@@ -3,6 +3,7 @@ package modifiers
 import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -28,13 +29,11 @@ func NewChannelModifier(channel *flows.Channel) *ChannelModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *ChannelModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
+func (m *ChannelModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
 	// if URNs change in anyway, generate a URNs changed event
 	if contact.UpdatePreferredChannel(m.Channel) {
 		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
-		return true
 	}
-	return false
 }
 
 var _ Modifier = (*ChannelModifier)(nil)

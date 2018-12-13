@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -30,13 +31,12 @@ func NewTimezoneModifier(timezone *time.Location) *TimezoneModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *TimezoneModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
+func (m *TimezoneModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
 	if !timezonesEqual(contact.Timezone(), m.Timezone) {
 		contact.SetTimezone(m.Timezone)
 		log(events.NewContactTimezoneChangedEvent(m.Timezone))
-		return true
+		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
-	return false
 }
 
 func timezonesEqual(tz1 *time.Location, tz2 *time.Location) bool {

@@ -74,10 +74,6 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step) e
 		}
 	}
 
-	mod := modifiers.NewTimezoneModifier(tz)
-	if mod.Apply(run.Session().Assets(), run.Contact(), func(e flows.Event) { a.log(run, step, e) }) {
-		a.reevaluateDynamicGroups(run, step)
-	}
-
+	a.applyModifier(run, step, modifiers.NewTimezoneModifier(tz))
 	return nil
 }

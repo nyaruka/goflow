@@ -63,10 +63,6 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step) error
 		return nil
 	}
 
-	mod := modifiers.NewNameModifier(name)
-	if mod.Apply(run.Session().Assets(), run.Contact(), func(e flows.Event) { a.log(run, step, e) }) {
-		a.reevaluateDynamicGroups(run, step)
-	}
-
+	a.applyModifier(run, step, modifiers.NewNameModifier(name))
 	return nil
 }

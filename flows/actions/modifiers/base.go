@@ -2,6 +2,8 @@ package modifiers
 
 import (
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 var registeredTypes = map[string](func() Modifier){}
@@ -14,7 +16,7 @@ func RegisterType(name string, initFunc func() Modifier) {
 // Modifier is something which can modify a contact
 type Modifier interface {
 	// Apply applies this modification to the given contact
-	Apply(flows.SessionAssets, *flows.Contact, func(flows.Event)) bool
+	Apply(utils.Environment, flows.SessionAssets, *flows.Contact, func(flows.Event))
 }
 
 // the base of all modifier types
@@ -28,3 +30,18 @@ func newBaseModifier(typeName string) baseModifier {
 
 // Type returns the type of this modifier
 func (m *baseModifier) Type() string { return m.Type_ }
+
+// helper to re-evaluate dynamic groups and log any changes to membership
+func (m *baseModifier) reevaluateDynamicGroups(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
+	added, removed, errors := contact.ReevaluateDynamicGroups(env, assets.Groups())
+
+	// add error event for each group we couldn't re-evaluate
+	for _, err := range errors {
+		log(events.NewErrorEvent(err))
+	}
+
+	// add groups changed event for the groups we were added/removed to/from
+	if len(added) > 0 || len(removed) > 0 {
+		log(events.NewContactGroupsChangedEvent(added, removed))
+	}
+}

@@ -79,10 +79,6 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error 
 		return nil
 	}
 
-	mod := modifiers.NewURNModifier(urn, modifiers.URNAppend)
-	if mod.Apply(run.Session().Assets(), run.Contact(), func(e flows.Event) { a.log(run, step, e) }) {
-		a.reevaluateDynamicGroups(run, step)
-	}
-
+	a.applyModifier(run, step, modifiers.NewURNModifier(urn, modifiers.URNAppend))
 	return nil
 }

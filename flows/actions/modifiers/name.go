@@ -3,6 +3,7 @@ package modifiers
 import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -28,13 +29,12 @@ func NewNameModifier(name string) *NameModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *NameModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
+func (m *NameModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
 	if contact.Name() != m.Name {
 		contact.SetName(m.Name)
 		log(events.NewContactNameChangedEvent(m.Name))
-		return true
+		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
-	return false
 }
 
 var _ Modifier = (*NameModifier)(nil)

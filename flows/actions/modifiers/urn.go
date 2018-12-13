@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -38,15 +39,12 @@ func NewURNModifier(urn urns.URN, modification URNModification) *URNModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *URNModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
+func (m *URNModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
 	contactURN := flows.NewContactURN(m.URN.Normalize(""), nil)
-
 	if contact.AddURN(contactURN) {
 		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
-		return true
+		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
-
-	return false
 }
 
 var _ Modifier = (*URNModifier)(nil)

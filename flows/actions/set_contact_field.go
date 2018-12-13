@@ -77,10 +77,6 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step) erro
 
 	newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
 
-	mod := modifiers.NewFieldModifier(field, newValue)
-	if mod.Apply(run.Session().Assets(), run.Contact(), func(e flows.Event) { a.log(run, step, e) }) {
-		a.reevaluateDynamicGroups(run, step)
-	}
-
+	a.applyModifier(run, step, modifiers.NewFieldModifier(field, newValue))
 	return nil
 }

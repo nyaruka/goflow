@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 
@@ -292,21 +293,6 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 	a.saveResult(run, step, name, value, category, "", &input, extra)
 }
 
-// helper to re-evaluate dynamic groups and log any changes to membership
-func (a *BaseAction) reevaluateDynamicGroups(run flows.FlowRun, step flows.Step) {
-	added, removed, errors := run.Contact().ReevaluateDynamicGroups(run.Session().Environment(), run.Session().Assets().Groups())
-
-	// add error event for each group we couldn't re-evaluate
-	for _, err := range errors {
-		a.logError(run, step, err)
-	}
-
-	// add groups changed event for the groups we were added/removed to/from
-	if len(added) > 0 || len(removed) > 0 {
-		a.log(run, step, events.NewContactGroupsChangedEvent(added, removed))
-	}
-}
-
 // helper to error the current run and log a fatal error event
 func (a *BaseAction) fatalError(run flows.FlowRun, step flows.Step, err error) {
 	run.Exit(flows.RunStatusErrored)
@@ -321,6 +307,11 @@ func (a *BaseAction) logError(run flows.FlowRun, step flows.Step, err error) {
 // helper to log an event
 func (a *BaseAction) log(run flows.FlowRun, step flows.Step, event flows.Event) {
 	run.LogEvent(step, event)
+}
+
+// helper to apply a contact modifier
+func (a *BaseAction) applyModifier(run flows.FlowRun, step flows.Step, mod modifiers.Modifier) {
+	mod.Apply(run.Session().Environment(), run.Session().Assets(), run.Contact(), func(e flows.Event) { a.log(run, step, e) })
 }
 
 // utility struct which sets the allowed flow types to any

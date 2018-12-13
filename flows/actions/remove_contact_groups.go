@@ -79,7 +79,6 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) 
 		}
 	}
 
-	mod := modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove)
-	mod.Apply(run.Session().Assets(), run.Contact(), func(e flows.Event) { a.log(run, step, e) })
+	a.applyModifier(run, step, modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove))
 	return nil
 }
