@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeChannel, ReadChannelTrigger)
+	RegisterType(TypeChannel, readChannelTrigger)
 }
 
 // TypeChannel is the type for sessions triggered by channel events
@@ -84,8 +84,7 @@ type channelTriggerEnvelope struct {
 	Event *ChannelEvent `json:"event" validate:"required,dive"`
 }
 
-// ReadChannelTrigger reads a channel trigger
-func ReadChannelTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func readChannelTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &channelTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

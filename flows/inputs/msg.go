@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsg, ReadMsgInput)
+	RegisterType(TypeMsg, readMsgInput)
 }
 
 // TypeMsg is a constant for incoming messages
@@ -94,8 +94,7 @@ type msgInputEnvelope struct {
 	Attachments flows.AttachmentList `json:"attachments,omitempty"`
 }
 
-// ReadMsgInput reads a message input from the given JSON
-func ReadMsgInput(session flows.Session, data json.RawMessage) (flows.Input, error) {
+func readMsgInput(session flows.Session, data json.RawMessage) (flows.Input, error) {
 	e := &msgInputEnvelope{}
 	err := utils.UnmarshalAndValidate(data, e)
 	if err != nil {

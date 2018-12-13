@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeCampaign, ReadCampaignTrigger)
+	RegisterType(TypeCampaign, readCampaignTrigger)
 }
 
 // TypeCampaign is the type for sessions triggered by campaign events
@@ -80,8 +80,7 @@ type campaignTriggerEnvelope struct {
 	Event *CampaignEvent `json:"event" validate:"required,dive"`
 }
 
-// ReadCampaignTrigger reads a campaign trigger
-func ReadCampaignTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func readCampaignTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &campaignTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

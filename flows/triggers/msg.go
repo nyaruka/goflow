@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsg, ReadMsgTrigger)
+	RegisterType(TypeMsg, readMsgTrigger)
 }
 
 // TypeMsg is the type for message triggered sessions
@@ -104,8 +104,7 @@ type msgTriggerEnvelope struct {
 	Match *KeywordMatch `json:"keyword_match,omitempty" validate:"omitempty,dive"`
 }
 
-// ReadMsgTrigger reads a message trigger
-func ReadMsgTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func readMsgTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &msgTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
