@@ -2,6 +2,7 @@ package modifiers
 
 import (
 	"encoding/json"
+	"github.com/nyaruka/goflow/assets"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -15,25 +16,25 @@ func init() {
 // TypeChannel is the type of our channel modifier
 const TypeChannel string = "channel"
 
-// ChannelModifier modifies the channel of a contact
+// ChannelModifier modifies the preferred channel of a contact
 type ChannelModifier struct {
 	baseModifier
 
-	Channel *flows.Channel
+	channel *flows.Channel
 }
 
 // NewChannelModifier creates a new channel modifier
 func NewChannelModifier(channel *flows.Channel) *ChannelModifier {
 	return &ChannelModifier{
 		baseModifier: newBaseModifier(TypeChannel),
-		Channel:      channel,
+		channel:      channel,
 	}
 }
 
 // Apply applies this modification to the given contact
 func (m *ChannelModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
 	// if URNs change in anyway, generate a URNs changed event
-	if contact.UpdatePreferredChannel(m.Channel) {
+	if contact.UpdatePreferredChannel(m.channel) {
 		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
 	}
 }
@@ -44,7 +45,22 @@ var _ Modifier = (*ChannelModifier)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type channelModifierEnvelope struct {
+	Channel *assets.ChannelReference `json:"channel" validate:"omitempty,dive"`
+}
+
 func readChannelModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
-	// TODO
-	return nil, nil
+	e := &channelModifierEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
+	m := &ChannelModifier{}
+	if e.Channel != nil {
+		var err error
+		if m.channel, err = assets.Channels().Get(e.Channel.UUID); err != nil {
+			return nil, err
+		}
+	}
+	return m, nil
 }

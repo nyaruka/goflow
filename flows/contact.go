@@ -447,7 +447,7 @@ type contactEnvelope struct {
 	Language  utils.Language           `json:"language,omitempty"`
 	Timezone  string                   `json:"timezone,omitempty"`
 	CreatedOn time.Time                `json:"created_on" validate:"required"`
-	URNs      []urns.URN               `json:"urns" validate:"dive,urn"`
+	URNs      []urns.URN               `json:"urns,omitempty" validate:"dive,urn"`
 	Groups    []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
 	Fields    map[string]*Value        `json:"fields,omitempty"`
 }

@@ -12,11 +12,12 @@ import (
 
 type readFunc func(flows.SessionAssets, json.RawMessage) (Modifier, error)
 
-var registeredTypes = map[string]readFunc{}
+// RegisteredTypes is the registered modifier types
+var RegisteredTypes = map[string]readFunc{}
 
 // RegisterType registers a new type of modifier
 func RegisterType(name string, f readFunc) {
-	registeredTypes[name] = f
+	RegisteredTypes[name] = f
 }
 
 // Modifier is something which can modify a contact
@@ -64,7 +65,7 @@ func ReadModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, e
 		return nil, err
 	}
 
-	f := registeredTypes[typeName]
+	f := RegisteredTypes[typeName]
 	if f == nil {
 		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}

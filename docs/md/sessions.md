@@ -22,8 +22,7 @@ Is used when a session was triggered by a campaign event
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "id": 0,
         "name": "Bob",
-        "created_on": "2018-01-01T12:00:00Z",
-        "urns": []
+        "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
     "event": {
@@ -54,8 +53,7 @@ Is used when a session was triggered by a channel event
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "id": 0,
         "name": "Bob",
-        "created_on": "2018-01-01T12:00:00Z",
-        "urns": []
+        "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
     "event": {
@@ -130,8 +128,7 @@ Is used when a session was triggered manually by a user
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "id": 0,
         "name": "Bob",
-        "created_on": "2018-01-01T12:00:00Z",
-        "urns": []
+        "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z"
 }
@@ -155,8 +152,7 @@ Is used when a session was triggered by a message being recieved by the caller
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "id": 0,
         "name": "Bob",
-        "created_on": "2018-01-01T12:00:00Z",
-        "urns": []
+        "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
     "msg": {
@@ -202,7 +198,6 @@ Is used when a session is resumed with a new message from the contact
         "name": "Bob",
         "language": "fra",
         "created_on": "2018-01-01T12:00:00Z",
-        "urns": [],
         "fields": {
             "gender": {
                 "text": "Male"
@@ -241,7 +236,6 @@ Is used when a session is resumed because the waiting run has expired
         "name": "Bob",
         "language": "fra",
         "created_on": "2018-01-01T12:00:00Z",
-        "urns": [],
         "fields": {
             "gender": {
                 "text": "Male"
@@ -268,7 +262,6 @@ Is used when a session is resumed because a wait has timed out
         "name": "Bob",
         "language": "fra",
         "created_on": "2018-01-01T12:00:00Z",
-        "urns": [],
         "fields": {
             "gender": {
                 "text": "Male"

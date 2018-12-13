@@ -75,7 +75,6 @@ func TestTriggerMarshaling(t *testing.T) {
 					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -114,7 +113,6 @@ func TestTriggerMarshaling(t *testing.T) {
 					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -153,7 +151,6 @@ func TestTriggerMarshaling(t *testing.T) {
 					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -187,7 +184,6 @@ func TestTriggerMarshaling(t *testing.T) {
 					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -222,7 +218,6 @@ func TestTriggerMarshaling(t *testing.T) {
 					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
