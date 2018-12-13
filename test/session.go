@@ -80,7 +80,7 @@ var sessionAssets = `{
                     "exits": [
                         {
                             "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-                            "label": "Al Responses",
+                            "name": "All Responses",
                             "destination_node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03"
                         }
                     ]
