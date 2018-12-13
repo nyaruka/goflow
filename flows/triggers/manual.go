@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeManual, ReadManualTrigger)
+	RegisterType(TypeManual, readManualTrigger)
 }
 
 // TypeManual is the type for manually triggered sessions
@@ -48,8 +48,7 @@ var _ flows.Trigger = (*ManualTrigger)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadManualTrigger reads a manual trigger
-func ReadManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func readManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &baseTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

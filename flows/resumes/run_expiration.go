@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeRunExpiration, ReadRunExpirationResume)
+	RegisterType(TypeRunExpiration, readRunExpirationResume)
 }
 
 // TypeRunExpiration is the type for resuming a session when a run has expired
@@ -56,8 +56,7 @@ var _ flows.Resume = (*RunExpirationResume)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadRunExpirationResume reads a run expired resume
-func ReadRunExpirationResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
+func readRunExpirationResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
 	e := &baseResumeEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

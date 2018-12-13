@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeWaitTimeout, ReadWaitTimeoutResume)
+	RegisterType(TypeWaitTimeout, readWaitTimeoutResume)
 }
 
 // TypeWaitTimeout is the type for resuming a session when a wait has timed out
@@ -57,8 +57,7 @@ var _ flows.Resume = (*WaitTimeoutResume)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadWaitTimeoutResume reads a timeout resume
-func ReadWaitTimeoutResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
+func readWaitTimeoutResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
 	e := &baseResumeEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

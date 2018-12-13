@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsg, ReadMsgWait)
+	RegisterType(TypeMsg, readMsgWait)
 }
 
 // TypeMsg is the type of our message wait
@@ -81,8 +81,7 @@ type msgWaitEnvelope struct {
 	Hint json.RawMessage `json:"hint,omitempty"`
 }
 
-// ReadMsgWait reads a message wait
-func ReadMsgWait(data json.RawMessage) (flows.Wait, error) {
+func readMsgWait(data json.RawMessage) (flows.Wait, error) {
 	e := &msgWaitEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

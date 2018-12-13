@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsg, ReadMsgResume)
+	RegisterType(TypeMsg, readMsgResume)
 }
 
 // TypeMsg is the type for resuming a session with a message
@@ -78,8 +78,7 @@ type msgResumeEnvelope struct {
 	Msg *flows.MsgIn `json:"msg" validate:"required,dive"`
 }
 
-// ReadMsgResume reads a message resume
-func ReadMsgResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
+func readMsgResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
 	e := &msgResumeEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
