@@ -31,10 +31,10 @@ type ContactFieldChangedEvent struct {
 }
 
 // NewContactFieldChangedEvent returns a new save to contact event
-func NewContactFieldChangedEvent(field *assets.FieldReference, value *flows.Value) *ContactFieldChangedEvent {
+func NewContactFieldChangedEvent(field *flows.Field, value *flows.Value) *ContactFieldChangedEvent {
 	return &ContactFieldChangedEvent{
 		BaseEvent: NewBaseEvent(TypeContactFieldChanged),
-		Field:     field,
+		Field:     field.Reference(),
 		Value:     value,
 	}
 }

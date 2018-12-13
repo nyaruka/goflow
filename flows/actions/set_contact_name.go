@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 
 	"github.com/pkg/errors"
 )
@@ -63,10 +63,10 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step) error
 		return nil
 	}
 
-	if run.Contact().Name() != name {
-		run.Contact().SetName(name)
-		a.log(run, step, events.NewContactNameChangedEvent(name))
-
+	mod := modifiers.NewNameModifier(name)
+	event := mod.Apply(run.Session().Assets(), run.Contact())
+	if event != nil {
+		a.log(run, step, event)
 		a.reevaluateDynamicGroups(run, step)
 	}
 

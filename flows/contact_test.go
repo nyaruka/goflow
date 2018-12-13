@@ -159,8 +159,13 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	contact.SetLanguage(utils.Language("spa"))
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:crazy_joe"), nil))
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
-	contact.Fields().Set(env, gender, "M", fieldSet)
-	contact.Fields().Set(env, age, "37", fieldSet)
+
+	genderValue := contact.Fields().Parse(env, fieldSet, gender, "M")
+	contact.Fields().Set(gender, genderValue)
+
+	ageValue := contact.Fields().Parse(env, fieldSet, age, "37")
+	contact.Fields().Set(age, ageValue)
+
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
 
 	assert.Equal(t, []*flows.Group{males, old, spanish, lastYear, tel1800, twitterCrazies}, evaluateGroups(t, env, contact, groups))

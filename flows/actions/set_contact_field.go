@@ -5,7 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 
 	"github.com/pkg/errors"
 )
@@ -75,12 +75,14 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step) erro
 		return err
 	}
 
-	oldValue := run.Contact().Fields().Get(field)
-	newValue := run.Contact().Fields().Set(run.Environment(), field, rawValue, fields)
+	newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
 
-	if !newValue.Equals(oldValue) {
-		a.log(run, step, events.NewContactFieldChangedEvent(a.Field, newValue))
+	mod := modifiers.NewFieldModifier(field, newValue)
+	event := mod.Apply(run.Session().Assets(), run.Contact())
+	if event != nil {
+		a.log(run, step, event)
 		a.reevaluateDynamicGroups(run, step)
 	}
+
 	return nil
 }

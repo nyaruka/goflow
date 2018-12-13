@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -74,10 +74,10 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step) e
 		}
 	}
 
-	if run.Contact().Language() != lang {
-		run.Contact().SetLanguage(lang)
-		a.log(run, step, events.NewContactLanguageChangedEvent(lang))
-
+	mod := modifiers.NewLanguageModifier(lang)
+	event := mod.Apply(run.Session().Assets(), run.Contact())
+	if event != nil {
+		a.log(run, step, event)
 		a.reevaluateDynamicGroups(run, step)
 	}
 

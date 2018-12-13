@@ -94,7 +94,7 @@ func (a *BaseAction) validateFlow(assets flows.SessionAssets, reference *assets.
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*assets.GroupReference) ([]*flows.Group, error) {
+func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*assets.GroupReference, staticOnly bool) ([]*flows.Group, error) {
 	groupSet := run.Session().Assets().Groups()
 	groups := make([]*flows.Group, 0, len(references))
 
@@ -123,7 +123,11 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 		}
 
 		if group != nil {
-			groups = append(groups, group)
+			if staticOnly && group.IsDynamic() {
+				a.logError(run, step, errors.Errorf("can't add or remove contacts from a dynamic group '%s'", group.Name()))
+			} else {
+				groups = append(groups, group)
+			}
 		}
 	}
 
@@ -223,7 +227,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 	}
 
 	// resolve group references
-	groups, err := a.resolveGroups(run, step, actionGroups)
+	groups, err := a.resolveGroups(run, step, actionGroups, false)
 	if err != nil {
 		return nil, nil, nil, err
 	}

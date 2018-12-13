@@ -3,7 +3,7 @@ package actions
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 
 	"github.com/pkg/errors"
 )
@@ -57,31 +57,15 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) err
 		return nil
 	}
 
-	groups, err := a.resolveGroups(run, step, a.Groups)
+	groups, err := a.resolveGroups(run, step, a.Groups, true)
 	if err != nil {
 		return err
 	}
 
-	added := make([]*flows.Group, 0, len(groups))
-	for _, group := range groups {
-		// ignore group if contact is already in it
-		if contact.Groups().FindByUUID(group.UUID()) != nil {
-			continue
-		}
-
-		// error if group is dynamic
-		if group.IsDynamic() {
-			a.logError(run, step, errors.Errorf("can't manually add contact to dynamic group '%s'", group.Name()))
-			continue
-		}
-
-		run.Contact().Groups().Add(group)
-		added = append(added, group)
-	}
-
-	// only generate event if contact's groups change
-	if len(added) > 0 {
-		a.log(run, step, events.NewContactGroupsChangedEvent(added, nil))
+	mod := modifiers.NewGroupsModifier(groups, true)
+	event := mod.Apply(run.Session().Assets(), run.Contact())
+	if event != nil {
+		a.log(run, step, event)
 	}
 
 	return nil

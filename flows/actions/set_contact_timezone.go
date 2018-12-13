@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 
 	"github.com/pkg/errors"
 )
@@ -74,14 +74,12 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step) e
 		}
 	}
 
-	if !timezonesEqual(run.Contact().Timezone(), tz) {
-		run.Contact().SetTimezone(tz)
-		a.log(run, step, events.NewContactTimezoneChangedEvent(tz))
+	mod := modifiers.NewTimezoneModifier(tz)
+	event := mod.Apply(run.Session().Assets(), run.Contact())
+	if event != nil {
+		a.log(run, step, event)
+		a.reevaluateDynamicGroups(run, step)
 	}
 
 	return nil
-}
-
-func timezonesEqual(tz1 *time.Location, tz2 *time.Location) bool {
-	return (tz1 == nil && tz2 == nil) || (tz1 != nil && tz2 != nil && tz1.String() == tz2.String())
 }
