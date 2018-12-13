@@ -30,14 +30,15 @@ func NewFieldModifier(field *flows.Field, value *flows.Value) *FieldModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *FieldModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
+func (m *FieldModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
 	oldValue := contact.Fields().Get(m.Field)
 
 	if !m.Value.Equals(oldValue) {
 		contact.Fields().Set(m.Field, m.Value)
-		return events.NewContactFieldChangedEvent(m.Field, m.Value)
+		log(events.NewContactFieldChangedEvent(m.Field, m.Value))
+		return true
 	}
-	return nil
+	return false
 }
 
 var _ Modifier = (*FieldModifier)(nil)

@@ -29,12 +29,13 @@ func NewLanguageModifier(language utils.Language) *LanguageModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *LanguageModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
+func (m *LanguageModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
 	if contact.Language() != m.Language {
 		contact.SetLanguage(m.Language)
-		return events.NewContactLanguageChangedEvent(m.Language)
+		log(events.NewContactLanguageChangedEvent(m.Language))
+		return true
 	}
-	return nil
+	return false
 }
 
 var _ Modifier = (*LanguageModifier)(nil)

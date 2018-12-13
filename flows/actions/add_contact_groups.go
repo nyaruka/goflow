@@ -63,10 +63,6 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) err
 	}
 
 	mod := modifiers.NewGroupsModifier(groups, modifiers.GroupsAdd)
-	event := mod.Apply(run.Session().Assets(), run.Contact())
-	if event != nil {
-		a.log(run, step, event)
-	}
-
+	mod.Apply(run.Session().Assets(), run.Contact(), func(e flows.Event) { a.log(run, step, e) })
 	return nil
 }

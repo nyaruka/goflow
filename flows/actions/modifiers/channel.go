@@ -28,12 +28,13 @@ func NewChannelModifier(channel *flows.Channel) *ChannelModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *ChannelModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
+func (m *ChannelModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
 	// if URNs change in anyway, generate a URNs changed event
 	if contact.UpdatePreferredChannel(m.Channel) {
-		return events.NewContactURNsChangedEvent(contact.URNs().RawURNs())
+		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
+		return true
 	}
-	return nil
+	return false
 }
 
 var _ Modifier = (*ChannelModifier)(nil)

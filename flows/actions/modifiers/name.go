@@ -28,12 +28,13 @@ func NewNameModifier(name string) *NameModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *NameModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
+func (m *NameModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
 	if contact.Name() != m.Name {
 		contact.SetName(m.Name)
-		return events.NewContactNameChangedEvent(m.Name)
+		log(events.NewContactNameChangedEvent(m.Name))
+		return true
 	}
-	return nil
+	return false
 }
 
 var _ Modifier = (*NameModifier)(nil)

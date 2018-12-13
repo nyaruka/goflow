@@ -68,10 +68,6 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) er
 	}
 
 	mod := modifiers.NewChannelModifier(channel)
-	event := mod.Apply(run.Session().Assets(), run.Contact())
-	if event != nil {
-		a.log(run, step, event)
-	}
-
+	mod.Apply(run.Session().Assets(), run.Contact(), func(e flows.Event) { a.log(run, step, e) })
 	return nil
 }

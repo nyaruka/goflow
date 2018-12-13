@@ -14,7 +14,7 @@ func RegisterType(name string, initFunc func() Modifier) {
 // Modifier is something which can modify a contact
 type Modifier interface {
 	// Apply applies this modification to the given contact
-	Apply(flows.SessionAssets, *flows.Contact) flows.Event
+	Apply(flows.SessionAssets, *flows.Contact, func(flows.Event)) bool
 }
 
 // the base of all modifier types

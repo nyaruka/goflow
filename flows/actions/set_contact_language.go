@@ -75,9 +75,7 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step) e
 	}
 
 	mod := modifiers.NewLanguageModifier(lang)
-	event := mod.Apply(run.Session().Assets(), run.Contact())
-	if event != nil {
-		a.log(run, step, event)
+	if mod.Apply(run.Session().Assets(), run.Contact(), func(e flows.Event) { a.log(run, step, e) }) {
 		a.reevaluateDynamicGroups(run, step)
 	}
 

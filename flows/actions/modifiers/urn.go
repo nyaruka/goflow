@@ -38,14 +38,15 @@ func NewURNModifier(urn urns.URN, modification URNModification) *URNModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *URNModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
+func (m *URNModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
 	contactURN := flows.NewContactURN(m.URN.Normalize(""), nil)
 
 	if contact.AddURN(contactURN) {
-		return events.NewContactURNsChangedEvent(contact.URNs().RawURNs())
+		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
+		return true
 	}
 
-	return nil
+	return false
 }
 
 var _ Modifier = (*URNModifier)(nil)

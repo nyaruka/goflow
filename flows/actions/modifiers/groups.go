@@ -39,7 +39,7 @@ func NewGroupsModifier(groups []*flows.Group, modification GroupsModification) *
 }
 
 // Apply applies this modification to the given contact
-func (m *GroupsModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
+func (m *GroupsModifier) Apply(assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) bool {
 	diff := make([]*flows.Group, 0, len(m.Groups))
 	if m.Modification == GroupsAdd {
 		for _, group := range m.Groups {
@@ -55,7 +55,8 @@ func (m *GroupsModifier) Apply(assets flows.SessionAssets, contact *flows.Contac
 
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
-			return events.NewContactGroupsChangedEvent(diff, nil)
+			log(events.NewContactGroupsChangedEvent(diff, nil))
+			return true
 		}
 	} else if m.Modification == GroupsRemove {
 		for _, group := range m.Groups {
@@ -70,10 +71,11 @@ func (m *GroupsModifier) Apply(assets flows.SessionAssets, contact *flows.Contac
 
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
-			return events.NewContactGroupsChangedEvent(nil, diff)
+			log(events.NewContactGroupsChangedEvent(nil, diff))
+			return true
 		}
 	}
-	return nil
+	return false
 }
 
 var _ Modifier = (*GroupsModifier)(nil)
