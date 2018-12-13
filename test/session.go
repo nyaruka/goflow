@@ -178,11 +178,11 @@ var sessionAssets = `{
         }
     ],
     "fields": [
-        {"key": "gender", "label": "Gender", "type": "text"},
-        {"key": "age", "label": "Age", "type": "number"},
-        {"key": "join_date", "label": "Join Date", "type": "datetime"},
-        {"key": "activation_token", "label": "Activation Token", "type": "text"},
-        {"key": "not_set", "label": "Not set", "type": "text"}
+        {"key": "gender", "name": "Gender", "type": "text"},
+        {"key": "age", "name": "Age", "type": "number"},
+        {"key": "join_date", "name": "Join Date", "type": "datetime"},
+        {"key": "activation_token", "name": "Activation Token", "type": "text"},
+        {"key": "not_set", "name": "Not set", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -366,7 +366,7 @@ var voiceSessionAssets = `{
         }
     ],
     "fields": [
-        {"key": "gender", "label": "Gender", "type": "text"}
+        {"key": "gender", "name": "Gender", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},

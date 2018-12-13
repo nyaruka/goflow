@@ -131,7 +131,7 @@
                     "created_on": "2018-07-06T12:30:24.123456789Z",
                     "field": {
                         "key": "age",
-                        "name": ""
+                        "name": "Age"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "contact_field_changed",
@@ -358,7 +358,7 @@
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "field": {
                                     "key": "age",
-                                    "name": ""
+                                    "name": "Age"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_field_changed",

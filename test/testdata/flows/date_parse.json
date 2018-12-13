@@ -76,17 +76,17 @@
     "fields": [
         {
             "key": "first_name",
-            "label": "First Name",
+            "name": "First Name",
             "type": "text"
         },
         {
             "key": "state",
-            "label": "State",
+            "name": "State",
             "type": "state"
         },
         {
             "key": "birth_date",
-            "label": "birth Date",
+            "name": "birth Date",
             "type": "text"
         }
     ],

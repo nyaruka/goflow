@@ -207,7 +207,7 @@
     "fields": [
         {
             "key": "gender",
-            "label": "Gender",
+            "name": "Gender",
             "type": "text"
         }
     ]
