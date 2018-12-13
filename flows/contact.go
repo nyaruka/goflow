@@ -442,7 +442,7 @@ func NewContactReference(uuid ContactUUID, name string) *ContactReference {
 
 type contactEnvelope struct {
 	UUID      ContactUUID              `json:"uuid" validate:"required,uuid4"`
-	ID        ContactID                `json:"id"`
+	ID        ContactID                `json:"id,omitempty"`
 	Name      string                   `json:"name,omitempty"`
 	Language  utils.Language           `json:"language,omitempty"`
 	Timezone  string                   `json:"timezone,omitempty"`

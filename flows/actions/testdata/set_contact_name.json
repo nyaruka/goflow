@@ -90,7 +90,6 @@
                     "uuid": "5389414a-66b8-408b-afec-07c5d68f6784"
                 }
             ],
-            "id": 0,
             "language": "eng",
             "timezone": "America/Guayaquil",
             "urns": [
@@ -132,7 +131,6 @@
                     "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
                 }
             ],
-            "id": 0,
             "language": "eng",
             "name": "Bryan",
             "timezone": "America/Guayaquil",
