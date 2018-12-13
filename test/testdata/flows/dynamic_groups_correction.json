@@ -12,12 +12,12 @@
     "fields": [
         {
             "key": "gender",
-            "label": "Gender",
+            "name": "Gender",
             "type": "text"
         },
         {
             "key": "age",
-            "label": "Age",
+            "name": "Age",
             "type": "number"
         }
     ],

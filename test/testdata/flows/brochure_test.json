@@ -170,7 +170,7 @@
                     "type": "msg_received"
                 },
                 {
-                    "category": "",
+                    "category": "Not Empty",
                     "created_on": "2018-07-06T12:30:18.123456789Z",
                     "input": "Ryan Lewis",
                     "name": "Name",
@@ -299,7 +299,7 @@
                                 "type": "msg_received"
                             },
                             {
-                                "category": "",
+                                "category": "Not Empty",
                                 "created_on": "2018-07-06T12:30:18.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Name",
@@ -368,6 +368,7 @@
                         ],
                         "results": {
                             "name": {
+                                "category": "Not Empty",
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Name",

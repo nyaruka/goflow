@@ -54,17 +54,17 @@
                         ]
                     },
                     "2ab9b033-77a8-4e56-a558-b568c00c9492": {
-                        "label": [
+                        "name": [
                             "Pepsi"
                         ]
                     },
                     "c7bca181-0cb3-4ec6-8555-f7e5644238ad": {
-                        "label": [
+                        "name": [
                             "Coke"
                         ]
                     },
                     "5ce6c69a-fdfe-4594-ab71-26be534d31c3": {
-                        "label": [
+                        "name": [
                             "Autres"
                         ]
                     },
@@ -219,22 +219,22 @@
     "fields": [
         {
             "key": "first_name",
-            "label": "First Name",
+            "name": "First Name",
             "type": "text"
         },
         {
             "key": "activation_token",
-            "label": "Activation Token",
+            "name": "Activation Token",
             "type": "text"
         },
         {
             "key": "gender",
-            "label": "Gender",
+            "name": "Gender",
             "type": "text"
         },
         {
             "key": "state",
-            "label": "State",
+            "name": "State",
             "type": "state"
         }
     ],

@@ -26,7 +26,7 @@
             "exits": [
                 {
                     "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
-                    "label": "Default",
+                    "name": "Default",
                     "destination_node_uuid": null
                 }
             ]
