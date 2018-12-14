@@ -78,6 +78,10 @@ func testModifierType(t *testing.T, assets flows.SessionAssets, typeName string)
 		actualEventsJSON, _ := json.Marshal(eventLog)
 		expectedEventsJSON, _ := json.Marshal(tc.Events)
 		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
+
+		// try marshaling the modifier back to JSON
+		modifierJSON, err := json.Marshal(modifier)
+		test.AssertEqualJSON(t, tc.Modifier, modifierJSON, "marshal mismatch in %s", testName)
 	}
 }
 
@@ -89,14 +93,4 @@ func TestReadModifier(t *testing.T) {
 	// error if we don't recognize the type
 	_, err = modifiers.ReadModifier(nil, []byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
-
-	// read name modifier
-	mod, err := modifiers.ReadModifier(nil, []byte(`{"type": "name", "name": "Bob"}`))
-	assert.NoError(t, err)
-	assert.Equal(t, "name", mod.Type())
-
-	// marshal back to JSON
-	data, err := json.Marshal(mod)
-	assert.NoError(t, err)
-	assert.Equal(t, `{"type":"name","name":"Bob"}`, string(data))
 }

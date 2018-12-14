@@ -29,7 +29,7 @@ type URNModifier struct {
 	baseModifier
 
 	URN          urns.URN        `json:"urn"`
-	Modification URNModification `json:"modification"`
+	Modification URNModification `json:"modification" validate:"required,eq=append"`
 }
 
 // NewURNModifier creates a new name modifier
@@ -42,7 +42,7 @@ func NewURNModifier(urn urns.URN, modification URNModification) *URNModifier {
 
 // Apply applies this modification to the given contact
 func (m *URNModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
-	contactURN := flows.NewContactURN(m.URN.Normalize(""), nil)
+	contactURN := flows.NewContactURN(m.URN.Normalize(string(env.DefaultCountry())), nil)
 	if contact.AddURN(contactURN) {
 		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
 		m.reevaluateDynamicGroups(env, assets, contact, log)

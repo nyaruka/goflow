@@ -20,22 +20,22 @@ const TypeTimezone string = "timezone"
 type TimezoneModifier struct {
 	baseModifier
 
-	Timezone *time.Location `json:"timezone"`
+	timezone *time.Location
 }
 
 // NewTimezoneModifier creates a new timezone modifier
 func NewTimezoneModifier(timezone *time.Location) *TimezoneModifier {
 	return &TimezoneModifier{
 		baseModifier: newBaseModifier(TypeTimezone),
-		Timezone:     timezone,
+		timezone:     timezone,
 	}
 }
 
 // Apply applies this modification to the given contact
 func (m *TimezoneModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
-	if !timezonesEqual(contact.Timezone(), m.Timezone) {
-		contact.SetTimezone(m.Timezone)
-		log(events.NewContactTimezoneChangedEvent(m.Timezone))
+	if !timezonesEqual(contact.Timezone(), m.timezone) {
+		contact.SetTimezone(m.timezone)
+		log(events.NewContactTimezoneChangedEvent(m.timezone))
 		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
 }
@@ -50,7 +50,33 @@ var _ Modifier = (*TimezoneModifier)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type timezoneModifierEnvelope struct {
+	utils.TypedEnvelope
+	Timezone string `json:"timezone"`
+}
+
 func readTimezoneModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
-	m := &TimezoneModifier{}
-	return m, utils.UnmarshalAndValidate(data, m)
+	e := &timezoneModifierEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
+	var tz *time.Location
+	if e.Timezone != "" {
+		var err error
+		tz, err = time.LoadLocation(e.Timezone)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return NewTimezoneModifier(tz), nil
+}
+
+func (m *TimezoneModifier) MarshalJSON() ([]byte, error) {
+	tzName := ""
+	if m.timezone != nil {
+		tzName = m.timezone.String()
+	}
+	return json.Marshal(&timezoneModifierEnvelope{TypedEnvelope: utils.TypedEnvelope{Type: m.Type()}, Timezone: tzName})
 }

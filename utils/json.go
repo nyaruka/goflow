@@ -86,13 +86,14 @@ type Typed interface {
 	Type() string
 }
 
-type typeOnly struct {
+// TypedEnvelope can be mixed into envelopes that have a type field
+type TypedEnvelope struct {
 	Type string `json:"type" validate:"required"`
 }
 
 // ReadTypeFromJSON reads a field called `type` from the given JSON
 func ReadTypeFromJSON(data []byte) (string, error) {
-	t := &typeOnly{}
+	t := &TypedEnvelope{}
 	if err := UnmarshalAndValidate(data, t); err != nil {
 		return "", err
 	}

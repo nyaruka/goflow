@@ -1,6 +1,6 @@
 [
     {
-        "description": "sets name to value",
+        "description": "name changed event if name changed",
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
@@ -22,6 +22,24 @@
                 "type": "contact_name_changed"
             }
         ]
+    },
+    {
+        "description": "noop if name unchanged",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bobby",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "name",
+            "name": "Bobby"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bobby",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": []
     },
     {
         "description": "clears name if value is empty",
