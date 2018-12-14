@@ -51,6 +51,9 @@ func TestMobileBindings(t *testing.T) {
 	assert.Equal(t, "msg_created", events.Get(0).Type())
 	assert.Equal(t, "msg_wait", events.Get(1).Type())
 
+	modifiers := sprint.Modifiers()
+	assert.Equal(t, 0, modifiers.Length())
+
 	wait := session.GetWait()
 	assert.Equal(t, "msg", wait.Type())
 	assert.Nil(t, wait.Hint())

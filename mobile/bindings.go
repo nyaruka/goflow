@@ -185,9 +185,32 @@ func (e *Event) Payload() string {
 	return e.payload
 }
 
+type Modifier struct {
+	type_   string
+	payload string
+}
+
+func (m *Modifier) Type() string {
+	return m.type_
+}
+
+func (m *Modifier) Payload() string {
+	return m.payload
+}
+
 // Sprint is an interaction with the engine - i.e. a start or resume of a session
 type Sprint struct {
 	target flows.Sprint
+}
+
+// Modifiers returns the modifiers created during this sprint
+func (s *Sprint) Modifiers() *ModifierSlice {
+	mods := NewModifierSlice(len(s.target.Modifiers()))
+	for _, mod := range s.target.Modifiers() {
+		marshaled, _ := json.Marshal(mod)
+		mods.Add(&Modifier{type_: mod.Type(), payload: string(marshaled)})
+	}
+	return mods
 }
 
 // Events returns the events created during this sprint
