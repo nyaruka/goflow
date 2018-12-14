@@ -50,7 +50,7 @@ func (a *StartFlowAction) Validate(assets flows.SessionAssets, context *flows.Va
 }
 
 // Execute runs our action
-func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
 	if err != nil {
 		return err
@@ -58,11 +58,11 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step, log func(f
 
 	if !run.Session().CanEnterFlow(flow) {
 		run.Exit(flows.RunStatusErrored)
-		log(events.NewFatalErrorEventf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))
+		logEvent(events.NewFatalErrorEventf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))
 		return nil
 	}
 
 	run.Session().PushFlow(flow, run, a.Terminal)
-	log(events.NewFlowTriggeredEvent(a.Flow, run.UUID(), a.Terminal))
+	logEvent(events.NewFlowTriggeredEvent(a.Flow, run.UUID(), a.Terminal))
 	return nil
 }

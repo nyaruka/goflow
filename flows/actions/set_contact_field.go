@@ -52,9 +52,9 @@ func (a *SetContactFieldAction) Validate(assets flows.SessionAssets, context *fl
 }
 
 // Execute runs this action
-func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	if run.Contact() == nil {
-		log(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -63,7 +63,7 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log 
 
 	// if we received an error, log it
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 		return nil
 	}
 
@@ -76,6 +76,6 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log 
 
 	newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
 
-	a.applyModifier(run, modifiers.NewFieldModifier(field, newValue), log)
+	a.applyModifier(run, modifiers.NewFieldModifier(field, newValue), logModifier, logEvent)
 	return nil
 }

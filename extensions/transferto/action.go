@@ -56,17 +56,17 @@ func (a *TransferAirtimeAction) AllowedFlowTypes() []flows.FlowType {
 }
 
 // Execute runs this action
-func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
-		log(events.NewErrorEvent(errors.Errorf("can't execute action in session without a contact")))
+		logEvent(events.NewErrorEvent(errors.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 
 	// check that our contact has a tel URN
 	telURNs := contact.URNs().WithScheme(urns.TelScheme)
 	if len(telURNs) == 0 {
-		log(events.NewErrorEvent(errors.Errorf("can't transfer airtime to contact without a tel URN")))
+		logEvent(events.NewErrorEvent(errors.Errorf("can't transfer airtime to contact without a tel URN")))
 		return nil
 	}
 	recipient := telURNs[0].URN().Path()
@@ -74,7 +74,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 	// log error and return if we don't have a configuration
 	rawConfig := run.Session().Environment().Extension("transferto")
 	if rawConfig == nil {
-		log(events.NewErrorEvent(errors.Errorf("missing transferto configuration")))
+		logEvent(events.NewErrorEvent(errors.Errorf("missing transferto configuration")))
 		return nil
 	}
 
@@ -86,9 +86,9 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 	transfer, err := attemptTransfer(contact.PreferredChannel(), config, a.Amounts, recipient, run.Session().HTTPClient())
 
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 	} else {
-		log(NewAirtimeTransferredEvent(transfer))
+		logEvent(NewAirtimeTransferredEvent(transfer))
 	}
 
 	if a.ResultName != "" && transfer != nil {
@@ -97,7 +97,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 		result := flows.NewResult(a.ResultName, value, category, "", step.NodeUUID(), nil, nil, utils.Now())
 
 		run.SaveResult(result)
-		log(events.NewRunResultChangedEvent(result))
+		logEvent(events.NewRunResultChangedEvent(result))
 	}
 	return nil
 }

@@ -54,10 +54,10 @@ func (a *SendEmailAction) Validate(assets flows.SessionAssets, context *flows.Va
 }
 
 // Execute creates the email events
-func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	subject, err := run.EvaluateTemplateAsString(a.Subject)
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 	}
 
 	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
@@ -65,16 +65,16 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log func(f
 	subject = strings.TrimSpace(subject)
 
 	if subject == "" {
-		log(events.NewErrorEventf("email subject evaluated to empty string, skipping"))
+		logEvent(events.NewErrorEventf("email subject evaluated to empty string, skipping"))
 		return nil
 	}
 
 	body, err := run.EvaluateTemplateAsString(a.Body)
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 	}
 	if body == "" {
-		log(events.NewErrorEventf("email body evaluated to empty string, skipping"))
+		logEvent(events.NewErrorEventf("email body evaluated to empty string, skipping"))
 		return nil
 	}
 
@@ -83,10 +83,10 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log func(f
 	for _, address := range a.Addresses {
 		evaluatedAddress, err := run.EvaluateTemplateAsString(address)
 		if err != nil {
-			log(events.NewErrorEvent(err))
+			logEvent(events.NewErrorEvent(err))
 		}
 		if evaluatedAddress == "" {
-			log(events.NewErrorEventf("email address evaluated to empty string, skipping"))
+			logEvent(events.NewErrorEventf("email address evaluated to empty string, skipping"))
 			continue
 		}
 
@@ -99,7 +99,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log func(f
 	}
 
 	if len(evaluatedAddresses) > 0 {
-		log(events.NewEmailCreatedEvent(evaluatedAddresses, subject, body))
+		logEvent(events.NewEmailCreatedEvent(evaluatedAddresses, subject, body))
 	}
 
 	return nil

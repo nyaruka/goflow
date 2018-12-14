@@ -58,10 +58,10 @@ func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets, context
 }
 
 // Execute runs the action
-func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
-		log(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -75,11 +75,11 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 			}
 		}
 	} else {
-		if groups, err = a.resolveGroups(run, a.Groups, true, log); err != nil {
+		if groups, err = a.resolveGroups(run, a.Groups, true, logEvent); err != nil {
 			return err
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove), log)
+	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove), logModifier, logEvent)
 	return nil
 }

@@ -72,7 +72,7 @@ func (t *baseTrigger) Initialize(session flows.Session) error {
 }
 
 // InitializeRun performs additional initialization when we create our first run
-func (t *baseTrigger) InitializeRun(run flows.FlowRun, log func(flows.Event)) error {
+func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent func(flows.Event)) error {
 	return nil
 }
 

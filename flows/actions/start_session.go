@@ -66,8 +66,8 @@ func (a *StartSessionAction) Validate(assets flows.SessionAssets, context *flows
 }
 
 // Execute runs our action
-func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
-	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, log)
+func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, logEvent)
 	if err != nil {
 		return err
 	}
@@ -77,6 +77,6 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, log fun
 		return err
 	}
 
-	log(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
+	logEvent(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
 	return nil
 }

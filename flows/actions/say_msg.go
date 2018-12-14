@@ -51,12 +51,12 @@ func (a *SayMsgAction) Validate(assets flows.SessionAssets, context *flows.Valid
 }
 
 // Execute runs this action
-func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	// localize and evaluate the message text
 	localizedText := run.GetText(utils.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, err := run.EvaluateTemplateAsString(localizedText)
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 	}
 	evaluatedText = strings.TrimSpace(evaluatedText)
 
@@ -65,11 +65,11 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, log func(flow
 
 	// if we have either an audio URL or backdown text.. tell caller to play this
 	if localizedAudioURL != "" {
-		log(events.NewIVRPlayEvent(localizedAudioURL, evaluatedText))
+		logEvent(events.NewIVRPlayEvent(localizedAudioURL, evaluatedText))
 	} else if evaluatedText != "" {
-		log(events.NewIVRSayEvent(evaluatedText))
+		logEvent(events.NewIVRSayEvent(evaluatedText))
 	} else {
-		log(events.NewErrorEventf("need either audio URL or backdown text, skipping"))
+		logEvent(events.NewErrorEventf("need either audio URL or backdown text, skipping"))
 	}
 
 	return nil

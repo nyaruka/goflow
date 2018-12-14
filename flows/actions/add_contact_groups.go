@@ -49,18 +49,18 @@ func (a *AddContactGroupsAction) Validate(assets flows.SessionAssets, context *f
 }
 
 // Execute adds our contact to the specified groups
-func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
-		log(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
-	groups, err := a.resolveGroups(run, a.Groups, true, log)
+	groups, err := a.resolveGroups(run, a.Groups, true, logEvent)
 	if err != nil {
 		return err
 	}
 
-	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsAdd), log)
+	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsAdd), logModifier, logEvent)
 	return nil
 }

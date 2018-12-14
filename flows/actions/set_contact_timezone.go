@@ -48,9 +48,9 @@ func (a *SetContactTimezoneAction) Validate(assets flows.SessionAssets, context 
 }
 
 // Execute runs this action
-func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	if run.Contact() == nil {
-		log(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -59,7 +59,7 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	// if we received an error, log it
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 		return nil
 	}
 
@@ -68,11 +68,11 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 	if timezone != "" {
 		tz, err = time.LoadLocation(timezone)
 		if err != nil {
-			log(events.NewErrorEventf("unrecognized timezone: '%s'", timezone))
+			logEvent(events.NewErrorEventf("unrecognized timezone: '%s'", timezone))
 			return nil
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewTimezoneModifier(tz), log)
+	a.applyModifier(run, modifiers.NewTimezoneModifier(tz), logModifier, logEvent)
 	return nil
 }

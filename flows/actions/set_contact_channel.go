@@ -50,10 +50,10 @@ func (a *SetContactChannelAction) Validate(assets flows.SessionAssets, context *
 	return nil
 }
 
-func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
-		log(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -66,6 +66,6 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewChannelModifier(channel), log)
+	a.applyModifier(run, modifiers.NewChannelModifier(channel), logModifier, logEvent)
 	return nil
 }

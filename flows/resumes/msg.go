@@ -53,7 +53,7 @@ func NewMsgResume(env utils.Environment, contact *flows.Contact, msg *flows.MsgI
 }
 
 // Apply applies our state changes and saves any events to the run
-func (r *MsgResume) Apply(run flows.FlowRun, log func(flows.Event)) error {
+func (r *MsgResume) Apply(run flows.FlowRun, logEvent func(flows.Event)) error {
 	// update our input
 	input, err := inputs.NewMsgInput(run.Session().Assets(), r.msg, r.ResumedOn())
 	if err != nil {
@@ -62,9 +62,9 @@ func (r *MsgResume) Apply(run flows.FlowRun, log func(flows.Event)) error {
 
 	run.Session().SetInput(input)
 	run.ResetExpiration(nil)
-	log(events.NewMsgReceivedEvent(r.msg))
+	logEvent(events.NewMsgReceivedEvent(r.msg))
 
-	return r.baseResume.Apply(run, log)
+	return r.baseResume.Apply(run, logEvent)
 }
 
 var _ flows.Resume = (*MsgResume)(nil)

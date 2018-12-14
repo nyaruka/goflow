@@ -47,9 +47,9 @@ func (a *SetContactNameAction) Validate(assets flows.SessionAssets, context *flo
 }
 
 // Execute runs this action
-func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	if run.Contact() == nil {
-		log(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -58,10 +58,10 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, log f
 
 	// if we received an error, log it
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 		return nil
 	}
 
-	a.applyModifier(run, modifiers.NewNameModifier(name), log)
+	a.applyModifier(run, modifiers.NewNameModifier(name), logModifier, logEvent)
 	return nil
 }

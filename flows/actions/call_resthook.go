@@ -52,7 +52,7 @@ func (a *CallResthookAction) Validate(assets flows.SessionAssets, context *flows
 }
 
 // Execute runs this action
-func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	// NOOP if resthook doesn't exist
 	resthook := run.Session().Assets().Resthooks().FindBySlug(a.Resthook)
 	if resthook == nil {
@@ -62,7 +62,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log fun
 	// build our payload
 	payload, err := run.EvaluateTemplateAsString(flows.DefaultWebhookPayload)
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 	}
 
 	// make a call to each subscriber URL
@@ -71,7 +71,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log fun
 	for _, url := range resthook.Subscribers() {
 		req, err := http.NewRequest("POST", url, strings.NewReader(payload))
 		if err != nil {
-			log(events.NewErrorEvent(err))
+			logEvent(events.NewErrorEvent(err))
 			return nil
 		}
 
@@ -79,16 +79,16 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log fun
 
 		webhook, err := flows.MakeWebhookCall(run.Session(), req, a.Resthook)
 		if err != nil {
-			log(events.NewErrorEvent(err))
+			logEvent(events.NewErrorEvent(err))
 		} else {
 			webhooks = append(webhooks, webhook)
-			log(events.NewWebhookCalledEvent(webhook))
+			logEvent(events.NewWebhookCalledEvent(webhook))
 		}
 	}
 
 	asResult := a.pickResultWebhook(webhooks)
 	if asResult != nil && a.ResultName != "" {
-		a.saveWebhookResult(run, step, a.ResultName, asResult, log)
+		a.saveWebhookResult(run, step, a.ResultName, asResult, logEvent)
 	}
 
 	return nil

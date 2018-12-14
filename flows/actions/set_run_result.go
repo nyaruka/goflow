@@ -54,14 +54,14 @@ func (a *SetRunResultAction) Validate(assets flows.SessionAssets, context *flows
 }
 
 // Execute runs this action
-func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	// get our localized value if any
 	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
 	value, err := run.EvaluateTemplateAsString(template)
 
 	// log any error received
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 		return nil
 	}
 
@@ -70,6 +70,6 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, log fun
 		categoryLocalized = ""
 	}
 
-	a.saveResult(run, step, a.Name, value, a.Category, categoryLocalized, nil, nil, log)
+	a.saveResult(run, step, a.Name, value, a.Category, categoryLocalized, nil, nil, logEvent)
 	return nil
 }

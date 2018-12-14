@@ -46,23 +46,23 @@ func (a *PlayAudioAction) Validate(assets flows.SessionAssets, context *flows.Va
 }
 
 // Execute runs this action
-func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
+func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	// localize and evaluate audio URL
 	localizedAudioURL := run.GetText(utils.UUID(a.UUID()), "audio_url", a.AudioURL)
 	evaluatedAudioURL, err := run.EvaluateTemplateAsString(localizedAudioURL)
 	if err != nil {
-		log(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 		return nil
 	}
 
 	evaluatedAudioURL = strings.TrimSpace(evaluatedAudioURL)
 	if evaluatedAudioURL == "" {
-		log(events.NewErrorEventf("audio URL evaluated to empty, skipping"))
+		logEvent(events.NewErrorEventf("audio URL evaluated to empty, skipping"))
 		return nil
 	}
 
 	// if we have an audio URL, tell caller to play it
-	log(events.NewIVRPlayEvent(evaluatedAudioURL, ""))
+	logEvent(events.NewIVRPlayEvent(evaluatedAudioURL, ""))
 
 	return nil
 }
