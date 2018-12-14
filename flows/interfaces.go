@@ -189,7 +189,7 @@ type Node interface {
 type Action interface {
 	UUID() ActionUUID
 
-	Execute(FlowRun, Step) error
+	Execute(FlowRun, Step, func(Event)) error
 	Validate(SessionAssets, *ValidationContext) error
 	AllowedFlowTypes() []FlowType
 	utils.Typed

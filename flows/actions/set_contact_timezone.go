@@ -6,8 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
-
-	"github.com/pkg/errors"
+	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -49,9 +48,9 @@ func (a *SetContactTimezoneAction) Validate(assets flows.SessionAssets, context 
 }
 
 // Execute runs this action
-func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
 	if run.Contact() == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		log(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -60,7 +59,7 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step) e
 
 	// if we received an error, log it
 	if err != nil {
-		a.logError(run, step, err)
+		log(events.NewErrorEvent(err))
 		return nil
 	}
 
@@ -69,11 +68,11 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step) e
 	if timezone != "" {
 		tz, err = time.LoadLocation(timezone)
 		if err != nil {
-			a.logError(run, step, errors.Errorf("unrecognized timezone: '%s'", timezone))
+			log(events.NewErrorEventf("unrecognized timezone: '%s'", timezone))
 			return nil
 		}
 	}
 
-	a.applyModifier(run, step, modifiers.NewTimezoneModifier(tz))
+	a.applyModifier(run, modifiers.NewTimezoneModifier(tz), log)
 	return nil
 }

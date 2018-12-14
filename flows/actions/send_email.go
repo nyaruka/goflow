@@ -6,8 +6,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -56,10 +54,10 @@ func (a *SendEmailAction) Validate(assets flows.SessionAssets, context *flows.Va
 }
 
 // Execute creates the email events
-func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
 	subject, err := run.EvaluateTemplateAsString(a.Subject)
 	if err != nil {
-		a.logError(run, step, err)
+		log(events.NewErrorEvent(err))
 	}
 
 	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
@@ -67,16 +65,16 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 	subject = strings.TrimSpace(subject)
 
 	if subject == "" {
-		a.logError(run, step, errors.Errorf("email subject evaluated to empty string, skipping"))
+		log(events.NewErrorEventf("email subject evaluated to empty string, skipping"))
 		return nil
 	}
 
 	body, err := run.EvaluateTemplateAsString(a.Body)
 	if err != nil {
-		a.logError(run, step, err)
+		log(events.NewErrorEvent(err))
 	}
 	if body == "" {
-		a.logError(run, step, errors.Errorf("email body evaluated to empty string, skipping"))
+		log(events.NewErrorEventf("email body evaluated to empty string, skipping"))
 		return nil
 	}
 
@@ -85,10 +83,10 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 	for _, address := range a.Addresses {
 		evaluatedAddress, err := run.EvaluateTemplateAsString(address)
 		if err != nil {
-			a.logError(run, step, err)
+			log(events.NewErrorEvent(err))
 		}
 		if evaluatedAddress == "" {
-			a.logError(run, step, errors.Errorf("email address evaluated to empty string, skipping"))
+			log(events.NewErrorEventf("email address evaluated to empty string, skipping"))
 			continue
 		}
 
@@ -101,7 +99,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 
 	if len(evaluatedAddresses) > 0 {
-		a.log(run, step, events.NewEmailCreatedEvent(evaluatedAddresses, subject, body))
+		log(events.NewEmailCreatedEvent(evaluatedAddresses, subject, body))
 	}
 
 	return nil

@@ -140,7 +140,7 @@ func (r *flowRun) LogError(step flows.Step, err error) {
 
 func (r *flowRun) LogFatalError(step flows.Step, err error) {
 	r.Exit(flows.RunStatusErrored)
-	r.LogEvent(step, events.NewFatalErrorEvent(err))
+	r.LogEvent(step, events.NewFatalErrorEventf(err.Error()))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }

@@ -365,13 +365,15 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Tr
 
 	// execute our node's actions
 	if node.Actions() != nil {
+		eventLog := func(e flows.Event) { run.LogEvent(step, e) }
+
 		for _, action := range node.Actions() {
 			if log.GetLevel() >= log.DebugLevel {
 				actionJSON, _ := json.Marshal(action)
 				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executing")
 			}
 
-			if err := action.Execute(run, step); err != nil {
+			if err := action.Execute(run, step, eventLog); err != nil {
 				return step, noDestination, errors.Wrapf(err, "error executing action[type=%s,uuid=%s]", action.Type(), action.UUID())
 			}
 

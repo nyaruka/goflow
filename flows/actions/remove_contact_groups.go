@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
+	"github.com/nyaruka/goflow/flows/events"
 
 	"github.com/pkg/errors"
 )
@@ -57,10 +58,10 @@ func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets, context
 }
 
 // Execute runs the action
-func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		log(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -74,11 +75,11 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) 
 			}
 		}
 	} else {
-		if groups, err = a.resolveGroups(run, step, a.Groups, true); err != nil {
+		if groups, err = a.resolveGroups(run, a.Groups, true, log); err != nil {
 			return err
 		}
 	}
 
-	a.applyModifier(run, step, modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove))
+	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove), log)
 	return nil
 }

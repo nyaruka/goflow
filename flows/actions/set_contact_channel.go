@@ -4,8 +4,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
-
-	"github.com/pkg/errors"
+	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -51,10 +50,10 @@ func (a *SetContactChannelAction) Validate(assets flows.SessionAssets, context *
 	return nil
 }
 
-func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		log(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -67,6 +66,6 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) er
 		}
 	}
 
-	a.applyModifier(run, step, modifiers.NewChannelModifier(channel))
+	a.applyModifier(run, modifiers.NewChannelModifier(channel), log)
 	return nil
 }

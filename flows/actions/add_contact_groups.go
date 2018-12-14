@@ -4,8 +4,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
-
-	"github.com/pkg/errors"
+	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -50,18 +49,18 @@ func (a *AddContactGroupsAction) Validate(assets flows.SessionAssets, context *f
 }
 
 // Execute adds our contact to the specified groups
-func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		log(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
-	groups, err := a.resolveGroups(run, step, a.Groups, true)
+	groups, err := a.resolveGroups(run, a.Groups, true, log)
 	if err != nil {
 		return err
 	}
 
-	a.applyModifier(run, step, modifiers.NewGroupsModifier(groups, modifiers.GroupsAdd))
+	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsAdd), log)
 	return nil
 }

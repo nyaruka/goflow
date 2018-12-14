@@ -5,8 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
-
-	"github.com/pkg/errors"
+	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -48,9 +47,9 @@ func (a *SetContactNameAction) Validate(assets flows.SessionAssets, context *flo
 }
 
 // Execute runs this action
-func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, log func(flows.Event)) error {
 	if run.Contact() == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		log(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -59,10 +58,10 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step) error
 
 	// if we received an error, log it
 	if err != nil {
-		a.logError(run, step, err)
+		log(events.NewErrorEvent(err))
 		return nil
 	}
 
-	a.applyModifier(run, step, modifiers.NewNameModifier(name))
+	a.applyModifier(run, modifiers.NewNameModifier(name), log)
 	return nil
 }
