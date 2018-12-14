@@ -34,7 +34,7 @@ type RemoveContactGroupsAction struct {
 	universalAction
 
 	Groups    []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
-	AllGroups bool                     `json:"all_groups"`
+	AllGroups bool                     `json:"all_groups,omitempty"`
 }
 
 // NewRemoveContactGroupsAction creates a new remove from groups action
