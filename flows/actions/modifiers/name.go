@@ -38,13 +38,13 @@ func (m *NameModifier) Apply(env utils.Environment, assets flows.SessionAssets, 
 	}
 }
 
-var _ Modifier = (*NameModifier)(nil)
+var _ flows.Modifier = (*NameModifier)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readNameModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+func readNameModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
 	m := &NameModifier{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

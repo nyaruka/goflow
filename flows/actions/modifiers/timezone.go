@@ -44,7 +44,7 @@ func timezonesEqual(tz1 *time.Location, tz2 *time.Location) bool {
 	return (tz1 == nil && tz2 == nil) || (tz1 != nil && tz2 != nil && tz1.String() == tz2.String())
 }
 
-var _ Modifier = (*TimezoneModifier)(nil)
+var _ flows.Modifier = (*TimezoneModifier)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -55,7 +55,7 @@ type timezoneModifierEnvelope struct {
 	Timezone string `json:"timezone"`
 }
 
-func readTimezoneModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+func readTimezoneModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
 	e := &timezoneModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

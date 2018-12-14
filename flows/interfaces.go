@@ -296,6 +296,13 @@ type Resume interface {
 	ResumedOn() time.Time
 }
 
+// Modifier is something which can modify a contact
+type Modifier interface {
+	utils.Typed
+
+	Apply(utils.Environment, SessionAssets, *Contact, func(Event))
+}
+
 // Event describes a state change
 type Event interface {
 	utils.Typed
@@ -355,6 +362,14 @@ type EngineConfig interface {
 	MaxWebhookResponseBytes() int
 }
 
+// Sprint is an interaction with the engine - i.e. a start or resume of a session
+type Sprint interface {
+	Modifiers() []Modifier
+	LogModifier(Modifier)
+	Events() []Event
+	LogEvent(Event)
+}
+
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
 	Assets() SessionAssets
@@ -375,8 +390,8 @@ type Session interface {
 	CanEnterFlow(Flow) bool
 	LogEvent(Event)
 
-	Start(Trigger) ([]Event, error)
-	Resume(Resume) ([]Event, error)
+	Start(Trigger) (Sprint, error)
+	Resume(Resume) (Sprint, error)
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 	GetCurrentChild(FlowRun) FlowRun

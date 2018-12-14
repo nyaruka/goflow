@@ -44,7 +44,7 @@ func (m *FieldModifier) Apply(env utils.Environment, assets flows.SessionAssets,
 	}
 }
 
-var _ Modifier = (*FieldModifier)(nil)
+var _ flows.Modifier = (*FieldModifier)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -56,7 +56,7 @@ type fieldModifierEnvelope struct {
 	Value *flows.Value           `json:"value"`
 }
 
-func readFieldModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+func readFieldModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
 	e := &fieldModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

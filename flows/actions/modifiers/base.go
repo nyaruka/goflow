@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-type readFunc func(flows.SessionAssets, json.RawMessage) (Modifier, error)
+type readFunc func(flows.SessionAssets, json.RawMessage) (flows.Modifier, error)
 
 // RegisteredTypes is the registered modifier types
 var RegisteredTypes = map[string]readFunc{}
@@ -18,13 +18,6 @@ var RegisteredTypes = map[string]readFunc{}
 // RegisterType registers a new type of modifier
 func RegisterType(name string, f readFunc) {
 	RegisteredTypes[name] = f
-}
-
-// Modifier is something which can modify a contact
-type Modifier interface {
-	utils.Typed
-
-	Apply(utils.Environment, flows.SessionAssets, *flows.Contact, func(flows.Event))
 }
 
 // the base of all modifier types
@@ -59,7 +52,7 @@ func (m *baseModifier) reevaluateDynamicGroups(env utils.Environment, assets flo
 //------------------------------------------------------------------------------------------
 
 // ReadModifier reads a modifier from the given JSON
-func ReadModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+func ReadModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

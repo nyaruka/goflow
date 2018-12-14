@@ -39,7 +39,7 @@ func (m *ChannelModifier) Apply(env utils.Environment, assets flows.SessionAsset
 	}
 }
 
-var _ Modifier = (*ChannelModifier)(nil)
+var _ flows.Modifier = (*ChannelModifier)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -50,7 +50,7 @@ type channelModifierEnvelope struct {
 	Channel *assets.ChannelReference `json:"channel" validate:"omitempty,dive"`
 }
 
-func readChannelModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+func readChannelModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
 	e := &channelModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

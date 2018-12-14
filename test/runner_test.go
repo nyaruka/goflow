@@ -114,7 +114,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		return runResult{}, errors.Wrapf(err, "error unmarshalling trigger")
 	}
 
-	newEvents, err := session.Start(trigger)
+	sprint, err := session.Start(trigger)
 	if err != nil {
 		return runResult{}, err
 	}
@@ -127,7 +127,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		if err != nil {
 			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}
-		marshalledEvents, err := marshalEventLog(newEvents)
+		marshalledEvents, err := marshalEventLog(sprint.Events())
 		if err != nil {
 			return runResult{}, err
 		}
@@ -149,7 +149,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 			return runResult{}, err
 		}
 
-		newEvents, err = session.Resume(resume)
+		sprint, err = session.Resume(resume)
 		if err != nil {
 			return runResult{}, err
 		}
@@ -160,7 +160,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		return runResult{}, errors.Wrap(err, "error marshalling output")
 	}
 
-	marshalledEvents, err := marshalEventLog(newEvents)
+	marshalledEvents, err := marshalEventLog(sprint.Events())
 	if err != nil {
 		return runResult{}, err
 	}

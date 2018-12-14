@@ -49,13 +49,13 @@ func (m *URNModifier) Apply(env utils.Environment, assets flows.SessionAssets, c
 	}
 }
 
-var _ Modifier = (*URNModifier)(nil)
+var _ flows.Modifier = (*URNModifier)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readURNModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+func readURNModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
 	m := &URNModifier{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

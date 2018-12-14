@@ -226,20 +226,20 @@ func ReadSession(a *SessionAssets, httpUserAgent string, data string) (*Session,
 
 // Start starts this session using the given trigger
 func (s *Session) Start(trigger *Trigger) (*EventSlice, error) {
-	newEvents, err := s.target.Start(trigger.target)
+	sprint, err := s.target.Start(trigger.target)
 	if err != nil {
 		return nil, err
 	}
-	return convertEvents(newEvents)
+	return convertEvents(sprint.Events())
 }
 
 // Resume resumes this session
 func (s *Session) Resume(resume *Resume) (*EventSlice, error) {
-	newEvents, err := s.target.Resume(resume.target)
+	sprint, err := s.target.Resume(resume.target)
 	if err != nil {
 		return nil, err
 	}
-	return convertEvents(newEvents)
+	return convertEvents(sprint.Events())
 }
 
 // GetWait gets the current wait of this session.. can't call this Wait() because Object in Java already has a wait() method

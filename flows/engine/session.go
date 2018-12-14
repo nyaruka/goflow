@@ -38,8 +38,8 @@ type session struct {
 	runsByUUID map[flows.RunUUID]flows.FlowRun
 	pushedFlow *pushedFlow
 	flowStack  *flowStack
-	newEvents  []flows.Event
 	parentRun  flows.RunSummary
+	sprint     flows.Sprint
 
 	engineConfig flows.EngineConfig
 	httpClient   *utils.HTTPClient
@@ -51,7 +51,7 @@ func NewSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, htt
 		env:          utils.NewDefaultEnvironment(),
 		assets:       assets,
 		status:       flows.SessionStatusActive,
-		newEvents:    []flows.Event{},
+		sprint:       NewSprint(),
 		runsByUUID:   make(map[flows.RunUUID]flows.FlowRun),
 		flowStack:    newFlowStack(),
 		engineConfig: engineConfig,
@@ -122,7 +122,7 @@ func (s *session) waitingRun() flows.FlowRun {
 }
 
 func (s *session) LogEvent(event flows.Event) {
-	s.newEvents = append(s.newEvents, event)
+	s.sprint.LogEvent(event)
 }
 
 func (s *session) EngineConfig() flows.EngineConfig { return s.engineConfig }
@@ -133,39 +133,44 @@ func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 //------------------------------------------------------------------------------------------
 
 // Start initializes this session with the given trigger and runs the flow to the first wait
-func (s *session) Start(trigger flows.Trigger) ([]flows.Event, error) {
+func (s *session) Start(trigger flows.Trigger) (flows.Sprint, error) {
 	s.trigger = trigger
 
 	if err := s.prepareForSprint(); err != nil {
-		return s.newEvents, err
+		return s.sprint, err
 	}
 
 	if err := s.trigger.Initialize(s); err != nil {
-		return s.newEvents, err
+		return s.sprint, err
 	}
 
 	// off to the races...
-	return s.newEvents, s.continueUntilWait(nil, noDestination, nil, trigger)
+	if err := s.continueUntilWait(nil, noDestination, nil, trigger); err != nil {
+		return s.sprint, err
+	}
+
+	return s.sprint, nil
 }
 
 // Resume tries to resume a waiting session
-func (s *session) Resume(resume flows.Resume) ([]flows.Event, error) {
+func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
+
 	if err := s.prepareForSprint(); err != nil {
-		return s.newEvents, err
+		return s.sprint, err
 	}
 
 	if s.status != flows.SessionStatusWaiting {
-		return s.newEvents, errors.Errorf("only waiting sessions can be resumed")
+		return s.sprint, errors.Errorf("only waiting sessions can be resumed")
 	}
 
 	waitingRun := s.waitingRun()
 	if waitingRun == nil {
-		return s.newEvents, errors.Errorf("session doesn't contain any runs which are waiting")
+		return s.sprint, errors.Errorf("session doesn't contain any runs which are waiting")
 	}
 
 	// check flow is valid and has everything it needs to run
 	if err := waitingRun.Flow().Validate(s.Assets(), flows.NewValidationContext()); err != nil {
-		return s.newEvents, errors.Wrapf(err, "validation failed for flow[uuid=%s]", waitingRun.Flow().UUID())
+		return s.sprint, errors.Wrapf(err, "validation failed for flow[uuid=%s]", waitingRun.Flow().UUID())
 	}
 
 	if err := s.tryToResume(waitingRun, resume); err != nil {
@@ -177,13 +182,12 @@ func (s *session) Resume(resume flows.Resume) ([]flows.Event, error) {
 		s.LogEvent(events.NewErrorEvent(err))
 	}
 
-	return s.newEvents, nil
+	return s.sprint, nil
 }
 
 // prepares the session for starting/resuming
 func (s *session) prepareForSprint() error {
-	// clear the new events log
-	s.newEvents = make([]flows.Event, 0)
+	s.sprint = NewSprint()
 
 	if s.parentRun == nil {
 		// if we have a trigger with a parent run, load that

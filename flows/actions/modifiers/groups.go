@@ -79,7 +79,7 @@ func (m *GroupsModifier) Apply(env utils.Environment, assets flows.SessionAssets
 	}
 }
 
-var _ Modifier = (*GroupsModifier)(nil)
+var _ flows.Modifier = (*GroupsModifier)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -91,7 +91,7 @@ type groupsModifierEnvelope struct {
 	Modification GroupsModification       `json:"modification" validate:"eq=add|eq=remove"`
 }
 
-func readGroupsModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+func readGroupsModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
 	e := &groupsModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

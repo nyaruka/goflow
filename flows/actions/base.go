@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 
@@ -294,7 +293,7 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 }
 
 // helper to apply a contact modifier
-func (a *BaseAction) applyModifier(run flows.FlowRun, mod modifiers.Modifier, log func(flows.Event)) {
+func (a *BaseAction) applyModifier(run flows.FlowRun, mod flows.Modifier, log func(flows.Event)) {
 	mod.Apply(run.Session().Environment(), run.Session().Assets(), run.Contact(), log)
 }
 

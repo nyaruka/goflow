@@ -39,13 +39,13 @@ func (m *LanguageModifier) Apply(env utils.Environment, assets flows.SessionAsse
 	}
 }
 
-var _ Modifier = (*LanguageModifier)(nil)
+var _ flows.Modifier = (*LanguageModifier)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readLanguageModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+func readLanguageModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
 	m := &LanguageModifier{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }
