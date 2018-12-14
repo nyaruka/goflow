@@ -1,1 +1,104 @@
-[]
+[
+    {
+        "description": "channel changed event if channel changed",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "channel",
+            "channel": {
+                "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "name": "Nexmo"
+            }
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "urns": [
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "urns": [
+                    "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
+                    "twitterid:54784326227#nyaruka"
+                ],
+                "type": "contact_urns_changed"
+            }
+        ]
+    },
+    {
+        "description": "noop if channel unchanged",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "urns": [
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "channel",
+            "channel": {
+                "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "name": "Nexmo"
+            }
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "urns": [
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": []
+    },
+    {
+        "description": "channel cleared if value empty",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "urns": [
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "channel",
+            "channel": null
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "urns": [
+                "tel:+12065551212?id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "type": "contact_urns_changed",
+                "urns": [
+                    "tel:+12065551212?id=123",
+                    "twitterid:54784326227#nyaruka"
+                ]
+            }
+        ]
+    }
+]

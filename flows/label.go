@@ -23,6 +23,9 @@ func (l *Label) Asset() assets.Label { return l.Label }
 
 // Reference returns a reference to this label
 func (l *Label) Reference() *assets.LabelReference {
+	if l == nil {
+		return nil
+	}
 	return assets.NewLabelReference(l.UUID(), l.Name())
 }
 

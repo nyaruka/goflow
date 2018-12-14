@@ -25,6 +25,9 @@ func (f *Field) Asset() assets.Field { return f.Field }
 
 // Reference returns a reference to this field
 func (f *Field) Reference() *assets.FieldReference {
+	if f == nil {
+		return nil
+	}
 	return assets.NewFieldReference(f.Key(), f.Name())
 }
 

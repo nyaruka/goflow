@@ -2,8 +2,8 @@ package modifiers
 
 import (
 	"encoding/json"
-	"github.com/nyaruka/goflow/assets"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -46,6 +46,7 @@ var _ Modifier = (*ChannelModifier)(nil)
 //------------------------------------------------------------------------------------------
 
 type channelModifierEnvelope struct {
+	utils.TypedEnvelope
 	Channel *assets.ChannelReference `json:"channel" validate:"omitempty,dive"`
 }
 
@@ -55,12 +56,19 @@ func readChannelModifier(assets flows.SessionAssets, data json.RawMessage) (Modi
 		return nil, err
 	}
 
-	m := &ChannelModifier{}
+	var channel *flows.Channel
 	if e.Channel != nil {
 		var err error
-		if m.channel, err = assets.Channels().Get(e.Channel.UUID); err != nil {
+		if channel, err = assets.Channels().Get(e.Channel.UUID); err != nil {
 			return nil, err
 		}
 	}
-	return m, nil
+	return NewChannelModifier(channel), nil
+}
+
+func (m *ChannelModifier) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&channelModifierEnvelope{
+		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
+		Channel:       m.channel.Reference(),
+	})
 }
