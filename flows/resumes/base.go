@@ -55,7 +55,7 @@ func (r *baseResume) Apply(run flows.FlowRun, logEvent func(flows.Event)) error 
 
 		run.Session().SetContact(r.contact)
 
-		triggers.EnsureDynamicGroups(run.Session())
+		triggers.EnsureDynamicGroups(run.Session(), logEvent)
 	}
 
 	if run.Status() == flows.RunStatusWaiting {

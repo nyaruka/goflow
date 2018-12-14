@@ -41,10 +41,12 @@ func TestMobileBindings(t *testing.T) {
 
 	session := mobile.NewSession(sessionAssets, "mobile-test")
 
-	events, err := session.Start(trigger)
+	sprint, err := session.Start(trigger)
 	require.NoError(t, err)
 
 	assert.Equal(t, "waiting", session.Status())
+
+	events := sprint.Events()
 	assert.Equal(t, 2, events.Length())
 	assert.Equal(t, "msg_created", events.Get(0).Type())
 	assert.Equal(t, "msg_wait", events.Get(1).Type())
@@ -62,9 +64,10 @@ func TestMobileBindings(t *testing.T) {
 
 	resume := mobile.NewMsgResume(nil, nil, msg)
 
-	events, err = session.Resume(resume)
+	sprint, err = session.Resume(resume)
 	require.NoError(t, err)
 
+	events = sprint.Events()
 	assert.Equal(t, 4, events.Length())
 	assert.Equal(t, "msg_received", events.Get(0).Type())
 	assert.Equal(t, `{"type":"msg_received","created_`, events.Get(0).Payload()[:32])

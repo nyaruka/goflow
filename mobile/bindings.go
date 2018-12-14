@@ -185,16 +185,19 @@ func (e *Event) Payload() string {
 	return e.payload
 }
 
-func convertEvents(raw []flows.Event) (*EventSlice, error) {
-	events := NewEventSlice(len(raw))
-	for e := range raw {
-		marshaled, err := json.Marshal(raw[e])
-		if err != nil {
-			return nil, err
-		}
-		events.Add(&Event{type_: raw[e].Type(), payload: string(marshaled)})
+// Sprint is an interaction with the engine - i.e. a start or resume of a session
+type Sprint struct {
+	target flows.Sprint
+}
+
+// Events returns the events created during this sprint
+func (s *Sprint) Events() *EventSlice {
+	events := NewEventSlice(len(s.target.Events()))
+	for _, event := range s.target.Events() {
+		marshaled, _ := json.Marshal(event)
+		events.Add(&Event{type_: event.Type(), payload: string(marshaled)})
 	}
-	return events, nil
+	return events
 }
 
 // Session represents a session with the flow engine
@@ -225,21 +228,21 @@ func ReadSession(a *SessionAssets, httpUserAgent string, data string) (*Session,
 }
 
 // Start starts this session using the given trigger
-func (s *Session) Start(trigger *Trigger) (*EventSlice, error) {
+func (s *Session) Start(trigger *Trigger) (*Sprint, error) {
 	sprint, err := s.target.Start(trigger.target)
 	if err != nil {
 		return nil, err
 	}
-	return convertEvents(sprint.Events())
+	return &Sprint{target: sprint}, nil
 }
 
 // Resume resumes this session
-func (s *Session) Resume(resume *Resume) (*EventSlice, error) {
+func (s *Session) Resume(resume *Resume) (*Sprint, error) {
 	sprint, err := s.target.Resume(resume.target)
 	if err != nil {
 		return nil, err
 	}
-	return convertEvents(sprint.Events())
+	return &Sprint{target: sprint}, nil
 }
 
 // GetWait gets the current wait of this session.. can't call this Wait() because Object in Java already has a wait() method

@@ -39,7 +39,6 @@ type session struct {
 	pushedFlow *pushedFlow
 	flowStack  *flowStack
 	parentRun  flows.RunSummary
-	sprint     flows.Sprint
 
 	engineConfig flows.EngineConfig
 	httpClient   *utils.HTTPClient
@@ -51,7 +50,6 @@ func NewSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, htt
 		env:          utils.NewDefaultEnvironment(),
 		assets:       assets,
 		status:       flows.SessionStatusActive,
-		sprint:       NewSprint(),
 		runsByUUID:   make(map[flows.RunUUID]flows.FlowRun),
 		flowStack:    newFlowStack(),
 		engineConfig: engineConfig,
@@ -121,10 +119,6 @@ func (s *session) waitingRun() flows.FlowRun {
 	return nil
 }
 
-func (s *session) LogEvent(event flows.Event) {
-	s.sprint.LogEvent(event)
-}
-
 func (s *session) EngineConfig() flows.EngineConfig { return s.engineConfig }
 func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 
@@ -134,61 +128,61 @@ func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 
 // Start initializes this session with the given trigger and runs the flow to the first wait
 func (s *session) Start(trigger flows.Trigger) (flows.Sprint, error) {
+	sprint := NewSprint()
 	s.trigger = trigger
 
 	if err := s.prepareForSprint(); err != nil {
-		return s.sprint, err
+		return sprint, err
 	}
 
-	if err := s.trigger.Initialize(s); err != nil {
-		return s.sprint, err
+	if err := s.trigger.Initialize(s, sprint.LogEvent); err != nil {
+		return sprint, err
 	}
 
 	// off to the races...
-	if err := s.continueUntilWait(nil, noDestination, nil, trigger); err != nil {
-		return s.sprint, err
+	if err := s.continueUntilWait(sprint, nil, noDestination, nil, trigger); err != nil {
+		return sprint, err
 	}
 
-	return s.sprint, nil
+	return sprint, nil
 }
 
 // Resume tries to resume a waiting session
 func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
+	sprint := NewSprint()
 
 	if err := s.prepareForSprint(); err != nil {
-		return s.sprint, err
+		return sprint, err
 	}
 
 	if s.status != flows.SessionStatusWaiting {
-		return s.sprint, errors.Errorf("only waiting sessions can be resumed")
+		return sprint, errors.Errorf("only waiting sessions can be resumed")
 	}
 
 	waitingRun := s.waitingRun()
 	if waitingRun == nil {
-		return s.sprint, errors.Errorf("session doesn't contain any runs which are waiting")
+		return sprint, errors.Errorf("session doesn't contain any runs which are waiting")
 	}
 
 	// check flow is valid and has everything it needs to run
 	if err := waitingRun.Flow().Validate(s.Assets(), flows.NewValidationContext()); err != nil {
-		return s.sprint, errors.Wrapf(err, "validation failed for flow[uuid=%s]", waitingRun.Flow().UUID())
+		return sprint, errors.Wrapf(err, "validation failed for flow[uuid=%s]", waitingRun.Flow().UUID())
 	}
 
-	if err := s.tryToResume(waitingRun, resume); err != nil {
+	if err := s.tryToResume(sprint, waitingRun, resume); err != nil {
 		// if we got an error, add it to the log and shut everything down
 		for _, run := range s.runs {
 			run.Exit(flows.RunStatusErrored)
 		}
 		s.status = flows.SessionStatusErrored
-		s.LogEvent(events.NewErrorEvent(err))
+		sprint.LogEvent(events.NewErrorEvent(err))
 	}
 
-	return s.sprint, nil
+	return sprint, nil
 }
 
 // prepares the session for starting/resuming
 func (s *session) prepareForSprint() error {
-	s.sprint = NewSprint()
-
 	if s.parentRun == nil {
 		// if we have a trigger with a parent run, load that
 		triggerWithRun, hasRun := s.trigger.(flows.TriggerWithRun)
@@ -204,7 +198,7 @@ func (s *session) prepareForSprint() error {
 }
 
 // Resume resumes a waiting session
-func (s *session) tryToResume(waitingRun flows.FlowRun, resume flows.Resume) error {
+func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, resume flows.Resume) error {
 	// figure out where in the flow we began waiting on
 	step, node, err := waitingRun.PathLocation()
 	if err != nil {
@@ -216,29 +210,33 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, resume flows.Resume) err
 
 	// try to end our wait which will return and log an error if it can't be ended with this resume
 	if err := s.wait.End(resume, node); err != nil {
-		s.LogEvent(events.NewErrorEvent(err))
+		sprint.LogEvent(events.NewErrorEvent(err))
 		return nil
 	}
 	s.wait = nil
 	s.status = flows.SessionStatusActive
 
+	logEvent := func(e flows.Event) {
+		waitingRun.LogEvent(step, e)
+		sprint.LogEvent(e)
+	}
+
 	// resumes are allowed to make state changes
-	logEvent := func(e flows.Event) { waitingRun.LogEvent(step, e) }
 	if err := resume.Apply(waitingRun, logEvent); err != nil {
 		return err
 	}
 
-	destination, err := s.findResumeDestination(waitingRun)
+	destination, err := s.findResumeDestination(sprint, waitingRun)
 	if err != nil {
 		return err
 	}
 
 	// off to the races again...
-	return s.continueUntilWait(waitingRun, destination, step, nil)
+	return s.continueUntilWait(sprint, waitingRun, destination, step, nil)
 }
 
 // finds the next destination in a run that may have been waiting or a parent paused for a child subflow
-func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, error) {
+func (s *session) findResumeDestination(sprint flows.Sprint, run flows.FlowRun) (flows.NodeUUID, error) {
 	// we might have no immediate destination in this run, but continueUntilWait can resume a parent run
 	if run.Status() != flows.RunStatusActive {
 		return noDestination, nil
@@ -248,7 +246,10 @@ func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, erro
 	if err != nil {
 		return noDestination, err
 	}
-	logEvent := func(e flows.Event) { run.LogEvent(step, e) }
+	logEvent := func(e flows.Event) {
+		run.LogEvent(step, e)
+		sprint.LogEvent(e)
+	}
 
 	// see if this node can now pick a destination
 	step, destination, err := s.pickNodeExit(run, node, step, logEvent)
@@ -260,7 +261,7 @@ func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, erro
 }
 
 // the main flow execution loop
-func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, trigger flows.Trigger) (err error) {
+func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, trigger flows.Trigger) (err error) {
 	for {
 		// if we have a flow trigger handle that first to find our destination in the new flow
 		if s.pushedFlow != nil {
@@ -304,7 +305,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
-					if destination, err = s.findResumeDestination(currentRun); err != nil {
+					if destination, err = s.findResumeDestination(sprint, currentRun); err != nil {
 						currentRun.LogFatalError(step, errors.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
@@ -338,7 +339,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 					return errors.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
 				}
 
-				step, destination, err = s.visitNode(currentRun, node, trigger)
+				step, destination, err = s.visitNode(sprint, currentRun, node, trigger)
 				if err != nil {
 					return err
 				}
@@ -356,12 +357,15 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 }
 
 // visits the given node, creating a step in our current run path
-func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Trigger) (flows.Step, flows.NodeUUID, error) {
+func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.Node, trigger flows.Trigger) (flows.Step, flows.NodeUUID, error) {
 	// mark this node as visited to prevent loops
 	s.flowStack.visit(node.UUID())
 
 	step := run.CreateStep(node)
-	logEvent := func(e flows.Event) { run.LogEvent(step, e) }
+	logEvent := func(e flows.Event) {
+		run.LogEvent(step, e)
+		sprint.LogEvent(e)
+	}
 
 	// this might be the first run of the session in which case a trigger might need to initialize the run
 	if trigger != nil {
@@ -372,15 +376,13 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Tr
 
 	// execute our node's actions
 	if node.Actions() != nil {
-		logModifier := s.sprint.LogModifier
-
 		for _, action := range node.Actions() {
 			if log.GetLevel() >= log.DebugLevel {
 				actionJSON, _ := json.Marshal(action)
 				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executing")
 			}
 
-			if err := action.Execute(run, step, logModifier, logEvent); err != nil {
+			if err := action.Execute(run, step, sprint.LogModifier, logEvent); err != nil {
 				return step, noDestination, errors.Wrapf(err, "error executing action[type=%s,uuid=%s]", action.Type(), action.UUID())
 			}
 

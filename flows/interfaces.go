@@ -268,7 +268,7 @@ type Trigger interface {
 	types.XValue
 	types.XResolvable
 
-	Initialize(Session) error
+	Initialize(Session, func(Event)) error
 	InitializeRun(FlowRun, func(Event)) error
 
 	Environment() utils.Environment
@@ -388,7 +388,6 @@ type Session interface {
 	PushFlow(Flow, FlowRun, bool)
 	Wait() Wait
 	CanEnterFlow(Flow) bool
-	LogEvent(Event)
 
 	Start(Trigger) (Sprint, error)
 	Resume(Resume) (Sprint, error)

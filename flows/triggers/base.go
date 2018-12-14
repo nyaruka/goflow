@@ -46,7 +46,7 @@ func (t *baseTrigger) Params() types.XValue           { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 // Initialize initializes the session
-func (t *baseTrigger) Initialize(session flows.Session) error {
+func (t *baseTrigger) Initialize(session flows.Session, logEvent func(flows.Event)) error {
 	// try to load the flow
 	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
 	if err != nil {
@@ -66,7 +66,7 @@ func (t *baseTrigger) Initialize(session flows.Session) error {
 	if t.contact != nil {
 		session.SetContact(t.contact.Clone())
 
-		EnsureDynamicGroups(session)
+		EnsureDynamicGroups(session, logEvent)
 	}
 	return nil
 }
@@ -103,18 +103,18 @@ func (t *baseTrigger) Reduce(env utils.Environment) types.XPrimitive {
 
 // EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
 // as far as the engine is concerned
-func EnsureDynamicGroups(session flows.Session) {
+func EnsureDynamicGroups(session flows.Session, logEvent func(flows.Event)) {
 	allGroups := session.Assets().Groups()
 	added, removed, errors := session.Contact().ReevaluateDynamicGroups(session.Environment(), allGroups)
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {
-		session.LogEvent(events.NewErrorEvent(err))
+		logEvent(events.NewErrorEvent(err))
 	}
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
-		session.LogEvent(events.NewContactGroupsChangedEvent(added, removed))
+		logEvent(events.NewContactGroupsChangedEvent(added, removed))
 	}
 }
 
