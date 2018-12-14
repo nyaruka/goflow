@@ -214,7 +214,7 @@ type Wait interface {
 	Timeout() *int
 	TimeoutOn() *time.Time
 
-	Begin(FlowRun, Step) bool
+	Begin(FlowRun, func(Event)) bool
 	End(Resume, Node) error
 }
 
@@ -269,7 +269,7 @@ type Trigger interface {
 	types.XResolvable
 
 	Initialize(Session) error
-	InitializeRun(FlowRun, Step) error
+	InitializeRun(FlowRun, func(Event)) error
 
 	Environment() utils.Environment
 	Flow() *assets.FlowReference
@@ -289,7 +289,7 @@ type TriggerWithRun interface {
 type Resume interface {
 	utils.Typed
 
-	Apply(FlowRun, Step) error
+	Apply(FlowRun, func(Event)) error
 
 	Environment() utils.Environment
 	Contact() *Contact

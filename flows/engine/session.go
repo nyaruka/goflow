@@ -223,7 +223,8 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, resume flows.Resume) err
 	s.status = flows.SessionStatusActive
 
 	// resumes are allowed to make state changes
-	if err := resume.Apply(waitingRun, step); err != nil {
+	eventLog := func(e flows.Event) { waitingRun.LogEvent(step, e) }
+	if err := resume.Apply(waitingRun, eventLog); err != nil {
 		return err
 	}
 
@@ -247,9 +248,10 @@ func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, erro
 	if err != nil {
 		return noDestination, err
 	}
+	eventLog := func(e flows.Event) { run.LogEvent(step, e) }
 
 	// see if this node can now pick a destination
-	step, destination, err := s.pickNodeExit(run, node, step)
+	step, destination, err := s.pickNodeExit(run, node, step, eventLog)
 	if err != nil {
 		return noDestination, err
 	}
@@ -359,18 +361,17 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Tr
 	s.flowStack.visit(node.UUID())
 
 	step := run.CreateStep(node)
+	eventLog := func(e flows.Event) { run.LogEvent(step, e) }
 
 	// this might be the first run of the session in which case a trigger might need to initialize the run
 	if trigger != nil {
-		if err := trigger.InitializeRun(run, step); err != nil {
+		if err := trigger.InitializeRun(run, eventLog); err != nil {
 			return step, noDestination, nil
 		}
 	}
 
 	// execute our node's actions
 	if node.Actions() != nil {
-		eventLog := func(e flows.Event) { run.LogEvent(step, e) }
-
 		for _, action := range node.Actions() {
 			if log.GetLevel() >= log.DebugLevel {
 				actionJSON, _ := json.Marshal(action)
@@ -399,7 +400,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Tr
 	if wait != nil {
 
 		// waits have the option to skip themselves
-		if wait.Begin(run, step) {
+		if wait.Begin(run, eventLog) {
 			// mark ouselves as waiting and hand back to
 			run.SetStatus(flows.RunStatusWaiting)
 			s.wait = wait
@@ -413,11 +414,11 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Tr
 	}
 
 	// use our node's router to determine where to go next
-	return s.pickNodeExit(run, node, step)
+	return s.pickNodeExit(run, node, step, eventLog)
 }
 
 // picks the exit to use on the given node
-func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.Step, flows.NodeUUID, error) {
+func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step, eventLog func(flows.Event)) (flows.Step, flows.NodeUUID, error) {
 	var err error
 
 	var operand *string
@@ -472,8 +473,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 		}
 		result := flows.NewResult(router.ResultName(), route.Match(), exit.Name(), localizedExitName, step.NodeUUID(), operand, extraJSON, utils.Now())
 		run.SaveResult(result)
-		event := events.NewRunResultChangedEvent(result)
-		run.LogEvent(step, event)
+		eventLog(events.NewRunResultChangedEvent(result))
 	}
 
 	return step, exit.DestinationNodeUUID(), nil
