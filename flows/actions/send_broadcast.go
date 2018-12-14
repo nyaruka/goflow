@@ -34,7 +34,7 @@ type SendBroadcastAction struct {
 	onlineAction
 
 	Text         string                    `json:"text"`
-	Attachments  []string                  `json:"attachments"`
+	Attachments  []string                  `json:"attachments,omitempty"`
 	QuickReplies []string                  `json:"quick_replies,omitempty"`
 	URNs         []urns.URN                `json:"urns,omitempty"`
 	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`

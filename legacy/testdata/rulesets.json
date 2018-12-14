@@ -1031,8 +1031,7 @@
                     "flow": {
                         "uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534",
                         "name": "My Subflow"
-                    },
-                    "terminal": false
+                    }
                 }
             ],
             "router": {

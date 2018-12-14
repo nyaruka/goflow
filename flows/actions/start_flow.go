@@ -32,7 +32,7 @@ type StartFlowAction struct {
 	universalAction
 
 	Flow     *assets.FlowReference `json:"flow" validate:"required"`
-	Terminal bool                  `json:"terminal"`
+	Terminal bool                  `json:"terminal,omitempty"`
 }
 
 // NewStartFlowAction creates a new start flow action

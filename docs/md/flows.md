@@ -374,8 +374,7 @@ the contact from all non-dynamic groups.
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Registered Users"
         }
-    ],
-    "all_groups": false
+    ]
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -434,7 +433,6 @@ with the evaluated text.
     "type": "send_broadcast",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "text": "Hi @contact.name, are you ready to complete today's survey?",
-    "attachments": null,
     "urns": [
         "tel:+12065551212"
     ]
@@ -694,8 +692,7 @@ A [flow_triggered](sessions.html#event:flow_triggered) event will be created to 
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
-    },
-    "terminal": false
+    }
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json

@@ -93,8 +93,7 @@
                 {
                     "name_match": "@contact.fields.district"
                 }
-            ],
-            "all_groups": false
+            ]
         },
         "expected_localization": {}
     },
