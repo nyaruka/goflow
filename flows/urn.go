@@ -67,7 +67,7 @@ func NewContactURN(urn urns.URN, channel *Channel) *ContactURN {
 }
 
 // ParseRawURN converts a raw URN to a ContactURN by extracting it's channel reference
-func ParseRawURN(a SessionAssets, rawURN urns.URN) (*ContactURN, error) {
+func ParseRawURN(ca *ChannelAssets, rawURN urns.URN) (*ContactURN, error) {
 	_, _, query, _ := rawURN.ToParts()
 
 	parsedQuery, err := url.ParseQuery(query)
@@ -78,7 +78,7 @@ func ParseRawURN(a SessionAssets, rawURN urns.URN) (*ContactURN, error) {
 	var channel *Channel
 	channelUUID := parsedQuery.Get("channel")
 	if channelUUID != "" {
-		if channel, err = a.Channels().Get(assets.ChannelUUID(channelUUID)); err != nil {
+		if channel, err = ca.Get(assets.ChannelUUID(channelUUID)); err != nil {
 			return nil, err
 		}
 	}
@@ -174,7 +174,7 @@ func ReadURNList(a SessionAssets, rawURNs []urns.URN) (URNList, error) {
 	l := make(URNList, len(rawURNs))
 
 	for u := range rawURNs {
-		parsed, err := ParseRawURN(a, rawURNs[u])
+		parsed, err := ParseRawURN(a.Channels(), rawURNs[u])
 		if err != nil {
 			return nil, err
 		}

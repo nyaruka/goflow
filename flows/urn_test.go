@@ -38,19 +38,21 @@ func TestContactURN(t *testing.T) {
 	sessionAssets, err := engine.NewSessionAssets(source)
 	require.NoError(t, err)
 
-	channel, err := sessionAssets.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
+	channels := sessionAssets.Channels()
+
+	channel, err := channels.Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 	require.NoError(t, err)
 
 	// check that parsing a URN properly extracts its channel affinity
-	urn, err := flows.ParseRawURN(sessionAssets, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"))
+	urn, err := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"))
 	assert.NoError(t, err)
 	assert.Equal(t, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), urn.URN())
 	assert.Equal(t, channel, urn.Channel())
 	assert.Equal(t, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3", urn.String())
 
 	// check equality
-	urn2, _ := flows.ParseRawURN(sessionAssets, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"))
-	urn3, _ := flows.ParseRawURN(sessionAssets, urns.URN("tel:+250781234567?id=3"))
+	urn2, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"))
+	urn3, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?id=3"))
 	assert.True(t, urn.Equal(urn2))
 	assert.False(t, urn.Equal(urn3))
 
