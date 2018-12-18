@@ -40,6 +40,7 @@ func TestMobileBindings(t *testing.T) {
 	trigger := mobile.NewManualTrigger(environment, contact, mobile.NewFlowReference("7c3db26f-e12a-48af-9673-e2feefdf8516", "Two Questions"))
 
 	session := mobile.NewSession(sessionAssets, "mobile-test")
+	assert.Equal(t, sessionAssets, session.Assets())
 
 	sprint, err := session.Start(trigger)
 	require.NoError(t, err)

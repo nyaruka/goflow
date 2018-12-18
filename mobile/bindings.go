@@ -250,6 +250,11 @@ func ReadSession(a *SessionAssets, httpUserAgent string, data string) (*Session,
 	return &Session{target: s}, nil
 }
 
+// Assets returns the assets associated with this session
+func (s *Session) Assets() *SessionAssets {
+	return &SessionAssets{target: s.target.Assets()}
+}
+
 // Start starts this session using the given trigger
 func (s *Session) Start(trigger *Trigger) (*Sprint, error) {
 	sprint, err := s.target.Start(trigger.target)
