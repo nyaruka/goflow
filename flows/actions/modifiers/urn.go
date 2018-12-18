@@ -37,6 +37,7 @@ func NewURNModifier(urn urns.URN, modification URNModification) *URNModifier {
 	return &URNModifier{
 		baseModifier: newBaseModifier(TypeURN),
 		URN:          urn,
+		Modification: modification,
 	}
 }
 
