@@ -26,11 +26,11 @@ session.Start(trigger)
 
 Sessions can easily be persisted between waits by calling `json.Marshal` on the `Session` instance to marshal it as JSON. You can inspect this JSON at https://sessions.temba.io/.
 
-## Programs
+## Utilities
 
 ### Flow Runner 
 
-This program provides a command line interface for stepping through a given flow.
+Provides a command line interface for stepping through a given flow.
 
 ```
 % go install github.com/nyaruka/goflow/cmd/flowrunner
@@ -56,7 +56,7 @@ If the `-repro` flag is set, it will dump the triggers and resumes it used which
 
 ### Flow Migrator
 
-This utility takes a legacy flow definition as piped input and outputs the migrated definition:
+Takes a legacy flow definition as piped input and outputs the migrated definition:
 
 ```
 % go install github.com/nyaruka/goflow/cmd/flowmigrate
@@ -66,7 +66,7 @@ This utility takes a legacy flow definition as piped input and outputs the migra
 
 ### Expression Tester
 
-This utility provides a quick way to test evaluation of expressions which can be used in flows:
+Provides a quick way to test evaluation of expressions which can be used in flows:
 
 ```
 % go install github.com/nyaruka/goflow/cmd/exptester
@@ -74,22 +74,7 @@ This utility provides a quick way to test evaluation of expressions which can be
 % $GOPATH/bin/exptester '@(TITLE("foo"))'
 ```
 
-### Flow Server
-
-This server provides an HTTP endpoint for stepping through a given flow:
-
-```
-% go install github.com/nyaruka/goflow/cmd/flowserver
-% $GOPATH/bin/flowserver
-```
-
 ## Development
-
-You can run the flow server with detailed output of actions being executed and events being applied with:
-
-```
-% $GOPATH/bin/flowserver --log-level=debug
-```
 
 You can run all the tests with:
 
@@ -97,22 +82,8 @@ You can run all the tests with:
 % go test github.com/nyaruka/goflow/...
 ```
 
-If you've made changes to the flow server response format, regenerate the test files with:
+If you've made changes to the flow engine output, regenerate the test files with:
 
 ```
 % go test github.com/nyaruka/goflow/test -write
-```
-
-If you've made changes to the flow server static files, you should regenerate the statik module with:
-
-```
-% go generate github.com/nyaruka/goflow/cmd/flowserver
-```
-
-To make a new release:
-
-```
-% git tag v?.?.?
-% git push origin v?.?.?
-% goreleaser
 ```
