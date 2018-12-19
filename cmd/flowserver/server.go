@@ -6,12 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/rakyll/statik/fs"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -19,7 +17,6 @@ import (
 type FlowServer struct {
 	config     *Config
 	httpServer *http.Server
-	assetCache *rest.AssetCache
 	httpClient *utils.HTTPClient
 }
 
@@ -33,22 +30,6 @@ func NewFlowServer(config *Config) *FlowServer {
 	r.Use(panicRecovery)
 	r.Use(requestLogger)
 	r.Use(middleware.Timeout(60 * time.Second))
-	r.Use(corsAllowedOrigins(config))
-
-	// no static dir passed in? serve from statik
-	var staticDir http.FileSystem
-	var err error
-
-	if config.Static == "" {
-		staticDir, err = fs.New()
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.WithField("comp", "server").Info("using compiled statik assets")
-	} else {
-		staticDir = http.Dir(config.Static)
-		log.WithField("comp", "server").Info("using asset dir: ", config.Static)
-	}
 
 	s := &FlowServer{
 		config: config,
@@ -62,11 +43,7 @@ func NewFlowServer(config *Config) *FlowServer {
 	}
 
 	// set up the routes and handlers
-	r.Get("/", templateHandler(staticDir, indexHandler))
-	r.Post("/flow/start", jsonHandler(s.handleStart))
-	r.Post("/flow/resume", jsonHandler(s.handleResume))
 	r.Post("/flow/migrate", jsonHandler(s.handleMigrate))
-	r.Post("/expression", jsonHandler(s.handleExpression))
 	r.Get("/version", jsonHandler(s.handleVersion))
 
 	r.NotFound(errorHandler(http.StatusNotFound, "not found"))
@@ -77,8 +54,6 @@ func NewFlowServer(config *Config) *FlowServer {
 
 // Start starts the flow server
 func (s *FlowServer) Start() {
-	s.assetCache = rest.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune)
-
 	go func() {
 		err := s.httpServer.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
@@ -93,5 +68,4 @@ func (s *FlowServer) Start() {
 // Stop stops the flow server
 func (s *FlowServer) Stop() {
 	s.httpServer.Shutdown(context.Background())
-	s.assetCache.Shutdown()
 }

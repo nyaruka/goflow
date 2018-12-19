@@ -10,7 +10,6 @@ import (
 	"syscall"
 
 	"github.com/evalphobia/logrus_sentry"
-	_ "github.com/nyaruka/goflow/cmd/flowserver/statik"
 	"github.com/nyaruka/goflow/utils"
 	log "github.com/sirupsen/logrus"
 )

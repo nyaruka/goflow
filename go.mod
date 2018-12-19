@@ -13,8 +13,6 @@ require (
 	github.com/go-playground/locales v0.11.2 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/hashicorp/go-version v1.0.0
-	github.com/karlseguin/ccache v2.0.2+incompatible
-	github.com/karlseguin/expect v1.0.1 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/kylelemons/godebug v0.0.0-20170820004349-d65d576e9348 // indirect
 	github.com/nyaruka/ezconf v0.0.0-20180307215726-b12749342a72
@@ -24,13 +22,11 @@ require (
 	github.com/onsi/gomega v1.4.3 // indirect
 	github.com/pkg/errors v0.8.0
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/rakyll/statik v0.1.1
 	github.com/satori/go.uuid v1.2.0
 	github.com/sergi/go-diff v1.0.0
 	github.com/shopspring/decimal v0.0.0-20180319170823-2df3e6ddaf6e
 	github.com/sirupsen/logrus v1.0.4
 	github.com/stretchr/testify v1.2.1
-	github.com/wsxiaoys/terminal v0.0.0-20160513160801-0940f3fc43a0 // indirect
 	golang.org/x/crypto v0.0.0-20180228161326-91a49db82a88 // indirect
 	golang.org/x/net v0.0.0-20181217023233-e147a9138326 // indirect
 	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
@@ -40,5 +36,4 @@ require (
 	gopkg.in/gemnasium/logrus-airbrake-hook.v2 v2.1.2 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.12.0
-	gopkg.in/karlseguin/expect.v1 v1.0.1 // indirect
 )
