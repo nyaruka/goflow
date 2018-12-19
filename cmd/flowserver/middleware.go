@@ -5,11 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/go-chi/chi/middleware"
-	"github.com/go-chi/cors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -54,20 +52,4 @@ func panicRecovery(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
-}
-
-// generates a CORS middleware which allows requests from the allowed_origins config setting
-func corsAllowedOrigins(config *Config) func(http.Handler) http.Handler {
-	var origins []string
-	if config.AllowedOrigins != "" {
-		origins = strings.Split(config.AllowedOrigins, ",")
-	} else {
-		origins = []string{"*"}
-	}
-
-	return cors.New(cors.Options{
-		AllowedOrigins: origins,
-		AllowedMethods: []string{"GET", "POST"},
-		MaxAge:         300, // maximum value not ignored by any of major browsers
-	}).Handler
 }
