@@ -1,6 +1,7 @@
 package events
 
 import (
+	"fmt"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -35,11 +36,19 @@ func NewErrorEvent(err error) *ErrorEvent {
 	}
 }
 
-// NewFatalErrorEvent returns a new fatal error event for the passed in error
-func NewFatalErrorEvent(err error) *ErrorEvent {
+// NewErrorEventf returns a new error event for the passed in format string and args
+func NewErrorEventf(format string, a ...interface{}) *ErrorEvent {
 	return &ErrorEvent{
 		BaseEvent: NewBaseEvent(TypeError),
-		Text:      err.Error(),
+		Text:      fmt.Sprintf(format, a...),
+	}
+}
+
+// NewFatalErrorEventf returns a new fatal error event for the passed in format string and args
+func NewFatalErrorEventf(format string, a ...interface{}) *ErrorEvent {
+	return &ErrorEvent{
+		BaseEvent: NewBaseEvent(TypeError),
+		Text:      fmt.Sprintf(format, a...),
 		Fatal:     true,
 	}
 }

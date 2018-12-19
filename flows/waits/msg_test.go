@@ -63,12 +63,12 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 	// a manual trigger will wait at the initial wait
 	trigger := triggers.NewManualTrigger(env, flow.Reference(), contact, nil, utils.Now())
 
-	newEvents, err := session.Start(trigger)
+	sprint, err := session.Start(trigger)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.SessionStatusWaiting, session.Status())
-	assert.Equal(t, 1, len(newEvents))
-	assert.Equal(t, "msg_wait", newEvents[0].Type())
+	assert.Equal(t, 1, len(sprint.Events()))
+	assert.Equal(t, "msg_wait", sprint.Events()[0].Type())
 
 	session, flow = initializeSession(t)
 
@@ -76,12 +76,12 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), urns.NilURN, nil, "Hi there", nil)
 	trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil, utils.Now())
 
-	newEvents, err = session.Start(trigger)
+	sprint, err = session.Start(trigger)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
-	assert.Equal(t, 1, len(newEvents))
-	assert.Equal(t, "msg_received", newEvents[0].Type())
+	assert.Equal(t, 1, len(sprint.Events()))
+	assert.Equal(t, "msg_received", sprint.Events()[0].Type())
 }
 
 func initializeSession(t *testing.T) (flows.Session, flows.Flow) {

@@ -40,14 +40,20 @@ func TestMobileBindings(t *testing.T) {
 	trigger := mobile.NewManualTrigger(environment, contact, mobile.NewFlowReference("7c3db26f-e12a-48af-9673-e2feefdf8516", "Two Questions"))
 
 	session := mobile.NewSession(sessionAssets, "mobile-test")
+	assert.Equal(t, sessionAssets, session.Assets())
 
-	events, err := session.Start(trigger)
+	sprint, err := session.Start(trigger)
 	require.NoError(t, err)
 
 	assert.Equal(t, "waiting", session.Status())
+
+	events := sprint.Events()
 	assert.Equal(t, 2, events.Length())
 	assert.Equal(t, "msg_created", events.Get(0).Type())
 	assert.Equal(t, "msg_wait", events.Get(1).Type())
+
+	modifiers := sprint.Modifiers()
+	assert.Equal(t, 0, modifiers.Length())
 
 	wait := session.GetWait()
 	assert.Equal(t, "msg", wait.Type())
@@ -62,9 +68,10 @@ func TestMobileBindings(t *testing.T) {
 
 	resume := mobile.NewMsgResume(nil, nil, msg)
 
-	events, err = session.Resume(resume)
+	sprint, err = session.Resume(resume)
 	require.NoError(t, err)
 
+	events = sprint.Events()
 	assert.Equal(t, 4, events.Length())
 	assert.Equal(t, "msg_received", events.Get(0).Type())
 	assert.Equal(t, `{"type":"msg_received","created_`, events.Get(0).Payload()[:32])

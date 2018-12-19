@@ -5,8 +5,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -63,13 +61,13 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets, context *flows.Vali
 }
 
 // Execute runs this action
-func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	if run.Contact() == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
-	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, nil, a.Text, a.Attachments, a.QuickReplies)
+	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
 
 	channels := run.Session().Assets().Channels()
 	destinations := []msgDestination{}
@@ -94,14 +92,14 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 		}
 
 		msg := flows.NewMsgOut(dest.urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
-		a.log(run, step, events.NewMsgCreatedEvent(msg))
+		logEvent(events.NewMsgCreatedEvent(msg))
 	}
 
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
 		msg := flows.NewMsgOut(urns.NilURN, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
-		a.log(run, step, events.NewMsgCreatedEvent(msg))
+		logEvent(events.NewMsgCreatedEvent(msg))
 	}
 
 	return nil

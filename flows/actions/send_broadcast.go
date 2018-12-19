@@ -62,8 +62,8 @@ func (a *SendBroadcastAction) Validate(assets flows.SessionAssets, context *flow
 }
 
 // Execute runs this action
-func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step) error {
-	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, step, a.URNs, a.Contacts, a.Groups, a.LegacyVars)
+func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, logEvent)
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step) error 
 	for _, language := range languages {
 		languages := []utils.Language{language, run.Flow().Language()}
 
-		evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, languages, a.Text, a.Attachments, a.QuickReplies)
+		evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, logEvent)
 		translations[language] = &events.BroadcastTranslation{
 			Text:         evaluatedText,
 			Attachments:  evaluatedAttachments,
@@ -83,7 +83,7 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step) error 
 		}
 	}
 
-	a.log(run, step, events.NewBroadcastCreatedEvent(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
+	logEvent(events.NewBroadcastCreatedEvent(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
 
 	return nil
 }

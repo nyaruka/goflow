@@ -86,7 +86,7 @@
         },
         {
             "key": "birth_date",
-            "name": "birth Date",
+            "name": "Birth Date",
             "type": "text"
         }
     ],

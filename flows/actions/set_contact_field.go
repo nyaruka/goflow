@@ -5,9 +5,8 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -53,9 +52,9 @@ func (a *SetContactFieldAction) Validate(assets flows.SessionAssets, context *fl
 }
 
 // Execute runs this action
-func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	if run.Contact() == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -64,7 +63,7 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step) erro
 
 	// if we received an error, log it
 	if err != nil {
-		a.logError(run, step, err)
+		logEvent(events.NewErrorEvent(err))
 		return nil
 	}
 
@@ -75,12 +74,8 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step) erro
 		return err
 	}
 
-	oldValue := run.Contact().Fields().Get(field)
-	newValue := run.Contact().Fields().Set(run.Environment(), field, rawValue, fields)
+	newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
 
-	if !newValue.Equals(oldValue) {
-		a.log(run, step, events.NewContactFieldChangedEvent(a.Field, newValue))
-		a.reevaluateDynamicGroups(run, step)
-	}
+	a.applyModifier(run, modifiers.NewFieldModifier(field, newValue), logModifier, logEvent)
 	return nil
 }

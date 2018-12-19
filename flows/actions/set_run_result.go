@@ -2,6 +2,7 @@ package actions
 
 import (
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -53,14 +54,14 @@ func (a *SetRunResultAction) Validate(assets flows.SessionAssets, context *flows
 }
 
 // Execute runs this action
-func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	// get our localized value if any
 	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
 	value, err := run.EvaluateTemplateAsString(template)
 
 	// log any error received
 	if err != nil {
-		a.logError(run, step, err)
+		logEvent(events.NewErrorEvent(err))
 		return nil
 	}
 
@@ -69,6 +70,6 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step) error {
 		categoryLocalized = ""
 	}
 
-	a.saveResult(run, step, a.Name, value, a.Category, categoryLocalized, nil, nil)
+	a.saveResult(run, step, a.Name, value, a.Category, categoryLocalized, nil, nil, logEvent)
 	return nil
 }

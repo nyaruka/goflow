@@ -4,8 +4,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -52,18 +50,19 @@ func (a *StartFlowAction) Validate(assets flows.SessionAssets, context *flows.Va
 }
 
 // Execute runs our action
-func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
 	if err != nil {
 		return err
 	}
 
 	if !run.Session().CanEnterFlow(flow) {
-		a.fatalError(run, step, errors.Errorf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))
+		run.Exit(flows.RunStatusErrored)
+		logEvent(events.NewFatalErrorEventf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))
 		return nil
 	}
 
 	run.Session().PushFlow(flow, run, a.Terminal)
-	a.log(run, step, events.NewFlowTriggeredEvent(a.Flow, run.UUID(), a.Terminal))
+	logEvent(events.NewFlowTriggeredEvent(a.Flow, run.UUID(), a.Terminal))
 	return nil
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
 
 	"github.com/pkg/errors"
@@ -51,11 +52,11 @@ func (a *AddContactURNAction) Validate(assets flows.SessionAssets, context *flow
 }
 
 // Execute runs the labeling action
-func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	// only generate event if run has a contact
 	contact := run.Contact()
 	if contact == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -63,29 +64,22 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error 
 
 	// if we received an error, log it although it might just be a non-expression like foo@bar.com
 	if err != nil {
-		a.logError(run, step, err)
+		logEvent(events.NewErrorEvent(err))
 	}
 
 	evaluatedPath = strings.TrimSpace(evaluatedPath)
 	if evaluatedPath == "" {
-		a.logError(run, step, errors.Errorf("can't add URN with empty path"))
+		logEvent(events.NewErrorEventf("can't add URN with empty path"))
 		return nil
 	}
 
 	// if we don't have a valid URN, log error
 	urn, err := urns.NewURNFromParts(a.Scheme, evaluatedPath, "", "")
 	if err != nil {
-		a.logError(run, step, errors.Wrapf(err, "unable to add URN '%s:%s'", a.Scheme, evaluatedPath))
+		logEvent(events.NewErrorEvent(errors.Wrapf(err, "unable to add URN '%s:%s'", a.Scheme, evaluatedPath)))
 		return nil
 	}
 
-	contactURN := flows.NewContactURN(urn.Normalize(""), nil)
-
-	if contact.AddURN(contactURN) {
-		a.log(run, step, events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
-
-		a.reevaluateDynamicGroups(run, step)
-	}
-
+	a.applyModifier(run, modifiers.NewURNModifier(urn, modifiers.URNAppend), logModifier, logEvent)
 	return nil
 }

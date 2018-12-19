@@ -106,8 +106,5 @@ func (i *baseInput) marshal(e *baseInputEnvelope) {
 	e.Type = i.type_
 	e.UUID = i.uuid
 	e.CreatedOn = i.createdOn
-
-	if i.channel != nil {
-		e.Channel = i.channel.Reference()
-	}
+	e.Channel = i.channel.Reference()
 }

@@ -51,3 +51,28 @@ func (l *EventSlice) Length() int {
 func (l *EventSlice) Get(index int) *Event {
 	return l.items[index]
 }
+
+// ModifierSlice wraps a slice of modifiers
+type ModifierSlice struct {
+	items []*Modifier
+}
+
+// NewModifierSlice creates a new slice of modifiers
+func NewModifierSlice(capacity int) *ModifierSlice {
+	return &ModifierSlice{items: make([]*Modifier, 0, capacity)}
+}
+
+// Add adds an event to this slice
+func (l *ModifierSlice) Add(item *Modifier) {
+	l.items = append(l.items, item)
+}
+
+// Length gets the length of this slice
+func (l *ModifierSlice) Length() int {
+	return len(l.items)
+}
+
+// Get returns the event at the given index
+func (l *ModifierSlice) Get(index int) *Modifier {
+	return l.items[index]
+}

@@ -131,6 +131,9 @@ var _ flows.Flow = (*flow)(nil)
 
 // Reference returns a reference to this flow asset
 func (f *flow) Reference() *assets.FlowReference {
+	if f == nil {
+		return nil
+	}
 	return assets.NewFlowReference(f.uuid, f.name)
 }
 

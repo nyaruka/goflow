@@ -41,6 +41,9 @@ func (c *Channel) Asset() assets.Channel { return c.Channel }
 
 // Reference returns a reference to this channel
 func (c *Channel) Reference() *assets.ChannelReference {
+	if c == nil {
+		return nil
+	}
 	return assets.NewChannelReference(c.UUID(), c.Name())
 }
 

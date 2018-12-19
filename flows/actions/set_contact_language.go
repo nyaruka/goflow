@@ -4,10 +4,9 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -49,9 +48,9 @@ func (a *SetContactLanguageAction) Validate(assets flows.SessionAssets, context 
 }
 
 // Execute runs this action
-func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	if run.Contact() == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -60,7 +59,7 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step) e
 
 	// if we received an error, log it
 	if err != nil {
-		a.logError(run, step, err)
+		logEvent(events.NewErrorEvent(err))
 		return nil
 	}
 
@@ -69,17 +68,11 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step) e
 	if language != "" {
 		lang, err = utils.ParseLanguage(language)
 		if err != nil {
-			a.logError(run, step, err)
+			logEvent(events.NewErrorEvent(err))
 			return nil
 		}
 	}
 
-	if run.Contact().Language() != lang {
-		run.Contact().SetLanguage(lang)
-		a.log(run, step, events.NewContactLanguageChangedEvent(lang))
-
-		a.reevaluateDynamicGroups(run, step)
-	}
-
+	a.applyModifier(run, modifiers.NewLanguageModifier(lang), logModifier, logEvent)
 	return nil
 }

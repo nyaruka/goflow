@@ -23,6 +23,14 @@ func NewField(asset assets.Field) *Field {
 // Asset returns the underlying asset
 func (f *Field) Asset() assets.Field { return f.Field }
 
+// Reference returns a reference to this field
+func (f *Field) Reference() *assets.FieldReference {
+	if f == nil {
+		return nil
+	}
+	return assets.NewFieldReference(f.Key(), f.Name())
+}
+
 // Value represents a value in each of the field types
 type Value struct {
 	Text     types.XText      `json:"text" validate:"required"`
@@ -171,7 +179,7 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-// Get gets the field value set for the given field
+// Get gets the value set for the given field
 func (f FieldValues) Get(field *Field) *Value {
 	fieldVal := f[field.Key()]
 	if fieldVal != nil {
@@ -180,29 +188,29 @@ func (f FieldValues) Get(field *Field) *Value {
 	return nil
 }
 
-// Clear clears the field value set for the given field
+// Set sets the value for the given field (can be null to clear it)
+func (f FieldValues) Set(field *Field, value *Value) {
+	if value == nil {
+		f.Clear(field)
+	} else {
+		fieldValue := NewFieldValue(field, value)
+		f[field.Key()] = fieldValue
+	}
+}
+
+// Clear clears the value set for the given field
 func (f FieldValues) Clear(field *Field) {
 	delete(f, field.Key())
 }
 
-// Set sets the field value set for the given field
-func (f FieldValues) Set(env utils.Environment, field *Field, rawValue string, fields *FieldAssets) *Value {
-	runEnv := env.(RunEnvironment)
-	var value *Value
-
-	// if raw value is empty string, set an empty value, other parse into different types
+// Parse parses a raw string field value into the different possible types
+func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Field, rawValue string) *Value {
 	if rawValue == "" {
-		f.Clear(field)
 		return nil
 	}
 
-	value = f.parseValue(runEnv, fields, field, rawValue)
-	fieldValue := NewFieldValue(field, value)
-	f[field.Key()] = fieldValue
-	return fieldValue.Value
-}
+	runEnv := env.(RunEnvironment)
 
-func (f FieldValues) parseValue(env RunEnvironment, fields *FieldAssets, field *Field, rawValue string) *Value {
 	var asText = types.NewXText(rawValue)
 	var asDateTime *types.XDateTime
 	var asNumber *types.XNumber
@@ -219,22 +227,22 @@ func (f FieldValues) parseValue(env RunEnvironment, fields *FieldAssets, field *
 
 	// for locations, if it has a '>' then it is explicit, look it up that way
 	if IsPossibleLocationPath(rawValue) {
-		asLocation, _ = env.LookupLocation(LocationPath(rawValue))
+		asLocation, _ = runEnv.LookupLocation(LocationPath(rawValue))
 	} else {
 		var matchingLocations []*utils.Location
 
 		if field.Type() == assets.FieldTypeWard {
-			parent := f.getFirstLocationValue(env, fields, assets.FieldTypeDistrict)
+			parent := f.getFirstLocationValue(runEnv, fields, assets.FieldTypeDistrict)
 			if parent != nil {
-				matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelWard, parent)
+				matchingLocations, _ = runEnv.FindLocationsFuzzy(rawValue, LocationLevelWard, parent)
 			}
 		} else if field.Type() == assets.FieldTypeDistrict {
-			parent := f.getFirstLocationValue(env, fields, assets.FieldTypeState)
+			parent := f.getFirstLocationValue(runEnv, fields, assets.FieldTypeState)
 			if parent != nil {
-				matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelDistrict, parent)
+				matchingLocations, _ = runEnv.FindLocationsFuzzy(rawValue, LocationLevelDistrict, parent)
 			}
 		} else if field.Type() == assets.FieldTypeState {
-			matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelState, nil)
+			matchingLocations, _ = runEnv.FindLocationsFuzzy(rawValue, LocationLevelState, nil)
 		}
 
 		if len(matchingLocations) > 0 {

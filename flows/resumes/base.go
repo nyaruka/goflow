@@ -40,22 +40,22 @@ func (r *baseResume) Contact() *flows.Contact        { return r.contact }
 func (r *baseResume) ResumedOn() time.Time           { return r.resumedOn }
 
 // Apply applies our state changes and saves any events to the run
-func (r *baseResume) Apply(run flows.FlowRun, step flows.Step) error {
+func (r *baseResume) Apply(run flows.FlowRun, logEvent func(flows.Event)) error {
 	if r.environment != nil {
 		if !run.Session().Environment().Equal(r.environment) {
-			run.LogEvent(step, events.NewEnvironmentRefreshedEvent(r.environment))
+			logEvent(events.NewEnvironmentRefreshedEvent(r.environment))
 		}
 
 		run.Session().SetEnvironment(r.environment)
 	}
 	if r.contact != nil {
 		if !run.Session().Contact().Equal(r.contact) {
-			run.LogEvent(step, events.NewContactRefreshedEvent(r.contact))
+			logEvent(events.NewContactRefreshedEvent(r.contact))
 		}
 
 		run.Session().SetContact(r.contact)
 
-		triggers.EnsureDynamicGroups(run.Session())
+		triggers.EnsureDynamicGroups(run.Session(), logEvent)
 	}
 
 	if run.Status() == flows.RunStatusWaiting {

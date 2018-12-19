@@ -189,7 +189,7 @@ type Node interface {
 type Action interface {
 	UUID() ActionUUID
 
-	Execute(FlowRun, Step) error
+	Execute(FlowRun, Step, func(Modifier), func(Event)) error
 	Validate(SessionAssets, *ValidationContext) error
 	AllowedFlowTypes() []FlowType
 	utils.Typed
@@ -214,7 +214,7 @@ type Wait interface {
 	Timeout() *int
 	TimeoutOn() *time.Time
 
-	Begin(FlowRun, Step) bool
+	Begin(FlowRun, func(Event)) bool
 	End(Resume, Node) error
 }
 
@@ -268,8 +268,8 @@ type Trigger interface {
 	types.XValue
 	types.XResolvable
 
-	Initialize(Session) error
-	InitializeRun(FlowRun, Step) error
+	Initialize(Session, func(Event)) error
+	InitializeRun(FlowRun, func(Event)) error
 
 	Environment() utils.Environment
 	Flow() *assets.FlowReference
@@ -289,11 +289,18 @@ type TriggerWithRun interface {
 type Resume interface {
 	utils.Typed
 
-	Apply(FlowRun, Step) error
+	Apply(FlowRun, func(Event)) error
 
 	Environment() utils.Environment
 	Contact() *Contact
 	ResumedOn() time.Time
+}
+
+// Modifier is something which can modify a contact
+type Modifier interface {
+	utils.Typed
+
+	Apply(utils.Environment, SessionAssets, *Contact, func(Event))
 }
 
 // Event describes a state change
@@ -355,6 +362,14 @@ type EngineConfig interface {
 	MaxWebhookResponseBytes() int
 }
 
+// Sprint is an interaction with the engine - i.e. a start or resume of a session
+type Sprint interface {
+	Modifiers() []Modifier
+	LogModifier(Modifier)
+	Events() []Event
+	LogEvent(Event)
+}
+
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
 	Assets() SessionAssets
@@ -373,10 +388,9 @@ type Session interface {
 	PushFlow(Flow, FlowRun, bool)
 	Wait() Wait
 	CanEnterFlow(Flow) bool
-	LogEvent(Event)
 
-	Start(Trigger) ([]Event, error)
-	Resume(Resume) ([]Event, error)
+	Start(Trigger) (Sprint, error)
+	Resume(Resume) (Sprint, error)
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 	GetCurrentChild(FlowRun) FlowRun

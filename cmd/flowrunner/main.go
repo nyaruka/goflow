@@ -118,12 +118,12 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
 	// start our session
-	newEvents, err := session.Start(repro.Trigger)
+	sprint, err := session.Start(repro.Trigger)
 	if err != nil {
 		return nil, err
 	}
 
-	printEvents(newEvents, out)
+	printEvents(sprint.Events(), out)
 	scanner := bufio.NewScanner(in)
 
 	for session.Wait() != nil {
@@ -137,12 +137,12 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		resume := resumes.NewMsgResume(nil, nil, msg)
 		repro.Resumes = append(repro.Resumes, resume)
 
-		newEvents, err := session.Resume(resume)
+		sprint, err := session.Resume(resume)
 		if err != nil {
 			return nil, err
 		}
 
-		printEvents(newEvents, out)
+		printEvents(sprint.Events(), out)
 	}
 
 	return repro, nil

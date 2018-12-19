@@ -6,8 +6,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -53,12 +51,12 @@ func (a *SayMsgAction) Validate(assets flows.SessionAssets, context *flows.Valid
 }
 
 // Execute runs this action
-func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	// localize and evaluate the message text
 	localizedText := run.GetText(utils.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, err := run.EvaluateTemplateAsString(localizedText)
 	if err != nil {
-		a.logError(run, step, err)
+		logEvent(events.NewErrorEvent(err))
 	}
 	evaluatedText = strings.TrimSpace(evaluatedText)
 
@@ -67,11 +65,11 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// if we have either an audio URL or backdown text.. tell caller to play this
 	if localizedAudioURL != "" {
-		a.log(run, step, events.NewIVRPlayEvent(localizedAudioURL, evaluatedText))
+		logEvent(events.NewIVRPlayEvent(localizedAudioURL, evaluatedText))
 	} else if evaluatedText != "" {
-		a.log(run, step, events.NewIVRSayEvent(evaluatedText))
+		logEvent(events.NewIVRSayEvent(evaluatedText))
 	} else {
-		a.logError(run, step, errors.Errorf("need either audio URL or backdown text, skipping"))
+		logEvent(events.NewErrorEventf("need either audio URL or backdown text, skipping"))
 	}
 
 	return nil

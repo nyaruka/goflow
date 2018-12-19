@@ -3,9 +3,8 @@ package actions
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -31,7 +30,7 @@ type SetContactChannelAction struct {
 	BaseAction
 	onlineAction
 
-	Channel *assets.ChannelReference `json:"channel"`
+	Channel *assets.ChannelReference `json:"channel" validate:"omitempty,dive"`
 }
 
 // NewSetContactChannelAction creates a new set channel action
@@ -51,10 +50,10 @@ func (a *SetContactChannelAction) Validate(assets flows.SessionAssets, context *
 	return nil
 }
 
-func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -67,10 +66,6 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) er
 		}
 	}
 
-	// if URNs have changed in anyway, generate a URNs changed event
-	if run.Contact().UpdatePreferredChannel(channel) {
-		a.log(run, step, events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
-	}
-
+	a.applyModifier(run, modifiers.NewChannelModifier(channel), logModifier, logEvent)
 	return nil
 }

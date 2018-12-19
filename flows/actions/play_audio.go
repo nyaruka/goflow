@@ -6,8 +6,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -48,23 +46,23 @@ func (a *PlayAudioAction) Validate(assets flows.SessionAssets, context *flows.Va
 }
 
 // Execute runs this action
-func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	// localize and evaluate audio URL
 	localizedAudioURL := run.GetText(utils.UUID(a.UUID()), "audio_url", a.AudioURL)
 	evaluatedAudioURL, err := run.EvaluateTemplateAsString(localizedAudioURL)
 	if err != nil {
-		a.logError(run, step, err)
+		logEvent(events.NewErrorEvent(err))
 		return nil
 	}
 
 	evaluatedAudioURL = strings.TrimSpace(evaluatedAudioURL)
 	if evaluatedAudioURL == "" {
-		a.logError(run, step, errors.Errorf("audio URL evaluated to empty, skipping"))
+		logEvent(events.NewErrorEventf("audio URL evaluated to empty, skipping"))
 		return nil
 	}
 
 	// if we have an audio URL, tell caller to play it
-	a.log(run, step, events.NewIVRPlayEvent(evaluatedAudioURL, ""))
+	logEvent(events.NewIVRPlayEvent(evaluatedAudioURL, ""))
 
 	return nil
 }

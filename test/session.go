@@ -447,8 +447,8 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 		return nil, nil, errors.Wrap(err, "error reading resume")
 	}
 
-	newEvents, err := session.Resume(resume)
-	return session, newEvents, err
+	sprint, err := session.Resume(resume)
+	return session, sprint.Events(), err
 }
 
 // CreateTestVoiceSession creates a standard example session for testing voice flows and actions
@@ -472,12 +472,12 @@ func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flo
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	newEvents, err := session.Start(trigger)
+	sprint, err := session.Start(trigger)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test voice session")
 	}
 
-	return session, newEvents, err
+	return session, sprint.Events(), err
 }
 
 // CreateSession creates a session with the given assets

@@ -3,9 +3,8 @@ package actions
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -50,39 +49,18 @@ func (a *AddContactGroupsAction) Validate(assets flows.SessionAssets, context *f
 }
 
 // Execute adds our contact to the specified groups
-func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
 	}
 
-	groups, err := a.resolveGroups(run, step, a.Groups)
+	groups, err := a.resolveGroups(run, a.Groups, true, logEvent)
 	if err != nil {
 		return err
 	}
 
-	added := make([]*flows.Group, 0, len(groups))
-	for _, group := range groups {
-		// ignore group if contact is already in it
-		if contact.Groups().FindByUUID(group.UUID()) != nil {
-			continue
-		}
-
-		// error if group is dynamic
-		if group.IsDynamic() {
-			a.logError(run, step, errors.Errorf("can't manually add contact to dynamic group '%s'", group.Name()))
-			continue
-		}
-
-		run.Contact().Groups().Add(group)
-		added = append(added, group)
-	}
-
-	// only generate event if contact's groups change
-	if len(added) > 0 {
-		a.log(run, step, events.NewContactGroupsChangedEvent(added, nil))
-	}
-
+	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsAdd), logModifier, logEvent)
 	return nil
 }

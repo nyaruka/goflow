@@ -126,8 +126,6 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 		r.modifiedOn = utils.Now()
 	}
 
-	r.Session().LogEvent(event)
-
 	if log.GetLevel() >= log.DebugLevel {
 		eventJSON, _ := json.Marshal(event)
 		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("event logged")
@@ -140,7 +138,7 @@ func (r *flowRun) LogError(step flows.Step, err error) {
 
 func (r *flowRun) LogFatalError(step flows.Step, err error) {
 	r.Exit(flows.RunStatusErrored)
-	r.LogEvent(step, events.NewFatalErrorEvent(err))
+	r.LogEvent(step, events.NewFatalErrorEventf(err.Error()))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }

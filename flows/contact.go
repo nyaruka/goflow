@@ -227,7 +227,12 @@ func (c *Contact) Groups() *GroupList { return c.groups }
 func (c *Contact) Fields() FieldValues { return c.fields }
 
 // Reference returns a reference to this contact
-func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
+func (c *Contact) Reference() *ContactReference {
+	if c == nil {
+		return nil
+	}
+	return NewContactReference(c.uuid, c.name)
+}
 
 // Format returns a friendly string version of this contact depending on what fields are set
 func (c *Contact) Format(env utils.Environment) string {

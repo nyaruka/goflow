@@ -4,8 +4,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -51,21 +49,21 @@ func (a *AddInputLabelsAction) Validate(assets flows.SessionAssets, context *flo
 }
 
 // Execute runs the labeling action
-func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {
-		a.logError(run, step, errors.Errorf("can't execute action in session without input"))
+		logEvent(events.NewErrorEventf("can't execute action in session without input"))
 		return nil
 	}
 
-	labels, err := a.resolveLabels(run, step, a.Labels)
+	labels, err := a.resolveLabels(run, a.Labels, logEvent)
 	if err != nil {
 		return err
 	}
 
 	if len(labels) > 0 {
-		a.log(run, step, events.NewInputLabelsAddedEvent(input.UUID(), labels))
+		logEvent(events.NewInputLabelsAddedEvent(input.UUID(), labels))
 	}
 
 	return nil

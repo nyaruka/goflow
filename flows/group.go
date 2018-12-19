@@ -69,6 +69,9 @@ func (g *Group) CheckDynamicMembership(env utils.Environment, contact *Contact) 
 
 // Reference returns a reference to this group
 func (g *Group) Reference() *assets.GroupReference {
+	if g == nil {
+		return nil
+	}
 	return assets.NewGroupReference(g.UUID(), g.Name())
 }
 

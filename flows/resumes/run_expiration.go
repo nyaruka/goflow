@@ -43,11 +43,11 @@ func NewRunExpirationResume(env utils.Environment, contact *flows.Contact) *RunE
 }
 
 // Apply applies our state changes and saves any events to the run
-func (r *RunExpirationResume) Apply(run flows.FlowRun, step flows.Step) error {
+func (r *RunExpirationResume) Apply(run flows.FlowRun, logEvent func(flows.Event)) error {
 	run.Exit(flows.RunStatusExpired)
-	run.LogEvent(step, events.NewRunExpiredEvent(run))
+	logEvent(events.NewRunExpiredEvent(run))
 
-	return r.baseResume.Apply(run, step)
+	return r.baseResume.Apply(run, logEvent)
 }
 
 var _ flows.Resume = (*RunExpirationResume)(nil)
