@@ -9,7 +9,6 @@ require (
 	github.com/evalphobia/logrus_sentry v0.4.6
 	github.com/getsentry/raven-go v0.0.0-20180517221441-ed7bcb39ff10 // indirect
 	github.com/go-chi/chi v3.3.2+incompatible
-	github.com/go-chi/cors v1.0.0
 	github.com/go-playground/locales v0.11.2 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/hashicorp/go-version v1.0.0
