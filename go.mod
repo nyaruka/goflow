@@ -1,0 +1,44 @@
+module github.com/nyaruka/goflow
+
+require (
+	github.com/antlr/antlr4 v0.0.0-20181218183534-70d9ddcd0a58
+	github.com/buger/jsonparser v0.0.0-20180131123142-4be68c93a244
+	github.com/certifi/gocertifi v0.0.0-20180118203423-deb3ae2ef261 // indirect
+	github.com/davecgh/go-spew v1.1.0 // indirect
+	github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4
+	github.com/evalphobia/logrus_sentry v0.4.6
+	github.com/getsentry/raven-go v0.0.0-20180517221441-ed7bcb39ff10 // indirect
+	github.com/go-chi/chi v3.3.2+incompatible
+	github.com/go-chi/cors v1.0.0
+	github.com/go-playground/locales v0.11.2 // indirect
+	github.com/go-playground/universal-translator v0.16.0 // indirect
+	github.com/hashicorp/go-version v1.0.0
+	github.com/karlseguin/ccache v2.0.2+incompatible
+	github.com/karlseguin/expect v1.0.1 // indirect
+	github.com/kr/pretty v0.1.0 // indirect
+	github.com/kylelemons/godebug v0.0.0-20170820004349-d65d576e9348 // indirect
+	github.com/nyaruka/ezconf v0.0.0-20180307215726-b12749342a72
+	github.com/nyaruka/gocommon v0.2.0
+	github.com/nyaruka/phonenumbers v0.0.0-20180208145444-15aafd6b263c
+	github.com/onsi/ginkgo v1.7.0 // indirect
+	github.com/onsi/gomega v1.4.3 // indirect
+	github.com/pkg/errors v0.8.0
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/rakyll/statik v0.1.1
+	github.com/satori/go.uuid v1.2.0
+	github.com/sergi/go-diff v1.0.0
+	github.com/shopspring/decimal v0.0.0-20180319170823-2df3e6ddaf6e
+	github.com/sirupsen/logrus v1.0.4
+	github.com/stretchr/testify v1.2.1
+	github.com/wsxiaoys/terminal v0.0.0-20160513160801-0940f3fc43a0 // indirect
+	golang.org/x/crypto v0.0.0-20180228161326-91a49db82a88 // indirect
+	golang.org/x/net v0.0.0-20181217023233-e147a9138326 // indirect
+	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
+	golang.org/x/text v0.3.0
+	gopkg.in/airbrake/gobrake.v2 v2.0.9 // indirect
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+	gopkg.in/gemnasium/logrus-airbrake-hook.v2 v2.1.2 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
+	gopkg.in/go-playground/validator.v9 v9.12.0
+	gopkg.in/karlseguin/expect.v1 v1.0.1 // indirect
+)
