@@ -82,7 +82,7 @@ func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d
 		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()), nil
 	}
 
-	return ZeroTime, errors.Errorf("No date found in string: %s", str)
+	return ZeroTime, errors.Errorf("string '%s' couldn't be parsed as a date", str)
 }
 
 // DaysBetween returns the number of calendar days (an int) between the two dates. Note

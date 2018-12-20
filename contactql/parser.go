@@ -75,14 +75,14 @@ func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, 
 func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool, error) {
 	switch val.(type) {
 	case string:
-		return stringComparison(val.(string), c.comparator, c.value)
+		return textComparison(val.(string), c.comparator, c.value)
 
 	case decimal.Decimal:
 		asDecimal, err := decimal.NewFromString(c.value)
 		if err != nil {
 			return false, err
 		}
-		return decimalComparison(val.(decimal.Decimal), c.comparator, asDecimal)
+		return numberComparison(val.(decimal.Decimal), c.comparator, asDecimal)
 
 	case time.Time:
 		asDate, err := utils.DateFromString(env, c.value, false)

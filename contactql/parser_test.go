@@ -1,7 +1,6 @@
 package contactql
 
 import (
-	"strconv"
 	"testing"
 	"time"
 
@@ -74,7 +73,7 @@ func TestEvaluateQuery(t *testing.T) {
 	testObj := &TestQueryable{}
 
 	tests := []struct {
-		text   string
+		query  string
 		result bool
 	}{
 		// URN condition
@@ -139,39 +138,48 @@ func TestEvaluateQuery(t *testing.T) {
 		{`(age = 36) AND (gender = male)`, true},
 		{`age = 36 AND gender = female`, false},
 		{`age = 36 OR gender = female`, true},
+		{`age = 35 OR gender = female`, false},
 		{`(age = 36 OR gender = female) AND age > 35`, true},
 	}
 
 	for _, test := range tests {
-		parsed, err := ParseQuery(test.text)
-		if err != nil {
-			t.Errorf("Error parsing query '%s'\n  Error: %s\n", test.text, err.Error())
-			continue
-		}
+		parsed, err := ParseQuery(test.query)
+		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := EvaluateQuery(env, parsed, testObj)
-		if err != nil {
-			t.Errorf("Error evaluating query '%s'\n  Error: %s\n", test.text, err.Error())
-			continue
-		}
-		if actualResult != test.result {
-			t.Errorf("Error evaluating query '%s'\n  Expected: %s  Got: %s\n", test.text, strconv.FormatBool(test.result), strconv.FormatBool(actualResult))
-		}
+		assert.NoError(t, err, "unexpected error evaluating '%s'", test.query)
+		assert.Equal(t, test.result, actualResult, "unexpected result for '%s'", test.query)
 	}
 }
 
-func TestQueryErrors(t *testing.T) {
+func TestParsingErrors(t *testing.T) {
+	_, err := ParseQuery("name = ")
+	assert.EqualError(t, err, "mismatched input '<EOF>' expecting {TEXT, STRING}")
+}
+
+func TestEvaluationErrors(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 	testObj := &TestQueryable{}
 
-	// a syntax eror
-	_, err := ParseQuery("name = ")
-	assert.EqualError(t, err, "mismatched input '<EOF>' expecting {TEXT, STRING}")
+	tests := []struct {
+		query  string
+		errMsg string
+	}{
+		{`Bob`, "dynamic group queries can't contain implicit conditions"},
+		{`gender > Male`, "can't query text fields with >"},
+		{`age ~ 32`, "can't query number fields with ~"},
+		{`dob = 32`, "string '32' couldn't be parsed as a date"},
+		{`dob = 32 AND name = Bob`, "string '32' couldn't be parsed as a date"},
+		{`name = Bob OR dob = 32`, "string '32' couldn't be parsed as a date"},
+		{`dob ~ 2018-12-31`, "can't query datetime fields with ~"},
+	}
 
-	// an evaluation error
-	parsed, err := ParseQuery("Bob")
-	assert.NoError(t, err)
+	for _, test := range tests {
+		parsed, err := ParseQuery(test.query)
+		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
-	_, err = EvaluateQuery(env, parsed, testObj)
-	assert.EqualError(t, err, "dynamic group queries can't contain implicit conditions")
+		actualResult, err := EvaluateQuery(env, parsed, testObj)
+		assert.EqualError(t, err, test.errMsg, "unexpected error evaluating '%s'", test.query)
+		assert.False(t, actualResult, "unexpected non-false result for '%s'", test.query)
+	}
 }

@@ -1,6 +1,7 @@
 package contactql
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -14,10 +15,12 @@ const (
 	ImplicitKey string = "*"
 )
 
+// Queryable is the interface objects must implement queried
 type Queryable interface {
 	ResolveQueryKey(utils.Environment, string) []interface{}
 }
 
+// EvaluateQuery evaluates the given parsed query against a queryable object
 func EvaluateQuery(env utils.Environment, query *ContactQuery, queryable Queryable) (bool, error) {
 	return query.Evaluate(env, queryable)
 }
@@ -26,7 +29,9 @@ func icontains(s string, substr string) bool {
 	return strings.Contains(strings.ToLower(s), strings.ToLower(substr))
 }
 
-func stringComparison(objectVal string, comparator string, queryVal string) (bool, error) {
+func textComparison(objectVal string, comparator string, queryVal string) (bool, error) {
+	fmt.Printf("textComparison(%s, %s, %s)", objectVal, comparator, queryVal)
+
 	switch comparator {
 	case "=":
 		return strings.ToLower(objectVal) == strings.ToLower(queryVal), nil
@@ -36,7 +41,7 @@ func stringComparison(objectVal string, comparator string, queryVal string) (boo
 	return false, errors.Errorf("can't query text fields with %s", comparator)
 }
 
-func decimalComparison(objectVal decimal.Decimal, comparator string, queryVal decimal.Decimal) (bool, error) {
+func numberComparison(objectVal decimal.Decimal, comparator string, queryVal decimal.Decimal) (bool, error) {
 	switch comparator {
 	case "=":
 		return objectVal.Equal(queryVal), nil
@@ -49,7 +54,7 @@ func decimalComparison(objectVal decimal.Decimal, comparator string, queryVal de
 	case "<=":
 		return objectVal.LessThanOrEqual(queryVal), nil
 	}
-	return false, errors.Errorf("can't query text fields with %s", comparator)
+	return false, errors.Errorf("can't query number fields with %s", comparator)
 }
 
 func dateComparison(objectVal time.Time, comparator string, queryVal time.Time) (bool, error) {
@@ -67,5 +72,5 @@ func dateComparison(objectVal time.Time, comparator string, queryVal time.Time) 
 	case "<=":
 		return objectVal.Before(utcDayEnd), nil
 	}
-	return false, errors.Errorf("can't query location fields with %s", comparator)
+	return false, errors.Errorf("can't query datetime fields with %s", comparator)
 }
