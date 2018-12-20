@@ -1,7 +1,6 @@
 package contactql
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -30,8 +29,6 @@ func icontains(s string, substr string) bool {
 }
 
 func textComparison(objectVal string, comparator string, queryVal string) (bool, error) {
-	fmt.Printf("textComparison(%s, %s, %s)", objectVal, comparator, queryVal)
-
 	switch comparator {
 	case "=":
 		return strings.ToLower(objectVal) == strings.ToLower(queryVal), nil

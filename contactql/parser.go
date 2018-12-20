@@ -80,7 +80,7 @@ func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool,
 	case decimal.Decimal:
 		asDecimal, err := decimal.NewFromString(c.value)
 		if err != nil {
-			return false, err
+			return false, errors.Errorf("can't convert '%s' to a number", c.value)
 		}
 		return numberComparison(val.(decimal.Decimal), c.comparator, asDecimal)
 
@@ -92,7 +92,7 @@ func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool,
 		return dateComparison(val.(time.Time), c.comparator, asDate)
 
 	default:
-		return false, errors.Errorf("unsupported query data type %+v", reflect.TypeOf(val))
+		return false, errors.Errorf("unsupported query data type: %+v", reflect.TypeOf(val))
 	}
 }
 

@@ -284,6 +284,8 @@ func TestEquals(t *testing.T) {
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(124), false},
 		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), true},
 		{types.NewXDateTime(time.Date(2019, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
+		{NewTestXObject("Hello", 123), NewTestXObject("Hello", 123), true},
+		{NewTestXObject("Hello", 456), NewTestXObject("Hello", 123), true},
 	}
 
 	for _, test := range tests {
@@ -301,4 +303,11 @@ func TestIsEmpty(t *testing.T) {
 	assert.False(t, types.IsEmpty(types.XBooleanTrue))
 	assert.False(t, types.IsEmpty(types.NewXNumberFromInt(0)))
 	assert.False(t, types.IsEmpty(types.NewXNumberFromInt(123)))
+}
+
+func TestReduce(t *testing.T) {
+	env := utils.NewDefaultEnvironment()
+
+	assert.Nil(t, types.Reduce(env, nil))
+	assert.Equal(t, types.NewXText("Hello"), types.Reduce(env, NewTestXObject("Hello", 123)))
 }

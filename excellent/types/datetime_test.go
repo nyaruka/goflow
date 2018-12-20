@@ -70,3 +70,13 @@ func TestToXDateTime(t *testing.T) {
 		}
 	}
 }
+
+func TestToXDateTimeWithTimeFill(t *testing.T) {
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
+
+	env := utils.NewDefaultEnvironment()
+	result, err := types.ToXDateTimeWithTimeFill(env, types.NewXText("2018/12/20"))
+	assert.NoError(t, err)
+	assert.Equal(t, types.NewXDateTime(time.Date(2018, 12, 20, 13, 36, 30, 123456789, time.UTC)), result)
+}

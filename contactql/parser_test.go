@@ -64,6 +64,8 @@ func (t *TestQueryable) ResolveQueryKey(env utils.Environment, key string) []int
 		return []interface{}{"Gasabo"}
 	case "ward":
 		return []interface{}{"Ndera"}
+	case "nope":
+		return []interface{}{t}
 	}
 	return nil
 }
@@ -167,11 +169,13 @@ func TestEvaluationErrors(t *testing.T) {
 	}{
 		{`Bob`, "dynamic group queries can't contain implicit conditions"},
 		{`gender > Male`, "can't query text fields with >"},
+		{`age = 3X`, "can't convert '3X' to a number"},
 		{`age ~ 32`, "can't query number fields with ~"},
 		{`dob = 32`, "string '32' couldn't be parsed as a date"},
 		{`dob = 32 AND name = Bob`, "string '32' couldn't be parsed as a date"},
 		{`name = Bob OR dob = 32`, "string '32' couldn't be parsed as a date"},
 		{`dob ~ 2018-12-31`, "can't query datetime fields with ~"},
+		{`nope = 1`, "unsupported query data type: *contactql.TestQueryable"},
 	}
 
 	for _, test := range tests {
