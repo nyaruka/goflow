@@ -136,26 +136,25 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 	for _, format := range isoFormats {
 		parsed, err := time.ParseInLocation(format, strings.Trim(str, " \n\r\t"), env.Timezone())
 		if err == nil {
+			if format == iso8601Date && fillTime {
+				parsed = replaceTime(parsed, Now().In(env.Timezone()))
+			}
 			return parsed, nil
 		}
 	}
 
 	// otherwise, try to parse according to their env settings
 	parsed := ZeroTime
-	currentYear := Now().Year()
 	var err error
+	currentYear := Now().Year()
 
 	switch env.DateFormat() {
-
 	case DateFormatYearMonthDay:
 		parsed, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
-
 	case DateFormatDayMonthYear:
 		parsed, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
-
 	case DateFormatMonthDayYear:
 		parsed, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
-
 	default:
 		err = errors.Errorf("unknown date format: %s", env.DateFormat())
 	}
@@ -170,8 +169,7 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 	if hasTime {
 		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), hour, minute, second, ns, env.Timezone())
 	} else if fillTime {
-		now := Now().In(env.Timezone())
-		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), now.Hour(), now.Minute(), now.Second(), now.Nanosecond(), env.Timezone())
+		parsed = replaceTime(parsed, Now().In(env.Timezone()))
 	}
 
 	// set our timezone if we have one
@@ -180,6 +178,10 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 	}
 
 	return parsed, nil
+}
+
+func replaceTime(d time.Time, t time.Time) time.Time {
+	return time.Date(d.Year(), d.Month(), d.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), t.Location())
 }
 
 func parseTime(str string) (bool, int, int, int, int) {

@@ -6,8 +6,11 @@ import (
 
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+var laTZ, _ = time.LoadLocation("America/Los_Angeles")
 
 var timeTests = []struct {
 	DateFormat utils.DateFormat
@@ -24,8 +27,12 @@ var timeTests = []struct {
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
 
-	// must be real, strict iso to match despite format
+	// must be strict iso to match despite format
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02T10:34:56Z", "02-01-2001 10:34:56 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02T10:34:56+02:00", "02-01-2001 10:34:56 +0200 MST", false},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", true, "2001-01-02", "02-01-2001 13:36:30.123456789 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "America/Los_Angeles", true, "2001-01-02", "02-01-2001 06:36:30.123456789 -0800 PST", false},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, " 2001-01-02 ", "02-01-2001 00:00:00 +0000 UTC", false},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "on 2001-01-02 ", "", true},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001_01_02", "", true},
@@ -87,70 +94,56 @@ func TestDateFromString(t *testing.T) {
 
 		env := utils.NewEnvironment(test.DateFormat, test.TimeFormat, timezone, utils.NilLanguage, nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
-		if err != nil {
-			t.Errorf("Error parsing expected timezone: %s", err)
-			continue
-		}
-
 		value, err := utils.DateFromString(env, test.Value, test.FillTime)
-		if err != nil && !test.Error {
-			t.Errorf("Error parsing date: %s", err)
-			continue
-		}
 
-		if test.Expected != "" {
+		if test.Error {
+			assert.Error(t, err)
+		} else {
+			require.NoError(t, err, "error parsing date %s", test.Value)
+
 			expected, err := time.Parse("02-01-2006 15:04:05.999999999 -0700 MST", test.Expected)
-			if err != nil {
-				t.Errorf("Error parsing expected date: %s", err)
-				continue
-			}
+			require.NoError(t, err, "error parsing expected date %s", test.Expected)
 
-			if !value.Equal(expected) {
-				t.Errorf("Date '%s' not match expected date '%s' for input: '%s'", value, expected, test.Value)
+			if !expected.Equal(value) {
+				assert.Fail(t, "", "mismatch for date input %s, expected %s, got %s", test.Value, expected, value)
 			}
 		}
 	}
-}
-
-var laTZ, _ = time.LoadLocation("America/Los_Angeles")
-
-var daysBetweenTests = []struct {
-	d1       time.Time
-	d2       time.Time
-	expected int
-}{
-	{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 3, 0, 30, 0, 0, time.UTC), -2},
-	{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 3, 0, 30, 0, 0, laTZ), -2},
-	{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2017, 12, 25, 0, 30, 0, 0, time.UTC), 7},
-	{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), 0},
 }
 
 func TestDaysBetween(t *testing.T) {
+	daysBetweenTests := []struct {
+		d1       time.Time
+		d2       time.Time
+		expected int
+	}{
+		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 3, 0, 30, 0, 0, time.UTC), -2},
+		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 3, 0, 30, 0, 0, laTZ), -2},
+		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2017, 12, 25, 0, 30, 0, 0, time.UTC), 7},
+		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), 0},
+	}
+
 	for _, test := range daysBetweenTests {
 		actual := utils.DaysBetween(test.d1, test.d2)
-		if actual != test.expected {
-			t.Errorf("Days between: %d did not match expected: %d for %s - %s", actual, test.expected, test.d1, test.d2)
-		}
+		assert.Equal(t, test.expected, actual, "mismatch for inputs %s - %s", test.d1, test.d2)
 	}
 }
 
-var monthsBetweenTests = []struct {
-	d1       time.Time
-	d2       time.Time
-	expected int
-}{
-	{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 3, 0, 30, 0, 0, time.UTC), 0},
-	{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 3, 3, 0, 30, 0, 0, laTZ), -2},
-	{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2017, 12, 25, 0, 30, 0, 0, time.UTC), 1},
-	{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), 0},
-}
-
 func TestMonthsBetween(t *testing.T) {
-	for _, test := range daysBetweenTests {
-		actual := utils.DaysBetween(test.d1, test.d2)
-		if actual != test.expected {
-			t.Errorf("Months between: %d did not match expected: %d for %s - %s", actual, test.expected, test.d1, test.d2)
-		}
+	monthsBetweenTests := []struct {
+		d1       time.Time
+		d2       time.Time
+		expected int
+	}{
+		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 3, 0, 30, 0, 0, time.UTC), 0},
+		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 3, 3, 0, 30, 0, 0, laTZ), -2},
+		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2017, 12, 25, 0, 30, 0, 0, time.UTC), 1},
+		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), 0},
+	}
+
+	for _, test := range monthsBetweenTests {
+		actual := utils.MonthsBetween(test.d1, test.d2)
+		assert.Equal(t, test.expected, actual, "mismatch for inputs %s - %s", test.d1, test.d2)
 	}
 }
 
