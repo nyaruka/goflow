@@ -1,11 +1,29 @@
 package test
 
 import (
+	"io/ioutil"
+
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/assets/static/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/utils"
 )
+
+func LoadSessionAssets(path string) (flows.SessionAssets, error) {
+	assetsJSON, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	source, err := static.NewStaticSource(assetsJSON)
+	if err != nil {
+		return nil, err
+	}
+
+	return engine.NewSessionAssets(source)
+}
 
 func NewField(key string, name string, valueType assets.FieldType) *flows.Field {
 	return flows.NewField(types.NewField(key, name, valueType))

@@ -3,14 +3,14 @@ package modifiers_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/goflow/assets/static"
 	"io/ioutil"
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
-	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -19,13 +19,7 @@ import (
 )
 
 func TestModifierTypes(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
-	require.NoError(t, err)
-
-	source, err := static.NewStaticSource(assetsJSON)
-	require.NoError(t, err)
-
-	assets, err := engine.NewSessionAssets(source)
+	assets, err := test.LoadSessionAssets("testdata/_assets.json")
 	require.NoError(t, err)
 
 	for typeName := range modifiers.RegisteredTypes {
@@ -81,7 +75,97 @@ func testModifierType(t *testing.T, assets flows.SessionAssets, typeName string)
 
 		// try marshaling the modifier back to JSON
 		modifierJSON, err := json.Marshal(modifier)
+		require.NoError(t, err)
 		test.AssertEqualJSON(t, tc.Modifier, modifierJSON, "marshal mismatch in %s", testName)
+	}
+}
+
+func TestConstructors(t *testing.T) {
+	assets, err := test.LoadSessionAssets("testdata/_assets.json")
+	require.NoError(t, err)
+
+	nexmo, _ := assets.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
+	age, _ := assets.Fields().Get("age")
+	ageValue := types.NewXNumberFromInt(37)
+	testers, _ := assets.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")
+	la, _ := time.LoadLocation("America/Los_Angeles")
+
+	tests := []struct {
+		modifier flows.Modifier
+		json     string
+	}{
+		{
+			modifiers.NewChannelModifier(nexmo),
+			`{
+				"type": "channel",
+				"channel": {
+					"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+					"name": "Nexmo"
+				}
+			}`,
+		},
+		{
+			modifiers.NewFieldModifier(age, flows.NewValue(types.NewXText("37 years"), nil, &ageValue, "", "", "")),
+			`{
+				"type": "field",
+				"field": {
+					"key": "age",
+					"name": "Age"
+				},
+				"value": {
+					"text": "37 years",
+					"number": 37
+				}
+			}`,
+		},
+		{
+			modifiers.NewGroupsModifier([]*flows.Group{testers}, modifiers.GroupsAdd),
+			`{
+				"type": "groups",
+				"groups": [
+					{
+						"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+						"name": "Testers"
+					}
+				],
+				"modification": "add"
+			}`,
+		},
+		{
+			modifiers.NewLanguageModifier(utils.Language("fra")),
+			`{
+				"type": "language",
+				"language": "fra"
+			}`,
+		},
+		{
+			modifiers.NewNameModifier("Bob"),
+			`{
+				"type": "name",
+				"name": "Bob"
+			}`,
+		},
+		{
+			modifiers.NewTimezoneModifier(la),
+			`{
+				"type": "timezone",
+				"timezone": "America/Los_Angeles"
+			}`,
+		},
+		{
+			modifiers.NewURNModifier(urns.URN("tel:+1234567890"), modifiers.URNAppend),
+			`{
+				"type": "urn",
+				"urn": "tel:+1234567890",
+				"modification": "append"
+			}`,
+		},
+	}
+
+	for _, tc := range tests {
+		modifierJSON, err := json.Marshal(tc.modifier)
+		require.NoError(t, err)
+		test.AssertEqualJSON(t, []byte(tc.json), modifierJSON, "marshal mismatch for modifier %s", string(modifierJSON))
 	}
 }
 
