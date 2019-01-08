@@ -127,7 +127,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			var connection *flows.Connection
 			if flow.Type() == flows.FlowTypeVoice {
 				channel, _ := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-				connection = flows.NewConnection(channel, urns.URN("tel:+12065551212"))
+				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
 			}
 
 			trigger = triggers.NewManualTrigger(utils.NewDefaultEnvironment(), flow.Reference(), contact, connection, nil, utils.Now())

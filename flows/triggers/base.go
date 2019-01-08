@@ -133,7 +133,7 @@ type baseTriggerEnvelope struct {
 	Environment json.RawMessage       `json:"environment,omitempty"`
 	Flow        *assets.FlowReference `json:"flow" validate:"required"`
 	Contact     json.RawMessage       `json:"contact,omitempty"`
-	Connection  json.RawMessage       `json:"connection,omitempty"`
+	Connection  *flows.Connection     `json:"connection,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
 	TriggeredOn time.Time             `json:"triggered_on" validate:"required"`
 }
@@ -157,6 +157,7 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 
 	t.type_ = e.Type
 	t.flow = e.Flow
+	t.connection = e.Connection
 	t.triggeredOn = e.TriggeredOn
 
 	if e.Environment != nil {
@@ -167,11 +168,6 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 	if e.Contact != nil {
 		if t.contact, err = flows.ReadContact(sessionAssets, e.Contact, true); err != nil {
 			return errors.Wrap(err, "unable to read contact")
-		}
-	}
-	if e.Connection != nil {
-		if t.connection, err = flows.ReadConnection(sessionAssets, e.Connection); err != nil {
-			return errors.Wrap(err, "unable to read connection")
 		}
 	}
 	if e.Params != nil {
@@ -185,6 +181,7 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	var err error
 	e.Type = t.type_
 	e.Flow = t.flow
+	e.Connection = t.connection
 	e.TriggeredOn = t.triggeredOn
 
 	if t.environment != nil {
@@ -195,12 +192,6 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	}
 	if t.contact != nil {
 		e.Contact, err = json.Marshal(t.contact)
-		if err != nil {
-			return err
-		}
-	}
-	if t.connection != nil {
-		e.Connection, err = json.Marshal(t.connection)
 		if err != nil {
 			return err
 		}

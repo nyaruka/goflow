@@ -370,8 +370,9 @@ A [flow_entered](sessions.html#event:flow_entered) event will be created to reco
 
 ## play_audio
 
-Can be used to play an audio recording in a voice flow. It will generate
-an [ivr_play](sessions.html#event:ivr_play) event.
+Can be used to play an audio recording in a voice flow. It will generate an
+[ivr_created](sessions.html#event:ivr_created) event if there is a valid audio URL. This will contain a message which
+the caller should handle as an IVR play command using the audio attachment.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -382,10 +383,16 @@ an [ivr_play](sessions.html#event:ivr_play) event.
 ```
 </div><div class="output_event"><h3>Event</h3>```json
 {
-    "type": "ivr_play",
+    "type": "ivr_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772",
-    "audio_url": "http://uploads.temba.io/2353262.m4a"
+    "msg": {
+        "uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
+        "text": "",
+        "attachments": [
+            "audio:http://uploads.temba.io/2353262.m4a"
+        ]
+    }
 }
 ```
 </div>
@@ -413,7 +420,7 @@ the contact from all non-dynamic groups.
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f",
+    "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
     "groups_removed": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -428,9 +435,10 @@ the contact from all non-dynamic groups.
 ## say_msg
 
 Can be used to communicate with the contact in a voice flow by either reading
-a message with TTS or playing a pre-recorded audio file. If there is an audio file, it takes
-priority and an [ivr_play](sessions.html#event:ivr_play) event is generated. Otherwise the text is used
-and a [ivr_say](sessions.html#event:ivr_say) event is generated.
+a message with TTS or playing a pre-recorded audio file. It will generate an [ivr_created](sessions.html#event:ivr_created)
+event if there is a valid audio URL or backdown text. This will contain a message which
+the caller should handle as an IVR play command if it has an audio attachment, or otherwise
+an IVR say command using the message text.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -442,11 +450,16 @@ and a [ivr_say](sessions.html#event:ivr_say) event is generated.
 ```
 </div><div class="output_event"><h3>Event</h3>```json
 {
-    "type": "ivr_play",
+    "type": "ivr_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "8aed5d25-d9ba-4799-8c2c-eb689cc91cf8",
-    "audio_url": "http://uploads.temba.io/2353262.m4a",
-    "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
+    "step_uuid": "06b98e9d-825f-4be0-92f0-b4a6fcc7080c",
+    "msg": {
+        "uuid": "dde64b44-09cf-4e6f-a52e-e58736ac73ba",
+        "text": "Hi Ryan Lewis, are you ready to complete today's survey?",
+        "attachments": [
+            "audio:http://uploads.temba.io/2353262.m4a"
+        ]
+    }
 }
 ```
 </div>
@@ -474,7 +487,7 @@ with the evaluated text.
 {
     "type": "broadcast_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "9972fa41-f437-4bbd-881a-ef06948e0f99",
+    "step_uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6",
     "translations": {
         "eng": {
             "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
@@ -511,7 +524,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 {
     "type": "email_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "368c31c2-e333-4f4c-851c-386828964858",
+    "step_uuid": "7dcc445a-83cf-432b-8188-76dd971a6205",
     "addresses": [
         "foo@bar.com"
     ],
@@ -541,9 +554,9 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 {
     "type": "msg_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "8ffec076-3c61-4142-9741-d46beab654c1",
+    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
     "msg": {
-        "uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a",
+        "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df",
         "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -600,7 +613,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 {
     "type": "contact_field_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8",
+    "step_uuid": "1265aa33-e472-440a-b4b7-2e34e644276e",
     "field": {
         "key": "gender",
         "name": "Gender"
@@ -649,7 +662,7 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 {
     "type": "contact_name_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "91572113-cb8a-4686-b038-6776a9290118",
+    "step_uuid": "936fea74-7589-4322-aac5-484f64970a84",
     "name": "Bob Smith"
 }
 ```
@@ -673,7 +686,7 @@ A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event
 {
     "type": "contact_timezone_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e83ce5ec-cc78-483c-ab24-17061eb32600",
+    "step_uuid": "1fbe497b-2fec-4ec6-9c41-cf3f881022fb",
     "timezone": "Africa/Kigali"
 }
 ```
@@ -702,7 +715,7 @@ final values.
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "b5982db1-04d8-497b-bdc4-de873c294fa4",
+    "step_uuid": "f57752aa-b326-49dc-a261-a8a7a2e749fe",
     "name": "Gender",
     "value": "m",
     "category": "Male"
@@ -736,7 +749,7 @@ will be created and it's the responsibility of the caller to act on that by init
 {
     "type": "session_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "5bc28e77-810a-4720-b1ab-eaf1963053e5",
+    "step_uuid": "a452b30e-f118-4701-aba9-6b3f291e2750",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Registration"
@@ -748,7 +761,7 @@ will be created and it's the responsibility of the caller to act on that by init
         }
     ],
     "run_summary": {
-        "uuid": "3566819d-81f2-432f-86f5-36e944bfe3ab",
+        "uuid": "77405d28-851d-4051-a8e1-fc82b887c3ff",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration"

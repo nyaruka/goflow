@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -15,8 +16,9 @@ func init() {
 // TypePlayAudio is the type for the play audio action
 const TypePlayAudio string = "play_audio"
 
-// PlayAudioAction can be used to play an audio recording in a voice flow. It will generate
-// an [event:ivr_play] event.
+// PlayAudioAction can be used to play an audio recording in a voice flow. It will generate an
+// [event:ivr_created] event if there is a valid audio URL. This will contain a message which
+// the caller should handle as an IVR play command using the audio attachment.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -61,8 +63,13 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 		return nil
 	}
 
-	// if we have an audio URL, tell caller to play it
-	logEvent(events.NewIVRPlayEvent(evaluatedAudioURL, ""))
+	// an IVR flow must have been started with a connection
+	connection := run.Session().Trigger().Connection()
+
+	// if we have an audio URL, turn it into a message
+	attachments := []flows.Attachment{flows.Attachment(fmt.Sprintf("audio:%s", evaluatedAudioURL))}
+	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), "", attachments, nil)
+	logEvent(events.NewIVRCreatedEvent(msg))
 
 	return nil
 }

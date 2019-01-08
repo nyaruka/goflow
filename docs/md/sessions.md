@@ -552,39 +552,9 @@ Events are created when an action wants to send an IVR response to the current c
         },
         "text": "hi there",
         "attachments": [
-            "audio/mpeg:https://s3.amazon.com/mybucket/attachment.m4a"
+            "audio:https://s3.amazon.com/mybucket/attachment.m4a"
         ]
     }
-}
-```
-</div>
-<a name="event:ivr_play"></a>
-
-## ivr_play
-
-Events are created when an action wants to play an audio recording to the current contact.
-Text is optionally and only used for logging purposes.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "ivr_play",
-    "created_on": "2006-01-02T15:04:05Z",
-    "audio_url": "http://uploads.temba.io/2353262.m4a",
-    "text": "Hi John. May we ask you some questions?"
-}
-```
-</div>
-<a name="event:ivr_say"></a>
-
-## ivr_say
-
-Events are created when an action wants to say a message to the current contact using TTS.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "ivr_say",
-    "created_on": "2006-01-02T15:04:05Z",
-    "text": "Hi John. May we ask you some questions?"
 }
 ```
 </div>

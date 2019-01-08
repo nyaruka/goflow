@@ -21,7 +21,7 @@ const TypeIVRCreated string = "ivr_created"
 //       "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
 //       "urn": "tel:+12065551212",
 //       "text": "hi there",
-//       "attachments": ["audio/mpeg:https://s3.amazon.com/mybucket/attachment.m4a"]
+//       "attachments": ["audio:https://s3.amazon.com/mybucket/attachment.m4a"]
 //     }
 //   }
 //
