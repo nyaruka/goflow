@@ -1026,7 +1026,7 @@
             "uuid": "a040f89e-534e-4e5d-9e94-a8b639c426c8",
             "actions": [
                 {
-                    "type": "start_flow",
+                    "type": "enter_flow",
                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "flow": {
                         "uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534",

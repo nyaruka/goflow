@@ -7,25 +7,25 @@ import (
 )
 
 func init() {
-	RegisterType(TypeStartFlow, func() flows.Action { return &StartFlowAction{} })
+	RegisterType(TypeEnterFlow, func() flows.Action { return &EnterFlowAction{} })
 }
 
-// TypeStartFlow is the type for the start flow action
-const TypeStartFlow string = "start_flow"
+// TypeEnterFlow is the type for the enter flow action
+const TypeEnterFlow string = "enter_flow"
 
-// StartFlowAction can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
+// EnterFlowAction can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 //
 // A [event:flow_triggered] event will be created to record that the flow was started.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "start_flow",
+//     "type": "enter_flow",
 //     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Language"},
 //     "terminal": false
 //   }
 //
-// @action start_flow
-type StartFlowAction struct {
+// @action enter_flow
+type EnterFlowAction struct {
 	BaseAction
 	universalAction
 
@@ -33,24 +33,24 @@ type StartFlowAction struct {
 	Terminal bool                  `json:"terminal,omitempty"`
 }
 
-// NewStartFlowAction creates a new start flow action
-func NewStartFlowAction(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bool) *StartFlowAction {
-	return &StartFlowAction{
-		BaseAction: NewBaseAction(TypeStartFlow, uuid),
+// NewEnterFlowAction creates a new start flow action
+func NewEnterFlowAction(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bool) *EnterFlowAction {
+	return &EnterFlowAction{
+		BaseAction: NewBaseAction(TypeEnterFlow, uuid),
 		Flow:       flow,
 		Terminal:   terminal,
 	}
 }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *StartFlowAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+func (a *EnterFlowAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
 
 	// check the flow exists and that it's valid
 	return a.validateFlow(assets, a.Flow, context)
 }
 
 // Execute runs our action
-func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
 	if err != nil {
 		return err
@@ -58,7 +58,7 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 
 	if !run.Session().CanEnterFlow(flow) {
 		run.Exit(flows.RunStatusErrored)
-		logEvent(events.NewFatalErrorEventf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))
+		logEvent(events.NewFatalErrorEventf("flow loop detected, stopping execution before entering flow: %s", a.Flow.UUID))
 		return nil
 	}
 

@@ -334,6 +334,38 @@ through `extra` on the result.
 ]
 ```
 </div>
+<a name="action:enter_flow"></a>
+
+## enter_flow
+
+Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
+
+A [flow_triggered](sessions.html#event:flow_triggered) event will be created to record that the flow was started.
+
+<div class="input_action"><h3>Action</h3>```json
+{
+    "type": "enter_flow",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "flow": {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "name": "Collect Language"
+    }
+}
+```
+</div><div class="output_event"><h3>Event</h3>```json
+{
+    "type": "flow_triggered",
+    "created_on": "2018-04-11T18:24:30.123456Z",
+    "step_uuid": "530379ca-3fa7-4959-8ceb-17799a976525",
+    "flow": {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "name": "Collect Language"
+    },
+    "parent_run_uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07",
+    "terminal": false
+}
+```
+</div>
 <a name="action:play_audio"></a>
 
 ## play_audio
@@ -352,7 +384,7 @@ an [ivr_play](sessions.html#event:ivr_play) event.
 {
     "type": "ivr_play",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734",
+    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772",
     "audio_url": "http://uploads.temba.io/2353262.m4a"
 }
 ```
@@ -381,7 +413,7 @@ the contact from all non-dynamic groups.
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "edbc66c0-53a8-4b2a-998e-ae5bd773804a",
+    "step_uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f",
     "groups_removed": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -412,7 +444,7 @@ and a [ivr_say](sessions.html#event:ivr_say) event is generated.
 {
     "type": "ivr_play",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772",
+    "step_uuid": "8aed5d25-d9ba-4799-8c2c-eb689cc91cf8",
     "audio_url": "http://uploads.temba.io/2353262.m4a",
     "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
 }
@@ -442,7 +474,7 @@ with the evaluated text.
 {
     "type": "broadcast_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f",
+    "step_uuid": "9972fa41-f437-4bbd-881a-ef06948e0f99",
     "translations": {
         "eng": {
             "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
@@ -479,7 +511,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 {
     "type": "email_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
+    "step_uuid": "368c31c2-e333-4f4c-851c-386828964858",
     "addresses": [
         "foo@bar.com"
     ],
@@ -509,9 +541,9 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 {
     "type": "msg_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "75a7bcfc-86f1-43aa-b4c4-260cfebfde0b",
+    "step_uuid": "8ffec076-3c61-4142-9741-d46beab654c1",
     "msg": {
-        "uuid": "7bdffc44-d323-42bf-8fb7-9f7a1d1cb701",
+        "uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a",
         "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -568,7 +600,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 {
     "type": "contact_field_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e891b787-12cf-4c38-8a45-573a4a7a0d0f",
+    "step_uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8",
     "field": {
         "key": "gender",
         "name": "Gender"
@@ -617,7 +649,7 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 {
     "type": "contact_name_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "dda50da0-8fc0-4f22-9c96-61ebc05df996",
+    "step_uuid": "91572113-cb8a-4686-b038-6776a9290118",
     "name": "Bob Smith"
 }
 ```
@@ -641,7 +673,7 @@ A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event
 {
     "type": "contact_timezone_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "2ff14e28-184d-45df-962a-76fbcac8bf7f",
+    "step_uuid": "e83ce5ec-cc78-483c-ab24-17061eb32600",
     "timezone": "Africa/Kigali"
 }
 ```
@@ -670,42 +702,10 @@ final values.
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e485ab25-c3c6-45ee-9ad9-7b76948880e3",
+    "step_uuid": "b5982db1-04d8-497b-bdc4-de873c294fa4",
     "name": "Gender",
     "value": "m",
     "category": "Male"
-}
-```
-</div>
-<a name="action:start_flow"></a>
-
-## start_flow
-
-Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
-
-A [flow_triggered](sessions.html#event:flow_triggered) event will be created to record that the flow was started.
-
-<div class="input_action"><h3>Action</h3>```json
-{
-    "type": "start_flow",
-    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-    "flow": {
-        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-        "name": "Collect Language"
-    }
-}
-```
-</div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "flow_triggered",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "b41974b9-a0ef-40d2-8c6f-7b85c24bcbca",
-    "flow": {
-        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-        "name": "Collect Language"
-    },
-    "parent_run_uuid": "03530137-9309-4b09-b1f8-3d29c913263a",
-    "terminal": false
 }
 ```
 </div>

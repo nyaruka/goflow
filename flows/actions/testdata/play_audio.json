@@ -1,6 +1,7 @@
 [
     {
         "description": "Error event and action skipped if audio URL contains expression error",
+        "no_input": true,
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "play_audio",
@@ -18,6 +19,7 @@
     },
     {
         "description": "Error event and action skipped if audio URL evaluates to empty",
+        "no_input": true,
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "play_audio",
@@ -35,6 +37,7 @@
     },
     {
         "description": "IVR play event if we have an audio URL",
+        "no_input": true,
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "play_audio",

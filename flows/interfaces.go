@@ -274,6 +274,7 @@ type Trigger interface {
 	Environment() utils.Environment
 	Flow() *assets.FlowReference
 	Contact() *Contact
+	Connection() *Connection
 	Params() types.XValue
 	TriggeredOn() time.Time
 }

@@ -392,7 +392,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 	case "channel":
 		return actions.NewSetContactChannelAction(a.UUID, assets.NewChannelReference(a.Channel, a.Name)), nil
 	case "flow":
-		return actions.NewStartFlowAction(a.UUID, a.Flow.Migrate(), true), nil
+		return actions.NewEnterFlowAction(a.UUID, a.Flow.Migrate(), true), nil
 	case "trigger-flow":
 		contacts := make([]*flows.ContactReference, len(a.Contacts))
 		for i, contact := range a.Contacts {
@@ -556,7 +556,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 	switch r.Type {
 	case "subflow":
 		newActions = []flows.Action{
-			actions.NewStartFlowAction(flows.ActionUUID(utils.NewUUID()), config.Flow, false),
+			actions.NewEnterFlowAction(flows.ActionUUID(utils.NewUUID()), config.Flow, false),
 		}
 
 		// subflow rulesets operate on the child flow status

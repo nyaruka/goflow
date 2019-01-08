@@ -3,7 +3,7 @@
         "description": "Validation fails for invalid flow reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-            "type": "start_flow",
+            "type": "enter_flow",
             "flow": {
                 "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
                 "name": "Long Lost Flow"
@@ -15,7 +15,7 @@
         "description": "Fatal error event if flow loop detected",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-            "type": "start_flow",
+            "type": "enter_flow",
             "flow": {
                 "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
                 "name": "Action Tester"
@@ -26,7 +26,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": true,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "flow loop detected, stopping execution before starting flow: bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "text": "flow loop detected, stopping execution before entering flow: bead76f5-dac4-4c9d-996c-c62b326e8c0a",
                 "type": "error"
             }
         ]
@@ -35,7 +35,7 @@
         "description": "Flow triggered event if flow can be started",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-            "type": "start_flow",
+            "type": "enter_flow",
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"

@@ -72,7 +72,7 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 // NewMsgTrigger creates a new message trigger
 func NewMsgTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, msg *flows.MsgIn, match *KeywordMatch, triggeredOn time.Time) flows.Trigger {
 	return &MsgTrigger{
-		baseTrigger: newBaseTrigger(TypeMsg, env, flow, contact, nil, triggeredOn),
+		baseTrigger: newBaseTrigger(TypeMsg, env, flow, contact, nil, nil, triggeredOn),
 		msg:         msg,
 		match:       match,
 	}

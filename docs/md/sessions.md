@@ -533,6 +533,31 @@ Events are created when an action wants to add labels to the current input.
 }
 ```
 </div>
+<a name="event:ivr_created"></a>
+
+## ivr_created
+
+Events are created when an action wants to send an IVR response to the current contact.
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "ivr_created",
+    "created_on": "2006-01-02T15:04:05Z",
+    "msg": {
+        "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+        "urn": "tel:+12065551212",
+        "channel": {
+            "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+            "name": "Twilio"
+        },
+        "text": "hi there",
+        "attachments": [
+            "audio/mpeg:https://s3.amazon.com/mybucket/attachment.m4a"
+        ]
+    }
+}
+```
+</div>
 <a name="event:ivr_play"></a>
 
 ## ivr_play
@@ -582,7 +607,7 @@ Events are created when an action wants to send a reply to the current contact.
         },
         "text": "hi there",
         "attachments": [
-            "https://s3.amazon.com/mybucket/attachment.jpg"
+            "image/jpeg:https://s3.amazon.com/mybucket/attachment.jpg"
         ]
     }
 }

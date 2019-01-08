@@ -28,12 +28,13 @@ type baseTrigger struct {
 	environment utils.Environment
 	flow        *assets.FlowReference
 	contact     *flows.Contact
+	connection  *flows.Connection
 	params      types.XValue
 	triggeredOn time.Time
 }
 
-func newBaseTrigger(typeName string, env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, params types.XValue, triggeredOn time.Time) baseTrigger {
-	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, params: params, triggeredOn: triggeredOn}
+func newBaseTrigger(typeName string, env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue, triggeredOn time.Time) baseTrigger {
+	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, connection: connection, params: params, triggeredOn: triggeredOn}
 }
 
 // Type returns the type of this trigger
@@ -42,6 +43,7 @@ func (t *baseTrigger) Type() string { return t.type_ }
 func (t *baseTrigger) Environment() utils.Environment { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
 func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
+func (t *baseTrigger) Connection() *flows.Connection  { return t.connection }
 func (t *baseTrigger) Params() types.XValue           { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
@@ -51,6 +53,10 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent func(flows.Even
 	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
 	if err != nil {
 		return errors.Wrapf(err, "unable to load flow[uuid=%s]", t.Flow().UUID)
+	}
+
+	if flow.Type() == flows.FlowTypeVoice && t.connection == nil {
+		return errors.New("unable to trigger voice flow without connection")
 	}
 
 	// check flow is valid and has everything it needs to run
@@ -127,6 +133,7 @@ type baseTriggerEnvelope struct {
 	Environment json.RawMessage       `json:"environment,omitempty"`
 	Flow        *assets.FlowReference `json:"flow" validate:"required"`
 	Contact     json.RawMessage       `json:"contact,omitempty"`
+	Connection  json.RawMessage       `json:"connection,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
 	TriggeredOn time.Time             `json:"triggered_on" validate:"required"`
 }
@@ -162,6 +169,11 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 			return errors.Wrap(err, "unable to read contact")
 		}
 	}
+	if e.Connection != nil {
+		if t.connection, err = flows.ReadConnection(sessionAssets, e.Connection); err != nil {
+			return errors.Wrap(err, "unable to read connection")
+		}
+	}
 	if e.Params != nil {
 		t.params = types.JSONToXValue(e.Params)
 	}
@@ -183,6 +195,12 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	}
 	if t.contact != nil {
 		e.Contact, err = json.Marshal(t.contact)
+		if err != nil {
+			return err
+		}
+	}
+	if t.connection != nil {
+		e.Connection, err = json.Marshal(t.connection)
 		if err != nil {
 			return err
 		}

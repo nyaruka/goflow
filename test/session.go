@@ -52,7 +52,7 @@ var sessionAssets = `{
                     "actions": [
                         {
                             "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
-                            "type": "start_flow",
+                            "type": "enter_flow",
                             "flow": {
                                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                                 "name": "Collect Age"
@@ -381,6 +381,10 @@ var voiceSessionTrigger = `{
     "event": {
         "type": "incoming_call",
         "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"}
+    },
+    "connection": {
+        "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"},
+        "urn": "tel:+12065551212"
     },
     "flow": {"uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf", "name": "Voice Test"},
     "contact": {

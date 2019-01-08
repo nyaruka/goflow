@@ -53,7 +53,7 @@ type FlowActionTrigger struct {
 // NewFlowActionTrigger creates a new flow action trigger with the passed in values
 func NewFlowActionTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, runSummary json.RawMessage, triggeredOn time.Time) *FlowActionTrigger {
 	return &FlowActionTrigger{
-		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, nil, triggeredOn),
+		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, nil, nil, triggeredOn),
 		runSummary:  runSummary,
 	}
 }

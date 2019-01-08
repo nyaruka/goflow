@@ -50,6 +50,7 @@ func (a *SetContactChannelAction) Validate(assets flows.SessionAssets, context *
 	return nil
 }
 
+// Execute runs our action
 func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
 	contact := run.Contact()
 	if contact == nil {
