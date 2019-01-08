@@ -340,7 +340,7 @@ through `extra` on the result.
 
 Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 
-A [flow_triggered](sessions.html#event:flow_triggered) event will be created to record that the flow was started.
+A [flow_entered](sessions.html#event:flow_entered) event will be created to record that the flow was started.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -354,7 +354,7 @@ A [flow_triggered](sessions.html#event:flow_triggered) event will be created to 
 ```
 </div><div class="output_event"><h3>Event</h3>```json
 {
-    "type": "flow_triggered",
+    "type": "flow_entered",
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "530379ca-3fa7-4959-8ceb-17799a976525",
     "flow": {

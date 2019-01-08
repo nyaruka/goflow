@@ -51,7 +51,7 @@
                 "parent_run_uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "terminal": false,
-                "type": "flow_triggered"
+                "type": "flow_entered"
             }
         ]
     }

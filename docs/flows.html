@@ -308,7 +308,7 @@ Event
 <p><a name="action:enter_flow"></a></p>
 <h2 id="enter_flow">enter_flow</h2>
 <p>Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.</p>
-<p>A <a href="sessions.html#event:flow_triggered">flow_triggered</a> event will be created to record that the flow was started.</p>
+<p>A <a href="sessions.html#event:flow_entered">flow_entered</a> event will be created to record that the flow was started.</p>
 <div class="input_action">
 <h3>
 Action
@@ -327,7 +327,7 @@ Action
 Event
 </h3>
 <div class="sourceCode" id="cb18"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb18-1" title="1"><span class="fu">{</span></a>
-<a class="sourceLine" id="cb18-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;flow_triggered&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb18-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;flow_entered&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb18-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb18-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;530379ca-3fa7-4959-8ceb-17799a976525&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb18-5" title="5">    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>

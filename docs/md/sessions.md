@@ -494,15 +494,15 @@ Events are created when an error occurs during flow execution.
 }
 ```
 </div>
-<a name="event:flow_triggered"></a>
+<a name="event:flow_entered"></a>
 
-## flow_triggered
+## flow_entered
 
-Events are created when an action has started a sub-flow.
+Events are created when an action has entered a sub-flow.
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "flow_triggered",
+    "type": "flow_entered",
     "created_on": "2006-01-02T15:04:05Z",
     "flow": {
         "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
