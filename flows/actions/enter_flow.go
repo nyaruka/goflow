@@ -56,9 +56,15 @@ func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 		return err
 	}
 
+	if flow.Type() != run.Flow().Type() {
+		run.Exit(flows.RunStatusErrored)
+		logEvent(events.NewFatalErrorEventf("can't enter flow %s of type %s from type %s", a.Flow.UUID, flow.Type(), run.Flow().Type()))
+		return nil
+	}
+
 	if !run.Session().CanEnterFlow(flow) {
 		run.Exit(flows.RunStatusErrored)
-		logEvent(events.NewFatalErrorEventf("flow loop detected, stopping execution before entering flow: %s", a.Flow.UUID))
+		logEvent(events.NewFatalErrorEventf("can't enter flow %s due to looping prevention", a.Flow.UUID))
 		return nil
 	}
 

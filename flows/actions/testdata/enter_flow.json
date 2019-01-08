@@ -26,7 +26,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": true,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "flow loop detected, stopping execution before entering flow: bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "text": "can't enter flow bead76f5-dac4-4c9d-996c-c62b326e8c0a due to looping prevention",
                 "type": "error"
             }
         ]
