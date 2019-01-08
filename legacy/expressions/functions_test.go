@@ -2,9 +2,11 @@ package expressions_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -26,7 +28,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(CODE("A"))`, new: `@(code("A"))`, val: `65`},
 		{old: `@(CONCATENATE(contact.first_name, " ", contact.language))`, new: `@(contact.first_name & " " & contact.language)`, val: `Ryan eng`},
 		{old: `@(DATE(2012, 12, 25))`, new: `@(datetime_from_parts(2012, 12, 25))`, val: `2012-12-25T00:00:00.000000-05:00`},
-		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`, val: `12`},
+		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`, val: `4`},
 		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(datetime("2012-02-03"))`, val: `2012-02-03T00:00:00.000000-05:00`},
 		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`, val: `1`},
 		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(datetime_diff("2016-02-28", "2015-02-28", "D"))`, val: `-365`},
@@ -93,6 +95,9 @@ func TestMigrateFunctionCall(t *testing.T) {
 	session, _, err := test.CreateTestSession(server.URL, nil)
 	require.NoError(t, err)
 
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+
 	for _, tc := range tests {
 		migratedTemplate, err := expressions.MigrateTemplate(tc.old, nil)
 
@@ -111,7 +116,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 			require.NoError(t, err, "unable to evaluate migrated function call '%s'", migratedTemplate)
 
 			if tc.val != "" {
-				assert.Equal(t, tc.val, val)
+				assert.Equal(t, tc.val, val, "unexpected evaluated value for migrated function call '%s'", tc.old)
 			}
 		}
 	}
