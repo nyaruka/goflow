@@ -3,7 +3,7 @@
         "description": "Validation fails for invalid flow reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-            "type": "start_flow",
+            "type": "enter_flow",
             "flow": {
                 "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
                 "name": "Long Lost Flow"
@@ -15,7 +15,7 @@
         "description": "Fatal error event if flow loop detected",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-            "type": "start_flow",
+            "type": "enter_flow",
             "flow": {
                 "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
                 "name": "Action Tester"
@@ -26,7 +26,27 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": true,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "flow loop detected, stopping execution before starting flow: bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "text": "can't enter flow bead76f5-dac4-4c9d-996c-c62b326e8c0a due to looping prevention",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Fatal error event if flow is of different type",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "enter_flow",
+            "flow": {
+                "uuid": "7a84463d-d209-4d3e-a0ff-79f977cd7bd0",
+                "name": "Voice Action Tester"
+            }
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": true,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't enter flow 7a84463d-d209-4d3e-a0ff-79f977cd7bd0 of type voice from type messaging",
                 "type": "error"
             }
         ]
@@ -35,7 +55,7 @@
         "description": "Flow triggered event if flow can be started",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-            "type": "start_flow",
+            "type": "enter_flow",
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"
@@ -51,7 +71,7 @@
                 "parent_run_uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "terminal": false,
-                "type": "flow_triggered"
+                "type": "flow_entered"
             }
         ]
     }

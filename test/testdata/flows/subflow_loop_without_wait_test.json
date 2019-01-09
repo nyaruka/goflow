@@ -25,7 +25,7 @@
                     "parent_run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "terminal": false,
-                    "type": "flow_triggered"
+                    "type": "flow_entered"
                 },
                 {
                     "created_on": "2018-07-06T12:30:13.123456789Z",
@@ -45,7 +45,7 @@
                     "created_on": "2018-07-06T12:30:16.123456789Z",
                     "fatal": true,
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "text": "flow loop detected, stopping execution before starting flow: 76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                    "text": "can't enter flow 76f0a02f-3b75-4b86-9064-e9195e1b3a02 due to looping prevention",
                     "type": "error"
                 },
                 {
@@ -116,7 +116,7 @@
                                 "parent_run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "terminal": false,
-                                "type": "flow_triggered"
+                                "type": "flow_entered"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
@@ -164,7 +164,7 @@
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "fatal": true,
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                                "text": "flow loop detected, stopping execution before starting flow: 76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                                "text": "can't enter flow 76f0a02f-3b75-4b86-9064-e9195e1b3a02 due to looping prevention",
                                 "type": "error"
                             }
                         ],

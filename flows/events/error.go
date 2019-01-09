@@ -44,11 +44,11 @@ func NewErrorEventf(format string, a ...interface{}) *ErrorEvent {
 	}
 }
 
-// NewFatalErrorEventf returns a new fatal error event for the passed in format string and args
-func NewFatalErrorEventf(format string, a ...interface{}) *ErrorEvent {
+// NewFatalErrorEvent returns a new fatal error event for the passed in error
+func NewFatalErrorEvent(err error) *ErrorEvent {
 	return &ErrorEvent{
 		BaseEvent: NewBaseEvent(TypeError),
-		Text:      fmt.Sprintf(format, a...),
+		Text:      err.Error(),
 		Fatal:     true,
 	}
 }

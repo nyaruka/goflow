@@ -494,15 +494,15 @@ Events are created when an error occurs during flow execution.
 }
 ```
 </div>
-<a name="event:flow_triggered"></a>
+<a name="event:flow_entered"></a>
 
-## flow_triggered
+## flow_entered
 
-Events are created when an action has started a sub-flow.
+Events are created when an action has entered a sub-flow.
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "flow_triggered",
+    "type": "flow_entered",
     "created_on": "2006-01-02T15:04:05Z",
     "flow": {
         "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
@@ -533,33 +533,28 @@ Events are created when an action wants to add labels to the current input.
 }
 ```
 </div>
-<a name="event:ivr_play"></a>
+<a name="event:ivr_created"></a>
 
-## ivr_play
+## ivr_created
 
-Events are created when an action wants to play an audio recording to the current contact.
-Text is optionally and only used for logging purposes.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "ivr_play",
-    "created_on": "2006-01-02T15:04:05Z",
-    "audio_url": "http://uploads.temba.io/2353262.m4a",
-    "text": "Hi John. May we ask you some questions?"
-}
-```
-</div>
-<a name="event:ivr_say"></a>
-
-## ivr_say
-
-Events are created when an action wants to say a message to the current contact using TTS.
+Events are created when an action wants to send an IVR response to the current contact.
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "ivr_say",
+    "type": "ivr_created",
     "created_on": "2006-01-02T15:04:05Z",
-    "text": "Hi John. May we ask you some questions?"
+    "msg": {
+        "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+        "urn": "tel:+12065551212",
+        "channel": {
+            "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+            "name": "Twilio"
+        },
+        "text": "hi there",
+        "attachments": [
+            "audio:https://s3.amazon.com/mybucket/attachment.m4a"
+        ]
+    }
 }
 ```
 </div>
@@ -582,7 +577,7 @@ Events are created when an action wants to send a reply to the current contact.
         },
         "text": "hi there",
         "attachments": [
-            "https://s3.amazon.com/mybucket/attachment.jpg"
+            "image/jpeg:https://s3.amazon.com/mybucket/attachment.jpg"
         ]
     }
 }

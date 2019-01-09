@@ -72,7 +72,7 @@
                         },
                         {
                             "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
-                            "type": "start_flow",
+                            "type": "enter_flow",
                             "flow": {
                                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                                 "name": "Collect Language"

@@ -172,6 +172,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				env,
 				flow,
 				contact,
+				nil,
 				types.NewXArray(types.NewXText("foo")),
 				triggeredOn,
 			),

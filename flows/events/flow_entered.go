@@ -6,24 +6,24 @@ import (
 )
 
 func init() {
-	RegisterType(TypeFlowTriggered, func() flows.Event { return &FlowTriggeredEvent{} })
+	RegisterType(TypeFlowEntered, func() flows.Event { return &FlowEnteredEvent{} })
 }
 
-// TypeFlowTriggered is the type of our flow triggered event
-const TypeFlowTriggered string = "flow_triggered"
+// TypeFlowEntered is the type of our flow entered event
+const TypeFlowEntered string = "flow_entered"
 
-// FlowTriggeredEvent events are created when an action has started a sub-flow.
+// FlowEnteredEvent events are created when an action has entered a sub-flow.
 //
 //   {
-//     "type": "flow_triggered",
+//     "type": "flow_entered",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "flow": {"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Registration"},
 //     "parent_run_uuid": "95eb96df-461b-4668-b168-727f8ceb13dd",
 //     "terminal": false
 //   }
 //
-// @event flow_triggered
-type FlowTriggeredEvent struct {
+// @event flow_entered
+type FlowEnteredEvent struct {
 	BaseEvent
 
 	Flow          *assets.FlowReference `json:"flow" validate:"required"`
@@ -31,10 +31,10 @@ type FlowTriggeredEvent struct {
 	Terminal      bool                  `json:"terminal"`
 }
 
-// NewFlowTriggeredEvent returns a new flow triggered event for the passed in flow and parent run
-func NewFlowTriggeredEvent(flow *assets.FlowReference, parentRunUUID flows.RunUUID, terminal bool) *FlowTriggeredEvent {
-	return &FlowTriggeredEvent{
-		BaseEvent:     NewBaseEvent(TypeFlowTriggered),
+// NewFlowEnteredEvent returns a new flow entered event for the passed in flow and parent run
+func NewFlowEnteredEvent(flow *assets.FlowReference, parentRunUUID flows.RunUUID, terminal bool) *FlowEnteredEvent {
+	return &FlowEnteredEvent{
+		BaseEvent:     NewBaseEvent(TypeFlowEntered),
 		Flow:          flow,
 		ParentRunUUID: parentRunUUID,
 		Terminal:      terminal,

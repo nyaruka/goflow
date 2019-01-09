@@ -1,6 +1,26 @@
 [
     {
-        "description": "IVR play event if we have an audio URL",
+        "description": "Error event and action skipped if both text and audio URL are empty",
+        "no_input": true,
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "say_msg",
+            "text": "@(\"\")",
+            "audio_url": ""
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "need either audio URL or backdown text, skipping",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "IVR created event with msg attachment if we have an audio URL",
+        "no_input": true,
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "say_msg",
@@ -10,15 +30,26 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "audio_url": "http://uploads.temba.io/welcome.m4a",
+                "msg": {
+                    "attachments": [
+                        "audio:http://uploads.temba.io/welcome.m4a"
+                    ],
+                    "channel": {
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "text": "Hi there Ryan Lewis",
+                    "urn": "tel:+12065551212",
+                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                },
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "Hi there Ryan Lewis",
-                "type": "ivr_play"
+                "type": "ivr_created"
             }
         ]
     },
     {
-        "description": "IVR say event if we don't have an audio URL",
+        "description": "IVR created event without msg attachment if we don't have an audio URL",
+        "no_input": true,
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "say_msg",
@@ -28,9 +59,17 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "msg": {
+                    "channel": {
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "text": "Hi there Ryan Lewis",
+                    "urn": "tel:+12065551212",
+                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                },
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "Hi there Ryan Lewis",
-                "type": "ivr_say"
+                "type": "ivr_created"
             }
         ]
     }

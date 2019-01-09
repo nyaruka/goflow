@@ -113,7 +113,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		msg := createMessage(contact, initialMsg)
 		repro.Trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil, time.Now())
 	} else {
-		repro.Trigger = triggers.NewManualTrigger(env, flow.Reference(), contact, nil, time.Now())
+		repro.Trigger = triggers.NewManualTrigger(env, flow.Reference(), contact, nil, nil, time.Now())
 	}
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 

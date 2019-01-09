@@ -21,7 +21,7 @@ const TypeMsgCreated string = "msg_created"
 //       "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
 //       "urn": "tel:+12065551212",
 //       "text": "hi there",
-//       "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
+//       "attachments": ["image/jpeg:https://s3.amazon.com/mybucket/attachment.jpg"]
 //     }
 //   }
 //
@@ -29,13 +29,13 @@ const TypeMsgCreated string = "msg_created"
 type MsgCreatedEvent struct {
 	BaseEvent
 
-	Msg flows.MsgOut `json:"msg" validate:"required,dive"`
+	Msg *flows.MsgOut `json:"msg" validate:"required,dive"`
 }
 
 // NewMsgCreatedEvent creates a new outgoing msg event to a single contact
 func NewMsgCreatedEvent(msg *flows.MsgOut) *MsgCreatedEvent {
 	return &MsgCreatedEvent{
 		BaseEvent: NewBaseEvent(TypeMsgCreated),
-		Msg:       *msg,
+		Msg:       msg,
 	}
 }

@@ -1,6 +1,7 @@
 [
     {
         "description": "Error event and action skipped if audio URL contains expression error",
+        "no_input": true,
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "play_audio",
@@ -18,6 +19,7 @@
     },
     {
         "description": "Error event and action skipped if audio URL evaluates to empty",
+        "no_input": true,
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "play_audio",
@@ -34,7 +36,8 @@
         ]
     },
     {
-        "description": "IVR play event if we have an audio URL",
+        "description": "IVR created event with msg attachment if we have an audio URL",
+        "no_input": true,
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "play_audio",
@@ -43,9 +46,20 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "audio_url": "http://uploads.temba.io/welcome/5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f.m4a",
+                "msg": {
+                    "attachments": [
+                        "audio:http://uploads.temba.io/welcome/5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f.m4a"
+                    ],
+                    "channel": {
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "text": "",
+                    "urn": "tel:+12065551212",
+                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                },
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "type": "ivr_play"
+                "type": "ivr_created"
             }
         ]
     }

@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -16,9 +17,10 @@ func init() {
 const TypeSayMsg string = "say_msg"
 
 // SayMsgAction can be used to communicate with the contact in a voice flow by either reading
-// a message with TTS or playing a pre-recorded audio file. If there is an audio file, it takes
-// priority and an [event:ivr_play] event is generated. Otherwise the text is used
-// and a [event:ivr_say] event is generated.
+// a message with TTS or playing a pre-recorded audio file. It will generate an [event:ivr_created]
+// event if there is a valid audio URL or backdown text. This will contain a message which
+// the caller should handle as an IVR play command if it has an audio attachment, or otherwise
+// an IVR say command using the message text.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -63,14 +65,22 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 	// localize the audio URL
 	localizedAudioURL := run.GetText(utils.UUID(a.UUID()), "audio_url", a.AudioURL)
 
-	// if we have either an audio URL or backdown text.. tell caller to play this
-	if localizedAudioURL != "" {
-		logEvent(events.NewIVRPlayEvent(localizedAudioURL, evaluatedText))
-	} else if evaluatedText != "" {
-		logEvent(events.NewIVRSayEvent(evaluatedText))
-	} else {
+	// if we have neither an audio URL or backdown text, skip
+	if evaluatedText == "" && localizedAudioURL == "" {
 		logEvent(events.NewErrorEventf("need either audio URL or backdown text, skipping"))
+		return nil
 	}
+
+	var attachments []flows.Attachment
+	if localizedAudioURL != "" {
+		attachments = []flows.Attachment{flows.Attachment(fmt.Sprintf("audio:%s", localizedAudioURL))}
+	}
+
+	// an IVR flow must have been started with a connection
+	connection := run.Session().Trigger().Connection()
+
+	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), evaluatedText, attachments, nil)
+	logEvent(events.NewIVRCreatedEvent(msg))
 
 	return nil
 }
