@@ -4,6 +4,8 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -56,19 +58,24 @@ func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 		return err
 	}
 
-	if flow.Type() != run.Flow().Type() {
+	if err := a.checkAllowed(run, flow); err != nil {
 		run.Exit(flows.RunStatusErrored)
-		logEvent(events.NewFatalErrorEventf("can't enter flow %s of type %s from type %s", a.Flow.UUID, flow.Type(), run.Flow().Type()))
-		return nil
-	}
-
-	if !run.Session().CanEnterFlow(flow) {
-		run.Exit(flows.RunStatusErrored)
-		logEvent(events.NewFatalErrorEventf("can't enter flow %s due to looping prevention", a.Flow.UUID))
+		logEvent(events.NewFatalErrorEvent(err))
 		return nil
 	}
 
 	run.Session().PushFlow(flow, run, a.Terminal)
 	logEvent(events.NewFlowEnteredEvent(a.Flow, run.UUID(), a.Terminal))
+	return nil
+}
+
+func (a *EnterFlowAction) checkAllowed(run flows.FlowRun, flow flows.Flow) error {
+	if flow.Type() != run.Flow().Type() {
+		return errors.Errorf("can't enter flow %s of type %s from type %s", a.Flow.UUID, flow.Type(), run.Flow().Type())
+	}
+
+	if !run.Session().CanEnterFlow(flow) {
+		return errors.Errorf("can't enter flow %s due to looping prevention", a.Flow.UUID)
+	}
 	return nil
 }

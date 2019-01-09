@@ -32,6 +32,26 @@
         ]
     },
     {
+        "description": "Fatal error event if flow is of different type",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "enter_flow",
+            "flow": {
+                "uuid": "7a84463d-d209-4d3e-a0ff-79f977cd7bd0",
+                "name": "Voice Action Tester"
+            }
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": true,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't enter flow 7a84463d-d209-4d3e-a0ff-79f977cd7bd0 of type voice from type messaging",
+                "type": "error"
+            }
+        ]
+    },
+    {
         "description": "Flow triggered event if flow can be started",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
