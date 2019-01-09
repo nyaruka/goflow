@@ -624,20 +624,6 @@ the number of seconds in the timeout to resume it.
 }
 ```
 </div>
-<a name="event:nothing_wait"></a>
-
-## nothing_wait
-
-Events are created when a flow requests to hand back control to the caller but isn't
-waiting for anything from the caller.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "nothing_wait",
-    "created_on": "2006-01-02T15:04:05.234532Z"
-}
-```
-</div>
 <a name="event:run_expired"></a>
 
 ## run_expired
