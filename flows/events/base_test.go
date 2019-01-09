@@ -21,6 +21,9 @@ func TestEventMarshaling(t *testing.T) {
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
+	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
 	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
@@ -225,6 +228,22 @@ func TestEventMarshaling(t *testing.T) {
 					"timezone": "America/Guayaquil"
 				},
 				"type": "environment_refreshed"
+			}`,
+		},
+		{
+			events.NewIVRCreatedEvent(flows.NewMsgOut(urns.URN("tel:+12345678900"), assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"), "Hi there", nil, nil)),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"msg": {
+					"channel": {
+						"name": "My Android Phone",
+						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+					},
+					"text": "Hi there",
+					"urn": "tel:+12345678900",
+					"uuid": "08d3c3e2-f1ea-4b52-97e4-99d56e963fc9"
+				},
+				"type": "ivr_created"
 			}`,
 		},
 		{
