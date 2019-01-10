@@ -286,6 +286,32 @@
         "expected_localization": {}
     },
     {
+        "description": "say action with only msg",
+        "legacy_action": {
+            "type": "say",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "msg": {
+                "eng": "Do you still live in @contact.city?",
+                "fra": "Vous habitez toujours à @contact.city"
+            }
+        },
+        "expected_action": {
+            "type": "say_msg",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "text": "Do you still live in @contact.fields.city?"
+        },
+        "expected_localization": {
+            "fra": {
+                "5a4d00aa-807e-44af-9693-64b9fdedd352": {
+                    "text": [
+                        "Vous habitez toujours à @contact.fields.city"
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "description": "say action with both msg and recording",
         "legacy_action": {
             "type": "say",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",

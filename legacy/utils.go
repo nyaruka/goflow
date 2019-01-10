@@ -11,6 +11,9 @@ import (
 type Translations map[utils.Language]string
 
 func ReadTranslations(data json.RawMessage) (Translations, error) {
+	if data == nil {
+		return nil, nil
+	}
 	t := make(Translations)
 	return t, json.Unmarshal(data, &t)
 }

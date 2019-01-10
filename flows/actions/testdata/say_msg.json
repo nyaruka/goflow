@@ -5,8 +5,7 @@
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "say_msg",
-            "text": "@(\"\")",
-            "audio_url": ""
+            "text": "@(\"\")"
         },
         "events": [
             {
@@ -53,7 +52,6 @@
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "say_msg",
-            "audio_url": "",
             "text": "Hi there @contact.name"
         },
         "events": [
