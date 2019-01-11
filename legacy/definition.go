@@ -1020,7 +1020,6 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 	return definition.NewFlow(
 		f.Metadata.UUID,
 		f.Metadata.Name,
-		"12.0",
 		f.BaseLanguage,
 		flowTypeMapping[f.FlowType],
 		f.Metadata.Revision,

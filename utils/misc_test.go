@@ -25,3 +25,23 @@ func TestDeriveCountryFromTel(t *testing.T) {
 	assert.Equal(t, "EC", utils.DeriveCountryFromTel("+593979000000"))
 	assert.Equal(t, "", utils.DeriveCountryFromTel("1234"))
 }
+
+func TestVersionCompare(t *testing.T) {
+	_, err := utils.VersionCompare("x", "12.0")
+	assert.EqualError(t, err, "Malformed version: x")
+
+	_, err = utils.VersionCompare("12.0", "x")
+	assert.EqualError(t, err, "Malformed version: x")
+
+	c, err := utils.VersionCompare("12.0.0", "12.0")
+	assert.NoError(t, err)
+	assert.Equal(t, c, 0)
+
+	c, err = utils.VersionCompare("13.0", "12.0")
+	assert.NoError(t, err)
+	assert.Equal(t, c, 1)
+
+	c, err = utils.VersionCompare("12.0", "12.1")
+	assert.NoError(t, err)
+	assert.Equal(t, c, -1)
+}

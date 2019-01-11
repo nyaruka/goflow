@@ -3,6 +3,7 @@ package utils
 import (
 	"reflect"
 
+	"github.com/hashicorp/go-version"
 	"github.com/nyaruka/phonenumbers"
 )
 
@@ -38,4 +39,18 @@ func DeriveCountryFromTel(number string) string {
 		return ""
 	}
 	return phonenumbers.GetRegionCodeForNumber(parsed)
+}
+
+// VersionCompare compares two version strings. Returns -1 if v1 is before v2, 0 if they are equal, 1 if v1 is after v2
+func VersionCompare(v1, v2 string) (int, error) {
+	p1, err := version.NewVersion(v1)
+	if err != nil {
+		return 0, err
+	}
+	p2, err := version.NewVersion(v2)
+	if err != nil {
+		return 0, err
+	}
+
+	return p1.Compare(p2), nil
 }

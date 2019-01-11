@@ -13,6 +13,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+const CurrentSpecVersion = "12.0"
+
 type flow struct {
 	uuid               assets.FlowUUID
 	name               string
@@ -33,11 +35,11 @@ type flow struct {
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, specVersion string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui flows.UI) flows.Flow {
+func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui flows.UI) flows.Flow {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
-		specVersion:        specVersion,
+		specVersion:        CurrentSpecVersion,
 		language:           language,
 		flowType:           flowType,
 		revision:           revision,
@@ -145,20 +147,26 @@ func init() {
 	utils.Validator.RegisterAlias("flow_type", "eq=messaging|eq=messaging_offline|eq=voice")
 }
 
+type flowHeader struct {
+	UUID        assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	Name        string          `json:"name" validate:"required"`
+	SpecVersion string          `json:"spec_version" validate:"required"`
+}
+
 type flowEnvelope struct {
-	UUID               assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
-	Name               string          `json:"name" validate:"required"`
-	SpecVersion        string          `json:"spec_version" validate:"required"`
-	Language           utils.Language  `json:"language" validate:"required"`
-	Type               flows.FlowType  `json:"type" validate:"required,flow_type"`
-	Revision           int             `json:"revision"`
-	ExpireAfterMinutes int             `json:"expire_after_minutes"`
-	Localization       localization    `json:"localization"`
-	Nodes              []*node         `json:"nodes"`
+	flowHeader
+
+	Language           utils.Language `json:"language" validate:"required"`
+	Type               flows.FlowType `json:"type" validate:"required,flow_type"`
+	Revision           int            `json:"revision"`
+	ExpireAfterMinutes int            `json:"expire_after_minutes"`
+	Localization       localization   `json:"localization"`
+	Nodes              []*node        `json:"nodes"`
 }
 
 type flowEnvelopeWithUI struct {
 	flowEnvelope
+
 	UI flows.UI `json:"_ui,omitempty"`
 }
 
@@ -168,21 +176,24 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, errors.Wrap(err, "unable to read flow")
 	}
+
 	nodes := make([]flows.Node, len(e.Nodes))
 	for n := range e.Nodes {
 		nodes[n] = e.Nodes[n]
 	}
 
-	return NewFlow(e.UUID, e.Name, e.SpecVersion, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil), nil
+	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil), nil
 }
 
 // MarshalJSON marshals this flow into JSON
 func (f *flow) MarshalJSON() ([]byte, error) {
 	var fe = &flowEnvelopeWithUI{
 		flowEnvelope: flowEnvelope{
-			UUID:               f.uuid,
-			Name:               f.name,
-			SpecVersion:        f.specVersion,
+			flowHeader: flowHeader{
+				UUID:        f.uuid,
+				Name:        f.name,
+				SpecVersion: f.specVersion,
+			},
 			Language:           f.language,
 			Type:               f.flowType,
 			Revision:           f.revision,

@@ -23,16 +23,27 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/hashicorp/go-version"
 )
 
 // IsSpecVersionSupported returns whether the given flow spec version is supported
 func IsSpecVersionSupported(ver string) bool {
-	return flows.IsVersionSupported(ver)
+	v, err := version.NewVersion(ver)
+	if err != nil {
+		return false
+	}
+
+	vSpec, _ := version.NewVersion(definition.CurrentSpecVersion)
+
+	// flow is supported if it's the same major version as engine
+	return vSpec.Segments()[0] == v.Segments()[0]
 }
 
 // Environment defines the environment for expression evaluation etc
