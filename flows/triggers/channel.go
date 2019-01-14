@@ -2,8 +2,8 @@ package triggers
 
 import (
 	"encoding/json"
-	"time"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -61,9 +61,20 @@ type ChannelTrigger struct {
 }
 
 // NewChannelTrigger creates a new channel trigger with the passed in values
-func NewChannelTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, event *ChannelEvent, params types.XValue, triggeredOn time.Time) *ChannelTrigger {
+func NewChannelTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, event *ChannelEvent, params types.XValue) *ChannelTrigger {
 	return &ChannelTrigger{
-		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, nil, params, triggeredOn),
+		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, nil, params),
+		event:       event,
+	}
+}
+
+// NewIncomingCallTrigger creates a new channel trigger with the passed in values
+func NewIncomingCallTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, urn urns.URN, channel *assets.ChannelReference) *ChannelTrigger {
+	event := NewChannelEvent(ChannelEventTypeIncomingCall, channel)
+	connection := flows.NewConnection(channel, urn)
+
+	return &ChannelTrigger{
+		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, connection, nil),
 		event:       event,
 	}
 }

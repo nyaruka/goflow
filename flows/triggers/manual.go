@@ -2,7 +2,6 @@ package triggers
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -36,9 +35,16 @@ type ManualTrigger struct {
 }
 
 // NewManualTrigger creates a new manual trigger
-func NewManualTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue, triggeredOn time.Time) flows.Trigger {
+func NewManualTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, params types.XValue) flows.Trigger {
 	return &ManualTrigger{
-		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, connection, params, triggeredOn),
+		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, nil, params),
+	}
+}
+
+// NewManualVoiceTrigger creates a new manual trigger with a channel connection for voice
+func NewManualVoiceTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue) flows.Trigger {
+	return &ManualTrigger{
+		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, connection, params),
 	}
 }
 

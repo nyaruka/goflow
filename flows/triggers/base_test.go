@@ -34,13 +34,20 @@ var assetsJSON = `{
 			"address": "23532562626",
 			"schemes": ["facebook"],
 			"roles": ["send", "receive"]
-		}
+		},
+		{
+            "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+            "name": "Nexmo",
+            "address": "+12345672222",
+            "schemes": ["tel"],
+            "roles": ["send", "receive"]
+        }
 	]
 }`
 
 func TestTriggerMarshaling(t *testing.T) {
-	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
 
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
@@ -52,10 +59,11 @@ func TestTriggerMarshaling(t *testing.T) {
 	require.NoError(t, err)
 
 	env := utils.NewDefaultEnvironment()
-	contact := flows.NewEmptyContact("Bob", utils.Language("eng"), nil)
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
-	channel := assets.NewChannelReference("8cd472c4-bb85-459a-8c9a-c04708af799e", "Facebook")
-	triggeredOn := time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)
+	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
+
+	contact := flows.NewEmptyContact("Bob", utils.Language("eng"), nil)
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil))
 
 	triggerTests := []struct {
 		trigger   flows.Trigger
@@ -67,13 +75,13 @@ func TestTriggerMarshaling(t *testing.T) {
 				flow,
 				contact,
 				triggers.NewCampaignEvent("8d339613-f0be-48b7-92ee-155f4c7576f8", triggers.NewCampaignReference("8cd472c4-bb85-459a-8c9a-c04708af799e", "Reminders")),
-				triggeredOn,
 			),
 			`{
 				"contact": {
-					"created_on": "2018-10-18T14:20:30.000123456Z",
+					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -104,13 +112,13 @@ func TestTriggerMarshaling(t *testing.T) {
 				contact,
 				triggers.NewChannelEvent(triggers.ChannelEventTypeNewConversation, channel),
 				types.NewEmptyXMap(),
-				triggeredOn,
 			),
 			`{
 				"contact": {
-					"created_on": "2018-10-18T14:20:30.000123456Z",
+					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -121,8 +129,8 @@ func TestTriggerMarshaling(t *testing.T) {
 				},
 				"event": {
 					"channel": {
-						"name": "Facebook",
-						"uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e"
+						"name": "Nexmo",
+						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
 					},
 					"type": "new_conversation"
 				},
@@ -141,13 +149,13 @@ func TestTriggerMarshaling(t *testing.T) {
 				flow,
 				contact,
 				json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`),
-				triggeredOn,
 			),
 			`{
 				"contact": {
-					"created_on": "2018-10-18T14:20:30.000123456Z",
+					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -168,19 +176,102 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			triggers.NewIncomingCallTrigger(
+				env,
+				flow,
+				contact,
+				urns.URN("tel:+12065551212"),
+				channel,
+			),
+			`{
+				"connection": {
+					"channel": {
+						"name": "Nexmo",
+						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
+					},
+					"urn": "tel:+12065551212"
+				},
+				"contact": {
+					"created_on": "2018-10-20T09:49:31.23456789Z",
+					"language": "eng",
+					"name": "Bob",
+					"urns": ["tel:+12065551212"],
+					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
+				},
+				"environment": {
+					"date_format": "YYYY-MM-DD",
+					"redaction_policy": "none",
+					"time_format": "tt:mm",
+					"timezone": "UTC"
+				},
+				"event": {
+					"channel": {
+						"name": "Nexmo",
+						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
+					},
+					"type": "incoming_call"
+				},
+				"flow": {
+					"name": "Registration",
+					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
+				},
+				"triggered_on": "2018-10-20T09:49:31.23456789Z",
+				"type": "channel"
+			}`,
+		},
+		{
 			triggers.NewManualTrigger(
 				env,
 				flow,
 				contact,
-				nil,
 				types.NewXArray(types.NewXText("foo")),
-				triggeredOn,
 			),
 			`{
 				"contact": {
-					"created_on": "2018-10-18T14:20:30.000123456Z",
+					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"urns": ["tel:+12065551212"],
+					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
+				},
+				"environment": {
+					"date_format": "YYYY-MM-DD",
+					"redaction_policy": "none",
+					"time_format": "tt:mm",
+					"timezone": "UTC"
+				},
+				"flow": {
+					"name": "Registration",
+					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
+				},
+				"params": [
+					"foo"
+				],
+				"triggered_on": "2018-10-20T09:49:31.23456789Z",
+				"type": "manual"
+			}`,
+		},
+		{
+			triggers.NewManualVoiceTrigger(
+				env,
+				flow,
+				contact,
+				flows.NewConnection(channel, "tel:+12065551212"),
+				types.NewXArray(types.NewXText("foo")),
+			),
+			`{
+				"connection": {
+					"channel": {
+						"name": "Nexmo",
+						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
+					},
+					"urn": "tel:+12065551212"
+				},
+				"contact": {
+					"created_on": "2018-10-20T09:49:31.23456789Z",
+					"language": "eng",
+					"name": "Bob",
+					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -207,13 +298,13 @@ func TestTriggerMarshaling(t *testing.T) {
 				contact,
 				flows.NewMsgIn(flows.MsgUUID("c8005ee3-4628-4d76-be66-906352cb1935"), urns.URN("tel:+1234567890"), channel, "Hi there", nil),
 				triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi"),
-				triggeredOn,
 			),
 			`{
 				"contact": {
-					"created_on": "2018-10-18T14:20:30.000123456Z",
+					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -232,8 +323,8 @@ func TestTriggerMarshaling(t *testing.T) {
 				},
 				"msg": {
 					"channel": {
-						"name": "Facebook",
-						"uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e"
+						"name": "Nexmo",
+						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
 					},
 					"text": "Hi there",
 					"urn": "tel:+1234567890",

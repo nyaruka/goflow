@@ -388,6 +388,11 @@ the caller should handle as an IVR play command using the audio attachment.
     "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772",
     "msg": {
         "uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
+        "urn": "tel:+12065551212",
+        "channel": {
+            "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
+            "name": "Nexmo"
+        },
         "text": "",
         "attachments": [
             "audio:http://uploads.temba.io/2353262.m4a"
@@ -455,6 +460,11 @@ an IVR say command using the message text.
     "step_uuid": "06b98e9d-825f-4be0-92f0-b4a6fcc7080c",
     "msg": {
         "uuid": "dde64b44-09cf-4e6f-a52e-e58736ac73ba",
+        "urn": "tel:+12065551212",
+        "channel": {
+            "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
+            "name": "Nexmo"
+        },
         "text": "Hi Ryan Lewis, are you ready to complete today's survey?",
         "attachments": [
             "audio:http://uploads.temba.io/2353262.m4a"
