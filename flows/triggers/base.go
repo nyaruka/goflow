@@ -33,8 +33,8 @@ type baseTrigger struct {
 	triggeredOn time.Time
 }
 
-func newBaseTrigger(typeName string, env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue, triggeredOn time.Time) baseTrigger {
-	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, connection: connection, params: params, triggeredOn: triggeredOn}
+func newBaseTrigger(typeName string, env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue) baseTrigger {
+	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, connection: connection, params: params, triggeredOn: utils.Now()}
 }
 
 // Type returns the type of this trigger

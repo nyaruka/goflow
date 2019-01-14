@@ -184,7 +184,7 @@ func TestWaitTimeout(t *testing.T) {
 
 	contact := flows.NewEmptyContact("Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
-	trigger := triggers.NewManualTrigger(nil, flow.Reference(), contact, nil, nil, time.Now())
+	trigger := triggers.NewManualTrigger(nil, flow.Reference(), contact, nil)
 
 	sprint, err := session.Start(trigger)
 	require.NoError(t, err)
