@@ -1,6 +1,10 @@
+v0.25.3
+----------
+ * Remove flow server components which are no longer used
+
 v0.25.2
 ----------
-Simpler trigger constructors
+ * Simpler trigger constructors
 
 v0.25.1
 ----------
