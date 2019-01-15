@@ -1,3 +1,23 @@
+v0.25.2
+----------
+Simpler trigger constructors
+
+v0.25.1
+----------
+ * Fix unmarshalling legacy say actions
+
+v0.25.0
+----------
+ * New IVR events
+
+v0.24.1
+----------
+ * Fix time-filling bug
+
+v0.24.0
+----------
+ * Convert to go module to be used as library
+
 v0.23.0
 ----------
  * Migrate api actions so that URL expressions are wrapped in url_encode()
