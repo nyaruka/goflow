@@ -3,18 +3,12 @@ module github.com/nyaruka/goflow
 require (
 	github.com/antlr/antlr4 v0.0.0-20181218183534-70d9ddcd0a58
 	github.com/buger/jsonparser v0.0.0-20180131123142-4be68c93a244
-	github.com/certifi/gocertifi v0.0.0-20180118203423-deb3ae2ef261 // indirect
 	github.com/davecgh/go-spew v1.1.0 // indirect
 	github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4
-	github.com/evalphobia/logrus_sentry v0.4.6
-	github.com/getsentry/raven-go v0.0.0-20180517221441-ed7bcb39ff10 // indirect
-	github.com/go-chi/chi v3.3.2+incompatible
 	github.com/go-playground/locales v0.11.2 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/hashicorp/go-version v1.0.0
 	github.com/kr/pretty v0.1.0 // indirect
-	github.com/kylelemons/godebug v0.0.0-20170820004349-d65d576e9348 // indirect
-	github.com/nyaruka/ezconf v0.0.0-20180307215726-b12749342a72
 	github.com/nyaruka/gocommon v0.2.0
 	github.com/nyaruka/phonenumbers v0.0.0-20180208145444-15aafd6b263c
 	github.com/onsi/ginkgo v1.7.0 // indirect
