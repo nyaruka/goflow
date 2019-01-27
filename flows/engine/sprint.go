@@ -17,6 +17,14 @@ func NewSprint() flows.Sprint {
 	}
 }
 
+// NewSprintWithValues creates a new sprint with the passed in events and modifiers
+func NewSprintWithValues(modifiers []flows.Modifier, events []flows.Event) flows.Sprint {
+	return &sprint{
+		modifiers: modifiers,
+		events:    events,
+	}
+}
+
 func (s *sprint) Modifiers() []flows.Modifier { return s.modifiers }
 func (s *sprint) Events() []flows.Event       { return s.events }
 
