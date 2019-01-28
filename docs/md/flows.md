@@ -164,6 +164,7 @@ Can be used to add a contact to one or more groups. A [contact_groups_changed](s
 for the groups which the contact has been added to.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "add_contact_groups",
@@ -177,6 +178,7 @@ for the groups which the contact has been added to.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "contact_groups_changed",
@@ -199,6 +201,7 @@ Can be used to add a URN to the current contact. A [contact_urns_changed](sessio
 will be created when this action is encountered.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "add_contact_urn",
@@ -208,6 +211,7 @@ will be created when this action is encountered.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "contact_urns_changed",
@@ -231,6 +235,7 @@ will be created with the labels added when this action is encountered. If there 
 no user input at that point then this action will be ignored.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "add_input_labels",
@@ -244,6 +249,7 @@ no user input at that point then this action will be ignored.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "input_labels_added",
@@ -271,6 +277,7 @@ be created with that name, and if the resthook returns valid JSON, that will be 
 through `extra` on the result.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "call_resthook",
@@ -279,6 +286,7 @@ through `extra` on the result.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "webhook_called",
@@ -304,6 +312,7 @@ a new result with that name. If the webhook returned valid JSON, that will be ac
 through `extra` on the result.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "call_webhook",
@@ -317,6 +326,7 @@ through `extra` on the result.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 [
     {
@@ -353,6 +363,7 @@ Can be used to start a contact down another flow. The current flow will pause un
 A [flow_entered](sessions.html#event:flow_entered) event will be created to record that the flow was started.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "enter_flow",
@@ -364,6 +375,7 @@ A [flow_entered](sessions.html#event:flow_entered) event will be created to reco
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "flow_entered",
@@ -387,6 +399,7 @@ Can be used to play an audio recording in a voice flow. It will generate an
 the caller should handle as an IVR play command using the audio attachment.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "play_audio",
@@ -395,6 +408,7 @@ the caller should handle as an IVR play command using the audio attachment.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "ivr_created",
@@ -424,6 +438,7 @@ for the groups which the contact is removed from. Groups can either be explicitl
 the contact from all non-dynamic groups.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "remove_contact_groups",
@@ -437,6 +452,7 @@ the contact from all non-dynamic groups.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "contact_groups_changed",
@@ -462,6 +478,7 @@ the caller should handle as an IVR play command if it has an audio attachment, o
 an IVR say command using the message text.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "say_msg",
@@ -471,6 +488,7 @@ an IVR say command using the message text.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "ivr_created",
@@ -502,6 +520,7 @@ The URNs and text fields may be templates. A [broadcast_created](sessions.html#e
 with the evaluated text.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "send_broadcast",
@@ -513,6 +532,7 @@ with the evaluated text.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "broadcast_created",
@@ -540,6 +560,7 @@ can all contain expressions.
 An [email_created](sessions.html#event:email_created) event will be created for each email address.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "send_email",
@@ -552,6 +573,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "email_created",
@@ -576,6 +598,7 @@ create a message without a channel or URN.
 A [msg_created](sessions.html#event:msg_created) event will be created with the evaluated text.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "send_msg",
@@ -584,6 +607,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "msg_created",
@@ -611,6 +635,7 @@ Because channel affinity is a property of a contact's URNs, a [contact_urns_chan
 changes are made to the contact's URNs.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "set_contact_channel",
@@ -622,6 +647,7 @@ changes are made to the contact's URNs.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 []
 ```
@@ -635,6 +661,7 @@ template and white space is trimmed from the final value. An empty string clears
 A [contact_field_changed](sessions.html#event:contact_field_changed) event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "set_contact_field",
@@ -647,6 +674,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "contact_field_changed",
@@ -671,6 +699,7 @@ template and white space is trimmed from the final value. An empty string clears
 A [contact_language_changed](sessions.html#event:contact_language_changed) event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "set_contact_language",
@@ -679,6 +708,7 @@ A [contact_language_changed](sessions.html#event:contact_language_changed) event
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 []
 ```
@@ -692,6 +722,7 @@ template and white space is trimmed from the final value. An empty string clears
 A [contact_name_changed](sessions.html#event:contact_name_changed) event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "set_contact_name",
@@ -700,6 +731,7 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "contact_name_changed",
@@ -718,6 +750,7 @@ template and white space is trimmed from the final value. An empty string clears
 A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "set_contact_timezone",
@@ -726,6 +759,7 @@ A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "contact_timezone_changed",
@@ -747,6 +781,7 @@ Both the value and category fields may be templates. A [run_result_changed](sess
 final values.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "set_run_result",
@@ -757,6 +792,7 @@ final values.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "run_result_changed",
@@ -776,6 +812,7 @@ Can be used to trigger sessions for other contacts and groups. A [session_trigge
 will be created and it's the responsibility of the caller to act on that by initiating a new session with the flow engine.
 
 <div class="input_action"><h3>Action</h3>
+
 ```json
 {
     "type": "start_session",
@@ -793,6 +830,7 @@ will be created and it's the responsibility of the caller to act on that by init
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
+
 ```json
 {
     "type": "session_triggered",
