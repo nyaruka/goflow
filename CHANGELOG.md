@@ -1,3 +1,8 @@
+v0.25.4
+----------
+ * Fix renderEventDoc to properly render JSON in markdown
+ * Add full constructor for sprint
+
 v0.25.3
 ----------
  * Remove flow server components which are no longer used
