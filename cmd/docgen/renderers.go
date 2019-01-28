@@ -131,6 +131,7 @@ func renderEventDoc(output *strings.Builder, item *documentedItem, session flows
 	output.WriteString(strings.Join(item.description, "\n"))
 
 	output.WriteString(`<div class="output_event"><h3>Event</h3>`)
+	output.WriteString("\n\n")
 	output.WriteString("```json\n")
 	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
 	output.WriteString("```\n")
@@ -170,13 +171,15 @@ func renderActionDoc(output *strings.Builder, item *documentedItem, session flow
 	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
 	output.WriteString(strings.Join(item.description, "\n"))
 
-	output.WriteString("<div class=\"input_action\"><h3>Action</h3>\n\n")
+	output.WriteString(`<div class="input_action"><h3>Action</h3>`)
+	output.WriteString("\n\n")
 	output.WriteString("```json\n")
 	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
 	output.WriteString("```\n")
 	output.WriteString(`</div>`)
 
-	output.WriteString("<div class=\"output_event\"><h3>Event</h3>\n\n")
+	output.WriteString(`<div class="output_event"><h3>Event</h3>`)
+	output.WriteString("\n\n")
 	output.WriteString("```json\n")
 	output.WriteString(fmt.Sprintf("%s\n", events))
 	output.WriteString("```\n")

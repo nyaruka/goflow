@@ -280,7 +280,9 @@ All templates in events have been evaluated and can be used to create concrete m
 
 Events are created when an action wants to send a message to other contacts.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "broadcast_created",
     "created_on": "2006-01-02T15:04:05Z",
@@ -320,7 +322,9 @@ Events are created when an action wants to send a message to other contacts.
 Events are created when a custom field value of the contact has been changed.
 A null values indicates that the field value has been cleared.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "contact_field_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -340,7 +344,9 @@ A null values indicates that the field value has been cleared.
 
 Events are created when a contact is added or removed to/from one or more groups.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "contact_groups_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -365,7 +371,9 @@ Events are created when a contact is added or removed to/from one or more groups
 
 Events are created when the language of the contact has been changed.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "contact_language_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -379,7 +387,9 @@ Events are created when the language of the contact has been changed.
 
 Events are created when the name of the contact has been changed.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "contact_name_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -393,7 +403,9 @@ Events are created when the name of the contact has been changed.
 
 Events are generated when the resume has a contact with differences to the current session contact.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "contact_refreshed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -413,7 +425,9 @@ Events are generated when the resume has a contact with differences to the curre
 
 Events are created when the timezone of the contact has been changed.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "contact_timezone_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -427,7 +441,9 @@ Events are created when the timezone of the contact has been changed.
 
 Events are created when a contact's URNs have changed.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "contact_urns_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -444,7 +460,9 @@ Events are created when a contact's URNs have changed.
 
 Events are created when an action wants to send an email.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "email_created",
     "created_on": "2006-01-02T15:04:05Z",
@@ -462,7 +480,9 @@ Events are created when an action wants to send an email.
 
 Events are sent by the caller to tell the engine to update the session environment.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "environment_refreshed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -485,7 +505,9 @@ Events are sent by the caller to tell the engine to update the session environme
 
 Events are created when an error occurs during flow execution.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "error",
     "created_on": "2006-01-02T15:04:05Z",
@@ -500,7 +522,9 @@ Events are created when an error occurs during flow execution.
 
 Events are created when an action has entered a sub-flow.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "flow_entered",
     "created_on": "2006-01-02T15:04:05Z",
@@ -519,7 +543,9 @@ Events are created when an action has entered a sub-flow.
 
 Events are created when an action wants to add labels to the current input.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "input_labels_added",
     "created_on": "2006-01-02T15:04:05Z",
@@ -539,7 +565,9 @@ Events are created when an action wants to add labels to the current input.
 
 Events are created when an action wants to send an IVR response to the current contact.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "ivr_created",
     "created_on": "2006-01-02T15:04:05Z",
@@ -564,7 +592,9 @@ Events are created when an action wants to send an IVR response to the current c
 
 Events are created when an action wants to send a reply to the current contact.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "msg_created",
     "created_on": "2006-01-02T15:04:05Z",
@@ -590,7 +620,9 @@ Events are created when an action wants to send a reply to the current contact.
 Events are sent by the caller to tell the engine that a message was received from
 the contact and that it should try to resume the session.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "msg_received",
     "created_on": "2006-01-02T15:04:05Z",
@@ -617,7 +649,9 @@ Events are created when a flow pauses waiting for a response from
 a contact. If a timeout is set, then the caller should resume the flow after
 the number of seconds in the timeout to resume it.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "msg_wait",
     "created_on": "2006-01-02T15:04:05Z"
@@ -630,7 +664,9 @@ the number of seconds in the timeout to resume it.
 
 Events are sent by the caller to tell the engine that a run has expired.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "run_expired",
     "created_on": "2006-01-02T15:04:05Z",
@@ -646,7 +682,9 @@ Events are created when a run result is saved. They contain not only
 the name, value and category of the result, but also the UUID of the node where
 the result was generated.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "run_result_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -664,7 +702,9 @@ the result was generated.
 
 Events are created when an action wants to start other people in a flow.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "session_triggered",
     "created_on": "2006-01-02T15:04:05Z",
@@ -713,7 +753,9 @@ Events are created when an action wants to start other people in a flow.
 Events are sent by the caller when a wait has timed out - i.e. they are sent instead of
 the item that the wait was waiting for.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "wait_timed_out",
     "created_on": "2006-01-02T15:04:05Z"
@@ -728,7 +770,9 @@ Events are created when a webhook is called. The event contains
 the URL and the status of the response, as well as a full dump of the
 request and response.
 
-<div class="output_event"><h3>Event</h3>```json
+<div class="output_event"><h3>Event</h3>
+
+```json
 {
     "type": "webhook_called",
     "created_on": "2006-01-02T15:04:05Z",
