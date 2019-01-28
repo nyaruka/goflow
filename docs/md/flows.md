@@ -163,7 +163,8 @@ representation of a contact's state based on action performed on a flow so that 
 Can be used to add a contact to one or more groups. A [contact_groups_changed](sessions.html#event:contact_groups_changed) event will be created
 for the groups which the contact has been added to.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "add_contact_groups",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -175,7 +176,8 @@ for the groups which the contact has been added to.
     ]
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -196,7 +198,8 @@ for the groups which the contact has been added to.
 Can be used to add a URN to the current contact. A [contact_urns_changed](sessions.html#event:contact_urns_changed) event
 will be created when this action is encountered.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "add_contact_urn",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -204,7 +207,8 @@ will be created when this action is encountered.
     "path": "@results.phone_number"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "contact_urns_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -226,7 +230,8 @@ Can be used to add labels to the last user input on a flow. An [input_labels_add
 will be created with the labels added when this action is encountered. If there is
 no user input at that point then this action will be ignored.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "add_input_labels",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -238,7 +243,8 @@ no user input at that point then this action will be ignored.
     ]
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "input_labels_added",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -264,14 +270,16 @@ of the HTTP call. If the action has `result_name` set, a result will
 be created with that name, and if the resthook returns valid JSON, that will be accessible
 through `extra` on the result.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "call_resthook",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "resthook": "new-registration"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "webhook_called",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -295,7 +303,8 @@ the results of the HTTP call. If this action has a `result_name`, then addtional
 a new result with that name. If the webhook returned valid JSON, that will be accessible
 through `extra` on the result.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "call_webhook",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -307,7 +316,8 @@ through `extra` on the result.
     "result_name": "webhook"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 [
     {
         "type": "webhook_called",
@@ -342,7 +352,8 @@ Can be used to start a contact down another flow. The current flow will pause un
 
 A [flow_entered](sessions.html#event:flow_entered) event will be created to record that the flow was started.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "enter_flow",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -352,7 +363,8 @@ A [flow_entered](sessions.html#event:flow_entered) event will be created to reco
     }
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "flow_entered",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -374,14 +386,16 @@ Can be used to play an audio recording in a voice flow. It will generate an
 [ivr_created](sessions.html#event:ivr_created) event if there is a valid audio URL. This will contain a message which
 the caller should handle as an IVR play command using the audio attachment.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "play_audio",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "audio_url": "http://uploads.temba.io/2353262.m4a"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "ivr_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -409,7 +423,8 @@ Can be used to remove a contact from one or more groups. A [contact_groups_chang
 for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
 the contact from all non-dynamic groups.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "remove_contact_groups",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -421,7 +436,8 @@ the contact from all non-dynamic groups.
     ]
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -445,7 +461,8 @@ event if there is a valid audio URL or backdown text. This will contain a messag
 the caller should handle as an IVR play command if it has an audio attachment, or otherwise
 an IVR say command using the message text.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "say_msg",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -453,7 +470,8 @@ an IVR say command using the message text.
     "audio_url": "http://uploads.temba.io/2353262.m4a"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "ivr_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -483,7 +501,8 @@ and a list of contacts.
 The URNs and text fields may be templates. A [broadcast_created](sessions.html#event:broadcast_created) event will be created for each unique urn, contact and group
 with the evaluated text.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "send_broadcast",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -493,7 +512,8 @@ with the evaluated text.
     ]
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "broadcast_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -519,7 +539,8 @@ can all contain expressions.
 
 An [email_created](sessions.html#event:email_created) event will be created for each email address.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "send_email",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -530,7 +551,8 @@ An [email_created](sessions.html#event:email_created) event will be created for 
     "body": "Your activation token is @contact.fields.activation_token"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "email_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -553,14 +575,16 @@ create a message without a channel or URN.
 
 A [msg_created](sessions.html#event:msg_created) event will be created with the evaluated text.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "send_msg",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "text": "Hi @contact.name, are you ready to complete today's survey?"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "msg_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -586,7 +610,8 @@ Can be used to change or clear the preferred channel of the current contact.
 Because channel affinity is a property of a contact's URNs, a [contact_urns_changed](sessions.html#event:contact_urns_changed) event will be created if any
 changes are made to the contact's URNs.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "set_contact_channel",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -596,7 +621,8 @@ changes are made to the contact's URNs.
     }
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 []
 ```
 </div>
@@ -608,7 +634,8 @@ Can be used to update a field value on the contact. The value is a localizable
 template and white space is trimmed from the final value. An empty string clears the value.
 A [contact_field_changed](sessions.html#event:contact_field_changed) event will be created with the corresponding value.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "set_contact_field",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -619,7 +646,8 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
     "value": "Female"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "contact_field_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -642,14 +670,16 @@ Can be used to update the name of the contact. The language is a localizable
 template and white space is trimmed from the final value. An empty string clears the language.
 A [contact_language_changed](sessions.html#event:contact_language_changed) event will be created with the corresponding value.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "set_contact_language",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "language": "eng"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 []
 ```
 </div>
@@ -661,14 +691,16 @@ Can be used to update the name of the contact. The name is a localizable
 template and white space is trimmed from the final value. An empty string clears the name.
 A [contact_name_changed](sessions.html#event:contact_name_changed) event will be created with the corresponding value.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "set_contact_name",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "name": "Bob Smith"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "contact_name_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -685,14 +717,16 @@ Can be used to update the timezone of the contact. The timezone is a localizable
 template and white space is trimmed from the final value. An empty string clears the timezone.
 A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event will be created with the corresponding value.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "set_contact_timezone",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "timezone": "Africa/Kigali"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "contact_timezone_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -712,7 +746,8 @@ this can be useful for reporting or analytics.
 Both the value and category fields may be templates. A [run_result_changed](sessions.html#event:run_result_changed) event will be created with the
 final values.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "set_run_result",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -721,7 +756,8 @@ final values.
     "category": "Male"
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -739,7 +775,8 @@ final values.
 Can be used to trigger sessions for other contacts and groups. A [session_triggered](sessions.html#event:session_triggered) event
 will be created and it's the responsibility of the caller to act on that by initiating a new session with the flow engine.
 
-<div class="input_action"><h3>Action</h3>```json
+<div class="input_action"><h3>Action</h3>
+```json
 {
     "type": "start_session",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -755,7 +792,8 @@ will be created and it's the responsibility of the caller to act on that by init
     ]
 }
 ```
-</div><div class="output_event"><h3>Event</h3>```json
+</div><div class="output_event"><h3>Event</h3>
+```json
 {
     "type": "session_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
