@@ -128,7 +128,7 @@ func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 
 // Start initializes this session with the given trigger and runs the flow to the first wait
 func (s *session) Start(trigger flows.Trigger) (flows.Sprint, error) {
-	sprint := NewSprint()
+	sprint := NewEmptySprint()
 	s.trigger = trigger
 
 	if err := s.prepareForSprint(); err != nil {
@@ -149,7 +149,7 @@ func (s *session) Start(trigger flows.Trigger) (flows.Sprint, error) {
 
 // Resume tries to resume a waiting session
 func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
-	sprint := NewSprint()
+	sprint := NewEmptySprint()
 
 	if err := s.prepareForSprint(); err != nil {
 		return sprint, err
