@@ -9,16 +9,16 @@ type sprint struct {
 	events    []flows.Event
 }
 
-// NewSprint creates a new sprint
-func NewSprint() flows.Sprint {
+// NewEmptySprint creates a new sprint
+func NewEmptySprint() flows.Sprint {
 	return &sprint{
 		modifiers: make([]flows.Modifier, 0),
 		events:    make([]flows.Event, 0),
 	}
 }
 
-// NewSprintWithValues creates a new sprint with the passed in events and modifiers
-func NewSprintWithValues(modifiers []flows.Modifier, events []flows.Event) flows.Sprint {
+// NewSprint creates a new sprint with the passed in modifiers and events
+func NewSprint(modifiers []flows.Modifier, events []flows.Event) flows.Sprint {
 	return &sprint{
 		modifiers: modifiers,
 		events:    events,
