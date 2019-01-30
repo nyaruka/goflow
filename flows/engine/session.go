@@ -306,12 +306,12 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
 					if destination, err = s.findResumeDestination(sprint, currentRun); err != nil {
-						currentRun.LogFatalError(step, errors.Errorf("can't resume run as node no longer exists"))
+						fatalError(sprint, currentRun, step, errors.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
 					// if we did error then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					currentRun.LogFatalError(step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
+					fatalError(sprint, currentRun, step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
 				}
 
 			} else {
@@ -331,7 +331,7 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 		if destination != noDestination {
 			if s.flowStack.hasVisited(destination) {
 				// this is a loop, we log it and stop execution
-				currentRun.LogFatalError(step, errors.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
+				fatalError(sprint, currentRun, step, errors.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
 				destination = noDestination
 			} else {
 				node := currentRun.Flow().GetNode(destination)
@@ -484,6 +484,16 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 }
 
 const noDestination = flows.NodeUUID("")
+
+// utility to log a fatal error event
+func fatalError(sprint flows.Sprint, run flows.FlowRun, step flows.Step, err error) {
+	event := events.NewFatalErrorEvent(err)
+	if run != nil {
+		run.Exit(flows.RunStatusErrored)
+		run.LogEvent(step, event)
+	}
+	sprint.LogEvent(event)
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
