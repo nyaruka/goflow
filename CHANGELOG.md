@@ -1,3 +1,7 @@
+v0.25.5
+----------
+ * Include status code in webhook events
+
 v0.25.4
 ----------
  * Fix renderEventDoc to properly render JSON in markdown

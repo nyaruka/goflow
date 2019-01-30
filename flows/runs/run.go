@@ -122,9 +122,10 @@ func (r *flowRun) Ancestors() []flows.FlowRun {
 func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 	if s != nil {
 		event.SetStepUUID(s.UUID())
-		r.events = append(r.events, event)
-		r.modifiedOn = utils.Now()
 	}
+
+	r.events = append(r.events, event)
+	r.modifiedOn = utils.Now()
 
 	if log.GetLevel() >= log.DebugLevel {
 		eventJSON, _ := json.Marshal(event)
@@ -134,11 +135,6 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 
 func (r *flowRun) LogError(step flows.Step, err error) {
 	r.LogEvent(step, events.NewErrorEvent(err))
-}
-
-func (r *flowRun) LogFatalError(step flows.Step, err error) {
-	r.Exit(flows.RunStatusErrored)
-	r.LogEvent(step, events.NewFatalErrorEvent(err))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }

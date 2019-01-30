@@ -448,7 +448,6 @@ type FlowRun interface {
 
 	LogEvent(Step, Event)
 	LogError(Step, error)
-	LogFatalError(Step, error)
 
 	CreateStep(Node) Step
 	Path() []Step
