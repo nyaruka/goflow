@@ -95,7 +95,7 @@ type channelTriggerEnvelope struct {
 	Event *ChannelEvent `json:"event" validate:"required,dive"`
 }
 
-func readChannelTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func readChannelTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &channelTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -105,7 +105,7 @@ func readChannelTrigger(sessionAssets flows.SessionAssets, data json.RawMessage)
 		event: e.Event,
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
 		return nil, err
 	}
 

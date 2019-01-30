@@ -3,6 +3,7 @@ package resumes
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -57,7 +58,7 @@ var _ flows.Resume = (*WaitTimeoutResume)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readWaitTimeoutResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
+func readWaitTimeoutResume(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Resume, error) {
 	e := &baseResumeEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -65,7 +66,7 @@ func readWaitTimeoutResume(session flows.Session, data json.RawMessage) (flows.R
 
 	r := &WaitTimeoutResume{}
 
-	if err := r.unmarshal(session, e); err != nil {
+	if err := r.unmarshal(sessionAssets, e, missing); err != nil {
 		return nil, err
 	}
 

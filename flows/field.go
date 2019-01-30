@@ -143,7 +143,7 @@ var _ types.XResolvable = (*FieldValue)(nil)
 type FieldValues map[string]*FieldValue
 
 // NewFieldValues creates a new field value map
-func NewFieldValues(a SessionAssets, values map[string]*Value, strict bool) (FieldValues, error) {
+func NewFieldValues(a SessionAssets, values map[string]*Value, missing assets.MissingCallback) (FieldValues, error) {
 	allFields := a.Fields().All()
 	fieldValues := make(FieldValues, len(allFields))
 	for _, field := range allFields {
@@ -158,12 +158,11 @@ func NewFieldValues(a SessionAssets, values map[string]*Value, strict bool) (Fie
 		}
 	}
 
-	if strict {
-		for key := range values {
-			_, valid := fieldValues[key]
-			if !valid {
-				return nil, errors.Errorf("invalid field key: %s", key)
-			}
+	// log any unmatched field keys as missing assets
+	for key := range values {
+		_, valid := fieldValues[key]
+		if !valid {
+			missing(assets.NewFieldReference(key, ""))
 		}
 	}
 

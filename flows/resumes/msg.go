@@ -3,6 +3,7 @@ package resumes
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -78,7 +79,7 @@ type msgResumeEnvelope struct {
 	Msg *flows.MsgIn `json:"msg" validate:"required,dive"`
 }
 
-func readMsgResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
+func readMsgResume(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Resume, error) {
 	e := &msgResumeEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -88,7 +89,7 @@ func readMsgResume(session flows.Session, data json.RawMessage) (flows.Resume, e
 		msg: e.Msg,
 	}
 
-	if err := r.unmarshal(session, &e.baseResumeEnvelope); err != nil {
+	if err := r.unmarshal(sessionAssets, &e.baseResumeEnvelope, missing); err != nil {
 		return nil, err
 	}
 

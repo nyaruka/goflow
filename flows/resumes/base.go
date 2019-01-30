@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -12,7 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-type readFunc func(session flows.Session, data json.RawMessage) (flows.Resume, error)
+type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Resume, error)
 
 var registeredTypes = map[string]readFunc{}
 
@@ -77,7 +78,7 @@ type baseResumeEnvelope struct {
 }
 
 // ReadResume reads a resume from the given JSON
-func ReadResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
+func ReadResume(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Resume, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -87,10 +88,10 @@ func ReadResume(session flows.Session, data json.RawMessage) (flows.Resume, erro
 	if f == nil {
 		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
-	return f(session, data)
+	return f(sessionAssets, data, missing)
 }
 
-func (r *baseResume) unmarshal(session flows.Session, e *baseResumeEnvelope) error {
+func (r *baseResume) unmarshal(sessionAssets flows.SessionAssets, e *baseResumeEnvelope, missing assets.MissingCallback) error {
 	var err error
 
 	r.type_ = e.Type
@@ -102,7 +103,7 @@ func (r *baseResume) unmarshal(session flows.Session, e *baseResumeEnvelope) err
 		}
 	}
 	if e.Contact != nil {
-		if r.contact, err = flows.ReadContact(session.Assets(), e.Contact, true); err != nil {
+		if r.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
 			return errors.Wrap(err, "unable to read contact")
 		}
 	}

@@ -95,7 +95,7 @@ type msgInputEnvelope struct {
 	Attachments flows.AttachmentList `json:"attachments,omitempty"`
 }
 
-func readMsgInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing func(assets.Reference)) (flows.Input, error) {
+func readMsgInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Input, error) {
 	e := &msgInputEnvelope{}
 	err := utils.UnmarshalAndValidate(data, e)
 	if err != nil {

@@ -14,7 +14,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-type readFunc func(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error)
+type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Trigger, error)
 
 var registeredTypes = map[string]readFunc{}
 
@@ -139,7 +139,7 @@ type baseTriggerEnvelope struct {
 }
 
 // ReadTrigger reads a trigger from the given JSON
-func ReadTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func ReadTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -149,10 +149,10 @@ func ReadTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows
 	if f == nil {
 		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
-	return f(sessionAssets, data)
+	return f(sessionAssets, data, missing)
 }
 
-func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTriggerEnvelope) error {
+func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTriggerEnvelope, missing assets.MissingCallback) error {
 	var err error
 
 	t.type_ = e.Type
@@ -166,7 +166,7 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 		}
 	}
 	if e.Contact != nil {
-		if t.contact, err = flows.ReadContact(sessionAssets, e.Contact, true); err != nil {
+		if t.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
 			return errors.Wrap(err, "unable to read contact")
 		}
 	}

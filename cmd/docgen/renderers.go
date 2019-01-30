@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/flows"
@@ -192,7 +193,7 @@ func renderActionDoc(output *strings.Builder, item *documentedItem, session flow
 func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
-	trigger, err := triggers.ReadTrigger(session.Assets(), exampleJSON)
+	trigger, err := triggers.ReadTrigger(session.Assets(), exampleJSON, assets.PanicOnMissing)
 	if err != nil {
 		return errors.Wrap(err, "unable to read trigger")
 	}
@@ -223,7 +224,7 @@ func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flo
 func renderResumeDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
-	resume, err := resumes.ReadResume(session, exampleJSON)
+	resume, err := resumes.ReadResume(session.Assets(), exampleJSON, assets.PanicOnMissing)
 	if err != nil {
 		return errors.Wrap(err, "unable to read resume")
 	}

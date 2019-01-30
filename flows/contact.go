@@ -93,7 +93,7 @@ func NewContactFromAssets(
 	groups []assets.Group,
 	fields map[string]*Value) (*Contact, error) {
 
-	urnList, err := ReadURNList(a, urns)
+	urnList, err := ReadURNList(a, urns, assets.IgnoreOnMissing)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func NewContactFromAssets(
 		return nil, err
 	}
 
-	fieldValues, err := NewFieldValues(a, fields, true)
+	fieldValues, err := NewFieldValues(a, fields, assets.IgnoreOnMissing)
 	if err != nil {
 		return nil, err
 	}
@@ -458,7 +458,7 @@ type contactEnvelope struct {
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Contact, error) {
+func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.MissingCallback) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 
@@ -483,7 +483,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Cont
 	if envelope.URNs == nil {
 		c.urns = make(URNList, 0)
 	} else {
-		if c.urns, err = ReadURNList(assets, envelope.URNs); err != nil {
+		if c.urns, err = ReadURNList(assets, envelope.URNs, missing); err != nil {
 			return nil, errors.Wrap(err, "error reading urns")
 		}
 	}
@@ -492,17 +492,18 @@ func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Cont
 		c.groups = NewGroupList([]*Group{})
 	} else {
 		groups := make([]*Group, 0, len(envelope.Groups))
-		for g := range envelope.Groups {
-			group, err := assets.Groups().Get(envelope.Groups[g].UUID)
-			if err != nil && strict {
-				return nil, errors.Wrap(err, "error reading groups")
+		for _, g := range envelope.Groups {
+			group, err := assets.Groups().Get(g.UUID)
+			if err != nil {
+				missing(g)
+			} else {
+				groups = append(groups, group)
 			}
-			groups = append(groups, group)
 		}
 		c.groups = NewGroupList(groups)
 	}
 
-	if c.fields, err = NewFieldValues(assets, envelope.Fields, strict); err != nil {
+	if c.fields, err = NewFieldValues(assets, envelope.Fields, missing); err != nil {
 		return nil, errors.Wrap(err, "error reading fields")
 	}
 

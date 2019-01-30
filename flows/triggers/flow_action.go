@@ -71,7 +71,7 @@ type flowActionTriggerEnvelope struct {
 	RunSummary json.RawMessage `json:"run_summary"`
 }
 
-func readFlowActionTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func readFlowActionTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &flowActionTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func readFlowActionTrigger(sessionAssets flows.SessionAssets, data json.RawMessa
 		runSummary: e.RunSummary,
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
 		return nil, err
 	}
 

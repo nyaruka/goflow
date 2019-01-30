@@ -188,7 +188,7 @@ func (s *session) prepareForSprint() error {
 		// if we have a trigger with a parent run, load that
 		triggerWithRun, hasRun := s.trigger.(flows.TriggerWithRun)
 		if hasRun {
-			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary())
+			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary(), assets.IgnoreOnMissing)
 			if err != nil {
 				return errors.Wrap(err, "error reading parent run from trigger")
 			}
@@ -535,14 +535,14 @@ func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineCon
 
 	// read our trigger
 	if e.Trigger != nil {
-		if s.trigger, err = triggers.ReadTrigger(s.Assets(), e.Trigger); err != nil {
+		if s.trigger, err = triggers.ReadTrigger(s.Assets(), e.Trigger, missing); err != nil {
 			return nil, errors.Wrap(err, "unable to read trigger")
 		}
 	}
 
 	// read our contact
 	if e.Contact != nil {
-		if s.contact, err = flows.ReadContact(s.Assets(), *e.Contact, false); err != nil {
+		if s.contact, err = flows.ReadContact(s.Assets(), *e.Contact, missing); err != nil {
 			return nil, errors.Wrap(err, "unable to read contact")
 		}
 	}

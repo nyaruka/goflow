@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
@@ -27,7 +28,7 @@ func TestModifierTypes(t *testing.T) {
 	}
 }
 
-func testModifierType(t *testing.T, assets flows.SessionAssets, typeName string) {
+func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName string) {
 	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
@@ -52,17 +53,17 @@ func testModifierType(t *testing.T, assets flows.SessionAssets, typeName string)
 		testName := fmt.Sprintf("test '%s' for modifier type '%s'", tc.Description, typeName)
 
 		// read the modifier to be tested
-		modifier, err := modifiers.ReadModifier(assets, tc.Modifier)
+		modifier, err := modifiers.ReadModifier(sessionAssets, tc.Modifier)
 		require.NoError(t, err, "error loading modifier in %s", testName)
 		assert.Equal(t, typeName, modifier.Type())
 
 		// read the initial contact state
-		contact, err := flows.ReadContact(assets, tc.ContactBefore, true)
+		contact, err := flows.ReadContact(sessionAssets, tc.ContactBefore, assets.PanicOnMissing)
 		require.NoError(t, err, "error loading contact_before in %s", testName)
 
 		// apply the modifier
 		logEvent := make([]flows.Event, 0)
-		modifier.Apply(utils.NewDefaultEnvironment(), assets, contact, func(e flows.Event) { logEvent = append(logEvent, e) })
+		modifier.Apply(utils.NewDefaultEnvironment(), sessionAssets, contact, func(e flows.Event) { logEvent = append(logEvent, e) })
 
 		// check contact is in the expected state
 		contactJSON, _ := json.Marshal(contact)

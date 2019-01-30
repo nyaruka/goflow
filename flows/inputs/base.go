@@ -13,7 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-type readFunc func(flows.SessionAssets, json.RawMessage, func(assets.Reference)) (flows.Input, error)
+type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Input, error)
 
 var registeredTypes = map[string]readFunc{}
 
@@ -73,7 +73,7 @@ type baseInputEnvelope struct {
 }
 
 // ReadInput reads an input from the given typed envelope
-func ReadInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing func(assets.Reference)) (flows.Input, error) {
+func ReadInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Input, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func ReadInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing 
 	return f(sessionAssets, data, missing)
 }
 
-func (i *baseInput) unmarshal(sessionAssets flows.SessionAssets, e *baseInputEnvelope, missing func(assets.Reference)) error {
+func (i *baseInput) unmarshal(sessionAssets flows.SessionAssets, e *baseInputEnvelope, missing assets.MissingCallback) error {
 	var err error
 
 	i.type_ = e.Type

@@ -9,7 +9,9 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -163,6 +165,23 @@ func TestContextToJSON(t *testing.T) {
 		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)
 		assert.Equal(t, test.expected, eval, "json() returned unexpected value for template '%s'", template)
 	}
+}
+
+func TestReadWithMissingAssets(t *testing.T) {
+	// create standard test session and marshal to JSON
+	session, _, err := test.CreateTestSession("", nil)
+	require.NoError(t, err)
+
+	sessionJSON, err := json.Marshal(session)
+	require.NoError(t, err)
+
+	// try to read it back but without the assets
+	source, err := static.NewStaticSource([]byte(`{}`))
+	require.NoError(t, err)
+	sessionAssets, err := engine.NewSessionAssets(source)
+
+	_, err = engine.ReadSession(sessionAssets, engine.NewDefaultConfig(), utils.NewHTTPClient("test"), sessionJSON)
+	require.NoError(t, err)
 }
 
 func TestWaitTimeout(t *testing.T) {

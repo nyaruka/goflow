@@ -17,6 +17,12 @@ type Reference interface {
 	fmt.Stringer
 }
 
+type MissingCallback func(Reference)
+
+var PanicOnMissing MissingCallback = func(a Reference) { panic(fmt.Sprintf("unable to find asset %s", a.String())) }
+
+var IgnoreOnMissing MissingCallback = func(Reference) {}
+
 // ChannelReference is used to reference a channel
 type ChannelReference struct {
 	UUID ChannelUUID `json:"uuid" validate:"required,uuid"`
@@ -64,9 +70,15 @@ type FieldReference struct {
 }
 
 // NewFieldReference creates a new field reference with the given key and label
-func NewFieldReference(key string, label string) *FieldReference {
-	return &FieldReference{Key: key, Name: label}
+func NewFieldReference(key string, name string) *FieldReference {
+	return &FieldReference{Key: key, Name: name}
 }
+
+func (r *FieldReference) String() string {
+	return fmt.Sprintf("field[key=%s,name=%s]", r.Key, r.Name)
+}
+
+var _ Reference = (*FieldReference)(nil)
 
 // FlowReference is used to reference a flow from another flow
 type FlowReference struct {

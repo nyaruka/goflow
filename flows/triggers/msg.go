@@ -103,7 +103,7 @@ type msgTriggerEnvelope struct {
 	Match *KeywordMatch `json:"keyword_match,omitempty" validate:"omitempty,dive"`
 }
 
-func readMsgTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func readMsgTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &msgTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -114,7 +114,7 @@ func readMsgTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (fl
 		match: e.Match,
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
 		return nil, err
 	}
 
