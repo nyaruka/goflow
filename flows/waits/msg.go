@@ -43,7 +43,7 @@ func NewMsgWait(timeout *int, hint flows.Hint) *MsgWait {
 func (w *MsgWait) Hint() flows.Hint { return w.hint }
 
 // Begin beings waiting at this wait
-func (w *MsgWait) Begin(run flows.FlowRun, log func(flows.Event)) bool {
+func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) bool {
 	if !w.baseWait.Begin(run) {
 		return false
 	}

@@ -43,7 +43,7 @@ func NewGroupsModifier(groups []*flows.Group, modification GroupsModification) *
 }
 
 // Apply applies this modification to the given contact
-func (m *GroupsModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
+func (m *GroupsModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	diff := make([]*flows.Group, 0, len(m.groups))
 	if m.modification == GroupsAdd {
 		for _, group := range m.groups {

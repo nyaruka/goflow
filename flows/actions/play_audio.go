@@ -48,7 +48,7 @@ func (a *PlayAudioAction) Validate(assets flows.SessionAssets, context *flows.Va
 }
 
 // Execute runs this action
-func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent flows.EventCallback) error {
 	// localize and evaluate audio URL
 	localizedAudioURL := run.GetText(utils.UUID(a.UUID()), "audio_url", a.AudioURL)
 	evaluatedAudioURL, err := run.EvaluateTemplateAsString(localizedAudioURL)

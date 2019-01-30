@@ -32,7 +32,7 @@ func NewTimezoneModifier(timezone *time.Location) *TimezoneModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *TimezoneModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
+func (m *TimezoneModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	if !timezonesEqual(contact.Timezone(), m.timezone) {
 		contact.SetTimezone(m.timezone)
 		log(events.NewContactTimezoneChangedEvent(m.timezone))

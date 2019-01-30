@@ -68,7 +68,7 @@ func (a *CallWebhookAction) Validate(assets flows.SessionAssets, context *flows.
 }
 
 // Execute runs this action
-func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent flows.EventCallback) error {
 
 	// substitute any variables in our url
 	url, err := run.EvaluateTemplateAsString(a.URL)

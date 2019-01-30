@@ -34,7 +34,7 @@ func NewFieldModifier(field *flows.Field, value *flows.Value) *FieldModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *FieldModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
+func (m *FieldModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	oldValue := contact.Fields().Get(m.field)
 
 	if !m.value.Equals(oldValue) {

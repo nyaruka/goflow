@@ -49,7 +49,7 @@ func (a *AddInputLabelsAction) Validate(assets flows.SessionAssets, context *flo
 }
 
 // Execute runs the labeling action
-func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent flows.EventCallback) error {
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {

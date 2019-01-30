@@ -30,7 +30,7 @@ func NewNameModifier(name string) *NameModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *NameModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log func(flows.Event)) {
+func (m *NameModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	if contact.Name() != m.Name {
 		contact.SetName(m.Name)
 		log(events.NewContactNameChangedEvent(m.Name))

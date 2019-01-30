@@ -52,7 +52,7 @@ func (a *EnterFlowAction) Validate(assets flows.SessionAssets, context *flows.Va
 }
 
 // Execute runs our action
-func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent flows.EventCallback) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
 	if err != nil {
 		return err

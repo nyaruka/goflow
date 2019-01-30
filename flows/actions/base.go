@@ -94,7 +94,7 @@ func (a *BaseAction) validateFlow(assets flows.SessionAssets, reference *assets.
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func (a *BaseAction) resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent func(flows.Event)) ([]*flows.Group, error) {
+func (a *BaseAction) resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {
 	groupSet := run.Session().Assets().Groups()
 	groups := make([]*flows.Group, 0, len(references))
 
@@ -135,7 +135,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, references []*assets.Group
 }
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
-func (a *BaseAction) resolveLabels(run flows.FlowRun, references []*assets.LabelReference, logEvent func(flows.Event)) ([]*flows.Label, error) {
+func (a *BaseAction) resolveLabels(run flows.FlowRun, references []*assets.LabelReference, logEvent flows.EventCallback) ([]*flows.Label, error) {
 	labelSet := run.Session().Assets().Labels()
 	labels := make([]*flows.Label, 0, len(references))
 
@@ -172,7 +172,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, references []*assets.Label
 }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent func(flows.Event)) (string, []flows.Attachment, []string) {
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []flows.Attachment, []string) {
 	// localize and evaluate the message text
 	localizedText := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "text", []string{actionText}, languages)[0]
 	evaluatedText, err := run.EvaluateTemplateAsString(localizedText)
@@ -211,7 +211,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies
 }
 
-func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*assets.GroupReference, actionLegacyVars []string, logEvent func(flows.Event)) ([]urns.URN, []*flows.ContactReference, []*assets.GroupReference, error) {
+func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*assets.GroupReference, actionLegacyVars []string, logEvent flows.EventCallback) ([]urns.URN, []*flows.ContactReference, []*assets.GroupReference, error) {
 	groupSet := run.Session().Assets().Groups()
 
 	// copy URNs
@@ -265,14 +265,14 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, actionURNs []ur
 }
 
 // helper to save a run result and log it as an event
-func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input *string, extra json.RawMessage, logEvent func(flows.Event)) {
+func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input *string, extra json.RawMessage, logEvent flows.EventCallback) {
 	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, utils.Now())
 	run.SaveResult(result)
 	logEvent(events.NewRunResultChangedEvent(result))
 }
 
 // helper to save a run result based on a webhook call and log it as an event
-func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall, logEvent func(flows.Event)) {
+func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall, logEvent flows.EventCallback) {
 	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
 	value := strconv.Itoa(webhook.StatusCode())
 	category := webhookStatusCategories[webhook.Status()]
@@ -293,7 +293,7 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 }
 
 // helper to apply a contact modifier
-func (a *BaseAction) applyModifier(run flows.FlowRun, mod flows.Modifier, logModifier func(flows.Modifier), logEvent func(flows.Event)) {
+func (a *BaseAction) applyModifier(run flows.FlowRun, mod flows.Modifier, logModifier func(flows.Modifier), logEvent flows.EventCallback) {
 	mod.Apply(run.Session().Environment(), run.Session().Assets(), run.Contact(), logEvent)
 	logModifier(mod)
 }

@@ -52,7 +52,7 @@ func (a *AddContactURNAction) Validate(assets flows.SessionAssets, context *flow
 }
 
 // Execute runs the labeling action
-func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent flows.EventCallback) error {
 	// only generate event if run has a contact
 	contact := run.Contact()
 	if contact == nil {
