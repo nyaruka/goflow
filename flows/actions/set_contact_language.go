@@ -48,7 +48,7 @@ func (a *SetContactLanguageAction) Validate(assets flows.SessionAssets, context 
 }
 
 // Execute runs this action
-func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent flows.EventCallback) error {
+func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {
 		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil

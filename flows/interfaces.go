@@ -189,7 +189,7 @@ type Node interface {
 type Action interface {
 	UUID() ActionUUID
 
-	Execute(FlowRun, Step, func(Modifier), EventCallback) error
+	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
 	Validate(SessionAssets, *ValidationContext) error
 	AllowedFlowTypes() []FlowType
 	utils.Typed
@@ -303,6 +303,9 @@ type Modifier interface {
 
 	Apply(utils.Environment, SessionAssets, *Contact, EventCallback)
 }
+
+// ModifierCallback is a callback invoked when a modifier has been generated
+type ModifierCallback func(Modifier)
 
 // Event describes a state change
 type Event interface {

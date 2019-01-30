@@ -53,7 +53,7 @@ func (a *SayMsgAction) Validate(assets flows.SessionAssets, context *flows.Valid
 }
 
 // Execute runs this action
-func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent flows.EventCallback) error {
+func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
 	localizedText := run.GetText(utils.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, err := run.EvaluateTemplateAsString(localizedText)

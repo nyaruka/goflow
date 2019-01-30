@@ -293,7 +293,7 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 }
 
 // helper to apply a contact modifier
-func (a *BaseAction) applyModifier(run flows.FlowRun, mod flows.Modifier, logModifier func(flows.Modifier), logEvent flows.EventCallback) {
+func (a *BaseAction) applyModifier(run flows.FlowRun, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) {
 	mod.Apply(run.Session().Environment(), run.Session().Assets(), run.Contact(), logEvent)
 	logModifier(mod)
 }

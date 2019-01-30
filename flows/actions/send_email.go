@@ -54,7 +54,7 @@ func (a *SendEmailAction) Validate(assets flows.SessionAssets, context *flows.Va
 }
 
 // Execute creates the email events
-func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent flows.EventCallback) error {
+func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	subject, err := run.EvaluateTemplateAsString(a.Subject)
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))

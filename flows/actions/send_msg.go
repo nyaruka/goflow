@@ -61,7 +61,7 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets, context *flows.Vali
 }
 
 // Execute runs this action
-func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent flows.EventCallback) error {
+func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {
 		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
 		return nil
