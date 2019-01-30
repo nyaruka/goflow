@@ -1,6 +1,7 @@
 package assets
 
 import (
+	"fmt"
 	validator "gopkg.in/go-playground/validator.v9"
 
 	"github.com/nyaruka/goflow/utils"
@@ -11,11 +12,22 @@ func init() {
 	utils.Validator.RegisterStructValidation(LabelReferenceValidation, LabelReference{})
 }
 
+// Reference is interface for all reference types
+type Reference interface {
+	fmt.Stringer
+}
+
 // ChannelReference is used to reference a channel
 type ChannelReference struct {
 	UUID ChannelUUID `json:"uuid" validate:"required,uuid"`
 	Name string      `json:"name"`
 }
+
+func (r *ChannelReference) String() string {
+	return fmt.Sprintf("channel[uuid=%s,name=%s]", r.UUID, r.Name)
+}
+
+var _ Reference = (*ChannelReference)(nil)
 
 // NewChannelReference creates a new channel reference with the given UUID and name
 func NewChannelReference(uuid ChannelUUID, name string) *ChannelReference {
@@ -39,6 +51,12 @@ func NewVariableGroupReference(nameMatch string) *GroupReference {
 	return &GroupReference{NameMatch: nameMatch}
 }
 
+func (r *GroupReference) String() string {
+	return fmt.Sprintf("group[uuid=%s,name=%s]", r.UUID, r.Name)
+}
+
+var _ Reference = (*GroupReference)(nil)
+
 // FieldReference is a reference to field
 type FieldReference struct {
 	Key  string `json:"key" validate:"required"`
@@ -61,6 +79,12 @@ func NewFlowReference(uuid FlowUUID, name string) *FlowReference {
 	return &FlowReference{UUID: uuid, Name: name}
 }
 
+func (r *FlowReference) String() string {
+	return fmt.Sprintf("flow[uuid=%s,name=%s]", r.UUID, r.Name)
+}
+
+var _ Reference = (*FlowReference)(nil)
+
 // LabelReference is used to reference a label
 type LabelReference struct {
 	UUID      LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
@@ -77,6 +101,12 @@ func NewLabelReference(uuid LabelUUID, name string) *LabelReference {
 func NewVariableLabelReference(nameMatch string) *LabelReference {
 	return &LabelReference{NameMatch: nameMatch}
 }
+
+func (r *LabelReference) String() string {
+	return fmt.Sprintf("label[uuid=%s,name=%s]", r.UUID, r.Name)
+}
+
+var _ Reference = (*LabelReference)(nil)
 
 //------------------------------------------------------------------------------------------
 // Validation

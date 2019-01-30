@@ -3,6 +3,7 @@ package engine
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -500,7 +501,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient, data json.RawMessage) (flows.Session, error) {
+func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient, data json.RawMessage) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 
@@ -508,8 +509,13 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 		return nil, errors.Wrap(err, "unable to read session")
 	}
 
-	s := NewSession(assets, engineConfig, httpClient).(*session)
+	s := NewSession(sessionAssets, engineConfig, httpClient).(*session)
 	s.status = e.Status
+
+	// some things on the session may need to report missing assets
+	// TODO do something with this
+	missingAssets := make([]assets.Reference, 0)
+	missing := func(a assets.Reference) { missingAssets = append(missingAssets, a) }
 
 	// read our environment
 	s.env, err = utils.ReadEnvironment(e.Environment)
@@ -548,7 +554,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 		}
 	}
 	if e.Input != nil {
-		if s.input, err = inputs.ReadInput(s, e.Input); err != nil {
+		if s.input, err = inputs.ReadInput(s.Assets(), e.Input, missing); err != nil {
 			return nil, errors.Wrap(err, "unable to read input")
 		}
 	}

@@ -25,6 +25,11 @@ type StaticSource struct {
 	}
 }
 
+// NewEmptySource creates a new empty source with no assets
+func NewEmptySource() *StaticSource {
+	return &StaticSource{}
+}
+
 // NewStaticSource creates a new static source from the given JSON
 func NewStaticSource(data json.RawMessage) (*StaticSource, error) {
 	s := &StaticSource{}
