@@ -209,7 +209,6 @@ func TestReadWithMissingAssets(t *testing.T) {
 	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), ""), missingAssets[0])
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"), missingAssets[1])
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("4f1f98fc-27a7-4a69-bbdb-24744ba739a9"), "Males"), missingAssets[2])
-	assert.Equal(t, assets.NewFieldReference("activation_token", ""), missingAssets[3])
 
 	// still get error if we're missing flow assets
 	emptyAssets, err := engine.NewSessionAssets(static.NewEmptySource())
