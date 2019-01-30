@@ -17,11 +17,14 @@ type Reference interface {
 	fmt.Stringer
 }
 
+// MissingCallback is callback to be invoked when an asset is missing
 type MissingCallback func(Reference)
 
+// PanicOnMissing panics if an asset is reported missing
 var PanicOnMissing MissingCallback = func(a Reference) { panic(fmt.Sprintf("unable to find asset %s", a.String())) }
 
-var IgnoreOnMissing MissingCallback = func(Reference) {}
+// IgnoreMissing does nothing if an asset is reported missing
+var IgnoreMissing MissingCallback = func(Reference) {}
 
 // ChannelReference is used to reference a channel
 type ChannelReference struct {

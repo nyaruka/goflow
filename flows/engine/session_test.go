@@ -175,13 +175,48 @@ func TestReadWithMissingAssets(t *testing.T) {
 	sessionJSON, err := json.Marshal(session)
 	require.NoError(t, err)
 
-	// try to read it back but without the assets
-	source, err := static.NewStaticSource([]byte(`{}`))
+	// try to read it back but with only the flow assets
+	source, err := static.NewStaticSource([]byte(`{
+		"flows": [
+			{
+				"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+				"name": "Registration",
+				"spec_version": "12.0",
+				"language": "eng",
+				"type": "messaging",
+				"revision": 123,
+				"nodes": []
+			},
+			{
+				"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+				"name": "Collect Age",
+				"spec_version": "12.0",
+				"language": "eng",
+				"type": "messaging",
+				"nodes": []
+			}
+		]
+	}`))
 	require.NoError(t, err)
 	sessionAssets, err := engine.NewSessionAssets(source)
 
-	_, err = engine.ReadSession(sessionAssets, engine.NewDefaultConfig(), utils.NewHTTPClient("test"), sessionJSON)
+	missingAssets := make([]assets.Reference, 0)
+	missing := func(a assets.Reference) { missingAssets = append(missingAssets, a) }
+
+	_, err = engine.ReadSession(sessionAssets, engine.NewDefaultConfig(), utils.NewHTTPClient("test"), sessionJSON, missing)
 	require.NoError(t, err)
+	assert.Equal(t, 14, len(missingAssets))
+	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), ""), missingAssets[0])
+	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"), missingAssets[1])
+	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("4f1f98fc-27a7-4a69-bbdb-24744ba739a9"), "Males"), missingAssets[2])
+	assert.Equal(t, assets.NewFieldReference("activation_token", ""), missingAssets[3])
+
+	// still get error if we're missing flow assets
+	emptyAssets, err := engine.NewSessionAssets(static.NewEmptySource())
+	require.NoError(t, err)
+
+	_, err = engine.ReadSession(emptyAssets, engine.NewDefaultConfig(), utils.NewHTTPClient("test"), sessionJSON, missing)
+	assert.EqualError(t, err, "unable to read run 0: unable to load flow[uuid=50c3706e-fedb-42c0-8eab-dda3335714b7,name=Registration]: no such flow with UUID '50c3706e-fedb-42c0-8eab-dda3335714b7'")
 }
 
 func TestWaitTimeout(t *testing.T) {

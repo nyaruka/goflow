@@ -188,7 +188,7 @@ func (s *session) prepareForSprint() error {
 		// if we have a trigger with a parent run, load that
 		triggerWithRun, hasRun := s.trigger.(flows.TriggerWithRun)
 		if hasRun {
-			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary(), assets.IgnoreOnMissing)
+			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary(), assets.IgnoreMissing)
 			if err != nil {
 				return errors.Wrap(err, "error reading parent run from trigger")
 			}
@@ -511,7 +511,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient, data json.RawMessage) (flows.Session, error) {
+func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient, data json.RawMessage, missing assets.MissingCallback) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 
@@ -521,11 +521,6 @@ func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineCon
 
 	s := NewSession(sessionAssets, engineConfig, httpClient).(*session)
 	s.status = e.Status
-
-	// some things on the session may need to report missing assets
-	// TODO do something with this
-	missingAssets := make([]assets.Reference, 0)
-	missing := func(a assets.Reference) { missingAssets = append(missingAssets, a) }
 
 	// read our environment
 	s.env, err = utils.ReadEnvironment(e.Environment)

@@ -93,7 +93,7 @@ func NewContactFromAssets(
 	groups []assets.Group,
 	fields map[string]*Value) (*Contact, error) {
 
-	urnList, err := ReadURNList(a, urns, assets.IgnoreOnMissing)
+	urnList, err := ReadURNList(a, urns, assets.IgnoreMissing)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func NewContactFromAssets(
 		return nil, err
 	}
 
-	fieldValues, err := NewFieldValues(a, fields, assets.IgnoreOnMissing)
+	fieldValues, err := NewFieldValues(a, fields, assets.IgnoreMissing)
 	if err != nil {
 		return nil, err
 	}

@@ -135,7 +135,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 		outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
 
-		session, err = engine.ReadSession(sessionAssets, engine.NewDefaultConfig(), TestHTTPClient, sessionJSON)
+		session, err = engine.ReadSession(sessionAssets, engine.NewDefaultConfig(), TestHTTPClient, sessionJSON, assets.PanicOnMissing)
 		if err != nil {
 			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}

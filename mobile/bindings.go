@@ -265,7 +265,7 @@ func NewSession(a *SessionAssets, httpUserAgent string) *Session {
 // ReadSession reads an existing session from JSON
 func ReadSession(a *SessionAssets, httpUserAgent string, data string) (*Session, error) {
 	httpClient := utils.NewHTTPClient(httpUserAgent)
-	s, err := engine.ReadSession(a.target, engine.NewDefaultConfig(), httpClient, []byte(data))
+	s, err := engine.ReadSession(a.target, engine.NewDefaultConfig(), httpClient, []byte(data), assets.IgnoreMissing)
 	if err != nil {
 		return nil, err
 	}
