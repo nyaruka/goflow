@@ -23,6 +23,7 @@
                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                 "resthook": "new-registration",
                 "status": "success",
+                "status_code": 200,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "webhook_called",
                 "url": "http://127.0.0.1:49996/?cmd=success"
@@ -34,6 +35,7 @@
                 "response": "HTTP/1.1 503 Service Unavailable\r\nContent-Length: 37\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
                 "resthook": "new-registration",
                 "status": "response_error",
+                "status_code": 503,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "webhook_called",
                 "url": "http://127.0.0.1:49996/?cmd=unavailable"
@@ -56,6 +58,7 @@
                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                 "resthook": "new-registration",
                 "status": "success",
+                "status_code": 200,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "webhook_called",
                 "url": "http://127.0.0.1:49996/?cmd=success"
@@ -67,6 +70,7 @@
                 "response": "HTTP/1.1 503 Service Unavailable\r\nContent-Length: 37\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
                 "resthook": "new-registration",
                 "status": "response_error",
+                "status_code": 503,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "webhook_called",
                 "url": "http://127.0.0.1:49996/?cmd=unavailable"
