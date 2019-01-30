@@ -51,7 +51,7 @@ func (a *SetContactChannelAction) Validate(assets flows.SessionAssets, context *
 }
 
 // Execute runs our action
-func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	contact := run.Contact()
 	if contact == nil {
 		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))

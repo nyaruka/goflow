@@ -58,7 +58,7 @@ func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets, context
 }
 
 // Execute runs the action
-func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	contact := run.Contact()
 	if contact == nil {
 		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))

@@ -48,7 +48,7 @@ func (t *baseTrigger) Params() types.XValue           { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 // Initialize initializes the session
-func (t *baseTrigger) Initialize(session flows.Session, logEvent func(flows.Event)) error {
+func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback) error {
 	// try to load the flow
 	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
 	if err != nil {
@@ -78,7 +78,7 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent func(flows.Even
 }
 
 // InitializeRun performs additional initialization when we create our first run
-func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent func(flows.Event)) error {
+func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallback) error {
 	return nil
 }
 
@@ -109,7 +109,7 @@ func (t *baseTrigger) Reduce(env utils.Environment) types.XPrimitive {
 
 // EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
 // as far as the engine is concerned
-func EnsureDynamicGroups(session flows.Session, logEvent func(flows.Event)) {
+func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
 	allGroups := session.Assets().Groups()
 	added, removed, errors := session.Contact().ReevaluateDynamicGroups(session.Environment(), allGroups)
 

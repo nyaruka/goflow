@@ -49,7 +49,7 @@ func (a *AddContactGroupsAction) Validate(assets flows.SessionAssets, context *f
 }
 
 // Execute adds our contact to the specified groups
-func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier func(flows.Modifier), logEvent func(flows.Event)) error {
+func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	contact := run.Contact()
 	if contact == nil {
 		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))

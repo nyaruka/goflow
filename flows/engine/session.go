@@ -423,7 +423,7 @@ func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.N
 }
 
 // picks the exit to use on the given node
-func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step, logEvent func(flows.Event)) (flows.Step, flows.NodeUUID, error) {
+func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step, logEvent flows.EventCallback) (flows.Step, flows.NodeUUID, error) {
 	var err error
 
 	var operand *string

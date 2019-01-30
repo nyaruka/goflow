@@ -189,7 +189,7 @@ type Node interface {
 type Action interface {
 	UUID() ActionUUID
 
-	Execute(FlowRun, Step, func(Modifier), func(Event)) error
+	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
 	Validate(SessionAssets, *ValidationContext) error
 	AllowedFlowTypes() []FlowType
 	utils.Typed
@@ -214,7 +214,7 @@ type Wait interface {
 	Timeout() *int
 	TimeoutOn() *time.Time
 
-	Begin(FlowRun, func(Event)) bool
+	Begin(FlowRun, EventCallback) bool
 	End(Resume, Node) error
 }
 
@@ -268,8 +268,8 @@ type Trigger interface {
 	types.XValue
 	types.XResolvable
 
-	Initialize(Session, func(Event)) error
-	InitializeRun(FlowRun, func(Event)) error
+	Initialize(Session, EventCallback) error
+	InitializeRun(FlowRun, EventCallback) error
 
 	Environment() utils.Environment
 	Flow() *assets.FlowReference
@@ -290,7 +290,7 @@ type TriggerWithRun interface {
 type Resume interface {
 	utils.Typed
 
-	Apply(FlowRun, func(Event)) error
+	Apply(FlowRun, EventCallback) error
 
 	Environment() utils.Environment
 	Contact() *Contact
@@ -301,8 +301,11 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(utils.Environment, SessionAssets, *Contact, func(Event))
+	Apply(utils.Environment, SessionAssets, *Contact, EventCallback)
 }
+
+// ModifierCallback is a callback invoked when a modifier has been generated
+type ModifierCallback func(Modifier)
 
 // Event describes a state change
 type Event interface {
@@ -312,6 +315,9 @@ type Event interface {
 	StepUUID() StepUUID
 	SetStepUUID(StepUUID)
 }
+
+// EventCallback is a callback invoked when an event has been generated
+type EventCallback func(Event)
 
 // Input describes input from the contact and currently we only support one type of input: `msg`. Any input has the following
 // properties which can be accessed:
