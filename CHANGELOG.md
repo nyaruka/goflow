@@ -1,3 +1,10 @@
+v0.26.0
+----------
+ * Update modifier loading so missing assets are reported
+ * Remove logrus logging
+ * Rework all session objects to record missing assets
+ * Ensure error events are logged to sprint as well as run
+
 v0.25.5
 ----------
  * Include status code in webhook events
