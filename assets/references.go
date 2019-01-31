@@ -15,16 +15,10 @@ func init() {
 // Reference is interface for all reference types
 type Reference interface {
 	fmt.Stringer
+
+	Type() string
+	Identity() string
 }
-
-// MissingCallback is callback to be invoked when an asset is missing
-type MissingCallback func(Reference)
-
-// PanicOnMissing panics if an asset is reported missing
-var PanicOnMissing MissingCallback = func(a Reference) { panic(fmt.Sprintf("unable to find asset %s", a.String())) }
-
-// IgnoreMissing does nothing if an asset is reported missing
-var IgnoreMissing MissingCallback = func(Reference) {}
 
 // ChannelReference is used to reference a channel
 type ChannelReference struct {
@@ -32,16 +26,26 @@ type ChannelReference struct {
 	Name string      `json:"name"`
 }
 
-func (r *ChannelReference) String() string {
-	return fmt.Sprintf("channel[uuid=%s,name=%s]", r.UUID, r.Name)
-}
-
-var _ Reference = (*ChannelReference)(nil)
-
 // NewChannelReference creates a new channel reference with the given UUID and name
 func NewChannelReference(uuid ChannelUUID, name string) *ChannelReference {
 	return &ChannelReference{UUID: uuid, Name: name}
 }
+
+// Type returns the name of the asset type
+func (r *ChannelReference) Type() string {
+	return "channel"
+}
+
+// Identity returns the unique identity of the asset
+func (r *ChannelReference) Identity() string {
+	return string(r.UUID)
+}
+
+func (r *ChannelReference) String() string {
+	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
+}
+
+var _ Reference = (*ChannelReference)(nil)
 
 // GroupReference is used to reference a group
 type GroupReference struct {
@@ -60,8 +64,18 @@ func NewVariableGroupReference(nameMatch string) *GroupReference {
 	return &GroupReference{NameMatch: nameMatch}
 }
 
+// Type returns the name of the asset type
+func (r *GroupReference) Type() string {
+	return "group"
+}
+
+// Identity returns the unique identity of the asset
+func (r *GroupReference) Identity() string {
+	return string(r.UUID)
+}
+
 func (r *GroupReference) String() string {
-	return fmt.Sprintf("group[uuid=%s,name=%s]", r.UUID, r.Name)
+	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
 
 var _ Reference = (*GroupReference)(nil)
@@ -77,8 +91,18 @@ func NewFieldReference(key string, name string) *FieldReference {
 	return &FieldReference{Key: key, Name: name}
 }
 
+// Type returns the name of the asset type
+func (r *FieldReference) Type() string {
+	return "field"
+}
+
+// Identity returns the unique identity of the asset
+func (r *FieldReference) Identity() string {
+	return string(r.Key)
+}
+
 func (r *FieldReference) String() string {
-	return fmt.Sprintf("field[key=%s,name=%s]", r.Key, r.Name)
+	return fmt.Sprintf("%s[key=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
 
 var _ Reference = (*FieldReference)(nil)
@@ -94,8 +118,18 @@ func NewFlowReference(uuid FlowUUID, name string) *FlowReference {
 	return &FlowReference{UUID: uuid, Name: name}
 }
 
+// Type returns the name of the asset type
+func (r *FlowReference) Type() string {
+	return "flow"
+}
+
+// Identity returns the unique identity of the asset
+func (r *FlowReference) Identity() string {
+	return string(r.UUID)
+}
+
 func (r *FlowReference) String() string {
-	return fmt.Sprintf("flow[uuid=%s,name=%s]", r.UUID, r.Name)
+	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
 
 var _ Reference = (*FlowReference)(nil)
@@ -117,11 +151,34 @@ func NewVariableLabelReference(nameMatch string) *LabelReference {
 	return &LabelReference{NameMatch: nameMatch}
 }
 
+// Type returns the name of the asset type
+func (r *LabelReference) Type() string {
+	return "label"
+}
+
+// Identity returns the unique identity of the asset
+func (r *LabelReference) Identity() string {
+	return string(r.UUID)
+}
+
 func (r *LabelReference) String() string {
-	return fmt.Sprintf("label[uuid=%s,name=%s]", r.UUID, r.Name)
+	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
 
 var _ Reference = (*LabelReference)(nil)
+
+//------------------------------------------------------------------------------------------
+// Callbacks for missing assets
+//------------------------------------------------------------------------------------------
+
+// MissingCallback is callback to be invoked when an asset is missing
+type MissingCallback func(Reference)
+
+// PanicOnMissing panics if an asset is reported missing
+var PanicOnMissing MissingCallback = func(a Reference) { panic(fmt.Sprintf("unable to find asset %s", a.String())) }
+
+// IgnoreMissing does nothing if an asset is reported missing
+var IgnoreMissing MissingCallback = func(Reference) {}
 
 //------------------------------------------------------------------------------------------
 // Validation
