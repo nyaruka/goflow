@@ -11,6 +11,9 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ErrNoModifier is the error instance returned when a modifier is read but due to missing assets can't be returned
+var ErrNoModifier = errors.New("no modifier to return because of missing assets")
+
 type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Modifier, error)
 
 // RegisteredTypes is the registered modifier types

@@ -67,7 +67,7 @@ func readFieldModifier(assets flows.SessionAssets, data json.RawMessage, missing
 		var err error
 		if field, err = assets.Fields().Get(e.Field.Key); err != nil {
 			missing(e.Field)
-			return nil, nil // nothing left to modify without the field
+			return nil, ErrNoModifier // nothing left to modify without the field
 		}
 	}
 	return NewFieldModifier(field, e.Value), nil

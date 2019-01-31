@@ -111,7 +111,7 @@ func readGroupsModifier(assets flows.SessionAssets, data json.RawMessage, missin
 		return NewGroupsModifier(groups, e.Modification), nil
 	}
 
-	return nil, nil // nothing left to modify if there are no groups
+	return nil, ErrNoModifier // nothing left to modify if there are no groups
 }
 
 func (m *GroupsModifier) MarshalJSON() ([]byte, error) {

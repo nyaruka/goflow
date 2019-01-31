@@ -187,21 +187,21 @@ func TestReadModifier(t *testing.T) {
 	_, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 
-	// nil and a missing asset record if we load a channel modifier for a channel that no longer exists
+	// no-modifier error and a missing asset record if we load a channel modifier for a channel that no longer exists
 	mod, err := modifiers.ReadModifier(sessionAssets, []byte(`{"type": "channel", "channel": {"uuid": "8632b9f0-ac2f-40ad-808f-77781a444dc9", "name": "Nexmo"}}`), missing)
-	assert.NoError(t, err)
+	assert.Equal(t, modifiers.ErrNoModifier, err)
 	assert.Nil(t, mod)
 	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("8632b9f0-ac2f-40ad-808f-77781a444dc9"), "Nexmo"), missingAssets[len(missingAssets)-1])
 
-	// nil and a missing asset record if we load a field modifier for a field that no longer exists
+	// no-modifier error and a missing asset record if we load a field modifier for a field that no longer exists
 	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "gender", "name": "Gender"}, "value": {"text": "M"}}`), missing)
-	assert.NoError(t, err)
+	assert.Equal(t, modifiers.ErrNoModifier, err)
 	assert.Nil(t, mod)
 	assert.Equal(t, assets.NewFieldReference("gender", "Gender"), missingAssets[len(missingAssets)-1])
 
-	// nil if we load a groups modifier and none of its groups exist
+	// no-modifier error if we load a groups modifier and none of its groups exist
 	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "groups", "modification": "add", "groups": [{"uuid": "8632b9f0-ac2f-40ad-808f-77781a444dc9", "name": "Testers"}]}`), missing)
-	assert.NoError(t, err)
+	assert.Equal(t, modifiers.ErrNoModifier, err)
 	assert.Nil(t, mod)
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("8632b9f0-ac2f-40ad-808f-77781a444dc9"), "Testers"), missingAssets[len(missingAssets)-1])
 
