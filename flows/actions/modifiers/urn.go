@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -56,7 +57,7 @@ var _ flows.Modifier = (*URNModifier)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readURNModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
+func readURNModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
 	m := &URNModifier{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }
