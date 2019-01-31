@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -55,7 +56,7 @@ type timezoneModifierEnvelope struct {
 	Timezone string `json:"timezone"`
 }
 
-func readTimezoneModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
+func readTimezoneModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &timezoneModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

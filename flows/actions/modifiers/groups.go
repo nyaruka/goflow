@@ -91,22 +91,27 @@ type groupsModifierEnvelope struct {
 	Modification GroupsModification       `json:"modification" validate:"eq=add|eq=remove"`
 }
 
-func readGroupsModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
+func readGroupsModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &groupsModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	groups := make([]*flows.Group, len(e.Groups))
-	var err error
-	for g, groupRef := range e.Groups {
-		groups[g], err = assets.Groups().Get(groupRef.UUID)
+	groups := make([]*flows.Group, 0, len(e.Groups))
+	for _, groupRef := range e.Groups {
+		group, err := assets.Groups().Get(groupRef.UUID)
 		if err != nil {
-			return nil, err
+			missing(groupRef)
+		} else {
+			groups = append(groups, group)
 		}
 	}
 
-	return NewGroupsModifier(groups, e.Modification), nil
+	if len(groups) > 0 {
+		return NewGroupsModifier(groups, e.Modification), nil
+	}
+
+	return nil, ErrNoModifier // nothing left to modify if there are no groups
 }
 
 func (m *GroupsModifier) MarshalJSON() ([]byte, error) {

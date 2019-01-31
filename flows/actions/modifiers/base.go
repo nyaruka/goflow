@@ -3,6 +3,7 @@ package modifiers
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -10,7 +11,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-type readFunc func(flows.SessionAssets, json.RawMessage) (flows.Modifier, error)
+// ErrNoModifier is the error instance returned when a modifier is read but due to missing assets can't be returned
+var ErrNoModifier = errors.New("no modifier to return because of missing assets")
+
+type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Modifier, error)
 
 // RegisteredTypes is the registered modifier types
 var RegisteredTypes = map[string]readFunc{}
@@ -52,7 +56,7 @@ func (m *baseModifier) reevaluateDynamicGroups(env utils.Environment, assets flo
 //------------------------------------------------------------------------------------------
 
 // ReadModifier reads a modifier from the given JSON
-func ReadModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modifier, error) {
+func ReadModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -62,5 +66,5 @@ func ReadModifier(assets flows.SessionAssets, data json.RawMessage) (flows.Modif
 	if f == nil {
 		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
-	return f(assets, data)
+	return f(assets, data, missing)
 }
