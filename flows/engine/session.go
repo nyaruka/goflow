@@ -13,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 )
 
 // used to spawn a new run or sub-flow in the event loop
@@ -378,11 +377,6 @@ func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.N
 	// execute our node's actions
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
-			if log.GetLevel() >= log.DebugLevel {
-				actionJSON, _ := json.Marshal(action)
-				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executing")
-			}
-
 			if err := action.Execute(run, step, sprint.LogModifier, logEvent); err != nil {
 				return step, noDestination, errors.Wrapf(err, "error executing action[type=%s,uuid=%s]", action.Type(), action.UUID())
 			}

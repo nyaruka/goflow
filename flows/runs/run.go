@@ -13,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 )
 
 type flowRun struct {
@@ -126,11 +125,6 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 
 	r.events = append(r.events, event)
 	r.modifiedOn = utils.Now()
-
-	if log.GetLevel() >= log.DebugLevel {
-		eventJSON, _ := json.Marshal(event)
-		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("event logged")
-	}
 }
 
 func (r *flowRun) LogError(step flows.Step, err error) {

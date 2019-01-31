@@ -5,8 +5,6 @@ import (
 	"net/http/httptest"
 	"net/http/httputil"
 	"time"
-
-	log "github.com/sirupsen/logrus"
 )
 
 var httpHeaderUserAgent = "User-Agent"
@@ -58,8 +56,6 @@ func (c *HTTPClient) DoWithDump(request *http.Request) (*http.Response, string, 
 		return nil, "", err
 	}
 
-	log.Debug(string(dump))
-
 	response, err := c.client.Do(request)
 
 	return response, string(dump), err
@@ -73,8 +69,6 @@ func (c *HTTPClient) MockWithDump(request *http.Request, mockStatus int, mockRes
 	if err != nil {
 		return nil, "", err
 	}
-
-	log.Debug(string(dump))
 
 	recorder := httptest.NewRecorder()
 	recorder.WriteString(mockResponse)
