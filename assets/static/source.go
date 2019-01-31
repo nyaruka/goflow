@@ -30,8 +30,8 @@ func NewEmptySource() *StaticSource {
 	return &StaticSource{}
 }
 
-// NewStaticSource creates a new static source from the given JSON
-func NewStaticSource(data json.RawMessage) (*StaticSource, error) {
+// NewSource creates a new static source from the given JSON
+func NewSource(data json.RawMessage) (*StaticSource, error) {
 	s := &StaticSource{}
 	if err := utils.UnmarshalAndValidate(data, &s.s); err != nil {
 		return nil, errors.Wrap(err, "unable to read assets")
@@ -39,13 +39,13 @@ func NewStaticSource(data json.RawMessage) (*StaticSource, error) {
 	return s, nil
 }
 
-// LoadStaticSource loads a new static source from the given JSON file
-func LoadStaticSource(path string) (*StaticSource, error) {
+// LoadSource loads a new static source from the given JSON file
+func LoadSource(path string) (*StaticSource, error) {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error reading file '%s'", path)
 	}
-	return NewStaticSource(data)
+	return NewSource(data)
 }
 
 var _ assets.AssetSource = (*StaticSource)(nil)

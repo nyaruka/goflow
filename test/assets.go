@@ -17,7 +17,7 @@ func LoadSessionAssets(path string) (flows.SessionAssets, error) {
 		return nil, err
 	}
 
-	source, err := static.NewStaticSource(assetsJSON)
+	source, err := static.NewSource(assetsJSON)
 	if err != nil {
 		return nil, err
 	}

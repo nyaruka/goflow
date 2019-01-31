@@ -84,7 +84,7 @@ type AssetsSource struct {
 
 // NewAssetsSource creates a new static asset source
 func NewAssetsSource(src string) (*AssetsSource, error) {
-	s, err := static.NewStaticSource(json.RawMessage(src))
+	s, err := static.NewSource(json.RawMessage(src))
 	if err != nil {
 		return nil, err
 	}

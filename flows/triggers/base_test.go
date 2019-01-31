@@ -52,7 +52,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	source, err := static.NewStaticSource([]byte(assetsJSON))
+	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
 	sessionAssets, err := engine.NewSessionAssets(source)

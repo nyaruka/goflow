@@ -492,7 +492,7 @@ func CreateSession(assetsJSON json.RawMessage, testServerURL string) (flows.Sess
 	}
 
 	// read our assets into a source
-	source, err := static.NewStaticSource(assetsJSON)
+	source, err := static.NewSource(assetsJSON)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading test assets")
 	}

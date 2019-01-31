@@ -102,7 +102,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	// rewrite the URL on any webhook actions
 	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
-	source, err := static.NewStaticSource(json.RawMessage(testAssetsJSONStr))
+	source, err := static.NewSource(json.RawMessage(testAssetsJSONStr))
 	if err != nil {
 		return runResult{}, errors.Wrapf(err, "error reading test assets '%s'", assetsPath)
 	}

@@ -18,7 +18,7 @@ import (
 )
 
 func TestContactURN(t *testing.T) {
-	source, err := static.NewStaticSource([]byte(`{
+	source, err := static.NewSource([]byte(`{
 		"channels": [
 			{
 				"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",

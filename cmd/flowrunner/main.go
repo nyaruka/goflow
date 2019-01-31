@@ -78,7 +78,7 @@ func main() {
 
 // RunFlow steps through a flow
 func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang utils.Language, in io.Reader, out io.Writer) (*Repro, error) {
-	source, err := static.LoadStaticSource(assetsPath)
+	source, err := static.LoadSource(assetsPath)
 	if err != nil {
 		return nil, err
 	}

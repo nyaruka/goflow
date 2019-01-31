@@ -176,7 +176,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	require.NoError(t, err)
 
 	// try to read it back but with only the flow assets
-	source, err := static.NewStaticSource([]byte(`{
+	source, err := static.NewSource([]byte(`{
 		"flows": [
 			{
 				"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
