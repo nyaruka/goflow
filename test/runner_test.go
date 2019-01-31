@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
@@ -101,15 +102,15 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	// rewrite the URL on any webhook actions
 	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
-	source, err := static.NewStaticSource(json.RawMessage(testAssetsJSONStr))
+	source, err := static.NewSource(json.RawMessage(testAssetsJSONStr))
 	if err != nil {
 		return runResult{}, errors.Wrapf(err, "error reading test assets '%s'", assetsPath)
 	}
 
-	assets, _ := engine.NewSessionAssets(source)
-	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)
+	sessionAssets, _ := engine.NewSessionAssets(source)
+	session := engine.NewSession(sessionAssets, engine.NewDefaultConfig(), TestHTTPClient)
 
-	trigger, err := triggers.ReadTrigger(session.Assets(), rawTrigger)
+	trigger, err := triggers.ReadTrigger(sessionAssets, rawTrigger, assets.PanicOnMissing)
 	if err != nil {
 		return runResult{}, errors.Wrapf(err, "error unmarshalling trigger")
 	}
@@ -134,7 +135,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 		outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
 
-		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), TestHTTPClient, sessionJSON)
+		session, err = engine.ReadSession(sessionAssets, engine.NewDefaultConfig(), TestHTTPClient, sessionJSON, assets.PanicOnMissing)
 		if err != nil {
 			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}
@@ -144,7 +145,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 			return runResult{}, errors.Errorf("did not stop at expected wait, have unused resumes: %#v", rawResumes[r:])
 		}
 
-		resume, err := resumes.ReadResume(session, rawResume)
+		resume, err := resumes.ReadResume(sessionAssets, rawResume, assets.PanicOnMissing)
 		if err != nil {
 			return runResult{}, err
 		}

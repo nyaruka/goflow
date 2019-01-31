@@ -79,7 +79,7 @@ type campaignTriggerEnvelope struct {
 	Event *CampaignEvent `json:"event" validate:"required,dive"`
 }
 
-func readCampaignTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func readCampaignTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &campaignTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func readCampaignTrigger(sessionAssets flows.SessionAssets, data json.RawMessage
 	t := &CampaignTrigger{
 		event: e.Event,
 	}
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
 		return nil, err
 	}
 

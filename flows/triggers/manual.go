@@ -54,7 +54,7 @@ var _ flows.Trigger = (*ManualTrigger)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
+func readManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &baseTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func readManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) 
 
 	t := &ManualTrigger{}
 
-	if err := t.unmarshal(sessionAssets, e); err != nil {
+	if err := t.unmarshal(sessionAssets, e, missing); err != nil {
 		return nil, err
 	}
 

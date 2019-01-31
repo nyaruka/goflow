@@ -78,20 +78,20 @@ func main() {
 
 // RunFlow steps through a flow
 func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang utils.Language, in io.Reader, out io.Writer) (*Repro, error) {
-	source, err := static.LoadStaticSource(assetsPath)
+	source, err := static.LoadSource(assetsPath)
 	if err != nil {
 		return nil, err
 	}
 
-	assets, err := engine.NewSessionAssets(source)
+	sessionAssets, err := engine.NewSessionAssets(source)
 	if err != nil {
 		return nil, errors.Wrap(err, "error parsing assets")
 	}
 
 	httpClient := utils.NewHTTPClient("goflow-flowrunner")
-	session := engine.NewSession(assets, engine.NewDefaultConfig(), httpClient)
+	session := engine.NewSession(sessionAssets, engine.NewDefaultConfig(), httpClient)
 
-	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), true)
+	contact, err := flows.ReadContact(sessionAssets, json.RawMessage(contactJSON), assets.PanicOnMissing)
 	if err != nil {
 		return nil, err
 	}

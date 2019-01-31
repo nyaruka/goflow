@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -17,7 +18,7 @@ import (
 )
 
 func TestContactURN(t *testing.T) {
-	source, err := static.NewStaticSource([]byte(`{
+	source, err := static.NewSource([]byte(`{
 		"channels": [
 			{
 				"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -44,15 +45,15 @@ func TestContactURN(t *testing.T) {
 	require.NoError(t, err)
 
 	// check that parsing a URN properly extracts its channel affinity
-	urn, err := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"))
+	urn, err := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), assets.PanicOnMissing)
 	assert.NoError(t, err)
 	assert.Equal(t, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), urn.URN())
 	assert.Equal(t, channel, urn.Channel())
 	assert.Equal(t, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3", urn.String())
 
 	// check equality
-	urn2, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"))
-	urn3, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?id=3"))
+	urn2, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), assets.PanicOnMissing)
+	urn3, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?id=3"), assets.PanicOnMissing)
 	assert.True(t, urn.Equal(urn2))
 	assert.False(t, urn.Equal(urn3))
 

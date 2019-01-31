@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -94,7 +95,7 @@ type msgInputEnvelope struct {
 	Attachments flows.AttachmentList `json:"attachments,omitempty"`
 }
 
-func readMsgInput(session flows.Session, data json.RawMessage) (flows.Input, error) {
+func readMsgInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Input, error) {
 	e := &msgInputEnvelope{}
 	err := utils.UnmarshalAndValidate(data, e)
 	if err != nil {
@@ -107,7 +108,7 @@ func readMsgInput(session flows.Session, data json.RawMessage) (flows.Input, err
 		attachments: e.Attachments,
 	}
 
-	if err := i.unmarshal(session, &e.baseInputEnvelope); err != nil {
+	if err := i.unmarshal(sessionAssets, &e.baseInputEnvelope, missing); err != nil {
 		return nil, err
 	}
 

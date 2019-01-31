@@ -110,7 +110,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		// optionally load our contact
 		var contact *flows.Contact
 		if !tc.NoContact {
-			contact, err = flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), true)
+			contact, err = flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), assets.PanicOnMissing)
 			require.NoError(t, err)
 
 			// optionally give our contact some URNs

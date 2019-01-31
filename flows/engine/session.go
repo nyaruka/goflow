@@ -3,6 +3,7 @@ package engine
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -187,7 +188,7 @@ func (s *session) prepareForSprint() error {
 		// if we have a trigger with a parent run, load that
 		triggerWithRun, hasRun := s.trigger.(flows.TriggerWithRun)
 		if hasRun {
-			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary())
+			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary(), assets.IgnoreMissing)
 			if err != nil {
 				return errors.Wrap(err, "error reading parent run from trigger")
 			}
@@ -510,7 +511,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient, data json.RawMessage) (flows.Session, error) {
+func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient, data json.RawMessage, missing assets.MissingCallback) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 
@@ -518,7 +519,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 		return nil, errors.Wrap(err, "unable to read session")
 	}
 
-	s := NewSession(assets, engineConfig, httpClient).(*session)
+	s := NewSession(sessionAssets, engineConfig, httpClient).(*session)
 	s.status = e.Status
 
 	// read our environment
@@ -529,14 +530,14 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 
 	// read our trigger
 	if e.Trigger != nil {
-		if s.trigger, err = triggers.ReadTrigger(s.Assets(), e.Trigger); err != nil {
+		if s.trigger, err = triggers.ReadTrigger(s.Assets(), e.Trigger, missing); err != nil {
 			return nil, errors.Wrap(err, "unable to read trigger")
 		}
 	}
 
 	// read our contact
 	if e.Contact != nil {
-		if s.contact, err = flows.ReadContact(s.Assets(), *e.Contact, false); err != nil {
+		if s.contact, err = flows.ReadContact(s.Assets(), *e.Contact, missing); err != nil {
 			return nil, errors.Wrap(err, "unable to read contact")
 		}
 	}
@@ -558,7 +559,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 		}
 	}
 	if e.Input != nil {
-		if s.input, err = inputs.ReadInput(s, e.Input); err != nil {
+		if s.input, err = inputs.ReadInput(s.Assets(), e.Input, missing); err != nil {
 			return nil, errors.Wrap(err, "unable to read input")
 		}
 	}

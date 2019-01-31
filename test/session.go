@@ -435,7 +435,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(sessionTrigger))
+	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(sessionTrigger), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
@@ -446,7 +446,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	// read our resume
-	resume, err := resumes.ReadResume(session, json.RawMessage(sessionResume))
+	resume, err := resumes.ReadResume(session.Assets(), json.RawMessage(sessionResume), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error reading resume")
 	}
@@ -471,7 +471,7 @@ func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flo
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(voiceSessionTrigger))
+	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(voiceSessionTrigger), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
@@ -492,7 +492,7 @@ func CreateSession(assetsJSON json.RawMessage, testServerURL string) (flows.Sess
 	}
 
 	// read our assets into a source
-	source, err := static.NewStaticSource(assetsJSON)
+	source, err := static.NewSource(assetsJSON)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading test assets")
 	}

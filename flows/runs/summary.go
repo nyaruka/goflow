@@ -48,7 +48,7 @@ type runSummaryEnvelope struct {
 }
 
 // ReadRunSummary reads a run summary from the given JSON
-func ReadRunSummary(assets flows.SessionAssets, data json.RawMessage) (flows.RunSummary, error) {
+func ReadRunSummary(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.RunSummary, error) {
 	var err error
 	e := runSummaryEnvelope{}
 	if err = utils.UnmarshalAndValidate(data, &e); err != nil {
@@ -62,13 +62,13 @@ func ReadRunSummary(assets flows.SessionAssets, data json.RawMessage) (flows.Run
 	}
 
 	// lookup the flow
-	if run.flow, err = assets.Flows().Get(e.Flow.UUID); err != nil {
+	if run.flow, err = sessionAssets.Flows().Get(e.Flow.UUID); err != nil {
 		return nil, err
 	}
 
 	// read the contact
 	if e.Contact != nil {
-		if run.contact, err = flows.ReadContact(assets, e.Contact, false); err != nil {
+		if run.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
 			return nil, err
 		}
 	}

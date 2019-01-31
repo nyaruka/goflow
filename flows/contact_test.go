@@ -200,10 +200,10 @@ func TestContactEqual(t *testing.T) {
 		"urns": ["tel:+12065551212"]
 	}`)
 
-	contact1, err := flows.ReadContact(session.Assets(), contact1JSON, true)
+	contact1, err := flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
 	require.NoError(t, err)
 
-	contact2, err := flows.ReadContact(session.Assets(), contact1JSON, true)
+	contact2, err := flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
 	require.NoError(t, err)
 
 	assert.True(t, contact1.Equal(contact2))
@@ -213,7 +213,7 @@ func TestContactEqual(t *testing.T) {
 	// marshal and unmarshal contact 1 again
 	contact1JSON, err = json.Marshal(contact1)
 	require.NoError(t, err)
-	contact1, err = flows.ReadContact(session.Assets(), contact1JSON, true)
+	contact1, err = flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
 	require.NoError(t, err)
 
 	assert.True(t, contact1.Equal(contact2))

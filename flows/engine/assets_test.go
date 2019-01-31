@@ -21,7 +21,7 @@ var assetsJSON = `{
 }`
 
 func TestSessionAssets(t *testing.T) {
-	source, err := static.NewStaticSource([]byte(assetsJSON))
+	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
 	sessionAssets, err := engine.NewSessionAssets(source)

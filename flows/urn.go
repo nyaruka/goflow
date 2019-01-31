@@ -67,7 +67,7 @@ func NewContactURN(urn urns.URN, channel *Channel) *ContactURN {
 }
 
 // ParseRawURN converts a raw URN to a ContactURN by extracting it's channel reference
-func ParseRawURN(ca *ChannelAssets, rawURN urns.URN) (*ContactURN, error) {
+func ParseRawURN(ca *ChannelAssets, rawURN urns.URN, missing assets.MissingCallback) (*ContactURN, error) {
 	_, _, query, _ := rawURN.ToParts()
 
 	parsedQuery, err := url.ParseQuery(query)
@@ -76,10 +76,10 @@ func ParseRawURN(ca *ChannelAssets, rawURN urns.URN) (*ContactURN, error) {
 	}
 
 	var channel *Channel
-	channelUUID := parsedQuery.Get("channel")
+	channelUUID := assets.ChannelUUID(parsedQuery.Get("channel"))
 	if channelUUID != "" {
-		if channel, err = ca.Get(assets.ChannelUUID(channelUUID)); err != nil {
-			return nil, err
+		if channel, err = ca.Get(channelUUID); err != nil {
+			missing(assets.NewChannelReference(channelUUID, ""))
 		}
 	}
 
@@ -170,11 +170,11 @@ var _ types.XResolvable = (*ContactURN)(nil)
 type URNList []*ContactURN
 
 // ReadURNList parses contact URN list from the given list of raw URNs
-func ReadURNList(a SessionAssets, rawURNs []urns.URN) (URNList, error) {
+func ReadURNList(a SessionAssets, rawURNs []urns.URN, missing assets.MissingCallback) (URNList, error) {
 	l := make(URNList, len(rawURNs))
 
 	for u := range rawURNs {
-		parsed, err := ParseRawURN(a.Channels(), rawURNs[u])
+		parsed, err := ParseRawURN(a.Channels(), rawURNs[u], missing)
 		if err != nil {
 			return nil, err
 		}

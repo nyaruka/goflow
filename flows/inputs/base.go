@@ -13,7 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-type readFunc func(session flows.Session, data json.RawMessage) (flows.Input, error)
+type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Input, error)
 
 var registeredTypes = map[string]readFunc{}
 
@@ -73,7 +73,7 @@ type baseInputEnvelope struct {
 }
 
 // ReadInput reads an input from the given typed envelope
-func ReadInput(session flows.Session, data json.RawMessage) (flows.Input, error) {
+func ReadInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Input, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -83,10 +83,11 @@ func ReadInput(session flows.Session, data json.RawMessage) (flows.Input, error)
 	if f == nil {
 		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
-	return f(session, data)
+
+	return f(sessionAssets, data, missing)
 }
 
-func (i *baseInput) unmarshal(session flows.Session, e *baseInputEnvelope) error {
+func (i *baseInput) unmarshal(sessionAssets flows.SessionAssets, e *baseInputEnvelope, missing assets.MissingCallback) error {
 	var err error
 
 	i.type_ = e.Type
@@ -94,9 +95,10 @@ func (i *baseInput) unmarshal(session flows.Session, e *baseInputEnvelope) error
 	i.createdOn = e.CreatedOn
 
 	if e.Channel != nil {
-		i.channel, err = session.Assets().Channels().Get(e.Channel.UUID)
+		i.channel, err = sessionAssets.Channels().Get(e.Channel.UUID)
 		if err != nil {
-			return err
+			missing(e.Channel)
+			return nil
 		}
 	}
 	return nil

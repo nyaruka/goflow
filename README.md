@@ -14,7 +14,7 @@ import (
     "github.com/nyaruka/goflow/utils"
 )
 
-source, _ := static.LoadStaticSource("myassets.json")
+source, _ := static.LoadSource("myassets.json")
 assets, _ := engine.NewSessionAssets(source)
 session := engine.NewSession(assets, engine.NewDefaultConfig(), utils.NewHTTPClient("goflow-flowrunner"))
 contact := flows.NewContact(...)

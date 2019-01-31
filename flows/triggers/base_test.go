@@ -52,7 +52,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	source, err := static.NewStaticSource([]byte(assetsJSON))
+	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
 	sessionAssets, err := engine.NewSessionAssets(source)
@@ -343,17 +343,23 @@ func TestTriggerMarshaling(t *testing.T) {
 		test.AssertEqualJSON(t, []byte(tc.marshaled), triggerJSON, "trigger JSON mismatch")
 
 		// then try to read from the JSON
-		_, err = triggers.ReadTrigger(sessionAssets, triggerJSON)
+		_, err = triggers.ReadTrigger(sessionAssets, triggerJSON, assets.PanicOnMissing)
 		assert.NoError(t, err, "error reading trigger: %s", string(triggerJSON))
 	}
 }
 
 func TestReadTrigger(t *testing.T) {
+	missingAssets := make([]assets.Reference, 0)
+	missing := func(a assets.Reference) { missingAssets = append(missingAssets, a) }
+
+	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource())
+	require.NoError(t, err)
+
 	// error if no type field
-	_, err := triggers.ReadTrigger(nil, []byte(`{"foo": "bar"}`))
+	_, err = triggers.ReadTrigger(sessionAssets, []byte(`{"foo": "bar"}`), missing)
 	assert.EqualError(t, err, "field 'type' is required")
 
 	// error if we don't recognize action type
-	_, err = triggers.ReadTrigger(nil, []byte(`{"type": "do_the_foo", "foo": "bar"}`))
+	_, err = triggers.ReadTrigger(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 }

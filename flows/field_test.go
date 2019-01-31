@@ -3,6 +3,7 @@ package flows_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
@@ -21,7 +22,7 @@ func TestFieldValues(t *testing.T) {
 	age, _ := fields.Get("age")
 
 	// can have no values for any fields
-	fieldVals, err := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, true)
+	fieldVals, err := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, assets.PanicOnMissing)
 	assert.NoError(t, err)
 
 	assert.Equal(t, 0, fieldVals.Length())
@@ -33,7 +34,7 @@ func TestFieldValues(t *testing.T) {
 	fieldVals, err = flows.NewFieldValues(session.Assets(), map[string]*flows.Value{
 		"gender": flows.NewValue(types.NewXText("Male"), nil, nil, flows.LocationPath(""), flows.LocationPath(""), flows.LocationPath("")),
 		"age":    flows.NewValue(types.NewXText("nan"), nil, nil, flows.LocationPath(""), flows.LocationPath(""), flows.LocationPath("")),
-	}, true)
+	}, assets.PanicOnMissing)
 	assert.NoError(t, err)
 
 	assert.Equal(t, types.NewXText("Male"), fieldVals.Get(gender).Text)
