@@ -1,3 +1,7 @@
+v0.27.0
+----------
+ * Add type to sessions (the type of the flow it was triggered with)
+
 v0.26.0
 ----------
  * Update modifier loading so missing assets are reported
