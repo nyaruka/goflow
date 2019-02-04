@@ -140,6 +140,7 @@
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "manual"
                 },
+                "type": "messaging",
                 "wait": {
                     "timeout": 600,
                     "timeout_on": "2018-07-06T12:40:06.123456789Z",
@@ -398,7 +399,8 @@
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "manual"
-                }
+                },
+                "type": "messaging"
             }
         }
     ],

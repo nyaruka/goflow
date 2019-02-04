@@ -108,12 +108,13 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	}
 
 	sessionAssets, _ := engine.NewSessionAssets(source)
-	session := engine.NewSession(sessionAssets, engine.NewDefaultConfig(), TestHTTPClient)
 
 	trigger, err := triggers.ReadTrigger(sessionAssets, rawTrigger, assets.PanicOnMissing)
 	if err != nil {
 		return runResult{}, errors.Wrapf(err, "error unmarshalling trigger")
 	}
+
+	session := engine.NewSession(sessionAssets, engine.NewDefaultConfig(), TestHTTPClient)
 
 	sprint, err := session.Start(trigger)
 	if err != nil {

@@ -16,9 +16,9 @@ import (
 
 source, _ := static.LoadSource("myassets.json")
 assets, _ := engine.NewSessionAssets(source)
-session := engine.NewSession(assets, engine.NewDefaultConfig(), utils.NewHTTPClient("goflow-flowrunner"))
 contact := flows.NewContact(...)
 trigger := triggers.NewManualTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), nil, nil, time.Now())
+session := engine.NewSession(assets, engine.NewDefaultConfig(), utils.NewHTTPClient("goflow-flowrunner"))
 session.Start(trigger)
 ```
 

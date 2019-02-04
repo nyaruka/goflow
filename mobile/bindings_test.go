@@ -85,7 +85,7 @@ func TestMobileBindings(t *testing.T) {
 	marshaled, err := session.ToJSON()
 	require.NoError(t, err)
 
-	assert.Equal(t, `{"environment":{"date_format":"DD-MM-YYYY","time_f`, marshaled[:50])
+	assert.Equal(t, `{"type":"messaging_offline","environment":{"date_f`, marshaled[:50])
 
 	// and try to read it back
 	session2, err := mobile.ReadSession(sessionAssets, "mobile-test", marshaled)

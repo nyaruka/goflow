@@ -26,7 +26,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": true,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "can't enter flow bead76f5-dac4-4c9d-996c-c62b326e8c0a due to looping prevention",
+                "text": "can't enter flow[uuid=bead76f5-dac4-4c9d-996c-c62b326e8c0a,name=Action Tester] due to looping prevention",
                 "type": "error"
             }
         ]
@@ -46,7 +46,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": true,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "can't enter flow 7a84463d-d209-4d3e-a0ff-79f977cd7bd0 of type voice from type messaging",
+                "text": "can't enter flow[uuid=7a84463d-d209-4d3e-a0ff-79f977cd7bd0,name=Voice Action Tester] of type voice from type messaging",
                 "type": "error"
             }
         ]

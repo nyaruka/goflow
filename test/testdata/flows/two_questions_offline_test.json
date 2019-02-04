@@ -122,6 +122,7 @@
                     "triggered_on": "2018-10-18T11:30:24.574076-05:00",
                     "type": "manual"
                 },
+                "type": "messaging_offline",
                 "wait": {
                     "timeout": 600,
                     "timeout_on": "2018-07-06T12:40:06.123456789Z",
@@ -327,6 +328,7 @@
                     "triggered_on": "2018-10-18T11:30:24.574076-05:00",
                     "type": "manual"
                 },
+                "type": "messaging_offline",
                 "wait": {
                     "timeout": 600,
                     "timeout_on": "2018-07-06T12:40:22.123456789Z",
@@ -568,7 +570,8 @@
                     },
                     "triggered_on": "2018-10-18T11:30:24.574076-05:00",
                     "type": "manual"
-                }
+                },
+                "type": "messaging_offline"
             }
         }
     ],
