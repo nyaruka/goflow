@@ -88,16 +88,13 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		return nil, errors.Wrap(err, "error parsing assets")
 	}
 
-	httpClient := utils.NewHTTPClient("goflow-flowrunner")
-	session := engine.NewSession(sessionAssets, engine.NewDefaultConfig(), httpClient)
-
 	contact, err := flows.ReadContact(sessionAssets, json.RawMessage(contactJSON), assets.PanicOnMissing)
 	if err != nil {
 		return nil, err
 	}
 	contact.SetLanguage(contactLang)
 
-	flow, err := session.Assets().Flows().Get(flowUUID)
+	flow, err := sessionAssets.Flows().Get(flowUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -116,6 +113,9 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		repro.Trigger = triggers.NewManualTrigger(env, flow.Reference(), contact, nil)
 	}
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
+
+	httpClient := utils.NewHTTPClient("goflow-flowrunner")
+	session := engine.NewSession(sessionAssets, engine.NewDefaultConfig(), httpClient)
 
 	// start our session
 	sprint, err := session.Start(repro.Trigger)

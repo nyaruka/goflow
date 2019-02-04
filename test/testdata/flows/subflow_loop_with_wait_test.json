@@ -208,6 +208,7 @@
                     "triggered_on": "2018-10-26T12:21:24.285648-05:00",
                     "type": "manual"
                 },
+                "type": "messaging",
                 "wait": {
                     "type": "msg"
                 }
@@ -547,7 +548,8 @@
                     },
                     "triggered_on": "2018-10-26T12:21:24.285648-05:00",
                     "type": "manual"
-                }
+                },
+                "type": "messaging"
             }
         }
     ],

@@ -381,6 +381,9 @@ type Sprint interface {
 type Session interface {
 	Assets() SessionAssets
 
+	Type() FlowType
+	SetType(FlowType)
+
 	Environment() utils.Environment
 	SetEnvironment(utils.Environment)
 
@@ -394,7 +397,7 @@ type Session interface {
 	Trigger() Trigger
 	PushFlow(Flow, FlowRun, bool)
 	Wait() Wait
-	CanEnterFlow(Flow) bool
+	CanEnterFlow(Flow) error
 
 	Start(Trigger) (Sprint, error)
 	Resume(Resume) (Sprint, error)

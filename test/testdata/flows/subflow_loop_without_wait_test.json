@@ -45,7 +45,7 @@
                     "created_on": "2018-07-06T12:30:16.123456789Z",
                     "fatal": true,
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "text": "can't enter flow 76f0a02f-3b75-4b86-9064-e9195e1b3a02 due to looping prevention",
+                    "text": "can't enter flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02,name=Parent Flow] due to looping prevention",
                     "type": "error"
                 },
                 {
@@ -164,7 +164,7 @@
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "fatal": true,
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                                "text": "can't enter flow 76f0a02f-3b75-4b86-9064-e9195e1b3a02 due to looping prevention",
+                                "text": "can't enter flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02,name=Parent Flow] due to looping prevention",
                                 "type": "error"
                             }
                         ],
@@ -227,7 +227,8 @@
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "manual"
-                }
+                },
+                "type": "messaging"
             }
         }
     ],

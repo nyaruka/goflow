@@ -155,7 +155,8 @@
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "flow_action"
-                }
+                },
+                "type": "messaging"
             }
         }
     ],

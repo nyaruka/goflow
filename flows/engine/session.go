@@ -26,6 +26,7 @@ type session struct {
 	assets flows.SessionAssets
 
 	// state which is maintained between engine calls
+	type_   flows.FlowType
 	env     utils.Environment
 	trigger flows.Trigger
 	contact *flows.Contact
@@ -60,6 +61,9 @@ func NewSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, htt
 func (s *session) Assets() flows.SessionAssets { return s.assets }
 func (s *session) Trigger() flows.Trigger      { return s.trigger }
 
+func (s *session) Type() flows.FlowType         { return s.type_ }
+func (s *session) SetType(type_ flows.FlowType) { s.type_ = type_ }
+
 func (s *session) Environment() utils.Environment       { return s.env }
 func (s *session) SetEnvironment(env utils.Environment) { s.env = env }
 
@@ -69,8 +73,15 @@ func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
 func (s *session) Input() flows.Input         { return s.input }
 func (s *session) SetInput(input flows.Input) { s.input = input }
 
-func (s *session) CanEnterFlow(flow flows.Flow) bool {
-	return !s.flowStack.hasVisitedFlowSinceResume(flow.UUID())
+func (s *session) CanEnterFlow(flow flows.Flow) error {
+	if s.Type() != "" && s.Type() != flow.Type() {
+		return errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(), flow.Type(), s.Type())
+	}
+	if s.flowStack.hasVisitedFlowSinceResume(flow.UUID()) {
+		return errors.Errorf("can't enter %s due to looping prevention", flow.Reference())
+	}
+
+	return nil
 }
 
 func (s *session) PushFlow(flow flows.Flow, parentRun flows.FlowRun, terminal bool) {
@@ -495,6 +506,7 @@ func fatalError(sprint flows.Sprint, run flows.FlowRun, step flows.Step, err err
 //------------------------------------------------------------------------------------------
 
 type sessionEnvelope struct {
+	Type        flows.FlowType      `json:"type"` // TODO validate:"required"`
 	Environment json.RawMessage     `json:"environment"`
 	Trigger     json.RawMessage     `json:"trigger" validate:"required"`
 	Contact     *json.RawMessage    `json:"contact,omitempty"`
@@ -514,6 +526,7 @@ func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineCon
 	}
 
 	s := NewSession(sessionAssets, engineConfig, httpClient).(*session)
+	s.type_ = e.Type
 	s.status = e.Status
 
 	// read our environment
@@ -570,6 +583,7 @@ func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineCon
 // MarshalJSON marshals this session into JSON
 func (s *session) MarshalJSON() ([]byte, error) {
 	e := &sessionEnvelope{
+		Type:   s.type_,
 		Status: s.status,
 	}
 	var err error
