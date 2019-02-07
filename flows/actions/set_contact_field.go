@@ -33,7 +33,7 @@ type SetContactFieldAction struct {
 	universalAction
 
 	Field *assets.FieldReference `json:"field" validate:"required"`
-	Value string                 `json:"value"`
+	Value string                 `json:"value" engine:"evaluate"`
 }
 
 // NewSetContactFieldAction creates a new set channel action

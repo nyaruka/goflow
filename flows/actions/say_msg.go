@@ -34,7 +34,7 @@ type SayMsgAction struct {
 	BaseAction
 	voiceAction
 
-	Text     string `json:"text" validate:"required"`
+	Text     string `json:"text" validate:"required" engine:"evaluate"`
 	AudioURL string `json:"audio_url,omitempty"`
 }
 

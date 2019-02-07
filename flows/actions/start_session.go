@@ -37,7 +37,7 @@ type StartSessionAction struct {
 	URNs          []urns.URN                `json:"urns,omitempty"`
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups        []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	LegacyVars    []string                  `json:"legacy_vars,omitempty"`
+	LegacyVars    []string                  `json:"legacy_vars,omitempty" engine:"evaluate"`
 	CreateContact bool                      `json:"create_contact,omitempty"`
 }
 

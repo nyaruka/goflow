@@ -22,7 +22,7 @@ const TypeSwitch string = "switch"
 type Case struct {
 	UUID        utils.UUID     `json:"uuid"                 validate:"required"`
 	Type        string         `json:"type"                 validate:"required"`
-	Arguments   []string       `json:"arguments,omitempty"`
+	Arguments   []string       `json:"arguments,omitempty"  engine:"evaluate"`
 	OmitOperand bool           `json:"omit_operand,omitempty"`
 	ExitUUID    flows.ExitUUID `json:"exit_uuid"            validate:"required"`
 }
@@ -42,8 +42,8 @@ func NewCase(uuid utils.UUID, type_ string, arguments []string, omitOperand bool
 // whichever case returns true, or if none do, then taking the default exit
 type SwitchRouter struct {
 	BaseRouter
-	Default flows.ExitUUID `json:"default_exit_uuid"   validate:"omitempty,uuid4"`
-	Operand string         `json:"operand"             validate:"required"`
+	Default flows.ExitUUID `json:"default_exit_uuid" validate:"omitempty,uuid4"`
+	Operand string         `json:"operand"           validate:"required"       engine:"evaluate"`
 	Cases   []*Case        `json:"cases"`
 }
 

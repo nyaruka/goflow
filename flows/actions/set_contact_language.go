@@ -31,7 +31,7 @@ type SetContactLanguageAction struct {
 	BaseAction
 	universalAction
 
-	Language string `json:"language"`
+	Language string `json:"language" engine:"evaluate"`
 }
 
 // NewSetContactLanguageAction creates a new set language action

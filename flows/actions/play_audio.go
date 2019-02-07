@@ -31,7 +31,7 @@ type PlayAudioAction struct {
 	BaseAction
 	voiceAction
 
-	AudioURL string `json:"audio_url" validate:"required"`
+	AudioURL string `json:"audio_url" validate:"required" engine:"evaluate"`
 }
 
 // NewPlayAudioAction creates a new play message action

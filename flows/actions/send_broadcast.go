@@ -33,13 +33,13 @@ type SendBroadcastAction struct {
 	BaseAction
 	onlineAction
 
-	Text         string                    `json:"text"`
-	Attachments  []string                  `json:"attachments,omitempty"`
-	QuickReplies []string                  `json:"quick_replies,omitempty"`
+	Text         string                    `json:"text" engine:"evaluate"`
+	Attachments  []string                  `json:"attachments,omitempty" engine:"evaluate"`
+	QuickReplies []string                  `json:"quick_replies,omitempty" engine:"evaluate"`
 	URNs         []urns.URN                `json:"urns,omitempty"`
 	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups       []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	LegacyVars   []string                  `json:"legacy_vars,omitempty"`
+	LegacyVars   []string                  `json:"legacy_vars,omitempty" engine:"evaluate"`
 }
 
 // NewSendBroadcastAction creates a new send broadcast action

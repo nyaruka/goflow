@@ -34,7 +34,7 @@ type SetRunResultAction struct {
 	universalAction
 
 	Name     string `json:"name" validate:"required"`
-	Value    string `json:"value" validate:"required"`
+	Value    string `json:"value" validate:"required" engine:"evaluate"`
 	Category string `json:"category"`
 }
 

@@ -33,9 +33,9 @@ type SendEmailAction struct {
 	BaseAction
 	onlineAction
 
-	Addresses []string `json:"addresses" validate:"required,min=1"`
-	Subject   string   `json:"subject" validate:"required"`
-	Body      string   `json:"body" validate:"required"`
+	Addresses []string `json:"addresses" validate:"required,min=1" engine:"evaluate"`
+	Subject   string   `json:"subject" validate:"required" engine:"evaluate"`
+	Body      string   `json:"body" validate:"required" engine:"evaluate"`
 }
 
 // NewSendEmailAction creates a new send email action

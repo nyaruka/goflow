@@ -34,7 +34,7 @@ type AddContactURNAction struct {
 	universalAction
 
 	Scheme string `json:"scheme" validate:"urnscheme"`
-	Path   string `json:"path" validate:"required"`
+	Path   string `json:"path" validate:"required" engine:"evaluate"`
 }
 
 // NewAddContactURNAction creates a new add URN action

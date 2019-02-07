@@ -50,7 +50,6 @@ func TestVisitFields(t *testing.T) {
 
 	visits := make([]string, 0)
 	utils.VisitFields(s, func(v reflect.Value, tag reflect.StructTag) {
-		fmt.Printf("type=%s tag=%s\n", v.Type(), tag)
 		visits = append(visits, fmt.Sprintf("type=%s tag=%s", v.Type(), tag))
 	})
 
