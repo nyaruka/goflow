@@ -22,7 +22,7 @@ const TypeSwitch string = "switch"
 type Case struct {
 	UUID        utils.UUID     `json:"uuid"                 validate:"required"`
 	Type        string         `json:"type"                 validate:"required"`
-	Arguments   []string       `json:"arguments,omitempty"  engine:"evaluate"`
+	Arguments   []string       `json:"arguments,omitempty"  engine:"localize,evaluate"`
 	OmitOperand bool           `json:"omit_operand,omitempty"`
 	ExitUUID    flows.ExitUUID `json:"exit_uuid"            validate:"required"`
 }

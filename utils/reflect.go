@@ -5,7 +5,7 @@ import (
 )
 
 // FieldCallback is a callback for a visit to any struct field
-type FieldCallback func(v reflect.Value, tag reflect.StructTag)
+type FieldCallback func(reflect.Value, reflect.Value, reflect.StructTag)
 
 // VisitFields visits all struct fields recursively in the given value
 func VisitFields(s interface{}, visitor FieldCallback) {
@@ -22,7 +22,7 @@ func traverse(v reflect.Value, visitor FieldCallback) {
 			fld := v.Type().Field(f)
 			val := v.FieldByIndex(fld.Index)
 
-			visitor(val, fld.Tag)
+			visitor(v, val, fld.Tag)
 
 			traverse(val, visitor)
 		}

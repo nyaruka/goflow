@@ -33,9 +33,9 @@ type SendBroadcastAction struct {
 	BaseAction
 	onlineAction
 
-	Text         string                    `json:"text" engine:"evaluate"`
-	Attachments  []string                  `json:"attachments,omitempty" engine:"evaluate"`
-	QuickReplies []string                  `json:"quick_replies,omitempty" engine:"evaluate"`
+	Text         string                    `json:"text" engine:"localize,evaluate"`
+	Attachments  []string                  `json:"attachments,omitempty" engine:"localize,evaluate"`
+	QuickReplies []string                  `json:"quick_replies,omitempty" engine:"localize,evaluate"`
 	URNs         []urns.URN                `json:"urns,omitempty"`
 	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups       []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`

@@ -23,16 +23,21 @@ func TestExtractTemplates(t *testing.T) {
 
 	assert.Equal(t, []string{
 		`Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))`,
+		`Quelle est votres couleur preferee? (rouge/blue)`,
 		`@input`,
 		`red`,
+		`rouge`,
 		`blue`,
+		`bleu`,
 		`fra`,
 		`@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)`,
+		`@(TITLE(results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)`,
 		`@input`,
 		`pepsi`,
 		`coke coca cola`,
 		`http://localhost/?cmd=success`,
 		`{ "contact": @(json(contact.uuid)), "soda": @(json(results.soda.value)) }`,
 		`Great, you are done and like @results.soda! Webhook status was @results.webhook.value`,
+		`Parfait, vous avez finis et tu aimes @results.soda.category`,
 	}, definition.ExtractTemplates(flow))
 }

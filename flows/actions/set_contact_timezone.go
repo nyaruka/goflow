@@ -31,7 +31,7 @@ type SetContactTimezoneAction struct {
 	BaseAction
 	universalAction
 
-	Timezone string `json:"timezone" engine:"evaluate"`
+	Timezone string `json:"timezone" engine:"localize,evaluate"`
 }
 
 // NewSetContactTimezoneAction creates a new set timezone action

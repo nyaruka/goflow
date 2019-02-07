@@ -38,9 +38,9 @@ type SendMsgAction struct {
 	BaseAction
 	universalAction
 
-	Text         string   `json:"text" engine:"evaluate"`
-	Attachments  []string `json:"attachments,omitempty" engine:"evaluate"`
-	QuickReplies []string `json:"quick_replies,omitempty" engine:"evaluate"`
+	Text         string   `json:"text" engine:"localize,evaluate"`
+	Attachments  []string `json:"attachments,omitempty" engine:"localize,evaluate"`
+	QuickReplies []string `json:"quick_replies,omitempty" engine:"localize,evaluate"`
 	AllURNs      bool     `json:"all_urns,omitempty"`
 }
 

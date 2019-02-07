@@ -35,7 +35,7 @@ type SetRunResultAction struct {
 
 	Name     string `json:"name" validate:"required"`
 	Value    string `json:"value" validate:"required" engine:"evaluate"`
-	Category string `json:"category"`
+	Category string `json:"category" engine:"localize"`
 }
 
 // NewSetRunResultAction creates a new set run result action

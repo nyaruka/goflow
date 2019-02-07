@@ -14,7 +14,13 @@ type testSubType struct {
 	text string `subtag:"hi"`
 }
 
+type testEncapsulatedType struct {
+	zed string `ptag:"bonjour"`
+}
+
 type testReflectType struct {
+	testEncapsulatedType
+
 	text        string `tag1:"weee"`
 	number      int
 	textSlice   []string
@@ -49,11 +55,13 @@ func TestVisitFields(t *testing.T) {
 	}
 
 	visits := make([]string, 0)
-	utils.VisitFields(s, func(v reflect.Value, tag reflect.StructTag) {
+	utils.VisitFields(s, func(s reflect.Value, v reflect.Value, tag reflect.StructTag) {
 		visits = append(visits, fmt.Sprintf("type=%s tag=%s", v.Type(), tag))
 	})
 
 	assert.Equal(t, []string{
+		`type=utils_test.testEncapsulatedType tag=`,
+		`type=string tag=ptag:"bonjour"`,
 		`type=string tag=tag1:"weee"`,
 		`type=int tag=`,
 		`type=[]string tag=`,
