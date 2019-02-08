@@ -86,6 +86,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				},
 				"environment": {
 					"date_format": "YYYY-MM-DD",
+					"max_value_length": 640,
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -123,6 +124,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				},
 				"environment": {
 					"date_format": "YYYY-MM-DD",
+					"max_value_length": 640,
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -160,6 +162,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				},
 				"environment": {
 					"date_format": "YYYY-MM-DD",
+					"max_value_length": 640,
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -200,6 +203,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				},
 				"environment": {
 					"date_format": "YYYY-MM-DD",
+					"max_value_length": 640,
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -236,6 +240,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				},
 				"environment": {
 					"date_format": "YYYY-MM-DD",
+					"max_value_length": 640,
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -276,6 +281,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				},
 				"environment": {
 					"date_format": "YYYY-MM-DD",
+					"max_value_length": 640,
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -309,6 +315,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				},
 				"environment": {
 					"date_format": "YYYY-MM-DD",
+					"max_value_length": 640,
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"

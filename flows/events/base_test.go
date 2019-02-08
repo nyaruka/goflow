@@ -223,6 +223,7 @@ func TestEventMarshaling(t *testing.T) {
 					],
 					"date_format": "YYYY-MM-DD",
 					"default_language": "eng",
+					"max_value_length": 640,
 					"redaction_policy": "none",
 					"time_format": "hh:mm",
 					"timezone": "America/Guayaquil"

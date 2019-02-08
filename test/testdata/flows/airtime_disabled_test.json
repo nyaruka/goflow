@@ -46,6 +46,7 @@
                             "login": "testymctest"
                         }
                     },
+                    "max_value_length": 640,
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
@@ -127,6 +128,7 @@
                                 "login": "testymctest"
                             }
                         },
+                        "max_value_length": 640,
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
