@@ -64,7 +64,14 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 	}
 
 	return &Environment{
-		target: utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormat(dateFormat)).WithTimeFormat(utils.TimeFormat(timeFormat)).WithTimezone(tz).WithDefaultLanguage(utils.Language(defaultLanguage)).WithAllowedLanguages(langs).WithRedactionPolicy(utils.RedactionPolicy(redactionPolicy)).Build(),
+		target: utils.NewEnvironmentBuilder().
+			WithDateFormat(utils.DateFormat(dateFormat)).
+			WithTimeFormat(utils.TimeFormat(timeFormat)).
+			WithTimezone(tz).
+			WithDefaultLanguage(utils.Language(defaultLanguage)).
+			WithAllowedLanguages(langs).
+			WithRedactionPolicy(utils.RedactionPolicy(redactionPolicy)).
+			Build(),
 	}, nil
 }
 
