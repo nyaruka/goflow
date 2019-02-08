@@ -84,24 +84,25 @@ func (e *environment) Equal(other Environment) bool {
 //------------------------------------------------------------------------------------------
 
 type envEnvelope struct {
-	DateFormat       DateFormat                 `json:"date_format" validate:"required,date_format"`
-	TimeFormat       TimeFormat                 `json:"time_format" validate:"required,time_format"`
-	Timezone         string                     `json:"timezone" validate:"required"`
+	DateFormat       DateFormat                 `json:"date_format" validate:"date_format"`
+	TimeFormat       TimeFormat                 `json:"time_format" validate:"time_format"`
+	Timezone         string                     `json:"timezone"`
 	DefaultLanguage  Language                   `json:"default_language,omitempty" validate:"omitempty,language"`
 	AllowedLanguages []Language                 `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
 	NumberFormat     *NumberFormat              `json:"number_format,omitempty"`
 	DefaultCountry   Country                    `json:"default_country,omitempty" validate:"omitempty,country"`
 	RedactionPolicy  RedactionPolicy            `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
-	MaxValuelength   *int                       `json:"max_value_length"`
+	MaxValuelength   int                        `json:"max_value_length"`
 	Extensions       map[string]json.RawMessage `json:"extensions,omitempty"`
 }
 
 // ReadEnvironment reads an environment from the given JSON
 func ReadEnvironment(data json.RawMessage) (Environment, error) {
+	// create new env with defaults
 	env := NewEnvironmentBuilder().Build().(*environment)
+	envelope := env.toEnvelope()
 
-	var envelope envEnvelope
-	if err := UnmarshalAndValidate(data, &envelope); err != nil {
+	if err := UnmarshalAndValidate(data, envelope); err != nil {
 		return nil, err
 	}
 
@@ -110,15 +111,10 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env.defaultLanguage = envelope.DefaultLanguage
 	env.allowedLanguages = envelope.AllowedLanguages
 	env.defaultCountry = envelope.DefaultCountry
+	env.numberFormat = envelope.NumberFormat
+	env.redactionPolicy = envelope.RedactionPolicy
+	env.maxValueLength = envelope.MaxValuelength
 	env.extensions = envelope.Extensions
-
-	if envelope.NumberFormat != nil {
-		env.numberFormat = envelope.NumberFormat
-	}
-
-	if envelope.MaxValuelength != nil {
-		env.maxValueLength = *envelope.MaxValuelength
-	}
 
 	tz, err := time.LoadLocation(envelope.Timezone)
 	if err != nil {
@@ -126,32 +122,27 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	}
 	env.timezone = tz
 
-	env.redactionPolicy = envelope.RedactionPolicy
-	if env.redactionPolicy == "" {
-		env.redactionPolicy = RedactionPolicyNone
-	}
-
 	return env, nil
 }
 
-// MarshalJSON marshals this environment into JSON
-func (e *environment) MarshalJSON() ([]byte, error) {
-	ee := &envEnvelope{
+func (e *environment) toEnvelope() *envEnvelope {
+	return &envEnvelope{
 		DateFormat:       e.dateFormat,
 		TimeFormat:       e.timeFormat,
 		Timezone:         e.timezone.String(),
 		DefaultLanguage:  e.defaultLanguage,
 		AllowedLanguages: e.allowedLanguages,
 		DefaultCountry:   e.defaultCountry,
+		NumberFormat:     e.numberFormat,
 		RedactionPolicy:  e.redactionPolicy,
-		MaxValuelength:   &e.maxValueLength,
+		MaxValuelength:   e.maxValueLength,
 		Extensions:       e.extensions,
 	}
-	if e.numberFormat != DefaultNumberFormat {
-		ee.NumberFormat = e.numberFormat
-	}
+}
 
-	return json.Marshal(ee)
+// MarshalJSON marshals this environment into JSON
+func (e *environment) MarshalJSON() ([]byte, error) {
+	return json.Marshal(e.toEnvelope())
 }
 
 //------------------------------------------------------------------------------------------

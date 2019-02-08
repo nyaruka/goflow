@@ -15,12 +15,8 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	kgl, err := time.LoadLocation("Africa/Kigali")
 	require.NoError(t, err)
 
-	// can't create empty environment
-	env, err := utils.ReadEnvironment(json.RawMessage(`{}`))
-	assert.Error(t, err)
-
 	// can't create with invalid date format
-	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "YYYYYYYYYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
+	env, err := utils.ReadEnvironment(json.RawMessage(`{"date_format": "YYYYYYYYYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
 	assert.Error(t, err)
 
 	// can't create with invalid time format
@@ -43,6 +39,14 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Cuenca", "extensions": []}`))
 	assert.Error(t, err)
 
+	// empty environment uses all defaults
+	env, err = utils.ReadEnvironment(json.RawMessage(`{}`))
+	assert.NoError(t, err)
+	assert.Equal(t, utils.DateFormatYearMonthDay, env.DateFormat())
+	assert.Equal(t, utils.TimeFormatHourMinute, env.TimeFormat())
+	assert.Equal(t, utils.DefaultNumberFormat, env.NumberFormat())
+	assert.Equal(t, 640, env.MaxValueLength())
+
 	// can create with valid values
 	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "default_language": "eng", "allowed_languages": ["eng", "fra"], "default_country": "RW", "timezone": "Africa/Kigali", "extensions": {"foo":{"bar":1234}}}`))
 	assert.NoError(t, err)
@@ -56,7 +60,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 
 	data, err := json.Marshal(env)
 	require.NoError(t, err)
-	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","default_language":"eng","allowed_languages":["eng","fra"],"default_country":"RW","redaction_policy":"none","max_value_length":640,"extensions":{"foo":{"bar":1234}}}`)
+	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","default_language":"eng","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","redaction_policy":"none","max_value_length":640,"extensions":{"foo":{"bar":1234}}}`)
 }
 
 func TestEnvironmentEqual(t *testing.T) {
