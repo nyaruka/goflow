@@ -74,6 +74,12 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 		return err
 	}
 
+	// trim value if necessary
+	maxLength := run.Session().EngineConfig().MaxFieldLength()
+	if len(rawValue) > maxLength {
+		rawValue = rawValue[0:maxLength]
+	}
+
 	newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
 
 	a.applyModifier(run, modifiers.NewFieldModifier(field, newValue), logModifier, logEvent)

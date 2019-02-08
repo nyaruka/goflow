@@ -70,6 +70,12 @@ func (r *flowRun) Events() []flows.Event   { return r.events }
 
 func (r *flowRun) Results() flows.Results { return r.results }
 func (r *flowRun) SaveResult(result *flows.Result) {
+	// trim value if necessary
+	maxLength := r.Session().EngineConfig().MaxResultLength()
+	if len(result.Value) > maxLength {
+		result.Value = result.Value[0:maxLength]
+	}
+
 	r.results.Save(result)
 	r.modifiedOn = utils.Now()
 }

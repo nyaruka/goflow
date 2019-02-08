@@ -364,8 +364,9 @@ type Step interface {
 }
 
 type EngineConfig interface {
+	MaxFieldLength() int
+	MaxResultLength() int
 	DisableWebhooks() bool
-	WebhookMocks() []*WebhookMock
 	MaxWebhookResponseBytes() int
 }
 
