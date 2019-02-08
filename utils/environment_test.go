@@ -81,3 +81,30 @@ func TestEnvironmentEqual(t *testing.T) {
 
 	assert.True(t, env1.Equal(env2))
 }
+
+func TestEnvironmentBuilder(t *testing.T) {
+	kgl, err := time.LoadLocation("Africa/Kigali")
+	require.NoError(t, err)
+
+	env := utils.NewEnvironmentBuilder().
+		WithDateFormat(utils.DateFormatDayMonthYear).
+		WithTimeFormat(utils.TimeFormatHourMinuteSecond).
+		WithTimezone(kgl).
+		WithDefaultLanguage(utils.Language("fra")).
+		WithAllowedLanguages([]utils.Language{utils.Language("fra"), utils.Language("eng")}).
+		WithDefaultCountry(utils.Country("RW")).
+		WithNumberFormat(&utils.NumberFormat{DecimalSymbol: "'"}).
+		WithRedactionPolicy(utils.RedactionPolicyURNs).
+		WithMaxValueLength(1024).
+		Build()
+
+	assert.Equal(t, utils.DateFormatDayMonthYear, env.DateFormat())
+	assert.Equal(t, utils.TimeFormatHourMinuteSecond, env.TimeFormat())
+	assert.Equal(t, kgl, env.Timezone())
+	assert.Equal(t, utils.Language("fra"), env.DefaultLanguage())
+	assert.Equal(t, []utils.Language{utils.Language("fra"), utils.Language("eng")}, env.AllowedLanguages())
+	assert.Equal(t, utils.Country("RW"), env.DefaultCountry())
+	assert.Equal(t, &utils.NumberFormat{DecimalSymbol: "'"}, env.NumberFormat())
+	assert.Equal(t, utils.RedactionPolicyURNs, env.RedactionPolicy())
+	assert.Equal(t, 1024, env.MaxValueLength())
+}
