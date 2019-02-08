@@ -73,6 +73,7 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 			utils.NilCountry,
 			utils.DefaultNumberFormat,
 			utils.RedactionPolicy(redactionPolicy),
+			640,
 		),
 	}, nil
 }

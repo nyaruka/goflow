@@ -69,7 +69,7 @@ func TestContactURN(t *testing.T) {
 	assert.Equal(t, types.NewXText(`{"display":"0781 234 567","path":"+250781234567","scheme":"tel"}`), urn.ToXJSON(env))
 
 	// check when URNs have to be redacted
-	env = utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.Language("eng"), nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyURNs)
+	env = utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.Language("eng"), nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyURNs, 640)
 	assert.Equal(t, types.NewXText("********"), urn.Reduce(env))
 	assert.Equal(t, types.NewXText("tel"), urn.Resolve(env, "scheme"))
 	assert.Equal(t, types.NewXText("********"), urn.Resolve(env, "path"))

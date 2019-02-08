@@ -34,6 +34,11 @@ func NewNameModifier(name string) *NameModifier {
 // Apply applies this modification to the given contact
 func (m *NameModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	if contact.Name() != m.Name {
+		// truncate value if necessary
+		if len(m.Name) > env.MaxValueLength() {
+			m.Name = m.Name[0:env.MaxValueLength()]
+		}
+
 		contact.SetName(m.Name)
 		log(events.NewContactNameChangedEvent(m.Name))
 		m.reevaluateDynamicGroups(env, assets, contact, log)

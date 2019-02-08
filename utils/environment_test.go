@@ -56,7 +56,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 
 	data, err := json.Marshal(env)
 	require.NoError(t, err)
-	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","default_language":"eng","allowed_languages":["eng","fra"],"default_country":"RW","redaction_policy":"none","extensions":{"foo":{"bar":1234}}}`)
+	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","default_language":"eng","allowed_languages":["eng","fra"],"default_country":"RW","redaction_policy":"none","max_value_length":640,"extensions":{"foo":{"bar":1234}}}`)
 }
 
 func TestEnvironmentEqual(t *testing.T) {

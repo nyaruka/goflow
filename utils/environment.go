@@ -32,6 +32,7 @@ type Environment interface {
 	DefaultCountry() Country
 	NumberFormat() *NumberFormat
 	RedactionPolicy() RedactionPolicy
+	MaxValueLength() int
 
 	// Convenience method to get the current time in the env timezone
 	Now() time.Time
@@ -40,6 +41,19 @@ type Environment interface {
 	Extension(string) json.RawMessage
 
 	Equal(Environment) bool
+}
+
+type environment struct {
+	dateFormat       DateFormat
+	timeFormat       TimeFormat
+	timezone         *time.Location
+	defaultLanguage  Language
+	allowedLanguages []Language
+	defaultCountry   Country
+	numberFormat     *NumberFormat
+	redactionPolicy  RedactionPolicy
+	maxValueLength   int
+	extensions       map[string]json.RawMessage
 }
 
 // NewDefaultEnvironment creates a new Environment with our usual defaults in the UTC timezone
@@ -52,12 +66,13 @@ func NewDefaultEnvironment() Environment {
 		allowedLanguages: nil,
 		defaultCountry:   NilCountry,
 		numberFormat:     DefaultNumberFormat,
+		maxValueLength:   640,
 		redactionPolicy:  RedactionPolicyNone,
 	}
 }
 
 // NewEnvironment creates a new Environment with the passed in date and time formats and timezone
-func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time.Location, defaultLanguage Language, allowedLanguages []Language, defaultCountry Country, numberFormat *NumberFormat, redactionPolicy RedactionPolicy) Environment {
+func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time.Location, defaultLanguage Language, allowedLanguages []Language, defaultCountry Country, numberFormat *NumberFormat, redactionPolicy RedactionPolicy, maxValueLength int) Environment {
 	return &environment{
 		dateFormat:       dateFormat,
 		timeFormat:       timeFormat,
@@ -66,20 +81,9 @@ func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time
 		allowedLanguages: allowedLanguages,
 		defaultCountry:   defaultCountry,
 		numberFormat:     numberFormat,
+		maxValueLength:   maxValueLength,
 		redactionPolicy:  redactionPolicy,
 	}
-}
-
-type environment struct {
-	dateFormat       DateFormat
-	timeFormat       TimeFormat
-	timezone         *time.Location
-	defaultLanguage  Language
-	allowedLanguages []Language
-	defaultCountry   Country
-	numberFormat     *NumberFormat
-	redactionPolicy  RedactionPolicy
-	extensions       map[string]json.RawMessage
 }
 
 func (e *environment) DateFormat() DateFormat           { return e.dateFormat }
@@ -90,7 +94,9 @@ func (e *environment) AllowedLanguages() []Language     { return e.allowedLangua
 func (e *environment) DefaultCountry() Country          { return e.defaultCountry }
 func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
-func (e *environment) Now() time.Time                   { return Now().In(e.Timezone()) }
+func (e *environment) MaxValueLength() int              { return e.maxValueLength }
+
+func (e *environment) Now() time.Time { return Now().In(e.Timezone()) }
 
 func (e *environment) Extension(name string) json.RawMessage {
 	return e.extensions[name]
@@ -116,6 +122,7 @@ type envEnvelope struct {
 	NumberFormat     *NumberFormat              `json:"number_format,omitempty"`
 	DefaultCountry   Country                    `json:"default_country,omitempty" validate:"omitempty,country"`
 	RedactionPolicy  RedactionPolicy            `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
+	MaxValuelength   *int                       `json:"max_value_length"`
 	Extensions       map[string]json.RawMessage `json:"extensions,omitempty"`
 }
 
@@ -137,6 +144,10 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 
 	if envelope.NumberFormat != nil {
 		env.numberFormat = envelope.NumberFormat
+	}
+
+	if envelope.MaxValuelength != nil {
+		env.maxValueLength = *envelope.MaxValuelength
 	}
 
 	tz, err := time.LoadLocation(envelope.Timezone)
@@ -163,6 +174,7 @@ func (e *environment) MarshalJSON() ([]byte, error) {
 		AllowedLanguages: e.allowedLanguages,
 		DefaultCountry:   e.defaultCountry,
 		RedactionPolicy:  e.redactionPolicy,
+		MaxValuelength:   &e.maxValueLength,
 		Extensions:       e.extensions,
 	}
 	if e.numberFormat != DefaultNumberFormat {
