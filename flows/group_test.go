@@ -17,7 +17,7 @@ func TestGroupListResolve(t *testing.T) {
 	males := test.NewGroup("Males", "gender = \"M\"")
 	groups := flows.NewGroupList([]*flows.Group{customers, testers, males})
 
-	env := utils.NewEnvironmentBuilder().Environment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	testCases := []struct {
 		key      string

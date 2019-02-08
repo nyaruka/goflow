@@ -17,7 +17,7 @@ import (
 )
 
 func TestContact(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Environment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
@@ -71,7 +71,7 @@ func TestContact(t *testing.T) {
 }
 
 func TestContactFormat(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Environment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	// name takes precedence if set
 	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
@@ -86,7 +86,7 @@ func TestContactFormat(t *testing.T) {
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	assert.Equal(t, "joey", contact.Format(env))
 
-	anonEnv := utils.NewEnvironmentBuilder().WithRedactionPolicy(utils.RedactionPolicyURNs).Environment()
+	anonEnv := utils.NewEnvironmentBuilder().WithRedactionPolicy(utils.RedactionPolicyURNs).Build()
 
 	// unless URNs are redacted
 	assert.Equal(t, "1234", contact.Format(anonEnv))

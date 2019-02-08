@@ -335,7 +335,7 @@ func TestLegacyTests(t *testing.T) {
 			tz, err := time.LoadLocation(tc.Context.Timezone)
 			require.NoError(t, err)
 
-			env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).WithTimezone(tz).Environment()
+			env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).WithTimezone(tz).Build()
 			if tc.Context.Now != nil {
 				utils.SetTimeSource(utils.NewFixedTimeSource(*tc.Context.Now))
 				defer utils.SetTimeSource(utils.DefaultTimeSource)

@@ -128,13 +128,13 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			if flow.Type() == flows.FlowTypeVoice {
 				channel, _ := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
-				trigger = triggers.NewManualVoiceTrigger(utils.NewEnvironmentBuilder().Environment(), flow.Reference(), contact, connection, nil)
+				trigger = triggers.NewManualVoiceTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, connection, nil)
 			} else {
-				trigger = triggers.NewManualTrigger(utils.NewEnvironmentBuilder().Environment(), flow.Reference(), contact, nil)
+				trigger = triggers.NewManualTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, nil)
 			}
 		} else {
 			msg := flows.NewMsgIn(flows.MsgUUID("aa90ce99-3b4d-44ba-b0ca-79e63d9ed842"), urns.URN("tel:+12065551212"), nil, "Hi everybody", nil)
-			trigger = triggers.NewMsgTrigger(utils.NewEnvironmentBuilder().Environment(), flow.Reference(), contact, msg, nil)
+			trigger = triggers.NewMsgTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, msg, nil)
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 

@@ -10,7 +10,7 @@ import (
 )
 
 func TestXMap(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Environment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	map1 := types.NewXMap(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
@@ -27,7 +27,7 @@ func TestXMap(t *testing.T) {
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), map1.ToXText(env))
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), map1.ToXJSON(env))
 	assert.Equal(t, `{"bar":123,"foo":"abc","zed":false}`, map1.String())
-	assert.Equal(t, map1, map1.Reduce(utils.NewEnvironmentBuilder().Environment()))
+	assert.Equal(t, map1, map1.Reduce(utils.NewEnvironmentBuilder().Build()))
 	assert.Equal(t, "map", map1.Describe())
 
 	// test equality

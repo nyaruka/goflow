@@ -98,7 +98,7 @@ type envEnvelope struct {
 
 // ReadEnvironment reads an environment from the given JSON
 func ReadEnvironment(data json.RawMessage) (Environment, error) {
-	env := NewEnvironmentBuilder().Environment().(*environment)
+	env := NewEnvironmentBuilder().Build().(*environment)
 
 	var envelope envEnvelope
 	if err := UnmarshalAndValidate(data, &envelope); err != nil {
@@ -227,5 +227,5 @@ func (b *EnvironmentBuilder) WithMaxValueLength(maxValueLength int) *Environment
 	return b
 }
 
-// Environment returns the final environment
-func (b *EnvironmentBuilder) Environment() Environment { return b.env }
+// Build returns the final environment
+func (b *EnvironmentBuilder) Build() Environment { return b.env }

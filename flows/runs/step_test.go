@@ -31,7 +31,7 @@ func TestStep(t *testing.T) {
 	assert.Equal(t, flows.ExitUUID(""), step.ExitUUID())
 
 	// test use in expressions
-	env := utils.NewEnvironmentBuilder().Environment()
+	env := utils.NewEnvironmentBuilder().Build()
 	assert.Equal(t, "step", step.Describe())
 	assert.Equal(t, types.NewXText("c00e5d67-c275-4389-aded-7d8b151cbd5b"), step.Resolve(env, "UUID"))
 	assert.Equal(t, types.NewXDateTime(d), step.Resolve(env, "Arrived_On"))

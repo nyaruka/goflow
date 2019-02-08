@@ -218,7 +218,7 @@ func TestTests(t *testing.T) {
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).WithTimeFormat(utils.TimeFormatHourMinuteSecond).WithDefaultCountry(utils.Country("RW")).Environment()
+	env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).WithTimeFormat(utils.TimeFormatHourMinuteSecond).WithDefaultCountry(utils.Country("RW")).Build()
 
 	for _, test := range testTests {
 		testFunc := tests.XTESTS[test.name]
@@ -268,7 +268,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(is_error(1 / 0))", "true", false},
 	}
 
-	env := utils.NewEnvironmentBuilder().Environment()
+	env := utils.NewEnvironmentBuilder().Build()
 	for _, test := range evalTests {
 		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, vars.Keys())
 
