@@ -70,6 +70,11 @@ func (r *flowRun) Events() []flows.Event   { return r.events }
 
 func (r *flowRun) Results() flows.Results { return r.results }
 func (r *flowRun) SaveResult(result *flows.Result) {
+	// truncate value if necessary
+	if len(result.Value) > r.Environment().MaxValueLength() {
+		result.Value = result.Value[0:r.Environment().MaxValueLength()]
+	}
+
 	r.results.Save(result)
 	r.modifiedOn = utils.Now()
 }
