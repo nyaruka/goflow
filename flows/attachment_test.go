@@ -11,7 +11,7 @@ import (
 )
 
 func TestAttachment(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Environment()
 
 	attachment := flows.Attachment("image/jpeg:https://example.com/test.jpg")
 
@@ -31,7 +31,7 @@ func TestAttachment(t *testing.T) {
 }
 
 func TestAttachmentList(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Environment()
 
 	a1 := flows.Attachment("image/jpeg:https://example.com/test.jpg")
 	a2 := flows.Attachment("audio/mp3:https://example.com/test.mp3")

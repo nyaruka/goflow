@@ -26,7 +26,7 @@ func TestXDateTime(t *testing.T) {
 	assert.Equal(t, -1, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 29, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
 
 	d1 := types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))
-	assert.Equal(t, d1, d1.Reduce(utils.NewDefaultEnvironment()))
+	assert.Equal(t, d1, d1.Reduce(utils.NewEnvironmentBuilder().Environment()))
 	assert.Equal(t, `datetime`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).Describe())
 
 	// test unmarshaling
@@ -57,7 +57,7 @@ func TestToXDateTime(t *testing.T) {
 		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
 	}
 
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Environment()
 
 	for _, test := range tests {
 		result, err := types.ToXDateTime(env, test.value)
@@ -75,7 +75,7 @@ func TestToXDateTimeWithTimeFill(t *testing.T) {
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Environment()
 	result, err := types.ToXDateTimeWithTimeFill(env, types.NewXText("2018/12/20"))
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXDateTime(time.Date(2018, 12, 20, 13, 36, 30, 123456789, time.UTC)), result)

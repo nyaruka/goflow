@@ -15,7 +15,7 @@ import (
 )
 
 func TestChannel(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Environment()
 
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)

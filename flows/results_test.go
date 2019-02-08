@@ -26,7 +26,7 @@ func TestResults(t *testing.T) {
 		{[]byte(`{ "last_name": { "result_name": "Last Name", "value": "Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "Last Name", types.NewXText("Lewis")},
 	}
 
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Environment()
 	for _, test := range tests {
 		results := NewResults()
 		err := json.Unmarshal(test.JSON, &results)

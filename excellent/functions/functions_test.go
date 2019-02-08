@@ -25,8 +25,8 @@ var xd = types.NewXDateTime
 var ERROR = types.NewXErrorf("any error")
 
 func TestFunctions(t *testing.T) {
-	dmy := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyNone, 640)
-	mdy := utils.NewEnvironment(utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, la, utils.NilLanguage, nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyNone, 640)
+	dmy := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Environment()
+	mdy := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatMonthDayYear).WithTimezone(la).Environment()
 
 	var funcTests = []struct {
 		name     string

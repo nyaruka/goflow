@@ -71,7 +71,7 @@ func (t *TestQueryable) ResolveQueryKey(env utils.Environment, key string) []int
 }
 
 func TestEvaluateQuery(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Environment()
 	testObj := &TestQueryable{}
 
 	tests := []struct {
@@ -160,7 +160,7 @@ func TestParsingErrors(t *testing.T) {
 }
 
 func TestEvaluationErrors(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Environment()
 	testObj := &TestQueryable{}
 
 	tests := []struct {

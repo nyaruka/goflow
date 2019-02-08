@@ -48,7 +48,7 @@ type session struct {
 // NewSession creates a new session
 func NewSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient) flows.Session {
 	return &session{
-		env:          utils.NewDefaultEnvironment(),
+		env:          utils.NewEnvironmentBuilder().Environment(),
 		assets:       assets,
 		status:       flows.SessionStatusActive,
 		runsByUUID:   make(map[flows.RunUUID]flows.FlowRun),
