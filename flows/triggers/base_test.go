@@ -87,6 +87,10 @@ func TestTriggerMarshaling(t *testing.T) {
 				"environment": {
 					"date_format": "YYYY-MM-DD",
 					"max_value_length": 640,
+					"number_format": {
+						"decimal_symbol": ".",
+						"digit_grouping_symbol": ","
+					},
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -125,6 +129,10 @@ func TestTriggerMarshaling(t *testing.T) {
 				"environment": {
 					"date_format": "YYYY-MM-DD",
 					"max_value_length": 640,
+					"number_format": {
+						"decimal_symbol": ".",
+						"digit_grouping_symbol": ","
+					},
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -163,6 +171,10 @@ func TestTriggerMarshaling(t *testing.T) {
 				"environment": {
 					"date_format": "YYYY-MM-DD",
 					"max_value_length": 640,
+					"number_format": {
+						"decimal_symbol": ".",
+						"digit_grouping_symbol": ","
+					},
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -204,6 +216,10 @@ func TestTriggerMarshaling(t *testing.T) {
 				"environment": {
 					"date_format": "YYYY-MM-DD",
 					"max_value_length": 640,
+					"number_format": {
+						"decimal_symbol": ".",
+						"digit_grouping_symbol": ","
+					},
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -241,6 +257,10 @@ func TestTriggerMarshaling(t *testing.T) {
 				"environment": {
 					"date_format": "YYYY-MM-DD",
 					"max_value_length": 640,
+					"number_format": {
+						"decimal_symbol": ".",
+						"digit_grouping_symbol": ","
+					},
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -282,6 +302,10 @@ func TestTriggerMarshaling(t *testing.T) {
 				"environment": {
 					"date_format": "YYYY-MM-DD",
 					"max_value_length": 640,
+					"number_format": {
+						"decimal_symbol": ".",
+						"digit_grouping_symbol": ","
+					},
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
@@ -316,6 +340,10 @@ func TestTriggerMarshaling(t *testing.T) {
 				"environment": {
 					"date_format": "YYYY-MM-DD",
 					"max_value_length": 640,
+					"number_format": {
+						"decimal_symbol": ".",
+						"digit_grouping_symbol": ","
+					},
 					"redaction_policy": "none",
 					"time_format": "tt:mm",
 					"timezone": "UTC"
