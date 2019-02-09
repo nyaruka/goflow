@@ -1,3 +1,7 @@
+v0.27.1
+----------
+ * Add max_value_length to environment and apply in name and field change modifiers
+
 v0.27.0
 ----------
  * Add type to sessions (the type of the flow it was triggered with)
