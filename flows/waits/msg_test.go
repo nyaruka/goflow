@@ -56,7 +56,7 @@ func TestMsgWait(t *testing.T) {
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Build()
 	contact := flows.NewEmptyContact("Ben Haggerty", utils.Language("eng"), nil)
 	session, flow := initializeSession(t)
 

@@ -65,7 +65,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 
 		// apply the modifier
 		logEvent := make([]flows.Event, 0)
-		modifier.Apply(utils.NewDefaultEnvironment(), sessionAssets, contact, func(e flows.Event) { logEvent = append(logEvent, e) })
+		modifier.Apply(utils.NewEnvironmentBuilder().Build(), sessionAssets, contact, func(e flows.Event) { logEvent = append(logEvent, e) })
 
 		// check contact is in the expected state
 		contactJSON, _ := json.Marshal(contact)

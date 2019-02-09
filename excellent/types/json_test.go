@@ -69,7 +69,7 @@ func TestXJSONResolve(t *testing.T) {
 		{[]byte(`["foo", null]`), "3", nil, true},
 	}
 
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Build()
 	for _, test := range jsonTests {
 		fragment := types.JSONToXValue(test.JSON)
 		value := excellent.ResolveValue(env, fragment, test.lookup)

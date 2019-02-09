@@ -61,7 +61,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 	date1 := time.Date(2017, 6, 23, 15, 30, 0, 0, time.UTC)
 	date2 := time.Date(2017, 7, 18, 15, 30, 0, 0, chi)
 
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	tests := []struct {
 		value          types.XValue
@@ -265,7 +265,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 }
 
 func TestEquals(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	var tests = []struct {
 		x1     types.XValue
@@ -306,7 +306,7 @@ func TestIsEmpty(t *testing.T) {
 }
 
 func TestReduce(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	assert.Nil(t, types.Reduce(env, nil))
 	assert.Equal(t, types.NewXText("Hello"), types.Reduce(env, NewTestXObject("Hello", 123)))

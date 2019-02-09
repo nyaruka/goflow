@@ -11,7 +11,7 @@ import (
 )
 
 func TestTestResult(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	res := tests.NewTrueResult(types.NewXText("abc"))
 
