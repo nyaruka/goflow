@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
 
@@ -64,6 +65,9 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))
 	}
+
+	// regardless of what subscriber calls we make, we need to record the payload that would be sent
+	logEvent(events.NewResthookCalledEvent(a.Resthook, json.RawMessage(payload)))
 
 	// make a call to each subscriber URL
 	webhooks := make([]*flows.WebhookCall, 0, len(resthook.Subscribers()))
