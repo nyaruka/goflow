@@ -52,7 +52,7 @@ type Environment struct {
 }
 
 // NewEnvironment creates a new environment.
-func NewEnvironment(dateFormat string, timeFormat string, timezone string, defaultLanguage string, allowedLanguages *StringSlice, redactionPolicy string) (*Environment, error) {
+func NewEnvironment(dateFormat string, timeFormat string, timezone string, defaultLanguage string, allowedLanguages *StringSlice, defaultCountry string, redactionPolicy string) (*Environment, error) {
 	tz, err := time.LoadLocation(timezone)
 	if err != nil {
 		return nil, err
@@ -70,6 +70,7 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 			WithTimezone(tz).
 			WithDefaultLanguage(utils.Language(defaultLanguage)).
 			WithAllowedLanguages(langs).
+			WithDefaultCountry(utils.Country(defaultCountry)).
 			WithRedactionPolicy(utils.RedactionPolicy(redactionPolicy)).
 			Build(),
 	}, nil
@@ -253,23 +254,6 @@ func (s *Session) Status() string {
 	return string(s.target.Status())
 }
 
-// NewSession creates a new session
-func NewSession(a *SessionAssets, httpUserAgent string) *Session {
-	httpClient := utils.NewHTTPClient(httpUserAgent)
-	s := engine.NewSession(a.target, engine.NewDefaultConfig(), httpClient)
-	return &Session{target: s}
-}
-
-// ReadSession reads an existing session from JSON
-func ReadSession(a *SessionAssets, httpUserAgent string, data string) (*Session, error) {
-	httpClient := utils.NewHTTPClient(httpUserAgent)
-	s, err := engine.ReadSession(a.target, engine.NewDefaultConfig(), httpClient, []byte(data), assets.IgnoreMissing)
-	if err != nil {
-		return nil, err
-	}
-	return &Session{target: s}, nil
-}
-
 // Assets returns the assets associated with this session
 func (s *Session) Assets() *SessionAssets {
 	return &SessionAssets{target: s.target.Assets()}
@@ -332,4 +316,28 @@ func (w *Wait) Hint() *Hint {
 		return &Hint{target: asMsgWait.Hint()}
 	}
 	return nil
+}
+
+type Engine struct {
+	target flows.Engine
+}
+
+func NewEngine(httpUserAgent string) *Engine {
+	return &Engine{
+		target: engine.NewBuilder().WithDefaultUserAgent(httpUserAgent).Build(),
+	}
+}
+
+// NewSession creates a new session
+func (e *Engine) NewSession(sa *SessionAssets) *Session {
+	return &Session{target: e.target.NewSession(sa.target)}
+}
+
+// ReadSession reads an existing session from JSON
+func (e *Engine) ReadSession(a *SessionAssets, data string) (*Session, error) {
+	s, err := e.target.ReadSession(a.target, []byte(data), assets.IgnoreMissing)
+	if err != nil {
+		return nil, err
+	}
+	return &Session{target: s}, nil
 }

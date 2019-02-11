@@ -34,14 +34,15 @@ func TestMobileBindings(t *testing.T) {
 	langs := mobile.NewStringSlice(2)
 	langs.Add("eng")
 	langs.Add("fra")
-	environment, err := mobile.NewEnvironment("DD-MM-YYYY", "tt:mm", "Africa/Kigali", "eng", langs, "none")
+	environment, err := mobile.NewEnvironment("DD-MM-YYYY", "tt:mm", "Africa/Kigali", "eng", langs, "RW", "none")
 	require.NoError(t, err)
 
 	contact := mobile.NewEmptyContact()
 
 	trigger := mobile.NewManualTrigger(environment, contact, mobile.NewFlowReference("7c3db26f-e12a-48af-9673-e2feefdf8516", "Two Questions"))
 
-	session := mobile.NewSession(sessionAssets, "mobile-test")
+	eng := mobile.NewEngine("mobile-test")
+	session := eng.NewSession(sessionAssets)
 	assert.Equal(t, sessionAssets, session.Assets())
 
 	sprint, err := session.Start(trigger)
@@ -88,7 +89,7 @@ func TestMobileBindings(t *testing.T) {
 	assert.Equal(t, `{"type":"messaging_offline","environment":{"date_f`, marshaled[:50])
 
 	// and try to read it back
-	session2, err := mobile.ReadSession(sessionAssets, "mobile-test", marshaled)
+	session2, err := eng.ReadSession(sessionAssets, marshaled)
 	require.NoError(t, err)
 
 	assert.Equal(t, "waiting", session2.Status())
