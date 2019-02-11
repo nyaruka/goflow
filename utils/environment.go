@@ -32,6 +32,7 @@ type Environment interface {
 	DefaultCountry() Country
 	NumberFormat() *NumberFormat
 	RedactionPolicy() RedactionPolicy
+	MaxValueLength() int
 
 	// Convenience method to get the current time in the env timezone
 	Now() time.Time
@@ -40,34 +41,6 @@ type Environment interface {
 	Extension(string) json.RawMessage
 
 	Equal(Environment) bool
-}
-
-// NewDefaultEnvironment creates a new Environment with our usual defaults in the UTC timezone
-func NewDefaultEnvironment() Environment {
-	return &environment{
-		dateFormat:       DateFormatYearMonthDay,
-		timeFormat:       TimeFormatHourMinute,
-		timezone:         time.UTC,
-		defaultLanguage:  NilLanguage,
-		allowedLanguages: nil,
-		defaultCountry:   NilCountry,
-		numberFormat:     DefaultNumberFormat,
-		redactionPolicy:  RedactionPolicyNone,
-	}
-}
-
-// NewEnvironment creates a new Environment with the passed in date and time formats and timezone
-func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time.Location, defaultLanguage Language, allowedLanguages []Language, defaultCountry Country, numberFormat *NumberFormat, redactionPolicy RedactionPolicy) Environment {
-	return &environment{
-		dateFormat:       dateFormat,
-		timeFormat:       timeFormat,
-		timezone:         timezone,
-		defaultLanguage:  defaultLanguage,
-		allowedLanguages: allowedLanguages,
-		defaultCountry:   defaultCountry,
-		numberFormat:     numberFormat,
-		redactionPolicy:  redactionPolicy,
-	}
 }
 
 type environment struct {
@@ -79,6 +52,7 @@ type environment struct {
 	defaultCountry   Country
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
+	maxValueLength   int
 	extensions       map[string]json.RawMessage
 }
 
@@ -90,7 +64,9 @@ func (e *environment) AllowedLanguages() []Language     { return e.allowedLangua
 func (e *environment) DefaultCountry() Country          { return e.defaultCountry }
 func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
-func (e *environment) Now() time.Time                   { return Now().In(e.Timezone()) }
+func (e *environment) MaxValueLength() int              { return e.maxValueLength }
+
+func (e *environment) Now() time.Time { return Now().In(e.Timezone()) }
 
 func (e *environment) Extension(name string) json.RawMessage {
 	return e.extensions[name]
@@ -108,23 +84,25 @@ func (e *environment) Equal(other Environment) bool {
 //------------------------------------------------------------------------------------------
 
 type envEnvelope struct {
-	DateFormat       DateFormat                 `json:"date_format" validate:"required,date_format"`
-	TimeFormat       TimeFormat                 `json:"time_format" validate:"required,time_format"`
-	Timezone         string                     `json:"timezone" validate:"required"`
+	DateFormat       DateFormat                 `json:"date_format" validate:"date_format"`
+	TimeFormat       TimeFormat                 `json:"time_format" validate:"time_format"`
+	Timezone         string                     `json:"timezone"`
 	DefaultLanguage  Language                   `json:"default_language,omitempty" validate:"omitempty,language"`
 	AllowedLanguages []Language                 `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
 	NumberFormat     *NumberFormat              `json:"number_format,omitempty"`
 	DefaultCountry   Country                    `json:"default_country,omitempty" validate:"omitempty,country"`
 	RedactionPolicy  RedactionPolicy            `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
+	MaxValuelength   int                        `json:"max_value_length"`
 	Extensions       map[string]json.RawMessage `json:"extensions,omitempty"`
 }
 
 // ReadEnvironment reads an environment from the given JSON
 func ReadEnvironment(data json.RawMessage) (Environment, error) {
-	env := NewDefaultEnvironment().(*environment)
+	// create new env with defaults
+	env := NewEnvironmentBuilder().Build().(*environment)
+	envelope := env.toEnvelope()
 
-	var envelope envEnvelope
-	if err := UnmarshalAndValidate(data, &envelope); err != nil {
+	if err := UnmarshalAndValidate(data, envelope); err != nil {
 		return nil, err
 	}
 
@@ -133,11 +111,10 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env.defaultLanguage = envelope.DefaultLanguage
 	env.allowedLanguages = envelope.AllowedLanguages
 	env.defaultCountry = envelope.DefaultCountry
+	env.numberFormat = envelope.NumberFormat
+	env.redactionPolicy = envelope.RedactionPolicy
+	env.maxValueLength = envelope.MaxValuelength
 	env.extensions = envelope.Extensions
-
-	if envelope.NumberFormat != nil {
-		env.numberFormat = envelope.NumberFormat
-	}
 
 	tz, err := time.LoadLocation(envelope.Timezone)
 	if err != nil {
@@ -145,29 +122,101 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	}
 	env.timezone = tz
 
-	env.redactionPolicy = envelope.RedactionPolicy
-	if env.redactionPolicy == "" {
-		env.redactionPolicy = RedactionPolicyNone
-	}
-
 	return env, nil
 }
 
-// MarshalJSON marshals this environment into JSON
-func (e *environment) MarshalJSON() ([]byte, error) {
-	ee := &envEnvelope{
+func (e *environment) toEnvelope() *envEnvelope {
+	return &envEnvelope{
 		DateFormat:       e.dateFormat,
 		TimeFormat:       e.timeFormat,
 		Timezone:         e.timezone.String(),
 		DefaultLanguage:  e.defaultLanguage,
 		AllowedLanguages: e.allowedLanguages,
 		DefaultCountry:   e.defaultCountry,
+		NumberFormat:     e.numberFormat,
 		RedactionPolicy:  e.redactionPolicy,
+		MaxValuelength:   e.maxValueLength,
 		Extensions:       e.extensions,
 	}
-	if e.numberFormat != DefaultNumberFormat {
-		ee.NumberFormat = e.numberFormat
-	}
-
-	return json.Marshal(ee)
 }
+
+// MarshalJSON marshals this environment into JSON
+func (e *environment) MarshalJSON() ([]byte, error) {
+	return json.Marshal(e.toEnvelope())
+}
+
+//------------------------------------------------------------------------------------------
+// Builder
+//------------------------------------------------------------------------------------------
+
+// EnvironmentBuilder is a builder for environments
+type EnvironmentBuilder struct {
+	env *environment
+}
+
+// NewEnvironmentBuilder creates a new environment builder
+func NewEnvironmentBuilder() *EnvironmentBuilder {
+	return &EnvironmentBuilder{
+		env: &environment{
+			dateFormat:       DateFormatYearMonthDay,
+			timeFormat:       TimeFormatHourMinute,
+			timezone:         time.UTC,
+			defaultLanguage:  NilLanguage,
+			allowedLanguages: nil,
+			defaultCountry:   NilCountry,
+			numberFormat:     DefaultNumberFormat,
+			maxValueLength:   640,
+			redactionPolicy:  RedactionPolicyNone,
+		},
+	}
+}
+
+// WithDateFormat sets the date format
+func (b *EnvironmentBuilder) WithDateFormat(dateFormat DateFormat) *EnvironmentBuilder {
+	b.env.dateFormat = dateFormat
+	return b
+}
+
+// WithTimeFormat sets the time format
+func (b *EnvironmentBuilder) WithTimeFormat(timeFormat TimeFormat) *EnvironmentBuilder {
+	b.env.timeFormat = timeFormat
+	return b
+}
+
+func (b *EnvironmentBuilder) WithTimezone(timezone *time.Location) *EnvironmentBuilder {
+	b.env.timezone = timezone
+	return b
+}
+
+func (b *EnvironmentBuilder) WithDefaultLanguage(defaultLanguage Language) *EnvironmentBuilder {
+	b.env.defaultLanguage = defaultLanguage
+	return b
+}
+
+func (b *EnvironmentBuilder) WithAllowedLanguages(allowedLanguages []Language) *EnvironmentBuilder {
+	b.env.allowedLanguages = allowedLanguages
+	return b
+}
+
+func (b *EnvironmentBuilder) WithDefaultCountry(defaultCountry Country) *EnvironmentBuilder {
+	b.env.defaultCountry = defaultCountry
+	return b
+}
+
+func (b *EnvironmentBuilder) WithNumberFormat(numberFormat *NumberFormat) *EnvironmentBuilder {
+	b.env.numberFormat = numberFormat
+	return b
+}
+
+func (b *EnvironmentBuilder) WithRedactionPolicy(redactionPolicy RedactionPolicy) *EnvironmentBuilder {
+	b.env.redactionPolicy = redactionPolicy
+	return b
+}
+
+func (b *EnvironmentBuilder) WithMaxValueLength(maxValueLength int) *EnvironmentBuilder {
+	b.env.maxValueLength = maxValueLength
+	return b
+}
+
+// Build returns the final environment
+func (b *EnvironmentBuilder) Build() Environment { return b.env }

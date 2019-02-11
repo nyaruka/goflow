@@ -2,7 +2,6 @@ package flows_test
 
 import (
 	"testing"
-	"time"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -58,7 +57,7 @@ func TestContactURN(t *testing.T) {
 	assert.False(t, urn.Equal(urn3))
 
 	// check using URN in expressions
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Build()
 	assert.Equal(t, "URN", urn.Describe())
 	assert.Equal(t, types.NewXText("tel:+250781234567"), urn.Reduce(env))
 	assert.Equal(t, types.NewXText("tel"), urn.Resolve(env, "scheme"))
@@ -69,7 +68,7 @@ func TestContactURN(t *testing.T) {
 	assert.Equal(t, types.NewXText(`{"display":"0781 234 567","path":"+250781234567","scheme":"tel"}`), urn.ToXJSON(env))
 
 	// check when URNs have to be redacted
-	env = utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.Language("eng"), nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyURNs)
+	env = utils.NewEnvironmentBuilder().WithRedactionPolicy(utils.RedactionPolicyURNs).Build()
 	assert.Equal(t, types.NewXText("********"), urn.Reduce(env))
 	assert.Equal(t, types.NewXText("tel"), urn.Resolve(env, "scheme"))
 	assert.Equal(t, types.NewXText("********"), urn.Resolve(env, "path"))
@@ -94,7 +93,7 @@ func TestURNList(t *testing.T) {
 	urn3 := flows.NewContactURN("tel:+250781111222", nil)
 	urnList := flows.URNList{urn1, urn2, urn3}
 
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	// check equality
 	assert.True(t, urnList.Equal(flows.URNList{urn1, urn2, urn3}))

@@ -38,6 +38,11 @@ func (m *FieldModifier) Apply(env utils.Environment, assets flows.SessionAssets,
 	oldValue := contact.Fields().Get(m.field)
 
 	if !m.value.Equals(oldValue) {
+		// truncate text value if necessary
+		if m.value != nil && m.value.Text.Length() > env.MaxValueLength() {
+			m.value.Text = m.value.Text.Slice(0, env.MaxValueLength())
+		}
+
 		contact.Fields().Set(m.field, m.value)
 		log(events.NewContactFieldChangedEvent(m.field, m.value))
 		m.reevaluateDynamicGroups(env, assets, contact, log)

@@ -157,7 +157,7 @@ var callMigrators = map[string]callMigrator{
 	"unichar":           asRename(`char`),
 	"unicode":           asRename(`code`),
 	"upper":             asIs(),
-	"weekday":           asIs(),
+	"weekday":           asTemplate(`weekday(%s) + 1`),
 	"word_count":        asParamMigrators(`word_count`, paramAsIs(), paramBySpaces()),
 	"word_slice":        asParamMigrators(`word_slice`, paramAsIs(), paramDecremented(), paramDecremented(), paramBySpaces()),
 	"word":              asParamMigrators(`word`, paramAsIs(), paramDecremented(), paramBySpaces()),

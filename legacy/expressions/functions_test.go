@@ -73,7 +73,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(SECOND(NOW()))`, new: `@(format_datetime(now(), "s"))`},
 		{old: `@(SUM(contact.age, child.age))`, new: `@(contact.fields.age + child.results.age)`},
 		{old: `@(TRUE())`, new: `@(true)`},
-		{old: `@(WEEKDAY(TODAY()))`, new: `@(weekday(today()))`},
+		{old: `@(WEEKDAY(TODAY()))`, new: `@(weekday(today()) + 1)`},
 		{old: `@(WORD_COUNT(flow.favorite_color, FALSE))`, new: `@(word_count(results.favorite_color, NULL))`},
 		{old: `@(WORD_COUNT(flow.favorite_color, TRUE))`, new: `@(word_count(results.favorite_color, " \t"))`},
 		{old: `@(WORD_COUNT(flow.favorite_color))`, new: `@(word_count(results.favorite_color))`},

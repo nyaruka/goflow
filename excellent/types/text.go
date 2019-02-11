@@ -52,6 +52,11 @@ func (x XText) Compare(other XText) int {
 	return strings.Compare(x.Native(), other.Native())
 }
 
+// Slice returns a substring of this text
+func (x XText) Slice(start, end int) XText {
+	return NewXText(x.native[start:end])
+}
+
 // Length returns the length of this string
 func (x XText) Length() int { return utf8.RuneCountInString(x.Native()) }
 

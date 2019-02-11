@@ -60,7 +60,7 @@ func TestToXNumberAndInteger(t *testing.T) {
 		{NewTestXObject("123.45000", 123), types.RequireXNumberFromString("123.45"), 123, false},
 	}
 
-	env := utils.NewDefaultEnvironment()
+	env := utils.NewEnvironmentBuilder().Build()
 
 	for _, test := range tests {
 		number, err := types.ToXNumber(env, test.value)

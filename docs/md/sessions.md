@@ -658,6 +658,29 @@ the number of seconds in the timeout to resume it.
 }
 ```
 </div>
+<a name="event:resthook_called"></a>
+
+## resthook_called
+
+Events are created when a resthook is called. The event contains
+the payload that will be sent to any subscribers of that resthook. Note that this event is
+created regardless of whether there any subscriberes for that resthook.
+
+<div class="output_event"><h3>Event</h3>
+
+```json
+{
+    "type": "resthook_called",
+    "created_on": "2006-01-02T15:04:05Z",
+    "resthook": "success",
+    "payload": {
+        "contact:": {
+            "name": "Bob"
+        }
+    }
+}
+```
+</div>
 <a name="event:run_expired"></a>
 
 ## run_expired
