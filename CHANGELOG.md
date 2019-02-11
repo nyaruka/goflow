@@ -1,3 +1,8 @@
+v0.27.3
+----------
+ * Fix migration of weekday() to add 1
+ * Add resthook_called event
+
 v0.27.2
 ----------
  * simplify reading environments from JSON
