@@ -7,8 +7,10 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -17,14 +19,15 @@ import (
 )
 
 func TestContact(t *testing.T) {
+	sa, _ := engine.NewSessionAssets(static.NewEmptySource())
 	env := utils.NewEnvironmentBuilder().Build()
 
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	contact := flows.NewContact(
-		flows.ContactUUID(utils.NewUUID()), flows.ContactID(12345), "Joe Bloggs", utils.Language("eng"),
-		nil, time.Now(), flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues),
+	contact, _ := flows.NewContact(
+		sa, flows.ContactUUID(utils.NewUUID()), flows.ContactID(12345), "Joe Bloggs", utils.Language("eng"),
+		nil, time.Now(), nil, nil, nil,
 	)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
@@ -72,16 +75,17 @@ func TestContact(t *testing.T) {
 
 func TestContactFormat(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
+	sa, _ := engine.NewSessionAssets(static.NewEmptySource())
 
 	// name takes precedence if set
-	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
+	contact := flows.NewEmptyContact(sa, "Joe", utils.NilLanguage, nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	assert.Equal(t, "Joe", contact.Format(env))
 
 	// if not we fallback to URN
-	contact = flows.NewContact(
-		flows.ContactUUID(utils.NewUUID()), flows.ContactID(1234), "", utils.NilLanguage, nil, time.Now(),
-		flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues),
+	contact, _ = flows.NewContact(
+		sa, flows.ContactUUID(utils.NewUUID()), flows.ContactID(1234), "", utils.NilLanguage, nil, time.Now(),
+		nil, nil, nil,
 	)
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	assert.Equal(t, "joey", contact.Format(env))
@@ -92,17 +96,18 @@ func TestContactFormat(t *testing.T) {
 	assert.Equal(t, "1234", contact.Format(anonEnv))
 
 	// if we don't have name or URNs, then empty string
-	contact = flows.NewEmptyContact("", utils.NilLanguage, nil)
+	contact = flows.NewEmptyContact(sa, "", utils.NilLanguage, nil)
 	assert.Equal(t, "", contact.Format(env))
 }
 
 func TestContactSetPreferredChannel(t *testing.T) {
+	sa, _ := engine.NewSessionAssets(static.NewEmptySource())
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil)
 	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 
-	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
+	contact := flows.NewEmptyContact(sa, "Joe", utils.NilLanguage, nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
@@ -151,7 +156,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	twitterCrazies := test.NewGroup("Twitter Crazies", `twitter ~ crazy`)
 	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies}
 
-	contact := flows.NewEmptyContact("Joe", "eng", nil)
+	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
 
 	assert.Equal(t, []*flows.Group{english}, evaluateGroups(t, env, contact, groups))

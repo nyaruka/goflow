@@ -110,9 +110,9 @@ type Contact struct {
 }
 
 // NewEmptyContact creates a new contact
-func NewEmptyContact() *Contact {
+func NewEmptyContact(sa *SessionAssets) *Contact {
 	return &Contact{
-		target: flows.NewEmptyContact("", utils.NilLanguage, nil),
+		target: flows.NewEmptyContact(sa.target, "", utils.NilLanguage, nil),
 	}
 }
 

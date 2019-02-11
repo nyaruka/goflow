@@ -61,28 +61,14 @@ type Contact struct {
 	urns      URNList
 	groups    *GroupList
 	fields    FieldValues
+
+	// transient fields
+	assets SessionAssets
 }
 
 // NewContact creates a new contact with the passed in attributes
 func NewContact(
-	uuid ContactUUID, id ContactID, name string, language utils.Language, timezone *time.Location, createdOn time.Time,
-	urns URNList, groups *GroupList, fields FieldValues) *Contact {
-	return &Contact{
-		uuid:      uuid,
-		id:        id,
-		name:      name,
-		language:  language,
-		timezone:  timezone,
-		createdOn: createdOn,
-		urns:      urns,
-		groups:    groups,
-		fields:    fields,
-	}
-}
-
-// NewContactFromAssets creates a new contact using assets
-func NewContactFromAssets(
-	a SessionAssets,
+	sa SessionAssets,
 	uuid ContactUUID,
 	id ContactID,
 	name string,
@@ -93,17 +79,17 @@ func NewContactFromAssets(
 	groups []assets.Group,
 	fields map[string]*Value) (*Contact, error) {
 
-	urnList, err := ReadURNList(a, urns, assets.IgnoreMissing)
+	urnList, err := ReadURNList(sa, urns, assets.IgnoreMissing)
 	if err != nil {
 		return nil, err
 	}
 
-	groupList, err := NewGroupListFromAssets(a, groups)
+	groupList, err := NewGroupListFromAssets(sa, groups)
 	if err != nil {
 		return nil, err
 	}
 
-	fieldValues, err := NewFieldValues(a, fields, assets.IgnoreMissing)
+	fieldValues, err := NewFieldValues(sa, fields, assets.IgnoreMissing)
 	if err != nil {
 		return nil, err
 	}
@@ -118,11 +104,12 @@ func NewContactFromAssets(
 		urns:      urnList,
 		groups:    groupList,
 		fields:    fieldValues,
+		assets:    sa,
 	}, nil
 }
 
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
-func NewEmptyContact(name string, language utils.Language, timezone *time.Location) *Contact {
+func NewEmptyContact(sa SessionAssets, name string, language utils.Language, timezone *time.Location) *Contact {
 	return &Contact{
 		uuid:      ContactUUID(utils.NewUUID()),
 		name:      name,
@@ -151,6 +138,7 @@ func (c *Contact) Clone() *Contact {
 		urns:      c.urns.clone(),
 		groups:    c.groups.clone(),
 		fields:    c.fields.clone(),
+		assets:    c.assets,
 	}
 }
 
@@ -458,7 +446,7 @@ type contactEnvelope struct {
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.MissingCallback) (*Contact, error) {
+func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingCallback) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 
@@ -472,6 +460,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.Miss
 		name:      envelope.Name,
 		language:  envelope.Language,
 		createdOn: envelope.CreatedOn,
+		assets:    sa,
 	}
 
 	if envelope.Timezone != "" {
@@ -483,7 +472,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.Miss
 	if envelope.URNs == nil {
 		c.urns = make(URNList, 0)
 	} else {
-		if c.urns, err = ReadURNList(assets, envelope.URNs, missing); err != nil {
+		if c.urns, err = ReadURNList(sa, envelope.URNs, missing); err != nil {
 			return nil, errors.Wrap(err, "error reading urns")
 		}
 	}
@@ -493,7 +482,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.Miss
 	} else {
 		groups := make([]*Group, 0, len(envelope.Groups))
 		for _, g := range envelope.Groups {
-			group, err := assets.Groups().Get(g.UUID)
+			group, err := sa.Groups().Get(g.UUID)
 			if err != nil {
 				missing(g)
 			} else {
@@ -503,7 +492,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.Miss
 		c.groups = NewGroupList(groups)
 	}
 
-	if c.fields, err = NewFieldValues(assets, envelope.Fields, missing); err != nil {
+	if c.fields, err = NewFieldValues(sa, envelope.Fields, missing); err != nil {
 		return nil, errors.Wrap(err, "error reading fields")
 	}
 

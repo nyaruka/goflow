@@ -236,7 +236,7 @@ func TestWaitTimeout(t *testing.T) {
 	flow, err := session.Assets().Flows().Get(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
 	require.NoError(t, err)
 
-	contact := flows.NewEmptyContact("Joe", "eng", nil)
+	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
 	trigger := triggers.NewManualTrigger(nil, flow.Reference(), contact, nil)
 
