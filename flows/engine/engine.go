@@ -20,14 +20,14 @@ func (e *engine) MaxWebhookResponseBytes() int  { return e.maxWebhookResponseByt
 // Builder
 //------------------------------------------------------------------------------------------
 
-// EngineBuilder is a builder for engine configs
-type EngineBuilder struct {
+// Builder is a builder for engine configs
+type Builder struct {
 	eng *engine
 }
 
-// NewEngineBuilder creates a new environment builder
-func NewEngineBuilder() *EngineBuilder {
-	return &EngineBuilder{
+// NewBuilder creates a new environment builder
+func NewBuilder() *Builder {
+	return &Builder{
 		eng: &engine{
 			httpClient:              utils.NewHTTPClient("goflow"),
 			disableWebhooks:         false,
@@ -37,22 +37,22 @@ func NewEngineBuilder() *EngineBuilder {
 }
 
 // WithDefaultUserAgent sets the default user-agent string used for webhook calls
-func (b *EngineBuilder) WithDefaultUserAgent(userAgent string) *EngineBuilder {
+func (b *Builder) WithDefaultUserAgent(userAgent string) *Builder {
 	b.eng.httpClient = utils.NewHTTPClient(userAgent)
 	return b
 }
 
 // WithDisableWebhooks sets whether webhooks are enabled
-func (b *EngineBuilder) WithDisableWebhooks(disable bool) *EngineBuilder {
+func (b *Builder) WithDisableWebhooks(disable bool) *Builder {
 	b.eng.disableWebhooks = disable
 	return b
 }
 
 // WithMaxWebhookResponseBytes sets the maximum webhook request bytes
-func (b *EngineBuilder) WithMaxWebhookResponseBytes(max int) *EngineBuilder {
+func (b *Builder) WithMaxWebhookResponseBytes(max int) *Builder {
 	b.eng.maxWebhookResponseBytes = max
 	return b
 }
 
 // Build returns the final engine
-func (b *EngineBuilder) Build() flows.Engine { return b.eng }
+func (b *Builder) Build() flows.Engine { return b.eng }

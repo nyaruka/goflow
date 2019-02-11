@@ -203,7 +203,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference) { missingAssets = append(missingAssets, a) }
 
-	eng := engine.NewEngineBuilder().WithDefaultUserAgent("test").Build()
+	eng := engine.NewBuilder().WithDefaultUserAgent("test").Build()
 	_, err = engine.ReadSession(eng, sessionAssets, sessionJSON, missing)
 	require.NoError(t, err)
 	assert.Equal(t, 14, len(missingAssets))

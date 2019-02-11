@@ -114,7 +114,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 	}
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
-	eng := engine.NewEngineBuilder().WithDefaultUserAgent("goflow-flowrunner").Build()
+	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-flowrunner").Build()
 	session := engine.NewSession(eng, sessionAssets)
 
 	// start our session
