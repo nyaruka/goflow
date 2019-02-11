@@ -363,9 +363,12 @@ type Step interface {
 	Leave(ExitUUID)
 }
 
-type EngineConfig interface {
+type Engine interface {
+	NewSession(SessionAssets) Session
+	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
+
+	HTTPClient() *utils.HTTPClient
 	DisableWebhooks() bool
-	WebhookMocks() []*WebhookMock
 	MaxWebhookResponseBytes() int
 }
 
@@ -406,8 +409,7 @@ type Session interface {
 	GetCurrentChild(FlowRun) FlowRun
 	ParentRun() RunSummary
 
-	EngineConfig() EngineConfig
-	HTTPClient() *utils.HTTPClient
+	Engine() Engine
 }
 
 // RunSummary represents the minimum information available about all runs (current or related) and is the
