@@ -87,13 +87,11 @@ func MakeWebhookCall(session Session, request *http.Request, resthook string) (*
 	var err error
 	var timeTaken time.Duration
 
-	config := session.EngineConfig()
-
-	if config.DisableWebhooks() {
-		response, requestDump, err = config.HTTPClient().MockWithDump(request, 200, "DISABLED")
+	if session.Engine().DisableWebhooks() {
+		response, requestDump, err = session.Engine().HTTPClient().MockWithDump(request, 200, "DISABLED")
 	} else {
 		start := utils.Now()
-		response, requestDump, err = config.HTTPClient().DoWithDump(request)
+		response, requestDump, err = session.Engine().HTTPClient().DoWithDump(request)
 		timeTaken = utils.Now().Sub(start)
 	}
 
@@ -101,7 +99,7 @@ func MakeWebhookCall(session Session, request *http.Request, resthook string) (*
 		return newWebhookCallFromError(request, requestDump, err), err
 	}
 
-	return newWebhookCallFromResponse(requestDump, response, session.EngineConfig().MaxWebhookResponseBytes(), timeTaken, resthook)
+	return newWebhookCallFromResponse(requestDump, response, session.Engine().MaxWebhookResponseBytes(), timeTaken, resthook)
 }
 
 // URL returns the full URL

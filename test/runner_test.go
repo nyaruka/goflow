@@ -114,8 +114,8 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		return runResult{}, errors.Wrapf(err, "error unmarshalling trigger")
 	}
 
-	config := engine.NewConfigBuilder().WithDefaultUserAgent("goflow-testing").Build()
-	session := engine.NewSession(sessionAssets, config)
+	eng := engine.NewEngineBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	session := engine.NewSession(eng, sessionAssets)
 
 	sprint, err := session.Start(trigger)
 	if err != nil {
@@ -137,7 +137,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 		outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
 
-		session, err = engine.ReadSession(sessionAssets, config, sessionJSON, assets.PanicOnMissing)
+		session, err = engine.ReadSession(eng, sessionAssets, sessionJSON, assets.PanicOnMissing)
 		if err != nil {
 			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}

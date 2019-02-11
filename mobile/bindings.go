@@ -254,18 +254,18 @@ func (s *Session) Status() string {
 }
 
 // NewSession creates a new session
-func NewSession(a *SessionAssets, httpUserAgent string) *Session {
-	config := engine.NewConfigBuilder().WithDefaultUserAgent(httpUserAgent).Build()
+func NewSession(sa *SessionAssets, httpUserAgent string) *Session {
+	eng := engine.NewEngineBuilder().WithDefaultUserAgent(httpUserAgent).Build()
 
-	s := engine.NewSession(a.target, config)
+	s := engine.NewSession(eng, sa.target)
 	return &Session{target: s}
 }
 
 // ReadSession reads an existing session from JSON
 func ReadSession(a *SessionAssets, httpUserAgent string, data string) (*Session, error) {
-	config := engine.NewConfigBuilder().WithDefaultUserAgent(httpUserAgent).Build()
+	eng := engine.NewEngineBuilder().WithDefaultUserAgent(httpUserAgent).Build()
 
-	s, err := engine.ReadSession(a.target, config, []byte(data), assets.IgnoreMissing)
+	s, err := engine.ReadSession(eng, a.target, []byte(data), assets.IgnoreMissing)
 	if err != nil {
 		return nil, err
 	}

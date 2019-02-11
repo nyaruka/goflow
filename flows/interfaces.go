@@ -363,7 +363,7 @@ type Step interface {
 	Leave(ExitUUID)
 }
 
-type EngineConfig interface {
+type Engine interface {
 	HTTPClient() *utils.HTTPClient
 	DisableWebhooks() bool
 	MaxWebhookResponseBytes() int
@@ -406,7 +406,7 @@ type Session interface {
 	GetCurrentChild(FlowRun) FlowRun
 	ParentRun() RunSummary
 
-	EngineConfig() EngineConfig
+	Engine() Engine
 }
 
 // RunSummary represents the minimum information available about all runs (current or related) and is the
