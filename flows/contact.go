@@ -119,6 +119,7 @@ func NewEmptyContact(sa SessionAssets, name string, language utils.Language, tim
 		urns:      URNList{},
 		groups:    NewGroupList([]*Group{}),
 		fields:    make(FieldValues),
+		assets:    sa,
 	}
 }
 
@@ -267,10 +268,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "urns":
 		return c.urns
 	case "urn":
-		if len(c.urns) > 0 {
-			return c.urns[0]
-		}
-		return nil
+		return c.PreferredURN()
 	case "groups":
 		return c.groups
 	case "fields":
@@ -298,10 +296,42 @@ func (c *Contact) ToXJSON(env utils.Environment) types.XText {
 var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)
 
-// PreferredChannel gets the preferred channel for this contact, i.e. the preferred channel of their highest priority URN
+// Destination is a sendable channel and URN pair
+type Destination struct {
+	Channel *Channel
+	URN     *ContactURN
+}
+
+// ResolveDestinations resolves possible URN/channel destinations
+func (c *Contact) ResolveDestinations(all bool) []Destination {
+	destinations := []Destination{}
+
+	for _, u := range c.urns {
+		channel := c.assets.Channels().GetForURN(u, assets.ChannelRoleSend)
+		if channel != nil {
+			destinations = append(destinations, Destination{URN: u, Channel: channel})
+			if !all {
+				break
+			}
+		}
+	}
+	return destinations
+}
+
+// PreferredURN gets the preferred URN for this contact, i.e. the URN we would use for sending
+func (c *Contact) PreferredURN() *ContactURN {
+	destinations := c.ResolveDestinations(false)
+	if len(destinations) > 0 {
+		return destinations[0].URN
+	}
+	return nil
+}
+
+// PreferredChannel gets the preferred channel for this contact, i.e. the channel we would use for sending
 func (c *Contact) PreferredChannel() *Channel {
-	if len(c.urns) > 0 {
-		return c.urns[0].Channel()
+	destinations := c.ResolveDestinations(false)
+	if len(destinations) > 0 {
+		return destinations[0].Channel
 	}
 	return nil
 }
