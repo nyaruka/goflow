@@ -1,3 +1,8 @@
+v0.27.2
+----------
+ * simplify reading environments from JSON
+ * rename .Environment() to .Build()
+
 v0.27.1
 ----------
  * Add max_value_length to environment and apply in name and field change modifiers
