@@ -1,6 +1,9 @@
 package engine
 
 import (
+	"encoding/json"
+
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -12,9 +15,28 @@ type engine struct {
 	maxWebhookResponseBytes int
 }
 
+// NewSession creates a new session
+func (e *engine) NewSession(sa flows.SessionAssets) flows.Session {
+	return &session{
+		engine:     e,
+		env:        utils.NewEnvironmentBuilder().Build(),
+		assets:     sa,
+		status:     flows.SessionStatusActive,
+		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
+		flowStack:  newFlowStack(),
+	}
+}
+
+// ReadSession reads an existing session
+func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Session, error) {
+	return readSession(e, sa, data, missing)
+}
+
 func (e *engine) HTTPClient() *utils.HTTPClient { return e.httpClient }
 func (e *engine) DisableWebhooks() bool         { return e.disableWebhooks }
 func (e *engine) MaxWebhookResponseBytes() int  { return e.maxWebhookResponseBytes }
+
+var _ flows.Engine = (*engine)(nil)
 
 //------------------------------------------------------------------------------------------
 // Builder

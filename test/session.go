@@ -504,6 +504,6 @@ func CreateSession(assetsJSON json.RawMessage, testServerURL string) (flows.Sess
 	}
 
 	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
-	session := engine.NewSession(eng, assets)
+	session := eng.NewSession(assets)
 	return session, nil
 }

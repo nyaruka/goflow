@@ -20,7 +20,7 @@ contact := flows.NewContact(...)
 env := utils.NewEnvironmentBuilder().Build()
 trigger := triggers.NewManualTrigger(env, contact, flow.Reference(), nil, nil, time.Now())
 eng := engine.NewBuilder().WithDefaultUserAgent("goflow-flowrunner").Build()
-session := engine.NewSession(eng, assets)
+session := eng.NewSession(assets)
 session.Start(trigger)
 ```
 

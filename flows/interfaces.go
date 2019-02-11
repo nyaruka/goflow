@@ -364,6 +364,9 @@ type Step interface {
 }
 
 type Engine interface {
+	NewSession(SessionAssets) Session
+	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
+
 	HTTPClient() *utils.HTTPClient
 	DisableWebhooks() bool
 	MaxWebhookResponseBytes() int

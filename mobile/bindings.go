@@ -253,25 +253,6 @@ func (s *Session) Status() string {
 	return string(s.target.Status())
 }
 
-// NewSession creates a new session
-func NewSession(sa *SessionAssets, httpUserAgent string) *Session {
-	eng := engine.NewBuilder().WithDefaultUserAgent(httpUserAgent).Build()
-
-	s := engine.NewSession(eng, sa.target)
-	return &Session{target: s}
-}
-
-// ReadSession reads an existing session from JSON
-func ReadSession(a *SessionAssets, httpUserAgent string, data string) (*Session, error) {
-	eng := engine.NewBuilder().WithDefaultUserAgent(httpUserAgent).Build()
-
-	s, err := engine.ReadSession(eng, a.target, []byte(data), assets.IgnoreMissing)
-	if err != nil {
-		return nil, err
-	}
-	return &Session{target: s}, nil
-}
-
 // Assets returns the assets associated with this session
 func (s *Session) Assets() *SessionAssets {
 	return &SessionAssets{target: s.target.Assets()}
@@ -334,4 +315,28 @@ func (w *Wait) Hint() *Hint {
 		return &Hint{target: asMsgWait.Hint()}
 	}
 	return nil
+}
+
+type Engine struct {
+	target flows.Engine
+}
+
+func NewEngine(httpUserAgent string) *Engine {
+	return &Engine{
+		target: engine.NewBuilder().WithDefaultUserAgent(httpUserAgent).Build(),
+	}
+}
+
+// NewSession creates a new session
+func (e *Engine) NewSession(sa *SessionAssets) *Session {
+	return &Session{target: e.target.NewSession(sa.target)}
+}
+
+// ReadSession reads an existing session from JSON
+func (e *Engine) ReadSession(a *SessionAssets, data string) (*Session, error) {
+	s, err := e.target.ReadSession(a.target, []byte(data), assets.IgnoreMissing)
+	if err != nil {
+		return nil, err
+	}
+	return &Session{target: s}, nil
 }

@@ -44,18 +44,6 @@ type session struct {
 	engine flows.Engine
 }
 
-// NewSession creates a new session
-func NewSession(engine flows.Engine, assets flows.SessionAssets) flows.Session {
-	return &session{
-		env:        utils.NewEnvironmentBuilder().Build(),
-		assets:     assets,
-		status:     flows.SessionStatusActive,
-		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
-		flowStack:  newFlowStack(),
-		engine:     engine,
-	}
-}
-
 func (s *session) Assets() flows.SessionAssets { return s.assets }
 func (s *session) Trigger() flows.Trigger      { return s.trigger }
 
@@ -514,7 +502,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Session, error) {
+func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 
@@ -522,9 +510,14 @@ func ReadSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 		return nil, errors.Wrap(err, "unable to read session")
 	}
 
-	s := NewSession(eng, sessionAssets).(*session)
-	s.type_ = e.Type
-	s.status = e.Status
+	s := &session{
+		engine:     eng,
+		assets:     sessionAssets,
+		type_:      e.Type,
+		status:     e.Status,
+		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
+		flowStack:  newFlowStack(),
+	}
 
 	// read our environment
 	s.env, err = utils.ReadEnvironment(e.Environment)
