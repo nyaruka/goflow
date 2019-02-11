@@ -1,3 +1,10 @@
+v0.27.4
+----------
+ * add country to mobile.NewEnvironment
+ * move NewSession and ReadSession into Engine
+ * engine.EngineBuilder -> engine.Builder because gofmt doesn't like stuttering
+ * remove webhook mocking and reading engine coonfig from JSON
+
 v0.27.3
 ----------
  * Fix migration of weekday() to add 1
