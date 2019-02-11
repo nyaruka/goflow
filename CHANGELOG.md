@@ -1,3 +1,7 @@
+v0.27.5
+----------
+ * update contact PreferredChannel and PreferredURN to resolve first sendable destination
+
 v0.27.4
 ----------
  * add country to mobile.NewEnvironment
