@@ -364,6 +364,7 @@ type Step interface {
 }
 
 type EngineConfig interface {
+	HTTPClient() *utils.HTTPClient
 	DisableWebhooks() bool
 	MaxWebhookResponseBytes() int
 }
@@ -406,7 +407,6 @@ type Session interface {
 	ParentRun() RunSummary
 
 	EngineConfig() EngineConfig
-	HTTPClient() *utils.HTTPClient
 }
 
 // RunSummary represents the minimum information available about all runs (current or related) and is the

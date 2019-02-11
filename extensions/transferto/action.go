@@ -83,7 +83,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 		return errors.Wrap(err, "unable to read config")
 	}
 
-	transfer, err := attemptTransfer(contact.PreferredChannel(), config, a.Amounts, recipient, run.Session().HTTPClient())
+	transfer, err := attemptTransfer(contact.PreferredChannel(), config, a.Amounts, recipient, run.Session().EngineConfig().HTTPClient())
 
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))

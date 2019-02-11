@@ -87,11 +87,13 @@ func MakeWebhookCall(session Session, request *http.Request, resthook string) (*
 	var err error
 	var timeTaken time.Duration
 
-	if session.EngineConfig().DisableWebhooks() {
-		response, requestDump, err = session.HTTPClient().MockWithDump(request, 200, "DISABLED")
+	config := session.EngineConfig()
+
+	if config.DisableWebhooks() {
+		response, requestDump, err = config.HTTPClient().MockWithDump(request, 200, "DISABLED")
 	} else {
 		start := utils.Now()
-		response, requestDump, err = session.HTTPClient().DoWithDump(request)
+		response, requestDump, err = config.HTTPClient().DoWithDump(request)
 		timeTaken = utils.Now().Sub(start)
 	}
 

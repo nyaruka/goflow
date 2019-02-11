@@ -6,12 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strconv"
-
-	"github.com/nyaruka/goflow/utils"
 )
-
-// TestHTTPClient a HTTP client instance for tests
-var TestHTTPClient = utils.NewHTTPClient("goflow-testing")
 
 // NewTestHTTPServer sets up a mock server for webhook actions
 func NewTestHTTPServer(port int) *httptest.Server {

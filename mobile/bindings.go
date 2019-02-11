@@ -255,15 +255,17 @@ func (s *Session) Status() string {
 
 // NewSession creates a new session
 func NewSession(a *SessionAssets, httpUserAgent string) *Session {
-	httpClient := utils.NewHTTPClient(httpUserAgent)
-	s := engine.NewSession(a.target, engine.NewDefaultConfig(), httpClient)
+	config := engine.NewConfigBuilder().WithDefaultUserAgent(httpUserAgent).Build()
+
+	s := engine.NewSession(a.target, config)
 	return &Session{target: s}
 }
 
 // ReadSession reads an existing session from JSON
 func ReadSession(a *SessionAssets, httpUserAgent string, data string) (*Session, error) {
-	httpClient := utils.NewHTTPClient(httpUserAgent)
-	s, err := engine.ReadSession(a.target, engine.NewDefaultConfig(), httpClient, []byte(data), assets.IgnoreMissing)
+	config := engine.NewConfigBuilder().WithDefaultUserAgent(httpUserAgent).Build()
+
+	s, err := engine.ReadSession(a.target, config, []byte(data), assets.IgnoreMissing)
 	if err != nil {
 		return nil, err
 	}

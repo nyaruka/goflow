@@ -42,11 +42,10 @@ type session struct {
 	parentRun  flows.RunSummary
 
 	engineConfig flows.EngineConfig
-	httpClient   *utils.HTTPClient
 }
 
 // NewSession creates a new session
-func NewSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient) flows.Session {
+func NewSession(assets flows.SessionAssets, engineConfig flows.EngineConfig) flows.Session {
 	return &session{
 		env:          utils.NewEnvironmentBuilder().Build(),
 		assets:       assets,
@@ -54,7 +53,6 @@ func NewSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, htt
 		runsByUUID:   make(map[flows.RunUUID]flows.FlowRun),
 		flowStack:    newFlowStack(),
 		engineConfig: engineConfig,
-		httpClient:   httpClient,
 	}
 }
 
@@ -131,7 +129,6 @@ func (s *session) waitingRun() flows.FlowRun {
 }
 
 func (s *session) EngineConfig() flows.EngineConfig { return s.engineConfig }
-func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 
 //------------------------------------------------------------------------------------------
 // Flow execution
@@ -517,7 +514,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient, data json.RawMessage, missing assets.MissingCallback) (flows.Session, error) {
+func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineConfig, data json.RawMessage, missing assets.MissingCallback) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 
@@ -525,7 +522,7 @@ func ReadSession(sessionAssets flows.SessionAssets, engineConfig flows.EngineCon
 		return nil, errors.Wrap(err, "unable to read session")
 	}
 
-	s := NewSession(sessionAssets, engineConfig, httpClient).(*session)
+	s := NewSession(sessionAssets, engineConfig).(*session)
 	s.type_ = e.Type
 	s.status = e.Status
 

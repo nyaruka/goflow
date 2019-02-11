@@ -203,7 +203,8 @@ func TestReadWithMissingAssets(t *testing.T) {
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference) { missingAssets = append(missingAssets, a) }
 
-	_, err = engine.ReadSession(sessionAssets, engine.NewDefaultConfig(), utils.NewHTTPClient("test"), sessionJSON, missing)
+	config := engine.NewConfigBuilder().WithDefaultUserAgent("test").Build()
+	_, err = engine.ReadSession(sessionAssets, config, sessionJSON, missing)
 	require.NoError(t, err)
 	assert.Equal(t, 14, len(missingAssets))
 	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), ""), missingAssets[0])
@@ -214,7 +215,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	emptyAssets, err := engine.NewSessionAssets(static.NewEmptySource())
 	require.NoError(t, err)
 
-	_, err = engine.ReadSession(emptyAssets, engine.NewDefaultConfig(), utils.NewHTTPClient("test"), sessionJSON, missing)
+	_, err = engine.ReadSession(emptyAssets, config, sessionJSON, missing)
 	assert.EqualError(t, err, "unable to read run 0: unable to load flow[uuid=50c3706e-fedb-42c0-8eab-dda3335714b7,name=Registration]: no such flow with UUID '50c3706e-fedb-42c0-8eab-dda3335714b7'")
 }
 
