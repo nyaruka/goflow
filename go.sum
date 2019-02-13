@@ -1,5 +1,6 @@
 github.com/antlr/antlr4 v0.0.0-20181218183534-70d9ddcd0a58 h1:d4XWEhUH2DAtqTwT0M3ZtrrTeElFzMFZYPJGpOvYbGc=
 github.com/antlr/antlr4 v0.0.0-20181218183534-70d9ddcd0a58/go.mod h1:T7PbCXFs94rrTttyxjbyT5+/1V8T2TYDejxUfHJjw1Y=
+github.com/aws/aws-lambda-go v1.8.1/go.mod h1:zUsUQhAUjYzR8AuduJPCfhBuKWUaDbQiPOG+ouzmE1A=
 github.com/buger/jsonparser v0.0.0-20180131123142-4be68c93a244 h1:rOxavhYxbb6Iy3yE9nzmteYrHQjI71ltMFq7Pc0R/pI=
 github.com/buger/jsonparser v0.0.0-20180131123142-4be68c93a244/go.mod h1:bbYlZJ7hK1yFx9hf58LP0zeX7UjIGs20ufpu3evjr+s=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
@@ -23,6 +24,8 @@ github.com/nyaruka/gocommon v0.2.0 h1:1Le4Ok0Zp2RYULue0n4/02zL+1MrykN/C79HhirGeR
 github.com/nyaruka/gocommon v0.2.0/go.mod h1:ZrhaOKNc+kK1qWNuCuZivskT+ygLyIwu4KZVgcaC1mw=
 github.com/nyaruka/phonenumbers v0.0.0-20180208145444-15aafd6b263c h1:62Gp6xJNrGuyAoNpXKnCr3bbtbJES/WAE4CzTXSRJYc=
 github.com/nyaruka/phonenumbers v0.0.0-20180208145444-15aafd6b263c/go.mod h1:xvgYdyui5tFJCm/xA5g17hmHLaU3Qd8PueIPh6V8XAY=
+github.com/nyaruka/phonenumbers v1.0.35 h1:ZOXkPjBMVBTVwaNYyUGJHN1fCiwrcTgsY4SVeo0r/tk=
+github.com/nyaruka/phonenumbers v1.0.35/go.mod h1:Hhae+eypC1YKMaQlBJUCGZDzBrIHHNWhJX1xG/8sOC8=
 github.com/pkg/errors v0.8.0 h1:WdK/asTD0HN+q6hsWO3/vpuAkAr+tw6aNJNDFFf0+qw=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
@@ -35,6 +38,8 @@ github.com/shopspring/decimal v0.0.0-20180319170823-2df3e6ddaf6e h1:VEm1QiS3pE06
 github.com/shopspring/decimal v0.0.0-20180319170823-2df3e6ddaf6e/go.mod h1:M+9NzErvs504Cn4c5DxATwIqPbtswREoFCre64PpcG4=
 github.com/stretchr/testify v1.2.1 h1:52QO5WkIUcHGIR7EnGagH88x1bUzqGXTC5/1bDTUQ7U=
 github.com/stretchr/testify v1.2.1/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
+golang.org/x/net v0.0.0-20180921000356-2f5d2388922f/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
+golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20181108010431-42b317875d0f h1:Bl/8QSvNqXvPGPGXa2z5xUTmV7VDcZyvRZ+QQXkXTZQ=
 golang.org/x/sync v0.0.0-20181108010431-42b317875d0f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/text v0.3.0 h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=
