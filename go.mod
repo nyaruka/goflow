@@ -1,13 +1,13 @@
 module github.com/nyaruka/goflow
 
 require (
+	github.com/Masterminds/semver v1.4.2
 	github.com/antlr/antlr4 v0.0.0-20181218183534-70d9ddcd0a58
 	github.com/buger/jsonparser v0.0.0-20180131123142-4be68c93a244
 	github.com/davecgh/go-spew v1.1.0 // indirect
 	github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4
 	github.com/go-playground/locales v0.11.2 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
-	github.com/hashicorp/go-version v1.0.0
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/nyaruka/gocommon v0.2.0
 	github.com/nyaruka/phonenumbers v1.0.35

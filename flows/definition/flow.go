@@ -10,15 +10,17 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/Masterminds/semver"
 	"github.com/pkg/errors"
 )
 
-const CurrentSpecVersion = "12.0"
+// CurrentSpecVersion is the flow spec version supported by this library
+var CurrentSpecVersion = semver.MustParse("12.0")
 
 type flow struct {
 	uuid               assets.FlowUUID
 	name               string
-	specVersion        string
+	specVersion        *semver.Version
 	language           utils.Language
 	flowType           flows.FlowType
 	revision           int
@@ -59,7 +61,7 @@ func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowTyp
 
 func (f *flow) UUID() assets.FlowUUID                  { return f.uuid }
 func (f *flow) Name() string                           { return f.name }
-func (f *flow) SpecVersion() string                    { return f.specVersion }
+func (f *flow) SpecVersion() *semver.Version           { return f.specVersion }
 func (f *flow) Revision() int                          { return f.revision }
 func (f *flow) Language() utils.Language               { return f.language }
 func (f *flow) Type() flows.FlowType                   { return f.flowType }
@@ -147,10 +149,11 @@ func init() {
 	utils.Validator.RegisterAlias("flow_type", "eq=messaging|eq=messaging_offline|eq=voice")
 }
 
+// the set of fields common to all new flow spec versions
 type flowHeader struct {
 	UUID        assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name        string          `json:"name" validate:"required"`
-	SpecVersion string          `json:"spec_version" validate:"required"`
+	SpecVersion *semver.Version `json:"spec_version" validate:"required"`
 }
 
 type flowEnvelope struct {
@@ -172,6 +175,18 @@ type flowEnvelopeWithUI struct {
 
 // ReadFlow reads a single flow definition from the passed in byte array
 func ReadFlow(data json.RawMessage) (flows.Flow, error) {
+	header := &flowHeader{}
+	if err := utils.UnmarshalAndValidate(data, header); err != nil {
+		return nil, errors.Wrap(err, "unable to read flow header")
+	}
+
+	// can't do anything with a newer version than this library supports
+	if header.SpecVersion.GreaterThan(CurrentSpecVersion) {
+		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
+	}
+
+	// TODO flow spec migrations
+
 	e := &flowEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, errors.Wrap(err, "unable to read flow")

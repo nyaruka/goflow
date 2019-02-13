@@ -30,20 +30,18 @@ import (
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/hashicorp/go-version"
+	"github.com/Masterminds/semver"
 )
 
 // IsSpecVersionSupported returns whether the given flow spec version is supported
 func IsSpecVersionSupported(ver string) bool {
-	v, err := version.NewVersion(ver)
+	v, err := semver.NewVersion(ver)
 	if err != nil {
 		return false
 	}
 
-	vSpec, _ := version.NewVersion(definition.CurrentSpecVersion)
-
-	// flow is supported if it's the same major version as engine
-	return vSpec.Segments()[0] == v.Segments()[0]
+	// flow is supported as long as its major version isn't newer than the engine version
+	return v.Major() <= definition.CurrentSpecVersion.Major()
 }
 
 // Environment defines the environment for expression evaluation etc

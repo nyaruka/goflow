@@ -21,11 +21,16 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+type flowHeader struct {
+	Metadata *Metadata `json:"metadata"`
+}
+
 // Flow is a flow in the legacy format
 type Flow struct {
+	flowHeader
+
 	BaseLanguage utils.Language `json:"base_language"`
 	FlowType     string         `json:"flow_type"`
-	Metadata     Metadata       `json:"metadata"`
 	RuleSets     []RuleSet      `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
 	Entry        flows.NodeUUID `json:"entry" validate:"omitempty,uuid4"`
@@ -1028,4 +1033,27 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 		nodes,
 		ui,
 	), nil
+}
+
+// ReadLegacyOrNewFlow reads either a legacy or new flow
+func ReadLegacyOrNewFlow(data json.RawMessage) (flows.Flow, error) {
+	header := &flowHeader{}
+	if err := utils.UnmarshalAndValidate(data, header); err != nil {
+		return nil, errors.Wrap(err, "unable to read flow header")
+	}
+
+	// any flow definition with a metadata section is handled as a legacy definition
+	if header.Metadata != nil {
+		legacyFlow, err := ReadLegacyFlow(data)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to read legacy flow")
+		}
+		flow, err := legacyFlow.Migrate(true, true)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to migrate legacy flow")
+		}
+		return flow, nil
+	}
+
+	return definition.ReadFlow(data)
 }

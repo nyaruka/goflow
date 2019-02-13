@@ -11,7 +11,7 @@ import (
 )
 
 func TestMobileBindings(t *testing.T) {
-	assert.False(t, mobile.IsSpecVersionSupported("11.6"))
+	assert.True(t, mobile.IsSpecVersionSupported("11.6"))
 	assert.True(t, mobile.IsSpecVersionSupported("12"))
 	assert.True(t, mobile.IsSpecVersionSupported("12.5"))
 	assert.False(t, mobile.IsSpecVersionSupported("13.3"))

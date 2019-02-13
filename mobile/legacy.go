@@ -7,21 +7,16 @@ import (
 	"github.com/pkg/errors"
 )
 
-// MigrateLegacyFlow migrates a legacy flow definitin
-func MigrateLegacyFlow(definition string) (string, error) {
-	legacyFlow, err := legacy.ReadLegacyFlow([]byte(definition))
+// ReadLegacyOrNewFlow reads either a legacy or new flow
+func ReadLegacyOrNewFlow(definition string) (string, error) {
+	flow, err := legacy.ReadLegacyOrNewFlow([]byte(definition))
 	if err != nil {
-		return "", errors.Wrap(err, "unable to read legacy flow")
-	}
-
-	flow, err := legacyFlow.Migrate(false, false)
-	if err != nil {
-		return "", errors.Wrap(err, "unable to migrate legacy flow")
+		return "", errors.Wrap(err, "unable to read flow")
 	}
 
 	marshaled, err := utils.JSONMarshal(flow)
 	if err != nil {
-		return "", errors.Wrap(err, "unable to marshal migrated flow")
+		return "", errors.Wrap(err, "unable to marshal flow")
 	}
 
 	return string(marshaled), nil
