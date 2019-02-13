@@ -180,8 +180,8 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		return nil, errors.Wrap(err, "unable to read flow header")
 	}
 
-	// can't do anything with a newer version than this library supports
-	if header.SpecVersion.GreaterThan(CurrentSpecVersion) {
+	// can't do anything with a newer major version than this library supports
+	if header.SpecVersion.Major() > CurrentSpecVersion.Major() {
 		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
 	}
 

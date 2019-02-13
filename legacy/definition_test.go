@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -267,61 +266,4 @@ func checkFlowLocalization(t *testing.T, flow flows.Flow, expectedLocalizationRa
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, expectedLocalizationJSON, actualLocalizationJSON, "migrated localization produced unexpected JSON")
-}
-
-func TestReadLegacyOrNewFlow(t *testing.T) {
-	// try reading a new flow with invalid version
-	flow, err := legacy.ReadLegacyOrNewFlow([]byte(`{
-		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-		"name": "Simple",
-		"spec_version": "??????",
-		"language": "eng",
-		"type": "messaging",
-		"nodes": []
-	}`))
-
-	assert.EqualError(t, err, "unable to read flow header: Invalid Semantic Version")
-
-	// try reading a new flow with a version that is too new
-	flow, err = legacy.ReadLegacyOrNewFlow([]byte(`{
-		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-		"name": "Simple",
-		"spec_version": "2000.0",
-		"language": "eng",
-		"type": "messaging",
-		"nodes": []
-	}`))
-
-	assert.EqualError(t, err, "spec version 2000.0.0 is newer than this library (12.0.0)")
-
-	// try reading a new flow
-	flow, err = legacy.ReadLegacyOrNewFlow([]byte(`{
-		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-		"name": "Simple",
-		"spec_version": "12.0",
-		"language": "eng",
-		"type": "messaging",
-		"nodes": []
-	}`))
-
-	assert.NoError(t, err)
-	assert.Equal(t, "Simple", flow.Name())
-
-	// try reading a legacy flow
-	flow, err = legacy.ReadLegacyOrNewFlow([]byte(`{
-		"metadata": {
-			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-			"name": "Simple",
-			"revision": 1
-		},
-		"base_language": "eng",
-		"flow_type": "F",
-		"version": 11,
-		"action_sets": [],
-		"rule_sets": []
-	}`))
-
-	assert.NoError(t, err)
-	assert.Equal(t, "Simple", flow.Name())
-	assert.Equal(t, flows.FlowType("messaging"), flow.Type())
 }

@@ -2,22 +2,18 @@ package mobile
 
 import (
 	"github.com/nyaruka/goflow/legacy"
-	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
-// ReadLegacyOrNewFlow reads either a legacy or new flow
-func ReadLegacyOrNewFlow(definition string) (string, error) {
-	flow, err := legacy.ReadLegacyOrNewFlow([]byte(definition))
-	if err != nil {
-		return "", errors.Wrap(err, "unable to read flow")
-	}
+// IsLegacyDefinition peeks at the given flow definition to determine if it is in legacy format
+func IsLegacyDefinition(definition string) bool {
+	return legacy.IsLegacyDefinition([]byte(definition))
+}
 
-	marshaled, err := utils.JSONMarshal(flow)
+// MigrateLegacyDefinition migrates a legacy definition
+func MigrateLegacyDefinition(definition string) (string, error) {
+	migrated, err := legacy.MigrateLegacyDefinition([]byte(definition))
 	if err != nil {
-		return "", errors.Wrap(err, "unable to marshal flow")
+		return "", err
 	}
-
-	return string(marshaled), nil
+	return string(migrated), nil
 }

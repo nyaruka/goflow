@@ -1034,26 +1034,3 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 		ui,
 	), nil
 }
-
-// ReadLegacyOrNewFlow reads either a legacy or new flow
-func ReadLegacyOrNewFlow(data json.RawMessage) (flows.Flow, error) {
-	header := &flowHeader{}
-	if err := utils.UnmarshalAndValidate(data, header); err != nil {
-		return nil, errors.Wrap(err, "unable to read flow header")
-	}
-
-	// any flow definition with a metadata section is handled as a legacy definition
-	if header.Metadata != nil {
-		legacyFlow, err := ReadLegacyFlow(data)
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to read legacy flow")
-		}
-		flow, err := legacyFlow.Migrate(true, true)
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to migrate legacy flow")
-		}
-		return flow, nil
-	}
-
-	return definition.ReadFlow(data)
-}
