@@ -535,6 +535,10 @@ func HasPhone(env utils.Environment, text types.XText, args ...types.XValue) typ
 		return XFalseResult
 	}
 
+	if !phonenumbers.IsPossibleNumber(phone) {
+		return XFalseResult
+	}
+
 	// format as E164 number
 	formatted := phonenumbers.Format(phone, phonenumbers.E164)
 	return NewTrueResult(types.NewXText(formatted))
