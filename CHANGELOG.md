@@ -1,3 +1,7 @@
+v0.27.6
+----------
+ * Verify parsed numbers in has_phone are valid
+
 v0.27.5
 ----------
  * update contact PreferredChannel and PreferredURN to resolve first sendable destination
