@@ -1,3 +1,7 @@
+v0.27.8
+----------
+ * Add better flow spec version handling and ability to peek at definitions to determin if they are legacy
+
 v0.27.7
 ----------
  * Don't fake an ignored response body but record it in the event as ignored
