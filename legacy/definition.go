@@ -21,11 +21,16 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+type flowHeader struct {
+	Metadata *Metadata `json:"metadata"`
+}
+
 // Flow is a flow in the legacy format
 type Flow struct {
+	flowHeader
+
 	BaseLanguage utils.Language `json:"base_language"`
 	FlowType     string         `json:"flow_type"`
-	Metadata     Metadata       `json:"metadata"`
 	RuleSets     []RuleSet      `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
 	Entry        flows.NodeUUID `json:"entry" validate:"omitempty,uuid4"`
