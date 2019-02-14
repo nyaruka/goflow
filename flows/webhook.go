@@ -77,6 +77,7 @@ type WebhookCall struct {
 	timeTaken     time.Duration
 	requestTrace  string
 	responseTrace string
+	bodyIgnored   bool
 }
 
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
@@ -138,6 +139,11 @@ func (w *WebhookCall) Body() string {
 		return parts[1]
 	}
 	return ""
+}
+
+// BodyIgnored returns whether we ignored the body because we didn't recognize the content type
+func (w *WebhookCall) BodyIgnored() bool {
+	return w.bodyIgnored
 }
 
 // newWebhookCallFromError creates a new webhook call based on the passed in http request and error (when we received no response)
@@ -216,8 +222,7 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 
 		w.responseTrace += string(bodyBytes)
 	} else {
-		// no body for non-text responses but add it to our Response log so users know why
-		w.responseTrace += "Non-text body, ignoring"
+		w.bodyIgnored = true
 	}
 
 	return w, nil
