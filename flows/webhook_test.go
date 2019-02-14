@@ -90,6 +90,22 @@ func TestWebhookParsing(t *testing.T) {
 			// GET returning text body larger than allowed
 			call:    call{"GET", "http://127.0.0.1:49994/?cmd=binary&size=11000&type=text%2Fplain", ""},
 			isError: true,
+		}, {
+			// GET returning text body but an empty content-type header
+			call: call{"GET", "http://127.0.0.1:49994/?cmd=typeless&content=kthxbai", ""},
+			webhook: webhook{
+				request:  "GET /?cmd=typeless&content=kthxbai HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response: "HTTP/1.1 200 OK\r\nContent-Length: 7\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nkthxbai",
+				body:     `kthxbai`,
+			},
+		}, {
+			// GET returning JSON body but an empty content-type header
+			call: call{"GET", "http://127.0.0.1:49994/?cmd=typeless&content=%7B%22msg%22%3A%20%22I%27m%20JSON%22%7D", ""},
+			webhook: webhook{
+				request:  "GET /?cmd=typeless&content=%7B%22msg%22%3A%20%22I%27m%20JSON%22%7D HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response: "HTTP/1.1 200 OK\r\nContent-Length: 19\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{\"msg\": \"I'm JSON\"}",
+				body:     `{"msg": "I'm JSON"}`,
+			},
 		},
 	}
 
@@ -101,6 +117,8 @@ func TestWebhookParsing(t *testing.T) {
 		if tc.isError {
 			assert.Error(t, err)
 		} else {
+			assert.NoError(t, err, "unexpected error fetching %s", tc.call)
+
 			assert.Equal(t, tc.call.url, webhook.URL(), "URL mismatch for call %s", tc.call)
 			assert.Equal(t, "", webhook.Resthook(), "resthook mismatch for call %s", tc.call)
 			assert.Equal(t, tc.call.method, webhook.Method(), "method mismatch for call %s", tc.call)
