@@ -39,9 +39,7 @@ func IsSpecVersionSupported(ver string) bool {
 	if err != nil {
 		return false
 	}
-
-	// flow is supported as long as its major version isn't newer than the engine version
-	return v.Major() <= definition.CurrentSpecVersion.Major()
+	return definition.IsSpecVersionSupported(v)
 }
 
 // Environment defines the environment for expression evaluation etc

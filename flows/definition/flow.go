@@ -173,6 +173,12 @@ type flowEnvelopeWithUI struct {
 	UI flows.UI `json:"_ui,omitempty"`
 }
 
+// IsSpecVersionSupported determines if we can read the given flow version
+func IsSpecVersionSupported(ver *semver.Version) bool {
+	// major versions change flow schema
+	return ver.Major() <= CurrentSpecVersion.Major()
+}
+
 // ReadFlow reads a single flow definition from the passed in byte array
 func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	header := &flowHeader{}
@@ -181,7 +187,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	}
 
 	// can't do anything with a newer major version than this library supports
-	if header.SpecVersion.Major() > CurrentSpecVersion.Major() {
+	if !IsSpecVersionSupported(header.SpecVersion) {
 		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
 	}
 
