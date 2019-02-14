@@ -203,9 +203,6 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 	saveBody := fetchResponseContentTypes[contentType]
 
 	if saveBody {
-		// only read up to our max body bytes limit (minus whatever bytes we may have already sniffed)
-		bodyReader := io.LimitReader(response.Body, int64(maxBodyBytes+1-len(bodySniffed)))
-
 		bodyBytes, err := ioutil.ReadAll(bodyReader)
 		if err != nil {
 			return nil, err
