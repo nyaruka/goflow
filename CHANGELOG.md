@@ -1,3 +1,8 @@
+v0.27.7
+----------
+ * Don't fake an ignored response body but record it in the event as ignored
+ * If a webhook call doesn't return a content-type header, try to detect type
+
 v0.27.6
 ----------
  * Verify parsed numbers in has_phone are valid

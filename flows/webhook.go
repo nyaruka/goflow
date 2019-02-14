@@ -77,6 +77,7 @@ type WebhookCall struct {
 	timeTaken     time.Duration
 	requestTrace  string
 	responseTrace string
+	bodyIgnored   bool
 }
 
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
@@ -140,6 +141,11 @@ func (w *WebhookCall) Body() string {
 	return ""
 }
 
+// BodyIgnored returns whether we ignored the body because we didn't recognize the content type
+func (w *WebhookCall) BodyIgnored() bool {
+	return w.bodyIgnored
+}
+
 // newWebhookCallFromError creates a new webhook call based on the passed in http request and error (when we received no response)
 func newWebhookCallFromError(request *http.Request, requestTrace string, requestError error) *WebhookCall {
 	return &WebhookCall{
@@ -173,15 +179,30 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 		timeTaken:     timeTaken,
 	}
 
+	// we will only read up to our max body bytes limit
+	bodyReader := io.LimitReader(response.Body, int64(maxBodyBytes)+1)
+	var bodySniffed []byte
+
+	// hopefully we got a content-type header
+	contentTypeHeader := response.Header.Get("Content-Type")
+	contentType, _, _ := mime.ParseMediaType(contentTypeHeader)
+
+	// but if not, read first 512 bytes to sniff the content-type
+	if contentType == "" {
+		bodySniffed = make([]byte, 512)
+		bodyBytesRead, err := bodyReader.Read(bodySniffed)
+		if err != nil && err != io.EOF {
+			return nil, err
+		}
+		bodySniffed = bodySniffed[0:bodyBytesRead]
+
+		contentType, _, _ = mime.ParseMediaType(http.DetectContentType(bodySniffed))
+	}
+
 	// only save response body's if we have a supported content-type
-	contentType := response.Header.Get("Content-Type")
-	mediaType, _, _ := mime.ParseMediaType(contentType)
-	saveBody := fetchResponseContentTypes[mediaType]
+	saveBody := fetchResponseContentTypes[contentType]
 
 	if saveBody {
-		// only read up to our max body bytes limit
-		bodyReader := io.LimitReader(response.Body, int64(maxBodyBytes)+1)
-
 		bodyBytes, err := ioutil.ReadAll(bodyReader)
 		if err != nil {
 			return nil, err
@@ -192,10 +213,13 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 			return nil, errors.Errorf("webhook response body exceeds %d bytes limit", maxBodyBytes)
 		}
 
+		if len(bodySniffed) > 0 {
+			bodyBytes = append(bodySniffed, bodyBytes...)
+		}
+
 		w.responseTrace += string(bodyBytes)
 	} else {
-		// no body for non-text responses but add it to our Response log so users know why
-		w.responseTrace += "Non-text body, ignoring"
+		w.bodyIgnored = true
 	}
 
 	return w, nil
