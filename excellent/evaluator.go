@@ -3,7 +3,6 @@ package excellent
 import (
 	"bytes"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/gen"
@@ -51,7 +50,7 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 	if nextTT == EOF {
 		switch tokenType {
 		case IDENTIFIER:
-			return ResolveValue(env, context, token), nil
+			return evaluateIdentifier(env, context, token), nil
 		case EXPRESSION:
 			return EvaluateExpression(env, context, token), nil
 		}
@@ -73,7 +72,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 		case BODY:
 			buf.WriteString(token)
 		case IDENTIFIER:
-			value := ResolveValue(env, context, token)
+			value := evaluateIdentifier(env, context, token)
 
 			if types.IsXError(value) {
 				errors.Add(fmt.Sprintf("@%s", token), value.(error).Error())
@@ -101,87 +100,16 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 	return buf.String(), nil
 }
 
-func indexInto(env utils.Environment, variable types.XValue, index types.XNumber) types.XValue {
-	indexable, isIndexable := variable.(types.XIndexable)
-	if !isIndexable {
-		return types.NewXErrorf("%s is not indexable", variable.Describe())
-	}
-
-	indexAsInt, xerr := types.ToInteger(env, index)
-	if xerr != nil {
-		return xerr
-	}
-
-	if indexAsInt >= indexable.Length() || indexAsInt < -indexable.Length() {
-		return types.NewXErrorf("index %d out of range for %d items", indexAsInt, indexable.Length())
-	}
-	if indexAsInt < 0 {
-		indexAsInt += indexable.Length()
-	}
-	return indexable.Index(indexAsInt)
-}
-
-// ResolveValue will resolve the passed in string variable given in dot notation and return
-// the value as defined by the Resolvable passed in.
-func ResolveValue(env utils.Environment, variable types.XValue, key string) types.XValue {
-	rest := key
-	for rest != "" {
-		key, rest = popNextVariable(rest)
-
-		if utils.IsNil(variable) {
-			return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
-		}
-
-		// is our key numeric?
-		index, err := strconv.Atoi(key)
-		if err == nil {
-			variable = indexInto(env, variable, types.NewXNumberFromInt(index))
-			if types.IsXError(variable) {
-				return variable
-			}
-			continue
-		}
-
-		resolver, isResolver := variable.(types.XResolvable)
-
-		// look it up in our resolver
-		if isResolver {
-			variable = resolver.Resolve(env, key)
-
-			if types.IsXError(variable) {
-				return variable
-			}
-
-		} else {
-			return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
-		}
-	}
-
-	return variable
-}
-
-// popNextVariable pops the next variable off our string:
-//     foo.bar.baz -> "foo", "bar.baz"
-//     foo.0.bar -> "foo", "0.baz"
-func popNextVariable(input string) (string, string) {
-	var keyStart = 0
-	var keyEnd = -1
-	var restStart = -1
-
-	for i, c := range input {
-		if c == '.' {
-			keyEnd = i
-			restStart = i + 1
+// Evaluates an identifier like "foo.bar.zed".. these could be passed through the full excellent parser
+// but as an optimization we handle them separately.
+func evaluateIdentifier(env utils.Environment, context types.XValue, identifier string) types.XValue {
+	parts := strings.Split(identifier, ".")
+	value := context
+	for _, part := range parts {
+		value = lookupProperty(env, value, part)
+		if types.IsXError(value) {
 			break
 		}
 	}
-
-	if keyEnd == -1 {
-		return input, ""
-	}
-
-	key := strings.Trim(input[keyStart:keyEnd], "\"")
-	rest := input[restStart:]
-
-	return key, rest
+	return value
 }

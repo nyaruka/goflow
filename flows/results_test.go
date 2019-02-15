@@ -20,10 +20,10 @@ func TestResults(t *testing.T) {
 		expected types.XValue
 	}{
 		{[]byte(`{}`), "key", ERROR},
-		{[]byte(`{ "name": { "result_name": "Name", "value": "Ryan Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "key", ERROR},
-		{[]byte(`{ "name": { "result_name": "Name", "value": "Ryan Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "name", types.NewXText("Ryan Lewis")},
-		{[]byte(`{ "last_name": { "result_name": "Last Name", "value": "Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "last_name", types.NewXText("Lewis")},
-		{[]byte(`{ "last_name": { "result_name": "Last Name", "value": "Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "Last Name", types.NewXText("Lewis")},
+		{[]byte(`{ "name": { "result_name": "Name", "value": "Ryan Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), `results.key`, ERROR},
+		{[]byte(`{ "name": { "result_name": "Name", "value": "Ryan Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), `results.name`, types.NewXText("Ryan Lewis")},
+		{[]byte(`{ "last_name": { "result_name": "Last Name", "value": "Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), `results.last_name`, types.NewXText("Lewis")},
+		{[]byte(`{ "last_name": { "result_name": "Last Name", "value": "Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), `results["Last Name"]`, types.NewXText("Lewis")},
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
@@ -34,7 +34,8 @@ func TestResults(t *testing.T) {
 			t.Errorf("Error unmarshalling: '%s'", err)
 			continue
 		}
-		value := excellent.ResolveValue(env, results, test.lookup)
+		context := types.NewXMap(map[string]types.XValue{"results": results})
+		value := excellent.EvaluateExpression(env, context, test.lookup)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if test.expected == ERROR {

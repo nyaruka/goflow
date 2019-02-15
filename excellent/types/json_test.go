@@ -1,7 +1,6 @@
 package types_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent"
@@ -71,18 +70,17 @@ func TestXJSONResolve(t *testing.T) {
 
 	env := utils.NewEnvironmentBuilder().Build()
 	for _, test := range jsonTests {
-		template := fmt.Sprintf("@(%s)", test.expression)
 		fragment := types.JSONToXValue(test.JSON)
 		context := types.NewXMap(map[string]types.XValue{"json": fragment})
 
-		value, _ := excellent.EvaluateTemplate(env, context, template, nil)
+		value := excellent.EvaluateExpression(env, context, test.expression)
 		err, _ := value.(error)
 
 		if test.hasError {
-			assert.Error(t, err, "expected error resolving '%s' for '%s'", template, test.JSON)
+			assert.Error(t, err, "expected error resolving '%s' for '%s'", test.expression, test.JSON)
 		} else {
-			assert.NoError(t, err, "unexpected error resolving '%s' for '%s'", template, test.JSON)
-			assert.Equal(t, test.expected, value, "Actual '%s' does not match expected '%s' resolving '%s' for '%s'", value, test.expected, template, test.JSON)
+			assert.NoError(t, err, "unexpected error resolving '%s' for '%s'", test.expression, test.JSON)
+			assert.Equal(t, test.expected, value, "Actual '%s' does not match expected '%s' resolving '%s' for '%s'", value, test.expected, test.expression, test.JSON)
 		}
 	}
 }
