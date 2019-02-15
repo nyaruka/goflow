@@ -1,3 +1,8 @@
+v0.27.9
+----------
+ * Don't treat identifiers as special case, parse them like all other expressions
+ * When migrating expressions like flow.2factor, wrap non-name keys in ["..."]
+
 v0.27.8
 ----------
  * Add better flow spec version handling and ability to peek at definitions to determin if they are legacy
