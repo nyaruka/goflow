@@ -16,7 +16,7 @@ import (
 func TestLegacyExtra(t *testing.T) {
 	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"bool": true, "number": 123.34, "text": "hello", "dict": {"foo": "bar"}, "list": [1, "x"]}`))
+		w.Write([]byte(`{"bool": true, "number": 123.34, "text": "hello", "dict": {"foo": "bar", "1": "xx"}, "list": [1, "x"]}`))
 	}))
 	server.Start()
 	defer server.Close()
@@ -40,7 +40,8 @@ func TestLegacyExtra(t *testing.T) {
 		{"@legacy_extra.list.0", `1`},
 		{"@legacy_extra.list.1", `x`},
 		{"@legacy_extra.dict.FOO", `bar`},
-		{"@legacy_extra", `{"address":{"state":"WA"},"bool":true,"dict":{"foo":"bar"},"list":[1,"x"],"number":123.34,"source":"website","text":"hello","webhook":"{\"bool\": true, \"number\": 123.34, \"text\": \"hello\", \"dict\": {\"foo\": \"bar\"}, \"list\": [1, \"x\"]}"}`},
+		{"@legacy_extra.dict.1", `xx`},
+		{"@legacy_extra", `{"address":{"state":"WA"},"bool":true,"dict":{"1":"xx","foo":"bar"},"list":[1,"x"],"number":123.34,"source":"website","text":"hello","webhook":"{\"bool\": true, \"number\": 123.34, \"text\": \"hello\", \"dict\": {\"foo\": \"bar\", \"1\": \"xx\"}, \"list\": [1, \"x\"]}"}`},
 	}
 	for _, tc := range tests {
 		output, err := run.EvaluateTemplateAsString(tc.template)
