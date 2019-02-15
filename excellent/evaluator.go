@@ -123,10 +123,6 @@ func indexInto(env utils.Environment, variable types.XValue, index types.XNumber
 
 // ResolveValue will resolve the passed in string variable given in dot notation and return
 // the value as defined by the Resolvable passed in.
-//
-// Example syntaxes:
-//      foo.bar.0  - 0th element of bar slice within foo
-//      foo.bar[0] - same as above
 func ResolveValue(env utils.Environment, variable types.XValue, key string) types.XValue {
 	rest := key
 	for rest != "" {
@@ -166,27 +162,14 @@ func ResolveValue(env utils.Environment, variable types.XValue, key string) type
 
 // popNextVariable pops the next variable off our string:
 //     foo.bar.baz -> "foo", "bar.baz"
-//     foo[0].bar -> "foo", "[0].baz"
 //     foo.0.bar -> "foo", "0.baz"
-//     [0].bar -> "0", "bar"
-//     foo["my key"] -> "foo", "my key"
 func popNextVariable(input string) (string, string) {
 	var keyStart = 0
 	var keyEnd = -1
 	var restStart = -1
 
 	for i, c := range input {
-		if i == 0 && c == '[' {
-			keyStart++
-		} else if c == '[' {
-			keyEnd = i
-			restStart = i
-			break
-		} else if c == ']' {
-			keyEnd = i
-			restStart = i + 1
-			break
-		} else if c == '.' {
+		if c == '.' {
 			keyEnd = i
 			restStart = i + 1
 			break
