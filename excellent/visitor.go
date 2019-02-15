@@ -340,24 +340,10 @@ func lookupIndex(env utils.Environment, value types.XValue, index types.XNumber)
 
 // lookup a named property on the given value
 func lookupProperty(env utils.Environment, variable types.XValue, key string) types.XValue {
-	if utils.IsNil(variable) {
-		return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
-	}
-
-	// is our key numeric?
-	index, err := strconv.Atoi(key)
-	if err == nil {
-		return lookupIndex(env, variable, types.NewXNumberFromInt(index))
-	}
-
 	resolver, isResolver := variable.(types.XResolvable)
-
-	// look it up in our resolver
-	if isResolver {
-		variable = resolver.Resolve(env, key)
-	} else {
+	if !isResolver {
 		return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
 	}
 
-	return variable
+	return resolver.Resolve(env, key)
 }

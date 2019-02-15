@@ -435,15 +435,15 @@
                 "output": "(206) 555-1212"
             },
             {
-                "template": "@(format_urn(contact.urns.mailto.0))",
+                "template": "@(format_urn(contact.urns.mailto[0]))",
                 "output": "foo@bar.com"
             },
             {
-                "template": "@(format_urn(contact.urns.telegram.0))",
+                "template": "@(format_urn(contact.urns.telegram[0]))",
                 "output": ""
             },
             {
-                "template": "@(format_urn(contact.urns.2))",
+                "template": "@(format_urn(contact.urns[2]))",
                 "output": "foo@bar.com"
             },
             {
@@ -743,7 +743,7 @@
                 "output": "bar"
             },
             {
-                "template": "@(parse_json(\"[1,2,3,4]\").2)",
+                "template": "@(parse_json(\"[1,2,3,4]\")[2])",
                 "output": "3"
             },
             {

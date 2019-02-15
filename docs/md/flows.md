@@ -687,7 +687,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
     "type": "send_email",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "addresses": [
-        "@contact.urns.mailto.0"
+        "@(contact.urns.mailto[0])"
     ],
     "subject": "Here is your activation token",
     "body": "Your activation token is @contact.fields.activation_token"

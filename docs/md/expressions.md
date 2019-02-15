@@ -47,9 +47,9 @@ Examples:
 
 
 ```objectivec
-@input.attachments.0.content_type → image/jpeg
-@input.attachments.0.url → http://s3.amazon.com/bucket/test.jpg
-@(json(input.attachments.0)) → {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
+@(input.attachments[0].content_type) → image/jpeg
+@(input.attachments[0].url) → http://s3.amazon.com/bucket/test.jpg
+@(json(input.attachments[0])) → {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
 ```
 
 <a name="context:channel"></a>
@@ -93,7 +93,7 @@ Represents a person who is interacting with the flow. It renders as the person's
  * `groups` all the [groups](#context:group) that the contact belongs to
  * `fields` all the custom contact fields the contact has set
  * `fields.[snaked_field_name]` the value of the specific field
- * `channel` shorthand for `contact.urns.0.channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
+ * `channel` shorthand for `contact.urns[0].channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
 
 Examples:
 
@@ -106,9 +106,9 @@ Examples:
 @contact.timezone → America/Guayaquil
 @contact.created_on → 2018-06-20T11:40:30.123456Z
 @contact.urns → ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
-@contact.urns.0 → tel:+12065551212
+@(contact.urns[0]) → tel:+12065551212
 @contact.urns.tel → ["tel:+12065551212"]
-@contact.urns.mailto.0 → mailto:foo@bar.com
+@(contact.urns.mailto[0]) → mailto:foo@bar.com
 @contact.urn → tel:+12065551212
 @contact.groups → ["Testers","Males"]
 @contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
@@ -153,9 +153,9 @@ Examples:
 
 ```objectivec
 @contact.groups → ["Testers","Males"]
-@contact.groups.0.uuid → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
-@contact.groups.1.name → Males
-@(json(contact.groups.1)) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
+@(contact.groups[0].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
+@(contact.groups[1].name) → Males
+@(json(contact.groups[1])) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
 ```
 
 <a name="context:input"></a>
@@ -275,12 +275,12 @@ Examples:
 
 
 ```objectivec
-@contact.urns.0 → tel:+12065551212
-@contact.urns.0.scheme → tel
-@contact.urns.0.path → +12065551212
-@contact.urns.1.display → nyaruka
-@(format_urn(contact.urns.0)) → (206) 555-1212
-@(json(contact.urns.0)) → {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
+@(contact.urns[0]) → tel:+12065551212
+@(contact.urns[0].scheme) → tel
+@(contact.urns[0].path) → +12065551212
+@(contact.urns[1].display) → nyaruka
+@(format_urn(contact.urns[0])) → (206) 555-1212
+@(json(contact.urns[0])) → {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
 ```
 
 
@@ -616,9 +616,9 @@ Formats `urn` into human friendly text.
 @(format_urn("tel:+250781234567")) → 0781 234 567
 @(format_urn("twitter:134252511151#billy_bob")) → billy_bob
 @(format_urn(contact.urn)) → (206) 555-1212
-@(format_urn(contact.urns.mailto.0)) → foo@bar.com
-@(format_urn(contact.urns.telegram.0)) →
-@(format_urn(contact.urns.2)) → foo@bar.com
+@(format_urn(contact.urns.mailto[0])) → foo@bar.com
+@(format_urn(contact.urns.telegram[0])) →
+@(format_urn(contact.urns[2])) → foo@bar.com
 @(format_urn("NOT URN")) → ERROR
 ```
 
@@ -867,7 +867,7 @@ If the given `text` is not valid JSON, then an error is returned
 
 ```objectivec
 @(parse_json("{\"foo\": \"bar\"}").foo) → bar
-@(parse_json("[1,2,3,4]").2) → 3
+@(parse_json("[1,2,3,4]")[2]) → 3
 @(parse_json("invalid json")) → ERROR
 ```
 

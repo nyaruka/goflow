@@ -21,9 +21,9 @@ import (
 // Examples:
 //
 //   @contact.groups -> ["Testers","Males"]
-//   @contact.groups.0.uuid -> b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
-//   @contact.groups.1.name -> Males
-//   @(json(contact.groups.1)) -> {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
+//   @(contact.groups[0].uuid) -> b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
+//   @(contact.groups[1].name) -> Males
+//   @(json(contact.groups[1])) -> {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
 //
 // @context group
 type Group struct {

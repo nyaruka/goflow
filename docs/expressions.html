@@ -52,9 +52,9 @@
 <li><code>url</code> the URL of the attachment</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" title="1">@input.attachments.<span class="fl">0.</span>content_type → image/jpeg</a>
-<a class="sourceLine" id="cb1-2" title="2">@input.attachments.<span class="fl">0.</span>url → http:<span class="co">//s3.amazon.com/bucket/test.jpg</span></a>
-<a class="sourceLine" id="cb1-3" title="3">@(json(input.attachments<span class="fl">.0</span>)) → {<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" title="1">@(input.attachments[<span class="dv">0</span>].content_type) → image/jpeg</a>
+<a class="sourceLine" id="cb1-2" title="2">@(input.attachments[<span class="dv">0</span>].url) → http:<span class="co">//s3.amazon.com/bucket/test.jpg</span></a>
+<a class="sourceLine" id="cb1-3" title="3">@(json(input.attachments[<span class="dv">0</span>])) → {<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>}</a></code></pre></div>
 <p><a name="context:channel"></a></p>
 <h2 id="channel">Channel</h2>
 <p>Represents a means for sending and receiving input during a flow run. It renders as its name in a template, and has the following properties which can be accessed:</p>
@@ -85,7 +85,7 @@
 <li><code>groups</code> all the <a href="#context:group">groups</a> that the contact belongs to</li>
 <li><code>fields</code> all the custom contact fields the contact has set</li>
 <li><code>fields.[snaked_field_name]</code> the value of the specific field</li>
-<li><code>channel</code> shorthand for <code>contact.urns.0.channel</code>, i.e. the <a href="#context:channel">channel</a> of the contact’s preferred URN</li>
+<li><code>channel</code> shorthand for <code>contact.urns[0].channel</code>, i.e. the <a href="#context:channel">channel</a> of the contact’s preferred URN</li>
 </ul>
 <p>Examples:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb3-1" title="1">@contact → Ryan Lewis</a>
@@ -95,9 +95,9 @@
 <a class="sourceLine" id="cb3-5" title="5">@contact.timezone → America/Guayaquil</a>
 <a class="sourceLine" id="cb3-6" title="6">@contact.created_on → <span class="dv">2018-06</span>-20T11:<span class="dv">40</span>:<span class="fl">30.123456</span>Z</a>
 <a class="sourceLine" id="cb3-7" title="7">@contact.urns → [<span class="st">&quot;tel:+12065551212&quot;</span>,<span class="st">&quot;twitterid:54784326227#nyaruka&quot;</span>,<span class="st">&quot;mailto:foo@bar.com&quot;</span>]</a>
-<a class="sourceLine" id="cb3-8" title="8">@contact.urns<span class="fl">.0</span> → tel:+<span class="dv">12065551212</span></a>
+<a class="sourceLine" id="cb3-8" title="8">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb3-9" title="9">@contact.urns.tel → [<span class="st">&quot;tel:+12065551212&quot;</span>]</a>
-<a class="sourceLine" id="cb3-10" title="10">@contact.urns.mailto<span class="fl">.0</span> → mailto:foo@bar.com</a>
+<a class="sourceLine" id="cb3-10" title="10">@(contact.urns.mailto[<span class="dv">0</span>]) → mailto:foo@bar.com</a>
 <a class="sourceLine" id="cb3-11" title="11">@contact.urn → tel:+<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb3-12" title="12">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
 <a class="sourceLine" id="cb3-13" title="13">@contact.fields → {<span class="st">&quot;activation_token&quot;</span>:<span class="st">&quot;AACC55&quot;</span>,<span class="st">&quot;age&quot;</span>:<span class="dv">23</span>,<span class="st">&quot;gender&quot;</span>:<span class="st">&quot;Male&quot;</span>,<span class="st">&quot;join_date&quot;</span>:<span class="st">&quot;2017-12-02T00:00:00-02:00&quot;</span>,<span class="st">&quot;not_set&quot;</span>:null}</a>
@@ -125,9 +125,9 @@
 </ul>
 <p>Examples:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
-<a class="sourceLine" id="cb5-2" title="2">@contact.groups.<span class="fl">0.</span>uuid → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
-<a class="sourceLine" id="cb5-3" title="3">@contact.groups.<span class="fl">1.</span>name → Males</a>
-<a class="sourceLine" id="cb5-4" title="4">@(json(contact.groups<span class="fl">.1</span>)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb5-2" title="2">@(contact.groups[<span class="dv">0</span>].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
+<a class="sourceLine" id="cb5-3" title="3">@(contact.groups[<span class="dv">1</span>].name) → Males</a>
+<a class="sourceLine" id="cb5-4" title="4">@(json(contact.groups[<span class="dv">1</span>])) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
 <p><a name="context:input"></a></p>
 <h2 id="input">Input</h2>
 <p>Describes input from the contact and currently we only support one type of input: <code>msg</code>. Any input has the following properties which can be accessed:</p>
@@ -205,12 +205,12 @@
 </ul>
 <p>To render a URN in a human friendly format, use the <a href="expressions.html#function:format_urn">format_urn</a> function.</p>
 <p>Examples:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" title="1">@contact.urns<span class="fl">.0</span> → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb10-2" title="2">@contact.urns.<span class="fl">0.</span>scheme → tel</a>
-<a class="sourceLine" id="cb10-3" title="3">@contact.urns.<span class="fl">0.</span>path → +<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb10-4" title="4">@contact.urns.<span class="fl">1.</span>display → nyaruka</a>
-<a class="sourceLine" id="cb10-5" title="5">@(format_urn(contact.urns<span class="fl">.0</span>)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
-<a class="sourceLine" id="cb10-6" title="6">@(json(contact.urns<span class="fl">.0</span>)) → {<span class="st">&quot;display&quot;</span>:<span class="st">&quot;(206) 555-1212&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" title="1">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
+<a class="sourceLine" id="cb10-2" title="2">@(contact.urns[<span class="dv">0</span>].scheme) → tel</a>
+<a class="sourceLine" id="cb10-3" title="3">@(contact.urns[<span class="dv">0</span>].path) → +<span class="dv">12065551212</span></a>
+<a class="sourceLine" id="cb10-4" title="4">@(contact.urns[<span class="dv">1</span>].display) → nyaruka</a>
+<a class="sourceLine" id="cb10-5" title="5">@(format_urn(contact.urns[<span class="dv">0</span>])) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
+<a class="sourceLine" id="cb10-6" title="6">@(json(contact.urns[<span class="dv">0</span>])) → {<span class="st">&quot;display&quot;</span>:<span class="st">&quot;(206) 555-1212&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>}</a></code></pre></div>
 </div>
 <h1 id="functions">Functions</h1>
 <p>Templates also have access to a set of functions which can be used to further manipulate the context. Functions are called using the <code>@(function_name(args..))</code> syntax. For example, to title-case a contact’s name in a message, you can use <code>@(title(contact.name))</code>. Context variables referred to within functions do not need a leading <code>@</code>. Functions can also use literal numbers or strings as arguments, for example <code>@(length(split("1 2 3", " "))</code>.</p>
@@ -390,9 +390,9 @@
 <div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" title="1">@(format_urn(<span class="st">&quot;tel:+250781234567&quot;</span>)) → <span class="dv">0781</span> <span class="dv">234</span> <span class="dv">567</span></a>
 <a class="sourceLine" id="cb29-2" title="2">@(format_urn(<span class="st">&quot;twitter:134252511151#billy_bob&quot;</span>)) → billy_bob</a>
 <a class="sourceLine" id="cb29-3" title="3">@(format_urn(contact.urn)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
-<a class="sourceLine" id="cb29-4" title="4">@(format_urn(contact.urns.mailto<span class="fl">.0</span>)) → foo@bar.com</a>
-<a class="sourceLine" id="cb29-5" title="5">@(format_urn(contact.urns.telegram<span class="fl">.0</span>)) →</a>
-<a class="sourceLine" id="cb29-6" title="6">@(format_urn(contact.urns<span class="fl">.2</span>)) → foo@bar.com</a>
+<a class="sourceLine" id="cb29-4" title="4">@(format_urn(contact.urns.mailto[<span class="dv">0</span>])) → foo@bar.com</a>
+<a class="sourceLine" id="cb29-5" title="5">@(format_urn(contact.urns.telegram[<span class="dv">0</span>])) →</a>
+<a class="sourceLine" id="cb29-6" title="6">@(format_urn(contact.urns[<span class="dv">2</span>])) → foo@bar.com</a>
 <a class="sourceLine" id="cb29-7" title="7">@(format_urn(<span class="st">&quot;NOT URN&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:from_epoch"></a></p>
 <h2 id="from_epochseconds">from_epoch(seconds)</h2>
@@ -517,7 +517,7 @@
 <p>Tries to parse <code>text</code> as JSON.</p>
 <p>If the given <code>text</code> is not valid JSON, then an error is returned</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb45-1" title="1">@(parse_json(<span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">foo</span><span class="sc">\&quot;</span><span class="st">: </span><span class="sc">\&quot;</span><span class="st">bar</span><span class="sc">\&quot;</span><span class="st">}&quot;</span>).foo) → bar</a>
-<a class="sourceLine" id="cb45-2" title="2">@(parse_json(<span class="st">&quot;[1,2,3,4]&quot;</span>).<span class="dv">2</span>) → <span class="dv">3</span></a>
+<a class="sourceLine" id="cb45-2" title="2">@(parse_json(<span class="st">&quot;[1,2,3,4]&quot;</span>)[<span class="dv">2</span>]) → <span class="dv">3</span></a>
 <a class="sourceLine" id="cb45-3" title="3">@(parse_json(<span class="st">&quot;invalid json&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:percent"></a></p>
 <h2 id="percentnum">percent(num)</h2>

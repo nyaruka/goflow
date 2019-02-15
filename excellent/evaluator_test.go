@@ -83,13 +83,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(dec1 + dec2)", xn("4.0")},
 
 		{"@array1d", array1d},
-		{"@array1d.0", xs("a")},
-		{"@array1d.1", xs("b")},
-		{"@array2d.0.2", ERROR}, // need to use square brackets
 		{"@(array1d[0])", xs("a")},
 		{"@(array1d[1])", xs("b")},
 		{"@(array2d[0])", array1d},
 		{"@(array2d[0][2])", xs("c")},
+		{"@array1d.1", ERROR}, // need to use square brackets
+		{"@array2d.0.2", ERROR},
 
 		{"@string1 world", xs("foo world")},
 
@@ -189,7 +188,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@((1 / 0)[0])", ERROR},     // can't index into an error value
 		{"@(array1d[1 / 0])", ERROR}, // index expression can't be an error
 
-		{"@(split(words, \" \").0)", xs("one")},
+		{"@(split(words, \" \")[0])", xs("one")},
 		{"@(split(words, \" \")[1])", xs("two")},
 		{"@(split(words, \" \")[-1])", xs("three")},
 
@@ -280,15 +279,12 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@array", `["one","two","three"]`, false},
 		{"@array[0]", `["one","two","three"][0]`, false}, // [n] notation not supported outside expression
-		{"@array.0", "one", false},                       // works as dot notation however
 		{"@(array [0])", "one", false},
 		{"@(array[0])", "one", false},
 		{"@(array[3 - 3])", "one", false},
-		{"@(array.0)", "one", false},
 		{"@(array[-1])", "three", false}, // negative index
-		{"@(array.-1)", "", true},        // invalid negative index
 
-		{"@(split(words, \" \").0)", "one", false},
+		{"@(split(words, \" \")[0])", "one", false},
 		{"@(split(words, \" \")[1])", "two", false},
 		{"@(split(words, \" \")[-1])", "three", false},
 
@@ -339,7 +335,7 @@ var errorTests = []struct {
 	{`@(NULL.x)`, `error evaluating @(NULL.x): null has no property 'x'`},
 	{`@("abc".v)`, `error evaluating @("abc".v): "abc" has no property 'v'`},
 	{`@(False.g)`, `error evaluating @(False.g): false has no property 'g'`},
-	{`@(1.1.0)`, `error evaluating @(1.1.0): 1.1 is not indexable`},
+	{`@(1.1.0)`, `error evaluating @(1.1.0): 1.1 has no property '0'`},
 	{`@(hello)`, `error evaluating @(hello): map has no property 'hello'`}, // this context is a map
 	{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
 	{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},
