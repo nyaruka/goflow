@@ -40,6 +40,14 @@ func (e legacyExtraMap) Resolve(env utils.Environment, key string) types.XValue 
 	return e.convertToXValue(val)
 }
 
+func (e legacyExtraMap) Index(index int) types.XValue {
+	return e.Resolve(nil, strconv.Itoa(index))
+}
+
+func (e legacyExtraMap) Length() int {
+	return len(e)
+}
+
 func (e legacyExtraMap) convertToXValue(val interface{}) types.XValue {
 	switch typed := val.(type) {
 	case map[string]interface{}:
@@ -63,6 +71,7 @@ func (e legacyExtraMap) convertToXValue(val interface{}) types.XValue {
 
 var _ types.XValue = (legacyExtraMap)(nil)
 var _ types.XResolvable = (legacyExtraMap)(nil)
+var _ types.XIndexable = (legacyExtraMap)(nil)
 
 type legacyExtra struct {
 	legacyExtraMap

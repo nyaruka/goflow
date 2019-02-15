@@ -54,7 +54,6 @@ func TestXJSONResolve(t *testing.T) {
 
 		{[]byte(`["one", "two", "three"]`), "0", types.NewXText("one"), false},
 		{[]byte(`["escaped \"string\""]`), "0", types.NewXText(`escaped "string"`), false},
-		{[]byte(`{"1": "one"}`), "1", types.NewXText("one"), false}, // map key is numerical string
 		{[]byte(`{"arr": ["one", "two"]}`), "arr[1]", types.NewXText("two"), false},
 		{[]byte(`{"arr": ["one", "two"]}`), "arr.1", types.NewXText("two"), false},
 		{[]byte(`{"key": {"key2": "val2"}}`), "key.key2", types.NewXText("val2"), false},

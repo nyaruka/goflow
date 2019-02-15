@@ -101,11 +101,31 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 	return buf.String(), nil
 }
 
+func indexInto(env utils.Environment, variable types.XValue, index types.XNumber) types.XValue {
+	indexable, isIndexable := variable.(types.XIndexable)
+	if !isIndexable {
+		return types.NewXErrorf("%s is not indexable", variable.Describe())
+	}
+
+	indexAsInt, xerr := types.ToInteger(env, index)
+	if xerr != nil {
+		return xerr
+	}
+
+	if indexAsInt >= indexable.Length() || indexAsInt < -indexable.Length() {
+		return types.NewXErrorf("index %d out of range for %d items", indexAsInt, indexable.Length())
+	}
+	if indexAsInt < 0 {
+		indexAsInt += indexable.Length()
+	}
+	return indexable.Index(indexAsInt)
+}
+
 // ResolveValue will resolve the passed in string variable given in dot notation and return
 // the value as defined by the Resolvable passed in.
 //
 // Example syntaxes:
-//      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
+//      foo.bar.0  - 0th element of bar slice within foo
 //      foo.bar[0] - same as above
 func ResolveValue(env utils.Environment, variable types.XValue, key string) types.XValue {
 	rest := key
@@ -119,17 +139,11 @@ func ResolveValue(env utils.Environment, variable types.XValue, key string) type
 		// is our key numeric?
 		index, err := strconv.Atoi(key)
 		if err == nil {
-			indexable, isIndexable := variable.(types.XIndexable)
-			if isIndexable {
-				if index >= indexable.Length() || index < -indexable.Length() {
-					return types.NewXErrorf("index %d out of range for %d items", index, indexable.Length())
-				}
-				if index < 0 {
-					index += indexable.Length()
-				}
-				variable = indexable.Index(index)
-				continue
+			variable = indexInto(env, variable, types.NewXNumberFromInt(index))
+			if types.IsXError(variable) {
+				return variable
 			}
+			continue
 		}
 
 		resolver, isResolver := variable.(types.XResolvable)

@@ -117,6 +117,13 @@ func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 
 	expression := toXValue(v.Visit(ctx.Expression()))
 
+	// if the resolved expression is a number, this is an array lookup
+	asNumber, isNumber := expression.(types.XNumber)
+	if isNumber {
+		return indexInto(v.env, context, asNumber)
+	}
+
+	// if not it is a property lookup so stringify the key
 	lookup, xerr := types.ToXText(v.env, expression)
 	if xerr != nil {
 		return xerr
