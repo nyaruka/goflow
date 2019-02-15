@@ -85,7 +85,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@array1d", array1d},
 		{"@array1d.0", xs("a")},
 		{"@array1d.1", xs("b")},
-		{"@array2d.0.2", xs("c")},
+		{"@array2d.0.2", ERROR}, // need to use square brackets
 		{"@(array1d[0])", xs("a")},
 		{"@(array1d[1])", xs("b")},
 		{"@(array2d[0])", array1d},
@@ -205,7 +205,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, test.template)
 		} else {
 			if !types.Equals(env, result, test.expected) {
-				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} evaluating template '%s'", test.expected, test.expected, result, result, test.expected)
+				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} evaluating template '%s'", test.expected, test.expected, result, result, test.template)
 			}
 		}
 	}

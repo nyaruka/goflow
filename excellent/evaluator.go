@@ -2,7 +2,6 @@ package excellent
 
 import (
 	"bytes"
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/gen"
@@ -12,7 +11,8 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// EvaluateExpression evalutes the passed in template, returning the typed value it evaluates to, which might be an error
+// EvaluateExpression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
+// which might be an error, e.g. "2 / 3" or "contact.fields.age"
 func EvaluateExpression(env utils.Environment, context types.XValue, expression string) types.XValue {
 	errListener := NewErrorListener(expression)
 
@@ -49,9 +49,7 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 	// if we only have an identifier or an expression, evaluate it on its own
 	if nextTT == EOF {
 		switch tokenType {
-		case IDENTIFIER:
-			return evaluateIdentifier(env, context, token), nil
-		case EXPRESSION:
+		case IDENTIFIER, EXPRESSION:
 			return EvaluateExpression(env, context, token), nil
 		}
 	}
@@ -71,21 +69,18 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
-		case IDENTIFIER:
-			value := evaluateIdentifier(env, context, token)
-
-			if types.IsXError(value) {
-				errors.Add(fmt.Sprintf("@%s", token), value.(error).Error())
-			} else {
-				strValue, _ := types.ToXText(env, value)
-
-				buf.WriteString(strValue.Native())
-			}
-		case EXPRESSION:
+		case IDENTIFIER, EXPRESSION:
 			value := EvaluateExpression(env, context, token)
 
 			if types.IsXError(value) {
-				errors.Add(fmt.Sprintf("@(%s)", token), value.(error).Error())
+				var repr string
+				if tokenType == IDENTIFIER {
+					repr = "@" + token
+				} else {
+					repr = "@(" + token + ")"
+				}
+
+				errors.Add(repr, value.(error).Error())
 			} else {
 				strValue, _ := types.ToXText(env, value)
 
@@ -98,18 +93,4 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 		return buf.String(), errors
 	}
 	return buf.String(), nil
-}
-
-// Evaluates an identifier like "foo.bar.zed".. these could be passed through the full excellent parser
-// but as an optimization we handle them separately.
-func evaluateIdentifier(env utils.Environment, context types.XValue, identifier string) types.XValue {
-	parts := strings.Split(identifier, ".")
-	value := context
-	for _, part := range parts {
-		value = lookupProperty(env, value, part)
-		if types.IsXError(value) {
-			break
-		}
-	}
-	return value
 }
