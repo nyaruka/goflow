@@ -85,7 +85,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@array1d", array1d},
 		{"@array1d.0", xs("a")},
 		{"@array1d.1", xs("b")},
-		{"@array2d.0.2", xs("c")},
+		{"@array2d.0.2", ERROR}, // need to use square brackets
 		{"@(array1d[0])", xs("a")},
 		{"@(array1d[1])", xs("b")},
 		{"@(array2d[0])", array1d},
@@ -205,7 +205,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, test.template)
 		} else {
 			if !types.Equals(env, result, test.expected) {
-				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} evaluating template '%s'", test.expected, test.expected, result, result, test.expected)
+				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} evaluating template '%s'", test.expected, test.expected, result, result, test.template)
 			}
 		}
 	}
@@ -283,6 +283,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@array.0", "one", false},                       // works as dot notation however
 		{"@(array [0])", "one", false},
 		{"@(array[0])", "one", false},
+		{"@(array[3 - 3])", "one", false},
 		{"@(array.0)", "one", false},
 		{"@(array[-1])", "three", false}, // negative index
 		{"@(array.-1)", "", true},        // invalid negative index
@@ -291,11 +292,16 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(split(words, \" \")[1])", "two", false},
 		{"@(split(words, \" \")[-1])", "three", false},
 
-		{"@(thing.foo)", "bar", false},
-		{"@(thing.zed)", "123", false},
-		{"@(thing.missing)", "", false},    // missing is nil which becomes empty string
-		{"@(thing.missing.xxx)", "", true}, // but can't look up a property on nil
-		{"@(thing.xxx)", "", true},
+		{`@(thing.foo)`, "bar", false},
+		{`@(thing["foo"])`, "bar", false},
+		{`@(thing["FOO"])`, "", true}, // array notation is strict about case
+		{`@(thing[lower("FOO")])`, "bar", false},
+		{`@(thing["f" & "o" & "o"])`, "bar", false},
+		{`@(thing[string1])`, "bar", false},
+		{`@(thing.zed)`, "123", false},
+		{`@(thing.missing)`, "", false},    // missing is nil which becomes empty string
+		{`@(thing.missing.xxx)`, "", true}, // but can't look up a property on nil
+		{`@(thing.xxx)`, "", true},
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
@@ -333,7 +339,7 @@ var errorTests = []struct {
 	{`@(NULL.x)`, `error evaluating @(NULL.x): null has no property 'x'`},
 	{`@("abc".v)`, `error evaluating @("abc".v): "abc" has no property 'v'`},
 	{`@(False.g)`, `error evaluating @(False.g): false has no property 'g'`},
-	{`@(1.1.0)`, `error evaluating @(1.1.0): 1.1 has no property '0'`},
+	{`@(1.1.0)`, `error evaluating @(1.1.0): 1.1 is not indexable`},
 	{`@(hello)`, `error evaluating @(hello): map has no property 'hello'`}, // this context is a map
 	{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
 	{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},

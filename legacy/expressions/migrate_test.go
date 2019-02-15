@@ -25,6 +25,7 @@ type testTemplate struct {
 	old           string
 	new           string
 	defaultToSelf bool
+	dontEval      bool // do the migration test but don't try to evaluate the result
 }
 
 func TestMigrateTemplate(t *testing.T) {
@@ -60,6 +61,11 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@flow.favorite_color.text`, new: `@results.favorite_color.input`},
 		{old: `@flow.favorite_color.time`, new: `@results.favorite_color.created_on`},
 		{old: `@flow.favorite_color.value`, new: `@results.favorite_color.value`},
+		{old: `@flow.2factor`, new: `@(results["2factor"])`},
+		{old: `@flow.2factor.value`, new: `@(results["2factor"].value)`},
+		{old: `@flow.1`, new: `@(results["1"])`, dontEval: true},
+		{old: `@(flow.1337)`, new: `@(results["1337"])`, dontEval: true},
+		{old: `@(flow.1337.category)`, new: `@(results["1337"].category_localized)`, dontEval: true},
 		{old: `@flow.contact`, new: `@contact`},
 		{old: `@flow.contact.name`, new: `@contact.name`},
 
@@ -107,6 +113,7 @@ func TestMigrateTemplate(t *testing.T) {
 		// extra
 		{old: `@extra`, new: `@legacy_extra`},
 		{old: `@extra.address.state`, new: `@legacy_extra.address.state`},
+		{old: `@extra.results.1`, new: `@legacy_extra.results.1`},
 		{old: `@extra.flow.role`, new: `@parent.results.role`},
 
 		// variables in parens
@@ -181,11 +188,13 @@ func TestMigrateTemplate(t *testing.T) {
 			old:           "Embedded " + tc.old + " text",
 			new:           "Embedded " + tc.new + " text",
 			defaultToSelf: tc.defaultToSelf,
+			dontEval:      tc.dontEval,
 		})
 		tests = append(tests, testTemplate{
 			old:           "Replace " + tc.old + " two " + tc.old + " times",
 			new:           "Replace " + tc.new + " two " + tc.new + " times",
 			defaultToSelf: tc.defaultToSelf,
+			dontEval:      tc.dontEval,
 		})
 	}
 
@@ -210,7 +219,7 @@ func TestMigrateTemplate(t *testing.T) {
 			assert.NoError(t, err, "error migrating template '%s'", tc.old)
 			assert.Equal(t, tc.new, migratedTemplate, "migrating template '%s' failed", tc.old)
 
-			if migratedTemplate == tc.new {
+			if migratedTemplate == tc.new && !tc.dontEval {
 				// check that the migrated template can be evaluated
 				_, err = session.Runs()[0].EvaluateTemplate(migratedTemplate)
 				require.NoError(t, err, "unable to evaluate migrated template '%s'", migratedTemplate)

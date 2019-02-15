@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -18,33 +19,33 @@ func TestGroupListResolve(t *testing.T) {
 	groups := flows.NewGroupList([]*flows.Group{customers, testers, males})
 
 	env := utils.NewEnvironmentBuilder().Build()
+	context := types.NewXMap(map[string]types.XValue{"groups": groups})
 
 	testCases := []struct {
-		key      string
-		hasValue bool
-		value    interface{}
+		expression string
+		hasValue   bool
+		value      interface{}
 	}{
-		{"0", true, customers},
-		{"1", true, testers},
-		{"2", true, males},
-		{"-1", true, males},
-		{"3", false, nil}, // index out of range
+		{"groups.0", true, customers},
+		{"groups.1", true, testers},
+		{"groups[2]", true, males},
+		{"groups[-1]", true, males},
+		{"groups.3", false, nil}, // index out of range
 	}
 	for _, tc := range testCases {
-		val := excellent.ResolveValue(env, groups, tc.key)
-
-		err, isErr := val.(error)
+		value := excellent.EvaluateExpression(env, context, tc.expression)
+		err, isErr := value.(error)
 
 		if tc.hasValue && isErr {
-			t.Errorf("Got unexpected error resolving %s: %s", tc.key, err)
+			t.Errorf("Got unexpected error resolving %s: %s", tc.expression, err)
 		}
 
 		if !tc.hasValue && !isErr {
-			t.Errorf("Did not get expected error resolving %s", tc.key)
+			t.Errorf("Did not get expected error resolving %s", tc.expression)
 		}
 
 		if tc.hasValue {
-			assert.Equal(t, tc.value, val)
+			assert.Equal(t, tc.value, value)
 		}
 	}
 }

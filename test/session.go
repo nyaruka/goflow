@@ -102,10 +102,16 @@ var sessionAssets = `{
                             "category": "Red"
                         },
                         {
+                            "uuid": "821eef31-c6d2-45b1-8f6a-d396e4959bbf",
+                            "type": "set_run_result",
+                            "name": "2Factor",
+                            "value": "34634624463525"
+                        },
+                        {
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                             "type": "call_webhook",
                             "method": "GET",
-                            "url": "http://localhost/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
+                            "url": "http://localhost/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
                             "result_name": "webhook"
                         }
                     ],

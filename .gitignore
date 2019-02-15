@@ -32,3 +32,5 @@ dist/
 
 fabfile.*
 fabconfig.*
+
+antlr/.antlr
