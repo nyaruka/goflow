@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -42,10 +41,16 @@ func (t TimeOfDay) Compare(other TimeOfDay) int {
 	return t.Nanos - other.Nanos
 }
 
+// Format formats this time of day as a string
+func (t TimeOfDay) Format(layout string) string {
+	// upgrade us to a date time so we can use standard time.Time formatting
+	d := time.Date(1970, 1, 1, t.Hour, t.Minute, t.Second, t.Nanos, time.UTC)
+	return d.Format(layout)
+}
+
 // String returns the ISO8601 representation
 func (t TimeOfDay) String() string {
-	// TODO this matches our DateToISO accuracy.. but we're throwing away accuracy
-	return fmt.Sprintf("%02d:%02d:%02d.%06d", t.Hour, t.Minute, t.Second, t.Nanos/1000)
+	return t.Format(iso8601Time)
 }
 
 // ZeroTimeOfDay is our uninitialized time of day value

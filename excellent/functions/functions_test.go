@@ -26,7 +26,11 @@ var ERROR = types.NewXErrorf("any error")
 
 func TestFunctions(t *testing.T) {
 	dmy := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Build()
-	mdy := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatMonthDayYear).WithTimezone(la).Build()
+	mdy := utils.NewEnvironmentBuilder().
+		WithDateFormat(utils.DateFormatMonthDayYear).
+		WithTimeFormat(utils.TimeFormatHourMinuteAmPm).
+		WithTimezone(la).
+		Build()
 
 	var funcTests = []struct {
 		name     string
@@ -173,7 +177,7 @@ func TestFunctions(t *testing.T) {
 		{"format_date", dmy, []types.XValue{}, ERROR},
 
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977 15:34")},
-		{"format_datetime", mdy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("06-23-1977 08:34")},
+		{"format_datetime", mdy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("06-23-1977 8:34 am")},
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.fffZZZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.000-07:00")},
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.123000Z"), xs("YYYY-MM-DDTtt:mm:ss.fffZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.123-07:00")},
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.000000-07:00")},
@@ -189,6 +193,11 @@ func TestFunctions(t *testing.T) {
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY"), ERROR}, ERROR},
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY"), xs("Cuenca")}, ERROR},
 		{"format_datetime", dmy, []types.XValue{}, ERROR},
+
+		{"format_time", dmy, []types.XValue{xs("15:34:00.000000")}, xs("15:34")},
+		{"format_time", mdy, []types.XValue{xs("15:34:00.000000")}, xs("3:34 pm")},
+		{"format_time", dmy, []types.XValue{xs("15:34:00.000000"), xs("tt")}, xs("15")},
+		{"format_time", dmy, []types.XValue{}, ERROR},
 
 		{"format_location", dmy, []types.XValue{xs("Rwanda")}, xs("Rwanda")},
 		{"format_location", dmy, []types.XValue{xs("Rwanda > Kigali")}, xs("Kigali")},

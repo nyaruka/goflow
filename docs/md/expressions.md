@@ -576,6 +576,37 @@ will be used. An error will be returned if the timezone is not recognized.
 @(format_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
+<a name="function:format_datetime"></a>
+
+## format_datetime(time [,format])
+
+Formats `time` as text according to the given `format`.
+
+The format string can consist of the following characters. The characters
+' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+
+* `h`         - hour of the day 1-12
+* `hh`        - hour of the day 01-12
+* `tt`        - twenty four hour of the day 01-23
+* `m`         - minute 0-59
+* `mm`        - minute 00-59
+* `s`         - second 0-59
+* `ss`        - second 00-59
+* `fff`       - milliseconds
+* `ffffff`    - microseconds
+* `fffffffff` - nanoseconds
+* `aa`        - am or pm
+* `AA`        - AM or PM
+
+
+```objectivec
+@(format_time("14:50:30.000000")) → 02:50
+@(format_time("14:50:30.000000", "h:mm aa")) → 2:50 pm
+@(format_time("14:50:30.000000", "tt:mm")) → 14:50
+@(format_time("15:00:27.000000", "s")) → 27
+@(format_time("NOT TIME", "hh:mm")) → ERROR
+```
+
 <a name="function:format_location"></a>
 
 ## format_location(location)

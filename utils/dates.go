@@ -50,6 +50,17 @@ const (
 func (df DateFormat) String() string { return string(df) }
 func (tf TimeFormat) String() string { return string(tf) }
 
+// format we use for output
+var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
+
+// generic format for parsing any 8601 date
+var iso8601Format = "2006-01-02T15:04:05Z07:00"
+var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
+var iso8601Date = "2006-01-02"
+var iso8601Time = "15:04:05.000000"
+
+var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat, iso8601Date}
+
 // ZeroDateTime is our uninitialized datetime value
 var ZeroDateTime = time.Time{}
 
@@ -107,16 +118,6 @@ func MonthsBetween(date1 time.Time, date2 time.Time) int {
 
 	return months
 }
-
-// format we use for output
-var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
-
-// generic format for parsing any 8601 date
-var iso8601Format = "2006-01-02T15:04:05Z07:00"
-var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
-var iso8601Date = "2006-01-02"
-
-var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat, iso8601Date}
 
 // DateToISO converts the passed in time.Time to a string in ISO8601 format
 func DateToISO(date time.Time) string {
@@ -414,7 +415,11 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					return "", errors.Errorf("invalid date format, invalid count of 'A' format: %d", count)
 				}
 				continue
+			}
+		}
 
+		if mode == DateTimeFormatting {
+			switch r {
 			case 'Z':
 				if count == 1 {
 					goFormat.WriteString("Z07:00")

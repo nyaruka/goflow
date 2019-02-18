@@ -376,6 +376,33 @@
         ]
     },
     {
+        "signature": "format_datetime(time [,format])",
+        "summary": "Formats `time` as text according to the given `format`.",
+        "detail": "The format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM",
+        "examples": [
+            {
+                "template": "@(format_time(\"14:50:30.000000\"))",
+                "output": "02:50"
+            },
+            {
+                "template": "@(format_time(\"14:50:30.000000\", \"h:mm aa\"))",
+                "output": "2:50 pm"
+            },
+            {
+                "template": "@(format_time(\"14:50:30.000000\", \"tt:mm\"))",
+                "output": "14:50"
+            },
+            {
+                "template": "@(format_time(\"15:00:27.000000\", \"s\"))",
+                "output": "27"
+            },
+            {
+                "template": "@(format_time(\"NOT TIME\", \"hh:mm\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
         "signature": "format_location(location)",
         "summary": "Formats the given `location` as its name.",
         "detail": "",

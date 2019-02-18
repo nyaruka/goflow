@@ -98,6 +98,7 @@ var XFUNCTIONS = map[string]XFunction{
 	// formatting functions
 	"format_date":     ArgCountCheck(1, 2, FormatDate),
 	"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
+	"format_time":     ArgCountCheck(1, 2, FormatTime),
 	"format_location": OneTextFunction(FormatLocation),
 	"format_number":   FormatNumber,
 	"format_urn":      OneTextFunction(FormatURN),
@@ -1335,7 +1336,6 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 		date = types.NewXDateTime(date.Native().In(env.Timezone()))
 	}
 
-	// return the formatted date
 	return types.NewXText(date.Native().Format(goFormat))
 }
 
@@ -1419,8 +1419,57 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 		date = types.NewXDateTime(date.Native().In(location))
 	}
 
-	// return the formatted date
 	return types.NewXText(date.Native().Format(goFormat))
+}
+
+// FormatTime formats `time` as text according to the given `format`.
+//
+// The format string can consist of the following characters. The characters
+// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+//
+// * `h`         - hour of the day 1-12
+// * `hh`        - hour of the day 01-12
+// * `tt`        - twenty four hour of the day 01-23
+// * `m`         - minute 0-59
+// * `mm`        - minute 00-59
+// * `s`         - second 0-59
+// * `ss`        - second 00-59
+// * `fff`       - milliseconds
+// * `ffffff`    - microseconds
+// * `fffffffff` - nanoseconds
+// * `aa`        - am or pm
+// * `AA`        - AM or PM
+//
+//   @(format_time("14:50:30.000000")) -> 02:50
+//   @(format_time("14:50:30.000000", "h:mm aa")) -> 2:50 pm
+//   @(format_time("14:50:30.000000", "tt:mm")) -> 14:50
+//   @(format_time("15:00:27.000000", "s")) -> 27
+//   @(format_time("NOT TIME", "hh:mm")) -> ERROR
+//
+// @function format_datetime(time [,format])
+func FormatTime(env utils.Environment, args ...types.XValue) types.XValue {
+	t, xerr := types.ToXTime(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	var format types.XText
+	if len(args) >= 2 {
+		format, xerr = types.ToXText(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+	} else {
+		format = types.NewXText(env.TimeFormat().String())
+	}
+
+	// try to turn it to a go format
+	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.TimeOnlyFormatting)
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	return types.NewXText(t.Native().Format(goFormat))
 }
 
 // FormatNumber formats `number` to the given number of decimal `places`.
