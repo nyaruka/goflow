@@ -1042,6 +1042,19 @@ Replaces all occurrences of `needle` with `replacement` in `text`.
 @(replace("foo bar", "baz", "zap")) → foo bar
 ```
 
+<a name="function:replace_time"></a>
+
+## replace_time(date)
+
+Returns the a new date time with the time part replaced by the `time`.
+
+
+```objectivec
+@(replace_time(now(), "10:30")) → 2018-04-11T10:30:00.000000-05:00
+@(replace_time("2017-01-15", "10:30")) → 2017-01-15T10:30:00.000000-05:00
+@(replace_time("foo", "10:30")) → ERROR
+```
+
 <a name="function:right"></a>
 
 ## right(text, count)

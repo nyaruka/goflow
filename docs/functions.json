@@ -935,6 +935,25 @@
         ]
     },
     {
+        "signature": "replace_time(date)",
+        "summary": "Returns the a new date time with the time part replaced by the `time`.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(replace_time(now(), \"10:30\"))",
+                "output": "2018-04-11T10:30:00.000000-05:00"
+            },
+            {
+                "template": "@(replace_time(\"2017-01-15\", \"10:30\"))",
+                "output": "2017-01-15T10:30:00.000000-05:00"
+            },
+            {
+                "template": "@(replace_time(\"foo\", \"10:30\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
         "signature": "right(text, count)",
         "summary": "Returns the `count` right-most characters in `text`",
         "detail": "",

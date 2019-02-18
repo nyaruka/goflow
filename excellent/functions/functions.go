@@ -83,6 +83,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"datetime_from_parts": ThreeIntegerFunction(DateTimeFromParts),
 	"datetime_diff":       ThreeArgFunction(DateTimeDiff),
 	"datetime_add":        DateTimeAdd,
+	"replace_time":        ArgCountCheck(2, 2, ReplaceTime),
 	"weekday":             OneDateTimeFunction(Weekday),
 	"tz":                  OneDateTimeFunction(TZ),
 	"tz_offset":           OneDateTimeFunction(TZOffset),
@@ -1153,6 +1154,26 @@ func DateTimeAdd(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	return types.NewXErrorf("unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit)
+}
+
+// ReplaceTime returns the a new date time with the time part replaced by the `time`.
+//
+//   @(replace_time(now(), "10:30")) -> 2018-04-11T10:30:00.000000-05:00
+//   @(replace_time("2017-01-15", "10:30")) -> 2017-01-15T10:30:00.000000-05:00
+//   @(replace_time("foo", "10:30")) -> ERROR
+//
+// @function replace_time(date)
+func ReplaceTime(env utils.Environment, args ...types.XValue) types.XValue {
+	date, xerr := types.ToXDateTime(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+	t, xerr := types.ToXTime(env, args[1])
+	if xerr != nil {
+		return xerr
+	}
+
+	return date.ReplaceTime(t)
 }
 
 // Weekday returns the day of the week for `date`.

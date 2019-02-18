@@ -25,9 +25,21 @@ func TestXDateTime(t *testing.T) {
 	assert.Equal(t, 1, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 31, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
 	assert.Equal(t, -1, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 29, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
 
-	d1 := types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))
+	la, _ := time.LoadLocation("America/Los_Angeles")
+
+	d1 := types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, la))
 	assert.Equal(t, d1, d1.Reduce(utils.NewEnvironmentBuilder().Build()))
 	assert.Equal(t, `datetime`, d1.Describe())
+
+	d2 := d1.ReplaceTime(types.NewXTime(utils.NewTimeOfDay(16, 20, 30, 123456789)))
+	assert.Equal(t, 2018, d2.Native().Year())
+	assert.Equal(t, time.Month(4), d2.Native().Month())
+	assert.Equal(t, 9, d2.Native().Day())
+	assert.Equal(t, 16, d2.Native().Hour())
+	assert.Equal(t, 20, d2.Native().Minute())
+	assert.Equal(t, 30, d2.Native().Second())
+	assert.Equal(t, 123456789, d2.Native().Nanosecond())
+	assert.Equal(t, la, d2.Native().Location())
 
 	// test unmarshaling
 	var date types.XDateTime

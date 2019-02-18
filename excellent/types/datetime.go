@@ -46,6 +46,13 @@ func (x XDateTime) Time() XTime {
 	return NewXTime(utils.ExtractTimeOfDay(x.Native()))
 }
 
+// ReplaceTime returns the a new date time with the time part replaced by the given time
+func (x XDateTime) ReplaceTime(tm XTime) XDateTime {
+	d := x.Native()
+	t := tm.Native()
+	return NewXDateTime(time.Date(d.Year(), d.Month(), d.Day(), t.Hour, t.Minute, t.Second, t.Nanos, d.Location()))
+}
+
 // Equals determines equality for this type
 func (x XDateTime) Equals(other XDateTime) bool {
 	return x.Native().Equal(other.Native())

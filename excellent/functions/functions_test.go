@@ -378,6 +378,10 @@ func TestFunctions(t *testing.T) {
 		{"replace", dmy, []types.XValue{xs("hi ho"), xs("bye"), ERROR}, ERROR},
 		{"replace", dmy, []types.XValue{}, ERROR},
 
+		{"replace_time", dmy, []types.XValue{xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), xt(utils.NewTimeOfDay(10, 30, 0, 0))}, xd(time.Date(1977, 06, 23, 10, 30, 0, 0, la))},
+		{"replace_time", dmy, []types.XValue{xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), ERROR}, ERROR},
+		{"replace_time", dmy, []types.XValue{ERROR, xt(utils.NewTimeOfDay(10, 30, 0, 0))}, ERROR},
+
 		{"right", dmy, []types.XValue{xs("hello"), xs("2")}, xs("lo")},
 		{"right", dmy, []types.XValue{xs("  HELLO "), xs("2")}, xs("O ")},
 		{"right", dmy, []types.XValue{xs("hi"), xi(4)}, xs("hi")},
