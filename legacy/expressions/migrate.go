@@ -23,6 +23,7 @@ var functionReturnTypes = map[string]string{
 	"max":                 "number",
 	"mean":                "number",
 	"min":                 "number",
+	"mod":                 "number",
 	"now":                 "datetime",
 	"sum":                 "number",
 	"rand":                "number",

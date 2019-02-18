@@ -149,6 +149,11 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(" "" ")`, new: `@(" \" ")`},
 		{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & contact.fields.gender)`},
 
+		// number+number addition/subtraction should stay as addition/subtraction
+		{old: `@(5 + 4)`, new: `@(5 + 4)`},
+		{old: `@(5 - 4)`, new: `@(5 - 4)`},
+		{old: `@(ABS(5) + MOD(7, 2))`, new: `@(abs(5) + mod(7, 2))`},
+
 		// date+number addition should get converted to datetime_add
 		{old: `@(date.now + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(now() + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
@@ -158,6 +163,7 @@ func TestMigrateTemplate(t *testing.T) {
 		// date+time addition should get converted to replace_time
 		{old: `@(today() + TIME(15, 30, 0))`, new: `@(replace_time(today(), time_from_parts(15, 30, 0)))`},
 		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(replace_time(now(), time_from_parts(2, 30, 0)))`},
+		{old: `@(TODAY()+TIMEVALUE("10:30"))`, new: `@(replace_time(today(), time("10:30")))`},
 
 		// legacy_add permutations
 		{old: `@(contact.age + 5)`, new: `@(legacy_add(contact.fields.age, 5))`},
