@@ -48,12 +48,12 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //
 // Examples:
 //
-//   @contact.urns.0 -> tel:+12065551212
-//   @contact.urns.0.scheme -> tel
-//   @contact.urns.0.path -> +12065551212
-//   @contact.urns.1.display -> nyaruka
-//   @(format_urn(contact.urns.0)) -> (206) 555-1212
-//   @(json(contact.urns.0)) -> {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
+//   @(contact.urns[0]) -> tel:+12065551212
+//   @(contact.urns[0].scheme) -> tel
+//   @(contact.urns[0].path) -> +12065551212
+//   @(contact.urns[1].display) -> nyaruka
+//   @(format_urn(contact.urns[0])) -> (206) 555-1212
+//   @(json(contact.urns[0])) -> {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
 //
 // @context urn
 type ContactURN struct {

@@ -15,7 +15,7 @@ import (
 )
 
 var DefaultWebhookPayload = `{
-	"contact": {"uuid": "@contact.uuid", "name": @(json(contact.name)), "urn": @(json(if(default(input.urn, default(contact.urns.0, null)), text(default(input.urn, default(contact.urns.0, null))), null)))},
+	"contact": {"uuid": "@contact.uuid", "name": @(json(contact.name)), "urn": @(json(if(default(input.urn, default(contact.urns[0], null)), text(default(input.urn, default(contact.urns[0], null))), null)))},
 	"flow": @(json(run.flow)),
 	"path": @(json(run.path)),
 	"results": @(json(run.results)),

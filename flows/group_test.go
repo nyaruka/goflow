@@ -26,11 +26,11 @@ func TestGroupListResolve(t *testing.T) {
 		hasValue   bool
 		value      interface{}
 	}{
-		{"groups.0", true, customers},
-		{"groups.1", true, testers},
+		{"groups[0]", true, customers},
+		{"groups[1]", true, testers},
 		{"groups[2]", true, males},
 		{"groups[-1]", true, males},
-		{"groups.3", false, nil}, // index out of range
+		{"groups[3]", false, nil}, // index out of range
 	}
 	for _, tc := range testCases {
 		value := excellent.EvaluateExpression(env, context, tc.expression)

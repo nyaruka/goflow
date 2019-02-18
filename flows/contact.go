@@ -30,7 +30,7 @@ import (
 //  * `groups` all the [groups](#context:group) that the contact belongs to
 //  * `fields` all the custom contact fields the contact has set
 //  * `fields.[snaked_field_name]` the value of the specific field
-//  * `channel` shorthand for `contact.urns.0.channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
+//  * `channel` shorthand for `contact.urns[0].channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
 //
 // Examples:
 //
@@ -41,9 +41,9 @@ import (
 //   @contact.timezone -> America/Guayaquil
 //   @contact.created_on -> 2018-06-20T11:40:30.123456Z
 //   @contact.urns -> ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
-//   @contact.urns.0 -> tel:+12065551212
+//   @(contact.urns[0]) -> tel:+12065551212
 //   @contact.urns.tel -> ["tel:+12065551212"]
-//   @contact.urns.mailto.0 -> mailto:foo@bar.com
+//   @(contact.urns.mailto[0]) -> mailto:foo@bar.com
 //   @contact.urn -> tel:+12065551212
 //   @contact.groups -> ["Testers","Males"]
 //   @contact.fields -> {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
