@@ -70,7 +70,7 @@ func (x *XDateTime) UnmarshalJSON(data []byte) error {
 }
 
 // XDateTimeZero is the zero time value
-var XDateTimeZero = NewXDateTime(time.Time{})
+var XDateTimeZero = NewXDateTime(utils.ZeroDateTime)
 var _ XPrimitive = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible

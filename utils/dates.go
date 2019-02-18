@@ -50,8 +50,8 @@ const (
 func (df DateFormat) String() string { return string(df) }
 func (tf TimeFormat) String() string { return string(tf) }
 
-// ZeroTime is our uninitialized time value
-var ZeroTime = time.Time{}
+// ZeroDateTime is our uninitialized datetime value
+var ZeroDateTime = time.Time{}
 
 func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (time.Time, error) {
 
@@ -82,7 +82,7 @@ func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d
 		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()), nil
 	}
 
-	return ZeroTime, errors.Errorf("string '%s' couldn't be parsed as a date", str)
+	return ZeroDateTime, errors.Errorf("string '%s' couldn't be parsed as a date", str)
 }
 
 // DaysBetween returns the number of calendar days (an int) between the two dates. Note
@@ -144,7 +144,7 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 	}
 
 	// otherwise, try to parse according to their env settings
-	parsed := ZeroTime
+	parsed := ZeroDateTime
 	var err error
 	currentYear := Now().Year()
 
@@ -165,26 +165,36 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 	}
 
 	// can we pull out a time?
-	hasTime, hour, minute, second, ns := parseTime(str)
+	hasTime, timeOfDay := parseTime(str)
 	if hasTime {
-		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), hour, minute, second, ns, env.Timezone())
+		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanos, env.Timezone())
 	} else if fillTime {
 		parsed = replaceTime(parsed, Now().In(env.Timezone()))
 	}
 
 	// set our timezone if we have one
-	if env.Timezone() != nil && parsed != ZeroTime {
+	if env.Timezone() != nil && parsed != ZeroDateTime {
 		parsed = parsed.In(env.Timezone())
 	}
 
 	return parsed, nil
 }
 
+// TimeFromString returns a time of day constructed from the passed in string, or an error if we
+// are unable to extract one
+func TimeFromString(env Environment, str string) (TimeOfDay, error) {
+	hasTime, timeOfDay := parseTime(str)
+	if !hasTime {
+		return ZeroTimeOfDay, errors.Errorf("string '%s' couldn't be parsed as a time", str)
+	}
+	return timeOfDay, nil
+}
+
 func replaceTime(d time.Time, t time.Time) time.Time {
 	return time.Date(d.Year(), d.Month(), d.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), t.Location())
 }
 
-func parseTime(str string) (bool, int, int, int, int) {
+func parseTime(str string) (bool, TimeOfDay) {
 	matches := patternTime.FindAllStringSubmatch(str, -1)
 	for _, match := range matches {
 		hour, _ := strconv.Atoi(match[1])
@@ -227,10 +237,10 @@ func parseTime(str string) (bool, int, int, int, int) {
 			}
 		}
 
-		return true, hour, minute, second, ns
+		return true, NewTimeOfDay(hour, minute, second, ns)
 	}
 
-	return false, 0, 0, 0, 0
+	return false, ZeroTimeOfDay
 }
 
 // FormattingMode describe a mode of formatting dates, times, datetimes
