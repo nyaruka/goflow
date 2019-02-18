@@ -21,6 +21,7 @@ var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
 var xd = types.NewXDateTime
+var xt = types.NewXTime
 
 var ERROR = types.NewXErrorf("any error")
 
@@ -428,6 +429,11 @@ func TestFunctions(t *testing.T) {
 		{"text_compare", dmy, []types.XValue{xs("def"), xs("abc")}, xi(1)},
 		{"text_compare", dmy, []types.XValue{xs("abc"), types.NewXErrorf("error")}, ERROR},
 		{"text_compare", dmy, []types.XValue{}, ERROR},
+
+		{"time_from_parts", dmy, []types.XValue{xi(14), xi(40), xi(15)}, xt(utils.NewTimeOfDay(14, 40, 15, 0))},
+		{"time_from_parts", dmy, []types.XValue{xi(25), xi(40), xi(15)}, ERROR},
+		{"time_from_parts", dmy, []types.XValue{xi(14), xi(61), xi(15)}, ERROR},
+		{"time_from_parts", dmy, []types.XValue{xi(14), xi(40), xi(61)}, ERROR},
 
 		{"title", dmy, []types.XValue{xs("hello")}, xs("Hello")},
 		{"title", dmy, []types.XValue{xs("")}, xs("")},

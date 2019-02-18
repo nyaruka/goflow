@@ -80,7 +80,7 @@ var XFUNCTIONS = map[string]XFunction{
 
 	// datetime functions
 	"parse_datetime":      ArgCountCheck(2, 3, ParseDateTime),
-	"datetime_from_parts": ArgCountCheck(3, 3, DateTimeFromParts),
+	"datetime_from_parts": ThreeIntegerFunction(DateTimeFromParts),
 	"datetime_diff":       ThreeArgFunction(DateTimeDiff),
 	"datetime_add":        DateTimeAdd,
 	"weekday":             OneDateTimeFunction(Weekday),
@@ -90,6 +90,10 @@ var XFUNCTIONS = map[string]XFunction{
 	"now":                 NoArgFunction(Now),
 	"from_epoch":          OneNumberFunction(FromEpoch),
 	"epoch":               OneDateTimeFunction(Epoch),
+
+	// time functions
+	"parse_time":      ArgCountCheck(2, 2, ParseTime),
+	"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
 	// json functions
 	"json":       OneArgFunction(JSON),
@@ -1042,22 +1046,9 @@ func ParseDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(datetime_from_parts(2017, 13, 15)) -> ERROR
 //
 // @function datetime_from_parts(year, month, day)
-func DateTimeFromParts(env utils.Environment, args ...types.XValue) types.XValue {
-	year, xerr := types.ToInteger(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-	month, xerr := types.ToInteger(env, args[1])
-	if xerr != nil {
-		return xerr
-	}
+func DateTimeFromParts(env utils.Environment, year, month, day int) types.XValue {
 	if month < 1 || month > 12 {
 		return types.NewXErrorf("invalid value for month, must be 1-12")
-	}
-
-	day, xerr := types.ToInteger(env, args[2])
-	if xerr != nil {
-		return xerr
 	}
 
 	return types.NewXDateTime(time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()))
@@ -1254,6 +1245,86 @@ func Now(env utils.Environment) types.XValue {
 }
 
 //------------------------------------------------------------------------------------------
+// Time Functions
+//------------------------------------------------------------------------------------------
+
+// ParseTime parses `text` into a time using the given `format`.
+//
+// The format string can consist of the following characters. The characters
+// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+//
+// * `h`         - hour of the day 1-12
+// * `hh`        - hour of the day 01-12
+// * `tt`        - twenty four hour of the day 01-23
+// * `m`         - minute 0-59
+// * `mm`        - minute 00-59
+// * `s`         - second 0-59
+// * `ss`        - second 00-59
+// * `fff`       - milliseconds
+// * `ffffff`    - microseconds
+// * `fffffffff` - nanoseconds
+// * `aa`        - am or pm
+// * `AA`        - AM or PM
+//
+// Note that fractional seconds will be parsed even without an explicit format identifier.
+// You should only specify fractional seconds when you want to assert the number of places
+// in the input format.
+//
+// parse_time will return an error if it is unable to convert the text to a time.
+//
+//   @(parse_time("15:28", "tt:mm")) -> 15:28:00.000000
+//   @(parse_time("2:40 pm", "h:mm aa")) -> 14:40:00.000000
+//   @(parse_time("NOT TIME", "tt:mm")) -> ERROR
+//
+// @function parse_time(text, format)
+func ParseTime(env utils.Environment, args ...types.XValue) types.XValue {
+	str, xerr := types.ToXText(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	format, xerr := types.ToXText(env, args[1])
+	if xerr != nil {
+		return xerr
+	}
+
+	// try to turn it to a go format
+	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.TimeOnlyFormatting)
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	// finally try to parse the date
+	parsed, err := utils.ParseTimeOfDay(goFormat, str.Native())
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	return types.NewXTime(parsed)
+}
+
+// TimeFromParts creates a time from `hour`, `minute` and `second`
+//
+//   @(time_from_parts(14, 40, 15)) -> 14:40:15.000000
+//   @(time_from_parts(8, 10, 0)) -> 08:10:00.000000
+//   @(time_from_parts(25, 0, 0)) -> ERROR
+//
+// @function time_from_parts(year, month, day)
+func TimeFromParts(env utils.Environment, hour, minute, second int) types.XValue {
+	if hour < 0 || hour > 23 {
+		return types.NewXErrorf("invalid value for hour, must be 0-23")
+	}
+	if minute < 0 || minute > 59 {
+		return types.NewXErrorf("invalid value for minute, must be 0-59")
+	}
+	if second < 0 || second > 59 {
+		return types.NewXErrorf("invalid value for second, must be 0-59")
+	}
+
+	return types.NewXTime(utils.NewTimeOfDay(hour, minute, second, 0))
+}
+
+//------------------------------------------------------------------------------------------
 // JSON Functions
 //------------------------------------------------------------------------------------------
 
@@ -1446,7 +1517,7 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(format_time("15:00:27.000000", "s")) -> 27
 //   @(format_time("NOT TIME", "hh:mm")) -> ERROR
 //
-// @function format_datetime(time [,format])
+// @function format_time(time [,format])
 func FormatTime(env utils.Environment, args ...types.XValue) types.XValue {
 	t, xerr := types.ToXTime(env, args[0])
 	if xerr != nil {

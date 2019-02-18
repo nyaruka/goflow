@@ -57,4 +57,8 @@ func TestTimeOfDay(t *testing.T) {
 	assert.True(t, t3.Compare(t1) < 0)
 	assert.True(t, t1.Compare(t4) == 0)
 	assert.True(t, t4.Compare(t1) == 0)
+
+	parsed, err := utils.ParseTimeOfDay("15:04:05.000000", "11:02:30.123456")
+	assert.NoError(t, err)
+	assert.Equal(t, utils.NewTimeOfDay(11, 2, 30, 123456000), parsed)
 }

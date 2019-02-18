@@ -576,37 +576,6 @@ will be used. An error will be returned if the timezone is not recognized.
 @(format_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
-<a name="function:format_datetime"></a>
-
-## format_datetime(time [,format])
-
-Formats `time` as text according to the given `format`.
-
-The format string can consist of the following characters. The characters
-' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
-
-* `h`         - hour of the day 1-12
-* `hh`        - hour of the day 01-12
-* `tt`        - twenty four hour of the day 01-23
-* `m`         - minute 0-59
-* `mm`        - minute 00-59
-* `s`         - second 0-59
-* `ss`        - second 00-59
-* `fff`       - milliseconds
-* `ffffff`    - microseconds
-* `fffffffff` - nanoseconds
-* `aa`        - am or pm
-* `AA`        - AM or PM
-
-
-```objectivec
-@(format_time("14:50:30.000000")) → 02:50
-@(format_time("14:50:30.000000", "h:mm aa")) → 2:50 pm
-@(format_time("14:50:30.000000", "tt:mm")) → 14:50
-@(format_time("15:00:27.000000", "s")) → 27
-@(format_time("NOT TIME", "hh:mm")) → ERROR
-```
-
 <a name="function:format_location"></a>
 
 ## format_location(location)
@@ -634,6 +603,37 @@ An optional third argument `humanize` can be false to disable the use of thousan
 @(format_number(31337, 2, true)) → 31,337.00
 @(format_number(31337, 0, false)) → 31337
 @(format_number("foo", 2, false)) → ERROR
+```
+
+<a name="function:format_time"></a>
+
+## format_time(time [,format])
+
+Formats `time` as text according to the given `format`.
+
+The format string can consist of the following characters. The characters
+' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+
+* `h`         - hour of the day 1-12
+* `hh`        - hour of the day 01-12
+* `tt`        - twenty four hour of the day 01-23
+* `m`         - minute 0-59
+* `mm`        - minute 00-59
+* `s`         - second 0-59
+* `ss`        - second 00-59
+* `fff`       - milliseconds
+* `ffffff`    - microseconds
+* `fffffffff` - nanoseconds
+* `aa`        - am or pm
+* `AA`        - AM or PM
+
+
+```objectivec
+@(format_time("14:50:30.000000")) → 02:50
+@(format_time("14:50:30.000000", "h:mm aa")) → 2:50 pm
+@(format_time("14:50:30.000000", "tt:mm")) → 14:50
+@(format_time("15:00:27.000000", "s")) → 27
+@(format_time("NOT TIME", "hh:mm")) → ERROR
 ```
 
 <a name="function:format_urn"></a>
@@ -902,6 +902,41 @@ If the given `text` is not valid JSON, then an error is returned
 @(parse_json("invalid json")) → ERROR
 ```
 
+<a name="function:parse_time"></a>
+
+## parse_time(text, format)
+
+Parses `text` into a time using the given `format`.
+
+The format string can consist of the following characters. The characters
+' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+
+* `h`         - hour of the day 1-12
+* `hh`        - hour of the day 01-12
+* `tt`        - twenty four hour of the day 01-23
+* `m`         - minute 0-59
+* `mm`        - minute 00-59
+* `s`         - second 0-59
+* `ss`        - second 00-59
+* `fff`       - milliseconds
+* `ffffff`    - microseconds
+* `fffffffff` - nanoseconds
+* `aa`        - am or pm
+* `AA`        - AM or PM
+
+Note that fractional seconds will be parsed even without an explicit format identifier.
+You should only specify fractional seconds when you want to assert the number of places
+in the input format.
+
+parse_time will return an error if it is unable to convert the text to a time.
+
+
+```objectivec
+@(parse_time("15:28", "tt:mm")) → 15:28:00.000000
+@(parse_time("2:40 pm", "h:mm aa")) → 14:40:00.000000
+@(parse_time("NOT TIME", "tt:mm")) → ERROR
+```
+
 <a name="function:percent"></a>
 
 ## percent(num)
@@ -1123,6 +1158,19 @@ and 1 if `text1` comes after `text2`.
 @(text_compare("abc", "abc")) → 0
 @(text_compare("abc", "def")) → -1
 @(text_compare("zzz", "aaa")) → 1
+```
+
+<a name="function:time_from_parts"></a>
+
+## time_from_parts(year, month, day)
+
+Creates a time from `hour`, `minute` and `second`
+
+
+```objectivec
+@(time_from_parts(14, 40, 15)) → 14:40:15.000000
+@(time_from_parts(8, 10, 0)) → 08:10:00.000000
+@(time_from_parts(25, 0, 0)) → ERROR
 ```
 
 <a name="function:title"></a>
