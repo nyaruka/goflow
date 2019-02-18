@@ -35,7 +35,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"text":     OneArgFunction(Text),
 	"boolean":  OneArgFunction(Boolean),
 	"number":   OneArgFunction(Number),
-	"datetime": OneTextFunction(DateTime),
+	"datetime": OneArgFunction(DateTime),
+	"time":     OneArgFunction(Time),
 	"array":    Array,
 
 	// text functions
@@ -180,13 +181,29 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 //   @(datetime("NOT DATE")) -> ERROR
 //
 // @function datetime(text)
-func DateTime(env utils.Environment, str types.XText) types.XValue {
-	date, err := utils.DateFromString(env, str.Native(), false)
+func DateTime(env utils.Environment, value types.XValue) types.XValue {
+	d, err := types.ToXDateTime(env, value)
 	if err != nil {
 		return types.NewXError(err)
 	}
+	return d
+}
 
-	return types.NewXDateTime(date)
+// Time tries to convert `value` to a time.
+//
+// An error is returned if the value can't be converted.
+//
+//   @(time("10:30")) -> 10:30:00.000000
+//   @(time(datetime("1979-07-18T10:30:45.123456Z"))) -> 10:30:45.123456
+//   @(time("what?")) -> ERROR
+//
+// @function time(value)
+func Time(env utils.Environment, value types.XValue) types.XValue {
+	t, xerr := types.ToXTime(env, value)
+	if xerr != nil {
+		return xerr
+	}
+	return t
 }
 
 // Array takes multiple `values` and returns them as an array.

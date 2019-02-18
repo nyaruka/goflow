@@ -1173,6 +1173,21 @@ and 1 if `text1` comes after `text2`.
 @(text_compare("zzz", "aaa")) → 1
 ```
 
+<a name="function:time"></a>
+
+## time(value)
+
+Tries to convert `value` to a time.
+
+An error is returned if the value can't be converted.
+
+
+```objectivec
+@(time("10:30")) → 10:30:00.000000
+@(time(datetime("1979-07-18T10:30:45.123456Z"))) → 10:30:45.123456
+@(time("what?")) → ERROR
+```
+
 <a name="function:time_from_parts"></a>
 
 ## time_from_parts(year, month, day)

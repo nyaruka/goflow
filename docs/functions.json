@@ -1139,6 +1139,25 @@
         ]
     },
     {
+        "signature": "time(value)",
+        "summary": "Tries to convert `value` to a time.",
+        "detail": "An error is returned if the value can't be converted.",
+        "examples": [
+            {
+                "template": "@(time(\"10:30\"))",
+                "output": "10:30:00.000000"
+            },
+            {
+                "template": "@(time(datetime(\"1979-07-18T10:30:45.123456Z\")))",
+                "output": "10:30:45.123456"
+            },
+            {
+                "template": "@(time(\"what?\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
         "signature": "time_from_parts(year, month, day)",
         "summary": "Creates a time from `hour`, `minute` and `second`",
         "detail": "",
