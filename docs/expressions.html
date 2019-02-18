@@ -947,48 +947,55 @@
 <a class="sourceLine" id="cb98-4" title="4">@(has_text(<span class="st">&quot; </span><span class="sc">\n</span><span class="st">&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb98-5" title="5">@(has_text(<span class="dv">123</span>)) → true</a>
 <a class="sourceLine" id="cb98-6" title="6">@(has_text(contact.fields.not_set)) → false</a></code></pre></div>
+<p><a name="test:has_time"></a></p>
+<h2 id="has_timetext">has_time(text)</h2>
+<p>Tests whether <code>text</code> contains a time.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb99-1" title="1">@(has_time(<span class="st">&quot;the time is 10:30&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb99-2" title="2">@(has_time(<span class="st">&quot;the time is 10:30 PM&quot;</span>).match) → <span class="dv">22</span>:<span class="dv">30</span>:<span class="fl">00.000000</span></a>
+<a class="sourceLine" id="cb99-3" title="3">@(has_time(<span class="st">&quot;the time is 10:30:45&quot;</span>).match) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">45.000000</span></a>
+<a class="sourceLine" id="cb99-4" title="4">@(has_time(<span class="st">&quot;there is no time here, just a number 5&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_value"></a></p>
 <h2 id="has_valuevalue">has_value(value)</h2>
 <p>Returns whether <code>value</code> is non-nil and not an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb99-1" title="1">@(has_value(datetime(<span class="st">&quot;foo&quot;</span>))) → false</a>
-<a class="sourceLine" id="cb99-2" title="2">@(has_value(not.existing)) → false</a>
-<a class="sourceLine" id="cb99-3" title="3">@(has_value(contact.fields.unset)) → false</a>
-<a class="sourceLine" id="cb99-4" title="4">@(has_value(<span class="st">&quot;&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb99-5" title="5">@(has_value(<span class="st">&quot;hello&quot;</span>)) → true</a></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb100-1" title="1">@(has_value(datetime(<span class="st">&quot;foo&quot;</span>))) → false</a>
+<a class="sourceLine" id="cb100-2" title="2">@(has_value(not.existing)) → false</a>
+<a class="sourceLine" id="cb100-3" title="3">@(has_value(contact.fields.unset)) → false</a>
+<a class="sourceLine" id="cb100-4" title="4">@(has_value(<span class="st">&quot;&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb100-5" title="5">@(has_value(<span class="st">&quot;hello&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_wait_timed_out"></a></p>
 <h2 id="has_wait_timed_outrun">has_wait_timed_out(run)</h2>
 <p>Returns whether the last wait timed out.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb100-1" title="1">@(has_wait_timed_out(run)) → false</a></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb101-1" title="1">@(has_wait_timed_out(run)) → false</a></code></pre></div>
 <p><a name="test:has_ward"></a></p>
 <h2 id="has_wardtext-district-state">has_ward(text, district, state)</h2>
 <p>Tests whether a ward name is contained in the <code>text</code></p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb101-1" title="1">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb101-2" title="2">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb101-3" title="3">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</a>
-<a class="sourceLine" id="cb101-4" title="4">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb101-5" title="5">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb101-6" title="6">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb101-7" title="7">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb101-8" title="8">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb102-1" title="1">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb102-2" title="2">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb102-3" title="3">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</a>
+<a class="sourceLine" id="cb102-4" title="4">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb102-5" title="5">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb102-6" title="6">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb102-7" title="7">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb102-8" title="8">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:is_error"></a></p>
 <h2 id="is_errorvalue">is_error(value)</h2>
 <p>Returns whether <code>value</code> is an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb102-1" title="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → true</a>
-<a class="sourceLine" id="cb102-2" title="2">@(is_error(run.not.existing)) → true</a>
-<a class="sourceLine" id="cb102-3" title="3">@(is_error(contact.fields.unset)) → true</a>
-<a class="sourceLine" id="cb102-4" title="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) → false</a></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb103-1" title="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → true</a>
+<a class="sourceLine" id="cb103-2" title="2">@(is_error(run.not.existing)) → true</a>
+<a class="sourceLine" id="cb103-3" title="3">@(is_error(contact.fields.unset)) → true</a>
+<a class="sourceLine" id="cb103-4" title="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:is_text_eq"></a></p>
 <h2 id="is_text_eqtext1-text2">is_text_eq(text1, text2)</h2>
 <p>Returns whether two text values are equal (case sensitive). In the case that they are, it will return the text as the match.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb103-1" title="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb103-2" title="2">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;FOO&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb103-3" title="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb103-4" title="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) → false</a>
-<a class="sourceLine" id="cb103-5" title="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb103-6" title="6">@(is_text_eq(results.webhook.category, <span class="st">&quot;Success&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb103-7" title="7">@(is_text_eq(results.webhook.category, <span class="st">&quot;Failure&quot;</span>)) → false</a></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb104-1" title="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb104-2" title="2">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;FOO&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb104-3" title="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb104-4" title="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) → false</a>
+<a class="sourceLine" id="cb104-5" title="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb104-6" title="6">@(is_text_eq(results.webhook.category, <span class="st">&quot;Success&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb104-7" title="7">@(is_text_eq(results.webhook.category, <span class="st">&quot;Failure&quot;</span>)) → false</a></code></pre></div>
 </div>
 
     </body>
