@@ -41,6 +41,11 @@ func (x XDateTime) Native() time.Time { return x.native }
 // String returns the native string representation of this type
 func (x XDateTime) String() string { return x.ToXText(nil).Native() }
 
+// Time returns the time part of this datetime
+func (x XDateTime) Time() XTime {
+	return NewXTime(utils.ExtractTimeOfDay(x.Native()))
+}
+
 // Equals determines equality for this type
 func (x XDateTime) Equals(other XDateTime) bool {
 	return x.Native().Equal(other.Native())

@@ -64,8 +64,7 @@ func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
 		case XTime:
 			return typed, nil
 		case XDateTime:
-			dt := typed.Native()
-			return NewXTime(utils.ExtractTimeOfDay(dt)), nil
+			return typed.Time(), nil
 		case XText:
 			parsed, err := utils.TimeFromString(env, typed.Native())
 			if err == nil {
