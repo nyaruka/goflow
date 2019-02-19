@@ -82,6 +82,7 @@ var XFUNCTIONS = map[string]XFunction{
 	// datetime functions
 	"parse_datetime":      ArgCountCheck(2, 3, ParseDateTime),
 	"datetime_from_parts": ThreeIntegerFunction(DateTimeFromParts),
+	"datetime_from_epoch": OneNumberFunction(DatetimeFromEpoch),
 	"datetime_diff":       ThreeArgFunction(DateTimeDiff),
 	"datetime_add":        DateTimeAdd,
 	"replace_time":        ArgCountCheck(2, 2, ReplaceTime),
@@ -90,7 +91,6 @@ var XFUNCTIONS = map[string]XFunction{
 	"tz_offset":           OneDateTimeFunction(TZOffset),
 	"today":               NoArgFunction(Today),
 	"now":                 NoArgFunction(Now),
-	"from_epoch":          OneNumberFunction(FromEpoch),
 	"epoch":               OneDateTimeFunction(Epoch),
 
 	// time functions
@@ -1073,6 +1073,17 @@ func DateTimeFromParts(env utils.Environment, year, month, day int) types.XValue
 	return types.NewXDateTime(time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()))
 }
 
+// DatetimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
+//
+//   @(datetime_from_epoch(1497286619)) -> 2017-06-12T11:56:59.000000-05:00
+//   @(datetime_from_epoch(1497286619.123456)) -> 2017-06-12T11:56:59.123456-05:00
+//
+// @function datetime_from_epoch(seconds)
+func DatetimeFromEpoch(env utils.Environment, num types.XNumber) types.XValue {
+	nanos := num.Native().Mul(nanosPerSecond).IntPart()
+	return types.NewXDateTime(time.Unix(0, nanos).In(env.Timezone()))
+}
+
 // DateTimeDiff returns the duration between `date1` and `date2` in the `unit` specified.
 //
 // Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
@@ -1246,17 +1257,6 @@ func TZOffset(env utils.Environment, date types.XDateTime) types.XValue {
 func Today(env utils.Environment) types.XValue {
 	nowTZ := env.Now()
 	return types.NewXDateTime(time.Date(nowTZ.Year(), nowTZ.Month(), nowTZ.Day(), 0, 0, 0, 0, env.Timezone()))
-}
-
-// FromEpoch converts the UNIX epoch time `seconds` into a new date.
-//
-//   @(from_epoch(1497286619)) -> 2017-06-12T11:56:59.000000-05:00
-//   @(from_epoch(1497286619.123456)) -> 2017-06-12T11:56:59.123456-05:00
-//
-// @function from_epoch(seconds)
-func FromEpoch(env utils.Environment, num types.XNumber) types.XValue {
-	nanos := num.Native().Mul(nanosPerSecond).IntPart()
-	return types.NewXDateTime(time.Unix(0, nanos).In(env.Timezone()))
 }
 
 // Epoch converts `date` to a UNIX epoch time.

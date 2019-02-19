@@ -219,9 +219,9 @@ func TestFunctions(t *testing.T) {
 		{"format_urn", dmy, []types.XValue{ERROR}, ERROR},
 		{"format_urn", dmy, []types.XValue{}, ERROR},
 
-		{"from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
-		{"from_epoch", dmy, []types.XValue{ERROR}, ERROR},
-		{"from_epoch", dmy, []types.XValue{}, ERROR},
+		{"datetime_from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
+		{"datetime_from_epoch", dmy, []types.XValue{ERROR}, ERROR},
+		{"datetime_from_epoch", dmy, []types.XValue{}, ERROR},
 
 		{"if", dmy, []types.XValue{types.XBooleanTrue, xs("10"), xs("20")}, xs("10")},
 		{"if", dmy, []types.XValue{types.XBooleanFalse, xs("10"), xs("20")}, xs("20")},

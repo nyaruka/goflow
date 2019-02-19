@@ -206,6 +206,21 @@
         ]
     },
     {
+        "signature": "datetime_from_epoch(seconds)",
+        "summary": "Converts the UNIX epoch time `seconds` into a new date.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(datetime_from_epoch(1497286619))",
+                "output": "2017-06-12T11:56:59.000000-05:00"
+            },
+            {
+                "template": "@(datetime_from_epoch(1497286619.123456))",
+                "output": "2017-06-12T11:56:59.123456-05:00"
+            }
+        ]
+    },
+    {
         "signature": "datetime_from_parts(year, month, day)",
         "summary": "Creates a date from `year`, `month` and `day`.",
         "detail": "",
@@ -476,21 +491,6 @@
             {
                 "template": "@(format_urn(\"NOT URN\"))",
                 "output": "ERROR"
-            }
-        ]
-    },
-    {
-        "signature": "from_epoch(seconds)",
-        "summary": "Converts the UNIX epoch time `seconds` into a new date.",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(from_epoch(1497286619))",
-                "output": "2017-06-12T11:56:59.000000-05:00"
-            },
-            {
-                "template": "@(from_epoch(1497286619.123456))",
-                "output": "2017-06-12T11:56:59.123456-05:00"
             }
         ]
     },

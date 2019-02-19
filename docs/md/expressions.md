@@ -442,6 +442,18 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 @(datetime_diff("2017-01-17", "2015-12-17", "Y")) → -2
 ```
 
+<a name="function:datetime_from_epoch"></a>
+
+## datetime_from_epoch(seconds)
+
+Converts the UNIX epoch time `seconds` into a new date.
+
+
+```objectivec
+@(datetime_from_epoch(1497286619)) → 2017-06-12T11:56:59.000000-05:00
+@(datetime_from_epoch(1497286619.123456)) → 2017-06-12T11:56:59.123456-05:00
+```
+
 <a name="function:datetime_from_parts"></a>
 
 ## datetime_from_parts(year, month, day)
@@ -654,18 +666,6 @@ Formats `urn` into human friendly text.
 @(format_urn(contact.urns.telegram[0])) →
 @(format_urn(contact.urns[2])) → foo@bar.com
 @(format_urn("NOT URN")) → ERROR
-```
-
-<a name="function:from_epoch"></a>
-
-## from_epoch(seconds)
-
-Converts the UNIX epoch time `seconds` into a new date.
-
-
-```objectivec
-@(from_epoch(1497286619)) → 2017-06-12T11:56:59.000000-05:00
-@(from_epoch(1497286619.123456)) → 2017-06-12T11:56:59.123456-05:00
 ```
 
 <a name="function:if"></a>
