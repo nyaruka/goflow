@@ -134,6 +134,26 @@ func TextAndIntegerFunction(f func(utils.Environment, types.XText, int) types.XV
 	})
 }
 
+// ThreeIntegerFunction creates an XFunction from a function that takes a text and an integer arg
+func ThreeIntegerFunction(f func(utils.Environment, int, int, int) types.XValue) XFunction {
+	return ArgCountCheck(3, 3, func(env utils.Environment, args ...types.XValue) types.XValue {
+		num1, xerr := types.ToInteger(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+		num2, xerr := types.ToInteger(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+		num3, xerr := types.ToInteger(env, args[2])
+		if xerr != nil {
+			return xerr
+		}
+
+		return f(env, num1, num2, num3)
+	})
+}
+
 // TextAndDateFunction creates an XFunction from a function that takes a text and a date arg
 func TextAndDateFunction(f func(utils.Environment, types.XText, types.XDateTime) types.XValue) XFunction {
 	return ArgCountCheck(2, 2, func(env utils.Environment, args ...types.XValue) types.XValue {

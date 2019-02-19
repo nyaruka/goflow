@@ -21,12 +21,17 @@ var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
 var xd = types.NewXDateTime
+var xt = types.NewXTime
 
 var ERROR = types.NewXErrorf("any error")
 
 func TestFunctions(t *testing.T) {
 	dmy := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Build()
-	mdy := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatMonthDayYear).WithTimezone(la).Build()
+	mdy := utils.NewEnvironmentBuilder().
+		WithDateFormat(utils.DateFormatMonthDayYear).
+		WithTimeFormat(utils.TimeFormatHourMinuteAmPm).
+		WithTimezone(la).
+		Build()
 
 	var funcTests = []struct {
 		name     string
@@ -173,7 +178,7 @@ func TestFunctions(t *testing.T) {
 		{"format_date", dmy, []types.XValue{}, ERROR},
 
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977 15:34")},
-		{"format_datetime", mdy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("06-23-1977 08:34")},
+		{"format_datetime", mdy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("06-23-1977 8:34 am")},
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.fffZZZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.000-07:00")},
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.123000Z"), xs("YYYY-MM-DDTtt:mm:ss.fffZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.123-07:00")},
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.000000-07:00")},
@@ -189,6 +194,11 @@ func TestFunctions(t *testing.T) {
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY"), ERROR}, ERROR},
 		{"format_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY"), xs("Cuenca")}, ERROR},
 		{"format_datetime", dmy, []types.XValue{}, ERROR},
+
+		{"format_time", dmy, []types.XValue{xs("15:34:00.000000")}, xs("15:34")},
+		{"format_time", mdy, []types.XValue{xs("15:34:00.000000")}, xs("3:34 pm")},
+		{"format_time", dmy, []types.XValue{xs("15:34:00.000000"), xs("tt")}, xs("15")},
+		{"format_time", dmy, []types.XValue{}, ERROR},
 
 		{"format_location", dmy, []types.XValue{xs("Rwanda")}, xs("Rwanda")},
 		{"format_location", dmy, []types.XValue{xs("Rwanda > Kigali")}, xs("Kigali")},
@@ -368,6 +378,10 @@ func TestFunctions(t *testing.T) {
 		{"replace", dmy, []types.XValue{xs("hi ho"), xs("bye"), ERROR}, ERROR},
 		{"replace", dmy, []types.XValue{}, ERROR},
 
+		{"replace_time", dmy, []types.XValue{xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), xt(utils.NewTimeOfDay(10, 30, 0, 0))}, xd(time.Date(1977, 06, 23, 10, 30, 0, 0, la))},
+		{"replace_time", dmy, []types.XValue{xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), ERROR}, ERROR},
+		{"replace_time", dmy, []types.XValue{ERROR, xt(utils.NewTimeOfDay(10, 30, 0, 0))}, ERROR},
+
 		{"right", dmy, []types.XValue{xs("hello"), xs("2")}, xs("lo")},
 		{"right", dmy, []types.XValue{xs("  HELLO "), xs("2")}, xs("O ")},
 		{"right", dmy, []types.XValue{xs("hi"), xi(4)}, xs("hi")},
@@ -419,6 +433,14 @@ func TestFunctions(t *testing.T) {
 		{"text_compare", dmy, []types.XValue{xs("def"), xs("abc")}, xi(1)},
 		{"text_compare", dmy, []types.XValue{xs("abc"), types.NewXErrorf("error")}, ERROR},
 		{"text_compare", dmy, []types.XValue{}, ERROR},
+
+		{"time", dmy, []types.XValue{xs("10:30")}, xt(utils.NewTimeOfDay(10, 30, 0, 0))},
+		{"time", dmy, []types.XValue{ERROR}, ERROR},
+
+		{"time_from_parts", dmy, []types.XValue{xi(14), xi(40), xi(15)}, xt(utils.NewTimeOfDay(14, 40, 15, 0))},
+		{"time_from_parts", dmy, []types.XValue{xi(25), xi(40), xi(15)}, ERROR},
+		{"time_from_parts", dmy, []types.XValue{xi(14), xi(61), xi(15)}, ERROR},
+		{"time_from_parts", dmy, []types.XValue{xi(14), xi(40), xi(61)}, ERROR},
 
 		{"title", dmy, []types.XValue{xs("hello")}, xs("Hello")},
 		{"title", dmy, []types.XValue{xs("")}, xs("")},

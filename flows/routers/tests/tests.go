@@ -65,6 +65,7 @@ var XTESTS = map[string]functions.XFunction{
 	"has_date_eq": functions.TextAndDateFunction(HasDateEQ),
 	"has_date_gt": functions.TextAndDateFunction(HasDateGT),
 
+	"has_time":  functions.OneTextFunction(HasTime),
 	"has_phone": functions.InitialTextFunction(0, 1, HasPhone),
 	"has_email": functions.OneTextFunction(HasEmail),
 
@@ -486,6 +487,23 @@ func HasDateEQ(env utils.Environment, text types.XText, date types.XDateTime) ty
 // @test has_date_gt(text, min)
 func HasDateGT(env utils.Environment, text types.XText, date types.XDateTime) types.XValue {
 	return testDate(env, text, date, isDateGTTest)
+}
+
+// HasTime tests whether `text` contains a time.
+//
+//   @(has_time("the time is 10:30")) -> true
+//   @(has_time("the time is 10:30 PM").match) -> 22:30:00.000000
+//   @(has_time("the time is 10:30:45").match) -> 10:30:45.000000
+//   @(has_time("there is no time here, just a number 5")) -> false
+//
+// @test has_time(text)
+func HasTime(env utils.Environment, text types.XText) types.XValue {
+	t, xerr := types.ToXTime(env, text)
+	if xerr == nil {
+		return NewTrueResult(t)
+	}
+
+	return XFalseResult
 }
 
 var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\pN]*)(\.[\pL\pN][-_\pL\pN]*)+`)

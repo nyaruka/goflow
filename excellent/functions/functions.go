@@ -35,7 +35,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"text":     OneArgFunction(Text),
 	"boolean":  OneArgFunction(Boolean),
 	"number":   OneArgFunction(Number),
-	"datetime": OneTextFunction(DateTime),
+	"datetime": OneArgFunction(DateTime),
+	"time":     OneArgFunction(Time),
 	"array":    Array,
 
 	// text functions
@@ -80,9 +81,10 @@ var XFUNCTIONS = map[string]XFunction{
 
 	// datetime functions
 	"parse_datetime":      ArgCountCheck(2, 3, ParseDateTime),
-	"datetime_from_parts": ArgCountCheck(3, 3, DateTimeFromParts),
+	"datetime_from_parts": ThreeIntegerFunction(DateTimeFromParts),
 	"datetime_diff":       ThreeArgFunction(DateTimeDiff),
 	"datetime_add":        DateTimeAdd,
+	"replace_time":        ArgCountCheck(2, 2, ReplaceTime),
 	"weekday":             OneDateTimeFunction(Weekday),
 	"tz":                  OneDateTimeFunction(TZ),
 	"tz_offset":           OneDateTimeFunction(TZOffset),
@@ -91,6 +93,10 @@ var XFUNCTIONS = map[string]XFunction{
 	"from_epoch":          OneNumberFunction(FromEpoch),
 	"epoch":               OneDateTimeFunction(Epoch),
 
+	// time functions
+	"parse_time":      ArgCountCheck(2, 2, ParseTime),
+	"time_from_parts": ThreeIntegerFunction(TimeFromParts),
+
 	// json functions
 	"json":       OneArgFunction(JSON),
 	"parse_json": OneTextFunction(ParseJSON),
@@ -98,6 +104,7 @@ var XFUNCTIONS = map[string]XFunction{
 	// formatting functions
 	"format_date":     ArgCountCheck(1, 2, FormatDate),
 	"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
+	"format_time":     ArgCountCheck(1, 2, FormatTime),
 	"format_location": OneTextFunction(FormatLocation),
 	"format_number":   FormatNumber,
 	"format_urn":      OneTextFunction(FormatURN),
@@ -174,13 +181,30 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 //   @(datetime("NOT DATE")) -> ERROR
 //
 // @function datetime(text)
-func DateTime(env utils.Environment, str types.XText) types.XValue {
-	date, err := utils.DateFromString(env, str.Native(), false)
+func DateTime(env utils.Environment, value types.XValue) types.XValue {
+	d, err := types.ToXDateTime(env, value)
 	if err != nil {
 		return types.NewXError(err)
 	}
+	return d
+}
 
-	return types.NewXDateTime(date)
+// Time tries to convert `value` to a time.
+//
+// An error is returned if the value can't be converted.
+//
+//   @(time("10:30")) -> 10:30:00.000000
+//   @(time("10:30:45 PM")) -> 22:30:45.000000
+//   @(time(datetime("1979-07-18T10:30:45.123456Z"))) -> 10:30:45.123456
+//   @(time("what?")) -> ERROR
+//
+// @function time(value)
+func Time(env utils.Environment, value types.XValue) types.XValue {
+	t, xerr := types.ToXTime(env, value)
+	if xerr != nil {
+		return xerr
+	}
+	return t
 }
 
 // Array takes multiple `values` and returns them as an array.
@@ -1041,22 +1065,9 @@ func ParseDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(datetime_from_parts(2017, 13, 15)) -> ERROR
 //
 // @function datetime_from_parts(year, month, day)
-func DateTimeFromParts(env utils.Environment, args ...types.XValue) types.XValue {
-	year, xerr := types.ToInteger(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-	month, xerr := types.ToInteger(env, args[1])
-	if xerr != nil {
-		return xerr
-	}
+func DateTimeFromParts(env utils.Environment, year, month, day int) types.XValue {
 	if month < 1 || month > 12 {
 		return types.NewXErrorf("invalid value for month, must be 1-12")
-	}
-
-	day, xerr := types.ToInteger(env, args[2])
-	if xerr != nil {
-		return xerr
 	}
 
 	return types.NewXDateTime(time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()))
@@ -1163,6 +1174,26 @@ func DateTimeAdd(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXErrorf("unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit)
 }
 
+// ReplaceTime returns the a new date time with the time part replaced by the `time`.
+//
+//   @(replace_time(now(), "10:30")) -> 2018-04-11T10:30:00.000000-05:00
+//   @(replace_time("2017-01-15", "10:30")) -> 2017-01-15T10:30:00.000000-05:00
+//   @(replace_time("foo", "10:30")) -> ERROR
+//
+// @function replace_time(date)
+func ReplaceTime(env utils.Environment, args ...types.XValue) types.XValue {
+	date, xerr := types.ToXDateTime(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+	t, xerr := types.ToXTime(env, args[1])
+	if xerr != nil {
+		return xerr
+	}
+
+	return date.ReplaceTime(t)
+}
+
 // Weekday returns the day of the week for `date`.
 //
 // The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc.
@@ -1253,6 +1284,86 @@ func Now(env utils.Environment) types.XValue {
 }
 
 //------------------------------------------------------------------------------------------
+// Time Functions
+//------------------------------------------------------------------------------------------
+
+// ParseTime parses `text` into a time using the given `format`.
+//
+// The format string can consist of the following characters. The characters
+// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+//
+// * `h`         - hour of the day 1-12
+// * `hh`        - hour of the day 01-12
+// * `tt`        - twenty four hour of the day 01-23
+// * `m`         - minute 0-59
+// * `mm`        - minute 00-59
+// * `s`         - second 0-59
+// * `ss`        - second 00-59
+// * `fff`       - milliseconds
+// * `ffffff`    - microseconds
+// * `fffffffff` - nanoseconds
+// * `aa`        - am or pm
+// * `AA`        - AM or PM
+//
+// Note that fractional seconds will be parsed even without an explicit format identifier.
+// You should only specify fractional seconds when you want to assert the number of places
+// in the input format.
+//
+// parse_time will return an error if it is unable to convert the text to a time.
+//
+//   @(parse_time("15:28", "tt:mm")) -> 15:28:00.000000
+//   @(parse_time("2:40 pm", "h:mm aa")) -> 14:40:00.000000
+//   @(parse_time("NOT TIME", "tt:mm")) -> ERROR
+//
+// @function parse_time(text, format)
+func ParseTime(env utils.Environment, args ...types.XValue) types.XValue {
+	str, xerr := types.ToXText(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	format, xerr := types.ToXText(env, args[1])
+	if xerr != nil {
+		return xerr
+	}
+
+	// try to turn it to a go format
+	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.TimeOnlyFormatting)
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	// finally try to parse the date
+	parsed, err := utils.ParseTimeOfDay(goFormat, str.Native())
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	return types.NewXTime(parsed)
+}
+
+// TimeFromParts creates a time from `hour`, `minute` and `second`
+//
+//   @(time_from_parts(14, 40, 15)) -> 14:40:15.000000
+//   @(time_from_parts(8, 10, 0)) -> 08:10:00.000000
+//   @(time_from_parts(25, 0, 0)) -> ERROR
+//
+// @function time_from_parts(year, month, day)
+func TimeFromParts(env utils.Environment, hour, minute, second int) types.XValue {
+	if hour < 0 || hour > 23 {
+		return types.NewXErrorf("invalid value for hour, must be 0-23")
+	}
+	if minute < 0 || minute > 59 {
+		return types.NewXErrorf("invalid value for minute, must be 0-59")
+	}
+	if second < 0 || second > 59 {
+		return types.NewXErrorf("invalid value for second, must be 0-59")
+	}
+
+	return types.NewXTime(utils.NewTimeOfDay(hour, minute, second, 0))
+}
+
+//------------------------------------------------------------------------------------------
 // JSON Functions
 //------------------------------------------------------------------------------------------
 
@@ -1288,7 +1399,8 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // Formatting Functions
 //----------------------------------------------------------------------------------------
 
-// FormatDate formats `date` as text according to the given `format`.
+// FormatDate formats `date` as text according to the given `format`. If `format` is not
+// specified then the environment's default format is used.
 //
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -1335,11 +1447,11 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 		date = types.NewXDateTime(date.Native().In(env.Timezone()))
 	}
 
-	// return the formatted date
 	return types.NewXText(date.Native().Format(goFormat))
 }
 
-// FormatDateTime formats `date` as text according to the given `format`.
+// FormatDateTime formats `date` as text according to the given `format`. If `format` is not
+// specified then the environment's default format is used.
 //
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -1419,8 +1531,58 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 		date = types.NewXDateTime(date.Native().In(location))
 	}
 
-	// return the formatted date
 	return types.NewXText(date.Native().Format(goFormat))
+}
+
+// FormatTime formats `time` as text according to the given `format`. If `format` is not
+// specified then the environment's default format is used.
+//
+// The format string can consist of the following characters. The characters
+// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+//
+// * `h`         - hour of the day 1-12
+// * `hh`        - hour of the day 01-12
+// * `tt`        - twenty four hour of the day 01-23
+// * `m`         - minute 0-59
+// * `mm`        - minute 00-59
+// * `s`         - second 0-59
+// * `ss`        - second 00-59
+// * `fff`       - milliseconds
+// * `ffffff`    - microseconds
+// * `fffffffff` - nanoseconds
+// * `aa`        - am or pm
+// * `AA`        - AM or PM
+//
+//   @(format_time("14:50:30.000000")) -> 02:50
+//   @(format_time("14:50:30.000000", "h:mm aa")) -> 2:50 pm
+//   @(format_time("14:50:30.000000", "tt:mm")) -> 14:50
+//   @(format_time("15:00:27.000000", "s")) -> 27
+//   @(format_time("NOT TIME", "hh:mm")) -> ERROR
+//
+// @function format_time(time [,format])
+func FormatTime(env utils.Environment, args ...types.XValue) types.XValue {
+	t, xerr := types.ToXTime(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	var format types.XText
+	if len(args) >= 2 {
+		format, xerr = types.ToXText(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+	} else {
+		format = types.NewXText(env.TimeFormat().String())
+	}
+
+	// try to turn it to a go format
+	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.TimeOnlyFormatting)
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	return types.NewXText(t.Native().Format(goFormat))
 }
 
 // FormatNumber formats `number` to the given number of decimal `places`.

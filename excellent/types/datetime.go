@@ -41,6 +41,18 @@ func (x XDateTime) Native() time.Time { return x.native }
 // String returns the native string representation of this type
 func (x XDateTime) String() string { return x.ToXText(nil).Native() }
 
+// Time returns the time part of this datetime
+func (x XDateTime) Time() XTime {
+	return NewXTime(utils.ExtractTimeOfDay(x.Native()))
+}
+
+// ReplaceTime returns the a new date time with the time part replaced by the given time
+func (x XDateTime) ReplaceTime(tm XTime) XDateTime {
+	d := x.Native()
+	t := tm.Native()
+	return NewXDateTime(time.Date(d.Year(), d.Month(), d.Day(), t.Hour, t.Minute, t.Second, t.Nanos, d.Location()))
+}
+
 // Equals determines equality for this type
 func (x XDateTime) Equals(other XDateTime) bool {
 	return x.Native().Equal(other.Native())
@@ -70,7 +82,7 @@ func (x *XDateTime) UnmarshalJSON(data []byte) error {
 }
 
 // XDateTimeZero is the zero time value
-var XDateTimeZero = NewXDateTime(time.Time{})
+var XDateTimeZero = NewXDateTime(utils.ZeroDateTime)
 var _ XPrimitive = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible

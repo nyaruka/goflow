@@ -509,7 +509,8 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 
 ## format_date(date, [,format])
 
-Formats `date` as text according to the given `format`.
+Formats `date` as text according to the given `format`. If `format` is not
+specified then the environment's default format is used.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -535,7 +536,8 @@ The format string can consist of the following characters. The characters
 
 ## format_datetime(date [,format [,timezone]])
 
-Formats `date` as text according to the given `format`.
+Formats `date` as text according to the given `format`. If `format` is not
+specified then the environment's default format is used.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -603,6 +605,38 @@ An optional third argument `humanize` can be false to disable the use of thousan
 @(format_number(31337, 2, true)) → 31,337.00
 @(format_number(31337, 0, false)) → 31337
 @(format_number("foo", 2, false)) → ERROR
+```
+
+<a name="function:format_time"></a>
+
+## format_time(time [,format])
+
+Formats `time` as text according to the given `format`. If `format` is not
+specified then the environment's default format is used.
+
+The format string can consist of the following characters. The characters
+' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+
+* `h`         - hour of the day 1-12
+* `hh`        - hour of the day 01-12
+* `tt`        - twenty four hour of the day 01-23
+* `m`         - minute 0-59
+* `mm`        - minute 00-59
+* `s`         - second 0-59
+* `ss`        - second 00-59
+* `fff`       - milliseconds
+* `ffffff`    - microseconds
+* `fffffffff` - nanoseconds
+* `aa`        - am or pm
+* `AA`        - AM or PM
+
+
+```objectivec
+@(format_time("14:50:30.000000")) → 02:50
+@(format_time("14:50:30.000000", "h:mm aa")) → 2:50 pm
+@(format_time("14:50:30.000000", "tt:mm")) → 14:50
+@(format_time("15:00:27.000000", "s")) → 27
+@(format_time("NOT TIME", "hh:mm")) → ERROR
 ```
 
 <a name="function:format_urn"></a>
@@ -871,6 +905,41 @@ If the given `text` is not valid JSON, then an error is returned
 @(parse_json("invalid json")) → ERROR
 ```
 
+<a name="function:parse_time"></a>
+
+## parse_time(text, format)
+
+Parses `text` into a time using the given `format`.
+
+The format string can consist of the following characters. The characters
+' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+
+* `h`         - hour of the day 1-12
+* `hh`        - hour of the day 01-12
+* `tt`        - twenty four hour of the day 01-23
+* `m`         - minute 0-59
+* `mm`        - minute 00-59
+* `s`         - second 0-59
+* `ss`        - second 00-59
+* `fff`       - milliseconds
+* `ffffff`    - microseconds
+* `fffffffff` - nanoseconds
+* `aa`        - am or pm
+* `AA`        - AM or PM
+
+Note that fractional seconds will be parsed even without an explicit format identifier.
+You should only specify fractional seconds when you want to assert the number of places
+in the input format.
+
+parse_time will return an error if it is unable to convert the text to a time.
+
+
+```objectivec
+@(parse_time("15:28", "tt:mm")) → 15:28:00.000000
+@(parse_time("2:40 pm", "h:mm aa")) → 14:40:00.000000
+@(parse_time("NOT TIME", "tt:mm")) → ERROR
+```
+
 <a name="function:percent"></a>
 
 ## percent(num)
@@ -974,6 +1043,19 @@ Replaces all occurrences of `needle` with `replacement` in `text`.
 ```objectivec
 @(replace("foo bar", "foo", "zap")) → zap bar
 @(replace("foo bar", "baz", "zap")) → foo bar
+```
+
+<a name="function:replace_time"></a>
+
+## replace_time(date)
+
+Returns the a new date time with the time part replaced by the `time`.
+
+
+```objectivec
+@(replace_time(now(), "10:30")) → 2018-04-11T10:30:00.000000-05:00
+@(replace_time("2017-01-15", "10:30")) → 2017-01-15T10:30:00.000000-05:00
+@(replace_time("foo", "10:30")) → ERROR
 ```
 
 <a name="function:right"></a>
@@ -1092,6 +1174,35 @@ and 1 if `text1` comes after `text2`.
 @(text_compare("abc", "abc")) → 0
 @(text_compare("abc", "def")) → -1
 @(text_compare("zzz", "aaa")) → 1
+```
+
+<a name="function:time"></a>
+
+## time(value)
+
+Tries to convert `value` to a time.
+
+An error is returned if the value can't be converted.
+
+
+```objectivec
+@(time("10:30")) → 10:30:00.000000
+@(time("10:30:45 PM")) → 22:30:45.000000
+@(time(datetime("1979-07-18T10:30:45.123456Z"))) → 10:30:45.123456
+@(time("what?")) → ERROR
+```
+
+<a name="function:time_from_parts"></a>
+
+## time_from_parts(year, month, day)
+
+Creates a time from `hour`, `minute` and `second`
+
+
+```objectivec
+@(time_from_parts(14, 40, 15)) → 14:40:15.000000
+@(time_from_parts(8, 10, 0)) → 08:10:00.000000
+@(time_from_parts(25, 0, 0)) → ERROR
 ```
 
 <a name="function:title"></a>
@@ -1608,6 +1719,20 @@ Tests whether there the text has any characters in it
 @(has_text(" \n")) → false
 @(has_text(123)) → true
 @(has_text(contact.fields.not_set)) → false
+```
+
+<a name="test:has_time"></a>
+
+## has_time(text)
+
+Tests whether `text` contains a time.
+
+
+```objectivec
+@(has_time("the time is 10:30")) → true
+@(has_time("the time is 10:30 PM").match) → 22:30:00.000000
+@(has_time("the time is 10:30:45").match) → 10:30:45.000000
+@(has_time("there is no time here, just a number 5")) → false
 ```
 
 <a name="test:has_value"></a>

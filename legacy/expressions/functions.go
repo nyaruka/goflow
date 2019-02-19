@@ -149,8 +149,8 @@ var callMigrators = map[string]callMigrator{
 	"second":            asTemplate(`format_datetime(%s, "s")`),
 	"substitute":        asRename(`replace`),
 	"sum":               asJoin(` + `),
-	"time":              asTemplate(`time(%s %s %s)`), // special case format, we sum these parts into seconds for datetime_add
-	"timevalue":         asRename(`parse_datetime`),
+	"time":              asTemplate(`time_from_parts(%s, %s, %s)`),
+	"timevalue":         asTemplate(`time(%s)`),
 	"today":             asIs(),
 	"true":              asTemplate(`true`), // becomes just a keyword
 	"trunc":             asRename(`round_down`),
