@@ -311,8 +311,8 @@
     },
     {
         "signature": "format_date(date, [,format])",
-        "summary": "Formats `date` as text according to the given `format`.",
-        "detail": "The format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31",
+        "summary": "Formats `date` as text according to the given `format`. If `format` is not",
+        "detail": "specified then the environment's default format is used.\n\nThe format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31",
         "examples": [
             {
                 "template": "@(format_date(\"1979-07-18T15:00:00.000000Z\"))",
@@ -342,8 +342,8 @@
     },
     {
         "signature": "format_datetime(date [,format [,timezone]])",
-        "summary": "Formats `date` as text according to the given `format`.",
-        "detail": "The format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM\n* `Z`         - hour and minute offset from UTC, or Z for UTC\n* `ZZZ`       - hour and minute offset from UTC\n\nTimezone should be a location name as specified in the IANA Time Zone database, such\nas \"America/Guayaquil\" or \"America/Los_Angeles\". If not specified, the current timezone\nwill be used. An error will be returned if the timezone is not recognized.",
+        "summary": "Formats `date` as text according to the given `format`. If `format` is not",
+        "detail": "specified then the environment's default format is used.\n\nThe format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM\n* `Z`         - hour and minute offset from UTC, or Z for UTC\n* `ZZZ`       - hour and minute offset from UTC\n\nTimezone should be a location name as specified in the IANA Time Zone database, such\nas \"America/Guayaquil\" or \"America/Los_Angeles\". If not specified, the current timezone\nwill be used. An error will be returned if the timezone is not recognized.",
         "examples": [
             {
                 "template": "@(format_datetime(\"1979-07-18T15:00:00.000000Z\"))",
@@ -419,8 +419,8 @@
     },
     {
         "signature": "format_time(time [,format])",
-        "summary": "Formats `time` as text according to the given `format`.",
-        "detail": "The format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM",
+        "summary": "Formats `time` as text according to the given `format`. If `format` is not",
+        "detail": "specified then the environment's default format is used.\n\nThe format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM",
         "examples": [
             {
                 "template": "@(format_time(\"14:50:30.000000\"))",
@@ -1146,6 +1146,10 @@
             {
                 "template": "@(time(\"10:30\"))",
                 "output": "10:30:00.000000"
+            },
+            {
+                "template": "@(time(\"10:30:45 PM\"))",
+                "output": "22:30:45.000000"
             },
             {
                 "template": "@(time(datetime(\"1979-07-18T10:30:45.123456Z\")))",

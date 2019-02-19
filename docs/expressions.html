@@ -320,7 +320,7 @@
 <a class="sourceLine" id="cb24-6" title="6">@(field(<span class="st">&quot;a,b,c&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;,&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:format_date"></a></p>
 <h2 id="format_datedate-format">format_date(date, [,format])</h2>
-<p>Formats <code>date</code> as text according to the given <code>format</code>.</p>
+<p>Formats <code>date</code> as text according to the given <code>format</code>. If <code>format</code> is not specified then the environment’s default format is used.</p>
 <p>The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
 <li><code>YY</code> - last two digits of year 0-99</li>
@@ -338,7 +338,7 @@
 <a class="sourceLine" id="cb25-6" title="6">@(format_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:format_datetime"></a></p>
 <h2 id="format_datetimedate-format-timezone">format_datetime(date [,format [,timezone]])</h2>
-<p>Formats <code>date</code> as text according to the given <code>format</code>.</p>
+<p>Formats <code>date</code> as text according to the given <code>format</code>. If <code>format</code> is not specified then the environment’s default format is used.</p>
 <p>The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
 <li><code>YY</code> - last two digits of year 0-99</li>
@@ -386,7 +386,7 @@
 <a class="sourceLine" id="cb28-5" title="5">@(format_number(<span class="st">&quot;foo&quot;</span>, <span class="dv">2</span>, false)) → ERROR</a></code></pre></div>
 <p><a name="function:format_time"></a></p>
 <h2 id="format_timetime-format">format_time(time [,format])</h2>
-<p>Formats <code>time</code> as text according to the given <code>format</code>.</p>
+<p>Formats <code>time</code> as text according to the given <code>format</code>. If <code>format</code> is not specified then the environment’s default format is used.</p>
 <p>The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
 <li><code>h</code> - hour of the day 1-12</li>
@@ -683,8 +683,9 @@
 <p>Tries to convert <code>value</code> to a time.</p>
 <p>An error is returned if the value can’t be converted.</p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb64-1" title="1">@(time(<span class="st">&quot;10:30&quot;</span>)) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">00.000000</span></a>
-<a class="sourceLine" id="cb64-2" title="2">@(time(datetime(<span class="st">&quot;1979-07-18T10:30:45.123456Z&quot;</span>))) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">45.123456</span></a>
-<a class="sourceLine" id="cb64-3" title="3">@(time(<span class="st">&quot;what?&quot;</span>)) → ERROR</a></code></pre></div>
+<a class="sourceLine" id="cb64-2" title="2">@(time(<span class="st">&quot;10:30:45 PM&quot;</span>)) → <span class="dv">22</span>:<span class="dv">30</span>:<span class="fl">45.000000</span></a>
+<a class="sourceLine" id="cb64-3" title="3">@(time(datetime(<span class="st">&quot;1979-07-18T10:30:45.123456Z&quot;</span>))) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">45.123456</span></a>
+<a class="sourceLine" id="cb64-4" title="4">@(time(<span class="st">&quot;what?&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:time_from_parts"></a></p>
 <h2 id="time_from_partsyear-month-day">time_from_parts(year, month, day)</h2>
 <p>Creates a time from <code>hour</code>, <code>minute</code> and <code>second</code></p>

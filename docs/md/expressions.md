@@ -509,7 +509,8 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 
 ## format_date(date, [,format])
 
-Formats `date` as text according to the given `format`.
+Formats `date` as text according to the given `format`. If `format` is not
+specified then the environment's default format is used.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -535,7 +536,8 @@ The format string can consist of the following characters. The characters
 
 ## format_datetime(date [,format [,timezone]])
 
-Formats `date` as text according to the given `format`.
+Formats `date` as text according to the given `format`. If `format` is not
+specified then the environment's default format is used.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -609,7 +611,8 @@ An optional third argument `humanize` can be false to disable the use of thousan
 
 ## format_time(time [,format])
 
-Formats `time` as text according to the given `format`.
+Formats `time` as text according to the given `format`. If `format` is not
+specified then the environment's default format is used.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -1184,6 +1187,7 @@ An error is returned if the value can't be converted.
 
 ```objectivec
 @(time("10:30")) → 10:30:00.000000
+@(time("10:30:45 PM")) → 22:30:45.000000
 @(time(datetime("1979-07-18T10:30:45.123456Z"))) → 10:30:45.123456
 @(time("what?")) → ERROR
 ```

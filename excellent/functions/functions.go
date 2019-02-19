@@ -194,6 +194,7 @@ func DateTime(env utils.Environment, value types.XValue) types.XValue {
 // An error is returned if the value can't be converted.
 //
 //   @(time("10:30")) -> 10:30:00.000000
+//   @(time("10:30:45 PM")) -> 22:30:45.000000
 //   @(time(datetime("1979-07-18T10:30:45.123456Z"))) -> 10:30:45.123456
 //   @(time("what?")) -> ERROR
 //
@@ -1398,7 +1399,8 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // Formatting Functions
 //----------------------------------------------------------------------------------------
 
-// FormatDate formats `date` as text according to the given `format`.
+// FormatDate formats `date` as text according to the given `format`. If `format` is not
+// specified then the environment's default format is used.
 //
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -1448,7 +1450,8 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(date.Native().Format(goFormat))
 }
 
-// FormatDateTime formats `date` as text according to the given `format`.
+// FormatDateTime formats `date` as text according to the given `format`. If `format` is not
+// specified then the environment's default format is used.
 //
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -1531,7 +1534,8 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(date.Native().Format(goFormat))
 }
 
-// FormatTime formats `time` as text according to the given `format`.
+// FormatTime formats `time` as text according to the given `format`. If `format` is not
+// specified then the environment's default format is used.
 //
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
