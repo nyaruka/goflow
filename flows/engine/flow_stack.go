@@ -35,7 +35,7 @@ func flowStackFromRun(run flows.FlowRun) *flowStack {
 	for a := len(ancestors) - 1; a >= 0; a-- {
 		s.stack = append(s.stack, newFlowFrame(ancestors[a].Flow(), false))
 	}
-	s.push(run.Flow())
+	s.stack = append(s.stack, newFlowFrame(run.Flow(), false))
 	return s
 }
 
