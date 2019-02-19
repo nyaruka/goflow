@@ -1,3 +1,10 @@
+v0.28.0
+----------
+ * Rename from_epoch to datetime_from_epoch
+ * Add time functions and has_time router test
+ * Remove support for .0 indexing in excellent
+ * Remove gomobile dependency
+
 v0.27.9
 ----------
  * Don't treat identifiers as special case, parse them like all other expressions
