@@ -1,3 +1,7 @@
+v0.28.1
+----------
+ * Allow looping back into a flow that wasn't started in this sprint
+
 v0.28.0
 ----------
  * Rename from_epoch to datetime_from_epoch
