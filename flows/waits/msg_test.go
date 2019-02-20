@@ -57,8 +57,8 @@ func TestMsgWait(t *testing.T) {
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
-	contact := flows.NewEmptyContact("Ben Haggerty", utils.Language("eng"), nil)
 	session, flow := initializeSession(t)
+	contact := flows.NewEmptyContact(session.Assets(), "Ben Haggerty", utils.Language("eng"), nil)
 
 	// a manual trigger will wait at the initial wait
 	trigger := triggers.NewManualTrigger(env, flow.Reference(), contact, nil)

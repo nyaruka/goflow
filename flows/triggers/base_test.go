@@ -55,14 +55,14 @@ func TestTriggerMarshaling(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sessionAssets, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source)
 	require.NoError(t, err)
 
 	env := utils.NewEnvironmentBuilder().Build()
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 
-	contact := flows.NewEmptyContact("Bob", utils.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Bob", utils.Language("eng"), nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil))
 
 	triggerTests := []struct {
@@ -378,7 +378,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		test.AssertEqualJSON(t, []byte(tc.marshaled), triggerJSON, "trigger JSON mismatch")
 
 		// then try to read from the JSON
-		_, err = triggers.ReadTrigger(sessionAssets, triggerJSON, assets.PanicOnMissing)
+		_, err = triggers.ReadTrigger(sa, triggerJSON, assets.PanicOnMissing)
 		assert.NoError(t, err, "error reading trigger: %s", string(triggerJSON))
 	}
 }

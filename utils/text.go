@@ -44,3 +44,12 @@ func PrefixOverlap(s1, s2 string) int {
 	}
 	return r
 }
+
+// StringSlices returns the slices of s defined by pairs of indexes in indices
+func StringSlices(s string, indices []int) []string {
+	slices := make([]string, 0, len(indices)/2)
+	for i := 0; i < len(indices); i += 2 {
+		slices = append(slices, s[indices[i]:indices[i+1]])
+	}
+	return slices
+}

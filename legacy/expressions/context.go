@@ -3,6 +3,8 @@ package expressions
 import (
 	"fmt"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/urns"
 )
@@ -71,7 +73,7 @@ func (v *varMapper) Resolve(key string) interface{} {
 		asVarMapper, isVarMapper := value.(*varMapper)
 		if isVarMapper {
 			if len(newPath) > 0 {
-				return asVarMapper.rebase(strings.Join(newPath, "."))
+				return asVarMapper.rebase(flattenPath(newPath))
 			}
 			return asVarMapper
 		}
@@ -83,7 +85,7 @@ func (v *varMapper) Resolve(key string) interface{} {
 
 		// or a simple string in which case we add to the end of the path and return that
 		newPath = append(newPath, value.(string))
-		return strings.Join(newPath, ".")
+		return flattenPath(newPath)
 	}
 
 	// then it must be an arbitrary item
@@ -95,12 +97,32 @@ func (v *varMapper) Resolve(key string) interface{} {
 
 	if v.arbitraryVars != nil {
 		return &varMapper{
-			base:     strings.Join(newPath, "."),
+			base:     flattenPath(newPath),
 			baseVars: v.arbitraryVars,
 		}
 	}
 
-	return strings.Join(newPath, ".")
+	return flattenPath(newPath)
+}
+
+func flattenPath(parts []string) string {
+	path := &strings.Builder{}
+	path.WriteString(parts[0])
+
+	for _, part := range parts[1:] {
+		// Legacy expressions allowed things like @flow.2factor because the identifier was "flow.2factor" and
+		// we only required that that whole thing start with a letter. New expressions require that both "flow"
+		// and "2factor" be valid by themselves.
+		firstChar, _ := utf8.DecodeRuneInString(part)
+		isValidIdentifier := unicode.IsLetter(firstChar)
+
+		if isValidIdentifier {
+			path.WriteString(fmt.Sprintf(".%s", part))
+		} else {
+			path.WriteString(fmt.Sprintf("[\"%s\"]", part))
+		}
+	}
+	return path.String()
 }
 
 func (v *varMapper) String() string {
@@ -164,7 +186,7 @@ func newContactMapper(prefix string) *varMapper {
 			"first_name": "first_name",
 			"language":   "language",
 			"created_on": "created_on",
-			"tel_e164":   "urns.tel.0.path",
+			"tel_e164":   "urns.tel[0].path",
 		},
 		substitutions: map[string]interface{}{
 			"groups": fmt.Sprintf("join(%s.groups, \",\")", subsitutionBase),
@@ -175,11 +197,11 @@ func newContactMapper(prefix string) *varMapper {
 	for scheme := range urns.ValidSchemes {
 		contact.baseVars[scheme] = &varMapper{
 			substitutions: map[string]interface{}{
-				"__default__": fmt.Sprintf("%s.urns.%s.0.display", subsitutionBase, scheme),
-				"display":     fmt.Sprintf("%s.urns.%s.0.display", subsitutionBase, scheme),
-				"scheme":      fmt.Sprintf("%s.urns.%s.0.scheme", subsitutionBase, scheme),
-				"path":        fmt.Sprintf("%s.urns.%s.0.path", subsitutionBase, scheme),
-				"urn":         fmt.Sprintf("%s.urns.%s.0", subsitutionBase, scheme),
+				"__default__": fmt.Sprintf("%s.urns.%s[0].display", subsitutionBase, scheme),
+				"display":     fmt.Sprintf("%s.urns.%s[0].display", subsitutionBase, scheme),
+				"scheme":      fmt.Sprintf("%s.urns.%s[0].scheme", subsitutionBase, scheme),
+				"path":        fmt.Sprintf("%s.urns.%s[0].path", subsitutionBase, scheme),
+				"urn":         fmt.Sprintf("%s.urns.%s[0]", subsitutionBase, scheme),
 			},
 			base: fmt.Sprintf("urns.%s", scheme),
 		}

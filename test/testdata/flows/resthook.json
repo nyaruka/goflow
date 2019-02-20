@@ -89,7 +89,7 @@
         {
             "slug": "new-registration",
             "subscribers": [
-                "http://localhost/",
+                "http://localhost/?cmd=badrequest",
                 "http://localhost/?cmd=success"
             ]
         }

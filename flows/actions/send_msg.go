@@ -11,11 +11,6 @@ func init() {
 	RegisterType(TypeSendMsg, func() flows.Action { return &SendMsgAction{} })
 }
 
-type msgDestination struct {
-	urn     urns.URN
-	channel *flows.Channel
-}
-
 // TypeSendMsg is the type for the send message action
 const TypeSendMsg string = "send_msg"
 
@@ -69,29 +64,16 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 
 	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
 
-	channels := run.Session().Assets().Channels()
-	destinations := []msgDestination{}
-
-	for _, u := range run.Contact().URNs() {
-		channel := channels.GetForURN(u, assets.ChannelRoleSend)
-		if channel != nil {
-			destinations = append(destinations, msgDestination{urn: u.URN(), channel: channel})
-
-			// if we're not sending to all URNs we just need the first sendable URN
-			if !a.AllURNs {
-				break
-			}
-		}
-	}
+	destinations := run.Contact().ResolveDestinations(a.AllURNs)
 
 	// create a new message for each URN+channel destination
 	for _, dest := range destinations {
 		var channelRef *assets.ChannelReference
-		if dest.channel != nil {
-			channelRef = assets.NewChannelReference(dest.channel.UUID(), dest.channel.Name())
+		if dest.Channel != nil {
+			channelRef = assets.NewChannelReference(dest.Channel.UUID(), dest.Channel.Name())
 		}
 
-		msg := flows.NewMsgOut(dest.urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
+		msg := flows.NewMsgOut(dest.URN.URN(), channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
 		logEvent(events.NewMsgCreatedEvent(msg))
 	}
 

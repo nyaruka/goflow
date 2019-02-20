@@ -83,13 +83,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(dec1 + dec2)", xn("4.0")},
 
 		{"@array1d", array1d},
-		{"@array1d.0", xs("a")},
-		{"@array1d.1", xs("b")},
-		{"@array2d.0.2", xs("c")},
 		{"@(array1d[0])", xs("a")},
 		{"@(array1d[1])", xs("b")},
 		{"@(array2d[0])", array1d},
 		{"@(array2d[0][2])", xs("c")},
+		{"@array1d.1", ERROR}, // need to use square brackets
+		{"@array2d.0.2", ERROR},
 
 		{"@string1 world", xs("foo world")},
 
@@ -189,7 +188,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@((1 / 0)[0])", ERROR},     // can't index into an error value
 		{"@(array1d[1 / 0])", ERROR}, // index expression can't be an error
 
-		{"@(split(words, \" \").0)", xs("one")},
+		{"@(split(words, \" \")[0])", xs("one")},
 		{"@(split(words, \" \")[1])", xs("two")},
 		{"@(split(words, \" \")[-1])", xs("three")},
 
@@ -205,7 +204,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, test.template)
 		} else {
 			if !types.Equals(env, result, test.expected) {
-				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} evaluating template '%s'", test.expected, test.expected, result, result, test.expected)
+				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} evaluating template '%s'", test.expected, test.expected, result, result, test.template)
 			}
 		}
 	}
@@ -280,22 +279,25 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@array", `["one","two","three"]`, false},
 		{"@array[0]", `["one","two","three"][0]`, false}, // [n] notation not supported outside expression
-		{"@array.0", "one", false},                       // works as dot notation however
 		{"@(array [0])", "one", false},
 		{"@(array[0])", "one", false},
-		{"@(array.0)", "one", false},
+		{"@(array[3 - 3])", "one", false},
 		{"@(array[-1])", "three", false}, // negative index
-		{"@(array.-1)", "", true},        // invalid negative index
 
-		{"@(split(words, \" \").0)", "one", false},
+		{"@(split(words, \" \")[0])", "one", false},
 		{"@(split(words, \" \")[1])", "two", false},
 		{"@(split(words, \" \")[-1])", "three", false},
 
-		{"@(thing.foo)", "bar", false},
-		{"@(thing.zed)", "123", false},
-		{"@(thing.missing)", "", false},    // missing is nil which becomes empty string
-		{"@(thing.missing.xxx)", "", true}, // but can't look up a property on nil
-		{"@(thing.xxx)", "", true},
+		{`@(thing.foo)`, "bar", false},
+		{`@(thing["foo"])`, "bar", false},
+		{`@(thing["FOO"])`, "", true}, // array notation is strict about case
+		{`@(thing[lower("FOO")])`, "bar", false},
+		{`@(thing["f" & "o" & "o"])`, "bar", false},
+		{`@(thing[string1])`, "bar", false},
+		{`@(thing.zed)`, "123", false},
+		{`@(thing.missing)`, "", false},    // missing is nil which becomes empty string
+		{`@(thing.missing.xxx)`, "", true}, // but can't look up a property on nil
+		{`@(thing.xxx)`, "", true},
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()

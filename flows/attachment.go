@@ -14,9 +14,9 @@ import (
 //
 // Examples:
 //
-//   @input.attachments.0.content_type -> image/jpeg
-//   @input.attachments.0.url -> http://s3.amazon.com/bucket/test.jpg
-//   @(json(input.attachments.0)) -> {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
+//   @(input.attachments[0].content_type) -> image/jpeg
+//   @(input.attachments[0].url) -> http://s3.amazon.com/bucket/test.jpg
+//   @(json(input.attachments[0])) -> {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
 //
 // @context attachment
 type Attachment string

@@ -31,7 +31,7 @@ type SetContactLanguageAction struct {
 	BaseAction
 	universalAction
 
-	Language string `json:"language" engine:"localize,evaluate"`
+	Language string `json:"language" engine:"evaluate"`
 }
 
 // NewSetContactLanguageAction creates a new set language action
@@ -54,7 +54,7 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 		return nil
 	}
 
-	language, err := a.evaluateLocalizableTemplate(run, "language", a.Language)
+	language, err := run.EvaluateTemplateAsString(a.Language)
 	language = strings.TrimSpace(language)
 
 	// if we received an error, log it

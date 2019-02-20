@@ -1,3 +1,40 @@
+v0.28.2
+----------
+ * allow single tls renegotiation
+
+v0.28.1
+----------
+ * Allow looping back into a flow that wasn't started in this sprint
+
+v0.28.0
+----------
+ * Rename from_epoch to datetime_from_epoch
+ * Add time functions and has_time router test
+ * Remove support for .0 indexing in excellent
+ * Remove gomobile dependency
+
+v0.27.9
+----------
+ * Don't treat identifiers as special case, parse them like all other expressions
+ * When migrating expressions like flow.2factor, wrap non-name keys in ["..."]
+
+v0.27.8
+----------
+ * Add better flow spec version handling and ability to peek at definitions to determin if they are legacy
+
+v0.27.7
+----------
+ * Don't fake an ignored response body but record it in the event as ignored
+ * If a webhook call doesn't return a content-type header, try to detect type
+
+v0.27.6
+----------
+ * Verify parsed numbers in has_phone are valid
+
+v0.27.5
+----------
+ * update contact PreferredChannel and PreferredURN to resolve first sendable destination
+
 v0.27.4
 ----------
  * add country to mobile.NewEnvironment

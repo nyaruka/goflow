@@ -107,35 +107,36 @@ func TestURNList(t *testing.T) {
 	assert.Equal(t, urn3, urnList.Index(2))
 	assert.Equal(t, types.NewXText(`[{"display":"0781 234 567","path":"+250781234567","scheme":"tel"},{"display":"billy_bob","path":"134252511151","scheme":"twitter"},{"display":"0781 111 222","path":"+250781111222","scheme":"tel"}]`), urnList.ToXJSON(env))
 
+	context := types.NewXMap(map[string]types.XValue{"urns": urnList})
+
 	testCases := []struct {
-		key      string
-		hasValue bool
-		value    interface{}
+		expression string
+		hasValue   bool
+		value      interface{}
 	}{
-		{"0", true, flows.NewContactURN("tel:+250781234567", nil)},
-		{"1", true, flows.NewContactURN("twitter:134252511151#billy_bob", nil)},
-		{"2", true, flows.NewContactURN("tel:+250781111222", nil)},
-		{"-1", true, flows.NewContactURN("tel:+250781111222", nil)},
-		{"3", false, nil}, // index out of range
-		{"tel", true, flows.URNList{flows.NewContactURN("tel:+250781234567", nil), flows.NewContactURN("tel:+250781111222", nil)}},
-		{"twitter", true, flows.URNList{flows.NewContactURN("twitter:134252511151#billy_bob", nil)}},
-		{"xxxxxx", false, ""}, // not a valid scheme
+		{"urns[0]", true, flows.NewContactURN("tel:+250781234567", nil)},
+		{"urns[1]", true, flows.NewContactURN("twitter:134252511151#billy_bob", nil)},
+		{"urns[2]", true, flows.NewContactURN("tel:+250781111222", nil)},
+		{"urns[-1]", true, flows.NewContactURN("tel:+250781111222", nil)},
+		{"urns[3]", false, nil}, // index out of range
+		{"urns.tel", true, flows.URNList{flows.NewContactURN("tel:+250781234567", nil), flows.NewContactURN("tel:+250781111222", nil)}},
+		{"urns.twitter", true, flows.URNList{flows.NewContactURN("twitter:134252511151#billy_bob", nil)}},
+		{"urns.xxxxxx", false, ""}, // not a valid scheme
 	}
 	for _, tc := range testCases {
-		val := excellent.ResolveValue(env, urnList, tc.key)
-
-		err, isErr := val.(error)
+		value := excellent.EvaluateExpression(env, context, tc.expression)
+		err, isErr := value.(error)
 
 		if tc.hasValue && isErr {
-			t.Errorf("Got unexpected error resolving %s: %s", tc.key, err)
+			t.Errorf("Got unexpected error resolving %s: %s", tc.expression, err)
 		}
 
 		if !tc.hasValue && !isErr {
-			t.Errorf("Did not get expected error resolving %s", tc.key)
+			t.Errorf("Did not get expected error resolving %s", tc.expression)
 		}
 
 		if tc.hasValue {
-			assert.Equal(t, tc.value, val)
+			assert.Equal(t, tc.value, value)
 		}
 	}
 }

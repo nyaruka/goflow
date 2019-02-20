@@ -21,9 +21,10 @@ type call struct {
 func (c *call) String() string { return c.method + " " + c.url }
 
 type webhook struct {
-	request  string
-	response string
-	body     string
+	request     string
+	response    string
+	body        string
+	bodyIgnored bool
 }
 
 func TestWebhookParsing(t *testing.T) {
@@ -74,22 +75,40 @@ func TestWebhookParsing(t *testing.T) {
 			// GET returning non-text content type
 			call: call{"GET", "http://127.0.0.1:49994/?cmd=binary", ""},
 			webhook: webhook{
-				request:  "GET /?cmd=binary HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "HTTP/1.1 200 OK\r\nContent-Length: 10\r\nContent-Type: application/octet-stream\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nNon-text body, ignoring",
-				body:     "Non-text body, ignoring",
+				request:     "GET /?cmd=binary HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:    "HTTP/1.1 200 OK\r\nContent-Length: 10\r\nContent-Type: application/octet-stream\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:        "",
+				bodyIgnored: true,
 			},
 		}, {
 			// GET returning binary body larger than allowed (we ignore binary body so no biggie)
 			call: call{"GET", "http://127.0.0.1:49994/?cmd=binary&size=11000", ""},
 			webhook: webhook{
-				request:  "GET /?cmd=binary&size=11000 HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "HTTP/1.1 200 OK\r\nContent-Length: 11000\r\nContent-Type: application/octet-stream\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nNon-text body, ignoring",
-				body:     "Non-text body, ignoring",
+				request:     "GET /?cmd=binary&size=11000 HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:    "HTTP/1.1 200 OK\r\nContent-Length: 11000\r\nContent-Type: application/octet-stream\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:        "",
+				bodyIgnored: true,
 			},
 		}, {
 			// GET returning text body larger than allowed
 			call:    call{"GET", "http://127.0.0.1:49994/?cmd=binary&size=11000&type=text%2Fplain", ""},
 			isError: true,
+		}, {
+			// GET returning text body but an empty content-type header
+			call: call{"GET", "http://127.0.0.1:49994/?cmd=typeless&content=kthxbai", ""},
+			webhook: webhook{
+				request:  "GET /?cmd=typeless&content=kthxbai HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response: "HTTP/1.1 200 OK\r\nContent-Length: 7\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nkthxbai",
+				body:     `kthxbai`,
+			},
+		}, {
+			// GET returning JSON body but an empty content-type header
+			call: call{"GET", "http://127.0.0.1:49994/?cmd=typeless&content=%7B%22msg%22%3A%20%22I%27m%20JSON%22%7D", ""},
+			webhook: webhook{
+				request:  "GET /?cmd=typeless&content=%7B%22msg%22%3A%20%22I%27m%20JSON%22%7D HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response: "HTTP/1.1 200 OK\r\nContent-Length: 19\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{\"msg\": \"I'm JSON\"}",
+				body:     `{"msg": "I'm JSON"}`,
+			},
 		},
 	}
 
@@ -101,12 +120,15 @@ func TestWebhookParsing(t *testing.T) {
 		if tc.isError {
 			assert.Error(t, err)
 		} else {
+			assert.NoError(t, err, "unexpected error fetching %s", tc.call)
+
 			assert.Equal(t, tc.call.url, webhook.URL(), "URL mismatch for call %s", tc.call)
 			assert.Equal(t, "", webhook.Resthook(), "resthook mismatch for call %s", tc.call)
 			assert.Equal(t, tc.call.method, webhook.Method(), "method mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.request, webhook.Request(), "request trace mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.response, webhook.Response(), "response mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.body, webhook.Body(), "body mismatch for call %s", tc.call)
+			assert.Equal(t, tc.webhook.bodyIgnored, webhook.BodyIgnored(), "body-ignored mismatch for call %s", tc.call)
 		}
 	}
 }

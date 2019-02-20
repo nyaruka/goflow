@@ -30,7 +30,7 @@ import (
 //  * `groups` all the [groups](#context:group) that the contact belongs to
 //  * `fields` all the custom contact fields the contact has set
 //  * `fields.[snaked_field_name]` the value of the specific field
-//  * `channel` shorthand for `contact.urns.0.channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
+//  * `channel` shorthand for `contact.urns[0].channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
 //
 // Examples:
 //
@@ -41,9 +41,9 @@ import (
 //   @contact.timezone -> America/Guayaquil
 //   @contact.created_on -> 2018-06-20T11:40:30.123456Z
 //   @contact.urns -> ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
-//   @contact.urns.0 -> tel:+12065551212
+//   @(contact.urns[0]) -> tel:+12065551212
 //   @contact.urns.tel -> ["tel:+12065551212"]
-//   @contact.urns.mailto.0 -> mailto:foo@bar.com
+//   @(contact.urns.mailto[0]) -> mailto:foo@bar.com
 //   @contact.urn -> tel:+12065551212
 //   @contact.groups -> ["Testers","Males"]
 //   @contact.fields -> {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
@@ -61,28 +61,14 @@ type Contact struct {
 	urns      URNList
 	groups    *GroupList
 	fields    FieldValues
+
+	// transient fields
+	assets SessionAssets
 }
 
 // NewContact creates a new contact with the passed in attributes
 func NewContact(
-	uuid ContactUUID, id ContactID, name string, language utils.Language, timezone *time.Location, createdOn time.Time,
-	urns URNList, groups *GroupList, fields FieldValues) *Contact {
-	return &Contact{
-		uuid:      uuid,
-		id:        id,
-		name:      name,
-		language:  language,
-		timezone:  timezone,
-		createdOn: createdOn,
-		urns:      urns,
-		groups:    groups,
-		fields:    fields,
-	}
-}
-
-// NewContactFromAssets creates a new contact using assets
-func NewContactFromAssets(
-	a SessionAssets,
+	sa SessionAssets,
 	uuid ContactUUID,
 	id ContactID,
 	name string,
@@ -93,17 +79,17 @@ func NewContactFromAssets(
 	groups []assets.Group,
 	fields map[string]*Value) (*Contact, error) {
 
-	urnList, err := ReadURNList(a, urns, assets.IgnoreMissing)
+	urnList, err := ReadURNList(sa, urns, assets.IgnoreMissing)
 	if err != nil {
 		return nil, err
 	}
 
-	groupList, err := NewGroupListFromAssets(a, groups)
+	groupList, err := NewGroupListFromAssets(sa, groups)
 	if err != nil {
 		return nil, err
 	}
 
-	fieldValues, err := NewFieldValues(a, fields, assets.IgnoreMissing)
+	fieldValues, err := NewFieldValues(sa, fields, assets.IgnoreMissing)
 	if err != nil {
 		return nil, err
 	}
@@ -118,11 +104,12 @@ func NewContactFromAssets(
 		urns:      urnList,
 		groups:    groupList,
 		fields:    fieldValues,
+		assets:    sa,
 	}, nil
 }
 
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
-func NewEmptyContact(name string, language utils.Language, timezone *time.Location) *Contact {
+func NewEmptyContact(sa SessionAssets, name string, language utils.Language, timezone *time.Location) *Contact {
 	return &Contact{
 		uuid:      ContactUUID(utils.NewUUID()),
 		name:      name,
@@ -132,6 +119,7 @@ func NewEmptyContact(name string, language utils.Language, timezone *time.Locati
 		urns:      URNList{},
 		groups:    NewGroupList([]*Group{}),
 		fields:    make(FieldValues),
+		assets:    sa,
 	}
 }
 
@@ -151,6 +139,7 @@ func (c *Contact) Clone() *Contact {
 		urns:      c.urns.clone(),
 		groups:    c.groups.clone(),
 		fields:    c.fields.clone(),
+		assets:    c.assets,
 	}
 }
 
@@ -279,10 +268,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "urns":
 		return c.urns
 	case "urn":
-		if len(c.urns) > 0 {
-			return c.urns[0]
-		}
-		return nil
+		return c.PreferredURN()
 	case "groups":
 		return c.groups
 	case "fields":
@@ -310,10 +296,42 @@ func (c *Contact) ToXJSON(env utils.Environment) types.XText {
 var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)
 
-// PreferredChannel gets the preferred channel for this contact, i.e. the preferred channel of their highest priority URN
+// Destination is a sendable channel and URN pair
+type Destination struct {
+	Channel *Channel
+	URN     *ContactURN
+}
+
+// ResolveDestinations resolves possible URN/channel destinations
+func (c *Contact) ResolveDestinations(all bool) []Destination {
+	destinations := []Destination{}
+
+	for _, u := range c.urns {
+		channel := c.assets.Channels().GetForURN(u, assets.ChannelRoleSend)
+		if channel != nil {
+			destinations = append(destinations, Destination{URN: u, Channel: channel})
+			if !all {
+				break
+			}
+		}
+	}
+	return destinations
+}
+
+// PreferredURN gets the preferred URN for this contact, i.e. the URN we would use for sending
+func (c *Contact) PreferredURN() *ContactURN {
+	destinations := c.ResolveDestinations(false)
+	if len(destinations) > 0 {
+		return destinations[0].URN
+	}
+	return nil
+}
+
+// PreferredChannel gets the preferred channel for this contact, i.e. the channel we would use for sending
 func (c *Contact) PreferredChannel() *Channel {
-	if len(c.urns) > 0 {
-		return c.urns[0].Channel()
+	destinations := c.ResolveDestinations(false)
+	if len(destinations) > 0 {
+		return destinations[0].Channel
 	}
 	return nil
 }
@@ -458,7 +476,7 @@ type contactEnvelope struct {
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.MissingCallback) (*Contact, error) {
+func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingCallback) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 
@@ -472,6 +490,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.Miss
 		name:      envelope.Name,
 		language:  envelope.Language,
 		createdOn: envelope.CreatedOn,
+		assets:    sa,
 	}
 
 	if envelope.Timezone != "" {
@@ -483,7 +502,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.Miss
 	if envelope.URNs == nil {
 		c.urns = make(URNList, 0)
 	} else {
-		if c.urns, err = ReadURNList(assets, envelope.URNs, missing); err != nil {
+		if c.urns, err = ReadURNList(sa, envelope.URNs, missing); err != nil {
 			return nil, errors.Wrap(err, "error reading urns")
 		}
 	}
@@ -493,7 +512,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.Miss
 	} else {
 		groups := make([]*Group, 0, len(envelope.Groups))
 		for _, g := range envelope.Groups {
-			group, err := assets.Groups().Get(g.UUID)
+			group, err := sa.Groups().Get(g.UUID)
 			if err != nil {
 				missing(g)
 			} else {
@@ -503,7 +522,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, missing assets.Miss
 		c.groups = NewGroupList(groups)
 	}
 
-	if c.fields, err = NewFieldValues(assets, envelope.Fields, missing); err != nil {
+	if c.fields, err = NewFieldValues(sa, envelope.Fields, missing); err != nil {
 		return nil, errors.Wrap(err, "error reading fields")
 	}
 

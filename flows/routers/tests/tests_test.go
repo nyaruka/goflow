@@ -18,7 +18,8 @@ import (
 var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
-var xt = types.NewXDateTime
+var xd = types.NewXDateTime
+var xt = types.NewXTime
 
 type testResolvable struct{}
 
@@ -166,28 +167,33 @@ var testTests = []struct {
 	{"has_number_between", []types.XValue{nil, xs("but foo"), xs("10")}, false, nil, true},
 	{"has_number_between", []types.XValue{xs("a string"), xs("10"), xs("not number")}, false, nil, true},
 
-	{"has_date", []types.XValue{xs("last date was 1.10.2017")}, true, xt(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
-	{"has_date", []types.XValue{xs("last date was 1.10.99")}, true, xt(time.Date(1999, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
+	{"has_date", []types.XValue{xs("last date was 1.10.2017")}, true, xd(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
+	{"has_date", []types.XValue{xs("last date was 1.10.99")}, true, xd(time.Date(1999, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
 	{"has_date", []types.XValue{xs("this isn't a valid date 33.2.99")}, false, nil, false},
 	{"has_date", []types.XValue{xs("no date at all")}, false, nil, false},
 	{"has_date", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2017")}, true, xt(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
+	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2017")}, true, xd(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
 	{"has_date_lt", []types.XValue{xs("last date was 1.10.99"), xs("3.10.98")}, false, nil, false},
 	{"has_date_lt", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
 	{"has_date_lt", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), nil}, false, nil, true},
 	{"has_date_lt", []types.XValue{nil, xs("but foo")}, false, nil, true},
 
-	{"has_date_eq", []types.XValue{xs("last date was 1.10.2017"), xs("1.10.2017")}, true, xt(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
+	{"has_date_eq", []types.XValue{xs("last date was 1.10.2017"), xs("1.10.2017")}, true, xd(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
 	{"has_date_eq", []types.XValue{xs("last date was 1.10.99"), xs("3.10.98")}, false, nil, false},
 	{"has_date_eq", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
 	{"has_date_eq", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_date_gt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2016")}, true, xt(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
+	{"has_date_gt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2016")}, true, xd(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
 	{"has_date_gt", []types.XValue{xs("last date was 1.10.99"), xs("3.10.01")}, false, nil, false},
 	{"has_date_gt", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
 	{"has_date_gt", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
+
+	{"has_time", []types.XValue{xs("last time was 10:30")}, true, xt(utils.NewTimeOfDay(10, 30, 0, 0)), false},
+	{"has_time", []types.XValue{xs("this isn't a valid time 59:77")}, false, nil, false},
+	{"has_time", []types.XValue{xs("no time at all")}, false, nil, false},
+	{"has_time", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
 	{"has_email", []types.XValue{xs("my email is foo@bar.com.")}, true, xs("foo@bar.com"), false},
 	{"has_email", []types.XValue{xs("my email is <foo1@bar-2.com>")}, true, xs("foo1@bar-2.com"), false},
@@ -206,6 +212,9 @@ var testTests = []struct {
 	{"has_phone", []types.XValue{xs("my number is +12065551212"), xs("RW")}, true, xs("+12065551212"), false},
 	{"has_phone", []types.XValue{xs("my number is 12065551212"), xs("US")}, true, xs("+12065551212"), false},
 	{"has_phone", []types.XValue{xs("my number is 206 555 1212"), xs("US")}, true, xs("+12065551212"), false},
+	{"has_phone", []types.XValue{xs("my number is +10001112222"), xs("US")}, true, xs("+10001112222"), false},
+	{"has_phone", []types.XValue{xs("my number is 10000"), xs("US")}, false, nil, false},
+	{"has_phone", []types.XValue{xs("my number is 12067799294"), xs("BW")}, false, nil, false},
 	{"has_phone", []types.XValue{xs("my number is none of your business"), xs("US")}, false, nil, false},
 	{"has_phone", []types.XValue{}, false, nil, true},
 	{"has_phone", []types.XValue{types.NewXErrorf("error")}, false, nil, true},

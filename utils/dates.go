@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bytes"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -27,7 +28,7 @@ var patternDayMonthYear = regexp.MustCompile(`\b([0-9]{1,2})[-.\\/_ ]([0-9]{1,2}
 var patternMonthDayYear = regexp.MustCompile(`\b([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})\b`)
 var patternYearMonthDay = regexp.MustCompile(`\b([0-9]{4}|[0-9]{2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})\b`)
 
-var patternTime = regexp.MustCompile(`\b([0-9]{1,2}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?\b`)
+var patternTime = regexp.MustCompile(`\b(\d{1,2})(?:(?:\:)?(\d{2})(?:\:(\d{2})(?:\.(\d+))?)?)?\W*([aApP][mM])?\b`)
 
 // DateFormat a date format string
 type DateFormat string
@@ -50,27 +51,40 @@ const (
 func (df DateFormat) String() string { return string(df) }
 func (tf TimeFormat) String() string { return string(tf) }
 
-// ZeroTime is our uninitialized time value
-var ZeroTime = time.Time{}
+// format we use for output
+var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
 
-func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (time.Time, error) {
+// generic format for parsing any 8601 date
+var iso8601Format = "2006-01-02T15:04:05Z07:00"
+var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
+var iso8601Date = "2006-01-02"
+var iso8601Time = "15:04:05.000000"
 
-	matches := pattern.FindAllStringSubmatch(str, -1)
+var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat, iso8601Date}
+
+// ZeroDateTime is our uninitialized datetime value
+var ZeroDateTime = time.Time{}
+
+func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (time.Time, string, error) {
+
+	matches := pattern.FindAllStringSubmatchIndex(str, -1)
 	for _, match := range matches {
+		groups := StringSlices(str, match)
+
 		// does our day look believable?
-		day, _ := strconv.Atoi(match[d])
+		day, _ := strconv.Atoi(groups[d])
 		if day == 0 || day > 31 {
 			continue
 		}
-		month, _ := strconv.Atoi(match[m])
+		month, _ := strconv.Atoi(groups[m])
 		if month == 0 || month > 12 {
 			continue
 		}
 
-		year, _ := strconv.Atoi(match[y])
+		year, _ := strconv.Atoi(groups[y])
 
 		// convert to four digit year if necessary
-		if len(match[y]) == 2 {
+		if len(groups[y]) == 2 {
 			if year > currentYear%1000 {
 				year += 1900
 			} else {
@@ -78,11 +92,13 @@ func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d
 			}
 		}
 
+		remainder := str[match[1]:]
+
 		// looks believable, go for it
-		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()), nil
+		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()), remainder, nil
 	}
 
-	return ZeroTime, errors.Errorf("string '%s' couldn't be parsed as a date", str)
+	return ZeroDateTime, str, errors.Errorf("string '%s' couldn't be parsed as a date", str)
 }
 
 // DaysBetween returns the number of calendar days (an int) between the two dates. Note
@@ -107,16 +123,6 @@ func MonthsBetween(date1 time.Time, date2 time.Time) int {
 
 	return months
 }
-
-// format we use for output
-var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
-
-// generic format for parsing any 8601 date
-var iso8601Format = "2006-01-02T15:04:05Z07:00"
-var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
-var iso8601Date = "2006-01-02"
-
-var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat, iso8601Date}
 
 // DateToISO converts the passed in time.Time to a string in ISO8601 format
 func DateToISO(date time.Time) string {
@@ -144,17 +150,18 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 	}
 
 	// otherwise, try to parse according to their env settings
-	parsed := ZeroTime
+	parsed := ZeroDateTime
+	remainder := ""
 	var err error
 	currentYear := Now().Year()
 
 	switch env.DateFormat() {
 	case DateFormatYearMonthDay:
-		parsed, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
+		parsed, remainder, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
 	case DateFormatDayMonthYear:
-		parsed, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
+		parsed, remainder, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
 	case DateFormatMonthDayYear:
-		parsed, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
+		parsed, remainder, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
 	default:
 		err = errors.Errorf("unknown date format: %s", env.DateFormat())
 	}
@@ -164,73 +171,80 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 		return parsed, err
 	}
 
-	// can we pull out a time?
-	hasTime, hour, minute, second, ns := parseTime(str)
+	// can we pull out a time from the remainder of the string?
+	hasTime, timeOfDay := parseTime(remainder)
 	if hasTime {
-		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), hour, minute, second, ns, env.Timezone())
+		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanos, env.Timezone())
 	} else if fillTime {
 		parsed = replaceTime(parsed, Now().In(env.Timezone()))
 	}
 
 	// set our timezone if we have one
-	if env.Timezone() != nil && parsed != ZeroTime {
+	if env.Timezone() != nil && parsed != ZeroDateTime {
 		parsed = parsed.In(env.Timezone())
 	}
 
 	return parsed, nil
 }
 
+// TimeFromString returns a time of day constructed from the passed in string, or an error if we
+// are unable to extract one
+func TimeFromString(str string) (TimeOfDay, error) {
+	hasTime, timeOfDay := parseTime(str)
+	if !hasTime {
+		return ZeroTimeOfDay, errors.Errorf("string '%s' couldn't be parsed as a time", str)
+	}
+	return timeOfDay, nil
+}
+
 func replaceTime(d time.Time, t time.Time) time.Time {
 	return time.Date(d.Year(), d.Month(), d.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), t.Location())
 }
 
-func parseTime(str string) (bool, int, int, int, int) {
+func parseTime(str string) (bool, TimeOfDay) {
 	matches := patternTime.FindAllStringSubmatch(str, -1)
 	for _, match := range matches {
 		hour, _ := strconv.Atoi(match[1])
+		minute, _ := strconv.Atoi(match[2])
+		second, _ := strconv.Atoi(match[3])
+		ampm := strings.ToLower(match[5])
 
 		// do we have an AM/PM
-		if match[7] != "" {
-			if strings.ToLower(match[7]) == "pm" {
-				hour += 12
-			}
+		if ampm == "pm" {
+			hour += 12
 		}
 
-		// is this a valid hour?
+		nanosStr := match[4]
+		nanos := 0
+		if nanosStr != "" {
+			// can only read nano second accuracy
+			if len(nanosStr) > 9 {
+				nanosStr = nanosStr[0:9]
+			}
+			nanos, _ = strconv.Atoi(nanosStr)
+			nanos *= int(math.Pow(10, float64(9-len(nanosStr))))
+		}
+
+		// 24:00:00.000000 is a special case for midnight
+		if hour == 24 && minute == 0 && second == 0 && nanos == 0 {
+			hour = 0
+		}
+
+		// is our time valid?
 		if hour > 24 {
 			continue
 		}
-
-		minute, _ := strconv.Atoi(match[2])
 		if minute > 60 {
 			continue
 		}
-
-		second := 0
-		if match[4] != "" {
-			second, _ = strconv.Atoi(match[4])
-			if second > 60 {
-				continue
-			}
+		if second > 60 {
+			continue
 		}
 
-		ns := 0
-		if match[6] != "" {
-			ns, _ = strconv.Atoi(match[6])
-
-			if len(match[6]) == 3 {
-				// these are milliseconds, multi by 1,000,000 for nano
-				ns = ns * 1000000
-			} else if len(match[6]) == 6 {
-				// these are microseconds, times 1000 for nano
-				ns = ns * 1000
-			}
-		}
-
-		return true, hour, minute, second, ns
+		return true, NewTimeOfDay(hour, minute, second, nanos)
 	}
 
-	return false, 0, 0, 0, 0
+	return false, ZeroTimeOfDay
 }
 
 // FormattingMode describe a mode of formatting dates, times, datetimes
@@ -404,7 +418,11 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					return "", errors.Errorf("invalid date format, invalid count of 'A' format: %d", count)
 				}
 				continue
+			}
+		}
 
+		if mode == DateTimeFormatting {
+			switch r {
 			case 'Z':
 				if count == 1 {
 					goFormat.WriteString("Z07:00")

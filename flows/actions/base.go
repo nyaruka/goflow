@@ -52,11 +52,6 @@ func (a *BaseAction) Type() string { return a.Type_ }
 // UUID returns the UUID of the action
 func (a *BaseAction) UUID() flows.ActionUUID { return a.UUID_ }
 
-func (a *BaseAction) evaluateLocalizableTemplate(run flows.FlowRun, localizationKey string, defaultValue string) (string, error) {
-	localizedTemplate := run.GetText(utils.UUID(a.UUID()), localizationKey, defaultValue)
-	return run.EvaluateTemplateAsString(localizedTemplate)
-}
-
 // helper function for actions that have a set of group references that must be validated
 func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*assets.GroupReference) error {
 	for _, ref := range references {

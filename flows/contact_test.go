@@ -7,8 +7,10 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -17,14 +19,32 @@ import (
 )
 
 func TestContact(t *testing.T) {
+	source, err := static.NewSource([]byte(`{
+		"channels": [
+			{
+				"uuid": "294a14d4-c998-41e5-a314-5941b97b89d7",
+				"name": "My Android Phone",
+				"address": "+12345671111",
+				"schemes": ["tel"],
+				"roles": ["send", "receive"]
+			}
+		]
+	}`))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(source)
+	require.NoError(t, err)
+
+	android, _ := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
+
 	env := utils.NewEnvironmentBuilder().Build()
 
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	contact := flows.NewContact(
-		flows.ContactUUID(utils.NewUUID()), flows.ContactID(12345), "Joe Bloggs", utils.Language("eng"),
-		nil, time.Now(), flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues),
+	contact, _ := flows.NewContact(
+		sa, flows.ContactUUID(utils.NewUUID()), flows.ContactID(12345), "Joe Bloggs", utils.Language("eng"),
+		nil, time.Now(), nil, nil, nil,
 	)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
@@ -39,7 +59,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, flows.ContactID(12345), contact.ID())
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, utils.Language("eng"), contact.Language())
-	assert.Nil(t, contact.PreferredChannel())
+	assert.Equal(t, android, contact.PreferredChannel())
 	assert.True(t, contact.HasURN("tel:+16364646466"))
 	assert.False(t, contact.HasURN("tel:+16300000000"))
 
@@ -48,7 +68,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, flows.ContactID(12345), clone.ID())
 	assert.Equal(t, env.Timezone(), clone.Timezone())
 	assert.Equal(t, utils.Language("eng"), clone.Language())
-	assert.Nil(t, contact.PreferredChannel())
+	assert.Equal(t, android, contact.PreferredChannel())
 
 	// can also clone a null contact!
 	mrNil := (*flows.Contact)(nil)
@@ -63,25 +83,26 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, contact.URNs()[0], contact.Resolve(env, "urn"))
 	assert.Equal(t, contact.Fields(), contact.Resolve(env, "fields"))
 	assert.Equal(t, contact.Groups(), contact.Resolve(env, "groups"))
-	assert.Nil(t, contact.Resolve(env, "channel"))
+	assert.Equal(t, android, contact.Resolve(env, "channel"))
 	assert.Equal(t, types.NewXResolveError(contact, "xxx"), contact.Resolve(env, "xxx"))
 	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Reduce(env))
 	assert.Equal(t, "contact", contact.Describe())
-	assert.Equal(t, types.NewXText(`{"channel":null,"created_on":"2017-12-15T10:00:00.000000Z","fields":{},"groups":[],"language":"eng","name":"Joe Bloggs","timezone":"UTC","urns":[{"display":"(636) 464-6466","path":"+16364646466","scheme":"tel"},{"display":"joey","path":"joey","scheme":"twitter"}],"uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), contact.ToXJSON(env))
+	assert.Equal(t, types.NewXText(`{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"294a14d4-c998-41e5-a314-5941b97b89d7"},"created_on":"2017-12-15T10:00:00.000000Z","fields":{},"groups":[],"language":"eng","name":"Joe Bloggs","timezone":"UTC","urns":[{"display":"(636) 464-6466","path":"+16364646466","scheme":"tel"},{"display":"joey","path":"joey","scheme":"twitter"}],"uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), contact.ToXJSON(env))
 }
 
 func TestContactFormat(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
+	sa, _ := engine.NewSessionAssets(static.NewEmptySource())
 
 	// name takes precedence if set
-	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
+	contact := flows.NewEmptyContact(sa, "Joe", utils.NilLanguage, nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	assert.Equal(t, "Joe", contact.Format(env))
 
 	// if not we fallback to URN
-	contact = flows.NewContact(
-		flows.ContactUUID(utils.NewUUID()), flows.ContactID(1234), "", utils.NilLanguage, nil, time.Now(),
-		flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues),
+	contact, _ = flows.NewContact(
+		sa, flows.ContactUUID(utils.NewUUID()), flows.ContactID(1234), "", utils.NilLanguage, nil, time.Now(),
+		nil, nil, nil,
 	)
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	assert.Equal(t, "joey", contact.Format(env))
@@ -92,17 +113,18 @@ func TestContactFormat(t *testing.T) {
 	assert.Equal(t, "1234", contact.Format(anonEnv))
 
 	// if we don't have name or URNs, then empty string
-	contact = flows.NewEmptyContact("", utils.NilLanguage, nil)
+	contact = flows.NewEmptyContact(sa, "", utils.NilLanguage, nil)
 	assert.Equal(t, "", contact.Format(env))
 }
 
 func TestContactSetPreferredChannel(t *testing.T) {
+	sa, _ := engine.NewSessionAssets(static.NewEmptySource())
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil)
 	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 
-	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
+	contact := flows.NewEmptyContact(sa, "Joe", utils.NilLanguage, nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
@@ -151,7 +173,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	twitterCrazies := test.NewGroup("Twitter Crazies", `twitter ~ crazy`)
 	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies}
 
-	contact := flows.NewEmptyContact("Joe", "eng", nil)
+	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
 
 	assert.Equal(t, []*flows.Group{english}, evaluateGroups(t, env, contact, groups))

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"crypto/tls"
 	"net/http"
 	"net/http/httptest"
 	"net/http/httputil"
@@ -21,11 +22,17 @@ type HTTPClient struct {
 
 // NewHTTPClient creates a new HTTP client with our default options
 func NewHTTPClient(defaultUserAgent string) *HTTPClient {
+	// support single tls renegotiation
+	tlsConfig := &tls.Config{
+		Renegotiation: tls.RenegotiateOnceAsClient,
+	}
+
 	return &HTTPClient{
 		client: &http.Client{
 			Transport: &http.Transport{
 				MaxIdleConns:    10,
 				IdleConnTimeout: 30 * time.Second,
+				TLSClientConfig: tlsConfig,
 			},
 			Timeout: time.Duration(15 * time.Second),
 		},

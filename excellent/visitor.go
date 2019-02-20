@@ -63,7 +63,7 @@ func (v *Visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	}
 
 	lookup := ctx.Atom(1).GetText()
-	return ResolveValue(v.env, context, lookup)
+	return lookupProperty(v.env, context, lookup)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
@@ -117,19 +117,26 @@ func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 
 	expression := toXValue(v.Visit(ctx.Expression()))
 
+	// if the resolved expression is a number, this is an array lookup
+	asNumber, isNumber := expression.(types.XNumber)
+	if isNumber {
+		return lookupIndex(v.env, context, asNumber)
+	}
+
+	// if not it is a property lookup so stringify the key
 	lookup, xerr := types.ToXText(v.env, expression)
 	if xerr != nil {
 		return xerr
 	}
 
-	return ResolveValue(v.env, context, lookup.Native())
+	return lookupProperty(v.env, context, lookup.Native())
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *Visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
 
-	return ResolveValue(v.env, v.resolver, key)
+	return lookupProperty(v.env, v.resolver, key)
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)
@@ -308,4 +315,35 @@ func toXValue(val interface{}) types.XValue {
 		panic("Attempt to convert a non XValue to an XValue")
 	}
 	return asX
+}
+
+// lookup an index on the given value
+func lookupIndex(env utils.Environment, value types.XValue, index types.XNumber) types.XValue {
+	indexable, isIndexable := value.(types.XIndexable)
+	if !isIndexable {
+		return types.NewXErrorf("%s is not indexable", value.Describe())
+	}
+
+	indexAsInt, xerr := types.ToInteger(env, index)
+	if xerr != nil {
+		return xerr
+	}
+
+	if indexAsInt >= indexable.Length() || indexAsInt < -indexable.Length() {
+		return types.NewXErrorf("index %d out of range for %d items", indexAsInt, indexable.Length())
+	}
+	if indexAsInt < 0 {
+		indexAsInt += indexable.Length()
+	}
+	return indexable.Index(indexAsInt)
+}
+
+// lookup a named property on the given value
+func lookupProperty(env utils.Environment, variable types.XValue, key string) types.XValue {
+	resolver, isResolver := variable.(types.XResolvable)
+	if !isResolver {
+		return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
+	}
+
+	return resolver.Resolve(env, key)
 }

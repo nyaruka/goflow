@@ -30,7 +30,7 @@ type SetContactNameAction struct {
 	BaseAction
 	universalAction
 
-	Name string `json:"name" engine:"localize,evaluate"`
+	Name string `json:"name" engine:"evaluate"`
 }
 
 // NewSetContactNameAction creates a new set name action
@@ -53,7 +53,7 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, logMo
 		return nil
 	}
 
-	name, err := a.evaluateLocalizableTemplate(run, "name", a.Name)
+	name, err := run.EvaluateTemplateAsString(a.Name)
 	name = strings.TrimSpace(name)
 
 	// if we received an error, log it

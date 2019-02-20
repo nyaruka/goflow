@@ -1,9 +1,9 @@
-package mobile_test
+package legacy_test
 
 import (
 	"testing"
 
-	"github.com/nyaruka/goflow/mobile"
+	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
@@ -11,20 +11,20 @@ import (
 
 func TestIsLegacyDefinition(t *testing.T) {
 	// try reading empty JSON
-	assert.False(t, mobile.IsLegacyDefinition(`{}`))
+	assert.False(t, legacy.IsLegacyDefinition([]byte(`{}`)))
 
 	// try with new flow
-	assert.False(t, mobile.IsLegacyDefinition(`{
+	assert.False(t, legacy.IsLegacyDefinition([]byte(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Simple",
 		"spec_version": "12.0",
 		"language": "eng",
 		"type": "messaging",
 		"nodes": []
-	}`))
+	}`)))
 
 	// try with legacy flow
-	assert.True(t, mobile.IsLegacyDefinition(`{
+	assert.True(t, legacy.IsLegacyDefinition([]byte(`{
 		"metadata": {
 			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 			"name": "Simple",
@@ -35,11 +35,11 @@ func TestIsLegacyDefinition(t *testing.T) {
 		"version": 11,
 		"action_sets": [],
 		"rule_sets": []
-	}`))
+	}`)))
 }
 
 func TestMigrateLegacyDefinition(t *testing.T) {
-	migrated, err := mobile.MigrateLegacyDefinition(`{
+	migrated, err := legacy.MigrateLegacyDefinition([]byte(`{
 		"flow_type": "S", 
 		"action_sets": [],
 		"rule_sets": [],
@@ -48,7 +48,7 @@ func TestMigrateLegacyDefinition(t *testing.T) {
 			"uuid": "061be894-4507-470c-a20b-34273bf915be",
 			"name": "Survey"
 		}
-	}`)
+	}`))
 
 	assert.NoError(t, err)
 	test.AssertEqualJSON(t, []byte(`{
@@ -65,5 +65,5 @@ func TestMigrateLegacyDefinition(t *testing.T) {
 			"nodes": {},
 			"stickies": {}
 		}
-	}`), []byte(migrated), "migrated flow mismatch")
+	}`), migrated, "migrated flow mismatch")
 }

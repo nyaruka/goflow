@@ -2,8 +2,6 @@ package excellent
 
 import (
 	"bytes"
-	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/gen"
@@ -13,7 +11,8 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// EvaluateExpression evalutes the passed in template, returning the typed value it evaluates to, which might be an error
+// EvaluateExpression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
+// which might be an error, e.g. "2 / 3" or "contact.fields.age"
 func EvaluateExpression(env utils.Environment, context types.XValue, expression string) types.XValue {
 	errListener := NewErrorListener(expression)
 
@@ -50,9 +49,7 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 	// if we only have an identifier or an expression, evaluate it on its own
 	if nextTT == EOF {
 		switch tokenType {
-		case IDENTIFIER:
-			return ResolveValue(env, context, token), nil
-		case EXPRESSION:
+		case IDENTIFIER, EXPRESSION:
 			return EvaluateExpression(env, context, token), nil
 		}
 	}
@@ -72,21 +69,18 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
-		case IDENTIFIER:
-			value := ResolveValue(env, context, token)
-
-			if types.IsXError(value) {
-				errors.Add(fmt.Sprintf("@%s", token), value.(error).Error())
-			} else {
-				strValue, _ := types.ToXText(env, value)
-
-				buf.WriteString(strValue.Native())
-			}
-		case EXPRESSION:
+		case IDENTIFIER, EXPRESSION:
 			value := EvaluateExpression(env, context, token)
 
 			if types.IsXError(value) {
-				errors.Add(fmt.Sprintf("@(%s)", token), value.(error).Error())
+				var repr string
+				if tokenType == IDENTIFIER {
+					repr = "@" + token
+				} else {
+					repr = "@(" + token + ")"
+				}
+
+				errors.Add(repr, value.(error).Error())
 			} else {
 				strValue, _ := types.ToXText(env, value)
 
@@ -99,92 +93,4 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 		return buf.String(), errors
 	}
 	return buf.String(), nil
-}
-
-// ResolveValue will resolve the passed in string variable given in dot notation and return
-// the value as defined by the Resolvable passed in.
-//
-// Example syntaxes:
-//      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
-//      foo.bar[0] - same as above
-func ResolveValue(env utils.Environment, variable types.XValue, key string) types.XValue {
-	rest := key
-	for rest != "" {
-		key, rest = popNextVariable(rest)
-
-		if utils.IsNil(variable) {
-			return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
-		}
-
-		// is our key numeric?
-		index, err := strconv.Atoi(key)
-		if err == nil {
-			indexable, isIndexable := variable.(types.XIndexable)
-			if isIndexable {
-				if index >= indexable.Length() || index < -indexable.Length() {
-					return types.NewXErrorf("index %d out of range for %d items", index, indexable.Length())
-				}
-				if index < 0 {
-					index += indexable.Length()
-				}
-				variable = indexable.Index(index)
-				continue
-			}
-		}
-
-		resolver, isResolver := variable.(types.XResolvable)
-
-		// look it up in our resolver
-		if isResolver {
-			variable = resolver.Resolve(env, key)
-
-			if types.IsXError(variable) {
-				return variable
-			}
-
-		} else {
-			return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
-		}
-	}
-
-	return variable
-}
-
-// popNextVariable pops the next variable off our string:
-//     foo.bar.baz -> "foo", "bar.baz"
-//     foo[0].bar -> "foo", "[0].baz"
-//     foo.0.bar -> "foo", "0.baz"
-//     [0].bar -> "0", "bar"
-//     foo["my key"] -> "foo", "my key"
-func popNextVariable(input string) (string, string) {
-	var keyStart = 0
-	var keyEnd = -1
-	var restStart = -1
-
-	for i, c := range input {
-		if i == 0 && c == '[' {
-			keyStart++
-		} else if c == '[' {
-			keyEnd = i
-			restStart = i
-			break
-		} else if c == ']' {
-			keyEnd = i
-			restStart = i + 1
-			break
-		} else if c == '.' {
-			keyEnd = i
-			restStart = i + 1
-			break
-		}
-	}
-
-	if keyEnd == -1 {
-		return input, ""
-	}
-
-	key := strings.Trim(input[keyStart:keyEnd], "\"")
-	rest := input[restStart:]
-
-	return key, rest
 }
