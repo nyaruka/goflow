@@ -1348,7 +1348,7 @@ func ParseTime(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(time_from_parts(8, 10, 0)) -> 08:10:00.000000
 //   @(time_from_parts(25, 0, 0)) -> ERROR
 //
-// @function time_from_parts(year, month, day)
+// @function time_from_parts(hour, minute, second)
 func TimeFromParts(env utils.Environment, hour, minute, second int) types.XValue {
 	if hour < 0 || hour > 23 {
 		return types.NewXErrorf("invalid value for hour, must be 0-23")
