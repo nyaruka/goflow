@@ -37,11 +37,15 @@ func (d Date) Compare(other Date) int {
 	return d.Day - other.Day
 }
 
+// Combine combines this date and a time to make a datetime
+func (d Date) Combine(timeOfDay TimeOfDay, tz *time.Location) time.Time {
+	return time.Date(d.Year, time.Month(d.Month), d.Day, 0, 0, 0, 0, tz)
+}
+
 // Format formats this date as a string
 func (d Date) Format(layout string) string {
 	// upgrade us to a date time so we can use standard time.Time formatting
-	dt := time.Date(d.Year, time.Month(d.Month), d.Day, 0, 0, 0, 0, time.UTC)
-	return dt.Format(layout)
+	return d.Combine(ZeroTimeOfDay, time.UTC).Format(layout)
 }
 
 // String returns the ISO8601 representation

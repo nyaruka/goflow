@@ -23,7 +23,9 @@ func (x XDateTime) Describe() string { return "datetime" }
 func (x XDateTime) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
-func (x XDateTime) ToXText(env utils.Environment) XText { return NewXText(utils.DateTimeToISO(x.Native())) }
+func (x XDateTime) ToXText(env utils.Environment) XText {
+	return NewXText(utils.DateTimeToISO(x.Native()))
+}
 
 // ToXBoolean converts this type to a bool
 func (x XDateTime) ToXBoolean(env utils.Environment) XBoolean {
@@ -108,6 +110,8 @@ func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XEr
 		switch typed := x.(type) {
 		case XError:
 			return XDateTimeZero, typed
+		case XDate:
+			return NewXDateTime(typed.Native().Combine(utils.ZeroTimeOfDay, env.Timezone())), nil
 		case XDateTime:
 			return typed, nil
 		case XText:
