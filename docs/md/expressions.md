@@ -1730,9 +1730,10 @@ Tests whether `text` contains a time.
 
 ```objectivec
 @(has_time("the time is 10:30")) → true
+@(has_time("the time is 10 PM")) → true
 @(has_time("the time is 10:30 PM").match) → 22:30:00.000000
 @(has_time("the time is 10:30:45").match) → 10:30:45.000000
-@(has_time("there is no time here, just a number 5")) → false
+@(has_time("there is no time here, just the number 25")) → false
 ```
 
 <a name="test:has_value"></a>

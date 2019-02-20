@@ -77,3 +77,7 @@ func TestPrefixOverlap(t *testing.T) {
 	assert.Equal(t, 2, utils.PrefixOverlap("😄😟👨🏼", "😄😟👰"))
 	assert.Equal(t, 4, utils.PrefixOverlap("25078", "25073254252"))
 }
+
+func TestStringSlices(t *testing.T) {
+	assert.Equal(t, []string{"he", "hello", "world"}, utils.StringSlices("hello world", []int{0, 2, 0, 5, 6, 11}))
+}

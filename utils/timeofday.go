@@ -22,8 +22,8 @@ func ExtractTimeOfDay(dt time.Time) TimeOfDay {
 	return NewTimeOfDay(dt.Hour(), dt.Minute(), dt.Second(), dt.Nanosecond())
 }
 
-// Equals determines equality for this type
-func (t TimeOfDay) Equals(other TimeOfDay) bool {
+// Equal determines equality for this type
+func (t TimeOfDay) Equal(other TimeOfDay) bool {
 	return t.Hour == other.Hour && t.Minute == other.Minute && t.Second == other.Second && t.Nanos == other.Nanos
 }
 
