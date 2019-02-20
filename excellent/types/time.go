@@ -41,7 +41,7 @@ func (x XTime) String() string { return x.ToXText(nil).Native() }
 
 // Equals determines equality for this type
 func (x XTime) Equals(other XTime) bool {
-	return x.Native().Equals(other.Native())
+	return x.Native().Equal(other.Native())
 }
 
 // Compare compares this date to another
@@ -66,7 +66,7 @@ func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
 		case XDateTime:
 			return typed.Time(), nil
 		case XText:
-			parsed, err := utils.TimeFromString(env, typed.Native())
+			parsed, err := utils.TimeFromString(typed.Native())
 			if err == nil {
 				return NewXTime(parsed), nil
 			}

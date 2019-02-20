@@ -492,9 +492,10 @@ func HasDateGT(env utils.Environment, text types.XText, date types.XDateTime) ty
 // HasTime tests whether `text` contains a time.
 //
 //   @(has_time("the time is 10:30")) -> true
+//   @(has_time("the time is 10 PM")) -> true
 //   @(has_time("the time is 10:30 PM").match) -> 22:30:00.000000
 //   @(has_time("the time is 10:30:45").match) -> 10:30:45.000000
-//   @(has_time("there is no time here, just a number 5")) -> false
+//   @(has_time("there is no time here, just the number 25")) -> false
 //
 // @test has_time(text)
 func HasTime(env utils.Environment, text types.XText) types.XValue {

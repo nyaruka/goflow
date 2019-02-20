@@ -44,12 +44,12 @@ func TestTimeOfDay(t *testing.T) {
 	assert.Equal(t, t4.Nanos, 123456789)
 	assert.Equal(t, "09:38:30.123456", t4.String())
 
-	assert.False(t, t1.Equals(t2))
-	assert.False(t, t2.Equals(t1))
-	assert.False(t, t1.Equals(t3))
-	assert.False(t, t3.Equals(t1))
-	assert.True(t, t1.Equals(t4))
-	assert.True(t, t4.Equals(t1))
+	assert.False(t, t1.Equal(t2))
+	assert.False(t, t2.Equal(t1))
+	assert.False(t, t1.Equal(t3))
+	assert.False(t, t3.Equal(t1))
+	assert.True(t, t1.Equal(t4))
+	assert.True(t, t4.Equal(t1))
 
 	assert.True(t, t1.Compare(t2) < 0)
 	assert.True(t, t2.Compare(t1) > 0)
