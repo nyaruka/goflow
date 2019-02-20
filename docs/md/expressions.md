@@ -47,9 +47,9 @@ Examples:
 
 
 ```objectivec
-@input.attachments.0.content_type → image/jpeg
-@input.attachments.0.url → http://s3.amazon.com/bucket/test.jpg
-@(json(input.attachments.0)) → {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
+@(input.attachments[0].content_type) → image/jpeg
+@(input.attachments[0].url) → http://s3.amazon.com/bucket/test.jpg
+@(json(input.attachments[0])) → {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
 ```
 
 <a name="context:channel"></a>
@@ -93,7 +93,7 @@ Represents a person who is interacting with the flow. It renders as the person's
  * `groups` all the [groups](#context:group) that the contact belongs to
  * `fields` all the custom contact fields the contact has set
  * `fields.[snaked_field_name]` the value of the specific field
- * `channel` shorthand for `contact.urns.0.channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
+ * `channel` shorthand for `contact.urns[0].channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
 
 Examples:
 
@@ -106,9 +106,9 @@ Examples:
 @contact.timezone → America/Guayaquil
 @contact.created_on → 2018-06-20T11:40:30.123456Z
 @contact.urns → ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
-@contact.urns.0 → tel:+12065551212
+@(contact.urns[0]) → tel:+12065551212
 @contact.urns.tel → ["tel:+12065551212"]
-@contact.urns.mailto.0 → mailto:foo@bar.com
+@(contact.urns.mailto[0]) → mailto:foo@bar.com
 @contact.urn → tel:+12065551212
 @contact.groups → ["Testers","Males"]
 @contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
@@ -153,9 +153,9 @@ Examples:
 
 ```objectivec
 @contact.groups → ["Testers","Males"]
-@contact.groups.0.uuid → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
-@contact.groups.1.name → Males
-@(json(contact.groups.1)) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
+@(contact.groups[0].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
+@(contact.groups[1].name) → Males
+@(json(contact.groups[1])) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
 ```
 
 <a name="context:input"></a>
@@ -275,12 +275,12 @@ Examples:
 
 
 ```objectivec
-@contact.urns.0 → tel:+12065551212
-@contact.urns.0.scheme → tel
-@contact.urns.0.path → +12065551212
-@contact.urns.1.display → nyaruka
-@(format_urn(contact.urns.0)) → (206) 555-1212
-@(json(contact.urns.0)) → {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
+@(contact.urns[0]) → tel:+12065551212
+@(contact.urns[0].scheme) → tel
+@(contact.urns[0].path) → +12065551212
+@(contact.urns[1].display) → nyaruka
+@(format_urn(contact.urns[0])) → (206) 555-1212
+@(json(contact.urns[0])) → {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
 ```
 
 
@@ -442,6 +442,18 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 @(datetime_diff("2017-01-17", "2015-12-17", "Y")) → -2
 ```
 
+<a name="function:datetime_from_epoch"></a>
+
+## datetime_from_epoch(seconds)
+
+Converts the UNIX epoch time `seconds` into a new date.
+
+
+```objectivec
+@(datetime_from_epoch(1497286619)) → 2017-06-12T11:56:59.000000-05:00
+@(datetime_from_epoch(1497286619.123456)) → 2017-06-12T11:56:59.123456-05:00
+```
+
 <a name="function:datetime_from_parts"></a>
 
 ## datetime_from_parts(year, month, day)
@@ -509,7 +521,8 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 
 ## format_date(date, [,format])
 
-Formats `date` as text according to the given `format`.
+Formats `date` as text according to the given `format`. If `format` is not
+specified then the environment's default format is used.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -535,7 +548,8 @@ The format string can consist of the following characters. The characters
 
 ## format_datetime(date [,format [,timezone]])
 
-Formats `date` as text according to the given `format`.
+Formats `date` as text according to the given `format`. If `format` is not
+specified then the environment's default format is used.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -605,6 +619,38 @@ An optional third argument `humanize` can be false to disable the use of thousan
 @(format_number("foo", 2, false)) → ERROR
 ```
 
+<a name="function:format_time"></a>
+
+## format_time(time [,format])
+
+Formats `time` as text according to the given `format`. If `format` is not
+specified then the environment's default format is used.
+
+The format string can consist of the following characters. The characters
+' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+
+* `h`         - hour of the day 1-12
+* `hh`        - hour of the day 01-12
+* `tt`        - twenty four hour of the day 01-23
+* `m`         - minute 0-59
+* `mm`        - minute 00-59
+* `s`         - second 0-59
+* `ss`        - second 00-59
+* `fff`       - milliseconds
+* `ffffff`    - microseconds
+* `fffffffff` - nanoseconds
+* `aa`        - am or pm
+* `AA`        - AM or PM
+
+
+```objectivec
+@(format_time("14:50:30.000000")) → 02:50
+@(format_time("14:50:30.000000", "h:mm aa")) → 2:50 pm
+@(format_time("14:50:30.000000", "tt:mm")) → 14:50
+@(format_time("15:00:27.000000", "s")) → 27
+@(format_time("NOT TIME", "hh:mm")) → ERROR
+```
+
 <a name="function:format_urn"></a>
 
 ## format_urn(urn)
@@ -616,22 +662,10 @@ Formats `urn` into human friendly text.
 @(format_urn("tel:+250781234567")) → 0781 234 567
 @(format_urn("twitter:134252511151#billy_bob")) → billy_bob
 @(format_urn(contact.urn)) → (206) 555-1212
-@(format_urn(contact.urns.mailto.0)) → foo@bar.com
-@(format_urn(contact.urns.telegram.0)) →
-@(format_urn(contact.urns.2)) → foo@bar.com
+@(format_urn(contact.urns.mailto[0])) → foo@bar.com
+@(format_urn(contact.urns.telegram[0])) →
+@(format_urn(contact.urns[2])) → foo@bar.com
 @(format_urn("NOT URN")) → ERROR
-```
-
-<a name="function:from_epoch"></a>
-
-## from_epoch(seconds)
-
-Converts the UNIX epoch time `seconds` into a new date.
-
-
-```objectivec
-@(from_epoch(1497286619)) → 2017-06-12T11:56:59.000000-05:00
-@(from_epoch(1497286619.123456)) → 2017-06-12T11:56:59.123456-05:00
 ```
 
 <a name="function:if"></a>
@@ -867,8 +901,43 @@ If the given `text` is not valid JSON, then an error is returned
 
 ```objectivec
 @(parse_json("{\"foo\": \"bar\"}").foo) → bar
-@(parse_json("[1,2,3,4]").2) → 3
+@(parse_json("[1,2,3,4]")[2]) → 3
 @(parse_json("invalid json")) → ERROR
+```
+
+<a name="function:parse_time"></a>
+
+## parse_time(text, format)
+
+Parses `text` into a time using the given `format`.
+
+The format string can consist of the following characters. The characters
+' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+
+* `h`         - hour of the day 1-12
+* `hh`        - hour of the day 01-12
+* `tt`        - twenty four hour of the day 01-23
+* `m`         - minute 0-59
+* `mm`        - minute 00-59
+* `s`         - second 0-59
+* `ss`        - second 00-59
+* `fff`       - milliseconds
+* `ffffff`    - microseconds
+* `fffffffff` - nanoseconds
+* `aa`        - am or pm
+* `AA`        - AM or PM
+
+Note that fractional seconds will be parsed even without an explicit format identifier.
+You should only specify fractional seconds when you want to assert the number of places
+in the input format.
+
+parse_time will return an error if it is unable to convert the text to a time.
+
+
+```objectivec
+@(parse_time("15:28", "tt:mm")) → 15:28:00.000000
+@(parse_time("2:40 pm", "h:mm aa")) → 14:40:00.000000
+@(parse_time("NOT TIME", "tt:mm")) → ERROR
 ```
 
 <a name="function:percent"></a>
@@ -974,6 +1043,19 @@ Replaces all occurrences of `needle` with `replacement` in `text`.
 ```objectivec
 @(replace("foo bar", "foo", "zap")) → zap bar
 @(replace("foo bar", "baz", "zap")) → foo bar
+```
+
+<a name="function:replace_time"></a>
+
+## replace_time(date)
+
+Returns the a new date time with the time part replaced by the `time`.
+
+
+```objectivec
+@(replace_time(now(), "10:30")) → 2018-04-11T10:30:00.000000-05:00
+@(replace_time("2017-01-15", "10:30")) → 2017-01-15T10:30:00.000000-05:00
+@(replace_time("foo", "10:30")) → ERROR
 ```
 
 <a name="function:right"></a>
@@ -1092,6 +1174,35 @@ and 1 if `text1` comes after `text2`.
 @(text_compare("abc", "abc")) → 0
 @(text_compare("abc", "def")) → -1
 @(text_compare("zzz", "aaa")) → 1
+```
+
+<a name="function:time"></a>
+
+## time(value)
+
+Tries to convert `value` to a time.
+
+An error is returned if the value can't be converted.
+
+
+```objectivec
+@(time("10:30")) → 10:30:00.000000
+@(time("10:30:45 PM")) → 22:30:45.000000
+@(time(datetime("1979-07-18T10:30:45.123456Z"))) → 10:30:45.123456
+@(time("what?")) → ERROR
+```
+
+<a name="function:time_from_parts"></a>
+
+## time_from_parts(year, month, day)
+
+Creates a time from `hour`, `minute` and `second`
+
+
+```objectivec
+@(time_from_parts(14, 40, 15)) → 14:40:15.000000
+@(time_from_parts(8, 10, 0)) → 08:10:00.000000
+@(time_from_parts(25, 0, 0)) → ERROR
 ```
 
 <a name="function:title"></a>
@@ -1608,6 +1719,20 @@ Tests whether there the text has any characters in it
 @(has_text(" \n")) → false
 @(has_text(123)) → true
 @(has_text(contact.fields.not_set)) → false
+```
+
+<a name="test:has_time"></a>
+
+## has_time(text)
+
+Tests whether `text` contains a time.
+
+
+```objectivec
+@(has_time("the time is 10:30")) → true
+@(has_time("the time is 10:30 PM").match) → 22:30:00.000000
+@(has_time("the time is 10:30:45").match) → 10:30:45.000000
+@(has_time("there is no time here, just a number 5")) → false
 ```
 
 <a name="test:has_value"></a>

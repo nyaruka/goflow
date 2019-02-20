@@ -186,7 +186,7 @@ func newContactMapper(prefix string) *varMapper {
 			"first_name": "first_name",
 			"language":   "language",
 			"created_on": "created_on",
-			"tel_e164":   "urns.tel.0.path",
+			"tel_e164":   "urns.tel[0].path",
 		},
 		substitutions: map[string]interface{}{
 			"groups": fmt.Sprintf("join(%s.groups, \",\")", subsitutionBase),
@@ -197,11 +197,11 @@ func newContactMapper(prefix string) *varMapper {
 	for scheme := range urns.ValidSchemes {
 		contact.baseVars[scheme] = &varMapper{
 			substitutions: map[string]interface{}{
-				"__default__": fmt.Sprintf("%s.urns.%s.0.display", subsitutionBase, scheme),
-				"display":     fmt.Sprintf("%s.urns.%s.0.display", subsitutionBase, scheme),
-				"scheme":      fmt.Sprintf("%s.urns.%s.0.scheme", subsitutionBase, scheme),
-				"path":        fmt.Sprintf("%s.urns.%s.0.path", subsitutionBase, scheme),
-				"urn":         fmt.Sprintf("%s.urns.%s.0", subsitutionBase, scheme),
+				"__default__": fmt.Sprintf("%s.urns.%s[0].display", subsitutionBase, scheme),
+				"display":     fmt.Sprintf("%s.urns.%s[0].display", subsitutionBase, scheme),
+				"scheme":      fmt.Sprintf("%s.urns.%s[0].scheme", subsitutionBase, scheme),
+				"path":        fmt.Sprintf("%s.urns.%s[0].path", subsitutionBase, scheme),
+				"urn":         fmt.Sprintf("%s.urns.%s[0]", subsitutionBase, scheme),
 			},
 			base: fmt.Sprintf("urns.%s", scheme),
 		}

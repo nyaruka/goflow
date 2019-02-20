@@ -16,12 +16,23 @@ import (
 	"github.com/pkg/errors"
 )
 
-var datePrefixes = []string{
-	"today()",
-	"yesterday()",
-	"now()",
-	"time",
-	"timevalue",
+var functionReturnTypes = map[string]string{
+	"abs":                 "number",
+	"datetime_add":        "datetime",
+	"datetime_from_parts": "datetime",
+	"max":                 "number",
+	"mean":                "number",
+	"min":                 "number",
+	"mod":                 "number",
+	"now":                 "datetime",
+	"sum":                 "number",
+	"rand":                "number",
+	"round":               "number",
+	"round_down":          "number",
+	"round_up":            "number",
+	"time":                "time",
+	"time_from_parts":     "time",
+	"today":               "datetime",
 }
 
 // MigrateOptions are options for how expressions are migrated
@@ -222,13 +233,21 @@ func popNextVariable(input string) (string, string) {
 	return key, rest
 }
 
-func isDate(operand string) bool {
-	for i := range datePrefixes {
-		if strings.HasPrefix(operand, datePrefixes[i]) {
-			return true
-		}
+var functionCallRegex = regexp.MustCompile(`^(\w+)\(`)
+
+func inferType(operand string) string {
+	// if we have an integer literal, we're a number
+	_, numErr := strconv.Atoi(operand)
+	if numErr == nil {
+		return "number"
 	}
-	return false
+
+	// if this looks like a function call, lookup its return type
+	matches := functionCallRegex.FindStringSubmatch(operand)
+	if matches != nil {
+		return functionReturnTypes[matches[1]]
+	}
+	return ""
 }
 
 var identifierRegex = regexp.MustCompile(`^\pL+[\pL\pN_.]*$`)
@@ -262,21 +281,6 @@ func wrapRawExpression(expression string, errorAs string, urlEncode bool) string
 	}
 
 	return "@" + expression
-}
-
-// convertTimeToSeconds takes a old TIME(0,2,5) like expression
-// and returns the numeric value in seconds
-func convertTimeToSeconds(operand string) (string, bool) {
-	converted := false
-	if strings.HasPrefix(operand, "time(") {
-		var hours, minutes, seconds int
-		parsed, _ := fmt.Sscanf(operand, "time(%d %d %d)", &hours, &minutes, &seconds)
-		if parsed == 3 {
-			operand = strconv.Itoa(seconds + (minutes * 60) + (hours * 3600))
-			converted = true
-		}
-	}
-	return operand, converted
 }
 
 func MigrateStringLiteral(s string) string {

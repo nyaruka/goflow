@@ -27,11 +27,7 @@ var contactJSON = `{
 	"id": 1234567,
 	"name": "Ben Haggerty",
 	"created_on": "2018-01-01T12:00:00.000000000-00:00",
-	"fields": {
-		"gender": {
-			"text": "Male"
-		}
-	},
+	"fields": {},
 	"timezone": "America/Guayaquil",
 	"urns": [
 		"tel:+12065551212",

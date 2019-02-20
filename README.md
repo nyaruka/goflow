@@ -36,7 +36,7 @@ Provides a command line interface for stepping through a given flow.
 
 ```
 % go install github.com/nyaruka/goflow/cmd/flowrunner
-% $GOPATH/bin/flowrunner cmd/flowrunner/testdata/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
+% $GOPATH/bin/flowrunner test/testdata/flows/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
 Starting flow 'U-Report Registration Flow'....
 ---------------------------------------
 💬 "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212"

@@ -3,7 +3,6 @@ package expressions
 import (
 	"bytes"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/legacy/gen"
@@ -165,25 +164,11 @@ func (v *legacyVisitor) VisitConcatenation(ctx *gen.ConcatenationContext) interf
 
 // VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
 func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionContext) interface{} {
-	value, err := toString(v.Visit(ctx.Expression(0)))
+	arg1, err := toString(v.Visit(ctx.Expression(0)))
 	if err != nil {
 		return err
 	}
-
-	dateUnit := "D"
-	firstIsDate := isDate(value)
-	if firstIsDate {
-		firstSeconds, ok := convertTimeToSeconds(value)
-		if ok {
-			value = firstSeconds
-			dateUnit = "s"
-		}
-	}
-
-	// see if our first param is an int
-	_, firstNumberErr := strconv.Atoi(value)
-
-	next, err := toString(v.Visit(ctx.Expression(1)))
+	arg2, err := toString(v.Visit(ctx.Expression(1)))
 	if err != nil {
 		return err
 	}
@@ -193,50 +178,35 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 		op = "-"
 	}
 
-	secondIsDate := isDate(next)
-	if secondIsDate {
-		secondSeconds, ok := convertTimeToSeconds(next)
-		if ok {
-			next = secondSeconds
-			dateUnit = "s"
-		}
-	}
+	// see if either of our arguments is a date value
+	arg1Type := inferType(arg1)
+	arg2Type := inferType(arg2)
 
-	// see if our second param is an int
-	_, secondNumberErr := strconv.Atoi(next)
-	if (firstIsDate || secondIsDate) && (firstNumberErr != nil || secondNumberErr != nil) {
+	//fmt.Printf("Migrating add/sub with types: %s => %s, %s =>%s\n", arg1, arg1Type, arg2, arg2Type)
 
-		// we are adding two values where we know at least one side is a date
-		template := "datetime_add(%s, %s, \"%s\")"
-		if op == "-" {
-			template = "datetime_add(%s, -%s, \"%s\")"
-		}
-
-		// determine the order of our parameters
-		replacements := []interface{}{value, next, dateUnit}
-		if firstNumberErr == nil {
-			replacements = []interface{}{next, value, dateUnit}
-		}
-
-		value = fmt.Sprintf(template, replacements...)
-
-	} else if firstNumberErr == nil && secondNumberErr == nil {
+	if arg1Type == "number" && arg2Type == "number" {
 		// we are adding two numbers
-		if op == "+" {
-			value = fmt.Sprintf("%s + %s", value, next)
-		} else {
-			value = fmt.Sprintf("%s - %s", value, next)
+		return fmt.Sprintf("%s %s %s", arg1, op, arg2)
+
+	} else if arg1Type == "datetime" && arg2Type == "number" {
+		// we are adding a date and a number (of days)
+		template := `datetime_add(%s, %s, "D")`
+		if op == "-" {
+			template = `datetime_add(%s, -%s, "D")`
 		}
-	} else {
-		// we are adding a field of unknown type with an integer
-		if op == "+" {
-			value = fmt.Sprintf("legacy_add(%s, %s)", value, next)
-		} else {
-			value = fmt.Sprintf("legacy_add(%s, -%s)", value, next)
-		}
+
+		return fmt.Sprintf(template, arg1, arg2)
+
+	} else if arg1Type == "datetime" && arg2Type == "time" && op == "+" {
+		// we are adding a date and a time
+		return fmt.Sprintf(`replace_time(%s, %s)`, arg1, arg2)
 	}
 
-	return value
+	// we don't know what we are adding so fallback to legacy_add
+	if op == "+" {
+		return fmt.Sprintf("legacy_add(%s, %s)", arg1, arg2)
+	}
+	return fmt.Sprintf("legacy_add(%s, -%s)", arg1, arg2)
 }
 
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
