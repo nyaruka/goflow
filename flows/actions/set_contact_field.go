@@ -58,7 +58,7 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 		return nil
 	}
 
-	rawValue, err := a.evaluateLocalizableTemplate(run, "value", a.Value)
+	rawValue, err := run.EvaluateTemplateAsString(a.Value)
 	rawValue = strings.TrimSpace(rawValue)
 
 	// if we received an error, log it
