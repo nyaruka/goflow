@@ -120,6 +120,7 @@ func TestTimeFromString(t *testing.T) {
 		{"it's 10 ok", utils.NewTimeOfDay(10, 0, 0, 0), false},
 		{"it's 10 PM ok", utils.NewTimeOfDay(22, 0, 0, 0), false},
 		{"it's 10:30 ok", utils.NewTimeOfDay(10, 30, 0, 0), false},
+		{"it's 10:30pm ok", utils.NewTimeOfDay(22, 30, 0, 0), false},
 		{"it's 10:30 pm ok", utils.NewTimeOfDay(22, 30, 0, 0), false},
 		{"it's 1030 ok", utils.NewTimeOfDay(10, 30, 0, 0), false},
 		{"it's 1030 PM ok", utils.NewTimeOfDay(22, 30, 0, 0), false},
