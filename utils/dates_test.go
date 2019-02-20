@@ -128,6 +128,7 @@ func TestDateFromString(t *testing.T) {
 
 		// valid ISO always accepted
 		{utils.DateFormatDayMonthYear, "2018-12-31", utils.NewDate(2018, 12, 31), false},
+		{utils.DateFormatDayMonthYear, "2018-12-31T18:30:15-08:00", utils.NewDate(2018, 12, 31), false},
 
 		{utils.DateFormatDayMonthYear, "it's ok", utils.ZeroDate, true},
 		{utils.DateFormatDayMonthYear, "it's 2018-13-01 ok", utils.ZeroDate, true},

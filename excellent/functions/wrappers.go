@@ -229,7 +229,19 @@ func TwoNumberFunction(f func(utils.Environment, types.XNumber, types.XNumber) t
 	})
 }
 
-// OneDateTimeFunction creates an XFunction from a single number function
+// OneDateFunction creates an XFunction from a single date function
+func OneDateFunction(f func(utils.Environment, types.XDate) types.XValue) XFunction {
+	return ArgCountCheck(1, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
+		date, xerr := types.ToXDate(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+
+		return f(env, date)
+	})
+}
+
+// OneDateTimeFunction creates an XFunction from a single datetime function
 func OneDateTimeFunction(f func(utils.Environment, types.XDateTime) types.XValue) XFunction {
 	return ArgCountCheck(1, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
 		date, xerr := types.ToXDateTime(env, args[0])

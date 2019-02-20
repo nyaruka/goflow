@@ -30,7 +30,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(DATE(2012, 12, 25))`, new: `@(datetime_from_parts(2012, 12, 25))`, val: `2012-12-25T00:00:00.000000-05:00`},
 		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`, val: `4`},
 		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(datetime("2012-02-03"))`, val: `2012-02-03T00:00:00.000000-05:00`},
-		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`, val: `1`},
+		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`, val: `2`},
 		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(datetime_diff("2016-02-28", "2015-02-28", "D"))`, val: `-365`},
 		{old: `@(EDATE("2012-02-03", 1))`, new: `@(datetime_add("2012-02-03", 1, "M"))`, val: `2012-03-03T00:00:00.000000-05:00`},
 		{old: `@(EPOCH(NOW()))`, new: `@(epoch(now()))`},

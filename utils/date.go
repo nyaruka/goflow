@@ -7,13 +7,13 @@ import (
 // Date is a local gregorian calendar date
 type Date struct {
 	Year  int
-	Month int
+	Month time.Month
 	Day   int
 }
 
 // NewDate creates a new date
 func NewDate(year, month, day int) Date {
-	return Date{year, month, day}
+	return Date{year, time.Month(month), day}
 }
 
 // ExtractDate extracts the date from the give datetime
@@ -32,20 +32,25 @@ func (d Date) Compare(other Date) int {
 		return d.Year - other.Year
 	}
 	if d.Month != other.Month {
-		return d.Month - other.Month
+		return int(d.Month) - int(other.Month)
 	}
 	return d.Day - other.Day
 }
 
 // Combine combines this date and a time to make a datetime
 func (d Date) Combine(timeOfDay TimeOfDay, tz *time.Location) time.Time {
-	return time.Date(d.Year, time.Month(d.Month), d.Day, 0, 0, 0, 0, tz)
+	return time.Date(d.Year, d.Month, d.Day, 0, 0, 0, 0, tz)
 }
 
 // Format formats this date as a string
 func (d Date) Format(layout string) string {
 	// upgrade us to a date time so we can use standard time.Time formatting
 	return d.Combine(ZeroTimeOfDay, time.UTC).Format(layout)
+}
+
+// Weekday returns the day of the week
+func (d Date) Weekday() time.Weekday {
+	return d.Combine(ZeroTimeOfDay, time.UTC).Weekday()
 }
 
 // String returns the ISO8601 representation

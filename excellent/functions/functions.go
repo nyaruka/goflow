@@ -86,7 +86,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"datetime_diff":       ThreeArgFunction(DateTimeDiff),
 	"datetime_add":        DateTimeAdd,
 	"replace_time":        ArgCountCheck(2, 2, ReplaceTime),
-	"weekday":             OneDateTimeFunction(Weekday),
+	"weekday":             OneDateFunction(Weekday),
 	"tz":                  OneDateTimeFunction(TZ),
 	"tz_offset":           OneDateTimeFunction(TZOffset),
 	"today":               NoArgFunction(Today),
@@ -1213,7 +1213,7 @@ func ReplaceTime(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(weekday("foo")) -> ERROR
 //
 // @function weekday(date)
-func Weekday(env utils.Environment, date types.XDateTime) types.XValue {
+func Weekday(env utils.Environment, date types.XDate) types.XValue {
 	return types.NewXNumberFromInt(int(date.Native().Weekday()))
 }
 
@@ -1247,16 +1247,13 @@ func TZOffset(env utils.Environment, date types.XDateTime) types.XValue {
 	return types.NewXText(date.Native().Format("-0700"))
 }
 
-// Today returns the current date in the current timezone.
+// Today returns the current date in the environment timezone.
 //
-// The returned datetime has a time set to midnight in the current timezone.
-//
-//   @(today()) -> 2018-04-11T00:00:00.000000-05:00
+//   @(today()) -> 2018-04-11
 //
 // @function today()
 func Today(env utils.Environment) types.XValue {
-	nowTZ := env.Now()
-	return types.NewXDateTime(time.Date(nowTZ.Year(), nowTZ.Month(), nowTZ.Day(), 0, 0, 0, 0, env.Timezone()))
+	return types.NewXDate(utils.ExtractDate(env.Now()))
 }
 
 // Epoch converts `date` to a UNIX epoch time.
@@ -1421,7 +1418,7 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 //
 // @function format_date(date, [,format])
 func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
-	date, xerr := types.ToXDateTime(env, args[0])
+	date, xerr := types.ToXDate(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -1440,11 +1437,6 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.DateOnlyFormatting)
 	if err != nil {
 		return types.NewXError(err)
-	}
-
-	// convert to our timezone if we have one (otherwise we remain in the date's default)
-	if env.Timezone() != nil {
-		date = types.NewXDateTime(date.Native().In(env.Timezone()))
 	}
 
 	return types.NewXText(date.Native().Format(goFormat))

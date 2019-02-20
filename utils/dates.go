@@ -153,7 +153,7 @@ func DateTimeFromString(env Environment, str string, fillTime bool) (time.Time, 
 	// can we pull out a time from the remainder of the string?
 	hasTime, timeOfDay := parseTime(remainder)
 	if !hasTime && fillTime {
-		timeOfDay = ExtractTimeOfDay(Now().In(env.Timezone()))
+		timeOfDay = ExtractTimeOfDay(env.Now())
 	}
 
 	// combine our date and time
@@ -181,7 +181,7 @@ func parseDate(env Environment, str string) (Date, string, error) {
 	str = strings.Trim(str, " \n\r\t")
 
 	// try to parse as ISO date
-	asISO, err := time.ParseInLocation(iso8601Date, str, env.Timezone())
+	asISO, err := time.ParseInLocation(iso8601Date, str[0:MinInt(len(iso8601Date), len(str))], env.Timezone())
 	if err == nil {
 		return ExtractDate(asISO), str[len(iso8601Date):], nil
 	}

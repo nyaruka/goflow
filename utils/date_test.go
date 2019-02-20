@@ -13,14 +13,15 @@ func TestDate(t *testing.T) {
 	d1 := utils.NewDate(2019, 2, 20)
 
 	assert.Equal(t, d1.Year, 2019)
-	assert.Equal(t, d1.Month, 2)
+	assert.Equal(t, d1.Month, time.Month(2))
 	assert.Equal(t, d1.Day, 20)
+	assert.Equal(t, d1.Weekday(), time.Weekday(3))
 	assert.Equal(t, "2019-02-20", d1.String())
 
 	d2 := utils.NewDate(2020, 1, 1)
 
 	assert.Equal(t, d2.Year, 2020)
-	assert.Equal(t, d2.Month, 1)
+	assert.Equal(t, d2.Month, time.Month(1))
 	assert.Equal(t, d2.Day, 1)
 	assert.Equal(t, "2020-01-01", d2.String())
 
@@ -28,7 +29,7 @@ func TestDate(t *testing.T) {
 	d3 := utils.NewDate(2019, 2, 19)
 
 	assert.Equal(t, d3.Year, 2019)
-	assert.Equal(t, d3.Month, 2)
+	assert.Equal(t, d3.Month, time.Month(2))
 	assert.Equal(t, d3.Day, 19)
 	assert.Equal(t, "2019-02-19", d3.String())
 
@@ -36,7 +37,7 @@ func TestDate(t *testing.T) {
 	d4 := utils.ExtractDate(time.Date(2019, 2, 20, 9, 38, 30, 123456789, time.UTC))
 
 	assert.Equal(t, d4.Year, 2019)
-	assert.Equal(t, d4.Month, 2)
+	assert.Equal(t, d4.Month, time.Month(2))
 	assert.Equal(t, d4.Day, 20)
 	assert.Equal(t, "2019-02-20", d4.String())
 
