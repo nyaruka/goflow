@@ -117,10 +117,12 @@ func TestTimeFromString(t *testing.T) {
 		expected utils.TimeOfDay
 		hasError bool
 	}{
-		{"it's 10", utils.NewTimeOfDay(10, 0, 0, 0), false},
-		{"it's 10 PM", utils.NewTimeOfDay(22, 0, 0, 0), false},
-		{"it's 10:30", utils.NewTimeOfDay(10, 30, 0, 0), false},
+		{"it's 10 ok", utils.NewTimeOfDay(10, 0, 0, 0), false},
+		{"it's 10 PM ok", utils.NewTimeOfDay(22, 0, 0, 0), false},
+		{"it's 10:30 ok", utils.NewTimeOfDay(10, 30, 0, 0), false},
 		{"it's 10:30 pm ok", utils.NewTimeOfDay(22, 30, 0, 0), false},
+		{"it's 1030 ok", utils.NewTimeOfDay(10, 30, 0, 0), false},
+		{"it's 1030 PM ok", utils.NewTimeOfDay(22, 30, 0, 0), false},
 		{"it's 10:30:45 ok", utils.NewTimeOfDay(10, 30, 45, 0), false},
 		{"it's 10:30:45 pm ok", utils.NewTimeOfDay(22, 30, 45, 0), false},
 		{"it's 10:30:45.123 ok", utils.NewTimeOfDay(10, 30, 45, 123000000), false},
@@ -133,6 +135,10 @@ func TestTimeFromString(t *testing.T) {
 		// fractional compontent can be any length
 		{"it's 10:30:45.123456789123456789 ok", utils.NewTimeOfDay(10, 30, 45, 123456789), false},
 		{"it's 10:30:45.1 ok", utils.NewTimeOfDay(10, 30, 45, 100000000), false},
+
+		// 24 can be used to mean midnight
+		{"it's 24:00 ok", utils.NewTimeOfDay(0, 0, 0, 0), false},
+		{"it's 24:00:00 ok", utils.NewTimeOfDay(0, 0, 0, 0), false},
 
 		{"it's ok", utils.ZeroTimeOfDay, true},
 		{"it's 25:30", utils.ZeroTimeOfDay, true},

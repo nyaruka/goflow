@@ -28,7 +28,7 @@ var patternDayMonthYear = regexp.MustCompile(`\b([0-9]{1,2})[-.\\/_ ]([0-9]{1,2}
 var patternMonthDayYear = regexp.MustCompile(`\b([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})\b`)
 var patternYearMonthDay = regexp.MustCompile(`\b([0-9]{4}|[0-9]{2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})\b`)
 
-var patternTime = regexp.MustCompile(`\b([0-9]{1,2})(?:\:([0-9]{2})(?:\:([0-9]{2})(?:\.(\d+))?)?)?\W*([aApP][mM])?\b`)
+var patternTime = regexp.MustCompile(`\b(\d{1,2})(?:(?:\:)?(\d{2})(?:\:(\d{2})(?:\.(\d+))?)?)?\W*([aApP][mM])?\b`)
 
 // DateFormat a date format string
 type DateFormat string
@@ -223,6 +223,11 @@ func parseTime(str string) (bool, TimeOfDay) {
 			}
 			nanos, _ = strconv.Atoi(nanosStr)
 			nanos *= int(math.Pow(10, float64(9-len(nanosStr))))
+		}
+
+		// 24:00:00.000000 is a special case for midnight
+		if hour == 24 && minute == 0 && second == 0 && nanos == 0 {
+			hour = 0
 		}
 
 		// is our time valid?
