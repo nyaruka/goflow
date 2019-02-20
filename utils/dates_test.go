@@ -12,107 +12,146 @@ import (
 
 var laTZ, _ = time.LoadLocation("America/Los_Angeles")
 
-var timeTests = []struct {
-	DateFormat utils.DateFormat
-	TimeFormat utils.TimeFormat
-	Timezone   string
-	FillTime   bool
-	Value      string
-	Expected   string
-	Error      bool
-}{
-	// valid cases, varying formats
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-02-2001", "01-02-2001 00:00:00 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "date is 01.02.2001 yes", "01-02-2001 00:00:00 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
+func TestDateTimeFromString(t *testing.T) {
 
-	// must be strict iso to match despite format
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02T10:34:56Z", "02-01-2001 10:34:56 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02T10:34:56+02:00", "02-01-2001 10:34:56 +0200 MST", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", true, "2001-01-02", "02-01-2001 13:36:30.123456789 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "America/Los_Angeles", true, "2001-01-02", "02-01-2001 06:36:30.123456789 -0800 PST", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, " 2001-01-02 ", "02-01-2001 00:00:00 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "on 2001-01-02 ", "", true},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001_01_02", "", true},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-1-2", "", true},
+	testCases := []struct {
+		DateFormat utils.DateFormat
+		TimeFormat utils.TimeFormat
+		Timezone   string
+		FillTime   bool
+		Value      string
+		Expected   string
+		Error      bool
+	}{
+		// valid cases, varying formats
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-02-2001", "01-02-2001 00:00:00 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "date is 01.02.2001 yes", "01-02-2001 00:00:00 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
 
-	// month first
-	{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", false, "01-02-2001", "02-01-2001 00:00:00 +0000 UTC", false},
-	{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
-	{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", false, "2001-1-2", "", true},
+		// must be strict iso to match despite format
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02T10:34:56Z", "02-01-2001 10:34:56 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02T10:34:56+02:00", "02-01-2001 10:34:56 +0200 MST", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", true, "2001-01-02", "02-01-2001 13:36:30.123456789 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "America/Los_Angeles", true, "2001-01-02", "02-01-2001 06:36:30.123456789 -0800 PST", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, " 2001-01-02 ", "02-01-2001 00:00:00 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "on 2001-01-02 ", "", true},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001_01_02", "", true},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2001-1-2", "", true},
 
-	// year first
-	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01", "01-02-2001 00:00:00 +0000 UTC", false},
-	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "99-02-01", "01-02-1999 00:00:00 +0000 UTC", false},
+		// month first
+		{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", false, "01-02-2001", "02-01-2001 00:00:00 +0000 UTC", false},
+		{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", false, "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
+		{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", false, "2001-1-2", "", true},
 
-	// specific timezone
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "America/Los_Angeles", false, "01\\02\\2001", "01-02-2001 00:00:00 -0800 PST", false},
+		// year first
+		{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01", "01-02-2001 00:00:00 +0000 UTC", false},
+		{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "99-02-01", "01-02-1999 00:00:00 +0000 UTC", false},
 
-	// with time filling
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", true, "01-02-2001", "01-02-2001 13:36:30.123456789 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", true, "01-02-2001 04:23", "01-02-2001 04:23:00 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "America/Los_Angeles", true, "01-02-2001", "01-02-2001 06:36:30.123456789 -0800 PST", false},
+		// specific timezone
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "America/Los_Angeles", false, "01\\02\\2001", "01-02-2001 00:00:00 -0800 PST", false},
 
-	// illegal day
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "33-01-2001", "01-01-0001 00:00:00 +0000 UTC", true},
+		// with time filling
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", true, "01-02-2001", "01-02-2001 13:36:30.123456789 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", true, "01-02-2001 04:23", "01-02-2001 04:23:00 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "America/Los_Angeles", true, "01-02-2001", "01-02-2001 06:36:30.123456789 -0800 PST", false},
 
-	// illegal month
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-13-2001", "01-01-0001 00:00:00 +0000 UTC", true},
+		// illegal day
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "33-01-2001", "01-01-0001 00:00:00 +0000 UTC", true},
 
-	// valid two digit cases
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-01-99", "01-01-1999 00:00:00 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-01-16", "01-01-2016 00:00:00 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-01-16a", "", true},
+		// illegal month
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-13-2001", "01-01-0001 00:00:00 +0000 UTC", true},
 
-	// iso dates
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2016-05-01T18:30:15-08:00", "01-05-2016 18:30:15 -0800 PST", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2016-05-01T18:30:15Z", "01-05-2016 18:30:15 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2016-05-01T18:30:15.250Z", "01-05-2016 18:30:15.250 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "1977-06-23T08:34:00.000-07:00", "23-06-1977 15:34:00.000 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "1977-06-23T08:34:00.000250-07:00", "23-06-1977 15:34:00.000250 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "1977-06-23T08:34:00.000250500-07:00", "23-06-1977 15:34:00.000250500 +0000 UTC", false},
-	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2017-06-10T17:34-06:00", "10-06-2017 23:34:00.000000 +0000 UTC", false},
+		// valid two digit cases
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-01-99", "01-01-1999 00:00:00 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-01-16", "01-01-2016 00:00:00 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "01-01-16a", "", true},
 
-	// with time
-	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15", "01-02-2001 03:15:00 +0000 UTC", false},
-	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15pm", "01-02-2001 15:15:00 +0000 UTC", false},
-	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15 AM", "01-02-2001 03:15:00 +0000 UTC", false},
-	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34", "01-02-2001 03:15:34 +0000 UTC", false},
-	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34.123", "01-02-2001 03:15:34.123 +0000 UTC", false},
-	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34.123456", "01-02-2001 03:15:34.123456 +0000 UTC", false},
-}
+		// iso dates
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2016-05-01T18:30:15-08:00", "01-05-2016 18:30:15 -0800 PST", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2016-05-01T18:30:15Z", "01-05-2016 18:30:15 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2016-05-01T18:30:15.250Z", "01-05-2016 18:30:15.250 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "1977-06-23T08:34:00.000-07:00", "23-06-1977 15:34:00.000 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "1977-06-23T08:34:00.000250-07:00", "23-06-1977 15:34:00.000250 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "1977-06-23T08:34:00.000250500-07:00", "23-06-1977 15:34:00.000250500 +0000 UTC", false},
+		{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", false, "2017-06-10T17:34-06:00", "10-06-2017 23:34:00.000000 +0000 UTC", false},
 
-func TestDateFromString(t *testing.T) {
+		// with time
+		{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15", "01-02-2001 03:15:00 +0000 UTC", false},
+		{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15pm", "01-02-2001 15:15:00 +0000 UTC", false},
+		{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15 AM", "01-02-2001 03:15:00 +0000 UTC", false},
+		{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34", "01-02-2001 03:15:34 +0000 UTC", false},
+		{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34.123", "01-02-2001 03:15:34.123 +0000 UTC", false},
+		{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34.123456", "01-02-2001 03:15:34.123456 +0000 UTC", false},
+	}
+
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	for _, test := range timeTests {
-		timezone, err := time.LoadLocation(test.Timezone)
+	for _, tc := range testCases {
+		timezone, err := time.LoadLocation(tc.Timezone)
 		require.NoError(t, err)
 
-		env := utils.NewEnvironmentBuilder().WithDateFormat(test.DateFormat).WithTimeFormat(test.TimeFormat).WithTimezone(timezone).Build()
+		env := utils.NewEnvironmentBuilder().WithDateFormat(tc.DateFormat).WithTimeFormat(tc.TimeFormat).WithTimezone(timezone).Build()
 
-		value, err := utils.DateFromString(env, test.Value, test.FillTime)
+		value, err := utils.DateTimeFromString(env, tc.Value, tc.FillTime)
 
-		if test.Error {
+		if tc.Error {
 			assert.Error(t, err)
 		} else {
-			require.NoError(t, err, "error parsing date %s", test.Value)
+			require.NoError(t, err, "error parsing date %s", tc.Value)
 
-			expected, err := time.Parse("02-01-2006 15:04:05.999999999 -0700 MST", test.Expected)
-			require.NoError(t, err, "error parsing expected date %s", test.Expected)
+			expected, err := time.Parse("02-01-2006 15:04:05.999999999 -0700 MST", tc.Expected)
+			require.NoError(t, err, "error parsing expected date %s", tc.Expected)
 
 			if !expected.Equal(value) {
-				assert.Fail(t, "", "mismatch for date input %s, expected %s, got %s", test.Value, expected, value)
+				assert.Fail(t, "", "mismatch for date input %s, expected %s, got %s", tc.Value, expected, value)
+			}
+		}
+	}
+}
+
+func TestDateFromString(t *testing.T) {
+	testCases := []struct {
+		dateFormat utils.DateFormat
+		value      string
+		expected   utils.Date
+		hasError   bool
+	}{
+		{utils.DateFormatDayMonthYear, "it's 31-12-2018 ok", utils.NewDate(2018, 12, 31), false},
+		{utils.DateFormatDayMonthYear, "it's 31-12-18 ok", utils.NewDate(2018, 12, 31), false},
+		{utils.DateFormatMonthDayYear, "it's 12-31-2018 ok", utils.NewDate(2018, 12, 31), false},
+		{utils.DateFormatMonthDayYear, "it's 12-31-18 ok", utils.NewDate(2018, 12, 31), false},
+		{utils.DateFormatYearMonthDay, "it's 2018-12-31 ok", utils.NewDate(2018, 12, 31), false},
+		{utils.DateFormatYearMonthDay, "it's 18-12-31 ok", utils.NewDate(2018, 12, 31), false},
+
+		// valid ISO always accepted
+		{utils.DateFormatDayMonthYear, "2018-12-31", utils.NewDate(2018, 12, 31), false},
+
+		{utils.DateFormatDayMonthYear, "it's ok", utils.ZeroDate, true},
+		{utils.DateFormatDayMonthYear, "it's 2018-13-01 ok", utils.ZeroDate, true},
+		{utils.DateFormatDayMonthYear, "it's 2018-12-32 ok", utils.ZeroDate, true},
+	}
+
+	for _, tc := range testCases {
+		env := utils.NewEnvironmentBuilder().WithDateFormat(tc.dateFormat).Build()
+		parsed, err := utils.DateFromString(env, tc.value)
+
+		if tc.hasError {
+			assert.Error(t, err)
+		} else {
+			require.NoError(t, err, "error parsing time %s", tc.value)
+
+			if !tc.expected.Equal(parsed) {
+				assert.Fail(t, "", "mismatch for time input %s, expected %s, got %s", tc.value, tc.expected, parsed)
 			}
 		}
 	}
 }
 
 func TestTimeFromString(t *testing.T) {
-	timeTests := []struct {
+	testCases := []struct {
 		value    string
 		expected utils.TimeOfDay
 		hasError bool
@@ -147,7 +186,7 @@ func TestTimeFromString(t *testing.T) {
 		{"it's 10:30:61", utils.ZeroTimeOfDay, true},
 	}
 
-	for _, tc := range timeTests {
+	for _, tc := range testCases {
 		parsed, err := utils.TimeFromString(tc.value)
 
 		if tc.hasError {
