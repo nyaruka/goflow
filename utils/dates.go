@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bytes"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -27,7 +28,7 @@ var patternDayMonthYear = regexp.MustCompile(`\b([0-9]{1,2})[-.\\/_ ]([0-9]{1,2}
 var patternMonthDayYear = regexp.MustCompile(`\b([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})\b`)
 var patternYearMonthDay = regexp.MustCompile(`\b([0-9]{4}|[0-9]{2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})\b`)
 
-var patternTime = regexp.MustCompile(`\b([0-9]{1,2}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?\b`)
+var patternTime = regexp.MustCompile(`\b([0-9]{1,2})(?:\:([0-9]{2})(?:\:([0-9]{2})(?:\.(\d+))?)?)?\W*([aApP][mM])?\b`)
 
 // DateFormat a date format string
 type DateFormat string
@@ -64,24 +65,26 @@ var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat, iso8601Date}
 // ZeroDateTime is our uninitialized datetime value
 var ZeroDateTime = time.Time{}
 
-func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (time.Time, error) {
+func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (time.Time, string, error) {
 
-	matches := pattern.FindAllStringSubmatch(str, -1)
+	matches := pattern.FindAllStringSubmatchIndex(str, -1)
 	for _, match := range matches {
+		groups := StringSlices(str, match)
+
 		// does our day look believable?
-		day, _ := strconv.Atoi(match[d])
+		day, _ := strconv.Atoi(groups[d])
 		if day == 0 || day > 31 {
 			continue
 		}
-		month, _ := strconv.Atoi(match[m])
+		month, _ := strconv.Atoi(groups[m])
 		if month == 0 || month > 12 {
 			continue
 		}
 
-		year, _ := strconv.Atoi(match[y])
+		year, _ := strconv.Atoi(groups[y])
 
 		// convert to four digit year if necessary
-		if len(match[y]) == 2 {
+		if len(groups[y]) == 2 {
 			if year > currentYear%1000 {
 				year += 1900
 			} else {
@@ -89,11 +92,13 @@ func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d
 			}
 		}
 
+		remainder := str[match[1]:]
+
 		// looks believable, go for it
-		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()), nil
+		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()), remainder, nil
 	}
 
-	return ZeroDateTime, errors.Errorf("string '%s' couldn't be parsed as a date", str)
+	return ZeroDateTime, str, errors.Errorf("string '%s' couldn't be parsed as a date", str)
 }
 
 // DaysBetween returns the number of calendar days (an int) between the two dates. Note
@@ -146,16 +151,17 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 
 	// otherwise, try to parse according to their env settings
 	parsed := ZeroDateTime
+	remainder := ""
 	var err error
 	currentYear := Now().Year()
 
 	switch env.DateFormat() {
 	case DateFormatYearMonthDay:
-		parsed, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
+		parsed, remainder, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
 	case DateFormatDayMonthYear:
-		parsed, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
+		parsed, remainder, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
 	case DateFormatMonthDayYear:
-		parsed, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
+		parsed, remainder, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
 	default:
 		err = errors.Errorf("unknown date format: %s", env.DateFormat())
 	}
@@ -165,8 +171,8 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 		return parsed, err
 	}
 
-	// can we pull out a time?
-	hasTime, timeOfDay := parseTime(str)
+	// can we pull out a time from the remainder of the string?
+	hasTime, timeOfDay := parseTime(remainder)
 	if hasTime {
 		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanos, env.Timezone())
 	} else if fillTime {
@@ -183,7 +189,7 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 
 // TimeFromString returns a time of day constructed from the passed in string, or an error if we
 // are unable to extract one
-func TimeFromString(env Environment, str string) (TimeOfDay, error) {
+func TimeFromString(str string) (TimeOfDay, error) {
 	hasTime, timeOfDay := parseTime(str)
 	if !hasTime {
 		return ZeroTimeOfDay, errors.Errorf("string '%s' couldn't be parsed as a time", str)
@@ -199,46 +205,38 @@ func parseTime(str string) (bool, TimeOfDay) {
 	matches := patternTime.FindAllStringSubmatch(str, -1)
 	for _, match := range matches {
 		hour, _ := strconv.Atoi(match[1])
+		minute, _ := strconv.Atoi(match[2])
+		second, _ := strconv.Atoi(match[3])
+		ampm := strings.ToLower(match[5])
 
 		// do we have an AM/PM
-		if match[7] != "" {
-			if strings.ToLower(match[7]) == "pm" {
-				hour += 12
-			}
+		if ampm == "pm" {
+			hour += 12
 		}
 
-		// is this a valid hour?
+		nanosStr := match[4]
+		nanos := 0
+		if nanosStr != "" {
+			// can only read nano second accuracy
+			if len(nanosStr) > 9 {
+				nanosStr = nanosStr[0:9]
+			}
+			nanos, _ = strconv.Atoi(nanosStr)
+			nanos *= int(math.Pow(10, float64(9-len(nanosStr))))
+		}
+
+		// is our time valid?
 		if hour > 24 {
 			continue
 		}
-
-		minute, _ := strconv.Atoi(match[2])
 		if minute > 60 {
 			continue
 		}
-
-		second := 0
-		if match[4] != "" {
-			second, _ = strconv.Atoi(match[4])
-			if second > 60 {
-				continue
-			}
+		if second > 60 {
+			continue
 		}
 
-		ns := 0
-		if match[6] != "" {
-			ns, _ = strconv.Atoi(match[6])
-
-			if len(match[6]) == 3 {
-				// these are milliseconds, multi by 1,000,000 for nano
-				ns = ns * 1000000
-			} else if len(match[6]) == 6 {
-				// these are microseconds, times 1000 for nano
-				ns = ns * 1000
-			}
-		}
-
-		return true, NewTimeOfDay(hour, minute, second, ns)
+		return true, NewTimeOfDay(hour, minute, second, nanos)
 	}
 
 	return false, ZeroTimeOfDay

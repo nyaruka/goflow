@@ -111,6 +111,50 @@ func TestDateFromString(t *testing.T) {
 	}
 }
 
+func TestTimeFromString(t *testing.T) {
+	timeTests := []struct {
+		value    string
+		expected utils.TimeOfDay
+		hasError bool
+	}{
+		{"it's 10", utils.NewTimeOfDay(10, 0, 0, 0), false},
+		{"it's 10 PM", utils.NewTimeOfDay(22, 0, 0, 0), false},
+		{"it's 10:30", utils.NewTimeOfDay(10, 30, 0, 0), false},
+		{"it's 10:30 pm ok", utils.NewTimeOfDay(22, 30, 0, 0), false},
+		{"it's 10:30:45 ok", utils.NewTimeOfDay(10, 30, 45, 0), false},
+		{"it's 10:30:45 pm ok", utils.NewTimeOfDay(22, 30, 45, 0), false},
+		{"it's 10:30:45.123 ok", utils.NewTimeOfDay(10, 30, 45, 123000000), false},
+		{"it's 10:30:45.123 pm ok", utils.NewTimeOfDay(22, 30, 45, 123000000), false},
+		{"it's 10:30:45.123456 ok", utils.NewTimeOfDay(10, 30, 45, 123456000), false},
+		{"it's 10:30:45.123456 pm ok", utils.NewTimeOfDay(22, 30, 45, 123456000), false},
+		{"it's 10:30:45.123456789 ok", utils.NewTimeOfDay(10, 30, 45, 123456789), false},
+		{"it's 10:30:45.123456789 pm ok", utils.NewTimeOfDay(22, 30, 45, 123456789), false},
+
+		// fractional compontent can be any length
+		{"it's 10:30:45.123456789123456789 ok", utils.NewTimeOfDay(10, 30, 45, 123456789), false},
+		{"it's 10:30:45.1 ok", utils.NewTimeOfDay(10, 30, 45, 100000000), false},
+
+		{"it's ok", utils.ZeroTimeOfDay, true},
+		{"it's 25:30", utils.ZeroTimeOfDay, true},
+		{"it's 10:61", utils.ZeroTimeOfDay, true},
+		{"it's 10:30:61", utils.ZeroTimeOfDay, true},
+	}
+
+	for _, tc := range timeTests {
+		parsed, err := utils.TimeFromString(tc.value)
+
+		if tc.hasError {
+			assert.Error(t, err)
+		} else {
+			require.NoError(t, err, "error parsing time %s", tc.value)
+
+			if !tc.expected.Equal(parsed) {
+				assert.Fail(t, "", "mismatch for time input %s, expected %s, got %s", tc.value, tc.expected, parsed)
+			}
+		}
+	}
+}
+
 func TestDaysBetween(t *testing.T) {
 	daysBetweenTests := []struct {
 		d1       time.Time
