@@ -1,3 +1,7 @@
+v0.28.4
+----------
+ * Add utils.Date and types.XDate
+
 v0.28.3
 ----------
  * Don't localize fields not localized in legacy engine
