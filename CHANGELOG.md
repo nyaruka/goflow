@@ -1,3 +1,7 @@
+v0.28.2
+----------
+ * allow single tls renegotiation
+
 v0.28.1
 ----------
  * Allow looping back into a flow that wasn't started in this sprint
