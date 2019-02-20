@@ -1162,7 +1162,7 @@
         ]
     },
     {
-        "signature": "time_from_parts(year, month, day)",
+        "signature": "time_from_parts(hour, minute, second)",
         "summary": "Creates a time from `hour`, `minute` and `second`",
         "detail": "",
         "examples": [
