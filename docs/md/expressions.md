@@ -1194,7 +1194,7 @@ An error is returned if the value can't be converted.
 
 <a name="function:time_from_parts"></a>
 
-## time_from_parts(year, month, day)
+## time_from_parts(hour, minute, second)
 
 Creates a time from `hour`, `minute` and `second`
 
