@@ -64,7 +64,7 @@ func ToXDate(env utils.Environment, x XValue) (XDate, XError) {
 		case XDate:
 			return typed, nil
 		case XDateTime:
-			return typed.Date(), nil
+			return typed.In(env.Timezone()).Date(), nil
 		case XText:
 			parsed, err := utils.DateFromString(env, typed.Native())
 			if err == nil {

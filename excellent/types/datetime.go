@@ -53,6 +53,11 @@ func (x XDateTime) Time() XTime {
 	return NewXTime(utils.ExtractTimeOfDay(x.Native()))
 }
 
+// In returns a copy of this datetime in a different timezone
+func (x XDateTime) In(tz *time.Location) XDateTime {
+	return NewXDateTime(x.Native().In(tz))
+}
+
 // ReplaceTime returns the a new date time with the time part replaced by the given time
 func (x XDateTime) ReplaceTime(tm XTime) XDateTime {
 	d := x.Native()
