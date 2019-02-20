@@ -106,7 +106,7 @@ func TestMigrateTemplate(t *testing.T) {
 		// dates
 		{old: `@date`, new: `@(now())`},
 		{old: `@date.now`, new: `@(now())`},
-		{old: `@date.today`, new: `@(format_date(now()))`},
+		{old: `@date.today`, new: `@(format_date(today()))`},
 		{old: `@date.tomorrow`, new: `@(format_date(datetime_add(now(), 1, "D")))`},
 		{old: `@date.yesterday`, new: `@(format_date(datetime_add(now(), -1, "D")))`},
 
