@@ -1,3 +1,8 @@
+v0.28.3
+----------
+ * Don't localize fields not localized in legacy engine
+ * Rework time parsing to accept hour only and more ISO8601 formats
+
 v0.28.2
 ----------
  * allow single tls renegotiation
