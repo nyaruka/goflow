@@ -397,9 +397,9 @@ It is the inverse of [char](expressions.html#function:char).
 
 ## date(value)
 
-Tries to convert `value` to a date. If it is text then it will be
-parsed into a date using to the default date format.
+Tries to convert `value` to a date.
 
+If it is text then it will be parsed into a date using to the default date format.
 An error is returned if the value can't be converted.
 
 
@@ -427,10 +427,10 @@ Creates a date from `year`, `month` and `day`.
 
 ## datetime(value)
 
-Tries to convert `value` to a datetime. If it is text then it will be
-parsed into a datetime using to the default date and time formats.
+Tries to convert `value` to a datetime.
 
-An error is returned if the value can't be converted.
+If it is text then it will be parsed into a datetime using to the default date
+and time formats. An error is returned if the value can't be converted.
 
 
 ```objectivec
@@ -477,8 +477,7 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 ## datetime_from_epoch(seconds)
 
-DatetimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
-
+Converts the UNIX epoch time `seconds` into a new date.
 
 
 ```objectivec
@@ -1199,9 +1198,9 @@ and 1 if `text1` comes after `text2`.
 
 ## time(value)
 
-Tries to convert `value` to a time. If it is text then it will be
-parsed into a time using to the default time format.
+Tries to convert `value` to a time.
 
+If it is text then it will be parsed into a time using to the default time format.
 An error is returned if the value can't be converted.
 
 

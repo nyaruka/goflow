@@ -264,8 +264,8 @@
 <a class="sourceLine" id="cb17-6" title="6">@(code(<span class="st">&quot;&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:date"></a></p>
 <h2 id="datevalue">date(value)</h2>
-<p>Tries to convert <code>value</code> to a date. If it is text then it will be parsed into a date using to the default date format.</p>
-<p>An error is returned if the value can’t be converted.</p>
+<p>Tries to convert <code>value</code> to a date.</p>
+<p>If it is text then it will be parsed into a date using to the default date format. An error is returned if the value can’t be converted.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb18-1" title="1">@(date(<span class="st">&quot;1979-07-18&quot;</span>)) → <span class="dv">1979-07-18</span></a>
 <a class="sourceLine" id="cb18-2" title="2">@(date(<span class="st">&quot;1979-07-18T10:30:45.123456Z&quot;</span>)) → <span class="dv">1979-07-18</span></a>
 <a class="sourceLine" id="cb18-3" title="3">@(date(<span class="st">&quot;2010 05 10&quot;</span>)) → <span class="dv">2010-05-10</span></a>
@@ -278,8 +278,8 @@
 <a class="sourceLine" id="cb19-3" title="3">@(date_from_parts(<span class="dv">2017</span>, <span class="dv">13</span>, <span class="dv">15</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:datetime"></a></p>
 <h2 id="datetimevalue">datetime(value)</h2>
-<p>Tries to convert <code>value</code> to a datetime. If it is text then it will be parsed into a datetime using to the default date and time formats.</p>
-<p>An error is returned if the value can’t be converted.</p>
+<p>Tries to convert <code>value</code> to a datetime.</p>
+<p>If it is text then it will be parsed into a datetime using to the default date and time formats. An error is returned if the value can’t be converted.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" title="1">@(datetime(<span class="st">&quot;1979-07-18&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb20-2" title="2">@(datetime(<span class="st">&quot;1979-07-18T10:30:45.123456Z&quot;</span>)) → <span class="dv">1979-07</span>-18T10:<span class="dv">30</span>:<span class="fl">45.123456</span>Z</a>
 <a class="sourceLine" id="cb20-3" title="3">@(datetime(<span class="st">&quot;2010 05 10&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
@@ -301,7 +301,7 @@
 <a class="sourceLine" id="cb22-5" title="5">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;Y&quot;</span>)) → <span class="dv">-2</span></a></code></pre></div>
 <p><a name="function:datetime_from_epoch"></a></p>
 <h2 id="datetime_from_epochseconds">datetime_from_epoch(seconds)</h2>
-<p>DatetimeFromEpoch converts the UNIX epoch time <code>seconds</code> into a new date.</p>
+<p>Converts the UNIX epoch time <code>seconds</code> into a new date.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb23-1" title="1">@(datetime_from_epoch(<span class="dv">1497286619</span>)) → <span class="dv">2017-06</span>-12T11:<span class="dv">56</span>:<span class="fl">59.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb23-2" title="2">@(datetime_from_epoch(<span class="fl">1497286619.123456</span>)) → <span class="dv">2017-06</span>-12T11:<span class="dv">56</span>:<span class="fl">59.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
 <p><a name="function:default"></a></p>
@@ -688,8 +688,8 @@
 <a class="sourceLine" id="cb64-3" title="3">@(text_compare(<span class="st">&quot;zzz&quot;</span>, <span class="st">&quot;aaa&quot;</span>)) → <span class="dv">1</span></a></code></pre></div>
 <p><a name="function:time"></a></p>
 <h2 id="timevalue">time(value)</h2>
-<p>Tries to convert <code>value</code> to a time. If it is text then it will be parsed into a time using to the default time format.</p>
-<p>An error is returned if the value can’t be converted.</p>
+<p>Tries to convert <code>value</code> to a time.</p>
+<p>If it is text then it will be parsed into a time using to the default time format. An error is returned if the value can’t be converted.</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb65-1" title="1">@(time(<span class="st">&quot;10:30&quot;</span>)) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">00.000000</span></a>
 <a class="sourceLine" id="cb65-2" title="2">@(time(<span class="st">&quot;10:30:45 PM&quot;</span>)) → <span class="dv">22</span>:<span class="dv">30</span>:<span class="fl">45.000000</span></a>
 <a class="sourceLine" id="cb65-3" title="3">@(time(datetime(<span class="st">&quot;1979-07-18T10:30:45.123456Z&quot;</span>))) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">45.123456</span></a>

@@ -142,8 +142,8 @@
     },
     {
         "signature": "date(value)",
-        "summary": "Tries to convert `value` to a date. If it is text then it will be",
-        "detail": "parsed into a date using to the default date format.\n\nAn error is returned if the value can't be converted.",
+        "summary": "Tries to convert `value` to a date.",
+        "detail": "If it is text then it will be parsed into a date using to the default date format.\nAn error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(date(\"1979-07-18\"))",
@@ -184,8 +184,8 @@
     },
     {
         "signature": "datetime(value)",
-        "summary": "Tries to convert `value` to a datetime. If it is text then it will be",
-        "detail": "parsed into a datetime using to the default date and time formats.\n\nAn error is returned if the value can't be converted.",
+        "summary": "Tries to convert `value` to a datetime.",
+        "detail": "If it is text then it will be parsed into a datetime using to the default date\nand time formats. An error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(datetime(\"1979-07-18\"))",
@@ -249,7 +249,7 @@
     },
     {
         "signature": "datetime_from_epoch(seconds)",
-        "summary": "DatetimeFromEpoch converts the UNIX epoch time `seconds` into a new date.",
+        "summary": "Converts the UNIX epoch time `seconds` into a new date.",
         "detail": "",
         "examples": [
             {
@@ -1163,8 +1163,8 @@
     },
     {
         "signature": "time(value)",
-        "summary": "Tries to convert `value` to a time. If it is text then it will be",
-        "detail": "parsed into a time using to the default time format.\n\nAn error is returned if the value can't be converted.",
+        "summary": "Tries to convert `value` to a time.",
+        "detail": "If it is text then it will be parsed into a time using to the default time format.\nAn error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(time(\"10:30\"))",

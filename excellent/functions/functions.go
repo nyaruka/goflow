@@ -174,9 +174,9 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 	return num
 }
 
-// Date tries to convert `value` to a date. If it is text then it will be
-// parsed into a date using to the default date format.
+// Date tries to convert `value` to a date.
 //
+// If it is text then it will be parsed into a date using to the default date format.
 // An error is returned if the value can't be converted.
 //
 //   @(date("1979-07-18")) -> 1979-07-18
@@ -193,10 +193,10 @@ func Date(env utils.Environment, value types.XValue) types.XValue {
 	return d
 }
 
-// DateTime tries to convert `value` to a datetime. If it is text then it will be
-// parsed into a datetime using to the default date and time formats.
+// DateTime tries to convert `value` to a datetime.
 //
-// An error is returned if the value can't be converted.
+// If it is text then it will be parsed into a datetime using to the default date
+// and time formats. An error is returned if the value can't be converted.
 //
 //   @(datetime("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
 //   @(datetime("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
@@ -212,9 +212,9 @@ func DateTime(env utils.Environment, value types.XValue) types.XValue {
 	return dt
 }
 
-// Time tries to convert `value` to a time. If it is text then it will be
-// parsed into a time using to the default time format.
+// Time tries to convert `value` to a time.
 //
+// If it is text then it will be parsed into a time using to the default time format.
 // An error is returned if the value can't be converted.
 //
 //   @(time("10:30")) -> 10:30:00.000000
@@ -1082,7 +1082,7 @@ func ParseDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXDateTime(parsed.In(location))
 }
 
-// DatetimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
+// DateTimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
 //
 //   @(datetime_from_epoch(1497286619)) -> 2017-06-12T11:56:59.000000-05:00
 //   @(datetime_from_epoch(1497286619.123456)) -> 2017-06-12T11:56:59.123456-05:00
