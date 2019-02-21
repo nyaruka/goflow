@@ -154,11 +154,16 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(5 - 4)`, new: `@(5 - 4)`},
 		{old: `@(ABS(5) + MOD(7, 2))`, new: `@(abs(5) + mod(7, 2))`},
 
-		// date+number addition should get converted to datetime_add
+		// datetime+number addition should get converted to datetime_add
 		{old: `@(date.now + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(now() + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(date + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(date.now + 5 + contact.age)`, new: `@(legacy_add(datetime_add(now(), 5, "D"), contact.fields.age))`},
+
+		// date+number addition should get converted to format_date(datetime_add(...))
+		{old: `@(date.today + 5)`, new: `@(format_date(datetime_add(format_date(today()), 5, "D")))`},
+		{old: `@(date.yesterday - 5)`, new: `@(format_date(datetime_add(format_date(datetime_add(now(), -1, "D")), -5, "D")))`},
+		{old: `@(date.tomorrow - 3 + 10)`, new: `@(format_date(datetime_add(format_date(datetime_add(format_date(datetime_add(now(), 1, "D")), -3, "D")), 10, "D")))`},
 
 		// date+time addition should get converted to replace_time
 		{old: `@(today() + TIME(15, 30, 0))`, new: `@(replace_time(today(), time_from_parts(15, 30, 0)))`},
@@ -169,8 +174,6 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(contact.age + 5)`, new: `@(legacy_add(contact.fields.age, 5))`},
 		{old: `@(contact.join_date + 5 + contact.age)`, new: `@(legacy_add(legacy_add(contact.fields.join_date, 5), contact.fields.age))`},
 		{old: `@(contact.age + 100 - 5)`, new: `@(legacy_add(legacy_add(contact.fields.age, 100), -5))`},
-		{old: `@(date.yesterday - 3 + 10)`, new: `@(legacy_add(legacy_add(format_date(datetime_add(now(), -1, "D")), -3), 10))`},
-		{old: `@(date.tomorrow - 3)`, new: `@(legacy_add(format_date(datetime_add(now(), 1, "D")), -3))`},
 		{old: `@((5 + contact.age) / 2)`, new: `@((legacy_add(5, contact.fields.age)) / 2)`},
 		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(date("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "tt"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
