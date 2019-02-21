@@ -53,6 +53,9 @@ func NewMsgResume(env utils.Environment, contact *flows.Contact, msg *flows.MsgI
 	}
 }
 
+// Msg returns the msg this resume is based on
+func (r *MsgResume) Msg() *flows.MsgIn { return r.msg }
+
 // Apply applies our state changes and saves any events to the run
 func (r *MsgResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) error {
 	// update our input
