@@ -143,7 +143,7 @@
     {
         "signature": "date(value)",
         "summary": "Tries to convert `value` to a date.",
-        "detail": "If it is text then it will be parsed into a date using to the default date format.\nAn error is returned if the value can't be converted.",
+        "detail": "If it is text then it will be parsed into a date using the default date format.\nAn error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(date(\"1979-07-18\"))",
@@ -185,7 +185,7 @@
     {
         "signature": "datetime(value)",
         "summary": "Tries to convert `value` to a datetime.",
-        "detail": "If it is text then it will be parsed into a datetime using to the default date\nand time formats. An error is returned if the value can't be converted.",
+        "detail": "If it is text then it will be parsed into a datetime using the default date\nand time formats. An error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(datetime(\"1979-07-18\"))",
@@ -1164,7 +1164,7 @@
     {
         "signature": "time(value)",
         "summary": "Tries to convert `value` to a time.",
-        "detail": "If it is text then it will be parsed into a time using to the default time format.\nAn error is returned if the value can't be converted.",
+        "detail": "If it is text then it will be parsed into a time using the default time format.\nAn error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(time(\"10:30\"))",

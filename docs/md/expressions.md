@@ -399,7 +399,7 @@ It is the inverse of [char](expressions.html#function:char).
 
 Tries to convert `value` to a date.
 
-If it is text then it will be parsed into a date using to the default date format.
+If it is text then it will be parsed into a date using the default date format.
 An error is returned if the value can't be converted.
 
 
@@ -429,7 +429,7 @@ Creates a date from `year`, `month` and `day`.
 
 Tries to convert `value` to a datetime.
 
-If it is text then it will be parsed into a datetime using to the default date
+If it is text then it will be parsed into a datetime using the default date
 and time formats. An error is returned if the value can't be converted.
 
 
@@ -1200,7 +1200,7 @@ and 1 if `text1` comes after `text2`.
 
 Tries to convert `value` to a time.
 
-If it is text then it will be parsed into a time using to the default time format.
+If it is text then it will be parsed into a time using the default time format.
 An error is returned if the value can't be converted.
 
 

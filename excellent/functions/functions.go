@@ -176,7 +176,7 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 
 // Date tries to convert `value` to a date.
 //
-// If it is text then it will be parsed into a date using to the default date format.
+// If it is text then it will be parsed into a date using the default date format.
 // An error is returned if the value can't be converted.
 //
 //   @(date("1979-07-18")) -> 1979-07-18
@@ -195,7 +195,7 @@ func Date(env utils.Environment, value types.XValue) types.XValue {
 
 // DateTime tries to convert `value` to a datetime.
 //
-// If it is text then it will be parsed into a datetime using to the default date
+// If it is text then it will be parsed into a datetime using the default date
 // and time formats. An error is returned if the value can't be converted.
 //
 //   @(datetime("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
@@ -214,7 +214,7 @@ func DateTime(env utils.Environment, value types.XValue) types.XValue {
 
 // Time tries to convert `value` to a time.
 //
-// If it is text then it will be parsed into a time using to the default time format.
+// If it is text then it will be parsed into a time using the default time format.
 // An error is returned if the value can't be converted.
 //
 //   @(time("10:30")) -> 10:30:00.000000
