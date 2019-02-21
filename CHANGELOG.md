@@ -1,3 +1,7 @@
+v0.28.7
+----------
+ * add accessor for msg in MsgResume
+
 v0.28.6
 ----------
  * DATEVALUE should migrate to date() so it returns a date rather than a datetime
