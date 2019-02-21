@@ -1,3 +1,7 @@
+v0.28.5
+----------
+ * fix resolving @parent or @child when they are nil
+
 v0.28.4
 ----------
  * Add utils.Date and types.XDate
