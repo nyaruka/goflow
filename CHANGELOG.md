@@ -1,3 +1,9 @@
+v0.28.6
+----------
+ * DATEVALUE should migrate to date() so it returns a date rather than a datetime
+ * Add date() conversion function
+ * Change datetime_from_parts to date_from_parts
+
 v0.28.5
 ----------
  * fix resolving @parent or @child when they are nil
