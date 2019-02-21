@@ -1,3 +1,7 @@
+v0.28.9
+----------
+ * Fix calling length on a complex object that needs to be reduced
+
 v0.28.8
 ----------
  * Fix migration of DAYS()
