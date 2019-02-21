@@ -393,6 +393,19 @@ It is the inverse of [char](expressions.html#function:char).
 @(code("")) → ERROR
 ```
 
+<a name="function:date_from_parts"></a>
+
+## date_from_parts(year, month, day)
+
+Creates a date from `year`, `month` and `day`.
+
+
+```objectivec
+@(date_from_parts(2017, 1, 15)) → 2017-01-15
+@(date_from_parts(2017, 2, 31)) → 2017-03-03
+@(date_from_parts(2017, 13, 15)) → ERROR
+```
+
 <a name="function:datetime"></a>
 
 ## datetime(text)
@@ -446,25 +459,13 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 ## datetime_from_epoch(seconds)
 
-Converts the UNIX epoch time `seconds` into a new date.
+DatetimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
+
 
 
 ```objectivec
 @(datetime_from_epoch(1497286619)) → 2017-06-12T11:56:59.000000-05:00
 @(datetime_from_epoch(1497286619.123456)) → 2017-06-12T11:56:59.123456-05:00
-```
-
-<a name="function:datetime_from_parts"></a>
-
-## datetime_from_parts(year, month, day)
-
-Creates a date from `year`, `month` and `day`.
-
-
-```objectivec
-@(datetime_from_parts(2017, 1, 15)) → 2017-01-15T00:00:00.000000-05:00
-@(datetime_from_parts(2017, 2, 31)) → 2017-03-03T00:00:00.000000-05:00
-@(datetime_from_parts(2017, 13, 15)) → ERROR
 ```
 
 <a name="function:default"></a>

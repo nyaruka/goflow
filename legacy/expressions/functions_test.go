@@ -27,7 +27,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(CLEAN(contact.gender))`, new: `@(clean(contact.fields.gender))`, val: `Male`},
 		{old: `@(CODE("A"))`, new: `@(code("A"))`, val: `65`},
 		{old: `@(CONCATENATE(contact.first_name, " ", contact.language))`, new: `@(contact.first_name & " " & contact.language)`, val: `Ryan eng`},
-		{old: `@(DATE(2012, 12, 25))`, new: `@(datetime_from_parts(2012, 12, 25))`, val: `2012-12-25T00:00:00.000000-05:00`},
+		{old: `@(DATE(2012, 12, 25))`, new: `@(date_from_parts(2012, 12, 25))`, val: `2012-12-25`},
 		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`, val: `4`},
 		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(datetime("2012-02-03"))`, val: `2012-02-03T00:00:00.000000-05:00`},
 		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`, val: `1`},

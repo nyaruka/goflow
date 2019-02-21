@@ -141,6 +141,25 @@
         ]
     },
     {
+        "signature": "date_from_parts(year, month, day)",
+        "summary": "Creates a date from `year`, `month` and `day`.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(date_from_parts(2017, 1, 15))",
+                "output": "2017-01-15"
+            },
+            {
+                "template": "@(date_from_parts(2017, 2, 31))",
+                "output": "2017-03-03"
+            },
+            {
+                "template": "@(date_from_parts(2017, 13, 15))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
         "signature": "datetime(text)",
         "summary": "Parses `text` into a date using to the default date format.",
         "detail": "An error is returned if the value can't be converted.",
@@ -207,7 +226,7 @@
     },
     {
         "signature": "datetime_from_epoch(seconds)",
-        "summary": "Converts the UNIX epoch time `seconds` into a new date.",
+        "summary": "DatetimeFromEpoch converts the UNIX epoch time `seconds` into a new date.",
         "detail": "",
         "examples": [
             {
@@ -217,25 +236,6 @@
             {
                 "template": "@(datetime_from_epoch(1497286619.123456))",
                 "output": "2017-06-12T11:56:59.123456-05:00"
-            }
-        ]
-    },
-    {
-        "signature": "datetime_from_parts(year, month, day)",
-        "summary": "Creates a date from `year`, `month` and `day`.",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(datetime_from_parts(2017, 1, 15))",
-                "output": "2017-01-15T00:00:00.000000-05:00"
-            },
-            {
-                "template": "@(datetime_from_parts(2017, 2, 31))",
-                "output": "2017-03-03T00:00:00.000000-05:00"
-            },
-            {
-                "template": "@(datetime_from_parts(2017, 13, 15))",
-                "output": "ERROR"
             }
         ]
     },
