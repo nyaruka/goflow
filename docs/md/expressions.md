@@ -393,13 +393,44 @@ It is the inverse of [char](expressions.html#function:char).
 @(code("")) → ERROR
 ```
 
+<a name="function:date"></a>
+
+## date(value)
+
+Tries to convert `value` to a date.
+
+If it is text then it will be parsed into a date using the default date format.
+An error is returned if the value can't be converted.
+
+
+```objectivec
+@(date("1979-07-18")) → 1979-07-18
+@(date("1979-07-18T10:30:45.123456Z")) → 1979-07-18
+@(date("2010 05 10")) → 2010-05-10
+@(date("NOT DATE")) → ERROR
+```
+
+<a name="function:date_from_parts"></a>
+
+## date_from_parts(year, month, day)
+
+Creates a date from `year`, `month` and `day`.
+
+
+```objectivec
+@(date_from_parts(2017, 1, 15)) → 2017-01-15
+@(date_from_parts(2017, 2, 31)) → 2017-03-03
+@(date_from_parts(2017, 13, 15)) → ERROR
+```
+
 <a name="function:datetime"></a>
 
-## datetime(text)
+## datetime(value)
 
-Parses `text` into a date using to the default date format.
+Tries to convert `value` to a datetime.
 
-An error is returned if the value can't be converted.
+If it is text then it will be parsed into a datetime using the default date
+and time formats. An error is returned if the value can't be converted.
 
 
 ```objectivec
@@ -452,19 +483,6 @@ Converts the UNIX epoch time `seconds` into a new date.
 ```objectivec
 @(datetime_from_epoch(1497286619)) → 2017-06-12T11:56:59.000000-05:00
 @(datetime_from_epoch(1497286619.123456)) → 2017-06-12T11:56:59.123456-05:00
-```
-
-<a name="function:datetime_from_parts"></a>
-
-## datetime_from_parts(year, month, day)
-
-Creates a date from `year`, `month` and `day`.
-
-
-```objectivec
-@(datetime_from_parts(2017, 1, 15)) → 2017-01-15T00:00:00.000000-05:00
-@(datetime_from_parts(2017, 2, 31)) → 2017-03-03T00:00:00.000000-05:00
-@(datetime_from_parts(2017, 13, 15)) → ERROR
 ```
 
 <a name="function:default"></a>
@@ -1182,6 +1200,7 @@ and 1 if `text1` comes after `text2`.
 
 Tries to convert `value` to a time.
 
+If it is text then it will be parsed into a time using the default time format.
 An error is returned if the value can't be converted.
 
 

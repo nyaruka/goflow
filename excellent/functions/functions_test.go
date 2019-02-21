@@ -84,20 +84,27 @@ func TestFunctions(t *testing.T) {
 		{"clean", dmy, []types.XValue{xs("")}, xs("")},
 		{"clean", dmy, []types.XValue{}, ERROR},
 
+		{"date", dmy, []types.XValue{xs("01-12-2017")}, xd(utils.NewDate(2017, 12, 1))},
+		{"date", mdy, []types.XValue{xs("12-01-2017")}, xd(utils.NewDate(2017, 12, 1))},
+		{"date", dmy, []types.XValue{xs("01-12-2017 10:15pm")}, xd(utils.NewDate(2017, 12, 1))},
+		{"date", dmy, []types.XValue{xs("01.15.2017")}, ERROR}, // month out of range
+		{"date", dmy, []types.XValue{xs("no date")}, ERROR},    // invalid date
+		{"date", dmy, []types.XValue{}, ERROR},
+
+		{"date_from_parts", dmy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(utils.NewDate(2018, 11, 3))},
+		{"date_from_parts", mdy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(utils.NewDate(2018, 11, 3))},
+		{"date_from_parts", dmy, []types.XValue{xi(2018), xi(15), xi(3)}, ERROR}, // month out of range
+		{"date_from_parts", dmy, []types.XValue{ERROR, xi(11), xi(3)}, ERROR},
+		{"date_from_parts", dmy, []types.XValue{xi(2018), ERROR, xi(3)}, ERROR},
+		{"date_from_parts", dmy, []types.XValue{xi(2018), xi(11), ERROR}, ERROR},
+		{"date_from_parts", dmy, []types.XValue{}, ERROR},
+
 		{"datetime", dmy, []types.XValue{xs("01-12-2017")}, xdt(time.Date(2017, 12, 1, 0, 0, 0, 0, time.UTC))},
 		{"datetime", mdy, []types.XValue{xs("12-01-2017")}, xdt(time.Date(2017, 12, 1, 0, 0, 0, 0, la))},
 		{"datetime", dmy, []types.XValue{xs("01-12-2017 10:15pm")}, xdt(time.Date(2017, 12, 1, 22, 15, 0, 0, time.UTC))},
 		{"datetime", dmy, []types.XValue{xs("01.15.2017")}, ERROR}, // month out of range
 		{"datetime", dmy, []types.XValue{xs("no date")}, ERROR},    // invalid date
 		{"datetime", dmy, []types.XValue{}, ERROR},
-
-		{"datetime_from_parts", dmy, []types.XValue{xi(2018), xi(11), xi(3)}, xdt(time.Date(2018, 11, 3, 0, 0, 0, 0, time.UTC))},
-		{"datetime_from_parts", mdy, []types.XValue{xi(2018), xi(11), xi(3)}, xdt(time.Date(2018, 11, 3, 0, 0, 0, 0, la))},
-		{"datetime_from_parts", dmy, []types.XValue{xi(2018), xi(15), xi(3)}, ERROR}, // month out of range
-		{"datetime_from_parts", dmy, []types.XValue{ERROR, xi(11), xi(3)}, ERROR},
-		{"datetime_from_parts", dmy, []types.XValue{xi(2018), ERROR, xi(3)}, ERROR},
-		{"datetime_from_parts", dmy, []types.XValue{xi(2018), xi(11), ERROR}, ERROR},
-		{"datetime_from_parts", dmy, []types.XValue{}, ERROR},
 
 		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("Y")}, xdt(time.Date(2019, 12, 03, 22, 15, 0, 0, time.UTC))},
 		{"datetime_add", mdy, []types.XValue{xs("12-03-2017 10:15pm"), xs("2"), xs("Y")}, xdt(time.Date(2019, 12, 03, 22, 15, 0, 0, la))},
