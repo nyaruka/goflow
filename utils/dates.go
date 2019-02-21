@@ -60,12 +60,12 @@ var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
 var iso8601Date = "2006-01-02"
 var iso8601Time = "15:04:05.000000"
 
-var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat, iso8601Date}
+var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat}
 
 // ZeroDateTime is our uninitialized datetime value
 var ZeroDateTime = time.Time{}
 
-func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (time.Time, string, error) {
+func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (Date, string, error) {
 
 	matches := pattern.FindAllStringSubmatchIndex(str, -1)
 	for _, match := range matches {
@@ -95,10 +95,10 @@ func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d
 		remainder := str[match[1]:]
 
 		// looks believable, go for it
-		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()), remainder, nil
+		return NewDate(year, month, day), remainder, nil
 	}
 
-	return ZeroDateTime, str, errors.Errorf("string '%s' couldn't be parsed as a date", str)
+	return ZeroDate, str, errors.Errorf("string '%s' couldn't be parsed as a date", str)
 }
 
 // DaysBetween returns the number of calendar days (an int) between the two dates. Note
@@ -124,67 +124,47 @@ func MonthsBetween(date1 time.Time, date2 time.Time) int {
 	return months
 }
 
-// DateToISO converts the passed in time.Time to a string in ISO8601 format
-func DateToISO(date time.Time) string {
+// DateTimeToISO converts the passed in time.Time to a string in ISO8601 format
+func DateTimeToISO(date time.Time) string {
 	return date.Format(iso8601Default)
 }
 
-// DateToString converts the passed in time element to the right format based on the environment settings
-func DateToString(env Environment, date time.Time) string {
-	goFormat, _ := ToGoDateFormat(string(env.DateFormat())+" "+string(env.TimeFormat()), DateTimeFormatting)
-	return date.Format(goFormat)
-}
-
-// DateFromString returns a date constructed from the passed in string, or an error if we
+// DateTimeFromString returns a datetime constructed from the passed in string, or an error if we
 // are unable to extract one
-func DateFromString(env Environment, str string, fillTime bool) (time.Time, error) {
-	// first see if we can parse in any known iso formats, if so return that
+func DateTimeFromString(env Environment, str string, fillTime bool) (time.Time, error) {
+	str = strings.Trim(str, " \n\r\t")
+
+	// first see if we can parse in any known ISO formats, if so return that
 	for _, format := range isoFormats {
-		parsed, err := time.ParseInLocation(format, strings.Trim(str, " \n\r\t"), env.Timezone())
+		parsed, err := time.ParseInLocation(format, str, env.Timezone())
 		if err == nil {
-			if format == iso8601Date && fillTime {
-				parsed = replaceTime(parsed, Now().In(env.Timezone()))
-			}
 			return parsed, nil
 		}
 	}
 
 	// otherwise, try to parse according to their env settings
-	parsed := ZeroDateTime
-	remainder := ""
-	var err error
-	currentYear := Now().Year()
-
-	switch env.DateFormat() {
-	case DateFormatYearMonthDay:
-		parsed, remainder, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
-	case DateFormatDayMonthYear:
-		parsed, remainder, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
-	case DateFormatMonthDayYear:
-		parsed, remainder, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
-	default:
-		err = errors.Errorf("unknown date format: %s", env.DateFormat())
-	}
+	date, remainder, err := parseDate(env, str)
 
 	// couldn't find a date? bail
 	if err != nil {
-		return parsed, err
+		return ZeroDateTime, err
 	}
 
 	// can we pull out a time from the remainder of the string?
 	hasTime, timeOfDay := parseTime(remainder)
-	if hasTime {
-		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanos, env.Timezone())
-	} else if fillTime {
-		parsed = replaceTime(parsed, Now().In(env.Timezone()))
+	if !hasTime && fillTime {
+		timeOfDay = ExtractTimeOfDay(env.Now())
 	}
 
-	// set our timezone if we have one
-	if env.Timezone() != nil && parsed != ZeroDateTime {
-		parsed = parsed.In(env.Timezone())
-	}
+	// combine our date and time
+	return time.Date(date.Year, time.Month(date.Month), date.Day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanos, env.Timezone()), nil
+}
 
-	return parsed, nil
+// DateFromString returns a date constructed from the passed in string, or an error if we
+// are unable to extract one
+func DateFromString(env Environment, str string) (Date, error) {
+	parsed, _, err := parseDate(env, str)
+	return parsed, err
 }
 
 // TimeFromString returns a time of day constructed from the passed in string, or an error if we
@@ -195,6 +175,30 @@ func TimeFromString(str string) (TimeOfDay, error) {
 		return ZeroTimeOfDay, errors.Errorf("string '%s' couldn't be parsed as a time", str)
 	}
 	return timeOfDay, nil
+}
+
+func parseDate(env Environment, str string) (Date, string, error) {
+	str = strings.Trim(str, " \n\r\t")
+
+	// try to parse as ISO date
+	asISO, err := time.ParseInLocation(iso8601Date, str[0:MinInt(len(iso8601Date), len(str))], env.Timezone())
+	if err == nil {
+		return ExtractDate(asISO), str[len(iso8601Date):], nil
+	}
+
+	// otherwise, try to parse according to their env settings
+	currentYear := Now().Year()
+
+	switch env.DateFormat() {
+	case DateFormatYearMonthDay:
+		return dateFromFormats(currentYear, patternYearMonthDay, 3, 2, 1, str)
+	case DateFormatDayMonthYear:
+		return dateFromFormats(currentYear, patternDayMonthYear, 1, 2, 3, str)
+	case DateFormatMonthDayYear:
+		return dateFromFormats(currentYear, patternMonthDayYear, 2, 1, 3, str)
+	}
+
+	return ZeroDate, "", errors.Errorf("unknown date format: %s", env.DateFormat())
 }
 
 func replaceTime(d time.Time, t time.Time) time.Time {

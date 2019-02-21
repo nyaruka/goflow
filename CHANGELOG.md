@@ -1,3 +1,16 @@
+v0.28.5
+----------
+ * fix resolving @parent or @child when they are nil
+
+v0.28.4
+----------
+ * Add utils.Date and types.XDate
+
+v0.28.3
+----------
+ * Don't localize fields not localized in legacy engine
+ * Rework time parsing to accept hour only and more ISO8601 formats
+
 v0.28.2
 ----------
  * allow single tls renegotiation

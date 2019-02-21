@@ -20,7 +20,8 @@ var la, _ = time.LoadLocation("America/Los_Angeles")
 var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
-var xd = types.NewXDateTime
+var xdt = types.NewXDateTime
+var xd = types.NewXDate
 var xt = types.NewXTime
 
 var ERROR = types.NewXErrorf("any error")
@@ -83,36 +84,36 @@ func TestFunctions(t *testing.T) {
 		{"clean", dmy, []types.XValue{xs("")}, xs("")},
 		{"clean", dmy, []types.XValue{}, ERROR},
 
-		{"datetime", dmy, []types.XValue{xs("01-12-2017")}, xd(time.Date(2017, 12, 1, 0, 0, 0, 0, time.UTC))},
-		{"datetime", mdy, []types.XValue{xs("12-01-2017")}, xd(time.Date(2017, 12, 1, 0, 0, 0, 0, la))},
-		{"datetime", dmy, []types.XValue{xs("01-12-2017 10:15pm")}, xd(time.Date(2017, 12, 1, 22, 15, 0, 0, time.UTC))},
+		{"datetime", dmy, []types.XValue{xs("01-12-2017")}, xdt(time.Date(2017, 12, 1, 0, 0, 0, 0, time.UTC))},
+		{"datetime", mdy, []types.XValue{xs("12-01-2017")}, xdt(time.Date(2017, 12, 1, 0, 0, 0, 0, la))},
+		{"datetime", dmy, []types.XValue{xs("01-12-2017 10:15pm")}, xdt(time.Date(2017, 12, 1, 22, 15, 0, 0, time.UTC))},
 		{"datetime", dmy, []types.XValue{xs("01.15.2017")}, ERROR}, // month out of range
 		{"datetime", dmy, []types.XValue{xs("no date")}, ERROR},    // invalid date
 		{"datetime", dmy, []types.XValue{}, ERROR},
 
-		{"datetime_from_parts", dmy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(time.Date(2018, 11, 3, 0, 0, 0, 0, time.UTC))},
-		{"datetime_from_parts", mdy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(time.Date(2018, 11, 3, 0, 0, 0, 0, la))},
+		{"datetime_from_parts", dmy, []types.XValue{xi(2018), xi(11), xi(3)}, xdt(time.Date(2018, 11, 3, 0, 0, 0, 0, time.UTC))},
+		{"datetime_from_parts", mdy, []types.XValue{xi(2018), xi(11), xi(3)}, xdt(time.Date(2018, 11, 3, 0, 0, 0, 0, la))},
 		{"datetime_from_parts", dmy, []types.XValue{xi(2018), xi(15), xi(3)}, ERROR}, // month out of range
 		{"datetime_from_parts", dmy, []types.XValue{ERROR, xi(11), xi(3)}, ERROR},
 		{"datetime_from_parts", dmy, []types.XValue{xi(2018), ERROR, xi(3)}, ERROR},
 		{"datetime_from_parts", dmy, []types.XValue{xi(2018), xi(11), ERROR}, ERROR},
 		{"datetime_from_parts", dmy, []types.XValue{}, ERROR},
 
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("Y")}, xd(time.Date(2019, 12, 03, 22, 15, 0, 0, time.UTC))},
-		{"datetime_add", mdy, []types.XValue{xs("12-03-2017 10:15pm"), xs("2"), xs("Y")}, xd(time.Date(2019, 12, 03, 22, 15, 0, 0, la))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("Y")}, xd(time.Date(2015, 12, 03, 22, 15, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("M")}, xd(time.Date(2018, 2, 03, 22, 15, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("M")}, xd(time.Date(2017, 10, 3, 22, 15, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("W")}, xd(time.Date(2017, 12, 17, 22, 15, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("W")}, xd(time.Date(2017, 11, 19, 22, 15, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017"), xs("2"), xs("D")}, xd(time.Date(2017, 12, 5, 0, 0, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017"), xs("-4"), xs("D")}, xd(time.Date(2017, 11, 29, 0, 0, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("h")}, xd(time.Date(2017, 12, 4, 0, 15, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("h")}, xd(time.Date(2017, 12, 3, 20, 15, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("105"), xs("m")}, xd(time.Date(2017, 12, 4, 0, 0, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-20"), xs("m")}, xd(time.Date(2017, 12, 3, 21, 55, 0, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("s")}, xd(time.Date(2017, 12, 3, 22, 15, 2, 0, time.UTC))},
-		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("s")}, xd(time.Date(2017, 12, 3, 22, 14, 58, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("Y")}, xdt(time.Date(2019, 12, 03, 22, 15, 0, 0, time.UTC))},
+		{"datetime_add", mdy, []types.XValue{xs("12-03-2017 10:15pm"), xs("2"), xs("Y")}, xdt(time.Date(2019, 12, 03, 22, 15, 0, 0, la))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("Y")}, xdt(time.Date(2015, 12, 03, 22, 15, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("M")}, xdt(time.Date(2018, 2, 03, 22, 15, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("M")}, xdt(time.Date(2017, 10, 3, 22, 15, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("W")}, xdt(time.Date(2017, 12, 17, 22, 15, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("W")}, xdt(time.Date(2017, 11, 19, 22, 15, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017"), xs("2"), xs("D")}, xdt(time.Date(2017, 12, 5, 0, 0, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017"), xs("-4"), xs("D")}, xdt(time.Date(2017, 11, 29, 0, 0, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("h")}, xdt(time.Date(2017, 12, 4, 0, 15, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("h")}, xdt(time.Date(2017, 12, 3, 20, 15, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("105"), xs("m")}, xdt(time.Date(2017, 12, 4, 0, 0, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-20"), xs("m")}, xdt(time.Date(2017, 12, 3, 21, 55, 0, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("s")}, xdt(time.Date(2017, 12, 3, 22, 15, 2, 0, time.UTC))},
+		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("s")}, xdt(time.Date(2017, 12, 3, 22, 14, 58, 0, time.UTC))},
 		{"datetime_add", dmy, []types.XValue{xs("xxx"), xs("2"), xs("D")}, ERROR},
 		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15"), xs("xxx"), xs("D")}, ERROR},
 		{"datetime_add", dmy, []types.XValue{xs("03-12-2017 10:15"), xs("2"), xs("xxx")}, ERROR},
@@ -148,7 +149,7 @@ func TestFunctions(t *testing.T) {
 		{"default", dmy, []types.XValue{types.NewXErrorf("This is error"), xs("20")}, xs("20")},
 		{"default", dmy, []types.XValue{}, ERROR},
 
-		{"epoch", dmy, []types.XValue{xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619")},
+		{"epoch", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619")},
 		{"epoch", dmy, []types.XValue{ERROR}, ERROR},
 		{"epoch", dmy, []types.XValue{}, ERROR},
 
@@ -219,7 +220,7 @@ func TestFunctions(t *testing.T) {
 		{"format_urn", dmy, []types.XValue{ERROR}, ERROR},
 		{"format_urn", dmy, []types.XValue{}, ERROR},
 
-		{"datetime_from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
+		{"datetime_from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
 		{"datetime_from_epoch", dmy, []types.XValue{ERROR}, ERROR},
 		{"datetime_from_epoch", dmy, []types.XValue{}, ERROR},
 
@@ -252,8 +253,8 @@ func TestFunctions(t *testing.T) {
 		{"left", dmy, []types.XValue{xs("hello"), ERROR}, ERROR},
 		{"left", dmy, []types.XValue{}, ERROR},
 
-		{"legacy_add", dmy, []types.XValue{xs("01-12-2017"), xi(2)}, xd(time.Date(2017, 12, 3, 0, 0, 0, 0, time.UTC))},
-		{"legacy_add", dmy, []types.XValue{xs("2"), xs("01-12-2017 10:15:33pm")}, xd(time.Date(2017, 12, 3, 22, 15, 33, 0, time.UTC))},
+		{"legacy_add", dmy, []types.XValue{xs("01-12-2017"), xi(2)}, xdt(time.Date(2017, 12, 3, 0, 0, 0, 0, time.UTC))},
+		{"legacy_add", dmy, []types.XValue{xs("2"), xs("01-12-2017 10:15:33pm")}, xdt(time.Date(2017, 12, 3, 22, 15, 33, 0, time.UTC))},
 		{"legacy_add", dmy, []types.XValue{xs("2"), xs("3.5")}, xn("5.5")},
 		{"legacy_add", dmy, []types.XValue{xs("01-12-2017 10:15:33pm"), xs("01-12-2017")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{types.NewXNumberFromInt64(int64(math.MaxInt32 + 1)), xs("01-12-2017 10:15:33pm")}, ERROR},
@@ -301,7 +302,7 @@ func TestFunctions(t *testing.T) {
 		{"mod", dmy, []types.XValue{xs("9"), xs("not_num")}, ERROR},
 		{"mod", dmy, []types.XValue{}, ERROR},
 
-		{"now", dmy, []types.XValue{}, xd(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC))},
+		{"now", dmy, []types.XValue{}, xdt(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC))},
 		{"now", dmy, []types.XValue{ERROR}, ERROR},
 
 		{"number", dmy, []types.XValue{xn("10")}, xn("10")},
@@ -314,11 +315,11 @@ func TestFunctions(t *testing.T) {
 		{"or", dmy, []types.XValue{ERROR}, ERROR},
 		{"or", dmy, []types.XValue{}, ERROR},
 
-		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 8, 34, 0, 0, la))},
-		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.1234Z"), xs("YYYY-MM-DDTtt:mm:ssZ"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 8, 34, 0, 123400000, la))},
-		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD tt:mm"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
-		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 03:34 pm"), xs("YYYY-MM-DD tt:mm aa"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
-		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 03:34 PM"), xs("YYYY-MM-DD tt:mm AA"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
+		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xdt(time.Date(1977, 06, 23, 8, 34, 0, 0, la))},
+		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.1234Z"), xs("YYYY-MM-DDTtt:mm:ssZ"), xs("America/Los_Angeles")}, xdt(time.Date(1977, 06, 23, 8, 34, 0, 123400000, la))},
+		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD tt:mm"), xs("America/Los_Angeles")}, xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
+		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 03:34 pm"), xs("YYYY-MM-DD tt:mm aa"), xs("America/Los_Angeles")}, xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
+		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 03:34 PM"), xs("YYYY-MM-DD tt:mm AA"), xs("America/Los_Angeles")}, xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
 		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), xs("ttttttttt")}, ERROR},                // invalid format
 		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD"), xs("Cuenca")}, ERROR}, // invalid timezone
 		{"parse_datetime", dmy, []types.XValue{xs("abcd"), xs("YYYY-MM-DD")}, ERROR},                           // unparseable date
@@ -378,8 +379,8 @@ func TestFunctions(t *testing.T) {
 		{"replace", dmy, []types.XValue{xs("hi ho"), xs("bye"), ERROR}, ERROR},
 		{"replace", dmy, []types.XValue{}, ERROR},
 
-		{"replace_time", dmy, []types.XValue{xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), xt(utils.NewTimeOfDay(10, 30, 0, 0))}, xd(time.Date(1977, 06, 23, 10, 30, 0, 0, la))},
-		{"replace_time", dmy, []types.XValue{xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), ERROR}, ERROR},
+		{"replace_time", dmy, []types.XValue{xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), xt(utils.NewTimeOfDay(10, 30, 0, 0))}, xdt(time.Date(1977, 06, 23, 10, 30, 0, 0, la))},
+		{"replace_time", dmy, []types.XValue{xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), ERROR}, ERROR},
 		{"replace_time", dmy, []types.XValue{ERROR, xt(utils.NewTimeOfDay(10, 30, 0, 0))}, ERROR},
 
 		{"right", dmy, []types.XValue{xs("hello"), xs("2")}, xs("lo")},
@@ -447,8 +448,7 @@ func TestFunctions(t *testing.T) {
 		{"title", dmy, []types.XValue{nil}, xs("")},
 		{"title", dmy, []types.XValue{}, ERROR},
 
-		{"today", dmy, []types.XValue{}, xd(time.Date(2018, 4, 11, 0, 0, 0, 0, time.UTC))},
-		{"today", mdy, []types.XValue{}, xd(time.Date(2018, 4, 11, 0, 0, 0, 0, la))},
+		{"today", dmy, []types.XValue{}, xd(utils.NewDate(2018, 4, 11))},
 		{"today", dmy, []types.XValue{ERROR}, ERROR},
 
 		{"tz", dmy, []types.XValue{xs("01-12-2017")}, xs("UTC")},

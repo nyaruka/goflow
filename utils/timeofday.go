@@ -41,11 +41,15 @@ func (t TimeOfDay) Compare(other TimeOfDay) int {
 	return t.Nanos - other.Nanos
 }
 
+// Combine combines this time and a date to make a datetime
+func (t TimeOfDay) Combine(date Date, tz *time.Location) time.Time {
+	return time.Date(date.Year, time.Month(date.Month), date.Day, t.Hour, t.Minute, t.Second, t.Nanos, tz)
+}
+
 // Format formats this time of day as a string
 func (t TimeOfDay) Format(layout string) string {
 	// upgrade us to a date time so we can use standard time.Time formatting
-	d := time.Date(1970, 1, 1, t.Hour, t.Minute, t.Second, t.Nanos, time.UTC)
-	return d.Format(layout)
+	return t.Combine(ZeroDate, time.UTC).Format(layout)
 }
 
 // String returns the ISO8601 representation
@@ -58,10 +62,10 @@ var ZeroTimeOfDay = TimeOfDay{}
 
 // ParseTimeOfDay parses the given string into a time of day
 func ParseTimeOfDay(layout string, value string) (TimeOfDay, error) {
-	d, err := time.Parse(layout, value)
+	dt, err := time.Parse(layout, value)
 	if err != nil {
 		return ZeroTimeOfDay, err
 	}
 
-	return ExtractTimeOfDay(d), nil
+	return ExtractTimeOfDay(dt), nil
 }

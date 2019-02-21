@@ -320,7 +320,8 @@ func toXValue(val interface{}) types.XValue {
 // lookup an index on the given value
 func lookupIndex(env utils.Environment, value types.XValue, index types.XNumber) types.XValue {
 	indexable, isIndexable := value.(types.XIndexable)
-	if !isIndexable {
+
+	if !isIndexable || utils.IsNil(indexable) {
 		return types.NewXErrorf("%s is not indexable", value.Describe())
 	}
 
@@ -341,7 +342,8 @@ func lookupIndex(env utils.Environment, value types.XValue, index types.XNumber)
 // lookup a named property on the given value
 func lookupProperty(env utils.Environment, variable types.XValue, key string) types.XValue {
 	resolver, isResolver := variable.(types.XResolvable)
-	if !isResolver {
+
+	if !isResolver || utils.IsNil(resolver) {
 		return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
 	}
 

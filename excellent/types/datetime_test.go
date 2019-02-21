@@ -66,6 +66,7 @@ func TestToXDateTime(t *testing.T) {
 		{types.NewXText("wha?"), types.XDateTimeZero, true},
 		{NewTestXObject("Hello", 123), types.XDateTimeZero, true},
 		{NewTestXObject("2018/6/5", 123), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
+		{types.NewXDate(utils.NewDate(2018, 4, 9)), types.NewXDateTime(time.Date(2018, 4, 9, 0, 0, 0, 0, time.UTC)), false},
 		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
 	}
 

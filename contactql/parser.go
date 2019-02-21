@@ -85,7 +85,7 @@ func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool,
 		return numberComparison(val.(decimal.Decimal), c.comparator, asDecimal)
 
 	case time.Time:
-		asDate, err := utils.DateFromString(env, c.value, false)
+		asDate, err := utils.DateTimeFromString(env, c.value, false)
 		if err != nil {
 			return false, err
 		}

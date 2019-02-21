@@ -23,7 +23,9 @@ func (x XDateTime) Describe() string { return "datetime" }
 func (x XDateTime) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
-func (x XDateTime) ToXText(env utils.Environment) XText { return NewXText(utils.DateToISO(x.Native())) }
+func (x XDateTime) ToXText(env utils.Environment) XText {
+	return NewXText(utils.DateTimeToISO(x.Native()))
+}
 
 // ToXBoolean converts this type to a bool
 func (x XDateTime) ToXBoolean(env utils.Environment) XBoolean {
@@ -32,7 +34,7 @@ func (x XDateTime) ToXBoolean(env utils.Environment) XBoolean {
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (x XDateTime) ToXJSON(env utils.Environment) XText {
-	return MustMarshalToXText(utils.DateToISO(x.Native()))
+	return MustMarshalToXText(utils.DateTimeToISO(x.Native()))
 }
 
 // Native returns the native value of this type
@@ -41,9 +43,19 @@ func (x XDateTime) Native() time.Time { return x.native }
 // String returns the native string representation of this type
 func (x XDateTime) String() string { return x.ToXText(nil).Native() }
 
+// Date returns the date part of this datetime
+func (x XDateTime) Date() XDate {
+	return NewXDate(utils.ExtractDate(x.Native()))
+}
+
 // Time returns the time part of this datetime
 func (x XDateTime) Time() XTime {
 	return NewXTime(utils.ExtractTimeOfDay(x.Native()))
+}
+
+// In returns a copy of this datetime in a different timezone
+func (x XDateTime) In(tz *time.Location) XDateTime {
+	return NewXDateTime(x.Native().In(tz))
 }
 
 // ReplaceTime returns the a new date time with the time part replaced by the given time
@@ -103,10 +115,12 @@ func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XEr
 		switch typed := x.(type) {
 		case XError:
 			return XDateTimeZero, typed
+		case XDate:
+			return NewXDateTime(typed.Native().Combine(utils.ZeroTimeOfDay, env.Timezone())), nil
 		case XDateTime:
 			return typed, nil
 		case XText:
-			parsed, err := utils.DateFromString(env, typed.Native(), fillTime)
+			parsed, err := utils.DateTimeFromString(env, typed.Native(), fillTime)
 			if err == nil {
 				return NewXDateTime(parsed), nil
 			}

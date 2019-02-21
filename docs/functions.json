@@ -1201,12 +1201,12 @@
     },
     {
         "signature": "today()",
-        "summary": "Returns the current date in the current timezone.",
-        "detail": "The returned datetime has a time set to midnight in the current timezone.",
+        "summary": "Returns the current date in the environment timezone.",
+        "detail": "",
         "examples": [
             {
                 "template": "@(today())",
-                "output": "2018-04-11T00:00:00.000000-05:00"
+                "output": "2018-04-11"
             }
         ]
     },

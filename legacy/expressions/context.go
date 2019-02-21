@@ -275,7 +275,7 @@ func newMigrationVars() map[string]interface{} {
 			substitutions: map[string]interface{}{
 				"__default__": `now()`,
 				"now":         `now()`,
-				"today":       `format_date(now())`,
+				"today":       `format_date(today())`,
 				"tomorrow":    `format_date(datetime_add(now(), 1, "D"))`,
 				"yesterday":   `format_date(datetime_add(now(), -1, "D"))`,
 			},

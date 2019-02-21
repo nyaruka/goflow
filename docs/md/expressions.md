@@ -1222,13 +1222,11 @@ Capitalizes each word in `text`.
 
 ## today()
 
-Returns the current date in the current timezone.
-
-The returned datetime has a time set to midnight in the current timezone.
+Returns the current date in the environment timezone.
 
 
 ```objectivec
-@(today()) → 2018-04-11T00:00:00.000000-05:00
+@(today()) → 2018-04-11
 ```
 
 <a name="function:tz"></a>
