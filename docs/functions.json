@@ -599,6 +599,10 @@
                 "output": "5"
             },
             {
+                "template": "@(length(contact.fields.gender))",
+                "output": "4"
+            },
+            {
                 "template": "@(length(\"😀😃😄😁\"))",
                 "output": "4"
             },

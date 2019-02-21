@@ -750,6 +750,7 @@ length will return an error if it is passed an item which doesn't have length.
 
 ```objectivec
 @(length("Hello")) → 5
+@(length(contact.fields.gender)) → 4
 @(length("😀😃😄😁")) → 4
 @(length(array())) → 0
 @(length(array("a", "b", "c"))) → 3

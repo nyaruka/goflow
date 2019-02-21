@@ -1706,6 +1706,7 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 // length will return an error if it is passed an item which doesn't have length.
 //
 //   @(length("Hello")) -> 5
+//   @(length(contact.fields.gender)) -> 4
 //   @(length("😀😃😄😁")) -> 4
 //   @(length(array())) -> 0
 //   @(length(array("a", "b", "c"))) -> 3
@@ -1715,7 +1716,14 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 func Length(env utils.Environment, value types.XValue) types.XValue {
 	// argument must be a value with length
 	lengthable, isLengthable := value.(types.XLengthable)
-	if isLengthable {
+	if isLengthable && !utils.IsNil(lengthable) {
+		return types.NewXNumberFromInt(lengthable.Length())
+	}
+
+	// or reduceable to something with length
+	value = types.Reduce(env, value)
+	lengthable, isLengthable = value.(types.XLengthable)
+	if isLengthable && !utils.IsNil(lengthable) {
 		return types.NewXNumberFromInt(lengthable.Length())
 	}
 

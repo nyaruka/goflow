@@ -459,10 +459,11 @@
 <p>Returns the length of the passed in text or array.</p>
 <p>length will return an error if it is passed an item which doesn’t have length.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb37-1" title="1">@(length(<span class="st">&quot;Hello&quot;</span>)) → <span class="dv">5</span></a>
-<a class="sourceLine" id="cb37-2" title="2">@(length(<span class="st">&quot;😀😃😄😁&quot;</span>)) → <span class="dv">4</span></a>
-<a class="sourceLine" id="cb37-3" title="3">@(length(array())) → <span class="dv">0</span></a>
-<a class="sourceLine" id="cb37-4" title="4">@(length(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>))) → <span class="dv">3</span></a>
-<a class="sourceLine" id="cb37-5" title="5">@(length(<span class="dv">1234</span>)) → ERROR</a></code></pre></div>
+<a class="sourceLine" id="cb37-2" title="2">@(length(contact.fields.gender)) → <span class="dv">4</span></a>
+<a class="sourceLine" id="cb37-3" title="3">@(length(<span class="st">&quot;😀😃😄😁&quot;</span>)) → <span class="dv">4</span></a>
+<a class="sourceLine" id="cb37-4" title="4">@(length(array())) → <span class="dv">0</span></a>
+<a class="sourceLine" id="cb37-5" title="5">@(length(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>))) → <span class="dv">3</span></a>
+<a class="sourceLine" id="cb37-6" title="6">@(length(<span class="dv">1234</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:lower"></a></p>
 <h2 id="lowertext">lower(text)</h2>
 <p>Converts <code>text</code> to lowercase.</p>
