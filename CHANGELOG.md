@@ -1,3 +1,7 @@
+v0.28.8
+----------
+ * Fix migration of DAYS()
+
 v0.28.7
 ----------
  * add accessor for msg in MsgResume
