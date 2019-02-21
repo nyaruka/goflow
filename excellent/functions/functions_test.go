@@ -84,6 +84,13 @@ func TestFunctions(t *testing.T) {
 		{"clean", dmy, []types.XValue{xs("")}, xs("")},
 		{"clean", dmy, []types.XValue{}, ERROR},
 
+		{"date", dmy, []types.XValue{xs("01-12-2017")}, xd(utils.NewDate(2017, 12, 1))},
+		{"date", mdy, []types.XValue{xs("12-01-2017")}, xd(utils.NewDate(2017, 12, 1))},
+		{"date", dmy, []types.XValue{xs("01-12-2017 10:15pm")}, xd(utils.NewDate(2017, 12, 1))},
+		{"date", dmy, []types.XValue{xs("01.15.2017")}, ERROR}, // month out of range
+		{"date", dmy, []types.XValue{xs("no date")}, ERROR},    // invalid date
+		{"date", dmy, []types.XValue{}, ERROR},
+
 		{"date_from_parts", dmy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(utils.NewDate(2018, 11, 3))},
 		{"date_from_parts", mdy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(utils.NewDate(2018, 11, 3))},
 		{"date_from_parts", dmy, []types.XValue{xi(2018), xi(15), xi(3)}, ERROR}, // month out of range

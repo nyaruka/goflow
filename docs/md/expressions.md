@@ -393,6 +393,23 @@ It is the inverse of [char](expressions.html#function:char).
 @(code("")) → ERROR
 ```
 
+<a name="function:date"></a>
+
+## date(value)
+
+Tries to convert `value` to a date. If it is text then it will be
+parsed into a date using to the default date format.
+
+An error is returned if the value can't be converted.
+
+
+```objectivec
+@(date("1979-07-18")) → 1979-07-18
+@(date("1979-07-18T10:30:45.123456Z")) → 1979-07-18
+@(date("2010 05 10")) → 2010-05-10
+@(date("NOT DATE")) → ERROR
+```
+
 <a name="function:date_from_parts"></a>
 
 ## date_from_parts(year, month, day)
@@ -408,9 +425,10 @@ Creates a date from `year`, `month` and `day`.
 
 <a name="function:datetime"></a>
 
-## datetime(text)
+## datetime(value)
 
-Parses `text` into a date using to the default date format.
+Tries to convert `value` to a datetime. If it is text then it will be
+parsed into a datetime using to the default date and time formats.
 
 An error is returned if the value can't be converted.
 
@@ -1181,7 +1199,8 @@ and 1 if `text1` comes after `text2`.
 
 ## time(value)
 
-Tries to convert `value` to a time.
+Tries to convert `value` to a time. If it is text then it will be
+parsed into a time using to the default time format.
 
 An error is returned if the value can't be converted.
 

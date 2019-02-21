@@ -141,6 +141,29 @@
         ]
     },
     {
+        "signature": "date(value)",
+        "summary": "Tries to convert `value` to a date. If it is text then it will be",
+        "detail": "parsed into a date using to the default date format.\n\nAn error is returned if the value can't be converted.",
+        "examples": [
+            {
+                "template": "@(date(\"1979-07-18\"))",
+                "output": "1979-07-18"
+            },
+            {
+                "template": "@(date(\"1979-07-18T10:30:45.123456Z\"))",
+                "output": "1979-07-18"
+            },
+            {
+                "template": "@(date(\"2010 05 10\"))",
+                "output": "2010-05-10"
+            },
+            {
+                "template": "@(date(\"NOT DATE\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
         "signature": "date_from_parts(year, month, day)",
         "summary": "Creates a date from `year`, `month` and `day`.",
         "detail": "",
@@ -160,9 +183,9 @@
         ]
     },
     {
-        "signature": "datetime(text)",
-        "summary": "Parses `text` into a date using to the default date format.",
-        "detail": "An error is returned if the value can't be converted.",
+        "signature": "datetime(value)",
+        "summary": "Tries to convert `value` to a datetime. If it is text then it will be",
+        "detail": "parsed into a datetime using to the default date and time formats.\n\nAn error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(datetime(\"1979-07-18\"))",
@@ -1140,8 +1163,8 @@
     },
     {
         "signature": "time(value)",
-        "summary": "Tries to convert `value` to a time.",
-        "detail": "An error is returned if the value can't be converted.",
+        "summary": "Tries to convert `value` to a time. If it is text then it will be",
+        "detail": "parsed into a time using to the default time format.\n\nAn error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(time(\"10:30\"))",

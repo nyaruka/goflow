@@ -35,6 +35,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"text":     OneArgFunction(Text),
 	"boolean":  OneArgFunction(Boolean),
 	"number":   OneArgFunction(Number),
+	"date":     OneArgFunction(Date),
 	"datetime": OneArgFunction(DateTime),
 	"time":     OneArgFunction(Time),
 	"array":    Array,
@@ -173,7 +174,27 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 	return num
 }
 
-// DateTime parses `text` into a date using to the default date format.
+// Date tries to convert `value` to a date. If it is text then it will be
+// parsed into a date using to the default date format.
+//
+// An error is returned if the value can't be converted.
+//
+//   @(date("1979-07-18")) -> 1979-07-18
+//   @(date("1979-07-18T10:30:45.123456Z")) -> 1979-07-18
+//   @(date("2010 05 10")) -> 2010-05-10
+//   @(date("NOT DATE")) -> ERROR
+//
+// @function date(value)
+func Date(env utils.Environment, value types.XValue) types.XValue {
+	d, err := types.ToXDate(env, value)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return d
+}
+
+// DateTime tries to convert `value` to a datetime. If it is text then it will be
+// parsed into a datetime using to the default date and time formats.
 //
 // An error is returned if the value can't be converted.
 //
@@ -182,16 +203,17 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 //   @(datetime("2010 05 10")) -> 2010-05-10T00:00:00.000000-05:00
 //   @(datetime("NOT DATE")) -> ERROR
 //
-// @function datetime(text)
+// @function datetime(value)
 func DateTime(env utils.Environment, value types.XValue) types.XValue {
-	d, err := types.ToXDateTime(env, value)
+	dt, err := types.ToXDateTime(env, value)
 	if err != nil {
 		return types.NewXError(err)
 	}
-	return d
+	return dt
 }
 
-// Time tries to convert `value` to a time.
+// Time tries to convert `value` to a time. If it is text then it will be
+// parsed into a time using to the default time format.
 //
 // An error is returned if the value can't be converted.
 //
