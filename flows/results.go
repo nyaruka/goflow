@@ -146,16 +146,26 @@ func (r Results) Describe() string { return "run results" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r Results) Reduce(env utils.Environment) types.XPrimitive {
-	results := types.NewEmptyXMap()
-	for k, v := range r {
-		results.Put(k, v)
-	}
-	return results
+	return r.toMap(true)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (r Results) ToXJSON(env utils.Environment) types.XText {
-	return r.Reduce(env).ToXJSON(env)
+	return r.toMap(false).ToXJSON(env)
+}
+
+func (r Results) toMap(namesAsKeys bool) types.XMap {
+	results := types.NewEmptyXMap()
+	if namesAsKeys {
+		for _, v := range r {
+			results.Put(v.Name, v)
+		}
+	} else {
+		for k, v := range r {
+			results.Put(k, v)
+		}
+	}
+	return results
 }
 
 var _ types.XValue = (Results)(nil)

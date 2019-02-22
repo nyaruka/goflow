@@ -69,7 +69,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(length(contact.groups))", "2", ""},
 
 		// contact fields
-		{"@contact.fields", `{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}`, ""},
+		{"@contact.fields", "activation_token: AACC55\nage: 23\ngender: Male\njoin_date: 2017-12-02T00:00:00.000000-02:00\nnot_set: ", ""},
 		{"@contact.fields.activation_token", "AACC55", ""},
 		{"@contact.fields.age", "23", ""},
 		{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
@@ -84,7 +84,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
 		{"@input.channel.name", "My Android Phone", ""},
 
-		{"@results", `{"2factor":"34634624463525","favorite_color":"red","phone_number":"+12344563452"}`, ""},
+		{"@results", "2Factor: 34634624463525\nFavorite Color: red\nPhone Number: +12344563452", ""},
 		{"@results.favorite_color", "red", ""},
 		{"@results.favorite_color.category", "Red", ""},
 		{"@results.favorite_icecream", "", "error evaluating @results.favorite_icecream: no such run result 'favorite_icecream'"},

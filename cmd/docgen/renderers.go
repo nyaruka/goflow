@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -258,7 +259,8 @@ func checkExample(session flows.Session, line string) error {
 	}
 
 	test := strings.TrimSpace(pieces[0])
-	expected := strings.Replace(strings.TrimSpace(pieces[1]), "\\n", "\n", -1)
+	expected := strings.Replace(strings.TrimSpace(pieces[1]), `\n`, "\n", -1)
+	expected = strings.Replace(expected, `\x20`, " ", -1)
 
 	// evaluate our expression
 	val, err := session.Runs()[0].EvaluateTemplateAsString(test)
@@ -268,7 +270,7 @@ func checkExample(session flows.Session, line string) error {
 			return errors.Errorf("expected example '%s' to error but it didn't", test)
 		}
 	} else if val != expected {
-		return errors.Errorf("expected '%s' from example: '%s', but got '%s'", expected, test, val)
+		return errors.Errorf("expected %s from example: %s, but got %s", strconv.Quote(expected), strconv.Quote(test), strconv.Quote(val))
 	}
 
 	return nil

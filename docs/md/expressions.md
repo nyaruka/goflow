@@ -111,7 +111,7 @@ Examples:
 @(contact.urns.mailto[0]) → mailto:foo@bar.com
 @contact.urn → tel:+12065551212
 @contact.groups → ["Testers","Males"]
-@contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
+@contact.fields → activation_token: AACC55\nage: 23\ngender: Male\njoin_date: 2017-12-02T00:00:00.000000-02:00\nnot_set:\x20
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
 ```
