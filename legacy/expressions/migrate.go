@@ -20,6 +20,8 @@ var functionReturnTypes = map[string]string{
 	"abs":                 "number",
 	"datetime_add":        "datetime",
 	"datetime_from_parts": "datetime",
+	"datetime":            "datetime",
+	"date":                "date",
 	"format_date":         "date",
 	"max":                 "number",
 	"mean":                "number",
@@ -33,7 +35,7 @@ var functionReturnTypes = map[string]string{
 	"round_up":            "number",
 	"time":                "time",
 	"time_from_parts":     "time",
-	"today":               "datetime",
+	"today":               "date",
 }
 
 // MigrateOptions are options for how expressions are migrated

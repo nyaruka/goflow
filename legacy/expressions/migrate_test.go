@@ -169,6 +169,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(today() + TIME(15, 30, 0))`, new: `@(replace_time(today(), time_from_parts(15, 30, 0)))`},
 		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(replace_time(now(), time_from_parts(2, 30, 0)))`},
 		{old: `@(TODAY()+TIMEVALUE("10:30"))`, new: `@(replace_time(today(), time("10:30")))`},
+		{old: `@(DATEVALUE(date.today) + TIMEVALUE(CONCATENATE(flow.time_input, ":00")))`, new: `@(replace_time(date(format_date(today())), time(results.time_input & ":00")))`, dontEval: true},
 
 		// legacy_add permutations
 		{old: `@(contact.age + 5)`, new: `@(legacy_add(contact.fields.age, 5))`},
