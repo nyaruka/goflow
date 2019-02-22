@@ -43,8 +43,8 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urn.path", `+12065551212`, ""},
 
 		// contact URN list access
-		{"@contact.urns", `["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`, ""},
-		{"@contact.urns.tel", `["tel:+12065551212"]`, ""},
+		{"@contact.urns", `tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com`, ""},
+		{"@contact.urns.tel", `tel:+12065551212`, ""},
 		{"@contact.urns.xxx", "", "error evaluating @contact.urns.xxx: no such URN scheme 'xxx'"},
 		{"@(contact.urns[0])", "tel:+12065551212", ""},
 		{"@(contact.urns[110])", "", "error evaluating @(contact.urns[110]): index 110 out of range for 3 items"},
@@ -61,11 +61,11 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(contact.urns.twitterid[0])", `twitterid:54784326227#nyaruka`, ""},
 		{"@(contact.urns.twitterid[0].scheme)", `twitterid`, ""},
 		{"@(contact.urns.twitterid[0].path)", `54784326227`, ""},
-		{"@contact.urns.telegram", `[]`, ""},
+		{"@contact.urns.telegram", ``, ""},
 
 		// contact groups
-		{"@contact.groups", `["Testers","Males"]`, ""},
-		{"@(join(contact.groups, \",\"))", `Testers,Males`, ""},
+		{"@contact.groups", `Testers, Males`, ""},
+		{"@(join(contact.groups, \"|\"))", `Testers|Males`, ""},
 		{"@(length(contact.groups))", "2", ""},
 
 		// contact fields
@@ -79,7 +79,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@input", "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3", ""},
 		{"@input.text", "Hi there", ""},
-		{"@input.attachments", `["http://s3.amazon.com/bucket/test.jpg","http://s3.amazon.com/bucket/test.mp3"]`, ""},
+		{"@input.attachments", `http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3`, ""},
 		{"@(input.attachments[0])", "http://s3.amazon.com/bucket/test.jpg", ""},
 		{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
 		{"@input.channel.name", "My Android Phone", ""},

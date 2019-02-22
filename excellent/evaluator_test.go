@@ -277,8 +277,8 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(TITLE(missing))", "", true},
 		{"@(TITLE(string1.xxx))", "", true},
 
-		{"@array", `["one","two","three"]`, false},
-		{"@array[0]", `["one","two","three"][0]`, false}, // [n] notation not supported outside expression
+		{"@array", `one, two, three`, false},
+		{"@array[0]", `one, two, three[0]`, false}, // [n] notation not supported outside expression
 		{"@(array [0])", "one", false},
 		{"@(array[0])", "one", false},
 		{"@(array[3 - 3])", "one", false},

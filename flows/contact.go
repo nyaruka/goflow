@@ -40,12 +40,12 @@ import (
 //   @contact.language -> eng
 //   @contact.timezone -> America/Guayaquil
 //   @contact.created_on -> 2018-06-20T11:40:30.123456Z
-//   @contact.urns -> ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
+//   @contact.urns -> tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com
 //   @(contact.urns[0]) -> tel:+12065551212
-//   @contact.urns.tel -> ["tel:+12065551212"]
+//   @contact.urns.tel -> tel:+12065551212
 //   @(contact.urns.mailto[0]) -> mailto:foo@bar.com
 //   @contact.urn -> tel:+12065551212
-//   @contact.groups -> ["Testers","Males"]
+//   @contact.groups -> Testers, Males
 //   @contact.fields -> activation_token: AACC55\nage: 23\ngender: Male\njoin_date: 2017-12-02T00:00:00.000000-02:00\nnot_set:\x20
 //   @contact.fields.activation_token -> AACC55
 //   @contact.fields.gender -> Male
