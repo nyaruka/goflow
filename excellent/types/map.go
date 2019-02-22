@@ -2,6 +2,9 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
+	"sort"
+	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 )
@@ -42,11 +45,20 @@ func (m *xmap) Reduce(env utils.Environment) XPrimitive { return m }
 
 // ToXText converts this type to text
 func (m *xmap) ToXText(env utils.Environment) XText {
-	primitives := make(map[string]XValue, len(m.values))
-	for k, v := range m.values {
-		primitives[k] = Reduce(env, v)
+	// get our keys sorted A-Z
+	sortedKeys := m.Keys()
+	sort.Strings(sortedKeys)
+
+	lines := make([]string, 0, m.Length())
+	for _, k := range sortedKeys {
+		vAsText, xerr := ToXText(env, m.values[k])
+		if xerr != nil {
+			vAsText = xerr.ToXText(env)
+		}
+
+		lines = append(lines, fmt.Sprintf("%s: %s", k, vAsText))
 	}
-	return MustMarshalToXText(primitives)
+	return NewXText(strings.Join(lines, "\n"))
 }
 
 // ToXBoolean converts this type to a bool

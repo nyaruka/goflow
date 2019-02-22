@@ -94,13 +94,13 @@
 <a class="sourceLine" id="cb3-4" title="4">@contact.language → eng</a>
 <a class="sourceLine" id="cb3-5" title="5">@contact.timezone → America/Guayaquil</a>
 <a class="sourceLine" id="cb3-6" title="6">@contact.created_on → <span class="dv">2018-06</span>-20T11:<span class="dv">40</span>:<span class="fl">30.123456</span>Z</a>
-<a class="sourceLine" id="cb3-7" title="7">@contact.urns → [<span class="st">&quot;tel:+12065551212&quot;</span>,<span class="st">&quot;twitterid:54784326227#nyaruka&quot;</span>,<span class="st">&quot;mailto:foo@bar.com&quot;</span>]</a>
+<a class="sourceLine" id="cb3-7" title="7">@contact.urns → tel:+<span class="dv">12065551212</span>, twitterid:<span class="dv">54784326227</span>#nyaruka, mailto:foo@bar.com</a>
 <a class="sourceLine" id="cb3-8" title="8">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb3-9" title="9">@contact.urns.tel → [<span class="st">&quot;tel:+12065551212&quot;</span>]</a>
+<a class="sourceLine" id="cb3-9" title="9">@contact.urns.tel → tel:+<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb3-10" title="10">@(contact.urns.mailto[<span class="dv">0</span>]) → mailto:foo@bar.com</a>
 <a class="sourceLine" id="cb3-11" title="11">@contact.urn → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb3-12" title="12">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
-<a class="sourceLine" id="cb3-13" title="13">@contact.fields → {<span class="st">&quot;activation_token&quot;</span>:<span class="st">&quot;AACC55&quot;</span>,<span class="st">&quot;age&quot;</span>:<span class="dv">23</span>,<span class="st">&quot;gender&quot;</span>:<span class="st">&quot;Male&quot;</span>,<span class="st">&quot;join_date&quot;</span>:<span class="st">&quot;2017-12-02T00:00:00-02:00&quot;</span>,<span class="st">&quot;not_set&quot;</span>:null}</a>
+<a class="sourceLine" id="cb3-12" title="12">@contact.groups → Testers, Males</a>
+<a class="sourceLine" id="cb3-13" title="13">@contact.fields → activation_token: AACC55\nage: <span class="dv">23</span>\ngender: Male\njoin_date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span>\nnot_set:\x20</a>
 <a class="sourceLine" id="cb3-14" title="14">@contact.fields.activation_token → AACC55</a>
 <a class="sourceLine" id="cb3-15" title="15">@contact.fields.gender → Male</a></code></pre></div>
 <p><a name="context:flow"></a></p>
@@ -124,7 +124,7 @@
 <li><code>name</code> the name of the group</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1">@contact.groups → Testers, Males</a>
 <a class="sourceLine" id="cb5-2" title="2">@(contact.groups[<span class="dv">0</span>].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
 <a class="sourceLine" id="cb5-3" title="3">@(contact.groups[<span class="dv">1</span>].name) → Males</a>
 <a class="sourceLine" id="cb5-4" title="4">@(json(contact.groups[<span class="dv">1</span>])) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
@@ -147,7 +147,7 @@
 <div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" title="1">@input → Hi there\nhttp:<span class="co">//s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3</span></a>
 <a class="sourceLine" id="cb6-2" title="2">@input.type → msg</a>
 <a class="sourceLine" id="cb6-3" title="3">@input.text → Hi there</a>
-<a class="sourceLine" id="cb6-4" title="4">@input.attachments → [<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>,<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>]</a>
+<a class="sourceLine" id="cb6-4" title="4">@input.attachments → http:<span class="co">//s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3</span></a>
 <a class="sourceLine" id="cb6-5" title="5">@(json(input)) → {<span class="st">&quot;attachments&quot;</span>:[{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>},{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;audio/mp3&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>}],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2017-12-31T11:35:10.035757-02:00&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:{<span class="st">&quot;display&quot;</span>:<span class="st">&quot;(206) 555-1212&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>},<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
 <p><a name="context:result"></a></p>
 <h2 id="result">Result</h2>
@@ -310,7 +310,7 @@
 <div class="sourceCode" id="cb24"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb24-1" title="1">@(<span class="kw">default</span>(undeclared.var, <span class="st">&quot;default_value&quot;</span>)) → default_value</a>
 <a class="sourceLine" id="cb24-2" title="2">@(<span class="kw">default</span>(<span class="st">&quot;10&quot;</span>, <span class="st">&quot;20&quot;</span>)) → <span class="dv">10</span></a>
 <a class="sourceLine" id="cb24-3" title="3">@(<span class="kw">default</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;value&quot;</span>)) → value</a>
-<a class="sourceLine" id="cb24-4" title="4">@(<span class="kw">default</span>(array(<span class="dv">1</span>, <span class="dv">2</span>), <span class="st">&quot;value&quot;</span>)) → [<span class="dv">1</span>,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb24-4" title="4">@(<span class="kw">default</span>(array(<span class="dv">1</span>, <span class="dv">2</span>), <span class="st">&quot;value&quot;</span>)) → <span class="dv">1</span>, <span class="dv">2</span></a>
 <a class="sourceLine" id="cb24-5" title="5">@(<span class="kw">default</span>(array(), <span class="st">&quot;value&quot;</span>)) → value</a>
 <a class="sourceLine" id="cb24-6" title="6">@(<span class="kw">default</span>(datetime(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</a></code></pre></div>
 <p><a name="function:epoch"></a></p>
@@ -668,11 +668,11 @@
 <h2 id="splittext-delimiters">split(text, delimiters)</h2>
 <p>Splits <code>text</code> based on the given characters in <code>delimiters</code>.</p>
 <p>Empty values are removed from the returned list.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb62-1" title="1">@(split(<span class="st">&quot;a b c&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
-<a class="sourceLine" id="cb62-2" title="2">@(split(<span class="st">&quot;a&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>]</a>
-<a class="sourceLine" id="cb62-3" title="3">@(split(<span class="st">&quot;abc..d&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;d&quot;</span>]</a>
-<a class="sourceLine" id="cb62-4" title="4">@(split(<span class="st">&quot;a.b.c.&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
-<a class="sourceLine" id="cb62-5" title="5">@(split(<span class="st">&quot;a|b,c  d&quot;</span>, <span class="st">&quot; .|,&quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;d&quot;</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb62-1" title="1">@(split(<span class="st">&quot;a b c&quot;</span>, <span class="st">&quot; &quot;</span>)) → a, b, c</a>
+<a class="sourceLine" id="cb62-2" title="2">@(split(<span class="st">&quot;a&quot;</span>, <span class="st">&quot; &quot;</span>)) → a</a>
+<a class="sourceLine" id="cb62-3" title="3">@(split(<span class="st">&quot;abc..d&quot;</span>, <span class="st">&quot;.&quot;</span>)) → abc, d</a>
+<a class="sourceLine" id="cb62-4" title="4">@(split(<span class="st">&quot;a.b.c.&quot;</span>, <span class="st">&quot;.&quot;</span>)) → a, b, c</a>
+<a class="sourceLine" id="cb62-5" title="5">@(split(<span class="st">&quot;a|b,c  d&quot;</span>, <span class="st">&quot; .|,&quot;</span>)) → a, b, c, d</a></code></pre></div>
 <p><a name="function:text"></a></p>
 <h2 id="textvalue">text(value)</h2>
 <p>Tries to convert <code>value</code> to text.</p>
