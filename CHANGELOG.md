@@ -1,3 +1,7 @@
+v0.28.12
+----------
+ * Fix migration of datevalue+time
+
 v0.28.11
 ----------
  * length(nil) == 0
