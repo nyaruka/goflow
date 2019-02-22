@@ -1714,16 +1714,21 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 //
 // @function length(value)
 func Length(env utils.Environment, value types.XValue) types.XValue {
+	// a nil has length of zero
+	if utils.IsNil(value) {
+		return types.XNumberZero
+	}
+
 	// argument must be a value with length
 	lengthable, isLengthable := value.(types.XLengthable)
-	if isLengthable && !utils.IsNil(lengthable) {
+	if isLengthable {
 		return types.NewXNumberFromInt(lengthable.Length())
 	}
 
 	// or reduceable to something with length
 	value = types.Reduce(env, value)
 	lengthable, isLengthable = value.(types.XLengthable)
-	if isLengthable && !utils.IsNil(lengthable) {
+	if isLengthable {
 		return types.NewXNumberFromInt(lengthable.Length())
 	}
 
