@@ -189,10 +189,19 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 		return fmt.Sprintf("%s %s %s", arg1, op, arg2)
 
 	} else if arg1Type == "datetime" && arg2Type == "number" {
-		// we are adding a date and a number (of days)
+		// we are adding a datetime and a number (of days)
 		template := `datetime_add(%s, %s, "D")`
 		if op == "-" {
 			template = `datetime_add(%s, -%s, "D")`
+		}
+
+		return fmt.Sprintf(template, arg1, arg2)
+
+	} else if arg1Type == "date" && arg2Type == "number" {
+		// we are adding a date and a number (of days)
+		template := `format_date(datetime_add(%s, %s, "D"))`
+		if op == "-" {
+			template = `format_date(datetime_add(%s, -%s, "D"))`
 		}
 
 		return fmt.Sprintf(template, arg1, arg2)

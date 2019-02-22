@@ -20,6 +20,7 @@ var functionReturnTypes = map[string]string{
 	"abs":                 "number",
 	"datetime_add":        "datetime",
 	"datetime_from_parts": "datetime",
+	"format_date":         "date",
 	"max":                 "number",
 	"mean":                "number",
 	"min":                 "number",
