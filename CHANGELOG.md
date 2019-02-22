@@ -1,3 +1,9 @@
+v0.28.11
+----------
+ * length(nil) == 0
+ * Arrays should stringify as CSV
+ * Maps should stringify as new line separated key: value pairs
+
 v0.28.10
 ----------
  * Wrap results of date arithmetic in format_date
