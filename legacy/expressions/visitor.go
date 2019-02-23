@@ -206,8 +206,8 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 
 		return fmt.Sprintf(template, arg1, arg2)
 
-	} else if (arg1Type == "datetime" || arg1Type == "date") && arg2Type == "time" && op == "+" {
-		// we are adding a date and a time
+	} else if arg2Type == "time" && op == "+" {
+		// we are adding a date/datetime and a time
 		return fmt.Sprintf(`replace_time(%s, %s)`, arg1, arg2)
 	}
 
