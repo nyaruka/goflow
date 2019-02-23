@@ -1236,6 +1236,7 @@ Capitalizes each word in `text`.
 ```objectivec
 @(title("foo")) → Foo
 @(title("ryan lewis")) → Ryan Lewis
+@(title("RYAN LEWIS")) → Ryan Lewis
 @(title(123)) → 123
 ```
 

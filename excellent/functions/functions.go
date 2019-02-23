@@ -412,11 +412,12 @@ func Char(env utils.Environment, num types.XNumber) types.XValue {
 //
 //   @(title("foo")) -> Foo
 //   @(title("ryan lewis")) -> Ryan Lewis
+//   @(title("RYAN LEWIS")) -> Ryan Lewis
 //   @(title(123)) -> 123
 //
 // @function title(text)
 func Title(env utils.Environment, text types.XText) types.XValue {
-	return types.NewXText(strings.Title(text.Native()))
+	return types.NewXText(strings.Title(strings.ToLower(text.Native())))
 }
 
 // Word returns the word at `index` in `text`.

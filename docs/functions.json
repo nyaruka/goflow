@@ -1225,6 +1225,10 @@
                 "output": "Ryan Lewis"
             },
             {
+                "template": "@(title(\"RYAN LEWIS\"))",
+                "output": "Ryan Lewis"
+            },
+            {
                 "template": "@(title(123))",
                 "output": "123"
             }

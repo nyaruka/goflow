@@ -453,7 +453,8 @@ func TestFunctions(t *testing.T) {
 		{"time_from_parts", dmy, []types.XValue{xi(14), xi(61), xi(15)}, ERROR},
 		{"time_from_parts", dmy, []types.XValue{xi(14), xi(40), xi(61)}, ERROR},
 
-		{"title", dmy, []types.XValue{xs("hello")}, xs("Hello")},
+		{"title", dmy, []types.XValue{xs("hello world")}, xs("Hello World")},
+		{"title", dmy, []types.XValue{xs("HELLO WORLD")}, xs("Hello World")},
 		{"title", dmy, []types.XValue{xs("")}, xs("")},
 		{"title", dmy, []types.XValue{nil}, xs("")},
 		{"title", dmy, []types.XValue{}, ERROR},
