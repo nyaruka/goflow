@@ -479,8 +479,6 @@ func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
 	firstWordStart := strings.Index(text.Native(), firstWord.Native())
 	firstWordEnd := firstWordStart + firstWord.Length()
 
-	fmt.Printf("text=%s firstWord=%s firstWordStart=%d firstWordEnd=%d\n", text, firstWord, firstWordStart, firstWordEnd)
-
 	remainder := text.Slice(firstWordEnd, text.Length())
 
 	// remove any white space left at start
