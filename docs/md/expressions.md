@@ -1038,6 +1038,7 @@ Removes the first word of `text`.
 
 ```objectivec
 @(remove_first_word("foo bar")) → bar
+@(remove_first_word("Hi there. I'm a flow!")) → there. I'm a flow!
 ```
 
 <a name="function:repeat"></a>

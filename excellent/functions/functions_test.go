@@ -363,7 +363,8 @@ func TestFunctions(t *testing.T) {
 
 		{"remove_first_word", dmy, []types.XValue{xs("hello World")}, xs("World")},
 		{"remove_first_word", dmy, []types.XValue{xs("hello")}, xs("")},
-		{"remove_first_word", dmy, []types.XValue{xs("😁hello")}, xs("hello")},
+		{"remove_first_word", dmy, []types.XValue{xs("😁 hello")}, xs("hello")},
+		{"remove_first_word", dmy, []types.XValue{xs("Hi there. I'm a flow!")}, xs("there. I'm a flow!")},
 		{"remove_first_word", dmy, []types.XValue{xs("")}, xs("")},
 		{"remove_first_word", dmy, []types.XValue{}, ERROR},
 
