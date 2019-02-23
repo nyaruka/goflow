@@ -1,3 +1,9 @@
+v0.28.13
+----------
+ * Fix title to work with text which is uppercase
+ * Change implementation of remove_first_word so that punctuation is preserved
+ * Anything + TIME should migrate to replace_time(..)
+
 v0.28.12
 ----------
  * Fix migration of datevalue+time
