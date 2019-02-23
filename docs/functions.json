@@ -928,6 +928,10 @@
             {
                 "template": "@(remove_first_word(\"foo bar\"))",
                 "output": "bar"
+            },
+            {
+                "template": "@(remove_first_word(\"Hi there. I'm a flow!\"))",
+                "output": "there. I'm a flow!"
             }
         ]
     },

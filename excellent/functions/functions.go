@@ -466,15 +466,23 @@ func Word(env utils.Environment, text types.XText, args ...types.XValue) types.X
 // RemoveFirstWord removes the first word of `text`.
 //
 //   @(remove_first_word("foo bar")) -> bar
+//   @(remove_first_word("Hi there. I'm a flow!")) -> there. I'm a flow!
 //
 // @function remove_first_word(text)
 func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
-	words := utils.TokenizeString(text.Native())
-	if len(words) > 1 {
-		return types.NewXText(strings.Join(words[1:], " "))
+	firstWordVal := Word(env, text, types.XNumberZero)
+	firstWord, isText := firstWordVal.(types.XText)
+	if !isText || firstWord == types.XTextEmpty {
+		return types.XTextEmpty
 	}
 
-	return types.XTextEmpty
+	firstWordStart := strings.Index(text.Native(), firstWord.Native())
+	firstWordEnd := firstWordStart + firstWord.Length()
+
+	remainder := text.Slice(firstWordEnd, text.Length())
+
+	// remove any white space left at start
+	return types.NewXText(strings.TrimLeft(remainder.Native(), " "))
 }
 
 // WordSlice extracts a sub-sequence of words from `text`.
