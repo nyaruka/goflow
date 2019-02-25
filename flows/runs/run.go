@@ -186,13 +186,13 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
 // EvaluateTemplate evaluates the given template in the context of this run
-func (r *flowRun) EvaluateTemplate(template string) (types.XValue, error) {
-	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template, RunContextTopLevels)
+func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
+	return excellent.EvaluateTemplateValue(r.Environment(), r.Context(), template, RunContextTopLevels)
 }
 
 // EvaluateTemplateAsString evaluates the given template as a string in the context of this run
-func (r *flowRun) EvaluateTemplateAsString(template string) (string, error) {
-	return excellent.EvaluateTemplateAsString(r.Environment(), r.Context(), template, RunContextTopLevels)
+func (r *flowRun) EvaluateTemplate(template string) (string, error) {
+	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template, RunContextTopLevels)
 }
 
 // get the ordered list of languages to be used for localization in this run

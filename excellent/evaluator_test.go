@@ -52,7 +52,7 @@ var _ types.XResolvable = &testXObject{}
 
 var ERROR = types.NewXErrorf("any error")
 
-func TestEvaluateTemplate(t *testing.T) {
+func TestEvaluateTemplateValue(t *testing.T) {
 	array1d := types.NewXArray(types.NewXText("a"), types.NewXText("b"), types.NewXText("c"))
 	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")))
 
@@ -196,7 +196,7 @@ func TestEvaluateTemplate(t *testing.T) {
 	}
 
 	for _, test := range evaluateTests {
-		result, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
+		result, err := EvaluateTemplateValue(env, vars, test.template, vars.Keys())
 		assert.NoError(t, err)
 
 		// don't check error equality - just check that we got an error if we expected one
@@ -210,7 +210,7 @@ func TestEvaluateTemplate(t *testing.T) {
 	}
 }
 
-func TestEvaluateTemplateAsString(t *testing.T) {
+func TestEvaluateTemplate(t *testing.T) {
 
 	vars := types.NewXMap(map[string]types.XValue{
 		"string1": types.NewXText("foo"),
@@ -308,7 +308,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 			}
 		}()
 
-		eval, err := EvaluateTemplateAsString(env, vars, test.template, vars.Keys())
+		eval, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
@@ -362,7 +362,7 @@ func TestEvaluationErrors(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
 	for _, tc := range errorTests {
-		result, err := EvaluateTemplateAsString(env, vars, tc.template, vars.Keys())
+		result, err := EvaluateTemplate(env, vars, tc.template, vars.Keys())
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
 
@@ -380,7 +380,7 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 		env := utils.NewEnvironmentBuilder().Build()
 
 		for _, tc := range errorTests {
-			EvaluateTemplateAsString(env, vars, tc.template, vars.Keys())
+			EvaluateTemplate(env, vars, tc.template, vars.Keys())
 		}
 	}
 }

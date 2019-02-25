@@ -22,7 +22,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestEvaluateTemplateAsString(t *testing.T) {
+func TestEvaluateTemplate(t *testing.T) {
 	tests := []struct {
 		template string
 		expected string
@@ -113,7 +113,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 	run := session.Runs()[0]
 
 	for _, test := range tests {
-		eval, err := run.EvaluateTemplateAsString(test.template)
+		eval, err := run.EvaluateTemplate(test.template)
 
 		var actualErrorMsg string
 		if err != nil {
@@ -159,7 +159,7 @@ func TestContextToJSON(t *testing.T) {
 
 	for _, test := range tests {
 		template := fmt.Sprintf("@(json(%s))", test.path)
-		eval, err := run.EvaluateTemplateAsString(template)
+		eval, err := run.EvaluateTemplate(template)
 
 		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)
 		assert.Equal(t, test.expected, eval, "json() returned unexpected value for template '%s'", template)

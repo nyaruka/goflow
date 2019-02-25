@@ -15,34 +15,8 @@ func EvaluateExpression(env utils.Environment, context types.XValue, expression 
 	return toXValue(VisitExpression(expression, visitor))
 }
 
-// EvaluateTemplate tries to evaluate the passed in template into an object, this only works if the template
-// is a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In cases
-// which are not a single identifier or expression, we return the stringified value
-func EvaluateTemplate(env utils.Environment, context types.XValue, template string, allowedTopLevels []string) (types.XValue, error) {
-	template = strings.TrimSpace(template)
-	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
-
-	// parse our first token
-	tokenType, token := scanner.Scan()
-
-	// try to scan to our next token
-	nextTT, _ := scanner.Scan()
-
-	// if we only have an identifier or an expression, evaluate it on its own
-	if nextTT == EOF {
-		switch tokenType {
-		case IDENTIFIER, EXPRESSION:
-			return EvaluateExpression(env, context, token), nil
-		}
-	}
-
-	// otherwise fallback to full template evaluation
-	asStr, err := EvaluateTemplateAsString(env, context, template, allowedTopLevels)
-	return types.NewXText(asStr), err
-}
-
-// EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
-func EvaluateTemplateAsString(env utils.Environment, context types.XValue, template string, allowedTopLevels []string) (string, error) {
+// EvaluateTemplate evaluates the passed in template
+func EvaluateTemplate(env utils.Environment, context types.XValue, template string, allowedTopLevels []string) (string, error) {
 	buf := &strings.Builder{}
 
 	err := VisitTemplate(template, allowedTopLevels, func(tokenType XTokenType, token string) error {
@@ -65,6 +39,32 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 	})
 
 	return buf.String(), err
+}
+
+// EvaluateTemplateValue is equivalent to EvaluateTemplate except in the case where the template contains
+// a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In these cases we return
+// the typed value from EvaluateExpression instead of stringifying the result.
+func EvaluateTemplateValue(env utils.Environment, context types.XValue, template string, allowedTopLevels []string) (types.XValue, error) {
+	template = strings.TrimSpace(template)
+	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
+
+	// parse our first token
+	tokenType, token := scanner.Scan()
+
+	// try to scan to our next token
+	nextTT, _ := scanner.Scan()
+
+	// if we only have an identifier or an expression, evaluate it on its own
+	if nextTT == EOF {
+		switch tokenType {
+		case IDENTIFIER, EXPRESSION:
+			return EvaluateExpression(env, context, token), nil
+		}
+	}
+
+	// otherwise fallback to full template evaluation
+	asStr, err := EvaluateTemplate(env, context, template, allowedTopLevels)
+	return types.NewXText(asStr), err
 }
 
 // VisitTemplate scans the given template and calls the callback for each token encountered
