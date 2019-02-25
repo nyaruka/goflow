@@ -33,9 +33,15 @@ func VisitExpression(expression string, visitor antlr.ParseTreeVisitor) (interfa
 	return visitor.Visit(tree), nil
 }
 
+// BaseVisitor is the base of visitors
+type BaseVisitor struct {
+	gen.BaseExcellent2Visitor
+}
+
 // visitor which evaluates each part of an expression as a value
 type visitor struct {
-	gen.BaseExcellent2Visitor
+	BaseVisitor
+
 	env      utils.Environment
 	resolver types.XValue
 }

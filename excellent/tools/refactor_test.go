@@ -10,9 +10,9 @@ import (
 
 func TestRefactorTemplate(t *testing.T) {
 	testCases := []struct {
-		old      string
-		new      string
-		hasError bool
+		template   string
+		refactored string
+		hasError   bool
 	}{
 		{``, ``, false},
 		{`Hi @foo`, `Hi @foo`, false},
@@ -31,14 +31,14 @@ func TestRefactorTemplate(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		actual, err := tools.RefactorTemplate(tc.old, []string{"foo"})
+		actual, err := tools.RefactorTemplate(tc.template, []string{"foo"})
 
 		if tc.hasError {
-			assert.Error(t, err, "expected error for input: %s", tc.old)
+			assert.Error(t, err, "expected error for template: %s", tc.template)
 		} else {
-			assert.NoError(t, err, "unexpected error for input: %s, err: %s", tc.old, err)
+			assert.NoError(t, err, "unexpected error for template: %s, err: %s", tc.template, err)
 		}
 
-		assert.Equal(t, tc.new, actual, "refactor mismatch for input: %s", tc.old)
+		assert.Equal(t, tc.refactored, actual, "refactor mismatch for template: %s", tc.template)
 	}
 }

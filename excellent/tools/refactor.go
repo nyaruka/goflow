@@ -56,7 +56,7 @@ func wrapExpression(tokenType excellent.XTokenType, token string) string {
 
 // visitor which rewrites each part of an expression
 type refactorVisitor struct {
-	gen.BaseExcellent2Visitor
+	excellent.BaseVisitor
 }
 
 // Visit the top level parse tree
@@ -96,6 +96,18 @@ func (v *refactorVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interf
 	return fmt.Sprintf("%s(%s)", functionName, strings.Join(params, ", "))
 }
 
+// VisitFunctionParameters deals with the parameters to a function call
+func (v *refactorVisitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) interface{} {
+	params := make([]string, len(ctx.AllExpression()))
+	for i, exp := range ctx.AllExpression() {
+		params[i] = fmt.Sprintf("%s", v.Visit(exp))
+	}
+
+	// return as slice of strings so that function name and params can be refactored together
+	// in VisitFunctionCall
+	return params
+}
+
 // VisitTrue deals with the `true` reserved word
 func (v *refactorVisitor) VisitTrue(ctx *gen.TrueContext) interface{} {
 	return "true"
@@ -121,9 +133,24 @@ func (v *refactorVisitor) VisitContextReference(ctx *gen.ContextReferenceContext
 	return ctx.GetText()
 }
 
+// VisitAtomReference deals with visiting a single atom in our expression
+func (v *refactorVisitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} {
+	return v.Visit(ctx.Atom())
+}
+
 // VisitParentheses deals with expressions in parentheses such as (1+2)
 func (v *refactorVisitor) VisitParentheses(ctx *gen.ParenthesesContext) interface{} {
 	return fmt.Sprintf("(%s)", v.Visit(ctx.Expression()))
+}
+
+// VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
+func (v *refactorVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionContext) interface{} {
+	return fmt.Sprintf("%s %s %s", v.Visit(ctx.Expression(0)), ctx.GetOp().GetText(), v.Visit(ctx.Expression(1)))
+}
+
+// VisitMultiplicationOrDivision deals with division and multiplication such as 5*5 or 5/2
+func (v *refactorVisitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisionContext) interface{} {
+	return fmt.Sprintf("%s %s %s", v.Visit(ctx.Expression(0)), ctx.GetOp().GetText(), v.Visit(ctx.Expression(1)))
 }
 
 // VisitNegation deals with negations such as -5
@@ -141,39 +168,12 @@ func (v *refactorVisitor) VisitConcatenation(ctx *gen.ConcatenationContext) inte
 	return fmt.Sprintf("%s & %s", v.Visit(ctx.Expression(0)), v.Visit(ctx.Expression(1)))
 }
 
-// VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
-func (v *refactorVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionContext) interface{} {
-	return fmt.Sprintf("%s %s %s", v.Visit(ctx.Expression(0)), ctx.GetOp().GetText(), v.Visit(ctx.Expression(1)))
-}
-
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
 func (v *refactorVisitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
-	return fmt.Sprintf("%s %s %s", v.Visit(ctx.Expression(0)), ctx.GetOp().GetText(), v.Visit(ctx.Expression(1)))
-}
-
-// VisitAtomReference deals with visiting a single atom in our expression
-func (v *refactorVisitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} {
-	return v.Visit(ctx.Atom())
-}
-
-// VisitMultiplicationOrDivision deals with division and multiplication such as 5*5 or 5/2
-func (v *refactorVisitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisionContext) interface{} {
 	return fmt.Sprintf("%s %s %s", v.Visit(ctx.Expression(0)), ctx.GetOp().GetText(), v.Visit(ctx.Expression(1)))
 }
 
 // VisitComparison deals with visiting a comparison between two values, such as 5<3 or 3>5
 func (v *refactorVisitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
 	return fmt.Sprintf("%s %s %s", v.Visit(ctx.Expression(0)), ctx.GetOp().GetText(), v.Visit(ctx.Expression(1)))
-}
-
-// VisitFunctionParameters deals with the parameters to a function call
-func (v *refactorVisitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) interface{} {
-	params := make([]string, len(ctx.AllExpression()))
-	for i, exp := range ctx.AllExpression() {
-		params[i] = fmt.Sprintf("%s", v.Visit(exp))
-	}
-
-	// return as slice of strings so that function name and params can be refactored together
-	// in VisitFunctionCall
-	return params
 }
