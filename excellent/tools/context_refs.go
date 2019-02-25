@@ -10,18 +10,18 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// AuditContextInTemplate audits context references in the given template
-func AuditContextInTemplate(template string, allowedTopLevels []string, callback func(string)) error {
+// FindContextRefsInTemplate audits context references in the given template
+func FindContextRefsInTemplate(template string, allowedTopLevels []string, callback func(string)) error {
 	return excellent.VisitTemplate(template, allowedTopLevels, func(tokenType excellent.XTokenType, token string) error {
 		switch tokenType {
 		case excellent.IDENTIFIER, excellent.EXPRESSION:
-			return auditContextInExpression(token, callback)
+			return findContextRefsInTemplate(token, callback)
 		}
 		return nil
 	})
 }
 
-func auditContextInExpression(expression string, callback func(string)) error {
+func findContextRefsInTemplate(expression string, callback func(string)) error {
 	visitor := &auditContextVisitor{callback: callback}
 
 	_, err := excellent.VisitExpression(expression, visitor)

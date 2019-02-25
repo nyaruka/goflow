@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAuditContextInTemplate(t *testing.T) {
+func TestFindContextRefsInTemplate(t *testing.T) {
 	testCases := []struct {
 		template string
 		paths    []string
@@ -28,7 +28,7 @@ func TestAuditContextInTemplate(t *testing.T) {
 	for _, tc := range testCases {
 		actual := make([]string, 0)
 
-		err := tools.AuditContextInTemplate(tc.template, []string{"foo"}, func(path string) {
+		err := tools.FindContextRefsInTemplate(tc.template, []string{"foo"}, func(path string) {
 			actual = append(actual, path)
 		})
 
