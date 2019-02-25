@@ -14,7 +14,7 @@ import (
 )
 
 // VisitExpression parses and visits the given expression with the given visitor
-func VisitExpression(expression string, visitor antlr.ParseTreeVisitor) interface{} {
+func VisitExpression(expression string, visitor antlr.ParseTreeVisitor) (interface{}, error) {
 	errListener := NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)
@@ -27,10 +27,10 @@ func VisitExpression(expression string, visitor antlr.ParseTreeVisitor) interfac
 
 	// if we ran into errors parsing, return the first one
 	if len(errListener.Errors()) > 0 {
-		return errListener.Errors()[0]
+		return nil, errListener.Errors()[0]
 	}
 
-	return visitor.Visit(tree)
+	return visitor.Visit(tree), nil
 }
 
 // visitor which evaluates each part of an expression as a value

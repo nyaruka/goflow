@@ -11,8 +11,12 @@ import (
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
 func EvaluateExpression(env utils.Environment, context types.XValue, expression string) types.XValue {
 	visitor := newEvaluationVisitor(env, context)
+	output, err := VisitExpression(expression, visitor)
+	if err != nil {
+		return types.NewXError(err)
+	}
 
-	return toXValue(VisitExpression(expression, visitor))
+	return toXValue(output)
 }
 
 // EvaluateTemplate evaluates the passed in template
