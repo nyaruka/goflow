@@ -14,10 +14,20 @@ func TestRefactorTemplate(t *testing.T) {
 		new      string
 		hasError bool
 	}{
+		{``, ``, false},
 		{`Hi @foo`, `Hi @foo`, false},
-		{`Hi @(-1+2/3*4)`, `Hi @(-1 + 2 / 3 * 4)`, false},
-		{`Hi @(foo[ 1 ] + foo[ "x" ])`, `Hi @(foo[1] + foo["x"])`, false},
-		{`Hi @(1 / ) @(1+2)`, `Hi @(1 / ) @(1 + 2)`, true},
+		{`@(foo)`, `@(foo)`, false},
+		{`@( "Hello"+12345.123 )`, `@("Hello" + 12345.123)`, false},
+		{`@foo.bar`, `@foo.bar`, false},
+		{`@(foo . bar)`, `@(foo.bar)`, false},
+		{`@(OR(TRUE, False, Null))`, `@(or(true, false, null))`, false},
+		{`@(foo[ 1 ] + foo[ "x" ])`, `@(foo[1] + foo["x"])`, false},
+		{`@(-1+( 2/3 )*4^5)`, `@(-1 + (2 / 3) * 4 ^ 5)`, false},
+		{`@("x"&"y")`, `@("x" & "y")`, false},
+		{`@(AND("x"="y", "x"!="y"))`, `@(and("x" = "y", "x" != "y"))`, false},
+		{`@(AND(1>2, 3<4, 5>=6, 7<=8))`, `@(and(1 > 2, 3 < 4, 5 >= 6, 7 <= 8))`, false},
+		{`@(FOO_Func(x, y))`, `@(foo_func(x, y))`, false},
+		{`@(1 / ) @(1+2)`, `@(1 / ) @(1 + 2)`, true},
 	}
 
 	for _, tc := range testCases {
