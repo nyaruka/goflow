@@ -1,3 +1,9 @@
+v0.28.14
+----------
+ * Allow conversion of numbers to times
+ * Migrate datetime+time to a minutes addition expression
+ * Add tools.RefactorTemplate and tools.FindContextRefsInTemplate
+
 v0.28.13
 ----------
  * Fix title to work with text which is uppercase
