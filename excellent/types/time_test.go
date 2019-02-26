@@ -36,6 +36,8 @@ func TestToXTime(t *testing.T) {
 		{nil, types.XTimeZero, true},
 		{types.NewXError(errors.Errorf("Error")), types.XTimeZero, true},
 		{types.NewXNumberFromInt(123), types.XTimeZero, true},
+		{types.NewXNumberFromInt(23), types.NewXTime(utils.NewTimeOfDay(23, 0, 0, 0)), false},
+		{types.NewXNumberFromInt(24), types.XTimeZero, false},
 		{types.NewXText("10:30"), types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 0)), false},
 		{types.NewXText("10:30 pm"), types.NewXTime(utils.NewTimeOfDay(22, 30, 0, 0)), false},
 		{types.NewXText("10"), types.NewXTime(utils.NewTimeOfDay(10, 0, 0, 0)), false},

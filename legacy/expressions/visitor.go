@@ -189,7 +189,7 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 		return fmt.Sprintf("%s %s %s", arg1, op, arg2)
 
 	} else if arg1Type == "datetime" && arg2Type == "number" {
-		// we are adding a date and a number (of days)
+		// we are adding a datetime and a number (of days)
 		template := `datetime_add(%s, %s, "D")`
 		if op == "-" {
 			template = `datetime_add(%s, -%s, "D")`
@@ -197,7 +197,28 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 
 		return fmt.Sprintf(template, arg1, arg2)
 
-	} else if arg1Type == "datetime" && arg2Type == "time" && op == "+" {
+	} else if arg1Type == "date" && arg2Type == "number" {
+		// we are adding a date and a number (of days)
+		template := `format_date(datetime_add(%s, %s, "D"))`
+		if op == "-" {
+			template = `format_date(datetime_add(%s, -%s, "D"))`
+		}
+
+		return fmt.Sprintf(template, arg1, arg2)
+
+	} else if arg1Type == "datetime" && arg2Type == "time" {
+		// we are adding a datetime and a time
+
+		// create expression which converts arg2 to minutes
+		asMinutes := fmt.Sprintf(`format_time(%[1]s, "h") * 60 + format_time(%[1]s, "m")`, arg2)
+
+		template := `datetime_add(%s, %s, "m")`
+		if op == "-" {
+			template = `datetime_add(%s, -(%s), "m")`
+		}
+		return fmt.Sprintf(template, arg1, asMinutes)
+
+	} else if arg2Type == "time" && op == "+" {
 		// we are adding a date and a time
 		return fmt.Sprintf(`replace_time(%s, %s)`, arg1, arg2)
 	}

@@ -105,13 +105,13 @@ Examples:
 @contact.language → eng
 @contact.timezone → America/Guayaquil
 @contact.created_on → 2018-06-20T11:40:30.123456Z
-@contact.urns → ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
+@contact.urns → tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com
 @(contact.urns[0]) → tel:+12065551212
-@contact.urns.tel → ["tel:+12065551212"]
+@contact.urns.tel → tel:+12065551212
 @(contact.urns.mailto[0]) → mailto:foo@bar.com
 @contact.urn → tel:+12065551212
-@contact.groups → ["Testers","Males"]
-@contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
+@contact.groups → Testers, Males
+@contact.fields → activation_token: AACC55\nage: 23\ngender: Male\njoin_date: 2017-12-02T00:00:00.000000-02:00\nnot_set:\x20
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
 ```
@@ -152,7 +152,7 @@ Examples:
 
 
 ```objectivec
-@contact.groups → ["Testers","Males"]
+@contact.groups → Testers, Males
 @(contact.groups[0].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
 @(contact.groups[1].name) → Males
 @(json(contact.groups[1])) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
@@ -183,7 +183,7 @@ Examples:
 @input → Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
 @input.type → msg
 @input.text → Hi there
-@input.attachments → ["http://s3.amazon.com/bucket/test.jpg","http://s3.amazon.com/bucket/test.mp3"]
+@input.attachments → http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3
 @(json(input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
 ```
 
@@ -393,13 +393,44 @@ It is the inverse of [char](expressions.html#function:char).
 @(code("")) → ERROR
 ```
 
+<a name="function:date"></a>
+
+## date(value)
+
+Tries to convert `value` to a date.
+
+If it is text then it will be parsed into a date using the default date format.
+An error is returned if the value can't be converted.
+
+
+```objectivec
+@(date("1979-07-18")) → 1979-07-18
+@(date("1979-07-18T10:30:45.123456Z")) → 1979-07-18
+@(date("2010 05 10")) → 2010-05-10
+@(date("NOT DATE")) → ERROR
+```
+
+<a name="function:date_from_parts"></a>
+
+## date_from_parts(year, month, day)
+
+Creates a date from `year`, `month` and `day`.
+
+
+```objectivec
+@(date_from_parts(2017, 1, 15)) → 2017-01-15
+@(date_from_parts(2017, 2, 31)) → 2017-03-03
+@(date_from_parts(2017, 13, 15)) → ERROR
+```
+
 <a name="function:datetime"></a>
 
-## datetime(text)
+## datetime(value)
 
-Parses `text` into a date using to the default date format.
+Tries to convert `value` to a datetime.
 
-An error is returned if the value can't be converted.
+If it is text then it will be parsed into a datetime using the default date
+and time formats. An error is returned if the value can't be converted.
 
 
 ```objectivec
@@ -454,19 +485,6 @@ Converts the UNIX epoch time `seconds` into a new date.
 @(datetime_from_epoch(1497286619.123456)) → 2017-06-12T11:56:59.123456-05:00
 ```
 
-<a name="function:datetime_from_parts"></a>
-
-## datetime_from_parts(year, month, day)
-
-Creates a date from `year`, `month` and `day`.
-
-
-```objectivec
-@(datetime_from_parts(2017, 1, 15)) → 2017-01-15T00:00:00.000000-05:00
-@(datetime_from_parts(2017, 2, 31)) → 2017-03-03T00:00:00.000000-05:00
-@(datetime_from_parts(2017, 13, 15)) → ERROR
-```
-
 <a name="function:default"></a>
 
 ## default(value, default)
@@ -478,7 +496,7 @@ Returns `value` if is not empty or an error, otherwise it returns `default`.
 @(default(undeclared.var, "default_value")) → default_value
 @(default("10", "20")) → 10
 @(default("", "value")) → value
-@(default(array(1, 2), "value")) → [1,2]
+@(default(array(1, 2), "value")) → 1, 2
 @(default(array(), "value")) → value
 @(default(datetime("invalid-date"), "today")) → today
 ```
@@ -732,6 +750,7 @@ length will return an error if it is passed an item which doesn't have length.
 
 ```objectivec
 @(length("Hello")) → 5
+@(length(contact.fields.gender)) → 4
 @(length("😀😃😄😁")) → 4
 @(length(array())) → 0
 @(length(array("a", "b", "c"))) → 3
@@ -1019,6 +1038,7 @@ Removes the first word of `text`.
 
 ```objectivec
 @(remove_first_word("foo bar")) → bar
+@(remove_first_word("Hi there. I'm a flow!")) → there. I'm a flow!
 ```
 
 <a name="function:repeat"></a>
@@ -1138,11 +1158,11 @@ Empty values are removed from the returned list.
 
 
 ```objectivec
-@(split("a b c", " ")) → ["a","b","c"]
-@(split("a", " ")) → ["a"]
-@(split("abc..d", ".")) → ["abc","d"]
-@(split("a.b.c.", ".")) → ["a","b","c"]
-@(split("a|b,c  d", " .|,")) → ["a","b","c","d"]
+@(split("a b c", " ")) → a, b, c
+@(split("a", " ")) → a
+@(split("abc..d", ".")) → abc, d
+@(split("a.b.c.", ".")) → a, b, c
+@(split("a|b,c  d", " .|,")) → a, b, c, d
 ```
 
 <a name="function:text"></a>
@@ -1182,6 +1202,7 @@ and 1 if `text1` comes after `text2`.
 
 Tries to convert `value` to a time.
 
+If it is text then it will be parsed into a time using the default time format.
 An error is returned if the value can't be converted.
 
 
@@ -1215,6 +1236,7 @@ Capitalizes each word in `text`.
 ```objectivec
 @(title("foo")) → Foo
 @(title("ryan lewis")) → Ryan Lewis
+@(title("RYAN LEWIS")) → Ryan Lewis
 @(title(123)) → 123
 ```
 

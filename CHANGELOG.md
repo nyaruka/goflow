@@ -1,3 +1,47 @@
+v0.28.14
+----------
+ * Allow conversion of numbers to times
+ * Migrate datetime+time to a minutes addition expression
+ * Add tools.RefactorTemplate and tools.FindContextRefsInTemplate
+
+v0.28.13
+----------
+ * Fix title to work with text which is uppercase
+ * Change implementation of remove_first_word so that punctuation is preserved
+ * Anything + TIME should migrate to replace_time(..)
+
+v0.28.12
+----------
+ * Fix migration of datevalue+time
+
+v0.28.11
+----------
+ * length(nil) == 0
+ * Arrays should stringify as CSV
+ * Maps should stringify as new line separated key: value pairs
+
+v0.28.10
+----------
+ * Wrap results of date arithmetic in format_date
+
+v0.28.9
+----------
+ * Fix calling length on a complex object that needs to be reduced
+
+v0.28.8
+----------
+ * Fix migration of DAYS()
+
+v0.28.7
+----------
+ * add accessor for msg in MsgResume
+
+v0.28.6
+----------
+ * DATEVALUE should migrate to date() so it returns a date rather than a datetime
+ * Add date() conversion function
+ * Change datetime_from_parts to date_from_parts
+
 v0.28.5
 ----------
  * fix resolving @parent or @child when they are nil

@@ -154,25 +154,33 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(5 - 4)`, new: `@(5 - 4)`},
 		{old: `@(ABS(5) + MOD(7, 2))`, new: `@(abs(5) + mod(7, 2))`},
 
-		// date+number addition should get converted to datetime_add
+		// datetime+number addition should get converted to datetime_add
 		{old: `@(date.now + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(now() + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(date + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(date.now + 5 + contact.age)`, new: `@(legacy_add(datetime_add(now(), 5, "D"), contact.fields.age))`},
 
+		// datetime+time addition should get converted to datetime_add
+		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(datetime_add(now(), format_time(time_from_parts(2, 30, 0), "h") * 60 + format_time(time_from_parts(2, 30, 0), "m"), "m"))`},
+		{old: `@(date.now - TIME(2, 30, 0))`, new: `@(datetime_add(now(), -(format_time(time_from_parts(2, 30, 0), "h") * 60 + format_time(time_from_parts(2, 30, 0), "m")), "m"))`},
+
+		// date+number addition should get converted to format_date(datetime_add(...))
+		{old: `@(date.today + 5)`, new: `@(format_date(datetime_add(format_date(today()), 5, "D")))`},
+		{old: `@(date.yesterday - 5)`, new: `@(format_date(datetime_add(format_date(datetime_add(now(), -1, "D")), -5, "D")))`},
+		{old: `@(date.tomorrow - 3 + 10)`, new: `@(format_date(datetime_add(format_date(datetime_add(format_date(datetime_add(now(), 1, "D")), -3, "D")), 10, "D")))`},
+
 		// date+time addition should get converted to replace_time
 		{old: `@(today() + TIME(15, 30, 0))`, new: `@(replace_time(today(), time_from_parts(15, 30, 0)))`},
-		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(replace_time(now(), time_from_parts(2, 30, 0)))`},
 		{old: `@(TODAY()+TIMEVALUE("10:30"))`, new: `@(replace_time(today(), time("10:30")))`},
+		{old: `@(DATEVALUE(date.today) + TIMEVALUE(CONCATENATE(flow.time_input, ":00")))`, new: `@(replace_time(date(format_date(today())), time(results.time_input & ":00")))`, dontEval: true},
+		{old: `@(contact.join_date + TIME(2, 30, 0))`, new: `@(replace_time(contact.fields.join_date, time_from_parts(2, 30, 0)))`},
 
 		// legacy_add permutations
 		{old: `@(contact.age + 5)`, new: `@(legacy_add(contact.fields.age, 5))`},
 		{old: `@(contact.join_date + 5 + contact.age)`, new: `@(legacy_add(legacy_add(contact.fields.join_date, 5), contact.fields.age))`},
 		{old: `@(contact.age + 100 - 5)`, new: `@(legacy_add(legacy_add(contact.fields.age, 100), -5))`},
-		{old: `@(date.yesterday - 3 + 10)`, new: `@(legacy_add(legacy_add(format_date(datetime_add(now(), -1, "D")), -3), 10))`},
-		{old: `@(date.tomorrow - 3)`, new: `@(legacy_add(format_date(datetime_add(now(), 1, "D")), -3))`},
 		{old: `@((5 + contact.age) / 2)`, new: `@((legacy_add(5, contact.fields.age)) / 2)`},
-		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "tt"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
+		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(date("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "tt"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
 		// expressions that should default to themselves on error
 		{old: `@("hello")`, new: `@(if(is_error("hello"), "@(\"hello\")", "hello"))`, defaultToSelf: true},
@@ -226,7 +234,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 			if migratedTemplate == tc.new && !tc.dontEval {
 				// check that the migrated template can be evaluated
-				_, err = session.Runs()[0].EvaluateTemplate(migratedTemplate)
+				_, err := session.Runs()[0].EvaluateTemplate(migratedTemplate)
 				require.NoError(t, err, "unable to evaluate migrated template '%s'", migratedTemplate)
 			}
 		}
@@ -358,7 +366,7 @@ func TestLegacyTests(t *testing.T) {
 			migratedVars := tc.Context.Variables.Migrate()
 			migratedVarsJSON, _ := json.Marshal(migratedVars)
 
-			_, err = excellent.EvaluateTemplateAsString(env, migratedVars, migratedTemplate, runs.RunContextTopLevels)
+			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate, runs.RunContextTopLevels)
 
 			if len(tc.Errors) > 0 {
 				assert.Error(t, err, "expecting error evaluating template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)

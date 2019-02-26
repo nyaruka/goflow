@@ -56,7 +56,7 @@ func (a *SayMsgAction) Validate(assets flows.SessionAssets, context *flows.Valid
 func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
 	localizedText := run.GetText(utils.UUID(a.UUID()), "text", a.Text)
-	evaluatedText, err := run.EvaluateTemplateAsString(localizedText)
+	evaluatedText, err := run.EvaluateTemplate(localizedText)
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))
 	}

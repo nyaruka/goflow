@@ -27,11 +27,12 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(CLEAN(contact.gender))`, new: `@(clean(contact.fields.gender))`, val: `Male`},
 		{old: `@(CODE("A"))`, new: `@(code("A"))`, val: `65`},
 		{old: `@(CONCATENATE(contact.first_name, " ", contact.language))`, new: `@(contact.first_name & " " & contact.language)`, val: `Ryan eng`},
-		{old: `@(DATE(2012, 12, 25))`, new: `@(datetime_from_parts(2012, 12, 25))`, val: `2012-12-25T00:00:00.000000-05:00`},
+		{old: `@(DATE(2012, 12, 25))`, new: `@(date_from_parts(2012, 12, 25))`, val: `2012-12-25`},
 		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`, val: `4`},
-		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(datetime("2012-02-03"))`, val: `2012-02-03T00:00:00.000000-05:00`},
+		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(date("2012-02-03"))`, val: `2012-02-03`},
 		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`, val: `1`},
-		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(datetime_diff("2016-02-28", "2015-02-28", "D"))`, val: `-365`},
+		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(datetime_diff("2015-02-28", "2016-02-28", "D"))`, val: `365`},
+		{old: `@(DAYS("2016-02-28", "2016-02-29"))`, new: `@(datetime_diff("2016-02-29", "2016-02-28", "D"))`, val: `-1`},
 		{old: `@(EDATE("2012-02-03", 1))`, new: `@(datetime_add("2012-02-03", 1, "M"))`, val: `2012-03-03T00:00:00.000000-05:00`},
 		{old: `@(EPOCH(NOW()))`, new: `@(epoch(now()))`},
 		{old: `@(FALSE())`, new: `@(false)`, val: `false`},
@@ -56,7 +57,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(NOW())`, new: `@(now())`},
 		{old: `@(OR(contact.gender = "M", contact.gender = "F", contact.gender = "NB"))`, new: `@(or(contact.fields.gender = "M", contact.fields.gender = "F", contact.fields.gender = "NB"))`},
 		{old: `@(POWER(2, 3))`, new: `@(2 ^ 3)`, val: `8`},
-		{old: `@(PROPER(contact))`, new: `@(title(contact))`},
+		{old: `@(PROPER(contact))`, new: `@(title(contact))`, val: `Ryan Lewis`},
 		{old: `@(RAND())`, new: `@(rand())`},
 		{old: `@(RANDBETWEEN(1, 10))`, new: `@(rand_between(1, 10))`},
 		{old: `@(REGEX_GROUP(flow.favorite_color, "\w(\w+)", 1))`, new: `@(regex_match(results.favorite_color, "\w(\w+)", 1))`},
@@ -112,7 +113,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		if migratedTemplate == tc.new {
 			// check that the migrated template can be evaluated
-			val, err := session.Runs()[0].EvaluateTemplateAsString(migratedTemplate)
+			val, err := session.Runs()[0].EvaluateTemplate(migratedTemplate)
 			require.NoError(t, err, "unable to evaluate migrated function call '%s'", migratedTemplate)
 
 			if tc.val != "" {

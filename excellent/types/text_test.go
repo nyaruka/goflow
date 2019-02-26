@@ -29,6 +29,7 @@ func TestXText(t *testing.T) {
 	assert.Equal(t, types.NewXText(""), types.NewXText("").Slice(0, 0))
 	assert.Equal(t, types.NewXText("abc"), types.NewXText("abcdef").Slice(0, 3))
 	assert.Equal(t, types.NewXText("cd"), types.NewXText("abcdef").Slice(2, 4))
+	assert.Equal(t, types.NewXText("😁😁"), types.NewXText("😁😁😁😁").Slice(2, 4))
 
 	assert.Equal(t, "abc", types.NewXText("abc").String())
 

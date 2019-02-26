@@ -53,7 +53,7 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, logMo
 		return nil
 	}
 
-	name, err := run.EvaluateTemplateAsString(a.Name)
+	name, err := run.EvaluateTemplate(a.Name)
 	name = strings.TrimSpace(name)
 
 	// if we received an error, log it

@@ -90,7 +90,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	env := run.Environment()
 
 	// first evaluate our operand
-	operand, err := run.EvaluateTemplate(r.Operand)
+	operand, err := run.EvaluateTemplateValue(r.Operand)
 	if err != nil {
 		run.LogError(step, err)
 	}
@@ -121,7 +121,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		localizedArgs := run.GetTextArray(c.UUID, "arguments", c.Arguments)
 		for i := range c.Arguments {
 			test := localizedArgs[i]
-			arg, err := run.EvaluateTemplate(test)
+			arg, err := run.EvaluateTemplateValue(test)
 			if err != nil {
 				run.LogError(step, err)
 			}

@@ -35,6 +35,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"text":     OneArgFunction(Text),
 	"boolean":  OneArgFunction(Boolean),
 	"number":   OneArgFunction(Number),
+	"date":     OneArgFunction(Date),
 	"datetime": OneArgFunction(DateTime),
 	"time":     OneArgFunction(Time),
 	"array":    Array,
@@ -81,17 +82,19 @@ var XFUNCTIONS = map[string]XFunction{
 
 	// datetime functions
 	"parse_datetime":      ArgCountCheck(2, 3, ParseDateTime),
-	"datetime_from_parts": ThreeIntegerFunction(DateTimeFromParts),
-	"datetime_from_epoch": OneNumberFunction(DatetimeFromEpoch),
+	"datetime_from_epoch": OneNumberFunction(DateTimeFromEpoch),
 	"datetime_diff":       ThreeArgFunction(DateTimeDiff),
 	"datetime_add":        DateTimeAdd,
 	"replace_time":        ArgCountCheck(2, 2, ReplaceTime),
-	"weekday":             OneDateFunction(Weekday),
 	"tz":                  OneDateTimeFunction(TZ),
 	"tz_offset":           OneDateTimeFunction(TZOffset),
-	"today":               NoArgFunction(Today),
 	"now":                 NoArgFunction(Now),
 	"epoch":               OneDateTimeFunction(Epoch),
+
+	// date functions
+	"date_from_parts": ThreeIntegerFunction(DateFromParts),
+	"weekday":         OneDateFunction(Weekday),
+	"today":           NoArgFunction(Today),
 
 	// time functions
 	"parse_time":      ArgCountCheck(2, 2, ParseTime),
@@ -171,26 +174,47 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 	return num
 }
 
-// DateTime parses `text` into a date using to the default date format.
+// Date tries to convert `value` to a date.
 //
+// If it is text then it will be parsed into a date using the default date format.
 // An error is returned if the value can't be converted.
 //
-//   @(datetime("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
-//   @(datetime("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
-//   @(datetime("2010 05 10")) -> 2010-05-10T00:00:00.000000-05:00
-//   @(datetime("NOT DATE")) -> ERROR
+//   @(date("1979-07-18")) -> 1979-07-18
+//   @(date("1979-07-18T10:30:45.123456Z")) -> 1979-07-18
+//   @(date("2010 05 10")) -> 2010-05-10
+//   @(date("NOT DATE")) -> ERROR
 //
-// @function datetime(text)
-func DateTime(env utils.Environment, value types.XValue) types.XValue {
-	d, err := types.ToXDateTime(env, value)
+// @function date(value)
+func Date(env utils.Environment, value types.XValue) types.XValue {
+	d, err := types.ToXDate(env, value)
 	if err != nil {
 		return types.NewXError(err)
 	}
 	return d
 }
 
+// DateTime tries to convert `value` to a datetime.
+//
+// If it is text then it will be parsed into a datetime using the default date
+// and time formats. An error is returned if the value can't be converted.
+//
+//   @(datetime("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
+//   @(datetime("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
+//   @(datetime("2010 05 10")) -> 2010-05-10T00:00:00.000000-05:00
+//   @(datetime("NOT DATE")) -> ERROR
+//
+// @function datetime(value)
+func DateTime(env utils.Environment, value types.XValue) types.XValue {
+	dt, err := types.ToXDateTime(env, value)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return dt
+}
+
 // Time tries to convert `value` to a time.
 //
+// If it is text then it will be parsed into a time using the default time format.
 // An error is returned if the value can't be converted.
 //
 //   @(time("10:30")) -> 10:30:00.000000
@@ -317,11 +341,11 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 //
 // Empty values are removed from the returned list.
 //
-//   @(split("a b c", " ")) -> ["a","b","c"]
-//   @(split("a", " ")) -> ["a"]
-//   @(split("abc..d", ".")) -> ["abc","d"]
-//   @(split("a.b.c.", ".")) -> ["a","b","c"]
-//   @(split("a|b,c  d", " .|,")) -> ["a","b","c","d"]
+//   @(split("a b c", " ")) -> a, b, c
+//   @(split("a", " ")) -> a
+//   @(split("abc..d", ".")) -> abc, d
+//   @(split("a.b.c.", ".")) -> a, b, c
+//   @(split("a|b,c  d", " .|,")) -> a, b, c, d
 //
 // @function split(text, delimiters)
 func Split(env utils.Environment, text types.XText, delimiters types.XText) types.XValue {
@@ -388,11 +412,12 @@ func Char(env utils.Environment, num types.XNumber) types.XValue {
 //
 //   @(title("foo")) -> Foo
 //   @(title("ryan lewis")) -> Ryan Lewis
+//   @(title("RYAN LEWIS")) -> Ryan Lewis
 //   @(title(123)) -> 123
 //
 // @function title(text)
 func Title(env utils.Environment, text types.XText) types.XValue {
-	return types.NewXText(strings.Title(text.Native()))
+	return types.NewXText(strings.Title(strings.ToLower(text.Native())))
 }
 
 // Word returns the word at `index` in `text`.
@@ -442,15 +467,23 @@ func Word(env utils.Environment, text types.XText, args ...types.XValue) types.X
 // RemoveFirstWord removes the first word of `text`.
 //
 //   @(remove_first_word("foo bar")) -> bar
+//   @(remove_first_word("Hi there. I'm a flow!")) -> there. I'm a flow!
 //
 // @function remove_first_word(text)
 func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
-	words := utils.TokenizeString(text.Native())
-	if len(words) > 1 {
-		return types.NewXText(strings.Join(words[1:], " "))
+	firstWordVal := Word(env, text, types.XNumberZero)
+	firstWord, isText := firstWordVal.(types.XText)
+	if !isText || firstWord == types.XTextEmpty {
+		return types.XTextEmpty
 	}
 
-	return types.XTextEmpty
+	firstWordStart := strings.Index(text.Native(), firstWord.Native())
+	firstWordEnd := firstWordStart + firstWord.Length()
+
+	remainder := text.Slice(firstWordEnd, text.Length())
+
+	// remove any white space left at start
+	return types.NewXText(strings.TrimLeft(remainder.Native(), " "))
 }
 
 // WordSlice extracts a sub-sequence of words from `text`.
@@ -1058,28 +1091,13 @@ func ParseDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXDateTime(parsed.In(location))
 }
 
-// DateTimeFromParts creates a date from `year`, `month` and `day`.
-//
-//   @(datetime_from_parts(2017, 1, 15)) -> 2017-01-15T00:00:00.000000-05:00
-//   @(datetime_from_parts(2017, 2, 31)) -> 2017-03-03T00:00:00.000000-05:00
-//   @(datetime_from_parts(2017, 13, 15)) -> ERROR
-//
-// @function datetime_from_parts(year, month, day)
-func DateTimeFromParts(env utils.Environment, year, month, day int) types.XValue {
-	if month < 1 || month > 12 {
-		return types.NewXErrorf("invalid value for month, must be 1-12")
-	}
-
-	return types.NewXDateTime(time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()))
-}
-
-// DatetimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
+// DateTimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
 //
 //   @(datetime_from_epoch(1497286619)) -> 2017-06-12T11:56:59.000000-05:00
 //   @(datetime_from_epoch(1497286619.123456)) -> 2017-06-12T11:56:59.123456-05:00
 //
 // @function datetime_from_epoch(seconds)
-func DatetimeFromEpoch(env utils.Environment, num types.XNumber) types.XValue {
+func DateTimeFromEpoch(env utils.Environment, num types.XNumber) types.XValue {
 	nanos := num.Native().Mul(nanosPerSecond).IntPart()
 	return types.NewXDateTime(time.Unix(0, nanos).In(env.Timezone()))
 }
@@ -1205,18 +1223,6 @@ func ReplaceTime(env utils.Environment, args ...types.XValue) types.XValue {
 	return date.ReplaceTime(t)
 }
 
-// Weekday returns the day of the week for `date`.
-//
-// The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc.
-//
-//   @(weekday("2017-01-15")) -> 0
-//   @(weekday("foo")) -> ERROR
-//
-// @function weekday(date)
-func Weekday(env utils.Environment, date types.XDate) types.XValue {
-	return types.NewXNumberFromInt(int(date.Native().Weekday()))
-}
-
 // TZ returns the name of the timezone of `date`.
 //
 // If no timezone information is present in the date, then the current timezone will be returned.
@@ -1247,15 +1253,6 @@ func TZOffset(env utils.Environment, date types.XDateTime) types.XValue {
 	return types.NewXText(date.Native().Format("-0700"))
 }
 
-// Today returns the current date in the environment timezone.
-//
-//   @(today()) -> 2018-04-11
-//
-// @function today()
-func Today(env utils.Environment) types.XValue {
-	return types.NewXDate(utils.ExtractDate(env.Now()))
-}
-
 // Epoch converts `date` to a UNIX epoch time.
 //
 // The returned number can contain fractional seconds.
@@ -1278,6 +1275,46 @@ func Epoch(env utils.Environment, date types.XDateTime) types.XValue {
 // @function now()
 func Now(env utils.Environment) types.XValue {
 	return types.NewXDateTime(env.Now())
+}
+
+//------------------------------------------------------------------------------------------
+// Date Functions
+//------------------------------------------------------------------------------------------
+
+// DateFromParts creates a date from `year`, `month` and `day`.
+//
+//   @(date_from_parts(2017, 1, 15)) -> 2017-01-15
+//   @(date_from_parts(2017, 2, 31)) -> 2017-03-03
+//   @(date_from_parts(2017, 13, 15)) -> ERROR
+//
+// @function date_from_parts(year, month, day)
+func DateFromParts(env utils.Environment, year, month, day int) types.XValue {
+	if month < 1 || month > 12 {
+		return types.NewXErrorf("invalid value for month, must be 1-12")
+	}
+
+	return types.NewXDate(utils.NewDate(year, month, day))
+}
+
+// Weekday returns the day of the week for `date`.
+//
+// The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc.
+//
+//   @(weekday("2017-01-15")) -> 0
+//   @(weekday("foo")) -> ERROR
+//
+// @function weekday(date)
+func Weekday(env utils.Environment, date types.XDate) types.XValue {
+	return types.NewXNumberFromInt(int(date.Native().Weekday()))
+}
+
+// Today returns the current date in the environment timezone.
+//
+//   @(today()) -> 2018-04-11
+//
+// @function today()
+func Today(env utils.Environment) types.XValue {
+	return types.NewXDate(utils.ExtractDate(env.Now()))
 }
 
 //------------------------------------------------------------------------------------------
@@ -1678,6 +1715,7 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 // length will return an error if it is passed an item which doesn't have length.
 //
 //   @(length("Hello")) -> 5
+//   @(length(contact.fields.gender)) -> 4
 //   @(length("😀😃😄😁")) -> 4
 //   @(length(array())) -> 0
 //   @(length(array("a", "b", "c"))) -> 3
@@ -1685,8 +1723,20 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 //
 // @function length(value)
 func Length(env utils.Environment, value types.XValue) types.XValue {
+	// a nil has length of zero
+	if utils.IsNil(value) {
+		return types.XNumberZero
+	}
+
 	// argument must be a value with length
 	lengthable, isLengthable := value.(types.XLengthable)
+	if isLengthable {
+		return types.NewXNumberFromInt(lengthable.Length())
+	}
+
+	// or reduceable to something with length
+	value = types.Reduce(env, value)
+	lengthable, isLengthable = value.(types.XLengthable)
 	if isLengthable {
 		return types.NewXNumberFromInt(lengthable.Length())
 	}
@@ -1699,7 +1749,7 @@ func Length(env utils.Environment, value types.XValue) types.XValue {
 //   @(default(undeclared.var, "default_value")) -> default_value
 //   @(default("10", "20")) -> 10
 //   @(default("", "value")) -> value
-//   @(default(array(1, 2), "value")) -> [1,2]
+//   @(default(array(1, 2), "value")) -> 1, 2
 //   @(default(array(), "value")) -> value
 //   @(default(datetime("invalid-date"), "today")) -> today
 //

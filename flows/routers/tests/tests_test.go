@@ -254,7 +254,7 @@ func TestTests(t *testing.T) {
 	}
 }
 
-func TestEvaluateTemplateAsString(t *testing.T) {
+func TestEvaluateTemplate(t *testing.T) {
 	vars := types.NewXMap(map[string]types.XValue{
 		"int1":  types.NewXNumberFromInt(1),
 		"int2":  types.NewXNumberFromInt(2),
@@ -279,7 +279,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 	env := utils.NewEnvironmentBuilder().Build()
 	for _, test := range evalTests {
-		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, vars.Keys())
+		eval, err := excellent.EvaluateTemplate(env, vars, test.template, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)

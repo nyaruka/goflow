@@ -95,12 +95,12 @@ func TestRelatedRunContext(t *testing.T) {
 	run := session.Runs()[0]
 
 	// check that trying to resolve parent is an error
-	val, err := run.EvaluateTemplate(`@parent.contact`)
+	val, err := run.EvaluateTemplateValue(`@parent.contact`)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)
 
 	// check that trying to resolve child is an error
-	val, err = run.EvaluateTemplate(`@child.contact`)
+	val, err = run.EvaluateTemplateValue(`@child.contact`)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)
 }

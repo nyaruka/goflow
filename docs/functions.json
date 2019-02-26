@@ -141,9 +141,51 @@
         ]
     },
     {
-        "signature": "datetime(text)",
-        "summary": "Parses `text` into a date using to the default date format.",
-        "detail": "An error is returned if the value can't be converted.",
+        "signature": "date(value)",
+        "summary": "Tries to convert `value` to a date.",
+        "detail": "If it is text then it will be parsed into a date using the default date format.\nAn error is returned if the value can't be converted.",
+        "examples": [
+            {
+                "template": "@(date(\"1979-07-18\"))",
+                "output": "1979-07-18"
+            },
+            {
+                "template": "@(date(\"1979-07-18T10:30:45.123456Z\"))",
+                "output": "1979-07-18"
+            },
+            {
+                "template": "@(date(\"2010 05 10\"))",
+                "output": "2010-05-10"
+            },
+            {
+                "template": "@(date(\"NOT DATE\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
+        "signature": "date_from_parts(year, month, day)",
+        "summary": "Creates a date from `year`, `month` and `day`.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(date_from_parts(2017, 1, 15))",
+                "output": "2017-01-15"
+            },
+            {
+                "template": "@(date_from_parts(2017, 2, 31))",
+                "output": "2017-03-03"
+            },
+            {
+                "template": "@(date_from_parts(2017, 13, 15))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
+        "signature": "datetime(value)",
+        "summary": "Tries to convert `value` to a datetime.",
+        "detail": "If it is text then it will be parsed into a datetime using the default date\nand time formats. An error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(datetime(\"1979-07-18\"))",
@@ -221,25 +263,6 @@
         ]
     },
     {
-        "signature": "datetime_from_parts(year, month, day)",
-        "summary": "Creates a date from `year`, `month` and `day`.",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(datetime_from_parts(2017, 1, 15))",
-                "output": "2017-01-15T00:00:00.000000-05:00"
-            },
-            {
-                "template": "@(datetime_from_parts(2017, 2, 31))",
-                "output": "2017-03-03T00:00:00.000000-05:00"
-            },
-            {
-                "template": "@(datetime_from_parts(2017, 13, 15))",
-                "output": "ERROR"
-            }
-        ]
-    },
-    {
         "signature": "default(value, default)",
         "summary": "Returns `value` if is not empty or an error, otherwise it returns `default`.",
         "detail": "",
@@ -258,7 +281,7 @@
             },
             {
                 "template": "@(default(array(1, 2), \"value\"))",
-                "output": "[1,2]"
+                "output": "1, 2"
             },
             {
                 "template": "@(default(array(), \"value\"))",
@@ -574,6 +597,10 @@
             {
                 "template": "@(length(\"Hello\"))",
                 "output": "5"
+            },
+            {
+                "template": "@(length(contact.fields.gender))",
+                "output": "4"
             },
             {
                 "template": "@(length(\"😀😃😄😁\"))",
@@ -901,6 +928,10 @@
             {
                 "template": "@(remove_first_word(\"foo bar\"))",
                 "output": "bar"
+            },
+            {
+                "template": "@(remove_first_word(\"Hi there. I'm a flow!\"))",
+                "output": "there. I'm a flow!"
             }
         ]
     },
@@ -1080,23 +1111,23 @@
         "examples": [
             {
                 "template": "@(split(\"a b c\", \" \"))",
-                "output": "[\"a\",\"b\",\"c\"]"
+                "output": "a, b, c"
             },
             {
                 "template": "@(split(\"a\", \" \"))",
-                "output": "[\"a\"]"
+                "output": "a"
             },
             {
                 "template": "@(split(\"abc..d\", \".\"))",
-                "output": "[\"abc\",\"d\"]"
+                "output": "abc, d"
             },
             {
                 "template": "@(split(\"a.b.c.\", \".\"))",
-                "output": "[\"a\",\"b\",\"c\"]"
+                "output": "a, b, c"
             },
             {
                 "template": "@(split(\"a|b,c  d\", \" .|,\"))",
-                "output": "[\"a\",\"b\",\"c\",\"d\"]"
+                "output": "a, b, c, d"
             }
         ]
     },
@@ -1141,7 +1172,7 @@
     {
         "signature": "time(value)",
         "summary": "Tries to convert `value` to a time.",
-        "detail": "An error is returned if the value can't be converted.",
+        "detail": "If it is text then it will be parsed into a time using the default time format.\nAn error is returned if the value can't be converted.",
         "examples": [
             {
                 "template": "@(time(\"10:30\"))",
@@ -1191,6 +1222,10 @@
             },
             {
                 "template": "@(title(\"ryan lewis\"))",
+                "output": "Ryan Lewis"
+            },
+            {
+                "template": "@(title(\"RYAN LEWIS\"))",
                 "output": "Ryan Lewis"
             },
             {

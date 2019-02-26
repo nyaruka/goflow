@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 )
@@ -34,11 +35,15 @@ func (a *xarray) Reduce(env utils.Environment) XPrimitive { return a }
 
 // ToXText converts this type to text
 func (a *xarray) ToXText(env utils.Environment) XText {
-	primitives := make([]XValue, len(a.values))
+	parts := make([]string, a.Length())
 	for i, v := range a.values {
-		primitives[i] = Reduce(env, v)
+		vAsText, xerr := ToXText(env, v)
+		if xerr != nil {
+			vAsText = xerr.ToXText(env)
+		}
+		parts[i] = vAsText.Native()
 	}
-	return MustMarshalToXText(primitives)
+	return NewXText(strings.Join(parts, ", "))
 }
 
 // ToXBoolean converts this type to a bool

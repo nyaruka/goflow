@@ -54,7 +54,7 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 		return nil
 	}
 
-	language, err := run.EvaluateTemplateAsString(a.Language)
+	language, err := run.EvaluateTemplate(a.Language)
 	language = strings.TrimSpace(language)
 
 	// if we received an error, log it

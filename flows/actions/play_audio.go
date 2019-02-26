@@ -51,7 +51,7 @@ func (a *PlayAudioAction) Validate(assets flows.SessionAssets, context *flows.Va
 func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate audio URL
 	localizedAudioURL := run.GetText(utils.UUID(a.UUID()), "audio_url", a.AudioURL)
-	evaluatedAudioURL, err := run.EvaluateTemplateAsString(localizedAudioURL)
+	evaluatedAudioURL, err := run.EvaluateTemplate(localizedAudioURL)
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))
 		return nil
