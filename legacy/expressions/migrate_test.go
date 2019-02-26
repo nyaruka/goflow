@@ -366,7 +366,7 @@ func TestLegacyTests(t *testing.T) {
 			migratedVars := tc.Context.Variables.Migrate()
 			migratedVarsJSON, _ := json.Marshal(migratedVars)
 
-			_, err = excellent.EvaluateTemplateAsString(env, migratedVars, migratedTemplate, runs.RunContextTopLevels)
+			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate, runs.RunContextTopLevels)
 
 			if len(tc.Errors) > 0 {
 				assert.Error(t, err, "expecting error evaluating template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)

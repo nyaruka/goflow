@@ -54,7 +54,7 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 		return nil
 	}
 
-	timezone, err := run.EvaluateTemplateAsString(a.Timezone)
+	timezone, err := run.EvaluateTemplate(a.Timezone)
 	timezone = strings.TrimSpace(timezone)
 
 	// if we received an error, log it

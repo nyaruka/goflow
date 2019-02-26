@@ -465,8 +465,8 @@ type FlowRun interface {
 	PathLocation() (Step, Node, error)
 	Events() []Event
 
-	EvaluateTemplate(template string) (types.XValue, error)
-	EvaluateTemplateAsString(template string) (string, error)
+	EvaluateTemplateValue(template string) (types.XValue, error)
+	EvaluateTemplate(template string) (string, error)
 
 	GetText(utils.UUID, string, string) string
 	GetTextArray(utils.UUID, string, []string) []string

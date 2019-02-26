@@ -60,7 +60,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logMod
 		return nil
 	}
 
-	evaluatedPath, err := run.EvaluateTemplateAsString(a.Path)
+	evaluatedPath, err := run.EvaluateTemplate(a.Path)
 
 	// if we received an error, log it although it might just be a non-expression like foo@bar.com
 	if err != nil {

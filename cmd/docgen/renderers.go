@@ -263,7 +263,7 @@ func checkExample(session flows.Session, line string) error {
 	expected = strings.Replace(expected, `\x20`, " ", -1)
 
 	// evaluate our expression
-	val, err := session.Runs()[0].EvaluateTemplateAsString(test)
+	val, err := session.Runs()[0].EvaluateTemplate(test)
 
 	if expected == "ERROR" {
 		if err == nil {
