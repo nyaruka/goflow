@@ -8,11 +8,6 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// BaseVisitor is the base of visitors
-type BaseVisitor struct {
-	gen.BaseExcellent2Visitor
-}
-
 // VisitExpression parses and visits the given expression with the given visitor
 func VisitExpression(expression string, visitor antlr.ParseTreeVisitor) (interface{}, error) {
 	errListener := NewErrorListener(expression)

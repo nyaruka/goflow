@@ -56,7 +56,7 @@ func wrapExpression(tokenType excellent.XTokenType, token string) string {
 
 // visitor which rewrites each part of an expression
 type refactorVisitor struct {
-	excellent.BaseVisitor
+	gen.BaseExcellent2Visitor
 }
 
 // Visit the top level parse tree

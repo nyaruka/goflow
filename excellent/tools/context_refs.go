@@ -31,7 +31,7 @@ func findContextRefsInTemplate(expression string, callback func(string)) error {
 
 // visitor which audits access to the context
 type auditContextVisitor struct {
-	excellent.BaseVisitor
+	gen.BaseExcellent2Visitor
 
 	callback func(string)
 }

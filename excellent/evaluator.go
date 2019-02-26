@@ -78,7 +78,7 @@ func EvaluateExpression(env utils.Environment, context types.XValue, expression 
 
 // visitor which evaluates each part of an expression as a value
 type visitor struct {
-	BaseVisitor
+	gen.BaseExcellent2Visitor
 
 	env      utils.Environment
 	resolver types.XValue
