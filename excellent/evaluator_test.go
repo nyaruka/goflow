@@ -232,6 +232,10 @@ func TestEvaluateTemplate(t *testing.T) {
 		hasError bool
 	}{
 		{`hello world`, "hello world", false},
+		{`@("hello\nworld")`, "hello\nworld", false},
+		{`@("\"hello\nworld\"")`, "\"hello\nworld\"", false},
+		{`@("hello😁world")`, "hello😁world", false},
+		{`@("hello\U0001F601world")`, "hello😁world", false},
 		{`@(title("hello"))`, "Hello", false},
 		{`@(title(hello))`, "", true},
 		{`Hello @(title(string1))`, "Hello Foo", false},
@@ -244,13 +248,6 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		// identifier which is valid top-level, errors and isn't echo'ed back
 		{"@string1.xxx", "", true},
-
-		// text literals
-		{`@("hello\nworld")`, "hello\nworld", false},
-		{`@("\"hello\nworld\"")`, "\"hello\nworld\"", false},
-		{`@("hello😁world")`, "hello😁world", false},
-		{`@("hello\U0001F601world")`, "hello😁world", false},
-		{`@("hello\U0001F60world")`, "", true}, // invalid \U sequence
 
 		{"1 + 2", "1 + 2", false},
 		{"@(1 + 2)", "3", false},
@@ -313,12 +310,14 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		eval, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
 
-		assert.Equal(t, test.expected, eval, "output mistmatch evaluating template: %s", test.template)
-
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
 		} else {
 			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
+
+			if eval != test.expected {
+				t.Errorf("Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
+			}
 		}
 	}
 }

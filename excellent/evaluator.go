@@ -105,8 +105,10 @@ func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
 
 	// unquote, this takes care of escape sequences as well
 	unquoted, err := strconv.Unquote(value)
+
+	// if we had an error, just strip surrounding quotes
 	if err != nil {
-		return types.NewXErrorf("unable to parse text literal %s", value)
+		unquoted = value[1 : len(value)-1]
 	}
 
 	return types.NewXText(unquoted)
