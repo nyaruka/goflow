@@ -32,21 +32,21 @@ const TypeSendMsg string = "send_msg"
 type SendMsgAction struct {
 	BaseAction
 	universalAction
+	createMsgAction
 
-	Text         string   `json:"text"`
-	Attachments  []string `json:"attachments,omitempty"`
-	QuickReplies []string `json:"quick_replies,omitempty"`
-	AllURNs      bool     `json:"all_urns,omitempty"`
+	AllURNs bool `json:"all_urns,omitempty"`
 }
 
 // NewSendMsgAction creates a new send msg action
 func NewSendMsgAction(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, allURNs bool) *SendMsgAction {
 	return &SendMsgAction{
-		BaseAction:   NewBaseAction(TypeSendMsg, uuid),
-		Text:         text,
-		Attachments:  attachments,
-		QuickReplies: quickReplies,
-		AllURNs:      allURNs,
+		BaseAction: NewBaseAction(TypeSendMsg, uuid),
+		createMsgAction: createMsgAction{
+			Text:         text,
+			Attachments:  attachments,
+			QuickReplies: quickReplies,
+		},
+		AllURNs: allURNs,
 	}
 }
 

@@ -7,11 +7,9 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
-	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/flows/waits/hints"
@@ -263,64 +261,86 @@ func TestReadFlow(t *testing.T) {
 }
 
 func TestEnumerateAndRewriteTemplates(t *testing.T) {
-	source, err := static.LoadSource("../../test/testdata/flows/two_questions.json")
-	require.NoError(t, err)
+	testCases := []struct {
+		path      string
+		uuid      string
+		templates []string
+	}{
+		{
+			"../../test/testdata/flows/two_questions.json",
+			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+			[]string{
+				`Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))`,
+				`Red`,
+				`Blue`,
+				`Quelle est votres couleur preferee? (rouge/blue)`,
+				`@input`,
+				`red`,
+				`rouge`,
+				`blue`,
+				`bleu`,
+				`fra`,
+				`@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)`,
+				`@(TITLE(results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)`,
+				`@input`,
+				`pepsi`,
+				`coke coca cola`,
+				`http://localhost/?cmd=success`,
+				`{ "contact": @(json(contact.uuid)), "soda": @(json(results.soda.value)) }`,
+				`Great, you are done and like @results.soda! Webhook status was @results.webhook.value`,
+				`Parfait, vous avez finis et tu aimes @results.soda.category`,
+			},
+		},
+		{
+			"../../test/testdata/flows/all_actions.json",
+			"8ca44c09-791d-453a-9799-a70dd3303306",
+			[]string{
+				`@(format_location(contact.fields.state)) Messages`,
+				`@(format_location(contact.fields.state)) Members`,
+				`@(replace(lower(contact.name), " ", "_"))`,
+				`XXX-YYY-ZZZ`,
+				`Hi @contact.name, are you ready?`,
+				`Hola @contact.name, ¿estás listo?`,
+				`Hi @contact.name, are you ready for these attachments?`,
+				`image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))`,
+				`Hi @contact.name, are you ready to complete today's survey?`,
+				`This is a message to each of @contact.name's urns.`,
+				`This is a reply with attachments and quick replies`,
+				`image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))`,
+				`Yes`,
+				`No`,
+				`m`,
+				`Jeff Jefferson`,
+				``,
+				`@results.gender.category`,
+				`@contact.fields.raw_district`,
+				`http://localhost/?cmd=success&name=@(url_encode(contact.name))`,
+				``,
+			},
+		},
+	}
 
-	sessionAssets, err := engine.NewSessionAssets(source)
-	require.NoError(t, err)
+	for _, tc := range testCases {
+		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		require.NoError(t, err)
 
-	flow, err := sessionAssets.Flows().Get("615b8a0f-588c-4d20-a05f-363b0b4ce6f4")
-	require.NoError(t, err)
+		// try enumerating all templates
+		templates := make([]string, 0)
+		flow.EnumerateTemplates(func(t string) { templates = append(templates, t) })
 
-	templates := make([]string, 0)
-	flow.EnumerateTemplates(func(t string) { templates = append(templates, t) })
+		assert.Equal(t, tc.templates, templates)
 
-	assert.Equal(t, []string{
-		`Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))`,
-		`Red`,
-		`Blue`,
-		`Quelle est votres couleur preferee? (rouge/blue)`,
-		`@input`,
-		`red`,
-		`rouge`,
-		`blue`,
-		`bleu`,
-		`fra`,
-		`@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)`,
-		`@(TITLE(results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)`,
-		`@input`,
-		`pepsi`,
-		`coke coca cola`,
-		`http://localhost/?cmd=success`,
-		`{ "contact": @(json(contact.uuid)), "soda": @(json(results.soda.value)) }`,
-		`Great, you are done and like @results.soda! Webhook status was @results.webhook.value`,
-		`Parfait, vous avez finis et tu aimes @results.soda.category`,
-	}, templates)
+		// try rewriting all templates in uppercase
+		flow.RewriteTemplates(func(t string) string { return strings.ToUpper(t) })
 
-	flow.RewriteTemplates(func(t string) string { return strings.ToUpper(t) })
+		// re-enumerate all templates
+		rewritten := make([]string, 0)
+		flow.EnumerateTemplates(func(t string) { rewritten = append(rewritten, t) })
 
-	templates = make([]string, 0)
-	flow.EnumerateTemplates(func(t string) { templates = append(templates, t) })
+		for t := range templates {
+			templates[t] = strings.ToUpper(templates[t])
+		}
 
-	assert.Equal(t, []string{
-		`HI @CONTACT.NAME! WHAT IS YOUR FAVORITE COLOR? (RED/BLUE) YOUR NUMBER IS @(FORMAT_URN(CONTACT.URN))`,
-		`RED`,
-		`BLUE`,
-		`QUELLE EST VOTRES COULEUR PREFEREE? (ROUGE/BLUE)`,
-		`@INPUT`,
-		`RED`,
-		`ROUGE`,
-		`BLUE`,
-		`BLEU`,
-		`FRA`,
-		`@(TITLE(RESULTS.FAVORITE_COLOR.CATEGORY_LOCALIZED)) IT IS! WHAT IS YOUR FAVORITE SODA? (PEPSI/COKE)`,
-		`@(TITLE(RESULTS.FAVORITE_COLOR.CATEGORY_LOCALIZED))! BIEN SUR! QUELLE EST VOTES SODA PREFEREE? (PEPSI/COKE)`,
-		`@INPUT`,
-		`PEPSI`,
-		`COKE COCA COLA`,
-		`HTTP://LOCALHOST/?CMD=SUCCESS`,
-		`{ "CONTACT": @(JSON(CONTACT.UUID)), "SODA": @(JSON(RESULTS.SODA.VALUE)) }`,
-		`GREAT, YOU ARE DONE AND LIKE @RESULTS.SODA! WEBHOOK STATUS WAS @RESULTS.WEBHOOK.VALUE`,
-		`PARFAIT, VOUS AVEZ FINIS ET TU AIMES @RESULTS.SODA.CATEGORY`,
-	}, templates)
+		assert.Equal(t, templates, rewritten)
+	}
 }

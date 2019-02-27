@@ -25,6 +25,15 @@ func LoadSessionAssets(path string) (flows.SessionAssets, error) {
 	return engine.NewSessionAssets(source)
 }
 
+func LoadFlowFromAssets(path string, uuid assets.FlowUUID) (flows.Flow, error) {
+	sa, err := LoadSessionAssets(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return sa.Flows().Get(uuid)
+}
+
 func NewField(key string, name string, valueType assets.FieldType) *flows.Field {
 	return flows.NewField(types.NewField(key, name, valueType))
 }

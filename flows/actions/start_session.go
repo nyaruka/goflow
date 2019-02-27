@@ -32,24 +32,23 @@ const TypeStartSession string = "start_session"
 type StartSessionAction struct {
 	BaseAction
 	onlineAction
+	otherContactsAction
 
-	Flow          *assets.FlowReference     `json:"flow" validate:"required"`
-	URNs          []urns.URN                `json:"urns,omitempty"`
-	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups        []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	LegacyVars    []string                  `json:"legacy_vars,omitempty"`
-	CreateContact bool                      `json:"create_contact,omitempty"`
+	Flow          *assets.FlowReference `json:"flow" validate:"required"`
+	CreateContact bool                  `json:"create_contact,omitempty"`
 }
 
 // NewStartSessionAction creates a new start session action
 func NewStartSessionAction(uuid flows.ActionUUID, flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string, createContact bool) *StartSessionAction {
 	return &StartSessionAction{
-		BaseAction:    NewBaseAction(TypeStartSession, uuid),
+		BaseAction: NewBaseAction(TypeStartSession, uuid),
+		otherContactsAction: otherContactsAction{
+			URNs:       urns,
+			Contacts:   contacts,
+			Groups:     groups,
+			LegacyVars: legacyVars,
+		},
 		Flow:          flow,
-		URNs:          urns,
-		Contacts:      contacts,
-		Groups:        groups,
-		LegacyVars:    legacyVars,
 		CreateContact: createContact,
 	}
 }
@@ -79,4 +78,24 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 	logEvent(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
 	return nil
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *StartSessionAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	for _, group := range a.Groups {
+		if group.NameMatch != "" {
+			callback(group.NameMatch)
+		}
+	}
+	flows.EnumerateTemplateArray(a.LegacyVars, callback)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *StartSessionAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	for _, group := range a.Groups {
+		if group.NameMatch != "" {
+			group.NameMatch = rewrite(group.NameMatch)
+		}
+	}
+	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
 }

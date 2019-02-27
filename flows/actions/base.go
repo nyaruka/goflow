@@ -330,6 +330,21 @@ func (a *voiceAction) AllowedFlowTypes() []flows.FlowType {
 	return []flows.FlowType{flows.FlowTypeVoice}
 }
 
+// utility struct for actions which operate on other contacts
+type otherContactsAction struct {
+	URNs       []urns.URN                `json:"urns,omitempty"`
+	Contacts   []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	Groups     []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
+	LegacyVars []string                  `json:"legacy_vars,omitempty"`
+}
+
+// utility struct for actions which create a message
+type createMsgAction struct {
+	Text         string   `json:"text"`
+	Attachments  []string `json:"attachments,omitempty"`
+	QuickReplies []string `json:"quick_replies,omitempty"`
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

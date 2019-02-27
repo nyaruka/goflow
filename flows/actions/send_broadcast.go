@@ -32,27 +32,25 @@ const TypeSendBroadcast string = "send_broadcast"
 type SendBroadcastAction struct {
 	BaseAction
 	onlineAction
-
-	Text         string                    `json:"text"`
-	Attachments  []string                  `json:"attachments,omitempty"`
-	QuickReplies []string                  `json:"quick_replies,omitempty"`
-	URNs         []urns.URN                `json:"urns,omitempty"`
-	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups       []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	LegacyVars   []string                  `json:"legacy_vars,omitempty"`
+	otherContactsAction
+	createMsgAction
 }
 
 // NewSendBroadcastAction creates a new send broadcast action
 func NewSendBroadcastAction(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string) *SendBroadcastAction {
 	return &SendBroadcastAction{
-		BaseAction:   NewBaseAction(TypeSendBroadcast, uuid),
-		Text:         text,
-		Attachments:  attachments,
-		QuickReplies: quickReplies,
-		URNs:         urns,
-		Contacts:     contacts,
-		Groups:       groups,
-		LegacyVars:   legacyVars,
+		BaseAction: NewBaseAction(TypeSendBroadcast, uuid),
+		otherContactsAction: otherContactsAction{
+			URNs:       urns,
+			Contacts:   contacts,
+			Groups:     groups,
+			LegacyVars: legacyVars,
+		},
+		createMsgAction: createMsgAction{
+			Text:         text,
+			Attachments:  attachments,
+			QuickReplies: quickReplies,
+		},
 	}
 }
 
@@ -86,4 +84,38 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 	logEvent(events.NewBroadcastCreatedEvent(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
 
 	return nil
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Text)
+	flows.EnumerateTemplateArray(a.Attachments, callback)
+	flows.EnumerateTemplateArray(a.QuickReplies, callback)
+	flows.EnumerateTemplateTranslations(localization, a, "text", callback)
+	flows.EnumerateTemplateTranslations(localization, a, "attachments", callback)
+	flows.EnumerateTemplateTranslations(localization, a, "quick_replies", callback)
+
+	for _, group := range a.Groups {
+		if group.NameMatch != "" {
+			callback(group.NameMatch)
+		}
+	}
+	flows.EnumerateTemplateArray(a.LegacyVars, callback)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *SendBroadcastAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Text = rewrite(a.Text)
+	flows.RewriteTemplateArray(a.Attachments, rewrite)
+	flows.RewriteTemplateArray(a.QuickReplies, rewrite)
+	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
+	flows.RewriteTemplateTranslations(localization, a, "attachments", rewrite)
+	flows.RewriteTemplateTranslations(localization, a, "quick_replies", rewrite)
+
+	for _, group := range a.Groups {
+		if group.NameMatch != "" {
+			group.NameMatch = rewrite(group.NameMatch)
+		}
+	}
+	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
 }
