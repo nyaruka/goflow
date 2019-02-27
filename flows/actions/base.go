@@ -57,12 +57,10 @@ func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) 
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *BaseAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	// TODO use reflection?
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
 func (a *BaseAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	// TODO use reflection?
 }
 
 // helper function for actions that have a set of group references that must be validated

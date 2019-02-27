@@ -71,18 +71,10 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logMo
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *AddInputLabelsAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	for _, label := range a.Labels {
-		if label.NameMatch != "" {
-			callback(label.NameMatch)
-		}
-	}
+	flows.EnumerateTemplatesInLabelReferences(a.Labels, callback)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
 func (a *AddInputLabelsAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	for _, label := range a.Labels {
-		if label.NameMatch != "" {
-			label.NameMatch = rewrite(label.NameMatch)
-		}
-	}
+	flows.RewriteTemplatesInLabelReferences(a.Labels, rewrite)
 }

@@ -94,12 +94,7 @@ func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization
 	flows.EnumerateTemplateTranslations(localization, a, "text", callback)
 	flows.EnumerateTemplateTranslations(localization, a, "attachments", callback)
 	flows.EnumerateTemplateTranslations(localization, a, "quick_replies", callback)
-
-	for _, group := range a.Groups {
-		if group.NameMatch != "" {
-			callback(group.NameMatch)
-		}
-	}
+	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)
 	flows.EnumerateTemplateArray(a.LegacyVars, callback)
 }
 
@@ -111,11 +106,6 @@ func (a *SendBroadcastAction) RewriteTemplates(localization flows.Localization, 
 	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
 	flows.RewriteTemplateTranslations(localization, a, "attachments", rewrite)
 	flows.RewriteTemplateTranslations(localization, a, "quick_replies", rewrite)
-
-	for _, group := range a.Groups {
-		if group.NameMatch != "" {
-			group.NameMatch = rewrite(group.NameMatch)
-		}
-	}
+	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
 	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
 }

@@ -86,18 +86,10 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *RemoveContactGroupsAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	for _, group := range a.Groups {
-		if group.NameMatch != "" {
-			callback(group.NameMatch)
-		}
-	}
+	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
 func (a *RemoveContactGroupsAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	for _, group := range a.Groups {
-		if group.NameMatch != "" {
-			group.NameMatch = rewrite(group.NameMatch)
-		}
-	}
+	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
 }

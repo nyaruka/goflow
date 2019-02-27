@@ -82,20 +82,12 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *StartSessionAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	for _, group := range a.Groups {
-		if group.NameMatch != "" {
-			callback(group.NameMatch)
-		}
-	}
+	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)
 	flows.EnumerateTemplateArray(a.LegacyVars, callback)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
 func (a *StartSessionAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	for _, group := range a.Groups {
-		if group.NameMatch != "" {
-			group.NameMatch = rewrite(group.NameMatch)
-		}
-	}
+	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
 	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
 }
