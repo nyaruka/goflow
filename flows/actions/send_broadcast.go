@@ -32,27 +32,25 @@ const TypeSendBroadcast string = "send_broadcast"
 type SendBroadcastAction struct {
 	BaseAction
 	onlineAction
-
-	Text         string                    `json:"text"`
-	Attachments  []string                  `json:"attachments,omitempty"`
-	QuickReplies []string                  `json:"quick_replies,omitempty"`
-	URNs         []urns.URN                `json:"urns,omitempty"`
-	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups       []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	LegacyVars   []string                  `json:"legacy_vars,omitempty"`
+	otherContactsAction
+	createMsgAction
 }
 
 // NewSendBroadcastAction creates a new send broadcast action
 func NewSendBroadcastAction(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string) *SendBroadcastAction {
 	return &SendBroadcastAction{
-		BaseAction:   NewBaseAction(TypeSendBroadcast, uuid),
-		Text:         text,
-		Attachments:  attachments,
-		QuickReplies: quickReplies,
-		URNs:         urns,
-		Contacts:     contacts,
-		Groups:       groups,
-		LegacyVars:   legacyVars,
+		BaseAction: NewBaseAction(TypeSendBroadcast, uuid),
+		otherContactsAction: otherContactsAction{
+			URNs:       urns,
+			Contacts:   contacts,
+			Groups:     groups,
+			LegacyVars: legacyVars,
+		},
+		createMsgAction: createMsgAction{
+			Text:         text,
+			Attachments:  attachments,
+			QuickReplies: quickReplies,
+		},
 	}
 }
 
