@@ -138,6 +138,15 @@ func (v *ValidationContext) IsStarted(flow Flow) bool {
 	return v.started[flow.UUID()]
 }
 
+type Localizable interface {
+	LocalizationUUID() utils.UUID
+}
+
+type ExpressionsContainer interface {
+	EnumerateTemplates(Localization, func(string))
+	RewriteTemplates(Localization, func(string) string)
+}
+
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
 // properties which can be accessed:
 //
@@ -171,10 +180,15 @@ type Flow interface {
 	GetNode(uuid NodeUUID) Node
 
 	Reference() *assets.FlowReference
+
+	EnumerateTemplates(func(string))
+	RewriteTemplates(func(string) string)
 }
 
 // Node is a single node in a flow
 type Node interface {
+	ExpressionsContainer
+
 	UUID() NodeUUID
 	Actions() []Action
 	AddAction(Action)
@@ -187,19 +201,23 @@ type Node interface {
 
 // Action is an action within a flow node
 type Action interface {
-	UUID() ActionUUID
+	utils.Typed
+	Localizable
+	ExpressionsContainer
 
+	UUID() ActionUUID
 	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
 	Validate(SessionAssets, *ValidationContext) error
 	AllowedFlowTypes() []FlowType
-	utils.Typed
 }
 
 type Router interface {
+	utils.Typed
+	ExpressionsContainer
+
 	PickRoute(FlowRun, []Exit, Step) (*string, Route, error)
 	Validate([]Exit) error
 	ResultName() string
-	utils.Typed
 }
 
 type Exit interface {
@@ -231,7 +249,8 @@ type Localization interface {
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
 type Translations interface {
-	GetTextArray(uuid utils.UUID, key string) []string
+	GetTextArray(utils.UUID, string) []string
+	SetTextArray(utils.UUID, string, []string)
 }
 
 // UINodeDetails is the top level ui details for a node

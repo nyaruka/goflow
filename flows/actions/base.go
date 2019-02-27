@@ -52,6 +52,19 @@ func (a *BaseAction) Type() string { return a.Type_ }
 // UUID returns the UUID of the action
 func (a *BaseAction) UUID() flows.ActionUUID { return a.UUID_ }
 
+// LocalizationUUID gets the UUID which identifies this object for localization
+func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *BaseAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	// TODO use reflection?
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *BaseAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	// TODO use reflection?
+}
+
 // helper function for actions that have a set of group references that must be validated
 func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*assets.GroupReference) error {
 	for _, ref := range references {

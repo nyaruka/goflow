@@ -55,9 +55,8 @@ func (a *SetRunResultAction) Validate(assets flows.SessionAssets, context *flows
 
 // Execute runs this action
 func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	// get our localized value if any
-	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
-	value, err := run.EvaluateTemplate(template)
+	// get our evaluated value
+	value, err := run.EvaluateTemplate(a.Value)
 
 	// log any error received
 	if err != nil {
@@ -72,4 +71,14 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 	a.saveResult(run, step, a.Name, value, a.Category, categoryLocalized, nil, nil, logEvent)
 	return nil
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *SetRunResultAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Value)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *SetRunResultAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Value = rewrite(a.Value)
 }

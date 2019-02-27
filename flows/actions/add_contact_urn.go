@@ -83,3 +83,13 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logMod
 	a.applyModifier(run, modifiers.NewURNModifier(urn, modifiers.URNAppend), logModifier, logEvent)
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *AddContactURNAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Path)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *AddContactURNAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Path = rewrite(a.Path)
+}

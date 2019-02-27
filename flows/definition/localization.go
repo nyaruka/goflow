@@ -36,6 +36,16 @@ func (t languageTranslations) GetTextArray(uuid utils.UUID, property string) []s
 	return nil
 }
 
+// SetTextArray updates the requested item translation
+func (t languageTranslations) SetTextArray(uuid utils.UUID, property string, translated []string) {
+	_, found := t[uuid]
+	if !found {
+		t[uuid] = make(itemTranslations)
+	}
+
+	t[uuid][property] = translated
+}
+
 // our top level container for all the translations for all languages
 type localization map[utils.Language]languageTranslations
 
@@ -58,11 +68,7 @@ func (l localization) AddItemTranslation(lang utils.Language, itemUUID utils.UUI
 	if !found {
 		l[lang] = make(languageTranslations)
 	}
-	_, found = l[lang][itemUUID]
-	if !found {
-		l[lang][itemUUID] = make(itemTranslations)
-	}
-	l[lang][itemUUID][property] = translated
+	l[lang].SetTextArray(itemUUID, property, translated)
 }
 
 // GetTranslations returns the translations for the given language

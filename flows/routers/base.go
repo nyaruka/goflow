@@ -34,6 +34,12 @@ func (r *BaseRouter) Type() string { return r.Type_ }
 // ResultName returns the name which the result of this router should be saved as (if any)
 func (r *BaseRouter) ResultName() string { return r.ResultName_ }
 
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (r *BaseRouter) EnumerateTemplates(localization flows.Localization, callback func(string)) {}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (r *BaseRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

@@ -91,6 +91,28 @@ func (n *node) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 	return nil
 }
 
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (n *node) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	for _, a := range n.Actions() {
+		a.EnumerateTemplates(localization, callback)
+	}
+
+	if n.Router() != nil {
+		n.Router().EnumerateTemplates(localization, callback)
+	}
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (n *node) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	for _, a := range n.Actions() {
+		a.RewriteTemplates(localization, rewrite)
+	}
+
+	if n.Router() != nil {
+		n.Router().RewriteTemplates(localization, rewrite)
+	}
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

@@ -3,12 +3,15 @@ package definition_test
 import (
 	"encoding/json"
 	"io/ioutil"
+	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/flows/waits/hints"
@@ -257,4 +260,67 @@ func TestReadFlow(t *testing.T) {
 		"nodes": []
 	}`))
 	assert.EqualError(t, err, "unable to read flow: field 'type' is required")
+}
+
+func TestEnumerateAndRewriteTemplates(t *testing.T) {
+	source, err := static.LoadSource("../../test/testdata/flows/two_questions.json")
+	require.NoError(t, err)
+
+	sessionAssets, err := engine.NewSessionAssets(source)
+	require.NoError(t, err)
+
+	flow, err := sessionAssets.Flows().Get("615b8a0f-588c-4d20-a05f-363b0b4ce6f4")
+	require.NoError(t, err)
+
+	templates := make([]string, 0)
+	flow.EnumerateTemplates(func(t string) { templates = append(templates, t) })
+
+	assert.Equal(t, []string{
+		`Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))`,
+		`Red`,
+		`Blue`,
+		`Quelle est votres couleur preferee? (rouge/blue)`,
+		`@input`,
+		`red`,
+		`rouge`,
+		`blue`,
+		`bleu`,
+		`fra`,
+		`@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)`,
+		`@(TITLE(results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)`,
+		`@input`,
+		`pepsi`,
+		`coke coca cola`,
+		`http://localhost/?cmd=success`,
+		`{ "contact": @(json(contact.uuid)), "soda": @(json(results.soda.value)) }`,
+		`Great, you are done and like @results.soda! Webhook status was @results.webhook.value`,
+		`Parfait, vous avez finis et tu aimes @results.soda.category`,
+	}, templates)
+
+	flow.RewriteTemplates(func(t string) string { return strings.ToUpper(t) })
+
+	templates = make([]string, 0)
+	flow.EnumerateTemplates(func(t string) { templates = append(templates, t) })
+
+	assert.Equal(t, []string{
+		`HI @CONTACT.NAME! WHAT IS YOUR FAVORITE COLOR? (RED/BLUE) YOUR NUMBER IS @(FORMAT_URN(CONTACT.URN))`,
+		`RED`,
+		`BLUE`,
+		`QUELLE EST VOTRES COULEUR PREFEREE? (ROUGE/BLUE)`,
+		`@INPUT`,
+		`RED`,
+		`ROUGE`,
+		`BLUE`,
+		`BLEU`,
+		`FRA`,
+		`@(TITLE(RESULTS.FAVORITE_COLOR.CATEGORY_LOCALIZED)) IT IS! WHAT IS YOUR FAVORITE SODA? (PEPSI/COKE)`,
+		`@(TITLE(RESULTS.FAVORITE_COLOR.CATEGORY_LOCALIZED))! BIEN SUR! QUELLE EST VOTES SODA PREFEREE? (PEPSI/COKE)`,
+		`@INPUT`,
+		`PEPSI`,
+		`COKE COCA COLA`,
+		`HTTP://LOCALHOST/?CMD=SUCCESS`,
+		`{ "CONTACT": @(JSON(CONTACT.UUID)), "SODA": @(JSON(RESULTS.SODA.VALUE)) }`,
+		`GREAT, YOU ARE DONE AND LIKE @RESULTS.SODA! WEBHOOK STATUS WAS @RESULTS.WEBHOOK.VALUE`,
+		`PARFAIT, VOUS AVEZ FINIS ET TU AIMES @RESULTS.SODA.CATEGORY`,
+	}, templates)
 }

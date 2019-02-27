@@ -83,3 +83,21 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove), logModifier, logEvent)
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *RemoveContactGroupsAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	for _, group := range a.Groups {
+		if group.NameMatch != "" {
+			callback(group.NameMatch)
+		}
+	}
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *RemoveContactGroupsAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	for _, group := range a.Groups {
+		if group.NameMatch != "" {
+			group.NameMatch = rewrite(group.NameMatch)
+		}
+	}
+}
