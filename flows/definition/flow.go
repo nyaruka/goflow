@@ -144,7 +144,11 @@ func (f *flow) Reference() *assets.FlowReference {
 // EnumerateTemplates enumerates all templates
 func (f *flow) EnumerateTemplates(callback func(string)) {
 	for _, n := range f.Nodes() {
-		n.EnumerateTemplates(f.Localization(), callback)
+		n.EnumerateTemplates(f.Localization(), func(t string) {
+			if t != "" {
+				callback(t)
+			}
+		})
 	}
 }
 

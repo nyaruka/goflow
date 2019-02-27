@@ -16,6 +16,9 @@
                 "text": "can't execute action in session without a contact",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "+1234567890"
         ]
     },
     {

@@ -23,6 +23,12 @@
                 "text": "can't execute action in session without a contact",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "Hi there",
+            "http://example.com/red.jpg",
+            "Red",
+            "Blue"
         ]
     },
     {

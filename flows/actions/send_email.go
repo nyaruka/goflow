@@ -104,3 +104,17 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *SendEmailAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Subject)
+	callback(a.Body)
+	flows.EnumerateTemplateArray(a.Addresses, callback)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *SendEmailAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Subject = rewrite(a.Subject)
+	a.Body = rewrite(a.Body)
+	flows.RewriteTemplateArray(a.Addresses, rewrite)
+}

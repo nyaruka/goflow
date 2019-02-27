@@ -55,6 +55,9 @@
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "Spam@(1 / 0)"
         ]
     },
     {

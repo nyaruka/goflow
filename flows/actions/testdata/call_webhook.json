@@ -55,10 +55,15 @@
                 "type": "webhook_called",
                 "url": "http://localhost:49996/?cmd=success"
             }
+        ],
+        "templates": [
+            "http://localhost:49996/?cmd=success@(1 / 0)",
+            "@(1 / 0)",
+            "Token @contact.fields.token"
         ]
     },
     {
-        "description": "Error event created and action skiipped if URL evaluates to empty",
+        "description": "Error event created and action skipped if URL evaluates to empty",
         "action": {
             "type": "call_webhook",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -73,6 +78,9 @@
                 "text": "call_webhook URL evaluated to empty string, skipping",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "@(\"\")"
         ]
     },
     {

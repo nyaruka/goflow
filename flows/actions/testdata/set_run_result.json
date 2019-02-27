@@ -16,6 +16,9 @@
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "@(1 / 0)"
         ]
     },
     {
@@ -36,6 +39,9 @@
                 "type": "run_result_changed",
                 "value": "yes"
             }
+        ],
+        "templates": [
+            "yes"
         ]
     },
     {
