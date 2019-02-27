@@ -61,6 +61,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		ValidationError string            `json:"validation_error"`
 		Events          []json.RawMessage `json:"events"`
 		ContactAfter    json.RawMessage   `json:"contact_after"`
+		Templates       []string          `json:"templates"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -158,6 +159,13 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		// try marshaling the action back to JSON
 		actionJSON, err := json.Marshal(action)
 		test.AssertEqualJSON(t, tc.Action, actionJSON, "marshal mismatch in %s", testName)
+
+		// finally try enumerating templates on this action
+		if tc.Templates != nil {
+			var templates []string
+			flow.EnumerateTemplates(func(t string) { templates = append(templates, t) })
+			assert.Equal(t, tc.Templates, templates, "templates mismatch in %s", testName)
+		}
 	}
 }
 

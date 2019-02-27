@@ -120,3 +120,21 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *CallWebhookAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.URL)
+	callback(a.Body)
+	for _, v := range a.Headers {
+		callback(v)
+	}
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *CallWebhookAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.URL = rewrite(a.URL)
+	a.Body = rewrite(a.Body)
+	for k, v := range a.Headers {
+		a.Headers[k] = rewrite(v)
+	}
+}

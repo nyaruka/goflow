@@ -85,3 +85,27 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Text)
+	flows.EnumerateTemplateArray(a.Attachments, callback)
+	flows.EnumerateTemplateArray(a.QuickReplies, callback)
+	flows.EnumerateTemplateTranslations(localization, a, "text", callback)
+	flows.EnumerateTemplateTranslations(localization, a, "attachments", callback)
+	flows.EnumerateTemplateTranslations(localization, a, "quick_replies", callback)
+	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)
+	flows.EnumerateTemplateArray(a.LegacyVars, callback)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *SendBroadcastAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Text = rewrite(a.Text)
+	flows.RewriteTemplateArray(a.Attachments, rewrite)
+	flows.RewriteTemplateArray(a.QuickReplies, rewrite)
+	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
+	flows.RewriteTemplateTranslations(localization, a, "attachments", rewrite)
+	flows.RewriteTemplateTranslations(localization, a, "quick_replies", rewrite)
+	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
+	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
+}

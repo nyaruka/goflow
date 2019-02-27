@@ -141,6 +141,24 @@ func (f *flow) Reference() *assets.FlowReference {
 	return assets.NewFlowReference(f.uuid, f.name)
 }
 
+// EnumerateTemplates enumerates all templates
+func (f *flow) EnumerateTemplates(callback func(string)) {
+	for _, n := range f.Nodes() {
+		n.EnumerateTemplates(f.Localization(), func(t string) {
+			if t != "" {
+				callback(t)
+			}
+		})
+	}
+}
+
+// RewriteTemplates rewrites all templates
+func (f *flow) RewriteTemplates(rewrite func(string) string) {
+	for _, n := range f.Nodes() {
+		n.RewriteTemplates(f.Localization(), rewrite)
+	}
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

@@ -32,6 +32,9 @@
                 "text": "can't execute action in session without a contact",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "30"
         ]
     },
     {
@@ -53,6 +56,9 @@
                 "text": "error evaluating @( 1/ 0): division by zero",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "@( 1/ 0)"
         ]
     },
     {

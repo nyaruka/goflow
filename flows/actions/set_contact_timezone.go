@@ -76,3 +76,13 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 	a.applyModifier(run, modifiers.NewTimezoneModifier(tz), logModifier, logEvent)
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *SetContactTimezoneAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Timezone)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *SetContactTimezoneAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Timezone = rewrite(a.Timezone)
+}

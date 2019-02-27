@@ -38,6 +38,27 @@ func NewCase(uuid utils.UUID, type_ string, arguments []string, omitOperand bool
 	}
 }
 
+// LocalizationUUID gets the UUID which identifies this object for localization
+func (c *Case) LocalizationUUID() utils.UUID { return utils.UUID(c.UUID) }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (c *Case) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	for _, arg := range c.Arguments {
+		callback(arg)
+	}
+
+	flows.EnumerateTemplateTranslations(localization, c, "arguments", callback)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (c *Case) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	for a := range c.Arguments {
+		c.Arguments[a] = rewrite(c.Arguments[a])
+	}
+
+	flows.RewriteTemplateTranslations(localization, c, "arguments", rewrite)
+}
+
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default exit
 type SwitchRouter struct {
@@ -54,6 +75,24 @@ func NewSwitchRouter(defaultExit flows.ExitUUID, operand string, cases []*Case, 
 		Default:    defaultExit,
 		Operand:    operand,
 		Cases:      cases,
+	}
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(r.Operand)
+
+	for _, cs := range r.Cases {
+		cs.EnumerateTemplates(localization, callback)
+	}
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	r.Operand = rewrite(r.Operand)
+
+	for _, cs := range r.Cases {
+		cs.RewriteTemplates(localization, rewrite)
 	}
 }
 

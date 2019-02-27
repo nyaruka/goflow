@@ -76,3 +76,13 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 	a.applyModifier(run, modifiers.NewLanguageModifier(lang), logModifier, logEvent)
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *SetContactLanguageAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Language)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *SetContactLanguageAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Language = rewrite(a.Language)
+}

@@ -24,6 +24,13 @@ func (e *exit) UUID() flows.ExitUUID                { return e.uuid }
 func (e *exit) DestinationNodeUUID() flows.NodeUUID { return e.destination }
 func (e *exit) Name() string                        { return e.name }
 
+// LocalizationUUID gets the UUID which identifies this object for localization
+func (e *exit) LocalizationUUID() utils.UUID { return utils.UUID(e.uuid) }
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
 type exitEnvelope struct {
 	UUID                flows.ExitUUID `json:"uuid"                               validate:"required,uuid4"`
 	DestinationNodeUUID flows.NodeUUID `json:"destination_node_uuid,omitempty"    validate:"omitempty,uuid4"`

@@ -3,6 +3,7 @@ package definition_test
 import (
 	"encoding/json"
 	"io/ioutil"
+	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
@@ -257,4 +258,91 @@ func TestReadFlow(t *testing.T) {
 		"nodes": []
 	}`))
 	assert.EqualError(t, err, "unable to read flow: field 'type' is required")
+}
+
+func TestEnumerateAndRewriteTemplates(t *testing.T) {
+	testCases := []struct {
+		path      string
+		uuid      string
+		templates []string
+	}{
+		{
+			"../../test/testdata/flows/two_questions.json",
+			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+			[]string{
+				`Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))`,
+				`Red`,
+				`Blue`,
+				`Quelle est votres couleur preferee? (rouge/blue)`,
+				`@input`,
+				`red`,
+				`rouge`,
+				`blue`,
+				`bleu`,
+				`fra`,
+				`@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)`,
+				`@(TITLE(results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)`,
+				`@input`,
+				`pepsi`,
+				`coke coca cola`,
+				`http://localhost/?cmd=success`,
+				`{ "contact": @(json(contact.uuid)), "soda": @(json(results.soda.value)) }`,
+				`Great, you are done and like @results.soda! Webhook status was @results.webhook.value`,
+				`Parfait, vous avez finis et tu aimes @results.soda.category`,
+			},
+		},
+		{
+			"../../test/testdata/flows/all_actions.json",
+			"8ca44c09-791d-453a-9799-a70dd3303306",
+			[]string{
+				`@(format_location(contact.fields.state)) Messages`,
+				`@(format_location(contact.fields.state)) Members`,
+				`@(replace(lower(contact.name), " ", "_"))`,
+				`XXX-YYY-ZZZ`,
+				"Here is your activation token",
+				"Hi @contact.fields.first_name, Your activation token is @contact.fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
+				"@(contact.urns.mailto[0])",
+				"test@@example.com",
+				`Hi @contact.name, are you ready?`,
+				`Hola @contact.name, ¿estás listo?`,
+				`Hi @contact.name, are you ready for these attachments?`,
+				`image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))`,
+				`Hi @contact.name, are you ready to complete today's survey?`,
+				`This is a message to each of @contact.name's urns.`,
+				`This is a reply with attachments and quick replies`,
+				`image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))`,
+				`Yes`,
+				`No`,
+				`m`,
+				`Jeff Jefferson`,
+				`@results.gender.category`,
+				`@contact.fields.raw_district`,
+				`http://localhost/?cmd=success&name=@(url_encode(contact.name))`,
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		require.NoError(t, err)
+
+		// try enumerating all templates
+		templates := make([]string, 0)
+		flow.EnumerateTemplates(func(t string) { templates = append(templates, t) })
+
+		assert.Equal(t, tc.templates, templates)
+
+		// try rewriting all templates in uppercase
+		flow.RewriteTemplates(func(t string) string { return strings.ToUpper(t) })
+
+		// re-enumerate all templates
+		rewritten := make([]string, 0)
+		flow.EnumerateTemplates(func(t string) { rewritten = append(rewritten, t) })
+
+		for t := range templates {
+			templates[t] = strings.ToUpper(templates[t])
+		}
+
+		assert.Equal(t, templates, rewritten)
+	}
 }

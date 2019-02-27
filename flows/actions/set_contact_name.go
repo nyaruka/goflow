@@ -65,3 +65,13 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, logMo
 	a.applyModifier(run, modifiers.NewNameModifier(name), logModifier, logEvent)
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *SetContactNameAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Name)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *SetContactNameAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Name = rewrite(a.Name)
+}

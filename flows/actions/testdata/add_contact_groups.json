@@ -77,6 +77,9 @@
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "Customers@(1 / 0)"
         ]
     },
     {
@@ -98,6 +101,9 @@
                 "text": "no such group with name 'Climbers'",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "Climbers"
         ]
     },
     {

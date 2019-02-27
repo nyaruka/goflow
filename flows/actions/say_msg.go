@@ -84,3 +84,15 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *SayMsgAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Text)
+	flows.EnumerateTemplateTranslations(localization, a, "text", callback)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *SayMsgAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Text = rewrite(a.Text)
+	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
+}

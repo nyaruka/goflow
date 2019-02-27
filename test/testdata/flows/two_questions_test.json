@@ -9,6 +9,10 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "quick_replies": [
+                            "Red",
+                            "Blue"
+                        ],
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                         "urn": "tel:+12065551212",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
@@ -69,6 +73,10 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "quick_replies": [
+                                        "Red",
+                                        "Blue"
+                                    ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
@@ -313,6 +321,10 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "quick_replies": [
+                                        "Red",
+                                        "Blue"
+                                    ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
@@ -621,6 +633,10 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "quick_replies": [
+                                        "Red",
+                                        "Blue"
+                                    ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"

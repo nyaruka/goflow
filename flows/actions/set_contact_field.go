@@ -79,3 +79,13 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 	a.applyModifier(run, modifiers.NewFieldModifier(field, newValue), logModifier, logEvent)
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *SetContactFieldAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.Value)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *SetContactFieldAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.Value = rewrite(a.Value)
+}

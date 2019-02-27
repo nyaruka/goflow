@@ -83,3 +83,13 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove), logModifier, logEvent)
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *RemoveContactGroupsAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *RemoveContactGroupsAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
+}

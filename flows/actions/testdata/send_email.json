@@ -42,6 +42,11 @@
                 "subject": "Hi there",
                 "type": "email_created"
             }
+        ],
+        "templates": [
+            "Hi there@(1 / 0)",
+            "So I was thinking...@(1 / 0)",
+            "bob@example.com@(1 / 0)"
         ]
     },
     {

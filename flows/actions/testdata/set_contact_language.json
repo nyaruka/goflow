@@ -32,6 +32,9 @@
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "@(1 / 0)"
         ]
     },
     {
@@ -49,6 +52,9 @@
                 "text": "iso-639-3 codes must be 3 characters, got: xxxxxxxxxx",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "xxxxxxxxxx"
         ]
     },
     {

@@ -15,6 +15,9 @@
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "@(1 / 0).mp3"
         ]
     },
     {
@@ -33,6 +36,9 @@
                 "text": "audio URL evaluated to empty, skipping",
                 "type": "error"
             }
+        ],
+        "templates": [
+            "@(\"\")"
         ]
     },
     {

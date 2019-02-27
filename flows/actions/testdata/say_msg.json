@@ -44,6 +44,9 @@
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "ivr_created"
             }
+        ],
+        "templates": [
+            "Hi there @contact.name"
         ]
     },
     {

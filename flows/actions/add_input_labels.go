@@ -68,3 +68,13 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logMo
 
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *AddInputLabelsAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	flows.EnumerateTemplatesInLabelReferences(a.Labels, callback)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *AddInputLabelsAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	flows.RewriteTemplatesInLabelReferences(a.Labels, rewrite)
+}

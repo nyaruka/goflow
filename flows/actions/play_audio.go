@@ -73,3 +73,15 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 
 	return nil
 }
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *PlayAudioAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(a.AudioURL)
+	flows.EnumerateTemplateTranslations(localization, a, "audio_url", callback)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (a *PlayAudioAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	a.AudioURL = rewrite(a.AudioURL)
+	flows.RewriteTemplateTranslations(localization, a, "audio_url", rewrite)
+}
