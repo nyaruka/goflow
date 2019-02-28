@@ -78,9 +78,12 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "Customers@(1 / 0)"
-        ]
+        "inspection": {
+            "templates": [
+                "Customers@(1 / 0)"
+            ],
+            "result_names": []
+        }
     },
     {
         "description": "Error event if a group is name that doesn't match any group",
@@ -102,9 +105,12 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "Climbers"
-        ]
+        "inspection": {
+            "templates": [
+                "Climbers"
+            ],
+            "result_names": []
+        }
     },
     {
         "description": "NOOP if contact is already in group",

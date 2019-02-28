@@ -143,3 +143,8 @@ func (a *CallWebhookAction) RewriteTemplates(localization flows.Localization, re
 		a.Headers[k] = rewrite(v)
 	}
 }
+
+// EnumerateResultNames enumerates all result names on this object
+func (a *CallWebhookAction) EnumerateResultNames(callback func(string)) {
+	callback(a.ResultName)
+}

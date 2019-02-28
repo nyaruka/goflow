@@ -33,9 +33,12 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "@(1 / 0)"
-        ]
+        "inspection": {
+            "templates": [
+                "@(1 / 0)"
+            ],
+            "result_names": []
+        }
     },
     {
         "description": "Error event and action skipped if language isn't valid",
@@ -53,9 +56,12 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "xxxxxxxxxx"
-        ]
+        "inspection": {
+            "templates": [
+                "xxxxxxxxxx"
+            ],
+            "result_names": []
+        }
     },
     {
         "description": "NOOP if language doesn't change",

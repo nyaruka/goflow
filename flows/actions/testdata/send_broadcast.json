@@ -83,10 +83,13 @@
                 ]
             }
         ],
-        "templates": [
-            "Hi there!",
-            "@contact.fields.supervisor",
-            "@(\"+1098765432\")"
-        ]
+        "inspection": {
+            "templates": [
+                "Hi there!",
+                "@contact.fields.supervisor",
+                "@(\"+1098765432\")"
+            ],
+            "result_names": []
+        }
     }
 ]

@@ -48,20 +48,26 @@ func TestActionTypes(t *testing.T) {
 	}
 }
 
+type inspectionResults struct {
+	Templates    []string           `json:"templates"`
+	Dependencies []assets.Reference `json:"dependencies"`
+	ResultNames  []string           `json:"result_names"`
+}
+
 func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
 	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description     string            `json:"description"`
-		NoContact       bool              `json:"no_contact"`
-		NoURNs          bool              `json:"no_urns"`
-		NoInput         bool              `json:"no_input"`
-		Action          json.RawMessage   `json:"action"`
-		ValidationError string            `json:"validation_error"`
-		Events          []json.RawMessage `json:"events"`
-		ContactAfter    json.RawMessage   `json:"contact_after"`
-		Templates       []string          `json:"templates"`
+		Description     string             `json:"description"`
+		NoContact       bool               `json:"no_contact"`
+		NoURNs          bool               `json:"no_urns"`
+		NoInput         bool               `json:"no_input"`
+		Action          json.RawMessage    `json:"action"`
+		ValidationError string             `json:"validation_error"`
+		Events          []json.RawMessage  `json:"events"`
+		ContactAfter    json.RawMessage    `json:"contact_after"`
+		Inspection      *inspectionResults `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -161,9 +167,12 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		test.AssertEqualJSON(t, tc.Action, actionJSON, "marshal mismatch in %s", testName)
 
 		// finally try enumerating templates on this action
-		if tc.Templates != nil {
+		if tc.Inspection != nil {
 			templates := flow.ExtractTemplates()
-			assert.Equal(t, tc.Templates, templates, "templates mismatch in %s", testName)
+			assert.Equal(t, tc.Inspection.Templates, templates, "inspected templates mismatch in %s", testName)
+
+			resultNames := flow.ExtractResultNames()
+			assert.Equal(t, tc.Inspection.ResultNames, resultNames, "inspected result names mismatch in %s", testName)
 		}
 	}
 }

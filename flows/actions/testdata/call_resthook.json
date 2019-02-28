@@ -6,7 +6,11 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "resthook": "doesnt-exist"
         },
-        "events": []
+        "events": [],
+        "inspection": {
+            "templates": [],
+            "result_names": []
+        }
     },
     {
         "description": "Webhook called event created for each subscriber",
@@ -85,7 +89,11 @@
                 "type": "webhook_called",
                 "url": "http://127.0.0.1:49996/?cmd=unavailable"
             }
-        ]
+        ],
+        "inspection": {
+            "templates": [],
+            "result_names": []
+        }
     },
     {
         "description": "Result changed event created if result name set",
@@ -179,6 +187,12 @@
                 "type": "run_result_changed",
                 "value": "503"
             }
-        ]
+        ],
+        "inspection": {
+            "templates": [],
+            "result_names": [
+                "My Result"
+            ]
+        }
     }
 ]
