@@ -87,6 +87,9 @@ func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
 	for _, g := range a.Groups {
 		flows.InspectReference(g, inspect)
 	}
+	for _, c := range a.Contacts {
+		flows.InspectReference(c, inspect)
+	}
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children

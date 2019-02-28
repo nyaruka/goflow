@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -458,6 +459,27 @@ type ContactReference struct {
 func NewContactReference(uuid ContactUUID, name string) *ContactReference {
 	return &ContactReference{UUID: uuid, Name: name}
 }
+
+// Type returns the name of the asset type
+func (r *ContactReference) Type() string {
+	return "contact"
+}
+
+// Identity returns the unique identity of the asset
+func (r *ContactReference) Identity() string {
+	return string(r.UUID)
+}
+
+// Variable returns whether this a variable (vs concrete) reference
+func (r *ContactReference) Variable() bool {
+	return r.Identity() == ""
+}
+
+func (r *ContactReference) String() string {
+	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
+}
+
+var _ assets.Reference = (*ContactReference)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

@@ -360,6 +360,7 @@ func TestExtractDependencies(t *testing.T) {
 				assets.NewFieldReference("activation_token", "Activation Token"),
 				assets.NewFieldReference("first_name", ""),
 				assets.NewFlowReference("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "Collect Language"),
+				flows.NewContactReference("820f5923-3369-41c6-b3cd-af577c0bd4b8", "Bob"),
 				assets.NewFieldReference("gender", "Gender"),
 				assets.NewFieldReference("raw_district", ""),
 				assets.NewFieldReference("district", "District"),
