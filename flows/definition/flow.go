@@ -189,7 +189,7 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 				}
 			})
 
-			item.EnumerateDependencies(func(r assets.Reference) {
+			item.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
 				addDependency(r)
 			})
 		})

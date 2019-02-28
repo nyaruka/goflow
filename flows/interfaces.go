@@ -146,7 +146,7 @@ type Inspectable interface {
 	Inspect(func(Inspectable))
 	EnumerateTemplates(Localization, func(string))
 	RewriteTemplates(Localization, func(string) string)
-	EnumerateDependencies(func(assets.Reference))
+	EnumerateDependencies(Localization, func(assets.Reference))
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following

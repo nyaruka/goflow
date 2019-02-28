@@ -42,7 +42,8 @@ func (r *BaseRouter) EnumerateTemplates(localization flows.Localization, callbac
 func (r *BaseRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (r *BaseRouter) EnumerateDependencies(callback func(assets.Reference)) {}
+func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

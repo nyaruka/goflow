@@ -134,7 +134,7 @@ func (r inspectableReference) RewriteTemplates(localization Localization, rewrit
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
-func (r inspectableReference) EnumerateDependencies(callback func(assets.Reference)) {
+func (r inspectableReference) EnumerateDependencies(localization Localization, callback func(assets.Reference)) {
 	if r.ref != nil && !r.ref.Variable() {
 		callback(r.ref)
 	}

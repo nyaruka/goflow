@@ -369,7 +369,8 @@ func TestExtractDependencies(t *testing.T) {
 			"../../test/testdata/flows/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]assets.Reference{
-				assets.NewGroupReference("ade39253-0371-4dde-9df4-95245fe6a3a8", ""),
+				assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", ""),
+				assets.NewGroupReference("bf282a79-aa74-4557-9932-22a9b3bce537", ""),
 				assets.NewFieldReference("raw_district", ""),
 				assets.NewFieldReference("district", "District"),
 			},

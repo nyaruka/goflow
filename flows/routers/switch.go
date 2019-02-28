@@ -66,11 +66,18 @@ func (c *Case) RewriteTemplates(localization flows.Localization, rewrite func(st
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
-func (c *Case) EnumerateDependencies(callback func(assets.Reference)) {
+func (c *Case) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+	// currently only the HAS_GROUP router test can produce a dependency
 	if c.Type == "has_group" && len(c.Arguments) > 0 {
-		// TODO also need its translations
-
 		callback(assets.NewGroupReference(assets.GroupUUID(c.Arguments[0]), ""))
+
+		// the group UUID might be different in different translations
+		for _, lang := range localization.Languages() {
+			arguments := localization.GetTranslations(lang).GetTextArray(c.UUID, "arguments")
+			if len(arguments) > 0 {
+				callback(assets.NewGroupReference(assets.GroupUUID(arguments[0]), ""))
+			}
+		}
 	}
 }
 
@@ -223,4 +230,5 @@ func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
-func (r *SwitchRouter) EnumerateDependencies(callback func(assets.Reference)) {}
+func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+}
