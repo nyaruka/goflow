@@ -187,12 +187,12 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
 // EvaluateTemplate evaluates the given template in the context of this run
 func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
-	return excellent.EvaluateTemplateValue(r.Environment(), r.Context(), template, RunContextTopLevels)
+	return excellent.EvaluateTemplateValue(r.Environment(), r.Context(), template, flows.RunContextTopLevels)
 }
 
 // EvaluateTemplateAsString evaluates the given template as a string in the context of this run
 func (r *flowRun) EvaluateTemplate(template string) (string, error) {
-	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template, RunContextTopLevels)
+	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template, flows.RunContextTopLevels)
 }
 
 // get the ordered list of languages to be used for localization in this run

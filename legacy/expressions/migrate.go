@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent"
-	"github.com/nyaruka/goflow/flows/runs"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/legacy/gen"
 	"github.com/nyaruka/goflow/utils"
 
@@ -260,7 +260,7 @@ func isValidIdentifier(expression string) bool {
 		return false
 	}
 
-	for _, topLevel := range runs.RunContextTopLevels {
+	for _, topLevel := range flows.RunContextTopLevels {
 		if strings.HasPrefix(expression, topLevel+".") || expression == topLevel {
 			return true
 		}

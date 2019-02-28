@@ -11,24 +11,24 @@ import (
 func TestFindContextRefsInTemplate(t *testing.T) {
 	testCases := []struct {
 		template string
-		paths    []string
+		paths    [][]string
 		hasError bool
 	}{
-		{``, []string{}, false},
-		{`Hi @foo @foo.bar`, []string{`foo`, `foo`, `foo.bar`}, false},
-		{`@foo.bar.x.y`, []string{`foo`, `foo.bar`, `foo.bar.x`, `foo.bar.x.y`}, false},
-		{`@(foo) @(foo.bar)`, []string{`foo`, `foo`, `foo.bar`}, false},
-		{`@((foo))`, []string{`foo`}, false},
-		{`@(lower(foo.bar))`, []string{`foo`, `foo.bar`}, false},
-		{`@(foo["bar"])`, []string{`foo`, `foo.bar`}, false},
-		{`@(3 * (foo.bar + 1) / 2)`, []string{`foo`, `foo.bar`}, false},
-		{`@("foo.bar")`, []string{}, false},
+		{``, [][]string{}, false},
+		{`Hi @foo @foo.bar`, [][]string{{`foo`}, {`foo`}, {`foo`, `bar`}}, false},
+		{`@foo.bar.x.y`, [][]string{{`foo`}, {`foo`, `bar`}, {`foo`, `bar`, `x`}, {`foo`, `bar`, `x`, `y`}}, false},
+		{`@(foo) @(foo.bar)`, [][]string{{`foo`}, {`foo`}, {`foo`, `bar`}}, false},
+		{`@((foo))`, [][]string{{`foo`}}, false},
+		{`@(lower(foo.bar))`, [][]string{{`foo`}, {`foo`, `bar`}}, false},
+		{`@(foo["bar"])`, [][]string{{`foo`}, {`foo`, `bar`}}, false},
+		{`@(3 * (foo.bar + 1) / 2)`, [][]string{{`foo`}, {`foo`, `bar`}}, false},
+		{`@("foo.bar")`, [][]string{}, false},
 	}
 
 	for _, tc := range testCases {
-		actual := make([]string, 0)
+		actual := make([][]string, 0)
 
-		err := tools.FindContextRefsInTemplate(tc.template, []string{"foo"}, func(path string) {
+		err := tools.FindContextRefsInTemplate(tc.template, []string{"foo"}, func(path []string) {
 			actual = append(actual, path)
 		})
 

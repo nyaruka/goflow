@@ -1,8 +1,59 @@
 package flows
 
 import (
+	"strings"
+
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/excellent/tools"
 )
+
+// RunContextTopLevels are the allowed top-level variables for expression evaluations
+var RunContextTopLevels = []string{
+	"run",
+	"child",
+	"parent",
+	"contact",
+	"input",
+	"results",
+	"trigger",
+	"legacy_extra",
+}
+
+var fieldRefPaths = [][]string{
+	{"contact", "fields"},
+	{"parent", "contact", "fields"},
+	{"child", "contact", "fields"},
+}
+
+// ExtractFieldReferences extracts fields references from the given template
+func ExtractFieldReferences(template string) []*assets.FieldReference {
+	fieldRefs := make([]*assets.FieldReference, 0)
+	tools.FindContextRefsInTemplate(template, RunContextTopLevels, func(path []string) {
+		isField, fieldKey := isFieldRefPath(path)
+		if isField {
+			fieldRefs = append(fieldRefs, assets.NewFieldReference(fieldKey, ""))
+		}
+	})
+	return fieldRefs
+}
+
+func isFieldRefPath(path []string) (bool, string) {
+	for _, possible := range fieldRefPaths {
+		if len(path) == len(possible)+1 {
+			matches := true
+			for i := range possible {
+				if strings.ToLower(path[i]) != possible[i] {
+					matches = false
+					break
+				}
+			}
+			if matches {
+				return true, strings.ToLower(path[len(possible)])
+			}
+		}
+	}
+	return false, ""
+}
 
 // EnumerateTemplateArray enumerates each template in the array
 func EnumerateTemplateArray(templates []string, callback func(string)) {
