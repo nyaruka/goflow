@@ -6,7 +6,15 @@
             "spec_version": "12.0",
             "language": "eng",
             "type": "messaging",
-            "localization": {},
+            "localization": {
+                "fra": {
+                    "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                        "arguments": [
+                            "bf282a79-aa74-4557-9932-22a9b3bce537"
+                        ]
+                    }
+                }
+            },
             "nodes": [
                 {
                     "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -51,7 +59,7 @@
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                                 "type": "has_group",
                                 "arguments": [
-                                    "ade39253-0371-4dde-9df4-95245fe6a3a8"
+                                    "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                                 ],
                                 "exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502"
                             }
@@ -170,6 +178,17 @@
                 "send",
                 "receive"
             ]
+        }
+    ],
+    "groups": [
+        {
+            "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+            "name": "Survey Audience"
+        },
+        {
+            "uuid": "bf282a79-aa74-4557-9932-22a9b3bce537",
+            "name": "Males",
+            "query": "gender = Male"
         }
     ],
     "locations": [

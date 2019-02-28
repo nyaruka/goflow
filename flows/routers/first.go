@@ -34,3 +34,8 @@ func (r *FirstRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flow
 
 	return nil, flows.NewRoute(exits[0].UUID(), "", nil), nil
 }
+
+// Inspect inspects this object and any children
+func (r *FirstRouter) Inspect(inspect func(flows.Inspectable)) {
+	inspect(r)
+}

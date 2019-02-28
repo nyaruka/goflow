@@ -2,8 +2,8 @@ package definition
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
-	"sync"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -141,22 +141,58 @@ func (f *flow) Reference() *assets.FlowReference {
 	return assets.NewFlowReference(f.uuid, f.name)
 }
 
-// EnumerateTemplates enumerates all templates
-func (f *flow) EnumerateTemplates(callback func(string)) {
+func (f *flow) inspect(inspect func(flows.Inspectable)) {
 	for _, n := range f.Nodes() {
-		n.EnumerateTemplates(f.Localization(), func(t string) {
-			if t != "" {
-				callback(t)
+		n.Inspect(inspect)
+	}
+}
+
+// ExtractTemplates extracts all non-empty templates
+func (f *flow) ExtractTemplates() []string {
+	templates := make([]string, 0)
+	f.inspect(func(item flows.Inspectable) {
+		item.EnumerateTemplates(f.Localization(), func(template string) {
+			if template != "" {
+				templates = append(templates, template)
 			}
 		})
-	}
+	})
+	return templates
 }
 
 // RewriteTemplates rewrites all templates
 func (f *flow) RewriteTemplates(rewrite func(string) string) {
-	for _, n := range f.Nodes() {
-		n.RewriteTemplates(f.Localization(), rewrite)
+	f.inspect(func(item flows.Inspectable) {
+		item.RewriteTemplates(f.Localization(), rewrite)
+	})
+}
+
+// ExtractDependencies extracts all asset dependencies
+func (f *flow) ExtractDependencies() []assets.Reference {
+	dependencies := make([]assets.Reference, 0)
+	dependenciesSeen := make(map[string]bool)
+	addDependency := func(r assets.Reference) {
+		key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
+		if r != nil && !r.Variable() && !dependenciesSeen[key] {
+			dependencies = append(dependencies, r)
+			dependenciesSeen[key] = true
+		}
 	}
+
+	f.inspect(func(item flows.Inspectable) {
+		item.EnumerateTemplates(f.Localization(), func(template string) {
+			fieldRefs := flows.ExtractFieldReferences(template)
+			for _, f := range fieldRefs {
+				addDependency(f)
+			}
+		})
+
+		item.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
+			addDependency(r)
+		})
+	})
+
+	return dependencies
 }
 
 //------------------------------------------------------------------------------------------
@@ -251,44 +287,4 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(fe)
-}
-
-// implemention of FlowAssets which provides lazy loading and validation of flows
-type flowAssets struct {
-	byUUID map[assets.FlowUUID]flows.Flow
-
-	mutex  sync.Mutex
-	source assets.AssetSource
-}
-
-// NewFlowAssets creates a new flow assets
-func NewFlowAssets(source assets.AssetSource) flows.FlowAssets {
-	return &flowAssets{
-		byUUID: make(map[assets.FlowUUID]flows.Flow),
-		source: source,
-	}
-}
-
-// Get returns the flow with the given UUID
-func (a *flowAssets) Get(uuid assets.FlowUUID) (flows.Flow, error) {
-	a.mutex.Lock()
-	defer a.mutex.Unlock()
-
-	flow := a.byUUID[uuid]
-	if flow != nil {
-		return flow, nil
-	}
-
-	asset, err := a.source.Flow(uuid)
-	if err != nil {
-		return nil, err
-	}
-
-	flow, err = ReadFlow(asset.Definition())
-	if err != nil {
-		return nil, err
-	}
-
-	a.byUUID[flow.UUID()] = flow
-	return flow, nil
 }

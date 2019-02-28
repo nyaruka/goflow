@@ -142,9 +142,11 @@ type Localizable interface {
 	LocalizationUUID() utils.UUID
 }
 
-type ExpressionsContainer interface {
+type Inspectable interface {
+	Inspect(func(Inspectable))
 	EnumerateTemplates(Localization, func(string))
 	RewriteTemplates(Localization, func(string) string)
+	EnumerateDependencies(Localization, func(assets.Reference))
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
@@ -181,13 +183,14 @@ type Flow interface {
 
 	Reference() *assets.FlowReference
 
-	EnumerateTemplates(func(string))
+	ExtractTemplates() []string
 	RewriteTemplates(func(string) string)
+	ExtractDependencies() []assets.Reference
 }
 
 // Node is a single node in a flow
 type Node interface {
-	ExpressionsContainer
+	Inspectable
 
 	UUID() NodeUUID
 	Actions() []Action
@@ -203,7 +206,7 @@ type Node interface {
 type Action interface {
 	utils.Typed
 	Localizable
-	ExpressionsContainer
+	Inspectable
 
 	UUID() ActionUUID
 	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
@@ -213,7 +216,7 @@ type Action interface {
 
 type Router interface {
 	utils.Typed
-	ExpressionsContainer
+	Inspectable
 
 	PickRoute(FlowRun, []Exit, Step) (*string, Route, error)
 	Validate([]Exit) error

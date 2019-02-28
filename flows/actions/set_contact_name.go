@@ -66,6 +66,11 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, logMo
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *SetContactNameAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetContactNameAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	callback(a.Name)

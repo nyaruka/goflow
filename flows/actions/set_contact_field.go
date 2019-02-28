@@ -80,6 +80,12 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *SetContactFieldAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+	flows.InspectReference(a.Field, inspect)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetContactFieldAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	callback(a.Value)

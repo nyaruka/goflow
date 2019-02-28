@@ -113,3 +113,8 @@ func (a *CallResthookAction) pickResultWebhook(calls []*flows.WebhookCall) *flow
 	}
 	return asResult
 }
+
+// Inspect inspects this object and any children
+func (a *CallResthookAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}

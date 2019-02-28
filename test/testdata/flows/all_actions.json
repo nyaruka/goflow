@@ -202,6 +202,14 @@
                             "type": "call_webhook",
                             "method": "GET",
                             "url": "http://localhost/?cmd=success&name=@(url_encode(contact.name))"
+                        },
+                        {
+                            "uuid": "3eab275a-be4a-43f7-9acc-d8a384b594c5",
+                            "type": "set_contact_channel",
+                            "channel": {
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                                "name": "Android Channel"
+                            }
                         }
                     ],
                     "exits": [

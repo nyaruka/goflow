@@ -3,6 +3,7 @@ package definition
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/routers"
@@ -91,27 +92,26 @@ func (n *node) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 	return nil
 }
 
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (n *node) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+func (n *node) Inspect(inspect func(flows.Inspectable)) {
+	inspect(n)
+
 	for _, a := range n.Actions() {
-		a.EnumerateTemplates(localization, callback)
+		a.Inspect(inspect)
 	}
 
 	if n.Router() != nil {
-		n.Router().EnumerateTemplates(localization, callback)
+		n.Router().Inspect(inspect)
 	}
 }
 
-// RewriteTemplates rewrites all templates on this object and its children
-func (n *node) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	for _, a := range n.Actions() {
-		a.RewriteTemplates(localization, rewrite)
-	}
+// EnumerateTemplates enumerates all expressions on this object
+func (n *node) EnumerateTemplates(localization flows.Localization, callback func(string)) {}
 
-	if n.Router() != nil {
-		n.Router().RewriteTemplates(localization, rewrite)
-	}
-}
+// RewriteTemplates rewrites all templates on this object
+func (n *node) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
+
+// EnumerateDependencies enumerates all dependencies on this object
+func (n *node) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

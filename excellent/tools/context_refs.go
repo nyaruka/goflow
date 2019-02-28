@@ -1,7 +1,6 @@
 package tools
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/nyaruka/goflow/excellent"
@@ -11,7 +10,7 @@ import (
 )
 
 // FindContextRefsInTemplate audits context references in the given template
-func FindContextRefsInTemplate(template string, allowedTopLevels []string, callback func(string)) error {
+func FindContextRefsInTemplate(template string, allowedTopLevels []string, callback func([]string)) error {
 	return excellent.VisitTemplate(template, allowedTopLevels, func(tokenType excellent.XTokenType, token string) error {
 		switch tokenType {
 		case excellent.IDENTIFIER, excellent.EXPRESSION:
@@ -21,7 +20,7 @@ func FindContextRefsInTemplate(template string, allowedTopLevels []string, callb
 	})
 }
 
-func findContextRefsInTemplate(expression string, callback func(string)) error {
+func findContextRefsInTemplate(expression string, callback func([]string)) error {
 	visitor := &auditContextVisitor{callback: callback}
 
 	_, err := excellent.VisitExpression(expression, visitor)
@@ -33,7 +32,7 @@ func findContextRefsInTemplate(expression string, callback func(string)) error {
 type auditContextVisitor struct {
 	gen.BaseExcellent2Visitor
 
-	callback func(string)
+	callback func([]string)
 }
 
 // Visit the top level parse tree
@@ -55,30 +54,31 @@ func (v *auditContextVisitor) VisitParse(ctx *gen.ParseContext) interface{} {
 
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *auditContextVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	base := v.Visit(ctx.Atom(0)).(string)
+	path, isPath := v.Visit(ctx.Atom(0)).([]string)
 	key := ctx.Atom(1).GetText()
-	path := fmt.Sprintf("%s.%s", base, key)
-	v.callback(path)
-	return path
+	if isPath {
+		path = append(path, key)
+		v.callback(path)
+		return path
+	}
+	return nil
 }
 
 // VisitArrayLookup deals with lookups such as foo[5] or foo["key with spaces"]
 func (v *auditContextVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
-	base := v.Visit(ctx.Atom()).(string)
-	key := v.Visit(ctx.Expression())
-
-	if key != nil {
-		path := fmt.Sprintf("%s.%s", base, key)
+	path, isPath := v.Visit(ctx.Atom()).([]string)
+	key, isString := v.Visit(ctx.Expression()).(string)
+	if isPath && isString {
+		path = append(path, key)
 		v.callback(path)
 		return path
 	}
-
 	return nil
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *auditContextVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
-	path := ctx.GetText()
+	path := []string{ctx.GetText()}
 	v.callback(path)
 	return path
 }

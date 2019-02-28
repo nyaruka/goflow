@@ -162,8 +162,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 		// finally try enumerating templates on this action
 		if tc.Templates != nil {
-			var templates []string
-			flow.EnumerateTemplates(func(t string) { templates = append(templates, t) })
+			templates := flow.ExtractTemplates()
 			assert.Equal(t, tc.Templates, templates, "templates mismatch in %s", testName)
 		}
 	}

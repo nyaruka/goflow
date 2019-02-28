@@ -80,3 +80,8 @@ func (r *RandomOnceRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step
 	exitN := utils.RandIntN(len(validExits))
 	return nil, flows.NewRoute(validExits[exitN], string(exitN), nil), nil
 }
+
+// Inspect inspects this object and any children
+func (r *RandomOnceRouter) Inspect(inspect func(flows.Inspectable)) {
+	inspect(r)
+}

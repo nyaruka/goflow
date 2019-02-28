@@ -3,6 +3,7 @@ package routers
 import (
 	"strings"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers/tests"
@@ -41,6 +42,11 @@ func NewCase(uuid utils.UUID, type_ string, arguments []string, omitOperand bool
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Case) LocalizationUUID() utils.UUID { return utils.UUID(c.UUID) }
 
+// Inspect inspects this object and any children
+func (c *Case) Inspect(inspect func(flows.Inspectable)) {
+	inspect(c)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (c *Case) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	for _, arg := range c.Arguments {
@@ -59,6 +65,22 @@ func (c *Case) RewriteTemplates(localization flows.Localization, rewrite func(st
 	flows.RewriteTemplateTranslations(localization, c, "arguments", rewrite)
 }
 
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (c *Case) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+	// currently only the HAS_GROUP router test can produce a dependency
+	if c.Type == "has_group" && len(c.Arguments) > 0 {
+		callback(assets.NewGroupReference(assets.GroupUUID(c.Arguments[0]), ""))
+
+		// the group UUID might be different in different translations
+		for _, lang := range localization.Languages() {
+			arguments := localization.GetTranslations(lang).GetTextArray(c.UUID, "arguments")
+			if len(arguments) > 0 {
+				callback(assets.NewGroupReference(assets.GroupUUID(arguments[0]), ""))
+			}
+		}
+	}
+}
+
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default exit
 type SwitchRouter struct {
@@ -75,24 +97,6 @@ func NewSwitchRouter(defaultExit flows.ExitUUID, operand string, cases []*Case, 
 		Default:    defaultExit,
 		Operand:    operand,
 		Cases:      cases,
-	}
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	callback(r.Operand)
-
-	for _, cs := range r.Cases {
-		cs.EnumerateTemplates(localization, callback)
-	}
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	r.Operand = rewrite(r.Operand)
-
-	for _, cs := range r.Cases {
-		cs.RewriteTemplates(localization, rewrite)
 	}
 }
 
@@ -204,4 +208,27 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 
 	// no matches, no defaults, no route
 	return operandAsStr, flows.NoRoute, nil
+}
+
+// Inspect inspects this object and any children
+func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
+	inspect(r)
+
+	for _, cs := range r.Cases {
+		cs.Inspect(inspect)
+	}
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(r.Operand)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	r.Operand = rewrite(r.Operand)
+}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
 }

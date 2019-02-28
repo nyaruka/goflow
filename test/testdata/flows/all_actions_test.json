@@ -379,6 +379,17 @@
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success&name=Jeff%20Jefferson"
+                },
+                {
+                    "created_on": "2018-07-06T12:31:01.123456789Z",
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_urns_changed",
+                    "urns": [
+                        "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore",
+                        "twitter:ben_haggerty"
+                    ]
                 }
             ],
             "session": {
@@ -417,7 +428,7 @@
                     "name": "Jeff Jefferson",
                     "timezone": "America/Guayaquil",
                     "urns": [
-                        "tel:+12065551212",
+                        "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "facebook:1122334455667788",
                         "mailto:ben@macklemore",
                         "twitter:ben_haggerty"
@@ -831,15 +842,26 @@
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success&name=Jeff%20Jefferson"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:31:01.123456789Z",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "contact_urns_changed",
+                                "urns": [
+                                    "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                                    "facebook:1122334455667788",
+                                    "mailto:ben@macklemore",
+                                    "twitter:ben_haggerty"
+                                ]
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:06.123456789Z",
-                        "expires_on": "2018-07-06T12:31:02.123456789Z",
+                        "exited_on": "2018-07-06T12:31:08.123456789Z",
+                        "expires_on": "2018-07-06T12:31:04.123456789Z",
                         "flow": {
                             "name": "All Actions",
                             "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
                         },
-                        "modified_on": "2018-07-06T12:31:06.123456789Z",
+                        "modified_on": "2018-07-06T12:31:08.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -861,14 +883,14 @@
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     },
                     {
-                        "created_on": "2018-07-06T12:31:01.123456789Z",
-                        "exited_on": "2018-07-06T12:31:05.123456789Z",
-                        "expires_on": "2018-07-06T12:31:02.123456789Z",
+                        "created_on": "2018-07-06T12:31:03.123456789Z",
+                        "exited_on": "2018-07-06T12:31:07.123456789Z",
+                        "expires_on": "2018-07-06T12:31:04.123456789Z",
                         "flow": {
                             "name": "Registration Flow",
                             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                         },
-                        "modified_on": "2018-07-06T12:31:05.123456789Z",
+                        "modified_on": "2018-07-06T12:31:07.123456789Z",
                         "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "path": [],
                         "status": "completed",

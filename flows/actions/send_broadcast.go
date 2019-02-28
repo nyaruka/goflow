@@ -86,6 +86,18 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *SendBroadcastAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+
+	for _, g := range a.Groups {
+		flows.InspectReference(g, inspect)
+	}
+	for _, c := range a.Contacts {
+		flows.InspectReference(c, inspect)
+	}
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	callback(a.Text)
@@ -94,7 +106,6 @@ func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization
 	flows.EnumerateTemplateTranslations(localization, a, "text", callback)
 	flows.EnumerateTemplateTranslations(localization, a, "attachments", callback)
 	flows.EnumerateTemplateTranslations(localization, a, "quick_replies", callback)
-	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)
 	flows.EnumerateTemplateArray(a.LegacyVars, callback)
 }
 
@@ -106,6 +117,5 @@ func (a *SendBroadcastAction) RewriteTemplates(localization flows.Localization, 
 	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
 	flows.RewriteTemplateTranslations(localization, a, "attachments", rewrite)
 	flows.RewriteTemplateTranslations(localization, a, "quick_replies", rewrite)
-	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
 	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
 }

@@ -3,6 +3,7 @@ package routers
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -39,6 +40,10 @@ func (r *BaseRouter) EnumerateTemplates(localization flows.Localization, callbac
 
 // RewriteTemplates rewrites all templates on this object and its children
 func (r *BaseRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
+
+// EnumerateDependencies enumerates all dependencies on this object
+func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

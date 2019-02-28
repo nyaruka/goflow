@@ -70,3 +70,9 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 	a.applyModifier(run, modifiers.NewChannelModifier(channel), logModifier, logEvent)
 	return nil
 }
+
+// Inspect inspects this object and any children
+func (a *SetContactChannelAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+	flows.InspectReference(a.Channel, inspect)
+}

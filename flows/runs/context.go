@@ -8,17 +8,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// RunContextTopLevels are the allowed top-level variables for expression evaluations
-var RunContextTopLevels = []string{
-	"run",
-	"child",
-	"parent",
-	"contact",
-	"input",
-	"results",
-	"trigger",
-	"legacy_extra",
-}
+
 
 type runContext struct {
 	run flows.FlowRun
