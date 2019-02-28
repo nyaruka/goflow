@@ -68,19 +68,8 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 // Inspect inspects this object and any children
 func (a *AddContactGroupsAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-}
 
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *AddContactGroupsAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *AddContactGroupsAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *AddContactGroupsAction) EnumerateDependencies(callback func(assets.Reference)) {
-	flows.EnumerateDependenciesInGroupReferences(a.Groups, callback)
+	for _, g := range a.Groups {
+		flows.InspectReference(g, inspect)
+	}
 }

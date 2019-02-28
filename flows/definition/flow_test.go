@@ -354,8 +354,8 @@ func TestExtractDependencies(t *testing.T) {
 			"../../test/testdata/flows/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
 			[]assets.Reference{
-				assets.NewFieldReference("state", ""),
 				assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
+				assets.NewFieldReference("state", ""),
 				assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", "Survey Audience"),
 				assets.NewFieldReference("activation_token", "Activation Token"),
 				assets.NewFieldReference("first_name", ""),

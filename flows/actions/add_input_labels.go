@@ -72,19 +72,8 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logMo
 // Inspect inspects this object and any children
 func (a *AddInputLabelsAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-}
 
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *AddInputLabelsAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	flows.EnumerateTemplatesInLabelReferences(a.Labels, callback)
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *AddInputLabelsAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	flows.RewriteTemplatesInLabelReferences(a.Labels, rewrite)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *AddInputLabelsAction) EnumerateDependencies(callback func(assets.Reference)) {
-	flows.EnumerateDependenciesInLabelReferences(a.Labels, callback)
+	for _, l := range a.Labels {
+		flows.InspectReference(l, inspect)
+	}
 }

@@ -83,6 +83,7 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 // Inspect inspects this object and any children
 func (a *SetContactFieldAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
+	flows.InspectReference(a.Field, inspect)
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
@@ -93,9 +94,4 @@ func (a *SetContactFieldAction) EnumerateTemplates(localization flows.Localizati
 // RewriteTemplates rewrites all templates on this object and its children
 func (a *SetContactFieldAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
 	a.Value = rewrite(a.Value)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *SetContactFieldAction) EnumerateDependencies(callback func(assets.Reference)) {
-	callback(a.Field)
 }

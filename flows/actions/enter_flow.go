@@ -70,9 +70,5 @@ func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 // Inspect inspects this object and any children
 func (a *EnterFlowAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *EnterFlowAction) EnumerateDependencies(callback func(assets.Reference)) {
-	callback(a.Flow)
+	flows.InspectReference(a.Flow, inspect)
 }

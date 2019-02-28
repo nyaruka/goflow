@@ -83,21 +83,18 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 // Inspect inspects this object and any children
 func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
+
+	for _, g := range a.Groups {
+		flows.InspectReference(g, inspect)
+	}
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *StartSessionAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)
 	flows.EnumerateTemplateArray(a.LegacyVars, callback)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
 func (a *StartSessionAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
 	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *StartSessionAction) EnumerateDependencies(callback func(assets.Reference)) {
-	flows.EnumerateDependenciesInGroupReferences(a.Groups, callback)
 }
