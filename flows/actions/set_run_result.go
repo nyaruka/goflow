@@ -87,3 +87,8 @@ func (a *SetRunResultAction) EnumerateTemplates(localization flows.Localization,
 func (a *SetRunResultAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
 	a.Value = rewrite(a.Value)
 }
+
+// EnumerateResultNames enumerates all result names on this object
+func (a *SetRunResultAction) EnumerateResultNames(callback func(string)) {
+	callback(a.Name)
+}

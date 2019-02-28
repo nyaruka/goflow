@@ -33,9 +33,13 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "@(1 / 0)"
-        ]
+        "inspection": {
+            "templates": [
+                "@(1 / 0)"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "Error event and action skipped if timezone isn't valid",
@@ -53,9 +57,13 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "xxxxxxxxxx"
-        ]
+        "inspection": {
+            "templates": [
+                "xxxxxxxxxx"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "NOOP if timezone doesn't change",

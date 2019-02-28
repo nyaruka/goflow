@@ -147,6 +147,7 @@ type Inspectable interface {
 	EnumerateTemplates(Localization, func(string))
 	RewriteTemplates(Localization, func(string) string)
 	EnumerateDependencies(Localization, func(assets.Reference))
+	EnumerateResultNames(func(string))
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
@@ -186,6 +187,7 @@ type Flow interface {
 	ExtractTemplates() []string
 	RewriteTemplates(func(string) string)
 	ExtractDependencies() []assets.Reference
+	ExtractResultNames() []string
 }
 
 // Node is a single node in a flow

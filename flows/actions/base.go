@@ -62,7 +62,11 @@ func (a *BaseAction) EnumerateTemplates(localization flows.Localization, callbac
 func (a *BaseAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *BaseAction) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {}
+func (a *BaseAction) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+}
+
+// EnumerateResultNames enumerates all result names on this object
+func (a *BaseAction) EnumerateResultNames(callback func(string)) {}
 
 // helper function for actions that have a set of group references that must be validated
 func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*assets.GroupReference) error {

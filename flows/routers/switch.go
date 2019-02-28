@@ -81,6 +81,9 @@ func (c *Case) EnumerateDependencies(localization flows.Localization, callback f
 	}
 }
 
+// EnumerateResultNames enumerates all result names on this object
+func (c *Case) EnumerateResultNames(callback func(string)) {}
+
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default exit
 type SwitchRouter struct {
@@ -231,4 +234,9 @@ func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+}
+
+// EnumerateResultNames enumerates all result names on this object
+func (r *SwitchRouter) EnumerateResultNames(callback func(string)) {
+	callback(r.ResultName())
 }

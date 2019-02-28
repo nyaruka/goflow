@@ -45,9 +45,13 @@
                 "type": "ivr_created"
             }
         ],
-        "templates": [
-            "Hi there @contact.name"
-        ]
+        "inspection": {
+            "templates": [
+                "Hi there @contact.name"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "IVR created event without msg attachment if we don't have an audio URL",

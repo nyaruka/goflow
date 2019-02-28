@@ -83,10 +83,18 @@
                 ]
             }
         ],
-        "templates": [
-            "Hi there!",
-            "@contact.fields.supervisor",
-            "@(\"+1098765432\")"
-        ]
+        "inspection": {
+            "templates": [
+                "Hi there!",
+                "@contact.fields.supervisor",
+                "@(\"+1098765432\")"
+            ],
+            "dependencies": [
+                "field[key=supervisor,name=]",
+                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
+                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]"
+            ],
+            "result_names": []
+        }
     }
 ]

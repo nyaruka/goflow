@@ -17,9 +17,13 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "+1234567890"
-        ]
+        "inspection": {
+            "templates": [
+                "+1234567890"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "Error event if path evaluates to empty",

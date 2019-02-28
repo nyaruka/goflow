@@ -56,9 +56,13 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "Spam@(1 / 0)"
-        ]
+        "inspection": {
+            "templates": [
+                "Spam@(1 / 0)"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "Error event if a label is name that doesn't match any label",

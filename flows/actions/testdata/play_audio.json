@@ -16,9 +16,13 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "@(1 / 0).mp3"
-        ]
+        "inspection": {
+            "templates": [
+                "@(1 / 0).mp3"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "Error event and action skipped if audio URL evaluates to empty",
@@ -37,9 +41,13 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "@(\"\")"
-        ]
+        "inspection": {
+            "templates": [
+                "@(\"\")"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "IVR created event with msg attachment if we have an audio URL",

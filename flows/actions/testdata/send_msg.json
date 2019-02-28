@@ -24,12 +24,16 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "Hi there",
-            "http://example.com/red.jpg",
-            "Red",
-            "Blue"
-        ]
+        "inspection": {
+            "templates": [
+                "Hi there",
+                "http://example.com/red.jpg",
+                "Red",
+                "Blue"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "Error events if msg text, attachments and quick replies have expression errors",

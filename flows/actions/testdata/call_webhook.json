@@ -56,11 +56,17 @@
                 "url": "http://localhost:49996/?cmd=success"
             }
         ],
-        "templates": [
-            "http://localhost:49996/?cmd=success@(1 / 0)",
-            "@(1 / 0)",
-            "Token @contact.fields.token"
-        ]
+        "inspection": {
+            "templates": [
+                "http://localhost:49996/?cmd=success@(1 / 0)",
+                "@(1 / 0)",
+                "Token @contact.fields.token"
+            ],
+            "dependencies": [
+                "field[key=token,name=]"
+            ],
+            "result_names": []
+        }
     },
     {
         "description": "Error event created and action skipped if URL evaluates to empty",
@@ -79,9 +85,13 @@
                 "type": "error"
             }
         ],
-        "templates": [
-            "@(\"\")"
-        ]
+        "inspection": {
+            "templates": [
+                "@(\"\")"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "Result changed event created if result name set",
@@ -117,6 +127,16 @@
                 "type": "run_result_changed",
                 "value": "200"
             }
-        ]
+        ],
+        "inspection": {
+            "templates": [
+                "http://localhost:49996/?cmd=success",
+                "Hi there!"
+            ],
+            "dependencies": [],
+            "result_names": [
+                "My Webhook"
+            ]
+        }
     }
 ]

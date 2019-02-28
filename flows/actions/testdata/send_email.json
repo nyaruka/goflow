@@ -43,11 +43,15 @@
                 "type": "email_created"
             }
         ],
-        "templates": [
-            "Hi there@(1 / 0)",
-            "So I was thinking...@(1 / 0)",
-            "bob@example.com@(1 / 0)"
-        ]
+        "inspection": {
+            "templates": [
+                "Hi there@(1 / 0)",
+                "So I was thinking...@(1 / 0)",
+                "bob@example.com@(1 / 0)"
+            ],
+            "dependencies": [],
+            "result_names": []
+        }
     },
     {
         "description": "Error event and action skipped if subject evaluates to empty",

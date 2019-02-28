@@ -118,3 +118,8 @@ func (a *CallResthookAction) pickResultWebhook(calls []*flows.WebhookCall) *flow
 func (a *CallResthookAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
 }
+
+// EnumerateResultNames enumerates all result names on this object
+func (a *CallResthookAction) EnumerateResultNames(callback func(string)) {
+	callback(a.ResultName)
+}

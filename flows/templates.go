@@ -139,3 +139,6 @@ func (r inspectableReference) EnumerateDependencies(localization Localization, c
 		callback(r.ref)
 	}
 }
+
+// EnumerateResultNames enumerates all result names on this object
+func (r inspectableReference) EnumerateResultNames(callback func(string)) {}
