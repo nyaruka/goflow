@@ -142,6 +142,7 @@ func (f *flow) Reference() *assets.FlowReference {
 }
 
 func (f *flow) inspect(inspect func(flows.Inspectable)) {
+	// inspect each node
 	for _, n := range f.Nodes() {
 		n.Inspect(inspect)
 	}
@@ -193,6 +194,19 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 	})
 
 	return dependencies
+}
+
+// ExtractResultNames extracts all result names
+func (f *flow) ExtractResultNames() []string {
+	names := make([]string, 0)
+	f.inspect(func(item flows.Inspectable) {
+		item.EnumerateResultNames(func(name string) {
+			if name != "" {
+				names = append(names, name)
+			}
+		})
+	})
+	return names
 }
 
 //------------------------------------------------------------------------------------------

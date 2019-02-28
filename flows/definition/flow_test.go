@@ -395,3 +395,35 @@ func TestExtractDependencies(t *testing.T) {
 		assert.Equal(t, tc.dependencies, flow.ExtractDependencies(), "extracted dependencies mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 	}
 }
+
+func TestExtractResultNames(t *testing.T) {
+	testCases := []struct {
+		path        string
+		uuid        string
+		resultNames []string
+	}{
+		{
+			"../../test/testdata/flows/all_actions.json",
+			"8ca44c09-791d-453a-9799-a70dd3303306",
+			[]string{"Gender"},
+		},
+		{
+			"../../test/testdata/flows/router_tests.json",
+			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+			[]string{"URN Check", "Group Check", "District Check"},
+		},
+		{
+			"../../test/testdata/flows/two_questions.json",
+			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+			[]string{"Favorite Color", "Soda"},
+		},
+	}
+
+	for _, tc := range testCases {
+		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		require.NoError(t, err)
+
+		// try extracting all dependencies
+		assert.Equal(t, tc.resultNames, flow.ExtractResultNames(), "extracted result names mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+	}
+}
