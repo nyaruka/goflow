@@ -260,7 +260,7 @@ func TestReadFlow(t *testing.T) {
 	assert.EqualError(t, err, "unable to read flow: field 'type' is required")
 }
 
-func TestEnumerateAndRewriteTemplates(t *testing.T) {
+func TestExtractAndRewriteTemplates(t *testing.T) {
 	testCases := []struct {
 		path      string
 		uuid      string
@@ -326,23 +326,69 @@ func TestEnumerateAndRewriteTemplates(t *testing.T) {
 		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
 		require.NoError(t, err)
 
-		// try enumerating all templates
-		templates := make([]string, 0)
-		flow.EnumerateTemplates(func(t string) { templates = append(templates, t) })
-
-		assert.Equal(t, tc.templates, templates)
+		// try extracting all templates
+		templates := flow.ExtractTemplates()
+		assert.Equal(t, tc.templates, templates, "extracted templates mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 
 		// try rewriting all templates in uppercase
 		flow.RewriteTemplates(func(t string) string { return strings.ToUpper(t) })
 
-		// re-enumerate all templates
-		rewritten := make([]string, 0)
-		flow.EnumerateTemplates(func(t string) { rewritten = append(rewritten, t) })
+		// re-extract all templates
+		rewritten := flow.ExtractTemplates()
 
 		for t := range templates {
 			templates[t] = strings.ToUpper(templates[t])
 		}
 
 		assert.Equal(t, templates, rewritten)
+	}
+}
+
+func TestExtractDependencies(t *testing.T) {
+	testCases := []struct {
+		path         string
+		uuid         string
+		dependencies []assets.Reference
+	}{
+		{
+			"../../test/testdata/flows/all_actions.json",
+			"8ca44c09-791d-453a-9799-a70dd3303306",
+			[]assets.Reference{
+				assets.NewFieldReference("state", ""),
+				assets.NewFieldReference("first_name", ""),
+				assets.NewFieldReference("activation_token", ""),
+				assets.NewFieldReference("raw_district", ""),
+				assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
+				assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", "Survey Audience"),
+				assets.NewFlowReference("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "Collect Language"),
+				assets.NewFieldReference("gender", "Gender"),
+				assets.NewFieldReference("district", "District"),
+			},
+		},
+		{
+			"../../test/testdata/flows/router_tests.json",
+			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+			[]assets.Reference{
+				assets.NewGroupReference("ade39253-0371-4dde-9df4-95245fe6a3a8", ""),
+				assets.NewFieldReference("raw_district", ""),
+				assets.NewFieldReference("district", "District"),
+			},
+		},
+		{
+			"../../test/testdata/flows/dynamic_groups.json",
+			"1b462ce8-983a-4393-b133-e15a0efdb70c",
+			[]assets.Reference{
+				assets.NewFieldReference("gender", "Gender"),
+				assets.NewFieldReference("age", "Age"),
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		require.NoError(t, err)
+
+		// try extracting all dependencies
+		assert.Equal(t, tc.dependencies, flow.ExtractDependencies(), "extracted dependencies mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 	}
 }

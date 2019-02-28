@@ -89,3 +89,8 @@ func (a *SetContactFieldAction) EnumerateTemplates(localization flows.Localizati
 func (a *SetContactFieldAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
 	a.Value = rewrite(a.Value)
 }
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *SetContactFieldAction) EnumerateDependencies(callback func(assets.Reference)) {
+	callback(a.Field)
+}

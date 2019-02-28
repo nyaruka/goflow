@@ -78,3 +78,8 @@ func (a *AddInputLabelsAction) EnumerateTemplates(localization flows.Localizatio
 func (a *AddInputLabelsAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
 	flows.RewriteTemplatesInLabelReferences(a.Labels, rewrite)
 }
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *AddInputLabelsAction) EnumerateDependencies(callback func(assets.Reference)) {
+	flows.EnumerateDependenciesInLabelReferences(a.Labels, callback)
+}

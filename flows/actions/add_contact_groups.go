@@ -74,3 +74,8 @@ func (a *AddContactGroupsAction) EnumerateTemplates(localization flows.Localizat
 func (a *AddContactGroupsAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
 	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
 }
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *AddContactGroupsAction) EnumerateDependencies(callback func(assets.Reference)) {
+	flows.EnumerateDependenciesInGroupReferences(a.Groups, callback)
+}

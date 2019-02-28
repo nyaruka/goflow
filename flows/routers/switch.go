@@ -3,6 +3,7 @@ package routers
 import (
 	"strings"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers/tests"
@@ -59,6 +60,15 @@ func (c *Case) RewriteTemplates(localization flows.Localization, rewrite func(st
 	flows.RewriteTemplateTranslations(localization, c, "arguments", rewrite)
 }
 
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (c *Case) EnumerateDependencies(callback func(assets.Reference)) {
+	if c.Type == "has_group" && len(c.Arguments) > 0 {
+		// TODO also need its translations
+
+		callback(assets.NewGroupReference(assets.GroupUUID(c.Arguments[0]), ""))
+	}
+}
+
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default exit
 type SwitchRouter struct {
@@ -93,6 +103,13 @@ func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite
 
 	for _, cs := range r.Cases {
 		cs.RewriteTemplates(localization, rewrite)
+	}
+}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (r *SwitchRouter) EnumerateDependencies(callback func(assets.Reference)) {
+	for _, cs := range r.Cases {
+		cs.EnumerateDependencies(callback)
 	}
 }
 

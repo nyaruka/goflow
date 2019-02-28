@@ -56,12 +56,13 @@ func (a *BaseAction) UUID() flows.ActionUUID { return a.UUID_ }
 func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *BaseAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-}
+func (a *BaseAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {}
 
 // RewriteTemplates rewrites all templates on this object and its children
-func (a *BaseAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-}
+func (a *BaseAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *BaseAction) EnumerateDependencies(callback func(assets.Reference)) {}
 
 // helper function for actions that have a set of group references that must be validated
 func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*assets.GroupReference) error {

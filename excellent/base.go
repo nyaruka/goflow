@@ -30,6 +30,11 @@ func VisitExpression(expression string, visitor antlr.ParseTreeVisitor) (interfa
 
 // VisitTemplate scans the given template and calls the callback for each token encountered
 func VisitTemplate(template string, allowedTopLevels []string, callback func(XTokenType, string) error) error {
+	// nothing todo for an empty template
+	if template == "" {
+		return nil
+	}
+
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
 	errors := NewTemplateErrors()
 

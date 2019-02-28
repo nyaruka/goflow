@@ -109,3 +109,8 @@ func (a *SendBroadcastAction) RewriteTemplates(localization flows.Localization, 
 	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
 	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
 }
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *SendBroadcastAction) EnumerateDependencies(callback func(assets.Reference)) {
+	flows.EnumerateDependenciesInGroupReferences(a.Groups, callback)
+}

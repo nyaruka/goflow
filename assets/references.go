@@ -18,6 +18,7 @@ type Reference interface {
 
 	Type() string
 	Identity() string
+	Variable() bool
 }
 
 // ChannelReference is used to reference a channel
@@ -39,6 +40,11 @@ func (r *ChannelReference) Type() string {
 // Identity returns the unique identity of the asset
 func (r *ChannelReference) Identity() string {
 	return string(r.UUID)
+}
+
+// Variable returns whether this a variable (vs concrete) reference
+func (r *ChannelReference) Variable() bool {
+	return false
 }
 
 func (r *ChannelReference) String() string {
@@ -74,6 +80,11 @@ func (r *GroupReference) Identity() string {
 	return string(r.UUID)
 }
 
+// Variable returns whether this a variable (vs concrete) reference
+func (r *GroupReference) Variable() bool {
+	return r.Identity() == ""
+}
+
 func (r *GroupReference) String() string {
 	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
@@ -101,6 +112,11 @@ func (r *FieldReference) Identity() string {
 	return string(r.Key)
 }
 
+// Variable returns whether this a variable (vs concrete) reference
+func (r *FieldReference) Variable() bool {
+	return false
+}
+
 func (r *FieldReference) String() string {
 	return fmt.Sprintf("%s[key=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
@@ -126,6 +142,11 @@ func (r *FlowReference) Type() string {
 // Identity returns the unique identity of the asset
 func (r *FlowReference) Identity() string {
 	return string(r.UUID)
+}
+
+// Variable returns whether this a variable (vs concrete) reference
+func (r *FlowReference) Variable() bool {
+	return false
 }
 
 func (r *FlowReference) String() string {
@@ -159,6 +180,11 @@ func (r *LabelReference) Type() string {
 // Identity returns the unique identity of the asset
 func (r *LabelReference) Identity() string {
 	return string(r.UUID)
+}
+
+// Variable returns whether this a variable (vs concrete) reference
+func (r *LabelReference) Variable() bool {
+	return r.Identity() == ""
 }
 
 func (r *LabelReference) String() string {

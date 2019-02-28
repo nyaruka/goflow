@@ -66,3 +66,8 @@ func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	logEvent(events.NewFlowEnteredEvent(a.Flow, run.UUID(), a.Terminal))
 	return nil
 }
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *EnterFlowAction) EnumerateDependencies(callback func(assets.Reference)) {
+	callback(a.Flow)
+}

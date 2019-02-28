@@ -70,3 +70,8 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 	a.applyModifier(run, modifiers.NewChannelModifier(channel), logModifier, logEvent)
 	return nil
 }
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *SetContactChannelAction) EnumerateDependencies(callback func(assets.Reference)) {
+	callback(a.Channel)
+}

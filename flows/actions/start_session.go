@@ -91,3 +91,8 @@ func (a *StartSessionAction) RewriteTemplates(localization flows.Localization, r
 	flows.RewriteTemplatesInGroupReferences(a.Groups, rewrite)
 	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
 }
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *StartSessionAction) EnumerateDependencies(callback func(assets.Reference)) {
+	flows.EnumerateDependenciesInGroupReferences(a.Groups, callback)
+}

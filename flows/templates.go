@@ -93,7 +93,7 @@ func RewriteTemplateTranslations(localization Localization, localizable Localiza
 
 func EnumerateTemplatesInGroupReferences(groups []*assets.GroupReference, callback func(string)) {
 	for _, group := range groups {
-		if group.NameMatch != "" {
+		if group.Variable() {
 			callback(group.NameMatch)
 		}
 	}
@@ -101,7 +101,7 @@ func EnumerateTemplatesInGroupReferences(groups []*assets.GroupReference, callba
 
 func RewriteTemplatesInGroupReferences(groups []*assets.GroupReference, rewrite func(string) string) {
 	for _, group := range groups {
-		if group.NameMatch != "" {
+		if group.Variable() {
 			group.NameMatch = rewrite(group.NameMatch)
 		}
 	}
@@ -109,7 +109,7 @@ func RewriteTemplatesInGroupReferences(groups []*assets.GroupReference, rewrite 
 
 func EnumerateTemplatesInLabelReferences(labels []*assets.LabelReference, callback func(string)) {
 	for _, label := range labels {
-		if label.NameMatch != "" {
+		if label.Variable() {
 			callback(label.NameMatch)
 		}
 	}
@@ -117,8 +117,24 @@ func EnumerateTemplatesInLabelReferences(labels []*assets.LabelReference, callba
 
 func RewriteTemplatesInLabelReferences(labels []*assets.LabelReference, rewrite func(string) string) {
 	for _, label := range labels {
-		if label.NameMatch != "" {
+		if label.Variable() {
 			label.NameMatch = rewrite(label.NameMatch)
+		}
+	}
+}
+
+func EnumerateDependenciesInGroupReferences(groups []*assets.GroupReference, callback func(assets.Reference)) {
+	for _, group := range groups {
+		if !group.Variable() {
+			callback(group)
+		}
+	}
+}
+
+func EnumerateDependenciesInLabelReferences(labels []*assets.LabelReference, callback func(assets.Reference)) {
+	for _, label := range labels {
+		if !label.Variable() {
+			callback(label)
 		}
 	}
 }

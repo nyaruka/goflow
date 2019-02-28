@@ -3,6 +3,7 @@ package definition
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/routers"
@@ -110,6 +111,17 @@ func (n *node) RewriteTemplates(localization flows.Localization, rewrite func(st
 
 	if n.Router() != nil {
 		n.Router().RewriteTemplates(localization, rewrite)
+	}
+}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (n *node) EnumerateDependencies(callback func(assets.Reference)) {
+	for _, a := range n.Actions() {
+		a.EnumerateDependencies(callback)
+	}
+
+	if n.Router() != nil {
+		n.Router().EnumerateDependencies(callback)
 	}
 }
 
