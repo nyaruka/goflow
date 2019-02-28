@@ -80,6 +80,11 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *StartSessionAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)

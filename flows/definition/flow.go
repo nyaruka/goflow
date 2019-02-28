@@ -143,13 +143,16 @@ func (f *flow) Reference() *assets.FlowReference {
 
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
+
 	templates := make([]string, 0)
 
 	for _, n := range f.Nodes() {
-		n.EnumerateTemplates(f.Localization(), func(template string) {
-			if template != "" {
-				templates = append(templates, template)
-			}
+		n.Inspect(func(item flows.Inspectable) {
+			item.EnumerateTemplates(f.Localization(), func(template string) {
+				if template != "" {
+					templates = append(templates, template)
+				}
+			})
 		})
 	}
 
@@ -159,7 +162,9 @@ func (f *flow) ExtractTemplates() []string {
 // RewriteTemplates rewrites all templates
 func (f *flow) RewriteTemplates(rewrite func(string) string) {
 	for _, n := range f.Nodes() {
-		n.RewriteTemplates(f.Localization(), rewrite)
+		n.Inspect(func(item flows.Inspectable) {
+			item.RewriteTemplates(f.Localization(), rewrite)
+		})
 	}
 }
 
@@ -176,15 +181,17 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 	}
 
 	for _, n := range f.Nodes() {
-		n.EnumerateTemplates(f.Localization(), func(template string) {
-			fieldRefs := flows.ExtractFieldReferences(template)
-			for _, f := range fieldRefs {
-				addDependency(f)
-			}
-		})
+		n.Inspect(func(item flows.Inspectable) {
+			item.EnumerateTemplates(f.Localization(), func(template string) {
+				fieldRefs := flows.ExtractFieldReferences(template)
+				for _, f := range fieldRefs {
+					addDependency(f)
+				}
+			})
 
-		n.EnumerateDependencies(func(r assets.Reference) {
-			addDependency(r)
+			item.EnumerateDependencies(func(r assets.Reference) {
+				addDependency(r)
+			})
 		})
 	}
 

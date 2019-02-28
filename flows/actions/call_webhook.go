@@ -121,6 +121,11 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *CallWebhookAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *CallWebhookAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	callback(a.URL)

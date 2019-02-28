@@ -42,6 +42,11 @@ func NewCase(uuid utils.UUID, type_ string, arguments []string, omitOperand bool
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Case) LocalizationUUID() utils.UUID { return utils.UUID(c.UUID) }
 
+// Inspect inspects this object and any children
+func (c *Case) Inspect(inspect func(flows.Inspectable)) {
+	inspect(c)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (c *Case) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	for _, arg := range c.Arguments {
@@ -85,31 +90,6 @@ func NewSwitchRouter(defaultExit flows.ExitUUID, operand string, cases []*Case, 
 		Default:    defaultExit,
 		Operand:    operand,
 		Cases:      cases,
-	}
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	callback(r.Operand)
-
-	for _, cs := range r.Cases {
-		cs.EnumerateTemplates(localization, callback)
-	}
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	r.Operand = rewrite(r.Operand)
-
-	for _, cs := range r.Cases {
-		cs.RewriteTemplates(localization, rewrite)
-	}
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (r *SwitchRouter) EnumerateDependencies(callback func(assets.Reference)) {
-	for _, cs := range r.Cases {
-		cs.EnumerateDependencies(callback)
 	}
 }
 
@@ -222,3 +202,25 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	// no matches, no defaults, no route
 	return operandAsStr, flows.NoRoute, nil
 }
+
+// Inspect inspects this object and any children
+func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
+	inspect(r)
+
+	for _, cs := range r.Cases {
+		cs.Inspect(inspect)
+	}
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+	callback(r.Operand)
+}
+
+// RewriteTemplates rewrites all templates on this object and its children
+func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
+	r.Operand = rewrite(r.Operand)
+}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (r *SwitchRouter) EnumerateDependencies(callback func(assets.Reference)) {}

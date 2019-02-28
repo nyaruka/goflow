@@ -65,6 +65,11 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *AddContactGroupsAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *AddContactGroupsAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	flows.EnumerateTemplatesInGroupReferences(a.Groups, callback)

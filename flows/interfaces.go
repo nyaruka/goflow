@@ -143,6 +143,7 @@ type Localizable interface {
 }
 
 type Inspectable interface {
+	Inspect(func(Inspectable))
 	EnumerateTemplates(Localization, func(string))
 	RewriteTemplates(Localization, func(string) string)
 	EnumerateDependencies(func(assets.Reference))

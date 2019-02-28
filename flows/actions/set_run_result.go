@@ -73,6 +73,11 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *SetRunResultAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetRunResultAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	callback(a.Value)

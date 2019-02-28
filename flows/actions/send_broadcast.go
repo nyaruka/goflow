@@ -86,6 +86,11 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *SendBroadcastAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	callback(a.Text)

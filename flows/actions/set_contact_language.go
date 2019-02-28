@@ -77,6 +77,11 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *SetContactLanguageAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetContactLanguageAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	callback(a.Language)

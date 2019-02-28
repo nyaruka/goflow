@@ -105,6 +105,11 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *SendEmailAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SendEmailAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	callback(a.Subject)

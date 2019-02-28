@@ -71,6 +71,11 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *SetContactChannelAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *SetContactChannelAction) EnumerateDependencies(callback func(assets.Reference)) {
 	callback(a.Channel)

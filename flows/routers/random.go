@@ -38,3 +38,8 @@ func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	exitN := utils.RandIntN(len(exits))
 	return nil, flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN), nil), nil
 }
+
+// Inspect inspects this object and any children
+func (r *RandomRouter) Inspect(inspect func(flows.Inspectable)) {
+	inspect(r)
+}

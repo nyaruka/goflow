@@ -74,6 +74,11 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *PlayAudioAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *PlayAudioAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	callback(a.AudioURL)

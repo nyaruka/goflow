@@ -69,6 +69,11 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logMo
 	return nil
 }
 
+// Inspect inspects this object and any children
+func (a *AddInputLabelsAction) Inspect(inspect func(flows.Inspectable)) {
+	inspect(a)
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *AddInputLabelsAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
 	flows.EnumerateTemplatesInLabelReferences(a.Labels, callback)
