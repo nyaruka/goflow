@@ -49,6 +49,7 @@
             "templates": [
                 "Hi there @contact.name"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },

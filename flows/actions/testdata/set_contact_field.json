@@ -37,6 +37,9 @@
             "templates": [
                 "30"
             ],
+            "dependencies": [
+                "field[key=age,name=Age]"
+            ],
             "result_names": []
         }
     },
@@ -63,6 +66,9 @@
         "inspection": {
             "templates": [
                 "@( 1/ 0)"
+            ],
+            "dependencies": [
+                "field[key=age,name=Age]"
             ],
             "result_names": []
         }

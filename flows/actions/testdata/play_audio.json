@@ -20,6 +20,7 @@
             "templates": [
                 "@(1 / 0).mp3"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },
@@ -44,6 +45,7 @@
             "templates": [
                 "@(\"\")"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },

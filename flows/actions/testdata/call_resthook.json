@@ -9,6 +9,7 @@
         "events": [],
         "inspection": {
             "templates": [],
+            "dependencies": [],
             "result_names": []
         }
     },
@@ -92,6 +93,7 @@
         ],
         "inspection": {
             "templates": [],
+            "dependencies": [],
             "result_names": []
         }
     },
@@ -190,6 +192,7 @@
         ],
         "inspection": {
             "templates": [],
+            "dependencies": [],
             "result_names": [
                 "My Result"
             ]

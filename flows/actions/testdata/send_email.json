@@ -49,6 +49,7 @@
                 "So I was thinking...@(1 / 0)",
                 "bob@example.com@(1 / 0)"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },

@@ -62,6 +62,9 @@
                 "@(1 / 0)",
                 "Token @contact.fields.token"
             ],
+            "dependencies": [
+                "field[key=token,name=]"
+            ],
             "result_names": []
         }
     },
@@ -86,6 +89,7 @@
             "templates": [
                 "@(\"\")"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },
@@ -129,6 +133,7 @@
                 "http://localhost:49996/?cmd=success",
                 "Hi there!"
             ],
+            "dependencies": [],
             "result_names": [
                 "My Webhook"
             ]

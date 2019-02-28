@@ -21,6 +21,7 @@
             "templates": [
                 "+1234567890"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },

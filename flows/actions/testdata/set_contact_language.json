@@ -37,6 +37,7 @@
             "templates": [
                 "@(1 / 0)"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },
@@ -60,6 +61,7 @@
             "templates": [
                 "xxxxxxxxxx"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },

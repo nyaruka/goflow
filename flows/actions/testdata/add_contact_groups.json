@@ -82,6 +82,7 @@
             "templates": [
                 "Customers@(1 / 0)"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },
@@ -109,6 +110,7 @@
             "templates": [
                 "Climbers"
             ],
+            "dependencies": [],
             "result_names": []
         }
     },
