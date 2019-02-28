@@ -364,6 +364,7 @@ func TestExtractDependencies(t *testing.T) {
 				assets.NewFieldReference("gender", "Gender"),
 				assets.NewFieldReference("raw_district", ""),
 				assets.NewFieldReference("district", "District"),
+				assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Android Channel"),
 			},
 		},
 		{
