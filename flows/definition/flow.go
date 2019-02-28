@@ -141,31 +141,30 @@ func (f *flow) Reference() *assets.FlowReference {
 	return assets.NewFlowReference(f.uuid, f.name)
 }
 
+func (f *flow) inspect(inspect func(flows.Inspectable)) {
+	for _, n := range f.Nodes() {
+		n.Inspect(inspect)
+	}
+}
+
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
-
 	templates := make([]string, 0)
-
-	for _, n := range f.Nodes() {
-		n.Inspect(func(item flows.Inspectable) {
-			item.EnumerateTemplates(f.Localization(), func(template string) {
-				if template != "" {
-					templates = append(templates, template)
-				}
-			})
+	f.inspect(func(item flows.Inspectable) {
+		item.EnumerateTemplates(f.Localization(), func(template string) {
+			if template != "" {
+				templates = append(templates, template)
+			}
 		})
-	}
-
+	})
 	return templates
 }
 
 // RewriteTemplates rewrites all templates
 func (f *flow) RewriteTemplates(rewrite func(string) string) {
-	for _, n := range f.Nodes() {
-		n.Inspect(func(item flows.Inspectable) {
-			item.RewriteTemplates(f.Localization(), rewrite)
-		})
-	}
+	f.inspect(func(item flows.Inspectable) {
+		item.RewriteTemplates(f.Localization(), rewrite)
+	})
 }
 
 // ExtractDependencies extracts all asset dependencies
@@ -180,20 +179,18 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 		}
 	}
 
-	for _, n := range f.Nodes() {
-		n.Inspect(func(item flows.Inspectable) {
-			item.EnumerateTemplates(f.Localization(), func(template string) {
-				fieldRefs := flows.ExtractFieldReferences(template)
-				for _, f := range fieldRefs {
-					addDependency(f)
-				}
-			})
-
-			item.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
-				addDependency(r)
-			})
+	f.inspect(func(item flows.Inspectable) {
+		item.EnumerateTemplates(f.Localization(), func(template string) {
+			fieldRefs := flows.ExtractFieldReferences(template)
+			for _, f := range fieldRefs {
+				addDependency(f)
+			}
 		})
-	}
+
+		item.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
+			addDependency(r)
+		})
+	})
 
 	return dependencies
 }
