@@ -124,7 +124,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 			// optionally give our contact some URNs
 			if !tc.NoURNs {
-				channel, _ := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
+				channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 				contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123"), channel))
 				contact.AddURN(flows.NewContactURN(urns.URN("twitterid:54784326227#nyaruka"), nil))
 			}
@@ -135,7 +135,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		if tc.NoInput {
 			var connection *flows.Connection
 			if flow.Type() == flows.FlowTypeVoice {
-				channel, _ := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
+				channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
 				trigger = triggers.NewManualVoiceTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, connection, nil)
 			} else {

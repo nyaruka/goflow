@@ -87,10 +87,10 @@ func TestConstructors(t *testing.T) {
 	assets, err := test.LoadSessionAssets("testdata/_assets.json")
 	require.NoError(t, err)
 
-	nexmo, _ := assets.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
-	age, _ := assets.Fields().Get("age")
+	nexmo := assets.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
+	age := assets.Fields().Get("age")
 	ageValue := types.NewXNumberFromInt(37)
-	testers, _ := assets.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")
+	testers := assets.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")
 	la, _ := time.LoadLocation("America/Los_Angeles")
 
 	tests := []struct {

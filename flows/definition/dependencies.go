@@ -38,17 +38,17 @@ func newDependencies(refs []assets.Reference) *dependencies {
 // refreshes the asset dependencies and notifies the caller of missing assets via the callback
 func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCallback) {
 	for i, ref := range d.Channels {
-		a, err := sa.Channels().Get(ref.UUID)
-		if err != nil {
+		a := sa.Channels().Get(ref.UUID)
+		if a == nil {
 			missing(ref)
 		} else {
 			d.Channels[i] = a.Reference()
 		}
 	}
 	for i, ref := range d.Fields {
-		a, err := sa.Fields().Get(ref.Key)
+		a := sa.Fields().Get(ref.Key)
 
-		if err != nil {
+		if a == nil {
 			// TODO for now if a field reference came from an expression (i.e. no name), we don't blow up if it's missing
 			// reality is we probably have lots of flows like this that need fixed.
 			if ref.Name != "" {
@@ -67,16 +67,16 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 		}
 	}
 	for i, ref := range d.Groups {
-		a, err := sa.Groups().Get(ref.UUID)
-		if err != nil {
+		a := sa.Groups().Get(ref.UUID)
+		if a == nil {
 			missing(ref)
 		} else {
 			d.Groups[i] = a.Reference()
 		}
 	}
 	for i, ref := range d.Labels {
-		a, err := sa.Labels().Get(ref.UUID)
-		if err != nil {
+		a := sa.Labels().Get(ref.UUID)
+		if a == nil {
 			missing(ref)
 		} else {
 			d.Labels[i] = a.Reference()

@@ -31,12 +31,8 @@ type MsgInput struct {
 func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) (*MsgInput, error) {
 	// load the channel
 	var channel *flows.Channel
-	var err error
 	if msg.Channel() != nil {
-		channel, err = assets.Channels().Get(msg.Channel().UUID)
-		if err != nil {
-			return nil, err
-		}
+		channel = assets.Channels().Get(msg.Channel().UUID)
 	}
 
 	return &MsgInput{

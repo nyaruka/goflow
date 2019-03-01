@@ -35,7 +35,7 @@ func TestContact(t *testing.T) {
 	sa, err := engine.NewSessionAssets(source)
 	require.NoError(t, err)
 
-	android, _ := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
+	android := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
 
 	env := utils.NewEnvironmentBuilder().Build()
 

@@ -39,9 +39,7 @@ func TestContactURN(t *testing.T) {
 	require.NoError(t, err)
 
 	channels := sessionAssets.Channels()
-
-	channel, err := channels.Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-	require.NoError(t, err)
+	channel := channels.Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
 	// check that parsing a URN properly extracts its channel affinity
 	urn, err := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), assets.PanicOnMissing)

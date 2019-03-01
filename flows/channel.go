@@ -8,8 +8,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 // Channel represents a means for sending and receiving input during a flow run. It renders as its name in a template,
@@ -126,12 +124,8 @@ func NewChannelAssets(channels []assets.Channel) *ChannelAssets {
 }
 
 // Get returns the channel with the given UUID
-func (s *ChannelAssets) Get(uuid assets.ChannelUUID) (*Channel, error) {
-	c, found := s.byUUID[uuid]
-	if !found {
-		return nil, errors.Errorf("no such channel with UUID '%s'", uuid)
-	}
-	return c, nil
+func (s *ChannelAssets) Get(uuid assets.ChannelUUID) *Channel {
+	return s.byUUID[uuid]
 }
 
 // GetForURN returns the best channel for the given URN

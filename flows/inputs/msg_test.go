@@ -22,8 +22,7 @@ func TestMsgInput(t *testing.T) {
 
 	env := session.Environment()
 
-	channel, err := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-	require.NoError(t, err)
+	channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
 	msg := flows.NewMsgIn(
 		flows.MsgUUID("f51d7220-10b3-4faa-a91c-1ae70beaae3e"),

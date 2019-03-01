@@ -4,8 +4,6 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
-
-	"github.com/pkg/errors"
 )
 
 // Label represents a message label
@@ -57,12 +55,8 @@ func (s *LabelAssets) All() []*Label {
 }
 
 // Get returns the label with the given UUID
-func (s *LabelAssets) Get(uuid assets.LabelUUID) (*Label, error) {
-	c, found := s.byUUID[uuid]
-	if !found {
-		return nil, errors.Errorf("no such label with UUID '%s'", uuid)
-	}
-	return c, nil
+func (s *LabelAssets) Get(uuid assets.LabelUUID) *Label {
+	return s.byUUID[uuid]
 }
 
 // FindByName looks for a label with the given name (case-insensitive)

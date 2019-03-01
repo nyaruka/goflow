@@ -50,12 +50,8 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 	}
 
 	var channel *flows.Channel
-	var err error
 	if a.Channel != nil {
-		channel, err = run.Session().Assets().Channels().Get(a.Channel.UUID)
-		if err != nil {
-			return err
-		}
+		channel = run.Session().Assets().Channels().Get(a.Channel.UUID)
 	}
 
 	a.applyModifier(run, modifiers.NewChannelModifier(channel), logModifier, logEvent)

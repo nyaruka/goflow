@@ -88,15 +88,13 @@ func ReadInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing 
 }
 
 func (i *baseInput) unmarshal(sessionAssets flows.SessionAssets, e *baseInputEnvelope, missing assets.MissingCallback) error {
-	var err error
-
 	i.type_ = e.Type
 	i.uuid = e.UUID
 	i.createdOn = e.CreatedOn
 
 	if e.Channel != nil {
-		i.channel, err = sessionAssets.Channels().Get(e.Channel.UUID)
-		if err != nil {
+		i.channel = sessionAssets.Channels().Get(e.Channel.UUID)
+		if i.channel == nil {
 			missing(e.Channel)
 			return nil
 		}
