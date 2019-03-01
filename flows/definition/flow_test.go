@@ -239,6 +239,31 @@ func TestNewFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(newFlowDef), marshaled, "flow definition mismatch")
 }
 
+func TestValidateEmptyFlow(t *testing.T) {
+	flow, err := test.LoadFlowFromAssets("../../test/testdata/flows/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+	require.NoError(t, err)
+
+	err = flow.Validate(nil)
+	assert.NoError(t, err)
+
+	marshaled, err := json.Marshal(flow)
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Empty Flow",
+		"revision": 0,
+		"spec_version": "12.0.0",
+		"type": "messaging",
+		"expire_after_minutes": 0,
+		"language": "eng",
+		"localization": {},
+		"nodes": [],
+		"_dependencies": {},
+		"_result_names": []
+	}`), marshaled, "flow definition mismatch")
+}
+
 func TestReadFlow(t *testing.T) {
 	// try reading something without a flow header
 	_, err := definition.ReadFlow([]byte(`{"nodes":[]}`))
