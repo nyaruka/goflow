@@ -600,7 +600,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		// resthook rulesets operate on the webhook status, saved as category
-		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@(default(results.%s.category, \"Success\"))", utils.Snakify(resultName)), cases, "")
+		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
 		uiType = UINodeTypeSplitByResthook
 
 	case "form_field":
