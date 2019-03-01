@@ -41,8 +41,8 @@ func NewSetContactChannelAction(uuid flows.ActionUUID, channel *assets.ChannelRe
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SetContactChannelAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *SetContactChannelAction) Validate() error {
 	return nil
 }
 

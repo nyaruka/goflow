@@ -54,8 +54,8 @@ func NewSendBroadcastAction(uuid flows.ActionUUID, text string, attachments []st
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SendBroadcastAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *SendBroadcastAction) Validate() error {
 	return nil
 }
 

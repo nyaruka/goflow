@@ -58,8 +58,8 @@ func NewCallWebhookAction(uuid flows.ActionUUID, method string, url string, head
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *CallWebhookAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *CallWebhookAction) Validate() error {
 	if a.Body != "" && a.Method == "GET" {
 		return errors.Errorf("can't specify body if method is GET")
 	}

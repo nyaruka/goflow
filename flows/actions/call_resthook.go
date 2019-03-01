@@ -47,8 +47,8 @@ func NewCallResthookAction(uuid flows.ActionUUID, resthook string, resultName st
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *CallResthookAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *CallResthookAction) Validate() error {
 	return nil
 }
 

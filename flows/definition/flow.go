@@ -55,6 +55,10 @@ func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowTyp
 		ui:                 ui,
 	}
 
+	if f.localization == nil {
+		f.localization = NewLocalization()
+	}
+
 	for _, node := range f.nodes {
 		f.nodeMap[node.UUID()] = node
 	}
@@ -98,7 +102,7 @@ func (f *flow) Validate(sa flows.SessionAssets, context *flows.ValidationContext
 		}
 		seenUUIDs[utils.UUID(node.UUID())] = true
 
-		if err := node.Validate(sa, context, f, seenUUIDs); err != nil {
+		if err := node.Validate(f, seenUUIDs); err != nil {
 			return errors.Wrapf(err, "validation failed for node[uuid=%s]", node.UUID())
 		}
 	}

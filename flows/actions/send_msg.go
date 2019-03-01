@@ -50,8 +50,8 @@ func NewSendMsgAction(uuid flows.ActionUUID, text string, attachments []string, 
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SendMsgAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *SendMsgAction) Validate() error {
 	return nil
 }
 

@@ -53,8 +53,8 @@ func NewStartSessionAction(uuid flows.ActionUUID, flow *assets.FlowReference, ur
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *StartSessionAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *StartSessionAction) Validate() error {
 	return nil
 }
 

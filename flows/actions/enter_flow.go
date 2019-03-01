@@ -42,8 +42,8 @@ func NewEnterFlowAction(uuid flows.ActionUUID, flow *assets.FlowReference, termi
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *EnterFlowAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *EnterFlowAction) Validate() error {
 	return nil
 }
 

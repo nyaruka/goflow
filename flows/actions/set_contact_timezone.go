@@ -42,8 +42,8 @@ func NewSetContactTimezoneAction(uuid flows.ActionUUID, timezone string) *SetCon
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SetContactTimezoneAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *SetContactTimezoneAction) Validate() error {
 	return nil
 }
 

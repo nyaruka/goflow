@@ -48,8 +48,8 @@ func NewSendEmailAction(uuid flows.ActionUUID, addresses []string, subject strin
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SendEmailAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *SendEmailAction) Validate() error {
 	return nil
 }
 

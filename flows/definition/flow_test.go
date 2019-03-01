@@ -67,7 +67,7 @@ func TestNewFlow(t *testing.T) {
 		"type": "messaging",
 		"revision": 123,
 		"expire_after_minutes": 30,
-		"localization": null,
+		"localization": {},
 		"nodes": [
 			{
 				"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",

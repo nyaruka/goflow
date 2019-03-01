@@ -45,8 +45,8 @@ func NewSetContactFieldAction(uuid flows.ActionUUID, field *assets.FieldReferenc
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SetContactFieldAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *SetContactFieldAction) Validate() error {
 	return nil
 }
 

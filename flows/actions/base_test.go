@@ -534,12 +534,9 @@ func TestConstructors(t *testing.T) {
 		},
 	}
 
-	session, _, err := test.CreateTestSession("", nil)
-	require.NoError(t, err)
-
 	for _, tc := range tests {
 		// test validating the action
-		err := tc.action.Validate(session.Assets(), flows.NewValidationContext())
+		err := tc.action.Validate()
 		assert.NoError(t, err)
 
 		// test marshaling the action

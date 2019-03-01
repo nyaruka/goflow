@@ -47,8 +47,8 @@ func NewSayMsgAction(uuid flows.ActionUUID, text string, audioURL string) *SayMs
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SayMsgAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *SayMsgAction) Validate() error {
 	return nil
 }
 

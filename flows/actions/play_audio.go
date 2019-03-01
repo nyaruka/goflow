@@ -42,8 +42,8 @@ func NewPlayAudioAction(uuid flows.ActionUUID, audioURL string) *PlayAudioAction
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *PlayAudioAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *PlayAudioAction) Validate() error {
 	return nil
 }
 

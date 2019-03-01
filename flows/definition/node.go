@@ -42,7 +42,7 @@ func (n *node) AddAction(action flows.Action) {
 	n.actions = append(n.actions, action)
 }
 
-func (n *node) Validate(assets flows.SessionAssets, context *flows.ValidationContext, flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
+func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 	// validate all the node's actions
 	for _, action := range n.Actions() {
 
@@ -64,7 +64,7 @@ func (n *node) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 		}
 		seenUUIDs[utils.UUID(action.UUID())] = true
 
-		if err := action.Validate(assets, context); err != nil {
+		if err := action.Validate(); err != nil {
 			return errors.Wrapf(err, "validation failed for action[uuid=%s, type=%s]", action.UUID(), action.Type())
 		}
 	}

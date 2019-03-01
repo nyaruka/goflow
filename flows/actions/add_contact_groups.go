@@ -42,8 +42,8 @@ func NewAddContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupRefe
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *AddContactGroupsAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *AddContactGroupsAction) Validate() error {
 	return nil
 }
 

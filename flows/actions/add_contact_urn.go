@@ -46,8 +46,8 @@ func NewAddContactURNAction(uuid flows.ActionUUID, scheme string, path string) *
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *AddContactURNAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *AddContactURNAction) Validate() error {
 	return nil
 }
 

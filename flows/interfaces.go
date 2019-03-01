@@ -203,7 +203,7 @@ type Node interface {
 	Exits() []Exit
 	Wait() Wait
 
-	Validate(SessionAssets, *ValidationContext, Flow, map[utils.UUID]bool) error
+	Validate(Flow, map[utils.UUID]bool) error
 }
 
 // Action is an action within a flow node
@@ -214,7 +214,7 @@ type Action interface {
 
 	UUID() ActionUUID
 	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
-	Validate(SessionAssets, *ValidationContext) error
+	Validate() error
 	AllowedFlowTypes() []FlowType
 }
 

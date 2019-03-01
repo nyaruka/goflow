@@ -41,8 +41,8 @@ func NewSetContactNameAction(uuid flows.ActionUUID, name string) *SetContactName
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SetContactNameAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+// Validate validates our action is valid
+func (a *SetContactNameAction) Validate() error {
 	return nil
 }
 
