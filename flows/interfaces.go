@@ -120,24 +120,6 @@ type SessionAssets interface {
 	Resthooks() *ResthookAssets
 }
 
-// ValidationContext contains state required during flow validation to avoid infinite loops
-type ValidationContext struct {
-	started map[assets.FlowUUID]bool
-}
-
-// NewValidationContext creates a new flow validation context
-func NewValidationContext() *ValidationContext {
-	return &ValidationContext{started: make(map[assets.FlowUUID]bool, 1)}
-}
-
-func (v *ValidationContext) Start(flow Flow) {
-	v.started[flow.UUID()] = true
-}
-
-func (v *ValidationContext) IsStarted(flow Flow) bool {
-	return v.started[flow.UUID()]
-}
-
 type Localizable interface {
 	LocalizationUUID() utils.UUID
 }
@@ -169,6 +151,7 @@ type Flow interface {
 	types.XValue
 	types.XResolvable
 
+	// spec properties
 	UUID() assets.FlowUUID
 	Name() string
 	Revision() int
@@ -176,12 +159,14 @@ type Flow interface {
 	Type() FlowType
 	ExpireAfterMinutes() int
 	Localization() Localization
+
+	// optional spec properties
 	UI() UI
 
-	Validate(SessionAssets, *ValidationContext) error
+	Validate(SessionAssets) error
+	ValidateRecursively(SessionAssets) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
-
 	Reference() *assets.FlowReference
 
 	ExtractTemplates() []string
@@ -201,7 +186,7 @@ type Node interface {
 	Exits() []Exit
 	Wait() Wait
 
-	Validate(SessionAssets, *ValidationContext, Flow, map[utils.UUID]bool) error
+	Validate(Flow, map[utils.UUID]bool) error
 }
 
 // Action is an action within a flow node
@@ -212,7 +197,7 @@ type Action interface {
 
 	UUID() ActionUUID
 	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
-	Validate(SessionAssets, *ValidationContext) error
+	Validate() error
 	AllowedFlowTypes() []FlowType
 }
 

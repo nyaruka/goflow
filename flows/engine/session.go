@@ -161,7 +161,7 @@ func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
 	}
 
 	// check flow is valid and has everything it needs to run
-	if err := waitingRun.Flow().Validate(s.Assets(), flows.NewValidationContext()); err != nil {
+	if err := waitingRun.Flow().ValidateRecursively(s.Assets()); err != nil {
 		return sprint, errors.Wrapf(err, "validation failed for flow[uuid=%s]", waitingRun.Flow().UUID())
 	}
 

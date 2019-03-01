@@ -15,7 +15,7 @@
                 }
             ]
         },
-        "validation_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+        "validation_error": "missing dependencies: flow[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Long Lost Flow]"
     },
     {
         "description": "Validation fails for invalid group reference",
@@ -33,7 +33,7 @@
                 }
             ]
         },
-        "validation_error": "no such group with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+        "validation_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
     },
     {
         "description": "Session triggered event if new session can be triggered",
@@ -130,6 +130,7 @@
                 "@(\"+1098765432\")"
             ],
             "dependencies": [
+                "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]",
                 "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
                 "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]"
             ],

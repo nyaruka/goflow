@@ -18,13 +18,13 @@ type ui struct {
 
 // NewUI creates a new UI section
 func NewUI() flows.UI {
-	return ui{
+	return &ui{
 		nodes:    make(map[flows.NodeUUID]flows.UINodeDetails),
 		stickies: make(map[utils.UUID]flows.Sticky),
 	}
 }
 
-func (u ui) MarshalJSON() ([]byte, error) {
+func (u *ui) MarshalJSON() ([]byte, error) {
 	return json.Marshal(map[string]interface{}{
 		"nodes":    u.nodes,
 		"stickies": u.stickies,
@@ -32,16 +32,16 @@ func (u ui) MarshalJSON() ([]byte, error) {
 }
 
 // AddNode adds information about a node
-func (u ui) AddNode(uuid flows.NodeUUID, nodeDetails flows.UINodeDetails) {
+func (u *ui) AddNode(uuid flows.NodeUUID, nodeDetails flows.UINodeDetails) {
 	u.nodes[uuid] = nodeDetails
 }
 
-func (u ui) GetNode(uuid flows.NodeUUID) flows.UINodeDetails {
+func (u *ui) GetNode(uuid flows.NodeUUID) flows.UINodeDetails {
 	return u.nodes[uuid]
 }
 
 // AddSticky adds a new sticky note
-func (u ui) AddSticky(sticky flows.Sticky) {
+func (u *ui) AddSticky(sticky flows.Sticky) {
 	u.stickies[utils.NewUUID()] = sticky
 }
 

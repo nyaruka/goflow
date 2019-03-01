@@ -60,7 +60,7 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 	}
 
 	// check flow is valid and has everything it needs to run
-	if err := flow.Validate(session.Assets(), flows.NewValidationContext()); err != nil {
+	if err := flow.ValidateRecursively(session.Assets()); err != nil {
 		return errors.Wrapf(err, "validation failed for %s", flow.Reference())
 	}
 

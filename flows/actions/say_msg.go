@@ -47,11 +47,6 @@ func NewSayMsgAction(uuid flows.ActionUUID, text string, audioURL string) *SayMs
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SayMsgAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	return nil
-}
-
 // Execute runs this action
 func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text

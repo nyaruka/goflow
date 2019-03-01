@@ -53,7 +53,7 @@ func TestFlowValidation(t *testing.T) {
 		flow, err := definition.ReadFlow(assetsJSON)
 		require.NoError(t, err)
 
-		err = flow.Validate(session.Assets(), flows.NewValidationContext())
+		err = flow.ValidateRecursively(session.Assets())
 		assert.EqualError(t, err, tc.expectedErr)
 	}
 }
@@ -67,7 +67,7 @@ func TestNewFlow(t *testing.T) {
 		"type": "messaging",
 		"revision": 123,
 		"expire_after_minutes": 30,
-		"localization": null,
+		"localization": {},
 		"nodes": [
 			{
 				"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
@@ -150,7 +150,7 @@ func TestNewFlow(t *testing.T) {
 		flows.FlowTypeMessaging,
 		123, // revision
 		30,  // expires after minutes
-		nil, // localization
+		definition.NewLocalization(),
 		[]flows.Node{
 			definition.NewNode(
 				flows.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"),
@@ -206,14 +206,62 @@ func TestNewFlow(t *testing.T) {
 		nil, // no UI
 	)
 
-	// should validate ok
-	err = flow.Validate(session.Assets(), flows.NewValidationContext())
-	assert.NoError(t, err)
-
 	marshaled, err := json.Marshal(flow)
 	assert.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
+
+	// should validate ok
+	err = flow.Validate(session.Assets())
+	assert.NoError(t, err)
+
+	// add expected dependencies and result names to our expected JSON
+	flowRaw, err := utils.JSONDecodeGeneric([]byte(flowDef))
+	require.NoError(t, err)
+	flowAsMap := flowRaw.(map[string]interface{})
+	flowAsMap[`_dependencies`] = map[string]interface{}{
+		"fields": []interface{}{
+			map[string]string{"key": "state", "name": ""},
+		},
+		"labels": []interface{}{
+			map[string]string{"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"},
+		},
+	}
+	flowAsMap[`_result_names`] = []string{"Response 1"}
+
+	// now when we marshal to JSON, those should be included
+	newFlowDef, err := json.Marshal(flowAsMap)
+	require.NoError(t, err)
+
+	marshaled, err = json.Marshal(flow)
+	assert.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(newFlowDef), marshaled, "flow definition mismatch")
+}
+
+func TestValidateEmptyFlow(t *testing.T) {
+	flow, err := test.LoadFlowFromAssets("../../test/testdata/flows/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+	require.NoError(t, err)
+
+	err = flow.Validate(nil)
+	assert.NoError(t, err)
+
+	marshaled, err := json.Marshal(flow)
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Empty Flow",
+		"revision": 0,
+		"spec_version": "12.0.0",
+		"type": "messaging",
+		"expire_after_minutes": 0,
+		"language": "eng",
+		"localization": {},
+		"nodes": [],
+		"_dependencies": {},
+		"_result_names": []
+	}`), marshaled, "flow definition mismatch")
 }
 
 func TestReadFlow(t *testing.T) {

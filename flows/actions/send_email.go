@@ -48,11 +48,6 @@ func NewSendEmailAction(uuid flows.ActionUUID, addresses []string, subject strin
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SendEmailAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	return nil
-}
-
 // Execute creates the email events
 func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	subject, err := run.EvaluateTemplate(a.Subject)

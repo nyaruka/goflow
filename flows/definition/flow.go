@@ -18,6 +18,7 @@ import (
 var CurrentSpecVersion = semver.MustParse("12.0")
 
 type flow struct {
+	// spec properties
 	uuid               assets.FlowUUID
 	name               string
 	specVersion        *semver.Version
@@ -28,12 +29,14 @@ type flow struct {
 	localization       flows.Localization
 	nodes              []flows.Node
 
-	// only read for legacy flows which are being migrated
-	ui flows.UI
+	// optional properties not used by engine itself
+	ui           flows.UI
+	dependencies *dependencies
+	resultNames  []string
 
 	// internal state
-	nodeMap map[flows.NodeUUID]flows.Node
-	valid   bool
+	nodeMap   map[flows.NodeUUID]flows.Node
+	validated bool
 }
 
 // NewFlow creates a new flow
@@ -71,17 +74,20 @@ func (f *flow) Localization() flows.Localization       { return f.localization }
 func (f *flow) UI() flows.UI                           { return f.ui }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
-// Validates that structurally we are sane. IE, all required fields are present and
-// all exits with destinations point to valid endpoints.
-func (f *flow) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	// check we haven't already started validating this flow to avoid an infinite loop
-	if context.IsStarted(f) {
-		return nil
-	}
-	context.Start(f)
+// Validates that we are structurally currect and have all the dependencies we need
+func (f *flow) Validate(sa flows.SessionAssets) error {
+	return f.validate(sa, false)
+}
 
-	// if this flow has already been validated, don't need to do it again
-	if f.valid {
+// Validates that we are structurally currect, have all the dependencies we need, and all our flow dependencies are also valid
+func (f *flow) ValidateRecursively(sa flows.SessionAssets) error {
+	return f.validate(sa, true)
+}
+
+func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
+	// if this flow has already been validated, don't need to do it again - avoid unnecessary work
+	// but also prevents looping if recursively validating flows
+	if f.validated {
 		return nil
 	}
 
@@ -95,12 +101,38 @@ func (f *flow) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 		}
 		seenUUIDs[utils.UUID(node.UUID())] = true
 
-		if err := node.Validate(assets, context, f, seenUUIDs); err != nil {
+		if err := node.Validate(f, seenUUIDs); err != nil {
 			return errors.Wrapf(err, "validation failed for node[uuid=%s]", node.UUID())
 		}
 	}
 
-	f.valid = true
+	// extract all dependencies (assets, contacts)
+	deps := newDependencies(f.ExtractDependencies())
+
+	// and validate that all assets are available in the session assets
+	missingAssets := make([]assets.Reference, 0)
+	deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
+
+	if len(missingAssets) > 0 {
+		depStrings := make([]string, len(missingAssets))
+		for d := range missingAssets {
+			depStrings[d] = missingAssets[d].String()
+		}
+		return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
+	}
+
+	f.validated = true
+	f.dependencies = deps
+	f.resultNames = f.ExtractResultNames()
+
+	if recursive {
+		// go validate any flow dependencies
+		for _, flowRef := range deps.Flows {
+			flowDep, _ := sa.Flows().Get(flowRef.UUID)
+			flowDep.(*flow).validate(sa, true)
+		}
+	}
+
 	return nil
 }
 
@@ -173,10 +205,12 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 	dependencies := make([]assets.Reference, 0)
 	dependenciesSeen := make(map[string]bool)
 	addDependency := func(r assets.Reference) {
-		key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
-		if r != nil && !r.Variable() && !dependenciesSeen[key] {
-			dependencies = append(dependencies, r)
-			dependenciesSeen[key] = true
+		if !utils.IsNil(r) && !r.Variable() {
+			key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
+			if !dependenciesSeen[key] {
+				dependencies = append(dependencies, r)
+				dependenciesSeen[key] = true
+			}
 		}
 	}
 
@@ -233,12 +267,15 @@ type flowEnvelope struct {
 	ExpireAfterMinutes int            `json:"expire_after_minutes"`
 	Localization       localization   `json:"localization"`
 	Nodes              []*node        `json:"nodes"`
+	UI                 *ui            `json:"_ui,omitempty"`
 }
 
-type flowEnvelopeWithUI struct {
-	flowEnvelope
+// additional properties that a validated flow can have
+type validatedFlowEnvelope struct {
+	*flowEnvelope
 
-	UI flows.UI `json:"_ui,omitempty"`
+	Dependencies *dependencies `json:"_dependencies"`
+	ResultNames  []string      `json:"_result_names"`
 }
 
 // IsSpecVersionSupported determines if we can read the given flow version
@@ -271,34 +308,43 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		nodes[n] = e.Nodes[n]
 	}
 
+	if e.Localization == nil {
+		e.Localization = make(localization)
+	}
+
 	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil), nil
 }
 
 // MarshalJSON marshals this flow into JSON
 func (f *flow) MarshalJSON() ([]byte, error) {
-	var fe = &flowEnvelopeWithUI{
-		flowEnvelope: flowEnvelope{
-			flowHeader: flowHeader{
-				UUID:        f.uuid,
-				Name:        f.name,
-				SpecVersion: f.specVersion,
-			},
-			Language:           f.language,
-			Type:               f.flowType,
-			Revision:           f.revision,
-			ExpireAfterMinutes: f.expireAfterMinutes,
+	e := &flowEnvelope{
+		flowHeader: flowHeader{
+			UUID:        f.uuid,
+			Name:        f.name,
+			SpecVersion: f.specVersion,
 		},
-		UI: f.ui,
+		Language:           f.language,
+		Type:               f.flowType,
+		Revision:           f.revision,
+		ExpireAfterMinutes: f.expireAfterMinutes,
+		Localization:       f.localization.(localization),
+		Nodes:              make([]*node, len(f.nodes)),
 	}
 
-	if f.localization != nil {
-		fe.Localization = f.localization.(localization)
+	if f.ui != nil {
+		e.UI = f.ui.(*ui)
 	}
-
-	fe.Nodes = make([]*node, len(f.nodes))
 	for i := range f.nodes {
-		fe.Nodes[i] = f.nodes[i].(*node)
+		e.Nodes[i] = f.nodes[i].(*node)
 	}
 
-	return json.Marshal(fe)
+	if f.validated {
+		return json.Marshal(&validatedFlowEnvelope{
+			flowEnvelope: e,
+			Dependencies: f.dependencies,
+			ResultNames:  f.resultNames,
+		})
+	}
+
+	return json.Marshal(e)
 }

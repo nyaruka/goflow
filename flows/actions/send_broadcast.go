@@ -54,11 +54,6 @@ func NewSendBroadcastAction(uuid flows.ActionUUID, text string, attachments []st
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SendBroadcastAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	return a.validateGroups(assets, a.Groups)
-}
-
 // Execute runs this action
 func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, logEvent)

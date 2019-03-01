@@ -48,11 +48,6 @@ func NewSetRunResultAction(uuid flows.ActionUUID, name string, value string, cat
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *SetRunResultAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	return nil
-}
-
 // Execute runs this action
 func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// get our evaluated value

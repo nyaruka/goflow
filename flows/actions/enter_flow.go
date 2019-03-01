@@ -42,13 +42,6 @@ func NewEnterFlowAction(uuid flows.ActionUUID, flow *assets.FlowReference, termi
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *EnterFlowAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-
-	// check the flow exists and that it's valid
-	return a.validateFlow(assets, a.Flow, context)
-}
-
 // Execute runs our action
 func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)

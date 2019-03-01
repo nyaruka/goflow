@@ -46,11 +46,6 @@ func NewAddContactURNAction(uuid flows.ActionUUID, scheme string, path string) *
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *AddContactURNAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	return nil
-}
-
 // Execute runs the labeling action
 func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// only generate event if run has a contact

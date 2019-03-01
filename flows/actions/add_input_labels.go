@@ -42,12 +42,6 @@ func NewAddInputLabelsAction(uuid flows.ActionUUID, labels []*assets.LabelRefere
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *AddInputLabelsAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	// check we have all labels
-	return a.validateLabels(assets, a.Labels)
-}
-
 // Execute runs the labeling action
 func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// log error if we don't have any input that could be labeled

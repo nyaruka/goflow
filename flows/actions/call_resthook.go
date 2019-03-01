@@ -47,11 +47,6 @@ func NewCallResthookAction(uuid flows.ActionUUID, resthook string, resultName st
 	}
 }
 
-// Validate validates our action is valid and has all the assets it needs
-func (a *CallResthookAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	return nil
-}
-
 // Execute runs this action
 func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// NOOP if resthook doesn't exist

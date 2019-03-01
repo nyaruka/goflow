@@ -10,7 +10,7 @@
             },
             "value": "123"
         },
-        "validation_error": "no such field with key 'score'"
+        "validation_error": "missing dependencies: field[key=score,name=Score]"
     },
     {
         "description": "Error event if session has no contact",
