@@ -18,8 +18,8 @@ func TestFieldValues(t *testing.T) {
 
 	env := session.Environment()
 	fields := session.Assets().Fields()
-	gender, _ := fields.Get("gender")
-	age, _ := fields.Get("age")
+	gender := fields.Get("gender")
+	age := fields.Get("age")
 
 	// can have no values for any fields
 	fieldVals, err := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, assets.PanicOnMissing)

@@ -29,8 +29,7 @@ func TestEventMarshaling(t *testing.T) {
 
 	tz, _ := time.LoadLocation("Africa/Kigali")
 
-	gender, err := session.Assets().Fields().Get("gender")
-	require.NoError(t, err)
+	gender := session.Assets().Fields().Get("gender")
 
 	eventTests := []struct {
 		event     flows.Event

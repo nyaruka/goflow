@@ -534,8 +534,8 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 	} else {
 		groups := make([]*Group, 0, len(envelope.Groups))
 		for _, g := range envelope.Groups {
-			group, err := sa.Groups().Get(g.UUID)
-			if err != nil {
+			group := sa.Groups().Get(g.UUID)
+			if group == nil {
 				missing(g)
 			} else {
 				groups = append(groups, group)

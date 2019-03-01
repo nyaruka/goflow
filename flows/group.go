@@ -114,12 +114,13 @@ func NewGroupList(groups []*Group) *GroupList {
 // NewGroupListFromAssets creates a new group list
 func NewGroupListFromAssets(a SessionAssets, groupAssets []assets.Group) (*GroupList, error) {
 	groups := make([]*Group, len(groupAssets))
-	var err error
 
 	for g, asset := range groupAssets {
-		if groups[g], err = a.Groups().Get(asset.UUID()); err != nil {
-			return nil, err
+		group := a.Groups().Get(asset.UUID())
+		if group == nil {
+			return nil, errors.Errorf("no such group: %s", asset.UUID())
 		}
+		groups[g] = group
 	}
 	return &GroupList{groups: groups}, nil
 }
@@ -227,12 +228,8 @@ func (s *GroupAssets) All() []*Group {
 }
 
 // Get returns the group with the given UUID
-func (s *GroupAssets) Get(uuid assets.GroupUUID) (*Group, error) {
-	c, found := s.byUUID[uuid]
-	if !found {
-		return nil, errors.Errorf("no such group with UUID '%s'", uuid)
-	}
-	return c, nil
+func (s *GroupAssets) Get(uuid assets.GroupUUID) *Group {
+	return s.byUUID[uuid]
 }
 
 // FindByName looks for a group with the given name (case-insensitive)

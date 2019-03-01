@@ -355,12 +355,8 @@ func NewFieldAssets(fields []assets.Field) *FieldAssets {
 }
 
 // Get returns the contact field with the given key
-func (s *FieldAssets) Get(key string) (*Field, error) {
-	field, found := s.byKey[key]
-	if !found {
-		return nil, errors.Errorf("no such field with key '%s'", key)
-	}
-	return field, nil
+func (s *FieldAssets) Get(key string) *Field {
+	return s.byKey[key]
 }
 
 // All returns all the fields in this set

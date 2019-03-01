@@ -27,8 +27,8 @@ func TestSessionAssets(t *testing.T) {
 	sessionAssets, err := engine.NewSessionAssets(source)
 	require.NoError(t, err)
 
-	group, err := sessionAssets.Groups().Get(assets.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"))
-	assert.NoError(t, err)
+	group := sessionAssets.Groups().Get(assets.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"))
+	assert.NotNil(t, group)
 	assert.Equal(t, assets.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"), group.UUID())
 	assert.Equal(t, "Survey Audience", group.Name())
 }

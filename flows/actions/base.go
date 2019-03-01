@@ -78,14 +78,10 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, references []*assets.Group
 
 	for _, ref := range references {
 		var group *flows.Group
-		var err error
 
 		if ref.UUID != "" {
 			// group is a fixed group with a UUID
-			group, err = groupSet.Get(ref.UUID)
-			if err != nil {
-				return nil, err
-			}
+			group = groupSet.Get(ref.UUID)
 		} else {
 			// group is an expression that evaluates to an existing group's name
 			evaluatedGroupName, err := run.EvaluateTemplate(ref.NameMatch)
@@ -119,14 +115,10 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, references []*assets.Label
 
 	for _, ref := range references {
 		var label *flows.Label
-		var err error
 
 		if ref.UUID != "" {
 			// label is a fixed label with a UUID
-			label, err = labelSet.Get(ref.UUID)
-			if err != nil {
-				return nil, err
-			}
+			label = labelSet.Get(ref.UUID)
 		} else {
 			// label is an expression that evaluates to an existing label's name
 			evaluatedLabelName, err := run.EvaluateTemplate(ref.NameMatch)
