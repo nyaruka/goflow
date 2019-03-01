@@ -35,8 +35,8 @@ type flow struct {
 	resultNames  []string
 
 	// internal state
-	nodeMap map[flows.NodeUUID]flows.Node
-	valid   bool
+	nodeMap   map[flows.NodeUUID]flows.Node
+	validated bool
 }
 
 // NewFlow creates a new flow
@@ -53,10 +53,6 @@ func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowTyp
 		nodes:              nodes,
 		nodeMap:            make(map[flows.NodeUUID]flows.Node, len(nodes)),
 		ui:                 ui,
-	}
-
-	if f.localization == nil {
-		f.localization = NewLocalization()
 	}
 
 	for _, node := range f.nodes {
@@ -91,7 +87,7 @@ func (f *flow) ValidateRecursively(sa flows.SessionAssets) error {
 func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
 	// if this flow has already been validated, don't need to do it again - avoid unnecessary work
 	// but also prevents looping if recursively validating flows
-	if f.valid {
+	if f.validated {
 		return nil
 	}
 
@@ -125,7 +121,7 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
 		return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 	}
 
-	f.valid = true
+	f.validated = true
 	f.dependencies = deps
 	f.resultNames = f.ExtractResultNames()
 
@@ -271,11 +267,15 @@ type flowEnvelope struct {
 	ExpireAfterMinutes int            `json:"expire_after_minutes"`
 	Localization       localization   `json:"localization"`
 	Nodes              []*node        `json:"nodes"`
+	UI                 *ui            `json:"_ui,omitempty"`
+}
 
-	// optional properties
-	UI           *ui           `json:"_ui,omitempty"`
-	Dependencies *dependencies `json:"_dependencies,omitempty"`
-	ResultNames  []string      `json:"_result_names,omitempty"`
+// additional properties that a validated flow can have
+type validatedFlowEnvelope struct {
+	*flowEnvelope
+
+	Dependencies *dependencies `json:"_dependencies"`
+	ResultNames  []string      `json:"_result_names"`
 }
 
 // IsSpecVersionSupported determines if we can read the given flow version
@@ -308,12 +308,16 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		nodes[n] = e.Nodes[n]
 	}
 
+	if e.Localization == nil {
+		e.Localization = make(localization)
+	}
+
 	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil), nil
 }
 
 // MarshalJSON marshals this flow into JSON
 func (f *flow) MarshalJSON() ([]byte, error) {
-	var fe = &flowEnvelope{
+	e := &flowEnvelope{
 		flowHeader: flowHeader{
 			UUID:        f.uuid,
 			Name:        f.name,
@@ -323,22 +327,24 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		Type:               f.flowType,
 		Revision:           f.revision,
 		ExpireAfterMinutes: f.expireAfterMinutes,
-
-		Dependencies: f.dependencies,
-		ResultNames:  f.resultNames,
+		Localization:       f.localization.(localization),
+		Nodes:              make([]*node, len(f.nodes)),
 	}
 
 	if f.ui != nil {
-		fe.UI = f.ui.(*ui)
+		e.UI = f.ui.(*ui)
 	}
-	if f.localization != nil {
-		fe.Localization = f.localization.(localization)
-	}
-
-	fe.Nodes = make([]*node, len(f.nodes))
 	for i := range f.nodes {
-		fe.Nodes[i] = f.nodes[i].(*node)
+		e.Nodes[i] = f.nodes[i].(*node)
 	}
 
-	return json.Marshal(fe)
+	if f.validated {
+		return json.Marshal(&validatedFlowEnvelope{
+			flowEnvelope: e,
+			Dependencies: f.dependencies,
+			ResultNames:  f.resultNames,
+		})
+	}
+
+	return json.Marshal(e)
 }

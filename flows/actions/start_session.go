@@ -53,11 +53,6 @@ func NewStartSessionAction(uuid flows.ActionUUID, flow *assets.FlowReference, ur
 	}
 }
 
-// Validate validates our action is valid
-func (a *StartSessionAction) Validate() error {
-	return nil
-}
-
 // Execute runs our action
 func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, logEvent)

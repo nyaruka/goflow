@@ -45,11 +45,6 @@ func NewSetContactFieldAction(uuid flows.ActionUUID, field *assets.FieldReferenc
 	}
 }
 
-// Validate validates our action is valid
-func (a *SetContactFieldAction) Validate() error {
-	return nil
-}
-
 // Execute runs this action
 func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {

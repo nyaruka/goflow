@@ -41,11 +41,6 @@ func NewSetContactNameAction(uuid flows.ActionUUID, name string) *SetContactName
 	}
 }
 
-// Validate validates our action is valid
-func (a *SetContactNameAction) Validate() error {
-	return nil
-}
-
 // Execute runs this action
 func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {

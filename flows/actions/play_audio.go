@@ -42,11 +42,6 @@ func NewPlayAudioAction(uuid flows.ActionUUID, audioURL string) *PlayAudioAction
 	}
 }
 
-// Validate validates our action is valid
-func (a *PlayAudioAction) Validate() error {
-	return nil
-}
-
 // Execute runs this action
 func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate audio URL
