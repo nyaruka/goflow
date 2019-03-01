@@ -169,6 +169,7 @@ type Flow interface {
 	types.XValue
 	types.XResolvable
 
+	// spec properties
 	UUID() assets.FlowUUID
 	Name() string
 	Revision() int
@@ -176,12 +177,13 @@ type Flow interface {
 	Type() FlowType
 	ExpireAfterMinutes() int
 	Localization() Localization
+
+	// optional spec properties
 	UI() UI
 
 	Validate(SessionAssets, *ValidationContext) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
-
 	Reference() *assets.FlowReference
 
 	ExtractTemplates() []string

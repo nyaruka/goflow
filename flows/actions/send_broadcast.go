@@ -56,7 +56,7 @@ func NewSendBroadcastAction(uuid flows.ActionUUID, text string, attachments []st
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SendBroadcastAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	return a.validateGroups(assets, a.Groups)
+	return nil
 }
 
 // Execute runs this action

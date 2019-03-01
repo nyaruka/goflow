@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -102,17 +103,18 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		flow, err := session.Assets().Flows().Get(flowUUID)
 		require.NoError(t, err)
 
-		// if this action is expected to fail validation, check that
-		err = action.Validate(session.Assets(), flows.NewValidationContext())
+		// if not, add it to our flow
+		flow.Nodes()[0].AddAction(action)
+
+		// if this action is expected to cause flow validation failure, check that
+		err = flow.Validate(session.Assets(), flows.NewValidationContext())
 		if tc.ValidationError != "" {
-			assert.EqualError(t, err, tc.ValidationError, "validation error mismatch in %s", testName)
+			rootErr := errors.Cause(err)
+			assert.EqualError(t, rootErr, tc.ValidationError, "validation error mismatch in %s", testName)
 			continue
 		} else {
 			assert.NoError(t, err, "unexpected validation error in %s", testName)
 		}
-
-		// if not, add it to our flow
-		flow.Nodes()[0].AddAction(action)
 
 		// optionally load our contact
 		var contact *flows.Contact

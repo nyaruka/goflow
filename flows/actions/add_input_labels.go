@@ -44,8 +44,7 @@ func NewAddInputLabelsAction(uuid flows.ActionUUID, labels []*assets.LabelRefere
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *AddInputLabelsAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	// check we have all labels
-	return a.validateLabels(assets, a.Labels)
+	return nil
 }
 
 // Execute runs the labeling action

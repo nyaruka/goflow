@@ -55,13 +55,7 @@ func NewStartSessionAction(uuid flows.ActionUUID, flow *assets.FlowReference, ur
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *StartSessionAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	// check the flow exists and that it's valid
-	if err := a.validateFlow(assets, a.Flow, context); err != nil {
-		return err
-	}
-
-	// finally check that all the groups exist
-	return a.validateGroups(assets, a.Groups)
+	return nil
 }
 
 // Execute runs our action
@@ -83,6 +77,7 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 // Inspect inspects this object and any children
 func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
+	flows.InspectReference(a.Flow, inspect)
 
 	for _, g := range a.Groups {
 		flows.InspectReference(g, inspect)

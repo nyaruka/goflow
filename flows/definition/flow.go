@@ -18,6 +18,7 @@ import (
 var CurrentSpecVersion = semver.MustParse("12.0")
 
 type flow struct {
+	// spec properties
 	uuid               assets.FlowUUID
 	name               string
 	specVersion        *semver.Version
@@ -28,8 +29,10 @@ type flow struct {
 	localization       flows.Localization
 	nodes              []flows.Node
 
-	// only read for legacy flows which are being migrated
-	ui flows.UI
+	// optional properties not used by engine itself
+	ui           flows.UI
+	dependencies *dependencies
+	resultNames  []string
 
 	// internal state
 	nodeMap map[flows.NodeUUID]flows.Node
@@ -73,7 +76,7 @@ func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] 
 
 // Validates that structurally we are sane. IE, all required fields are present and
 // all exits with destinations point to valid endpoints.
-func (f *flow) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+func (f *flow) Validate(sa flows.SessionAssets, context *flows.ValidationContext) error {
 	// check we haven't already started validating this flow to avoid an infinite loop
 	if context.IsStarted(f) {
 		return nil
@@ -95,9 +98,22 @@ func (f *flow) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 		}
 		seenUUIDs[utils.UUID(node.UUID())] = true
 
-		if err := node.Validate(assets, context, f, seenUUIDs); err != nil {
+		if err := node.Validate(sa, context, f, seenUUIDs); err != nil {
 			return errors.Wrapf(err, "validation failed for node[uuid=%s]", node.UUID())
 		}
+	}
+
+	deps := newDependencies(f.ExtractDependencies())
+
+	missingAssets := make([]assets.Reference, 0)
+	deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
+
+	if len(missingAssets) > 0 {
+		depStrings := make([]string, len(missingAssets))
+		for d := range missingAssets {
+			depStrings[d] = missingAssets[d].String()
+		}
+		return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 	}
 
 	f.valid = true
@@ -173,10 +189,12 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 	dependencies := make([]assets.Reference, 0)
 	dependenciesSeen := make(map[string]bool)
 	addDependency := func(r assets.Reference) {
-		key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
-		if r != nil && !r.Variable() && !dependenciesSeen[key] {
-			dependencies = append(dependencies, r)
-			dependenciesSeen[key] = true
+		if !utils.IsNil(r) && !r.Variable() {
+			key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
+			if !dependenciesSeen[key] {
+				dependencies = append(dependencies, r)
+				dependenciesSeen[key] = true
+			}
 		}
 	}
 

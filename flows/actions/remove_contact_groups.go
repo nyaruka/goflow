@@ -52,9 +52,7 @@ func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets, context
 	if a.AllGroups && len(a.Groups) > 0 {
 		return errors.Errorf("can't specify specific groups when all_groups=true")
 	}
-
-	// check we have all specified groups
-	return a.validateGroups(assets, a.Groups)
+	return nil
 }
 
 // Execute runs the action

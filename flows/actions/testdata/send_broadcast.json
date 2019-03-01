@@ -12,7 +12,7 @@
             ],
             "text": "Hi there!"
         },
-        "validation_error": "no such group with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+        "validation_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
     },
     {
         "description": "Broadcast created event for the message",
@@ -35,19 +35,13 @@
                 }
             ],
             "legacy_vars": [
-                "@contact.fields.supervisor",
+                "@(\"\")",
+                "@contact.fields.gender",
                 "@(\"+1098765432\")"
             ],
             "text": "Hi there!"
         },
         "events": [
-            {
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "error evaluating @contact.fields.supervisor: no such contact field 'supervisor'",
-                "type": "error"
-            },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
@@ -79,6 +73,7 @@
                 "type": "broadcast_created",
                 "urns": [
                     "tel:+1234567890",
+                    "tel:Male",
                     "tel:+1098765432"
                 ]
             }
@@ -86,11 +81,12 @@
         "inspection": {
             "templates": [
                 "Hi there!",
-                "@contact.fields.supervisor",
+                "@(\"\")",
+                "@contact.fields.gender",
                 "@(\"+1098765432\")"
             ],
             "dependencies": [
-                "field[key=supervisor,name=]",
+                "field[key=gender,name=]",
                 "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
                 "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]"
             ],
