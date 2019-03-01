@@ -38,8 +38,8 @@ func newDependencies(refs []assets.Reference) *dependencies {
 // refreshes the asset dependencies and notifies the caller of missing assets via the callback
 func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCallback) {
 	for i, ref := range d.Channels {
-		a, err := sa.Channels().Get(ref.UUID)
-		if err != nil {
+		a := sa.Channels().Get(ref.UUID)
+		if a == nil {
 			missing(ref)
 		} else {
 			d.Channels[i] = a.Reference()

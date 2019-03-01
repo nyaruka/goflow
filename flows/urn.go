@@ -78,7 +78,7 @@ func ParseRawURN(ca *ChannelAssets, rawURN urns.URN, missing assets.MissingCallb
 	var channel *Channel
 	channelUUID := assets.ChannelUUID(parsedQuery.Get("channel"))
 	if channelUUID != "" {
-		if channel, err = ca.Get(channelUUID); err != nil {
+		if channel = ca.Get(channelUUID); channel == nil {
 			missing(assets.NewChannelReference(channelUUID, ""))
 		}
 	}

@@ -58,8 +58,8 @@ func readChannelModifier(assets flows.SessionAssets, data json.RawMessage, missi
 
 	var channel *flows.Channel
 	if e.Channel != nil {
-		var err error
-		if channel, err = assets.Channels().Get(e.Channel.UUID); err != nil {
+		channel = assets.Channels().Get(e.Channel.UUID)
+		if channel == nil {
 			missing(e.Channel)
 			return nil, ErrNoModifier // nothing left to modify without the channel
 		}
