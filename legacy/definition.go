@@ -599,9 +599,8 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			actions.NewCallResthookAction(flows.ActionUUID(utils.NewUUID()), config.Resthook, resultName),
 		}
 
-		// resthook rulesets operate on the webhook status, saved as category - we need to default to "Failure"
-		// in case there were no subscribers and thus no result created
-		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@(default(results.%s.category, \"Failure\"))", utils.Snakify(resultName)), cases, "")
+		// resthook rulesets operate on the webhook status, saved as category
+		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
 		uiType = UINodeTypeSplitByResthook
 
 	case "form_field":
