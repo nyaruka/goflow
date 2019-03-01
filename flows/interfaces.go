@@ -120,24 +120,6 @@ type SessionAssets interface {
 	Resthooks() *ResthookAssets
 }
 
-// ValidationContext contains state required during flow validation to avoid infinite loops
-type ValidationContext struct {
-	started map[assets.FlowUUID]bool
-}
-
-// NewValidationContext creates a new flow validation context
-func NewValidationContext() *ValidationContext {
-	return &ValidationContext{started: make(map[assets.FlowUUID]bool, 1)}
-}
-
-func (v *ValidationContext) Start(flow Flow) {
-	v.started[flow.UUID()] = true
-}
-
-func (v *ValidationContext) IsStarted(flow Flow) bool {
-	return v.started[flow.UUID()]
-}
-
 type Localizable interface {
 	LocalizationUUID() utils.UUID
 }
@@ -181,7 +163,8 @@ type Flow interface {
 	// optional spec properties
 	UI() UI
 
-	Validate(SessionAssets, *ValidationContext) error
+	Validate(SessionAssets) error
+	ValidateRecursively(SessionAssets) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference

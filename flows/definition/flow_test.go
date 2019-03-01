@@ -53,7 +53,7 @@ func TestFlowValidation(t *testing.T) {
 		flow, err := definition.ReadFlow(assetsJSON)
 		require.NoError(t, err)
 
-		err = flow.Validate(session.Assets(), flows.NewValidationContext())
+		err = flow.ValidateRecursively(session.Assets())
 		assert.EqualError(t, err, tc.expectedErr)
 	}
 }
@@ -207,7 +207,7 @@ func TestNewFlow(t *testing.T) {
 	)
 
 	// should validate ok
-	err = flow.Validate(session.Assets(), flows.NewValidationContext())
+	err = flow.Validate(session.Assets())
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)

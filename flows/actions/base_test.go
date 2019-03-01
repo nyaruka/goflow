@@ -107,7 +107,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		flow.Nodes()[0].AddAction(action)
 
 		// if this action is expected to cause flow validation failure, check that
-		err = flow.Validate(session.Assets(), flows.NewValidationContext())
+		err = flow.Validate(session.Assets())
 		if tc.ValidationError != "" {
 			rootErr := errors.Cause(err)
 			assert.EqualError(t, rootErr, tc.ValidationError, "validation error mismatch in %s", testName)

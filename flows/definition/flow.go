@@ -78,16 +78,19 @@ func (f *flow) Localization() flows.Localization       { return f.localization }
 func (f *flow) UI() flows.UI                           { return f.ui }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
-// Validates that structurally we are sane. IE, all required fields are present and
-// all exits with destinations point to valid endpoints.
-func (f *flow) Validate(sa flows.SessionAssets, context *flows.ValidationContext) error {
-	// check we haven't already started validating this flow to avoid an infinite loop
-	if context.IsStarted(f) {
-		return nil
-	}
-	context.Start(f)
+// Validates that we are structurally currect and have all the dependencies we need
+func (f *flow) Validate(sa flows.SessionAssets) error {
+	return f.validate(sa, false)
+}
 
-	// if this flow has already been validated, don't need to do it again
+// Validates that we are structurally currect, have all the dependencies we need, and all our flow dependencies are also valid
+func (f *flow) ValidateRecursively(sa flows.SessionAssets) error {
+	return f.validate(sa, true)
+}
+
+func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
+	// if this flow has already been validated, don't need to do it again - avoid unnecessary work
+	// but also prevents looping if recursively validating flows
 	if f.valid {
 		return nil
 	}
@@ -121,6 +124,14 @@ func (f *flow) Validate(sa flows.SessionAssets, context *flows.ValidationContext
 	}
 
 	f.valid = true
+
+	if recursive {
+		for _, flowRef := range deps.Flows {
+			flowDep, _ := sa.Flows().Get(flowRef.UUID)
+			flowDep.(*flow).validate(sa, true)
+		}
+	}
+
 	return nil
 }
 
