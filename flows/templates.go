@@ -57,9 +57,9 @@ func isFieldRefPath(path []string) (bool, string) {
 }
 
 // EnumerateTemplateArray enumerates each template in the array
-func EnumerateTemplateArray(templates []string, callback func(string)) {
+func EnumerateTemplateArray(templates []string, include func(string)) {
 	for _, template := range templates {
-		callback(template)
+		include(template)
 	}
 }
 
@@ -70,11 +70,11 @@ func RewriteTemplateArray(templates []string, rewrite func(string) string) {
 	}
 }
 
-func EnumerateTemplateTranslations(localization Localization, localizable Localizable, key string, callback func(string)) {
+func EnumerateTemplateTranslations(localization Localization, localizable Localizable, key string, include func(string)) {
 	for _, lang := range localization.Languages() {
 		translations := localization.GetTranslations(lang)
 		for _, tpl := range translations.GetTextArray(localizable.LocalizationUUID(), key) {
-			callback(tpl)
+			include(tpl)
 		}
 	}
 }
@@ -110,13 +110,13 @@ func (r inspectableReference) Inspect(inspect func(Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r inspectableReference) EnumerateTemplates(localization Localization, callback func(string)) {
+func (r inspectableReference) EnumerateTemplates(localization Localization, include func(string)) {
 	if r.ref != nil && r.ref.Variable() {
 		switch typed := r.ref.(type) {
 		case *assets.GroupReference:
-			callback(typed.NameMatch)
+			include(typed.NameMatch)
 		case *assets.LabelReference:
-			callback(typed.NameMatch)
+			include(typed.NameMatch)
 		}
 	}
 }
@@ -134,12 +134,12 @@ func (r inspectableReference) RewriteTemplates(localization Localization, rewrit
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
-func (r inspectableReference) EnumerateDependencies(localization Localization, callback func(assets.Reference)) {
+func (r inspectableReference) EnumerateDependencies(localization Localization, include func(assets.Reference)) {
 	if r.ref != nil && !r.ref.Variable() {
-		callback(r.ref)
+		include(r.ref)
 	}
 }
 
 // EnumerateResultNames enumerates all result names on this object.
 // Asset references can't contain result names.
-func (r inspectableReference) EnumerateResultNames(callback func(string)) {}
+func (r inspectableReference) EnumerateResultNames(include func(string)) {}

@@ -127,11 +127,11 @@ func (a *CallWebhookAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *CallWebhookAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	callback(a.URL)
-	callback(a.Body)
+func (a *CallWebhookAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	include(a.URL)
+	include(a.Body)
 	for _, v := range a.Headers {
-		callback(v)
+		include(v)
 	}
 }
 
@@ -145,6 +145,6 @@ func (a *CallWebhookAction) RewriteTemplates(localization flows.Localization, re
 }
 
 // EnumerateResultNames enumerates all result names on this object
-func (a *CallWebhookAction) EnumerateResultNames(callback func(string)) {
-	callback(a.ResultName)
+func (a *CallWebhookAction) EnumerateResultNames(include func(string)) {
+	include(a.ResultName)
 }

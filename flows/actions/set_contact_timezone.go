@@ -78,8 +78,8 @@ func (a *SetContactTimezoneAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactTimezoneAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	callback(a.Timezone)
+func (a *SetContactTimezoneAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	include(a.Timezone)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children

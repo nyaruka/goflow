@@ -115,6 +115,6 @@ func (a *CallResthookAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateResultNames enumerates all result names on this object
-func (a *CallResthookAction) EnumerateResultNames(callback func(string)) {
-	callback(a.ResultName)
+func (a *CallResthookAction) EnumerateResultNames(include func(string)) {
+	include(a.ResultName)
 }

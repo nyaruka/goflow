@@ -105,17 +105,17 @@ func (n *node) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object
-func (n *node) EnumerateTemplates(localization flows.Localization, callback func(string)) {}
+func (n *node) EnumerateTemplates(localization flows.Localization, include func(string)) {}
 
 // RewriteTemplates rewrites all templates on this object
 func (n *node) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (n *node) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
 
 // EnumerateResultNames enumerates all result names on this object
-func (n *node) EnumerateResultNames(callback func(string)) {}
+func (n *node) EnumerateResultNames(include func(string)) {}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

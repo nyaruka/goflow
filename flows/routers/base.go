@@ -36,17 +36,17 @@ func (r *BaseRouter) Type() string { return r.Type_ }
 func (r *BaseRouter) ResultName() string { return r.ResultName_ }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *BaseRouter) EnumerateTemplates(localization flows.Localization, callback func(string)) {}
+func (r *BaseRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {}
 
 // RewriteTemplates rewrites all templates on this object and its children
 func (r *BaseRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
 
 // EnumerateResultNames enumerates all result names on this object
-func (r *BaseRouter) EnumerateResultNames(callback func(string)) {}
+func (r *BaseRouter) EnumerateResultNames(include func(string)) {}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

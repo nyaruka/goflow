@@ -59,17 +59,17 @@ func (a *BaseAction) Validate() error { return nil }
 func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *BaseAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {}
+func (a *BaseAction) EnumerateTemplates(localization flows.Localization, include func(string)) {}
 
 // RewriteTemplates rewrites all templates on this object and its children
 func (a *BaseAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *BaseAction) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+func (a *BaseAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
 
 // EnumerateResultNames enumerates all result names on this object
-func (a *BaseAction) EnumerateResultNames(callback func(string)) {}
+func (a *BaseAction) EnumerateResultNames(include func(string)) {}
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
 func (a *BaseAction) resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {

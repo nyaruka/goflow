@@ -74,8 +74,8 @@ func (a *SetRunResultAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetRunResultAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	callback(a.Value)
+func (a *SetRunResultAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	include(a.Value)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
@@ -84,6 +84,6 @@ func (a *SetRunResultAction) RewriteTemplates(localization flows.Localization, r
 }
 
 // EnumerateResultNames enumerates all result names on this object
-func (a *SetRunResultAction) EnumerateResultNames(callback func(string)) {
-	callback(a.Name)
+func (a *SetRunResultAction) EnumerateResultNames(include func(string)) {
+	include(a.Name)
 }

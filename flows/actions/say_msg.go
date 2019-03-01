@@ -86,9 +86,9 @@ func (a *SayMsgAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SayMsgAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	callback(a.Text)
-	flows.EnumerateTemplateTranslations(localization, a, "text", callback)
+func (a *SayMsgAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	include(a.Text)
+	flows.EnumerateTemplateTranslations(localization, a, "text", include)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children

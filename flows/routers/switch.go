@@ -48,12 +48,12 @@ func (c *Case) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (c *Case) EnumerateTemplates(localization flows.Localization, callback func(string)) {
+func (c *Case) EnumerateTemplates(localization flows.Localization, include func(string)) {
 	for _, arg := range c.Arguments {
-		callback(arg)
+		include(arg)
 	}
 
-	flows.EnumerateTemplateTranslations(localization, c, "arguments", callback)
+	flows.EnumerateTemplateTranslations(localization, c, "arguments", include)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
@@ -66,23 +66,23 @@ func (c *Case) RewriteTemplates(localization flows.Localization, rewrite func(st
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
-func (c *Case) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+func (c *Case) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 	// currently only the HAS_GROUP router test can produce a dependency
 	if c.Type == "has_group" && len(c.Arguments) > 0 {
-		callback(assets.NewGroupReference(assets.GroupUUID(c.Arguments[0]), ""))
+		include(assets.NewGroupReference(assets.GroupUUID(c.Arguments[0]), ""))
 
 		// the group UUID might be different in different translations
 		for _, lang := range localization.Languages() {
 			arguments := localization.GetTranslations(lang).GetTextArray(c.UUID, "arguments")
 			if len(arguments) > 0 {
-				callback(assets.NewGroupReference(assets.GroupUUID(arguments[0]), ""))
+				include(assets.NewGroupReference(assets.GroupUUID(arguments[0]), ""))
 			}
 		}
 	}
 }
 
 // EnumerateResultNames enumerates all result names on this object
-func (c *Case) EnumerateResultNames(callback func(string)) {}
+func (c *Case) EnumerateResultNames(include func(string)) {}
 
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default exit
@@ -223,8 +223,8 @@ func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	callback(r.Operand)
+func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	include(r.Operand)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
@@ -233,10 +233,10 @@ func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
-func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, callback func(assets.Reference)) {
+func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
 
 // EnumerateResultNames enumerates all result names on this object
-func (r *SwitchRouter) EnumerateResultNames(callback func(string)) {
-	callback(r.ResultName())
+func (r *SwitchRouter) EnumerateResultNames(include func(string)) {
+	include(r.ResultName())
 }

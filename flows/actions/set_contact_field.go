@@ -81,8 +81,8 @@ func (a *SetContactFieldAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactFieldAction) EnumerateTemplates(localization flows.Localization, callback func(string)) {
-	callback(a.Value)
+func (a *SetContactFieldAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	include(a.Value)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
