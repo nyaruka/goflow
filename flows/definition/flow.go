@@ -110,8 +110,10 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
 		}
 	}
 
+	// extract all dependencies (assets, contacts)
 	deps := newDependencies(f.ExtractDependencies())
 
+	// and validate that all assets are available in the session assets
 	missingAssets := make([]assets.Reference, 0)
 	deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
 
@@ -124,8 +126,11 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
 	}
 
 	f.valid = true
+	f.dependencies = deps
+	f.resultNames = f.ExtractResultNames()
 
 	if recursive {
+		// go validate any flow dependencies
 		for _, flowRef := range deps.Flows {
 			flowDep, _ := sa.Flows().Get(flowRef.UUID)
 			flowDep.(*flow).validate(sa, true)
@@ -266,12 +271,11 @@ type flowEnvelope struct {
 	ExpireAfterMinutes int            `json:"expire_after_minutes"`
 	Localization       localization   `json:"localization"`
 	Nodes              []*node        `json:"nodes"`
-}
 
-type flowEnvelopeWithUI struct {
-	flowEnvelope
-
-	UI flows.UI `json:"_ui,omitempty"`
+	// optional properties
+	UI           *ui           `json:"_ui,omitempty"`
+	Dependencies *dependencies `json:"_dependencies,omitempty"`
+	ResultNames  []string      `json:"_result_names,omitempty"`
 }
 
 // IsSpecVersionSupported determines if we can read the given flow version
@@ -309,21 +313,24 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 
 // MarshalJSON marshals this flow into JSON
 func (f *flow) MarshalJSON() ([]byte, error) {
-	var fe = &flowEnvelopeWithUI{
-		flowEnvelope: flowEnvelope{
-			flowHeader: flowHeader{
-				UUID:        f.uuid,
-				Name:        f.name,
-				SpecVersion: f.specVersion,
-			},
-			Language:           f.language,
-			Type:               f.flowType,
-			Revision:           f.revision,
-			ExpireAfterMinutes: f.expireAfterMinutes,
+	var fe = &flowEnvelope{
+		flowHeader: flowHeader{
+			UUID:        f.uuid,
+			Name:        f.name,
+			SpecVersion: f.specVersion,
 		},
-		UI: f.ui,
+		Language:           f.language,
+		Type:               f.flowType,
+		Revision:           f.revision,
+		ExpireAfterMinutes: f.expireAfterMinutes,
+
+		Dependencies: f.dependencies,
+		ResultNames:  f.resultNames,
 	}
 
+	if f.ui != nil {
+		fe.UI = f.ui.(*ui)
+	}
 	if f.localization != nil {
 		fe.Localization = f.localization.(localization)
 	}

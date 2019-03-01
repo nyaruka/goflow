@@ -206,14 +206,37 @@ func TestNewFlow(t *testing.T) {
 		nil, // no UI
 	)
 
-	// should validate ok
-	err = flow.Validate(session.Assets())
-	assert.NoError(t, err)
-
 	marshaled, err := json.Marshal(flow)
 	assert.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
+
+	// should validate ok
+	err = flow.Validate(session.Assets())
+	assert.NoError(t, err)
+
+	// add expected dependencies and result names to our expected JSON
+	flowRaw, err := utils.JSONDecodeGeneric([]byte(flowDef))
+	require.NoError(t, err)
+	flowAsMap := flowRaw.(map[string]interface{})
+	flowAsMap[`_dependencies`] = map[string]interface{}{
+		"fields": []interface{}{
+			map[string]string{"key": "state", "name": ""},
+		},
+		"labels": []interface{}{
+			map[string]string{"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"},
+		},
+	}
+	flowAsMap[`_result_names`] = []string{"Response 1"}
+
+	// now when we marshal to JSON, those should be included
+	newFlowDef, err := json.Marshal(flowAsMap)
+	require.NoError(t, err)
+
+	marshaled, err = json.Marshal(flow)
+	assert.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(newFlowDef), marshaled, "flow definition mismatch")
 }
 
 func TestReadFlow(t *testing.T) {
