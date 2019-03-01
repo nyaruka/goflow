@@ -150,7 +150,7 @@ func TestNewFlow(t *testing.T) {
 		flows.FlowTypeMessaging,
 		123, // revision
 		30,  // expires after minutes
-		nil, // localization
+		definition.NewLocalization(),
 		[]flows.Node{
 			definition.NewNode(
 				flows.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"),

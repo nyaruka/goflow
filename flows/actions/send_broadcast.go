@@ -54,11 +54,6 @@ func NewSendBroadcastAction(uuid flows.ActionUUID, text string, attachments []st
 	}
 }
 
-// Validate validates our action is valid
-func (a *SendBroadcastAction) Validate() error {
-	return nil
-}
-
 // Execute runs this action
 func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, logEvent)

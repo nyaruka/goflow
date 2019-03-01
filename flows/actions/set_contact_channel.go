@@ -41,11 +41,6 @@ func NewSetContactChannelAction(uuid flows.ActionUUID, channel *assets.ChannelRe
 	}
 }
 
-// Validate validates our action is valid
-func (a *SetContactChannelAction) Validate() error {
-	return nil
-}
-
 // Execute runs our action
 func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	contact := run.Contact()

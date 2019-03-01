@@ -42,11 +42,6 @@ func NewAddContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupRefe
 	}
 }
 
-// Validate validates our action is valid
-func (a *AddContactGroupsAction) Validate() error {
-	return nil
-}
-
 // Execute adds our contact to the specified groups
 func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	contact := run.Contact()

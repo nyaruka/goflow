@@ -42,11 +42,6 @@ func NewAddInputLabelsAction(uuid flows.ActionUUID, labels []*assets.LabelRefere
 	}
 }
 
-// Validate validates our action is valid 
-func (a *AddInputLabelsAction) Validate() error {
-	return nil
-}
-
 // Execute runs the labeling action
 func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// log error if we don't have any input that could be labeled

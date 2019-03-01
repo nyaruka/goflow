@@ -42,11 +42,6 @@ func NewEnterFlowAction(uuid flows.ActionUUID, flow *assets.FlowReference, termi
 	}
 }
 
-// Validate validates our action is valid
-func (a *EnterFlowAction) Validate() error {
-	return nil
-}
-
 // Execute runs our action
 func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)

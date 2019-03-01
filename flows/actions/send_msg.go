@@ -50,11 +50,6 @@ func NewSendMsgAction(uuid flows.ActionUUID, text string, attachments []string, 
 	}
 }
 
-// Validate validates our action is valid
-func (a *SendMsgAction) Validate() error {
-	return nil
-}
-
 // Execute runs this action
 func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {

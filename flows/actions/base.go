@@ -52,6 +52,9 @@ func (a *BaseAction) Type() string { return a.Type_ }
 // UUID returns the UUID of the action
 func (a *BaseAction) UUID() flows.ActionUUID { return a.UUID_ }
 
+// Validate validates our action is valid
+func (a *BaseAction) Validate() error { return nil }
+
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) }
 
