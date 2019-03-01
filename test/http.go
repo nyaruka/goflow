@@ -59,6 +59,9 @@ func testHTTPHandler(w http.ResponseWriter, r *http.Request) {
 	case "badrequest":
 		statusCode = http.StatusBadRequest
 		data = []byte(`{ "errors": ["bad_request"] }`)
+	case "gone":
+		statusCode = http.StatusGone
+		data = []byte(`{ "errors": ["gone"] }`)
 	}
 
 	w.Header().Set("Date", "Wed, 11 Apr 2018 18:24:30 GMT")

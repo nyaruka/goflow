@@ -167,6 +167,13 @@
                 "http://localhost/?cmd=success",
                 "http://localhost/?cmd=unavailable"
             ]
+        },
+        {
+            "slug": "registration-complete",
+            "subscribers": [
+                "http://localhost/?cmd=success",
+                "http://localhost/?cmd=gone"
+            ]
         }
     ]
 }
