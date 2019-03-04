@@ -1,3 +1,7 @@
+v0.29.1
+----------
+ * Store a map of result keys to result names in a validated flow definition
+
 v0.29.0
 ----------
  * call_resthook action should generate result even if there are no subscribers
