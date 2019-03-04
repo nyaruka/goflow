@@ -1,3 +1,11 @@
+v0.29.0
+----------
+ * call_resthook action should generate result even if there are no subscribers
+ * If a resthook call returns a success and a 410, use the success as the result
+ * Validating flow should add dependencies and result_names to definition
+ * Rework flow validation so dependency checking happens centrally and not in each action
+ * Add util methods for enumerating and rewriting templats in group and label references
+
 v0.28.14
 ----------
  * Allow conversion of numbers to times
