@@ -227,7 +227,7 @@ func TestNewFlow(t *testing.T) {
 			map[string]string{"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"},
 		},
 	}
-	flowAsMap[`_result_names`] = []string{"Response 1"}
+	flowAsMap[`_results`] = map[string][]string{"response_1": {"Response 1"}}
 
 	// now when we marshal to JSON, those should be included
 	newFlowDef, err := json.Marshal(flowAsMap)
@@ -260,7 +260,7 @@ func TestValidateEmptyFlow(t *testing.T) {
 		"localization": {},
 		"nodes": [],
 		"_dependencies": {},
-		"_result_names": []
+		"_results": {}
 	}`), marshaled, "flow definition mismatch")
 }
 
