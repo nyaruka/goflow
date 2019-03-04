@@ -227,7 +227,11 @@ func TestNewFlow(t *testing.T) {
 			map[string]string{"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"},
 		},
 	}
-	flowAsMap[`_result_names`] = []string{"Response 1"}
+	flowAsMap[`_results`] = map[string]interface{}{
+		"response_1": map[string]interface{}{
+			"names": []string{"Response 1"},
+		},
+	}
 
 	// now when we marshal to JSON, those should be included
 	newFlowDef, err := json.Marshal(flowAsMap)
@@ -260,8 +264,43 @@ func TestValidateEmptyFlow(t *testing.T) {
 		"localization": {},
 		"nodes": [],
 		"_dependencies": {},
-		"_result_names": []
+		"_results": {}
 	}`), marshaled, "flow definition mismatch")
+}
+
+func TestValidateFlow(t *testing.T) {
+	sa, err := test.LoadSessionAssets("../../test/testdata/flows/brochure.json")
+	require.NoError(t, err)
+
+	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
+	require.NoError(t, err)
+
+	err = flow.Validate(sa)
+	assert.NoError(t, err)
+
+	marshaled, err := json.Marshal(flow)
+	require.NoError(t, err)
+
+	flowAsMap, err := utils.JSONDecodeGeneric(marshaled)
+	require.NoError(t, err)
+
+	dependenciesJSON, _ := json.Marshal(flowAsMap.(map[string]interface{})["_dependencies"])
+	test.AssertEqualJSON(t, []byte(`{
+		"groups": [
+			{
+				"name": "Registered Users",
+				"uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
+			}
+
+		]
+	}`), dependenciesJSON, "dependencies mismatch")
+
+	resultsJSON, _ := json.Marshal(flowAsMap.(map[string]interface{})["_results"])
+	test.AssertEqualJSON(t, []byte(`{
+		"name": {
+	        "names": ["Name"]
+	    }
+	}`), resultsJSON, "results mismatch")
 }
 
 func TestReadFlow(t *testing.T) {

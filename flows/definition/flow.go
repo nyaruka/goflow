@@ -32,7 +32,7 @@ type flow struct {
 	// optional properties not used by engine itself
 	ui           flows.UI
 	dependencies *dependencies
-	resultNames  []string
+	results      resultsInfo
 
 	// internal state
 	nodeMap   map[flows.NodeUUID]flows.Node
@@ -123,7 +123,7 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
 
 	f.validated = true
 	f.dependencies = deps
-	f.resultNames = f.ExtractResultNames()
+	f.results = newResultsInfo(f.ExtractResultNames())
 
 	if recursive {
 		// go validate any flow dependencies
@@ -275,7 +275,7 @@ type validatedFlowEnvelope struct {
 	*flowEnvelope
 
 	Dependencies *dependencies `json:"_dependencies"`
-	ResultNames  []string      `json:"_result_names"`
+	Results      resultsInfo   `json:"_results"`
 }
 
 // IsSpecVersionSupported determines if we can read the given flow version
@@ -342,7 +342,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&validatedFlowEnvelope{
 			flowEnvelope: e,
 			Dependencies: f.dependencies,
-			ResultNames:  f.resultNames,
+			Results:      f.results,
 		})
 	}
 
