@@ -227,7 +227,11 @@ func TestNewFlow(t *testing.T) {
 			map[string]string{"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"},
 		},
 	}
-	flowAsMap[`_results`] = map[string][]string{"response_1": {"Response 1"}}
+	flowAsMap[`_results`] = map[string]interface{}{
+		"response_1": map[string]interface{}{
+			"names": []string{"Response 1"},
+		},
+	}
 
 	// now when we marshal to JSON, those should be included
 	newFlowDef, err := json.Marshal(flowAsMap)
@@ -293,9 +297,9 @@ func TestValidateFlow(t *testing.T) {
 
 	resultsJSON, _ := json.Marshal(flowAsMap.(map[string]interface{})["_results"])
 	test.AssertEqualJSON(t, []byte(`{
-		"name": [
-	        "Name"
-	    ]
+		"name": {
+	        "names": ["Name"]
+	    }
 	}`), resultsJSON, "results mismatch")
 }
 
