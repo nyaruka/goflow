@@ -264,6 +264,41 @@ func TestValidateEmptyFlow(t *testing.T) {
 	}`), marshaled, "flow definition mismatch")
 }
 
+func TestValidateFlow(t *testing.T) {
+	sa, err := test.LoadSessionAssets("../../test/testdata/flows/brochure.json")
+	require.NoError(t, err)
+
+	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
+	require.NoError(t, err)
+
+	err = flow.Validate(sa)
+	assert.NoError(t, err)
+
+	marshaled, err := json.Marshal(flow)
+	require.NoError(t, err)
+
+	flowAsMap, err := utils.JSONDecodeGeneric(marshaled)
+	require.NoError(t, err)
+
+	dependenciesJSON, _ := json.Marshal(flowAsMap.(map[string]interface{})["_dependencies"])
+	test.AssertEqualJSON(t, []byte(`{
+		"groups": [
+			{
+				"name": "Registered Users",
+				"uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
+			}
+
+		]
+	}`), dependenciesJSON, "dependencies mismatch")
+
+	resultsJSON, _ := json.Marshal(flowAsMap.(map[string]interface{})["_results"])
+	test.AssertEqualJSON(t, []byte(`{
+		"name": [
+	        "Name"
+	    ]
+	}`), resultsJSON, "results mismatch")
+}
+
 func TestReadFlow(t *testing.T) {
 	// try reading something without a flow header
 	_, err := definition.ReadFlow([]byte(`{"nodes":[]}`))
