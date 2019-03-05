@@ -1,3 +1,7 @@
+v0.29.5
+----------
+ * Fix tests
+
 v0.29.4
 ----------
  * Flow name shouldn't be required (matches any other asset type)
