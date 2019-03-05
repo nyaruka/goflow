@@ -1,3 +1,7 @@
+v0.29.3
+----------
+ * Use presence of flow_type to determine if flow is in legacy format and handle legacy flows with missing metadata section
+
 v0.29.2
 ----------
  * Allow flow validation without assets
