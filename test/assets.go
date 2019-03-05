@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// LoadSessionAssets loads a session assets instance from a static JSON file
 func LoadSessionAssets(path string) (flows.SessionAssets, error) {
 	assetsJSON, err := ioutil.ReadFile(path)
 	if err != nil {
