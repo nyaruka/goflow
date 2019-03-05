@@ -40,6 +40,10 @@ var invalidFlows = []struct {
 		"flow_with_invalid_case_exit.json",
 		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
 	},
+	{
+		"flow_with_missing_asset.json",
+		"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered]",
+	},
 }
 
 func TestFlowValidation(t *testing.T) {
