@@ -333,7 +333,7 @@ func TestValidateFlow(t *testing.T) {
 func TestReadFlow(t *testing.T) {
 	// try reading something without a flow header
 	_, err := definition.ReadFlow([]byte(`{"nodes":[]}`))
-	assert.EqualError(t, err, "unable to read flow header: field 'uuid' is required, field 'name' is required, field 'spec_version' is required")
+	assert.EqualError(t, err, "unable to read flow header: field 'uuid' is required, field 'spec_version' is required")
 
 	// try reading a definition with a newer major version
 	_, err = definition.ReadFlow([]byte(`{
