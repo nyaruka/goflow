@@ -1,3 +1,7 @@
+v0.29.4
+----------
+ * Flow name shouldn't be required (matches any other asset type)
+
 v0.29.3
 ----------
  * Use presence of flow_type to determine if flow is in legacy format and handle legacy flows with missing metadata section
