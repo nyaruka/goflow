@@ -5,18 +5,15 @@ import (
 
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/buger/jsonparser"
 	"github.com/pkg/errors"
 )
 
 // IsLegacyDefinition peeks at the given flow definition to determine if it is in legacy format
 func IsLegacyDefinition(data json.RawMessage) bool {
-	header := &flowHeader{}
-	if err := utils.UnmarshalAndValidate(data, header); err != nil {
-		return false
-	}
-
-	// any flow definition with a metadata section is handled as a legacy definition
-	return header.Metadata != nil
+	// any flow with a root-level flow_type property is considered to be in legacy format
+	_, _, _, err := jsonparser.Get(data, "flow_type")
+	return err == nil
 }
 
 // MigrateLegacyDefinition migrates a legacy definition

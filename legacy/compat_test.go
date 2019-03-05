@@ -32,6 +32,17 @@ func TestIsLegacyDefinition(t *testing.T) {
 		},
 		"base_language": "eng",
 		"flow_type": "F",
+		"entry"
+		"version": 11,
+		"action_sets": [],
+		"rule_sets": []
+	}`)))
+
+	// try with legacy flow without metadata
+	assert.True(t, legacy.IsLegacyDefinition([]byte(`{
+		"base_language": "eng",
+		"flow_type": "F",
+		"entry"
 		"version": 11,
 		"action_sets": [],
 		"rule_sets": []

@@ -21,24 +21,19 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type flowHeader struct {
-	Metadata *Metadata `json:"metadata"`
-}
-
 // Flow is a flow in the legacy format
 type Flow struct {
-	flowHeader
-
 	BaseLanguage utils.Language `json:"base_language"`
 	FlowType     string         `json:"flow_type"`
 	RuleSets     []RuleSet      `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
 	Entry        flows.NodeUUID `json:"entry" validate:"omitempty,uuid4"`
+	Metadata     *Metadata      `json:"metadata"`
 }
 
 // Metadata is the metadata section of a legacy flow
 type Metadata struct {
-	UUID     assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	UUID     assets.FlowUUID `json:"uuid"`
 	Name     string          `json:"name"`
 	Revision int             `json:"revision"`
 	Expires  int             `json:"expires"`
@@ -963,11 +958,20 @@ func migateActionSet(lang utils.Language, a ActionSet, localization flows.Locali
 
 // ReadLegacyFlow reads a single legacy formatted flow
 func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
-	flow := &Flow{}
-	if err := utils.UnmarshalAndValidate(data, flow); err != nil {
+	f := &Flow{}
+	if err := utils.UnmarshalAndValidate(data, f); err != nil {
 		return nil, err
 	}
-	return flow, nil
+
+	// add some metadata for incomplete definitions
+	if f.Metadata == nil {
+		f.Metadata = &Metadata{}
+	}
+	if f.Metadata.UUID == "" {
+		f.Metadata.UUID = assets.FlowUUID(utils.NewUUID())
+	}
+
+	return f, nil
 }
 
 // Migrate migrates this legacy flow to the new format

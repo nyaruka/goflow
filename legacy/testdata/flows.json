@@ -29,6 +29,27 @@
     },
     {
         "legacy": {
+            "base_language": "eng",
+            "flow_type": "M"
+        },
+        "expected": {
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "name": "",
+            "spec_version": "12.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "revision": 0,
+            "expire_after_minutes": 0,
+            "localization": {},
+            "nodes": [],
+            "_ui": {
+                "nodes": {},
+                "stickies": {}
+            }
+        }
+    },
+    {
+        "legacy": {
             "metadata": {
                 "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                 "name": "Simple",
