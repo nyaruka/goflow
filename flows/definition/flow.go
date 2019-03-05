@@ -74,7 +74,8 @@ func (f *flow) Localization() flows.Localization       { return f.localization }
 func (f *flow) UI() flows.UI                           { return f.ui }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
-// Validates that we are structurally currect and have all the dependencies we need
+// Validates that we are structurally currect. The SessionAssets `sa` is optional but if provided,
+// we will also check that all dependencies actually exist, and refresh their names.
 func (f *flow) Validate(sa flows.SessionAssets) error {
 	return f.validate(sa, false)
 }
@@ -110,15 +111,17 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
 	deps := newDependencies(f.ExtractDependencies())
 
 	// and validate that all assets are available in the session assets
-	missingAssets := make([]assets.Reference, 0)
-	deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
+	if sa != nil {
+		missingAssets := make([]assets.Reference, 0)
+		deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
 
-	if len(missingAssets) > 0 {
-		depStrings := make([]string, len(missingAssets))
-		for d := range missingAssets {
-			depStrings[d] = missingAssets[d].String()
+		if len(missingAssets) > 0 {
+			depStrings := make([]string, len(missingAssets))
+			for d := range missingAssets {
+				depStrings[d] = missingAssets[d].String()
+			}
+			return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 		}
-		return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 	}
 
 	f.validated = true
@@ -126,6 +129,10 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
 	f.results = newResultsInfo(f.ExtractResultNames())
 
 	if recursive {
+		if sa == nil {
+			panic("can't do recursive flow validation without session assets")
+		}
+
 		// go validate any flow dependencies
 		for _, flowRef := range deps.Flows {
 			flowDep, _ := sa.Flows().Get(flowRef.UUID)

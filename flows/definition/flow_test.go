@@ -268,6 +268,15 @@ func TestValidateEmptyFlow(t *testing.T) {
 	}`), marshaled, "flow definition mismatch")
 }
 
+func assertFlowSection(t *testing.T, definition []byte, key string, data []byte) {
+	flowAsMap, err := utils.JSONDecodeGeneric(definition)
+	require.NoError(t, err)
+
+	sectionJSON, _ := json.Marshal(flowAsMap.(map[string]interface{})[key])
+
+	test.AssertEqualJSON(t, data, sectionJSON, "flow JSON mismatch")
+}
+
 func TestValidateFlow(t *testing.T) {
 	sa, err := test.LoadSessionAssets("../../test/testdata/flows/brochure.json")
 	require.NoError(t, err)
@@ -275,32 +284,46 @@ func TestValidateFlow(t *testing.T) {
 	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
 	require.NoError(t, err)
 
+	// validate with session assets
 	err = flow.Validate(sa)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
 	require.NoError(t, err)
 
-	flowAsMap, err := utils.JSONDecodeGeneric(marshaled)
-	require.NoError(t, err)
-
-	dependenciesJSON, _ := json.Marshal(flowAsMap.(map[string]interface{})["_dependencies"])
-	test.AssertEqualJSON(t, []byte(`{
+	// name of group will have been corrected
+	assertFlowSection(t, marshaled, "_dependencies", []byte(`{
 		"groups": [
 			{
 				"name": "Registered Users",
 				"uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
 			}
-
 		]
-	}`), dependenciesJSON, "dependencies mismatch")
-
-	resultsJSON, _ := json.Marshal(flowAsMap.(map[string]interface{})["_results"])
-	test.AssertEqualJSON(t, []byte(`{
+	}`))
+	assertFlowSection(t, marshaled, "_results", []byte(`{
 		"name": {
 	        "names": ["Name"]
 	    }
-	}`), resultsJSON, "results mismatch")
+	}`))
+
+	// validate without session assets
+	sa, _ = test.LoadSessionAssets("../../test/testdata/flows/brochure.json")
+	flow, _ = sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
+	err = flow.Validate(nil)
+	assert.NoError(t, err)
+
+	marshaled, err = json.Marshal(flow)
+	require.NoError(t, err)
+
+	// name of group won't have been corrected
+	assertFlowSection(t, marshaled, "_dependencies", []byte(`{
+		"groups": [
+			{
+				"name": "Registered",
+				"uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
+			}
+		]
+	}`))
 }
 
 func TestReadFlow(t *testing.T) {
