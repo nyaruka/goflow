@@ -261,7 +261,7 @@ func init() {
 // the set of fields common to all new flow spec versions
 type flowHeader struct {
 	UUID        assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
-	Name        string          `json:"name" validate:"required"`
+	Name        string          `json:"name"`
 	SpecVersion *semver.Version `json:"spec_version" validate:"required"`
 }
 
