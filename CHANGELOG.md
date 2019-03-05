@@ -1,3 +1,7 @@
+v0.29.2
+----------
+ * Allow flow validation without assets
+
 v0.29.1
 ----------
  * Store a map of result keys to result names in a validated flow definition
