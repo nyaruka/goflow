@@ -100,13 +100,13 @@ func (l *LabelReference) UnmarshalJSON(data []byte) error {
 	}
 
 	// or a JSON object with UUID/Name properties
-	var raw map[string]interface{}
+	var raw map[string]string
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	l.UUID = assets.LabelUUID(raw["uuid"].(string))
-	l.Name = raw["name"].(string)
+	l.UUID = assets.LabelUUID(raw["uuid"])
+	l.Name = raw["name"]
 	return nil
 }
 
@@ -150,13 +150,13 @@ func (g *GroupReference) UnmarshalJSON(data []byte) error {
 	}
 
 	// or a JSON object with UUID/Name properties
-	var raw map[string]interface{}
+	var raw map[string]string
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	g.UUID = assets.GroupUUID(raw["uuid"].(string))
-	g.Name = raw["name"].(string)
+	g.UUID = assets.GroupUUID(raw["uuid"])
+	g.Name = raw["name"]
 	return nil
 }
 
