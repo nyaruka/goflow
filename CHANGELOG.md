@@ -1,3 +1,8 @@
+v0.29.6
+----------
+ * Migrate name only legacy label and group references
+ * Add more tests for has_pattern
+
 v0.29.5
 ----------
  * Fix tests
