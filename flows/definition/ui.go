@@ -61,22 +61,30 @@ func (p position) MarshalJSON() ([]byte, error) {
 	})
 }
 
+func (p position) Left() int {
+	return p.left
+}
+
+func (p position) Top() int {
+	return p.top
+}
+
 type uiNodeDetails struct {
 	NodeType_     flows.UINodeType   `json:"type,omitempty"`
 	UiNodeConfig_ flows.UINodeConfig `json:"config,omitempty"`
 	Position_     flows.Position     `json:"position"`
 }
 
+func (n *uiNodeDetails) Position() flows.Position {
+	return n.Position_
+}
+
 // NewUINodeDetails creates a ui configuration for a specific
-func NewUINodeDetails(
-	x, y int,
-	nodeType flows.UINodeType,
-	uiNodeConfig flows.UINodeConfig,
-) flows.UINodeDetails {
-	return uiNodeDetails{
+func NewUINodeDetails(x, y int, nodeType flows.UINodeType, uiNodeConfig flows.UINodeConfig) flows.UINodeDetails {
+	return &uiNodeDetails{
 		NodeType_:     nodeType,
 		UiNodeConfig_: uiNodeConfig,
-		Position_: &position{
+		Position_: position{
 			left: x,
 			top:  y,
 		},

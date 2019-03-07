@@ -146,5 +146,150 @@
                 }
             }
         }
+    },
+    {
+        "legacy": {
+            "metadata": {
+                "uuid": "aaf52597-9485-45fb-9d38-56b2aa548d55",
+                "name": "Node Ordering Test",
+                "revision": 123
+            },
+            "entry": "b2f67f50-0a27-47ba-8b99-9801724c979c",
+            "base_language": "eng",
+            "flow_type": "M",
+            "action_sets": [
+                {
+                    "y": 1000,
+                    "x": 1,
+                    "destination": null,
+                    "uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
+                    "exit_uuid": "02e9b42f-62f8-46e5-91c0-a7ef5d1ae314"
+                },
+                {
+                    "y": 500,
+                    "x": 1,
+                    "destination": "90c35d48-7b15-4af0-92eb-1a120b508e89",
+                    "uuid": "397e6a5d-b5ea-4d3a-91fa-de0b0f3efeca",
+                    "exit_uuid": "f8985923-cf3d-4a51-83cb-e15bf70659c1"
+                },
+                {
+                    "y": 750,
+                    "x": 1,
+                    "destination": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
+                    "uuid": "90c35d48-7b15-4af0-92eb-1a120b508e89",
+                    "exit_uuid": "9b79240e-753a-4c4a-b414-4f0c83a2ff67"
+                },
+                {
+                    "y": 0,
+                    "x": 1,
+                    "destination": "b2f67f50-0a27-47ba-8b99-9801724c979c",
+                    "uuid": "764bf406-1a5d-43cf-b006-9f6f19595974",
+                    "exit_uuid": "14299c29-2c8e-4c17-8eda-bac4eabf99b6"
+                },
+                {
+                    "y": 250,
+                    "x": 1,
+                    "destination": "397e6a5d-b5ea-4d3a-91fa-de0b0f3efeca",
+                    "uuid": "b2f67f50-0a27-47ba-8b99-9801724c979c",
+                    "exit_uuid": "906b1936-ae34-40b3-bc08-dd62d459adbc"
+                }
+            ]
+        },
+        "expected": {
+            "uuid": "aaf52597-9485-45fb-9d38-56b2aa548d55",
+            "name": "Node Ordering Test",
+            "spec_version": "12.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "revision": 123,
+            "expire_after_minutes": 0,
+            "localization": {},
+            "nodes": [
+                {
+                    "exits": [
+                        {
+                            "destination_node_uuid": "397e6a5d-b5ea-4d3a-91fa-de0b0f3efeca",
+                            "uuid": "906b1936-ae34-40b3-bc08-dd62d459adbc"
+                        }
+                    ],
+                    "uuid": "b2f67f50-0a27-47ba-8b99-9801724c979c"
+                },
+                {
+                    "exits": [
+                        {
+                            "destination_node_uuid": "b2f67f50-0a27-47ba-8b99-9801724c979c",
+                            "uuid": "14299c29-2c8e-4c17-8eda-bac4eabf99b6"
+                        }
+                    ],
+                    "uuid": "764bf406-1a5d-43cf-b006-9f6f19595974"
+                },
+                {
+                    "exits": [
+                        {
+                            "destination_node_uuid": "90c35d48-7b15-4af0-92eb-1a120b508e89",
+                            "uuid": "f8985923-cf3d-4a51-83cb-e15bf70659c1"
+                        }
+                    ],
+                    "uuid": "397e6a5d-b5ea-4d3a-91fa-de0b0f3efeca"
+                },
+                {
+                    "exits": [
+                        {
+                            "destination_node_uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
+                            "uuid": "9b79240e-753a-4c4a-b414-4f0c83a2ff67"
+                        }
+                    ],
+                    "uuid": "90c35d48-7b15-4af0-92eb-1a120b508e89"
+                },
+                {
+                    "exits": [
+                        {
+                            "uuid": "02e9b42f-62f8-46e5-91c0-a7ef5d1ae314"
+                        }
+                    ],
+                    "uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597"
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "397e6a5d-b5ea-4d3a-91fa-de0b0f3efeca": {
+                        "position": {
+                            "left": 1,
+                            "top": 500
+                        },
+                        "type": "execute_actions"
+                    },
+                    "764bf406-1a5d-43cf-b006-9f6f19595974": {
+                        "position": {
+                            "left": 1,
+                            "top": 0
+                        },
+                        "type": "execute_actions"
+                    },
+                    "90c35d48-7b15-4af0-92eb-1a120b508e89": {
+                        "position": {
+                            "left": 1,
+                            "top": 750
+                        },
+                        "type": "execute_actions"
+                    },
+                    "b2f67f50-0a27-47ba-8b99-9801724c979c": {
+                        "position": {
+                            "left": 1,
+                            "top": 250
+                        },
+                        "type": "execute_actions"
+                    },
+                    "d51ec25f-04e6-4349-a448-e7c4d93d4597": {
+                        "position": {
+                            "left": 1,
+                            "top": 1000
+                        },
+                        "type": "execute_actions"
+                    }
+                },
+                "stickies": {}
+            }
+        }
     }
 ]

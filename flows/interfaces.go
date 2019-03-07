@@ -243,10 +243,6 @@ type Translations interface {
 	SetTextArray(utils.UUID, string, []string)
 }
 
-// UINodeDetails is the top level ui details for a node
-type UINodeDetails interface {
-}
-
 // UI is a optional section in a flow definition with editor specific information
 type UI interface {
 	AddNode(uuid NodeUUID, details UINodeDetails)
@@ -255,8 +251,15 @@ type UI interface {
 	GetNode(uuid NodeUUID) UINodeDetails
 }
 
+// UINodeDetails is the top level ui details for a node
+type UINodeDetails interface {
+	Position() Position
+}
+
 // Position holds coordinates for a node
 type Position interface {
+	Left() int
+	Top() int
 }
 
 // Trigger represents something which can initiate a session with the flow engine. It has several properties which can be
