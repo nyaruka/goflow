@@ -447,7 +447,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 			if strings.Contains(mediaType, "/") {
 				// attachment is a real upload and not just an expression, need to make it absolute
-				media[lang] = fmt.Sprintf("%s:%s/%s", mediaType, baseMediaURL, mediaURL)
+				media[lang] = fmt.Sprintf("%s:%s", mediaType, URLJoin(baseMediaURL, mediaURL))
 			}
 		}
 
@@ -529,7 +529,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		// make audio URLs absolute
 		for lang, audioURL := range recording {
-			recording[lang] = fmt.Sprintf("%s/%s", baseMediaURL, audioURL)
+			recording[lang] = URLJoin(baseMediaURL, audioURL)
 		}
 
 		migratedText := addTranslationMap(baseLanguage, localization, msg, utils.UUID(a.UUID), "text")
