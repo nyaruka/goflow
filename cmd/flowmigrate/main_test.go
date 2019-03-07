@@ -23,7 +23,7 @@ func TestMigrate(t *testing.T) {
 		"rule_sets": []
 	}`)
 
-	migrated, err := main.Migrate(input, true, false)
+	migrated, err := main.Migrate(input, true, false, "")
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
