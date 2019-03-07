@@ -231,9 +231,10 @@ func TestNewFlow(t *testing.T) {
 			map[string]string{"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"},
 		},
 	}
-	flowAsMap[`_results`] = map[string]interface{}{
-		"response_1": map[string]interface{}{
-			"names": []string{"Response 1"},
+	flowAsMap[`_results`] = []map[string]string{
+		{
+			"name": "Response 1",
+			"key":  "response_1",
 		},
 	}
 
@@ -268,7 +269,7 @@ func TestValidateEmptyFlow(t *testing.T) {
 		"localization": {},
 		"nodes": [],
 		"_dependencies": {},
-		"_results": {}
+		"_results": []
 	}`), marshaled, "flow definition mismatch")
 }
 
@@ -304,11 +305,12 @@ func TestValidateFlow(t *testing.T) {
 			}
 		]
 	}`))
-	assertFlowSection(t, marshaled, "_results", []byte(`{
-		"name": {
-	        "names": ["Name"]
+	assertFlowSection(t, marshaled, "_results", []byte(`[
+		{
+			"name": "Name",
+			"key": "name"
 	    }
-	}`))
+	]`))
 
 	// validate without session assets
 	sa, _ = test.LoadSessionAssets("../../test/testdata/flows/brochure.json")
