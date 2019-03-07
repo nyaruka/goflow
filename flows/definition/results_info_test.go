@@ -7,7 +7,7 @@ import (
 )
 
 func TestResultsInfo(t *testing.T) {
-	r := newResultsInfo([]string{"Age", "Response 1", "Response-1"})
+	r := newResultsInfo([]string{"Age", "Response 1", "Response-1", "Response 1"})
 
 	assert.Equal(t, resultsInfo(map[string]*resultInfo{
 		"age":        {Names: []string{"Age"}},

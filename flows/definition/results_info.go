@@ -16,6 +16,8 @@ type resultInfo struct {
 type resultsInfo map[string]*resultInfo
 
 func newResultsInfo(names []string) resultsInfo {
+	namesSeen := make(map[string]bool)
+
 	r := make(resultsInfo)
 	for _, name := range names {
 		key := utils.Snakify(name)
@@ -24,8 +26,10 @@ func newResultsInfo(names []string) resultsInfo {
 			info = &resultInfo{}
 			r[key] = info
 		}
-
-		info.Names = append(info.Names, name)
+		if _, seen := namesSeen[name]; !seen {
+			info.Names = append(info.Names, name)
+			namesSeen[name] = true
+		}
 	}
 	return r
 }
