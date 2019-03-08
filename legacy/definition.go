@@ -3,6 +3,7 @@ package legacy
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -1017,15 +1018,29 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool, baseMediaURL string) 
 	}
 
 	// make sure our entry node is first
+	var entryNodes, otherNodes []flows.Node
 	if f.Entry != "" {
-		for i := range nodes {
-			if nodes[i].UUID() == f.Entry {
-				firstNode := nodes[0]
-				nodes[0] = nodes[i]
-				nodes[i] = firstNode
+		for _, node := range nodes {
+			if node.UUID() == f.Entry {
+				entryNodes = []flows.Node{node}
+			} else {
+				otherNodes = append(otherNodes, node)
 			}
 		}
 	}
+
+	// and sort remaining nodes by their top position (Y)
+	sort.SliceStable(otherNodes, func(i, j int) bool {
+		u1 := nodeUI[otherNodes[i].UUID()]
+		u2 := nodeUI[otherNodes[j].UUID()]
+
+		if u1 != nil && u2 != nil {
+			return u1.Position().Top() < u2.Position().Top()
+		}
+		return false
+	})
+
+	nodes = append(entryNodes, otherNodes...)
 
 	var ui flows.UI
 
