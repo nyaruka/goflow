@@ -235,8 +235,3 @@ func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
-
-// EnumerateResultNames enumerates all result names on this object
-func (r *SwitchRouter) EnumerateResultNames(include func(string)) {
-	include(r.ResultName())
-}

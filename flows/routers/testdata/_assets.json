@@ -1,0 +1,68 @@
+{
+    "flows": [
+        {
+            "uuid": "16f6eee7-9843-4333-bad2-1d7fd636452c",
+            "name": "Router Tester",
+            "spec_version": "12.0",
+            "language": "eng",
+            "type": "messaging",
+            "revision": 123,
+            "nodes": [
+                {
+                    "uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
+                    "actions": [],
+                    "exits": [
+                        {
+                            "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                            "name": "Yes"
+                        },
+                        {
+                            "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                            "name": "No"
+                        },
+                        {
+                            "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                            "name": "Other"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "My Android Phone",
+            "address": "+12345671111",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "key": "gender",
+            "name": "Gender",
+            "type": "text"
+        },
+        {
+            "key": "age",
+            "name": "Age",
+            "type": "number"
+        }
+    ],
+    "groups": [
+        {
+            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+            "name": "Testers"
+        },
+        {
+            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+            "name": "Customers"
+        }
+    ]
+}

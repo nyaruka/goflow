@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/shopspring/decimal"
 )
 
 func init() {
@@ -19,6 +19,7 @@ type RandomRouter struct {
 	BaseRouter
 }
 
+// NewRandomRouter creates a new random router
 func NewRandomRouter(resultName string) *RandomRouter {
 	return &RandomRouter{newBaseRouter(TypeRandom, resultName)}
 }
@@ -35,8 +36,9 @@ func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	}
 
 	// pick a random exit
-	exitN := utils.RandIntN(len(exits))
-	return nil, flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN), nil), nil
+	rand := utils.RandDecimal()
+	exitNum := rand.Mul(decimal.New(int64(len(exits)), 0)).IntPart()
+	return nil, flows.NewRoute(exits[exitNum].UUID(), rand.String(), nil), nil
 }
 
 // Inspect inspects this object and any children
