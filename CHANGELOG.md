@@ -1,3 +1,10 @@
+v0.29.7
+----------
+ * Change random router to return raw random value as result value
+ * Return results as list of name/key objects during flow validation
+ * Order nodes by y during flow migration
+ * Convert attachment URLs to absolute during flow migration
+
 v0.29.6
 ----------
  * Migrate name only legacy label and group references
