@@ -59,7 +59,7 @@ func TestMigrateLegacyDefinition(t *testing.T) {
 			"uuid": "061be894-4507-470c-a20b-34273bf915be",
 			"name": "Survey"
 		}
-	}`))
+	}`), "")
 
 	assert.NoError(t, err)
 	test.AssertEqualJSON(t, []byte(`{

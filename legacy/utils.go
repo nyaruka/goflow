@@ -2,6 +2,8 @@ package legacy
 
 import (
 	"encoding/json"
+	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 	"github.com/pkg/errors"
@@ -86,4 +88,15 @@ func (e *TypedEnvelope) UnmarshalJSON(b []byte) error {
 	e.Data = make([]byte, len(b))
 	copy(e.Data, b)
 	return nil
+}
+
+// URLJoin joins two URL parts with /
+func URLJoin(base, relative string) string {
+	if strings.HasSuffix(base, "/") {
+		base = base[:len(base)-1]
+	}
+	if strings.HasPrefix(relative, "/") {
+		relative = relative[1:]
+	}
+	return fmt.Sprintf("%s/%s", base, relative)
 }

@@ -361,7 +361,7 @@ var testTypeMappings = map[string]string{
 }
 
 // migrates the given legacy action to a new action
-func migrateAction(baseLanguage utils.Language, a Action, localization flows.Localization) (flows.Action, error) {
+func migrateAction(baseLanguage utils.Language, a Action, localization flows.Localization, baseMediaURL string) (flows.Action, error) {
 	switch a.Type {
 	case "add_label":
 		labels := make([]*assets.LabelReference, len(a.Labels))
@@ -440,6 +440,17 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			quickReplies = TransformTranslations(legacyQuickReplies)
 		}
 
+		for lang, attachment := range media {
+			parts := strings.SplitN(attachment, ":", 2)
+			mediaType := parts[0]
+			mediaURL := parts[1]
+
+			if strings.Contains(mediaType, "/") {
+				// attachment is a real upload and not just an expression, need to make it absolute
+				media[lang] = fmt.Sprintf("%s:%s", mediaType, URLJoin(baseMediaURL, mediaURL))
+			}
+		}
+
 		migratedText := addTranslationMap(baseLanguage, localization, msg, utils.UUID(a.UUID), "text")
 		migratedMedia := addTranslationMap(baseLanguage, localization, media, utils.UUID(a.UUID), "attachments")
 		migratedQuickReplies := addTranslationMultiMap(baseLanguage, localization, quickReplies, utils.UUID(a.UUID), "quick_replies")
@@ -516,11 +527,17 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			return nil, err
 		}
 
+		// make audio URLs absolute
+		for lang, audioURL := range recording {
+			recording[lang] = URLJoin(baseMediaURL, audioURL)
+		}
+
 		migratedText := addTranslationMap(baseLanguage, localization, msg, utils.UUID(a.UUID), "text")
 		migratedAudioURL := addTranslationMap(baseLanguage, localization, recording, utils.UUID(a.UUID), "audio_url")
 
 		return actions.NewSayMsgAction(a.UUID, migratedText, migratedAudioURL), nil
 	case "play":
+		// note this URL is already assumed to be absolute
 		migratedAudioURL, _ := expressions.MigrateTemplate(a.URL, nil)
 
 		return actions.NewPlayAudioAction(a.UUID, migratedAudioURL), nil
@@ -941,12 +958,12 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
-func migateActionSet(lang utils.Language, a ActionSet, localization flows.Localization) (flows.Node, error) {
+func migrateActionSet(lang utils.Language, a ActionSet, localization flows.Localization, baseMediaURL string) (flows.Node, error) {
 	actions := make([]flows.Action, len(a.Actions))
 
 	// migrate each action
 	for i := range a.Actions {
-		action, err := migrateAction(lang, a.Actions[i], localization)
+		action, err := migrateAction(lang, a.Actions[i], localization, baseMediaURL)
 		if err != nil {
 			return nil, errors.Wrapf(err, "error migrating action[type=%s]", a.Actions[i].Type)
 		}
@@ -975,14 +992,14 @@ func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 }
 
 // Migrate migrates this legacy flow to the new format
-func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
+func (f *Flow) Migrate(collapseExits bool, includeUI bool, baseMediaURL string) (flows.Flow, error) {
 	localization := definition.NewLocalization()
 	numNodes := len(f.ActionSets) + len(f.RuleSets)
 	nodes := make([]flows.Node, numNodes)
 	nodeUI := make(map[flows.NodeUUID]flows.UINodeDetails, numNodes)
 
 	for i, actionSet := range f.ActionSets {
-		node, err := migateActionSet(f.BaseLanguage, actionSet, localization)
+		node, err := migrateActionSet(f.BaseLanguage, actionSet, localization, baseMediaURL)
 		if err != nil {
 			return nil, errors.Wrapf(err, "error migrating action_set[uuid=%s]", actionSet.UUID)
 		}

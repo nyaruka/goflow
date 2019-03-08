@@ -81,3 +81,10 @@ func TestTypedEnvelope(t *testing.T) {
 	assert.Equal(t, "first", e.Type)
 	assert.Equal(t, `{"type":"first","foo":"bar","other":1234}`, string(e.Data))
 }
+
+func TestURLJoin(t *testing.T) {
+	assert.Equal(t, "http://myfiles.com/test.jpg", legacy.URLJoin("http://myfiles.com", "test.jpg"))
+	assert.Equal(t, "http://myfiles.com/test.jpg", legacy.URLJoin("http://myfiles.com/", "test.jpg"))
+	assert.Equal(t, "http://myfiles.com/test.jpg", legacy.URLJoin("http://myfiles.com", "/test.jpg"))
+	assert.Equal(t, "http://myfiles.com/test.jpg", legacy.URLJoin("http://myfiles.com/", "/test.jpg"))
+}

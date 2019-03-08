@@ -198,8 +198,8 @@
                 "fra": "Vous habitez toujours à @contact.city"
             },
             "media": {
-                "eng": "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.age",
-                "fra": "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.age"
+                "eng": "image/jpeg:bucket/test_en.jpg?a=@contact.age",
+                "fra": "image/jpeg:bucket/test_fr.jpg?a=@contact.age"
             },
             "quick_replies": [
                 {
@@ -221,7 +221,7 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "text": "Do you still live in @contact.fields.city?",
             "attachments": [
-                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.age"
+                "image/jpeg:https://myfiles.com/bucket/test_en.jpg?a=@contact.fields.age"
             ],
             "quick_replies": [
                 "Yes",
@@ -234,7 +234,7 @@
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
                     "attachments": [
-                        "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.fields.age"
+                        "image/jpeg:https://myfiles.com/bucket/test_fr.jpg?a=@contact.fields.age"
                     ],
                     "quick_replies": [
                         "Oui",
@@ -332,21 +332,21 @@
                 "fra": "Vous habitez toujours à @contact.city"
             },
             "recording": {
-                "eng": "http://s3.amazon.com/bucket/question1_en.m4a",
-                "fra": "http://s3.amazon.com/bucket/question1_fr.m4a"
+                "eng": "bucket/question1_en.m4a",
+                "fra": "bucket/question1_fr.m4a"
             }
         },
         "expected_action": {
             "type": "say_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "text": "Do you still live in @contact.fields.city?",
-            "audio_url": "http://s3.amazon.com/bucket/question1_en.m4a"
+            "audio_url": "https://myfiles.com/bucket/question1_en.m4a"
         },
         "expected_localization": {
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
                     "audio_url": [
-                        "http://s3.amazon.com/bucket/question1_fr.m4a"
+                        "https://myfiles.com/bucket/question1_fr.m4a"
                     ],
                     "text": [
                         "Vous habitez toujours à @contact.fields.city"
@@ -364,8 +364,8 @@
                 "fra": "Vous habitez toujours à @contact.city"
             },
             "media": {
-                "eng": "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.age",
-                "fra": "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.age"
+                "eng": "image/jpeg:bucket/test_en.jpg?a=@contact.age",
+                "fra": "image/jpeg:bucket/test_fr.jpg?a=@contact.age"
             },
             "contacts": [
                 {
@@ -399,7 +399,7 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "text": "Do you still live in @contact.fields.city?",
             "attachments": [
-                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.age"
+                "image/jpeg:https://myfiles.com/bucket/test_en.jpg?a=@contact.fields.age"
             ],
             "contacts": [
                 {
@@ -430,7 +430,7 @@
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
                     "attachments": [
-                        "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.fields.age"
+                        "image/jpeg:https://myfiles.com/bucket/test_fr.jpg?a=@contact.fields.age"
                     ],
                     "text": [
                         "Vous habitez toujours à @contact.fields.city"

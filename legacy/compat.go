@@ -17,13 +17,13 @@ func IsLegacyDefinition(data json.RawMessage) bool {
 }
 
 // MigrateLegacyDefinition migrates a legacy definition
-func MigrateLegacyDefinition(data json.RawMessage) (json.RawMessage, error) {
+func MigrateLegacyDefinition(data json.RawMessage, baseMediaURL string) (json.RawMessage, error) {
 	legacyFlow, err := ReadLegacyFlow(data)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to read legacy flow")
 	}
 
-	flow, err := legacyFlow.Migrate(true, true)
+	flow, err := legacyFlow.Migrate(true, true, baseMediaURL)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to migrate legacy flow")
 	}
