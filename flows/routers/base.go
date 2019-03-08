@@ -17,6 +17,11 @@ func RegisterType(name string, initFunc func() flows.Router) {
 	registeredTypes[name] = initFunc
 }
 
+// RegisteredTypes gets the registered types of router
+func RegisteredTypes() map[string](func() flows.Router) {
+	return registeredTypes
+}
+
 // BaseRouter is the base class for all our router classes
 type BaseRouter struct {
 	Type_ string `json:"type" validate:"required"`
@@ -46,7 +51,9 @@ func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, incl
 }
 
 // EnumerateResultNames enumerates all result names on this object
-func (r *BaseRouter) EnumerateResultNames(include func(string)) {}
+func (r *BaseRouter) EnumerateResultNames(include func(string)) {
+	include(r.ResultName())
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

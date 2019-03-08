@@ -168,7 +168,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		actionJSON, err := json.Marshal(action)
 		test.AssertEqualJSON(t, tc.Action, actionJSON, "marshal mismatch in %s", testName)
 
-		// finally try enumerating templates on this action
+		// finally try inspecting this action
 		if tc.Inspection != nil {
 			templates := flow.ExtractTemplates()
 			assert.Equal(t, tc.Inspection.Templates, templates, "inspected templates mismatch in %s", testName)

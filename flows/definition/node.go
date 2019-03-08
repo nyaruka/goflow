@@ -42,6 +42,10 @@ func (n *node) AddAction(action flows.Action) {
 	n.actions = append(n.actions, action)
 }
 
+func (n *node) SetRouter(router flows.Router) {
+	n.router = router
+}
+
 func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 	// validate all the node's actions
 	for _, action := range n.Actions() {

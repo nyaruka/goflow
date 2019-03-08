@@ -181,10 +181,12 @@ type Node interface {
 
 	UUID() NodeUUID
 	Actions() []Action
-	AddAction(Action)
 	Router() Router
 	Exits() []Exit
 	Wait() Wait
+
+	AddAction(Action)
+	SetRouter(Router)
 
 	Validate(Flow, map[utils.UUID]bool) error
 }
