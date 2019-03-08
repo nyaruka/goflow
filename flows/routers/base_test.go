@@ -107,7 +107,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		require.NoError(t, err)
 
 		trigger := triggers.NewManualTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, nil)
-		_, err = session.Start(trigger)
+		_, err = session.Start(trigger, nil)
 		require.NoError(t, err)
 
 		// check results are what we expected
