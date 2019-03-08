@@ -257,7 +257,7 @@ func (s *Session) Assets() *SessionAssets {
 
 // Start starts this session using the given trigger
 func (s *Session) Start(trigger *Trigger) (*Sprint, error) {
-	sprint, err := s.target.Start(trigger.target)
+	sprint, err := s.target.Start(trigger.target, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -266,7 +266,7 @@ func (s *Session) Start(trigger *Trigger) (*Sprint, error) {
 
 // Resume resumes this session
 func (s *Session) Resume(resume *Resume) (*Sprint, error) {
-	sprint, err := s.target.Resume(resume.target)
+	sprint, err := s.target.Resume(resume.target, nil)
 	if err != nil {
 		return nil, err
 	}

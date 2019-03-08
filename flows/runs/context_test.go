@@ -89,7 +89,7 @@ func TestRelatedRunContext(t *testing.T) {
 	trigger, err := triggers.ReadTrigger(session.Assets(), []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	_, err = session.Start(trigger)
+	_, err = session.Start(trigger, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

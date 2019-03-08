@@ -48,7 +48,7 @@ func (t *baseTrigger) Params() types.XValue           { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 // Initialize initializes the session
-func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback) error {
+func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback, missing assets.MissingCallback) error {
 	// try to load the flow
 	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
 	if err != nil {
@@ -60,7 +60,7 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 	}
 
 	// check flow is valid and has everything it needs to run
-	if err := flow.ValidateRecursively(session.Assets()); err != nil {
+	if err := flow.ValidateRecursively(session.Assets(), missing); err != nil {
 		return errors.Wrapf(err, "validation failed for %s", flow.Reference())
 	}
 

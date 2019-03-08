@@ -114,7 +114,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 	session := eng.NewSession(sessionAssets)
 
 	// start our session
-	sprint, err := session.Start(repro.Trigger)
+	sprint, err := session.Start(repro.Trigger, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		resume := resumes.NewMsgResume(nil, nil, msg)
 		repro.Resumes = append(repro.Resumes, resume)
 
-		sprint, err := session.Resume(resume)
+		sprint, err := session.Resume(resume, nil)
 		if err != nil {
 			return nil, err
 		}

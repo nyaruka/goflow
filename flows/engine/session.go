@@ -123,7 +123,7 @@ func (s *session) Engine() flows.Engine { return s.engine }
 //------------------------------------------------------------------------------------------
 
 // Start initializes this session with the given trigger and runs the flow to the first wait
-func (s *session) Start(trigger flows.Trigger) (flows.Sprint, error) {
+func (s *session) Start(trigger flows.Trigger, missing assets.MissingCallback) (flows.Sprint, error) {
 	sprint := NewEmptySprint()
 	s.trigger = trigger
 
@@ -131,7 +131,7 @@ func (s *session) Start(trigger flows.Trigger) (flows.Sprint, error) {
 		return sprint, err
 	}
 
-	if err := s.trigger.Initialize(s, sprint.LogEvent); err != nil {
+	if err := s.trigger.Initialize(s, sprint.LogEvent, missing); err != nil {
 		return sprint, err
 	}
 
@@ -144,7 +144,7 @@ func (s *session) Start(trigger flows.Trigger) (flows.Sprint, error) {
 }
 
 // Resume tries to resume a waiting session
-func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
+func (s *session) Resume(resume flows.Resume, missing assets.MissingCallback) (flows.Sprint, error) {
 	sprint := NewEmptySprint()
 
 	if err := s.prepareForSprint(); err != nil {
@@ -161,7 +161,7 @@ func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
 	}
 
 	// check flow is valid and has everything it needs to run
-	if err := waitingRun.Flow().ValidateRecursively(s.Assets()); err != nil {
+	if err := waitingRun.Flow().ValidateRecursively(s.Assets(), missing); err != nil {
 		return sprint, errors.Wrapf(err, "validation failed for flow[uuid=%s]", waitingRun.Flow().UUID())
 	}
 

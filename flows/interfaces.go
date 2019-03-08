@@ -164,7 +164,7 @@ type Flow interface {
 	UI() UI
 
 	Validate(SessionAssets) error
-	ValidateRecursively(SessionAssets) error
+	ValidateRecursively(SessionAssets, assets.MissingCallback) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
@@ -280,7 +280,7 @@ type Trigger interface {
 	types.XValue
 	types.XResolvable
 
-	Initialize(Session, EventCallback) error
+	Initialize(Session, EventCallback, assets.MissingCallback) error
 	InitializeRun(FlowRun, EventCallback) error
 
 	Environment() utils.Environment
@@ -414,8 +414,8 @@ type Session interface {
 	Wait() Wait
 	CanEnterFlow(Flow) error
 
-	Start(Trigger) (Sprint, error)
-	Resume(Resume) (Sprint, error)
+	Start(Trigger, assets.MissingCallback) (Sprint, error)
+	Resume(Resume, assets.MissingCallback) (Sprint, error)
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 	GetCurrentChild(FlowRun) FlowRun

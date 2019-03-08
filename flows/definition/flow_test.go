@@ -57,7 +57,7 @@ func TestFlowValidation(t *testing.T) {
 		flow, err := definition.ReadFlow(assetsJSON)
 		require.NoError(t, err)
 
-		err = flow.ValidateRecursively(session.Assets())
+		err = flow.ValidateRecursively(session.Assets(), nil)
 		assert.EqualError(t, err, tc.expectedErr)
 	}
 }

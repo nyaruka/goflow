@@ -147,7 +147,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
-		_, err = session.Start(trigger)
+		_, err = session.Start(trigger, nil)
 		require.NoError(t, err)
 
 		// check events are what we expected

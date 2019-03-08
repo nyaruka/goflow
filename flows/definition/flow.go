@@ -77,15 +77,15 @@ func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] 
 // Validates that we are structurally currect. The SessionAssets `sa` is optional but if provided,
 // we will also check that all dependencies actually exist, and refresh their names.
 func (f *flow) Validate(sa flows.SessionAssets) error {
-	return f.validate(sa, false)
+	return f.validate(sa, false, nil)
 }
 
 // Validates that we are structurally currect, have all the dependencies we need, and all our flow dependencies are also valid
-func (f *flow) ValidateRecursively(sa flows.SessionAssets) error {
-	return f.validate(sa, true)
+func (f *flow) ValidateRecursively(sa flows.SessionAssets, missing assets.MissingCallback) error {
+	return f.validate(sa, true, missing)
 }
 
-func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
+func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing assets.MissingCallback) error {
 	// if this flow has already been validated, don't need to do it again - avoid unnecessary work
 	// but also prevents looping if recursively validating flows
 	if f.validated {
@@ -116,6 +116,14 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
 		deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
 
 		if len(missingAssets) > 0 {
+			// if we have callback for missing dependencies, call that
+			if missing != nil {
+				for _, dep := range missingAssets {
+					missing(dep)
+				}
+			}
+
+			// otherwise error
 			depStrings := make([]string, len(missingAssets))
 			for d := range missingAssets {
 				depStrings[d] = missingAssets[d].String()
@@ -136,7 +144,7 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool) error {
 		// go validate any flow dependencies
 		for _, flowRef := range deps.Flows {
 			flowDep, _ := sa.Flows().Get(flowRef.UUID)
-			flowDep.(*flow).validate(sa, true)
+			flowDep.(*flow).validate(sa, true, missing)
 		}
 	}
 

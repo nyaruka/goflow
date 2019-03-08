@@ -446,7 +446,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	_, err = session.Start(trigger)
+	_, err = session.Start(trigger, nil)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test session")
 	}
@@ -457,7 +457,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 		return nil, nil, errors.Wrap(err, "error reading resume")
 	}
 
-	sprint, err := session.Resume(resume)
+	sprint, err := session.Resume(resume, nil)
 	return session, sprint.Events(), err
 }
 
@@ -482,7 +482,7 @@ func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flo
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	sprint, err := session.Start(trigger)
+	sprint, err := session.Start(trigger, assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test voice session")
 	}

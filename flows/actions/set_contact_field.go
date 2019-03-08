@@ -63,10 +63,10 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 
 	fields := run.Session().Assets().Fields()
 	field := fields.Get(a.Field.Key)
-
-	newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
-
-	a.applyModifier(run, modifiers.NewFieldModifier(field, newValue), logModifier, logEvent)
+	if field != nil {
+		newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
+		a.applyModifier(run, modifiers.NewFieldModifier(field, newValue), logModifier, logEvent)
+	}
 	return nil
 }
 

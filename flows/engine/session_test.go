@@ -239,7 +239,7 @@ func TestWaitTimeout(t *testing.T) {
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
 	trigger := triggers.NewManualTrigger(nil, flow.Reference(), contact, nil)
 
-	sprint, err := session.Start(trigger)
+	sprint, err := session.Start(trigger, nil)
 	require.NoError(t, err)
 
 	require.Equal(t, 1, len(session.Runs()[0].Path()))
@@ -254,7 +254,7 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, &t2, waitEvent.TimeoutOn)
 
 	// should fail with error event if we try to timeout immediately
-	sprint, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil))
+	sprint, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil), nil)
 	require.NoError(t, err)
 	require.Equal(t, 1, len(sprint.Events()))
 	require.Equal(t, "error", sprint.Events()[0].Type())
@@ -262,7 +262,7 @@ func TestWaitTimeout(t *testing.T) {
 	// mock our current time to be 10 seconds after the wait times out
 	utils.SetTimeSource(utils.NewFixedTimeSource(t2.Add(time.Second * 10)))
 
-	_, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil))
+	_, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil), nil)
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
