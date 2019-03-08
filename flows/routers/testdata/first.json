@@ -1,6 +1,6 @@
 [
     {
-        "description": "Result created with random value",
+        "description": "Result created with empty value",
         "router": {
             "type": "first",
             "result_name": "Something"
