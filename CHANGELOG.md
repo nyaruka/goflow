@@ -1,3 +1,7 @@
+v0.29.8
+----------
+ * Fix migration of legacy flows that don't have entry set
+
 v0.29.7
 ----------
  * Change random router to return raw random value as result value
