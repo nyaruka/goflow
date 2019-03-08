@@ -62,6 +62,25 @@ func TestFlowValidation(t *testing.T) {
 	}
 }
 
+func TestFlowValidationWithMissingAssetCallback(t *testing.T) {
+	session, _, err := test.CreateTestSession("", nil)
+	require.NoError(t, err)
+
+	assetsJSON, err := ioutil.ReadFile("testdata/flow_with_missing_asset.json")
+	require.NoError(t, err)
+
+	flow, err := definition.ReadFlow(assetsJSON)
+	require.NoError(t, err)
+
+	missing := make([]assets.Reference, 0)
+	err = flow.ValidateRecursively(session.Assets(), func(r assets.Reference) {
+		missing = append(missing, r)
+	})
+	assert.Equal(t, []assets.Reference{
+		assets.NewGroupReference(assets.GroupUUID("7be2f40b-38a0-4b06-9e6d-522dca592cc8"), "Registered"),
+	}, missing)
+}
+
 func TestNewFlow(t *testing.T) {
 	var flowDef = `{
 		"uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 

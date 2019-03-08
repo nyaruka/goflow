@@ -482,7 +482,7 @@ func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flo
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	sprint, err := session.Start(trigger, assets.PanicOnMissing)
+	sprint, err := session.Start(trigger, nil)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test voice session")
 	}
