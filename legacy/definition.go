@@ -1019,13 +1019,11 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool, baseMediaURL string) 
 
 	// make sure our entry node is first
 	var entryNodes, otherNodes []flows.Node
-	if f.Entry != "" {
-		for _, node := range nodes {
-			if node.UUID() == f.Entry {
-				entryNodes = []flows.Node{node}
-			} else {
-				otherNodes = append(otherNodes, node)
-			}
+	for _, node := range nodes {
+		if node.UUID() == f.Entry {
+			entryNodes = []flows.Node{node}
+		} else {
+			otherNodes = append(otherNodes, node)
 		}
 	}
 

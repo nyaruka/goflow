@@ -291,5 +291,240 @@
                 "stickies": {}
             }
         }
+    },
+    {
+        "legacy": {
+            "rule_sets": [
+                {
+                    "y": 106,
+                    "x": 100,
+                    "rules": [
+                        {
+                            "test": {
+                                "max": "10",
+                                "type": "between",
+                                "min": "1"
+                            },
+                            "destination": "9e82371e-94f6-41cf-8a97-82aedc1ccadd",
+                            "uuid": "a66f3bfc-7a68-4925-a07b-a31cbc1b207a",
+                            "category": {
+                                "base": "1-10"
+                            }
+                        },
+                        {
+                            "test": {
+                                "test": "true",
+                                "type": "true"
+                            },
+                            "category": {
+                                "base": "Other"
+                            },
+                            "destination": null,
+                            "uuid": "ee85d3a5-75af-4809-94b9-661c2e731c2a"
+                        }
+                    ],
+                    "uuid": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
+                    "label": "number",
+                    "ruleset_type": "wait_message"
+                },
+                {
+                    "y": 300,
+                    "x": 300,
+                    "rules": [
+                        {
+                            "test": {
+                                "test": "true",
+                                "type": "true"
+                            },
+                            "category": {
+                                "base": "All Responses"
+                            },
+                            "destination": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
+                            "uuid": "358ebed8-8cf2-455d-b60f-f882d71c6ed6"
+                        }
+                    ],
+                    "uuid": "fd9c4b9e-48d2-45b5-84af-ffb102672710",
+                    "label": "passive",
+                    "operand": "@contact.name",
+                    "ruleset_type": "contact_field"
+                }
+            ],
+            "action_sets": [
+                {
+                    "y": 0,
+                    "x": 100,
+                    "destination": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
+                    "uuid": "029c3266-39c1-4850-9d71-7e008dae2e65",
+                    "actions": [
+                        {
+                            "msg": {
+                                "base": "Pick a number between 1-10."
+                            },
+                            "type": "reply",
+                            "uuid": "623c784f-5277-4dbc-9568-f7984dbc5c7b"
+                        }
+                    ],
+                    "exit_uuid": "21eab42d-8cfd-4e1f-a4a0-cb7d069bc366"
+                },
+                {
+                    "y": 228,
+                    "x": 118,
+                    "destination": null,
+                    "uuid": "9e82371e-94f6-41cf-8a97-82aedc1ccadd",
+                    "actions": [
+                        {
+                            "msg": {
+                                "base": "You picked @flow.number!"
+                            },
+                            "type": "reply",
+                            "uuid": "988b0715-a553-435a-bc05-76389570b70b"
+                        }
+                    ],
+                    "exit_uuid": "f659aa9f-492e-4872-82ce-e752719c3559"
+                }
+            ],
+            "base_language": "base",
+            "flow_type": "F",
+            "metadata": {
+                "uuid": "40730a2d-edaa-4ff0-9d2f-81ca2131ddfe",
+                "saved_on": null,
+                "name": "Pick a Number"
+            },
+            "version": "11.11"
+        },
+        "expected": {
+            "_ui": {
+                "nodes": {
+                    "029c3266-39c1-4850-9d71-7e008dae2e65": {
+                        "position": {
+                            "left": 100,
+                            "top": 0
+                        },
+                        "type": "execute_actions"
+                    },
+                    "80f2ae0b-492b-4bb1-9628-fb3dc191ab82": {
+                        "position": {
+                            "left": 100,
+                            "top": 106
+                        },
+                        "type": "wait_for_response"
+                    },
+                    "9e82371e-94f6-41cf-8a97-82aedc1ccadd": {
+                        "position": {
+                            "left": 118,
+                            "top": 228
+                        },
+                        "type": "execute_actions"
+                    },
+                    "fd9c4b9e-48d2-45b5-84af-ffb102672710": {
+                        "config": {
+                            "operand": {
+                                "id": "name",
+                                "name": "Name",
+                                "type": "property"
+                            }
+                        },
+                        "position": {
+                            "left": 300,
+                            "top": 300
+                        },
+                        "type": "split_by_contact_field"
+                    }
+                },
+                "stickies": {}
+            },
+            "expire_after_minutes": 0,
+            "language": "base",
+            "localization": {},
+            "name": "Pick a Number",
+            "nodes": [
+                {
+                    "actions": [
+                        {
+                            "text": "Pick a number between 1-10.",
+                            "type": "send_msg",
+                            "uuid": "623c784f-5277-4dbc-9568-f7984dbc5c7b"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "destination_node_uuid": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
+                            "uuid": "21eab42d-8cfd-4e1f-a4a0-cb7d069bc366"
+                        }
+                    ],
+                    "uuid": "029c3266-39c1-4850-9d71-7e008dae2e65"
+                },
+                {
+                    "exits": [
+                        {
+                            "destination_node_uuid": "9e82371e-94f6-41cf-8a97-82aedc1ccadd",
+                            "name": "1-10",
+                            "uuid": "a66f3bfc-7a68-4925-a07b-a31cbc1b207a"
+                        },
+                        {
+                            "name": "Other",
+                            "uuid": "ee85d3a5-75af-4809-94b9-661c2e731c2a"
+                        }
+                    ],
+                    "router": {
+                        "cases": [
+                            {
+                                "arguments": [
+                                    "1",
+                                    "10"
+                                ],
+                                "exit_uuid": "a66f3bfc-7a68-4925-a07b-a31cbc1b207a",
+                                "type": "has_number_between",
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                            }
+                        ],
+                        "default_exit_uuid": "ee85d3a5-75af-4809-94b9-661c2e731c2a",
+                        "operand": "@input",
+                        "result_name": "number",
+                        "type": "switch"
+                    },
+                    "uuid": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
+                    "wait": {
+                        "type": "msg"
+                    }
+                },
+                {
+                    "actions": [
+                        {
+                            "text": "You picked @results.number!",
+                            "type": "send_msg",
+                            "uuid": "988b0715-a553-435a-bc05-76389570b70b"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "f659aa9f-492e-4872-82ce-e752719c3559"
+                        }
+                    ],
+                    "uuid": "9e82371e-94f6-41cf-8a97-82aedc1ccadd"
+                },
+                {
+                    "exits": [
+                        {
+                            "destination_node_uuid": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
+                            "name": "All Responses",
+                            "uuid": "358ebed8-8cf2-455d-b60f-f882d71c6ed6"
+                        }
+                    ],
+                    "router": {
+                        "cases": [],
+                        "default_exit_uuid": "358ebed8-8cf2-455d-b60f-f882d71c6ed6",
+                        "operand": "@contact.name",
+                        "result_name": "passive",
+                        "type": "switch"
+                    },
+                    "uuid": "fd9c4b9e-48d2-45b5-84af-ffb102672710"
+                }
+            ],
+            "revision": 0,
+            "spec_version": "12.0.0",
+            "type": "messaging",
+            "uuid": "40730a2d-edaa-4ff0-9d2f-81ca2131ddfe"
+        }
     }
 ]
