@@ -102,5 +102,46 @@
                 "Favorite Color"
             ]
         }
+    },
+    {
+        "description": "Result created with matching test result (in group)",
+        "router": {
+            "type": "switch",
+            "result_name": "Is Member",
+            "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+            "operand": "@contact",
+            "cases": [
+                {
+                    "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                    "type": "has_group",
+                    "arguments": [
+                        "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                    ],
+                    "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                }
+            ]
+        },
+        "results": {
+            "is_member": {
+                "category": "Other",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "Ryan Lewis",
+                "name": "Is Member",
+                "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
+                "value": "Ryan Lewis"
+            }
+        },
+        "inspection": {
+            "templates": [
+                "@contact",
+                "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+            ],
+            "dependencies": [
+                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=]"
+            ],
+            "result_names": [
+                "Is Member"
+            ]
+        }
     }
 ]
