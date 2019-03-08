@@ -5,6 +5,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
+	"github.com/shopspring/decimal"
 )
 
 func init() {
@@ -20,6 +21,7 @@ type RandomOnceRouter struct {
 	Exit flows.ExitUUID `json:"exit"     validate:"required"`
 }
 
+// NewRandomOnceRouter creates a new random-once router
 func NewRandomOnceRouter(exit flows.ExitUUID, resultName string) *RandomOnceRouter {
 	return &RandomOnceRouter{
 		BaseRouter: newBaseRouter(TypeRandomOnce, resultName),
@@ -77,8 +79,9 @@ func (r *RandomOnceRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step
 	}
 
 	// ok, now pick one randomly
-	exitN := utils.RandIntN(len(validExits))
-	return nil, flows.NewRoute(validExits[exitN], string(exitN), nil), nil
+	rand := utils.RandDecimal()
+	exitNum := rand.Mul(decimal.New(int64(len(validExits)), 0)).IntPart()
+	return nil, flows.NewRoute(validExits[exitNum], rand.String(), nil), nil
 }
 
 // Inspect inspects this object and any children

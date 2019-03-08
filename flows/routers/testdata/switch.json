@@ -1,0 +1,106 @@
+[
+    {
+        "description": "Validation fails for invalid default exit",
+        "router": {
+            "type": "switch",
+            "result_name": "Favorite Color",
+            "default_exit_uuid": "33c829d5-9092-484e-9683-c03614b6a446",
+            "operand": "@input",
+            "cases": [
+                {
+                    "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                    "type": "has_any_word",
+                    "arguments": [
+                        "yes"
+                    ],
+                    "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                },
+                {
+                    "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+                    "type": "has_any_word",
+                    "arguments": [
+                        "no"
+                    ],
+                    "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                }
+            ]
+        },
+        "validation_error": "default exit 33c829d5-9092-484e-9683-c03614b6a446 is not a valid exit"
+    },
+    {
+        "description": "Validation fails for invalid exit",
+        "router": {
+            "type": "switch",
+            "result_name": "Favorite Color",
+            "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+            "operand": "@input",
+            "cases": [
+                {
+                    "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                    "type": "has_any_word",
+                    "arguments": [
+                        "yes"
+                    ],
+                    "exit_uuid": "33c829d5-9092-484e-9683-c03614b6a446"
+                },
+                {
+                    "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+                    "type": "has_any_word",
+                    "arguments": [
+                        "no"
+                    ],
+                    "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                }
+            ]
+        },
+        "validation_error": "case exit 33c829d5-9092-484e-9683-c03614b6a446 is not a valid exit"
+    },
+    {
+        "description": "Result created with matching test result",
+        "router": {
+            "type": "switch",
+            "result_name": "Favorite Color",
+            "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+            "operand": "@(\"YES!!\")",
+            "cases": [
+                {
+                    "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                    "type": "has_any_word",
+                    "arguments": [
+                        "yes"
+                    ],
+                    "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                },
+                {
+                    "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+                    "type": "has_any_word",
+                    "arguments": [
+                        "no"
+                    ],
+                    "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                }
+            ]
+        },
+        "results": {
+            "favorite_color": {
+                "category": "Yes",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "YES!!",
+                "name": "Favorite Color",
+                "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
+                "value": "YES"
+            }
+        },
+        "inspection": {
+            "templates": [
+                "@(\"YES!!\")",
+                "yes",
+                "no"
+            ],
+            "dependencies": [],
+            "result_names": [
+                "Favorite Color"
+            ]
+        }
+    }
+]
