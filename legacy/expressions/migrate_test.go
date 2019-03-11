@@ -161,8 +161,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(date.now + 5 + contact.age)`, new: `@(legacy_add(datetime_add(now(), 5, "D"), contact.fields.age))`},
 
 		// datetime+time addition should get converted to datetime_add
-		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(datetime_add(now(), format_time(time_from_parts(2, 30, 0), "h") * 60 + format_time(time_from_parts(2, 30, 0), "m"), "m"))`},
-		{old: `@(date.now - TIME(2, 30, 0))`, new: `@(datetime_add(now(), -(format_time(time_from_parts(2, 30, 0), "h") * 60 + format_time(time_from_parts(2, 30, 0), "m")), "m"))`},
+		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(datetime_add(now(), format_time(time_from_parts(2, 30, 0), "tt") * 60 + format_time(time_from_parts(2, 30, 0), "m"), "m"))`},
+		{old: `@(date.now - TIME(2, 30, 0))`, new: `@(datetime_add(now(), -(format_time(time_from_parts(2, 30, 0), "tt") * 60 + format_time(time_from_parts(2, 30, 0), "m")), "m"))`},
 
 		// date+number addition should get converted to format_date(datetime_add(...))
 		{old: `@(date.today + 5)`, new: `@(format_date(datetime_add(format_date(today()), 5, "D")))`},

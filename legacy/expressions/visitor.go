@@ -210,7 +210,7 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 		// we are adding a datetime and a time
 
 		// create expression which converts arg2 to minutes
-		asMinutes := fmt.Sprintf(`format_time(%[1]s, "h") * 60 + format_time(%[1]s, "m")`, arg2)
+		asMinutes := fmt.Sprintf(`format_time(%[1]s, "tt") * 60 + format_time(%[1]s, "m")`, arg2)
 
 		template := `datetime_add(%s, %s, "m")`
 		if op == "-" {
