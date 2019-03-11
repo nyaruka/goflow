@@ -1,3 +1,7 @@
+v0.29.9
+----------
+ * Fix migration of datetime + time in legacy expressions
+
 v0.29.8
 ----------
  * Fix migration of legacy flows that don't have entry set
