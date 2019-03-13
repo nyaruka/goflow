@@ -78,6 +78,14 @@ func (v *varMapper) Resolve(key string) interface{} {
 			return asVarMapper
 		}
 
+		asArrayMapper, isArrayMapper := value.(*arrayMapper)
+		if isArrayMapper {
+			if len(newPath) > 0 {
+				return asArrayMapper.rebase(flattenPath(newPath))
+			}
+			return asArrayMapper
+		}
+
 		asExtraMapper, isExtraMapper := value.(*extraMapper)
 		if isExtraMapper {
 			return asExtraMapper
@@ -137,6 +145,28 @@ func (v *varMapper) String() string {
 }
 
 var _ Resolvable = (*varMapper)(nil)
+
+type arrayMapper struct {
+	varMapper
+}
+
+// returns a copy of this mapper with a prefix applied to the previous base
+func (v *arrayMapper) rebase(prefix string) *arrayMapper {
+	var newBase string
+	if prefix != "" {
+		newBase = fmt.Sprintf("%s.%s", prefix, v.base)
+	} else {
+		newBase = v.base
+	}
+	return &arrayMapper{
+		varMapper: varMapper{base: newBase},
+	}
+}
+
+func (m *arrayMapper) Resolve(key string) interface{} {
+	fmt.Printf("====== arrayMapper.Resolve %s | %s\n", m.base, key)
+	return fmt.Sprintf("%s[%s]", m.base, key)
+}
 
 // Migration of @extra requires its own mapper because parts of it are completely unstructured
 type extraMapper struct {
@@ -253,14 +283,15 @@ func newMigrationVars() map[string]interface{} {
 		},
 		"step": &varMapper{
 			substitutions: map[string]interface{}{
+				"contact":     contact,
 				"__default__": "input",
 				"value":       "input",
-				"text":        "input.text",
-				"attachments": "input.attachments",
-				"time":        "input.created_on",
 			},
+			base: "input",
 			baseVars: map[string]interface{}{
-				"contact": contact,
+				"text":        "text",
+				"attachments": &arrayMapper{varMapper: varMapper{base: "attachments"}},
+				"time":        "created_on",
 			},
 		},
 		"channel": &varMapper{
