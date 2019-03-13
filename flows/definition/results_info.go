@@ -10,10 +10,19 @@ type resultInfo struct {
 	Key  string `json:"key"`
 }
 
+// creates a set of result infos with unique keys
 func resultInfosFromNames(names []string) []resultInfo {
-	r := make([]resultInfo, len(names))
-	for n, name := range names {
-		r[n] = resultInfo{name, utils.Snakify(name)}
+	keysSeen := make(map[string]bool)
+
+	r := make([]resultInfo, 0, len(names))
+
+	for _, name := range names {
+		key := utils.Snakify(name)
+
+		if _, seen := keysSeen[key]; !seen {
+			r = append(r, resultInfo{name, key})
+			keysSeen[key] = true
+		}
 	}
 	return r
 }
