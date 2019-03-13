@@ -1,3 +1,8 @@
+v0.29.10
+----------
+ * Fix migration of the @step.attacthments array in legacy expressions
+ * Merge result infos by key so caller doesn't have to know how to do that
+
 v0.29.9
 ----------
  * Fix migration of datetime + time in legacy expressions
