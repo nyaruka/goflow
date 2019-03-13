@@ -326,7 +326,7 @@ func HasPattern(env utils.Environment, text types.XText, pattern types.XText) ty
 		return types.NewXErrorf("must be called with a valid regular expression")
 	}
 
-	matches := regex.FindStringSubmatch(strings.TrimSpace(text.Native()))
+	matches := regex.FindStringSubmatch(text.Native())
 	if matches != nil {
 		extra := make(map[string]string, len(matches))
 		for g, group := range matches {
