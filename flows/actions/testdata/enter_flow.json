@@ -12,26 +12,6 @@
         "validation_error": "missing dependencies: flow[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Long Lost Flow]"
     },
     {
-        "description": "Fatal error event if flow loop detected",
-        "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-            "type": "enter_flow",
-            "flow": {
-                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
-                "name": "Action Tester"
-            }
-        },
-        "events": [
-            {
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": true,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "can't enter flow[uuid=bead76f5-dac4-4c9d-996c-c62b326e8c0a,name=Action Tester] due to looping prevention",
-                "type": "error"
-            }
-        ]
-    },
-    {
         "description": "Fatal error event if flow is of different type",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

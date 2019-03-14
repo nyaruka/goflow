@@ -38,7 +38,6 @@ type session struct {
 	// state which is temporary to each call
 	runsByUUID map[flows.RunUUID]flows.FlowRun
 	pushedFlow *pushedFlow
-	flowStack  *flowStack
 	parentRun  flows.RunSummary
 
 	engine flows.Engine
@@ -58,17 +57,6 @@ func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
 
 func (s *session) Input() flows.Input         { return s.input }
 func (s *session) SetInput(input flows.Input) { s.input = input }
-
-func (s *session) CanEnterFlow(flow flows.Flow) error {
-	if s.Type() != "" && s.Type() != flow.Type() {
-		return errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(), flow.Type(), s.Type())
-	}
-	if s.flowStack.hasVisitedFlowSinceResume(flow.UUID()) {
-		return errors.Errorf("can't enter %s due to looping prevention", flow.Reference())
-	}
-
-	return nil
-}
 
 func (s *session) PushFlow(flow flows.Flow, parentRun flows.FlowRun, terminal bool) {
 	s.pushedFlow = &pushedFlow{flow: flow, parentRun: parentRun, terminal: terminal}
@@ -201,9 +189,6 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 		return err
 	}
 
-	// set up our flow stack based on the current run hierarchy
-	s.flowStack = flowStackFromRun(waitingRun)
-
 	// try to end our wait which will return and log an error if it can't be ended with this resume
 	if err := s.wait.End(resume, node); err != nil {
 		sprint.LogEvent(events.NewErrorEvent(err))
@@ -258,6 +243,8 @@ func (s *session) findResumeDestination(sprint flows.Sprint, run flows.FlowRun) 
 
 // the main flow execution loop
 func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, trigger flows.Trigger) (err error) {
+	numNewSteps := 0
+
 	for {
 		// if we have a flow trigger handle that first to find our destination in the new flow
 		if s.pushedFlow != nil {
@@ -272,7 +259,6 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 			flow := s.pushedFlow.flow
 			currentRun = runs.NewRun(s, s.pushedFlow.flow, currentRun)
 			s.addRun(currentRun)
-			s.flowStack.push(flow)
 
 			// our destination is the first node in that flow... if such a node exists
 			if len(flow.Nodes()) > 0 {
@@ -297,7 +283,6 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 			if parentRun != nil && parentRun.Status() == flows.RunStatusActive {
 				childRun := currentRun
 				currentRun = parentRun
-				s.flowStack.pop()
 
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
@@ -325,9 +310,11 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 
 		// if we now have a destination, go there
 		if destination != noDestination {
-			if s.flowStack.hasVisited(destination) {
-				// this is a loop, we log it and stop execution
-				fatalError(sprint, currentRun, step, errors.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
+			numNewSteps++
+
+			if numNewSteps > s.Engine().MaxStepsPerSprint() {
+				// we've hit the step limit - usually a sign of a loop
+				fatalError(sprint, currentRun, step, errors.Errorf("step limit exceeded, stopping execution before entering '%s'", destination))
 				destination = noDestination
 			} else {
 				node := currentRun.Flow().GetNode(destination)
@@ -354,9 +341,6 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 
 // visits the given node, creating a step in our current run path
 func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.Node, trigger flows.Trigger) (flows.Step, flows.NodeUUID, error) {
-	// mark this node as visited to prevent loops
-	s.flowStack.visit(node.UUID())
-
 	step := run.CreateStep(node)
 	logEvent := func(e flows.Event) {
 		run.LogEvent(step, e)
@@ -403,9 +387,6 @@ func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.N
 
 			return step, noDestination, nil
 		}
-
-		// if our wait skipped we need to pretend we were never at this node to avoid a loop error if we end up back here
-		s.flowStack.unvisit(node.UUID())
 	}
 
 	// use our node's router to determine where to go next
@@ -516,7 +497,6 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 		type_:      e.Type,
 		status:     e.Status,
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
-		flowStack:  newFlowStack(),
 	}
 
 	// read our environment

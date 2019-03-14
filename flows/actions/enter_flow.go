@@ -4,6 +4,8 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -49,9 +51,9 @@ func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 		return err
 	}
 
-	if err := run.Session().CanEnterFlow(flow); err != nil {
+	if run.Session().Type() != "" && run.Session().Type() != flow.Type() {
 		run.Exit(flows.RunStatusErrored)
-		logEvent(events.NewFatalErrorEvent(err))
+		logEvent(events.NewFatalErrorEvent(errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(), flow.Type(), run.Session().Type())))
 		return nil
 	}
 
