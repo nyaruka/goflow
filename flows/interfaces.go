@@ -118,6 +118,8 @@ type SessionAssets interface {
 	Labels() *LabelAssets
 	Locations() *LocationAssets
 	Resthooks() *ResthookAssets
+
+	Validate(flowUUIDs []assets.FlowUUID) error
 }
 
 type Localizable interface {

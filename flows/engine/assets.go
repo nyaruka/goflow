@@ -67,3 +67,17 @@ func (s *sessionAssets) Groups() *flows.GroupAssets       { return s.groups }
 func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
 func (s *sessionAssets) Locations() *flows.LocationAssets { return s.locations }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets { return s.resthooks }
+
+func (s *sessionAssets) Validate(flowUUIDs []assets.FlowUUID) error {
+	for _, flowUUID := range flowUUIDs {
+		flow, err := s.Flows().Get(flowUUID)
+		if err != nil {
+			return err
+		}
+
+		if err := flow.ValidateRecursively(s); err != nil {
+			return err
+		}
+	}
+	return nil
+}
