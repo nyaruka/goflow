@@ -4,6 +4,8 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
+
+	"github.com/pkg/errors"
 )
 
 // our implementation of SessionAssets - the high-level API for asset access from the engine
@@ -68,16 +70,20 @@ func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
 func (s *sessionAssets) Locations() *flows.LocationAssets { return s.locations }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets { return s.resthooks }
 
-func (s *sessionAssets) Validate(flowUUIDs []assets.FlowUUID) error {
-	for _, flowUUID := range flowUUIDs {
-		flow, err := s.Flows().Get(flowUUID)
-		if err != nil {
-			return err
-		}
-
-		if err := flow.ValidateRecursively(s); err != nil {
-			return err
-		}
+// Validate ensures that the given flow exists, is correct, and all its dependent flows are also valid
+func (s *sessionAssets) Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error) {
+	flow, err := s.Flows().Get(flowUUID)
+	if err != nil {
+		return nil, err
 	}
-	return nil
+
+	missingAssets := make([]assets.Reference, 0)
+	missing := func(r assets.Reference) {
+		missingAssets = append(missingAssets, r)
+	}
+
+	if err := flow.ValidateRecursively(s, missing); err != nil {
+		return nil, errors.Wrapf(err, "validation failed for flow[uuid=%s]", flow.UUID())
+	}
+	return missingAssets, nil
 }

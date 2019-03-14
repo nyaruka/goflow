@@ -119,7 +119,7 @@ type SessionAssets interface {
 	Locations() *LocationAssets
 	Resthooks() *ResthookAssets
 
-	Validate(flowUUIDs []assets.FlowUUID) error
+	Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error)
 }
 
 type Localizable interface {
@@ -166,7 +166,7 @@ type Flow interface {
 	UI() UI
 
 	Validate(SessionAssets) error
-	ValidateRecursively(SessionAssets) error
+	ValidateRecursively(SessionAssets, func(assets.Reference)) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
