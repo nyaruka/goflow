@@ -384,6 +384,7 @@ type Engine interface {
 	HTTPClient() *utils.HTTPClient
 	DisableWebhooks() bool
 	MaxWebhookResponseBytes() int
+	MaxStepsPerSprint() int
 }
 
 // Sprint is an interaction with the engine - i.e. a start or resume of a session
@@ -414,7 +415,6 @@ type Session interface {
 	Trigger() Trigger
 	PushFlow(Flow, FlowRun, bool)
 	Wait() Wait
-	CanEnterFlow(Flow) error
 
 	Start(Trigger) (Sprint, error)
 	Resume(Resume) (Sprint, error)

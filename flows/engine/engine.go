@@ -13,6 +13,7 @@ type engine struct {
 	httpClient              *utils.HTTPClient
 	disableWebhooks         bool
 	maxWebhookResponseBytes int
+	maxStepsPerSprint       int
 }
 
 // NewSession creates a new session
@@ -23,7 +24,6 @@ func (e *engine) NewSession(sa flows.SessionAssets) flows.Session {
 		assets:     sa,
 		status:     flows.SessionStatusActive,
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
-		flowStack:  newFlowStack(),
 	}
 }
 
@@ -35,6 +35,7 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missi
 func (e *engine) HTTPClient() *utils.HTTPClient { return e.httpClient }
 func (e *engine) DisableWebhooks() bool         { return e.disableWebhooks }
 func (e *engine) MaxWebhookResponseBytes() int  { return e.maxWebhookResponseBytes }
+func (e *engine) MaxStepsPerSprint() int        { return e.maxStepsPerSprint }
 
 var _ flows.Engine = (*engine)(nil)
 
@@ -54,6 +55,7 @@ func NewBuilder() *Builder {
 			httpClient:              utils.NewHTTPClient("goflow"),
 			disableWebhooks:         false,
 			maxWebhookResponseBytes: 10000,
+			maxStepsPerSprint:       100,
 		},
 	}
 }
@@ -73,6 +75,12 @@ func (b *Builder) WithDisableWebhooks(disable bool) *Builder {
 // WithMaxWebhookResponseBytes sets the maximum webhook request bytes
 func (b *Builder) WithMaxWebhookResponseBytes(max int) *Builder {
 	b.eng.maxWebhookResponseBytes = max
+	return b
+}
+
+// WithMaxStepsPerSprint sets the maximum number of steps allowed in a single sprint
+func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
+	b.eng.maxStepsPerSprint = max
 	return b
 }
 
