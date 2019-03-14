@@ -43,7 +43,6 @@ var flowTests = []struct {
 	{"resthook.json", "resthook_test.json"},
 	{"router_tests.json", "router_tests_test.json"},
 	{"subflow_loop_with_wait.json", "subflow_loop_with_wait_test.json"},
-	{"subflow_loop_without_wait.json", "subflow_loop_without_wait_test.json"},
 	{"enter_flow_loop.json", "enter_flow_loop_test.json"},
 	{"enter_flow_terminal.json", "enter_flow_terminal_test.json"},
 	{"subflow_other.json", "subflow_other_test.json"},
