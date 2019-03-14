@@ -1,3 +1,7 @@
+v0.29.11
+----------
+ * Don't trim whitespace on input to has_pattern test
+
 v0.29.10
 ----------
  * Fix migration of the @step.attacthments array in legacy expressions
