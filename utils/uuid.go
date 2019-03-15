@@ -3,7 +3,7 @@ package utils
 import (
 	"math/rand"
 
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // UUID is a 36 character UUID
@@ -19,7 +19,8 @@ type defaultUUID4Generator struct{}
 
 // Next returns the next random UUID
 func (g defaultUUID4Generator) Next() UUID {
-	return UUID(uuid.NewV4().String())
+	u, _ := uuid.NewV4()
+	return UUID(u.String())
 }
 
 // generates a seedable random v4 UUID using math/rand
