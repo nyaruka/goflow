@@ -5,7 +5,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/functions"
@@ -896,15 +895,15 @@ func isNumberBetween(value decimal.Decimal, test1 decimal.Decimal, test2 decimal
 // Date Test Functions
 //------------------------------------------------------------------------------------------
 
-type dateTest func(value time.Time, test time.Time) bool
+type dateTest func(utils.Date, utils.Date) bool
 
 func testDate(env utils.Environment, str types.XText, testDate types.XDateTime, testFunc dateTest) types.XValue {
-	// first parse wiwth time filling which will the rest result
+	// first parse with time filling which will be the test result
 	value, xerr := types.ToXDateTimeWithTimeFill(env, str)
 
 	// but comparsion should be against only the date portions
-	valueAsDate := value.Native().Truncate(24 * time.Hour)
-	testAsDate := testDate.Native().Truncate(24 * time.Hour)
+	valueAsDate := utils.ExtractDate(value.In(env.Timezone()).Native())
+	testAsDate := utils.ExtractDate(testDate.In(env.Timezone()).Native())
 
 	if xerr != nil {
 		return XFalseResult
@@ -917,18 +916,18 @@ func testDate(env utils.Environment, str types.XText, testDate types.XDateTime, 
 	return XFalseResult
 }
 
-func isDateTest(value time.Time, test time.Time) bool {
+func isDateTest(value utils.Date, test utils.Date) bool {
 	return true
 }
 
-func isDateLTTest(value time.Time, test time.Time) bool {
-	return value.Before(test)
+func isDateLTTest(value utils.Date, test utils.Date) bool {
+	return value.Compare(test) < 0
 }
 
-func isDateEQTest(value time.Time, test time.Time) bool {
-	return value.Equal(test)
+func isDateEQTest(value utils.Date, test utils.Date) bool {
+	return value.Compare(test) == 0
 }
 
-func isDateGTTest(value time.Time, test time.Time) bool {
-	return value.After(test)
+func isDateGTTest(value utils.Date, test utils.Date) bool {
+	return value.Compare(test) > 0
 }
