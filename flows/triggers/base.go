@@ -59,11 +59,6 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 		return errors.New("unable to trigger voice flow without connection")
 	}
 
-	// check flow is valid and has everything it needs to run
-	if err := flow.ValidateRecursively(session.Assets()); err != nil {
-		return errors.Wrapf(err, "validation failed for %s", flow.Reference())
-	}
-
 	session.SetType(flow.Type())
 	session.PushFlow(flow, nil, false)
 

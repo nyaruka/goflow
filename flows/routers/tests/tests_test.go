@@ -48,6 +48,8 @@ func (r *testResolvable) ToXJSON(env utils.Environment) types.XText {
 	return types.ResolveKeys(env, r, "foo", "zed").ToXJSON(env)
 }
 
+var kgl, _ = time.LoadLocation("Africa/Kigali")
+
 var testTests = []struct {
 	name     string
 	args     []types.XValue
@@ -172,25 +174,27 @@ var testTests = []struct {
 	{"has_number_between", []types.XValue{nil, xs("but foo"), xs("10")}, false, nil, true},
 	{"has_number_between", []types.XValue{xs("a string"), xs("10"), xs("not number")}, false, nil, true},
 
-	{"has_date", []types.XValue{xs("last date was 1.10.2017")}, true, xd(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
-	{"has_date", []types.XValue{xs("last date was 1.10.99")}, true, xd(time.Date(1999, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
+	{"has_date", []types.XValue{xs("last date was 1.10.2017")}, true, xd(time.Date(2017, 10, 1, 15, 24, 30, 123456000, kgl)), false},
+	{"has_date", []types.XValue{xs("last date was 1.10.99")}, true, xd(time.Date(1999, 10, 1, 15, 24, 30, 123456000, kgl)), false},
 	{"has_date", []types.XValue{xs("this isn't a valid date 33.2.99")}, false, nil, false},
 	{"has_date", []types.XValue{xs("no date at all")}, false, nil, false},
 	{"has_date", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2017")}, true, xd(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
+	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2017")}, true, xd(time.Date(2017, 10, 1, 15, 24, 30, 123456000, kgl)), false},
 	{"has_date_lt", []types.XValue{xs("last date was 1.10.99"), xs("3.10.98")}, false, nil, false},
 	{"has_date_lt", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
 	{"has_date_lt", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), nil}, false, nil, true},
 	{"has_date_lt", []types.XValue{nil, xs("but foo")}, false, nil, true},
 
-	{"has_date_eq", []types.XValue{xs("last date was 1.10.2017"), xs("1.10.2017")}, true, xd(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
+	{"has_date_eq", []types.XValue{xs("last date was 1.10.2017"), xs("1.10.2017")}, true, xd(time.Date(2017, 10, 1, 15, 24, 30, 123456000, kgl)), false},
 	{"has_date_eq", []types.XValue{xs("last date was 1.10.99"), xs("3.10.98")}, false, nil, false},
+	{"has_date_eq", []types.XValue{xs("2017-10-01T23:55:55.123456+02:00"), xs("1.10.2017")}, true, xd(time.Date(2017, 10, 1, 23, 55, 55, 123456000, kgl)), false},
+	{"has_date_eq", []types.XValue{xs("2017-10-01T23:55:55.123456+01:00"), xs("1.10.2017")}, false, nil, false}, // would have been 2017-10-02 in env timezone
 	{"has_date_eq", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
 	{"has_date_eq", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_date_gt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2016")}, true, xd(time.Date(2017, 10, 1, 13, 24, 30, 123456000, time.UTC)), false},
+	{"has_date_gt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2016")}, true, xd(time.Date(2017, 10, 1, 15, 24, 30, 123456000, kgl)), false},
 	{"has_date_gt", []types.XValue{xs("last date was 1.10.99"), xs("3.10.01")}, false, nil, false},
 	{"has_date_gt", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
 	{"has_date_gt", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
@@ -232,7 +236,12 @@ func TestTests(t *testing.T) {
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).WithTimeFormat(utils.TimeFormatHourMinuteSecond).WithDefaultCountry(utils.Country("RW")).Build()
+	env := utils.NewEnvironmentBuilder().
+		WithDateFormat(utils.DateFormatDayMonthYear).
+		WithTimeFormat(utils.TimeFormatHourMinuteSecond).
+		WithTimezone(kgl).
+		WithDefaultCountry(utils.Country("RW")).
+		Build()
 
 	for _, test := range testTests {
 		testFunc := tests.XTESTS[test.name]

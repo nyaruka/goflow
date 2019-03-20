@@ -18,9 +18,9 @@
             "method": "POST",
             "url": "http://localhost:49996/?cmd=success@(1 / 0)",
             "headers": {
-                "Authentication": "Token @contact.fields.token"
+                "Authentication": "Token @(2 / 0)-@contact.fields.age"
             },
-            "body": "@(1 / 0)"
+            "body": "@(3 / 0)"
         },
         "events": [
             {
@@ -34,20 +34,20 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "error evaluating @(1 / 0): division by zero",
+                "text": "error evaluating @(3 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "text": "error evaluating @contact.fields.token: no such contact field 'token'",
+                "text": "error evaluating @(2 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "elapsed_ms": 0,
-                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAuthentication: Token\r\nAccept-Encoding: gzip\r\n\r\n",
+                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAuthentication: Token -\r\nAccept-Encoding: gzip\r\n\r\n",
                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                 "status": "success",
                 "status_code": 200,
@@ -59,11 +59,11 @@
         "inspection": {
             "templates": [
                 "http://localhost:49996/?cmd=success@(1 / 0)",
-                "@(1 / 0)",
-                "Token @contact.fields.token"
+                "@(3 / 0)",
+                "Token @(2 / 0)-@contact.fields.age"
             ],
             "dependencies": [
-                "field[key=token,name=]"
+                "field[key=age,name=]"
             ],
             "result_names": []
         }
