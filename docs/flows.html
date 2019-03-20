@@ -1,78 +1,66 @@
 <html>
+    <head>
+        <title>Flows</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <center>
+            <h7>Flows</h7>
+        </center>
 
-<head>
-    <title>Flows</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
-</head>
+ <ul>
+ <li><a href="#container">Container</a></li>
+ <li><a href="#nodes">Nodes</a></li>
+ <li><a href="#routers">Routers</a></li>
+ <li><a href="#waits">Waits</a></li>
+ <li><a href="#actions">Actions</a></li>
+ </ul>  
 
-<body>
-    <center>
-        <h7>Flows</h7>
-    </center>
-
-    <ul>
-        <li><a href="#container">Container</a></li>
-        <li><a href="#nodes">Nodes</a></li>
-        <li><a href="#routers">Routers</a></li>
-        <li><a href="#waits">Waits</a></li>
-        <li><a href="#actions">Actions</a></li>
-    </ul>
-
-    <h1 id="container">Container</h1>
-    <p>Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest
-        possible flow containing no nodes whatsoever (and therefore being a no-op) contains the following fields:</p>
-    <ul>
-        <li><code>uuid</code> the UUID</li>
-        <li><code>name</code> the name</li>
-        <li><code>language</code> the base authoring language used for localization</li>
-        <li><code>type</code> the type, one of <code>messaging</code>, <code>messaging_offline</code>,
-            <code>voice</code> whcih determines which actions are allowed in the flow</li>
-        <li><code>nodes</code> the nodes (may be empty)</li>
-    </ul>
-    <p>For example:</p>
-    <div class="sourceCode" id="cb1">
-        <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<h1 id="container">Container</h1>
+<p>Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest possible flow containing no nodes whatsoever (and therefore being a no-op) contains the following fields:</p>
+<ul>
+<li><code>uuid</code> the UUID</li>
+<li><code>name</code> the name</li>
+<li><code>language</code> the base authoring language used for localization</li>
+<li><code>type</code> the type, one of <code>messaging</code>, <code>messaging_offline</code>, <code>voice</code> whcih determines which actions are allowed in the flow</li>
+<li><code>nodes</code> the nodes (may be empty)</li>
+</ul>
+<p>For example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7bb5e7c-ad49-4e65-9e24-bf7f1e4ff00a&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Empty Flow&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-4" title="4">    <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-5" title="5">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;messaging&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-6" title="6">    <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[]</span></a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="fu">}</span></a></code></pre>
-    </div>
-    <h1 id="nodes">Nodes</h1>
-    <p>Flow definitions are composed of zero or more nodes, the first node is always the entry node.</p>
-    <p>A Node consists of:</p>
-    <ul>
-        <li><code>uuid</code> the UUID</li>
-        <li><code>actions</code> a list of 0-n actions which will be executed upon first entering a node</li>
-        <li><code>wait</code> an optional pause in the flow waiting for some event to occur, such as a contact
-            responding, a timeout for that response or a subflow completing</li>
-        <li><code>exit</code> a list of 0-n exits which can be used to link to other nodes</li>
-        <li><code>router</code> an optional router which determines which exit to take</li>
-    </ul>
-    <p>At its simplest, a node can be just a single action with no exits, wait or router, such as:</p>
-    <div class="sourceCode" id="cb2">
-        <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="fu">}</span></a></code></pre></div>
+<h1 id="nodes">Nodes</h1>
+<p>Flow definitions are composed of zero or more nodes, the first node is always the entry node.</p>
+<p>A Node consists of:</p>
+<ul>
+<li><code>uuid</code> the UUID</li>
+<li><code>actions</code> a list of 0-n actions which will be executed upon first entering a node</li>
+<li><code>wait</code> an optional pause in the flow waiting for some event to occur, such as a contact responding, a timeout for that response or a subflow completing</li>
+<li><code>exit</code> a list of 0-n exits which can be used to link to other nodes</li>
+<li><code>router</code> an optional router which determines which exit to take</li>
+</ul>
+<p>At its simplest, a node can be just a single action with no exits, wait or router, such as:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb2-2" title="2">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span><span class="st">&quot;5a06445e-d790-4bd3-a10b-b47bdcc9abed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb2-3" title="3">    <span class="dt">&quot;actions&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="fu">{</span></a>
 <a class="sourceLine" id="cb2-4" title="4">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;abc0a2bf-6b4a-4ee0-83e1-1eebae6948ac&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb2-5" title="5">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;send_msg&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb2-6" title="6">        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;What is your name?&quot;</span></a>
 <a class="sourceLine" id="cb2-7" title="7">    <span class="fu">}</span><span class="ot">]</span></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="fu">}</span></a></code></pre>
-    </div>
-    <p>If a node wishes to route to another node, it can do so by defining one or more exits, each with the UUID of the
-        node that is next. Without a router defined, the first exit will always be taken.</p>
-    <p>An exit consists of:</p>
-    <ul>
-        <li><code>uuid</code> the UUID</li>
-        <li><code>destination_uuid</code> the uuid of the node that should be visited if this exit is chosen by the
-            router (optional)</li>
-        <li><code>name</code> a name for this exit (optional)</li>
-    </ul>
-    <div class="sourceCode" id="cb3">
-        <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="fu">}</span></a></code></pre></div>
+<p>If a node wishes to route to another node, it can do so by defining one or more exits, each with the UUID of the node that is next. Without a router defined, the first exit will always be taken.</p>
+<p>An exit consists of:</p>
+<ul>
+<li><code>uuid</code> the UUID</li>
+<li><code>destination_uuid</code> the uuid of the node that should be visited if this exit is chosen by the router (optional)</li>
+<li><code>name</code> a name for this exit (optional)</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb3-2" title="2">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span><span class="st">&quot;5a06445e-d790-4bd3-a10b-b47bdcc9abed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb3-3" title="3">    <span class="dt">&quot;actions&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="fu">{</span></a>
 <a class="sourceLine" id="cb3-4" title="4">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;abc0a2bf-6b4a-4ee0-83e1-1eebae6948ac&quot;</span><span class="fu">,</span></a>
@@ -83,37 +71,27 @@
 <a class="sourceLine" id="cb3-9" title="9">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span><span class="st">&quot;eb7defc9-3c66-4dfc-80bc-825567ccd9de&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb3-10" title="10">        <span class="dt">&quot;destination_uuid&quot;</span><span class="fu">:</span><span class="st">&quot;ee0bee3f-34b3-4275-af78-f9ff52c82e6a&quot;</span></a>
 <a class="sourceLine" id="cb3-11" title="11">    <span class="fu">}</span><span class="ot">]</span></a>
-<a class="sourceLine" id="cb3-12" title="12"><span class="fu">}</span></a></code></pre>
-    </div>
-    <h1 id="routers">Routers</h1>
-    <h2 id="switch">Switch</h2>
-    <p>If a node wishes to route differently based on some state, it can add a <code>switch</code> router which defines
-        one or more <code>cases</code>. Each case defines a <code>type</code> which is the name of an expression
-        function that is run by passing the evaluation of <code>operand</code> as the first argument. Cases may define
-        additional arguments using the <code>arguments</code> array on a case. If no case evaluates to true, then the
-        <code>default_category_uuid</code> will be used otherwise flow execution will stop.</p>
-    <p>A switch router may also define a <code>result_name</code> parameters which will save the result of the case
-        which evaluated as true.</p>
-    <p>A switch router consists of:</p>
-    <ul>
-        <li><code>operand</code> the expression which will be evaluated against each of our cases</li>
-        <li><code>default_category_uuid</code> the uuid of the default exit to take if no case matches (optional)</li>
-        <li><code>result_name</code> the name of the result which should be written when the switch is evaluated
-            (optional)</li>
-        <li><code>cases</code> a list of 1-n cases which are evaluated in order until one is true</li>
-    </ul>
-    <p>Each case consists of:</p>
-    <ul>
-        <li><code>uuid</code> the UUID</li>
-        <li><code>type</code> the type of this test, this must be an excellent test (see below) and will be passed the
-            value of the switch’s operand as its first value</li>
-        <li><code>arguments</code> an optional list of templates which can be passed as extra parameters to the test
-            (after the initial operand)</li>
-        <li><code>exit_uuid</code> the uuid of the exit that should be taken if this case evaluated to true</li>
-    </ul>
-    <p>An example switch router that tests for the input not being empty:</p>
-    <div class="sourceCode" id="cb4">
-        <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="fu">}</span></a></code></pre></div>
+<h1 id="routers">Routers</h1>
+<h2 id="switch">Switch</h2>
+<p>If a node wishes to route differently based on some state, it can add a <code>switch</code> router which defines one or more <code>cases</code>. Each case defines a <code>type</code> which is the name of an expression function that is run by passing the evaluation of <code>operand</code> as the first argument. Cases may define additional arguments using the <code>arguments</code> array on a case. If no case evaluates to true, then the <code>default_category_uuid</code> will be used otherwise flow execution will stop.</p>
+<p>A switch router may also define a <code>result_name</code> parameters which will save the result of the case which evaluated as true.</p>
+<p>A switch router consists of:</p>
+<ul>
+<li><code>operand</code> the expression which will be evaluated against each of our cases</li>
+<li><code>default_category_uuid</code> the uuid of the default exit to take if no case matches (optional)</li>
+<li><code>result_name</code> the name of the result which should be written when the switch is evaluated (optional)</li>
+<li><code>cases</code> a list of 1-n cases which are evaluated in order until one is true</li>
+</ul>
+<p>Each case consists of:</p>
+<ul>
+<li><code>uuid</code> the UUID</li>
+<li><code>type</code> the type of this test, this must be an excellent test (see below) and will be passed the value of the switch’s operand as its first value</li>
+<li><code>arguments</code> an optional list of templates which can be passed as extra parameters to the test (after the initial operand)</li>
+<li><code>exit_uuid</code> the uuid of the exit that should be taken if this case evaluated to true</li>
+</ul>
+<p>An example switch router that tests for the input not being empty:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb4-2" title="2">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span><span class="st">&quot;ee0bee3f-34b3-4275-af78-f9ff52c82e6a&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb4-3" title="3">    <span class="dt">&quot;router&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb4-4" title="4">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;switch&quot;</span><span class="fu">,</span></a>
@@ -134,47 +112,31 @@
 <a class="sourceLine" id="cb4-19" title="19">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span><span class="st">&quot;Other&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb4-20" title="20">        <span class="dt">&quot;destination_uuid&quot;</span><span class="fu">:</span><span class="st">&quot;ee0bee3f-34b3-4275-af78-f9ff52c82e6a&quot;</span></a>
 <a class="sourceLine" id="cb4-21" title="21">    <span class="fu">}</span><span class="ot">]</span></a>
-<a class="sourceLine" id="cb4-22" title="22"><span class="fu">}</span></a></code></pre>
-    </div>
-    <h1 id="waits">Waits</h1>
-    <p>A node can indicate that it needs more information to continue by containing a wait.</p>
-    <h2 id="msg">Msg</h2>
-    <p>This wait type indicates that flow execution should pause until an incoming message is received and also gives an
-        optional timeout in seconds as to when the flow should continue even if there is no reply:</p>
-    <div class="sourceCode" id="cb5">
-        <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="fu">}</span></a></code></pre></div>
+<h1 id="waits">Waits</h1>
+<p>A node can indicate that it needs more information to continue by containing a wait.</p>
+<h2 id="msg">Msg</h2>
+<p>This wait type indicates that flow execution should pause until an incoming message is received and also gives an optional timeout in seconds as to when the flow should continue even if there is no reply:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb5-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb5-3" title="3">    <span class="dt">&quot;timeout&quot;</span><span class="fu">:</span> <span class="dv">600</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="fu">}</span></a></code></pre>
-    </div>
-    <h2 id="nothing">Nothing</h2>
-    <p>This wait type indicates that the caller can resume the session immediately with no incoming message or any other
-        input. This type of wait enables the caller to commit changes in the session up to that point in the flow.</p>
-    <div class="sourceCode" id="cb6">
-        <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="fu">}</span></a></code></pre></div>
+<h2 id="nothing">Nothing</h2>
+<p>This wait type indicates that the caller can resume the session immediately with no incoming message or any other input. This type of wait enables the caller to commit changes in the session up to that point in the flow.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb6-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;nothing&quot;</span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="fu">}</span></a></code></pre>
-    </div>
-    <h1 id="actions">Actions</h1>
-    <p>Actions on a node generate events which can then be ingested by the engine container. In some cases the actions
-        cause an immediate action, such as calling a webhook, in others the engine container is responsible for taking
-        the action based on the event that is output, such as sending messages or updating contact fields. In either
-        case the internal state of the engine is always updated to represent the new state so that flow execution is
-        consistent. For example, while the engine itself does not have access to a contact store, it updates its
-        internal representation of a contact’s state based on action performed on a flow so that later references in the
-        flow are correct.</p>
-    <div class="actions">
-        <p><a name="action:add_contact_groups"></a></p>
-        <h2 id="add_contact_groups">add_contact_groups</h2>
-        <p>Can be used to add a contact to one or more groups. A <a
-                href="sessions.html#event:contact_groups_changed">contact_groups_changed</a> event will be created for
-            the groups which the contact has been added to.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb7">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="fu">}</span></a></code></pre></div>
+<h1 id="actions">Actions</h1>
+<p>Actions on a node generate events which can then be ingested by the engine container. In some cases the actions cause an immediate action, such as calling a webhook, in others the engine container is responsible for taking the action based on the event that is output, such as sending messages or updating contact fields. In either case the internal state of the engine is always updated to represent the new state so that flow execution is consistent. For example, while the engine itself does not have access to a contact store, it updates its internal representation of a contact’s state based on action performed on a flow so that later references in the flow are correct.</p>
+<div class="actions">
+<p><a name="action:add_contact_groups"></a></p>
+<h2 id="add_contact_groups">add_contact_groups</h2>
+<p>Can be used to add a contact to one or more groups. A <a href="sessions.html#event:contact_groups_changed">contact_groups_changed</a> event will be created for the groups which the contact has been added to.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb7-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;add_contact_groups&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb7-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb7-4" title="4">    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
@@ -183,15 +145,13 @@
 <a class="sourceLine" id="cb7-7" title="7">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Customers&quot;</span></a>
 <a class="sourceLine" id="cb7-8" title="8">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb7-9" title="9">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb7-10" title="10"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb8">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb8-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_groups_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb8-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb8-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;688e64f9-2456-4b42-afcb-91a2073e5459&quot;</span><span class="fu">,</span></a>
@@ -201,33 +161,27 @@
 <a class="sourceLine" id="cb8-8" title="8">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Customers&quot;</span></a>
 <a class="sourceLine" id="cb8-9" title="9">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb8-10" title="10">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb8-11" title="11"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:add_contact_urn"></a></p>
-        <h2 id="add_contact_urn">add_contact_urn</h2>
-        <p>Can be used to add a URN to the current contact. A <a
-                href="sessions.html#event:contact_urns_changed">contact_urns_changed</a> event will be created when this
-            action is encountered.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb9">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:add_contact_urn"></a></p>
+<h2 id="add_contact_urn">add_contact_urn</h2>
+<p>Can be used to add a URN to the current contact. A <a href="sessions.html#event:contact_urns_changed">contact_urns_changed</a> event will be created when this action is encountered.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb9-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb9-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;add_contact_urn&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb9-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb9-4" title="4">    <span class="dt">&quot;scheme&quot;</span><span class="fu">:</span> <span class="st">&quot;tel&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb9-5" title="5">    <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;@results.phone_number&quot;</span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb10">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb10-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_urns_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb10-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb10-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b6c40a98-ecfa-4266-9853-0310d032b497&quot;</span><span class="fu">,</span></a>
@@ -237,21 +191,16 @@
 <a class="sourceLine" id="cb10-8" title="8">        <span class="st">&quot;mailto:foo@bar.com&quot;</span><span class="ot">,</span></a>
 <a class="sourceLine" id="cb10-9" title="9">        <span class="st">&quot;tel:+12344563452&quot;</span></a>
 <a class="sourceLine" id="cb10-10" title="10">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb10-11" title="11"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:add_input_labels"></a></p>
-        <h2 id="add_input_labels">add_input_labels</h2>
-        <p>Can be used to add labels to the last user input on a flow. An <a
-                href="sessions.html#event:input_labels_added">input_labels_added</a> event will be created with the
-            labels added when this action is encountered. If there is no user input at that point then this action will
-            be ignored.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb11">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:add_input_labels"></a></p>
+<h2 id="add_input_labels">add_input_labels</h2>
+<p>Can be used to add labels to the last user input on a flow. An <a href="sessions.html#event:input_labels_added">input_labels_added</a> event will be created with the labels added when this action is encountered. If there is no user input at that point then this action will be ignored.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb11-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;add_input_labels&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb11-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb11-4" title="4">    <span class="dt">&quot;labels&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
@@ -260,15 +209,13 @@
 <a class="sourceLine" id="cb11-7" title="7">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Spam&quot;</span></a>
 <a class="sourceLine" id="cb11-8" title="8">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb11-9" title="9">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb11-10" title="10"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb12">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb12-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb12-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb12-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;input_labels_added&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb12-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb12-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;2a6725ab-4f62-4c5a-9014-2c868db4022e&quot;</span><span class="fu">,</span></a>
@@ -279,34 +226,27 @@
 <a class="sourceLine" id="cb12-9" title="9">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Spam&quot;</span></a>
 <a class="sourceLine" id="cb12-10" title="10">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb12-11" title="11">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb12-12" title="12"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:call_resthook"></a></p>
-        <h2 id="call_resthook">call_resthook</h2>
-        <p>Can be used to call a resthook.</p>
-        <p>A <a href="sessions.html#event:webhook_called">webhook_called</a> event will be created for each subscriber
-            of the resthook with the results of the HTTP call. If the action has <code>result_name</code> set, a result
-            will be created with that name, and if the resthook returns valid JSON, that will be accessible through
-            <code>extra</code> on the result.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb13">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb13-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:call_resthook"></a></p>
+<h2 id="call_resthook">call_resthook</h2>
+<p>Can be used to call a resthook.</p>
+<p>A <a href="sessions.html#event:webhook_called">webhook_called</a> event will be created for each subscriber of the resthook with the results of the HTTP call. If the action has <code>result_name</code> set, a result will be created with that name, and if the resthook returns valid JSON, that will be accessible through <code>extra</code> on the result.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb13-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb13-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;call_resthook&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb13-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb13-4" title="4">    <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;new-registration&quot;</span></a>
-<a class="sourceLine" id="cb13-5" title="5"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb14">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb14-1" title="1"><span class="ot">[</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb14-1" title="1"><span class="ot">[</span></a>
 <a class="sourceLine" id="cb14-2" title="2">    <span class="fu">{</span></a>
 <a class="sourceLine" id="cb14-3" title="3">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_called&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb14-4" title="4">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
@@ -332,7 +272,7 @@
 <a class="sourceLine" id="cb14-24" title="24">                <span class="fu">}</span><span class="ot">,</span></a>
 <a class="sourceLine" id="cb14-25" title="25">                <span class="fu">{</span></a>
 <a class="sourceLine" id="cb14-26" title="26">                    <span class="dt">&quot;arrived_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb14-27" title="27">                    <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;37d8813f-1402-4ad2-9cc2-e9054a96525b&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-27" title="27">                    <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;100f2d68-2481-4137-a0a3-177620ba3c5f&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb14-28" title="28">                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;3dcccbb4-d29c-41dd-a01f-16d814c9ab82&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb14-29" title="29">                    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5254b218-3673-41f2-b63d-c8dcc2fa9de0&quot;</span></a>
 <a class="sourceLine" id="cb14-30" title="30">                <span class="fu">}</span><span class="ot">,</span></a>
@@ -433,25 +373,19 @@
 <a class="sourceLine" id="cb14-125" title="125">        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb14-126" title="126">        <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb14-127" title="127">        <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb14-128" title="128">        <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST /?cmd=success HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: localhost:49998</span><span class="ch">\r\n</span><span class="st">User-Agent: goflow-testing</span><span class="ch">\r\n</span><span class="st">Content-Length: 2607</span><span class="ch">\r\n</span><span class="st">Content-Type: application/json</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\n\t\&quot;</span><span class="st">contact</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f</span><span class="ch">\&quot;</span><span class="st">, </span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">Ryan Lewis</span><span class="ch">\&quot;</span><span class="st">, </span><span class="ch">\&quot;</span><span class="st">urn</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">tel:+12065551212</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\n\t\&quot;</span><span class="st">flow</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Registration</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">revision</span><span class="ch">\&quot;</span><span class="st">:123,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">50c3706e-fedb-42c0-8eab-dda3335714b7</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\n\t\&quot;</span><span class="st">path</span><span class="ch">\&quot;</span><span class="st">: [{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">d7a36118-0a38-4b35-a7e4-ae89042f0d3c</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">72a1f5df-49f9-45df-94c9-d86f7ea064e5</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">229bd432-dac7-4a3f-ba91-c48ad8c50e6b</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">37d8813f-1402-4ad2-9cc2-e9054a96525b</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">3dcccbb4-d29c-41dd-a01f-16d814c9ab82</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">5254b218-3673-41f2-b63d-c8dcc2fa9de0</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">d898f9a4-f0fc-4ac4-a639-c98c602bb511</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">951242a1-5333-4221-8f9d-465efd6fbb5e</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">c0781400-737f-4940-9a6c-1ec1c3df0325</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">644592ee-11ad-4bc4-9566-6fb2598c32d6</span><span class="ch">\&quot;</span><span class="st">}],</span><span class="ch">\n\t\&quot;</span><span class="st">results</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">2factor</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:null,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2Factor</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">34634624463525</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">favorite_color</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Red</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Red</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:null,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Favorite Color</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">red</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">phone_number</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:null,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Phone Number</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12344563452</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">webhook</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Success</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Success</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">GET http://localhost:49998/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">webhook</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">200</span><span class="ch">\&quot;</span><span class="st">}},</span><span class="ch">\n\t\&quot;</span><span class="st">run</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">da339edd-083b-48cb-bef6-3979f99a96f9</span><span class="ch">\&quot;</span><span class="st">, </span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\n\t\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">attachments</span><span class="ch">\&quot;</span><span class="st">:[{</span><span class="ch">\&quot;</span><span class="st">content_type</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">image/jpeg</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">url</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">http://s3.amazon.com/bucket/test.jpg</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">content_type</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">audio/mp3</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">url</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">http://s3.amazon.com/bucket/test.mp3</span><span class="ch">\&quot;</span><span class="st">}],</span><span class="ch">\&quot;</span><span class="st">channel</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">address</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12345671111</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">My Android Phone</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">57f1078f-88aa-46f4-a59a-948a5739c03d</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2017-12-31T11:35:10.035757-02:00</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">text</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Hi there</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">type</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">msg</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">urn</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">display</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">(206) 555-1212</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">path</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12065551212</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">scheme</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">tel</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">9bf91c2b-ce58-4cef-aacc-281e03f69ab5</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\n\t\&quot;</span><span class="st">channel</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">address</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12345671111</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">My Android Phone</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">57f1078f-88aa-46f4-a59a-948a5739c03d</span><span class="ch">\&quot;</span><span class="st">}</span><span class="ch">\n</span><span class="st">}&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb14-128" title="128">        <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST /?cmd=success HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: localhost:49998</span><span class="ch">\r\n</span><span class="st">User-Agent: goflow-testing</span><span class="ch">\r\n</span><span class="st">Content-Length: 2607</span><span class="ch">\r\n</span><span class="st">Content-Type: application/json</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\n\t\&quot;</span><span class="st">contact</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f</span><span class="ch">\&quot;</span><span class="st">, </span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">Ryan Lewis</span><span class="ch">\&quot;</span><span class="st">, </span><span class="ch">\&quot;</span><span class="st">urn</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">tel:+12065551212</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\n\t\&quot;</span><span class="st">flow</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Registration</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">revision</span><span class="ch">\&quot;</span><span class="st">:123,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">50c3706e-fedb-42c0-8eab-dda3335714b7</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\n\t\&quot;</span><span class="st">path</span><span class="ch">\&quot;</span><span class="st">: [{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">d7a36118-0a38-4b35-a7e4-ae89042f0d3c</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">72a1f5df-49f9-45df-94c9-d86f7ea064e5</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">229bd432-dac7-4a3f-ba91-c48ad8c50e6b</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">100f2d68-2481-4137-a0a3-177620ba3c5f</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">3dcccbb4-d29c-41dd-a01f-16d814c9ab82</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">5254b218-3673-41f2-b63d-c8dcc2fa9de0</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">d898f9a4-f0fc-4ac4-a639-c98c602bb511</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">951242a1-5333-4221-8f9d-465efd6fbb5e</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">c0781400-737f-4940-9a6c-1ec1c3df0325</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">644592ee-11ad-4bc4-9566-6fb2598c32d6</span><span class="ch">\&quot;</span><span class="st">}],</span><span class="ch">\n\t\&quot;</span><span class="st">results</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">2factor</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:null,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2Factor</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">34634624463525</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">favorite_color</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Red</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Red</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:null,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Favorite Color</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">red</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">phone_number</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:null,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Phone Number</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12344563452</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">webhook</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Success</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Success</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">GET http://localhost:49998/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">webhook</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">200</span><span class="ch">\&quot;</span><span class="st">}},</span><span class="ch">\n\t\&quot;</span><span class="st">run</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">da339edd-083b-48cb-bef6-3979f99a96f9</span><span class="ch">\&quot;</span><span class="st">, </span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\n\t\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">attachments</span><span class="ch">\&quot;</span><span class="st">:[{</span><span class="ch">\&quot;</span><span class="st">content_type</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">image/jpeg</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">url</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">http://s3.amazon.com/bucket/test.jpg</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">content_type</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">audio/mp3</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">url</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">http://s3.amazon.com/bucket/test.mp3</span><span class="ch">\&quot;</span><span class="st">}],</span><span class="ch">\&quot;</span><span class="st">channel</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">address</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12345671111</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">My Android Phone</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">57f1078f-88aa-46f4-a59a-948a5739c03d</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2017-12-31T11:35:10.035757-02:00</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">text</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Hi there</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">type</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">msg</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">urn</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">display</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">(206) 555-1212</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">path</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12065551212</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">scheme</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">tel</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">9bf91c2b-ce58-4cef-aacc-281e03f69ab5</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\n\t\&quot;</span><span class="st">channel</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">address</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12345671111</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">My Android Phone</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">57f1078f-88aa-46f4-a59a-948a5739c03d</span><span class="ch">\&quot;</span><span class="st">}</span><span class="ch">\n</span><span class="st">}&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb14-129" title="129">        <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 16</span><span class="ch">\r\n</span><span class="st">Content-Type: text/plain; charset=utf-8</span><span class="ch">\r\n</span><span class="st">Date: Wed, 11 Apr 2018 18:24:30 GMT</span><span class="ch">\r\n\r\n</span><span class="st">{ </span><span class="ch">\&quot;</span><span class="st">ok</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">true</span><span class="ch">\&quot;</span><span class="st"> }&quot;</span></a>
 <a class="sourceLine" id="cb14-130" title="130">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb14-131" title="131"><span class="ot">]</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:call_webhook"></a></p>
-        <h2 id="call_webhook">call_webhook</h2>
-        <p>Can be used to call an external service. The body, header and url fields may be templates and will be
-            evaluated at runtime. A <a href="sessions.html#event:webhook_called">webhook_called</a> event will be
-            created based on the results of the HTTP call. If this action has a <code>result_name</code>, then
-            addtionally it will create a new result with that name. If the webhook returned valid JSON, that will be
-            accessible through <code>extra</code> on the result.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb15">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb15-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-131" title="131"><span class="ot">]</span></a></code></pre></div>
+</div>
+<p><a name="action:call_webhook"></a></p>
+<h2 id="call_webhook">call_webhook</h2>
+<p>Can be used to call an external service. The body, header and url fields may be templates and will be evaluated at runtime. A <a href="sessions.html#event:webhook_called">webhook_called</a> event will be created based on the results of the HTTP call. If this action has a <code>result_name</code>, then addtionally it will create a new result with that name. If the webhook returned valid JSON, that will be accessible through <code>extra</code> on the result.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb15-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb15-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;call_webhook&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb15-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb15-4" title="4">    <span class="dt">&quot;method&quot;</span><span class="fu">:</span> <span class="st">&quot;GET&quot;</span><span class="fu">,</span></a>
@@ -460,15 +394,13 @@
 <a class="sourceLine" id="cb15-7" title="7">        <span class="dt">&quot;Authorization&quot;</span><span class="fu">:</span> <span class="st">&quot;Token AAFFZZHH&quot;</span></a>
 <a class="sourceLine" id="cb15-8" title="8">    <span class="fu">},</span></a>
 <a class="sourceLine" id="cb15-9" title="9">    <span class="dt">&quot;result_name&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook&quot;</span></a>
-<a class="sourceLine" id="cb15-10" title="10"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb16">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb16-1" title="1"><span class="ot">[</span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb16-1" title="1"><span class="ot">[</span></a>
 <a class="sourceLine" id="cb16-2" title="2">    <span class="fu">{</span></a>
 <a class="sourceLine" id="cb16-3" title="3">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb16-4" title="4">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
@@ -492,36 +424,30 @@
 <a class="sourceLine" id="cb16-22" title="22">            <span class="dt">&quot;ok&quot;</span><span class="fu">:</span> <span class="st">&quot;true&quot;</span></a>
 <a class="sourceLine" id="cb16-23" title="23">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb16-24" title="24">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb16-25" title="25"><span class="ot">]</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:enter_flow"></a></p>
-        <h2 id="enter_flow">enter_flow</h2>
-        <p>Can be used to start a contact down another flow. The current flow will pause until the subflow exits or
-            expires.</p>
-        <p>A <a href="sessions.html#event:flow_entered">flow_entered</a> event will be created to record that the flow
-            was started.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb17">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb17-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb16-25" title="25"><span class="ot">]</span></a></code></pre></div>
+</div>
+<p><a name="action:enter_flow"></a></p>
+<h2 id="enter_flow">enter_flow</h2>
+<p>Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.</p>
+<p>A <a href="sessions.html#event:flow_entered">flow_entered</a> event will be created to record that the flow was started.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb17-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb17-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;enter_flow&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb17-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb17-4" title="4">    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb17-5" title="5">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb17-6" title="6">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Collect Language&quot;</span></a>
 <a class="sourceLine" id="cb17-7" title="7">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb17-8" title="8"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb18">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb18-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb18-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb18-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;flow_entered&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb18-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb18-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;530379ca-3fa7-4959-8ceb-17799a976525&quot;</span><span class="fu">,</span></a>
@@ -531,32 +457,26 @@
 <a class="sourceLine" id="cb18-8" title="8">    <span class="fu">},</span></a>
 <a class="sourceLine" id="cb18-9" title="9">    <span class="dt">&quot;parent_run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5865a06e-6fcc-4db9-bfd7-d22404241e07&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb18-10" title="10">    <span class="dt">&quot;terminal&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
-<a class="sourceLine" id="cb18-11" title="11"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:play_audio"></a></p>
-        <h2 id="play_audio">play_audio</h2>
-        <p>Can be used to play an audio recording in a voice flow. It will generate an <a
-                href="sessions.html#event:ivr_created">ivr_created</a> event if there is a valid audio URL. This will
-            contain a message which the caller should handle as an IVR play command using the audio attachment.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb19">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb19-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb18-11" title="11"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:play_audio"></a></p>
+<h2 id="play_audio">play_audio</h2>
+<p>Can be used to play an audio recording in a voice flow. It will generate an <a href="sessions.html#event:ivr_created">ivr_created</a> event if there is a valid audio URL. This will contain a message which the caller should handle as an IVR play command using the audio attachment.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb19-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb19-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;play_audio&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb19-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb19-4" title="4">    <span class="dt">&quot;audio_url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://uploads.temba.io/2353262.m4a&quot;</span></a>
-<a class="sourceLine" id="cb19-5" title="5"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb20">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb20-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb20-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb20-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;ivr_created&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb20-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb20-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;7dcaa995-4ad0-444b-8a34-b008aed3f772&quot;</span><span class="fu">,</span></a>
@@ -572,21 +492,16 @@
 <a class="sourceLine" id="cb20-14" title="14">            <span class="st">&quot;audio:http://uploads.temba.io/2353262.m4a&quot;</span></a>
 <a class="sourceLine" id="cb20-15" title="15">        <span class="ot">]</span></a>
 <a class="sourceLine" id="cb20-16" title="16">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb20-17" title="17"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:remove_contact_groups"></a></p>
-        <h2 id="remove_contact_groups">remove_contact_groups</h2>
-        <p>Can be used to remove a contact from one or more groups. A <a
-                href="sessions.html#event:contact_groups_changed">contact_groups_changed</a> event will be created for
-            the groups which the contact is removed from. Groups can either be explicitly provided or
-            <code>all_groups</code> can be set to true to remove the contact from all non-dynamic groups.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb21">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb21-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb20-17" title="17"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:remove_contact_groups"></a></p>
+<h2 id="remove_contact_groups">remove_contact_groups</h2>
+<p>Can be used to remove a contact from one or more groups. A <a href="sessions.html#event:contact_groups_changed">contact_groups_changed</a> event will be created for the groups which the contact is removed from. Groups can either be explicitly provided or <code>all_groups</code> can be set to true to remove the contact from all non-dynamic groups.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb21-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb21-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;remove_contact_groups&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb21-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb21-4" title="4">    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
@@ -595,15 +510,13 @@
 <a class="sourceLine" id="cb21-7" title="7">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registered Users&quot;</span></a>
 <a class="sourceLine" id="cb21-8" title="8">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb21-9" title="9">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb21-10" title="10"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb22">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb22-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb21-10" title="10"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb22"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb22-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb22-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_groups_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb22-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb22-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;10c62052-7db1-49d1-b8ba-60d66db82e39&quot;</span><span class="fu">,</span></a>
@@ -613,35 +526,27 @@
 <a class="sourceLine" id="cb22-8" title="8">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Testers&quot;</span></a>
 <a class="sourceLine" id="cb22-9" title="9">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb22-10" title="10">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb22-11" title="11"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:say_msg"></a></p>
-        <h2 id="say_msg">say_msg</h2>
-        <p>Can be used to communicate with the contact in a voice flow by either reading a message with TTS or playing a
-            pre-recorded audio file. It will generate an <a href="sessions.html#event:ivr_created">ivr_created</a> event
-            if there is a valid audio URL or backdown text. This will contain a message which the caller should handle
-            as an IVR play command if it has an audio attachment, or otherwise an IVR say command using the message
-            text.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb23">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb23-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb22-11" title="11"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:say_msg"></a></p>
+<h2 id="say_msg">say_msg</h2>
+<p>Can be used to communicate with the contact in a voice flow by either reading a message with TTS or playing a pre-recorded audio file. It will generate an <a href="sessions.html#event:ivr_created">ivr_created</a> event if there is a valid audio URL or backdown text. This will contain a message which the caller should handle as an IVR play command if it has an audio attachment, or otherwise an IVR say command using the message text.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb23-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb23-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;say_msg&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb23-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb23-4" title="4">    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi @contact.name, are you ready to complete today&#39;s survey?&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb23-5" title="5">    <span class="dt">&quot;audio_url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://uploads.temba.io/2353262.m4a&quot;</span></a>
-<a class="sourceLine" id="cb23-6" title="6"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb24">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb24-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-6" title="6"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb24"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb24-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb24-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;ivr_created&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb24-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb24-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;06b98e9d-825f-4be0-92f0-b4a6fcc7080c&quot;</span><span class="fu">,</span></a>
@@ -657,37 +562,30 @@
 <a class="sourceLine" id="cb24-14" title="14">            <span class="st">&quot;audio:http://uploads.temba.io/2353262.m4a&quot;</span></a>
 <a class="sourceLine" id="cb24-15" title="15">        <span class="ot">]</span></a>
 <a class="sourceLine" id="cb24-16" title="16">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb24-17" title="17"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:send_broadcast"></a></p>
-        <h2 id="send_broadcast">send_broadcast</h2>
-        <p>Can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups and a list
-            of contacts.</p>
-        <p>The URNs and text fields may be templates. A <a
-                href="sessions.html#event:broadcast_created">broadcast_created</a> event will be created for each unique
-            urn, contact and group with the evaluated text.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb25">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb25-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb24-17" title="17"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:send_broadcast"></a></p>
+<h2 id="send_broadcast">send_broadcast</h2>
+<p>Can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups and a list of contacts.</p>
+<p>The URNs and text fields may be templates. A <a href="sessions.html#event:broadcast_created">broadcast_created</a> event will be created for each unique urn, contact and group with the evaluated text.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb25"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb25-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb25-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;send_broadcast&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb25-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb25-4" title="4">    <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb25-5" title="5">        <span class="st">&quot;tel:+12065551212&quot;</span></a>
 <a class="sourceLine" id="cb25-6" title="6">    <span class="ot">]</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb25-7" title="7">    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi @contact.name, are you ready to complete today&#39;s survey?&quot;</span></a>
-<a class="sourceLine" id="cb25-8" title="8"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb26">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb26-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb25-8" title="8"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb26"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb26-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb26-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;broadcast_created&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb26-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb26-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9a7e02cb-5b84-4117-b890-8b948fb200a6&quot;</span><span class="fu">,</span></a>
@@ -700,21 +598,17 @@
 <a class="sourceLine" id="cb26-11" title="11">    <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb26-12" title="12">        <span class="st">&quot;tel:+12065551212&quot;</span></a>
 <a class="sourceLine" id="cb26-13" title="13">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb26-14" title="14"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:send_email"></a></p>
-        <h2 id="send_email">send_email</h2>
-        <p>Can be used to send an email to one or more recipients. The subject, body and addresses can all contain
-            expressions.</p>
-        <p>An <a href="sessions.html#event:email_created">email_created</a> event will be created for each email
-            address.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb27">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb27-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb26-14" title="14"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:send_email"></a></p>
+<h2 id="send_email">send_email</h2>
+<p>Can be used to send an email to one or more recipients. The subject, body and addresses can all contain expressions.</p>
+<p>An <a href="sessions.html#event:email_created">email_created</a> event will be created for each email address.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb27"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb27-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb27-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;send_email&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb27-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb27-4" title="4">    <span class="dt">&quot;addresses&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
@@ -722,15 +616,13 @@
 <a class="sourceLine" id="cb27-6" title="6">    <span class="ot">]</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb27-7" title="7">    <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="st">&quot;Here is your activation token&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb27-8" title="8">    <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;Your activation token is @contact.fields.activation_token&quot;</span></a>
-<a class="sourceLine" id="cb27-9" title="9"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb28">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb28-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb27-9" title="9"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb28-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb28-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;email_created&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb28-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb28-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;7dcc445a-83cf-432b-8188-76dd971a6205&quot;</span><span class="fu">,</span></a>
@@ -739,34 +631,27 @@
 <a class="sourceLine" id="cb28-7" title="7">    <span class="ot">]</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb28-8" title="8">    <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="st">&quot;Here is your activation token&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb28-9" title="9">    <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;Your activation token is AACC55&quot;</span></a>
-<a class="sourceLine" id="cb28-10" title="10"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:send_msg"></a></p>
-        <h2 id="send_msg">send_msg</h2>
-        <p>Can be used to reply to the current contact in a flow. The text field may contain templates. The action will
-            attempt to find pairs of URNs and channels which can be used for sending. If it can’t find such a pair, it
-            will create a message without a channel or URN.</p>
-        <p>A <a href="sessions.html#event:msg_created">msg_created</a> event will be created with the evaluated text.
-        </p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb29">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb29-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb28-10" title="10"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:send_msg"></a></p>
+<h2 id="send_msg">send_msg</h2>
+<p>Can be used to reply to the current contact in a flow. The text field may contain templates. The action will attempt to find pairs of URNs and channels which can be used for sending. If it can’t find such a pair, it will create a message without a channel or URN.</p>
+<p>A <a href="sessions.html#event:msg_created">msg_created</a> event will be created with the evaluated text.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb29"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb29-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb29-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;send_msg&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb29-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb29-4" title="4">    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi @contact.name, are you ready to complete today&#39;s survey?&quot;</span></a>
-<a class="sourceLine" id="cb29-5" title="5"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb30">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb30-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb29-5" title="5"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb30-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb30-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_created&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb30-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb30-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;fbce9f1c-ddff-45f4-8d46-86b76f70a6a6&quot;</span><span class="fu">,</span></a>
@@ -779,51 +664,39 @@
 <a class="sourceLine" id="cb30-11" title="11">        <span class="fu">},</span></a>
 <a class="sourceLine" id="cb30-12" title="12">        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi Ryan Lewis, are you ready to complete today&#39;s survey?&quot;</span></a>
 <a class="sourceLine" id="cb30-13" title="13">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb30-14" title="14"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:set_contact_channel"></a></p>
-        <h2 id="set_contact_channel">set_contact_channel</h2>
-        <p>Can be used to change or clear the preferred channel of the current contact.</p>
-        <p>Because channel affinity is a property of a contact’s URNs, a <a
-                href="sessions.html#event:contact_urns_changed">contact_urns_changed</a> event will be created if any
-            changes are made to the contact’s URNs.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb31">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb31-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb30-14" title="14"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:set_contact_channel"></a></p>
+<h2 id="set_contact_channel">set_contact_channel</h2>
+<p>Can be used to change or clear the preferred channel of the current contact.</p>
+<p>Because channel affinity is a property of a contact’s URNs, a <a href="sessions.html#event:contact_urns_changed">contact_urns_changed</a> event will be created if any changes are made to the contact’s URNs.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb31"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb31-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb31-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_channel&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb31-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb31-4" title="4">    <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb31-5" title="5">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4bb288a0-7fca-4da1-abe8-59a593aff648&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb31-6" title="6">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;FAcebook Channel&quot;</span></a>
 <a class="sourceLine" id="cb31-7" title="7">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb31-8" title="8"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb32">
-                <pre
-                    class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb32-1" title="1"><span class="ot">[]</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:set_contact_field"></a></p>
-        <h2 id="set_contact_field">set_contact_field</h2>
-        <p>Can be used to update a field value on the contact. The value is a localizable template and white space is
-            trimmed from the final value. An empty string clears the value. A <a
-                href="sessions.html#event:contact_field_changed">contact_field_changed</a> event will be created with
-            the corresponding value.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb33">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb33-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb31-8" title="8"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb32-1" title="1"><span class="ot">[]</span></a></code></pre></div>
+</div>
+<p><a name="action:set_contact_field"></a></p>
+<h2 id="set_contact_field">set_contact_field</h2>
+<p>Can be used to update a field value on the contact. The value is a localizable template and white space is trimmed from the final value. An empty string clears the value. A <a href="sessions.html#event:contact_field_changed">contact_field_changed</a> event will be created with the corresponding value.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb33"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb33-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb33-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_field&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb33-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb33-4" title="4">    <span class="dt">&quot;field&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
@@ -831,15 +704,13 @@
 <a class="sourceLine" id="cb33-6" title="6">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></a>
 <a class="sourceLine" id="cb33-7" title="7">    <span class="fu">},</span></a>
 <a class="sourceLine" id="cb33-8" title="8">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Female&quot;</span></a>
-<a class="sourceLine" id="cb33-9" title="9"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb34">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb34-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb33-9" title="9"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb34-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb34-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_field_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb34-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb34-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1265aa33-e472-440a-b4b7-2e34e644276e&quot;</span><span class="fu">,</span></a>
@@ -850,146 +721,112 @@
 <a class="sourceLine" id="cb34-9" title="9">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb34-10" title="10">        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Female&quot;</span></a>
 <a class="sourceLine" id="cb34-11" title="11">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb34-12" title="12"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:set_contact_language"></a></p>
-        <h2 id="set_contact_language">set_contact_language</h2>
-        <p>Can be used to update the name of the contact. The language is a localizable template and white space is
-            trimmed from the final value. An empty string clears the language. A <a
-                href="sessions.html#event:contact_language_changed">contact_language_changed</a> event will be created
-            with the corresponding value.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb35">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb35-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb34-12" title="12"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:set_contact_language"></a></p>
+<h2 id="set_contact_language">set_contact_language</h2>
+<p>Can be used to update the name of the contact. The language is a localizable template and white space is trimmed from the final value. An empty string clears the language. A <a href="sessions.html#event:contact_language_changed">contact_language_changed</a> event will be created with the corresponding value.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb35"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb35-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb35-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_language&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb35-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb35-4" title="4">    <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span></a>
-<a class="sourceLine" id="cb35-5" title="5"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb36">
-                <pre
-                    class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb36-1" title="1"><span class="ot">[]</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:set_contact_name"></a></p>
-        <h2 id="set_contact_name">set_contact_name</h2>
-        <p>Can be used to update the name of the contact. The name is a localizable template and white space is trimmed
-            from the final value. An empty string clears the name. A <a
-                href="sessions.html#event:contact_name_changed">contact_name_changed</a> event will be created with the
-            corresponding value.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb37">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb37-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb35-5" title="5"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb36-1" title="1"><span class="ot">[]</span></a></code></pre></div>
+</div>
+<p><a name="action:set_contact_name"></a></p>
+<h2 id="set_contact_name">set_contact_name</h2>
+<p>Can be used to update the name of the contact. The name is a localizable template and white space is trimmed from the final value. An empty string clears the name. A <a href="sessions.html#event:contact_name_changed">contact_name_changed</a> event will be created with the corresponding value.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb37"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb37-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb37-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_name&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb37-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb37-4" title="4">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob Smith&quot;</span></a>
-<a class="sourceLine" id="cb37-5" title="5"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb38">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb38-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb37-5" title="5"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb38"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb38-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb38-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_name_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb38-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb38-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;936fea74-7589-4322-aac5-484f64970a84&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb38-5" title="5">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob Smith&quot;</span></a>
-<a class="sourceLine" id="cb38-6" title="6"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:set_contact_timezone"></a></p>
-        <h2 id="set_contact_timezone">set_contact_timezone</h2>
-        <p>Can be used to update the timezone of the contact. The timezone is a localizable template and white space is
-            trimmed from the final value. An empty string clears the timezone. A <a
-                href="sessions.html#event:contact_timezone_changed">contact_timezone_changed</a> event will be created
-            with the corresponding value.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb39">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb39-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb38-6" title="6"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:set_contact_timezone"></a></p>
+<h2 id="set_contact_timezone">set_contact_timezone</h2>
+<p>Can be used to update the timezone of the contact. The timezone is a localizable template and white space is trimmed from the final value. An empty string clears the timezone. A <a href="sessions.html#event:contact_timezone_changed">contact_timezone_changed</a> event will be created with the corresponding value.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb39"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb39-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb39-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_timezone&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb39-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb39-4" title="4">    <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;Africa/Kigali&quot;</span></a>
-<a class="sourceLine" id="cb39-5" title="5"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb40">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb40-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb39-5" title="5"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb40"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb40-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb40-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_timezone_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb40-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb40-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1fbe497b-2fec-4ec6-9c41-cf3f881022fb&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb40-5" title="5">    <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;Africa/Kigali&quot;</span></a>
-<a class="sourceLine" id="cb40-6" title="6"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:set_run_result"></a></p>
-        <h2 id="set_run_result">set_run_result</h2>
-        <p>Can be used to save a result for a flow. The result will be available in the context for the run as <span
-                class="citation" data-cites="results">@results</span>.[name]. The optional category can be used as a way
-            of categorizing results, this can be useful for reporting or analytics.</p>
-        <p>Both the value and category fields may be templates. A <a
-                href="sessions.html#event:run_result_changed">run_result_changed</a> event will be created with the
-            final values.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb41">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb41-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb40-6" title="6"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:set_run_result"></a></p>
+<h2 id="set_run_result">set_run_result</h2>
+<p>Can be used to save a result for a flow. The result will be available in the context for the run as <span class="citation" data-cites="results">@results</span>.[name]. The optional category can be used as a way of categorizing results, this can be useful for reporting or analytics.</p>
+<p>Both the value and category fields may be templates. A <a href="sessions.html#event:run_result_changed">run_result_changed</a> event will be created with the final values.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb41"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb41-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb41-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_run_result&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb41-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb41-4" title="4">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb41-5" title="5">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb41-6" title="6">    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></a>
-<a class="sourceLine" id="cb41-7" title="7"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb42">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb42-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb41-7" title="7"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb42"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb42-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb42-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb42-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb42-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f57752aa-b326-49dc-a261-a8a7a2e749fe&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb42-5" title="5">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb42-6" title="6">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb42-7" title="7">    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></a>
-<a class="sourceLine" id="cb42-8" title="8"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <p><a name="action:start_session"></a></p>
-        <h2 id="start_session">start_session</h2>
-        <p>Can be used to trigger sessions for other contacts and groups. A <a
-                href="sessions.html#event:session_triggered">session_triggered</a> event will be created and it’s the
-            responsibility of the caller to act on that by initiating a new session with the flow engine.</p>
-        <div class="input_action">
-            <h3>
-                Action
-            </h3>
-            <div class="sourceCode" id="cb43">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb43-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb42-8" title="8"><span class="fu">}</span></a></code></pre></div>
+</div>
+<p><a name="action:start_session"></a></p>
+<h2 id="start_session">start_session</h2>
+<p>Can be used to trigger sessions for other contacts and groups. A <a href="sessions.html#event:session_triggered">session_triggered</a> event will be created and it’s the responsibility of the caller to act on that by initiating a new session with the flow engine.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb43"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb43-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb43-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;start_session&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb43-3" title="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb43-4" title="4">    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
@@ -1002,15 +839,13 @@
 <a class="sourceLine" id="cb43-11" title="11">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb43-12" title="12">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></a>
 <a class="sourceLine" id="cb43-13" title="13">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb43-14" title="14"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-        <div class="output_event">
-            <h3>
-                Event
-            </h3>
-            <div class="sourceCode" id="cb44">
-                <pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb44-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb43-14" title="14"><span class="fu">}</span></a></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb44"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb44-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb44-2" title="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;session_triggered&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb44-3" title="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb44-4" title="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;a452b30e-f118-4701-aba9-6b3f291e2750&quot;</span><span class="fu">,</span></a>
@@ -1110,11 +945,9 @@
 <a class="sourceLine" id="cb44-98" title="98">            <span class="fu">}</span></a>
 <a class="sourceLine" id="cb44-99" title="99">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb44-100" title="100">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb44-101" title="101"><span class="fu">}</span></a></code></pre>
-            </div>
-        </div>
-    </div>
+<a class="sourceLine" id="cb44-101" title="101"><span class="fu">}</span></a></code></pre></div>
+</div>
+</div>
 
-</body>
-
+    </body>
 </html>

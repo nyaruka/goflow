@@ -69,6 +69,23 @@
                     "router": {
                         "type": "switch",
                         "result_name": "Command",
+                        "categories": [
+                            {
+                                "uuid": "eb8ad51c-35a1-425a-99bf-688a4c389325",
+                                "name": "Name",
+                                "exit_uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612"
+                            },
+                            {
+                                "uuid": "403d36b6-72ea-4ac0-b7d9-07581695c4b7",
+                                "name": "Exit",
+                                "exit_uuid": "5530b3d4-64e5-44ee-b68d-ab0913aab2b0"
+                            },
+                            {
+                                "uuid": "2aed2241-1003-45d5-a77b-060a5b444a00",
+                                "name": "Other",
+                                "exit_uuid": "6d8ef50f-d063-458e-b4e8-48f39cc91576"
+                            }
+                        ],
                         "default_category_uuid": "2aed2241-1003-45d5-a77b-060a5b444a00",
                         "operand": "@input",
                         "cases": [
@@ -78,7 +95,7 @@
                                 "arguments": [
                                     "name"
                                 ],
-                                "exit_uuid": "eb8ad51c-35a1-425a-99bf-688a4c389325"
+                                "category_uuid": "eb8ad51c-35a1-425a-99bf-688a4c389325"
                             },
                             {
                                 "uuid": "9fd19bf1-dabc-4b68-a179-fa4b8369a257",
@@ -86,24 +103,21 @@
                                 "arguments": [
                                     "exit"
                                 ],
-                                "exit_uuid": "403d36b6-72ea-4ac0-b7d9-07581695c4b7"
+                                "category_uuid": "403d36b6-72ea-4ac0-b7d9-07581695c4b7"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "eb8ad51c-35a1-425a-99bf-688a4c389325",
-                            "destination_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
-                            "name": "Name"
+                            "uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612",
+                            "destination_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba"
                         },
                         {
-                            "uuid": "403d36b6-72ea-4ac0-b7d9-07581695c4b7",
-                            "name": "Exit"
+                            "uuid": "5530b3d4-64e5-44ee-b68d-ab0913aab2b0"
                         },
                         {
-                            "uuid": "2aed2241-1003-45d5-a77b-060a5b444a00",
-                            "destination_uuid": "99a9c871-2b36-483a-9956-550a2025d4df",
-                            "name": "Other"
+                            "uuid": "6d8ef50f-d063-458e-b4e8-48f39cc91576",
+                            "destination_uuid": "99a9c871-2b36-483a-9956-550a2025d4df"
                         }
                     ]
                 }

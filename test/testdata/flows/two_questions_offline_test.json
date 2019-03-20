@@ -282,7 +282,7 @@
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
-                                "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                                "exit_uuid": "2f42b942-bf32-4e81-8ff3-f946b5e68dd8",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
@@ -520,13 +520,13 @@
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
-                                "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                                "exit_uuid": "2f42b942-bf32-4e81-8ff3-f946b5e68dd8",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:19.123456789Z",
-                                "exit_uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492",
+                                "exit_uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },

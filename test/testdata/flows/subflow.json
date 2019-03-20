@@ -26,6 +26,18 @@
                     ],
                     "router": {
                         "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
+                                "name": "Completed",
+                                "exit_uuid": "4d043c51-260c-4a5f-a7d7-defd1067c9f2"
+                            },
+                            {
+                                "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
+                                "name": "Expired",
+                                "exit_uuid": "19a1c2ad-719e-4f1a-b128-863ba4222a1a"
+                            }
+                        ],
                         "operand": "@child.status",
                         "cases": [
                             {
@@ -34,7 +46,7 @@
                                 "arguments": [
                                     "completed"
                                 ],
-                                "exit_uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef"
+                                "category_uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef"
                             },
                             {
                                 "uuid": "8b4def38-17ca-4207-8b6f-d81fb64a2dc6",
@@ -42,19 +54,17 @@
                                 "arguments": [
                                     "expired"
                                 ],
-                                "exit_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
+                                "category_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
-                            "name": "Completed",
+                            "uuid": "4d043c51-260c-4a5f-a7d7-defd1067c9f2",
                             "destination_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
                         },
                         {
-                            "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                            "name": "Expired",
+                            "uuid": "19a1c2ad-719e-4f1a-b128-863ba4222a1a",
                             "destination_uuid": "805d3b99-9e45-4c88-b667-c1557b44c081"
                         }
                     ]
@@ -111,27 +121,37 @@
                         "type": "msg"
                     },
                     "router": {
-                        "result_name": "Name",
                         "type": "switch",
-                        "default": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
+                        "result_name": "Name",
+                        "categories": [
+                            {
+                                "uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b",
+                                "name": "Name",
+                                "exit_uuid": "78f74c5c-5797-4bcf-8d05-7f38e34e968d"
+                            },
+                            {
+                                "uuid": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
+                                "name": "Other",
+                                "exit_uuid": "d856f8de-0b07-48d9-b641-87f68b46500d"
+                            }
+                        ],
+                        "default_category_uuid": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
                         "operand": "@input.text",
                         "cases": [
                             {
                                 "uuid": "a134dfb7-c9ed-4802-a4b2-6eaa694a23e2",
                                 "type": "has_text",
-                                "exit_uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b"
+                                "category_uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b",
-                            "name": "Name",
+                            "uuid": "78f74c5c-5797-4bcf-8d05-7f38e34e968d",
                             "destination_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43"
                         },
                         {
-                            "uuid": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
-                            "name": "Other",
+                            "uuid": "d856f8de-0b07-48d9-b641-87f68b46500d",
                             "destination_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
                         }
                     ]

@@ -28,6 +28,18 @@
                     "router": {
                         "type": "switch",
                         "result_name": "Name Check",
+                        "categories": [
+                            {
+                                "uuid": "96119ebb-8c08-47bd-bbff-6cd94adf64b5",
+                                "name": "Valid",
+                                "exit_uuid": "1671d236-2de5-4e44-b2af-064a3b9c9b45"
+                            },
+                            {
+                                "uuid": "86dbcb84-0ad0-4736-80c6-44b50d5568c8",
+                                "name": "Invalid",
+                                "exit_uuid": "cc2d0569-b408-41bc-952a-1e9079e71af9"
+                            }
+                        ],
                         "default_category_uuid": "86dbcb84-0ad0-4736-80c6-44b50d5568c8",
                         "operand": "@contact.name",
                         "cases": [
@@ -37,20 +49,18 @@
                                 "arguments": [
                                     "(\\w+)\\s+(\\w+)"
                                 ],
-                                "exit_uuid": "96119ebb-8c08-47bd-bbff-6cd94adf64b5"
+                                "category_uuid": "96119ebb-8c08-47bd-bbff-6cd94adf64b5"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "96119ebb-8c08-47bd-bbff-6cd94adf64b5",
-                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                            "name": "Valid"
+                            "uuid": "1671d236-2de5-4e44-b2af-064a3b9c9b45",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
-                            "uuid": "86dbcb84-0ad0-4736-80c6-44b50d5568c8",
-                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                            "name": "Invalid"
+                            "uuid": "cc2d0569-b408-41bc-952a-1e9079e71af9",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         }
                     ]
                 },
@@ -82,6 +92,16 @@
                     },
                     "router": {
                         "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                                "exit_uuid": "e63af3a0-4c7c-469e-8c5a-01cc38ab872d"
+                            },
+                            {
+                                "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "exit_uuid": "7f156979-1f47-49cd-98b9-e5e6fe0e3baf"
+                            }
+                        ],
                         "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
                         "result_name": "Continue",
                         "operand": "@input",
@@ -89,17 +109,17 @@
                             {
                                 "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
                                 "type": "has_text",
-                                "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                                "category_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                            "uuid": "e63af3a0-4c7c-469e-8c5a-01cc38ab872d",
                             "destination_uuid": "e9666140-dcf1-46ab-a27e-ecb2a5e8b73d"
                         },
                         {
-                            "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                            "uuid": "7f156979-1f47-49cd-98b9-e5e6fe0e3baf",
                             "destination_uuid": null
                         }
                     ]

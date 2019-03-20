@@ -23,25 +23,35 @@
                     "router": {
                         "type": "switch",
                         "result_name": "Birth Date",
+                        "categories": [
+                            {
+                                "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                                "name": "Valid",
+                                "exit_uuid": "079f247a-16f4-419f-8cd2-0c8ae13152c6"
+                            },
+                            {
+                                "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                                "name": "Other",
+                                "exit_uuid": "122af91a-0174-4dbd-ae66-4fef39bb7eda"
+                            }
+                        ],
                         "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
                         "operand": "@input",
                         "cases": [
                             {
                                 "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
                                 "type": "has_date",
-                                "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                                "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
-                            "name": "Valid",
+                            "uuid": "079f247a-16f4-419f-8cd2-0c8ae13152c6",
                             "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
-                            "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-                            "name": "Other",
+                            "uuid": "122af91a-0174-4dbd-ae66-4fef39bb7eda",
                             "destination_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
                         }
                     ]
