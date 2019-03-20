@@ -1177,6 +1177,118 @@
     },
     {
         "legacy_ruleset": {
+            "uuid": "266c2948-06c2-487a-8218-7c99e4499b8c",
+            "x": 541,
+            "y": 0,
+            "label": "Response 1",
+            "rules": [
+                {
+                    "uuid": "4d627be9-0305-44f5-9949-5c7668216ef8",
+                    "category": {
+                        "eng": "Yesterday"
+                    },
+                    "destination": "a2fb92c0-e309-477d-9db5-dfcf8d34f321",
+                    "destination_type": "A",
+                    "test": {
+                        "type": "date_equal",
+                        "test": "@(date.today - 1)"
+                    },
+                    "label": null
+                },
+                {
+                    "uuid": "ec378307-e1da-4488-8c9b-825e81a8dbcf",
+                    "category": {
+                        "eng": "Today"
+                    },
+                    "destination": "245d5919-6612-484b-ad9e-abe10e0285e5",
+                    "destination_type": "A",
+                    "test": {
+                        "type": "date_equal",
+                        "test": "@(date.today + 0)"
+                    },
+                    "label": null
+                },
+                {
+                    "uuid": "15ad3a13-251f-46c5-a040-ddfcf07aee03",
+                    "category": {
+                        "eng": "Other"
+                    },
+                    "destination": "6a3fc6dc-ab4b-4e1a-b82d-594d4433f10d",
+                    "destination_type": "A",
+                    "test": {
+                        "type": "true"
+                    },
+                    "label": null
+                }
+            ],
+            "finished_key": null,
+            "ruleset_type": "contact_field",
+            "response_type": "",
+            "operand": "@contact.reporting_date",
+            "config": {}
+        },
+        "collapse_exits": true,
+        "expected_node": {
+            "uuid": "266c2948-06c2-487a-8218-7c99e4499b8c",
+            "router": {
+                "cases": [
+                    {
+                        "arguments": [
+                            "@(format_date(datetime_add(format_date(today()), -1, \"D\")))"
+                        ],
+                        "exit_uuid": "4d627be9-0305-44f5-9949-5c7668216ef8",
+                        "type": "has_date_eq",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "arguments": [
+                            "@(format_date(datetime_add(format_date(today()), 0, \"D\")))"
+                        ],
+                        "exit_uuid": "ec378307-e1da-4488-8c9b-825e81a8dbcf",
+                        "type": "has_date_eq",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "default_exit_uuid": "15ad3a13-251f-46c5-a040-ddfcf07aee03",
+                "operand": "@contact.fields.reporting_date",
+                "result_name": "Response 1",
+                "type": "switch"
+            },
+            "exits": [
+                {
+                    "destination_node_uuid": "a2fb92c0-e309-477d-9db5-dfcf8d34f321",
+                    "name": "Yesterday",
+                    "uuid": "4d627be9-0305-44f5-9949-5c7668216ef8"
+                },
+                {
+                    "destination_node_uuid": "245d5919-6612-484b-ad9e-abe10e0285e5",
+                    "name": "Today",
+                    "uuid": "ec378307-e1da-4488-8c9b-825e81a8dbcf"
+                },
+                {
+                    "destination_node_uuid": "6a3fc6dc-ab4b-4e1a-b82d-594d4433f10d",
+                    "name": "Other",
+                    "uuid": "15ad3a13-251f-46c5-a040-ddfcf07aee03"
+                }
+            ]
+        },
+        "expected_localization": {},
+        "expected_ui": {
+            "config": {
+                "operand": {
+                    "id": "reporting_date",
+                    "type": "field"
+                }
+            },
+            "position": {
+                "left": 541,
+                "top": 0
+            },
+            "type": "split_by_contact_field"
+        }
+    },
+    {
+        "legacy_ruleset": {
             "uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
             "x": 428,
             "y": 374,
