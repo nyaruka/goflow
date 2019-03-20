@@ -141,10 +141,12 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 			panic("can't do recursive flow validation without session assets")
 		}
 
-		// go validate any flow dependencies
+		// go validate any non-missing flow dependencies
 		for _, flowRef := range deps.Flows {
-			flowDep, _ := sa.Flows().Get(flowRef.UUID)
-			flowDep.(*flow).validate(sa, true, missing)
+			flowDep, err := sa.Flows().Get(flowRef.UUID)
+			if err == nil {
+				flowDep.(*flow).validate(sa, true, missing)
+			}
 		}
 	}
 
