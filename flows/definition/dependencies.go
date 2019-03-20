@@ -47,13 +47,8 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	}
 	for i, ref := range d.Fields {
 		a := sa.Fields().Get(ref.Key)
-
 		if a == nil {
-			// TODO for now if a field reference came from an expression (i.e. no name), we don't blow up if it's missing
-			// reality is we probably have lots of flows like this that need fixed.
-			if ref.Name != "" {
-				missing(ref)
-			}
+			missing(ref)
 		} else {
 			d.Fields[i] = a.Reference()
 		}
