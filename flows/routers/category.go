@@ -9,23 +9,23 @@ import (
 	"github.com/pkg/errors"
 )
 
-type category struct {
+type Category struct {
 	uuid     flows.CategoryUUID
 	name     string
 	exitUUID flows.ExitUUID
 }
 
 // NewCategory creates a new category
-func NewCategory(uuid flows.CategoryUUID, name string, exit flows.ExitUUID) flows.Category {
-	return &category{uuid: uuid, name: name, exitUUID: exit}
+func NewCategory(uuid flows.CategoryUUID, name string, exit flows.ExitUUID) *Category {
+	return &Category{uuid: uuid, name: name, exitUUID: exit}
 }
 
-func (c *category) UUID() flows.CategoryUUID { return c.uuid }
-func (c *category) Name() string             { return c.name }
-func (c *category) ExitUUID() flows.ExitUUID { return c.exitUUID }
+func (c *Category) UUID() flows.CategoryUUID { return c.uuid }
+func (c *Category) Name() string             { return c.name }
+func (c *Category) ExitUUID() flows.ExitUUID { return c.exitUUID }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
-func (c *category) LocalizationUUID() utils.UUID { return utils.UUID(c.uuid) }
+func (c *Category) LocalizationUUID() utils.UUID { return utils.UUID(c.uuid) }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -38,7 +38,7 @@ type categoryEnvelope struct {
 }
 
 // UnmarshalJSON unmarshals a node category from the given JSON
-func (c *category) UnmarshalJSON(data []byte) error {
+func (c *Category) UnmarshalJSON(data []byte) error {
 	e := &categoryEnvelope{}
 
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
@@ -52,7 +52,7 @@ func (c *category) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON marshals this node category into JSON
-func (c *category) MarshalJSON() ([]byte, error) {
+func (c *Category) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&categoryEnvelope{
 		c.uuid,
 		c.name,

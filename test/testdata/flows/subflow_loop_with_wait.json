@@ -18,7 +18,7 @@
                     ],
                     "router": {
                         "type": "switch",
-                        "default_exit_uuid": "e55e6b52-e934-4d20-a761-49ebcc0303aa",
+                        "default_category_uuid": "e55e6b52-e934-4d20-a761-49ebcc0303aa",
                         "operand": "@contact.fields.activation_token",
                         "cases": [
                             {
@@ -32,7 +32,7 @@
                         {
                             "uuid": "e55e6b52-e934-4d20-a761-49ebcc0303aa",
                             "name": "Run Child",
-                            "destination_node_uuid": "48b59851-017e-4d84-a4d9-fcefc7399e98"
+                            "destination_uuid": "48b59851-017e-4d84-a4d9-fcefc7399e98"
                         },
                         {
                             "uuid": "4f6d624e-e699-4196-9b2e-b371c13bf086",
@@ -55,7 +55,7 @@
                     "exits": [
                         {
                             "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
-                            "destination_node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
+                            "destination_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
                         }
                     ]
                 },
@@ -99,7 +99,7 @@
                         {
                             "uuid": "f72c2fe8-c61f-498b-8976-1deb589a8b9b",
                             "name": "All Responses",
-                            "destination_node_uuid": "f1ecb42a-cf88-47dd-81b1-d7568ef0d219"
+                            "destination_uuid": "f1ecb42a-cf88-47dd-81b1-d7568ef0d219"
                         }
                     ]
                 },

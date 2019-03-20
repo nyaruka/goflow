@@ -11,7 +11,7 @@
                 {
                     "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
                     "name": "Default",
-                    "destination_node_uuid": null
+                    "destination_uuid": null
                 }
             ]
         },
@@ -21,7 +21,7 @@
                 {
                     "uuid": "ab761421-2896-4e3a-aa23-c827e53ec0cd",
                     "name": "Default",
-                    "destination_node_uuid": null
+                    "destination_uuid": null
                 }
             ]
         }

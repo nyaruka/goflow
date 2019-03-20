@@ -50,12 +50,12 @@
                         {
                             "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
                             "name": "Completed",
-                            "destination_node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
+                            "destination_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
                         },
                         {
                             "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
                             "name": "Expired",
-                            "destination_node_uuid": "805d3b99-9e45-4c88-b667-c1557b44c081"
+                            "destination_uuid": "805d3b99-9e45-4c88-b667-c1557b44c081"
                         }
                     ]
                 },
@@ -127,12 +127,12 @@
                         {
                             "uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b",
                             "name": "Name",
-                            "destination_node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43"
+                            "destination_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43"
                         },
                         {
                             "uuid": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
                             "name": "Other",
-                            "destination_node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
+                            "destination_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
                         }
                     ]
                 },

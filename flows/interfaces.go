@@ -213,16 +213,9 @@ type Router interface {
 	Inspectable
 
 	ResultName() string
-	Categories() []Category
 
 	PickExit(FlowRun, Step, EventCallback) (ExitUUID, error)
 	Validate([]Exit) error
-}
-
-type Category interface {
-	UUID() CategoryUUID
-	Name() string
-	ExitUUID() ExitUUID
 }
 
 type Exit interface {

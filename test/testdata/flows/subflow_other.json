@@ -11,7 +11,7 @@
                     "exits": [
                         {
                             "uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
-                            "destination_node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f"
+                            "destination_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f"
                         }
                     ],
                     "actions": [
@@ -28,7 +28,7 @@
                         {
                             "name": "Complete",
                             "uuid": "f68d80e5-651c-404a-bbc0-efa6966254a6",
-                            "destination_node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f"
+                            "destination_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f"
                         }
                     ],
                     "router": {
@@ -44,7 +44,7 @@
                             }
                         ],
                         "operand": "@child.status",
-                        "default_exit_uuid": null
+                        "default_category_uuid": null
                     },
                     "actions": [
                         {
@@ -63,7 +63,7 @@
                         {
                             "name": null,
                             "uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
-                            "destination_node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
+                            "destination_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
                         }
                     ],
                     "actions": [
@@ -80,7 +80,7 @@
                         {
                             "name": null,
                             "uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
-                            "destination_node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
+                            "destination_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
                         }
                     ],
                     "actions": [
@@ -100,17 +100,17 @@
                         {
                             "name": "Yes",
                             "uuid": "87d86e2b-6eda-4151-858e-c47a3282c48e",
-                            "destination_node_uuid": "48d058e6-a40c-437f-a3b0-f757dbbdeda1"
+                            "destination_uuid": "48d058e6-a40c-437f-a3b0-f757dbbdeda1"
                         },
                         {
                             "name": "No",
                             "uuid": "3f6401ba-4144-4f29-8b48-9e8a3a11ff26",
-                            "destination_node_uuid": "48d058e6-a40c-437f-a3b0-f757dbbdeda1"
+                            "destination_uuid": "48d058e6-a40c-437f-a3b0-f757dbbdeda1"
                         },
                         {
                             "name": "Other",
                             "uuid": "3e3a8051-da19-495a-b0ad-69b11e2158f7",
-                            "destination_node_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742"
+                            "destination_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742"
                         }
                     ],
                     "router": {
@@ -135,7 +135,7 @@
                             }
                         ],
                         "operand": "@input",
-                        "default_exit_uuid": "3e3a8051-da19-495a-b0ad-69b11e2158f7"
+                        "default_category_uuid": "3e3a8051-da19-495a-b0ad-69b11e2158f7"
                     }
                 },
                 {
@@ -144,7 +144,7 @@
                         {
                             "name": null,
                             "uuid": "801c349a-2c2e-4666-b7b2-1e6ed4945d8a",
-                            "destination_node_uuid": null
+                            "destination_uuid": null
                         }
                     ],
                     "actions": [
@@ -169,7 +169,7 @@
                     "exits": [
                         {
                             "uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
-                            "destination_node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
+                            "destination_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                         }
                     ],
                     "actions": [
@@ -189,17 +189,17 @@
                         {
                             "name": "Yes",
                             "uuid": "49caa88e-95b2-4ee2-beef-8db17a829c61",
-                            "destination_node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e"
+                            "destination_uuid": "9b53d684-62a6-4f25-900c-268f762b192e"
                         },
                         {
                             "name": "No",
                             "uuid": "9cf9216c-d001-4052-85db-c499c26a0ea1",
-                            "destination_node_uuid": "09a32235-8fc5-45e6-b45e-e3c51bf89822"
+                            "destination_uuid": "09a32235-8fc5-45e6-b45e-e3c51bf89822"
                         },
                         {
                             "name": "Other",
                             "uuid": "47f7e70f-f7a5-4a24-a6cd-4853ef07487d",
-                            "destination_node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17"
+                            "destination_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17"
                         }
                     ],
                     "router": {
@@ -224,7 +224,7 @@
                             }
                         ],
                         "operand": "@input",
-                        "default_exit_uuid": "47f7e70f-f7a5-4a24-a6cd-4853ef07487d"
+                        "default_category_uuid": "47f7e70f-f7a5-4a24-a6cd-4853ef07487d"
                     }
                 },
                 {
@@ -233,7 +233,7 @@
                         {
                             "name": null,
                             "uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
-                            "destination_node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
+                            "destination_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                         }
                     ],
                     "actions": [
@@ -250,7 +250,7 @@
                         {
                             "name": null,
                             "uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
-                            "destination_node_uuid": null
+                            "destination_uuid": null
                         }
                     ],
                     "actions": [
@@ -267,7 +267,7 @@
                         {
                             "name": null,
                             "uuid": "69503a57-9542-421b-899f-c887a04fcaf2",
-                            "destination_node_uuid": null
+                            "destination_uuid": null
                         }
                     ],
                     "actions": [

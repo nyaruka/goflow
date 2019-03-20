@@ -97,7 +97,7 @@ type SwitchRouter struct {
 }
 
 // NewSwitchRouter creates a new switch router
-func NewSwitchRouter(resultName string, categories []flows.Category, operand string, cases []*Case, defaultCategory flows.CategoryUUID) *SwitchRouter {
+func NewSwitchRouter(resultName string, categories []*Category, operand string, cases []*Case, defaultCategory flows.CategoryUUID) *SwitchRouter {
 	return &SwitchRouter{
 		BaseRouter: newBaseRouter(TypeSwitch, resultName, categories),
 		Default:    defaultCategory,
@@ -131,7 +131,7 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 	}
 
 	// find the category
-	var category flows.Category
+	var category *Category
 	for _, c := range r.Categories_ {
 		if c.UUID() == route.categoryUUID {
 			category = c

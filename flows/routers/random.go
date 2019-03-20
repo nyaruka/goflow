@@ -24,7 +24,7 @@ type RandomRouter struct {
 }
 
 // NewRandomRouter creates a new random router
-func NewRandomRouter(resultName string, categories []flows.Category) *RandomRouter {
+func NewRandomRouter(resultName string, categories []*Category) *RandomRouter {
 	return &RandomRouter{newBaseRouter(TypeRandom, resultName, categories)}
 }
 
@@ -41,7 +41,7 @@ func (r *RandomRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 	}
 
 	// find the category
-	var category flows.Category
+	var category *Category
 	for _, c := range r.Categories_ {
 		if c.UUID() == route.categoryUUID {
 			category = c

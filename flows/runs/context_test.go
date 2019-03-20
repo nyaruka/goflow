@@ -39,14 +39,14 @@ var sessionAssets = `{
                     },
                     "router": {
                         "type": "switch",
-                        "default_exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                        "default_category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
                         "operand": "@input"
                     },
                     "exits": [
                         {
                             "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
                             "name": "All Responses",
-                            "destination_node_uuid": null
+                            "destination_uuid": null
                         }
                     ]
                 }

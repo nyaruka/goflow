@@ -16,7 +16,7 @@
                     "router": {
                         "type": "switch",
                         "result_name": "Command",
-                        "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                        "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
                         "operand": "@input",
                         "cases": [
                             {
@@ -41,17 +41,17 @@
                         {
                             "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
                             "name": "Ping",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
                             "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
                             "name": "Pong",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
                             "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
                             "name": "Other",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         }
                     ]
                 },

@@ -50,7 +50,7 @@ If a node wishes to route to another node, it can do so by defining one or more 
 An exit consists of:
 
  * `uuid` the UUID
- * `destination_node_uuid` the uuid of the node that should be visited if this exit is chosen by the router (optional)
+ * `destination_uuid` the uuid of the node that should be visited if this exit is chosen by the router (optional)
  * `name` a name for this exit (optional)
 
 ```json
@@ -63,7 +63,7 @@ An exit consists of:
     }],
     "exits": [{
         "uuid":"eb7defc9-3c66-4dfc-80bc-825567ccd9de",
-        "destination_node_uuid":"ee0bee3f-34b3-4275-af78-f9ff52c82e6a"
+        "destination_uuid":"ee0bee3f-34b3-4275-af78-f9ff52c82e6a"
     }]
 }
 ```
@@ -75,14 +75,14 @@ An exit consists of:
 If a node wishes to route differently based on some state, it can add a `switch` router which defines one or more `cases`. 
 Each case defines a `type` which is the name of an expression function that is run by passing the evaluation of `operand` 
 as the first argument. Cases may define additional arguments using the `arguments` array on a case. If no case evaluates 
-to true, then the `default_exit_uuid` will be used otherwise flow execution will stop.
+to true, then the `default_category_uuid` will be used otherwise flow execution will stop.
 
 A switch router may also define a `result_name` parameters which will save the result of the case which evaluated as true.
 
 A switch router consists of:
 
  * `operand` the expression which will be evaluated against each of our cases
- * `default_exit_uuid` the uuid of the default exit to take if no case matches (optional)
+ * `default_category_uuid` the uuid of the default exit to take if no case matches (optional)
  * `result_name` the name of the result which should be written when the switch is evaluated (optional)
  * `cases` a list of 1-n cases which are evaluated in order until one is true
 
@@ -101,7 +101,7 @@ Each case consists of:
     "router": {
         "type":"switch",
         "operand": "@input",
-        "default_exit_uuid": "9574fbfd-510f-4dfc-b989-97d2aecf50b9",
+        "default_category_uuid": "9574fbfd-510f-4dfc-b989-97d2aecf50b9",
         "cases": [{
             "uuid": "6f78d564-029b-4715-b8d4-b28daeae4f24",
             "type": "has_text",
@@ -111,11 +111,11 @@ Each case consists of:
     "exits": [{
         "uuid":"cab600f5-b54b-49b9-a7ea-5638f4cbf2b4",
         "name":"Has Name",
-        "destination_node_uuid":"deec1dd4-b727-4b21-800a-0b7bbd146a82"
+        "destination_uuid":"deec1dd4-b727-4b21-800a-0b7bbd146a82"
     },{
         "uuid":"9574fbfd-510f-4dfc-b989-97d2aecf50b9",
         "name":"Other",
-        "destination_node_uuid":"ee0bee3f-34b3-4275-af78-f9ff52c82e6a"
+        "destination_uuid":"ee0bee3f-34b3-4275-af78-f9ff52c82e6a"
     }]
 }
 ```

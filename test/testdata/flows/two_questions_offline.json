@@ -92,7 +92,7 @@
                     "router": {
                         "type": "switch",
                         "result_name": "Favorite Color",
-                        "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                        "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
                         "operand": "@input",
                         "cases": [
                             {
@@ -117,17 +117,17 @@
                         {
                             "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
                             "name": "Red",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
                             "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
                             "name": "Blue",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
                             "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
                             "name": "Other",
-                            "destination_node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
+                            "destination_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
                         }
                     ]
                 },
@@ -146,7 +146,7 @@
                     },
                     "router": {
                         "type": "switch",
-                        "default_exit_uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
+                        "default_category_uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
                         "result_name": "Soda",
                         "operand": "@input",
                         "cases": [
@@ -172,17 +172,17 @@
                         {
                             "uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492",
                             "name": "Pepsi",
-                            "destination_node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db"
+                            "destination_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db"
                         },
                         {
                             "uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
                             "name": "Coke",
-                            "destination_node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db"
+                            "destination_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db"
                         },
                         {
                             "uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
                             "name": "Other",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         }
                     ]
                 },

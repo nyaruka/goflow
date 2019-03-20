@@ -23,7 +23,24 @@
                     "router": {
                         "type": "switch",
                         "result_name": "Favorite Color",
-                        "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                        "categories": [
+                            {
+                                "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                                "name": "Red",
+                                "exit_uuid": "a0d84faf-284d-43e5-a3f8-63891c454e20"
+                            },
+                            {
+                                "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                                "name": "Blue",
+                                "exit_uuid": "d21d7642-a4ca-49d0-8c2b-667ead24b14b"
+                            },
+                            {
+                                "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                                "name": "Timeout",
+                                "exit_uuid": "d6bf5696-2d5b-4750-9168-3ad55529696d"
+                            }
+                        ],
+                        "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
                         "operand": "@input",
                         "cases": [
                             {
@@ -32,7 +49,7 @@
                                 "arguments": [
                                     "red"
                                 ],
-                                "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                                "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
                             },
                             {
                                 "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
@@ -40,7 +57,7 @@
                                 "arguments": [
                                     "blue"
                                 ],
-                                "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                                "category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
                             },
                             {
                                 "uuid": "7ea92692-a2c8-4add-8c84-6c74a963c198",
@@ -49,25 +66,22 @@
                                     "@run"
                                 ],
                                 "omit_operand": true,
-                                "exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
+                                "category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
-                            "name": "Red",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "uuid": "a0d84faf-284d-43e5-a3f8-63891c454e20",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
-                            "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
-                            "name": "Blue",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "uuid": "d21d7642-a4ca-49d0-8c2b-667ead24b14b",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
-                            "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-                            "name": "Timeout",
-                            "destination_node_uuid": "091decfb-c9b0-4dcf-954e-04927f119fc8"
+                            "uuid": "d6bf5696-2d5b-4750-9168-3ad55529696d",
+                            "destination_uuid": "091decfb-c9b0-4dcf-954e-04927f119fc8"
                         }
                     ]
                 },

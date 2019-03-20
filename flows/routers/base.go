@@ -24,15 +24,12 @@ func RegisteredTypes() map[string](func() flows.Router) {
 
 // BaseRouter is the base class for all our router classes
 type BaseRouter struct {
-	Type_ string `json:"type" validate:"required"`
-
-	// ResultName_ is the name of the which the result of this router should be saved as (if any)
-	ResultName_ string `json:"result_name,omitempty"`
-
-	Categories_ []flows.Category
+	Type_       string      `json:"type" validate:"required"`
+	ResultName_ string      `json:"result_name,omitempty"`
+	Categories_ []*Category `json:"categories,omitempty"`
 }
 
-func newBaseRouter(typeName string, resultName string, categories []flows.Category) BaseRouter {
+func newBaseRouter(typeName string, resultName string, categories []*Category) BaseRouter {
 	return BaseRouter{Type_: typeName, ResultName_: resultName, Categories_: categories}
 }
 
@@ -41,9 +38,6 @@ func (r *BaseRouter) Type() string { return r.Type_ }
 
 // ResultName returns the name which the result of this router should be saved as (if any)
 func (r *BaseRouter) ResultName() string { return r.ResultName_ }
-
-// Categories are the categories of results this router can create
-func (r *BaseRouter) Categories() []flows.Category { return r.Categories_ }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (r *BaseRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {}

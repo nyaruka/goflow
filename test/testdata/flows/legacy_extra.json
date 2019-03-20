@@ -19,7 +19,7 @@
                     "exits": [
                         {
                             "uuid": "532e0cec-b66a-4c30-925b-c305705a9607",
-                            "destination_node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3"
+                            "destination_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3"
                         }
                     ]
                 },
@@ -28,7 +28,7 @@
                     "router": {
                         "type": "switch",
                         "result_name": "Name Check",
-                        "default_exit_uuid": "86dbcb84-0ad0-4736-80c6-44b50d5568c8",
+                        "default_category_uuid": "86dbcb84-0ad0-4736-80c6-44b50d5568c8",
                         "operand": "@contact.name",
                         "cases": [
                             {
@@ -44,12 +44,12 @@
                     "exits": [
                         {
                             "uuid": "96119ebb-8c08-47bd-bbff-6cd94adf64b5",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                             "name": "Valid"
                         },
                         {
                             "uuid": "86dbcb84-0ad0-4736-80c6-44b50d5568c8",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                             "name": "Invalid"
                         }
                     ]
@@ -82,7 +82,7 @@
                     },
                     "router": {
                         "type": "switch",
-                        "default_exit_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                        "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
                         "result_name": "Continue",
                         "operand": "@input",
                         "cases": [
@@ -96,11 +96,11 @@
                     "exits": [
                         {
                             "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
-                            "destination_node_uuid": "e9666140-dcf1-46ab-a27e-ecb2a5e8b73d"
+                            "destination_uuid": "e9666140-dcf1-46ab-a27e-ecb2a5e8b73d"
                         },
                         {
                             "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
-                            "destination_node_uuid": null
+                            "destination_uuid": null
                         }
                     ]
                 },
@@ -116,7 +116,7 @@
                     "exits": [
                         {
                             "uuid": "82765044-5c8e-4678-a1c8-8e4f348f903a",
-                            "destination_node_uuid": null
+                            "destination_uuid": null
                         }
                     ]
                 }

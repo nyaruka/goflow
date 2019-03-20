@@ -23,7 +23,7 @@
                     ],
                     "router": {
                         "type": "switch",
-                        "default_exit_uuid": "",
+                        "default_category_uuid": "",
                         "operand": "@results.transfer.category",
                         "cases": [
                             {
@@ -47,12 +47,12 @@
                     "exits": [
                         {
                             "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
-                            "destination_node_uuid": null,
+                            "destination_uuid": null,
                             "name": "Success"
                         },
                         {
                             "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
-                            "destination_node_uuid": null,
+                            "destination_uuid": null,
                             "name": "Failure"
                         }
                     ]
