@@ -14,11 +14,11 @@ import (
 )
 
 type node struct {
-	uuid    flows.NodeUUID
-	actions []flows.Action
-	wait    flows.Wait
-	router  flows.Router
-	exits   []flows.Exit
+	uuid       flows.NodeUUID
+	actions    []flows.Action
+	wait       flows.Wait
+	router     flows.Router
+	exits      []flows.Exit
 }
 
 // NewNode creates a new flow node
@@ -88,8 +88,8 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 		}
 		seenUUIDs[utils.UUID(exit.UUID())] = true
 
-		if exit.DestinationNodeUUID() != "" && flow.GetNode(exit.DestinationNodeUUID()) == nil {
-			return errors.Errorf("destination %s of exit[uuid=%s] isn't a known node", exit.DestinationNodeUUID(), exit.UUID())
+		if exit.DestinationUUID() != "" && flow.GetNode(exit.DestinationUUID()) == nil {
+			return errors.Errorf("destination %s of exit[uuid=%s] isn't a known node", exit.DestinationUUID(), exit.UUID())
 		}
 	}
 

@@ -1,9 +1,13 @@
 package routers
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -20,25 +24,58 @@ type RandomRouter struct {
 }
 
 // NewRandomRouter creates a new random router
-func NewRandomRouter(resultName string) *RandomRouter {
-	return &RandomRouter{newBaseRouter(TypeRandom, resultName)}
+func NewRandomRouter(resultName string, categories []flows.Category) *RandomRouter {
+	return &RandomRouter{newBaseRouter(TypeRandom, resultName, categories)}
 }
 
 // Validate validates that the fields on this router are valid
 func (r *RandomRouter) Validate(exits []flows.Exit) error {
-	return utils.Validate(r)
+	return r.validate(exits)
 }
 
-// PickRoute picks a route randomly from our available exits
-func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (*string, flows.Route, error) {
-	if len(exits) == 0 {
-		return nil, flows.NoRoute, nil
+// PickExit determines which exit to take from a node
+func (r *RandomRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+	route, err := r.pickRoute(run, step)
+	if err != nil {
+		return "", err
 	}
 
-	// pick a random exit
+	// find the category
+	var category flows.Category
+	for _, c := range r.Categories_ {
+		if c.UUID() == route.categoryUUID {
+			category = c
+			break
+		}
+	}
+
+	if category == nil {
+		return "", errors.Errorf("category %s is not a valid category", route.categoryUUID)
+	}
+
+	// save result if we have a result name
+	if r.ResultName_ != "" {
+		// localize the category name
+		localizedCategory := run.GetText(utils.UUID(category.UUID()), "name", "")
+
+		var extraJSON json.RawMessage
+		if route.extra != nil {
+			extraJSON, _ = json.Marshal(route.extra)
+		}
+		result := flows.NewResult(r.ResultName_, route.match, category.Name(), localizedCategory, step.NodeUUID(), route.input, extraJSON, utils.Now())
+		run.SaveResult(result)
+		logEvent(events.NewRunResultChangedEvent(result))
+	}
+
+	return category.ExitUUID(), nil
+}
+
+func (r *RandomRouter) pickRoute(run flows.FlowRun, step flows.Step) (*route, error) {
+	// pick a random category
 	rand := utils.RandDecimal()
-	exitNum := rand.Mul(decimal.New(int64(len(exits)), 0)).IntPart()
-	return nil, flows.NewRoute(exits[exitNum].UUID(), rand.String(), nil), nil
+	categoryNum := rand.Mul(decimal.New(int64(len(r.Categories_)), 0)).IntPart()
+	categoryUUID := r.Categories_[categoryNum].UUID()
+	return newRoute(nil, rand.String(), categoryUUID, nil), nil
 }
 
 // Inspect inspects this object and any children

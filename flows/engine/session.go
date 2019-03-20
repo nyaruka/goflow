@@ -233,7 +233,7 @@ func (s *session) findResumeDestination(sprint flows.Sprint, run flows.FlowRun) 
 	}
 
 	// see if this node can now pick a destination
-	step, destination, err := s.pickNodeExit(run, node, step, logEvent)
+	destination, err := s.pickNodeExit(run, node, step, logEvent)
 	if err != nil {
 		return noDestination, err
 	}
@@ -390,24 +390,20 @@ func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.N
 	}
 
 	// use our node's router to determine where to go next
-	return s.pickNodeExit(run, node, step, logEvent)
+	destinationUUID, err := s.pickNodeExit(run, node, step, logEvent)
+	return step, destinationUUID, err
 }
 
 // picks the exit to use on the given node
-func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step, logEvent flows.EventCallback) (flows.Step, flows.NodeUUID, error) {
+func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step, logEvent flows.EventCallback) (flows.NodeUUID, error) {
+	var exitUUID flows.ExitUUID
 	var err error
 
-	var operand *string
-	route := flows.NoRoute
-	router := node.Router()
-
-	// we have a router, have it determine our exit
-	var exitUUID flows.ExitUUID
-	if router != nil {
-		if operand, route, err = router.PickRoute(run, node.Exits(), step); err != nil {
-			return nil, noDestination, errors.Wrapf(err, "error routing from node[uuid=%s]", node.UUID())
+	if node.Router() != nil {
+		exitUUID, err = node.Router().PickExit(run, step, logEvent)
+		if err != nil {
+			return noDestination, errors.Wrapf(err, "error routing from node[uuid=%s]", node.UUID())
 		}
-		exitUUID = route.Exit()
 	} else if len(node.Exits()) > 0 {
 		// no router, pick our first exit if we have one
 		exitUUID = node.Exits()[0].UUID()
@@ -415,44 +411,17 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 
 	step.Leave(exitUUID)
 
-	// look up our actual exit and localized name
-	var exit flows.Exit
-	var localizedExitName string
-
 	if exitUUID != "" {
 		// find our exit
-		for _, e := range node.Exits() {
-			if e.UUID() == exitUUID {
-				localizedName := run.GetText(utils.UUID(exitUUID), "name", e.Name())
-				if localizedName != e.Name() {
-					localizedExitName = localizedName
-				}
-				exit = e
-				break
+		for _, exit := range node.Exits() {
+			if exit.UUID() == exitUUID {
+				return exit.DestinationUUID(), nil
 			}
-		}
-		if exit == nil {
-			return nil, noDestination, errors.Errorf("unable to find exit with UUID '%s'", exitUUID)
 		}
 	}
 
 	// no exit? return no destination
-	if exit == nil {
-		return step, noDestination, nil
-	}
-
-	// save our results if appropriate
-	if router != nil && router.ResultName() != "" {
-		var extraJSON json.RawMessage
-		if route.Extra() != nil {
-			extraJSON, _ = json.Marshal(route.Extra())
-		}
-		result := flows.NewResult(router.ResultName(), route.Match(), exit.Name(), localizedExitName, step.NodeUUID(), operand, extraJSON, utils.Now())
-		run.SaveResult(result)
-		logEvent(events.NewRunResultChangedEvent(result))
-	}
-
-	return step, exit.DestinationNodeUUID(), nil
+	return noDestination, nil
 }
 
 const noDestination = flows.NodeUUID("")

@@ -28,10 +28,12 @@ type BaseRouter struct {
 
 	// ResultName_ is the name of the which the result of this router should be saved as (if any)
 	ResultName_ string `json:"result_name,omitempty"`
+
+	Categories_ []flows.Category
 }
 
-func newBaseRouter(typeName string, resultName string) BaseRouter {
-	return BaseRouter{Type_: typeName, ResultName_: resultName}
+func newBaseRouter(typeName string, resultName string, categories []flows.Category) BaseRouter {
+	return BaseRouter{Type_: typeName, ResultName_: resultName, Categories_: categories}
 }
 
 // Type returns the type of this router
@@ -39,6 +41,9 @@ func (r *BaseRouter) Type() string { return r.Type_ }
 
 // ResultName returns the name which the result of this router should be saved as (if any)
 func (r *BaseRouter) ResultName() string { return r.ResultName_ }
+
+// Categories are the categories of results this router can create
+func (r *BaseRouter) Categories() []flows.Category { return r.Categories_ }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (r *BaseRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {}
@@ -53,6 +58,34 @@ func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, incl
 // EnumerateResultNames enumerates all result names on this object
 func (r *BaseRouter) EnumerateResultNames(include func(string)) {
 	include(r.ResultName())
+}
+
+func (r *BaseRouter) validate(exits []flows.Exit) error {
+	// check each category points to a valid exit
+	for _, c := range r.Categories_ {
+		if c.ExitUUID() != "" && !r.isValidExit(c.ExitUUID(), exits) {
+			return errors.Errorf("category exit %s is not a valid exit", c.ExitUUID())
+		}
+	}
+	return nil
+}
+
+func (r *BaseRouter) isValidCategory(uuid flows.CategoryUUID) bool {
+	for _, c := range r.Categories_ {
+		if c.UUID() == uuid {
+			return true
+		}
+	}
+	return false
+}
+
+func (r *BaseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
+	for _, e := range exits {
+		if e.UUID() == uuid {
+			return true
+		}
+	}
+	return false
 }
 
 //------------------------------------------------------------------------------------------
