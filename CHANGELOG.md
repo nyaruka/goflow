@@ -1,3 +1,9 @@
+v0.30.0
+----------
+ * Fix HasDate tests to compare dates in env timezone
+ * Return missing assets from SessionAssets.Validate
+ * Replace runtime loop detection with an engine limit on steps per sprint (default 100)
+
 v0.29.11
 ----------
  * Don't trim whitespace on input to has_pattern test
