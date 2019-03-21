@@ -134,7 +134,7 @@ func loadAssets(path string) (flows.SessionAssets, error) {
 			return nil, err
 		}
 
-		//ioutil.WriteFile(path+".migrated", assetsJSON, 0666)
+		// ioutil.WriteFile(path+".migrated", assetsJSON, 0666)
 	}
 
 	// rewrite the URL on any webhook actions

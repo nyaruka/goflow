@@ -1,0 +1,103 @@
+{
+    "legacy_flows": [
+        {
+            "entry": "30c97f0e-e537-4940-ad1f-85599d3634b3",
+            "action_sets": [
+                {
+                    "uuid": "0b45a338-d7a6-4c19-b0b2-03b2d35141ed",
+                    "x": 66,
+                    "y": 136,
+                    "destination": null,
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "523981d6-189f-49af-804a-b9ebe316dbf3",
+                            "msg": {
+                                "eng": "Webhook was successful\n\nResult value: @flow.webhook_result.value \nResult category: @flow.webhook_result.category \nResult text: @flow.webhook_result.text \nExtra: @extra.foo"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "5f2be383-2d09-46e7-9397-ac52ab8faf6e"
+                },
+                {
+                    "uuid": "315dacd7-5e18-4048-9155-a48b0a9c817a",
+                    "x": 321,
+                    "y": 137,
+                    "destination": null,
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "055ea766-8730-4579-8d40-e8598fbce7c4",
+                            "msg": {
+                                "eng": "Webhook failed"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "ce5989c7-8695-4510-8a47-4c6469658d26"
+                }
+            ],
+            "rule_sets": [
+                {
+                    "uuid": "30c97f0e-e537-4940-ad1f-85599d3634b3",
+                    "x": 100,
+                    "y": 0,
+                    "label": "Webhook Result",
+                    "rules": [
+                        {
+                            "uuid": "dd9f9855-46fd-42e9-9dc0-6694439594b3",
+                            "category": {
+                                "eng": "Success"
+                            },
+                            "destination": "0b45a338-d7a6-4c19-b0b2-03b2d35141ed",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "webhook_status",
+                                "status": "success"
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "b6cfe022-c9c8-4b88-95e6-78463f4ee830",
+                            "category": {
+                                "eng": "Failure"
+                            },
+                            "destination": "315dacd7-5e18-4048-9155-a48b0a9c817a",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "webhook_status",
+                                "status": "failure"
+                            },
+                            "label": null
+                        }
+                    ],
+                    "finished_key": null,
+                    "ruleset_type": "webhook",
+                    "response_type": "",
+                    "operand": "@step.value",
+                    "config": {
+                        "webhook": "http://localhost/?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D",
+                        "webhook_action": "POST",
+                        "webhook_headers": []
+                    }
+                }
+            ],
+            "base_language": "eng",
+            "flow_type": "M",
+            "version": "11.12",
+            "metadata": {
+                "name": "Webhook",
+                "saved_on": "2019-03-21T19:42:47.294397Z",
+                "revision": 11,
+                "uuid": "0256c9fc-8194-4567-b4ab-6965c2b7d791",
+                "expires": 10080
+            }
+        }
+    ],
+    "other_assets": {}
+}

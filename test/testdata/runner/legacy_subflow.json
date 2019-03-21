@@ -1,0 +1,196 @@
+{
+    "legacy_flows": [
+        {
+            "entry": "fb57fe4a-d3d6-4765-a554-f13d344dbd9b",
+            "action_sets": [
+                {
+                    "uuid": "fb57fe4a-d3d6-4765-a554-f13d344dbd9b",
+                    "x": 100,
+                    "y": 0,
+                    "destination": "17d45eb5-f35d-4e15-974d-8beb26b67050",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "b61d236b-a607-406e-a96e-6f57e6d5bef0",
+                            "msg": {
+                                "eng": "You're in the subflow now. Pick a number!"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "faeaff17-1c00-4fc1-a4a6-32b5cf28f7f6"
+                },
+                {
+                    "uuid": "22c48807-0f4a-4229-8cf3-e05019804ff7",
+                    "x": 581,
+                    "y": 0,
+                    "destination": "17d45eb5-f35d-4e15-974d-8beb26b67050",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "c2499401-4898-4152-b05e-1b40d0431e6f",
+                            "msg": {
+                                "eng": "That's not a number.. try again"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "94567b19-ab3a-4d81-a0e7-2f30120bcd85"
+                }
+            ],
+            "rule_sets": [
+                {
+                    "uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
+                    "x": 298,
+                    "y": 134,
+                    "label": "Number",
+                    "rules": [
+                        {
+                            "uuid": "0dfdf99b-3dc6-4028-8184-1b6e9afb6c8d",
+                            "category": {
+                                "eng": "Numeric"
+                            },
+                            "destination": null,
+                            "destination_type": null,
+                            "test": {
+                                "type": "number"
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "0ca5e8ce-6979-4c2f-b934-ca628897342e",
+                            "category": {
+                                "eng": "Other"
+                            },
+                            "destination": "22c48807-0f4a-4229-8cf3-e05019804ff7",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "true"
+                            },
+                            "label": null
+                        }
+                    ],
+                    "finished_key": null,
+                    "ruleset_type": "wait_message",
+                    "response_type": "",
+                    "operand": "@step.value",
+                    "config": {}
+                }
+            ],
+            "base_language": "eng",
+            "flow_type": "M",
+            "version": "11.12",
+            "metadata": {
+                "name": "Subflow Child",
+                "saved_on": "2019-03-21T19:34:37.435886Z",
+                "revision": 10,
+                "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804",
+                "expires": 10080
+            }
+        },
+        {
+            "entry": "24f17436-6852-4cdd-9af4-e5428f2a147a",
+            "action_sets": [
+                {
+                    "uuid": "24f17436-6852-4cdd-9af4-e5428f2a147a",
+                    "x": 100,
+                    "y": 0,
+                    "destination": "ae496ccb-e1db-4392-92a3-12235fa320ec",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "6e32974d-3e66-4bde-ace0-790d645e7ee1",
+                            "msg": {
+                                "eng": "In the parent flow"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "9fc779b6-416b-4908-915c-7a70f686dcc7"
+                },
+                {
+                    "uuid": "d5165e62-6306-4341-b83c-2735363b813c",
+                    "x": 83,
+                    "y": 279,
+                    "destination": null,
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "683b8d23-9577-4dea-af75-6001de57371b",
+                            "msg": {
+                                "eng": "You picked @child.number"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "3c54cc3f-1c01-433b-a150-ffbdbf756919"
+                }
+            ],
+            "rule_sets": [
+                {
+                    "uuid": "ae496ccb-e1db-4392-92a3-12235fa320ec",
+                    "x": 173,
+                    "y": 129,
+                    "label": "Response 1",
+                    "rules": [
+                        {
+                            "uuid": "37abdbb6-149a-4010-bd2c-9df9b1219294",
+                            "category": {
+                                "eng": "Completed"
+                            },
+                            "destination": "d5165e62-6306-4341-b83c-2735363b813c",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "subflow",
+                                "exit_type": "completed"
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "8b395314-b545-4330-ad80-b296e8c62b40",
+                            "category": {
+                                "eng": "Expired"
+                            },
+                            "destination": null,
+                            "destination_type": null,
+                            "test": {
+                                "type": "subflow",
+                                "exit_type": "expired"
+                            },
+                            "label": null
+                        }
+                    ],
+                    "finished_key": null,
+                    "ruleset_type": "subflow",
+                    "response_type": "",
+                    "operand": "@step.value",
+                    "config": {
+                        "flow": {
+                            "name": "Subflow Child",
+                            "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
+                        }
+                    }
+                }
+            ],
+            "base_language": "eng",
+            "flow_type": "M",
+            "version": "11.12",
+            "metadata": {
+                "name": "Subflow Parent",
+                "saved_on": "2019-03-21T19:35:04.623777Z",
+                "revision": 7,
+                "uuid": "8423878e-8ff8-4021-9f64-5df2b7834029",
+                "expires": 10080
+            }
+        }
+    ],
+    "other_assets": {}
+}
