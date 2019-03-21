@@ -16,6 +16,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -27,33 +28,34 @@ var flowTests = []struct {
 	assets string
 	output string
 }{
-	{"airtime.json", "airtime_disabled_test.json"},
-	{"all_actions.json", "all_actions_test.json"},
-	{"brochure.json", "brochure_test.json"},
-	{"date_parse.json", "date_parse_test.json"},
-	{"default_result.json", "default_result_test.json"},
-	{"dynamic_groups_correction.json", "dynamic_groups_correction_test.json"},
-	{"dynamic_groups.json", "dynamic_groups_test.json"},
-	{"empty.json", "empty_test.json"},
-	{"initial_wait.json", "initial_wait_test.json"},
-	{"legacy_extra.json", "legacy_extra_test.json"},
-	{"no_contact.json", "no_contact_test.json"},
-	{"node_loop.json", "node_loop_test.json"},
-	{"redact_urns.json", "redact_urns_test.json"},
-	{"resthook.json", "resthook_test.json"},
-	{"router_tests.json", "router_tests_test.json"},
-	{"subflow_loop_with_wait.json", "subflow_loop_with_wait_test.json"},
-	{"enter_flow_loop.json", "enter_flow_loop_test.json"},
-	{"enter_flow_terminal.json", "enter_flow_terminal_test.json"},
-	{"subflow_other.json", "subflow_other_test.json"},
-	{"subflow.json", "subflow_test.json"},
-	{"subflow.json", "subflow_resume_with_expiration_test.json"},
-	{"triggered.json", "triggered_test.json"},
-	{"two_questions.json", "two_questions_test.json"},
-	{"two_questions.json", "two_questions_resume_with_expiration_test.json"},
-	{"two_questions_offline.json", "two_questions_offline_test.json"},
-	{"webhook_migrated.json", "webhook_migrated_test.json"},
-	{"webhook_persists.json", "webhook_persists_test.json"},
+	{"airtime.json", "airtime.test_disabled.json"},
+	{"all_actions.json", "all_actions.test.json"},
+	{"brochure.json", "brochure.test.json"},
+	{"date_parse.json", "date_parse.test.json"},
+	{"default_result.json", "default_result.test.json"},
+	{"dynamic_groups_correction.json", "dynamic_groups_correction.test.json"},
+	{"dynamic_groups.json", "dynamic_groups.test.json"},
+	{"empty.json", "empty.test.json"},
+	{"enter_flow_loop.json", "enter_flow_loop.test.json"},
+	{"enter_flow_terminal.json", "enter_flow_terminal.test.json"},
+	{"initial_wait.json", "initial_wait.test.json"},
+	{"legacy_extra.json", "legacy_extra.test.json"},
+	{"no_contact.json", "no_contact.test.json"},
+	{"node_loop.json", "node_loop.test.json"},
+	{"redact_urns.json", "redact_urns.test.json"},
+	{"resthook.json", "resthook.test.json"},
+	{"router_tests.json", "router_tests.test.json"},
+	{"subflow_loop_with_wait.json", "subflow_loop_with_wait.test.json"},
+	{"subflow_other.json", "subflow_other.test.json"},
+	{"subflow.json", "subflow.test_resume_with_expiration.json"},
+	{"subflow.json", "subflow.test.json"},
+	{"triggered.json", "triggered.test.json"},
+	{"two_questions_offline.json", "two_questions_offline.test.json"},
+	{"two_questions.json", "two_questions.test_resume_with_expiration.json"},
+	{"two_questions.json", "two_questions.test.json"},
+	{"webhook_migrated.json", "webhook_migrated.test.json"},
+	{"webhook_persists.json", "webhook_persists.test.json"},
+	{"legacy/favorites.json", "legacy/favorites.test.json"},
 }
 
 var writeOutput bool
@@ -92,30 +94,71 @@ type runResult struct {
 	outputs []*Output
 }
 
+type legacyAssets struct {
+	LegacyFlows []json.RawMessage      `json:"legacy_flows"`
+	OtherAssets map[string]interface{} `json:"other_assets"`
+}
+
+// loads assets from a file in one of two formats, indicated in the path:
+//   1. ./*.json a regular static assets file
+//   2. legacy/*.json a file with both legacy flow defs and assets, i.e. {"legacy_flows": [], "other_assets": {}}
+func loadAssets(path string) (flows.SessionAssets, error) {
+	// load the test specific assets
+	assetsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/flows/%s", path))
+	if err != nil {
+		return nil, err
+	}
+
+	if strings.HasPrefix(path, "legacy/") {
+		la := &legacyAssets{}
+		if err := json.Unmarshal(assetsJSON, la); err != nil {
+			return nil, errors.Wrap(err, "unable to read legacy assets")
+		}
+
+		migratedFlows := make([]json.RawMessage, len(la.LegacyFlows))
+		for f, legacyFlow := range la.LegacyFlows {
+			migrated, err := legacy.MigrateLegacyDefinition(legacyFlow, "")
+			if err != nil {
+				return nil, errors.Wrap(err, "unable to migrate legacy flow")
+			}
+			migratedFlows[f] = migrated
+		}
+
+		la.OtherAssets["flows"] = migratedFlows
+		assetsJSON, err = json.Marshal(la.OtherAssets)
+		if err != nil {
+			return nil, err
+		}
+
+		//ioutil.WriteFile(fmt.Sprintf("testdata/flows/%s.migrated", path), assetsJSON, 0666)
+	}
+
+	// rewrite the URL on any webhook actions
+	assetsJSON = json.RawMessage(strings.Replace(string(assetsJSON), "http://localhost", serverURL, -1))
+
+	// create the assets source
+	source, err := static.NewSource(assetsJSON)
+	if err != nil {
+		return nil, errors.Wrapf(err, "error reading test assets '%s'", path)
+	}
+
+	return engine.NewSessionAssets(source)
+}
+
 func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.RawMessage) (runResult, error) {
 	// load the test specific assets
-	testAssetsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/flows/%s", assetsPath))
+	sa, err := loadAssets(assetsPath)
 	if err != nil {
 		return runResult{}, err
 	}
 
-	// rewrite the URL on any webhook actions
-	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
-
-	source, err := static.NewSource(json.RawMessage(testAssetsJSONStr))
-	if err != nil {
-		return runResult{}, errors.Wrapf(err, "error reading test assets '%s'", assetsPath)
-	}
-
-	sessionAssets, _ := engine.NewSessionAssets(source)
-
-	trigger, err := triggers.ReadTrigger(sessionAssets, rawTrigger, assets.PanicOnMissing)
+	trigger, err := triggers.ReadTrigger(sa, rawTrigger, assets.PanicOnMissing)
 	if err != nil {
 		return runResult{}, errors.Wrapf(err, "error unmarshalling trigger")
 	}
 
 	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
-	session := eng.NewSession(sessionAssets)
+	session := eng.NewSession(sa)
 
 	sprint, err := session.Start(trigger)
 	if err != nil {
@@ -137,7 +180,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 		outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
 
-		session, err = eng.ReadSession(sessionAssets, sessionJSON, assets.PanicOnMissing)
+		session, err = eng.ReadSession(sa, sessionJSON, assets.PanicOnMissing)
 		if err != nil {
 			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}
@@ -147,7 +190,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 			return runResult{}, errors.Errorf("did not stop at expected wait, have unused resumes: %#v", rawResumes[r:])
 		}
 
-		resume, err := resumes.ReadResume(sessionAssets, rawResume, assets.PanicOnMissing)
+		resume, err := resumes.ReadResume(sa, rawResume, assets.PanicOnMissing)
 		if err != nil {
 			return runResult{}, err
 		}
