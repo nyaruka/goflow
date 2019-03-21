@@ -1,14 +1,12 @@
 package routers
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/tests"
 	"github.com/nyaruka/goflow/utils"
 
@@ -125,42 +123,6 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 
 // PickExit determines which exit to take from a node
 func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
-	route, err := r.pickRoute(run, step)
-	if err != nil {
-		return "", err
-	}
-
-	// find the category
-	var category *Category
-	for _, c := range r.Categories_ {
-		if c.UUID() == route.categoryUUID {
-			category = c
-			break
-		}
-	}
-
-	if category == nil {
-		return "", errors.Errorf("category %s is not a valid category", route.categoryUUID)
-	}
-
-	// save result if we have a result name
-	if r.ResultName_ != "" {
-		// localize the category name
-		localizedCategory := run.GetText(utils.UUID(category.UUID()), "name", "")
-
-		var extraJSON json.RawMessage
-		if route.extra != nil {
-			extraJSON, _ = json.Marshal(route.extra)
-		}
-		result := flows.NewResult(r.ResultName_, route.match, category.Name(), localizedCategory, step.NodeUUID(), route.input, extraJSON, utils.Now())
-		run.SaveResult(result)
-		logEvent(events.NewRunResultChangedEvent(result))
-	}
-
-	return category.ExitUUID(), nil
-}
-
-func (r *SwitchRouter) pickRoute(run flows.FlowRun, step flows.Step) (*route, error) {
 	env := run.Environment()
 
 	// first evaluate our operand
@@ -169,11 +131,16 @@ func (r *SwitchRouter) pickRoute(run flows.FlowRun, step flows.Step) (*route, er
 		run.LogError(step, err)
 	}
 
-	var operandAsStr *string
+	// the ingredients for a result
+	var input *string
+	var match string
+	var categoryUUID flows.CategoryUUID
+	var extra map[string]string
+
 	if operand != nil {
 		asText, _ := types.ToXText(env, operand)
 		asString := asText.Native()
-		operandAsStr = &asString
+		input = &asString
 	}
 
 	// each of our cases
@@ -183,7 +150,7 @@ func (r *SwitchRouter) pickRoute(run flows.FlowRun, step flows.Step) (*route, er
 		// try to look up our function
 		xtest := tests.XTESTS[test]
 		if xtest == nil {
-			return nil, errors.Errorf("unknown case test '%s'", c.Type)
+			return "", errors.Errorf("unknown case test '%s'", c.Type)
 		}
 
 		// build our argument list
@@ -214,10 +181,13 @@ func (r *SwitchRouter) pickRoute(run flows.FlowRun, step flows.Step) (*route, er
 			if typedResult.Matched() {
 				resultAsStr, xerr := types.ToXText(env, typedResult.Match())
 				if xerr != nil {
-					return nil, xerr
+					return "", xerr
 				}
 
-				return newRoute(operandAsStr, resultAsStr.Native(), c.CategoryUUID, typedResult.Extra()), nil
+				match = resultAsStr.Native()
+				categoryUUID = c.CategoryUUID
+				extra = typedResult.Extra()
+				break
 			}
 		default:
 			panic(fmt.Sprintf("unexpected result type from test %v: %#v", xtest, result))
@@ -225,18 +195,18 @@ func (r *SwitchRouter) pickRoute(run flows.FlowRun, step flows.Step) (*route, er
 	}
 
 	// none of our cases matched, so try to use the default
-	if r.Default != "" {
+	if categoryUUID == "" && r.Default != "" {
 		// evaluate our operand as a string
 		value, xerr := types.ToXText(env, operand)
 		if xerr != nil {
 			run.LogError(step, xerr)
 		}
 
-		return newRoute(operandAsStr, value.Native(), r.Default, nil), nil
+		match = value.Native()
+		categoryUUID = r.Default
 	}
 
-	// no matches, no defaults, no route
-	return nil, nil
+	return r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
 }
 
 // Inspect inspects this object and any children

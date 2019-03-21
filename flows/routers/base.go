@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -80,6 +81,41 @@ func (r *BaseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 		}
 	}
 	return false
+}
+
+func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input *string, extra map[string]string, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+	if categoryUUID == "" {
+		return "", errors.New("switch router failed to pick an exit")
+	}
+
+	// find the actual category
+	var category *Category
+	for _, c := range r.Categories_ {
+		if c.UUID() == categoryUUID {
+			category = c
+			break
+		}
+	}
+
+	if category == nil {
+		return "", errors.Errorf("category %s is not a valid category", categoryUUID)
+	}
+
+	// save result if we have a result name
+	if r.ResultName_ != "" {
+		// localize the category name
+		localizedCategory := run.GetText(utils.UUID(category.UUID()), "name", "")
+
+		var extraJSON json.RawMessage
+		if extra != nil {
+			extraJSON, _ = json.Marshal(extra)
+		}
+		result := flows.NewResult(r.ResultName_, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, utils.Now())
+		run.SaveResult(result)
+		logEvent(events.NewRunResultChangedEvent(result))
+	}
+
+	return category.ExitUUID(), nil
 }
 
 //------------------------------------------------------------------------------------------
