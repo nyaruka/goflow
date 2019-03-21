@@ -1,3 +1,7 @@
+v0.30.1
+----------
+ * Don't try to validate a subflow which is missing
+
 v0.30.0
 ----------
  * Fix HasDate tests to compare dates in env timezone
