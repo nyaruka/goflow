@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -21,21 +22,21 @@ const TypeSwitch string = "switch"
 
 // Case represents a single case and test in our switch
 type Case struct {
-	UUID        utils.UUID     `json:"uuid"                 validate:"required"`
-	Type        string         `json:"type"                 validate:"required"`
-	Arguments   []string       `json:"arguments,omitempty"`
-	OmitOperand bool           `json:"omit_operand,omitempty"`
-	ExitUUID    flows.ExitUUID `json:"exit_uuid"            validate:"required"`
+	UUID         utils.UUID         `json:"uuid"                   validate:"required"`
+	Type         string             `json:"type"                   validate:"required"`
+	Arguments    []string           `json:"arguments,omitempty"`
+	OmitOperand  bool               `json:"omit_operand,omitempty"`
+	CategoryUUID flows.CategoryUUID `json:"category_uuid"          validate:"required"`
 }
 
 // NewCase creates a new case
-func NewCase(uuid utils.UUID, type_ string, arguments []string, omitOperand bool, exitUUID flows.ExitUUID) *Case {
+func NewCase(uuid utils.UUID, type_ string, arguments []string, omitOperand bool, categoryUUID flows.CategoryUUID) *Case {
 	return &Case{
-		UUID:        uuid,
-		Type:        type_,
-		Arguments:   arguments,
-		OmitOperand: omitOperand,
-		ExitUUID:    exitUUID,
+		UUID:         uuid,
+		Type:         type_,
+		Arguments:    arguments,
+		OmitOperand:  omitOperand,
+		CategoryUUID: categoryUUID,
 	}
 }
 
@@ -85,19 +86,19 @@ func (c *Case) EnumerateDependencies(localization flows.Localization, include fu
 func (c *Case) EnumerateResultNames(include func(string)) {}
 
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
-// whichever case returns true, or if none do, then taking the default exit
+// whichever case returns true, or if none do, then taking the default category
 type SwitchRouter struct {
 	BaseRouter
-	Default flows.ExitUUID `json:"default_exit_uuid"   validate:"omitempty,uuid4"`
-	Operand string         `json:"operand"             validate:"required"`
-	Cases   []*Case        `json:"cases"`
+	Operand string             `json:"operand"             validate:"required"`
+	Cases   []*Case            `json:"cases"`
+	Default flows.CategoryUUID `json:"default_category_uuid"   validate:"omitempty,uuid4"`
 }
 
 // NewSwitchRouter creates a new switch router
-func NewSwitchRouter(defaultExit flows.ExitUUID, operand string, cases []*Case, resultName string) *SwitchRouter {
+func NewSwitchRouter(resultName string, categories []*Category, operand string, cases []*Case, defaultCategory flows.CategoryUUID) *SwitchRouter {
 	return &SwitchRouter{
-		BaseRouter: newBaseRouter(TypeSwitch, resultName),
-		Default:    defaultExit,
+		BaseRouter: newBaseRouter(TypeSwitch, resultName, categories),
+		Default:    defaultCategory,
 		Operand:    operand,
 		Cases:      cases,
 	}
@@ -105,34 +106,23 @@ func NewSwitchRouter(defaultExit flows.ExitUUID, operand string, cases []*Case, 
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(exits []flows.Exit) error {
-	// helper to look for the given exit UUID
-	hasExit := func(exitUUID flows.ExitUUID) bool {
-		found := false
-		for _, e := range exits {
-			if e.UUID() == exitUUID {
-				found = true
-				break
-			}
-		}
-		return found
+	// check the default category is valid
+	if r.Default != "" && !r.isValidCategory(r.Default) {
+		return errors.Errorf("default category %s is not a valid category", r.Default)
 	}
 
-	if r.Default != "" && !hasExit(r.Default) {
-		return errors.Errorf("default exit %s is not a valid exit", r.Default)
-	}
-
+	// check each case points to a valid category
 	for _, c := range r.Cases {
-		if !hasExit(c.ExitUUID) {
-			return errors.Errorf("case exit %s is not a valid exit", c.ExitUUID)
+		if !r.isValidCategory(c.CategoryUUID) {
+			return errors.Errorf("case category %s is not a valid category", c.CategoryUUID)
 		}
 	}
 
-	return nil
+	return r.validate(exits)
 }
 
-// PickRoute evaluates each of the tests on our cases in order, returning the exit for the first case which
-// evaluates to a true. If no cases evaluate to true, then the default exit (if specified) is returned
-func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (*string, flows.Route, error) {
+// PickExit determines which exit to take from a node
+func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
 	env := run.Environment()
 
 	// first evaluate our operand
@@ -141,11 +131,16 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		run.LogError(step, err)
 	}
 
-	var operandAsStr *string
+	// the ingredients for a result
+	var input *string
+	var match string
+	var categoryUUID flows.CategoryUUID
+	var extra map[string]string
+
 	if operand != nil {
 		asText, _ := types.ToXText(env, operand)
 		asString := asText.Native()
-		operandAsStr = &asString
+		input = &asString
 	}
 
 	// each of our cases
@@ -155,7 +150,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		// try to look up our function
 		xtest := tests.XTESTS[test]
 		if xtest == nil {
-			return nil, flows.NoRoute, errors.Errorf("unknown test '%s', taking no exit", c.Type)
+			return "", errors.Errorf("unknown case test '%s'", c.Type)
 		}
 
 		// build our argument list
@@ -182,35 +177,36 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		case types.XError:
 			// test functions can return an error
 			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typedResult.Error()))
-			continue
 		case tests.XTestResult:
-			// looks truthy, lets return this exit
 			if typedResult.Matched() {
 				resultAsStr, xerr := types.ToXText(env, typedResult.Match())
 				if xerr != nil {
-					return nil, flows.NoRoute, xerr
+					return "", xerr
 				}
 
-				return operandAsStr, flows.NewRoute(c.ExitUUID, resultAsStr.Native(), typedResult.Extra()), nil
+				match = resultAsStr.Native()
+				categoryUUID = c.CategoryUUID
+				extra = typedResult.Extra()
+				break
 			}
 		default:
-			return nil, flows.NoRoute, errors.Errorf("unexpected result type from test %v: %#v", xtest, result)
+			panic(fmt.Sprintf("unexpected result type from test %v: %#v", xtest, result))
 		}
 	}
 
-	// we have a default exit, use that
-	if r.Default != "" {
+	// none of our cases matched, so try to use the default
+	if categoryUUID == "" && r.Default != "" {
 		// evaluate our operand as a string
 		value, xerr := types.ToXText(env, operand)
 		if xerr != nil {
 			run.LogError(step, xerr)
 		}
 
-		return operandAsStr, flows.NewRoute(r.Default, value.Native(), nil), nil
+		match = value.Native()
+		categoryUUID = r.Default
 	}
 
-	// no matches, no defaults, no route
-	return operandAsStr, flows.NoRoute, nil
+	return r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
 }
 
 // Inspect inspects this object and any children

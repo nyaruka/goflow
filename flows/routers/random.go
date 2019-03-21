@@ -20,25 +20,24 @@ type RandomRouter struct {
 }
 
 // NewRandomRouter creates a new random router
-func NewRandomRouter(resultName string) *RandomRouter {
-	return &RandomRouter{newBaseRouter(TypeRandom, resultName)}
+func NewRandomRouter(resultName string, categories []*Category) *RandomRouter {
+	return &RandomRouter{newBaseRouter(TypeRandom, resultName, categories)}
 }
 
 // Validate validates that the fields on this router are valid
 func (r *RandomRouter) Validate(exits []flows.Exit) error {
-	return utils.Validate(r)
+	return r.validate(exits)
 }
 
-// PickRoute picks a route randomly from our available exits
-func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (*string, flows.Route, error) {
-	if len(exits) == 0 {
-		return nil, flows.NoRoute, nil
-	}
-
-	// pick a random exit
+// PickExit determines which exit to take from a node
+func (r *RandomRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+	// pick a random category
 	rand := utils.RandDecimal()
-	exitNum := rand.Mul(decimal.New(int64(len(exits)), 0)).IntPart()
-	return nil, flows.NewRoute(exits[exitNum].UUID(), rand.String(), nil), nil
+	categoryNum := rand.Mul(decimal.New(int64(len(r.Categories_)), 0)).IntPart()
+	categoryUUID := r.Categories_[categoryNum].UUID()
+
+	// TODO should raw rand value be iput and category number the match ?
+	return r.routeToCategory(run, step, categoryUUID, rand.String(), nil, nil, logEvent)
 }
 
 // Inspect inspects this object and any children

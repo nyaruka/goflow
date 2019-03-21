@@ -22,7 +22,7 @@
                     "exits": [
                         {
                             "uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
-                            "destination_node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
+                            "destination_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
                         }
                     ]
                 },
@@ -38,7 +38,7 @@
                     "exits": [
                         {
                             "uuid": "58ce5f18-83a5-4d90-8489-c48bca5837bb",
-                            "destination_node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
+                            "destination_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
                         }
                     ]
                 },
@@ -69,7 +69,24 @@
                     "router": {
                         "type": "switch",
                         "result_name": "Command",
-                        "default_exit_uuid": "2aed2241-1003-45d5-a77b-060a5b444a00",
+                        "categories": [
+                            {
+                                "uuid": "eb8ad51c-35a1-425a-99bf-688a4c389325",
+                                "name": "Name",
+                                "exit_uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612"
+                            },
+                            {
+                                "uuid": "403d36b6-72ea-4ac0-b7d9-07581695c4b7",
+                                "name": "Exit",
+                                "exit_uuid": "5530b3d4-64e5-44ee-b68d-ab0913aab2b0"
+                            },
+                            {
+                                "uuid": "2aed2241-1003-45d5-a77b-060a5b444a00",
+                                "name": "Other",
+                                "exit_uuid": "6d8ef50f-d063-458e-b4e8-48f39cc91576"
+                            }
+                        ],
+                        "default_category_uuid": "2aed2241-1003-45d5-a77b-060a5b444a00",
                         "operand": "@input",
                         "cases": [
                             {
@@ -78,7 +95,7 @@
                                 "arguments": [
                                     "name"
                                 ],
-                                "exit_uuid": "eb8ad51c-35a1-425a-99bf-688a4c389325"
+                                "category_uuid": "eb8ad51c-35a1-425a-99bf-688a4c389325"
                             },
                             {
                                 "uuid": "9fd19bf1-dabc-4b68-a179-fa4b8369a257",
@@ -86,24 +103,21 @@
                                 "arguments": [
                                     "exit"
                                 ],
-                                "exit_uuid": "403d36b6-72ea-4ac0-b7d9-07581695c4b7"
+                                "category_uuid": "403d36b6-72ea-4ac0-b7d9-07581695c4b7"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "eb8ad51c-35a1-425a-99bf-688a4c389325",
-                            "destination_node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
-                            "name": "Name"
+                            "uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612",
+                            "destination_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba"
                         },
                         {
-                            "uuid": "403d36b6-72ea-4ac0-b7d9-07581695c4b7",
-                            "name": "Exit"
+                            "uuid": "5530b3d4-64e5-44ee-b68d-ab0913aab2b0"
                         },
                         {
-                            "uuid": "2aed2241-1003-45d5-a77b-060a5b444a00",
-                            "destination_node_uuid": "99a9c871-2b36-483a-9956-550a2025d4df",
-                            "name": "Other"
+                            "uuid": "6d8ef50f-d063-458e-b4e8-48f39cc91576",
+                            "destination_uuid": "99a9c871-2b36-483a-9956-550a2025d4df"
                         }
                     ]
                 }
@@ -131,7 +145,7 @@
                     "exits": [
                         {
                             "uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
-                            "destination_node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61"
+                            "destination_uuid": "9b24a837-6c15-4231-8661-72971bb00a61"
                         }
                     ]
                 },
@@ -147,7 +161,7 @@
                     "exits": [
                         {
                             "uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
-                            "destination_node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08"
+                            "destination_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08"
                         }
                     ]
                 },

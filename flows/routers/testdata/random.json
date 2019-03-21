@@ -3,7 +3,24 @@
         "description": "Result created with random value",
         "router": {
             "type": "random",
-            "result_name": "Random Result"
+            "result_name": "Random Result",
+            "categories": [
+                {
+                    "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                    "name": "Yes",
+                    "exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
+                },
+                {
+                    "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                    "name": "No",
+                    "exit_uuid": "5bd6a427-2b9a-4a4d-ad3f-eb39eaaa7e5a"
+                },
+                {
+                    "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                    "name": "Other",
+                    "exit_uuid": "b787ffe3-c21a-46ad-9475-954614b52477"
+                }
+            ]
         },
         "results": {
             "random_result": {

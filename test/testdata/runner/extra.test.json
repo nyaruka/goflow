@@ -217,7 +217,7 @@
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:06.123456789Z",
-                                "exit_uuid": "96119ebb-8c08-47bd-bbff-6cd94adf64b5",
+                                "exit_uuid": "1671d236-2de5-4e44-b2af-064a3b9c9b45",
                                 "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
@@ -508,13 +508,13 @@
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:06.123456789Z",
-                                "exit_uuid": "96119ebb-8c08-47bd-bbff-6cd94adf64b5",
+                                "exit_uuid": "1671d236-2de5-4e44-b2af-064a3b9c9b45",
                                 "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:11.123456789Z",
-                                "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                                "exit_uuid": "e63af3a0-4c7c-469e-8c5a-01cc38ab872d",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },

@@ -18,25 +18,35 @@
                     ],
                     "router": {
                         "type": "switch",
-                        "default_exit_uuid": "e55e6b52-e934-4d20-a761-49ebcc0303aa",
+                        "categories": [
+                            {
+                                "uuid": "e55e6b52-e934-4d20-a761-49ebcc0303aa",
+                                "name": "Run Child",
+                                "exit_uuid": "f4c88a91-e1b7-4ccf-9919-b423eb3cfc3c"
+                            },
+                            {
+                                "uuid": "4f6d624e-e699-4196-9b2e-b371c13bf086",
+                                "name": "Exit",
+                                "exit_uuid": "5e11ad89-2ed0-44e5-b5ff-38448983bf15"
+                            }
+                        ],
+                        "default_category_uuid": "e55e6b52-e934-4d20-a761-49ebcc0303aa",
                         "operand": "@contact.fields.activation_token",
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                                 "type": "has_text",
-                                "exit_uuid": "4f6d624e-e699-4196-9b2e-b371c13bf086"
+                                "category_uuid": "4f6d624e-e699-4196-9b2e-b371c13bf086"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "e55e6b52-e934-4d20-a761-49ebcc0303aa",
-                            "name": "Run Child",
-                            "destination_node_uuid": "48b59851-017e-4d84-a4d9-fcefc7399e98"
+                            "uuid": "f4c88a91-e1b7-4ccf-9919-b423eb3cfc3c",
+                            "destination_uuid": "48b59851-017e-4d84-a4d9-fcefc7399e98"
                         },
                         {
-                            "uuid": "4f6d624e-e699-4196-9b2e-b371c13bf086",
-                            "name": "Exit"
+                            "uuid": "5e11ad89-2ed0-44e5-b5ff-38448983bf15"
                         }
                     ]
                 },
@@ -55,7 +65,7 @@
                     "exits": [
                         {
                             "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
-                            "destination_node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
+                            "destination_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
                         }
                     ]
                 },
@@ -98,8 +108,7 @@
                     "exits": [
                         {
                             "uuid": "f72c2fe8-c61f-498b-8976-1deb589a8b9b",
-                            "name": "All Responses",
-                            "destination_node_uuid": "f1ecb42a-cf88-47dd-81b1-d7568ef0d219"
+                            "destination_uuid": "f1ecb42a-cf88-47dd-81b1-d7568ef0d219"
                         }
                     ]
                 },
@@ -122,6 +131,11 @@
                                 "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                                 "name": "Parent Flow"
                             }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "f7ed461f-2392-4549-aaba-f69beb1bdc50"
                         }
                     ]
                 }

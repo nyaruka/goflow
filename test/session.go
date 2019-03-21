@@ -62,7 +62,7 @@ var sessionAssets = `{
                     "exits": [
                         {
                             "uuid": "d7a36118-0a38-4b35-a7e4-ae89042f0d3c",
-                            "destination_node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
+                            "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
                         }
                     ]
                 },
@@ -74,14 +74,20 @@ var sessionAssets = `{
                     },
                     "router": {
                         "type": "switch",
-                        "default_exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-                        "operand": "@input"
+                        "categories": [
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "All Responses",
+                                "exit_uuid": "100f2d68-2481-4137-a0a3-177620ba3c5f"
+                            }
+                        ],
+                        "operand": "@input",
+                        "default_category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
                     },
                     "exits": [
                         {
-                            "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-                            "name": "All Responses",
-                            "destination_node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03"
+                            "uuid": "100f2d68-2481-4137-a0a3-177620ba3c5f",
+                            "destination_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03"
                         }
                     ]
                 },
@@ -118,7 +124,7 @@ var sessionAssets = `{
                     "exits": [
                         {
                             "uuid": "d898f9a4-f0fc-4ac4-a639-c98c602bb511",
-                            "destination_node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325"
+                            "destination_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325"
                         }
                     ]
                 },
@@ -363,10 +369,12 @@ var voiceSessionAssets = `{
             "nodes": [
                 {
                     "uuid": "6da04a32-6c84-40d9-b614-3782fde7af80",
-                    "type": "set_run_result",
-                    "name": "Age",
-                    "value": "23",
-                    "category": "Youth"
+                    "actions": [],
+                    "exits": [
+                        {
+                            "uuid": "9082b6ec-a65f-4677-8b3c-2f8de402ff13"
+                        }
+                    ]
                 }
             ]
         }

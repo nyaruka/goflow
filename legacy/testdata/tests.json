@@ -6,13 +6,13 @@
             "max": "34"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_between",
             "arguments": [
                 "@contact.fields.age",
                 "34"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -25,16 +25,16 @@
             }
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_all_words",
             "arguments": [
                 "yes yeah @contact.fields.affirmative"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {
             "fra": {
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "692926ea-09d6-4942-bd38-d266ec8d3716": {
                     "arguments": [
                         "oui @contact.fields.affirmative"
                     ]
@@ -51,16 +51,16 @@
             }
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_any_word",
             "arguments": [
                 "yes yeah"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {
             "fra": {
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "692926ea-09d6-4942-bd38-d266ec8d3716": {
                     "arguments": [
                         "oui"
                     ]
@@ -74,12 +74,12 @@
             "test": "oops not a dict"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_any_word",
             "arguments": [
                 "oops not a dict"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -92,16 +92,16 @@
             }
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_only_phrase",
             "arguments": [
                 "yes yeah"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {
             "fra": {
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "692926ea-09d6-4942-bd38-d266ec8d3716": {
                     "arguments": [
                         "oui"
                     ]
@@ -118,16 +118,16 @@
             }
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_phrase",
             "arguments": [
                 "yes yeah"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {
             "fra": {
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "692926ea-09d6-4942-bd38-d266ec8d3716": {
                     "arguments": [
                         "oui"
                     ]
@@ -140,9 +140,9 @@
             "type": "date"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_date",
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -152,12 +152,12 @@
             "test": "27-7-2017"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_date_gt",
             "arguments": [
                 "27-7-2017"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -167,12 +167,12 @@
             "test": "@date.yesterday"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_date_gt",
             "arguments": [
                 "@(format_date(datetime_add(now(), -1, \"D\")))"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -182,12 +182,12 @@
             "test": "27-7-2017"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_date_lt",
             "arguments": [
                 "27-7-2017"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -197,12 +197,12 @@
             "test": "27-7-2017"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_date_eq",
             "arguments": [
                 "27-7-2017"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -212,12 +212,12 @@
             "test": "@flow.state"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_district",
             "arguments": [
                 "@results.state"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -226,9 +226,9 @@
             "type": "has_email"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_email",
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -238,12 +238,12 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_eq",
             "arguments": [
                 "@contact.fields.age"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -253,12 +253,12 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_gt",
             "arguments": [
                 "@contact.fields.age"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -268,12 +268,12 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_gte",
             "arguments": [
                 "@contact.fields.age"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -286,12 +286,12 @@
             }
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_group",
             "arguments": [
                 "e9963476-1751-4078-9cc8-32a01283751a"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -301,12 +301,12 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_lt",
             "arguments": [
                 "@contact.fields.age"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -316,12 +316,12 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_lte",
             "arguments": [
                 "@contact.fields.age"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -330,9 +330,9 @@
             "type": "not_empty"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_text",
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -341,9 +341,9 @@
             "type": "number"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number",
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -352,9 +352,9 @@
             "type": "phone"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_phone",
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -367,16 +367,16 @@
             }
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_pattern",
             "arguments": [
                 "[Yy]eah? \\w"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {
             "fra": {
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "692926ea-09d6-4942-bd38-d266ec8d3716": {
                     "arguments": [
                         "[Oo]ui"
                     ]
@@ -393,16 +393,16 @@
             }
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_beginning",
             "arguments": [
                 "yes"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {
             "fra": {
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "692926ea-09d6-4942-bd38-d266ec8d3716": {
                     "arguments": [
                         "oui"
                     ]
@@ -415,9 +415,9 @@
             "type": "state"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_state",
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -427,12 +427,12 @@
             "exit_type": "completed"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "is_text_eq",
             "arguments": [
                 "completed"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -442,12 +442,12 @@
             "exit_type": "expired"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "is_text_eq",
             "arguments": [
                 "expired"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -458,13 +458,13 @@
             "district": "@flow.district"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_ward",
             "arguments": [
                 "@results.district",
                 "@results.state"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -474,12 +474,12 @@
             "status": "success"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "is_text_eq",
             "arguments": [
                 "Success"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     },
@@ -489,12 +489,12 @@
             "status": "failure"
         },
         "expected_case": {
-            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "is_text_eq",
             "arguments": [
                 "Failure"
             ],
-            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
         "expected_localization": {}
     }

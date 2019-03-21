@@ -12,11 +12,10 @@
                 "categories": [
                     {
                         "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
-                        "name": "Default",
-                        "exit_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                        "name": "Default"
                     }
                 ],
-                "default_category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
                 "result_name": "name",
                 "operand": "@contact.fields.gender",
                 "cases": [

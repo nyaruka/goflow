@@ -28,7 +28,7 @@
                     "exits": [
                         {
                             "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
-                            "destination_node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
+                            "destination_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
                         }
                     ]
                 },

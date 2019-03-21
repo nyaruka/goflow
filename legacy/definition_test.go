@@ -50,7 +50,7 @@ var legacyTestHolderDef = `
 		"ruleset_type": "wait_message", 
 		"label": "Name", 
 		"operand": "@step.value", 
-		"finished_key": null, 
+		"finished_key": null,
 		"response_type": "", 
 		"y": 0, 
 		"x": 100, 
@@ -117,7 +117,6 @@ type TestMigrationTest struct {
 
 type RuleSetMigrationTest struct {
 	LegacyRuleSet        json.RawMessage `json:"legacy_ruleset"`
-	CollapseExits        bool            `json:"collapse_exits"`
 	ExpectedNode         json.RawMessage `json:"expected_node"`
 	ExpectedLocalization json.RawMessage `json:"expected_localization"`
 	ExpectedUI           json.RawMessage `json:"expected_ui"`
@@ -139,7 +138,7 @@ func TestFlowMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(tc.Legacy)
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(true, true, "https://myfiles.com")
+		migratedFlow, err := legacyFlow.Migrate(true, "https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedFlowJSON, err := json.Marshal(migratedFlow)
@@ -162,7 +161,7 @@ func TestActionMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(true, false, "https://myfiles.com")
+		migratedFlow, err := legacyFlow.Migrate(false, "https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
@@ -192,7 +191,7 @@ func TestTestMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(true, false, "https://myfiles.com")
+		migratedFlow, err := legacyFlow.Migrate(false, "https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedRouter := migratedFlow.Nodes()[0].Router().(*routers.SwitchRouter)
@@ -228,7 +227,7 @@ func TestRuleSetMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(tc.CollapseExits, true, "https://myfiles.com")
+		migratedFlow, err := legacyFlow.Migrate(true, "https://myfiles.com")
 		require.NoError(t, err)
 
 		// check we now have a new node in addition to the 3 actionsets used as destinations

@@ -23,7 +23,19 @@
                     ],
                     "router": {
                         "type": "switch",
-                        "default_exit_uuid": "",
+                        "categories": [
+                            {
+                                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                                "name": "Success",
+                                "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                            },
+                            {
+                                "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                                "name": "Failure",
+                                "exit_uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                            }
+                        ],
+                        "default_category_uuid": "",
                         "operand": "@results.transfer.category",
                         "cases": [
                             {
@@ -32,7 +44,7 @@
                                 "arguments": [
                                     "Success"
                                 ],
-                                "exit_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                                "category_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
                             },
                             {
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -40,20 +52,16 @@
                                 "arguments": [
                                     "Failure"
                                 ],
-                                "exit_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
+                                "category_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
-                            "destination_node_uuid": null,
-                            "name": "Success"
+                            "uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
                         },
                         {
-                            "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
-                            "destination_node_uuid": null,
-                            "name": "Failure"
+                            "uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
                         }
                     ]
                 }

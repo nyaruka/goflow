@@ -12,6 +12,9 @@ import (
 // NodeUUID is a UUID of a flow node
 type NodeUUID utils.UUID
 
+// CategoryUUID is the UUID of a node category
+type CategoryUUID utils.UUID
+
 // ExitUUID is the UUID of a node exit
 type ExitUUID utils.UUID
 
@@ -209,15 +212,15 @@ type Router interface {
 	utils.Typed
 	Inspectable
 
-	PickRoute(FlowRun, []Exit, Step) (*string, Route, error)
-	Validate([]Exit) error
 	ResultName() string
+
+	PickExit(FlowRun, Step, EventCallback) (ExitUUID, error)
+	Validate([]Exit) error
 }
 
 type Exit interface {
 	UUID() ExitUUID
-	DestinationNodeUUID() NodeUUID
-	Name() string
+	DestinationUUID() NodeUUID
 }
 
 type Wait interface {

@@ -57,200 +57,71 @@
             "x": 100,
             "config": {}
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+            "wait": {
+                "type": "msg"
+            },
             "router": {
                 "type": "switch",
                 "result_name": "Beer",
-                "default_exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
-                "operand": "@input",
-                "cases": [
+                "categories": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_any_word",
-                        "arguments": [
-                            "yeah yes"
-                        ],
+                        "name": "Yes",
                         "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
                     },
                     {
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_any_word",
-                        "arguments": [
-                            "affirmative"
-                        ],
-                        "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
+                        "name": "Other",
+                        "exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8"
                     }
-                ]
-            },
-            "exits": [
-                {
-                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Yes"
-                },
-                {
-                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Other"
-                }
-            ],
-            "wait": {
-                "type": "msg"
-            }
-        },
-        "expected_localization": {
-            "fra": {
-                "1fc4c133-d038-4f75-a69e-6e7e3190e5d8": {
-                    "name": [
-                        "Autre"
-                    ]
-                },
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
-                    "arguments": [
-                        "oui"
-                    ]
-                },
-                "ea304225-332e-49d4-9768-1e804cd0b6c2": {
-                    "name": [
-                        "Oui"
-                    ]
-                }
-            }
-        },
-        "expected_ui": {
-            "type": "wait_for_response",
-            "position": {
-                "left": 100,
-                "top": 0
-            }
-        }
-    },
-    {
-        "legacy_ruleset": {
-            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-            "rules": [
-                {
-                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
-                    "test": {
-                        "test": {
-                            "eng": "yeah yes",
-                            "fra": "oui"
-                        },
-                        "type": "contains_any"
-                    },
-                    "category": {
-                        "eng": "Yes",
-                        "fra": "Oui"
-                    },
-                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "destination_type": "A"
-                },
-                {
-                    "uuid": "633dfe67-988e-4190-a95f-70f477494032",
-                    "test": {
-                        "test": {
-                            "eng": "affirmative"
-                        },
-                        "type": "contains_any"
-                    },
-                    "category": {
-                        "eng": "Yes",
-                        "fra": "Oui"
-                    },
-                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "destination_type": "A"
-                },
-                {
-                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
-                    "test": {
-                        "test": "true",
-                        "type": "true"
-                    },
-                    "category": {
-                        "eng": "Other",
-                        "fra": "Autre"
-                    },
-                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "destination_type": "A"
-                }
-            ],
-            "ruleset_type": "wait_message",
-            "label": "Beer",
-            "operand": "@step.value",
-            "finished_key": null,
-            "response_type": "",
-            "y": 0,
-            "x": 100,
-            "config": {}
-        },
-        "collapse_exits": false,
-        "expected_node": {
-            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-            "router": {
-                "type": "switch",
-                "result_name": "Beer",
-                "default_exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                ],
                 "operand": "@input",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                         "type": "has_any_word",
                         "arguments": [
                             "yeah yes"
                         ],
-                        "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                         "type": "has_any_word",
                         "arguments": [
                             "affirmative"
                         ],
-                        "exit_uuid": "633dfe67-988e-4190-a95f-70f477494032"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     }
-                ]
+                ],
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
             },
             "exits": [
                 {
                     "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Yes"
-                },
-                {
-                    "uuid": "633dfe67-988e-4190-a95f-70f477494032",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Yes"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Other"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
-            ],
-            "wait": {
-                "type": "msg"
-            }
+            ]
         },
         "expected_localization": {
             "fra": {
-                "1fc4c133-d038-4f75-a69e-6e7e3190e5d8": {
+                "692926ea-09d6-4942-bd38-d266ec8d3716": {
                     "name": [
                         "Autre"
                     ]
                 },
-                "633dfe67-988e-4190-a95f-70f477494032": {
-                    "name": [
-                        "Oui"
-                    ]
-                },
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "8720f157-ca1c-432f-9c0b-2014ddc77094": {
                     "arguments": [
                         "oui"
                     ]
                 },
-                "ea304225-332e-49d4-9768-1e804cd0b6c2": {
+                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
                     "name": [
                         "Oui"
                     ]
@@ -324,76 +195,89 @@
             "x": 323,
             "config": {}
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "d3cf1b16-9f1e-46b4-a0c1-a57d29eb99b9",
             "router": {
                 "type": "switch",
                 "result_name": "Response 1",
-                "default_exit_uuid": "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035",
+                "categories": [
+                    {
+                        "exit_uuid": "2b8a87c9-3262-4dd7-ab57-b099f362b075",
+                        "name": "Male",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "f966c0ac-1c17-4876-8c88-32495490a987",
+                        "name": "Female",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    },
+                    {
+                        "exit_uuid": "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035",
+                        "name": "Other",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ],
                 "operand": "@(if(is_error(contact.fields.gender), \"@contact.gender\", contact.fields.gender))",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_any_word",
                         "arguments": [
                             "male"
                         ],
-                        "exit_uuid": "2b8a87c9-3262-4dd7-ab57-b099f362b075"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_any_word",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_any_word",
                         "arguments": [
                             "female"
                         ],
-                        "exit_uuid": "f966c0ac-1c17-4876-8c88-32495490a987"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_any_word",
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     }
-                ]
+                ],
+                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
             },
             "exits": [
                 {
-                    "uuid": "2b8a87c9-3262-4dd7-ab57-b099f362b075",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Male"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "uuid": "2b8a87c9-3262-4dd7-ab57-b099f362b075"
                 },
                 {
-                    "uuid": "f966c0ac-1c17-4876-8c88-32495490a987",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Female"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "uuid": "f966c0ac-1c17-4876-8c88-32495490a987"
                 },
                 {
-                    "uuid": "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035",
-                    "destination_node_uuid": "42ff72d3-5f4d-4dbf-89c9-8a97864dabcd",
-                    "name": "Other"
+                    "destination_uuid": "42ff72d3-5f4d-4dbf-89c9-8a97864dabcd",
+                    "uuid": "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035"
                 }
             ]
         },
         "expected_localization": {
             "fra": {
-                "2b8a87c9-3262-4dd7-ab57-b099f362b075": {
-                    "name": [
-                        "Homme"
-                    ]
-                },
-                "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035": {
-                    "name": [
-                        "Autre"
-                    ]
-                },
-                "692926ea-09d6-4942-bd38-d266ec8d3716": {
+                "5802813d-6c58-4292-8228-9728778b6c98": {
                     "arguments": [
                         "femme"
                     ]
                 },
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "692926ea-09d6-4942-bd38-d266ec8d3716": {
+                    "name": [
+                        "Femme"
+                    ]
+                },
+                "8720f157-ca1c-432f-9c0b-2014ddc77094": {
+                    "name": [
+                        "Autre"
+                    ]
+                },
+                "c34b6c7d-fa06-4563-92a3-d648ab64bccb": {
                     "arguments": [
                         "homme"
                     ]
                 },
-                "f966c0ac-1c17-4876-8c88-32495490a987": {
+                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
                     "name": [
-                        "Femme"
+                        "Homme"
                     ]
                 }
             }
@@ -460,53 +344,66 @@
             "x": 100,
             "config": {}
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+            "wait": {
+                "type": "msg"
+            },
             "router": {
                 "type": "switch",
                 "result_name": "Beer",
-                "default_exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                "categories": [
+                    {
+                        "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
+                        "name": "This",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "633dfe67-988e-4190-a95f-70f477494032",
+                        "name": "Other",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    },
+                    {
+                        "exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                        "name": "Other",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ],
                 "operand": "@input",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_any_word",
                         "arguments": [
                             "this"
                         ],
-                        "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_any_word",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_any_word",
                         "arguments": [
                             "other"
                         ],
-                        "exit_uuid": "633dfe67-988e-4190-a95f-70f477494032"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_any_word",
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     }
-                ]
+                ],
+                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
             },
             "exits": [
                 {
-                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "This"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
                 },
                 {
-                    "uuid": "633dfe67-988e-4190-a95f-70f477494032",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Other"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "uuid": "633dfe67-988e-4190-a95f-70f477494032"
                 },
                 {
-                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Other"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8"
                 }
-            ],
-            "wait": {
-                "type": "msg"
-            }
+            ]
         },
         "expected_localization": {},
         "expected_ui": {
@@ -557,48 +454,57 @@
             "x": 5,
             "config": {}
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "bd531ace-911e-4722-8e53-6730d6122fe1",
+            "wait": {
+                "type": "msg"
+            },
             "router": {
                 "type": "switch",
                 "result_name": "age",
-                "default_exit_uuid": "",
+                "categories": [
+                    {
+                        "exit_uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6",
+                        "name": "Too Young",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa",
+                        "name": "Permitted",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
                 "operand": "@input",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_number_lt",
                         "arguments": [
                             "10"
                         ],
-                        "exit_uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_number_lt",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_number_gte",
                         "arguments": [
                             "10"
                         ],
-                        "exit_uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_number_gte",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     }
-                ]
+                ],
+                "default_category_uuid": ""
             },
             "exits": [
                 {
                     "uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Too Young"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Permitted"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
-            ],
-            "wait": {
-                "type": "msg"
-            }
+            ]
         },
         "expected_localization": {},
         "expected_ui": {
@@ -635,27 +541,32 @@
             "operand": "@step.value",
             "config": {}
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "bf8bcadf-7a26-4c4b-a5ab-577987ac3c20",
-            "router": {
-                "type": "switch",
-                "result_name": "Selfie",
-                "default_exit_uuid": "b26f9640-93b4-409e-b65e-7d0ee1e886dd",
-                "operand": "@input",
-                "cases": []
-            },
             "wait": {
                 "type": "msg",
                 "hint": {
                     "type": "image"
                 }
             },
+            "router": {
+                "type": "switch",
+                "result_name": "Selfie",
+                "categories": [
+                    {
+                        "exit_uuid": "b26f9640-93b4-409e-b65e-7d0ee1e886dd",
+                        "name": "All Responses",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
+                ],
+                "operand": "@input",
+                "cases": [],
+                "default_category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            },
             "exits": [
                 {
                     "uuid": "b26f9640-93b4-409e-b65e-7d0ee1e886dd",
-                    "name": "All Responses",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 }
             ]
         },
@@ -709,13 +620,12 @@
                 "webhook_action": "GET"
             }
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
             "actions": [
                 {
                     "type": "call_webhook",
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "method": "GET",
                     "url": "http://example.com?name=@(url_encode(contact.name))",
                     "result_name": "Response 1"
@@ -723,37 +633,47 @@
             ],
             "router": {
                 "type": "switch",
-                "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                "categories": [
+                    {
+                        "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
+                        "name": "Success",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                        "name": "Failure",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
                 "operand": "@results.response_1.category",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "is_text_eq",
                         "arguments": [
                             "Success"
                         ],
-                        "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "is_text_eq",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "is_text_eq",
                         "arguments": [
                             "Failure"
                         ],
-                        "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "is_text_eq",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     }
-                ]
+                ],
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
             },
             "exits": [
                 {
                     "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Success"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Failure"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
             ]
         },
@@ -817,13 +737,12 @@
                 ]
             }
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
             "actions": [
                 {
                     "type": "call_webhook",
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "method": "POST",
                     "url": "http://example.com",
                     "headers": {
@@ -837,37 +756,47 @@
             ],
             "router": {
                 "type": "switch",
-                "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                "categories": [
+                    {
+                        "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
+                        "name": "Success",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                        "name": "Failure",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
                 "operand": "@results.response_1.category",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "is_text_eq",
                         "arguments": [
                             "Success"
                         ],
-                        "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "is_text_eq",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "is_text_eq",
                         "arguments": [
                             "Failure"
                         ],
-                        "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "is_text_eq",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     }
-                ]
+                ],
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
             },
             "exits": [
                 {
                     "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Success"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Failure"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
             ]
         },
@@ -920,50 +849,59 @@
                 "resthook": "new-registration"
             }
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
             "actions": [
                 {
                     "type": "call_resthook",
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "resthook": "new-registration",
                     "result_name": "Response 1"
                 }
             ],
             "router": {
                 "type": "switch",
-                "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                "categories": [
+                    {
+                        "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
+                        "name": "Success",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                        "name": "Failure",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
                 "operand": "@results.response_1.category",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "is_text_eq",
                         "arguments": [
                             "Success"
                         ],
-                        "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "is_text_eq",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "is_text_eq",
                         "arguments": [
                             "Failure"
                         ],
-                        "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "is_text_eq",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     }
-                ]
+                ],
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
             },
             "exits": [
                 {
                     "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Success"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Failure"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
             ]
         },
@@ -1021,13 +959,12 @@
                 }
             }
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "a040f89e-534e-4e5d-9e94-a8b639c426c8",
             "actions": [
                 {
                     "type": "enter_flow",
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "flow": {
                         "uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534",
                         "name": "My Subflow"
@@ -1037,48 +974,58 @@
             "router": {
                 "type": "switch",
                 "result_name": "Response 1",
-                "default_exit_uuid": "",
+                "categories": [
+                    {
+                        "exit_uuid": "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2",
+                        "name": "Completed",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "279a7adf-4681-4efb-a65f-34369a7a4f42",
+                        "name": "Expired",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
                 "operand": "@child.status",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "is_text_eq",
                         "arguments": [
                             "completed"
                         ],
-                        "exit_uuid": "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "is_text_eq",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "is_text_eq",
                         "arguments": [
                             "expired"
                         ],
-                        "exit_uuid": "279a7adf-4681-4efb-a65f-34369a7a4f42"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "is_text_eq",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     }
-                ]
+                ],
+                "default_category_uuid": ""
             },
             "exits": [
                 {
                     "uuid": "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Completed"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "279a7adf-4681-4efb-a65f-34369a7a4f42",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Expired"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
             ]
         },
         "expected_localization": {
             "fra": {
-                "279a7adf-4681-4efb-a65f-34369a7a4f42": {
+                "692926ea-09d6-4942-bd38-d266ec8d3716": {
                     "name": [
                         "Expiré"
                     ]
                 },
-                "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2": {
+                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
                     "name": [
                         "Terminé"
                     ]
@@ -1131,32 +1078,41 @@
             "operand": "@contact.telegram",
             "config": {}
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "9e4078de-2304-4751-b6e7-35532cc5ab8f",
             "router": {
                 "type": "switch",
                 "result_name": "Response 14",
-                "default_exit_uuid": "85038c16-0060-486c-97be-898c65587658",
+                "categories": [
+                    {
+                        "exit_uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
+                        "name": "Telegram",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "85038c16-0060-486c-97be-898c65587658",
+                        "name": "Other",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
                 "operand": "@(contact.urns.telegram[0].display)",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "type": "has_text",
-                        "exit_uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef"
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
-                ]
+                ],
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
             },
             "exits": [
                 {
                     "uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Telegram"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "85038c16-0060-486c-97be-898c65587658",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Other"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
             ]
         },
@@ -1227,47 +1183,60 @@
             "operand": "@contact.reporting_date",
             "config": {}
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "266c2948-06c2-487a-8218-7c99e4499b8c",
             "router": {
+                "type": "switch",
+                "result_name": "Response 1",
+                "categories": [
+                    {
+                        "exit_uuid": "4d627be9-0305-44f5-9949-5c7668216ef8",
+                        "name": "Yesterday",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "ec378307-e1da-4488-8c9b-825e81a8dbcf",
+                        "name": "Today",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    },
+                    {
+                        "exit_uuid": "15ad3a13-251f-46c5-a040-ddfcf07aee03",
+                        "name": "Other",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ],
+                "operand": "@contact.fields.reporting_date",
                 "cases": [
                     {
                         "arguments": [
                             "@(format_date(datetime_add(format_date(today()), -1, \"D\")))"
                         ],
-                        "exit_uuid": "4d627be9-0305-44f5-9949-5c7668216ef8",
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "type": "has_date_eq",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
                     {
                         "arguments": [
                             "@(format_date(datetime_add(format_date(today()), 0, \"D\")))"
                         ],
-                        "exit_uuid": "ec378307-e1da-4488-8c9b-825e81a8dbcf",
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "type": "has_date_eq",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     }
                 ],
-                "default_exit_uuid": "15ad3a13-251f-46c5-a040-ddfcf07aee03",
-                "operand": "@contact.fields.reporting_date",
-                "result_name": "Response 1",
-                "type": "switch"
+                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
             },
             "exits": [
                 {
-                    "destination_node_uuid": "a2fb92c0-e309-477d-9db5-dfcf8d34f321",
-                    "name": "Yesterday",
+                    "destination_uuid": "a2fb92c0-e309-477d-9db5-dfcf8d34f321",
                     "uuid": "4d627be9-0305-44f5-9949-5c7668216ef8"
                 },
                 {
-                    "destination_node_uuid": "245d5919-6612-484b-ad9e-abe10e0285e5",
-                    "name": "Today",
+                    "destination_uuid": "245d5919-6612-484b-ad9e-abe10e0285e5",
                     "uuid": "ec378307-e1da-4488-8c9b-825e81a8dbcf"
                 },
                 {
-                    "destination_node_uuid": "6a3fc6dc-ab4b-4e1a-b82d-594d4433f10d",
-                    "name": "Other",
+                    "destination_uuid": "6a3fc6dc-ab4b-4e1a-b82d-594d4433f10d",
                     "uuid": "15ad3a13-251f-46c5-a040-ddfcf07aee03"
                 }
             ]
@@ -1329,35 +1298,44 @@
             "operand": "@step.value",
             "config": {}
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
             "router": {
                 "type": "switch",
                 "result_name": "Group Check",
-                "default_exit_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
+                "categories": [
+                    {
+                        "exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
+                        "name": "Testers",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
+                        "name": "Other",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
                 "operand": "@contact",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_group",
                         "arguments": [
                             "ade39253-0371-4dde-9df4-95245fe6a3a8"
                         ],
-                        "exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_group",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
-                ]
+                ],
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
             },
             "exits": [
                 {
                     "uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Testers"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Other"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
             ]
         },
@@ -1410,36 +1388,45 @@
             "x": 300,
             "config": {}
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "0e191a4b-b815-4bdc-b7d7-00ab2882a17f",
             "router": {
                 "type": "switch",
                 "result_name": "Name",
-                "default_exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
+                "categories": [
+                    {
+                        "exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
+                        "name": "All Responses",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
+                        "name": "No Response",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
                 "operand": "@input",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_wait_timed_out",
                         "arguments": [
                             "@run"
                         ],
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "omit_operand": true,
-                        "exit_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f"
+                        "type": "has_wait_timed_out",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
-                ]
+                ],
+                "default_category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             },
             "exits": [
                 {
                     "uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "All Responses"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "No Response"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
             ],
             "wait": {
@@ -1511,13 +1498,12 @@
                 }
             }
         },
-        "collapse_exits": true,
         "expected_node": {
             "uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
             "actions": [
                 {
                     "type": "transfer_airtime",
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "amounts": {
                         "BRL": 2.5,
                         "USD": 3
@@ -1527,37 +1513,47 @@
             ],
             "router": {
                 "type": "switch",
-                "default_exit_uuid": "",
+                "categories": [
+                    {
+                        "exit_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                        "name": "Success",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                        "name": "Failure",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
                 "operand": "@results.transfer.category",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "is_text_eq",
                         "arguments": [
                             "Success"
                         ],
-                        "exit_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "is_text_eq",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "is_text_eq",
                         "arguments": [
                             "Failure"
                         ],
-                        "exit_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "is_text_eq",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     }
-                ]
+                ],
+                "default_category_uuid": ""
             },
             "exits": [
                 {
                     "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
-                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "Success"
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
                 },
                 {
                     "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Failure"
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                 }
             ]
         },
@@ -1634,39 +1630,53 @@
             "router": {
                 "type": "switch",
                 "result_name": "Delimited Split",
-                "default_exit_uuid": "22b5ef86-afad-41aa-8863-c167996083a6",
+                "categories": [
+                    {
+                        "exit_uuid": "65b7a5ee-44cb-499c-8334-8032b96e2660",
+                        "name": "Fish",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "ce2102b1-7f8b-4813-808e-5b7af8116a36",
+                        "name": "Chicken",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    },
+                    {
+                        "exit_uuid": "22b5ef86-afad-41aa-8863-c167996083a6",
+                        "name": "Other",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ],
                 "operand": "@(field(results.response_1, 1, \" \"))",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_any_word",
                         "arguments": [
                             "fish"
                         ],
-                        "exit_uuid": "65b7a5ee-44cb-499c-8334-8032b96e2660"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_any_word",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_any_word",
                         "arguments": [
                             "chicken"
                         ],
-                        "exit_uuid": "ce2102b1-7f8b-4813-808e-5b7af8116a36"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_any_word",
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     }
-                ]
+                ],
+                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
             },
             "exits": [
                 {
-                    "uuid": "65b7a5ee-44cb-499c-8334-8032b96e2660",
-                    "name": "Fish"
+                    "uuid": "65b7a5ee-44cb-499c-8334-8032b96e2660"
                 },
                 {
-                    "uuid": "ce2102b1-7f8b-4813-808e-5b7af8116a36",
-                    "name": "Chicken"
+                    "uuid": "ce2102b1-7f8b-4813-808e-5b7af8116a36"
                 },
                 {
-                    "uuid": "22b5ef86-afad-41aa-8863-c167996083a6",
-                    "name": "Other"
+                    "uuid": "22b5ef86-afad-41aa-8863-c167996083a6"
                 }
             ]
         },
@@ -1750,39 +1760,53 @@
             "router": {
                 "type": "switch",
                 "result_name": "Flow Field",
-                "default_exit_uuid": "1996613d-cc80-4704-be21-6c0a8e79870c",
+                "categories": [
+                    {
+                        "exit_uuid": "1db7814f-c832-4d62-b0f9-939aa343cd9a",
+                        "name": "Fish",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "9eb1744e-bb40-426c-97aa-9aed051717ed",
+                        "name": "Chicken",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    },
+                    {
+                        "exit_uuid": "1996613d-cc80-4704-be21-6c0a8e79870c",
+                        "name": "Other",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ],
                 "operand": "@results.response_1",
                 "cases": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_any_word",
                         "arguments": [
                             "fish"
                         ],
-                        "exit_uuid": "1db7814f-c832-4d62-b0f9-939aa343cd9a"
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_any_word",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_any_word",
                         "arguments": [
                             "chicken"
                         ],
-                        "exit_uuid": "9eb1744e-bb40-426c-97aa-9aed051717ed"
+                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_any_word",
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     }
-                ]
+                ],
+                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
             },
             "exits": [
                 {
-                    "uuid": "1db7814f-c832-4d62-b0f9-939aa343cd9a",
-                    "name": "Fish"
+                    "uuid": "1db7814f-c832-4d62-b0f9-939aa343cd9a"
                 },
                 {
-                    "uuid": "9eb1744e-bb40-426c-97aa-9aed051717ed",
-                    "name": "Chicken"
+                    "uuid": "9eb1744e-bb40-426c-97aa-9aed051717ed"
                 },
                 {
-                    "uuid": "1996613d-cc80-4704-be21-6c0a8e79870c",
-                    "name": "Other"
+                    "uuid": "1996613d-cc80-4704-be21-6c0a8e79870c"
                 }
             ]
         },
@@ -1846,16 +1870,26 @@
             "uuid": "7bc054ca-398f-48c5-94d3-ea2d525cbc77",
             "router": {
                 "type": "random",
-                "result_name": "Random Split"
+                "result_name": "Random Split",
+                "categories": [
+                    {
+                        "exit_uuid": "57552c7e-aab2-41b2-a3b2-02e8ff0d0268",
+                        "name": "Bucket 1",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "f6144072-933b-4d80-b82b-a7bb62db10bb",
+                        "name": "Bucket 2",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ]
             },
             "exits": [
                 {
-                    "uuid": "57552c7e-aab2-41b2-a3b2-02e8ff0d0268",
-                    "name": "Bucket 1"
+                    "uuid": "57552c7e-aab2-41b2-a3b2-02e8ff0d0268"
                 },
                 {
-                    "uuid": "f6144072-933b-4d80-b82b-a7bb62db10bb",
-                    "name": "Bucket 2"
+                    "uuid": "f6144072-933b-4d80-b82b-a7bb62db10bb"
                 }
             ]
         },
@@ -1877,7 +1911,7 @@
                         "type": "number"
                     },
                     "category": {
-                        "eng": "numeric"
+                        "eng": "Numeric"
                     },
                     "destination": "e00f3e91-4849-46ff-9c4a-131534e4156d",
                     "uuid": "e7e42463-8ee3-41e6-a2ff-aa165fbd981e",
@@ -1916,27 +1950,37 @@
                 "type": "msg"
             },
             "router": {
-                "cases": [
+                "type": "switch",
+                "result_name": "Phone",
+                "categories": [
                     {
                         "exit_uuid": "e7e42463-8ee3-41e6-a2ff-aa165fbd981e",
-                        "type": "has_number",
+                        "name": "Numeric",
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "22aa4d15-c096-42b2-abcb-d13fac81dfa3",
+                        "name": "Other",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
-                "default_exit_uuid": "22aa4d15-c096-42b2-abcb-d13fac81dfa3",
                 "operand": "@input",
-                "result_name": "Phone",
-                "type": "switch"
+                "cases": [
+                    {
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_number",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ],
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
             },
             "exits": [
                 {
-                    "destination_node_uuid": "e00f3e91-4849-46ff-9c4a-131534e4156d",
-                    "name": "numeric",
+                    "destination_uuid": "e00f3e91-4849-46ff-9c4a-131534e4156d",
                     "uuid": "e7e42463-8ee3-41e6-a2ff-aa165fbd981e"
                 },
                 {
-                    "destination_node_uuid": "4ea947fa-3d40-400d-9881-a5f7accae04a",
-                    "name": "Other",
+                    "destination_uuid": "4ea947fa-3d40-400d-9881-a5f7accae04a",
                     "uuid": "22aa4d15-c096-42b2-abcb-d13fac81dfa3"
                 }
             ]

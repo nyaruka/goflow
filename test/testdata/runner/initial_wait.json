@@ -16,7 +16,24 @@
                     "router": {
                         "type": "switch",
                         "result_name": "Command",
-                        "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                        "categories": [
+                            {
+                                "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                                "name": "Ping",
+                                "exit_uuid": "1ca74fca-1803-4ae7-8ae9-336e75276cd6"
+                            },
+                            {
+                                "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                                "name": "Pong",
+                                "exit_uuid": "6514c6fe-58c0-402d-b355-e37b54d906ba"
+                            },
+                            {
+                                "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                                "name": "Other",
+                                "exit_uuid": "4629d320-dd8d-4c79-81cc-c6479541d6aa"
+                            }
+                        ],
+                        "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
                         "operand": "@input",
                         "cases": [
                             {
@@ -25,7 +42,7 @@
                                 "arguments": [
                                     "ping"
                                 ],
-                                "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                                "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
                             },
                             {
                                 "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
@@ -33,25 +50,22 @@
                                 "arguments": [
                                     "pong"
                                 ],
-                                "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                                "category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
                             }
                         ]
                     },
                     "exits": [
                         {
-                            "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
-                            "name": "Ping",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "uuid": "1ca74fca-1803-4ae7-8ae9-336e75276cd6",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
-                            "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
-                            "name": "Pong",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "uuid": "6514c6fe-58c0-402d-b355-e37b54d906ba",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         },
                         {
-                            "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-                            "name": "Other",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                            "uuid": "4629d320-dd8d-4c79-81cc-c6479541d6aa",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         }
                     ]
                 },

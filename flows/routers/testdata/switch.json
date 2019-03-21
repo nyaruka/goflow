@@ -1,10 +1,27 @@
 [
     {
-        "description": "Validation fails for invalid default exit",
+        "description": "Validation fails for invalid default category",
         "router": {
             "type": "switch",
             "result_name": "Favorite Color",
-            "default_exit_uuid": "33c829d5-9092-484e-9683-c03614b6a446",
+            "categories": [
+                {
+                    "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                    "name": "Yes",
+                    "exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
+                },
+                {
+                    "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                    "name": "No",
+                    "exit_uuid": "5bd6a427-2b9a-4a4d-ad3f-eb39eaaa7e5a"
+                },
+                {
+                    "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                    "name": "Other",
+                    "exit_uuid": "b787ffe3-c21a-46ad-9475-954614b52477"
+                }
+            ],
+            "default_category_uuid": "33c829d5-9092-484e-9683-c03614b6a446",
             "operand": "@input",
             "cases": [
                 {
@@ -13,7 +30,7 @@
                     "arguments": [
                         "yes"
                     ],
-                    "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                    "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
                 },
                 {
                     "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
@@ -21,18 +38,35 @@
                     "arguments": [
                         "no"
                     ],
-                    "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                    "category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
                 }
             ]
         },
-        "validation_error": "default exit 33c829d5-9092-484e-9683-c03614b6a446 is not a valid exit"
+        "validation_error": "default category 33c829d5-9092-484e-9683-c03614b6a446 is not a valid category"
     },
     {
-        "description": "Validation fails for invalid exit",
+        "description": "Validation fails for invalid case category",
         "router": {
             "type": "switch",
             "result_name": "Favorite Color",
-            "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+            "categories": [
+                {
+                    "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                    "name": "Yes",
+                    "exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
+                },
+                {
+                    "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                    "name": "No",
+                    "exit_uuid": "5bd6a427-2b9a-4a4d-ad3f-eb39eaaa7e5a"
+                },
+                {
+                    "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                    "name": "Other",
+                    "exit_uuid": "b787ffe3-c21a-46ad-9475-954614b52477"
+                }
+            ],
+            "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
             "operand": "@input",
             "cases": [
                 {
@@ -41,7 +75,7 @@
                     "arguments": [
                         "yes"
                     ],
-                    "exit_uuid": "33c829d5-9092-484e-9683-c03614b6a446"
+                    "category_uuid": "33c829d5-9092-484e-9683-c03614b6a446"
                 },
                 {
                     "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
@@ -49,18 +83,35 @@
                     "arguments": [
                         "no"
                     ],
-                    "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                    "category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
                 }
             ]
         },
-        "validation_error": "case exit 33c829d5-9092-484e-9683-c03614b6a446 is not a valid exit"
+        "validation_error": "case category 33c829d5-9092-484e-9683-c03614b6a446 is not a valid category"
     },
     {
         "description": "Result created with matching test result",
         "router": {
             "type": "switch",
             "result_name": "Favorite Color",
-            "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+            "categories": [
+                {
+                    "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                    "name": "Yes",
+                    "exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
+                },
+                {
+                    "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                    "name": "No",
+                    "exit_uuid": "5bd6a427-2b9a-4a4d-ad3f-eb39eaaa7e5a"
+                },
+                {
+                    "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                    "name": "Other",
+                    "exit_uuid": "b787ffe3-c21a-46ad-9475-954614b52477"
+                }
+            ],
+            "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
             "operand": "@(\"YES!!\")",
             "cases": [
                 {
@@ -69,7 +120,7 @@
                     "arguments": [
                         "yes"
                     ],
-                    "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                    "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
                 },
                 {
                     "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
@@ -77,7 +128,7 @@
                     "arguments": [
                         "no"
                     ],
-                    "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                    "category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
                 }
             ]
         },
@@ -108,7 +159,24 @@
         "router": {
             "type": "switch",
             "result_name": "Is Member",
-            "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+            "categories": [
+                {
+                    "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                    "name": "Yes",
+                    "exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
+                },
+                {
+                    "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                    "name": "No",
+                    "exit_uuid": "5bd6a427-2b9a-4a4d-ad3f-eb39eaaa7e5a"
+                },
+                {
+                    "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                    "name": "Other",
+                    "exit_uuid": "b787ffe3-c21a-46ad-9475-954614b52477"
+                }
+            ],
+            "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
             "operand": "@contact",
             "cases": [
                 {
@@ -117,7 +185,7 @@
                     "arguments": [
                         "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     ],
-                    "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                    "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
                 }
             ]
         },

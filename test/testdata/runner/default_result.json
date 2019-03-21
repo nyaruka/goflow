@@ -19,7 +19,7 @@
                     "exits": [
                         {
                             "uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
-                            "destination_node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f"
+                            "destination_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f"
                         }
                     ]
                 },
@@ -28,20 +28,26 @@
                     "wait": {
                         "type": "msg"
                     },
+                    "router": {
+                        "type": "switch",
+                        "result_name": "Contact Name",
+                        "categories": [
+                            {
+                                "uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
+                                "name": "All Responses",
+                                "exit_uuid": "feb35432-c156-44cc-af7b-136db6713aa4"
+                            }
+                        ],
+                        "cases": [],
+                        "default_category_uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
+                        "operand": "@input"
+                    },
                     "exits": [
                         {
-                            "name": "All Responses",
-                            "uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
-                            "destination_node_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0"
+                            "uuid": "feb35432-c156-44cc-af7b-136db6713aa4",
+                            "destination_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0"
                         }
-                    ],
-                    "router": {
-                        "result_name": "Contact Name",
-                        "type": "switch",
-                        "cases": [],
-                        "default_exit_uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
-                        "operand": "@input"
-                    }
+                    ]
                 },
                 {
                     "uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
