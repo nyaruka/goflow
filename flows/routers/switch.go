@@ -86,7 +86,7 @@ func (c *Case) EnumerateDependencies(localization flows.Localization, include fu
 func (c *Case) EnumerateResultNames(include func(string)) {}
 
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
-// whichever case returns true, or if none do, then taking the default exit
+// whichever case returns true, or if none do, then taking the default category
 type SwitchRouter struct {
 	BaseRouter
 	Operand string             `json:"operand"             validate:"required"`
