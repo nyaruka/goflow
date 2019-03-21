@@ -548,14 +548,14 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, flows.UINodeType, flows.UINodeConfig, error) {
+func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, flows.UINodeType, flows.UINodeConfig, error) {
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
 	var uiType flows.UINodeType
 	var uiNodeConfig flows.UINodeConfig
 
-	cases, exits, defaultExit, err := migrateRules(lang, r, localization, collapseExits)
+	cases, categories, defaultCategory, exits, err := migrateRules(lang, r, localization)
 	if err != nil {
 		return nil, "", nil, err
 	}
@@ -578,7 +578,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		// subflow rulesets operate on the child flow status
-		router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
+		router = routers.NewSwitchRouter(resultName, categories, "@child.status", cases, defaultCategory)
 		uiType = UINodeTypeSplitBySubflow
 
 	case "webhook":
@@ -604,7 +604,8 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		// webhook rulesets operate on the webhook status, saved as category
-		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
+		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
+		router = routers.NewSwitchRouter("", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByWebhook
 
 	case "resthook":
@@ -613,13 +614,14 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		// resthook rulesets operate on the webhook status, saved as category
-		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
+		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
+		router = routers.NewSwitchRouter("", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByResthook
 
 	case "form_field":
 		operand, _ := expressions.MigrateTemplate(r.Operand, nil)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
-		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
+		router = routers.NewSwitchRouter(resultName, categories, operand, cases, defaultCategory)
 
 		lastDot := strings.LastIndex(r.Operand, ".")
 		if lastDot > -1 {
@@ -635,7 +637,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 	case "group":
 		// in legacy flows these rulesets have their operand as @step.value but it's not used
-		router = routers.NewSwitchRouter(defaultExit, "@contact", cases, resultName)
+		router = routers.NewSwitchRouter(resultName, categories, "@contact", cases, defaultCategory)
 		uiType = UINodeTypeSplitByGroups
 
 	case "wait_message", "wait_audio", "wait_video", "wait_photo", "wait_gps", "wait_recording", "wait_digit", "wait_digits":
@@ -712,9 +714,9 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			operand = "@input"
 		}
 
-		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
+		router = routers.NewSwitchRouter(resultName, categories, operand, cases, defaultCategory)
 	case "random":
-		router = routers.NewRandomRouter(resultName)
+		router = routers.NewRandomRouter(resultName, categories)
 		uiType = UINodeTypeSplitByRandom
 
 	case "airtime":
@@ -740,9 +742,9 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			transferto.NewTransferAirtimeAction(flows.ActionUUID(utils.NewUUID()), currencyAmounts, resultName),
 		}
 
+		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
+		router = routers.NewSwitchRouter("", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByAirtime
-
-		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
 
 	default:
 		return nil, "", nil, errors.Errorf("unrecognized ruleset type: %s", r.Type)
@@ -771,61 +773,73 @@ func migrateRuleSetToHint(r RuleSet) flows.Hint {
 	return nil
 }
 
-// migrates a set of legacy rules to sets of cases and exits
-func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) ([]*routers.Case, []flows.Exit, flows.ExitUUID, error) {
+type categoryAndExit struct {
+	category *routers.Category
+	exit     flows.Exit
+}
+
+// migrates a set of legacy rules to sets of categories, cases and exits
+func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization) ([]*routers.Case, []*routers.Category, flows.CategoryUUID, []flows.Exit, error) {
 	cases := make([]*routers.Case, 0, len(r.Rules))
+	categories := make([]*routers.Category, 0, len(r.Rules))
 	exits := make([]flows.Exit, 0, len(r.Rules))
-	var defaultExitUUID flows.ExitUUID
+	var defaultCategoryUUID flows.CategoryUUID
 
-	ruleUUIDsToExits := make(map[flows.ExitUUID]flows.Exit, len(r.Rules))
-	categoriesToExits := make(map[string]flows.Exit, len(r.Rules))
+	convertedByRuleUUID := make(map[flows.ExitUUID]*categoryAndExit, len(r.Rules))
+	convertedByCategoryName := make(map[string]*categoryAndExit, len(r.Rules))
 
-	// creating exits from the rules
+	// create categories and exits from the rules
 	for _, rule := range r.Rules {
 		baseName := rule.Category.Base(baseLanguage)
-		var exit flows.Exit
+		var converted *categoryAndExit
 
-		// if we're collapsing exits, then we can use the exit previously created for this category
-		if collapseExits && rule.Test.Type != "true" {
-			exit = categoriesToExits[baseName]
+		// check if we have previously created category/exits for this category name
+		if rule.Test.Type != "true" {
+			converted = convertedByCategoryName[baseName]
 		}
-		if exit == nil {
-			exit = definition.NewExit(rule.UUID, rule.Destination, baseName)
+		if converted == nil {
+			// rule UUIDs in legacy flows determine path data, so their UUIDs become the exit UUIDs
+			exit := definition.NewExit(rule.UUID, rule.Destination)
 			exits = append(exits, exit)
+
+			category := routers.NewCategory(flows.CategoryUUID(utils.NewUUID()), baseName, exit.UUID())
+			categories = append(categories, category)
+
+			converted = &categoryAndExit{category, exit}
 		}
 
-		ruleUUIDsToExits[rule.UUID] = exit
-		categoriesToExits[baseName] = exit
+		convertedByRuleUUID[rule.UUID] = converted
+		convertedByCategoryName[baseName] = converted
 
-		addTranslationMap(baseLanguage, localization, rule.Category, utils.UUID(exit.UUID()), "name")
+		addTranslationMap(baseLanguage, localization, rule.Category, utils.UUID(converted.category.UUID()), "name")
 	}
 
 	// and then a case for each rule
 	for _, rule := range r.Rules {
-		// implicit Other rules don't become cases
+		converted := convertedByRuleUUID[rule.UUID]
+
+		// implicit Other rules don't become cases, but instead become the router default
 		if rule.Test.Type == "true" {
-			defaultExitUUID = rule.UUID
+			defaultCategoryUUID = converted.category.UUID()
 			continue
 		} else if rule.Test.Type == "webhook_status" {
 			// default case for a webhook ruleset is the last migrated rule (failure)
-			defaultExitUUID = rule.UUID
+			defaultCategoryUUID = converted.category.UUID()
 		}
 
-		exit := ruleUUIDsToExits[rule.UUID]
-
-		kase, err := migrateRule(baseLanguage, rule, exit, localization)
+		kase, err := migrateRule(baseLanguage, rule, converted.category, localization)
 		if err != nil {
-			return nil, nil, "", err
+			return nil, nil, "", nil, err
 		}
 
 		cases = append(cases, kase)
 	}
 
-	return cases, exits, defaultExitUUID, nil
+	return cases, categories, defaultCategoryUUID, exits, nil
 }
 
 // migrates the given legacy rule to a router case
-func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localization flows.Localization) (*routers.Case, error) {
+func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category, localization flows.Localization) (*routers.Case, error) {
 	newType, _ := testTypeMappings[r.Test.Type]
 	var omitOperand bool
 	var arguments []string
@@ -955,7 +969,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		return nil, errors.Errorf("migration of '%s' tests no supported", r.Test.Type)
 	}
 
-	return routers.NewCase(caseUUID, newType, arguments, omitOperand, exit.UUID()), err
+	return routers.NewCase(caseUUID, newType, arguments, omitOperand, category.UUID()), err
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
@@ -971,7 +985,9 @@ func migrateActionSet(lang utils.Language, a ActionSet, localization flows.Local
 		actions[i] = action
 	}
 
-	return definition.NewNode(a.UUID, actions, nil, nil, []flows.Exit{definition.NewExit(a.ExitUUID, a.Destination, "")}), nil
+	exit := definition.NewExit(a.ExitUUID, a.Destination)
+
+	return definition.NewNode(a.UUID, actions, nil, nil, []flows.Exit{exit}), nil
 }
 
 // ReadLegacyFlow reads a single legacy formatted flow
@@ -993,7 +1009,7 @@ func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 }
 
 // Migrate migrates this legacy flow to the new format
-func (f *Flow) Migrate(collapseExits bool, includeUI bool, baseMediaURL string) (flows.Flow, error) {
+func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) {
 	localization := definition.NewLocalization()
 	numNodes := len(f.ActionSets) + len(f.RuleSets)
 	nodes := make([]flows.Node, numNodes)
@@ -1009,7 +1025,7 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool, baseMediaURL string) 
 	}
 
 	for i, ruleSet := range f.RuleSets {
-		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, localization, collapseExits)
+		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, localization)
 		if err != nil {
 			return nil, errors.Wrapf(err, "error migrating rule_set[uuid=%s]", ruleSet.UUID)
 		}

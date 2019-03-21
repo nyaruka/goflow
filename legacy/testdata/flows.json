@@ -455,38 +455,48 @@
                     "uuid": "029c3266-39c1-4850-9d71-7e008dae2e65"
                 },
                 {
-                    "exits": [
-                        {
-                            "destination_uuid": "9e82371e-94f6-41cf-8a97-82aedc1ccadd",
-                            "name": "1-10",
-                            "uuid": "a66f3bfc-7a68-4925-a07b-a31cbc1b207a"
-                        },
-                        {
-                            "name": "Other",
-                            "uuid": "ee85d3a5-75af-4809-94b9-661c2e731c2a"
-                        }
-                    ],
+                    "uuid": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
+                    "wait": {
+                        "type": "msg"
+                    },
                     "router": {
+                        "type": "switch",
+                        "result_name": "number",
+                        "categories": [
+                            {
+                                "exit_uuid": "a66f3bfc-7a68-4925-a07b-a31cbc1b207a",
+                                "name": "1-10",
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                            },
+                            {
+                                "exit_uuid": "ee85d3a5-75af-4809-94b9-661c2e731c2a",
+                                "name": "Other",
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                            }
+                        ],
+                        "operand": "@input",
                         "cases": [
                             {
                                 "arguments": [
                                     "1",
                                     "10"
                                 ],
-                                "exit_uuid": "a66f3bfc-7a68-4925-a07b-a31cbc1b207a",
+                                "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                                 "type": "has_number_between",
-                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             }
                         ],
-                        "default_category_uuid": "ee85d3a5-75af-4809-94b9-661c2e731c2a",
-                        "operand": "@input",
-                        "result_name": "number",
-                        "type": "switch"
+                        "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     },
-                    "uuid": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
-                    "wait": {
-                        "type": "msg"
-                    }
+                    "exits": [
+                        {
+                            "uuid": "a66f3bfc-7a68-4925-a07b-a31cbc1b207a",
+                            "destination_uuid": "9e82371e-94f6-41cf-8a97-82aedc1ccadd"
+                        },
+                        {
+                            "uuid": "ee85d3a5-75af-4809-94b9-661c2e731c2a"
+                        }
+                    ]
                 },
                 {
                     "actions": [
@@ -504,21 +514,27 @@
                     "uuid": "9e82371e-94f6-41cf-8a97-82aedc1ccadd"
                 },
                 {
+                    "uuid": "fd9c4b9e-48d2-45b5-84af-ffb102672710",
+                    "router": {
+                        "type": "switch",
+                        "result_name": "passive",
+                        "categories": [
+                            {
+                                "exit_uuid": "358ebed8-8cf2-455d-b60f-f882d71c6ed6",
+                                "name": "All Responses",
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                            }
+                        ],
+                        "operand": "@contact.name",
+                        "cases": [],
+                        "default_category_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
                     "exits": [
                         {
-                            "destination_uuid": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
-                            "name": "All Responses",
-                            "uuid": "358ebed8-8cf2-455d-b60f-f882d71c6ed6"
+                            "uuid": "358ebed8-8cf2-455d-b60f-f882d71c6ed6",
+                            "destination_uuid": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82"
                         }
-                    ],
-                    "router": {
-                        "cases": [],
-                        "default_category_uuid": "358ebed8-8cf2-455d-b60f-f882d71c6ed6",
-                        "operand": "@contact.name",
-                        "result_name": "passive",
-                        "type": "switch"
-                    },
-                    "uuid": "fd9c4b9e-48d2-45b5-84af-ffb102672710"
+                    ]
                 }
             ],
             "revision": 0,

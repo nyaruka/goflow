@@ -23,7 +23,7 @@ func MigrateLegacyDefinition(data json.RawMessage, baseMediaURL string) (json.Ra
 		return nil, errors.Wrap(err, "unable to read legacy flow")
 	}
 
-	flow, err := legacyFlow.Migrate(true, true, baseMediaURL)
+	flow, err := legacyFlow.Migrate(true, baseMediaURL)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to migrate legacy flow")
 	}
