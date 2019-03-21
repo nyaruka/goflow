@@ -250,7 +250,7 @@ func TestNewFlow(t *testing.T) {
 }
 
 func TestValidateEmptyFlow(t *testing.T) {
-	flow, err := test.LoadFlowFromAssets("../../test/testdata/flows/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
 	err = flow.Validate(nil)
@@ -284,7 +284,7 @@ func assertFlowSection(t *testing.T, definition []byte, key string, data []byte)
 }
 
 func TestValidateFlow(t *testing.T) {
-	sa, err := test.LoadSessionAssets("../../test/testdata/flows/brochure.json")
+	sa, err := test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
 	require.NoError(t, err)
 
 	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
@@ -314,7 +314,7 @@ func TestValidateFlow(t *testing.T) {
   ]`))
 
 	// validate without session assets
-	sa, _ = test.LoadSessionAssets("../../test/testdata/flows/brochure.json")
+	sa, _ = test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
 	flow, _ = sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
 	err = flow.Validate(nil)
 	assert.NoError(t, err)
@@ -384,7 +384,7 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 		templates []string
 	}{
 		{
-			"../../test/testdata/flows/two_questions.json",
+			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]string{
 				`Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))`,
@@ -409,7 +409,7 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 			},
 		},
 		{
-			"../../test/testdata/flows/all_actions.json",
+			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
 			[]string{
 				`@(format_location(contact.fields.state)) Messages`,
@@ -468,7 +468,7 @@ func TestExtractDependencies(t *testing.T) {
 		dependencies []assets.Reference
 	}{
 		{
-			"../../test/testdata/flows/all_actions.json",
+			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
 			[]assets.Reference{
 				assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
@@ -485,7 +485,7 @@ func TestExtractDependencies(t *testing.T) {
 			},
 		},
 		{
-			"../../test/testdata/flows/router_tests.json",
+			"../../test/testdata/runner/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]assets.Reference{
 				assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", ""),
@@ -495,7 +495,7 @@ func TestExtractDependencies(t *testing.T) {
 			},
 		},
 		{
-			"../../test/testdata/flows/dynamic_groups.json",
+			"../../test/testdata/runner/dynamic_groups.json",
 			"1b462ce8-983a-4393-b133-e15a0efdb70c",
 			[]assets.Reference{
 				assets.NewFieldReference("gender", "Gender"),
@@ -520,17 +520,17 @@ func TestExtractResultNames(t *testing.T) {
 		resultNames []string
 	}{
 		{
-			"../../test/testdata/flows/all_actions.json",
+			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
 			[]string{"Gender"},
 		},
 		{
-			"../../test/testdata/flows/router_tests.json",
+			"../../test/testdata/runner/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]string{"URN Check", "Group Check", "District Check"},
 		},
 		{
-			"../../test/testdata/flows/two_questions.json",
+			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]string{"Favorite Color", "Soda"},
 		},
