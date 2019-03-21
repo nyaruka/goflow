@@ -39,3 +39,13 @@ func DeriveCountryFromTel(number string) string {
 	}
 	return phonenumbers.GetRegionCodeForNumber(parsed)
 }
+
+// StringSliceContains determines whether the given slice of strings contains the given string
+func StringSliceContains(slice []string, str string) bool {
+	for _, s := range slice {
+		if s == str {
+			return true
+		}
+	}
+	return false
+}

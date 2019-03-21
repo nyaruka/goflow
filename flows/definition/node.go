@@ -118,8 +118,8 @@ func (n *node) RewriteTemplates(localization flows.Localization, rewrite func(st
 func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
 
-// EnumerateResultNames enumerates all result names on this object
-func (n *node) EnumerateResultNames(include func(string)) {}
+// EnumerateResults enumerates all potential results on this object
+func (n *node) EnumerateResults(include func(*flows.ResultSpec)) {}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

@@ -32,7 +32,7 @@ type flow struct {
 	// optional properties not used by engine itself
 	ui           flows.UI
 	dependencies *dependencies
-	results      []resultInfo
+	results      []*flows.ResultSpec
 
 	// internal state
 	nodeMap   map[flows.NodeUUID]flows.Node
@@ -134,7 +134,7 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 
 	f.validated = true
 	f.dependencies = deps
-	f.results = resultInfosFromNames(f.ExtractResultNames())
+	f.results = f.ExtractResults()
 
 	if recursive {
 		if sa == nil {
@@ -248,16 +248,14 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 }
 
 // ExtractResultNames extracts all result names
-func (f *flow) ExtractResultNames() []string {
-	names := make([]string, 0)
+func (f *flow) ExtractResults() []*flows.ResultSpec {
+	specs := make([]*flows.ResultSpec, 0)
 	f.inspect(func(item flows.Inspectable) {
-		item.EnumerateResultNames(func(name string) {
-			if name != "" {
-				names = append(names, name)
-			}
+		item.EnumerateResults(func(spec *flows.ResultSpec) {
+			specs = append(specs, spec)
 		})
 	})
-	return names
+	return flows.MergeResultSpecs(specs)
 }
 
 //------------------------------------------------------------------------------------------
@@ -291,8 +289,8 @@ type flowEnvelope struct {
 type validatedFlowEnvelope struct {
 	*flowEnvelope
 
-	Dependencies *dependencies `json:"_dependencies"`
-	Results      []resultInfo  `json:"_results"`
+	Dependencies *dependencies       `json:"_dependencies"`
+	Results      []*flows.ResultSpec `json:"_results"`
 }
 
 // IsSpecVersionSupported determines if we can read the given flow version

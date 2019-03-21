@@ -40,7 +40,7 @@
             "dependencies": [
                 "field[key=age,name=Age]"
             ],
-            "result_names": []
+            "results": []
         }
     },
     {
@@ -70,7 +70,7 @@
             "dependencies": [
                 "field[key=age,name=Age]"
             ],
-            "result_names": []
+            "results": []
         }
     },
     {

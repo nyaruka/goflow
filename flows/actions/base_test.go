@@ -50,9 +50,9 @@ func TestActionTypes(t *testing.T) {
 }
 
 type inspectionResults struct {
-	Templates    []string `json:"templates"`
-	Dependencies []string `json:"dependencies"`
-	ResultNames  []string `json:"result_names"`
+	Templates    []string            `json:"templates"`
+	Dependencies []string            `json:"dependencies"`
+	Results      []*flows.ResultSpec `json:"results"`
 }
 
 func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
@@ -180,8 +180,8 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			}
 			assert.Equal(t, tc.Inspection.Dependencies, depStrings, "inspected dependencies mismatch in %s", testName)
 
-			resultNames := flow.ExtractResultNames()
-			assert.Equal(t, tc.Inspection.ResultNames, resultNames, "inspected result names mismatch in %s", testName)
+			results := flow.ExtractResults()
+			assert.Equal(t, tc.Inspection.Results, results, "inspected results mismatch in %s", testName)
 		}
 	}
 }

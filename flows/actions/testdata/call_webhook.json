@@ -65,7 +65,7 @@
             "dependencies": [
                 "field[key=age,name=]"
             ],
-            "result_names": []
+            "results": []
         }
     },
     {
@@ -90,7 +90,7 @@
                 "@(\"\")"
             ],
             "dependencies": [],
-            "result_names": []
+            "results": []
         }
     },
     {
@@ -134,8 +134,15 @@
                 "Hi there!"
             ],
             "dependencies": [],
-            "result_names": [
-                "My Webhook"
+            "results": [
+                {
+                    "key": "my_webhook",
+                    "name": "My Webhook",
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ]
+                }
             ]
         }
     }

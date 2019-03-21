@@ -25,3 +25,10 @@ func TestDeriveCountryFromTel(t *testing.T) {
 	assert.Equal(t, "EC", utils.DeriveCountryFromTel("+593979000000"))
 	assert.Equal(t, "", utils.DeriveCountryFromTel("1234"))
 }
+
+func TestStringSliceContains(t *testing.T) {
+	assert.False(t, utils.StringSliceContains(nil, "a"))
+	assert.False(t, utils.StringSliceContains([]string{}, "a"))
+	assert.False(t, utils.StringSliceContains([]string{"b", "c"}, "a"))
+	assert.True(t, utils.StringSliceContains([]string{"b", "a", "c"}, "a"))
+}

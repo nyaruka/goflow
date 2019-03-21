@@ -10,7 +10,7 @@
         "inspection": {
             "templates": [],
             "dependencies": [],
-            "result_names": []
+            "results": []
         }
     },
     {
@@ -94,7 +94,7 @@
         "inspection": {
             "templates": [],
             "dependencies": [],
-            "result_names": []
+            "results": []
         }
     },
     {
@@ -193,8 +193,15 @@
         "inspection": {
             "templates": [],
             "dependencies": [],
-            "result_names": [
-                "My Result"
+            "results": [
+                {
+                    "key": "my_result",
+                    "name": "My Result",
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ]
+                }
             ]
         }
     },
@@ -292,8 +299,15 @@
         "inspection": {
             "templates": [],
             "dependencies": [],
-            "result_names": [
-                "My Result"
+            "results": [
+                {
+                    "key": "my_result",
+                    "name": "My Result",
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ]
+                }
             ]
         }
     },
@@ -363,8 +377,15 @@
         "inspection": {
             "templates": [],
             "dependencies": [],
-            "result_names": [
-                "My Result"
+            "results": [
+                {
+                    "key": "my_result",
+                    "name": "My Result",
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ]
+                }
             ]
         }
     }
