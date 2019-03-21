@@ -20,33 +20,49 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var invalidFlows = []struct {
-	path        string
-	expectedErr string
-}{
-	{
-		"flow_with_duplicate_node_uuid.json",
-		"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
-	},
-	{
-		"flow_with_invalid_default_exit.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-	},
-	{
-		"flow_with_invalid_case_category.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-	},
-	{
-		"flow_with_invalid_exit_dest.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
-	},
-	{
-		"flow_with_missing_asset.json",
-		"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered]",
-	},
-}
+func TestFlowReadingAndValidation(t *testing.T) {
+	invalidFlows := []struct {
+		path        string
+		expectedErr string
+		duringRead  bool
+	}{
+		{
+			"flow_with_exitless_node.json",
+			"unable to read node: field 'exits' must have a minimum of 1 items",
+			true,
+		},
+		{
+			"flow_with_exitless_category.json",
+			"unable to read router: unable to read category: field 'exit_uuid' is required",
+			true,
+		},
+		{
+			"flow_with_duplicate_node_uuid.json",
+			"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
+			false,
+		},
+		{
+			"flow_with_invalid_default_exit.json",
+			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
+			false,
+		},
+		{
+			"flow_with_invalid_case_category.json",
+			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
+			false,
+		},
+		{
+			"flow_with_invalid_exit_dest.json",
+			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
+			false,
+		},
+		{
+			"flow_with_missing_asset.json",
+			"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered]",
+			false,
+		},
+	}
 
-func TestFlowValidation(t *testing.T) {
 	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
@@ -55,10 +71,15 @@ func TestFlowValidation(t *testing.T) {
 		require.NoError(t, err)
 
 		flow, err := definition.ReadFlow(assetsJSON)
-		require.NoError(t, err)
 
-		err = flow.Validate(session.Assets())
-		assert.EqualError(t, err, tc.expectedErr)
+		if tc.duringRead {
+			assert.EqualError(t, err, tc.expectedErr)
+		} else {
+			require.NoError(t, err)
+
+			err = flow.Validate(session.Assets())
+			assert.EqualError(t, err, tc.expectedErr)
+		}
 	}
 }
 
@@ -394,7 +415,7 @@ func TestReadFlow(t *testing.T) {
     "expire_after_minutes": 30,
     "nodes": []
   }`))
-	assert.EqualError(t, err, "unable to read flow: field 'type' is required")
+	assert.EqualError(t, err, "field 'type' is required")
 }
 
 func TestExtractAndRewriteTemplates(t *testing.T) {

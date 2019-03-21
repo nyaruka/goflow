@@ -369,10 +369,12 @@ var voiceSessionAssets = `{
             "nodes": [
                 {
                     "uuid": "6da04a32-6c84-40d9-b614-3782fde7af80",
-                    "type": "set_run_result",
-                    "name": "Age",
-                    "value": "23",
-                    "category": "Youth"
+                    "actions": [],
+                    "exits": [
+                        {
+                            "uuid": "9082b6ec-a65f-4677-8b3c-2f8de402ff13"
+                        }
+                    ]
                 }
             ]
         }

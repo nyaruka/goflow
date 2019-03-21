@@ -14,11 +14,11 @@ import (
 )
 
 type node struct {
-	uuid       flows.NodeUUID
-	actions    []flows.Action
-	wait       flows.Wait
-	router     flows.Router
-	exits      []flows.Exit
+	uuid    flows.NodeUUID
+	actions []flows.Action
+	wait    flows.Wait
+	router  flows.Router
+	exits   []flows.Exit
 }
 
 // NewNode creates a new flow node
@@ -126,11 +126,11 @@ func (n *node) EnumerateResultNames(include func(string)) {}
 //------------------------------------------------------------------------------------------
 
 type nodeEnvelope struct {
-	UUID    flows.NodeUUID    `json:"uuid" validate:"required,uuid4"`
+	UUID    flows.NodeUUID    `json:"uuid"               validate:"required,uuid4"`
 	Actions []json.RawMessage `json:"actions,omitempty"`
 	Wait    json.RawMessage   `json:"wait,omitempty"`
 	Router  json.RawMessage   `json:"router,omitempty"`
-	Exits   []*exit           `json:"exits"`
+	Exits   []*exit           `json:"exits"              validate:"required,min=1"`
 }
 
 // UnmarshalJSON unmarshals a flow node from the given JSON

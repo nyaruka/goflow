@@ -25,9 +25,9 @@ func RegisteredTypes() map[string](func() flows.Router) {
 
 // BaseRouter is the base class for all our router classes
 type BaseRouter struct {
-	Type_       string      `json:"type" validate:"required"`
+	Type_       string      `json:"type"                  validate:"required"`
 	ResultName_ string      `json:"result_name,omitempty"`
-	Categories_ []*Category `json:"categories,omitempty"`
+	Categories_ []*Category `json:"categories,omitempty"  validate:"required,min=1"`
 }
 
 func newBaseRouter(typeName string, resultName string, categories []*Category) BaseRouter {

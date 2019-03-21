@@ -34,7 +34,7 @@ func (c *Category) LocalizationUUID() utils.UUID { return utils.UUID(c.uuid) }
 type categoryEnvelope struct {
 	UUID     flows.CategoryUUID `json:"uuid"                validate:"required,uuid4"`
 	Name     string             `json:"name,omitempty"`
-	ExitUUID flows.ExitUUID     `json:"exit_uuid,omitempty" validate:"omitempty,uuid4"`
+	ExitUUID flows.ExitUUID     `json:"exit_uuid,omitempty" validate:"required,uuid4"`
 }
 
 // UnmarshalJSON unmarshals a node category from the given JSON
@@ -42,7 +42,7 @@ func (c *Category) UnmarshalJSON(data []byte) error {
 	e := &categoryEnvelope{}
 
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return errors.Wrap(err, "unable to read exit")
+		return errors.Wrap(err, "unable to read category")
 	}
 
 	c.uuid = e.UUID

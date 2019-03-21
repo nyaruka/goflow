@@ -132,6 +132,11 @@
                                 "name": "Parent Flow"
                             }
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "f7ed461f-2392-4549-aaba-f69beb1bdc50"
+                        }
                     ]
                 }
             ]

@@ -39,13 +39,19 @@ var sessionAssets = `{
                     },
                     "router": {
                         "type": "switch",
-                        "default_category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-                        "operand": "@input"
+                        "categories": [
+                            {
+                                "uuid": "d7342563-7c9d-4576-b6d1-0c1f148765d2",
+                                "name": "All Responses",
+                                "exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
+                            }
+                        ],
+                        "operand": "@input",
+                        "default_category_uuid": "d7342563-7c9d-4576-b6d1-0c1f148765d2"
                     },
                     "exits": [
                         {
                             "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-                            "name": "All Responses",
                             "destination_uuid": null
                         }
                     ]

@@ -317,7 +317,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 
 	e := &flowEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, errors.Wrap(err, "unable to read flow")
+		return nil, err
 	}
 
 	nodes := make([]flows.Node, len(e.Nodes))
