@@ -134,7 +134,7 @@ func loadAssets(path string) (flows.SessionAssets, error) {
 			return nil, err
 		}
 
-		//ioutil.WriteFile(fmt.Sprintf("testdata/flows/%s.migrated", path), assetsJSON, 0666)
+		//ioutil.WriteFile(path+".migrated", assetsJSON, 0666)
 	}
 
 	// rewrite the URL on any webhook actions
@@ -223,6 +223,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 func TestFlows(t *testing.T) {
 	testCases, err := loadTestCases()
 	require.NoError(t, err)
+	require.True(t, len(testCases) > 0)
 
 	server := NewTestHTTPServer(49999)
 	defer server.Close()
