@@ -9,14 +9,15 @@ import (
 
 // RunContextTopLevels are the allowed top-level variables for expression evaluations
 var RunContextTopLevels = []string{
-	"run",
 	"child",
-	"parent",
 	"contact",
 	"input",
-	"results",
-	"trigger",
 	"legacy_extra",
+	"parent",
+	"results",
+	"run",
+	"trigger",
+	"urns",
 }
 
 var fieldRefPaths = [][]string{

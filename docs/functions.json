@@ -500,15 +500,15 @@
                 "output": "(206) 555-1212"
             },
             {
-                "template": "@(format_urn(contact.urns.mailto[0]))",
-                "output": "foo@bar.com"
-            },
-            {
                 "template": "@(format_urn(contact.urns.telegram[0]))",
                 "output": ""
             },
             {
                 "template": "@(format_urn(contact.urns[2]))",
+                "output": "foo@bar.com"
+            },
+            {
+                "template": "@(format_urn(urns.mailto))",
                 "output": "foo@bar.com"
             },
             {

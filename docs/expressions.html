@@ -426,9 +426,9 @@
 <div class="sourceCode" id="cb32"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb32-1" title="1">@(format_urn(<span class="st">&quot;tel:+250781234567&quot;</span>)) → <span class="dv">0781</span> <span class="dv">234</span> <span class="dv">567</span></a>
 <a class="sourceLine" id="cb32-2" title="2">@(format_urn(<span class="st">&quot;twitter:134252511151#billy_bob&quot;</span>)) → billy_bob</a>
 <a class="sourceLine" id="cb32-3" title="3">@(format_urn(contact.urn)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
-<a class="sourceLine" id="cb32-4" title="4">@(format_urn(contact.urns.mailto[<span class="dv">0</span>])) → foo@bar.com</a>
-<a class="sourceLine" id="cb32-5" title="5">@(format_urn(contact.urns.telegram[<span class="dv">0</span>])) →</a>
-<a class="sourceLine" id="cb32-6" title="6">@(format_urn(contact.urns[<span class="dv">2</span>])) → foo@bar.com</a>
+<a class="sourceLine" id="cb32-4" title="4">@(format_urn(contact.urns.telegram[<span class="dv">0</span>])) →</a>
+<a class="sourceLine" id="cb32-5" title="5">@(format_urn(contact.urns[<span class="dv">2</span>])) → foo@bar.com</a>
+<a class="sourceLine" id="cb32-6" title="6">@(format_urn(urns.mailto)) → foo@bar.com</a>
 <a class="sourceLine" id="cb32-7" title="7">@(format_urn(<span class="st">&quot;NOT URN&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:if"></a></p>
 <h2 id="iftest-value1-value2">if(test, value1, value2)</h2>

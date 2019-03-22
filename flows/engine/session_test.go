@@ -63,6 +63,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(contact.urns.twitterid[0].path)", `54784326227`, ""},
 		{"@contact.urns.telegram", `[]`, ""},
 
+		// simplified URN access
+		{"@urns", `{mailto: mailto:foo@bar.com, tel: tel:+12065551212, twitterid: twitterid:54784326227#nyaruka}`, ""},
+		{"@urns.tel", `tel:+12065551212`, ""},
+		{"@urns.mailto", `mailto:foo@bar.com`, ""},
+		{"@urns.viber", ``, "error evaluating @urns.viber: map has no property 'viber'"},
+
 		// contact groups
 		{"@contact.groups", `[Testers, Males]`, ""},
 		{"@(join(contact.groups, \"|\"))", `Testers|Males`, ""},

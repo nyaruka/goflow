@@ -210,6 +210,20 @@ func (c *Contact) HasURN(urn urns.URN) bool {
 	return false
 }
 
+// URNByScheme returns a map of the highest priority URN for each scheme
+func (c *Contact) URNByScheme() types.XMap {
+	byScheme := make(map[string]types.XValue)
+
+	for _, u := range c.urns {
+		scheme := u.URN().Scheme()
+		if _, seen := byScheme[scheme]; !seen {
+			byScheme[scheme] = u
+		}
+	}
+
+	return types.NewXMap(byScheme)
+}
+
 // Groups returns the groups that this contact belongs to
 func (c *Contact) Groups() *GroupList { return c.groups }
 
