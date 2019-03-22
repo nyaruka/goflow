@@ -280,6 +280,10 @@ func TestNewFlow(t *testing.T) {
 			"categories": []string{"Yes", "No"},
 		},
 	}
+	flowAsMap[`_waiting_exits`] = []string{
+		"023a5c10-d74a-4fad-9560-990caead8170",
+		"8943c032-2a91-456c-8080-2a249f1b420c",
+	}
 
 	// now when we marshal to JSON, those should be included
 	newFlowDef, err := json.Marshal(flowAsMap)
@@ -312,7 +316,8 @@ func TestValidateEmptyFlow(t *testing.T) {
     "localization": {},
     "nodes": [],
     "_dependencies": {},
-    "_results": []
+	"_results": [],
+	"_waiting_exits": []
   }`), marshaled, "flow definition mismatch")
 }
 
@@ -354,6 +359,10 @@ func TestValidateFlow(t *testing.T) {
 			"name": "Name",
 			"categories": ["Not Empty", "Other"]
 		}
+	]`))
+	assertFlowSection(t, marshaled, "_waiting_exits", []byte(`[
+		"fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
+        "43accf99-4940-44f7-926b-a8b35d9403d6"
 	]`))
 
 	// validate without session assets
