@@ -15,6 +15,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+var webhookCategories = []string{"Success", "Failure"}
 var webhookStatusCategories = map[flows.WebhookStatus]string{
 	flows.WebhookStatusSuccess:         "Success",
 	flows.WebhookStatusResponseError:   "Failure",
@@ -68,8 +69,8 @@ func (a *BaseAction) RewriteTemplates(localization flows.Localization, rewrite f
 func (a *BaseAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
 
-// EnumerateResultNames enumerates all result names on this object
-func (a *BaseAction) EnumerateResultNames(include func(string)) {}
+// EnumerateResults enumerates all potential results on this object
+func (a *BaseAction) EnumerateResults(include func(*flows.ResultSpec)) {}
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
 func (a *BaseAction) resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {

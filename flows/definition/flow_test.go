@@ -273,10 +273,11 @@ func TestNewFlow(t *testing.T) {
 			map[string]string{"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"},
 		},
 	}
-	flowAsMap[`_results`] = []map[string]string{
+	flowAsMap[`_results`] = []map[string]interface{}{
 		{
-			"name": "Response 1",
-			"key":  "response_1",
+			"key":        "response_1",
+			"name":       "Response 1",
+			"categories": []string{"Yes", "No"},
 		},
 	}
 
@@ -340,19 +341,20 @@ func TestValidateFlow(t *testing.T) {
 
 	// name of group will have been corrected
 	assertFlowSection(t, marshaled, "_dependencies", []byte(`{
-    "groups": [
-      {
-        "name": "Registered Users",
-        "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
-      }
-    ]
-  }`))
+		"groups": [
+			{
+				"name": "Registered Users",
+				"uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
+			}
+		]
+	}`))
 	assertFlowSection(t, marshaled, "_results", []byte(`[
-    {
-      "name": "Name",
-      "key": "name"
-      }
-  ]`))
+		{
+			"key": "name",
+			"name": "Name",
+			"categories": ["Not Empty", "Other"]
+		}
+	]`))
 
 	// validate without session assets
 	sa, _ = test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
@@ -554,26 +556,35 @@ func TestExtractDependencies(t *testing.T) {
 	}
 }
 
-func TestExtractResultNames(t *testing.T) {
+func TestExtractResults(t *testing.T) {
 	testCases := []struct {
-		path        string
-		uuid        string
-		resultNames []string
+		path    string
+		uuid    string
+		results []*flows.ResultSpec
 	}{
 		{
 			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
-			[]string{"Gender"},
+			[]*flows.ResultSpec{
+				{Key: "gender", Name: "Gender", Categories: []string{"Male"}},
+			},
 		},
 		{
 			"../../test/testdata/runner/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			[]string{"URN Check", "Group Check", "District Check"},
+			[]*flows.ResultSpec{
+				{Key: "urn_check", Name: "URN Check", Categories: []string{"Telegram", "Other"}},
+				{Key: "group_check", Name: "Group Check", Categories: []string{"Testers", "Other"}},
+				{Key: "district_check", Name: "District Check", Categories: []string{"Valid", "Invalid"}},
+			},
 		},
 		{
 			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			[]string{"Favorite Color", "Soda"},
+			[]*flows.ResultSpec{
+				{Key: "favorite_color", Name: "Favorite Color", Categories: []string{"Red", "Blue", "Other"}},
+				{Key: "soda", Name: "Soda", Categories: []string{"Pepsi", "Coke", "Other"}},
+			},
 		},
 	}
 
@@ -582,6 +593,6 @@ func TestExtractResultNames(t *testing.T) {
 		require.NoError(t, err)
 
 		// try extracting all dependencies
-		assert.Equal(t, tc.resultNames, flow.ExtractResultNames(), "extracted result names mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+		assert.Equal(t, tc.results, flow.ExtractResults(), "extracted results mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 	}
 }

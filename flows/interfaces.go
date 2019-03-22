@@ -129,14 +129,6 @@ type Localizable interface {
 	LocalizationUUID() utils.UUID
 }
 
-type Inspectable interface {
-	Inspect(func(Inspectable))
-	EnumerateTemplates(Localization, func(string))
-	RewriteTemplates(Localization, func(string) string)
-	EnumerateDependencies(Localization, func(assets.Reference))
-	EnumerateResultNames(func(string))
-}
-
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
 // properties which can be accessed:
 //
@@ -177,7 +169,7 @@ type Flow interface {
 	ExtractTemplates() []string
 	RewriteTemplates(func(string) string)
 	ExtractDependencies() []assets.Reference
-	ExtractResultNames() []string
+	ExtractResults() []*ResultSpec
 }
 
 // Node is a single node in a flow

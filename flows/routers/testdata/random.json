@@ -34,8 +34,16 @@
         "inspection": {
             "templates": [],
             "dependencies": [],
-            "result_names": [
-                "Random Result"
+            "results": [
+                {
+                    "key": "random_result",
+                    "name": "Random Result",
+                    "categories": [
+                        "Yes",
+                        "No",
+                        "Other"
+                    ]
+                }
             ]
         }
     }

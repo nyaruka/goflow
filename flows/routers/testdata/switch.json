@@ -149,8 +149,16 @@
                 "no"
             ],
             "dependencies": [],
-            "result_names": [
-                "Favorite Color"
+            "results": [
+                {
+                    "key": "favorite_color",
+                    "name": "Favorite Color",
+                    "categories": [
+                        "Yes",
+                        "No",
+                        "Other"
+                    ]
+                }
             ]
         }
     },
@@ -207,8 +215,16 @@
             "dependencies": [
                 "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=]"
             ],
-            "result_names": [
-                "Is Member"
+            "results": [
+                {
+                    "key": "is_member",
+                    "name": "Is Member",
+                    "categories": [
+                        "Yes",
+                        "No",
+                        "Other"
+                    ]
+                }
             ]
         }
     }

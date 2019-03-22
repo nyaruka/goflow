@@ -140,6 +140,6 @@ func (r inspectableReference) EnumerateDependencies(localization Localization, i
 	}
 }
 
-// EnumerateResultNames enumerates all result names on this object.
-// Asset references can't contain result names.
-func (r inspectableReference) EnumerateResultNames(include func(string)) {}
+// EnumerateResults enumerates all potential results on this object
+// Asset references can't contain results.
+func (r inspectableReference) EnumerateResults(include func(*ResultSpec)) {}

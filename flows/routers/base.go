@@ -50,9 +50,16 @@ func (r *BaseRouter) RewriteTemplates(localization flows.Localization, rewrite f
 func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
 
-// EnumerateResultNames enumerates all result names on this object
-func (r *BaseRouter) EnumerateResultNames(include func(string)) {
-	include(r.ResultName())
+// EnumerateResults enumerates all potential results on this object
+func (r *BaseRouter) EnumerateResults(include func(*flows.ResultSpec)) {
+	if r.ResultName_ != "" {
+		categoryNames := make([]string, len(r.Categories_))
+		for c := range r.Categories_ {
+			categoryNames[c] = r.Categories_[c].Name()
+		}
+
+		include(flows.NewResultSpec(r.ResultName_, categoryNames))
+	}
 }
 
 func (r *BaseRouter) validate(exits []flows.Exit) error {
