@@ -30,9 +30,12 @@ type flow struct {
 	nodes              []flows.Node
 
 	// optional properties not used by engine itself
-	ui           flows.UI
+	ui flows.UI
+
+	// properties set after validation
 	dependencies *dependencies
 	results      []*flows.ResultSpec
+	waitingExits []flows.ExitUUID
 
 	// internal state
 	nodeMap   map[flows.NodeUUID]flows.Node
@@ -135,6 +138,7 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 	f.validated = true
 	f.dependencies = deps
 	f.results = f.ExtractResults()
+	f.waitingExits = f.ExtractExitsFromWaits()
 
 	if recursive {
 		if sa == nil {
@@ -258,6 +262,21 @@ func (f *flow) ExtractResults() []*flows.ResultSpec {
 	return flows.MergeResultSpecs(specs)
 }
 
+// ExtractExitsFromWaits extracts all exits coming from nodes with waits
+func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
+	exitUUIDs := make([]flows.ExitUUID, 0)
+	include := func(e flows.ExitUUID) { exitUUIDs = append(exitUUIDs, e) }
+
+	for _, n := range f.nodes {
+		if n.Wait() != nil {
+			for _, e := range n.Exits() {
+				include(e.UUID())
+			}
+		}
+	}
+	return exitUUIDs
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
@@ -291,6 +310,7 @@ type validatedFlowEnvelope struct {
 
 	Dependencies *dependencies       `json:"_dependencies"`
 	Results      []*flows.ResultSpec `json:"_results"`
+	WaitingExits []flows.ExitUUID    `json:"_waiting_exits"`
 }
 
 // IsSpecVersionSupported determines if we can read the given flow version
@@ -358,6 +378,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 			flowEnvelope: e,
 			Dependencies: f.dependencies,
 			Results:      f.results,
+			WaitingExits: f.waitingExits,
 		})
 	}
 
