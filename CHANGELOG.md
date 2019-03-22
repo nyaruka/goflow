@@ -1,3 +1,10 @@
+v0.30.2
+----------
+ * Record exit UUIDs coming from waits in validated flow definition
+ * Match characters  intended to be combined with another character to support Thai, Bengali and Burmese properly
+ * Extract and save result categories during validation
+ * Add validation that node has > 0 exits, routers have > 0 categories, and categories have an exit
+
 v0.30.1
 ----------
  * Don't try to validate a subflow which is missing
