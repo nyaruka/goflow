@@ -53,3 +53,13 @@ func StringSlices(s string, indices []int) []string {
 	}
 	return slices
 }
+
+// StringSliceContains determines whether the given slice of strings contains the given string
+func StringSliceContains(slice []string, str string, caseSensitive bool) bool {
+	for _, s := range slice {
+		if (caseSensitive && s == str) || (!caseSensitive && strings.ToLower(s) == strings.ToLower(str)) {
+			return true
+		}
+	}
+	return false
+}

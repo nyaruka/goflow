@@ -39,7 +39,7 @@ func MergeResultSpecs(specs []*ResultSpec) []*ResultSpec {
 		if existing != nil {
 			// if we already have a result spec with this key, merge categories
 			for _, category := range spec.Categories {
-				if !utils.StringSliceContains(existing.Categories, category) {
+				if !utils.StringSliceContains(existing.Categories, category, false) {
 					existing.Categories = append(existing.Categories, category)
 				}
 			}
