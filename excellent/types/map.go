@@ -49,16 +49,16 @@ func (m *xmap) ToXText(env utils.Environment) XText {
 	sortedKeys := m.Keys()
 	sort.Strings(sortedKeys)
 
-	lines := make([]string, 0, m.Length())
+	pairs := make([]string, 0, m.Length())
 	for _, k := range sortedKeys {
 		vAsText, xerr := ToXText(env, m.values[k])
 		if xerr != nil {
 			vAsText = xerr.ToXText(env)
 		}
 
-		lines = append(lines, fmt.Sprintf("%s: %s", k, vAsText))
+		pairs = append(pairs, fmt.Sprintf("%s: %s", k, vAsText))
 	}
-	return NewXText(strings.Join(lines, "\n"))
+	return NewXText("{" + strings.Join(pairs, ", ") + "}")
 }
 
 // ToXBoolean converts this type to a bool

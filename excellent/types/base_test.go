@@ -201,7 +201,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 			value:          types.NewEmptyXMap(),
 			asInternalJSON: `{}`,
 			asJSON:         `{}`,
-			asText:         ``,
+			asText:         `{}`,
 			asBool:         false,
 			isEmpty:        true,
 		}, {
@@ -211,7 +211,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 			}),
 			asInternalJSON: `{"first":{"foo":"Hello"},"second":{"foo":"World"}}`,
 			asJSON:         `{"first":{"bar":123,"foo":"Hello"},"second":{"bar":456,"foo":"World"}}`,
-			asText:         "first: Hello\nsecond: World",
+			asText:         "{first: Hello, second: World}",
 			asBool:         true,
 			isEmpty:        false,
 		}, {

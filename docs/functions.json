@@ -1111,23 +1111,23 @@
         "examples": [
             {
                 "template": "@(split(\"a b c\", \" \"))",
-                "output": "a, b, c"
+                "output": "[a, b, c]"
             },
             {
                 "template": "@(split(\"a\", \" \"))",
-                "output": "a"
+                "output": "[a]"
             },
             {
                 "template": "@(split(\"abc..d\", \".\"))",
-                "output": "abc, d"
+                "output": "[abc, d]"
             },
             {
                 "template": "@(split(\"a.b.c.\", \".\"))",
-                "output": "a, b, c"
+                "output": "[a, b, c]"
             },
             {
                 "template": "@(split(\"a|b,c  d\", \" .|,\"))",
-                "output": "a, b, c, d"
+                "output": "[a, b, c, d]"
             }
         ]
     },

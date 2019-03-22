@@ -341,11 +341,11 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 //
 // Empty values are removed from the returned list.
 //
-//   @(split("a b c", " ")) -> a, b, c
-//   @(split("a", " ")) -> a
-//   @(split("abc..d", ".")) -> abc, d
-//   @(split("a.b.c.", ".")) -> a, b, c
-//   @(split("a|b,c  d", " .|,")) -> a, b, c, d
+//   @(split("a b c", " ")) -> [a, b, c]
+//   @(split("a", " ")) -> [a]
+//   @(split("abc..d", ".")) -> [abc, d]
+//   @(split("a.b.c.", ".")) -> [a, b, c]
+//   @(split("a|b,c  d", " .|,")) -> [a, b, c, d]
 //
 // @function split(text, delimiters)
 func Split(env utils.Environment, text types.XText, delimiters types.XText) types.XValue {
