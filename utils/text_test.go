@@ -42,7 +42,10 @@ func TestTokenizeString(t *testing.T) {
 		{"math+=×÷√∊", []string{"math", "+", "=", "×", "÷", "√", "∊"}},     // math symbols treated as individual tokens
 		{"emoji😄🏥👪👰😟🧟", []string{"emoji", "😄", "🏥", "👪", "👰", "😟", "🧟"}},   // emojis treated as individual tokens
 		{"👍🏿 👨🏼", []string{"👍", "🏿", "👨", "🏼"}},                            // tone modifiers treated as individual tokens
-		{"ℹ︎ ℹ️", []string{"ℹ", "ℹ"}},                                      // variation selectors ignored
+		{"ℹ ℹ️", []string{"ℹ", "ℹ️"}},                                      // variation selectors ignored
+		{"ยกเลิก sasa", []string{"ยกเลิก", "sasa"}},                        // Thai word means Cancelled
+		{"বাতিল sasa", []string{"বাতিল", "sasa"}},                          // Bangla word means Cancel
+		{"ထွက်သွား sasa", []string{"ထွက်သွား", "sasa"}},                    // Burmese word means exit
 	}
 	for _, test := range tokenizerTests {
 		assert.Equal(t, test.result, utils.TokenizeString(test.text), "unexpected result tokenizing '%s'", test.text)
