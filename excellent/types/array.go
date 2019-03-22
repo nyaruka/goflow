@@ -43,7 +43,7 @@ func (a *xarray) ToXText(env utils.Environment) XText {
 		}
 		parts[i] = vAsText.Native()
 	}
-	return NewXText(strings.Join(parts, ", "))
+	return NewXText("[" + strings.Join(parts, ", ") + "]")
 }
 
 // ToXBoolean converts this type to a bool

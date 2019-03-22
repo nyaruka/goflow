@@ -281,7 +281,7 @@
             },
             {
                 "template": "@(default(array(1, 2), \"value\"))",
-                "output": "1, 2"
+                "output": "[1, 2]"
             },
             {
                 "template": "@(default(array(), \"value\"))",

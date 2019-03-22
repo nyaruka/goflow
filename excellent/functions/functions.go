@@ -1749,7 +1749,7 @@ func Length(env utils.Environment, value types.XValue) types.XValue {
 //   @(default(undeclared.var, "default_value")) -> default_value
 //   @(default("10", "20")) -> 10
 //   @(default("", "value")) -> value
-//   @(default(array(1, 2), "value")) -> 1, 2
+//   @(default(array(1, 2), "value")) -> [1, 2]
 //   @(default(array(), "value")) -> value
 //   @(default(datetime("invalid-date"), "today")) -> today
 //
