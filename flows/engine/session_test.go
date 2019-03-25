@@ -74,6 +74,15 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(is_error(contact.fields.favorite_icecream))", "true", ""},
 		{"@(length(contact.fields))", "4", ""},
 
+		// simplifed field access
+		{"@fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},
+		{"@fields.activation_token", "AACC55", ""},
+		{"@fields.age", "23", ""},
+		{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
+		{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: map has no property 'favorite_icecream'"},
+		{"@(is_error(fields.favorite_icecream))", "true", ""},
+		{"@(length(fields))", "5", ""},
+
 		{"@input", "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3", ""},
 		{"@input.text", "Hi there", ""},
 		{"@input.attachments", `[http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3]`, ""},

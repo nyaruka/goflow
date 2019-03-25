@@ -77,7 +77,7 @@ func TestContact(t *testing.T) {
 		"viber":     nil,
 		"wechat":    nil,
 		"whatsapp":  nil,
-	}), contact.URNByScheme())
+	}), contact.URNsContext())
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())

@@ -11,6 +11,7 @@ import (
 var RunContextTopLevels = []string{
 	"child",
 	"contact",
+	"fields",
 	"input",
 	"legacy_extra",
 	"parent",
@@ -21,8 +22,11 @@ var RunContextTopLevels = []string{
 }
 
 var fieldRefPaths = [][]string{
+	{"fields"},
 	{"contact", "fields"},
+	{"parent", "fields"},
 	{"parent", "contact", "fields"},
+	{"child", "fields"},
 	{"child", "contact", "fields"},
 }
 
