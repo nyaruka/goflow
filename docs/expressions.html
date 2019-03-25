@@ -146,7 +146,7 @@
 <a class="sourceLine" id="cb6-2" title="2">@input.type → msg</a>
 <a class="sourceLine" id="cb6-3" title="3">@input.text → Hi there</a>
 <a class="sourceLine" id="cb6-4" title="4">@input.attachments → [http:<span class="co">//s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3]</span></a>
-<a class="sourceLine" id="cb6-5" title="5">@(json(input)) → {<span class="st">&quot;attachments&quot;</span>:[{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>},{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;audio/mp3&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>}],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2017-12-31T11:35:10.035757-02:00&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:{<span class="st">&quot;display&quot;</span>:<span class="st">&quot;(206) 555-1212&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>},<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb6-5" title="5">@(json(input)) → {<span class="st">&quot;attachments&quot;</span>:[{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>},{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;audio/mp3&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>}],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2017-12-31T11:35:10.035757-02:00&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:<span class="st">&quot;tel:+12065551212&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
 <p><a name="context:result"></a></p>
 <h2 id="result">Result</h2>
 <p>Describes a value captured during a run’s execution. It might have been implicitly created by a router, or explicitly created by a <a href="#action:set_run_result">set_run_result</a> action.It renders as its value in a template, and has the following properties which can be accessed:</p>
@@ -194,21 +194,12 @@
 <li><em>twitterid:54784326227#nyaruka</em></li>
 <li><em>telegram:34642632786#bobby</em></li>
 </ul>
-<p>It has several properties which can be accessed in expressions:</p>
-<ul>
-<li><code>scheme</code> the scheme of the URN, e.g. “tel”, “twitterid”</li>
-<li><code>path</code> the path of the URN, e.g. “+16303524567”, “54784326227”</li>
-<li><code>display</code> the display portion of the URN, e.g. “nyaruka”, “bobby”</li>
-<li><code>channel</code> the preferred <a href="#context:channel">channel</a> of the URN</li>
-</ul>
 <p>To render a URN in a human friendly format, use the <a href="expressions.html#function:format_urn">format_urn</a> function.</p>
 <p>Examples:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" title="1">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb10-2" title="2">@(contact.urns[<span class="dv">0</span>].scheme) → tel</a>
-<a class="sourceLine" id="cb10-3" title="3">@(contact.urns[<span class="dv">0</span>].path) → +<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb10-4" title="4">@(contact.urns[<span class="dv">1</span>].display) → nyaruka</a>
-<a class="sourceLine" id="cb10-5" title="5">@(format_urn(contact.urns[<span class="dv">0</span>])) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
-<a class="sourceLine" id="cb10-6" title="6">@(json(contact.urns[<span class="dv">0</span>])) → {<span class="st">&quot;display&quot;</span>:<span class="st">&quot;(206) 555-1212&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb10-2" title="2">@(urn_parts(contact.urns[<span class="dv">0</span>]).scheme) → tel</a>
+<a class="sourceLine" id="cb10-3" title="3">@(format_urn(contact.urns[<span class="dv">0</span>])) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
+<a class="sourceLine" id="cb10-4" title="4">@(json(contact.urns[<span class="dv">0</span>])) → <span class="st">&quot;tel:+12065551212&quot;</span></a></code></pre></div>
 </div>
 <h1 id="functions">Functions</h1>
 <p>Templates also have access to a set of functions which can be used to further manipulate the context. Functions are called using the <code>@(function_name(args..))</code> syntax. For example, to title-case a contact’s name in a message, you can use <code>@(title(contact.name))</code>. Context variables referred to within functions do not need a leading <code>@</code>. Functions can also use literal numbers or strings as arguments, for example <code>@(length(split("1 2 3", " "))</code>.</p>

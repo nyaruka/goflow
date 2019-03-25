@@ -2,7 +2,6 @@ package flows
 
 import (
 	"net/url"
-	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -37,23 +36,14 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //  - _twitterid:54784326227#nyaruka_
 //  - _telegram:34642632786#bobby_
 //
-// It has several properties which can be accessed in expressions:
-//
-//  * `scheme` the scheme of the URN, e.g. "tel", "twitterid"
-//  * `path` the path of the URN, e.g. "+16303524567", "54784326227"
-//  * `display` the display portion of the URN, e.g. "nyaruka", "bobby"
-//  * `channel` the preferred [channel](#context:channel) of the URN
-//
 // To render a URN in a human friendly format, use the [function:format_urn] function.
 //
 // Examples:
 //
 //   @(contact.urns[0]) -> tel:+12065551212
-//   @(contact.urns[0].scheme) -> tel
-//   @(contact.urns[0].path) -> +12065551212
-//   @(contact.urns[1].display) -> nyaruka
+//   @(urn_parts(contact.urns[0]).scheme) -> tel
 //   @(format_urn(contact.urns[0])) -> (206) 555-1212
-//   @(json(contact.urns[0])) -> {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
+//   @(json(contact.urns[0])) -> "tel:+12065551212"
 //
 // @context urn
 type ContactURN struct {
@@ -126,27 +116,6 @@ func (u *ContactURN) withoutQuery() urns.URN {
 	return urn
 }
 
-// Resolve resolves the given key when this URN is referenced in an expression
-func (u *ContactURN) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "scheme":
-		return types.NewXText(u.urn.Scheme())
-	case "path":
-		if env.RedactionPolicy() == utils.RedactionPolicyURNs {
-			return redactedURN
-		}
-		return types.NewXText(u.urn.Path())
-	case "display":
-		if env.RedactionPolicy() == utils.RedactionPolicyURNs {
-			return redactedURN
-		}
-		return types.NewXText(u.urn.Format())
-	case "channel":
-		return u.Channel()
-	}
-	return types.NewXResolveError(u, key)
-}
-
 // Describe returns a representation of this type for error messages
 func (u *ContactURN) Describe() string { return "URN" }
 
@@ -160,11 +129,10 @@ func (u *ContactURN) Reduce(env utils.Environment) types.XPrimitive {
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (u *ContactURN) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, u, "scheme", "path", "display").ToXJSON(env)
+	return u.Reduce(env).ToXJSON(env)
 }
 
 var _ types.XValue = (*ContactURN)(nil)
-var _ types.XResolvable = (*ContactURN)(nil)
 
 // URNList is the list of a contact's URNs
 type URNList []*ContactURN

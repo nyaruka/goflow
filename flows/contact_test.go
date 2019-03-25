@@ -87,7 +87,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, types.NewXResolveError(contact, "xxx"), contact.Resolve(env, "xxx"))
 	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Reduce(env))
 	assert.Equal(t, "contact", contact.Describe())
-	assert.Equal(t, types.NewXText(`{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"294a14d4-c998-41e5-a314-5941b97b89d7"},"created_on":"2017-12-15T10:00:00.000000Z","fields":{},"groups":[],"language":"eng","name":"Joe Bloggs","timezone":"UTC","urns":[{"display":"(636) 464-6466","path":"+16364646466","scheme":"tel"},{"display":"joey","path":"joey","scheme":"twitter"}],"uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), contact.ToXJSON(env))
+	assert.Equal(t, types.NewXText(`{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"294a14d4-c998-41e5-a314-5941b97b89d7"},"created_on":"2017-12-15T10:00:00.000000Z","fields":{},"groups":[],"language":"eng","name":"Joe Bloggs","timezone":"UTC","urns":["tel:+16364646466","twitter:joey"],"uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), contact.ToXJSON(env))
 }
 
 func TestContactFormat(t *testing.T) {

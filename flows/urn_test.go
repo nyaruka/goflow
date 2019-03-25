@@ -58,21 +58,12 @@ func TestContactURN(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 	assert.Equal(t, "URN", urn.Describe())
 	assert.Equal(t, types.NewXText("tel:+250781234567"), urn.Reduce(env))
-	assert.Equal(t, types.NewXText("tel"), urn.Resolve(env, "scheme"))
-	assert.Equal(t, types.NewXText("+250781234567"), urn.Resolve(env, "path"))
-	assert.Equal(t, types.NewXText("0781 234 567"), urn.Resolve(env, "display"))
-	assert.Equal(t, channel, urn.Resolve(env, "channel"))
-	assert.Equal(t, types.NewXResolveError(urn, "xxx"), urn.Resolve(env, "xxx"))
-	assert.Equal(t, types.NewXText(`{"display":"0781 234 567","path":"+250781234567","scheme":"tel"}`), urn.ToXJSON(env))
+	assert.Equal(t, types.NewXText(`"tel:+250781234567"`), urn.ToXJSON(env))
 
 	// check when URNs have to be redacted
 	env = utils.NewEnvironmentBuilder().WithRedactionPolicy(utils.RedactionPolicyURNs).Build()
 	assert.Equal(t, types.NewXText("********"), urn.Reduce(env))
-	assert.Equal(t, types.NewXText("tel"), urn.Resolve(env, "scheme"))
-	assert.Equal(t, types.NewXText("********"), urn.Resolve(env, "path"))
-	assert.Equal(t, types.NewXText("********"), urn.Resolve(env, "display"))
-	assert.Equal(t, channel, urn.Resolve(env, "channel"))
-	assert.Equal(t, types.NewXText(`{"display":"********","path":"********","scheme":"tel"}`), urn.ToXJSON(env))
+	assert.Equal(t, types.NewXText(`"********"`), urn.ToXJSON(env))
 
 	// we can clear the channel affinity
 	urn.SetChannel(nil)
@@ -103,7 +94,7 @@ func TestURNList(t *testing.T) {
 	assert.Equal(t, types.NewXArray(urn1, urn2, urn3), urnList.Reduce(env))
 	assert.Equal(t, 3, urnList.Length())
 	assert.Equal(t, urn3, urnList.Index(2))
-	assert.Equal(t, types.NewXText(`[{"display":"0781 234 567","path":"+250781234567","scheme":"tel"},{"display":"billy_bob","path":"134252511151","scheme":"twitter"},{"display":"0781 111 222","path":"+250781111222","scheme":"tel"}]`), urnList.ToXJSON(env))
+	assert.Equal(t, types.NewXText(`["tel:+250781234567","twitter:134252511151#billy_bob","tel:+250781111222"]`), urnList.ToXJSON(env))
 
 	context := types.NewXMap(map[string]types.XValue{"urns": urnList})
 

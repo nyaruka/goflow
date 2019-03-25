@@ -182,7 +182,7 @@ Examples:
 @input.type → msg
 @input.text → Hi there
 @input.attachments → [http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3]
-@(json(input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
+@(json(input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":"tel:+12065551212","uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
 ```
 
 <a name="context:result"></a>
@@ -260,13 +260,6 @@ components: scheme, path, and display (optional). For example:
  - _twitterid:54784326227#nyaruka_
  - _telegram:34642632786#bobby_
 
-It has several properties which can be accessed in expressions:
-
- * `scheme` the scheme of the URN, e.g. "tel", "twitterid"
- * `path` the path of the URN, e.g. "+16303524567", "54784326227"
- * `display` the display portion of the URN, e.g. "nyaruka", "bobby"
- * `channel` the preferred [channel](#context:channel) of the URN
-
 To render a URN in a human friendly format, use the [format_urn](expressions.html#function:format_urn) function.
 
 Examples:
@@ -274,11 +267,9 @@ Examples:
 
 ```objectivec
 @(contact.urns[0]) → tel:+12065551212
-@(contact.urns[0].scheme) → tel
-@(contact.urns[0].path) → +12065551212
-@(contact.urns[1].display) → nyaruka
+@(urn_parts(contact.urns[0]).scheme) → tel
 @(format_urn(contact.urns[0])) → (206) 555-1212
-@(json(contact.urns[0])) → {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
+@(json(contact.urns[0])) → "tel:+12065551212"
 ```
 
 

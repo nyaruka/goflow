@@ -19,7 +19,7 @@
                 {
                     "created_on": "2018-07-06T12:30:08.123456789Z",
                     "elapsed_ms": 1000,
-                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": {\"display\":\"********\",\"path\":\"********\",\"scheme\":\"tel\"}) }",
+                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 24\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"********\") }",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
                     "status_code": 200,
@@ -87,7 +87,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "elapsed_ms": 1000,
-                                "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": {\"display\":\"********\",\"path\":\"********\",\"scheme\":\"tel\"}) }",
+                                "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 24\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"********\") }",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
                                 "status_code": 200,
