@@ -40,9 +40,9 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //
 // Examples:
 //
-//   @(contact.urns[0]) -> tel:+12065551212
-//   @(urn_parts(contact.urns[0]).scheme) -> tel
-//   @(format_urn(contact.urns[0])) -> (206) 555-1212
+//   @(urns.tel) -> tel:+12065551212
+//   @(urn_parts(urns.tel).scheme) -> tel
+//   @(format_urn(urns.tel)) -> (206) 555-1212
 //   @(json(contact.urns[0])) -> "tel:+12065551212"
 //
 // @context urn

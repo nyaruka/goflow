@@ -266,9 +266,9 @@ Examples:
 
 
 ```objectivec
-@(contact.urns[0]) → tel:+12065551212
-@(urn_parts(contact.urns[0]).scheme) → tel
-@(format_urn(contact.urns[0])) → (206) 555-1212
+@(urns.tel) → tel:+12065551212
+@(urn_parts(urns.tel).scheme) → tel
+@(format_urn(urns.tel)) → (206) 555-1212
 @(json(contact.urns[0])) → "tel:+12065551212"
 ```
 
@@ -669,7 +669,7 @@ Formats `urn` into human friendly text.
 @(format_urn("tel:+250781234567")) → 0781 234 567
 @(format_urn("twitter:134252511151#billy_bob")) → billy_bob
 @(format_urn(contact.urn)) → (206) 555-1212
-@(format_urn(contact.urns[2])) → foo@bar.com
+@(format_urn(urns.tel)) → (206) 555-1212
 @(format_urn(urns.mailto)) → foo@bar.com
 @(format_urn("NOT URN")) → ERROR
 ```
