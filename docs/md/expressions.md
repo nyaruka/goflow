@@ -107,8 +107,6 @@ Examples:
 @contact.created_on → 2018-06-20T11:40:30.123456Z
 @contact.urns → [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 @(contact.urns[0]) → tel:+12065551212
-@contact.urns.tel → [tel:+12065551212]
-@(contact.urns.mailto[0]) → mailto:foo@bar.com
 @contact.urn → tel:+12065551212
 @contact.groups → [Testers, Males]
 @contact.fields → {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
@@ -264,9 +262,9 @@ components: scheme, path, and display (optional). For example:
 
 It has several properties which can be accessed in expressions:
 
- * `scheme` the scheme of the URN, e.g. "tel", "twitter"
- * `path` the path of the URN, e.g. "+16303524567"
- * `display` the display portion of the URN, e.g. "+16303524567"
+ * `scheme` the scheme of the URN, e.g. "tel", "twitterid"
+ * `path` the path of the URN, e.g. "+16303524567", "54784326227"
+ * `display` the display portion of the URN, e.g. "nyaruka", "bobby"
  * `channel` the preferred [channel](#context:channel) of the URN
 
 To render a URN in a human friendly format, use the [format_urn](expressions.html#function:format_urn) function.
@@ -680,7 +678,6 @@ Formats `urn` into human friendly text.
 @(format_urn("tel:+250781234567")) → 0781 234 567
 @(format_urn("twitter:134252511151#billy_bob")) → billy_bob
 @(format_urn(contact.urn)) → (206) 555-1212
-@(format_urn(contact.urns.telegram[0])) →
 @(format_urn(contact.urns[2])) → foo@bar.com
 @(format_urn(urns.mailto)) → foo@bar.com
 @(format_urn("NOT URN")) → ERROR

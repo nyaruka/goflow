@@ -39,9 +39,9 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //
 // It has several properties which can be accessed in expressions:
 //
-//  * `scheme` the scheme of the URN, e.g. "tel", "twitter"
-//  * `path` the path of the URN, e.g. "+16303524567"
-//  * `display` the display portion of the URN, e.g. "+16303524567"
+//  * `scheme` the scheme of the URN, e.g. "tel", "twitterid"
+//  * `path` the path of the URN, e.g. "+16303524567", "54784326227"
+//  * `display` the display portion of the URN, e.g. "nyaruka", "bobby"
 //  * `channel` the preferred [channel](#context:channel) of the URN
 //
 // To render a URN in a human friendly format, use the [function:format_urn] function.
@@ -227,18 +227,6 @@ func (l URNList) WithScheme(scheme string) URNList {
 	return matching
 }
 
-// Resolve resolves the given key when this URN list is referenced in an expression
-func (l URNList) Resolve(env utils.Environment, key string) types.XValue {
-	scheme := strings.ToLower(key)
-
-	// if this isn't a valid scheme, bail
-	if !urns.IsValidScheme(scheme) {
-		return types.NewXErrorf("no such URN scheme '%s'", key)
-	}
-
-	return l.WithScheme(scheme)
-}
-
 // Describe returns a representation of this type for error messages
 func (l URNList) Describe() string { return "URNs" }
 
@@ -268,4 +256,3 @@ func (l URNList) Length() int {
 
 var _ types.XValue = (URNList)(nil)
 var _ types.XIndexable = (URNList)(nil)
-var _ types.XResolvable = (URNList)(nil)

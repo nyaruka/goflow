@@ -20,7 +20,7 @@
                             "type": "call_webhook",
                             "url": "http://localhost/?cmd=success",
                             "method": "POST",
-                            "body": "{ \"phone\": @(json(contact.urns.tel))) }"
+                            "body": "{ \"phone\": @(json(urns.tel))) }"
                         }
                     ],
                     "exits": [

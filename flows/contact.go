@@ -43,8 +43,6 @@ import (
 //   @contact.created_on -> 2018-06-20T11:40:30.123456Z
 //   @contact.urns -> [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 //   @(contact.urns[0]) -> tel:+12065551212
-//   @contact.urns.tel -> [tel:+12065551212]
-//   @(contact.urns.mailto[0]) -> mailto:foo@bar.com
 //   @contact.urn -> tel:+12065551212
 //   @contact.groups -> [Testers, Males]
 //   @contact.fields -> {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
@@ -218,6 +216,13 @@ func (c *Contact) URNByScheme() types.XMap {
 		scheme := u.URN().Scheme()
 		if _, seen := byScheme[scheme]; !seen {
 			byScheme[scheme] = u
+		}
+	}
+
+	// and add nils for all other schemes
+	for scheme := range urns.ValidSchemes {
+		if _, seen := byScheme[scheme]; !seen {
+			byScheme[scheme] = nil
 		}
 	}
 

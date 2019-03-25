@@ -117,9 +117,6 @@ func TestURNList(t *testing.T) {
 		{"urns[2]", true, flows.NewContactURN("tel:+250781111222", nil)},
 		{"urns[-1]", true, flows.NewContactURN("tel:+250781111222", nil)},
 		{"urns[3]", false, nil}, // index out of range
-		{"urns.tel", true, flows.URNList{flows.NewContactURN("tel:+250781234567", nil), flows.NewContactURN("tel:+250781111222", nil)}},
-		{"urns.twitter", true, flows.URNList{flows.NewContactURN("twitter:134252511151#billy_bob", nil)}},
-		{"urns.xxxxxx", false, ""}, // not a valid scheme
 	}
 	for _, tc := range testCases {
 		value := excellent.EvaluateExpression(env, context, tc.expression)

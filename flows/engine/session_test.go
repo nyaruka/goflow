@@ -44,8 +44,6 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		// contact URN list access
 		{"@contact.urns", `[tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]`, ""},
-		{"@contact.urns.tel", `[tel:+12065551212]`, ""},
-		{"@contact.urns.xxx", "", "error evaluating @contact.urns.xxx: no such URN scheme 'xxx'"},
 		{"@(contact.urns[0])", "tel:+12065551212", ""},
 		{"@(contact.urns[110])", "", "error evaluating @(contact.urns[110]): index 110 out of range for 3 items"},
 		{"@(contact.urns[0].scheme)", "tel", ""},
@@ -58,16 +56,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(contact.urns[1])", "twitterid:54784326227#nyaruka", ""},
 		{"@(contact.urns[1].channel)", "", ""},
 		{"@(format_urn(contact.urns[0]))", "(206) 555-1212", ""},
-		{"@(contact.urns.twitterid[0])", `twitterid:54784326227#nyaruka`, ""},
-		{"@(contact.urns.twitterid[0].scheme)", `twitterid`, ""},
-		{"@(contact.urns.twitterid[0].path)", `54784326227`, ""},
-		{"@contact.urns.telegram", `[]`, ""},
 
 		// simplified URN access
-		{"@urns", `{mailto: mailto:foo@bar.com, tel: tel:+12065551212, twitterid: twitterid:54784326227#nyaruka}`, ""},
+		{"@urns", `{ext: , facebook: , fcm: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , wechat: , whatsapp: }`, ""},
 		{"@urns.tel", `tel:+12065551212`, ""},
 		{"@urns.mailto", `mailto:foo@bar.com`, ""},
-		{"@urns.viber", ``, "error evaluating @urns.viber: map has no property 'viber'"},
+		{"@urns.viber", ``, ""},
 
 		// contact groups
 		{"@contact.groups", `[Testers, Males]`, ""},

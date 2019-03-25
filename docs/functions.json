@@ -500,10 +500,6 @@
                 "output": "(206) 555-1212"
             },
             {
-                "template": "@(format_urn(contact.urns.telegram[0]))",
-                "output": ""
-            },
-            {
                 "template": "@(format_urn(contact.urns[2]))",
                 "output": "foo@bar.com"
             },

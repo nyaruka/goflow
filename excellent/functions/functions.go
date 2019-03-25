@@ -1710,7 +1710,6 @@ func FormatLocation(env utils.Environment, path types.XText) types.XValue {
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
 //   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
 //   @(format_urn(contact.urn)) -> (206) 555-1212
-//   @(format_urn(contact.urns.telegram[0])) ->
 //   @(format_urn(contact.urns[2])) -> foo@bar.com
 //   @(format_urn(urns.mailto)) -> foo@bar.com
 //   @(format_urn("NOT URN")) -> ERROR
