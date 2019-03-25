@@ -89,6 +89,11 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 		return types.NewXText(string(c.run.UUID()))
 	case "contact":
 		return c.run.Contact()
+	case "urns":
+		if c.run.Contact() != nil {
+			return c.run.Contact().URNByScheme()
+		}
+		return nil
 	case "flow":
 		return c.run.Flow()
 	case "status":

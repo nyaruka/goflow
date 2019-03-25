@@ -100,6 +100,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"parse_time":      ArgCountCheck(2, 2, ParseTime),
 	"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
+	// URN functions
+	"urn_parts": OneTextFunction(URNParts),
+
 	// json functions
 	"json":       OneArgFunction(JSON),
 	"parse_json": OneTextFunction(ParseJSON),
@@ -1395,6 +1398,23 @@ func TimeFromParts(env utils.Environment, hour, minute, second int) types.XValue
 	}
 
 	return types.NewXTime(utils.NewTimeOfDay(hour, minute, second, 0))
+}
+
+// URNParts parses a URN into its different parts
+//
+//   @(urn_parts("tel:+593979012345")) -> {display: , path: +593979012345, scheme: tel}
+//   @(urn_parts("twitterid:3263621177#bobby")) -> {display: bobby, path: 3263621177, scheme: twitterid}
+//
+// @function urn_parts(urn)
+func URNParts(env utils.Environment, urn types.XText) types.XValue {
+	u := urns.URN(urn.Native())
+	scheme, path, _, display := u.ToParts()
+
+	return types.NewXMap(map[string]types.XValue{
+		"scheme":  types.NewXText(scheme),
+		"path":    types.NewXText(path),
+		"display": types.NewXText(display),
+	})
 }
 
 //------------------------------------------------------------------------------------------

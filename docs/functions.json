@@ -1322,6 +1322,21 @@
         ]
     },
     {
+        "signature": "urn_parts(urn)",
+        "summary": "Parses a URN into its different parts",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(urn_parts(\"tel:+593979012345\"))",
+                "output": "{display: , path: +593979012345, scheme: tel}"
+            },
+            {
+                "template": "@(urn_parts(\"twitterid:3263621177#bobby\"))",
+                "output": "{display: bobby, path: 3263621177, scheme: twitterid}"
+            }
+        ]
+    },
+    {
         "signature": "weekday(date)",
         "summary": "Returns the day of the week for `date`.",
         "detail": "The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc.",

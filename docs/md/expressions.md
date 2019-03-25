@@ -1308,6 +1308,18 @@ Encodes `text` for use as a URL parameter.
 @(url_encode(10)) → 10
 ```
 
+<a name="function:urn_parts"></a>
+
+## urn_parts(urn)
+
+Parses a URN into its different parts
+
+
+```objectivec
+@(urn_parts("tel:+593979012345")) → {display: , path: +593979012345, scheme: tel}
+@(urn_parts("twitterid:3263621177#bobby")) → {display: bobby, path: 3263621177, scheme: twitterid}
+```
+
 <a name="function:weekday"></a>
 
 ## weekday(date)
