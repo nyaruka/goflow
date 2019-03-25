@@ -63,6 +63,22 @@ func TestContact(t *testing.T) {
 	assert.True(t, contact.HasURN("tel:+16364646466"))
 	assert.False(t, contact.HasURN("tel:+16300000000"))
 
+	assert.Equal(t, types.NewXMap(map[string]types.XValue{
+		"ext":       nil,
+		"facebook":  nil,
+		"fcm":       nil,
+		"jiochat":   nil,
+		"line":      nil,
+		"mailto":    nil,
+		"tel":       flows.NewContactURN(urns.URN("tel:+16364646466?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil),
+		"telegram":  nil,
+		"twitter":   flows.NewContactURN(urns.URN("twitter:joey"), nil),
+		"twitterid": nil,
+		"viber":     nil,
+		"wechat":    nil,
+		"whatsapp":  nil,
+	}), contact.URNByScheme())
+
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
 	assert.Equal(t, flows.ContactID(12345), clone.ID())
