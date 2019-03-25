@@ -105,13 +105,13 @@ Examples:
 @contact.language → eng
 @contact.timezone → America/Guayaquil
 @contact.created_on → 2018-06-20T11:40:30.123456Z
-@contact.urns → tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com
+@contact.urns → [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 @(contact.urns[0]) → tel:+12065551212
-@contact.urns.tel → tel:+12065551212
+@contact.urns.tel → [tel:+12065551212]
 @(contact.urns.mailto[0]) → mailto:foo@bar.com
 @contact.urn → tel:+12065551212
-@contact.groups → Testers, Males
-@contact.fields → activation_token: AACC55\nage: 23\ngender: Male\njoin_date: 2017-12-02T00:00:00.000000-02:00\nnot_set:\x20
+@contact.groups → [Testers, Males]
+@contact.fields → {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
 ```
@@ -152,7 +152,7 @@ Examples:
 
 
 ```objectivec
-@contact.groups → Testers, Males
+@contact.groups → [Testers, Males]
 @(contact.groups[0].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
 @(contact.groups[1].name) → Males
 @(json(contact.groups[1])) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
@@ -183,7 +183,7 @@ Examples:
 @input → Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
 @input.type → msg
 @input.text → Hi there
-@input.attachments → http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3
+@input.attachments → [http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3]
 @(json(input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
 ```
 
@@ -496,7 +496,7 @@ Returns `value` if is not empty or an error, otherwise it returns `default`.
 @(default(undeclared.var, "default_value")) → default_value
 @(default("10", "20")) → 10
 @(default("", "value")) → value
-@(default(array(1, 2), "value")) → 1, 2
+@(default(array(1, 2), "value")) → [1, 2]
 @(default(array(), "value")) → value
 @(default(datetime("invalid-date"), "today")) → today
 ```
@@ -1158,11 +1158,11 @@ Empty values are removed from the returned list.
 
 
 ```objectivec
-@(split("a b c", " ")) → a, b, c
-@(split("a", " ")) → a
-@(split("abc..d", ".")) → abc, d
-@(split("a.b.c.", ".")) → a, b, c
-@(split("a|b,c  d", " .|,")) → a, b, c, d
+@(split("a b c", " ")) → [a, b, c]
+@(split("a", " ")) → [a]
+@(split("abc..d", ".")) → [abc, d]
+@(split("a.b.c.", ".")) → [a, b, c]
+@(split("a|b,c  d", " .|,")) → [a, b, c, d]
 ```
 
 <a name="function:text"></a>
