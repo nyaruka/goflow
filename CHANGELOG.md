@@ -1,3 +1,8 @@
+v0.30.3
+----------
+ * Bug fix: switch router should use category from first matching rule
+ * Stringify maps with {...} and arrays with [...]
+
 v0.30.2
 ----------
  * Record exit UUIDs coming from waits in validated flow definition

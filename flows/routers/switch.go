@@ -131,11 +131,7 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 		run.LogError(step, err)
 	}
 
-	// the ingredients for a result
 	var input *string
-	var match string
-	var categoryUUID flows.CategoryUUID
-	var extra map[string]string
 
 	if operand != nil {
 		asText, _ := types.ToXText(env, operand)
@@ -143,14 +139,35 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 		input = &asString
 	}
 
-	// each of our cases
+	// find first matching case
+	match, categoryUUID, extra, err := r.matchCase(run, step, operand)
+	if err != nil {
+		return "", err
+	}
+
+	// none of our cases matched, so try to use the default
+	if categoryUUID == "" && r.Default != "" {
+		// evaluate our operand as a string
+		value, xerr := types.ToXText(env, operand)
+		if xerr != nil {
+			run.LogError(step, xerr)
+		}
+
+		match = value.Native()
+		categoryUUID = r.Default
+	}
+
+	return r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
+}
+
+func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, map[string]string, error) {
 	for _, c := range r.Cases {
 		test := strings.ToLower(c.Type)
 
 		// try to look up our function
 		xtest := tests.XTESTS[test]
 		if xtest == nil {
-			return "", errors.Errorf("unknown case test '%s'", c.Type)
+			return "", "", nil, errors.Errorf("unknown case test '%s'", c.Type)
 		}
 
 		// build our argument list
@@ -170,7 +187,7 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 		}
 
 		// call our function
-		result := xtest(env, args...)
+		result := xtest(run.Environment(), args...)
 
 		// tests have to return either errors or test results
 		switch typedResult := result.(type) {
@@ -179,34 +196,18 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typedResult.Error()))
 		case tests.XTestResult:
 			if typedResult.Matched() {
-				resultAsStr, xerr := types.ToXText(env, typedResult.Match())
+				resultAsStr, xerr := types.ToXText(run.Environment(), typedResult.Match())
 				if xerr != nil {
-					return "", xerr
+					return "", "", nil, xerr
 				}
 
-				match = resultAsStr.Native()
-				categoryUUID = c.CategoryUUID
-				extra = typedResult.Extra()
-				break
+				return resultAsStr.Native(), c.CategoryUUID, typedResult.Extra(), nil
 			}
 		default:
 			panic(fmt.Sprintf("unexpected result type from test %v: %#v", xtest, result))
 		}
 	}
-
-	// none of our cases matched, so try to use the default
-	if categoryUUID == "" && r.Default != "" {
-		// evaluate our operand as a string
-		value, xerr := types.ToXText(env, operand)
-		if xerr != nil {
-			run.LogError(step, xerr)
-		}
-
-		match = value.Native()
-		categoryUUID = r.Default
-	}
-
-	return r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
+	return "", "", nil, nil
 }
 
 // Inspect inspects this object and any children
