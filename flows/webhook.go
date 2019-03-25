@@ -20,7 +20,7 @@ var DefaultWebhookPayload = `{
 	"path": @(json(run.path)),
 	"results": @(json(run.results)),
 	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
-	"input": @(json(input)),
+	"input": @(if(input, "{\"attachments\":" & json(input.attachments) & ",\"channel\":" & json(input.channel) & ",\"created_on\":" & json(input.created_on) & ",\"text\":" & json(input.text) & ",\"type\":" & json(input.type) & ",\"urn\":" & if(input.urn, "{\"display\":" & json(format_urn(input.urn)) & ",\"path\":" & json(urn_parts(input.urn).path) & ",\"scheme\":" & json(urn_parts(input.urn).scheme) & "}", "null") & ",\"uuid\":" & json(input.uuid) & "}", "null")),
 	"channel": @(json(if(input, input.channel, null)))
 }`
 

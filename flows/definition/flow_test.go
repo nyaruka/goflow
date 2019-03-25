@@ -470,7 +470,7 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 				`XXX-YYY-ZZZ`,
 				"Here is your activation token",
 				"Hi @contact.fields.first_name, Your activation token is @contact.fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
-				"@(contact.urns.mailto[0])",
+				"@urns.mailto",
 				"test@@example.com",
 				`Hi @contact.name, are you ready?`,
 				`Hola @contact.name, ¿estás listo?`,

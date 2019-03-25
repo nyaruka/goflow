@@ -480,6 +480,24 @@ func TestFunctions(t *testing.T) {
 		{"upper", dmy, []types.XValue{xs("")}, xs("")},
 		{"upper", dmy, []types.XValue{}, ERROR},
 
+		{"urn_parts", dmy, []types.XValue{xs("tel:+593979012345")}, types.NewXMap(map[string]types.XValue{
+			"scheme":  xs("tel"),
+			"path":    xs("+593979012345"),
+			"display": types.XTextEmpty,
+		})},
+		{"urn_parts", dmy, []types.XValue{xs("twitterid:23454556#bobby")}, types.NewXMap(map[string]types.XValue{
+			"scheme":  xs("twitterid"),
+			"path":    xs("23454556"),
+			"display": xs("bobby"),
+		})},
+		{"urn_parts", dmy, []types.XValue{xs("not_a_urn")}, types.NewXMap(map[string]types.XValue{
+			"scheme":  types.XTextEmpty,
+			"path":    xs("not_a_urn"),
+			"display": types.XTextEmpty,
+		})},
+		{"urn_parts", dmy, []types.XValue{ERROR}, ERROR},
+		{"urn_parts", dmy, []types.XValue{}, ERROR},
+
 		{"word", dmy, []types.XValue{xs("hello World"), xn("1.5")}, xs("World")},
 		{"word", dmy, []types.XValue{xs(""), xi(0)}, ERROR},
 		{"word", dmy, []types.XValue{xs("cat dog bee"), xi(-1)}, xs("bee")},

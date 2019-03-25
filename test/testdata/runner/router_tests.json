@@ -34,14 +34,11 @@
                             }
                         ],
                         "default_category_uuid": "85038c16-0060-486c-97be-898c65587658",
-                        "operand": "@(length(contact.urns.telegram))",
+                        "operand": "@urns.telegram",
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                                "type": "has_number_gt",
-                                "arguments": [
-                                    "0"
-                                ],
+                                "type": "has_text",
                                 "category_uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef"
                             }
                         ]

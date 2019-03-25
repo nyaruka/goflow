@@ -107,8 +107,6 @@ Examples:
 @contact.created_on → 2018-06-20T11:40:30.123456Z
 @contact.urns → [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 @(contact.urns[0]) → tel:+12065551212
-@contact.urns.tel → [tel:+12065551212]
-@(contact.urns.mailto[0]) → mailto:foo@bar.com
 @contact.urn → tel:+12065551212
 @contact.groups → [Testers, Males]
 @contact.fields → {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
@@ -184,7 +182,7 @@ Examples:
 @input.type → msg
 @input.text → Hi there
 @input.attachments → [http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3]
-@(json(input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
+@(json(input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":"tel:+12065551212","uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
 ```
 
 <a name="context:result"></a>
@@ -262,25 +260,16 @@ components: scheme, path, and display (optional). For example:
  - _twitterid:54784326227#nyaruka_
  - _telegram:34642632786#bobby_
 
-It has several properties which can be accessed in expressions:
-
- * `scheme` the scheme of the URN, e.g. "tel", "twitter"
- * `path` the path of the URN, e.g. "+16303524567"
- * `display` the display portion of the URN, e.g. "+16303524567"
- * `channel` the preferred [channel](#context:channel) of the URN
-
 To render a URN in a human friendly format, use the [format_urn](expressions.html#function:format_urn) function.
 
 Examples:
 
 
 ```objectivec
-@(contact.urns[0]) → tel:+12065551212
-@(contact.urns[0].scheme) → tel
-@(contact.urns[0].path) → +12065551212
-@(contact.urns[1].display) → nyaruka
-@(format_urn(contact.urns[0])) → (206) 555-1212
-@(json(contact.urns[0])) → {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
+@(urns.tel) → tel:+12065551212
+@(urn_parts(urns.tel).scheme) → tel
+@(format_urn(urns.tel)) → (206) 555-1212
+@(json(contact.urns[0])) → "tel:+12065551212"
 ```
 
 
@@ -680,9 +669,8 @@ Formats `urn` into human friendly text.
 @(format_urn("tel:+250781234567")) → 0781 234 567
 @(format_urn("twitter:134252511151#billy_bob")) → billy_bob
 @(format_urn(contact.urn)) → (206) 555-1212
-@(format_urn(contact.urns.mailto[0])) → foo@bar.com
-@(format_urn(contact.urns.telegram[0])) →
-@(format_urn(contact.urns[2])) → foo@bar.com
+@(format_urn(urns.tel)) → (206) 555-1212
+@(format_urn(urns.mailto)) → foo@bar.com
 @(format_urn("NOT URN")) → ERROR
 ```
 
@@ -1306,6 +1294,18 @@ Encodes `text` for use as a URL parameter.
 ```objectivec
 @(url_encode("two & words")) → two%20%26%20words
 @(url_encode(10)) → 10
+```
+
+<a name="function:urn_parts"></a>
+
+## urn_parts(urn)
+
+Parses a URN into its different parts
+
+
+```objectivec
+@(urn_parts("tel:+593979012345")) → {display: , path: +593979012345, scheme: tel}
+@(urn_parts("twitterid:3263621177#bobby")) → {display: bobby, path: 3263621177, scheme: twitterid}
 ```
 
 <a name="function:weekday"></a>

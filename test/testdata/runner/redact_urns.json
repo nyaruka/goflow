@@ -13,14 +13,14 @@
                         {
                             "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
                             "type": "send_msg",
-                            "text": "Hi @contact.id! Your number is @(contact.urns[0])"
+                            "text": "Hi @contact.id! Your number is @urns.tel"
                         },
                         {
                             "uuid": "ce2b5142-453b-4e43-868e-abdafafaa878",
                             "type": "call_webhook",
                             "url": "http://localhost/?cmd=success",
                             "method": "POST",
-                            "body": "{ \"phone\": @(json(contact.urns.tel))) }"
+                            "body": "{ \"phone\": @(json(urns.tel))) }"
                         }
                     ],
                     "exits": [

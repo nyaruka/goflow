@@ -66,7 +66,7 @@
                             "subject": "Here is your activation token",
                             "body": "Hi @contact.fields.first_name, Your activation token is @contact.fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
                             "addresses": [
-                                "@(contact.urns.mailto[0])",
+                                "@urns.mailto",
                                 "test@@example.com"
                             ]
                         },

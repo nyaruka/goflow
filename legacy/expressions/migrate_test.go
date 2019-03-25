@@ -45,14 +45,14 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@contact.created_on`, new: `@contact.created_on`},
 
 		// contact URN variables
-		{old: `@contact.tel`, new: `@(contact.urns.tel[0].display)`},
-		{old: `@contact.tel.display`, new: `@(contact.urns.tel[0].display)`},
-		{old: `@contact.tel.scheme`, new: `@(contact.urns.tel[0].scheme)`},
-		{old: `@contact.tel.path`, new: `@(contact.urns.tel[0].path)`},
-		{old: `@contact.tel.urn`, new: `@(contact.urns.tel[0])`},
-		{old: `@contact.tel_e164`, new: `@(contact.urns.tel[0].path)`},
-		{old: `@contact.twitterid`, new: `@(contact.urns.twitterid[0].display)`},
-		{old: `@contact.mailto`, new: `@(contact.urns.mailto[0].display)`},
+		{old: `@contact.tel`, new: `@(format_urn(urns.tel))`},
+		{old: `@contact.tel.display`, new: `@(format_urn(urns.tel))`},
+		{old: `@contact.tel.scheme`, new: `@(urn_parts(urns.tel).scheme)`},
+		{old: `@contact.tel.path`, new: `@(urn_parts(urns.tel).path)`},
+		{old: `@contact.tel.urn`, new: `@urns.tel`},
+		{old: `@contact.tel_e164`, new: `@(urn_parts(urns.tel).path)`},
+		{old: `@contact.twitterid`, new: `@(format_urn(urns.twitterid))`},
+		{old: `@contact.mailto`, new: `@(format_urn(urns.mailto))`},
 
 		// run variables
 		{old: `@flow`, new: `@results`},
@@ -86,12 +86,12 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@parent.contact.name`, new: `@parent.contact.name`},
 		{old: `@parent.contact.groups`, new: `@(join(parent.contact.groups, ","))`},
 		{old: `@parent.contact.gender`, new: `@parent.contact.fields.gender`},
-		{old: `@parent.contact.tel`, new: `@(parent.contact.urns.tel[0].display)`},
-		{old: `@parent.contact.tel.display`, new: `@(parent.contact.urns.tel[0].display)`},
-		{old: `@parent.contact.tel.scheme`, new: `@(parent.contact.urns.tel[0].scheme)`},
-		{old: `@parent.contact.tel.path`, new: `@(parent.contact.urns.tel[0].path)`},
-		{old: `@parent.contact.tel.urn`, new: `@(parent.contact.urns.tel[0])`},
-		{old: `@parent.contact.tel_e164`, new: `@(parent.contact.urns.tel[0].path)`},
+		{old: `@parent.contact.tel`, new: `@(format_urn(parent.urns.tel))`},
+		{old: `@parent.contact.tel.display`, new: `@(format_urn(parent.urns.tel))`},
+		{old: `@parent.contact.tel.scheme`, new: `@(urn_parts(parent.urns.tel).scheme)`},
+		{old: `@parent.contact.tel.path`, new: `@(urn_parts(parent.urns.tel).path)`},
+		{old: `@parent.contact.tel.urn`, new: `@parent.urns.tel`},
+		{old: `@parent.contact.tel_e164`, new: `@(urn_parts(urns.tel).path)`},
 
 		// input
 		{old: `@step`, new: `@input`},
@@ -119,7 +119,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@extra.flow.role`, new: `@parent.results.role`},
 
 		// variables in parens
-		{old: `@(contact.tel)`, new: `@(contact.urns.tel[0].display)`},
+		{old: `@(contact.tel)`, new: `@(format_urn(urns.tel))`},
 		{old: `@(contact.gender)`, new: `@contact.fields.gender`},
 		{old: `@(flow.favorite_color)`, new: `@results.favorite_color`},
 

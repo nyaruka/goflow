@@ -100,6 +100,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"parse_time":      ArgCountCheck(2, 2, ParseTime),
 	"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
+	// URN functions
+	"urn_parts": OneTextFunction(URNParts),
+
 	// json functions
 	"json":       OneArgFunction(JSON),
 	"parse_json": OneTextFunction(ParseJSON),
@@ -1397,6 +1400,23 @@ func TimeFromParts(env utils.Environment, hour, minute, second int) types.XValue
 	return types.NewXTime(utils.NewTimeOfDay(hour, minute, second, 0))
 }
 
+// URNParts parses a URN into its different parts
+//
+//   @(urn_parts("tel:+593979012345")) -> {display: , path: +593979012345, scheme: tel}
+//   @(urn_parts("twitterid:3263621177#bobby")) -> {display: bobby, path: 3263621177, scheme: twitterid}
+//
+// @function urn_parts(urn)
+func URNParts(env utils.Environment, urn types.XText) types.XValue {
+	u := urns.URN(urn.Native())
+	scheme, path, _, display := u.ToParts()
+
+	return types.NewXMap(map[string]types.XValue{
+		"scheme":  types.NewXText(scheme),
+		"path":    types.NewXText(path),
+		"display": types.NewXText(display),
+	})
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Functions
 //------------------------------------------------------------------------------------------
@@ -1690,9 +1710,8 @@ func FormatLocation(env utils.Environment, path types.XText) types.XValue {
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
 //   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
 //   @(format_urn(contact.urn)) -> (206) 555-1212
-//   @(format_urn(contact.urns.mailto[0])) -> foo@bar.com
-//   @(format_urn(contact.urns.telegram[0])) ->
-//   @(format_urn(contact.urns[2])) -> foo@bar.com
+//   @(format_urn(urns.tel)) -> (206) 555-1212
+//   @(format_urn(urns.mailto)) -> foo@bar.com
 //   @(format_urn("NOT URN")) -> ERROR
 //
 // @function format_urn(urn)

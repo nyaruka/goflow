@@ -164,7 +164,6 @@ func (v *arrayMapper) rebase(prefix string) *arrayMapper {
 }
 
 func (m *arrayMapper) Resolve(key string) interface{} {
-	fmt.Printf("====== arrayMapper.Resolve %s | %s\n", m.base, key)
 	return fmt.Sprintf("%s[%s]", m.base, key)
 }
 
@@ -205,8 +204,6 @@ func (m *extraMapper) String() string {
 }
 
 func newContactMapper(prefix string) *varMapper {
-	subsitutionBase := prefix + "contact"
-
 	contact := &varMapper{
 		base: "contact",
 		baseVars: map[string]interface{}{
@@ -216,22 +213,22 @@ func newContactMapper(prefix string) *varMapper {
 			"first_name": "first_name",
 			"language":   "language",
 			"created_on": "created_on",
-			"tel_e164":   "urns.tel[0].path",
 		},
 		substitutions: map[string]interface{}{
-			"groups": fmt.Sprintf("join(%s.groups, \",\")", subsitutionBase),
+			"groups":   fmt.Sprintf("join(%scontact.groups, \",\")", prefix),
+			"tel_e164": "urn_parts(urns.tel).path",
 		},
 		arbitraryNesting: "fields",
 	}
 
 	for scheme := range urns.ValidSchemes {
-		contact.baseVars[scheme] = &varMapper{
+		contact.substitutions[scheme] = &varMapper{
 			substitutions: map[string]interface{}{
-				"__default__": fmt.Sprintf("%s.urns.%s[0].display", subsitutionBase, scheme),
-				"display":     fmt.Sprintf("%s.urns.%s[0].display", subsitutionBase, scheme),
-				"scheme":      fmt.Sprintf("%s.urns.%s[0].scheme", subsitutionBase, scheme),
-				"path":        fmt.Sprintf("%s.urns.%s[0].path", subsitutionBase, scheme),
-				"urn":         fmt.Sprintf("%s.urns.%s[0]", subsitutionBase, scheme),
+				"__default__": fmt.Sprintf("format_urn(%surns.%s)", prefix, scheme),
+				"display":     fmt.Sprintf("format_urn(%surns.%s)", prefix, scheme),
+				"scheme":      fmt.Sprintf("urn_parts(%surns.%s).scheme", prefix, scheme),
+				"path":        fmt.Sprintf("urn_parts(%surns.%s).path", prefix, scheme),
+				"urn":         fmt.Sprintf("%surns.%s", prefix, scheme),
 			},
 			base: fmt.Sprintf("urns.%s", scheme),
 		}
