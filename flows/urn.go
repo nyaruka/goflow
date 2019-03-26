@@ -195,11 +195,8 @@ func (l URNList) WithScheme(scheme string) URNList {
 	return matching
 }
 
-// Describe returns a representation of this type for error messages
-func (l URNList) Describe() string { return "URNs" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (l URNList) Reduce(env utils.Environment) types.XPrimitive {
+// Context returns this as an XArray - exposed in expressions as @contact.urns, @parent.contact.urns etc
+func (l URNList) Context() types.XValue {
 	array := types.NewXArray()
 	for _, urn := range l {
 		array.Append(urn)
@@ -207,20 +204,23 @@ func (l URNList) Reduce(env utils.Environment) types.XPrimitive {
 	return array
 }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (l URNList) ToXJSON(env utils.Environment) types.XText {
-	return l.Reduce(env).ToXJSON(env)
-}
+// MapContext returns a map of the highest priority URN for each scheme - exposed in expressions as @urns
+func (l URNList) MapContext() types.XValue {
+	byScheme := make(map[string]types.XValue)
 
-// Index is called when this object is indexed into in an expression
-func (l URNList) Index(index int) types.XValue {
-	return l[index]
-}
+	for _, u := range l {
+		scheme := u.URN().Scheme()
+		if _, seen := byScheme[scheme]; !seen {
+			byScheme[scheme] = u
+		}
+	}
 
-// Length is called when the length of this object is requested in an expression
-func (l URNList) Length() int {
-	return len(l)
-}
+	// and add nils for all other schemes
+	for scheme := range urns.ValidSchemes {
+		if _, seen := byScheme[scheme]; !seen {
+			byScheme[scheme] = nil
+		}
+	}
 
-var _ types.XValue = (URNList)(nil)
-var _ types.XIndexable = (URNList)(nil)
+	return types.NewXMap(byScheme)
+}

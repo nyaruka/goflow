@@ -208,27 +208,6 @@ func (c *Contact) HasURN(urn urns.URN) bool {
 	return false
 }
 
-// URNsContext returns a map of the highest priority URN for each scheme - exposed in expressions as @urns
-func (c *Contact) URNsContext() types.XValue {
-	byScheme := make(map[string]types.XValue)
-
-	for _, u := range c.urns {
-		scheme := u.URN().Scheme()
-		if _, seen := byScheme[scheme]; !seen {
-			byScheme[scheme] = u
-		}
-	}
-
-	// and add nils for all other schemes
-	for scheme := range urns.ValidSchemes {
-		if _, seen := byScheme[scheme]; !seen {
-			byScheme[scheme] = nil
-		}
-	}
-
-	return types.NewXMap(byScheme)
-}
-
 // Fields returns this contact's field values
 func (c *Contact) Fields() FieldValues { return c.fields }
 
@@ -286,7 +265,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "created_on":
 		return types.NewXDateTime(c.createdOn)
 	case "urns":
-		return c.urns
+		return c.urns.Context()
 	case "urn":
 		return c.PreferredURN()
 	case "groups":

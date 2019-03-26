@@ -18,10 +18,10 @@ import (
 
 func TestContactURN(t *testing.T) {
 	source, err := static.NewSource([]byte(`{
-		"channels": [
-			{
-				"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-				"name": "Android Channel",
+        "channels": [
+            {
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "name": "Android Channel",
 				"address": "+12345671111",
 				"schemes": [
 					"tel"
@@ -30,9 +30,9 @@ func TestContactURN(t *testing.T) {
 					"send",
 					"receive"
 				]
-			}
-	    ]
-	}`))
+            }
+        ]
+    }`))
 	require.NoError(t, err)
 
 	sessionAssets, err := engine.NewSessionAssets(source)
@@ -90,13 +90,7 @@ func TestURNList(t *testing.T) {
 	assert.False(t, urnList.Equal(flows.URNList{urn1, urn2}))
 
 	// check use in expressions
-	assert.Equal(t, "URNs", urnList.Describe())
-	assert.Equal(t, types.NewXArray(urn1, urn2, urn3), urnList.Reduce(env))
-	assert.Equal(t, 3, urnList.Length())
-	assert.Equal(t, urn3, urnList.Index(2))
-	assert.Equal(t, types.NewXText(`["tel:+250781234567","twitter:134252511151#billy_bob","tel:+250781111222"]`), urnList.ToXJSON(env))
-
-	context := types.NewXMap(map[string]types.XValue{"urns": urnList})
+	context := types.NewXMap(map[string]types.XValue{"urns": urnList.Context()})
 
 	testCases := []struct {
 		expression string

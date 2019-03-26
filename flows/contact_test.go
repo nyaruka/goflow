@@ -77,7 +77,7 @@ func TestContact(t *testing.T) {
 		"viber":     nil,
 		"wechat":    nil,
 		"whatsapp":  nil,
-	}), contact.URNsContext())
+	}), contact.URNs().MapContext())
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
@@ -95,7 +95,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Resolve(env, "name"))
 	assert.Equal(t, types.NewXText("Joe"), contact.Resolve(env, "first_name"))
 	assert.Equal(t, types.NewXDateTime(contact.CreatedOn()), contact.Resolve(env, "created_on"))
-	assert.Equal(t, contact.URNs(), contact.Resolve(env, "urns"))
+	assert.Equal(t, contact.URNs().Context(), contact.Resolve(env, "urns"))
 	assert.Equal(t, contact.URNs()[0], contact.Resolve(env, "urn"))
 	assert.Equal(t, contact.Fields().Context(env), contact.Resolve(env, "fields"))
 	assert.Equal(t, contact.Groups(), contact.Resolve(env, "groups"))
