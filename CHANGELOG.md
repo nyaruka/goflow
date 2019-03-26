@@ -1,3 +1,9 @@
+v0.30.4
+----------
+ * Add @fields as top-level shortcut to contact fields as map
+ * Add @urns as dict of highest-priority URN by scheme
+ * Make location parsing more forgiving
+
 v0.30.3
 ----------
  * Bug fix: switch router should use category from first matching rule
