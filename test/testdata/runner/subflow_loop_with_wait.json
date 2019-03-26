@@ -31,7 +31,7 @@
                             }
                         ],
                         "default_category_uuid": "e55e6b52-e934-4d20-a761-49ebcc0303aa",
-                        "operand": "@contact.fields.activation_token",
+                        "operand": "@fields.activation_token",
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",

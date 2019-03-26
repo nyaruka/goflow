@@ -9,7 +9,7 @@
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_between",
             "arguments": [
-                "@contact.fields.age",
+                "@fields.age",
                 "34"
             ],
             "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
@@ -28,7 +28,7 @@
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_all_words",
             "arguments": [
-                "yes yeah @contact.fields.affirmative"
+                "yes yeah @fields.affirmative"
             ],
             "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
@@ -36,7 +36,7 @@
             "fra": {
                 "692926ea-09d6-4942-bd38-d266ec8d3716": {
                     "arguments": [
-                        "oui @contact.fields.affirmative"
+                        "oui @fields.affirmative"
                     ]
                 }
             }
@@ -241,7 +241,7 @@
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_eq",
             "arguments": [
-                "@contact.fields.age"
+                "@fields.age"
             ],
             "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
@@ -256,7 +256,7 @@
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_gt",
             "arguments": [
-                "@contact.fields.age"
+                "@fields.age"
             ],
             "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
@@ -271,7 +271,7 @@
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_gte",
             "arguments": [
-                "@contact.fields.age"
+                "@fields.age"
             ],
             "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
@@ -304,7 +304,7 @@
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_lt",
             "arguments": [
-                "@contact.fields.age"
+                "@fields.age"
             ],
             "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
@@ -319,7 +319,7 @@
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_number_lte",
             "arguments": [
-                "@contact.fields.age"
+                "@fields.age"
             ],
             "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },

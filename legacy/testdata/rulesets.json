@@ -217,7 +217,7 @@
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
-                "operand": "@(if(is_error(contact.fields.gender), \"@contact.gender\", contact.fields.gender))",
+                "operand": "@(if(is_error(fields.gender), \"@contact.gender\", fields.gender))",
                 "cases": [
                     {
                         "arguments": [
@@ -746,7 +746,7 @@
                     "method": "POST",
                     "url": "http://example.com",
                     "headers": {
-                        "Auth-Token": "@contact.fields.auth_token",
+                        "Auth-Token": "@fields.auth_token",
                         "Content-Type": "application/json",
                         "User-Agent": "RapidPro"
                     },
@@ -1205,7 +1205,7 @@
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
-                "operand": "@contact.fields.reporting_date",
+                "operand": "@fields.reporting_date",
                 "cases": [
                     {
                         "arguments": [

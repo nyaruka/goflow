@@ -269,7 +269,7 @@ func TestConstructors(t *testing.T) {
 				"POST",
 				"http://example.com/ping",
 				map[string]string{
-					"Authentication": "Token @contact.fields.token",
+					"Authentication": "Token @fields.token",
 				},
 				`{"contact_id": 234}`, // body
 				"Webhook Response",
@@ -280,7 +280,7 @@ func TestConstructors(t *testing.T) {
 			"method": "POST",
 			"url": "http://example.com/ping",
 			"headers": {
-				"Authentication": "Token @contact.fields.token"
+				"Authentication": "Token @fields.token"
 			},
 			"body": "{\"contact_id\": 234}",
 			"result_name": "Webhook Response"
