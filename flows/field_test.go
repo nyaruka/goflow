@@ -25,11 +25,6 @@ func TestFieldValues(t *testing.T) {
 	fieldVals, err := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, assets.PanicOnMissing)
 	assert.NoError(t, err)
 
-	assert.Equal(t, 0, fieldVals.Length())
-	assert.Equal(t, "field values", fieldVals.Describe())
-	assert.Nil(t, fieldVals.Resolve(env, "gender"))
-	assert.Nil(t, fieldVals.Resolve(env, "age"))
-
 	// can have a value but not in the right type for that field (age below)
 	fieldVals, err = flows.NewFieldValues(session.Assets(), map[string]*flows.Value{
 		"gender": flows.NewValue(types.NewXText("Male"), nil, nil, flows.LocationPath(""), flows.LocationPath(""), flows.LocationPath("")),
@@ -42,11 +37,6 @@ func TestFieldValues(t *testing.T) {
 
 	genderVal := fieldVals["gender"]
 	ageVal := fieldVals["age"]
-
-	assert.Equal(t, 2, fieldVals.Length())
-	assert.Equal(t, genderVal, fieldVals.Resolve(env, "gender"))
-	assert.Equal(t, ageVal, fieldVals.Resolve(env, "age"))
-	assert.Nil(t, fieldVals.Resolve(env, "join_date"))
 
 	assert.Equal(t, types.NewXText("Male"), genderVal.Reduce(env))
 	assert.Equal(t, types.NewXText("Male"), genderVal.Resolve(env, "text"))

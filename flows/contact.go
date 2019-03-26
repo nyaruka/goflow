@@ -229,11 +229,6 @@ func (c *Contact) URNsContext() types.XValue {
 	return types.NewXMap(byScheme)
 }
 
-// FieldsContext returns a map of field values - exposed in expressions as @fields
-func (c *Contact) FieldsContext(env utils.Environment) types.XValue {
-	return c.fields.Reduce(env)
-}
-
 // Fields returns this contact's field values
 func (c *Contact) Fields() FieldValues { return c.fields }
 
@@ -297,7 +292,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "groups":
 		return c.groups
 	case "fields":
-		return c.fields
+		return c.Fields().Context(env)
 	case "channel":
 		return c.PreferredChannel()
 	}

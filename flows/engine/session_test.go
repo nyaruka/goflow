@@ -70,9 +70,9 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@contact.fields.activation_token", "AACC55", ""},
 		{"@contact.fields.age", "23", ""},
 		{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-		{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: no such contact field 'favorite_icecream'"},
+		{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: map has no property 'favorite_icecream'"},
 		{"@(is_error(contact.fields.favorite_icecream))", "true", ""},
-		{"@(length(contact.fields))", "4", ""},
+		{"@(length(contact.fields))", "5", ""},
 
 		// simplifed field access
 		{"@fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},
