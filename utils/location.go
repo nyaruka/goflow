@@ -167,7 +167,7 @@ func (h *LocationHierarchy) FindByPath(path string) *Location {
 	for i := range tokens {
 		tokens[i] = strings.TrimSpace(tokens[i])
 	}
-	normalizedPath := strings.ToLower(strings.TrimRight(strings.Join(tokens, "\x20>\x20"), "."))
+	normalizedPath := strings.ToLower(strings.TrimRight(strings.Join(tokens, " > "), "."))
 	return h.pathLookup.lookup(normalizedPath)
 }
 
