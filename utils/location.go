@@ -163,7 +163,12 @@ func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 
 // FindByPath looks for a location in the hierarchy with the given path
 func (h *LocationHierarchy) FindByPath(path string) *Location {
-	return h.pathLookup.lookup(strings.ToLower(path))
+	tokens := strings.Split(path, ">")
+	for i := range tokens {
+		tokens[i] = strings.TrimSpace(tokens[i])
+	}
+	normalizedPath := strings.ToLower(strings.TrimRight(strings.Join(tokens, "\x20>\x20"), "."))
+	return h.pathLookup.lookup(normalizedPath)
 }
 
 func (h *LocationHierarchy) UnmarshalJSON(data []byte) error {
