@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"regexp"
 	"strings"
 )
 
@@ -163,11 +164,12 @@ func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 
 // FindByPath looks for a location in the hierarchy with the given path
 func (h *LocationHierarchy) FindByPath(path string) *Location {
-	tokens := strings.Split(path, ">")
+	tokens := strings.Split(path, LocationPathSeparator)
+	spaceRegex := regexp.MustCompile(`\s+`)
 	for i := range tokens {
-		tokens[i] = strings.TrimSpace(tokens[i])
+		tokens[i] = spaceRegex.ReplaceAllString(strings.ToLower(strings.TrimSpace(tokens[i])), " ")
 	}
-	normalizedPath := strings.ToLower(strings.TrimRight(strings.Join(tokens, " > "), "."))
+	normalizedPath := strings.TrimRight(strings.Join(tokens, LocationPaddedPathSeparator), ".")
 	return h.pathLookup.lookup(normalizedPath)
 }
 
