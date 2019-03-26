@@ -64,7 +64,7 @@
                             "uuid": "4f452fb8-f0aa-442d-865b-a2b629c09c21",
                             "type": "send_email",
                             "subject": "Here is your activation token",
-                            "body": "Hi @contact.fields.first_name, Your activation token is @contact.fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
+                            "body": "Hi @fields.first_name, Your activation token is @fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
                             "addresses": [
                                 "@urns.mailto",
                                 "test@@example.com"
@@ -111,7 +111,7 @@
                             ],
                             "text": "Hi @contact.name, are you ready for these attachments?",
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(fields.state)))"
                             ]
                         },
                         {
@@ -155,7 +155,7 @@
                             "type": "send_msg",
                             "text": "This is a reply with attachments and quick replies",
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(fields.state)))"
                             ],
                             "quick_replies": [
                                 "Yes",
@@ -195,7 +195,7 @@
                                 "key": "district",
                                 "name": "District"
                             },
-                            "value": "@contact.fields.raw_district"
+                            "value": "@fields.raw_district"
                         },
                         {
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",

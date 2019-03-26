@@ -30,6 +30,9 @@ type varMapper struct {
 	// nesting for arbitrary subitems, e.g. contact fields or run results
 	arbitraryNesting string
 
+	// or move arbitrary subitems to new base
+	arbitraryBase string
+
 	// mapper for each arbitrary item
 	arbitraryVars map[string]interface{}
 }
@@ -48,6 +51,7 @@ func (v *varMapper) rebase(prefix string) *varMapper {
 		baseVars:         v.baseVars,
 		arbitraryNesting: v.arbitraryNesting,
 		arbitraryVars:    v.arbitraryVars,
+		arbitraryBase:    v.arbitraryBase,
 	}
 }
 
@@ -99,6 +103,8 @@ func (v *varMapper) Resolve(key string) interface{} {
 	// then it must be an arbitrary item
 	if v.arbitraryNesting != "" {
 		newPath = append(newPath, v.arbitraryNesting)
+	} else if v.arbitraryBase != "" {
+		newPath = []string{v.arbitraryBase}
 	}
 
 	newPath = append(newPath, key)
@@ -218,7 +224,7 @@ func newContactMapper(prefix string) *varMapper {
 			"groups":   fmt.Sprintf("join(%scontact.groups, \",\")", prefix),
 			"tel_e164": "urn_parts(urns.tel).path",
 		},
-		arbitraryNesting: "fields",
+		arbitraryBase: prefix + "fields",
 	}
 
 	for scheme := range urns.ValidSchemes {
@@ -269,7 +275,7 @@ func newMigrationVars() map[string]interface{} {
 		"child": &varMapper{
 			base: "child",
 			baseVars: map[string]interface{}{
-				"contact": contact,
+				"contact": newContactMapper("child."),
 			},
 			arbitraryNesting: "results",
 			arbitraryVars: map[string]interface{}{

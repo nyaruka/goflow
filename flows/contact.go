@@ -208,8 +208,8 @@ func (c *Contact) HasURN(urn urns.URN) bool {
 	return false
 }
 
-// URNByScheme returns a map of the highest priority URN for each scheme
-func (c *Contact) URNByScheme() types.XMap {
+// URNsContext returns a map of the highest priority URN for each scheme - exposed in expressions as @urns
+func (c *Contact) URNsContext() types.XValue {
 	byScheme := make(map[string]types.XValue)
 
 	for _, u := range c.urns {
@@ -229,11 +229,11 @@ func (c *Contact) URNByScheme() types.XMap {
 	return types.NewXMap(byScheme)
 }
 
-// Groups returns the groups that this contact belongs to
-func (c *Contact) Groups() *GroupList { return c.groups }
-
 // Fields returns this contact's field values
 func (c *Contact) Fields() FieldValues { return c.fields }
+
+// Groups returns the groups that this contact belongs to
+func (c *Contact) Groups() *GroupList { return c.groups }
 
 // Reference returns a reference to this contact
 func (c *Contact) Reference() *ContactReference {
@@ -292,7 +292,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "groups":
 		return c.groups
 	case "fields":
-		return c.fields
+		return c.Fields().Context(env)
 	case "channel":
 		return c.PreferredChannel()
 	}

@@ -36,12 +36,18 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 	case "results":
 		return c.run.Results()
 
-	// other
 	case "urns":
 		if c.run.Contact() != nil {
-			return c.run.Contact().URNByScheme()
+			return c.run.Contact().URNsContext()
 		}
 		return nil
+	case "fields":
+		if c.run.Contact() != nil {
+			return c.run.Contact().Fields().Context(env)
+		}
+		return nil
+
+	// other
 	case "trigger":
 		return c.run.Session().Trigger()
 	case "input":
@@ -87,13 +93,20 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(c.run.UUID()))
+
 	case "contact":
 		return c.run.Contact()
 	case "urns":
 		if c.run.Contact() != nil {
-			return c.run.Contact().URNByScheme()
+			return c.run.Contact().URNsContext()
 		}
 		return nil
+	case "fields":
+		if c.run.Contact() != nil {
+			return c.run.Contact().Fields().Context(env)
+		}
+		return nil
+
 	case "flow":
 		return c.run.Flow()
 	case "status":

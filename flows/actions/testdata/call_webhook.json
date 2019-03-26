@@ -18,7 +18,7 @@
             "method": "POST",
             "url": "http://localhost:49996/?cmd=success@(1 / 0)",
             "headers": {
-                "Authentication": "Token @(2 / 0)-@contact.fields.age"
+                "Authentication": "Token @(2 / 0)-@fields.age"
             },
             "body": "@(3 / 0)"
         },
@@ -60,7 +60,7 @@
             "templates": [
                 "http://localhost:49996/?cmd=success@(1 / 0)",
                 "@(3 / 0)",
-                "Token @(2 / 0)-@contact.fields.age"
+                "Token @(2 / 0)-@fields.age"
             ],
             "dependencies": [
                 "field[key=age,name=]"

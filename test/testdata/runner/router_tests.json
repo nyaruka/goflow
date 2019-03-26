@@ -113,7 +113,7 @@
                             }
                         ],
                         "default_category_uuid": "86dbcb84-0ad0-4736-80c6-44b50d5568c8",
-                        "operand": "@contact.fields.raw_district",
+                        "operand": "@fields.raw_district",
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",

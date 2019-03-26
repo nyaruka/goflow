@@ -16,8 +16,10 @@ func TestExtractFieldReferences(t *testing.T) {
 	}{
 		{``, []*assets.FieldReference{}},
 		{`Hi @contact`, []*assets.FieldReference{}},
+		{`You are @fields.age`, []*assets.FieldReference{assets.NewFieldReference("age", "")}},
 		{`You are @contact.fields.age`, []*assets.FieldReference{assets.NewFieldReference("age", "")}},
 		{`You are @CONTACT.FIELDS.AGE`, []*assets.FieldReference{assets.NewFieldReference("age", "")}},
+		{`You are @parent.fields.age`, []*assets.FieldReference{assets.NewFieldReference("age", "")}},
 		{`You are @parent.contact.fields.age`, []*assets.FieldReference{assets.NewFieldReference("age", "")}},
 		{`You are @child.contact.fields.age today`, []*assets.FieldReference{assets.NewFieldReference("age", "")}},
 		{`You are @(ABS(contact . fields . age) + 1)`, []*assets.FieldReference{assets.NewFieldReference("age", "")}},
