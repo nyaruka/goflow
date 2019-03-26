@@ -2,6 +2,7 @@ package assets
 
 import (
 	"fmt"
+
 	validator "gopkg.in/go-playground/validator.v9"
 
 	"github.com/nyaruka/goflow/utils"
@@ -192,6 +193,33 @@ func (r *LabelReference) String() string {
 }
 
 var _ Reference = (*LabelReference)(nil)
+
+// TemplateReference is used to reference a Template
+type TemplateReference struct {
+	UUID TemplateUUID `json:"uuid" validate:"required,uuid"`
+	Name string       `json:"name"`
+}
+
+// Identity returns the unique identity of the asset
+func (r *TemplateReference) Identity() string {
+	return string(r.UUID)
+}
+
+// Type returns the name of the asset type
+func (r *TemplateReference) Type() string {
+	return "template"
+}
+
+func (r *TemplateReference) String() string {
+	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
+}
+
+// Variable returns whether this a variable (vs concrete) reference
+func (r *TemplateReference) Variable() bool {
+	return false
+}
+
+var _ Reference = (*TemplateReference)(nil)
 
 //------------------------------------------------------------------------------------------
 // Callbacks for missing assets
