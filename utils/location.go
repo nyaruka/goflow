@@ -14,6 +14,8 @@ const (
 	LocationPaddedPathSeparator = " > "
 )
 
+var spaceRegex = regexp.MustCompile(`\s+`)
+
 // Location represents a single Location
 type Location struct {
 	level    LocationLevel
@@ -165,7 +167,6 @@ func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 // FindByPath looks for a location in the hierarchy with the given path
 func (h *LocationHierarchy) FindByPath(path string) *Location {
 	tokens := strings.Split(path, LocationPathSeparator)
-	spaceRegex := regexp.MustCompile(`\s+`)
 	for i := range tokens {
 		tokens[i] = spaceRegex.ReplaceAllString(strings.ToLower(strings.TrimSpace(tokens[i])), " ")
 	}
