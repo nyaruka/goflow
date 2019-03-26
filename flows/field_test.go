@@ -39,11 +39,9 @@ func TestFieldValues(t *testing.T) {
 	ageVal := fieldVals["age"]
 
 	assert.Equal(t, types.NewXText("Male"), genderVal.Reduce(env))
-	assert.Equal(t, types.NewXText("Male"), genderVal.Resolve(env, "text"))
 	assert.Equal(t, "field value", genderVal.Describe())
 
 	assert.Nil(t, ageVal.Reduce(env)) // doesn't have a value in the right type
-	assert.Equal(t, types.NewXText("nan"), ageVal.Resolve(env, "text"))
 }
 
 func TestValues(t *testing.T) {

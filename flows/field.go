@@ -1,8 +1,6 @@
 package flows
 
 import (
-	"strings"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -113,15 +111,6 @@ func (v *FieldValue) TypedValue() types.XValue {
 	return nil
 }
 
-// Resolve resolves the given key when this field value is referenced in an expression
-func (v *FieldValue) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "text":
-		return v.Text
-	}
-	return types.NewXResolveError(v, key)
-}
-
 // Describe returns a representation of this type for error messages
 func (v *FieldValue) Describe() string { return "field value" }
 
@@ -137,7 +126,6 @@ func (v *FieldValue) ToXJSON(env utils.Environment) types.XText {
 }
 
 var _ types.XValue = (*FieldValue)(nil)
-var _ types.XResolvable = (*FieldValue)(nil)
 
 // FieldValues is the set of all field values for a contact
 type FieldValues map[string]*FieldValue
