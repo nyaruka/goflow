@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"regexp"
 	"strings"
 )
 
@@ -12,6 +13,8 @@ const (
 	LocationPathSeparator       = ">"
 	LocationPaddedPathSeparator = " > "
 )
+
+var spaceRegex = regexp.MustCompile(`\s+`)
 
 // Location represents a single Location
 type Location struct {
@@ -163,7 +166,12 @@ func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 
 // FindByPath looks for a location in the hierarchy with the given path
 func (h *LocationHierarchy) FindByPath(path string) *Location {
-	return h.pathLookup.lookup(strings.ToLower(path))
+	tokens := strings.Split(path, LocationPathSeparator)
+	for i := range tokens {
+		tokens[i] = spaceRegex.ReplaceAllString(strings.ToLower(strings.TrimSpace(tokens[i])), " ")
+	}
+	normalizedPath := strings.TrimRight(strings.Join(tokens, LocationPaddedPathSeparator), ".")
+	return h.pathLookup.lookup(normalizedPath)
 }
 
 func (h *LocationHierarchy) UnmarshalJSON(data []byte) error {
