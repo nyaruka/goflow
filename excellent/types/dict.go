@@ -15,6 +15,7 @@ type XDict interface {
 	XResolvable
 	XLengthable
 
+	Get(string) XValue
 	Put(string, XValue)
 	Keys() []string
 }
@@ -96,12 +97,17 @@ func (x *xdict) Resolve(env utils.Environment, key string) XValue {
 	return val
 }
 
-// Put adds the given item to this map
+// Get retrieves the named item from this dict
+func (x *xdict) Get(key string) XValue {
+	return x.values[key]
+}
+
+// Put adds the given item to this dict
 func (x *xdict) Put(key string, value XValue) {
 	x.values[key] = value
 }
 
-// Keys returns the keys of this map
+// Keys returns the keys of this dict
 func (x *xdict) Keys() []string {
 	keys := make([]string, 0, len(x.values))
 	for key := range x.values {
