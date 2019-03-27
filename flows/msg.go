@@ -27,7 +27,9 @@ type MsgIn struct {
 type MsgOut struct {
 	BaseMsg
 
-	QuickReplies_ []string `json:"quick_replies,omitempty"`
+	QuickReplies_      []string                  `json:"quick_replies,omitempty"`
+	Template_          *assets.TemplateReference `json:"template,omitempty"`
+	TemplateVariables_ []string                  `json:"template_variables,omitempty"`
 }
 
 // NewMsgIn creates a new incoming message
@@ -44,7 +46,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment, quickReplies []string) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment, quickReplies []string, template *assets.TemplateReference, templateVariables []string) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(utils.NewUUID()),
@@ -54,6 +56,9 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, atta
 			Attachments_: attachments,
 		},
 		QuickReplies_: quickReplies,
+
+		Template_:          template,
+		TemplateVariables_: templateVariables,
 	}
 }
 
@@ -86,3 +91,9 @@ func (m *MsgIn) SetExternalID(id string) { m.ExternalID_ = id }
 
 // QuickReplies returns the quick replies of this outgoing message
 func (m *MsgOut) QuickReplies() []string { return m.QuickReplies_ }
+
+// Template returns the template to use to send this message (if any)
+func (m *MsgOut) Template() *assets.TemplateReference { return m.Template_ }
+
+// TemplateVariables returns the variables to use when sending this templated message (if any)
+func (m *MsgOut) TemplateVariables() []string { return m.TemplateVariables_ }

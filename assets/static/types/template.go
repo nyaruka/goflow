@@ -32,7 +32,13 @@ func (t *Template) UUID() assets.TemplateUUID { return t.t.UUID }
 func (t *Template) Name() string { return t.t.Name }
 
 // Translations returns the translations for this template
-func (t *Template) Translations() []*TemplateTranslation { return t.t.Translations }
+func (t *Template) Translations() []assets.TemplateTranslation {
+	trs := make([]assets.TemplateTranslation, len(t.t.Translations))
+	for i := range t.t.Translations {
+		trs[i] = t.t.Translations[i]
+	}
+	return trs
+}
 
 // UnmarshalJSON is our unmarshaller for json data
 func (t *Template) UnmarshalJSON(data []byte) error { return json.Unmarshal(data, &t.t) }

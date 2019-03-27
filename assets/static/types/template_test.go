@@ -35,5 +35,5 @@ func TestChannel(t *testing.T) {
 
 	assert.Equal(t, copy.Name(), template.Name())
 	assert.Equal(t, copy.UUID(), template.UUID())
-	assert.Equal(t, *copy.Translations()[0], *template.Translations()[0])
+	assert.Equal(t, copy.Translations()[0].Content(), template.Translations()[0].Content())
 }

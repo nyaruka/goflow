@@ -5,6 +5,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -25,7 +26,12 @@ const TypeSendMsg string = "send_msg"
 //     "type": "send_msg",
 //     "text": "Hi @contact.name, are you ready to complete today's survey?",
 //     "attachments": [],
-//     "all_urns": false
+//     "all_urns": false,
+//     "template": {
+//       "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+//       "name": "revive_issue"
+//     },
+//     "template_variables": ["@contact.name"]
 //   }
 //
 // @action send_msg
@@ -34,7 +40,9 @@ type SendMsgAction struct {
 	universalAction
 	createMsgAction
 
-	AllURNs bool `json:"all_urns,omitempty"`
+	AllURNs           bool                      `json:"all_urns,omitempty"`
+	Template          *assets.TemplateReference `json:"template,omitempty"`
+	TemplateVariables []string                  `json:"template_variables,omitempty"`
 }
 
 // NewSendMsgAction creates a new send msg action
@@ -61,6 +69,10 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 
 	destinations := run.Contact().ResolveDestinations(a.AllURNs)
 
+	sa := run.Session().Assets()
+
+	template := a.Template
+
 	// create a new message for each URN+channel destination
 	for _, dest := range destinations {
 		var channelRef *assets.ChannelReference
@@ -68,14 +80,35 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 			channelRef = assets.NewChannelReference(dest.Channel.UUID(), dest.Channel.Name())
 		}
 
-		msg := flows.NewMsgOut(dest.URN.URN(), channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
+		var templateVariables []string
+
+		// do we have a template defined?
+		if template != nil {
+			translation := sa.Templates().FindTranslation(a.Template.Name, channelRef, []utils.Language{run.Contact().Language(), run.Environment().DefaultLanguage()})
+			if translation != flows.NilTemplateContent {
+				// evaluate our variables
+				templateVariables = make([]string, len(a.TemplateVariables))
+				for i, t := range a.TemplateVariables {
+					sub, err := run.EvaluateTemplate(t)
+					if err != nil {
+						logEvent(events.NewErrorEvent(err))
+					}
+					templateVariables[i] = sub
+				}
+
+				// finally substitute into our translation
+				evaluatedText = translation.Substitute(templateVariables)
+			}
+		}
+
+		msg := flows.NewMsgOut(dest.URN.URN(), channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, template, templateVariables)
 		logEvent(events.NewMsgCreatedEvent(msg))
 	}
 
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
-		msg := flows.NewMsgOut(urns.NilURN, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
+		msg := flows.NewMsgOut(urns.NilURN, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, nil, nil)
 		logEvent(events.NewMsgCreatedEvent(msg))
 	}
 
@@ -92,6 +125,7 @@ func (a *SendMsgAction) EnumerateTemplates(localization flows.Localization, incl
 	include(a.Text)
 	flows.EnumerateTemplateArray(a.Attachments, include)
 	flows.EnumerateTemplateArray(a.QuickReplies, include)
+	flows.EnumerateTemplateArray(a.TemplateVariables, include)
 	flows.EnumerateTemplateTranslations(localization, a, "text", include)
 	flows.EnumerateTemplateTranslations(localization, a, "attachments", include)
 	flows.EnumerateTemplateTranslations(localization, a, "quick_replies", include)
@@ -102,6 +136,7 @@ func (a *SendMsgAction) RewriteTemplates(localization flows.Localization, rewrit
 	a.Text = rewrite(a.Text)
 	flows.RewriteTemplateArray(a.Attachments, rewrite)
 	flows.RewriteTemplateArray(a.QuickReplies, rewrite)
+	flows.RewriteTemplateArray(a.TemplateVariables, rewrite)
 	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
 	flows.RewriteTemplateTranslations(localization, a, "attachments", rewrite)
 	flows.RewriteTemplateTranslations(localization, a, "quick_replies", rewrite)

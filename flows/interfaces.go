@@ -118,6 +118,7 @@ type SessionAssets interface {
 	Labels() *LabelAssets
 	Locations() *LocationAssets
 	Resthooks() *ResthookAssets
+	Templates() *TemplateAssets
 
 	Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error)
 }

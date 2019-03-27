@@ -184,14 +184,27 @@ type Resthook interface {
 
 type TemplateUUID utils.UUID
 
-// Template is a message template, currently used by WhatsApp channels
+// Template is a message template, currently only used by WhatsApp channels
 //
 //   {
 //     "name": "revive-issue",
 //     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
 //     "translations": [
 //       {
-//          "content":
+//          "language": "eng",
+//          "content": "Hi {{1}}, are you still experiencing your issue?",
+//          "channel": {
+//            "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
+//            "name": "Twilio Channel"
+//          }
+//       },
+//       {
+//          "language": "fra",
+//          "content": "Bonjour {{1}}",
+//          "channel": {
+//            "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
+//            "name": "Twilio Channel"
+//          }
 //       }
 //     ]
 //   }
@@ -209,6 +222,11 @@ type TemplateTranslation interface {
 	Language() utils.Language
 	VariableCount() int
 	Channel() ChannelReference
+}
+
+// TemplateAssets represents our interface to get a template
+type TemplateAssets interface {
+	ByName(name string) Template
 }
 
 // AssetSource is a source of assets
