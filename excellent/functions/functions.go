@@ -1811,22 +1811,24 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 	return value
 }
 
-// Extract takes an array of objects and returns a new array by extracting the named property of
-// each object
+// Extract takes an array of objects and returns a new array by extracting named properties from each item.
+//
+// If a single property is specified, the returned array is a flat array of values. If multiple properties
+// are specified then each item is a dict of with those properties.
 //
 //   @(extract(contact.groups, "name")) -> [Testers, Males]
 //   @(extract(array(dict("foo", 123), dict("foo", 256)), "foo")) -> [123, 256]
 //   @(extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) -> [{a: 123, c: true}, {a: 345, c: false}]
 //   @(extract(array(dict("foo", 123), dict("foo", 256)), "bar")) -> ERROR
 //
-// @function extract(array, property)
+// @function extract(array, properties...)
 func Extract(env utils.Environment, array types.XArray, properties ...types.XText) types.XValue {
 	result := types.NewXArray()
 
 	for i := 0; i < array.Length(); i++ {
 		oldItem := array.Index(i)
 
-		// a single property means we return a flat list of values
+		// a single property means we return a flat array of values
 		if len(properties) == 1 {
 			newItem := types.Resolve(env, oldItem, properties[0].Native())
 			if types.IsXError(newItem) {

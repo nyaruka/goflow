@@ -521,10 +521,12 @@ The returned number can contain fractional seconds.
 
 <a name="function:extract"></a>
 
-## extract(array, property)
+## extract(array, properties...)
 
-Takes an array of objects and returns a new array by extracting the named property of
-each object
+Takes an array of objects and returns a new array by extracting named properties from each item.
+
+If a single property is specified, the returned array is a flat array of values. If multiple properties
+are specified then each item is a dict of with those properties.
 
 
 ```objectivec

@@ -336,9 +336,9 @@
         ]
     },
     {
-        "signature": "extract(array, property)",
-        "summary": "Takes an array of objects and returns a new array by extracting the named property of",
-        "detail": "each object",
+        "signature": "extract(array, properties...)",
+        "summary": "Takes an array of objects and returns a new array by extracting named properties from each item.",
+        "detail": "If a single property is specified, the returned array is a flat array of values. If multiple properties\nare specified then each item is a dict of with those properties.",
         "examples": [
             {
                 "template": "@(extract(contact.groups, \"name\"))",

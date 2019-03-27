@@ -317,8 +317,9 @@
 <a class="sourceLine" id="cb26-3" title="3">@(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>)) → <span class="fl">1497286619.123456</span></a>
 <a class="sourceLine" id="cb26-4" title="4">@(round_down(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>))) → <span class="dv">1497286619</span></a></code></pre></div>
 <p><a name="function:extract"></a></p>
-<h2 id="extractarray-property">extract(array, property)</h2>
-<p>Takes an array of objects and returns a new array by extracting the named property of each object</p>
+<h2 id="extractarray-properties">extract(array, properties…)</h2>
+<p>Takes an array of objects and returns a new array by extracting named properties from each item.</p>
+<p>If a single property is specified, the returned array is a flat array of values. If multiple properties are specified then each item is a dict of with those properties.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" title="1">@(extract(contact.groups, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
 <a class="sourceLine" id="cb27-2" title="2">@(extract(array(dict(<span class="st">&quot;foo&quot;</span>, <span class="dv">123</span>), dict(<span class="st">&quot;foo&quot;</span>, <span class="dv">256</span>)), <span class="st">&quot;foo&quot;</span>)) → [<span class="dv">123</span>, <span class="dv">256</span>]</a>
 <a class="sourceLine" id="cb27-3" title="3">@(extract(array(dict(<span class="st">&quot;a&quot;</span>, <span class="dv">123</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;xyz&quot;</span>, <span class="st">&quot;c&quot;</span>, true), dict(<span class="st">&quot;a&quot;</span>, <span class="dv">345</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;zyx&quot;</span>, <span class="st">&quot;c&quot;</span>, false)), <span class="st">&quot;a&quot;</span>, <span class="st">&quot;c&quot;</span>)) → [{a: <span class="dv">123</span>, c: true}, {a: <span class="dv">345</span>, c: false}]</a>
