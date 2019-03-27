@@ -61,9 +61,9 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(format_urn(urns.tel))", "(206) 555-1212", ""},
 
 		// contact groups
-		{"@contact.groups", `[Testers, Males]`, ""},
-		{"@(join(contact.groups, \"|\"))", `Testers|Males`, ""},
-		{"@(length(contact.groups))", "2", ""},
+		{`@(extract(contact.groups, "name"))`, `[Testers, Males]`, ""},
+		{`@(join(extract(contact.groups, "name"), "|"))`, `Testers|Males`, ""},
+		{`@(length(contact.groups))`, "2", ""},
 
 		// contact fields
 		{"@contact.fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},

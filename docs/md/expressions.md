@@ -108,7 +108,7 @@ Examples:
 @contact.urns → [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 @(contact.urns[0]) → tel:+12065551212
 @contact.urn → tel:+12065551212
-@contact.groups → [Testers, Males]
+@(extract(contact.groups, "name")) → [Testers, Males]
 @contact.fields → {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
@@ -150,7 +150,7 @@ Examples:
 
 
 ```objectivec
-@contact.groups → [Testers, Males]
+@(extract(contact.groups, "name")) → [Testers, Males]
 @(contact.groups[0].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
 @(contact.groups[1].name) → Males
 @(json(contact.groups[1])) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
@@ -1564,7 +1564,7 @@ Returns whether the `contact` is part of group with the passed in UUID
 
 ```objectivec
 @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) → true
-@(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d").match) → Testers
+@(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d").match) → {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}
 @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) → false
 ```
 

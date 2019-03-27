@@ -172,7 +172,7 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 // HasGroup returns whether the `contact` is part of group with the passed in UUID
 //
 //   @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) -> true
-//   @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d").match) -> Testers
+//   @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d").match) -> {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}
 //   @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> false
 //
 // @test has_group(contact, group_uuid)
@@ -191,7 +191,7 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 	// iterate through the groups looking for one with the same UUID as passed in
 	group := contact.Groups().FindByUUID(assets.GroupUUID(groupUUID.Native()))
 	if group != nil {
-		return NewTrueResult(group)
+		return NewTrueResult(group.Context())
 	}
 
 	return XFalseResult

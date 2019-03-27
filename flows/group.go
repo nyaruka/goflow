@@ -20,7 +20,7 @@ import (
 //
 // Examples:
 //
-//   @contact.groups -> [Testers, Males]
+//   @(extract(contact.groups, "name")) -> [Testers, Males]
 //   @(contact.groups[0].uuid) -> b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
 //   @(contact.groups[1].name) -> Males
 //   @(json(contact.groups[1])) -> {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
@@ -75,31 +75,13 @@ func (g *Group) Reference() *assets.GroupReference {
 	return assets.NewGroupReference(g.UUID(), g.Name())
 }
 
-// Resolve resolves the given key when this group is referenced in an expression
-func (g *Group) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "uuid":
-		return types.NewXText(string(g.UUID()))
-	case "name":
-		return types.NewXText(g.Name())
-	}
-
-	return types.NewXResolveError(g, key)
+// Context is called when this object is accessed in an expression
+func (g *Group) Context() types.XValue {
+	return types.NewXMap(map[string]types.XValue{
+		"uuid": types.NewXText(string(g.UUID())),
+		"name": types.NewXText(g.Name()),
+	})
 }
-
-// Describe returns a representation of this type for error messages
-func (g *Group) Describe() string { return "group" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (g *Group) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(g.Name()) }
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (g *Group) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, g, "uuid", "name").ToXJSON(env)
-}
-
-var _ types.XValue = (*Group)(nil)
-var _ types.XResolvable = (*Group)(nil)
 
 // GroupList defines a contact's list of groups
 type GroupList struct {
@@ -172,35 +154,14 @@ func (l *GroupList) Count() int {
 	return len(l.groups)
 }
 
-// Index is called when this object is indexed into in an expression
-func (l *GroupList) Index(index int) types.XValue {
-	return l.groups[index]
-}
-
-// Length is called when the length of this object is requested in an expression
-func (l *GroupList) Length() int {
-	return len(l.groups)
-}
-
-// Describe returns a representation of this type for error messages
-func (l GroupList) Describe() string { return "groups" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (l GroupList) Reduce(env utils.Environment) types.XPrimitive {
+// Context is called when this object needs to be reduced to a primitive
+func (l GroupList) Context() types.XValue {
 	array := types.NewXArray()
 	for _, group := range l.groups {
-		array.Append(group)
+		array.Append(group.Context())
 	}
 	return array
 }
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (l GroupList) ToXJSON(env utils.Environment) types.XText {
-	return l.Reduce(env).ToXJSON(env)
-}
-
-var _ types.XValue = (*GroupList)(nil)
-var _ types.XIndexable = (*GroupList)(nil)
 
 // GroupAssets provides access to all group assets
 type GroupAssets struct {

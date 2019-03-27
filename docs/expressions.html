@@ -97,7 +97,7 @@
 <a class="sourceLine" id="cb3-7" title="7">@contact.urns → [tel:+<span class="dv">12065551212</span>, twitterid:<span class="dv">54784326227</span>#nyaruka, mailto:foo@bar.com]</a>
 <a class="sourceLine" id="cb3-8" title="8">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb3-9" title="9">@contact.urn → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb3-10" title="10">@contact.groups → [Testers, Males]</a>
+<a class="sourceLine" id="cb3-10" title="10">@(extract(contact.groups, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
 <a class="sourceLine" id="cb3-11" title="11">@contact.fields → {activation_token: AACC55, age: <span class="dv">23</span>, gender: Male, join_date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span>, not_set: }</a>
 <a class="sourceLine" id="cb3-12" title="12">@contact.fields.activation_token → AACC55</a>
 <a class="sourceLine" id="cb3-13" title="13">@contact.fields.gender → Male</a></code></pre></div>
@@ -122,7 +122,7 @@
 <li><code>name</code> the name of the group</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1">@contact.groups → [Testers, Males]</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1">@(extract(contact.groups, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
 <a class="sourceLine" id="cb5-2" title="2">@(contact.groups[<span class="dv">0</span>].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
 <a class="sourceLine" id="cb5-3" title="3">@(contact.groups[<span class="dv">1</span>].name) → Males</a>
 <a class="sourceLine" id="cb5-4" title="4">@(json(contact.groups[<span class="dv">1</span>])) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
@@ -857,7 +857,7 @@
 <h2 id="has_groupcontact-group_uuid">has_group(contact, group_uuid)</h2>
 <p>Returns whether the <code>contact</code> is part of group with the passed in UUID</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb89-1" title="1">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb89-2" title="2">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>).match) → Testers</a>
+<a class="sourceLine" id="cb89-2" title="2">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>).match) → {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}</a>
 <a class="sourceLine" id="cb89-3" title="3">@(has_group(contact, <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_number"></a></p>
 <h2 id="has_numbertext">has_number(text)</h2>

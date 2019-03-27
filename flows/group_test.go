@@ -19,17 +19,17 @@ func TestGroupListResolve(t *testing.T) {
 	groups := flows.NewGroupList([]*flows.Group{customers, testers, males})
 
 	env := utils.NewEnvironmentBuilder().Build()
-	context := types.NewXMap(map[string]types.XValue{"groups": groups})
+	context := types.NewXMap(map[string]types.XValue{"groups": groups.Context()})
 
 	testCases := []struct {
 		expression string
 		hasValue   bool
 		value      interface{}
 	}{
-		{"groups[0]", true, customers},
-		{"groups[1]", true, testers},
-		{"groups[2]", true, males},
-		{"groups[-1]", true, males},
+		{"groups[0]", true, customers.Context()},
+		{"groups[1]", true, testers.Context()},
+		{"groups[2]", true, males.Context()},
+		{"groups[-1]", true, males.Context()},
 		{"groups[3]", false, nil}, // index out of range
 	}
 	for _, tc := range testCases {
