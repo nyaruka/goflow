@@ -1,3 +1,8 @@
+v0.31.2
+----------
+ * CallResthookAction should error if it can't evaluiate the payload template
+ * Resthook payload should still be valid when contact URN can't be formatted
+
 v0.31.1
 ----------
  * Generate better error message when resthook payload is not valid JSON
