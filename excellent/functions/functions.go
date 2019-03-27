@@ -257,7 +257,9 @@ func Array(env utils.Environment, values ...types.XValue) types.XValue {
 
 // Dict takes key value pairs and returns them as an dict.
 //
+//   @(dict()) -> {}
 //   @(dict("a", 123, "b", "hello")) -> {a: 123, b: hello}
+//   @(dict("a")) -> ERROR
 //
 // @function dict(pairs...)
 func Dict(env utils.Environment, pairs ...types.XValue) types.XValue {

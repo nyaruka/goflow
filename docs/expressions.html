@@ -305,7 +305,9 @@
 <p><a name="function:dict"></a></p>
 <h2 id="dictpairs">dict(pairs…)</h2>
 <p>Takes key value pairs and returns them as an dict.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" title="1">@(dict(<span class="st">&quot;a&quot;</span>, <span class="dv">123</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;hello&quot;</span>)) → {a: <span class="dv">123</span>, b: hello}</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" title="1">@(dict()) → {}</a>
+<a class="sourceLine" id="cb25-2" title="2">@(dict(<span class="st">&quot;a&quot;</span>, <span class="dv">123</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;hello&quot;</span>)) → {a: <span class="dv">123</span>, b: hello}</a>
+<a class="sourceLine" id="cb25-3" title="3">@(dict(<span class="st">&quot;a&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:epoch"></a></p>
 <h2 id="epochdate">epoch(date)</h2>
 <p>Converts <code>date</code> to a UNIX epoch time.</p>

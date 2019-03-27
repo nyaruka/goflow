@@ -498,7 +498,9 @@ Takes key value pairs and returns them as an dict.
 
 
 ```objectivec
+@(dict()) → {}
 @(dict("a", 123, "b", "hello")) → {a: 123, b: hello}
+@(dict("a")) → ERROR
 ```
 
 <a name="function:epoch"></a>

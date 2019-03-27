@@ -299,8 +299,16 @@
         "detail": "",
         "examples": [
             {
+                "template": "@(dict())",
+                "output": "{}"
+            },
+            {
                 "template": "@(dict(\"a\", 123, \"b\", \"hello\"))",
                 "output": "{a: 123, b: hello}"
+            },
+            {
+                "template": "@(dict(\"a\"))",
+                "output": "ERROR"
             }
         ]
     },
