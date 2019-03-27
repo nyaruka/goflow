@@ -64,6 +64,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		NoContact       bool               `json:"no_contact"`
 		NoURNs          bool               `json:"no_urns"`
 		NoInput         bool               `json:"no_input"`
+		RedactURNs      bool               `json:"redact_urns"`
 		Action          json.RawMessage    `json:"action"`
 		ValidationError string             `json:"validation_error"`
 		Events          []json.RawMessage  `json:"events"`
@@ -130,6 +131,13 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			}
 		}
 
+		envBuilder := utils.NewEnvironmentBuilder()
+		if tc.RedactURNs {
+			envBuilder.WithRedactionPolicy(utils.RedactionPolicyURNs)
+		}
+
+		env := envBuilder.Build()
+
 		var trigger flows.Trigger
 		ignoreEventCount := 0
 		if tc.NoInput {
@@ -137,13 +145,13 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
-				trigger = triggers.NewManualVoiceTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, connection, nil)
+				trigger = triggers.NewManualVoiceTrigger(env, flow.Reference(), contact, connection, nil)
 			} else {
-				trigger = triggers.NewManualTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, nil)
+				trigger = triggers.NewManualTrigger(env, flow.Reference(), contact, nil)
 			}
 		} else {
 			msg := flows.NewMsgIn(flows.MsgUUID("aa90ce99-3b4d-44ba-b0ca-79e63d9ed842"), urns.URN("tel:+12065551212"), nil, "Hi everybody", nil)
-			trigger = triggers.NewMsgTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, msg, nil)
+			trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil)
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
