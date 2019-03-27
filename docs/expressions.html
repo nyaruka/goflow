@@ -794,185 +794,162 @@
 <h2 id="has_all_wordstext-words">has_all_words(text, words)</h2>
 <p>Tests whether all the <code>words</code> are contained in <code>text</code></p>
 <p>The words can be in any order and may appear more than once.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb80-1" title="1">@(has_all_words(<span class="st">&quot;the quick brown FOX&quot;</span>, <span class="st">&quot;the fox&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb80-2" title="2">@(has_all_words(<span class="st">&quot;the quick brown FOX&quot;</span>, <span class="st">&quot;the fox&quot;</span>).match) → the FOX</a>
-<a class="sourceLine" id="cb80-3" title="3">@(has_all_words(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb80-1" title="1">@(has_all_words(<span class="st">&quot;the quick brown FOX&quot;</span>, <span class="st">&quot;the fox&quot;</span>)) → {match: the FOX}</a>
+<a class="sourceLine" id="cb80-2" title="2">@(has_all_words(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_any_word"></a></p>
 <h2 id="has_any_wordtext-words">has_any_word(text, words)</h2>
 <p>Tests whether any of the <code>words</code> are contained in the <code>text</code></p>
 <p>Only one of the words needs to match and it may appear more than once.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb81-1" title="1">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;fox quick&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb81-2" title="2">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb81-3" title="3">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>).match) → Fox</a></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb81-1" title="1">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;fox quick&quot;</span>)) → {match: Quick Fox}</a>
+<a class="sourceLine" id="cb81-2" title="2">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) → {match: Fox}</a></code></pre></div>
 <p><a name="test:has_beginning"></a></p>
 <h2 id="has_beginningtext-beginning">has_beginning(text, beginning)</h2>
 <p>Tests whether <code>text</code> starts with <code>beginning</code></p>
 <p>Both text values are trimmed of surrounding whitespace, but otherwise matching is strict without any tokenization.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb82-1" title="1">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the quick&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb82-2" title="2">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the quick&quot;</span>).match) → The Quick</a>
-<a class="sourceLine" id="cb82-3" title="3">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the   quick&quot;</span>)) →</a>
-<a class="sourceLine" id="cb82-4" title="4">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb82-1" title="1">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the quick&quot;</span>)) → {match: The Quick}</a>
+<a class="sourceLine" id="cb82-2" title="2">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the   quick&quot;</span>)) →</a>
+<a class="sourceLine" id="cb82-3" title="3">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_date"></a></p>
 <h2 id="has_datetext">has_date(text)</h2>
 <p>Tests whether <code>text</code> contains a date formatted according to our environment</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb83-1" title="1">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb83-2" title="2">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb83-3" title="3">@(has_date(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb83-1" title="1">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>)) → {match: <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span>}</a>
+<a class="sourceLine" id="cb83-2" title="2">@(has_date(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_date_eq"></a></p>
 <h2 id="has_date_eqtext-date">has_date_eq(text, date)</h2>
 <p>Tests whether <code>text</code> a date equal to <code>date</code></p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb84-1" title="1">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb84-2" title="2">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb84-3" title="3">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15 15:00&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb84-4" title="4">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) →</a>
-<a class="sourceLine" id="cb84-5" title="5">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb84-1" title="1">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → {match: <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span>}</a>
+<a class="sourceLine" id="cb84-2" title="2">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15 15:00&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → {match: <span class="dv">2017-01</span>-15T15:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span>}</a>
+<a class="sourceLine" id="cb84-3" title="3">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) →</a>
+<a class="sourceLine" id="cb84-4" title="4">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_date_gt"></a></p>
 <h2 id="has_date_gttext-min">has_date_gt(text, min)</h2>
 <p>Tests whether <code>text</code> a date after the date <code>min</code></p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb85-1" title="1">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb85-2" title="2">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb85-3" title="3">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-03-15&quot;</span>)) →</a>
-<a class="sourceLine" id="cb85-4" title="4">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) →</a>
-<a class="sourceLine" id="cb85-5" title="5">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb85-1" title="1">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>)) → {match: <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span>}</a>
+<a class="sourceLine" id="cb85-2" title="2">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-03-15&quot;</span>)) →</a>
+<a class="sourceLine" id="cb85-3" title="3">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) →</a>
+<a class="sourceLine" id="cb85-4" title="4">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_date_lt"></a></p>
 <h2 id="has_date_lttext-max">has_date_lt(text, max)</h2>
 <p>Tests whether <code>text</code> contains a date before the date <code>max</code></p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb86-1" title="1">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb86-2" title="2">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb86-3" title="3">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) →</a>
-<a class="sourceLine" id="cb86-4" title="4">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb86-1" title="1">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → {match: <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span>}</a>
+<a class="sourceLine" id="cb86-2" title="2">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) →</a>
+<a class="sourceLine" id="cb86-3" title="3">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_district"></a></p>
 <h2 id="has_districttext-state">has_district(text, state)</h2>
 <p>Tests whether a district name is contained in the <code>text</code>. If <code>state</code> is also provided then the returned district must be within that state.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb87-1" title="1">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb87-2" title="2">@(has_district(<span class="st">&quot;I live in Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb87-3" title="3">@(has_district(<span class="st">&quot;I live in Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo</a>
-<a class="sourceLine" id="cb87-4" title="4">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Boston&quot;</span>)) →</a>
-<a class="sourceLine" id="cb87-5" title="5">@(has_district(<span class="st">&quot;Gasabo&quot;</span>)) → true</a></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb87-1" title="1">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo}</a>
+<a class="sourceLine" id="cb87-2" title="2">@(has_district(<span class="st">&quot;I live in Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo}</a>
+<a class="sourceLine" id="cb87-3" title="3">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Boston&quot;</span>)) →</a>
+<a class="sourceLine" id="cb87-4" title="4">@(has_district(<span class="st">&quot;Gasabo&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo}</a></code></pre></div>
 <p><a name="test:has_email"></a></p>
 <h2 id="has_emailtext">has_email(text)</h2>
 <p>Tests whether an email is contained in <code>text</code></p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb88-1" title="1">@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb88-2" title="2">@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>).match) → foo1@bar.com</a>
-<a class="sourceLine" id="cb88-3" title="3">@(has_email(<span class="st">&quot;my email is &lt;foo@bar2.com&gt;&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb88-4" title="4">@(has_email(<span class="st">&quot;i&#39;m not sharing my email&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb88-1" title="1">@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>)) → {match: foo1@bar.com}</a>
+<a class="sourceLine" id="cb88-2" title="2">@(has_email(<span class="st">&quot;my email is &lt;foo@bar2.com&gt;&quot;</span>)) → {match: foo@bar2.com}</a>
+<a class="sourceLine" id="cb88-3" title="3">@(has_email(<span class="st">&quot;i&#39;m not sharing my email&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_group"></a></p>
 <h2 id="has_groupcontact-group_uuid">has_group(contact, group_uuid)</h2>
 <p>Returns whether the <code>contact</code> is part of group with the passed in UUID</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb89-1" title="1">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb89-2" title="2">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>).match) → {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}</a>
-<a class="sourceLine" id="cb89-3" title="3">@(has_group(contact, <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb89-1" title="1">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>)) → {match: {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}}</a>
+<a class="sourceLine" id="cb89-2" title="2">@(has_group(contact, <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_number"></a></p>
 <h2 id="has_numbertext">has_number(text)</h2>
 <p>Tests whether <code>text</code> contains a number</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb90-1" title="1">@(has_number(<span class="st">&quot;the number is 42&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb90-2" title="2">@(has_number(<span class="st">&quot;the number is 42&quot;</span>).match) → <span class="dv">42</span></a>
-<a class="sourceLine" id="cb90-3" title="3">@(has_number(<span class="st">&quot;the number is forty two&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb90-1" title="1">@(has_number(<span class="st">&quot;the number is 42&quot;</span>)) → {match: <span class="dv">42</span>}</a>
+<a class="sourceLine" id="cb90-2" title="2">@(has_number(<span class="st">&quot;the number is forty two&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_number_between"></a></p>
 <h2 id="has_number_betweentext-min-max">has_number_between(text, min, max)</h2>
 <p>Tests whether <code>text</code> contains a number between <code>min</code> and <code>max</code> inclusive</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb91-1" title="1">@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>, <span class="dv">44</span>)) → true</a>
-<a class="sourceLine" id="cb91-2" title="2">@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>, <span class="dv">44</span>).match) → <span class="dv">42</span></a>
-<a class="sourceLine" id="cb91-3" title="3">@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">50</span>, <span class="dv">60</span>)) →</a>
-<a class="sourceLine" id="cb91-4" title="4">@(has_number_between(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">50</span>, <span class="dv">60</span>)) →</a>
-<a class="sourceLine" id="cb91-5" title="5">@(has_number_between(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="dv">60</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb91-1" title="1">@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>, <span class="dv">44</span>)) → {match: <span class="dv">42</span>}</a>
+<a class="sourceLine" id="cb91-2" title="2">@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">50</span>, <span class="dv">60</span>)) →</a>
+<a class="sourceLine" id="cb91-3" title="3">@(has_number_between(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">50</span>, <span class="dv">60</span>)) →</a>
+<a class="sourceLine" id="cb91-4" title="4">@(has_number_between(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="dv">60</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_eq"></a></p>
 <h2 id="has_number_eqtext-value">has_number_eq(text, value)</h2>
 <p>Tests whether <code>text</code> contains a number equal to the <code>value</code></p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb92-1" title="1">@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</a>
-<a class="sourceLine" id="cb92-2" title="2">@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>).match) → <span class="dv">42</span></a>
-<a class="sourceLine" id="cb92-3" title="3">@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) →</a>
-<a class="sourceLine" id="cb92-4" title="4">@(has_number_eq(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
-<a class="sourceLine" id="cb92-5" title="5">@(has_number_eq(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb92-1" title="1">@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → {match: <span class="dv">42</span>}</a>
+<a class="sourceLine" id="cb92-2" title="2">@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) →</a>
+<a class="sourceLine" id="cb92-3" title="3">@(has_number_eq(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
+<a class="sourceLine" id="cb92-4" title="4">@(has_number_eq(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_gt"></a></p>
 <h2 id="has_number_gttext-min">has_number_gt(text, min)</h2>
 <p>Tests whether <code>text</code> contains a number greater than <code>min</code></p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb93-1" title="1">@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → true</a>
-<a class="sourceLine" id="cb93-2" title="2">@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>).match) → <span class="dv">42</span></a>
-<a class="sourceLine" id="cb93-3" title="3">@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) →</a>
-<a class="sourceLine" id="cb93-4" title="4">@(has_number_gt(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
-<a class="sourceLine" id="cb93-5" title="5">@(has_number_gt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb93-1" title="1">@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → {match: <span class="dv">42</span>}</a>
+<a class="sourceLine" id="cb93-2" title="2">@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) →</a>
+<a class="sourceLine" id="cb93-3" title="3">@(has_number_gt(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
+<a class="sourceLine" id="cb93-4" title="4">@(has_number_gt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_gte"></a></p>
 <h2 id="has_number_gtetext-min">has_number_gte(text, min)</h2>
 <p>Tests whether <code>text</code> contains a number greater than or equal to <code>min</code></p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb94-1" title="1">@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</a>
-<a class="sourceLine" id="cb94-2" title="2">@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>).match) → <span class="dv">42</span></a>
-<a class="sourceLine" id="cb94-3" title="3">@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">45</span>)) →</a>
-<a class="sourceLine" id="cb94-4" title="4">@(has_number_gte(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
-<a class="sourceLine" id="cb94-5" title="5">@(has_number_gte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb94-1" title="1">@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → {match: <span class="dv">42</span>}</a>
+<a class="sourceLine" id="cb94-2" title="2">@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">45</span>)) →</a>
+<a class="sourceLine" id="cb94-3" title="3">@(has_number_gte(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
+<a class="sourceLine" id="cb94-4" title="4">@(has_number_gte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_lt"></a></p>
 <h2 id="has_number_lttext-max">has_number_lt(text, max)</h2>
 <p>Tests whether <code>text</code> contains a number less than <code>max</code></p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb95-1" title="1">@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>)) → true</a>
-<a class="sourceLine" id="cb95-2" title="2">@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>).match) → <span class="dv">42</span></a>
-<a class="sourceLine" id="cb95-3" title="3">@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) →</a>
-<a class="sourceLine" id="cb95-4" title="4">@(has_number_lt(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
-<a class="sourceLine" id="cb95-5" title="5">@(has_number_lt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb95-1" title="1">@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>)) → {match: <span class="dv">42</span>}</a>
+<a class="sourceLine" id="cb95-2" title="2">@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) →</a>
+<a class="sourceLine" id="cb95-3" title="3">@(has_number_lt(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
+<a class="sourceLine" id="cb95-4" title="4">@(has_number_lt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_lte"></a></p>
 <h2 id="has_number_ltetext-max">has_number_lte(text, max)</h2>
 <p>Tests whether <code>text</code> contains a number less than or equal to <code>max</code></p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb96-1" title="1">@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</a>
-<a class="sourceLine" id="cb96-2" title="2">@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>).match) → <span class="dv">42</span></a>
-<a class="sourceLine" id="cb96-3" title="3">@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) →</a>
-<a class="sourceLine" id="cb96-4" title="4">@(has_number_lte(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
-<a class="sourceLine" id="cb96-5" title="5">@(has_number_lte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb96-1" title="1">@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → {match: <span class="dv">42</span>}</a>
+<a class="sourceLine" id="cb96-2" title="2">@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) →</a>
+<a class="sourceLine" id="cb96-3" title="3">@(has_number_lte(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) →</a>
+<a class="sourceLine" id="cb96-4" title="4">@(has_number_lte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_only_phrase"></a></p>
 <h2 id="has_only_phrasetext-phrase">has_only_phrase(text, phrase)</h2>
 <p>Tests whether the <code>text</code> contains only <code>phrase</code></p>
 <p>The phrase must be the only text in the text to match</p>
 <div class="sourceCode" id="cb97"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb97-1" title="1">@(has_only_phrase(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) →</a>
-<a class="sourceLine" id="cb97-2" title="2">@(has_only_phrase(<span class="st">&quot;Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb97-2" title="2">@(has_only_phrase(<span class="st">&quot;Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → {match: Quick Brown}</a>
 <a class="sourceLine" id="cb97-3" title="3">@(has_only_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;&quot;</span>)) →</a>
-<a class="sourceLine" id="cb97-4" title="4">@(has_only_phrase(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb97-5" title="5">@(has_only_phrase(<span class="st">&quot;Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>).match) → Quick Brown</a>
-<a class="sourceLine" id="cb97-6" title="6">@(has_only_phrase(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) →</a></code></pre></div>
+<a class="sourceLine" id="cb97-4" title="4">@(has_only_phrase(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>)) → {match: }</a>
+<a class="sourceLine" id="cb97-5" title="5">@(has_only_phrase(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_pattern"></a></p>
 <h2 id="has_patterntext-pattern">has_pattern(text, pattern)</h2>
 <p>Tests whether <code>text</code> matches the regex <code>pattern</code></p>
 <p>Both text values are trimmed of surrounding whitespace and matching is case-insensitive.</p>
 <div class="sourceCode" id="cb98"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb98-1" title="1">@(has_pattern(<span class="st">&quot;Sell cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) →</a>
-<a class="sourceLine" id="cb98-2" title="2">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb98-3" title="3">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match) → Buy cheese</a></code></pre></div>
+<a class="sourceLine" id="cb98-2" title="2">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) → {extra: {<span class="dv">0</span>: Buy cheese, <span class="dv">1</span>: cheese}, match: Buy cheese}</a></code></pre></div>
 <p><a name="test:has_phone"></a></p>
 <h2 id="has_phonetext-country_code">has_phone(text, country_code)</h2>
 <p>Tests whether <code>text</code> contains a phone number. The optional <code>country_code</code> argument specifies the country to use for parsing.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb99-1" title="1">@(has_phone(<span class="st">&quot;my number is +12067799294&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb99-2" title="2">@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb99-3" title="3">@(has_phone(<span class="st">&quot;my number is 206 779 9294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></a>
+<div class="sourceCode" id="cb99"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb99-1" title="1">@(has_phone(<span class="st">&quot;my number is +12067799294&quot;</span>)) → {match: +<span class="dv">12067799294</span>}</a>
+<a class="sourceLine" id="cb99-2" title="2">@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>)) → {match: +<span class="dv">12067799294</span>}</a>
+<a class="sourceLine" id="cb99-3" title="3">@(has_phone(<span class="st">&quot;my number is 206 779 9294&quot;</span>, <span class="st">&quot;US&quot;</span>)) → {match: +<span class="dv">12067799294</span>}</a>
 <a class="sourceLine" id="cb99-4" title="4">@(has_phone(<span class="st">&quot;my number is none of your business&quot;</span>, <span class="st">&quot;US&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_phrase"></a></p>
 <h2 id="has_phrasetext-phrase">has_phrase(text, phrase)</h2>
 <p>Tests whether <code>phrase</code> is contained in <code>text</code></p>
 <p>The words in the test phrase must appear in the same order with no other words in between.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb100-1" title="1">@(has_phrase(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;brown fox&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb100"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb100-1" title="1">@(has_phrase(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;brown fox&quot;</span>)) → {match: brown fox}</a>
 <a class="sourceLine" id="cb100-2" title="2">@(has_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;quick fox&quot;</span>)) →</a>
-<a class="sourceLine" id="cb100-3" title="3">@(has_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb100-4" title="4">@(has_phrase(<span class="st">&quot;the.quick.brown.fox&quot;</span>, <span class="st">&quot;the quick&quot;</span>).match) → the quick</a></code></pre></div>
+<a class="sourceLine" id="cb100-3" title="3">@(has_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;&quot;</span>)) → {match: }</a></code></pre></div>
 <p><a name="test:has_state"></a></p>
 <h2 id="has_statetext">has_state(text)</h2>
 <p>Tests whether a state name is contained in the <code>text</code></p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb101-1" title="1">@(has_state(<span class="st">&quot;Kigali&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb101-2" title="2">@(has_state(<span class="st">&quot;Boston&quot;</span>)) →</a>
-<a class="sourceLine" id="cb101-3" title="3">@(has_state(<span class="st">&quot;¡Kigali!&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb101-4" title="4">@(has_state(<span class="st">&quot;¡Kigali!&quot;</span>).match) → Rwanda &gt; Kigali City</a>
-<a class="sourceLine" id="cb101-5" title="5">@(has_state(<span class="st">&quot;I live in Kigali&quot;</span>)) → true</a></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb101-1" title="1">@(has_state(<span class="st">&quot;Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City}</a>
+<a class="sourceLine" id="cb101-2" title="2">@(has_state(<span class="st">&quot;¡Kigali!&quot;</span>)) → {match: Rwanda &gt; Kigali City}</a>
+<a class="sourceLine" id="cb101-3" title="3">@(has_state(<span class="st">&quot;I live in Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City}</a>
+<a class="sourceLine" id="cb101-4" title="4">@(has_state(<span class="st">&quot;Boston&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_text"></a></p>
 <h2 id="has_texttext">has_text(text)</h2>
 <p>Tests whether there the text has any characters in it</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb102-1" title="1">@(has_text(<span class="st">&quot;quick brown&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb102-2" title="2">@(has_text(<span class="st">&quot;quick brown&quot;</span>).match) → quick brown</a>
-<a class="sourceLine" id="cb102-3" title="3">@(has_text(<span class="st">&quot;&quot;</span>)) →</a>
-<a class="sourceLine" id="cb102-4" title="4">@(has_text(<span class="st">&quot; </span><span class="sc">\n</span><span class="st">&quot;</span>)) →</a>
-<a class="sourceLine" id="cb102-5" title="5">@(has_text(<span class="dv">123</span>)) → true</a>
-<a class="sourceLine" id="cb102-6" title="6">@(has_text(contact.fields.not_set)) →</a></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb102-1" title="1">@(has_text(<span class="st">&quot;quick brown&quot;</span>)) → {match: quick brown}</a>
+<a class="sourceLine" id="cb102-2" title="2">@(has_text(<span class="st">&quot;&quot;</span>)) →</a>
+<a class="sourceLine" id="cb102-3" title="3">@(has_text(<span class="st">&quot; </span><span class="sc">\n</span><span class="st">&quot;</span>)) →</a>
+<a class="sourceLine" id="cb102-4" title="4">@(has_text(<span class="dv">123</span>)) → {match: <span class="dv">123</span>}</a>
+<a class="sourceLine" id="cb102-5" title="5">@(has_text(contact.fields.not_set)) →</a></code></pre></div>
 <p><a name="test:has_time"></a></p>
 <h2 id="has_timetext">has_time(text)</h2>
 <p>Tests whether <code>text</code> contains a time.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb103-1" title="1">@(has_time(<span class="st">&quot;the time is 10:30&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb103-2" title="2">@(has_time(<span class="st">&quot;the time is 10 PM&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb103-3" title="3">@(has_time(<span class="st">&quot;the time is 10:30 PM&quot;</span>).match) → <span class="dv">22</span>:<span class="dv">30</span>:<span class="fl">00.000000</span></a>
-<a class="sourceLine" id="cb103-4" title="4">@(has_time(<span class="st">&quot;the time is 10:30:45&quot;</span>).match) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">45.000000</span></a>
-<a class="sourceLine" id="cb103-5" title="5">@(has_time(<span class="st">&quot;there is no time here, just the number 25&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb103-1" title="1">@(has_time(<span class="st">&quot;the time is 10:30&quot;</span>)) → {match: <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">00.000000</span>}</a>
+<a class="sourceLine" id="cb103-2" title="2">@(has_time(<span class="st">&quot;the time is 10 PM&quot;</span>)) → {match: <span class="dv">22</span>:<span class="dv">00</span>:<span class="fl">00.000000</span>}</a>
+<a class="sourceLine" id="cb103-3" title="3">@(has_time(<span class="st">&quot;the time is 10:30:45&quot;</span>)) → {match: <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">45.000000</span>}</a>
+<a class="sourceLine" id="cb103-4" title="4">@(has_time(<span class="st">&quot;there is no time here, just the number 25&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_value"></a></p>
 <h2 id="has_valuevalue">has_value(value)</h2>
 <p>Returns whether <code>value</code> is non-nil and not an error</p>
@@ -981,7 +958,7 @@
 <a class="sourceLine" id="cb104-2" title="2">@(has_value(not.existing)) →</a>
 <a class="sourceLine" id="cb104-3" title="3">@(has_value(contact.fields.unset)) →</a>
 <a class="sourceLine" id="cb104-4" title="4">@(has_value(<span class="st">&quot;&quot;</span>)) →</a>
-<a class="sourceLine" id="cb104-5" title="5">@(has_value(<span class="st">&quot;hello&quot;</span>)) → true</a></code></pre></div>
+<a class="sourceLine" id="cb104-5" title="5">@(has_value(<span class="st">&quot;hello&quot;</span>)) → {match: hello}</a></code></pre></div>
 <p><a name="test:has_wait_timed_out"></a></p>
 <h2 id="has_wait_timed_outrun">has_wait_timed_out(run)</h2>
 <p>Returns whether the last wait timed out.</p>
@@ -989,31 +966,30 @@
 <p><a name="test:has_ward"></a></p>
 <h2 id="has_wardtext-district-state">has_ward(text, district, state)</h2>
 <p>Tests whether a ward name is contained in the <code>text</code></p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb106-1" title="1">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb106-2" title="2">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb106-3" title="3">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</a>
-<a class="sourceLine" id="cb106-4" title="4">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) →</a>
-<a class="sourceLine" id="cb106-5" title="5">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) →</a>
-<a class="sourceLine" id="cb106-6" title="6">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) →</a>
-<a class="sourceLine" id="cb106-7" title="7">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) →</a>
-<a class="sourceLine" id="cb106-8" title="8">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb106-1" title="1">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi}</a>
+<a class="sourceLine" id="cb106-2" title="2">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi}</a>
+<a class="sourceLine" id="cb106-3" title="3">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) →</a>
+<a class="sourceLine" id="cb106-4" title="4">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) →</a>
+<a class="sourceLine" id="cb106-5" title="5">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) →</a>
+<a class="sourceLine" id="cb106-6" title="6">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) →</a>
+<a class="sourceLine" id="cb106-7" title="7">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi}</a></code></pre></div>
 <p><a name="test:is_error"></a></p>
 <h2 id="is_errorvalue">is_error(value)</h2>
 <p>Returns whether <code>value</code> is an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<div class="sourceCode" id="cb107"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb107-1" title="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → true</a>
-<a class="sourceLine" id="cb107-2" title="2">@(is_error(run.not.existing)) → true</a>
-<a class="sourceLine" id="cb107-3" title="3">@(is_error(contact.fields.unset)) → true</a>
+<div class="sourceCode" id="cb107"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb107-1" title="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → {match: error calling DATETIME: unable to convert <span class="st">&quot;foo&quot;</span> to a datetime}</a>
+<a class="sourceLine" id="cb107-2" title="2">@(is_error(run.not.existing)) → {match: run has no property &#39;not&#39;}</a>
+<a class="sourceLine" id="cb107-3" title="3">@(is_error(contact.fields.unset)) → {match: dict has no property &#39;unset&#39;}</a>
 <a class="sourceLine" id="cb107-4" title="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:is_text_eq"></a></p>
 <h2 id="is_text_eqtext1-text2">is_text_eq(text1, text2)</h2>
 <p>Returns whether two text values are equal (case sensitive). In the case that they are, it will return the text as the match.</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb108-1" title="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb108"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb108-1" title="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → {match: foo}</a>
 <a class="sourceLine" id="cb108-2" title="2">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;FOO&quot;</span>)) →</a>
 <a class="sourceLine" id="cb108-3" title="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) →</a>
 <a class="sourceLine" id="cb108-4" title="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) →</a>
-<a class="sourceLine" id="cb108-5" title="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb108-6" title="6">@(is_text_eq(results.webhook.category, <span class="st">&quot;Success&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb108-5" title="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → {match: completed}</a>
+<a class="sourceLine" id="cb108-6" title="6">@(is_text_eq(results.webhook.category, <span class="st">&quot;Success&quot;</span>)) → {match: Success}</a>
 <a class="sourceLine" id="cb108-7" title="7">@(is_text_eq(results.webhook.category, <span class="st">&quot;Failure&quot;</span>)) →</a></code></pre></div>
 </div>
 

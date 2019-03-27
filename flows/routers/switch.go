@@ -190,17 +190,25 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 		result := xtest(run.Environment(), args...)
 
 		// tests have to return either errors or test results
-		switch typedResult := result.(type) {
+		switch typed := result.(type) {
 		case types.XError:
 			// test functions can return an error
-			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typedResult.Error()))
-		case tests.XTestResult:
-			resultAsStr, xerr := types.ToXText(run.Environment(), typedResult.Match())
+			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typed.Error()))
+		case types.XDict:
+			match := typed.Get("match")
+			extra := typed.Get("extra")
+
+			extraAsDict, isDict := extra.(types.XDict)
+			if extra != nil && !isDict {
+				run.LogError(step, errors.Errorf("test %s returned non-dict extra", strings.ToUpper(test)))
+			}
+
+			resultAsStr, xerr := types.ToXText(run.Environment(), match)
 			if xerr != nil {
 				return "", "", nil, xerr
 			}
 
-			return resultAsStr.Native(), c.CategoryUUID, typedResult.Extra(), nil
+			return resultAsStr.Native(), c.CategoryUUID, extraAsDict, nil
 		case nil:
 			continue
 		default:
