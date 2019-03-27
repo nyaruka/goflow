@@ -42,12 +42,12 @@ type XIndexable interface {
 }
 
 // ResolveKeys is a utility function that resolves multiple keys on an XResolvable and returns the results as a map
-func ResolveKeys(env utils.Environment, resolvable XResolvable, keys ...string) XMap {
+func ResolveKeys(env utils.Environment, resolvable XResolvable, keys ...string) XDict {
 	values := make(map[string]XValue, len(keys))
 	for _, key := range keys {
 		values[key] = resolvable.Resolve(env, key)
 	}
-	return NewXMap(values)
+	return NewXDict(values)
 }
 
 // Equals checks for equality between the two give values

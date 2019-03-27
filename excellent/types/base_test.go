@@ -198,14 +198,14 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asBool:         true,
 			isEmpty:        false,
 		}, {
-			value:          types.NewEmptyXMap(),
+			value:          types.NewEmptyXDict(),
 			asInternalJSON: `{}`,
 			asJSON:         `{}`,
 			asText:         `{}`,
 			asBool:         false,
 			isEmpty:        true,
 		}, {
-			value: types.NewXMap(map[string]types.XValue{
+			value: types.NewXDict(map[string]types.XValue{
 				"first":  NewTestXObject("Hello", 123),
 				"second": NewTestXObject("World", 456),
 			}),
@@ -296,7 +296,7 @@ func TestEquals(t *testing.T) {
 func TestIsEmpty(t *testing.T) {
 	assert.True(t, types.IsEmpty(nil))
 	assert.True(t, types.IsEmpty(types.NewXArray()))
-	assert.True(t, types.IsEmpty(types.NewEmptyXMap()))
+	assert.True(t, types.IsEmpty(types.NewEmptyXDict()))
 	assert.True(t, types.IsEmpty(types.NewXText("")))
 	assert.False(t, types.IsEmpty(types.NewXText("a")))
 	assert.False(t, types.IsEmpty(types.XBooleanFalse))

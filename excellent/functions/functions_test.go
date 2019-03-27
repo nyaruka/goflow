@@ -156,18 +156,18 @@ func TestFunctions(t *testing.T) {
 		{"default", dmy, []types.XValue{types.NewXErrorf("This is error"), xs("20")}, xs("20")},
 		{"default", dmy, []types.XValue{}, ERROR},
 
-		{"dict", dmy, []types.XValue{xs("foo"), xs("hello"), xs("bar"), xi(123)}, types.NewXMap(map[string]types.XValue{"foo": xs("hello"), "bar": xi(123)})},
-		{"dict", dmy, []types.XValue{xi(0), xs("hello")}, types.NewXMap(map[string]types.XValue{"0": xs("hello")})},
+		{"dict", dmy, []types.XValue{xs("foo"), xs("hello"), xs("bar"), xi(123)}, types.NewXDict(map[string]types.XValue{"foo": xs("hello"), "bar": xi(123)})},
+		{"dict", dmy, []types.XValue{xi(0), xs("hello")}, types.NewXDict(map[string]types.XValue{"0": xs("hello")})},
 		{"dict", dmy, []types.XValue{ERROR, xs("hello")}, ERROR},
 		{"dict", dmy, []types.XValue{xs("foo"), ERROR}, ERROR},
 		{"dict", dmy, []types.XValue{xs("foo")}, ERROR},
-		{"dict", dmy, []types.XValue{}, types.NewEmptyXMap()},
+		{"dict", dmy, []types.XValue{}, types.NewEmptyXDict()},
 
 		{
 			"extract",
 			dmy,
 			[]types.XValue{
-				types.NewXArray(types.NewXMap(map[string]types.XValue{"foo": xs("hello")})),
+				types.NewXArray(types.NewXDict(map[string]types.XValue{"foo": xs("hello")})),
 				xs("foo"),
 			},
 			types.NewXArray(xs("hello")),
@@ -176,7 +176,7 @@ func TestFunctions(t *testing.T) {
 			"extract",
 			dmy,
 			[]types.XValue{
-				types.NewXArray(types.NewXMap(map[string]types.XValue{"foo": xs("hello")})),
+				types.NewXArray(types.NewXDict(map[string]types.XValue{"foo": xs("hello")})),
 				xs("bar"),
 			},
 			ERROR,
@@ -186,15 +186,15 @@ func TestFunctions(t *testing.T) {
 			dmy,
 			[]types.XValue{
 				types.NewXArray(
-					types.NewXMap(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
-					types.NewXMap(map[string]types.XValue{"a": xi(345), "b": xs("zyx"), "c": types.XBooleanFalse}),
+					types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
+					types.NewXDict(map[string]types.XValue{"a": xi(345), "b": xs("zyx"), "c": types.XBooleanFalse}),
 				),
 				xs("a"),
 				xs("c"),
 			},
 			types.NewXArray(
-				types.NewXMap(map[string]types.XValue{"a": xi(123), "c": types.XBooleanTrue}),
-				types.NewXMap(map[string]types.XValue{"a": xi(345), "c": types.XBooleanFalse}),
+				types.NewXDict(map[string]types.XValue{"a": xi(123), "c": types.XBooleanTrue}),
+				types.NewXDict(map[string]types.XValue{"a": xi(345), "c": types.XBooleanFalse}),
 			),
 		},
 		{
@@ -202,8 +202,8 @@ func TestFunctions(t *testing.T) {
 			dmy,
 			[]types.XValue{
 				types.NewXArray(
-					types.NewXMap(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
-					types.NewXMap(map[string]types.XValue{"a": xi(345), "b": xs("zyx"), "c": types.XBooleanFalse}),
+					types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
+					types.NewXDict(map[string]types.XValue{"a": xi(345), "b": xs("zyx"), "c": types.XBooleanFalse}),
 				),
 				xs("a"),
 				xs("d"),
@@ -536,17 +536,17 @@ func TestFunctions(t *testing.T) {
 		{"upper", dmy, []types.XValue{xs("")}, xs("")},
 		{"upper", dmy, []types.XValue{}, ERROR},
 
-		{"urn_parts", dmy, []types.XValue{xs("tel:+593979012345")}, types.NewXMap(map[string]types.XValue{
+		{"urn_parts", dmy, []types.XValue{xs("tel:+593979012345")}, types.NewXDict(map[string]types.XValue{
 			"scheme":  xs("tel"),
 			"path":    xs("+593979012345"),
 			"display": types.XTextEmpty,
 		})},
-		{"urn_parts", dmy, []types.XValue{xs("twitterid:23454556#bobby")}, types.NewXMap(map[string]types.XValue{
+		{"urn_parts", dmy, []types.XValue{xs("twitterid:23454556#bobby")}, types.NewXDict(map[string]types.XValue{
 			"scheme":  xs("twitterid"),
 			"path":    xs("23454556"),
 			"display": xs("bobby"),
 		})},
-		{"urn_parts", dmy, []types.XValue{xs("not_a_urn")}, types.NewXMap(map[string]types.XValue{
+		{"urn_parts", dmy, []types.XValue{xs("not_a_urn")}, types.NewXDict(map[string]types.XValue{
 			"scheme":  types.XTextEmpty,
 			"path":    xs("not_a_urn"),
 			"display": types.XTextEmpty,

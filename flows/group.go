@@ -77,7 +77,7 @@ func (g *Group) Reference() *assets.GroupReference {
 
 // Context is called when this object is accessed in an expression
 func (g *Group) Context() types.XValue {
-	return types.NewXMap(map[string]types.XValue{
+	return types.NewXDict(map[string]types.XValue{
 		"uuid": types.NewXText(string(g.UUID())),
 		"name": types.NewXText(g.Name()),
 	})

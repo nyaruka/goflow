@@ -288,7 +288,7 @@ func Dict(env utils.Environment, pairs ...types.XValue) types.XValue {
 		dict[keyAsText.Native()] = value
 	}
 
-	return types.NewXMap(dict)
+	return types.NewXDict(dict)
 }
 
 //------------------------------------------------------------------------------------------
@@ -1440,7 +1440,7 @@ func URNParts(env utils.Environment, urn types.XText) types.XValue {
 	u := urns.URN(urn.Native())
 	scheme, path, _, display := u.ToParts()
 
-	return types.NewXMap(map[string]types.XValue{
+	return types.NewXDict(map[string]types.XValue{
 		"scheme":  types.NewXText(scheme),
 		"path":    types.NewXText(path),
 		"display": types.NewXText(display),
@@ -1834,7 +1834,7 @@ func Extract(env utils.Environment, array types.XArray, properties ...types.XTex
 			}
 			result.Append(newItem)
 		} else {
-			newItem := types.NewEmptyXMap()
+			newItem := types.NewEmptyXDict()
 			for _, property := range properties {
 				newSubItem := types.Resolve(env, oldItem, property.Native())
 				if types.IsXError(newSubItem) {

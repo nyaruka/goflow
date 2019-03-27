@@ -19,7 +19,7 @@ func TestGroupListResolve(t *testing.T) {
 	groups := flows.NewGroupList([]*flows.Group{customers, testers, males})
 
 	env := utils.NewEnvironmentBuilder().Build()
-	context := types.NewXMap(map[string]types.XValue{"groups": groups.Context()})
+	context := types.NewXDict(map[string]types.XValue{"groups": groups.Context()})
 
 	testCases := []struct {
 		expression string

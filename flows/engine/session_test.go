@@ -70,7 +70,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@contact.fields.activation_token", "AACC55", ""},
 		{"@contact.fields.age", "23", ""},
 		{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-		{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: map has no property 'favorite_icecream'"},
+		{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: dict has no property 'favorite_icecream'"},
 		{"@(is_error(contact.fields.favorite_icecream))", "true", ""},
 		{"@(length(contact.fields))", "5", ""},
 
@@ -79,7 +79,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@fields.activation_token", "AACC55", ""},
 		{"@fields.age", "23", ""},
 		{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-		{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: map has no property 'favorite_icecream'"},
+		{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: dict has no property 'favorite_icecream'"},
 		{"@(is_error(fields.favorite_icecream))", "true", ""},
 		{"@(length(fields))", "5", ""},
 

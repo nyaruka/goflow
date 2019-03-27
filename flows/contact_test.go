@@ -63,7 +63,7 @@ func TestContact(t *testing.T) {
 	assert.True(t, contact.HasURN("tel:+16364646466"))
 	assert.False(t, contact.HasURN("tel:+16300000000"))
 
-	assert.Equal(t, types.NewXMap(map[string]types.XValue{
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
 		"ext":       nil,
 		"facebook":  nil,
 		"fcm":       nil,
