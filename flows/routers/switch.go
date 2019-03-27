@@ -195,14 +195,14 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 			// test functions can return an error
 			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typedResult.Error()))
 		case tests.XTestResult:
-			if typedResult.Matched() {
-				resultAsStr, xerr := types.ToXText(run.Environment(), typedResult.Match())
-				if xerr != nil {
-					return "", "", nil, xerr
-				}
-
-				return resultAsStr.Native(), c.CategoryUUID, typedResult.Extra(), nil
+			resultAsStr, xerr := types.ToXText(run.Environment(), typedResult.Match())
+			if xerr != nil {
+				return "", "", nil, xerr
 			}
+
+			return resultAsStr.Native(), c.CategoryUUID, typedResult.Extra(), nil
+		case nil:
+			continue
 		default:
 			panic(fmt.Sprintf("unexpected result type from test %v: %#v", xtest, result))
 		}
