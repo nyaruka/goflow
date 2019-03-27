@@ -1,3 +1,7 @@
+v0.31.3
+----------
+ * Add check to call_resthook that payload is valid JSON
+
 v0.31.2
 ----------
  * CallResthookAction should error if it can't evaluiate the payload template
