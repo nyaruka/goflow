@@ -45,7 +45,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"char":              OneNumberFunction(Char),
 	"code":              OneTextFunction(Code),
 	"split":             TwoTextFunction(Split),
-	"join":              TwoArgFunction(Join),
+	"join":              InitialArrayFunction(1, 1, Join),
 	"title":             OneTextFunction(Title),
 	"word":              InitialTextFunction(1, 2, Word),
 	"remove_first_word": OneTextFunction(RemoveFirstWord),
@@ -402,23 +402,15 @@ func Split(env utils.Environment, text types.XText, delimiters types.XText) type
 //   @(join(split("a.b.c", "."), " ")) -> a b c
 //
 // @function join(array, separator)
-func Join(env utils.Environment, array types.XValue, separator types.XValue) types.XValue {
-	indexable, isIndexable := array.(types.XIndexable)
-	if !isIndexable {
-		return types.NewXErrorf("requires an indexable as its first argument")
-	}
-
-	sep, xerr := types.ToXText(env, separator)
-	if xerr != nil {
-		return xerr
-	}
+func Join(env utils.Environment, array types.XArray, args ...types.XText) types.XValue {
+	separator := args[0]
 
 	var output bytes.Buffer
-	for i := 0; i < indexable.Length(); i++ {
+	for i := 0; i < array.Length(); i++ {
 		if i > 0 {
-			output.WriteString(sep.Native())
+			output.WriteString(separator.Native())
 		}
-		itemAsStr, xerr := types.ToXText(env, indexable.Index(i))
+		itemAsStr, xerr := types.ToXText(env, array.Index(i))
 		if xerr != nil {
 			return xerr
 		}
