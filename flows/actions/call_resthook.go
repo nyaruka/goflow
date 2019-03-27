@@ -7,6 +7,8 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -58,7 +60,8 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	// build our payload
 	payload, err := run.EvaluateTemplate(flows.DefaultWebhookPayload)
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		// if we got an error then our payload is likely not valid JSON
+		return errors.Wrapf(err, "error evaluating resthook payload")
 	}
 
 	// regardless of what subscriber calls we make, we need to record the payload that would be sent
