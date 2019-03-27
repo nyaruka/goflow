@@ -31,7 +31,7 @@
                         {
                             "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
                             "type": "send_msg",
-                            "text": "Current groups: @contact.groups"
+                            "text": "Current groups: @(extract(contact.groups, \"name\"))"
                         },
                         {
                             "uuid": "bc94b3ba-4aad-410a-ae71-1861f69da0fe",
@@ -42,7 +42,7 @@
                         {
                             "uuid": "5bc4894f-9ef4-430e-a040-e688fd2dd578",
                             "type": "send_msg",
-                            "text": "Current groups: @contact.groups"
+                            "text": "Current groups: @(extract(contact.groups, \"name\"))"
                         },
                         {
                             "uuid": "4ecf6abd-e8c8-424b-aef6-e904cf5b4fbe",
@@ -56,7 +56,7 @@
                         {
                             "uuid": "279b0215-c9d5-4a90-b7df-f371812bcc78",
                             "type": "send_msg",
-                            "text": "Current groups: @contact.groups"
+                            "text": "Current groups: @(extract(contact.groups, \"name\"))"
                         }
                     ],
                     "exits": [

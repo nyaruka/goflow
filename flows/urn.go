@@ -222,5 +222,5 @@ func (l URNList) MapContext() types.XValue {
 		}
 	}
 
-	return types.NewXMap(byScheme)
+	return types.NewXDict(byScheme)
 }

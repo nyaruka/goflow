@@ -264,7 +264,7 @@ func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Fi
 
 // Context returns a representation of this object for use in expressions
 func (f FieldValues) Context(env utils.Environment) types.XPrimitive {
-	values := types.NewEmptyXMap()
+	values := types.NewEmptyXDict()
 	for k, v := range f {
 		values.Put(string(k), v)
 	}

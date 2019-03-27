@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestXMap(t *testing.T) {
+func TestXDict(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
-	map1 := types.NewXMap(map[string]types.XValue{
+	map1 := types.NewXDict(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
 		"bar": types.NewXNumberFromInt(123),
 	})
@@ -28,15 +28,15 @@ func TestXMap(t *testing.T) {
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), map1.ToXJSON(env))
 	assert.Equal(t, "{bar: 123, foo: abc, zed: false}", map1.String())
 	assert.Equal(t, map1, map1.Reduce(utils.NewEnvironmentBuilder().Build()))
-	assert.Equal(t, "map", map1.Describe())
+	assert.Equal(t, "dict", map1.Describe())
 
 	// test equality
-	assert.Equal(t, map1, types.NewXMap(map[string]types.XValue{
+	assert.Equal(t, map1, types.NewXDict(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
 	}))
-	assert.NotEqual(t, map1, types.NewXMap(map[string]types.XValue{
+	assert.NotEqual(t, map1, types.NewXDict(map[string]types.XValue{
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
 	}))

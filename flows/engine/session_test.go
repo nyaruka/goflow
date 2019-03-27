@@ -61,16 +61,16 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(format_urn(urns.tel))", "(206) 555-1212", ""},
 
 		// contact groups
-		{"@contact.groups", `[Testers, Males]`, ""},
-		{"@(join(contact.groups, \"|\"))", `Testers|Males`, ""},
-		{"@(length(contact.groups))", "2", ""},
+		{`@(extract(contact.groups, "name"))`, `[Testers, Males]`, ""},
+		{`@(join(extract(contact.groups, "name"), "|"))`, `Testers|Males`, ""},
+		{`@(length(contact.groups))`, "2", ""},
 
 		// contact fields
 		{"@contact.fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},
 		{"@contact.fields.activation_token", "AACC55", ""},
 		{"@contact.fields.age", "23", ""},
 		{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-		{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: map has no property 'favorite_icecream'"},
+		{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: dict has no property 'favorite_icecream'"},
 		{"@(is_error(contact.fields.favorite_icecream))", "true", ""},
 		{"@(length(contact.fields))", "5", ""},
 
@@ -79,7 +79,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@fields.activation_token", "AACC55", ""},
 		{"@fields.age", "23", ""},
 		{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-		{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: map has no property 'favorite_icecream'"},
+		{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: dict has no property 'favorite_icecream'"},
 		{"@(is_error(fields.favorite_icecream))", "true", ""},
 		{"@(length(fields))", "5", ""},
 

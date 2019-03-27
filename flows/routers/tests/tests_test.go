@@ -269,7 +269,7 @@ func TestTests(t *testing.T) {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	vars := types.NewXMap(map[string]types.XValue{
+	vars := types.NewXDict(map[string]types.XValue{
 		"int1":  types.NewXNumberFromInt(1),
 		"int2":  types.NewXNumberFromInt(2),
 		"array": types.NewXArray(xs("one"), xs("two"), xs("three")),

@@ -34,7 +34,7 @@ func TestResults(t *testing.T) {
 			t.Errorf("Error unmarshalling: '%s'", err)
 			continue
 		}
-		context := types.NewXMap(map[string]types.XValue{"results": results})
+		context := types.NewXDict(map[string]types.XValue{"results": results})
 		value := excellent.EvaluateExpression(env, context, test.lookup)
 
 		// don't check error equality - just check that we got an error if we expected one

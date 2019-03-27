@@ -90,7 +90,7 @@ func TestURNList(t *testing.T) {
 	assert.False(t, urnList.Equal(flows.URNList{urn1, urn2}))
 
 	// check use in expressions
-	context := types.NewXMap(map[string]types.XValue{"urns": urnList.Context()})
+	context := types.NewXDict(map[string]types.XValue{"urns": urnList.Context()})
 
 	testCases := []struct {
 		expression string

@@ -63,7 +63,7 @@ func TestContact(t *testing.T) {
 	assert.True(t, contact.HasURN("tel:+16364646466"))
 	assert.False(t, contact.HasURN("tel:+16300000000"))
 
-	assert.Equal(t, types.NewXMap(map[string]types.XValue{
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
 		"ext":       nil,
 		"facebook":  nil,
 		"fcm":       nil,
@@ -98,7 +98,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, contact.URNs().Context(), contact.Resolve(env, "urns"))
 	assert.Equal(t, contact.URNs()[0], contact.Resolve(env, "urn"))
 	assert.Equal(t, contact.Fields().Context(env), contact.Resolve(env, "fields"))
-	assert.Equal(t, contact.Groups(), contact.Resolve(env, "groups"))
+	assert.Equal(t, contact.Groups().Context(), contact.Resolve(env, "groups"))
 	assert.Equal(t, android, contact.Resolve(env, "channel"))
 	assert.Equal(t, types.NewXResolveError(contact, "xxx"), contact.Resolve(env, "xxx"))
 	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Reduce(env))

@@ -58,7 +58,7 @@ func TestRefactorTemplate(t *testing.T) {
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
-	vars := types.NewXMap(map[string]types.XValue{
+	vars := types.NewXDict(map[string]types.XValue{
 		"foo": newTestXObject(123),
 	})
 	topLevels := []string{"foo"}
