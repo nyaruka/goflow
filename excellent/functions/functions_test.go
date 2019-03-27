@@ -303,6 +303,7 @@ func TestFunctions(t *testing.T) {
 		{"join", dmy, []types.XValue{types.NewXArray(xs("1"))}, ERROR},
 
 		{"json", dmy, []types.XValue{xs("hello")}, xs(`"hello"`)},
+		{"json", dmy, []types.XValue{nil}, xs(`null`)},
 		{"json", dmy, []types.XValue{ERROR}, ERROR},
 
 		{"left", dmy, []types.XValue{xs("hello"), xs("2")}, xs("he")},

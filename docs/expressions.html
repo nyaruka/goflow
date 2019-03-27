@@ -448,7 +448,8 @@
 <p>Returns the JSON representation of <code>value</code>.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb37-1" title="1">@(json(<span class="st">&quot;string&quot;</span>)) → <span class="st">&quot;string&quot;</span></a>
 <a class="sourceLine" id="cb37-2" title="2">@(json(<span class="dv">10</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb37-3" title="3">@(json(contact.uuid)) → <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb37-3" title="3">@(json(null)) → null</a>
+<a class="sourceLine" id="cb37-4" title="4">@(json(contact.uuid)) → <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span></a></code></pre></div>
 <p><a name="function:left"></a></p>
 <h2 id="lefttext-count">left(text, count)</h2>
 <p>Returns the <code>count</code> left-most characters in <code>text</code></p>

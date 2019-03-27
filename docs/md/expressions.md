@@ -740,6 +740,7 @@ Returns the JSON representation of `value`.
 ```objectivec
 @(json("string")) → "string"
 @(json(10)) → 10
+@(json(null)) → null
 @(json(contact.uuid)) → "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 ```
 

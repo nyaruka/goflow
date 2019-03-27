@@ -1468,6 +1468,7 @@ func ParseJSON(env utils.Environment, text types.XText) types.XValue {
 //
 //   @(json("string")) -> "string"
 //   @(json(10)) -> 10
+//   @(json(null)) -> null
 //   @(json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 //
 // @function json(value)
