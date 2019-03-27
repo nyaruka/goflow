@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -43,4 +45,17 @@ func NewResthookCalledEvent(resthook string, payload json.RawMessage) *ResthookC
 		Resthook:  resthook,
 		Payload:   payload,
 	}
+}
+
+// ResthookCalledEnvelope lets us avoid a infinite loop between json.Marshal and ResthookCalledEvent.MarshalJSON
+type ResthookCalledEnvelope ResthookCalledEvent
+
+// MarshalJSON marshals this object to JSON
+func (e *ResthookCalledEvent) MarshalJSON() ([]byte, error) {
+	data, err := json.Marshal((*ResthookCalledEnvelope)(e))
+	if err != nil {
+		// we generate the payload so there's always a chance it isn't valid JSON
+		return nil, errors.Errorf("error marshaling resthook_called event with payload: %s", string(e.Payload))
+	}
+	return data, nil
 }

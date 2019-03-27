@@ -12,31 +12,33 @@ import (
 func TestXDict(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
-	map1 := types.NewXDict(map[string]types.XValue{
+	dict := types.NewXDict(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
 		"bar": types.NewXNumberFromInt(123),
 	})
-	assert.Equal(t, 2, map1.Length())
-	assert.ElementsMatch(t, []string{"foo", "bar"}, map1.Keys())
+	assert.Equal(t, 2, dict.Length())
+	assert.ElementsMatch(t, []string{"foo", "bar"}, dict.Keys())
 
-	map1.Put("zed", types.XBooleanFalse)
-	assert.Equal(t, 3, map1.Length())
-	assert.Equal(t, types.NewXNumberFromInt(123), map1.Resolve(nil, "bar"))
-	assert.True(t, types.IsXError(map1.Resolve(nil, "xxxx")))
+	dict.Put("zed", types.XBooleanFalse)
 
-	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), map1.ToXText(env))
-	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), map1.ToXJSON(env))
-	assert.Equal(t, "{bar: 123, foo: abc, zed: false}", map1.String())
-	assert.Equal(t, map1, map1.Reduce(utils.NewEnvironmentBuilder().Build()))
-	assert.Equal(t, "dict", map1.Describe())
+	assert.Equal(t, 3, dict.Length())
+	assert.Equal(t, types.XBooleanFalse, dict.Get("zed"))
+	assert.Equal(t, types.NewXNumberFromInt(123), dict.Resolve(nil, "bar"))
+	assert.True(t, types.IsXError(dict.Resolve(nil, "xxxx")))
+
+	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), dict.ToXText(env))
+	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), dict.ToXJSON(env))
+	assert.Equal(t, "{bar: 123, foo: abc, zed: false}", dict.String())
+	assert.Equal(t, dict, dict.Reduce(utils.NewEnvironmentBuilder().Build()))
+	assert.Equal(t, "dict", dict.Describe())
 
 	// test equality
-	assert.Equal(t, map1, types.NewXDict(map[string]types.XValue{
+	assert.Equal(t, dict, types.NewXDict(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
 	}))
-	assert.NotEqual(t, map1, types.NewXDict(map[string]types.XValue{
+	assert.NotEqual(t, dict, types.NewXDict(map[string]types.XValue{
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
 	}))
