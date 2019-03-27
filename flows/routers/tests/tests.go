@@ -327,9 +327,9 @@ func HasPattern(env utils.Environment, text types.XText, pattern types.XText) ty
 
 	matches := regex.FindStringSubmatch(text.Native())
 	if matches != nil {
-		extra := make(map[string]string, len(matches))
+		extra := types.NewEmptyXDict()
 		for g, group := range matches {
-			extra[strconv.Itoa(g)] = group
+			extra.Put(strconv.Itoa(g), types.NewXText(group))
 		}
 		return NewTrueResultWithExtra(types.NewXText(matches[0]), extra)
 	}

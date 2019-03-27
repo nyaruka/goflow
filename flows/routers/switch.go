@@ -160,7 +160,7 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 	return r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
 }
 
-func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, map[string]string, error) {
+func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, types.XDict, error) {
 	for _, c := range r.Cases {
 		test := strings.ToLower(c.Type)
 

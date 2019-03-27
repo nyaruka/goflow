@@ -11,7 +11,7 @@ import (
 type XTestResult struct {
 	matched bool
 	match   types.XValue
-	extra   map[string]string
+	extra   types.XDict
 }
 
 // NewTrueResult creates a new matched result
@@ -20,7 +20,7 @@ func NewTrueResult(match types.XValue) XTestResult {
 }
 
 // NewTrueResultWithExtra creates a new matched result with extra info about the match
-func NewTrueResultWithExtra(match types.XValue, extra map[string]string) XTestResult {
+func NewTrueResultWithExtra(match types.XValue, extra types.XDict) XTestResult {
 	return XTestResult{true, match, extra}
 }
 
@@ -31,7 +31,7 @@ func (t XTestResult) Matched() bool { return t.matched }
 func (t XTestResult) Match() types.XValue { return t.match }
 
 // Extra returns the extra data about the match
-func (t XTestResult) Extra() map[string]string { return t.extra }
+func (t XTestResult) Extra() types.XDict { return t.extra }
 
 // Resolve resolves the given key when this result is referenced in an expression
 func (t XTestResult) Resolve(env utils.Environment, key string) types.XValue {
