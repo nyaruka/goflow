@@ -1,3 +1,7 @@
+v0.31.1
+----------
+ * Generate better error message when resthook payload is not valid JSON
+
 v0.31.0
 ----------
  * Better error message when marshalling a run
