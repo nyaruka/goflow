@@ -290,6 +290,10 @@
             {
                 "template": "@(default(datetime(\"invalid-date\"), \"today\"))",
                 "output": "today"
+            },
+            {
+                "template": "@(default(format_urn(\"invalid-urn\"), \"ok\"))",
+                "output": "ok"
             }
         ]
     },

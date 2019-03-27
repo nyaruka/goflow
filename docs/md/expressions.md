@@ -488,6 +488,7 @@ Returns `value` if is not empty or an error, otherwise it returns `default`.
 @(default(array(1, 2), "value")) → [1, 2]
 @(default(array(), "value")) → value
 @(default(datetime("invalid-date"), "today")) → today
+@(default(format_urn("invalid-urn"), "ok")) → ok
 ```
 
 <a name="function:dict"></a>
