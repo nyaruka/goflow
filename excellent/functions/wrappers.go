@@ -181,6 +181,32 @@ func InitialTextFunction(minOtherArgs int, maxOtherArgs int, f func(utils.Enviro
 	})
 }
 
+// InitialArrayFunction creates an XFunction from a function that takes an initial array arg followed by other text args
+func InitialArrayFunction(minOtherArgs int, maxOtherArgs int, f func(utils.Environment, types.XArray, ...types.XText) types.XValue) XFunction {
+	var maxArgs = -1
+	if maxOtherArgs >= 0 {
+		maxArgs = maxOtherArgs + 1
+	}
+
+	return ArgCountCheck(minOtherArgs+1, maxArgs, func(env utils.Environment, args ...types.XValue) types.XValue {
+		array, isArray := args[0].(types.XArray)
+		if !isArray {
+			return types.NewXErrorf("requires an array as its first argument")
+		}
+
+		var xerr types.XError
+		othersAsText := make([]types.XText, len(args)-1)
+		for a := range args[1:] {
+			othersAsText[a], xerr = types.ToXText(env, args[a+1])
+			if xerr != nil {
+				return xerr
+			}
+		}
+
+		return f(env, array, othersAsText...)
+	})
+}
+
 // OneNumberFunction creates an XFunction from a single number function
 func OneNumberFunction(f func(utils.Environment, types.XNumber) types.XValue) XFunction {
 	return ArgCountCheck(1, 1, func(env utils.Environment, args ...types.XValue) types.XValue {

@@ -490,6 +490,17 @@ Returns `value` if is not empty or an error, otherwise it returns `default`.
 @(default(datetime("invalid-date"), "today")) → today
 ```
 
+<a name="function:dict"></a>
+
+## dict(pairs...)
+
+Takes key value pairs and returns them as an dict.
+
+
+```objectivec
+@(dict("a", 123, "b", "hello")) → {a: 123, b: hello}
+```
+
 <a name="function:epoch"></a>
 
 ## epoch(date)
@@ -504,6 +515,21 @@ The returned number can contain fractional seconds.
 @(epoch("2017-06-12T18:56:59.000000+02:00")) → 1497286619
 @(epoch("2017-06-12T16:56:59.123456Z")) → 1497286619.123456
 @(round_down(epoch("2017-06-12T16:56:59.123456Z"))) → 1497286619
+```
+
+<a name="function:extract"></a>
+
+## extract(array, property)
+
+Takes an array of objects and returns a new array by extracting the named property of
+each object
+
+
+```objectivec
+@(extract(contact.groups, "name")) → [Testers, Males]
+@(extract(array(dict("foo", 123), dict("foo", 256)), "foo")) → [123, 256]
+@(extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) → [{a: 123, c: true}, {a: 345, c: false}]
+@(extract(array(dict("foo", 123), dict("foo", 256)), "bar")) → ERROR
 ```
 
 <a name="function:field"></a>

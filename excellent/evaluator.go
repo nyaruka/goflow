@@ -127,7 +127,7 @@ func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	}
 
 	lookup := ctx.Atom(1).GetText()
-	return lookupProperty(v.env, context, lookup)
+	return types.Resolve(v.env, context, lookup)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
@@ -193,14 +193,14 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 		return xerr
 	}
 
-	return lookupProperty(v.env, context, lookup.Native())
+	return types.Resolve(v.env, context, lookup.Native())
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
 
-	return lookupProperty(v.env, v.resolver, key)
+	return types.Resolve(v.env, v.resolver, key)
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)
@@ -401,15 +401,4 @@ func lookupIndex(env utils.Environment, value types.XValue, index types.XNumber)
 		indexAsInt += indexable.Length()
 	}
 	return indexable.Index(indexAsInt)
-}
-
-// lookup a named property on the given value
-func lookupProperty(env utils.Environment, variable types.XValue, key string) types.XValue {
-	resolver, isResolver := variable.(types.XResolvable)
-
-	if !isResolver || utils.IsNil(resolver) {
-		return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
-	}
-
-	return resolver.Resolve(env, key)
 }

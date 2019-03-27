@@ -294,6 +294,17 @@
         ]
     },
     {
+        "signature": "dict(pairs...)",
+        "summary": "Takes key value pairs and returns them as an dict.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(dict(\"a\", 123, \"b\", \"hello\"))",
+                "output": "{a: 123, b: hello}"
+            }
+        ]
+    },
+    {
         "signature": "epoch(date)",
         "summary": "Converts `date` to a UNIX epoch time.",
         "detail": "The returned number can contain fractional seconds.",
@@ -313,6 +324,29 @@
             {
                 "template": "@(round_down(epoch(\"2017-06-12T16:56:59.123456Z\")))",
                 "output": "1497286619"
+            }
+        ]
+    },
+    {
+        "signature": "extract(array, property)",
+        "summary": "Takes an array of objects and returns a new array by extracting the named property of",
+        "detail": "each object",
+        "examples": [
+            {
+                "template": "@(extract(contact.groups, \"name\"))",
+                "output": "[Testers, Males]"
+            },
+            {
+                "template": "@(extract(array(dict(\"foo\", 123), dict(\"foo\", 256)), \"foo\"))",
+                "output": "[123, 256]"
+            },
+            {
+                "template": "@(extract(array(dict(\"a\", 123, \"b\", \"xyz\", \"c\", true), dict(\"a\", 345, \"b\", \"zyx\", \"c\", false)), \"a\", \"c\"))",
+                "output": "[{a: 123, c: true}, {a: 345, c: false}]"
+            },
+            {
+                "template": "@(extract(array(dict(\"foo\", 123), dict(\"foo\", 256)), \"bar\"))",
+                "output": "ERROR"
             }
         ]
     },

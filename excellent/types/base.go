@@ -115,3 +115,14 @@ func Describe(x XValue) string {
 	}
 	return x.Describe()
 }
+
+// Resolve resolves a named property on the given value
+func Resolve(env utils.Environment, variable XValue, property string) XValue {
+	resolver, isResolver := variable.(XResolvable)
+
+	if !isResolver || utils.IsNil(resolver) {
+		return NewXErrorf("%s has no property '%s'", Describe(variable), property)
+	}
+
+	return resolver.Resolve(env, property)
+}

@@ -39,6 +39,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"datetime": OneArgFunction(DateTime),
 	"time":     OneArgFunction(Time),
 	"array":    Array,
+	"dict":     Dict,
 
 	// text functions
 	"char":              OneNumberFunction(Char),
@@ -120,6 +121,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"default":    TwoArgFunction(Default),
 	"legacy_add": TwoArgFunction(LegacyAdd),
 	"read_chars": OneTextFunction(ReadChars),
+	"extract":    InitialArrayFunction(1, -1, Extract),
 }
 
 //------------------------------------------------------------------------------------------
@@ -251,6 +253,40 @@ func Array(env utils.Environment, values ...types.XValue) types.XValue {
 	}
 
 	return types.NewXArray(values...)
+}
+
+// Dict takes key value pairs and returns them as an dict.
+//
+//   @(dict("a", 123, "b", "hello")) -> {a: 123, b: hello}
+//
+// @function dict(pairs...)
+func Dict(env utils.Environment, pairs ...types.XValue) types.XValue {
+	// check none of our args are errors
+	for _, arg := range pairs {
+		if types.IsXError(arg) {
+			return arg
+		}
+	}
+
+	if len(pairs)%2 != 0 {
+		return types.NewXErrorf("requires an even number of arguments")
+	}
+
+	dict := make(map[string]types.XValue, len(pairs)/2)
+
+	for a := 0; a < len(pairs); a += 2 {
+		key := pairs[a]
+		value := pairs[a+1]
+
+		keyAsText, xerr := types.ToXText(env, key)
+		if xerr != nil {
+			return xerr
+		}
+
+		dict[keyAsText.Native()] = value
+	}
+
+	return types.NewXMap(dict)
 }
 
 //------------------------------------------------------------------------------------------
@@ -1779,6 +1815,44 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 	}
 
 	return value
+}
+
+// Extract takes an array of objects and returns a new array by extracting the named property of
+// each object
+//
+//   @(extract(contact.groups, "name")) -> [Testers, Males]
+//   @(extract(array(dict("foo", 123), dict("foo", 256)), "foo")) -> [123, 256]
+//   @(extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) -> [{a: 123, c: true}, {a: 345, c: false}]
+//   @(extract(array(dict("foo", 123), dict("foo", 256)), "bar")) -> ERROR
+//
+// @function extract(array, property)
+func Extract(env utils.Environment, array types.XArray, properties ...types.XText) types.XValue {
+	result := types.NewXArray()
+
+	for i := 0; i < array.Length(); i++ {
+		oldItem := array.Index(i)
+
+		// a single property means we return a flat list of values
+		if len(properties) == 1 {
+			newItem := types.Resolve(env, oldItem, properties[0].Native())
+			if types.IsXError(newItem) {
+				return newItem
+			}
+			result.Append(newItem)
+		} else {
+			newItem := types.NewEmptyXMap()
+			for _, property := range properties {
+				newSubItem := types.Resolve(env, oldItem, property.Native())
+				if types.IsXError(newSubItem) {
+					return newSubItem
+				}
+				newItem.Put(property.Native(), newSubItem)
+			}
+			result.Append(newItem)
+		}
+	}
+
+	return result
 }
 
 // LegacyAdd simulates our old + operator, which operated differently based on whether
