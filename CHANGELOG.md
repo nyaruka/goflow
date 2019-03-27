@@ -1,3 +1,10 @@
+v0.31.0
+----------
+ * Better error message when marshalling a run
+ * Use dict() function to simplify default webhook payload
+ * Convert @contact.groups to be only excellent primitives
+ * Add extract and dict as excellent functions
+
 v0.30.4
 ----------
  * Add @fields as top-level shortcut to contact fields as map
