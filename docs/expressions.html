@@ -110,8 +110,8 @@
 <li><code>revision</code> the revision number of the flow</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode"><pre class="sourceCode objectivec"><code class="sourceCode objectivec">@run.flow → Registration
-@child.flow → Collect Age
+<div class="sourceCode"><pre class="sourceCode objectivec"><code class="sourceCode objectivec">@run.flow → {name: Registration, revision: <span class="dv">123</span>, uuid: 50c3706e-fedb-42c0-8eab-dda3335714b7}
+@child.flow.name → Collect Age
 @run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7
 @(json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;revision&quot;</span>:<span class="dv">123</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</code></pre></div>
 <p><a name="context:group"></a></p>

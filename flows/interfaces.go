@@ -138,15 +138,13 @@ type Localizable interface {
 //
 // Examples:
 //
-//   @run.flow -> Registration
-//   @child.flow -> Collect Age
+//   @run.flow -> {name: Registration, revision: 123, uuid: 50c3706e-fedb-42c0-8eab-dda3335714b7}
+//   @child.flow.name -> Collect Age
 //   @run.flow.uuid -> 50c3706e-fedb-42c0-8eab-dda3335714b7
 //   @(json(run.flow)) -> {"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
 //
 // @context flow
 type Flow interface {
-	types.XValue
-	types.XResolvable
 
 	// spec properties
 	UUID() assets.FlowUUID
@@ -165,6 +163,7 @@ type Flow interface {
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
+	Context(utils.Environment) types.XValue
 
 	ExtractTemplates() []string
 	RewriteTemplates(func(string) string)

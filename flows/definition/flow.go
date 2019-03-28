@@ -157,34 +157,14 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 	return nil
 }
 
-// Resolve resolves the given key when this flow is referenced in an expression
-func (f *flow) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "uuid":
-		return types.NewXText(string(f.UUID()))
-	case "name":
-		return types.NewXText(f.name)
-	case "revision":
-		return types.NewXNumberFromInt(f.revision)
-	}
-
-	return types.NewXResolveError(f, key)
+// Context returns a representation of this object for use in expressions
+func (f *flow) Context(env utils.Environment) types.XValue {
+	return types.NewXDict(map[string]types.XValue{
+		"uuid":     types.NewXText(string(f.UUID())),
+		"name":     types.NewXText(f.name),
+		"revision": types.NewXNumberFromInt(f.revision),
+	})
 }
-
-// Describe returns a representation of this type for error messages
-func (f *flow) Describe() string { return "flow" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (f *flow) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(f.name)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (f *flow) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, f, "uuid", "name", "revision").ToXJSON(env)
-}
-
-var _ flows.Flow = (*flow)(nil)
 
 // Reference returns a reference to this flow asset
 func (f *flow) Reference() *assets.FlowReference {
@@ -276,6 +256,8 @@ func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
 	}
 	return exitUUIDs
 }
+
+var _ flows.Flow = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

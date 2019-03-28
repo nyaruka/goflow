@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -260,6 +261,13 @@ func TestNewFlow(t *testing.T) {
 	// should validate ok
 	err = flow.Validate(session.Assets())
 	assert.NoError(t, err)
+
+	// check in expressions
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+		"name":     types.NewXText("Test Flow"),
+		"revision": types.NewXNumberFromInt(123),
+		"uuid":     types.NewXText("8ca44c09-791d-453a-9799-a70dd3303306"),
+	}), flow.Context(session.Environment()))
 
 	// add expected dependencies and result names to our expected JSON
 	flowRaw, err := utils.JSONDecodeGeneric([]byte(flowDef))

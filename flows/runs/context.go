@@ -108,7 +108,7 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 		return nil
 
 	case "flow":
-		return c.run.Flow()
+		return c.run.Flow().Context(env)
 	case "status":
 		return types.NewXText(string(c.run.Status()))
 	case "results":
