@@ -144,7 +144,9 @@ func (a *CallWebhookAction) RewriteTemplates(localization flows.Localization, re
 	}
 }
 
-// EnumerateResultNames enumerates all result names on this object
-func (a *CallWebhookAction) EnumerateResultNames(include func(string)) {
-	include(a.ResultName)
+// EnumerateResults enumerates all potential results on this object
+func (a *CallWebhookAction) EnumerateResults(include func(*flows.ResultSpec)) {
+	if a.ResultName != "" {
+		include(flows.NewResultSpec(a.ResultName, webhookCategories))
+	}
 }

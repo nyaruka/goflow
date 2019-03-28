@@ -21,7 +21,7 @@ func TestMobileBindings(t *testing.T) {
 	assert.Error(t, err)
 
 	// can load a standard assets file
-	assetsJSON, err := ioutil.ReadFile("../test/testdata/flows/two_questions_offline.json")
+	assetsJSON, err := ioutil.ReadFile("../test/testdata/runner/two_questions_offline.json")
 	require.NoError(t, err)
 
 	source, err := mobile.NewAssetsSource(string(assetsJSON))

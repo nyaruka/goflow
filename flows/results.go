@@ -154,8 +154,8 @@ func (r Results) ToXJSON(env utils.Environment) types.XText {
 	return r.toMap(false).ToXJSON(env)
 }
 
-func (r Results) toMap(namesAsKeys bool) types.XMap {
-	results := types.NewEmptyXMap()
+func (r Results) toMap(namesAsKeys bool) types.XDict {
+	results := types.NewEmptyXDict()
 	if namesAsKeys {
 		for _, v := range r {
 			results.Put(v.Name, v)

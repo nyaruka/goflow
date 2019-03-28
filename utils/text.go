@@ -8,7 +8,7 @@ import (
 var snakedChars = regexp.MustCompile(`[^\p{L}\d_]+`)
 
 // treats sequences of letters/numbers/_/' as tokens, and symbols as individual tokens
-var wordTokenRegex = regexp.MustCompile(`[\pL\pN_']+|\pS`)
+var wordTokenRegex = regexp.MustCompile(`[\pM\pL\pN_']+|\pS`)
 
 // Snakify turns the passed in string into a context reference. We replace all whitespace
 // characters with _ and replace any duplicate underscores
@@ -52,4 +52,14 @@ func StringSlices(s string, indices []int) []string {
 		slices = append(slices, s[indices[i]:indices[i+1]])
 	}
 	return slices
+}
+
+// StringSliceContains determines whether the given slice of strings contains the given string
+func StringSliceContains(slice []string, str string, caseSensitive bool) bool {
+	for _, s := range slice {
+		if (caseSensitive && s == str) || (!caseSensitive && strings.ToLower(s) == strings.ToLower(str)) {
+			return true
+		}
+	}
+	return false
 }

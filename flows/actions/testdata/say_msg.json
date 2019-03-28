@@ -50,7 +50,7 @@
                 "Hi there @contact.name"
             ],
             "dependencies": [],
-            "result_names": []
+            "results": []
         }
     },
     {

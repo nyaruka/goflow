@@ -30,6 +30,9 @@ type varMapper struct {
 	// nesting for arbitrary subitems, e.g. contact fields or run results
 	arbitraryNesting string
 
+	// or move arbitrary subitems to new base
+	arbitraryBase string
+
 	// mapper for each arbitrary item
 	arbitraryVars map[string]interface{}
 }
@@ -48,6 +51,7 @@ func (v *varMapper) rebase(prefix string) *varMapper {
 		baseVars:         v.baseVars,
 		arbitraryNesting: v.arbitraryNesting,
 		arbitraryVars:    v.arbitraryVars,
+		arbitraryBase:    v.arbitraryBase,
 	}
 }
 
@@ -99,6 +103,8 @@ func (v *varMapper) Resolve(key string) interface{} {
 	// then it must be an arbitrary item
 	if v.arbitraryNesting != "" {
 		newPath = append(newPath, v.arbitraryNesting)
+	} else if v.arbitraryBase != "" {
+		newPath = []string{v.arbitraryBase}
 	}
 
 	newPath = append(newPath, key)
@@ -164,7 +170,6 @@ func (v *arrayMapper) rebase(prefix string) *arrayMapper {
 }
 
 func (m *arrayMapper) Resolve(key string) interface{} {
-	fmt.Printf("====== arrayMapper.Resolve %s | %s\n", m.base, key)
 	return fmt.Sprintf("%s[%s]", m.base, key)
 }
 
@@ -205,8 +210,6 @@ func (m *extraMapper) String() string {
 }
 
 func newContactMapper(prefix string) *varMapper {
-	subsitutionBase := prefix + "contact"
-
 	contact := &varMapper{
 		base: "contact",
 		baseVars: map[string]interface{}{
@@ -216,22 +219,22 @@ func newContactMapper(prefix string) *varMapper {
 			"first_name": "first_name",
 			"language":   "language",
 			"created_on": "created_on",
-			"tel_e164":   "urns.tel[0].path",
 		},
 		substitutions: map[string]interface{}{
-			"groups": fmt.Sprintf("join(%s.groups, \",\")", subsitutionBase),
+			"groups":   fmt.Sprintf("join(%scontact.groups, \",\")", prefix),
+			"tel_e164": "urn_parts(urns.tel).path",
 		},
-		arbitraryNesting: "fields",
+		arbitraryBase: prefix + "fields",
 	}
 
 	for scheme := range urns.ValidSchemes {
-		contact.baseVars[scheme] = &varMapper{
+		contact.substitutions[scheme] = &varMapper{
 			substitutions: map[string]interface{}{
-				"__default__": fmt.Sprintf("%s.urns.%s[0].display", subsitutionBase, scheme),
-				"display":     fmt.Sprintf("%s.urns.%s[0].display", subsitutionBase, scheme),
-				"scheme":      fmt.Sprintf("%s.urns.%s[0].scheme", subsitutionBase, scheme),
-				"path":        fmt.Sprintf("%s.urns.%s[0].path", subsitutionBase, scheme),
-				"urn":         fmt.Sprintf("%s.urns.%s[0]", subsitutionBase, scheme),
+				"__default__": fmt.Sprintf("format_urn(%surns.%s)", prefix, scheme),
+				"display":     fmt.Sprintf("format_urn(%surns.%s)", prefix, scheme),
+				"scheme":      fmt.Sprintf("urn_parts(%surns.%s).scheme", prefix, scheme),
+				"path":        fmt.Sprintf("urn_parts(%surns.%s).path", prefix, scheme),
+				"urn":         fmt.Sprintf("%surns.%s", prefix, scheme),
 			},
 			base: fmt.Sprintf("urns.%s", scheme),
 		}
@@ -272,7 +275,7 @@ func newMigrationVars() map[string]interface{} {
 		"child": &varMapper{
 			base: "child",
 			baseVars: map[string]interface{}{
-				"contact": contact,
+				"contact": newContactMapper("child."),
 			},
 			arbitraryNesting: "results",
 			arbitraryVars: map[string]interface{}{

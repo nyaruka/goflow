@@ -27,15 +27,13 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, "Android", ch.Name())
 	assert.Equal(t, []string{"tel"}, ch.Schemes())
 	assert.Equal(t, "+250961111111", ch.Address())
-	assert.Equal(t, "channel", ch.Describe())
 	assert.Equal(t, "+250961111111 (Android)", fmt.Sprintf("%s", ch))
 
-	assert.Equal(t, types.NewXText(string(ch.UUID())), ch.Resolve(env, "uuid"))
-	assert.Equal(t, types.NewXText("Android"), ch.Resolve(env, "name"))
-	assert.Equal(t, types.NewXText("+250961111111"), ch.Resolve(env, "address"))
-	assert.Equal(t, types.NewXResolveError(ch, "xxx"), ch.Resolve(env, "xxx"))
-	assert.Equal(t, types.NewXText("Android"), ch.Reduce(env))
-	assert.Equal(t, types.NewXText(`{"address":"+250961111111","name":"Android","uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), ch.ToXJSON(env))
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+		"uuid":    types.NewXText(string(ch.UUID())),
+		"name":    types.NewXText("Android"),
+		"address": types.NewXText("+250961111111"),
+	}), ch.Context(env))
 
 	assert.Equal(t, assets.NewChannelReference(ch.UUID(), "Android"), ch.Reference())
 	assert.True(t, ch.HasRole(assets.ChannelRoleSend))

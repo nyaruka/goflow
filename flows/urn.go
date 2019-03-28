@@ -2,7 +2,6 @@ package flows
 
 import (
 	"net/url"
-	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -37,23 +36,14 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //  - _twitterid:54784326227#nyaruka_
 //  - _telegram:34642632786#bobby_
 //
-// It has several properties which can be accessed in expressions:
-//
-//  * `scheme` the scheme of the URN, e.g. "tel", "twitter"
-//  * `path` the path of the URN, e.g. "+16303524567"
-//  * `display` the display portion of the URN, e.g. "+16303524567"
-//  * `channel` the preferred [channel](#context:channel) of the URN
-//
 // To render a URN in a human friendly format, use the [function:format_urn] function.
 //
 // Examples:
 //
-//   @(contact.urns[0]) -> tel:+12065551212
-//   @(contact.urns[0].scheme) -> tel
-//   @(contact.urns[0].path) -> +12065551212
-//   @(contact.urns[1].display) -> nyaruka
-//   @(format_urn(contact.urns[0])) -> (206) 555-1212
-//   @(json(contact.urns[0])) -> {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
+//   @(urns.tel) -> tel:+12065551212
+//   @(urn_parts(urns.tel).scheme) -> tel
+//   @(format_urn(urns.tel)) -> (206) 555-1212
+//   @(json(contact.urns[0])) -> "tel:+12065551212"
 //
 // @context urn
 type ContactURN struct {
@@ -126,45 +116,13 @@ func (u *ContactURN) withoutQuery() urns.URN {
 	return urn
 }
 
-// Resolve resolves the given key when this URN is referenced in an expression
-func (u *ContactURN) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "scheme":
-		return types.NewXText(u.urn.Scheme())
-	case "path":
-		if env.RedactionPolicy() == utils.RedactionPolicyURNs {
-			return redactedURN
-		}
-		return types.NewXText(u.urn.Path())
-	case "display":
-		if env.RedactionPolicy() == utils.RedactionPolicyURNs {
-			return redactedURN
-		}
-		return types.NewXText(u.urn.Format())
-	case "channel":
-		return u.Channel()
-	}
-	return types.NewXResolveError(u, key)
-}
-
-// Describe returns a representation of this type for error messages
-func (u *ContactURN) Describe() string { return "URN" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (u *ContactURN) Reduce(env utils.Environment) types.XPrimitive {
+// Context returns a representation of this object for use in expressions
+func (u *ContactURN) Context(env utils.Environment) types.XValue {
 	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
 		return redactedURN
 	}
 	return types.NewXText(string(u.withoutQuery()))
 }
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (u *ContactURN) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, u, "scheme", "path", "display").ToXJSON(env)
-}
-
-var _ types.XValue = (*ContactURN)(nil)
-var _ types.XResolvable = (*ContactURN)(nil)
 
 // URNList is the list of a contact's URNs
 type URNList []*ContactURN
@@ -227,45 +185,32 @@ func (l URNList) WithScheme(scheme string) URNList {
 	return matching
 }
 
-// Resolve resolves the given key when this URN list is referenced in an expression
-func (l URNList) Resolve(env utils.Environment, key string) types.XValue {
-	scheme := strings.ToLower(key)
-
-	// if this isn't a valid scheme, bail
-	if !urns.IsValidScheme(scheme) {
-		return types.NewXErrorf("no such URN scheme '%s'", key)
-	}
-
-	return l.WithScheme(scheme)
-}
-
-// Describe returns a representation of this type for error messages
-func (l URNList) Describe() string { return "URNs" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (l URNList) Reduce(env utils.Environment) types.XPrimitive {
+// Context returns a representation of this object for use in expressions
+func (l URNList) Context(env utils.Environment) types.XValue {
 	array := types.NewXArray()
 	for _, urn := range l {
-		array.Append(urn)
+		array.Append(urn.Context(env))
 	}
 	return array
 }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (l URNList) ToXJSON(env utils.Environment) types.XText {
-	return l.Reduce(env).ToXJSON(env)
-}
+// MapContext returns a map of the highest priority URN for each scheme - exposed in expressions as @urns
+func (l URNList) MapContext(env utils.Environment) types.XValue {
+	byScheme := make(map[string]types.XValue)
 
-// Index is called when this object is indexed into in an expression
-func (l URNList) Index(index int) types.XValue {
-	return l[index]
-}
+	for _, u := range l {
+		scheme := u.URN().Scheme()
+		if _, seen := byScheme[scheme]; !seen {
+			byScheme[scheme] = u.Context(env)
+		}
+	}
 
-// Length is called when the length of this object is requested in an expression
-func (l URNList) Length() int {
-	return len(l)
-}
+	// and add nils for all other schemes
+	for scheme := range urns.ValidSchemes {
+		if _, seen := byScheme[scheme]; !seen {
+			byScheme[scheme] = nil
+		}
+	}
 
-var _ types.XValue = (URNList)(nil)
-var _ types.XIndexable = (URNList)(nil)
-var _ types.XResolvable = (URNList)(nil)
+	return types.NewXDict(byScheme)
+}

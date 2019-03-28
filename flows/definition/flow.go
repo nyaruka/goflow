@@ -30,9 +30,12 @@ type flow struct {
 	nodes              []flows.Node
 
 	// optional properties not used by engine itself
-	ui           flows.UI
+	ui flows.UI
+
+	// properties set after validation
 	dependencies *dependencies
-	results      []resultInfo
+	results      []*flows.ResultSpec
+	waitingExits []flows.ExitUUID
 
 	// internal state
 	nodeMap   map[flows.NodeUUID]flows.Node
@@ -134,7 +137,8 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 
 	f.validated = true
 	f.dependencies = deps
-	f.results = resultInfosFromNames(f.ExtractResultNames())
+	f.results = f.ExtractResults()
+	f.waitingExits = f.ExtractExitsFromWaits()
 
 	if recursive {
 		if sa == nil {
@@ -153,34 +157,14 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 	return nil
 }
 
-// Resolve resolves the given key when this flow is referenced in an expression
-func (f *flow) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "uuid":
-		return types.NewXText(string(f.UUID()))
-	case "name":
-		return types.NewXText(f.name)
-	case "revision":
-		return types.NewXNumberFromInt(f.revision)
-	}
-
-	return types.NewXResolveError(f, key)
+// Context returns a representation of this object for use in expressions
+func (f *flow) Context(env utils.Environment) types.XValue {
+	return types.NewXDict(map[string]types.XValue{
+		"uuid":     types.NewXText(string(f.UUID())),
+		"name":     types.NewXText(f.name),
+		"revision": types.NewXNumberFromInt(f.revision),
+	})
 }
-
-// Describe returns a representation of this type for error messages
-func (f *flow) Describe() string { return "flow" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (f *flow) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(f.name)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (f *flow) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, f, "uuid", "name", "revision").ToXJSON(env)
-}
-
-var _ flows.Flow = (*flow)(nil)
 
 // Reference returns a reference to this flow asset
 func (f *flow) Reference() *assets.FlowReference {
@@ -248,17 +232,32 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 }
 
 // ExtractResultNames extracts all result names
-func (f *flow) ExtractResultNames() []string {
-	names := make([]string, 0)
+func (f *flow) ExtractResults() []*flows.ResultSpec {
+	specs := make([]*flows.ResultSpec, 0)
 	f.inspect(func(item flows.Inspectable) {
-		item.EnumerateResultNames(func(name string) {
-			if name != "" {
-				names = append(names, name)
-			}
+		item.EnumerateResults(func(spec *flows.ResultSpec) {
+			specs = append(specs, spec)
 		})
 	})
-	return names
+	return flows.MergeResultSpecs(specs)
 }
+
+// ExtractExitsFromWaits extracts all exits coming from nodes with waits
+func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
+	exitUUIDs := make([]flows.ExitUUID, 0)
+	include := func(e flows.ExitUUID) { exitUUIDs = append(exitUUIDs, e) }
+
+	for _, n := range f.nodes {
+		if n.Wait() != nil {
+			for _, e := range n.Exits() {
+				include(e.UUID())
+			}
+		}
+	}
+	return exitUUIDs
+}
+
+var _ flows.Flow = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -291,8 +290,9 @@ type flowEnvelope struct {
 type validatedFlowEnvelope struct {
 	*flowEnvelope
 
-	Dependencies *dependencies `json:"_dependencies"`
-	Results      []resultInfo  `json:"_results"`
+	Dependencies *dependencies       `json:"_dependencies"`
+	Results      []*flows.ResultSpec `json:"_results"`
+	WaitingExits []flows.ExitUUID    `json:"_waiting_exits"`
 }
 
 // IsSpecVersionSupported determines if we can read the given flow version
@@ -317,7 +317,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 
 	e := &flowEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, errors.Wrap(err, "unable to read flow")
+		return nil, err
 	}
 
 	nodes := make([]flows.Node, len(e.Nodes))
@@ -360,6 +360,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 			flowEnvelope: e,
 			Dependencies: f.dependencies,
 			Results:      f.results,
+			WaitingExits: f.waitingExits,
 		})
 	}
 

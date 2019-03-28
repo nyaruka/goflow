@@ -6,7 +6,6 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -18,10 +17,10 @@ import (
 
 func TestContactURN(t *testing.T) {
 	source, err := static.NewSource([]byte(`{
-		"channels": [
-			{
-				"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-				"name": "Android Channel",
+        "channels": [
+            {
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "name": "Android Channel",
 				"address": "+12345671111",
 				"schemes": [
 					"tel"
@@ -30,9 +29,9 @@ func TestContactURN(t *testing.T) {
 					"send",
 					"receive"
 				]
-			}
-	    ]
-	}`))
+            }
+        ]
+    }`))
 	require.NoError(t, err)
 
 	sessionAssets, err := engine.NewSessionAssets(source)
@@ -56,23 +55,11 @@ func TestContactURN(t *testing.T) {
 
 	// check using URN in expressions
 	env := utils.NewEnvironmentBuilder().Build()
-	assert.Equal(t, "URN", urn.Describe())
-	assert.Equal(t, types.NewXText("tel:+250781234567"), urn.Reduce(env))
-	assert.Equal(t, types.NewXText("tel"), urn.Resolve(env, "scheme"))
-	assert.Equal(t, types.NewXText("+250781234567"), urn.Resolve(env, "path"))
-	assert.Equal(t, types.NewXText("0781 234 567"), urn.Resolve(env, "display"))
-	assert.Equal(t, channel, urn.Resolve(env, "channel"))
-	assert.Equal(t, types.NewXResolveError(urn, "xxx"), urn.Resolve(env, "xxx"))
-	assert.Equal(t, types.NewXText(`{"display":"0781 234 567","path":"+250781234567","scheme":"tel"}`), urn.ToXJSON(env))
+	assert.Equal(t, types.NewXText("tel:+250781234567"), urn.Context(env))
 
 	// check when URNs have to be redacted
 	env = utils.NewEnvironmentBuilder().WithRedactionPolicy(utils.RedactionPolicyURNs).Build()
-	assert.Equal(t, types.NewXText("********"), urn.Reduce(env))
-	assert.Equal(t, types.NewXText("tel"), urn.Resolve(env, "scheme"))
-	assert.Equal(t, types.NewXText("********"), urn.Resolve(env, "path"))
-	assert.Equal(t, types.NewXText("********"), urn.Resolve(env, "display"))
-	assert.Equal(t, channel, urn.Resolve(env, "channel"))
-	assert.Equal(t, types.NewXText(`{"display":"********","path":"********","scheme":"tel"}`), urn.ToXJSON(env))
+	assert.Equal(t, types.NewXText("********"), urn.Context(env))
 
 	// we can clear the channel affinity
 	urn.SetChannel(nil)
@@ -99,42 +86,9 @@ func TestURNList(t *testing.T) {
 	assert.False(t, urnList.Equal(flows.URNList{urn1, urn2}))
 
 	// check use in expressions
-	assert.Equal(t, "URNs", urnList.Describe())
-	assert.Equal(t, types.NewXArray(urn1, urn2, urn3), urnList.Reduce(env))
-	assert.Equal(t, 3, urnList.Length())
-	assert.Equal(t, urn3, urnList.Index(2))
-	assert.Equal(t, types.NewXText(`[{"display":"0781 234 567","path":"+250781234567","scheme":"tel"},{"display":"billy_bob","path":"134252511151","scheme":"twitter"},{"display":"0781 111 222","path":"+250781111222","scheme":"tel"}]`), urnList.ToXJSON(env))
-
-	context := types.NewXMap(map[string]types.XValue{"urns": urnList})
-
-	testCases := []struct {
-		expression string
-		hasValue   bool
-		value      interface{}
-	}{
-		{"urns[0]", true, flows.NewContactURN("tel:+250781234567", nil)},
-		{"urns[1]", true, flows.NewContactURN("twitter:134252511151#billy_bob", nil)},
-		{"urns[2]", true, flows.NewContactURN("tel:+250781111222", nil)},
-		{"urns[-1]", true, flows.NewContactURN("tel:+250781111222", nil)},
-		{"urns[3]", false, nil}, // index out of range
-		{"urns.tel", true, flows.URNList{flows.NewContactURN("tel:+250781234567", nil), flows.NewContactURN("tel:+250781111222", nil)}},
-		{"urns.twitter", true, flows.URNList{flows.NewContactURN("twitter:134252511151#billy_bob", nil)}},
-		{"urns.xxxxxx", false, ""}, // not a valid scheme
-	}
-	for _, tc := range testCases {
-		value := excellent.EvaluateExpression(env, context, tc.expression)
-		err, isErr := value.(error)
-
-		if tc.hasValue && isErr {
-			t.Errorf("Got unexpected error resolving %s: %s", tc.expression, err)
-		}
-
-		if !tc.hasValue && !isErr {
-			t.Errorf("Did not get expected error resolving %s", tc.expression)
-		}
-
-		if tc.hasValue {
-			assert.Equal(t, tc.value, value)
-		}
-	}
+	assert.Equal(t, types.NewXArray(
+		types.NewXText("tel:+250781234567"),
+		types.NewXText("twitter:134252511151#billy_bob"),
+		types.NewXText("tel:+250781111222"),
+	), urnList.Context(env))
 }

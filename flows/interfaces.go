@@ -12,6 +12,9 @@ import (
 // NodeUUID is a UUID of a flow node
 type NodeUUID utils.UUID
 
+// CategoryUUID is the UUID of a node category
+type CategoryUUID utils.UUID
+
 // ExitUUID is the UUID of a node exit
 type ExitUUID utils.UUID
 
@@ -127,14 +130,6 @@ type Localizable interface {
 	LocalizationUUID() utils.UUID
 }
 
-type Inspectable interface {
-	Inspect(func(Inspectable))
-	EnumerateTemplates(Localization, func(string))
-	RewriteTemplates(Localization, func(string) string)
-	EnumerateDependencies(Localization, func(assets.Reference))
-	EnumerateResultNames(func(string))
-}
-
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
 // properties which can be accessed:
 //
@@ -144,15 +139,13 @@ type Inspectable interface {
 //
 // Examples:
 //
-//   @run.flow -> Registration
-//   @child.flow -> Collect Age
+//   @run.flow -> {name: Registration, revision: 123, uuid: 50c3706e-fedb-42c0-8eab-dda3335714b7}
+//   @child.flow.name -> Collect Age
 //   @run.flow.uuid -> 50c3706e-fedb-42c0-8eab-dda3335714b7
 //   @(json(run.flow)) -> {"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
 //
 // @context flow
 type Flow interface {
-	types.XValue
-	types.XResolvable
 
 	// spec properties
 	UUID() assets.FlowUUID
@@ -171,11 +164,12 @@ type Flow interface {
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
+	Context(utils.Environment) types.XValue
 
 	ExtractTemplates() []string
 	RewriteTemplates(func(string) string)
 	ExtractDependencies() []assets.Reference
-	ExtractResultNames() []string
+	ExtractResults() []*ResultSpec
 }
 
 // Node is a single node in a flow
@@ -210,15 +204,15 @@ type Router interface {
 	utils.Typed
 	Inspectable
 
-	PickRoute(FlowRun, []Exit, Step) (*string, Route, error)
-	Validate([]Exit) error
 	ResultName() string
+
+	PickExit(FlowRun, Step, EventCallback) (ExitUUID, error)
+	Validate([]Exit) error
 }
 
 type Exit interface {
 	UUID() ExitUUID
-	DestinationNodeUUID() NodeUUID
-	Name() string
+	DestinationUUID() NodeUUID
 }
 
 type Wait interface {
@@ -355,8 +349,8 @@ type EventCallback func(Event)
 //   @input -> Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
 //   @input.type -> msg
 //   @input.text -> Hi there
-//   @input.attachments -> http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3
-//   @(json(input)) -> {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
+//   @input.attachments -> [http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3]
+//   @(json(input)) -> {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":"tel:+12065551212","uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
 //
 // @context input
 type Input interface {

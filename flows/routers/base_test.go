@@ -45,9 +45,9 @@ func TestRouterTypes(t *testing.T) {
 }
 
 type inspectionResults struct {
-	Templates    []string `json:"templates"`
-	Dependencies []string `json:"dependencies"`
-	ResultNames  []string `json:"result_names"`
+	Templates    []string            `json:"templates"`
+	Dependencies []string            `json:"dependencies"`
+	Results      []*flows.ResultSpec `json:"results"`
 }
 
 func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
@@ -74,7 +74,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
 		utils.SetRand(utils.NewSeededRand(123456))
 
-		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
+		testName := fmt.Sprintf("test '%s' for router type '%s'", tc.Description, typeName)
 
 		// create unstarted session from our assets
 		session, err := test.CreateSession(assetsJSON, testServerURL)
@@ -131,8 +131,8 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		}
 		assert.Equal(t, tc.Inspection.Dependencies, depStrings, "inspected dependencies mismatch in %s", testName)
 
-		resultNames := flow.ExtractResultNames()
-		assert.Equal(t, tc.Inspection.ResultNames, resultNames, "inspected result names mismatch in %s", testName)
+		results := flow.ExtractResults()
+		assert.Equal(t, tc.Inspection.Results, results, "inspected results mismatch in %s", testName)
 	}
 }
 

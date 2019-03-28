@@ -17,17 +17,16 @@ import (
 )
 
 func main() {
-	var includeUI, collapseExits bool
+	var includeUI bool
 	var baseMediaURL string
 	flags := flag.NewFlagSet("", flag.ExitOnError)
-	flags.BoolVar(&collapseExits, "collapse-exits", false, "Collapse ruleset exits with same category")
 	flags.BoolVar(&includeUI, "include-ui", false, "Include UI configuration")
 	flags.StringVar(&baseMediaURL, "base-media-url", "", "Base URL for media files")
 	flags.Parse(os.Args[1:])
 
 	reader := bufio.NewReader(os.Stdin)
 
-	output, err := Migrate(reader, collapseExits, includeUI, baseMediaURL)
+	output, err := Migrate(reader, includeUI, baseMediaURL)
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -36,7 +35,7 @@ func main() {
 }
 
 // Migrate reads a legacy flow definition as JSON and migrates it
-func Migrate(reader io.Reader, collapseExits, includeUI bool, baseMediaURL string) ([]byte, error) {
+func Migrate(reader io.Reader, includeUI bool, baseMediaURL string) ([]byte, error) {
 	data, err := ioutil.ReadAll(reader)
 	if err != nil {
 		return nil, err
@@ -47,7 +46,7 @@ func Migrate(reader io.Reader, collapseExits, includeUI bool, baseMediaURL strin
 		return nil, err
 	}
 
-	migrated, err := flow.Migrate(collapseExits, includeUI, baseMediaURL)
+	migrated, err := flow.Migrate(includeUI, baseMediaURL)
 	if err != nil {
 		return nil, err
 	}

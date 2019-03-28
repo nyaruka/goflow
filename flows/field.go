@@ -1,8 +1,6 @@
 package flows
 
 import (
-	"strings"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -113,15 +111,6 @@ func (v *FieldValue) TypedValue() types.XValue {
 	return nil
 }
 
-// Resolve resolves the given key when this field value is referenced in an expression
-func (v *FieldValue) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "text":
-		return v.Text
-	}
-	return types.NewXResolveError(v, key)
-}
-
 // Describe returns a representation of this type for error messages
 func (v *FieldValue) Describe() string { return "field value" }
 
@@ -137,7 +126,6 @@ func (v *FieldValue) ToXJSON(env utils.Environment) types.XText {
 }
 
 var _ types.XValue = (*FieldValue)(nil)
-var _ types.XResolvable = (*FieldValue)(nil)
 
 // FieldValues is the set of all field values for a contact
 type FieldValues map[string]*FieldValue
@@ -274,6 +262,15 @@ func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Fi
 	}
 }
 
+// Context returns a representation of this object for use in expressions
+func (f FieldValues) Context(env utils.Environment) types.XPrimitive {
+	values := types.NewEmptyXDict()
+	for k, v := range f {
+		values.Put(string(k), v)
+	}
+	return values
+}
+
 func (f FieldValues) getFirstLocationValue(env RunEnvironment, fields *FieldAssets, valueType assets.FieldType) *utils.Location {
 	// do we have a field of this type?
 	field := fields.FirstOfType(valueType)
@@ -292,47 +289,6 @@ func (f FieldValues) getFirstLocationValue(env RunEnvironment, fields *FieldAsse
 	}
 	return location
 }
-
-// Length is called to get the length of this object which in this case is the number of set values
-func (f FieldValues) Length() int {
-	count := 0
-	for _, v := range f {
-		if v != nil {
-			count++
-		}
-	}
-	return count
-}
-
-// Resolve resolves the given key when this set of field values is referenced in an expression
-func (f FieldValues) Resolve(env utils.Environment, key string) types.XValue {
-	val, exists := f[strings.ToLower(key)]
-	if !exists {
-		return types.NewXErrorf("no such contact field '%s'", key)
-	}
-	return val
-}
-
-// Describe returns a representation of this type for error messages
-func (f FieldValues) Describe() string { return "field values" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (f FieldValues) Reduce(env utils.Environment) types.XPrimitive {
-	values := types.NewEmptyXMap()
-	for k, v := range f {
-		values.Put(string(k), v)
-	}
-	return values
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (f FieldValues) ToXJSON(env utils.Environment) types.XText {
-	return f.Reduce(env).ToXJSON(env)
-}
-
-var _ types.XValue = (FieldValues)(nil)
-var _ types.XLengthable = (FieldValues)(nil)
-var _ types.XResolvable = (FieldValues)(nil)
 
 // FieldAssets provides access to all field assets
 type FieldAssets struct {

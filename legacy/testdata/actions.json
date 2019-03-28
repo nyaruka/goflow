@@ -26,7 +26,7 @@
                     "name_match": "Customers"
                 },
                 {
-                    "name_match": "@contact.fields.district"
+                    "name_match": "@fields.district"
                 }
             ]
         },
@@ -59,7 +59,7 @@
                     "name_match": "Important"
                 },
                 {
-                    "name_match": "@contact.fields.district"
+                    "name_match": "@fields.district"
                 }
             ]
         },
@@ -103,7 +103,7 @@
                     "name": "Testers"
                 },
                 {
-                    "name_match": "@contact.fields.district"
+                    "name_match": "@fields.district"
                 }
             ]
         },
@@ -138,7 +138,7 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "addresses": [
                 "bob@nyaruka.com",
-                "@contact.fields.supervisor"
+                "@fields.supervisor"
             ],
             "subject": "Subject @input",
             "body": "Body @input"
@@ -185,7 +185,7 @@
         "expected_action": {
             "type": "send_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "text": "Do you still live in @contact.fields.city?"
+            "text": "Do you still live in @fields.city?"
         },
         "expected_localization": {}
     },
@@ -219,9 +219,9 @@
         "expected_action": {
             "type": "send_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "text": "Do you still live in @contact.fields.city?",
+            "text": "Do you still live in @fields.city?",
             "attachments": [
-                "image/jpeg:https://myfiles.com/bucket/test_en.jpg?a=@contact.fields.age"
+                "image/jpeg:https://myfiles.com/bucket/test_en.jpg?a=@fields.age"
             ],
             "quick_replies": [
                 "Yes",
@@ -234,7 +234,7 @@
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
                     "attachments": [
-                        "image/jpeg:https://myfiles.com/bucket/test_fr.jpg?a=@contact.fields.age"
+                        "image/jpeg:https://myfiles.com/bucket/test_fr.jpg?a=@fields.age"
                     ],
                     "quick_replies": [
                         "Oui",
@@ -242,7 +242,7 @@
                         ""
                     ],
                     "text": [
-                        "Vous habitez toujours à @contact.fields.city"
+                        "Vous habitez toujours à @fields.city"
                     ]
                 }
             }
@@ -310,13 +310,13 @@
         "expected_action": {
             "type": "say_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "text": "Do you still live in @contact.fields.city?"
+            "text": "Do you still live in @fields.city?"
         },
         "expected_localization": {
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
                     "text": [
-                        "Vous habitez toujours à @contact.fields.city"
+                        "Vous habitez toujours à @fields.city"
                     ]
                 }
             }
@@ -339,7 +339,7 @@
         "expected_action": {
             "type": "say_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "text": "Do you still live in @contact.fields.city?",
+            "text": "Do you still live in @fields.city?",
             "audio_url": "https://myfiles.com/bucket/question1_en.m4a"
         },
         "expected_localization": {
@@ -349,7 +349,7 @@
                         "https://myfiles.com/bucket/question1_fr.m4a"
                     ],
                     "text": [
-                        "Vous habitez toujours à @contact.fields.city"
+                        "Vous habitez toujours à @fields.city"
                     ]
                 }
             }
@@ -397,9 +397,9 @@
         "expected_action": {
             "type": "send_broadcast",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "text": "Do you still live in @contact.fields.city?",
+            "text": "Do you still live in @fields.city?",
             "attachments": [
-                "image/jpeg:https://myfiles.com/bucket/test_en.jpg?a=@contact.fields.age"
+                "image/jpeg:https://myfiles.com/bucket/test_en.jpg?a=@fields.age"
             ],
             "contacts": [
                 {
@@ -422,7 +422,7 @@
                 }
             ],
             "legacy_vars": [
-                "@contact.fields.support_group",
+                "@fields.support_group",
                 "+12223334444"
             ]
         },
@@ -430,10 +430,10 @@
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
                     "attachments": [
-                        "image/jpeg:https://myfiles.com/bucket/test_fr.jpg?a=@contact.fields.age"
+                        "image/jpeg:https://myfiles.com/bucket/test_fr.jpg?a=@fields.age"
                     ],
                     "text": [
-                        "Vous habitez toujours à @contact.fields.city"
+                        "Vous habitez toujours à @fields.city"
                     ]
                 }
             }
@@ -548,7 +548,7 @@
                 }
             ],
             "legacy_vars": [
-                "@contact.fields.support_group",
+                "@fields.support_group",
                 "+12223334444"
             ],
             "flow": {

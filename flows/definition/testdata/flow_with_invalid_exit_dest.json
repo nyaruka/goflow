@@ -10,8 +10,7 @@
             "exits": [
                 {
                     "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-                    "name": "Default",
-                    "destination_node_uuid": "714f1409-486e-4e8e-bb08-23e2943ef9f6"
+                    "destination_uuid": "714f1409-486e-4e8e-bb08-23e2943ef9f6"
                 }
             ]
         }

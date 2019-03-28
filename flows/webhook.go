@@ -14,13 +14,14 @@ import (
 	"github.com/pkg/errors"
 )
 
+// DefaultWebhookPayload is a template that matches the JSON payload sent by legacy webhooks
 var DefaultWebhookPayload = `{
 	"contact": {"uuid": "@contact.uuid", "name": @(json(contact.name)), "urn": @(json(if(default(input.urn, default(contact.urns[0], null)), text(default(input.urn, default(contact.urns[0], null))), null)))},
 	"flow": @(json(run.flow)),
 	"path": @(json(run.path)),
 	"results": @(json(run.results)),
 	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
-	"input": @(json(input)),
+	"input": @(json(if(input, dict("attachments", input.attachments, "channel", input.channel, "created_on", input.created_on, "text", input.text, "type", input.type, "urn", if(input.urn, dict("display", default(format_urn(input.urn), ""), "path", urn_parts(input.urn).path, "scheme", urn_parts(input.urn).scheme), null), "uuid", input.uuid), null))),
 	"channel": @(json(if(input, input.channel, null)))
 }`
 

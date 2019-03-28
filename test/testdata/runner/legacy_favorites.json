@@ -1,0 +1,227 @@
+{
+    "legacy_flows": [
+        {
+            "entry": "20b85218-553f-4fbb-bf65-8b8df6907b82",
+            "action_sets": [
+                {
+                    "uuid": "20b85218-553f-4fbb-bf65-8b8df6907b82",
+                    "x": 100,
+                    "y": 0,
+                    "destination": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "b4f2d7c4-24be-4175-9b1e-6d13926dee89",
+                            "msg": {
+                                "eng": "What's your favorite color?"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "370db3e8-061b-40d9-a666-06698f27bd79"
+                },
+                {
+                    "uuid": "0ec90220-1025-4533-8410-38f9adc0452b",
+                    "x": 102,
+                    "y": 176,
+                    "destination": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "b7ebc693-82b8-4c6c-89c6-5da703170406",
+                            "msg": {
+                                "eng": "What's your favorite beer?"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "3c464d16-3445-4a0b-b1cd-36ba9e1f89be"
+                },
+                {
+                    "uuid": "1134cc64-ecdf-44a8-9134-ff88b1dc9fcc",
+                    "x": 105,
+                    "y": 337,
+                    "destination": null,
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "2d663da7-4e21-4b6a-8587-8fed96a45db0",
+                            "msg": {
+                                "eng": "If only they made @flow.color.category @flow.beer.category !!"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "80818696-0e64-4834-9452-335b273f5417"
+                },
+                {
+                    "uuid": "7c420c93-f824-405e-a247-272d386950c9",
+                    "x": 638,
+                    "y": 4,
+                    "destination": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "c8245cae-66da-41c8-9924-d6bd02149dd2",
+                            "msg": {
+                                "eng": "That doesn't sound like a color.. try again"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "72af9ef2-9ff2-49b4-bfce-4997a1e9bfd3"
+                },
+                {
+                    "uuid": "dc8b3811-d3e2-48a1-89e5-eecb5afd1407",
+                    "x": 646,
+                    "y": 186,
+                    "destination": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "d2ad1be1-9c23-4161-8e46-9dea4812a85d",
+                            "msg": {
+                                "eng": "That doesn't sound like a beer.. try again"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "7bfdebd8-23c7-4433-8858-4565279fb203"
+                }
+            ],
+            "rule_sets": [
+                {
+                    "uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
+                    "x": 314,
+                    "y": 92,
+                    "label": "Color",
+                    "rules": [
+                        {
+                            "uuid": "8dd37105-7a84-43d7-8ea6-13e77a39aa80",
+                            "category": {
+                                "eng": "Red"
+                            },
+                            "destination": "0ec90220-1025-4533-8410-38f9adc0452b",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "contains_any",
+                                "test": {
+                                    "eng": "red"
+                                }
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "8548318b-4da8-4fae-96ef-ec9eb572edfd",
+                            "category": {
+                                "eng": "Blue"
+                            },
+                            "destination": "0ec90220-1025-4533-8410-38f9adc0452b",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "contains_any",
+                                "test": {
+                                    "eng": "blue"
+                                }
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "58a6978f-f006-46de-a940-edd4b4425306",
+                            "category": {
+                                "eng": "Other"
+                            },
+                            "destination": "7c420c93-f824-405e-a247-272d386950c9",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "true"
+                            },
+                            "label": null
+                        }
+                    ],
+                    "finished_key": null,
+                    "ruleset_type": "wait_message",
+                    "response_type": "",
+                    "operand": "@step.value",
+                    "config": {}
+                },
+                {
+                    "uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
+                    "x": 316,
+                    "y": 262,
+                    "label": "Beer",
+                    "rules": [
+                        {
+                            "uuid": "5eda1192-1468-4b79-a672-56778faa3864",
+                            "category": {
+                                "eng": "Club"
+                            },
+                            "destination": "1134cc64-ecdf-44a8-9134-ff88b1dc9fcc",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "contains_any",
+                                "test": {
+                                    "eng": "club"
+                                }
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "a3078f7d-63b3-4486-9481-ea97c5c4e49a",
+                            "category": {
+                                "eng": "Pilsner"
+                            },
+                            "destination": null,
+                            "destination_type": null,
+                            "test": {
+                                "type": "contains_any",
+                                "test": {
+                                    "eng": "pilsner"
+                                }
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "8860706e-d08b-44ad-b42a-88c730752848",
+                            "category": {
+                                "eng": "Other"
+                            },
+                            "destination": "dc8b3811-d3e2-48a1-89e5-eecb5afd1407",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "true"
+                            },
+                            "label": null
+                        }
+                    ],
+                    "finished_key": null,
+                    "ruleset_type": "wait_message",
+                    "response_type": "",
+                    "operand": "@step.value",
+                    "config": {}
+                }
+            ],
+            "base_language": "eng",
+            "flow_type": "M",
+            "version": "11.12",
+            "metadata": {
+                "name": "Favorites",
+                "saved_on": "2019-03-21T18:23:07.255014Z",
+                "revision": 30,
+                "uuid": "64e86aff-61a1-4029-a2da-f1615493d239",
+                "expires": 10080
+            }
+        }
+    ],
+    "other_assets": {}
+}

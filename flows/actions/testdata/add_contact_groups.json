@@ -83,7 +83,7 @@
                 "Customers@(1 / 0)"
             ],
             "dependencies": [],
-            "result_names": []
+            "results": []
         }
     },
     {
@@ -111,7 +111,7 @@
                 "Climbers"
             ],
             "dependencies": [],
-            "result_names": []
+            "results": []
         }
     },
     {

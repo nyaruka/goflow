@@ -72,7 +72,7 @@ func TestXJSONResolve(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 	for _, test := range jsonTests {
 		fragment := types.JSONToXValue(test.JSON)
-		context := types.NewXMap(map[string]types.XValue{"json": fragment})
+		context := types.NewXDict(map[string]types.XValue{"json": fragment})
 
 		value := excellent.EvaluateExpression(env, context, test.expression)
 		err, _ := value.(error)

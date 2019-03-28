@@ -56,7 +56,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	array1d := types.NewXArray(types.NewXText("a"), types.NewXText("b"), types.NewXText("c"))
 	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")))
 
-	vars := types.NewXMap(map[string]types.XValue{
+	vars := types.NewXDict(map[string]types.XValue{
 		"string1": types.NewXText("foo"),
 		"string2": types.NewXText("bar"),
 		"key":     types.NewXText("four"),
@@ -212,7 +212,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 
 func TestEvaluateTemplate(t *testing.T) {
 
-	vars := types.NewXMap(map[string]types.XValue{
+	vars := types.NewXDict(map[string]types.XValue{
 		"string1": types.NewXText("foo"),
 		"string2": types.NewXText("bar"),
 		"汉字":      types.NewXText("simplified chinese"),
@@ -277,8 +277,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(TITLE(missing))", "", true},
 		{"@(TITLE(string1.xxx))", "", true},
 
-		{"@array", `one, two, three`, false},
-		{"@array[0]", `one, two, three[0]`, false}, // [n] notation not supported outside expression
+		{"@array", `[one, two, three]`, false},
+		{"@array[0]", `[one, two, three][0]`, false}, // [n] notation not supported outside expression
 		{"@(array [0])", "one", false},
 		{"@(array[0])", "one", false},
 		{"@(array[3 - 3])", "one", false},
@@ -336,7 +336,7 @@ var errorTests = []struct {
 	{`@("abc".v)`, `error evaluating @("abc".v): "abc" has no property 'v'`},
 	{`@(False.g)`, `error evaluating @(False.g): false has no property 'g'`},
 	{`@(1.1.0)`, `error evaluating @(1.1.0): 1.1 has no property '0'`},
-	{`@(hello)`, `error evaluating @(hello): map has no property 'hello'`}, // this context is a map
+	{`@(hello)`, `error evaluating @(hello): dict has no property 'hello'`}, // this context is a map
 	{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
 	{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},
 	{`@(array(1, 2)[5])`, `error evaluating @(array(1, 2)[5]): index 5 out of range for 2 items`},
@@ -356,7 +356,7 @@ var errorTests = []struct {
 }
 
 func TestEvaluationErrors(t *testing.T) {
-	vars := types.NewXMap(map[string]types.XValue{
+	vars := types.NewXDict(map[string]types.XValue{
 		"foo": types.NewXText("bar"),
 	})
 	env := utils.NewEnvironmentBuilder().Build()
@@ -374,7 +374,7 @@ func TestEvaluationErrors(t *testing.T) {
 
 func BenchmarkEvaluationErrors(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		vars := types.NewXMap(map[string]types.XValue{
+		vars := types.NewXDict(map[string]types.XValue{
 			"foo": types.NewXText("bar"),
 		})
 		env := utils.NewEnvironmentBuilder().Build()

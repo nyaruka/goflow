@@ -88,8 +88,8 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 		}
 		seenUUIDs[utils.UUID(exit.UUID())] = true
 
-		if exit.DestinationNodeUUID() != "" && flow.GetNode(exit.DestinationNodeUUID()) == nil {
-			return errors.Errorf("destination %s of exit[uuid=%s] isn't a known node", exit.DestinationNodeUUID(), exit.UUID())
+		if exit.DestinationUUID() != "" && flow.GetNode(exit.DestinationUUID()) == nil {
+			return errors.Errorf("destination %s of exit[uuid=%s] isn't a known node", exit.DestinationUUID(), exit.UUID())
 		}
 	}
 
@@ -118,19 +118,19 @@ func (n *node) RewriteTemplates(localization flows.Localization, rewrite func(st
 func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
 
-// EnumerateResultNames enumerates all result names on this object
-func (n *node) EnumerateResultNames(include func(string)) {}
+// EnumerateResults enumerates all potential results on this object
+func (n *node) EnumerateResults(include func(*flows.ResultSpec)) {}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type nodeEnvelope struct {
-	UUID    flows.NodeUUID    `json:"uuid" validate:"required,uuid4"`
+	UUID    flows.NodeUUID    `json:"uuid"               validate:"required,uuid4"`
 	Actions []json.RawMessage `json:"actions,omitempty"`
 	Wait    json.RawMessage   `json:"wait,omitempty"`
 	Router  json.RawMessage   `json:"router,omitempty"`
-	Exits   []*exit           `json:"exits"`
+	Exits   []*exit           `json:"exits"              validate:"required,min=1"`
 }
 
 // UnmarshalJSON unmarshals a flow node from the given JSON

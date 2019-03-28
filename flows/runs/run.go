@@ -271,7 +271,7 @@ func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 	case "contact":
 		return r.Contact()
 	case "flow":
-		return r.Flow()
+		return r.Flow().Context(env)
 	case "status":
 		return types.NewXText(string(r.Status()))
 	case "results":
@@ -414,7 +414,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	e.Events = make([]json.RawMessage, len(r.events))
 	for i := range r.events {
 		if e.Events[i], err = json.Marshal(r.events[i]); err != nil {
-			return nil, err
+			return nil, errors.Wrapf(err, "unable to marshal event[type=%s]", r.events[i].Type())
 		}
 	}
 

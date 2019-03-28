@@ -7,6 +7,9 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -58,7 +61,13 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	// build our payload
 	payload, err := run.EvaluateTemplate(flows.DefaultWebhookPayload)
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		// if we got an error then our payload is likely not valid JSON
+		return errors.Wrapf(err, "error evaluating resthook payload")
+	}
+
+	// check the payload is valid JSON - it ends up in the session so needs to be valid
+	if !utils.IsValidJSON([]byte(payload)) {
+		return errors.Errorf("resthook payload evaluation produced invalid JSON: %s", payload)
 	}
 
 	// regardless of what subscriber calls we make, we need to record the payload that would be sent
@@ -128,7 +137,9 @@ func (a *CallResthookAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
 }
 
-// EnumerateResultNames enumerates all result names on this object
-func (a *CallResthookAction) EnumerateResultNames(include func(string)) {
-	include(a.ResultName)
+// EnumerateResults enumerates all potential results on this object
+func (a *CallResthookAction) EnumerateResults(include func(*flows.ResultSpec)) {
+	if a.ResultName != "" {
+		include(flows.NewResultSpec(a.ResultName, webhookCategories))
+	}
 }

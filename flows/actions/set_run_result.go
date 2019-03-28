@@ -83,7 +83,7 @@ func (a *SetRunResultAction) RewriteTemplates(localization flows.Localization, r
 	a.Value = rewrite(a.Value)
 }
 
-// EnumerateResultNames enumerates all result names on this object
-func (a *SetRunResultAction) EnumerateResultNames(include func(string)) {
-	include(a.Name)
+// EnumerateResults enumerates all potential results on this object
+func (a *SetRunResultAction) EnumerateResults(include func(*flows.ResultSpec)) {
+	include(flows.NewResultSpec(a.Name, []string{a.Category}))
 }

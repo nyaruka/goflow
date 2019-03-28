@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -20,33 +21,49 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var invalidFlows = []struct {
-	path        string
-	expectedErr string
-}{
-	{
-		"flow_with_duplicate_node_uuid.json",
-		"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
-	},
-	{
-		"flow_with_invalid_default_exit.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default exit 0680b01f-ba0b-48f4-a688-d2f963130126 is not a valid exit",
-	},
-	{
-		"flow_with_invalid_case_exit.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
-	},
-	{
-		"flow_with_invalid_case_exit.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
-	},
-	{
-		"flow_with_missing_asset.json",
-		"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered]",
-	},
-}
+func TestFlowReadingAndValidation(t *testing.T) {
+	invalidFlows := []struct {
+		path        string
+		expectedErr string
+		duringRead  bool
+	}{
+		{
+			"flow_with_exitless_node.json",
+			"unable to read node: field 'exits' must have a minimum of 1 items",
+			true,
+		},
+		{
+			"flow_with_exitless_category.json",
+			"unable to read router: unable to read category: field 'exit_uuid' is required",
+			true,
+		},
+		{
+			"flow_with_duplicate_node_uuid.json",
+			"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
+			false,
+		},
+		{
+			"flow_with_invalid_default_exit.json",
+			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
+			false,
+		},
+		{
+			"flow_with_invalid_case_category.json",
+			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
+			false,
+		},
+		{
+			"flow_with_invalid_exit_dest.json",
+			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
+			false,
+		},
+		{
+			"flow_with_missing_asset.json",
+			"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered]",
+			false,
+		},
+	}
 
-func TestFlowValidation(t *testing.T) {
 	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
@@ -55,10 +72,15 @@ func TestFlowValidation(t *testing.T) {
 		require.NoError(t, err)
 
 		flow, err := definition.ReadFlow(assetsJSON)
-		require.NoError(t, err)
 
-		err = flow.Validate(session.Assets())
-		assert.EqualError(t, err, tc.expectedErr)
+		if tc.duringRead {
+			assert.EqualError(t, err, tc.expectedErr)
+		} else {
+			require.NoError(t, err)
+
+			err = flow.Validate(session.Assets())
+			assert.EqualError(t, err, tc.expectedErr)
+		}
 	}
 }
 
@@ -90,6 +112,8 @@ func TestNewFlow(t *testing.T) {
                 }
             },
             "router": {
+				"type": "switch",
+				"operand": "@input",
                 "cases": [
                     {
                         "uuid": "9f593e22-7886-4c08-a52f-0e8780504d75",
@@ -98,24 +122,32 @@ func TestNewFlow(t *testing.T) {
                             "yes",
                             "yeah"
                         ],
-                        "exit_uuid": "97b9451c-2856-475b-af38-32af68100897"
+                        "category_uuid": "97b9451c-2856-475b-af38-32af68100897"
                     }
                 ],
-                "default_exit_uuid": "8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6",
-                "operand": "@input",
+                "default_category_uuid": "8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6",
                 "result_name": "Response 1",
-                "type": "switch"
+				"categories": [
+					{
+						"uuid": "97b9451c-2856-475b-af38-32af68100897",
+						"name": "Yes",
+						"exit_uuid": "023a5c10-d74a-4fad-9560-990caead8170"
+					},
+					{
+						"uuid": "8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6",
+						"name": "No",
+						"exit_uuid": "8943c032-2a91-456c-8080-2a249f1b420c"
+					}
+				]
             },
             "exits": [
                 {
-                    "uuid": "97b9451c-2856-475b-af38-32af68100897",
-                    "destination_node_uuid": "baaf9085-1198-4b41-9a1c-cc51c6dbec99",
-                    "name": "Yes"
+                    "uuid": "023a5c10-d74a-4fad-9560-990caead8170",
+                    "destination_uuid": "baaf9085-1198-4b41-9a1c-cc51c6dbec99"
                 },
                 {
-                    "uuid": "8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6",
-                    "destination_node_uuid": "baaf9085-1198-4b41-9a1c-cc51c6dbec99",
-                    "name": "No"
+                    "uuid": "8943c032-2a91-456c-8080-2a249f1b420c",
+                    "destination_uuid": "baaf9085-1198-4b41-9a1c-cc51c6dbec99"
                 }
             ]
         },
@@ -170,23 +202,33 @@ func TestNewFlow(t *testing.T) {
 				},
 				waits.NewMsgWait(nil, hints.NewImageHint()),
 				routers.NewSwitchRouter(
-					flows.ExitUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
+					"Response 1",
+					[]*routers.Category{
+						routers.NewCategory(
+							flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897"),
+							"Yes",
+							flows.ExitUUID("023a5c10-d74a-4fad-9560-990caead8170"),
+						),
+						routers.NewCategory(
+							flows.CategoryUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
+							"No",
+							flows.ExitUUID("8943c032-2a91-456c-8080-2a249f1b420c"),
+						),
+					},
 					"@input",
 					[]*routers.Case{
-						routers.NewCase(utils.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, false, flows.ExitUUID("97b9451c-2856-475b-af38-32af68100897")),
+						routers.NewCase(utils.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, false, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
 					},
-					"Response 1",
+					flows.CategoryUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
 				),
 				[]flows.Exit{
 					definition.NewExit(
-						flows.ExitUUID("97b9451c-2856-475b-af38-32af68100897"),
+						flows.ExitUUID("023a5c10-d74a-4fad-9560-990caead8170"),
 						flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
-						"Yes",
 					),
 					definition.NewExit(
-						flows.ExitUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
+						flows.ExitUUID("8943c032-2a91-456c-8080-2a249f1b420c"),
 						flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
-						"No",
 					),
 				},
 			),
@@ -204,7 +246,7 @@ func TestNewFlow(t *testing.T) {
 				nil, // no wait
 				nil, // no router
 				[]flows.Exit{
-					definition.NewExit(flows.ExitUUID("3e077111-7b62-4407-b8a4-4fddaf0d2f24"), "", ""),
+					definition.NewExit(flows.ExitUUID("3e077111-7b62-4407-b8a4-4fddaf0d2f24"), ""),
 				},
 			),
 		},
@@ -220,6 +262,13 @@ func TestNewFlow(t *testing.T) {
 	err = flow.Validate(session.Assets())
 	assert.NoError(t, err)
 
+	// check in expressions
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+		"name":     types.NewXText("Test Flow"),
+		"revision": types.NewXNumberFromInt(123),
+		"uuid":     types.NewXText("8ca44c09-791d-453a-9799-a70dd3303306"),
+	}), flow.Context(session.Environment()))
+
 	// add expected dependencies and result names to our expected JSON
 	flowRaw, err := utils.JSONDecodeGeneric([]byte(flowDef))
 	require.NoError(t, err)
@@ -232,11 +281,16 @@ func TestNewFlow(t *testing.T) {
 			map[string]string{"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"},
 		},
 	}
-	flowAsMap[`_results`] = []map[string]string{
+	flowAsMap[`_results`] = []map[string]interface{}{
 		{
-			"name": "Response 1",
-			"key":  "response_1",
+			"key":        "response_1",
+			"name":       "Response 1",
+			"categories": []string{"Yes", "No"},
 		},
+	}
+	flowAsMap[`_waiting_exits`] = []string{
+		"023a5c10-d74a-4fad-9560-990caead8170",
+		"8943c032-2a91-456c-8080-2a249f1b420c",
 	}
 
 	// now when we marshal to JSON, those should be included
@@ -250,7 +304,7 @@ func TestNewFlow(t *testing.T) {
 }
 
 func TestValidateEmptyFlow(t *testing.T) {
-	flow, err := test.LoadFlowFromAssets("../../test/testdata/flows/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
 	err = flow.Validate(nil)
@@ -270,7 +324,8 @@ func TestValidateEmptyFlow(t *testing.T) {
     "localization": {},
     "nodes": [],
     "_dependencies": {},
-    "_results": []
+	"_results": [],
+	"_waiting_exits": []
   }`), marshaled, "flow definition mismatch")
 }
 
@@ -284,7 +339,7 @@ func assertFlowSection(t *testing.T, definition []byte, key string, data []byte)
 }
 
 func TestValidateFlow(t *testing.T) {
-	sa, err := test.LoadSessionAssets("../../test/testdata/flows/brochure.json")
+	sa, err := test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
 	require.NoError(t, err)
 
 	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
@@ -299,22 +354,27 @@ func TestValidateFlow(t *testing.T) {
 
 	// name of group will have been corrected
 	assertFlowSection(t, marshaled, "_dependencies", []byte(`{
-    "groups": [
-      {
-        "name": "Registered Users",
-        "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
-      }
-    ]
-  }`))
+		"groups": [
+			{
+				"name": "Registered Users",
+				"uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
+			}
+		]
+	}`))
 	assertFlowSection(t, marshaled, "_results", []byte(`[
-    {
-      "name": "Name",
-      "key": "name"
-      }
-  ]`))
+		{
+			"key": "name",
+			"name": "Name",
+			"categories": ["Not Empty", "Other"]
+		}
+	]`))
+	assertFlowSection(t, marshaled, "_waiting_exits", []byte(`[
+		"fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
+        "43accf99-4940-44f7-926b-a8b35d9403d6"
+	]`))
 
 	// validate without session assets
-	sa, _ = test.LoadSessionAssets("../../test/testdata/flows/brochure.json")
+	sa, _ = test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
 	flow, _ = sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
 	err = flow.Validate(nil)
 	assert.NoError(t, err)
@@ -374,7 +434,7 @@ func TestReadFlow(t *testing.T) {
     "expire_after_minutes": 30,
     "nodes": []
   }`))
-	assert.EqualError(t, err, "unable to read flow: field 'type' is required")
+	assert.EqualError(t, err, "field 'type' is required")
 }
 
 func TestExtractAndRewriteTemplates(t *testing.T) {
@@ -384,7 +444,7 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 		templates []string
 	}{
 		{
-			"../../test/testdata/flows/two_questions.json",
+			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]string{
 				`Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))`,
@@ -409,7 +469,7 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 			},
 		},
 		{
-			"../../test/testdata/flows/all_actions.json",
+			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
 			[]string{
 				`@(format_location(contact.fields.state)) Messages`,
@@ -417,23 +477,23 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 				`@(replace(lower(contact.name), " ", "_"))`,
 				`XXX-YYY-ZZZ`,
 				"Here is your activation token",
-				"Hi @contact.fields.first_name, Your activation token is @contact.fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
-				"@(contact.urns.mailto[0])",
+				"Hi @fields.first_name, Your activation token is @fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
+				"@urns.mailto",
 				"test@@example.com",
 				`Hi @contact.name, are you ready?`,
 				`Hola @contact.name, ¿estás listo?`,
 				`Hi @contact.name, are you ready for these attachments?`,
-				`image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))`,
+				`image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(fields.state)))`,
 				`Hi @contact.name, are you ready to complete today's survey?`,
 				`This is a message to each of @contact.name's urns.`,
 				`This is a reply with attachments and quick replies`,
-				`image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))`,
+				`image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(fields.state)))`,
 				`Yes`,
 				`No`,
 				`m`,
 				`Jeff Jefferson`,
 				`@results.gender.category`,
-				`@contact.fields.raw_district`,
+				`@fields.raw_district`,
 				`http://localhost/?cmd=success&name=@(url_encode(contact.name))`,
 			},
 		},
@@ -468,7 +528,7 @@ func TestExtractDependencies(t *testing.T) {
 		dependencies []assets.Reference
 	}{
 		{
-			"../../test/testdata/flows/all_actions.json",
+			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
 			[]assets.Reference{
 				assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
@@ -485,7 +545,7 @@ func TestExtractDependencies(t *testing.T) {
 			},
 		},
 		{
-			"../../test/testdata/flows/router_tests.json",
+			"../../test/testdata/runner/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]assets.Reference{
 				assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", ""),
@@ -495,7 +555,7 @@ func TestExtractDependencies(t *testing.T) {
 			},
 		},
 		{
-			"../../test/testdata/flows/dynamic_groups.json",
+			"../../test/testdata/runner/dynamic_groups.json",
 			"1b462ce8-983a-4393-b133-e15a0efdb70c",
 			[]assets.Reference{
 				assets.NewFieldReference("gender", "Gender"),
@@ -513,26 +573,35 @@ func TestExtractDependencies(t *testing.T) {
 	}
 }
 
-func TestExtractResultNames(t *testing.T) {
+func TestExtractResults(t *testing.T) {
 	testCases := []struct {
-		path        string
-		uuid        string
-		resultNames []string
+		path    string
+		uuid    string
+		results []*flows.ResultSpec
 	}{
 		{
-			"../../test/testdata/flows/all_actions.json",
+			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
-			[]string{"Gender"},
+			[]*flows.ResultSpec{
+				{Key: "gender", Name: "Gender", Categories: []string{"Male"}},
+			},
 		},
 		{
-			"../../test/testdata/flows/router_tests.json",
+			"../../test/testdata/runner/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			[]string{"URN Check", "Group Check", "District Check"},
+			[]*flows.ResultSpec{
+				{Key: "urn_check", Name: "URN Check", Categories: []string{"Telegram", "Other"}},
+				{Key: "group_check", Name: "Group Check", Categories: []string{"Testers", "Other"}},
+				{Key: "district_check", Name: "District Check", Categories: []string{"Valid", "Invalid"}},
+			},
 		},
 		{
-			"../../test/testdata/flows/two_questions.json",
+			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			[]string{"Favorite Color", "Soda"},
+			[]*flows.ResultSpec{
+				{Key: "favorite_color", Name: "Favorite Color", Categories: []string{"Red", "Blue", "Other"}},
+				{Key: "soda", Name: "Soda", Categories: []string{"Pepsi", "Coke", "Other"}},
+			},
 		},
 	}
 
@@ -541,6 +610,6 @@ func TestExtractResultNames(t *testing.T) {
 		require.NoError(t, err)
 
 		// try extracting all dependencies
-		assert.Equal(t, tc.resultNames, flow.ExtractResultNames(), "extracted result names mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+		assert.Equal(t, tc.results, flow.ExtractResults(), "extracted results mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 	}
 }

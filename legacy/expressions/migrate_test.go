@@ -39,20 +39,20 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@contact.name`, new: `@contact.name`},
 		{old: `@contact.NAME`, new: `@contact.name`},
 		{old: `@contact.first_name`, new: `@contact.first_name`},
-		{old: `@contact.gender`, new: `@contact.fields.gender`},
+		{old: `@contact.gender`, new: `@fields.gender`},
 		{old: `@contact.groups`, new: `@(join(contact.groups, ","))`},
 		{old: `@contact.language`, new: `@contact.language`},
 		{old: `@contact.created_on`, new: `@contact.created_on`},
 
 		// contact URN variables
-		{old: `@contact.tel`, new: `@(contact.urns.tel[0].display)`},
-		{old: `@contact.tel.display`, new: `@(contact.urns.tel[0].display)`},
-		{old: `@contact.tel.scheme`, new: `@(contact.urns.tel[0].scheme)`},
-		{old: `@contact.tel.path`, new: `@(contact.urns.tel[0].path)`},
-		{old: `@contact.tel.urn`, new: `@(contact.urns.tel[0])`},
-		{old: `@contact.tel_e164`, new: `@(contact.urns.tel[0].path)`},
-		{old: `@contact.twitterid`, new: `@(contact.urns.twitterid[0].display)`},
-		{old: `@contact.mailto`, new: `@(contact.urns.mailto[0].display)`},
+		{old: `@contact.tel`, new: `@(format_urn(urns.tel))`},
+		{old: `@contact.tel.display`, new: `@(format_urn(urns.tel))`},
+		{old: `@contact.tel.scheme`, new: `@(urn_parts(urns.tel).scheme)`},
+		{old: `@contact.tel.path`, new: `@(urn_parts(urns.tel).path)`},
+		{old: `@contact.tel.urn`, new: `@urns.tel`},
+		{old: `@contact.tel_e164`, new: `@(urn_parts(urns.tel).path)`},
+		{old: `@contact.twitterid`, new: `@(format_urn(urns.twitterid))`},
+		{old: `@contact.mailto`, new: `@(format_urn(urns.mailto))`},
 
 		// run variables
 		{old: `@flow`, new: `@results`},
@@ -75,7 +75,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@child.age.time`, new: `@child.results.age.created_on`},
 		{old: `@child.age.value`, new: `@child.results.age.value`},
 		{old: `@child.contact`, new: `@child.contact`},
-		{old: `@child.contact.age`, new: `@child.contact.fields.age`},
+		{old: `@child.contact.age`, new: `@child.fields.age`},
 
 		{old: `@parent.role`, new: `@parent.results.role`},
 		{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
@@ -85,13 +85,13 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@parent.contact`, new: `@parent.contact`},
 		{old: `@parent.contact.name`, new: `@parent.contact.name`},
 		{old: `@parent.contact.groups`, new: `@(join(parent.contact.groups, ","))`},
-		{old: `@parent.contact.gender`, new: `@parent.contact.fields.gender`},
-		{old: `@parent.contact.tel`, new: `@(parent.contact.urns.tel[0].display)`},
-		{old: `@parent.contact.tel.display`, new: `@(parent.contact.urns.tel[0].display)`},
-		{old: `@parent.contact.tel.scheme`, new: `@(parent.contact.urns.tel[0].scheme)`},
-		{old: `@parent.contact.tel.path`, new: `@(parent.contact.urns.tel[0].path)`},
-		{old: `@parent.contact.tel.urn`, new: `@(parent.contact.urns.tel[0])`},
-		{old: `@parent.contact.tel_e164`, new: `@(parent.contact.urns.tel[0].path)`},
+		{old: `@parent.contact.gender`, new: `@parent.fields.gender`},
+		{old: `@parent.contact.tel`, new: `@(format_urn(parent.urns.tel))`},
+		{old: `@parent.contact.tel.display`, new: `@(format_urn(parent.urns.tel))`},
+		{old: `@parent.contact.tel.scheme`, new: `@(urn_parts(parent.urns.tel).scheme)`},
+		{old: `@parent.contact.tel.path`, new: `@(urn_parts(parent.urns.tel).path)`},
+		{old: `@parent.contact.tel.urn`, new: `@parent.urns.tel`},
+		{old: `@parent.contact.tel_e164`, new: `@(urn_parts(urns.tel).path)`},
 
 		// input
 		{old: `@step`, new: `@input`},
@@ -103,7 +103,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@step.time`, new: `@input.created_on`},
 		{old: `@step.contact`, new: `@contact`},
 		{old: `@step.contact.name`, new: `@contact.name`},
-		{old: `@step.contact.age`, new: `@contact.fields.age`},
+		{old: `@step.contact.age`, new: `@fields.age`},
 
 		// dates
 		{old: `@date`, new: `@(now())`},
@@ -119,8 +119,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@extra.flow.role`, new: `@parent.results.role`},
 
 		// variables in parens
-		{old: `@(contact.tel)`, new: `@(contact.urns.tel[0].display)`},
-		{old: `@(contact.gender)`, new: `@contact.fields.gender`},
+		{old: `@(contact.tel)`, new: `@(format_urn(urns.tel))`},
+		{old: `@(contact.gender)`, new: `@fields.gender`},
 		{old: `@(flow.favorite_color)`, new: `@results.favorite_color`},
 
 		// booleans
@@ -149,7 +149,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@("")`, new: ``},
 		{old: `@(" ")`, new: `@(" ")`},
 		{old: `@(" "" ")`, new: `@(" \" ")`},
-		{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & contact.fields.gender)`},
+		{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & fields.gender)`},
 
 		// number+number addition/subtraction should stay as addition/subtraction
 		{old: `@(5 + 4)`, new: `@(5 + 4)`},
@@ -160,7 +160,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(date.now + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(now() + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(date + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
-		{old: `@(date.now + 5 + contact.age)`, new: `@(legacy_add(datetime_add(now(), 5, "D"), contact.fields.age))`},
+		{old: `@(date.now + 5 + contact.age)`, new: `@(legacy_add(datetime_add(now(), 5, "D"), fields.age))`},
 
 		// datetime+time addition should get converted to datetime_add
 		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(datetime_add(now(), format_time(time_from_parts(2, 30, 0), "tt") * 60 + format_time(time_from_parts(2, 30, 0), "m"), "m"))`},
@@ -175,13 +175,13 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(today() + TIME(15, 30, 0))`, new: `@(replace_time(today(), time_from_parts(15, 30, 0)))`},
 		{old: `@(TODAY()+TIMEVALUE("10:30"))`, new: `@(replace_time(today(), time("10:30")))`},
 		{old: `@(DATEVALUE(date.today) + TIMEVALUE(CONCATENATE(flow.time_input, ":00")))`, new: `@(replace_time(date(format_date(today())), time(results.time_input & ":00")))`, dontEval: true},
-		{old: `@(contact.join_date + TIME(2, 30, 0))`, new: `@(replace_time(contact.fields.join_date, time_from_parts(2, 30, 0)))`},
+		{old: `@(contact.join_date + TIME(2, 30, 0))`, new: `@(replace_time(fields.join_date, time_from_parts(2, 30, 0)))`},
 
 		// legacy_add permutations
-		{old: `@(contact.age + 5)`, new: `@(legacy_add(contact.fields.age, 5))`},
-		{old: `@(contact.join_date + 5 + contact.age)`, new: `@(legacy_add(legacy_add(contact.fields.join_date, 5), contact.fields.age))`},
-		{old: `@(contact.age + 100 - 5)`, new: `@(legacy_add(legacy_add(contact.fields.age, 100), -5))`},
-		{old: `@((5 + contact.age) / 2)`, new: `@((legacy_add(5, contact.fields.age)) / 2)`},
+		{old: `@(contact.age + 5)`, new: `@(legacy_add(fields.age, 5))`},
+		{old: `@(contact.join_date + 5 + contact.age)`, new: `@(legacy_add(legacy_add(fields.join_date, 5), fields.age))`},
+		{old: `@(contact.age + 100 - 5)`, new: `@(legacy_add(legacy_add(fields.age, 100), -5))`},
+		{old: `@((5 + contact.age) / 2)`, new: `@((legacy_add(5, fields.age)) / 2)`},
 		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(date("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "tt"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
 		// expressions that should default to themselves on error

@@ -1,3 +1,41 @@
+v0.31.3
+----------
+ * Add check to call_resthook that payload is valid JSON
+
+v0.31.2
+----------
+ * CallResthookAction should error if it can't evaluiate the payload template
+ * Resthook payload should still be valid when contact URN can't be formatted
+
+v0.31.1
+----------
+ * Generate better error message when resthook payload is not valid JSON
+
+v0.31.0
+----------
+ * Better error message when marshalling a run
+ * Use dict() function to simplify default webhook payload
+ * Convert @contact.groups to be only excellent primitives
+ * Add extract and dict as excellent functions
+
+v0.30.4
+----------
+ * Add @fields as top-level shortcut to contact fields as map
+ * Add @urns as dict of highest-priority URN by scheme
+ * Make location parsing more forgiving
+
+v0.30.3
+----------
+ * Bug fix: switch router should use category from first matching rule
+ * Stringify maps with {...} and arrays with [...]
+
+v0.30.2
+----------
+ * Record exit UUIDs coming from waits in validated flow definition
+ * Match characters  intended to be combined with another character to support Thai, Bengali and Burmese properly
+ * Extract and save result categories during validation
+ * Add validation that node has > 0 exits, routers have > 0 categories, and categories have an exit
+
 v0.30.1
 ----------
  * Don't try to validate a subflow which is missing

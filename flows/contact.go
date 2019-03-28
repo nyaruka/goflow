@@ -41,13 +41,11 @@ import (
 //   @contact.language -> eng
 //   @contact.timezone -> America/Guayaquil
 //   @contact.created_on -> 2018-06-20T11:40:30.123456Z
-//   @contact.urns -> tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com
+//   @contact.urns -> [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 //   @(contact.urns[0]) -> tel:+12065551212
-//   @contact.urns.tel -> tel:+12065551212
-//   @(contact.urns.mailto[0]) -> mailto:foo@bar.com
 //   @contact.urn -> tel:+12065551212
-//   @contact.groups -> Testers, Males
-//   @contact.fields -> activation_token: AACC55\nage: 23\ngender: Male\njoin_date: 2017-12-02T00:00:00.000000-02:00\nnot_set:\x20
+//   @(extract(contact.groups, "name")) -> [Testers, Males]
+//   @contact.fields -> {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
 //   @contact.fields.activation_token -> AACC55
 //   @contact.fields.gender -> Male
 //
@@ -210,11 +208,11 @@ func (c *Contact) HasURN(urn urns.URN) bool {
 	return false
 }
 
-// Groups returns the groups that this contact belongs to
-func (c *Contact) Groups() *GroupList { return c.groups }
-
 // Fields returns this contact's field values
 func (c *Contact) Fields() FieldValues { return c.fields }
+
+// Groups returns the groups that this contact belongs to
+func (c *Contact) Groups() *GroupList { return c.groups }
 
 // Reference returns a reference to this contact
 func (c *Contact) Reference() *ContactReference {
@@ -267,15 +265,23 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "created_on":
 		return types.NewXDateTime(c.createdOn)
 	case "urns":
-		return c.urns
+		return c.urns.Context(env)
 	case "urn":
-		return c.PreferredURN()
+		urn := c.PreferredURN()
+		if urn != nil {
+			return urn.Context(env)
+		}
+		return nil
 	case "groups":
-		return c.groups
+		return c.groups.Context(env)
 	case "fields":
-		return c.fields
+		return c.Fields().Context(env)
 	case "channel":
-		return c.PreferredChannel()
+		ch := c.PreferredChannel()
+		if ch != nil {
+			return ch.Context(env)
+		}
+		return nil
 	}
 
 	return types.NewXResolveError(c, key)

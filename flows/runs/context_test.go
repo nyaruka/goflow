@@ -22,6 +22,13 @@ var sessionAssets = `{
             "roles": ["send", "receive"]
         }
     ],
+    "fields": [
+        {
+            "key": "gender",
+            "name": "Gender",
+            "type": "text"
+        }
+    ],
     "flows": [
         {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
@@ -39,14 +46,20 @@ var sessionAssets = `{
                     },
                     "router": {
                         "type": "switch",
-                        "default_exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-                        "operand": "@input"
+                        "categories": [
+                            {
+                                "uuid": "d7342563-7c9d-4576-b6d1-0c1f148765d2",
+                                "name": "All Responses",
+                                "exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
+                            }
+                        ],
+                        "operand": "@input",
+                        "default_category_uuid": "d7342563-7c9d-4576-b6d1-0c1f148765d2"
                     },
                     "exits": [
                         {
                             "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-                            "name": "All Responses",
-                            "destination_node_uuid": null
+                            "destination_uuid": null
                         }
                     ]
                 }
@@ -66,7 +79,10 @@ var sessionTrigger = `{
         "language": "eng",
         "timezone": "America/Guayaquil",
         "created_on": "2018-06-20T11:40:30.123456789-00:00",
-        "urns": [ "tel:+12065551212"]
+        "urns": [ "tel:+12065551212"],
+        "fields": {
+            "gender": {"text": "M"}
+        }
     },
     "environment": {
         "date_format": "YYYY-MM-DD",
@@ -81,7 +97,7 @@ var sessionTrigger = `{
     }
 }`
 
-func TestRelatedRunContext(t *testing.T) {
+func TestRunContexts(t *testing.T) {
 	// create a run with no parent or child
 	session, err := test.CreateSession([]byte(sessionAssets), "")
 	require.NoError(t, err)
@@ -94,12 +110,25 @@ func TestRelatedRunContext(t *testing.T) {
 
 	run := session.Runs()[0]
 
-	// check that trying to resolve parent is an error
-	val, err := run.EvaluateTemplateValue(`@parent.contact`)
+	val, err := run.EvaluateTemplateValue(`@(json(contact.fields))`)
+	assert.NoError(t, err)
+	assert.Equal(t, types.NewXText(`{"gender":"M"}`), val)
+
+	val, err = run.EvaluateTemplateValue(`@(json(fields))`)
+	assert.Equal(t, types.NewXText(`{"gender":"M"}`), val)
+
+	val, err = run.EvaluateTemplateValue(`@(json(contact.urns))`)
+	assert.Equal(t, types.NewXText(`["tel:+12065551212"]`), val)
+
+	val, err = run.EvaluateTemplateValue(`@(json(urns))`)
+	assert.Equal(t, types.NewXText(`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":null,"viber":null,"wechat":null,"whatsapp":null}`), val)
+
+	// since we have no parent, check that trying to resolve parent is an error
+	val, err = run.EvaluateTemplateValue(`@parent.contact`)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)
 
-	// check that trying to resolve child is an error
+	// we also have no child, check that trying to resolve child is an error
 	val, err = run.EvaluateTemplateValue(`@child.contact`)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)

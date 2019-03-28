@@ -39,12 +39,13 @@ var XFUNCTIONS = map[string]XFunction{
 	"datetime": OneArgFunction(DateTime),
 	"time":     OneArgFunction(Time),
 	"array":    Array,
+	"dict":     Dict,
 
 	// text functions
 	"char":              OneNumberFunction(Char),
 	"code":              OneTextFunction(Code),
 	"split":             TwoTextFunction(Split),
-	"join":              TwoArgFunction(Join),
+	"join":              InitialArrayFunction(1, 1, Join),
 	"title":             OneTextFunction(Title),
 	"word":              InitialTextFunction(1, 2, Word),
 	"remove_first_word": OneTextFunction(RemoveFirstWord),
@@ -100,6 +101,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"parse_time":      ArgCountCheck(2, 2, ParseTime),
 	"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
+	// URN functions
+	"urn_parts": OneTextFunction(URNParts),
+
 	// json functions
 	"json":       OneArgFunction(JSON),
 	"parse_json": OneTextFunction(ParseJSON),
@@ -117,6 +121,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"default":    TwoArgFunction(Default),
 	"legacy_add": TwoArgFunction(LegacyAdd),
 	"read_chars": OneTextFunction(ReadChars),
+	"extract":    InitialArrayFunction(1, -1, Extract),
 }
 
 //------------------------------------------------------------------------------------------
@@ -250,6 +255,42 @@ func Array(env utils.Environment, values ...types.XValue) types.XValue {
 	return types.NewXArray(values...)
 }
 
+// Dict takes key value pairs and returns them as an dict.
+//
+//   @(dict()) -> {}
+//   @(dict("a", 123, "b", "hello")) -> {a: 123, b: hello}
+//   @(dict("a")) -> ERROR
+//
+// @function dict(pairs...)
+func Dict(env utils.Environment, pairs ...types.XValue) types.XValue {
+	// check none of our args are errors
+	for _, arg := range pairs {
+		if types.IsXError(arg) {
+			return arg
+		}
+	}
+
+	if len(pairs)%2 != 0 {
+		return types.NewXErrorf("requires an even number of arguments")
+	}
+
+	dict := make(map[string]types.XValue, len(pairs)/2)
+
+	for a := 0; a < len(pairs); a += 2 {
+		key := pairs[a]
+		value := pairs[a+1]
+
+		keyAsText, xerr := types.ToXText(env, key)
+		if xerr != nil {
+			return xerr
+		}
+
+		dict[keyAsText.Native()] = value
+	}
+
+	return types.NewXDict(dict)
+}
+
 //------------------------------------------------------------------------------------------
 // Bool Functions
 //------------------------------------------------------------------------------------------
@@ -341,11 +382,11 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 //
 // Empty values are removed from the returned list.
 //
-//   @(split("a b c", " ")) -> a, b, c
-//   @(split("a", " ")) -> a
-//   @(split("abc..d", ".")) -> abc, d
-//   @(split("a.b.c.", ".")) -> a, b, c
-//   @(split("a|b,c  d", " .|,")) -> a, b, c, d
+//   @(split("a b c", " ")) -> [a, b, c]
+//   @(split("a", " ")) -> [a]
+//   @(split("abc..d", ".")) -> [abc, d]
+//   @(split("a.b.c.", ".")) -> [a, b, c]
+//   @(split("a|b,c  d", " .|,")) -> [a, b, c, d]
 //
 // @function split(text, delimiters)
 func Split(env utils.Environment, text types.XText, delimiters types.XText) types.XValue {
@@ -363,23 +404,15 @@ func Split(env utils.Environment, text types.XText, delimiters types.XText) type
 //   @(join(split("a.b.c", "."), " ")) -> a b c
 //
 // @function join(array, separator)
-func Join(env utils.Environment, array types.XValue, separator types.XValue) types.XValue {
-	indexable, isIndexable := array.(types.XIndexable)
-	if !isIndexable {
-		return types.NewXErrorf("requires an indexable as its first argument")
-	}
-
-	sep, xerr := types.ToXText(env, separator)
-	if xerr != nil {
-		return xerr
-	}
+func Join(env utils.Environment, array types.XArray, args ...types.XText) types.XValue {
+	separator := args[0]
 
 	var output bytes.Buffer
-	for i := 0; i < indexable.Length(); i++ {
+	for i := 0; i < array.Length(); i++ {
 		if i > 0 {
-			output.WriteString(sep.Native())
+			output.WriteString(separator.Native())
 		}
-		itemAsStr, xerr := types.ToXText(env, indexable.Index(i))
+		itemAsStr, xerr := types.ToXText(env, array.Index(i))
 		if xerr != nil {
 			return xerr
 		}
@@ -1397,6 +1430,23 @@ func TimeFromParts(env utils.Environment, hour, minute, second int) types.XValue
 	return types.NewXTime(utils.NewTimeOfDay(hour, minute, second, 0))
 }
 
+// URNParts parses a URN into its different parts
+//
+//   @(urn_parts("tel:+593979012345")) -> {display: , path: +593979012345, scheme: tel}
+//   @(urn_parts("twitterid:3263621177#bobby")) -> {display: bobby, path: 3263621177, scheme: twitterid}
+//
+// @function urn_parts(urn)
+func URNParts(env utils.Environment, urn types.XText) types.XValue {
+	u := urns.URN(urn.Native())
+	scheme, path, _, display := u.ToParts()
+
+	return types.NewXDict(map[string]types.XValue{
+		"scheme":  types.NewXText(scheme),
+		"path":    types.NewXText(path),
+		"display": types.NewXText(display),
+	})
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Functions
 //------------------------------------------------------------------------------------------
@@ -1418,6 +1468,7 @@ func ParseJSON(env utils.Environment, text types.XText) types.XValue {
 //
 //   @(json("string")) -> "string"
 //   @(json(10)) -> 10
+//   @(json(null)) -> null
 //   @(json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 //
 // @function json(value)
@@ -1690,9 +1741,8 @@ func FormatLocation(env utils.Environment, path types.XText) types.XValue {
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
 //   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
 //   @(format_urn(contact.urn)) -> (206) 555-1212
-//   @(format_urn(contact.urns.mailto[0])) -> foo@bar.com
-//   @(format_urn(contact.urns.telegram[0])) ->
-//   @(format_urn(contact.urns[2])) -> foo@bar.com
+//   @(format_urn(urns.tel)) -> (206) 555-1212
+//   @(format_urn(urns.mailto)) -> foo@bar.com
 //   @(format_urn("NOT URN")) -> ERROR
 //
 // @function format_urn(urn)
@@ -1749,9 +1799,10 @@ func Length(env utils.Environment, value types.XValue) types.XValue {
 //   @(default(undeclared.var, "default_value")) -> default_value
 //   @(default("10", "20")) -> 10
 //   @(default("", "value")) -> value
-//   @(default(array(1, 2), "value")) -> 1, 2
+//   @(default(array(1, 2), "value")) -> [1, 2]
 //   @(default(array(), "value")) -> value
 //   @(default(datetime("invalid-date"), "today")) -> today
+//   @(default(format_urn("invalid-urn"), "ok")) -> ok
 //
 // @function default(value, default)
 func Default(env utils.Environment, value types.XValue, def types.XValue) types.XValue {
@@ -1760,6 +1811,46 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 	}
 
 	return value
+}
+
+// Extract takes an array of objects and returns a new array by extracting named properties from each item.
+//
+// If a single property is specified, the returned array is a flat array of values. If multiple properties
+// are specified then each item is a dict of with those properties.
+//
+//   @(extract(contact.groups, "name")) -> [Testers, Males]
+//   @(extract(array(dict("foo", 123), dict("foo", 256)), "foo")) -> [123, 256]
+//   @(extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) -> [{a: 123, c: true}, {a: 345, c: false}]
+//   @(extract(array(dict("foo", 123), dict("foo", 256)), "bar")) -> ERROR
+//
+// @function extract(array, properties...)
+func Extract(env utils.Environment, array types.XArray, properties ...types.XText) types.XValue {
+	result := types.NewXArray()
+
+	for i := 0; i < array.Length(); i++ {
+		oldItem := array.Index(i)
+
+		// a single property means we return a flat array of values
+		if len(properties) == 1 {
+			newItem := types.Resolve(env, oldItem, properties[0].Native())
+			if types.IsXError(newItem) {
+				return newItem
+			}
+			result.Append(newItem)
+		} else {
+			newItem := types.NewEmptyXDict()
+			for _, property := range properties {
+				newSubItem := types.Resolve(env, oldItem, property.Native())
+				if types.IsXError(newSubItem) {
+					return newSubItem
+				}
+				newItem.Put(property.Native(), newSubItem)
+			}
+			result.Append(newItem)
+		}
+	}
+
+	return result
 }
 
 // LegacyAdd simulates our old + operator, which operated differently based on whether

@@ -9,19 +9,24 @@ import (
 
 // RunContextTopLevels are the allowed top-level variables for expression evaluations
 var RunContextTopLevels = []string{
-	"run",
 	"child",
-	"parent",
 	"contact",
+	"fields",
 	"input",
-	"results",
-	"trigger",
 	"legacy_extra",
+	"parent",
+	"results",
+	"run",
+	"trigger",
+	"urns",
 }
 
 var fieldRefPaths = [][]string{
+	{"fields"},
 	{"contact", "fields"},
+	{"parent", "fields"},
 	{"parent", "contact", "fields"},
+	{"child", "fields"},
 	{"child", "contact", "fields"},
 }
 
@@ -140,6 +145,6 @@ func (r inspectableReference) EnumerateDependencies(localization Localization, i
 	}
 }
 
-// EnumerateResultNames enumerates all result names on this object.
-// Asset references can't contain result names.
-func (r inspectableReference) EnumerateResultNames(include func(string)) {}
+// EnumerateResults enumerates all potential results on this object
+// Asset references can't contain results.
+func (r inspectableReference) EnumerateResults(include func(*ResultSpec)) {}

@@ -8,8 +8,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-
-
 type runContext struct {
 	run flows.FlowRun
 
@@ -37,6 +35,17 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 		return c.run.Contact()
 	case "results":
 		return c.run.Results()
+
+	case "urns":
+		if c.run.Contact() != nil {
+			return c.run.Contact().URNs().MapContext(env)
+		}
+		return nil
+	case "fields":
+		if c.run.Contact() != nil {
+			return c.run.Contact().Fields().Context(env)
+		}
+		return nil
 
 	// other
 	case "trigger":
@@ -84,10 +93,22 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(c.run.UUID()))
+
 	case "contact":
 		return c.run.Contact()
+	case "urns":
+		if c.run.Contact() != nil {
+			return c.run.Contact().URNs().MapContext(env)
+		}
+		return nil
+	case "fields":
+		if c.run.Contact() != nil {
+			return c.run.Contact().Fields().Context(env)
+		}
+		return nil
+
 	case "flow":
-		return c.run.Flow()
+		return c.run.Flow().Context(env)
 	case "status":
 		return types.NewXText(string(c.run.Status()))
 	case "results":

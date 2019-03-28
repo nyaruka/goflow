@@ -281,7 +281,7 @@
             },
             {
                 "template": "@(default(array(1, 2), \"value\"))",
-                "output": "1, 2"
+                "output": "[1, 2]"
             },
             {
                 "template": "@(default(array(), \"value\"))",
@@ -290,6 +290,29 @@
             {
                 "template": "@(default(datetime(\"invalid-date\"), \"today\"))",
                 "output": "today"
+            },
+            {
+                "template": "@(default(format_urn(\"invalid-urn\"), \"ok\"))",
+                "output": "ok"
+            }
+        ]
+    },
+    {
+        "signature": "dict(pairs...)",
+        "summary": "Takes key value pairs and returns them as an dict.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(dict())",
+                "output": "{}"
+            },
+            {
+                "template": "@(dict(\"a\", 123, \"b\", \"hello\"))",
+                "output": "{a: 123, b: hello}"
+            },
+            {
+                "template": "@(dict(\"a\"))",
+                "output": "ERROR"
             }
         ]
     },
@@ -313,6 +336,29 @@
             {
                 "template": "@(round_down(epoch(\"2017-06-12T16:56:59.123456Z\")))",
                 "output": "1497286619"
+            }
+        ]
+    },
+    {
+        "signature": "extract(array, properties...)",
+        "summary": "Takes an array of objects and returns a new array by extracting named properties from each item.",
+        "detail": "If a single property is specified, the returned array is a flat array of values. If multiple properties\nare specified then each item is a dict of with those properties.",
+        "examples": [
+            {
+                "template": "@(extract(contact.groups, \"name\"))",
+                "output": "[Testers, Males]"
+            },
+            {
+                "template": "@(extract(array(dict(\"foo\", 123), dict(\"foo\", 256)), \"foo\"))",
+                "output": "[123, 256]"
+            },
+            {
+                "template": "@(extract(array(dict(\"a\", 123, \"b\", \"xyz\", \"c\", true), dict(\"a\", 345, \"b\", \"zyx\", \"c\", false)), \"a\", \"c\"))",
+                "output": "[{a: 123, c: true}, {a: 345, c: false}]"
+            },
+            {
+                "template": "@(extract(array(dict(\"foo\", 123), dict(\"foo\", 256)), \"bar\"))",
+                "output": "ERROR"
             }
         ]
     },
@@ -500,15 +546,11 @@
                 "output": "(206) 555-1212"
             },
             {
-                "template": "@(format_urn(contact.urns.mailto[0]))",
-                "output": "foo@bar.com"
+                "template": "@(format_urn(urns.tel))",
+                "output": "(206) 555-1212"
             },
             {
-                "template": "@(format_urn(contact.urns.telegram[0]))",
-                "output": ""
-            },
-            {
-                "template": "@(format_urn(contact.urns[2]))",
+                "template": "@(format_urn(urns.mailto))",
                 "output": "foo@bar.com"
             },
             {
@@ -559,6 +601,10 @@
             {
                 "template": "@(json(10))",
                 "output": "10"
+            },
+            {
+                "template": "@(json(null))",
+                "output": "null"
             },
             {
                 "template": "@(json(contact.uuid))",
@@ -1111,23 +1157,23 @@
         "examples": [
             {
                 "template": "@(split(\"a b c\", \" \"))",
-                "output": "a, b, c"
+                "output": "[a, b, c]"
             },
             {
                 "template": "@(split(\"a\", \" \"))",
-                "output": "a"
+                "output": "[a]"
             },
             {
                 "template": "@(split(\"abc..d\", \".\"))",
-                "output": "abc, d"
+                "output": "[abc, d]"
             },
             {
                 "template": "@(split(\"a.b.c.\", \".\"))",
-                "output": "a, b, c"
+                "output": "[a, b, c]"
             },
             {
                 "template": "@(split(\"a|b,c  d\", \" .|,\"))",
-                "output": "a, b, c, d"
+                "output": "[a, b, c, d]"
             }
         ]
     },
@@ -1318,6 +1364,21 @@
             {
                 "template": "@(url_encode(10))",
                 "output": "10"
+            }
+        ]
+    },
+    {
+        "signature": "urn_parts(urn)",
+        "summary": "Parses a URN into its different parts",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(urn_parts(\"tel:+593979012345\"))",
+                "output": "{display: , path: +593979012345, scheme: tel}"
+            },
+            {
+                "template": "@(urn_parts(\"twitterid:3263621177#bobby\"))",
+                "output": "{display: bobby, path: 3263621177, scheme: twitterid}"
             }
         ]
     },
