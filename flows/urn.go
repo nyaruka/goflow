@@ -116,23 +116,13 @@ func (u *ContactURN) withoutQuery() urns.URN {
 	return urn
 }
 
-// Describe returns a representation of this type for error messages
-func (u *ContactURN) Describe() string { return "URN" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (u *ContactURN) Reduce(env utils.Environment) types.XPrimitive {
+// Context is called when this object is accessed in an expression
+func (u *ContactURN) Context(env utils.Environment) types.XValue {
 	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
 		return redactedURN
 	}
 	return types.NewXText(string(u.withoutQuery()))
 }
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (u *ContactURN) ToXJSON(env utils.Environment) types.XText {
-	return u.Reduce(env).ToXJSON(env)
-}
-
-var _ types.XValue = (*ContactURN)(nil)
 
 // URNList is the list of a contact's URNs
 type URNList []*ContactURN
@@ -196,22 +186,22 @@ func (l URNList) WithScheme(scheme string) URNList {
 }
 
 // Context returns this as an XArray - exposed in expressions as @contact.urns, @parent.contact.urns etc
-func (l URNList) Context() types.XValue {
+func (l URNList) Context(env utils.Environment) types.XValue {
 	array := types.NewXArray()
 	for _, urn := range l {
-		array.Append(urn)
+		array.Append(urn.Context(env))
 	}
 	return array
 }
 
 // MapContext returns a map of the highest priority URN for each scheme - exposed in expressions as @urns
-func (l URNList) MapContext() types.XValue {
+func (l URNList) MapContext(env utils.Environment) types.XValue {
 	byScheme := make(map[string]types.XValue)
 
 	for _, u := range l {
 		scheme := u.URN().Scheme()
 		if _, seen := byScheme[scheme]; !seen {
-			byScheme[scheme] = u
+			byScheme[scheme] = u.Context(env)
 		}
 	}
 

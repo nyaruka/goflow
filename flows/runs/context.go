@@ -38,7 +38,7 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 
 	case "urns":
 		if c.run.Contact() != nil {
-			return c.run.Contact().URNs().MapContext()
+			return c.run.Contact().URNs().MapContext(env)
 		}
 		return nil
 	case "fields":
@@ -98,7 +98,7 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 		return c.run.Contact()
 	case "urns":
 		if c.run.Contact() != nil {
-			return c.run.Contact().URNs().MapContext()
+			return c.run.Contact().URNs().MapContext(env)
 		}
 		return nil
 	case "fields":
