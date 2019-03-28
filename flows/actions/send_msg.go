@@ -123,6 +123,9 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 // Inspect inspects this object and any children
 func (a *SendMsgAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
+	if a.Templating != nil {
+		flows.InspectReference(&a.Templating.Template, inspect)
+	}
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children

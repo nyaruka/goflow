@@ -224,11 +224,6 @@ type TemplateTranslation interface {
 	Channel() ChannelReference
 }
 
-// TemplateAssets represents our interface to get a template
-type TemplateAssets interface {
-	ByName(name string) Template
-}
-
 // AssetSource is a source of assets
 type AssetSource interface {
 	Channels() ([]Channel, error)

@@ -274,6 +274,17 @@
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "msg_created"
             }
-        ]
+        ],
+        "inspection": {
+            "templates": [
+                "Hi Ryan Lewis, who's a good boy?",
+                "@contact.name",
+                "boy"
+            ],
+            "dependencies": [
+                "template[uuid=5722e1fd-fe32-4e74-ac78-3cf41a6adb7e,name=affirmation]"
+            ],
+            "results": []
+        }
     }
 ]
