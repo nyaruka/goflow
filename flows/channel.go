@@ -19,7 +19,7 @@ import (
 //
 // Examples:
 //
-//   @contact.channel -> My Android Phone
+//   @contact.channel -> {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}
 //   @contact.channel.name -> My Android Phone
 //   @contact.channel.address -> +12345671111
 //   @input.channel.uuid -> 57f1078f-88aa-46f4-a59a-948a5739c03d
@@ -70,38 +70,17 @@ func (c *Channel) HasParent() bool {
 }
 
 // Resolve resolves the given key when this channel is referenced in an expression
-func (c *Channel) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "uuid":
-		return types.NewXText(string(c.UUID()))
-	case "name":
-		return types.NewXText(c.Name())
-	case "address":
-		return types.NewXText(c.Address())
-	}
-
-	return types.NewXResolveError(c, key)
-}
-
-// Describe returns a representation of this type for error messages
-func (c *Channel) Describe() string { return "channel" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (c *Channel) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(c.Name())
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (c *Channel) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, c, "uuid", "name", "address").ToXJSON(env)
+func (c *Channel) Context(env utils.Environment) types.XValue {
+	return types.NewXDict(map[string]types.XValue{
+		"uuid":    types.NewXText(string(c.UUID())),
+		"name":    types.NewXText(c.Name()),
+		"address": types.NewXText(c.Address()),
+	})
 }
 
 func (c *Channel) String() string {
 	return fmt.Sprintf("%s (%s)", c.Address(), c.Name())
 }
-
-var _ types.XValue = (*Channel)(nil)
-var _ types.XResolvable = (*Channel)(nil)
 
 // ChannelAssets provides access to all channel assets
 type ChannelAssets struct {

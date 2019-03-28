@@ -55,7 +55,10 @@ func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
 	case "created_on":
 		return types.NewXDateTime(i.createdOn)
 	case "channel":
-		return i.channel
+		if i.channel != nil {
+			return i.channel.Context(env)
+		}
+		return nil
 	}
 
 	return types.NewXResolveError(i, key)

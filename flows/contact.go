@@ -273,11 +273,15 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 		}
 		return nil
 	case "groups":
-		return c.groups.Context()
+		return c.groups.Context(env)
 	case "fields":
 		return c.Fields().Context(env)
 	case "channel":
-		return c.PreferredChannel()
+		ch := c.PreferredChannel()
+		if ch != nil {
+			return ch.Context(env)
+		}
+		return nil
 	}
 
 	return types.NewXResolveError(c, key)
