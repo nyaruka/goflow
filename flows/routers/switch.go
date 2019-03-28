@@ -160,7 +160,7 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 	return r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
 }
 
-func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, map[string]string, error) {
+func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, types.XDict, error) {
 	for _, c := range r.Cases {
 		test := strings.ToLower(c.Type)
 
@@ -190,19 +190,27 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 		result := xtest(run.Environment(), args...)
 
 		// tests have to return either errors or test results
-		switch typedResult := result.(type) {
+		switch typed := result.(type) {
 		case types.XError:
 			// test functions can return an error
-			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typedResult.Error()))
-		case tests.XTestResult:
-			if typedResult.Matched() {
-				resultAsStr, xerr := types.ToXText(run.Environment(), typedResult.Match())
-				if xerr != nil {
-					return "", "", nil, xerr
-				}
+			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typed.Error()))
+		case types.XDict:
+			match := typed.Get("match")
+			extra := typed.Get("extra")
 
-				return resultAsStr.Native(), c.CategoryUUID, typedResult.Extra(), nil
+			extraAsDict, isDict := extra.(types.XDict)
+			if extra != nil && !isDict {
+				run.LogError(step, errors.Errorf("test %s returned non-dict extra", strings.ToUpper(test)))
 			}
+
+			resultAsStr, xerr := types.ToXText(run.Environment(), match)
+			if xerr != nil {
+				return "", "", nil, xerr
+			}
+
+			return resultAsStr.Native(), c.CategoryUUID, extraAsDict, nil
+		case nil:
+			continue
 		default:
 			panic(fmt.Sprintf("unexpected result type from test %v: %#v", xtest, result))
 		}

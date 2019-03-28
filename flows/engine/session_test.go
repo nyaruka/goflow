@@ -71,7 +71,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@contact.fields.age", "23", ""},
 		{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
 		{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: dict has no property 'favorite_icecream'"},
-		{"@(is_error(contact.fields.favorite_icecream))", "true", ""},
+		{"@(is_error(contact.fields.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
 		{"@(length(contact.fields))", "5", ""},
 
 		// simplifed field access
@@ -80,7 +80,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@fields.age", "23", ""},
 		{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
 		{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: dict has no property 'favorite_icecream'"},
-		{"@(is_error(fields.favorite_icecream))", "true", ""},
+		{"@(is_error(fields.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
 		{"@(length(fields))", "5", ""},
 
 		{"@input", "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3", ""},
@@ -94,7 +94,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@results.favorite_color", "red", ""},
 		{"@results.favorite_color.category", "Red", ""},
 		{"@results.favorite_icecream", "", "error evaluating @results.favorite_icecream: no such run result 'favorite_icecream'"},
-		{"@(is_error(results.favorite_icecream))", "true", ""},
+		{"@(is_error(results.favorite_icecream))", "{match: no such run result 'favorite_icecream'}", ""},
 		{"@(length(results))", "3", ""},
 
 		{"@run.status", "completed", ""},
