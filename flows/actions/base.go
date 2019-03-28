@@ -143,7 +143,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, references []*assets.Label
 }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []flows.Attachment, []string) {
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string) {
 	// localize and evaluate the message text
 	localizedText := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "text", []string{actionText}, languages)[0]
 	evaluatedText, err := run.EvaluateTemplate(localizedText)
@@ -153,7 +153,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 
 	// localize and evaluate the message attachments
 	translatedAttachments := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "attachments", actionAttachments, languages)
-	evaluatedAttachments := make([]flows.Attachment, 0, len(translatedAttachments))
+	evaluatedAttachments := make([]utils.Attachment, 0, len(translatedAttachments))
 	for n := range translatedAttachments {
 		evaluatedAttachment, err := run.EvaluateTemplate(translatedAttachments[n])
 		if err != nil {
@@ -162,7 +162,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 			logEvent(events.NewErrorEventf("attachment text evaluated to empty string, skipping"))
 			continue
 		}
-		evaluatedAttachments = append(evaluatedAttachments, flows.Attachment(evaluatedAttachment))
+		evaluatedAttachments = append(evaluatedAttachments, utils.Attachment(evaluatedAttachment))
 	}
 
 	// localize and evaluate the quick replies

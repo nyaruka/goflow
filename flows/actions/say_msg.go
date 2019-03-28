@@ -66,9 +66,9 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 		return nil
 	}
 
-	var attachments []flows.Attachment
+	var attachments []utils.Attachment
 	if localizedAudioURL != "" {
-		attachments = []flows.Attachment{flows.Attachment(fmt.Sprintf("audio:%s", localizedAudioURL))}
+		attachments = []utils.Attachment{utils.Attachment(fmt.Sprintf("audio:%s", localizedAudioURL))}
 	}
 
 	// an IVR flow must have been started with a connection

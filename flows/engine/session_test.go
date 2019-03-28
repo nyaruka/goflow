@@ -85,7 +85,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		{"@input", "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3", ""},
 		{"@input.text", "Hi there", ""},
-		{"@input.attachments", `[http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3]`, ""},
+		{"@input.attachments", `[image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]`, ""},
 		{"@(input.attachments[0])", "http://s3.amazon.com/bucket/test.jpg", ""},
 		{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
 		{"@input.channel.name", "My Android Phone", ""},

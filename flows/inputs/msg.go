@@ -24,7 +24,7 @@ type MsgInput struct {
 	baseInput
 	urn         *flows.ContactURN
 	text        string
-	attachments flows.AttachmentList
+	attachments []utils.Attachment
 }
 
 // NewMsgInput creates a new user input based on a message
@@ -54,7 +54,11 @@ func (i *MsgInput) Resolve(env utils.Environment, key string) types.XValue {
 	case "text":
 		return types.NewXText(i.text)
 	case "attachments":
-		return i.attachments
+		attachments := types.NewXArray()
+		for _, attachment := range i.attachments {
+			attachments.Append(types.NewXText(string(attachment)))
+		}
+		return attachments
 	}
 	return i.baseInput.Resolve(env, key)
 }
@@ -89,9 +93,9 @@ var _ flows.Input = (*MsgInput)(nil)
 
 type msgInputEnvelope struct {
 	baseInputEnvelope
-	URN         urns.URN             `json:"urn" validate:"omitempty,urn"`
-	Text        string               `json:"text"`
-	Attachments flows.AttachmentList `json:"attachments,omitempty"`
+	URN         urns.URN           `json:"urn" validate:"omitempty,urn"`
+	Text        string             `json:"text"`
+	Attachments []utils.Attachment `json:"attachments,omitempty"`
 }
 
 func readMsgInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Input, error) {
