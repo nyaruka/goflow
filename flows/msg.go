@@ -27,8 +27,8 @@ type MsgIn struct {
 type MsgOut struct {
 	BaseMsg
 
-	QuickReplies_ []string     `json:"quick_replies,omitempty"`
-	Template_     *MsgTemplate `json:"template,omitempty"`
+	QuickReplies_ []string       `json:"quick_replies,omitempty"`
+	Templating_   *MsgTemplating `json:"templating,omitempty"`
 }
 
 // NewMsgIn creates a new incoming message
@@ -45,7 +45,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment, quickReplies []string, template *MsgTemplate) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment, quickReplies []string, templating *MsgTemplating) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(utils.NewUUID()),
@@ -55,7 +55,7 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, atta
 			Attachments_: attachments,
 		},
 		QuickReplies_: quickReplies,
-		Template_:     template,
+		Templating_:   templating,
 	}
 }
 
@@ -89,35 +89,29 @@ func (m *MsgIn) SetExternalID(id string) { m.ExternalID_ = id }
 // QuickReplies returns the quick replies of this outgoing message
 func (m *MsgOut) QuickReplies() []string { return m.QuickReplies_ }
 
-// Template returns the template to use to send this message (if any)
-func (m *MsgOut) Template() *MsgTemplate { return m.Template_ }
+// Templating returns the templating to use to send this message (if any)
+func (m *MsgOut) Templating() *MsgTemplating { return m.Templating_ }
 
-// MsgTemplate represents a substituted message template, containing the uuid and name of the template that should be used as well
-// as the language and variables that should be substituted
-type MsgTemplate struct {
-	UUID_      assets.TemplateUUID `json:"uuid"`
-	Name_      string              `json:"name"`
-	Language_  utils.Language      `json:"language"`
-	Variables_ []string            `json:"template_variables"`
+// MsgTemplating represents any substituted message template that should be applied when sending this message
+type MsgTemplating struct {
+	Template_  assets.TemplateReference `json:"template"`
+	Language_  utils.Language           `json:"language"`
+	Variables_ []string                 `json:"template_variables"`
 }
 
-// UUID returns the uuid of the template that should be used in the template
-func (t MsgTemplate) UUID() assets.TemplateUUID { return t.UUID_ }
-
-// Name returns the name of the template that should be used in the template
-func (t MsgTemplate) Name() string { return t.Name_ }
+// Template returns the template this msg template is for
+func (t MsgTemplating) Template() assets.TemplateReference { return t.Template_ }
 
 // Language returns the language that should be used for the template
-func (t MsgTemplate) Language() utils.Language { return t.Language_ }
+func (t MsgTemplating) Language() utils.Language { return t.Language_ }
 
 // Variables returns the variables that should be substituted in the template
-func (t MsgTemplate) Variables() []string { return t.Variables_ }
+func (t MsgTemplating) Variables() []string { return t.Variables_ }
 
-// NewMsgTemplate creates and returns a new msg template
-func NewMsgTemplate(uuid assets.TemplateUUID, name string, language utils.Language, variables []string) *MsgTemplate {
-	return &MsgTemplate{
-		UUID_:      uuid,
-		Name_:      name,
+// NewMsgTemplating creates and returns a new msg template
+func NewMsgTemplating(template assets.TemplateReference, language utils.Language, variables []string) *MsgTemplating {
+	return &MsgTemplating{
+		Template_:  template,
 		Language_:  language,
 		Variables_: variables,
 	}

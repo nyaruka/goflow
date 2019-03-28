@@ -203,9 +203,11 @@
             "type": "send_msg",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi @contact.name, who's a good boy?",
-            "template": {
-                "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
-                "name": "missing",
+            "templating": {
+                "template": {
+                    "name": "missing",
+                    "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec"
+                },
                 "variables": [
                     "@contact.name",
                     "boy"
@@ -235,9 +237,11 @@
             "type": "send_msg",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi Ryan Lewis, who's a good boy?",
-            "template": {
-                "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
-                "name": "affirmation",
+            "templating": {
+                "template": {
+                    "name": "affirmation",
+                    "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e"
+                },
                 "variables": [
                     "@contact.name",
                     "boy"
@@ -255,9 +259,11 @@
                     },
                     "text": "Hi Ryan Lewis, who's an excellent boy?",
                     "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                    "template": {
-                        "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
-                        "name": "affirmation",
+                    "templating": {
+                        "template": {
+                            "name": "affirmation",
+                            "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e"
+                        },
                         "language": "eng",
                         "template_variables": [
                             "Ryan Lewis",

@@ -74,34 +74,34 @@ func (t *TemplateTranslation) Substitute(vars []string) string {
 // TemplateAssets is our type for all the templates in an environment
 type TemplateAssets struct {
 	templates []*Template
-	byName    map[string]*Template
+	byUUID    map[assets.TemplateUUID]*Template
 }
 
 // NewTemplateAssets creates a new template list
 func NewTemplateAssets(ts []assets.Template) *TemplateAssets {
 	templates := make([]*Template, len(ts))
-	byName := make(map[string]*Template)
+	byUUID := make(map[assets.TemplateUUID]*Template)
 	for i, t := range ts {
 		template := NewTemplate(t)
 		templates[i] = template
-		byName[t.Name()] = template
+		byUUID[t.UUID()] = template
 	}
 
 	return &TemplateAssets{
 		templates: templates,
-		byName:    byName,
+		byUUID:    byUUID,
 	}
 }
 
 // FindTranslation looks through our list of templates to find the template matching the passed in name
 // If no template or translation is found then empty string is returned
-func (l *TemplateAssets) FindTranslation(name string, channel *assets.ChannelReference, langs []utils.Language) *TemplateTranslation {
+func (l *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, langs []utils.Language) *TemplateTranslation {
 	// no channel, can't match to a template
 	if channel == nil {
 		return nil
 	}
 
-	template := l.byName[name]
+	template := l.byUUID[uuid]
 
 	// not found, no template
 	if template == nil {

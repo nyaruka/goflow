@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestChannel(t *testing.T) {
+func TestTemplate(t *testing.T) {
 	channel := assets.ChannelReference{
 		Name: "Test Channel",
 		UUID: assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"),

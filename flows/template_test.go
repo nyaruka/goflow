@@ -38,21 +38,21 @@ func TestTemplates(t *testing.T) {
 	tas := NewTemplateAssets([]assets.Template{template})
 
 	tcs := []struct {
-		Name      string
+		UUID      assets.TemplateUUID
 		Channel   *assets.ChannelReference
 		Languages []utils.Language
 		Variables []string
 		Expected  string
 	}{
-		{"greeting", channel1, []utils.Language{"eng", "spa"}, []string{"Chef"}, "Hello Chef"},
-		{"greeting", channel1, []utils.Language{"deu", "spa"}, []string{"Chef"}, "Hola Chef"},
-		{"greeting", nil, []utils.Language{"deu", "spa"}, []string{"Chef"}, ""},
-		{"greeting", channel1, []utils.Language{"deu"}, []string{"Chef"}, ""},
-		{"missing", channel1, []utils.Language{"eng", "spa"}, []string{"Chef"}, ""},
+		{"c520cbda-e118-440f-aaf6-c0485088384f", channel1, []utils.Language{"eng", "spa"}, []string{"Chef"}, "Hello Chef"},
+		{"c520cbda-e118-440f-aaf6-c0485088384f", channel1, []utils.Language{"deu", "spa"}, []string{"Chef"}, "Hola Chef"},
+		{"c520cbda-e118-440f-aaf6-c0485088384f", nil, []utils.Language{"deu", "spa"}, []string{"Chef"}, ""},
+		{"c520cbda-e118-440f-aaf6-c0485088384f", channel1, []utils.Language{"deu"}, []string{"Chef"}, ""},
+		{"8c5d4910-114a-4521-ba1d-bde8b024865a", channel1, []utils.Language{"eng", "spa"}, []string{"Chef"}, ""},
 	}
 
 	for _, tc := range tcs {
-		tr := tas.FindTranslation(tc.Name, tc.Channel, tc.Languages)
+		tr := tas.FindTranslation(tc.UUID, tc.Channel, tc.Languages)
 		if tr == nil {
 			assert.Equal(t, "", tc.Expected)
 			continue
