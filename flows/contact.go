@@ -265,9 +265,13 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "created_on":
 		return types.NewXDateTime(c.createdOn)
 	case "urns":
-		return c.urns.Context()
+		return c.urns.Context(env)
 	case "urn":
-		return c.PreferredURN()
+		urn := c.PreferredURN()
+		if urn != nil {
+			return urn.Context(env)
+		}
+		return nil
 	case "groups":
 		return c.groups.Context()
 	case "fields":
