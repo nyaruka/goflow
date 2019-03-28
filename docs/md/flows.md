@@ -745,7 +745,9 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
     "template": {
         "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
         "name": "revive_issue",
-        "variables": null
+        "variables": [
+            "@contact.name"
+        ]
     }
 }
 ```
