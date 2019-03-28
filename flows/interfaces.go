@@ -362,15 +362,13 @@ type Input interface {
 }
 
 type Step interface {
-	types.XValue
-	types.XResolvable
-
 	UUID() StepUUID
 	NodeUUID() NodeUUID
 	ExitUUID() ExitUUID
 	ArrivedOn() time.Time
 
 	Leave(ExitUUID)
+	Context(utils.Environment) types.XValue
 }
 
 type Engine interface {

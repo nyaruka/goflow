@@ -32,11 +32,12 @@ func TestStep(t *testing.T) {
 
 	// test use in expressions
 	env := utils.NewEnvironmentBuilder().Build()
-	assert.Equal(t, "step", step.Describe())
-	assert.Equal(t, types.NewXText("c00e5d67-c275-4389-aded-7d8b151cbd5b"), step.Resolve(env, "UUID"))
-	assert.Equal(t, types.NewXDateTime(d), step.Resolve(env, "Arrived_On"))
-	assert.Equal(t, types.NewXText("c00e5d67-c275-4389-aded-7d8b151cbd5b"), step.Reduce(env))
-	assert.Equal(t, types.NewXText(`{"arrived_on":"2018-10-26T14:50:31.234567Z","exit_uuid":"","node_uuid":"5fb4f555-7662-4c4c-8387-226e359526e4","uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), step.ToXJSON(env))
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+		"arrived_on": types.NewXDateTime(d),
+		"exit_uuid":  types.XTextEmpty,
+		"node_uuid":  types.NewXText("5fb4f555-7662-4c4c-8387-226e359526e4"),
+		"uuid":       types.NewXText("c00e5d67-c275-4389-aded-7d8b151cbd5b"),
+	}), step.Context(env))
 
 	// test marshaling
 	marshaled, err := json.Marshal(step)

@@ -2,7 +2,6 @@ package tests_test
 
 import (
 	"fmt"
-	"strings"
 	"testing"
 	"time"
 
@@ -22,33 +21,6 @@ var xd = types.NewXDateTime
 var xt = types.NewXTime
 var result = tests.NewTrueResult
 var resultWithExtra = tests.NewTrueResultWithExtra
-
-type testResolvable struct{}
-
-func (r *testResolvable) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "foo":
-		return types.NewXText("bar")
-	case "zed":
-		return types.NewXNumberFromInt(123)
-	case "missing":
-		return nil
-	default:
-		return types.NewXResolveError(r, key)
-	}
-}
-
-func (r *testResolvable) Describe() string { return "test" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (r *testResolvable) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText("hello")
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (r *testResolvable) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, r, "foo", "zed").ToXJSON(env)
-}
 
 var kgl, _ = time.LoadLocation("Africa/Kigali")
 
@@ -278,8 +250,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		"int1":  types.NewXNumberFromInt(1),
 		"int2":  types.NewXNumberFromInt(2),
 		"array": types.NewXArray(xs("one"), xs("two"), xs("three")),
-		"thing": &testResolvable{},
-		"err":   types.NewXErrorf("an error"),
+		"thing": types.NewXDict(map[string]types.XValue{
+			"foo":     types.NewXText("bar"),
+			"zed":     types.NewXNumberFromInt(123),
+			"missing": nil,
+		}),
+		"err": types.NewXErrorf("an error"),
 	})
 
 	evalTests := []struct {
@@ -292,7 +268,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@(is_error(round("foo", "bar")))`, "{match: error calling ROUND: unable to convert \"foo\" to a number}", false},
 		{`@(is_error(err))`, "{match: an error}", false},
 		{"@(is_error(thing.foo))", "", false},
-		{"@(is_error(thing.xxx))", "{match: test has no property 'xxx'}", false},
+		{"@(is_error(thing.xxx))", "{match: dict has no property 'xxx'}", false},
 		{"@(is_error(1 / 0))", "{match: division by zero}", false},
 	}
 
