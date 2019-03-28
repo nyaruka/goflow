@@ -93,7 +93,7 @@ func NewTemplateAssets(ts []assets.Template) *TemplateAssets {
 	}
 }
 
-// FindTranslation looks through our list of templates to find the template matching the passed in name
+// FindTranslation looks through our list of templates to find the template matching the passed in uuid
 // If no template or translation is found then empty string is returned
 func (l *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, langs []utils.Language) *TemplateTranslation {
 	// no channel, can't match to a template
