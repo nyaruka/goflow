@@ -2,6 +2,7 @@ package flows
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -18,8 +19,11 @@ func NewTemplate(t assets.Template) *Template {
 	return &Template{Template: t}
 }
 
+// Asset returns the underlying asset
+func (t *Template) Asset() assets.Template { return t.Template }
+
 // FindTranslation finds the matching translation for the passed in channel and languages (in priority order)
-func (t *Template) FindTranslation(channel assets.ChannelUUID, langs []utils.Language) TemplateContent {
+func (t *Template) FindTranslation(channel assets.ChannelUUID, langs []utils.Language) *TemplateTranslation {
 	// first iterate through and find all translations that are for this channel
 	matches := make(map[utils.Language]assets.TemplateTranslation)
 	for _, tr := range t.Template.Translations() {
@@ -32,28 +36,37 @@ func (t *Template) FindTranslation(channel assets.ChannelUUID, langs []utils.Lan
 	for _, lang := range langs {
 		tr := matches[lang]
 		if tr != nil {
-			return TemplateContent(tr.Content())
+			return NewTemplateTranslation(tr)
 		}
 	}
 
-	return NilTemplateContent
+	return nil
+}
+
+// TemplateTranslation represents a single translation for a template
+type TemplateTranslation struct {
+	assets.TemplateTranslation
+}
+
+// NewTemplateTranslation returns a new TemplateTranslation for the passed in asset
+func NewTemplateTranslation(t assets.TemplateTranslation) *TemplateTranslation {
+	return &TemplateTranslation{TemplateTranslation: t}
 }
 
 // Asset returns the underlying asset
-func (t *Template) Asset() assets.Template { return t.Template }
+func (t *TemplateTranslation) Asset() assets.TemplateTranslation { return t.TemplateTranslation }
 
-// NilTemplateContent is our constant for nil content
-const NilTemplateContent = TemplateContent("")
-
-// TemplateContent represents the translated content for a template
-type TemplateContent string
+var templateRegex = regexp.MustCompile(`({{\d+}})`)
 
 // Substitute substitutes the passed in variables in our template
-func (c TemplateContent) Substitute(vars []string) string {
-	s := string(c)
+func (t *TemplateTranslation) Substitute(vars []string) string {
+	s := string(t.Content())
 	for i, v := range vars {
-		s = strings.ReplaceAll(s, fmt.Sprintf("{{%d}}", i), v)
+		s = strings.ReplaceAll(s, fmt.Sprintf("{{%d}}", i+1), v)
 	}
+
+	// replace any remaining unmatched items
+	s = templateRegex.ReplaceAllString(s, "")
 
 	return s
 }
@@ -82,17 +95,17 @@ func NewTemplateAssets(ts []assets.Template) *TemplateAssets {
 
 // FindTranslation looks through our list of templates to find the template matching the passed in name
 // If no template or translation is found then empty string is returned
-func (l *TemplateAssets) FindTranslation(name string, channel *assets.ChannelReference, langs []utils.Language) TemplateContent {
+func (l *TemplateAssets) FindTranslation(name string, channel *assets.ChannelReference, langs []utils.Language) *TemplateTranslation {
 	// no channel, can't match to a template
 	if channel == nil {
-		return ""
+		return nil
 	}
 
 	template := l.byName[name]
 
 	// not found, no template
 	if template == nil {
-		return ""
+		return nil
 	}
 
 	// look through our translations looking for a match by both channel and translation

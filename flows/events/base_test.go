@@ -242,7 +242,6 @@ func TestEventMarshaling(t *testing.T) {
 					"Hi there",
 					nil,
 					nil,
-					nil,
 					nil)),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
