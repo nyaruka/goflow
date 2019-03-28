@@ -116,7 +116,7 @@ func (u *ContactURN) withoutQuery() urns.URN {
 	return urn
 }
 
-// Context is called when this object is accessed in an expression
+// Context returns a representation of this object for use in expressions
 func (u *ContactURN) Context(env utils.Environment) types.XValue {
 	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
 		return redactedURN
@@ -185,7 +185,7 @@ func (l URNList) WithScheme(scheme string) URNList {
 	return matching
 }
 
-// Context returns this as an XArray - exposed in expressions as @contact.urns, @parent.contact.urns etc
+// Context returns a representation of this object for use in expressions
 func (l URNList) Context(env utils.Environment) types.XValue {
 	array := types.NewXArray()
 	for _, urn := range l {

@@ -75,8 +75,8 @@ func (g *Group) Reference() *assets.GroupReference {
 	return assets.NewGroupReference(g.UUID(), g.Name())
 }
 
-// Context is called when this object is accessed in an expression
-func (g *Group) Context() types.XValue {
+// Context returns a representation of this object for use in expressions
+func (g *Group) Context(env utils.Environment) types.XValue {
 	return types.NewXDict(map[string]types.XValue{
 		"uuid": types.NewXText(string(g.UUID())),
 		"name": types.NewXText(g.Name()),
@@ -154,11 +154,11 @@ func (l *GroupList) Count() int {
 	return len(l.groups)
 }
 
-// Context is called when this object needs to be reduced to a primitive
-func (l GroupList) Context() types.XValue {
+// Context returns a representation of this object for use in expressions
+func (l GroupList) Context(env utils.Environment) types.XValue {
 	array := types.NewXArray()
 	for _, group := range l.groups {
-		array.Append(group.Context())
+		array.Append(group.Context(env))
 	}
 	return array
 }
