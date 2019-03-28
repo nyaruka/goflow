@@ -271,7 +271,7 @@ func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 	case "contact":
 		return r.Contact()
 	case "flow":
-		return r.Flow()
+		return r.Flow().Context(env)
 	case "status":
 		return types.NewXText(string(r.Status()))
 	case "results":
