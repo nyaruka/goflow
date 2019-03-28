@@ -79,11 +79,6 @@ func NewIncomingCallTrigger(env utils.Environment, flow *assets.FlowReference, c
 	}
 }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (t *ChannelTrigger) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, t, "type", "params").ToXJSON(env)
-}
-
 var _ flows.Trigger = (*ChannelTrigger)(nil)
 
 //------------------------------------------------------------------------------------------

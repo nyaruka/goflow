@@ -2,7 +2,6 @@ package triggers
 
 import (
 	"encoding/json"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -78,29 +77,12 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 	return nil
 }
 
-// Resolve resolves the given key when this trigger is referenced in an expression
-func (t *baseTrigger) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "type":
-		return types.NewXText(t.type_)
-	case "params":
-		return t.params
-	}
-
-	return types.NewXResolveError(t, key)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (t *baseTrigger) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, t, "type", "params").ToXJSON(env)
-}
-
-// Describe returns a representation of this type for error messages
-func (t *baseTrigger) Describe() string { return "trigger" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (t *baseTrigger) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(string(t.flow.UUID))
+// Context returns a representation of this object for use in expressions
+func (t *baseTrigger) Context(env utils.Environment) types.XValue {
+	return types.NewXDict(map[string]types.XValue{
+		"type":   types.NewXText(t.type_),
+		"params": t.params,
+	})
 }
 
 // EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
