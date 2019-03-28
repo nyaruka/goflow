@@ -290,6 +290,10 @@
             {
                 "template": "@(default(datetime(\"invalid-date\"), \"today\"))",
                 "output": "today"
+            },
+            {
+                "template": "@(default(format_urn(\"invalid-urn\"), \"ok\"))",
+                "output": "ok"
             }
         ]
     },
@@ -597,6 +601,10 @@
             {
                 "template": "@(json(10))",
                 "output": "10"
+            },
+            {
+                "template": "@(json(null))",
+                "output": "null"
             },
             {
                 "template": "@(json(contact.uuid))",

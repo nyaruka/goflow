@@ -47,7 +47,10 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 func (i *MsgInput) Resolve(env utils.Environment, key string) types.XValue {
 	switch strings.ToLower(key) {
 	case "urn":
-		return i.urn
+		if i.urn != nil {
+			return i.urn.Context(env)
+		}
+		return nil
 	case "text":
 		return types.NewXText(i.text)
 	case "attachments":

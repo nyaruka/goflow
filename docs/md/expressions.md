@@ -488,6 +488,7 @@ Returns `value` if is not empty or an error, otherwise it returns `default`.
 @(default(array(1, 2), "value")) → [1, 2]
 @(default(array(), "value")) → value
 @(default(datetime("invalid-date"), "today")) → today
+@(default(format_urn("invalid-urn"), "ok")) → ok
 ```
 
 <a name="function:dict"></a>
@@ -740,6 +741,7 @@ Returns the JSON representation of `value`.
 ```objectivec
 @(json("string")) → "string"
 @(json(10)) → 10
+@(json(null)) → null
 @(json(contact.uuid)) → "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 ```
 
