@@ -97,7 +97,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@step`, new: `@input`},
 		{old: `@step.value`, new: `@input`},
 		{old: `@step.text`, new: `@input.text`},
-		{old: `@step.attachments`, new: `@input.attachments`},
+		{old: `@step.attachments`, new: `@(map_extract(map_apply(input.attachments, "attachment_parts"), "url"))`},
 		{old: `@step.attachments.0`, new: `@(attachment_parts(input.attachments[0]).url)`},
 		{old: `@step.attachments.10`, new: `@(attachment_parts(input.attachments[10]).url)`, dontEval: true}, // out of range
 		{old: `@step.time`, new: `@input.created_on`},

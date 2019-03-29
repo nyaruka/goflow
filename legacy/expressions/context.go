@@ -296,16 +296,20 @@ func newMigrationVars() map[string]interface{} {
 				"contact":     contact,
 				"__default__": "input",
 				"value":       "input",
-			},
-			base: "input",
-			baseVars: map[string]interface{}{
-				"text": "text",
 				"attachments": &arrayMapper{
-					varMapper: varMapper{base: "attachments"},
+					varMapper: varMapper{
+						substitutions: map[string]interface{}{
+							"__default__": `map_extract(map_apply(input.attachments, "attachment_parts"), "url")`,
+						},
+					},
 					substitutionFunc: func(index string) string {
 						return fmt.Sprintf("attachment_parts(input.attachments[%s]).url", index)
 					},
 				},
+			},
+			base: "input",
+			baseVars: map[string]interface{}{
+				"text": "text",
 				"time": "created_on",
 			},
 		},
