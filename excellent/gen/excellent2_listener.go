@@ -1,4 +1,4 @@
-// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent2.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -19,6 +19,9 @@ type Excellent2Listener interface {
 	// EnterFunctionCall is called when entering the functionCall production.
 	EnterFunctionCall(c *FunctionCallContext)
 
+	// EnterName is called when entering the name production.
+	EnterName(c *NameContext)
+
 	// EnterTrue is called when entering the true production.
 	EnterTrue(c *TrueContext)
 
@@ -27,9 +30,6 @@ type Excellent2Listener interface {
 
 	// EnterArrayLookup is called when entering the arrayLookup production.
 	EnterArrayLookup(c *ArrayLookupContext)
-
-	// EnterContextReference is called when entering the contextReference production.
-	EnterContextReference(c *ContextReferenceContext)
 
 	// EnterTextLiteral is called when entering the textLiteral production.
 	EnterTextLiteral(c *TextLiteralContext)
@@ -82,6 +82,9 @@ type Excellent2Listener interface {
 	// ExitFunctionCall is called when exiting the functionCall production.
 	ExitFunctionCall(c *FunctionCallContext)
 
+	// ExitName is called when exiting the name production.
+	ExitName(c *NameContext)
+
 	// ExitTrue is called when exiting the true production.
 	ExitTrue(c *TrueContext)
 
@@ -90,9 +93,6 @@ type Excellent2Listener interface {
 
 	// ExitArrayLookup is called when exiting the arrayLookup production.
 	ExitArrayLookup(c *ArrayLookupContext)
-
-	// ExitContextReference is called when exiting the contextReference production.
-	ExitContextReference(c *ContextReferenceContext)
 
 	// ExitTextLiteral is called when exiting the textLiteral production.
 	ExitTextLiteral(c *TextLiteralContext)

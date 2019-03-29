@@ -1,4 +1,4 @@
-// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent2.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -44,6 +44,12 @@ func (s *BaseExcellent2Listener) EnterFunctionCall(ctx *FunctionCallContext) {}
 // ExitFunctionCall is called when production functionCall is exited.
 func (s *BaseExcellent2Listener) ExitFunctionCall(ctx *FunctionCallContext) {}
 
+// EnterName is called when production name is entered.
+func (s *BaseExcellent2Listener) EnterName(ctx *NameContext) {}
+
+// ExitName is called when production name is exited.
+func (s *BaseExcellent2Listener) ExitName(ctx *NameContext) {}
+
 // EnterTrue is called when production true is entered.
 func (s *BaseExcellent2Listener) EnterTrue(ctx *TrueContext) {}
 
@@ -61,12 +67,6 @@ func (s *BaseExcellent2Listener) EnterArrayLookup(ctx *ArrayLookupContext) {}
 
 // ExitArrayLookup is called when production arrayLookup is exited.
 func (s *BaseExcellent2Listener) ExitArrayLookup(ctx *ArrayLookupContext) {}
-
-// EnterContextReference is called when production contextReference is entered.
-func (s *BaseExcellent2Listener) EnterContextReference(ctx *ContextReferenceContext) {}
-
-// ExitContextReference is called when production contextReference is exited.
-func (s *BaseExcellent2Listener) ExitContextReference(ctx *ContextReferenceContext) {}
 
 // EnterTextLiteral is called when production textLiteral is entered.
 func (s *BaseExcellent2Listener) EnterTextLiteral(ctx *TextLiteralContext) {}

@@ -76,8 +76,8 @@ func (v *auditContextVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) inte
 	return nil
 }
 
-// VisitContextReference deals with references to variables in the context such as "foo"
-func (v *auditContextVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
+// VisitName deals with references to variables in the context such as "foo"
+func (v *auditContextVisitor) VisitName(ctx *gen.NameContext) interface{} {
 	path := []string{ctx.GetText()}
 	v.callback(path)
 	return path

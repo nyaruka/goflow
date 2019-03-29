@@ -1,4 +1,4 @@
-// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent2.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent2
 import (
@@ -481,6 +481,50 @@ func (s *FunctionCallContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
 	}
 }
 
+type NameContext struct {
+	*AtomContext
+}
+
+func NewNameContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NameContext {
+	var p = new(NameContext)
+
+	p.AtomContext = NewEmptyAtomContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*AtomContext))
+
+	return p
+}
+
+func (s *NameContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NameContext) NAME() antlr.TerminalNode {
+	return s.GetToken(Excellent2ParserNAME, 0)
+}
+
+func (s *NameContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.EnterName(s)
+	}
+}
+
+func (s *NameContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.ExitName(s)
+	}
+}
+
+func (s *NameContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case Excellent2Visitor:
+		return t.VisitName(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
 type TrueContext struct {
 	*AtomContext
 }
@@ -631,50 +675,6 @@ func (s *ArrayLookupContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 	switch t := visitor.(type) {
 	case Excellent2Visitor:
 		return t.VisitArrayLookup(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type ContextReferenceContext struct {
-	*AtomContext
-}
-
-func NewContextReferenceContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ContextReferenceContext {
-	var p = new(ContextReferenceContext)
-
-	p.AtomContext = NewEmptyAtomContext()
-	p.parser = parser
-	p.CopyFrom(ctx.(*AtomContext))
-
-	return p
-}
-
-func (s *ContextReferenceContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *ContextReferenceContext) NAME() antlr.TerminalNode {
-	return s.GetToken(Excellent2ParserNAME, 0)
-}
-
-func (s *ContextReferenceContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.EnterContextReference(s)
-	}
-}
-
-func (s *ContextReferenceContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.ExitContextReference(s)
-	}
-}
-
-func (s *ContextReferenceContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case Excellent2Visitor:
-		return t.VisitContextReference(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -835,7 +835,7 @@ func (p *Excellent2Parser) atom(_p int) (localctx IAtomContext) {
 		}
 
 	case 2:
-		localctx = NewContextReferenceContext(p, localctx)
+		localctx = NewNameContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{

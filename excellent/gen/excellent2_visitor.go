@@ -1,4 +1,4 @@
-// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent2.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -19,6 +19,9 @@ type Excellent2Visitor interface {
 	// Visit a parse tree produced by Excellent2Parser#functionCall.
 	VisitFunctionCall(ctx *FunctionCallContext) interface{}
 
+	// Visit a parse tree produced by Excellent2Parser#name.
+	VisitName(ctx *NameContext) interface{}
+
 	// Visit a parse tree produced by Excellent2Parser#true.
 	VisitTrue(ctx *TrueContext) interface{}
 
@@ -27,9 +30,6 @@ type Excellent2Visitor interface {
 
 	// Visit a parse tree produced by Excellent2Parser#arrayLookup.
 	VisitArrayLookup(ctx *ArrayLookupContext) interface{}
-
-	// Visit a parse tree produced by Excellent2Parser#contextReference.
-	VisitContextReference(ctx *ContextReferenceContext) interface{}
 
 	// Visit a parse tree produced by Excellent2Parser#textLiteral.
 	VisitTextLiteral(ctx *TextLiteralContext) interface{}

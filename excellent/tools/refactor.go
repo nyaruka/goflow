@@ -128,8 +128,8 @@ func (v *refactorVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interfac
 	return fmt.Sprintf("%s[%s]", v.Visit(ctx.Atom()), v.Visit(ctx.Expression()))
 }
 
-// VisitContextReference deals with references to variables in the context such as "foo"
-func (v *refactorVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
+// VisitName deals with references to variables in the context such as "foo"
+func (v *refactorVisitor) VisitName(ctx *gen.NameContext) interface{} {
 	return ctx.GetText()
 }
 

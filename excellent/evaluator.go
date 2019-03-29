@@ -181,8 +181,8 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	return types.Resolve(v.env, context, lookup.Native())
 }
 
-// VisitContextReference deals with references to variables in the context such as "foo"
-func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
+// VisitName deals with references to variables in the context such as "foo"
+func (v *visitor) VisitName(ctx *gen.NameContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
 
 	return types.Resolve(v.env, v.resolver, key)
