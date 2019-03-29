@@ -34,24 +34,6 @@ The following types appear in the context:
  * [URN](#context:urn)
 
 <div class="context">
-<a name="context:attachment"></a>
-
-## Attachment
-
-Is a media attachment on a message, and it has the following properties which can be accessed:
-
- * `content_type` the MIME type of the attachment
- * `url` the URL of the attachment
-
-Examples:
-
-
-```objectivec
-@(input.attachments[0].content_type) → image/jpeg
-@(input.attachments[0].url) → http://s3.amazon.com/bucket/test.jpg
-@(json(input.attachments[0])) → {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
-```
-
 <a name="context:channel"></a>
 
 ## Channel
@@ -181,8 +163,8 @@ Examples:
 @input → Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
 @input.type → msg
 @input.text → Hi there
-@input.attachments → [http://s3.amazon.com/bucket/test.jpg, http://s3.amazon.com/bucket/test.mp3]
-@(json(input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":"tel:+12065551212","uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
+@input.attachments → [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]
+@(json(input)) → {"attachments":["image/jpeg:http://s3.amazon.com/bucket/test.jpg","audio/mp3:http://s3.amazon.com/bucket/test.mp3"],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":"tel:+12065551212","uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
 ```
 
 <a name="context:result"></a>
@@ -320,6 +302,17 @@ Takes multiple `values` and returns them as an array.
 @(join(array("a", "b", "c"), "|")) → a|b|c
 @(length(array())) → 0
 @(length(array("a", "b"))) → 2
+```
+
+<a name="function:attachment_parts"></a>
+
+## attachment_parts(attachment)
+
+Parses an attachment into its different parts
+
+
+```objectivec
+@(attachment_parts("image/jpeg:https://example.com/test.jpg")) → {content_type: image/jpeg, url: https://example.com/test.jpg}
 ```
 
 <a name="function:boolean"></a>
