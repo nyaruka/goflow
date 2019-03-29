@@ -1,7 +1,6 @@
 package excellent
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -118,12 +117,6 @@ func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
 // VisitNumberLiteral deals with numbers like 123 or 1.5
 func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) interface{} {
 	return types.RequireXNumberFromString(ctx.GetText())
-}
-
-func (v *visitor) VisitName(ctx *gen.NameContext) interface{} {
-	fmt.Printf("VisitName text=%s\n", ctx.GetText())
-
-	return ctx.GetText()
 }
 
 // VisitNamedValue deals with identifiers which are function names or root variables in the context
