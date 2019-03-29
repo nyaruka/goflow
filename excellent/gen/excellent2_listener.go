@@ -19,9 +19,6 @@ type Excellent2Listener interface {
 	// EnterFunctionCall is called when entering the functionCall production.
 	EnterFunctionCall(c *FunctionCallContext)
 
-	// EnterName is called when entering the name production.
-	EnterName(c *NameContext)
-
 	// EnterTrue is called when entering the true production.
 	EnterTrue(c *TrueContext)
 
@@ -31,11 +28,17 @@ type Excellent2Listener interface {
 	// EnterArrayLookup is called when entering the arrayLookup production.
 	EnterArrayLookup(c *ArrayLookupContext)
 
+	// EnterContextReference is called when entering the contextReference production.
+	EnterContextReference(c *ContextReferenceContext)
+
 	// EnterTextLiteral is called when entering the textLiteral production.
 	EnterTextLiteral(c *TextLiteralContext)
 
 	// EnterNumberLiteral is called when entering the numberLiteral production.
 	EnterNumberLiteral(c *NumberLiteralContext)
+
+	// EnterNamedValue is called when entering the namedValue production.
+	EnterNamedValue(c *NamedValueContext)
 
 	// EnterParentheses is called when entering the parentheses production.
 	EnterParentheses(c *ParenthesesContext)
@@ -64,9 +67,6 @@ type Excellent2Listener interface {
 	// EnterExponent is called when entering the exponent production.
 	EnterExponent(c *ExponentContext)
 
-	// EnterFnname is called when entering the fnname production.
-	EnterFnname(c *FnnameContext)
-
 	// EnterFunctionParameters is called when entering the functionParameters production.
 	EnterFunctionParameters(c *FunctionParametersContext)
 
@@ -82,9 +82,6 @@ type Excellent2Listener interface {
 	// ExitFunctionCall is called when exiting the functionCall production.
 	ExitFunctionCall(c *FunctionCallContext)
 
-	// ExitName is called when exiting the name production.
-	ExitName(c *NameContext)
-
 	// ExitTrue is called when exiting the true production.
 	ExitTrue(c *TrueContext)
 
@@ -94,11 +91,17 @@ type Excellent2Listener interface {
 	// ExitArrayLookup is called when exiting the arrayLookup production.
 	ExitArrayLookup(c *ArrayLookupContext)
 
+	// ExitContextReference is called when exiting the contextReference production.
+	ExitContextReference(c *ContextReferenceContext)
+
 	// ExitTextLiteral is called when exiting the textLiteral production.
 	ExitTextLiteral(c *TextLiteralContext)
 
 	// ExitNumberLiteral is called when exiting the numberLiteral production.
 	ExitNumberLiteral(c *NumberLiteralContext)
+
+	// ExitNamedValue is called when exiting the namedValue production.
+	ExitNamedValue(c *NamedValueContext)
 
 	// ExitParentheses is called when exiting the parentheses production.
 	ExitParentheses(c *ParenthesesContext)
@@ -126,9 +129,6 @@ type Excellent2Listener interface {
 
 	// ExitExponent is called when exiting the exponent production.
 	ExitExponent(c *ExponentContext)
-
-	// ExitFnname is called when exiting the fnname production.
-	ExitFnname(c *FnnameContext)
 
 	// ExitFunctionParameters is called when exiting the functionParameters production.
 	ExitFunctionParameters(c *FunctionParametersContext)

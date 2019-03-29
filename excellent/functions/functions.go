@@ -21,19 +21,8 @@ import (
 var nanosPerSecond = decimal.RequireFromString("1000000000")
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
-// XFunction defines the interface that Excellent functions must implement
-type XFunction func(env utils.Environment, args ...types.XValue) types.XValue
-
-// XFUNCTIONS is our map of functions available in Excellent which aren't tests
-var XFUNCTIONS = map[string]XFunction{}
-
-// RegisterXFunction registers a new function in Excellent
-func RegisterXFunction(name string, function XFunction) {
-	XFUNCTIONS[name] = function
-}
-
 func init() {
-	std := map[string]XFunction{
+	std := map[string]types.XFunction{
 		// type conversion
 		"text":     OneArgFunction(Text),
 		"boolean":  OneArgFunction(Boolean),

@@ -23,10 +23,6 @@ func (v *BaseExcellent2Visitor) VisitFunctionCall(ctx *FunctionCallContext) inte
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseExcellent2Visitor) VisitName(ctx *NameContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
 func (v *BaseExcellent2Visitor) VisitTrue(ctx *TrueContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -39,11 +35,19 @@ func (v *BaseExcellent2Visitor) VisitArrayLookup(ctx *ArrayLookupContext) interf
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseExcellent2Visitor) VisitContextReference(ctx *ContextReferenceContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseExcellent2Visitor) VisitTextLiteral(ctx *TextLiteralContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
 func (v *BaseExcellent2Visitor) VisitNumberLiteral(ctx *NumberLiteralContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent2Visitor) VisitNamedValue(ctx *NamedValueContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -80,10 +84,6 @@ func (v *BaseExcellent2Visitor) VisitEquality(ctx *EqualityContext) interface{} 
 }
 
 func (v *BaseExcellent2Visitor) VisitExponent(ctx *ExponentContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent2Visitor) VisitFnname(ctx *FnnameContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

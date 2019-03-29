@@ -3,6 +3,7 @@ package excellent
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -181,6 +182,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{"@(TITLE(string1))", xs("Foo")},
 		{"@(MISSING(string1))", ERROR},
 		{"@(TITLE(string1, string2))", ERROR},
+		{"@(TITLE)", functions.Lookup("title")}, // functions are values too
 
 		{"@(1 = asdf)", ERROR},       // asdf isn't a valid context item
 		{"@(asdf = 1)", ERROR},       // asdf isn't a valid context item
@@ -221,7 +223,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		"dec1":    types.RequireXNumberFromString("1.5"),
 		"dec2":    types.RequireXNumberFromString("2.5"),
 		"words":   types.NewXText("one two three"),
-		"array":   types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
+		"array1":  types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
 		"thing":   NewTestXObject("hello", 123),
 		"err":     types.NewXError(errors.Errorf("an error")),
 	})
@@ -240,6 +242,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@(title(hello))`, "", true},
 		{`Hello @(title(string1))`, "Hello Foo", false},
 		{`Hello @@string1`, "Hello @string1", false},
+		{`@(title)`, "function", false}, // functions are values too
 
 		// an identifier which isn't valid top-level is ignored completely
 		{"@hello", "@hello", false},
@@ -277,12 +280,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(TITLE(missing))", "", true},
 		{"@(TITLE(string1.xxx))", "", true},
 
-		{"@array", `[one, two, three]`, false},
-		{"@array[0]", `[one, two, three][0]`, false}, // [n] notation not supported outside expression
-		{"@(array [0])", "one", false},
-		{"@(array[0])", "one", false},
-		{"@(array[3 - 3])", "one", false},
-		{"@(array[-1])", "three", false}, // negative index
+		{"@array1", `[one, two, three]`, false},
+		{"@array1[0]", `[one, two, three][0]`, false}, // [n] notation not supported outside expression
+		{"@(array1 [0])", "one", false},
+		{"@(array1[0])", "one", false},
+		{"@(array1[3 - 3])", "one", false},
+		{"@(array1[-1])", "three", false}, // negative index
 
 		{"@(split(words, \" \")[0])", "one", false},
 		{"@(split(words, \" \")[1])", "two", false},
@@ -349,7 +352,7 @@ var errorTests = []struct {
 	{`@(format_datetime(3))`, `error evaluating @(format_datetime(3)): error calling FORMAT_DATETIME: unable to convert 3 to a datetime`},
 
 	// function call errors
-	{`@(FOO())`, `error evaluating @(FOO()): no function with name 'foo'`},
+	{`@(FOO())`, `error evaluating @(FOO()): FOO is not a function`},
 	{`@(length(1))`, `error evaluating @(length(1)): error calling LENGTH: value doesn't have length`},
 	{`@(word_count())`, `error evaluating @(word_count()): error calling WORD_COUNT: need 1 to 2 argument(s), got 0`},
 	{`@(word_count("a", "b", "c"))`, `error evaluating @(word_count("a", "b", "c")): error calling WORD_COUNT: need 1 to 2 argument(s), got 3`},

@@ -1,6 +1,7 @@
 package excellent
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -119,6 +120,30 @@ func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) interface{} 
 	return types.RequireXNumberFromString(ctx.GetText())
 }
 
+func (v *visitor) VisitName(ctx *gen.NameContext) interface{} {
+	fmt.Printf("VisitName text=%s\n", ctx.GetText())
+
+	return ctx.GetText()
+}
+
+// VisitNamedValue deals with identifiers which are function names or root variables in the context
+func (v *visitor) VisitNamedValue(ctx *gen.NamedValueContext) interface{} {
+	name := strings.ToLower(ctx.GetText())
+
+	// first of all try to look this up as a function
+	function := functions.Lookup(name)
+	if function != nil {
+		return toXValue(function)
+	}
+
+	return types.Resolve(v.env, v.resolver, name)
+}
+
+// VisitContextReference deals with root variables in the context
+func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
+	return toXValue(v.Visit(ctx.Name()))
+}
+
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	context := toXValue(v.Visit(ctx.Atom(0)))
@@ -132,14 +157,24 @@ func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
 func (v *visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
-	name := strings.ToLower(ctx.Fnname().GetText())
+	function := toXValue(v.Visit(ctx.Name()))
+	if types.IsXError(function) {
+		return function
+	}
+
+	asFunction, isFunction := function.(types.XFunction)
+	if !isFunction {
+		return types.NewXErrorf("%s is not a function", ctx.Name().GetText())
+	}
+
+	name := strings.ToLower(ctx.Name().GetText())
 
 	var params []types.XValue
 	if ctx.Parameters() != nil {
 		params, _ = v.Visit(ctx.Parameters()).([]types.XValue)
 	}
 
-	return functions.Call(v.env, name, params)
+	return functions.Call(v.env, name, asFunction, params)
 }
 
 // VisitTrue deals with the `true` reserved word
@@ -179,13 +214,6 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	}
 
 	return types.Resolve(v.env, context, lookup.Native())
-}
-
-// VisitName deals with references to variables in the context such as "foo"
-func (v *visitor) VisitName(ctx *gen.NameContext) interface{} {
-	key := strings.ToLower(ctx.GetText())
-
-	return types.Resolve(v.env, v.resolver, key)
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)

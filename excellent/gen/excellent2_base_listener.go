@@ -44,12 +44,6 @@ func (s *BaseExcellent2Listener) EnterFunctionCall(ctx *FunctionCallContext) {}
 // ExitFunctionCall is called when production functionCall is exited.
 func (s *BaseExcellent2Listener) ExitFunctionCall(ctx *FunctionCallContext) {}
 
-// EnterName is called when production name is entered.
-func (s *BaseExcellent2Listener) EnterName(ctx *NameContext) {}
-
-// ExitName is called when production name is exited.
-func (s *BaseExcellent2Listener) ExitName(ctx *NameContext) {}
-
 // EnterTrue is called when production true is entered.
 func (s *BaseExcellent2Listener) EnterTrue(ctx *TrueContext) {}
 
@@ -68,6 +62,12 @@ func (s *BaseExcellent2Listener) EnterArrayLookup(ctx *ArrayLookupContext) {}
 // ExitArrayLookup is called when production arrayLookup is exited.
 func (s *BaseExcellent2Listener) ExitArrayLookup(ctx *ArrayLookupContext) {}
 
+// EnterContextReference is called when production contextReference is entered.
+func (s *BaseExcellent2Listener) EnterContextReference(ctx *ContextReferenceContext) {}
+
+// ExitContextReference is called when production contextReference is exited.
+func (s *BaseExcellent2Listener) ExitContextReference(ctx *ContextReferenceContext) {}
+
 // EnterTextLiteral is called when production textLiteral is entered.
 func (s *BaseExcellent2Listener) EnterTextLiteral(ctx *TextLiteralContext) {}
 
@@ -79,6 +79,12 @@ func (s *BaseExcellent2Listener) EnterNumberLiteral(ctx *NumberLiteralContext) {
 
 // ExitNumberLiteral is called when production numberLiteral is exited.
 func (s *BaseExcellent2Listener) ExitNumberLiteral(ctx *NumberLiteralContext) {}
+
+// EnterNamedValue is called when production namedValue is entered.
+func (s *BaseExcellent2Listener) EnterNamedValue(ctx *NamedValueContext) {}
+
+// ExitNamedValue is called when production namedValue is exited.
+func (s *BaseExcellent2Listener) ExitNamedValue(ctx *NamedValueContext) {}
 
 // EnterParentheses is called when production parentheses is entered.
 func (s *BaseExcellent2Listener) EnterParentheses(ctx *ParenthesesContext) {}
@@ -133,12 +139,6 @@ func (s *BaseExcellent2Listener) EnterExponent(ctx *ExponentContext) {}
 
 // ExitExponent is called when production exponent is exited.
 func (s *BaseExcellent2Listener) ExitExponent(ctx *ExponentContext) {}
-
-// EnterFnname is called when production fnname is entered.
-func (s *BaseExcellent2Listener) EnterFnname(ctx *FnnameContext) {}
-
-// ExitFnname is called when production fnname is exited.
-func (s *BaseExcellent2Listener) ExitFnname(ctx *FnnameContext) {}
 
 // EnterFunctionParameters is called when production functionParameters is entered.
 func (s *BaseExcellent2Listener) EnterFunctionParameters(ctx *FunctionParametersContext) {}

@@ -20,40 +20,40 @@ var parserATN = []uint16{
 	2, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 20, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 5, 3, 30, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 7, 3, 40, 10, 3, 12, 3, 14, 3, 43, 11, 3, 3, 4, 3, 4, 3,
-	4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 5, 4, 53, 10, 4, 3, 4, 3, 4, 3, 4, 3,
-	4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3,
-	4, 3, 4, 3, 4, 7, 4, 73, 10, 4, 12, 4, 14, 4, 76, 11, 4, 3, 5, 3, 5, 3,
+	5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 5, 5, 55, 10, 5, 3, 5, 3,
+	5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3,
+	5, 3, 5, 3, 5, 3, 5, 3, 5, 7, 5, 75, 10, 5, 12, 5, 14, 5, 78, 11, 5, 3,
 	6, 3, 6, 3, 6, 7, 6, 83, 10, 6, 12, 6, 14, 6, 86, 11, 6, 3, 6, 2, 4, 4,
-	6, 7, 2, 4, 6, 8, 10, 2, 6, 3, 2, 11, 12, 3, 2, 9, 10, 3, 2, 16, 19, 3,
-	2, 14, 15, 2, 100, 2, 12, 3, 2, 2, 2, 4, 29, 3, 2, 2, 2, 6, 52, 3, 2, 2,
-	2, 8, 77, 3, 2, 2, 2, 10, 79, 3, 2, 2, 2, 12, 13, 5, 6, 4, 2, 13, 14, 7,
-	2, 2, 3, 14, 3, 3, 2, 2, 2, 15, 16, 8, 3, 1, 2, 16, 17, 5, 8, 5, 2, 17,
+	8, 7, 2, 4, 6, 8, 10, 2, 6, 3, 2, 11, 12, 3, 2, 9, 10, 3, 2, 16, 19, 3,
+	2, 14, 15, 2, 100, 2, 12, 3, 2, 2, 2, 4, 29, 3, 2, 2, 2, 6, 44, 3, 2, 2,
+	2, 8, 54, 3, 2, 2, 2, 10, 79, 3, 2, 2, 2, 12, 13, 5, 8, 5, 2, 13, 14, 7,
+	2, 2, 3, 14, 3, 3, 2, 2, 2, 15, 16, 8, 3, 1, 2, 16, 17, 5, 6, 4, 2, 17,
 	19, 7, 4, 2, 2, 18, 20, 5, 10, 6, 2, 19, 18, 3, 2, 2, 2, 19, 20, 3, 2,
 	2, 2, 20, 21, 3, 2, 2, 2, 21, 22, 7, 5, 2, 2, 22, 30, 3, 2, 2, 2, 23, 30,
-	7, 26, 2, 2, 24, 30, 7, 21, 2, 2, 25, 30, 7, 22, 2, 2, 26, 30, 7, 23, 2,
+	5, 6, 4, 2, 24, 30, 7, 21, 2, 2, 25, 30, 7, 22, 2, 2, 26, 30, 7, 23, 2,
 	2, 27, 30, 7, 24, 2, 2, 28, 30, 7, 25, 2, 2, 29, 15, 3, 2, 2, 2, 29, 23,
 	3, 2, 2, 2, 29, 24, 3, 2, 2, 2, 29, 25, 3, 2, 2, 2, 29, 26, 3, 2, 2, 2,
 	29, 27, 3, 2, 2, 2, 29, 28, 3, 2, 2, 2, 30, 41, 3, 2, 2, 2, 31, 32, 12,
 	10, 2, 2, 32, 33, 7, 8, 2, 2, 33, 40, 5, 4, 3, 11, 34, 35, 12, 9, 2, 2,
-	35, 36, 7, 6, 2, 2, 36, 37, 5, 6, 4, 2, 37, 38, 7, 7, 2, 2, 38, 40, 3,
+	35, 36, 7, 6, 2, 2, 36, 37, 5, 8, 5, 2, 37, 38, 7, 7, 2, 2, 38, 40, 3,
 	2, 2, 2, 39, 31, 3, 2, 2, 2, 39, 34, 3, 2, 2, 2, 40, 43, 3, 2, 2, 2, 41,
 	39, 3, 2, 2, 2, 41, 42, 3, 2, 2, 2, 42, 5, 3, 2, 2, 2, 43, 41, 3, 2, 2,
-	2, 44, 45, 8, 4, 1, 2, 45, 53, 5, 4, 3, 2, 46, 47, 7, 10, 2, 2, 47, 53,
-	5, 6, 4, 10, 48, 49, 7, 4, 2, 2, 49, 50, 5, 6, 4, 2, 50, 51, 7, 5, 2, 2,
-	51, 53, 3, 2, 2, 2, 52, 44, 3, 2, 2, 2, 52, 46, 3, 2, 2, 2, 52, 48, 3,
-	2, 2, 2, 53, 74, 3, 2, 2, 2, 54, 55, 12, 9, 2, 2, 55, 56, 7, 13, 2, 2,
-	56, 73, 5, 6, 4, 10, 57, 58, 12, 8, 2, 2, 58, 59, 9, 2, 2, 2, 59, 73, 5,
-	6, 4, 9, 60, 61, 12, 7, 2, 2, 61, 62, 9, 3, 2, 2, 62, 73, 5, 6, 4, 8, 63,
-	64, 12, 6, 2, 2, 64, 65, 9, 4, 2, 2, 65, 73, 5, 6, 4, 7, 66, 67, 12, 5,
-	2, 2, 67, 68, 9, 5, 2, 2, 68, 73, 5, 6, 4, 6, 69, 70, 12, 4, 2, 2, 70,
-	71, 7, 20, 2, 2, 71, 73, 5, 6, 4, 5, 72, 54, 3, 2, 2, 2, 72, 57, 3, 2,
-	2, 2, 72, 60, 3, 2, 2, 2, 72, 63, 3, 2, 2, 2, 72, 66, 3, 2, 2, 2, 72, 69,
-	3, 2, 2, 2, 73, 76, 3, 2, 2, 2, 74, 72, 3, 2, 2, 2, 74, 75, 3, 2, 2, 2,
-	75, 7, 3, 2, 2, 2, 76, 74, 3, 2, 2, 2, 77, 78, 7, 26, 2, 2, 78, 9, 3, 2,
-	2, 2, 79, 84, 5, 6, 4, 2, 80, 81, 7, 3, 2, 2, 81, 83, 5, 6, 4, 2, 82, 80,
-	3, 2, 2, 2, 83, 86, 3, 2, 2, 2, 84, 82, 3, 2, 2, 2, 84, 85, 3, 2, 2, 2,
-	85, 11, 3, 2, 2, 2, 86, 84, 3, 2, 2, 2, 10, 19, 29, 39, 41, 52, 72, 74,
-	84,
+	2, 44, 45, 7, 26, 2, 2, 45, 7, 3, 2, 2, 2, 46, 47, 8, 5, 1, 2, 47, 55,
+	5, 4, 3, 2, 48, 49, 7, 10, 2, 2, 49, 55, 5, 8, 5, 10, 50, 51, 7, 4, 2,
+	2, 51, 52, 5, 8, 5, 2, 52, 53, 7, 5, 2, 2, 53, 55, 3, 2, 2, 2, 54, 46,
+	3, 2, 2, 2, 54, 48, 3, 2, 2, 2, 54, 50, 3, 2, 2, 2, 55, 76, 3, 2, 2, 2,
+	56, 57, 12, 9, 2, 2, 57, 58, 7, 13, 2, 2, 58, 75, 5, 8, 5, 10, 59, 60,
+	12, 8, 2, 2, 60, 61, 9, 2, 2, 2, 61, 75, 5, 8, 5, 9, 62, 63, 12, 7, 2,
+	2, 63, 64, 9, 3, 2, 2, 64, 75, 5, 8, 5, 8, 65, 66, 12, 6, 2, 2, 66, 67,
+	9, 4, 2, 2, 67, 75, 5, 8, 5, 7, 68, 69, 12, 5, 2, 2, 69, 70, 9, 5, 2, 2,
+	70, 75, 5, 8, 5, 6, 71, 72, 12, 4, 2, 2, 72, 73, 7, 20, 2, 2, 73, 75, 5,
+	8, 5, 5, 74, 56, 3, 2, 2, 2, 74, 59, 3, 2, 2, 2, 74, 62, 3, 2, 2, 2, 74,
+	65, 3, 2, 2, 2, 74, 68, 3, 2, 2, 2, 74, 71, 3, 2, 2, 2, 75, 78, 3, 2, 2,
+	2, 76, 74, 3, 2, 2, 2, 76, 77, 3, 2, 2, 2, 77, 9, 3, 2, 2, 2, 78, 76, 3,
+	2, 2, 2, 79, 84, 5, 8, 5, 2, 80, 81, 7, 3, 2, 2, 81, 83, 5, 8, 5, 2, 82,
+	80, 3, 2, 2, 2, 83, 86, 3, 2, 2, 2, 84, 82, 3, 2, 2, 2, 84, 85, 3, 2, 2,
+	2, 85, 11, 3, 2, 2, 2, 86, 84, 3, 2, 2, 2, 10, 19, 29, 39, 41, 54, 74,
+	76, 84,
 }
 var deserializer = antlr.NewATNDeserializer(nil)
 var deserializedATN = deserializer.DeserializeFromUInt16(parserATN)
@@ -69,7 +69,7 @@ var symbolicNames = []string{
 }
 
 var ruleNames = []string{
-	"parse", "atom", "expression", "fnname", "parameters",
+	"parse", "atom", "name", "expression", "parameters",
 }
 var decisionToDFA = make([]*antlr.DFA, len(deserializedATN.DecisionToState))
 
@@ -132,8 +132,8 @@ const (
 const (
 	Excellent2ParserRULE_parse      = 0
 	Excellent2ParserRULE_atom       = 1
-	Excellent2ParserRULE_expression = 2
-	Excellent2ParserRULE_fnname     = 3
+	Excellent2ParserRULE_name       = 2
+	Excellent2ParserRULE_expression = 3
 	Excellent2ParserRULE_parameters = 4
 )
 
@@ -431,14 +431,14 @@ func (s *FunctionCallContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *FunctionCallContext) Fnname() IFnnameContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IFnnameContext)(nil)).Elem(), 0)
+func (s *FunctionCallContext) Name() INameContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*INameContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IFnnameContext)
+	return t.(INameContext)
 }
 
 func (s *FunctionCallContext) LPAREN() antlr.TerminalNode {
@@ -475,50 +475,6 @@ func (s *FunctionCallContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
 	switch t := visitor.(type) {
 	case Excellent2Visitor:
 		return t.VisitFunctionCall(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type NameContext struct {
-	*AtomContext
-}
-
-func NewNameContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NameContext {
-	var p = new(NameContext)
-
-	p.AtomContext = NewEmptyAtomContext()
-	p.parser = parser
-	p.CopyFrom(ctx.(*AtomContext))
-
-	return p
-}
-
-func (s *NameContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *NameContext) NAME() antlr.TerminalNode {
-	return s.GetToken(Excellent2ParserNAME, 0)
-}
-
-func (s *NameContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.EnterName(s)
-	}
-}
-
-func (s *NameContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.ExitName(s)
-	}
-}
-
-func (s *NameContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case Excellent2Visitor:
-		return t.VisitName(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -681,6 +637,56 @@ func (s *ArrayLookupContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 	}
 }
 
+type ContextReferenceContext struct {
+	*AtomContext
+}
+
+func NewContextReferenceContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ContextReferenceContext {
+	var p = new(ContextReferenceContext)
+
+	p.AtomContext = NewEmptyAtomContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*AtomContext))
+
+	return p
+}
+
+func (s *ContextReferenceContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ContextReferenceContext) Name() INameContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*INameContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(INameContext)
+}
+
+func (s *ContextReferenceContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.EnterContextReference(s)
+	}
+}
+
+func (s *ContextReferenceContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.ExitContextReference(s)
+	}
+}
+
+func (s *ContextReferenceContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case Excellent2Visitor:
+		return t.VisitContextReference(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
 type TextLiteralContext struct {
 	*AtomContext
 }
@@ -812,7 +818,7 @@ func (p *Excellent2Parser) atom(_p int) (localctx IAtomContext) {
 
 		{
 			p.SetState(14)
-			p.Fnname()
+			p.Name()
 		}
 		{
 			p.SetState(15)
@@ -835,12 +841,12 @@ func (p *Excellent2Parser) atom(_p int) (localctx IAtomContext) {
 		}
 
 	case 2:
-		localctx = NewNameContext(p, localctx)
+		localctx = NewContextReferenceContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
 			p.SetState(21)
-			p.Match(Excellent2ParserNAME)
+			p.Name()
 		}
 
 	case 3:
@@ -947,6 +953,130 @@ func (p *Excellent2Parser) atom(_p int) (localctx IAtomContext) {
 		p.SetState(41)
 		p.GetErrorHandler().Sync(p)
 		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
+	}
+
+	return localctx
+}
+
+// INameContext is an interface to support dynamic dispatch.
+type INameContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// IsNameContext differentiates from other interfaces.
+	IsNameContext()
+}
+
+type NameContext struct {
+	*antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyNameContext() *NameContext {
+	var p = new(NameContext)
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	p.RuleIndex = Excellent2ParserRULE_name
+	return p
+}
+
+func (*NameContext) IsNameContext() {}
+
+func NewNameContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *NameContext {
+	var p = new(NameContext)
+
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = Excellent2ParserRULE_name
+
+	return p
+}
+
+func (s *NameContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *NameContext) CopyFrom(ctx *NameContext) {
+	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+}
+
+func (s *NameContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NameContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+type NamedValueContext struct {
+	*NameContext
+}
+
+func NewNamedValueContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NamedValueContext {
+	var p = new(NamedValueContext)
+
+	p.NameContext = NewEmptyNameContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*NameContext))
+
+	return p
+}
+
+func (s *NamedValueContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NamedValueContext) NAME() antlr.TerminalNode {
+	return s.GetToken(Excellent2ParserNAME, 0)
+}
+
+func (s *NamedValueContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.EnterNamedValue(s)
+	}
+}
+
+func (s *NamedValueContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.ExitNamedValue(s)
+	}
+}
+
+func (s *NamedValueContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case Excellent2Visitor:
+		return t.VisitNamedValue(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+func (p *Excellent2Parser) Name() (localctx INameContext) {
+	localctx = NewNameContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 4, Excellent2ParserRULE_name)
+
+	defer func() {
+		p.ExitRule()
+	}()
+
+	defer func() {
+		if err := recover(); err != nil {
+			if v, ok := err.(antlr.RecognitionException); ok {
+				localctx.SetException(v)
+				p.GetErrorHandler().ReportError(p, v)
+				p.GetErrorHandler().Recover(p, v)
+			} else {
+				panic(err)
+			}
+		}
+	}()
+
+	localctx = NewNamedValueContext(p, localctx)
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(42)
+		p.Match(Excellent2ParserNAME)
 	}
 
 	return localctx
@@ -1620,8 +1750,8 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 	localctx = NewExpressionContext(p, p.GetParserRuleContext(), _parentState)
 	var _prevctx IExpressionContext = localctx
 	var _ antlr.ParserRuleContext = _prevctx // TODO: To prevent unused variable warning.
-	_startState := 4
-	p.EnterRecursionRule(localctx, 4, Excellent2ParserRULE_expression, _p)
+	_startState := 6
+	p.EnterRecursionRule(localctx, 6, Excellent2ParserRULE_expression, _p)
 	var _la int
 
 	defer func() {
@@ -1643,7 +1773,7 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(50)
+	p.SetState(52)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
@@ -1653,7 +1783,7 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 		_prevctx = localctx
 
 		{
-			p.SetState(43)
+			p.SetState(45)
 			p.atom(0)
 		}
 
@@ -1662,11 +1792,11 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(44)
+			p.SetState(46)
 			p.Match(Excellent2ParserMINUS)
 		}
 		{
-			p.SetState(45)
+			p.SetState(47)
 			p.expression(8)
 		}
 
@@ -1675,15 +1805,15 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(46)
+			p.SetState(48)
 			p.Match(Excellent2ParserLPAREN)
 		}
 		{
-			p.SetState(47)
+			p.SetState(49)
 			p.expression(0)
 		}
 		{
-			p.SetState(48)
+			p.SetState(50)
 			p.Match(Excellent2ParserRPAREN)
 		}
 
@@ -1691,7 +1821,7 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(72)
+	p.SetState(74)
 	p.GetErrorHandler().Sync(p)
 	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 6, p.GetParserRuleContext())
 
@@ -1701,36 +1831,36 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			p.SetState(70)
+			p.SetState(72)
 			p.GetErrorHandler().Sync(p)
 			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 5, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewExponentContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, Excellent2ParserRULE_expression)
-				p.SetState(52)
+				p.SetState(54)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 7)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
 				}
 				{
-					p.SetState(53)
+					p.SetState(55)
 					p.Match(Excellent2ParserEXPONENT)
 				}
 				{
-					p.SetState(54)
+					p.SetState(56)
 					p.expression(8)
 				}
 
 			case 2:
 				localctx = NewMultiplicationOrDivisionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, Excellent2ParserRULE_expression)
-				p.SetState(55)
+				p.SetState(57)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 6)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 6)", ""))
 				}
 				{
-					p.SetState(56)
+					p.SetState(58)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -1748,20 +1878,20 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(57)
+					p.SetState(59)
 					p.expression(7)
 				}
 
 			case 3:
 				localctx = NewAdditionOrSubtractionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, Excellent2ParserRULE_expression)
-				p.SetState(58)
+				p.SetState(60)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
 				}
 				{
-					p.SetState(59)
+					p.SetState(61)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -1779,20 +1909,20 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(60)
+					p.SetState(62)
 					p.expression(6)
 				}
 
 			case 4:
 				localctx = NewComparisonContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, Excellent2ParserRULE_expression)
-				p.SetState(61)
+				p.SetState(63)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
 				}
 				{
-					p.SetState(62)
+					p.SetState(64)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -1810,20 +1940,20 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(63)
+					p.SetState(65)
 					p.expression(5)
 				}
 
 			case 5:
 				localctx = NewEqualityContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, Excellent2ParserRULE_expression)
-				p.SetState(64)
+				p.SetState(66)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 3)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
 				}
 				{
-					p.SetState(65)
+					p.SetState(67)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -1841,134 +1971,33 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(66)
+					p.SetState(68)
 					p.expression(4)
 				}
 
 			case 6:
 				localctx = NewConcatenationContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, Excellent2ParserRULE_expression)
-				p.SetState(67)
+				p.SetState(69)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				}
 				{
-					p.SetState(68)
+					p.SetState(70)
 					p.Match(Excellent2ParserAMPERSAND)
 				}
 				{
-					p.SetState(69)
+					p.SetState(71)
 					p.expression(3)
 				}
 
 			}
 
 		}
-		p.SetState(74)
+		p.SetState(76)
 		p.GetErrorHandler().Sync(p)
 		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 6, p.GetParserRuleContext())
-	}
-
-	return localctx
-}
-
-// IFnnameContext is an interface to support dynamic dispatch.
-type IFnnameContext interface {
-	antlr.ParserRuleContext
-
-	// GetParser returns the parser.
-	GetParser() antlr.Parser
-
-	// IsFnnameContext differentiates from other interfaces.
-	IsFnnameContext()
-}
-
-type FnnameContext struct {
-	*antlr.BaseParserRuleContext
-	parser antlr.Parser
-}
-
-func NewEmptyFnnameContext() *FnnameContext {
-	var p = new(FnnameContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = Excellent2ParserRULE_fnname
-	return p
-}
-
-func (*FnnameContext) IsFnnameContext() {}
-
-func NewFnnameContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *FnnameContext {
-	var p = new(FnnameContext)
-
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = Excellent2ParserRULE_fnname
-
-	return p
-}
-
-func (s *FnnameContext) GetParser() antlr.Parser { return s.parser }
-
-func (s *FnnameContext) NAME() antlr.TerminalNode {
-	return s.GetToken(Excellent2ParserNAME, 0)
-}
-
-func (s *FnnameContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *FnnameContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *FnnameContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.EnterFnname(s)
-	}
-}
-
-func (s *FnnameContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.ExitFnname(s)
-	}
-}
-
-func (s *FnnameContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case Excellent2Visitor:
-		return t.VisitFnname(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-func (p *Excellent2Parser) Fnname() (localctx IFnnameContext) {
-	localctx = NewFnnameContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 6, Excellent2ParserRULE_fnname)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
-	p.EnterOuterAlt(localctx, 1)
-	{
-		p.SetState(75)
-		p.Match(Excellent2ParserNAME)
 	}
 
 	return localctx
@@ -2153,7 +2182,7 @@ func (p *Excellent2Parser) Sempred(localctx antlr.RuleContext, ruleIndex, predIn
 		}
 		return p.Atom_Sempred(t, predIndex)
 
-	case 2:
+	case 3:
 		var t *ExpressionContext = nil
 		if localctx != nil {
 			t = localctx.(*ExpressionContext)

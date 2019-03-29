@@ -45,15 +45,17 @@ ERROR: .;
 parse: expression EOF;
 
 atom:
-	fnname LPAREN parameters? RPAREN	# functionCall
-	| atom DOT atom						# dotLookup
-	| atom LBRACK expression RBRACK		# arrayLookup
-	| NAME								# name
-	| TEXT								# textLiteral
-	| NUMBER							# numberLiteral
-	| TRUE								# true
-	| FALSE								# false
-	| NULL								# null;
+	name LPAREN parameters? RPAREN	# functionCall
+	| atom DOT atom					# dotLookup
+	| atom LBRACK expression RBRACK	# arrayLookup
+	| name							# contextReference
+	| TEXT							# textLiteral
+	| NUMBER						# numberLiteral
+	| TRUE							# true
+	| FALSE							# false
+	| NULL							# null;
+
+name: NAME # namedValue;
 
 expression:
 	atom												# atomReference
@@ -65,7 +67,5 @@ expression:
 	| expression op = (EQ | NEQ) expression				# equality
 	| expression AMPERSAND expression					# concatenation
 	| LPAREN expression RPAREN							# parentheses;
-
-fnname: NAME;
 
 parameters: expression (COMMA expression)* # functionParameters;

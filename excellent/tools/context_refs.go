@@ -52,6 +52,13 @@ func (v *auditContextVisitor) VisitParse(ctx *gen.ParseContext) interface{} {
 	return v.Visit(ctx.Expression())
 }
 
+// VisitContextReference deals with root variables in the context
+func (v *auditContextVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
+	path := []string{ctx.GetText()}
+	v.callback(path)
+	return path
+}
+
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *auditContextVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	path, isPath := v.Visit(ctx.Atom(0)).([]string)
@@ -74,13 +81,6 @@ func (v *auditContextVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) inte
 		return path
 	}
 	return nil
-}
-
-// VisitName deals with references to variables in the context such as "foo"
-func (v *auditContextVisitor) VisitName(ctx *gen.NameContext) interface{} {
-	path := []string{ctx.GetText()}
-	v.callback(path)
-	return path
 }
 
 // VisitTextLiteral deals with string literals such as "asdf"

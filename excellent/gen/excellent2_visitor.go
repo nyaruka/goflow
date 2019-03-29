@@ -19,9 +19,6 @@ type Excellent2Visitor interface {
 	// Visit a parse tree produced by Excellent2Parser#functionCall.
 	VisitFunctionCall(ctx *FunctionCallContext) interface{}
 
-	// Visit a parse tree produced by Excellent2Parser#name.
-	VisitName(ctx *NameContext) interface{}
-
 	// Visit a parse tree produced by Excellent2Parser#true.
 	VisitTrue(ctx *TrueContext) interface{}
 
@@ -31,11 +28,17 @@ type Excellent2Visitor interface {
 	// Visit a parse tree produced by Excellent2Parser#arrayLookup.
 	VisitArrayLookup(ctx *ArrayLookupContext) interface{}
 
+	// Visit a parse tree produced by Excellent2Parser#contextReference.
+	VisitContextReference(ctx *ContextReferenceContext) interface{}
+
 	// Visit a parse tree produced by Excellent2Parser#textLiteral.
 	VisitTextLiteral(ctx *TextLiteralContext) interface{}
 
 	// Visit a parse tree produced by Excellent2Parser#numberLiteral.
 	VisitNumberLiteral(ctx *NumberLiteralContext) interface{}
+
+	// Visit a parse tree produced by Excellent2Parser#namedValue.
+	VisitNamedValue(ctx *NamedValueContext) interface{}
 
 	// Visit a parse tree produced by Excellent2Parser#parentheses.
 	VisitParentheses(ctx *ParenthesesContext) interface{}
@@ -63,9 +66,6 @@ type Excellent2Visitor interface {
 
 	// Visit a parse tree produced by Excellent2Parser#exponent.
 	VisitExponent(ctx *ExponentContext) interface{}
-
-	// Visit a parse tree produced by Excellent2Parser#fnname.
-	VisitFnname(ctx *FnnameContext) interface{}
 
 	// Visit a parse tree produced by Excellent2Parser#functionParameters.
 	VisitFunctionParameters(ctx *FunctionParametersContext) interface{}
