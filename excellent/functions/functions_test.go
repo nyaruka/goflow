@@ -164,7 +164,7 @@ func TestFunctions(t *testing.T) {
 		{"dict", dmy, []types.XValue{}, types.NewEmptyXDict()},
 
 		{
-			"extract",
+			"map_extract",
 			dmy,
 			[]types.XValue{
 				types.NewXArray(types.NewXDict(map[string]types.XValue{"foo": xs("hello")})),
@@ -173,7 +173,7 @@ func TestFunctions(t *testing.T) {
 			types.NewXArray(xs("hello")),
 		},
 		{
-			"extract",
+			"map_extract",
 			dmy,
 			[]types.XValue{
 				types.NewXArray(types.NewXDict(map[string]types.XValue{"foo": xs("hello")})),
@@ -182,7 +182,7 @@ func TestFunctions(t *testing.T) {
 			ERROR,
 		},
 		{
-			"extract",
+			"map_extract",
 			dmy,
 			[]types.XValue{
 				types.NewXArray(
@@ -198,7 +198,7 @@ func TestFunctions(t *testing.T) {
 			),
 		},
 		{
-			"extract",
+			"map_extract",
 			dmy,
 			[]types.XValue{
 				types.NewXArray(
@@ -210,7 +210,7 @@ func TestFunctions(t *testing.T) {
 			},
 			ERROR,
 		},
-		{"extract", dmy, []types.XValue{}, ERROR},
+		{"map_extract", dmy, []types.XValue{}, ERROR},
 
 		{"epoch", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619")},
 		{"epoch", dmy, []types.XValue{ERROR}, ERROR},

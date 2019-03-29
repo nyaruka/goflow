@@ -132,29 +132,14 @@ func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
 func (v *visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
-	functionName := strings.ToLower(ctx.Fnname().GetText())
-
-	var function functions.XFunction
-	var found bool
-
-	function, found = functions.XFUNCTIONS[functionName]
-	if !found {
-		return types.NewXErrorf("no function with name '%s'", functionName)
-	}
+	name := strings.ToLower(ctx.Fnname().GetText())
 
 	var params []types.XValue
 	if ctx.Parameters() != nil {
 		params, _ = v.Visit(ctx.Parameters()).([]types.XValue)
 	}
 
-	val := function(v.env, params...)
-
-	// if function returned an error, wrap the error with the function name
-	if types.IsXError(val) {
-		return types.NewXErrorf("error calling %s: %s", strings.ToUpper(functionName), val.(types.XError).Error())
-	}
-
-	return val
+	return functions.Call(v.env, name, params)
 }
 
 // VisitTrue deals with the `true` reserved word

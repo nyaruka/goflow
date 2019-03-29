@@ -24,105 +24,116 @@ var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 // XFunction defines the interface that Excellent functions must implement
 type XFunction func(env utils.Environment, args ...types.XValue) types.XValue
 
+// XFUNCTIONS is our map of functions available in Excellent which aren't tests
+var XFUNCTIONS = map[string]XFunction{}
+
 // RegisterXFunction registers a new function in Excellent
 func RegisterXFunction(name string, function XFunction) {
 	XFUNCTIONS[name] = function
 }
 
-// XFUNCTIONS is our map of functions available in Excellent which aren't tests
-var XFUNCTIONS = map[string]XFunction{
-	// type conversion
-	"text":     OneArgFunction(Text),
-	"boolean":  OneArgFunction(Boolean),
-	"number":   OneArgFunction(Number),
-	"date":     OneArgFunction(Date),
-	"datetime": OneArgFunction(DateTime),
-	"time":     OneArgFunction(Time),
-	"array":    Array,
-	"dict":     Dict,
+func init() {
+	std := map[string]XFunction{
+		// type conversion
+		"text":     OneArgFunction(Text),
+		"boolean":  OneArgFunction(Boolean),
+		"number":   OneArgFunction(Number),
+		"date":     OneArgFunction(Date),
+		"datetime": OneArgFunction(DateTime),
+		"time":     OneArgFunction(Time),
+		"array":    Array,
+		"dict":     Dict,
 
-	// text functions
-	"char":              OneNumberFunction(Char),
-	"code":              OneTextFunction(Code),
-	"split":             TwoTextFunction(Split),
-	"join":              InitialArrayFunction(1, 1, Join),
-	"title":             OneTextFunction(Title),
-	"word":              InitialTextFunction(1, 2, Word),
-	"remove_first_word": OneTextFunction(RemoveFirstWord),
-	"word_count":        InitialTextFunction(0, 1, WordCount),
-	"word_slice":        InitialTextFunction(1, 3, WordSlice),
-	"field":             InitialTextFunction(2, 2, Field),
-	"clean":             OneTextFunction(Clean),
-	"left":              TextAndIntegerFunction(Left),
-	"lower":             OneTextFunction(Lower),
-	"right":             TextAndIntegerFunction(Right),
-	"regex_match":       InitialTextFunction(1, 2, RegexMatch),
-	"text_compare":      TwoTextFunction(TextCompare),
-	"repeat":            TextAndIntegerFunction(Repeat),
-	"replace":           ThreeTextFunction(Replace),
-	"upper":             OneTextFunction(Upper),
-	"percent":           OneNumberFunction(Percent),
-	"url_encode":        OneTextFunction(URLEncode),
+		// text functions
+		"char":              OneNumberFunction(Char),
+		"code":              OneTextFunction(Code),
+		"split":             TwoTextFunction(Split),
+		"join":              InitialArrayFunction(1, 1, Join),
+		"title":             OneTextFunction(Title),
+		"word":              InitialTextFunction(1, 2, Word),
+		"remove_first_word": OneTextFunction(RemoveFirstWord),
+		"word_count":        InitialTextFunction(0, 1, WordCount),
+		"word_slice":        InitialTextFunction(1, 3, WordSlice),
+		"field":             InitialTextFunction(2, 2, Field),
+		"clean":             OneTextFunction(Clean),
+		"left":              TextAndIntegerFunction(Left),
+		"lower":             OneTextFunction(Lower),
+		"right":             TextAndIntegerFunction(Right),
+		"regex_match":       InitialTextFunction(1, 2, RegexMatch),
+		"text_compare":      TwoTextFunction(TextCompare),
+		"repeat":            TextAndIntegerFunction(Repeat),
+		"replace":           ThreeTextFunction(Replace),
+		"upper":             OneTextFunction(Upper),
+		"percent":           OneNumberFunction(Percent),
+		"url_encode":        OneTextFunction(URLEncode),
 
-	// bool functions
-	"and": ArgCountCheck(1, -1, And),
-	"if":  ThreeArgFunction(If),
-	"or":  ArgCountCheck(1, -1, Or),
+		// bool functions
+		"and": ArgCountCheck(1, -1, And),
+		"if":  ThreeArgFunction(If),
+		"or":  ArgCountCheck(1, -1, Or),
 
-	// number functions
-	"round":        OneNumberAndOptionalIntegerFunction(Round, 0),
-	"round_up":     OneNumberAndOptionalIntegerFunction(RoundUp, 0),
-	"round_down":   OneNumberAndOptionalIntegerFunction(RoundDown, 0),
-	"max":          ArgCountCheck(1, -1, Max),
-	"min":          ArgCountCheck(1, -1, Min),
-	"mean":         ArgCountCheck(1, -1, Mean),
-	"mod":          TwoNumberFunction(Mod),
-	"rand":         NoArgFunction(Rand),
-	"rand_between": TwoNumberFunction(RandBetween),
-	"abs":          OneNumberFunction(Abs),
+		// number functions
+		"round":        OneNumberAndOptionalIntegerFunction(Round, 0),
+		"round_up":     OneNumberAndOptionalIntegerFunction(RoundUp, 0),
+		"round_down":   OneNumberAndOptionalIntegerFunction(RoundDown, 0),
+		"max":          ArgCountCheck(1, -1, Max),
+		"min":          ArgCountCheck(1, -1, Min),
+		"mean":         ArgCountCheck(1, -1, Mean),
+		"mod":          TwoNumberFunction(Mod),
+		"rand":         NoArgFunction(Rand),
+		"rand_between": TwoNumberFunction(RandBetween),
+		"abs":          OneNumberFunction(Abs),
 
-	// datetime functions
-	"parse_datetime":      ArgCountCheck(2, 3, ParseDateTime),
-	"datetime_from_epoch": OneNumberFunction(DateTimeFromEpoch),
-	"datetime_diff":       ThreeArgFunction(DateTimeDiff),
-	"datetime_add":        DateTimeAdd,
-	"replace_time":        ArgCountCheck(2, 2, ReplaceTime),
-	"tz":                  OneDateTimeFunction(TZ),
-	"tz_offset":           OneDateTimeFunction(TZOffset),
-	"now":                 NoArgFunction(Now),
-	"epoch":               OneDateTimeFunction(Epoch),
+		// datetime functions
+		"parse_datetime":      ArgCountCheck(2, 3, ParseDateTime),
+		"datetime_from_epoch": OneNumberFunction(DateTimeFromEpoch),
+		"datetime_diff":       ThreeArgFunction(DateTimeDiff),
+		"datetime_add":        DateTimeAdd,
+		"replace_time":        ArgCountCheck(2, 2, ReplaceTime),
+		"tz":                  OneDateTimeFunction(TZ),
+		"tz_offset":           OneDateTimeFunction(TZOffset),
+		"now":                 NoArgFunction(Now),
+		"epoch":               OneDateTimeFunction(Epoch),
 
-	// date functions
-	"date_from_parts": ThreeIntegerFunction(DateFromParts),
-	"weekday":         OneDateFunction(Weekday),
-	"today":           NoArgFunction(Today),
+		// date functions
+		"date_from_parts": ThreeIntegerFunction(DateFromParts),
+		"weekday":         OneDateFunction(Weekday),
+		"today":           NoArgFunction(Today),
 
-	// time functions
-	"parse_time":      ArgCountCheck(2, 2, ParseTime),
-	"time_from_parts": ThreeIntegerFunction(TimeFromParts),
+		// time functions
+		"parse_time":      ArgCountCheck(2, 2, ParseTime),
+		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
-	// encoded text functions
-	"urn_parts":        OneTextFunction(URNParts),
-	"attachment_parts": OneTextFunction(AttachmentParts),
+		// encoded text functions
+		"urn_parts":        OneTextFunction(URNParts),
+		"attachment_parts": OneTextFunction(AttachmentParts),
 
-	// json functions
-	"json":       OneArgFunction(JSON),
-	"parse_json": OneTextFunction(ParseJSON),
+		// json functions
+		"json":       OneArgFunction(JSON),
+		"parse_json": OneTextFunction(ParseJSON),
 
-	// formatting functions
-	"format_date":     ArgCountCheck(1, 2, FormatDate),
-	"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
-	"format_time":     ArgCountCheck(1, 2, FormatTime),
-	"format_location": OneTextFunction(FormatLocation),
-	"format_number":   FormatNumber,
-	"format_urn":      OneTextFunction(FormatURN),
+		// formatting functions
+		"format_date":     ArgCountCheck(1, 2, FormatDate),
+		"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
+		"format_time":     ArgCountCheck(1, 2, FormatTime),
+		"format_location": OneTextFunction(FormatLocation),
+		"format_number":   FormatNumber,
+		"format_urn":      OneTextFunction(FormatURN),
 
-	// utility functions
-	"length":     OneArgFunction(Length),
-	"default":    TwoArgFunction(Default),
-	"legacy_add": TwoArgFunction(LegacyAdd),
-	"read_chars": OneTextFunction(ReadChars),
-	"extract":    InitialArrayFunction(1, -1, Extract),
+		// functional programming
+		"map_extract": InitialArrayFunction(1, -1, MapExtract),
+		"map_apply":   InitialArrayFunction(1, 1, MapApply),
+
+		// utility functions
+		"length":     OneArgFunction(Length),
+		"default":    TwoArgFunction(Default),
+		"legacy_add": TwoArgFunction(LegacyAdd),
+		"read_chars": OneTextFunction(ReadChars),
+	}
+
+	for name, fn := range std {
+		RegisterXFunction(name, fn)
+	}
 }
 
 //------------------------------------------------------------------------------------------
@@ -1829,18 +1840,18 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 	return value
 }
 
-// Extract takes an array of objects and returns a new array by extracting named properties from each item.
+// MapExtract takes an array of objects and returns a new array by extracting named properties from each item.
 //
 // If a single property is specified, the returned array is a flat array of values. If multiple properties
 // are specified then each item is a dict of with those properties.
 //
-//   @(extract(contact.groups, "name")) -> [Testers, Males]
-//   @(extract(array(dict("foo", 123), dict("foo", 256)), "foo")) -> [123, 256]
-//   @(extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) -> [{a: 123, c: true}, {a: 345, c: false}]
-//   @(extract(array(dict("foo", 123), dict("foo", 256)), "bar")) -> ERROR
+//   @(map_extract(contact.groups, "name")) -> [Testers, Males]
+//   @(map_extract(array(dict("foo", 123), dict("foo", 256)), "foo")) -> [123, 256]
+//   @(map_extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) -> [{a: 123, c: true}, {a: 345, c: false}]
+//   @(map_extract(array(dict("foo", 123), dict("foo", 256)), "bar")) -> ERROR
 //
-// @function extract(array, properties...)
-func Extract(env utils.Environment, array types.XArray, properties ...types.XText) types.XValue {
+// @function map_extract(array, properties...)
+func MapExtract(env utils.Environment, array types.XArray, properties ...types.XText) types.XValue {
 	result := types.NewXArray()
 
 	for i := 0; i < array.Length(); i++ {
@@ -1864,6 +1875,28 @@ func Extract(env utils.Environment, array types.XArray, properties ...types.XTex
 			}
 			result.Append(newItem)
 		}
+	}
+
+	return result
+}
+
+// MapApply takes an array of objects and returns a new array by applying the named function to each item.
+//
+//   @(map_apply(map_extract(contact.groups, "name"), "upper")) -> [TESTERS, MALES]
+//
+// @function map_apply(array, properties...)
+func MapApply(env utils.Environment, array types.XArray, args ...types.XText) types.XValue {
+	funcName := args[0]
+
+	result := types.NewXArray()
+
+	for i := 0; i < array.Length(); i++ {
+		oldItem := array.Index(i)
+		newItem := Call(env, funcName.Native(), []types.XValue{oldItem})
+		if types.IsXError(newItem) {
+			return newItem
+		}
+		result.Append(newItem)
 	}
 
 	return result
