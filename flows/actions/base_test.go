@@ -150,7 +150,16 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 				trigger = triggers.NewManualTrigger(env, flow.Reference(), contact, nil)
 			}
 		} else {
-			msg := flows.NewMsgIn(flows.MsgUUID("aa90ce99-3b4d-44ba-b0ca-79e63d9ed842"), urns.URN("tel:+12065551212"), nil, "Hi everybody", nil)
+			msg := flows.NewMsgIn(
+				flows.MsgUUID("aa90ce99-3b4d-44ba-b0ca-79e63d9ed842"),
+				urns.URN("tel:+12065551212"),
+				nil,
+				"Hi everybody",
+				flows.AttachmentList{
+					flows.Attachment("image/jpeg:http://http://s3.amazon.com/bucket/test.jpg"),
+					flows.Attachment("audio/mp3:http://s3.amazon.com/bucket/test.mp3"),
+				},
+			)
 			trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil)
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}

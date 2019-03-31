@@ -277,7 +277,7 @@ func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 	case "results":
 		return r.Results()
 	case "path":
-		return r.path
+		return r.path.Context(env)
 	case "created_on":
 		return types.NewXDateTime(r.CreatedOn())
 	case "exited_on":

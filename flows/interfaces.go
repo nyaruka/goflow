@@ -276,8 +276,6 @@ type Position interface {
 // @context trigger
 type Trigger interface {
 	utils.Typed
-	types.XValue
-	types.XResolvable
 
 	Initialize(Session, EventCallback) error
 	InitializeRun(FlowRun, EventCallback) error
@@ -288,6 +286,8 @@ type Trigger interface {
 	Connection() *Connection
 	Params() types.XValue
 	TriggeredOn() time.Time
+
+	Context(utils.Environment) types.XValue
 }
 
 // TriggerWithRun is special case of trigger that provides a parent run to the session
@@ -363,15 +363,13 @@ type Input interface {
 }
 
 type Step interface {
-	types.XValue
-	types.XResolvable
-
 	UUID() StepUUID
 	NodeUUID() NodeUUID
 	ExitUUID() ExitUUID
 	ArrivedOn() time.Time
 
 	Leave(ExitUUID)
+	Context(utils.Environment) types.XValue
 }
 
 type Engine interface {

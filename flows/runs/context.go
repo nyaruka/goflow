@@ -49,7 +49,7 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 
 	// other
 	case "trigger":
-		return c.run.Session().Trigger()
+		return c.run.Session().Trigger().Context(env)
 	case "input":
 		return c.run.Session().Input()
 	case "legacy_extra":
