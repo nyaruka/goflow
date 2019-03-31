@@ -94,13 +94,13 @@ func (m *MsgOut) Templating() *MsgTemplating { return m.Templating_ }
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
-	Template_  assets.TemplateReference `json:"template"`
-	Language_  utils.Language           `json:"language"`
-	Variables_ []string                 `json:"variables"`
+	Template_  *assets.TemplateReference `json:"template"`
+	Language_  utils.Language            `json:"language"`
+	Variables_ []string                  `json:"variables"`
 }
 
 // Template returns the template this msg template is for
-func (t MsgTemplating) Template() assets.TemplateReference { return t.Template_ }
+func (t MsgTemplating) Template() *assets.TemplateReference { return t.Template_ }
 
 // Language returns the language that should be used for the template
 func (t MsgTemplating) Language() utils.Language { return t.Language_ }
@@ -109,7 +109,7 @@ func (t MsgTemplating) Language() utils.Language { return t.Language_ }
 func (t MsgTemplating) Variables() []string { return t.Variables_ }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template assets.TemplateReference, language utils.Language, variables []string) *MsgTemplating {
+func NewMsgTemplating(template *assets.TemplateReference, language utils.Language, variables []string) *MsgTemplating {
 	return &MsgTemplating{
 		Template_:  template,
 		Language_:  language,
