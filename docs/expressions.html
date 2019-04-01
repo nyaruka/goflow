@@ -97,7 +97,7 @@
 <a class="sourceLine" id="cb3-7" title="7">@contact.urns → [tel:+<span class="dv">12065551212</span>, twitterid:<span class="dv">54784326227</span>#nyaruka, mailto:foo@bar.com]</a>
 <a class="sourceLine" id="cb3-8" title="8">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb3-9" title="9">@contact.urn → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb3-10" title="10">@(extract(contact.groups, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
+<a class="sourceLine" id="cb3-10" title="10">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
 <a class="sourceLine" id="cb3-11" title="11">@contact.fields → {activation_token: AACC55, age: <span class="dv">23</span>, gender: Male, join_date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span>, not_set: }</a>
 <a class="sourceLine" id="cb3-12" title="12">@contact.fields.activation_token → AACC55</a>
 <a class="sourceLine" id="cb3-13" title="13">@contact.fields.gender → Male</a></code></pre></div>
@@ -122,7 +122,7 @@
 <li><code>name</code> the name of the group</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1">@(extract(contact.groups, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
 <a class="sourceLine" id="cb5-2" title="2">@(contact.groups[<span class="dv">0</span>].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
 <a class="sourceLine" id="cb5-3" title="3">@(contact.groups[<span class="dv">1</span>].name) → Males</a>
 <a class="sourceLine" id="cb5-4" title="4">@(json(contact.groups[<span class="dv">1</span>])) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
@@ -319,12 +319,10 @@
 <a class="sourceLine" id="cb26-4" title="4">@(round_down(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>))) → <span class="dv">1497286619</span></a></code></pre></div>
 <p><a name="function:extract"></a></p>
 <h2 id="extractarray-properties">extract(array, properties…)</h2>
-<p>Takes an array of objects and returns a new array by extracting named properties from each item.</p>
-<p>If a single property is specified, the returned array is a flat array of values. If multiple properties are specified then each item is a dict of with those properties.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" title="1">@(extract(contact.groups, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
-<a class="sourceLine" id="cb27-2" title="2">@(extract(array(dict(<span class="st">&quot;foo&quot;</span>, <span class="dv">123</span>), dict(<span class="st">&quot;foo&quot;</span>, <span class="dv">256</span>)), <span class="st">&quot;foo&quot;</span>)) → [<span class="dv">123</span>, <span class="dv">256</span>]</a>
-<a class="sourceLine" id="cb27-3" title="3">@(extract(array(dict(<span class="st">&quot;a&quot;</span>, <span class="dv">123</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;xyz&quot;</span>, <span class="st">&quot;c&quot;</span>, true), dict(<span class="st">&quot;a&quot;</span>, <span class="dv">345</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;zyx&quot;</span>, <span class="st">&quot;c&quot;</span>, false)), <span class="st">&quot;a&quot;</span>, <span class="st">&quot;c&quot;</span>)) → [{a: <span class="dv">123</span>, c: true}, {a: <span class="dv">345</span>, c: false}]</a>
-<a class="sourceLine" id="cb27-4" title="4">@(extract(array(dict(<span class="st">&quot;foo&quot;</span>, <span class="dv">123</span>), dict(<span class="st">&quot;foo&quot;</span>, <span class="dv">256</span>)), <span class="st">&quot;bar&quot;</span>)) → ERROR</a></code></pre></div>
+<p>Takes a dict and returns a new dict by extracting only them named properties.</p>
+<p>If a single property is specified, the function returns that single value. If multiple properties are specified the returned value is a new dict with those properties.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" title="1">@(extract(contact.groups[<span class="dv">0</span>], <span class="st">&quot;name&quot;</span>)) → Testers</a>
+<a class="sourceLine" id="cb27-2" title="2">@(extract(contact, <span class="st">&quot;height&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:field"></a></p>
 <h2 id="fieldtext-index-delimiter">field(text, index, delimiter)</h2>
 <p>Splits <code>text</code> using the given <code>delimiter</code> and returns the field at <code>index</code>.</p>
@@ -338,7 +336,9 @@
 <p><a name="function:foreach"></a></p>
 <h2 id="foreacharray-func">foreach(array, func)</h2>
 <p>Takes an array of objects and returns a new array by applying the given function to each item.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" title="1">@(foreach(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), upper)) → [A, B, C]</a></code></pre></div>
+<p>If the given function takes more than one argument, you can pass additional arguments after the function.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" title="1">@(foreach(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), upper)) → [A, B, C]</a>
+<a class="sourceLine" id="cb29-2" title="2">@(foreach(array(<span class="st">&quot;the man&quot;</span>, <span class="st">&quot;fox&quot;</span>, <span class="st">&quot;jumped up&quot;</span>), word, <span class="dv">0</span>)) → [the, fox, jumped]</a></code></pre></div>
 <p><a name="function:format_date"></a></p>
 <h2 id="format_datedate-format">format_date(date, [,format])</h2>
 <p>Formats <code>date</code> as text according to the given <code>format</code>. If <code>format</code> is not specified then the environment’s default format is used.</p>

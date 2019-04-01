@@ -341,23 +341,15 @@
     },
     {
         "signature": "extract(array, properties...)",
-        "summary": "Takes an array of objects and returns a new array by extracting named properties from each item.",
-        "detail": "If a single property is specified, the returned array is a flat array of values. If multiple properties\nare specified then each item is a dict of with those properties.",
+        "summary": "Takes a dict and returns a new dict by extracting only them named properties.",
+        "detail": "If a single property is specified, the function returns that single value. If multiple properties\nare specified the returned value is a new dict with those properties.",
         "examples": [
             {
-                "template": "@(extract(contact.groups, \"name\"))",
-                "output": "[Testers, Males]"
+                "template": "@(extract(contact.groups[0], \"name\"))",
+                "output": "Testers"
             },
             {
-                "template": "@(extract(array(dict(\"foo\", 123), dict(\"foo\", 256)), \"foo\"))",
-                "output": "[123, 256]"
-            },
-            {
-                "template": "@(extract(array(dict(\"a\", 123, \"b\", \"xyz\", \"c\", true), dict(\"a\", 345, \"b\", \"zyx\", \"c\", false)), \"a\", \"c\"))",
-                "output": "[{a: 123, c: true}, {a: 345, c: false}]"
-            },
-            {
-                "template": "@(extract(array(dict(\"foo\", 123), dict(\"foo\", 256)), \"bar\"))",
+                "template": "@(extract(contact, \"height\"))",
                 "output": "ERROR"
             }
         ]
@@ -396,11 +388,15 @@
     {
         "signature": "foreach(array, func)",
         "summary": "Takes an array of objects and returns a new array by applying the given function to each item.",
-        "detail": "",
+        "detail": "If the given function takes more than one argument, you can pass additional arguments after the function.",
         "examples": [
             {
                 "template": "@(foreach(array(\"a\", \"b\", \"c\"), upper))",
                 "output": "[A, B, C]"
+            },
+            {
+                "template": "@(foreach(array(\"the man\", \"fox\", \"jumped up\"), word, 0))",
+                "output": "[the, fox, jumped]"
             }
         ]
     },

@@ -113,7 +113,7 @@ func init() {
 		"default":    TwoArgFunction(Default),
 		"legacy_add": TwoArgFunction(LegacyAdd),
 		"read_chars": OneTextFunction(ReadChars),
-		"extract":    InitialArrayFunction(1, -1, Extract),
+		"extract":    ArgCountCheck(2, -1, Extract),
 		"foreach":    ArgCountCheck(2, -1, ForEach),
 	}
 
@@ -1807,41 +1807,37 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 	return value
 }
 
-// Extract takes an array of objects and returns a new array by extracting named properties from each item.
+// Extract takes a dict and returns a new dict by extracting only them named properties.
 //
-// If a single property is specified, the returned array is a flat array of values. If multiple properties
-// are specified then each item is a dict of with those properties.
+// If a single property is specified, the function returns that single value. If multiple properties
+// are specified the returned value is a new dict with those properties.
 //
-//   @(extract(contact.groups, "name")) -> [Testers, Males]
-//   @(extract(array(dict("foo", 123), dict("foo", 256)), "foo")) -> [123, 256]
-//   @(extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) -> [{a: 123, c: true}, {a: 345, c: false}]
-//   @(extract(array(dict("foo", 123), dict("foo", 256)), "bar")) -> ERROR
+//   @(extract(contact.groups[0], "name")) -> Testers
+//   @(extract(contact, "height")) -> ERROR
 //
 // @function extract(array, properties...)
-func Extract(env utils.Environment, array types.XArray, properties ...types.XText) types.XValue {
-	result := types.NewXArray()
+func Extract(env utils.Environment, args ...types.XValue) types.XValue {
+	dict, xerr := types.ToXDict(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
 
-	for i := 0; i < array.Length(); i++ {
-		oldItem := array.Index(i)
-
-		// a single property means we return a flat array of values
-		if len(properties) == 1 {
-			newItem := types.Resolve(env, oldItem, properties[0].Native())
-			if types.IsXError(newItem) {
-				return newItem
-			}
-			result.Append(newItem)
-		} else {
-			newItem := types.NewEmptyXDict()
-			for _, property := range properties {
-				newSubItem := types.Resolve(env, oldItem, property.Native())
-				if types.IsXError(newSubItem) {
-					return newSubItem
-				}
-				newItem.Put(property.Native(), newSubItem)
-			}
-			result.Append(newItem)
+	properties := make([]string, 0, len(args)-1)
+	for _, arg := range args[1:] {
+		asText, xerr := types.ToXText(env, arg)
+		if xerr != nil {
+			return xerr
 		}
+		properties = append(properties, asText.Native())
+	}
+
+	if len(properties) == 1 {
+		return dict.Get(properties[0])
+	}
+
+	result := types.NewEmptyXDict()
+	for _, prop := range properties {
+		result.Put(prop, dict.Get(prop))
 	}
 
 	return result
@@ -1849,7 +1845,10 @@ func Extract(env utils.Environment, array types.XArray, properties ...types.XTex
 
 // ForEach takes an array of objects and returns a new array by applying the given function to each item.
 //
+// If the given function takes more than one argument, you can pass additional arguments after the function.
+//
 //   @(foreach(array("a", "b", "c"), upper)) -> [A, B, C]
+//   @(foreach(array("the man", "fox", "jumped up"), word, 0)) -> [the, fox, jumped]
 //
 // @function foreach(array, func)
 func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
@@ -1863,11 +1862,15 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("requires an function as its second argument")
 	}
 
+	otherArgs := args[2:]
+
 	result := types.NewXArray()
 
 	for i := 0; i < array.Length(); i++ {
 		oldItem := array.Index(i)
-		newItem := Call(env, function.Describe(), function, []types.XValue{oldItem})
+		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
+
+		newItem := Call(env, function.Describe(), function, funcArgs)
 		if types.IsXError(newItem) {
 			return newItem
 		}

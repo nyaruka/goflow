@@ -164,52 +164,27 @@ func TestFunctions(t *testing.T) {
 		{"dict", dmy, []types.XValue{xs("foo")}, ERROR},
 		{"dict", dmy, []types.XValue{}, types.NewEmptyXDict()},
 
+		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("foo")}, xs("hello")},
+		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("bar")}, nil},
 		{
 			"extract",
 			dmy,
 			[]types.XValue{
-				types.NewXArray(types.NewXDict(map[string]types.XValue{"foo": xs("hello")})),
-				xs("foo"),
-			},
-			types.NewXArray(xs("hello")),
-		},
-		{
-			"extract",
-			dmy,
-			[]types.XValue{
-				types.NewXArray(types.NewXDict(map[string]types.XValue{"foo": xs("hello")})),
-				xs("bar"),
-			},
-			ERROR,
-		},
-		{
-			"extract",
-			dmy,
-			[]types.XValue{
-				types.NewXArray(
-					types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
-					types.NewXDict(map[string]types.XValue{"a": xi(345), "b": xs("zyx"), "c": types.XBooleanFalse}),
-				),
+				types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
 				xs("a"),
 				xs("c"),
 			},
-			types.NewXArray(
-				types.NewXDict(map[string]types.XValue{"a": xi(123), "c": types.XBooleanTrue}),
-				types.NewXDict(map[string]types.XValue{"a": xi(345), "c": types.XBooleanFalse}),
-			),
+			types.NewXDict(map[string]types.XValue{"a": xi(123), "c": types.XBooleanTrue}),
 		},
 		{
 			"extract",
 			dmy,
 			[]types.XValue{
-				types.NewXArray(
-					types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
-					types.NewXDict(map[string]types.XValue{"a": xi(345), "b": xs("zyx"), "c": types.XBooleanFalse}),
-				),
+				types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
 				xs("a"),
 				xs("d"),
 			},
-			ERROR,
+			types.NewXDict(map[string]types.XValue{"a": xi(123), "d": nil}),
 		},
 		{"extract", dmy, []types.XValue{}, ERROR},
 
@@ -232,6 +207,7 @@ func TestFunctions(t *testing.T) {
 		{"field", dmy, []types.XValue{}, ERROR},
 
 		{"foreach", dmy, []types.XValue{types.NewXArray(xs("a"), xs("b"), xs("c")), xf("upper")}, types.NewXArray(xs("A"), xs("B"), xs("C"))},
+		{"foreach", dmy, []types.XValue{types.NewXArray(xs("the man"), xs("fox"), xs("jumped up")), xf("word"), xi(0)}, types.NewXArray(xs("the"), xs("fox"), xs("jumped"))},
 
 		{"format_date", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977")},
 		{"format_date", mdy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("06-23-1977")},

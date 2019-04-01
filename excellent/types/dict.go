@@ -119,5 +119,25 @@ func (x *xdict) Keys() []string {
 // String returns the native string representation of this type
 func (x *xdict) String() string { return x.ToXText(nil).Native() }
 
+var XDictEmpty = NewEmptyXDict()
 var _ XDict = (*xdict)(nil)
 var _ json.Marshaler = (*xdict)(nil)
+
+// ToXDict converts the given value to a dict
+func ToXDict(env utils.Environment, x XValue) (XDict, XError) {
+	x = Reduce(env, x)
+
+	if utils.IsNil(x) {
+		return XDictEmpty, nil
+	}
+	if IsXError(x) {
+		return XDictEmpty, x.(XError)
+	}
+
+	asDict, isDict := x.(XDict)
+	if isDict {
+		return asDict, nil
+	}
+
+	return XDictEmpty, NewXErrorf("unable to convert %s to a dict", Describe(x))
+}
