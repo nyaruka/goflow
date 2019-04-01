@@ -37,42 +37,42 @@ func TestXJSONResolve(t *testing.T) {
 		hasError   bool
 	}{
 		// error cases
-		{nil, "json.key", nil, true},
-		{[]byte(`malformed`), "json.key", nil, true},
+		{nil, "j.key", nil, true},
+		{[]byte(`malformed`), "j.key", nil, true},
 
 		// different data types in an object
-		{[]byte(`{"foo": "x", "bar": "one"}`), "json.bar", types.NewXText("one"), false},
-		{[]byte(`{"foo": "x", "bar": 1.23}`), "json.bar", types.RequireXNumberFromString("1.23"), false},
-		{[]byte(`{"foo": "x", "bar": true}`), "json.bar", types.NewXBoolean(true), false},
-		{[]byte(`{"foo": "x", "bar": null}`), "json.bar", nil, false},
+		{[]byte(`{"foo": "x", "bar": "one"}`), "j.bar", types.NewXText("one"), false},
+		{[]byte(`{"foo": "x", "bar": 1.23}`), "j.bar", types.RequireXNumberFromString("1.23"), false},
+		{[]byte(`{"foo": "x", "bar": true}`), "j.bar", types.NewXBoolean(true), false},
+		{[]byte(`{"foo": "x", "bar": null}`), "j.bar", nil, false},
 
 		// different data types in an array
-		{[]byte(`["foo", "one"]`), "json[1]", types.NewXText("one"), false},
-		{[]byte(`["foo", 1.23]`), "json[1]", types.RequireXNumberFromString("1.23"), false},
-		{[]byte(`["foo", true]`), "json[1]", types.NewXBoolean(true), false},
-		{[]byte(`["foo", null]`), "json[1]", nil, false},
+		{[]byte(`["foo", "one"]`), "j[1]", types.NewXText("one"), false},
+		{[]byte(`["foo", 1.23]`), "j[1]", types.RequireXNumberFromString("1.23"), false},
+		{[]byte(`["foo", true]`), "j[1]", types.NewXBoolean(true), false},
+		{[]byte(`["foo", null]`), "j[1]", nil, false},
 
-		{[]byte(`["one", "two", "three"]`), "json[0]", types.NewXText("one"), false},
-		{[]byte(`["escaped \"string\""]`), "json[0]", types.NewXText(`escaped "string"`), false},
-		{[]byte(`{"arr": ["one", "two"]}`), "json.arr[1]", types.NewXText("two"), false},
-		{[]byte(`{"arr": ["one", "two"]}`), "json.arr[1]", types.NewXText("two"), false},
-		{[]byte(`{"key": {"key2": "val2"}}`), "json.key.key2", types.NewXText("val2"), false},
-		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `json.key["key-with-dash"]`, types.NewXText("val2"), false},
-		{[]byte(`{"key": {"key with space": "val2"}}`), `json.key["key with space"]`, types.NewXText("val2"), false},
+		{[]byte(`["one", "two", "three"]`), "j[0]", types.NewXText("one"), false},
+		{[]byte(`["escaped \"string\""]`), "j[0]", types.NewXText(`escaped "string"`), false},
+		{[]byte(`{"arr": ["one", "two"]}`), "j.arr[1]", types.NewXText("two"), false},
+		{[]byte(`{"arr": ["one", "two"]}`), "j.arr[1]", types.NewXText("two"), false},
+		{[]byte(`{"key": {"key2": "val2"}}`), "j.key.key2", types.NewXText("val2"), false},
+		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `j.key["key-with-dash"]`, types.NewXText("val2"), false},
+		{[]byte(`{"key": {"key with space": "val2"}}`), `j.key["key with space"]`, types.NewXText("val2"), false},
 
-		{[]byte(`{"arr": ["one", "two"]}`), "json.arr", types.NewXJSONArray([]byte(`["one", "two"]`)), false},
-		{[]byte(`{"arr": {"foo": "bar"}}`), "json.arr", types.NewXJSONObject([]byte(`{"foo": "bar"}`)), false},
+		{[]byte(`{"arr": ["one", "two"]}`), "j.arr", types.NewXJSONArray([]byte(`["one", "two"]`)), false},
+		{[]byte(`{"arr": {"foo": "bar"}}`), "j.arr", types.NewXJSONObject([]byte(`{"foo": "bar"}`)), false},
 
 		// resolve errors
-		{[]byte(`{"foo": "x", "bar": "one"}`), "json.zed", nil, true},
-		{[]byte(`["foo", null]`), "json.0", nil, true},
-		{[]byte(`["foo", null]`), "json[3]", nil, true},
+		{[]byte(`{"foo": "x", "bar": "one"}`), "j.zed", nil, true},
+		{[]byte(`["foo", null]`), "j.0", nil, true},
+		{[]byte(`["foo", null]`), "j[3]", nil, true},
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
 	for _, test := range jsonTests {
 		fragment := types.JSONToXValue(test.JSON)
-		context := types.NewXDict(map[string]types.XValue{"json": fragment})
+		context := types.NewXDict(map[string]types.XValue{"j": fragment})
 
 		value := excellent.EvaluateExpression(env, context, test.expression)
 		err, _ := value.(error)

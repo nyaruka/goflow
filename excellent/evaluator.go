@@ -119,42 +119,56 @@ func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) interface{} 
 	return types.RequireXNumberFromString(ctx.GetText())
 }
 
+// VisitContextReference deals with identifiers which are function names or root variables in the context
+func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
+	name := strings.ToLower(ctx.GetText())
+
+	// first of all try to look this up as a function
+	function := functions.Lookup(name)
+	if function != nil {
+		return toXValue(function)
+	}
+
+	return types.Resolve(v.env, v.resolver, name)
+}
+
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	context := toXValue(v.Visit(ctx.Atom(0)))
+	context := toXValue(v.Visit(ctx.Atom()))
 	if types.IsXError(context) {
 		return context
 	}
 
-	lookup := ctx.Atom(1).GetText()
+	var lookup string
+	if ctx.NAME() != nil {
+		lookup = ctx.NAME().GetText()
+	} else {
+		lookup = ctx.NUMBER().GetText()
+	}
+
 	return types.Resolve(v.env, context, lookup)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
 func (v *visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
-	functionName := strings.ToLower(ctx.Fnname().GetText())
-
-	var function functions.XFunction
-	var found bool
-
-	function, found = functions.XFUNCTIONS[functionName]
-	if !found {
-		return types.NewXErrorf("no function with name '%s'", functionName)
+	function := toXValue(v.Visit(ctx.Atom()))
+	if types.IsXError(function) {
+		return function
 	}
+
+	asFunction, isFunction := function.(types.XFunction)
+	if !isFunction {
+		return types.NewXErrorf("%s is not a function", ctx.Atom().GetText())
+	}
+
+	name := strings.ToLower(ctx.Atom().GetText())
 
 	var params []types.XValue
 	if ctx.Parameters() != nil {
 		params, _ = v.Visit(ctx.Parameters()).([]types.XValue)
 	}
 
-	val := function(v.env, params...)
-
-	// if function returned an error, wrap the error with the function name
-	if types.IsXError(val) {
-		return types.NewXErrorf("error calling %s: %s", strings.ToUpper(functionName), val.(types.XError).Error())
-	}
-
-	return val
+	return functions.Call(v.env, name, asFunction, params)
 }
 
 // VisitTrue deals with the `true` reserved word
@@ -194,13 +208,6 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	}
 
 	return types.Resolve(v.env, context, lookup.Native())
-}
-
-// VisitContextReference deals with references to variables in the context such as "foo"
-func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
-	key := strings.ToLower(ctx.GetText())
-
-	return types.Resolve(v.env, v.resolver, key)
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)

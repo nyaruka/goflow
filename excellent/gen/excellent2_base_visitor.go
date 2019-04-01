@@ -1,4 +1,4 @@
-// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent2.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -80,10 +80,6 @@ func (v *BaseExcellent2Visitor) VisitEquality(ctx *EqualityContext) interface{} 
 }
 
 func (v *BaseExcellent2Visitor) VisitExponent(ctx *ExponentContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent2Visitor) VisitFnname(ctx *FnnameContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

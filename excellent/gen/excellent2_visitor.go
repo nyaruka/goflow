@@ -1,4 +1,4 @@
-// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent2.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -63,9 +63,6 @@ type Excellent2Visitor interface {
 
 	// Visit a parse tree produced by Excellent2Parser#exponent.
 	VisitExponent(ctx *ExponentContext) interface{}
-
-	// Visit a parse tree produced by Excellent2Parser#fnname.
-	VisitFnname(ctx *FnnameContext) interface{}
 
 	// Visit a parse tree produced by Excellent2Parser#functionParameters.
 	VisitFunctionParameters(ctx *FunctionParametersContext) interface{}

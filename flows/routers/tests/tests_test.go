@@ -247,9 +247,9 @@ func TestTests(t *testing.T) {
 
 func TestEvaluateTemplate(t *testing.T) {
 	vars := types.NewXDict(map[string]types.XValue{
-		"int1":  types.NewXNumberFromInt(1),
-		"int2":  types.NewXNumberFromInt(2),
-		"array": types.NewXArray(xs("one"), xs("two"), xs("three")),
+		"int1":   types.NewXNumberFromInt(1),
+		"int2":   types.NewXNumberFromInt(2),
+		"array1": types.NewXArray(xs("one"), xs("two"), xs("three")),
 		"thing": types.NewXDict(map[string]types.XValue{
 			"foo":     types.NewXText("bar"),
 			"zed":     types.NewXNumberFromInt(123),
@@ -263,8 +263,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		expected string
 		hasError bool
 	}{
-		{"@(is_error(array[100]))", "{match: index 100 out of range for 3 items}", false}, // errors are like any other value
-		{"@(is_error(array.100))", "{match: array has no property '100'}", false},
+		{"@(is_error(array1[100]))", "{match: index 100 out of range for 3 items}", false}, // errors are like any other value
+		{"@(is_error(array1.100))", "{match: array has no property '100'}", false},
 		{`@(is_error(round("foo", "bar")))`, "{match: error calling ROUND: unable to convert \"foo\" to a number}", false},
 		{`@(is_error(err))`, "{match: an error}", false},
 		{"@(is_error(thing.foo))", "", false},

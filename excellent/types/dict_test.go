@@ -43,3 +43,30 @@ func TestXDict(t *testing.T) {
 		"zed": types.XBooleanFalse,
 	}))
 }
+
+func TestToXDict(t *testing.T) {
+	var tests = []struct {
+		value    types.XValue
+		asDict   types.XDict
+		hasError bool
+	}{
+		{nil, types.XDictEmpty, false},
+		{types.NewXErrorf("Error"), types.XDictEmpty, true},
+		{types.NewXNumberFromInt(123), types.XDictEmpty, true},
+		{types.NewXText(""), types.XDictEmpty, true},
+		{types.NewXDict(map[string]types.XValue{"foo": types.NewXText("bar")}), types.NewXDict(map[string]types.XValue{"foo": types.NewXText("bar")}), false},
+	}
+
+	env := utils.NewEnvironmentBuilder().Build()
+
+	for _, test := range tests {
+		dict, err := types.ToXDict(env, test.value)
+
+		if test.hasError {
+			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)
+		} else {
+			assert.NoError(t, err, "unexpected error for input %T{%s}", test.value, test.value)
+			assert.Equal(t, test.asDict, dict, "dict mismatch for input %T{%s}", test.value, test.value)
+		}
+	}
+}

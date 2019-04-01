@@ -29,13 +29,13 @@ func init() {
 }
 
 // RegisterXTest registers a new router test (and Excellent function)
-func RegisterXTest(name string, function functions.XFunction) {
+func RegisterXTest(name string, function types.XFunction) {
 	XTESTS[name] = function
 	functions.RegisterXFunction(name, function)
 }
 
 // XTESTS is our mapping of the excellent test names to their actual functions
-var XTESTS = map[string]functions.XFunction{
+var XTESTS = map[string]types.XFunction{
 	"is_error":  functions.OneArgFunction(IsError),
 	"has_value": functions.OneArgFunction(HasValue),
 

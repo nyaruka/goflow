@@ -108,7 +108,7 @@ Examples:
 @contact.urns → [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 @(contact.urns[0]) → tel:+12065551212
 @contact.urn → tel:+12065551212
-@(extract(contact.groups, "name")) → [Testers, Males]
+@(foreach(contact.groups, extract, "name")) → [Testers, Males]
 @contact.fields → {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
@@ -150,7 +150,7 @@ Examples:
 
 
 ```objectivec
-@(extract(contact.groups, "name")) → [Testers, Males]
+@(foreach(contact.groups, extract, "name")) → [Testers, Males]
 @(contact.groups[0].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
 @(contact.groups[1].name) → Males
 @(json(contact.groups[1])) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
@@ -522,19 +522,26 @@ The returned number can contain fractional seconds.
 
 <a name="function:extract"></a>
 
-## extract(array, properties...)
+## extract(dict, properties...)
 
-Takes an array of objects and returns a new array by extracting named properties from each item.
-
-If a single property is specified, the returned array is a flat array of values. If multiple properties
-are specified then each item is a dict of with those properties.
+Takes a dict and extracts the named property.
 
 
 ```objectivec
-@(extract(contact.groups, "name")) → [Testers, Males]
-@(extract(array(dict("foo", 123), dict("foo", 256)), "foo")) → [123, 256]
-@(extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) → [{a: 123, c: true}, {a: 345, c: false}]
-@(extract(array(dict("foo", 123), dict("foo", 256)), "bar")) → ERROR
+@(extract(contact.groups[0], "name")) → Testers
+@(extract(contact, "height")) → ERROR
+```
+
+<a name="function:extract_dict"></a>
+
+## extract_dict(dict, properties...)
+
+Takes a dict and returns a new dict by extracting only the named properties.
+
+
+```objectivec
+@(extract_dict(contact.groups[0], "name")) → {name: Testers}
+@(extract_dict(contact, "height")) → ERROR
 ```
 
 <a name="function:field"></a>
@@ -553,6 +560,20 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 @(field("a		b	c	d", 1, "	")) →
 @(field("a\t\tb\tc\td", 1, " ")) →
 @(field("a,b,c", "foo", ",")) → ERROR
+```
+
+<a name="function:foreach"></a>
+
+## foreach(array, func, [args...])
+
+Takes an array of objects and returns a new array by applying the given function to each item.
+
+If the given function takes more than one argument, you can pass additional arguments after the function.
+
+
+```objectivec
+@(foreach(array("a", "b", "c"), upper)) → [A, B, C]
+@(foreach(array("the man", "fox", "jumped up"), word, 0)) → [the, fox, jumped]
 ```
 
 <a name="function:format_date"></a>
