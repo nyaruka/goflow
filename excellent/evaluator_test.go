@@ -242,7 +242,11 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@(title(hello))`, "", true},
 		{`Hello @(title(string1))`, "Hello Foo", false},
 		{`Hello @@string1`, "Hello @string1", false},
-		{`@(title)`, "function", false}, // functions are values too
+
+		// functions are values too
+		{`@(title)`, "function", false},
+		{`@(array(upper)[0]("hello"))`, "HELLO", false},
+		{`@(dict("a", lower, "b", upper).a("Hello"))`, "hello", false},
 
 		// an identifier which isn't valid top-level is ignored completely
 		{"@hello", "@hello", false},

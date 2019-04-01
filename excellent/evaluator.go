@@ -119,8 +119,8 @@ func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) interface{} 
 	return types.RequireXNumberFromString(ctx.GetText())
 }
 
-// VisitNamedValue deals with identifiers which are function names or root variables in the context
-func (v *visitor) VisitNamedValue(ctx *gen.NamedValueContext) interface{} {
+// VisitContextReference deals with identifiers which are function names or root variables in the context
+func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	name := strings.ToLower(ctx.GetText())
 
 	// first of all try to look this up as a function
@@ -132,35 +132,36 @@ func (v *visitor) VisitNamedValue(ctx *gen.NamedValueContext) interface{} {
 	return types.Resolve(v.env, v.resolver, name)
 }
 
-// VisitContextReference deals with root variables in the context
-func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
-	return toXValue(v.Visit(ctx.Name()))
-}
-
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	context := toXValue(v.Visit(ctx.Atom(0)))
+	context := toXValue(v.Visit(ctx.Atom()))
 	if types.IsXError(context) {
 		return context
 	}
 
-	lookup := ctx.Atom(1).GetText()
+	var lookup string
+	if ctx.NAME() != nil {
+		lookup = ctx.NAME().GetText()
+	} else {
+		lookup = ctx.NUMBER().GetText()
+	}
+
 	return types.Resolve(v.env, context, lookup)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
 func (v *visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
-	function := toXValue(v.Visit(ctx.Name()))
+	function := toXValue(v.Visit(ctx.Atom()))
 	if types.IsXError(function) {
 		return function
 	}
 
 	asFunction, isFunction := function.(types.XFunction)
 	if !isFunction {
-		return types.NewXErrorf("%s is not a function", ctx.Name().GetText())
+		return types.NewXErrorf("%s is not a function", ctx.Atom().GetText())
 	}
 
-	name := strings.ToLower(ctx.Name().GetText())
+	name := strings.ToLower(ctx.Atom().GetText())
 
 	var params []types.XValue
 	if ctx.Parameters() != nil {

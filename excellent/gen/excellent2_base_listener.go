@@ -80,12 +80,6 @@ func (s *BaseExcellent2Listener) EnterNumberLiteral(ctx *NumberLiteralContext) {
 // ExitNumberLiteral is called when production numberLiteral is exited.
 func (s *BaseExcellent2Listener) ExitNumberLiteral(ctx *NumberLiteralContext) {}
 
-// EnterNamedValue is called when production namedValue is entered.
-func (s *BaseExcellent2Listener) EnterNamedValue(ctx *NamedValueContext) {}
-
-// ExitNamedValue is called when production namedValue is exited.
-func (s *BaseExcellent2Listener) ExitNamedValue(ctx *NamedValueContext) {}
-
 // EnterParentheses is called when production parentheses is entered.
 func (s *BaseExcellent2Listener) EnterParentheses(ctx *ParenthesesContext) {}
 

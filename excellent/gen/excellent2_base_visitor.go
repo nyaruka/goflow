@@ -47,10 +47,6 @@ func (v *BaseExcellent2Visitor) VisitNumberLiteral(ctx *NumberLiteralContext) in
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseExcellent2Visitor) VisitNamedValue(ctx *NamedValueContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
 func (v *BaseExcellent2Visitor) VisitParentheses(ctx *ParenthesesContext) interface{} {
 	return v.VisitChildren(ctx)
 }

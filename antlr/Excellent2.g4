@@ -45,17 +45,15 @@ ERROR: .;
 parse: expression EOF;
 
 atom:
-	name LPAREN parameters? RPAREN	# functionCall
-	| atom DOT atom					# dotLookup
-	| atom LBRACK expression RBRACK	# arrayLookup
-	| name							# contextReference
-	| TEXT							# textLiteral
-	| NUMBER						# numberLiteral
-	| TRUE							# true
-	| FALSE							# false
-	| NULL							# null;
-
-name: NAME # namedValue;
+	atom LPAREN parameters? RPAREN		# functionCall
+	| atom DOT prop = (NAME | NUMBER)	# dotLookup
+	| atom LBRACK expression RBRACK		# arrayLookup
+	| NAME								# contextReference
+	| TEXT								# textLiteral
+	| NUMBER							# numberLiteral
+	| TRUE								# true
+	| FALSE								# false
+	| NULL								# null;
 
 expression:
 	atom												# atomReference

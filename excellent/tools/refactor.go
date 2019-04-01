@@ -79,24 +79,19 @@ func (v *refactorVisitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) inte
 	return ctx.GetText()
 }
 
-// VisitNamedValue deals with identifiers which are function names or root variables in the context
-func (v *refactorVisitor) VisitNamedValue(ctx *gen.NamedValueContext) interface{} {
-	return strings.ToLower(ctx.GetText())
-}
-
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *refactorVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
-	return v.Visit(ctx.Name())
+	return strings.ToLower(ctx.NAME().GetText())
 }
 
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *refactorVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	return fmt.Sprintf("%s.%s", v.Visit(ctx.Atom(0)), v.Visit(ctx.Atom(1)))
+	return fmt.Sprintf("%s.%s", v.Visit(ctx.Atom()), strings.ToLower(ctx.NAME().GetText()))
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
 func (v *refactorVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
-	functionName := v.Visit(ctx.Name())
+	functionName := v.Visit(ctx.Atom())
 
 	var params []string
 	if ctx.Parameters() != nil {

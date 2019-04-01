@@ -37,9 +37,6 @@ type Excellent2Visitor interface {
 	// Visit a parse tree produced by Excellent2Parser#numberLiteral.
 	VisitNumberLiteral(ctx *NumberLiteralContext) interface{}
 
-	// Visit a parse tree produced by Excellent2Parser#namedValue.
-	VisitNamedValue(ctx *NamedValueContext) interface{}
-
 	// Visit a parse tree produced by Excellent2Parser#parentheses.
 	VisitParentheses(ctx *ParenthesesContext) interface{}
 

@@ -37,9 +37,6 @@ type Excellent2Listener interface {
 	// EnterNumberLiteral is called when entering the numberLiteral production.
 	EnterNumberLiteral(c *NumberLiteralContext)
 
-	// EnterNamedValue is called when entering the namedValue production.
-	EnterNamedValue(c *NamedValueContext)
-
 	// EnterParentheses is called when entering the parentheses production.
 	EnterParentheses(c *ParenthesesContext)
 
@@ -99,9 +96,6 @@ type Excellent2Listener interface {
 
 	// ExitNumberLiteral is called when exiting the numberLiteral production.
 	ExitNumberLiteral(c *NumberLiteralContext)
-
-	// ExitNamedValue is called when exiting the namedValue production.
-	ExitNamedValue(c *NamedValueContext)
 
 	// ExitParentheses is called when exiting the parentheses production.
 	ExitParentheses(c *ParenthesesContext)
