@@ -196,5 +196,95 @@
                 "type": "msg_created"
             }
         ]
+    },
+    {
+        "description": "Msg with a missing template",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi @contact.name, who's a good boy?",
+            "templating": {
+                "template": {
+                    "name": "missing",
+                    "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec"
+                },
+                "variables": [
+                    "@contact.name",
+                    "boy"
+                ]
+            }
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "msg": {
+                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                    "channel": {
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "text": "Hi Ryan Lewis, who's a good boy?",
+                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                },
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "msg_created"
+            }
+        ]
+    },
+    {
+        "description": "Msg with a matching template",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi Ryan Lewis, who's a good boy?",
+            "templating": {
+                "template": {
+                    "name": "affirmation",
+                    "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e"
+                },
+                "variables": [
+                    "@contact.name",
+                    "boy"
+                ]
+            }
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "msg": {
+                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                    "channel": {
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "text": "Hi Ryan Lewis, who's an excellent boy?",
+                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                    "templating": {
+                        "template": {
+                            "name": "affirmation",
+                            "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e"
+                        },
+                        "language": "eng",
+                        "variables": [
+                            "Ryan Lewis",
+                            "boy"
+                        ]
+                    }
+                },
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "msg_created"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "Hi Ryan Lewis, who's a good boy?",
+                "@contact.name",
+                "boy"
+            ],
+            "dependencies": [
+                "template[uuid=5722e1fd-fe32-4e74-ac78-3cf41a6adb7e,name=affirmation]"
+            ],
+            "results": []
+        }
     }
 ]

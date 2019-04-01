@@ -22,6 +22,7 @@ type StaticSource struct {
 		Labels    []*types.Label             `json:"labels" validate:"omitempty,dive"`
 		Locations []*utils.LocationHierarchy `json:"locations"`
 		Resthooks []*types.Resthook          `json:"resthooks" validate:"omitempty,dive"`
+		Templates []*types.Template          `json:"templates" validate:"omitempty,dive"`
 	}
 }
 
@@ -110,6 +111,15 @@ func (s *StaticSource) Resthooks() ([]assets.Resthook, error) {
 	set := make([]assets.Resthook, len(s.s.Resthooks))
 	for i := range s.s.Resthooks {
 		set[i] = s.s.Resthooks[i]
+	}
+	return set, nil
+}
+
+// Templates returns all template assets
+func (s *StaticSource) Templates() ([]assets.Template, error) {
+	set := make([]assets.Template, len(s.s.Templates))
+	for i := range s.s.Templates {
+		set[i] = s.s.Templates[i]
 	}
 	return set, nil
 }

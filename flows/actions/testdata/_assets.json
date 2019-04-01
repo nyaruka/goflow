@@ -179,5 +179,21 @@
             "slug": "unpopular-resthook",
             "subscribers": []
         }
+    ],
+    "templates": [
+        {
+            "name": "affirmation",
+            "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
+            "translations": [
+                {
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "language": "eng",
+                    "content": "Hi {{1}}, who's an excellent {{2}}?"
+                }
+            ]
+        }
     ]
 }
