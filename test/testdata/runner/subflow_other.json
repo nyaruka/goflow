@@ -122,7 +122,7 @@
                             }
                         ],
                         "default_category_uuid": "3e3a8051-da19-495a-b0ad-69b11e2158f7",
-                        "operand": "@input",
+                        "operand": "@input.text",
                         "cases": [
                             {
                                 "type": "has_any_word",
@@ -225,7 +225,7 @@
                             }
                         ],
                         "default_category_uuid": "47f7e70f-f7a5-4a24-a6cd-4853ef07487d",
-                        "operand": "@input",
+                        "operand": "@input.text",
                         "cases": [
                             {
                                 "type": "has_any_word",

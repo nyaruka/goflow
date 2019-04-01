@@ -40,7 +40,7 @@
                         ],
                         "cases": [],
                         "default_category_uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
-                        "operand": "@input"
+                        "operand": "@input.text"
                     },
                     "exits": [
                         {

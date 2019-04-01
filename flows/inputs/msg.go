@@ -43,25 +43,23 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 	}, nil
 }
 
-// Resolve resolves the given key when this input is referenced in an expression
-func (i *MsgInput) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "urn":
-		return types.ToXValue(env, i.urn)
-	case "text":
-		return types.NewXText(i.text)
-	case "attachments":
-		attachments := types.NewXArray()
-		for _, attachment := range i.attachments {
-			attachments.Append(types.NewXText(string(attachment)))
-		}
-		return attachments
+// ToXValue returns a representation of this object for use in expressions
+func (i *MsgInput) ToXValue(env utils.Environment) types.XValue {
+	attachments := types.NewXArray()
+	for _, attachment := range i.attachments {
+		attachments.Append(types.NewXText(string(attachment)))
 	}
-	return i.baseInput.Resolve(env, key)
-}
 
-// Describe returns a representation of this type for error messages
-func (i *MsgInput) Describe() string { return "input" }
+	return types.NewXDict(map[string]types.XValue{
+		"type":        types.NewXText(i.type_),
+		"uuid":        types.NewXText(string(i.uuid)),
+		"created_on":  types.NewXDateTime(i.createdOn),
+		"channel":     types.ToXValue(env, i.channel),
+		"urn":         types.ToXValue(env, i.urn),
+		"text":        types.NewXText(i.text),
+		"attachments": attachments,
+	})
+}
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (i *MsgInput) Reduce(env utils.Environment) types.XPrimitive {
@@ -75,13 +73,6 @@ func (i *MsgInput) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(strings.Join(parts, "\n"))
 }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (i *MsgInput) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, i, "uuid", "created_on", "channel", "type", "urn", "text", "attachments").ToXJSON(env)
-}
-
-var _ types.XValue = (*MsgInput)(nil)
-var _ types.XResolvable = (*MsgInput)(nil)
 var _ flows.Input = (*MsgInput)(nil)
 
 //------------------------------------------------------------------------------------------

@@ -28,7 +28,7 @@
                             }
                         ],
                         "default_category_uuid": "403ff3e7-6a7b-4c9a-9765-3d1bb24e0dc5",
-                        "operand": "@input",
+                        "operand": "@input.text",
                         "cases": [
                             {
                                 "uuid": "3c6d59e9-b2eb-4458-bdc5-7d68b160411d",
