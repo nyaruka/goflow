@@ -93,8 +93,9 @@ func init() {
 		"parse_time":      ArgCountCheck(2, 2, ParseTime),
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
-		// URN functions
-		"urn_parts": OneTextFunction(URNParts),
+		// encoded text functions
+		"urn_parts":        OneTextFunction(URNParts),
+		"attachment_parts": OneTextFunction(AttachmentParts),
 
 		// json functions
 		"json":       OneArgFunction(JSON),
@@ -1451,6 +1452,21 @@ func URNParts(env utils.Environment, urn types.XText) types.XValue {
 		"scheme":  types.NewXText(scheme),
 		"path":    types.NewXText(path),
 		"display": types.NewXText(display),
+	})
+}
+
+// AttachmentParts parses an attachment into its different parts
+//
+//   @(attachment_parts("image/jpeg:https://example.com/test.jpg")) -> {content_type: image/jpeg, url: https://example.com/test.jpg}
+//
+// @function attachment_parts(attachment)
+func AttachmentParts(env utils.Environment, attachment types.XText) types.XValue {
+	a := utils.Attachment(attachment.Native())
+	contentType, url := a.ToParts()
+
+	return types.NewXDict(map[string]types.XValue{
+		"content_type": types.NewXText(contentType),
+		"url":          types.NewXText(url),
 	})
 }
 

@@ -154,6 +154,8 @@ var _ Resolvable = (*varMapper)(nil)
 
 type arrayMapper struct {
 	varMapper
+
+	substitutionFunc func(index string) string
 }
 
 // returns a copy of this mapper with a prefix applied to the previous base
@@ -165,11 +167,16 @@ func (v *arrayMapper) rebase(prefix string) *arrayMapper {
 		newBase = v.base
 	}
 	return &arrayMapper{
-		varMapper: varMapper{base: newBase},
+		varMapper:        varMapper{base: newBase},
+		substitutionFunc: v.substitutionFunc,
 	}
 }
 
 func (m *arrayMapper) Resolve(key string) interface{} {
+	if m.substitutionFunc != nil {
+		return m.substitutionFunc(key)
+	}
+
 	return fmt.Sprintf("%s[%s]", m.base, key)
 }
 
@@ -289,12 +296,21 @@ func newMigrationVars() map[string]interface{} {
 				"contact":     contact,
 				"__default__": "input",
 				"value":       "input",
+				"attachments": &arrayMapper{
+					varMapper: varMapper{
+						substitutions: map[string]interface{}{
+							"__default__": `foreach(foreach(input.attachments, attachment_parts), extract, "url")`,
+						},
+					},
+					substitutionFunc: func(index string) string {
+						return fmt.Sprintf("attachment_parts(input.attachments[%s]).url", index)
+					},
+				},
 			},
 			base: "input",
 			baseVars: map[string]interface{}{
-				"text":        "text",
-				"attachments": &arrayMapper{varMapper: varMapper{base: "attachments"}},
-				"time":        "created_on",
+				"text": "text",
+				"time": "created_on",
 			},
 		},
 		"channel": &varMapper{

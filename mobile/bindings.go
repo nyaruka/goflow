@@ -119,11 +119,11 @@ type MsgIn struct {
 
 // NewMsgIn creates a new incoming message
 func NewMsgIn(uuid string, text string, attachments *StringSlice) *MsgIn {
-	var convertedAttachments []flows.Attachment
+	var convertedAttachments []utils.Attachment
 	if attachments != nil {
-		convertedAttachments = make([]flows.Attachment, attachments.Length())
+		convertedAttachments = make([]utils.Attachment, attachments.Length())
 		for a := 0; a < attachments.Length(); a++ {
-			convertedAttachments[a] = flows.Attachment(attachments.Get(a))
+			convertedAttachments[a] = utils.Attachment(attachments.Get(a))
 		}
 	}
 

@@ -17,7 +17,7 @@ const TypeBroadcastCreated string = "broadcast_created"
 // BroadcastTranslation is the broadcast content in a particular language
 type BroadcastTranslation struct {
 	Text         string             `json:"text"`
-	Attachments  []flows.Attachment `json:"attachments,omitempty"`
+	Attachments  []utils.Attachment `json:"attachments,omitempty"`
 	QuickReplies []string           `json:"quick_replies,omitempty"`
 }
 

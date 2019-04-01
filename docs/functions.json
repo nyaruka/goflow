@@ -57,6 +57,17 @@
         ]
     },
     {
+        "signature": "attachment_parts(attachment)",
+        "summary": "Parses an attachment into its different parts",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(attachment_parts(\"image/jpeg:https://example.com/test.jpg\"))",
+                "output": "{content_type: image/jpeg, url: https://example.com/test.jpg}"
+            }
+        ]
+    },
+    {
         "signature": "boolean(value)",
         "summary": "Tries to convert `value` to a boolean.",
         "detail": "An error is returned if the value can't be converted.",

@@ -13,7 +13,7 @@ type BaseMsg struct {
 	URN_         urns.URN                 `json:"urn,omitempty" validate:"omitempty,urn"`
 	Channel_     *assets.ChannelReference `json:"channel,omitempty"`
 	Text_        string                   `json:"text"`
-	Attachments_ []Attachment             `json:"attachments,omitempty"`
+	Attachments_ []utils.Attachment       `json:"attachments,omitempty"`
 }
 
 // MsgIn represents a incoming message from the session contact
@@ -32,7 +32,7 @@ type MsgOut struct {
 }
 
 // NewMsgIn creates a new incoming message
-func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment) *MsgIn {
+func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment) *MsgIn {
 	return &MsgIn{
 		BaseMsg: BaseMsg{
 			UUID_:        uuid,
@@ -45,7 +45,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment, quickReplies []string, templating *MsgTemplating) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(utils.NewUUID()),
@@ -78,7 +78,7 @@ func (m *BaseMsg) Channel() *assets.ChannelReference { return m.Channel_ }
 func (m *BaseMsg) Text() string { return m.Text_ }
 
 // Attachments returns the attachments of this message
-func (m *BaseMsg) Attachments() []Attachment { return m.Attachments_ }
+func (m *BaseMsg) Attachments() []utils.Attachment { return m.Attachments_ }
 
 // ExternalID returns the optional external ID of this incoming message
 func (m *MsgIn) ExternalID() string { return m.ExternalID_ }

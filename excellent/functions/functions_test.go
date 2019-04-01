@@ -59,6 +59,17 @@ func TestFunctions(t *testing.T) {
 		{"array", dmy, []types.XValue{xi(123), xs("abc")}, types.NewXArray(xi(123), xs("abc"))},
 		{"array", dmy, []types.XValue{xi(123), ERROR, xs("abc")}, ERROR},
 
+		{"attachment_parts", dmy, []types.XValue{xs("image/jpeg:http://s3.com/test.jpg")}, types.NewXDict(map[string]types.XValue{
+			"content_type": xs("image/jpeg"),
+			"url":          xs("http://s3.com/test.jpg"),
+		})},
+		{"attachment_parts", dmy, []types.XValue{xs("not_a_thing")}, types.NewXDict(map[string]types.XValue{
+			"content_type": xs(""),
+			"url":          xs("not_a_thing"),
+		})},
+		{"attachment_parts", dmy, []types.XValue{ERROR}, ERROR},
+		{"attachment_parts", dmy, []types.XValue{}, ERROR},
+
 		{"boolean", dmy, []types.XValue{xs("abc")}, types.XBooleanTrue},
 		{"boolean", dmy, []types.XValue{xs("false")}, types.XBooleanFalse},
 		{"boolean", dmy, []types.XValue{xs("FALSE")}, types.XBooleanFalse},

@@ -155,9 +155,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 				urns.URN("tel:+12065551212"),
 				nil,
 				"Hi everybody",
-				flows.AttachmentList{
-					flows.Attachment("image/jpeg:http://http://s3.amazon.com/bucket/test.jpg"),
-					flows.Attachment("audio/mp3:http://s3.amazon.com/bucket/test.mp3"),
+				[]utils.Attachment{
+					"image/jpeg:http://http://s3.amazon.com/bucket/test.jpg",
+					"audio/mp3:http://s3.amazon.com/bucket/test.mp3",
 				},
 			)
 			trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil)

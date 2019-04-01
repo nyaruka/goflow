@@ -20,9 +20,9 @@ func TestMsgIn(t *testing.T) {
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		"Hi there",
-		[]flows.Attachment{
-			flows.Attachment("image/jpeg:https://example.com/test.jpg"),
-			flows.Attachment("audio/mp3:https://example.com/test.mp3"),
+		[]utils.Attachment{
+			utils.Attachment("image/jpeg:https://example.com/test.jpg"),
+			utils.Attachment("audio/mp3:https://example.com/test.mp3"),
 		},
 	)
 	msg.SetID(123)
