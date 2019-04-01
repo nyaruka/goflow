@@ -77,7 +77,7 @@
                         "exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8"
                     }
                 ],
-                "operand": "@input",
+                "operand": "@input.text",
                 "cases": [
                     {
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -369,7 +369,7 @@
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
-                "operand": "@input",
+                "operand": "@input.text",
                 "cases": [
                     {
                         "arguments": [
@@ -474,7 +474,7 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
-                "operand": "@input",
+                "operand": "@input.text",
                 "cases": [
                     {
                         "arguments": [
@@ -559,7 +559,7 @@
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     }
                 ],
-                "operand": "@input",
+                "operand": "@input.text",
                 "cases": [],
                 "default_category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             },
@@ -1405,7 +1405,7 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
-                "operand": "@input",
+                "operand": "@input.text",
                 "cases": [
                     {
                         "arguments": [
@@ -1964,7 +1964,7 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
-                "operand": "@input",
+                "operand": "@input.text",
                 "cases": [
                     {
                         "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
