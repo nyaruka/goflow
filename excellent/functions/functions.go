@@ -21,19 +21,8 @@ import (
 var nanosPerSecond = decimal.RequireFromString("1000000000")
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
-// XFunction defines the interface that Excellent functions must implement
-type XFunction func(env utils.Environment, args ...types.XValue) types.XValue
-
-// XFUNCTIONS is our map of functions available in Excellent which aren't tests
-var XFUNCTIONS = map[string]XFunction{}
-
-// RegisterXFunction registers a new function in Excellent
-func RegisterXFunction(name string, function XFunction) {
-	XFUNCTIONS[name] = function
-}
-
 func init() {
-	std := map[string]XFunction{
+	std := map[string]types.XFunction{
 		// type conversion
 		"text":     OneArgFunction(Text),
 		"boolean":  OneArgFunction(Boolean),
@@ -48,7 +37,7 @@ func init() {
 		"char":              OneNumberFunction(Char),
 		"code":              OneTextFunction(Code),
 		"split":             TwoTextFunction(Split),
-		"join":              InitialArrayFunction(1, 1, Join),
+		"join":              ArgCountCheck(2, 2, Join),
 		"title":             OneTextFunction(Title),
 		"word":              InitialTextFunction(1, 2, Word),
 		"remove_first_word": OneTextFunction(RemoveFirstWord),
@@ -104,9 +93,8 @@ func init() {
 		"parse_time":      ArgCountCheck(2, 2, ParseTime),
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
-		// encoded text functions
-		"urn_parts":        OneTextFunction(URNParts),
-		"attachment_parts": OneTextFunction(AttachmentParts),
+		// URN functions
+		"urn_parts": OneTextFunction(URNParts),
 
 		// json functions
 		"json":       OneArgFunction(JSON),
@@ -117,18 +105,16 @@ func init() {
 		"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
 		"format_time":     ArgCountCheck(1, 2, FormatTime),
 		"format_location": OneTextFunction(FormatLocation),
-		"format_number":   FormatNumber,
+		"format_number":   ArgCountCheck(1, 3, FormatNumber),
 		"format_urn":      OneTextFunction(FormatURN),
-
-		// functional programming
-		"map_extract": InitialArrayFunction(1, -1, MapExtract),
-		"map_apply":   InitialArrayFunction(1, 1, MapApply),
 
 		// utility functions
 		"length":     OneArgFunction(Length),
 		"default":    TwoArgFunction(Default),
 		"legacy_add": TwoArgFunction(LegacyAdd),
 		"read_chars": OneTextFunction(ReadChars),
+		"extract":    ArgCountCheck(2, -1, Extract),
+		"foreach":    ArgCountCheck(2, -1, ForEach),
 	}
 
 	for name, fn := range std {
@@ -416,8 +402,16 @@ func Split(env utils.Environment, text types.XText, delimiters types.XText) type
 //   @(join(split("a.b.c", "."), " ")) -> a b c
 //
 // @function join(array, separator)
-func Join(env utils.Environment, array types.XArray, args ...types.XText) types.XValue {
-	separator := args[0]
+func Join(env utils.Environment, args ...types.XValue) types.XValue {
+	array, xerr := types.ToXArray(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	separator, xerr := types.ToXText(env, args[1])
+	if xerr != nil {
+		return xerr
+	}
 
 	var output bytes.Buffer
 	for i := 0; i < array.Length(); i++ {
@@ -1704,10 +1698,6 @@ func FormatTime(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function format_number(number, places [, humanize])
 func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) < 1 || len(args) > 3 {
-		return types.NewXErrorf("takes 1 to 3 arguments, got %d", len(args))
-	}
-
 	num, err := types.ToXNumber(env, args[0])
 	if err != nil {
 		return err
@@ -1840,41 +1830,74 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 	return value
 }
 
-// MapExtract takes an array of objects and returns a new array by extracting named properties from each item.
+// Extract takes a dict and returns a new dict by extracting only the named properties.
 //
-// If a single property is specified, the returned array is a flat array of values. If multiple properties
-// are specified then each item is a dict of with those properties.
+// If a single property is specified, the function returns that single value. If multiple properties
+// are specified the returned value is a new dict with those properties.
 //
-//   @(map_extract(contact.groups, "name")) -> [Testers, Males]
-//   @(map_extract(array(dict("foo", 123), dict("foo", 256)), "foo")) -> [123, 256]
-//   @(map_extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) -> [{a: 123, c: true}, {a: 345, c: false}]
-//   @(map_extract(array(dict("foo", 123), dict("foo", 256)), "bar")) -> ERROR
+//   @(extract(contact.groups[0], "name")) -> Testers
+//   @(extract(contact, "height")) -> ERROR
 //
-// @function map_extract(array, properties...)
-func MapExtract(env utils.Environment, array types.XArray, properties ...types.XText) types.XValue {
+// @function extract(array, properties...)
+func Extract(env utils.Environment, args ...types.XValue) types.XValue {
+	dict, xerr := types.ToXDict(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	properties := make([]string, 0, len(args)-1)
+	for _, arg := range args[1:] {
+		asText, xerr := types.ToXText(env, arg)
+		if xerr != nil {
+			return xerr
+		}
+		properties = append(properties, asText.Native())
+	}
+
+	if len(properties) == 1 {
+		return dict.Get(properties[0])
+	}
+
+	result := types.NewEmptyXDict()
+	for _, prop := range properties {
+		result.Put(prop, dict.Get(prop))
+	}
+
+	return result
+}
+
+// ForEach takes an array of objects and returns a new array by applying the given function to each item.
+//
+// If the given function takes more than one argument, you can pass additional arguments after the function.
+//
+//   @(foreach(array("a", "b", "c"), upper)) -> [A, B, C]
+//   @(foreach(array("the man", "fox", "jumped up"), word, 0)) -> [the, fox, jumped]
+//
+// @function foreach(array, func, [args...])
+func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
+	array, xerr := types.ToXArray(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	function, isFunction := args[1].(types.XFunction)
+	if !isFunction {
+		return types.NewXErrorf("requires an function as its second argument")
+	}
+
+	otherArgs := args[2:]
+
 	result := types.NewXArray()
 
 	for i := 0; i < array.Length(); i++ {
 		oldItem := array.Index(i)
+		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 
-		// a single property means we return a flat array of values
-		if len(properties) == 1 {
-			newItem := types.Resolve(env, oldItem, properties[0].Native())
-			if types.IsXError(newItem) {
-				return newItem
-			}
-			result.Append(newItem)
-		} else {
-			newItem := types.NewEmptyXDict()
-			for _, property := range properties {
-				newSubItem := types.Resolve(env, oldItem, property.Native())
-				if types.IsXError(newSubItem) {
-					return newSubItem
-				}
-				newItem.Put(property.Native(), newSubItem)
-			}
-			result.Append(newItem)
+		newItem := Call(env, function.Describe(), function, funcArgs)
+		if types.IsXError(newItem) {
+			return newItem
 		}
+		result.Append(newItem)
 	}
 
 	return result

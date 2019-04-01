@@ -1,4 +1,4 @@
-// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent2.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -64,9 +64,6 @@ type Excellent2Listener interface {
 	// EnterExponent is called when entering the exponent production.
 	EnterExponent(c *ExponentContext)
 
-	// EnterFnname is called when entering the fnname production.
-	EnterFnname(c *FnnameContext)
-
 	// EnterFunctionParameters is called when entering the functionParameters production.
 	EnterFunctionParameters(c *FunctionParametersContext)
 
@@ -126,9 +123,6 @@ type Excellent2Listener interface {
 
 	// ExitExponent is called when exiting the exponent production.
 	ExitExponent(c *ExponentContext)
-
-	// ExitFnname is called when exiting the fnname production.
-	ExitFnname(c *FnnameContext)
 
 	// ExitFunctionParameters is called when exiting the functionParameters production.
 	ExitFunctionParameters(c *FunctionParametersContext)

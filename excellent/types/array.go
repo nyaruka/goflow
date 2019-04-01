@@ -86,5 +86,25 @@ func (a *xarray) Append(value XValue) {
 // String returns the native string representation of this type
 func (a *xarray) String() string { return a.ToXText(nil).Native() }
 
+var XArrayEmpty = NewXArray()
 var _ XArray = (*xarray)(nil)
 var _ json.Marshaler = (*xarray)(nil)
+
+// ToXArray converts the given value to an array
+func ToXArray(env utils.Environment, x XValue) (XArray, XError) {
+	x = Reduce(env, x)
+
+	if utils.IsNil(x) {
+		return XArrayEmpty, nil
+	}
+	if IsXError(x) {
+		return XArrayEmpty, x.(XError)
+	}
+
+	asArray, isArray := x.(XArray)
+	if isArray {
+		return asArray, nil
+	}
+
+	return XArrayEmpty, NewXErrorf("unable to convert %s to an array", Describe(x))
+}

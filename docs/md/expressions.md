@@ -90,7 +90,11 @@ Examples:
 @contact.urns → [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 @(contact.urns[0]) → tel:+12065551212
 @contact.urn → tel:+12065551212
+<<<<<<< HEAD
 @(map_extract(contact.groups, "name")) → [Testers, Males]
+=======
+@(foreach(contact.groups, extract, "name")) → [Testers, Males]
+>>>>>>> fp
 @contact.fields → {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
@@ -132,7 +136,11 @@ Examples:
 
 
 ```objectivec
+<<<<<<< HEAD
 @(map_extract(contact.groups, "name")) → [Testers, Males]
+=======
+@(foreach(contact.groups, extract, "name")) → [Testers, Males]
+>>>>>>> fp
 @(contact.groups[0].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
 @(contact.groups[1].name) → Males
 @(json(contact.groups[1])) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
@@ -513,6 +521,24 @@ The returned number can contain fractional seconds.
 @(round_down(epoch("2017-06-12T16:56:59.123456Z"))) → 1497286619
 ```
 
+<<<<<<< HEAD
+=======
+<a name="function:extract"></a>
+
+## extract(array, properties...)
+
+Takes a dict and returns a new dict by extracting only them named properties.
+
+If a single property is specified, the function returns that single value. If multiple properties
+are specified the returned value is a new dict with those properties.
+
+
+```objectivec
+@(extract(contact.groups[0], "name")) → Testers
+@(extract(contact, "height")) → ERROR
+```
+
+>>>>>>> fp
 <a name="function:field"></a>
 
 ## field(text, index, delimiter)
@@ -529,6 +555,20 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 @(field("a		b	c	d", 1, "	")) →
 @(field("a\t\tb\tc\td", 1, " ")) →
 @(field("a,b,c", "foo", ",")) → ERROR
+```
+
+<a name="function:foreach"></a>
+
+## foreach(array, func)
+
+Takes an array of objects and returns a new array by applying the given function to each item.
+
+If the given function takes more than one argument, you can pass additional arguments after the function.
+
+
+```objectivec
+@(foreach(array("a", "b", "c"), upper)) → [A, B, C]
+@(foreach(array("the man", "fox", "jumped up"), word, 0)) → [the, fox, jumped]
 ```
 
 <a name="function:format_date"></a>

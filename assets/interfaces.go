@@ -2,6 +2,7 @@ package assets
 
 import (
 	"encoding/json"
+
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -181,6 +182,48 @@ type Resthook interface {
 	Subscribers() []string
 }
 
+type TemplateUUID utils.UUID
+
+// Template is a message template, currently only used by WhatsApp channels
+//
+//   {
+//     "name": "revive-issue",
+//     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+//     "translations": [
+//       {
+//          "language": "eng",
+//          "content": "Hi {{1}}, are you still experiencing your issue?",
+//          "channel": {
+//            "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
+//            "name": "Twilio Channel"
+//          }
+//       },
+//       {
+//          "language": "fra",
+//          "content": "Bonjour {{1}}",
+//          "channel": {
+//            "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
+//            "name": "Twilio Channel"
+//          }
+//       }
+//     ]
+//   }
+//
+// @asset template
+type Template interface {
+	UUID() TemplateUUID
+	Name() string
+	Translations() []TemplateTranslation
+}
+
+// TemplateTranslation represents a single translation for a specific template and channel
+type TemplateTranslation interface {
+	Content() string
+	Language() utils.Language
+	VariableCount() int
+	Channel() ChannelReference
+}
+
 // AssetSource is a source of assets
 type AssetSource interface {
 	Channels() ([]Channel, error)
@@ -190,4 +233,5 @@ type AssetSource interface {
 	Labels() ([]Label, error)
 	Locations() ([]LocationHierarchy, error)
 	Resthooks() ([]Resthook, error)
+	Templates() ([]Template, error)
 }

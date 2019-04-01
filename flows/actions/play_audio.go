@@ -62,8 +62,8 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	connection := run.Session().Trigger().Connection()
 
 	// if we have an audio URL, turn it into a message
-	attachments := []utils.Attachment{utils.Attachment(fmt.Sprintf("audio:%s", evaluatedAudioURL))}
-	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), "", attachments, nil)
+	attachments := []utils.Attachment{flows.Attachment(fmt.Sprintf("audio:%s", evaluatedAudioURL))}
+	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), "", attachments, nil, nil)
 	logEvent(events.NewIVRCreatedEvent(msg))
 
 	return nil

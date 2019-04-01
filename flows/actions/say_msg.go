@@ -74,7 +74,7 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 	// an IVR flow must have been started with a connection
 	connection := run.Session().Trigger().Connection()
 
-	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), evaluatedText, attachments, nil)
+	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), evaluatedText, attachments, nil, nil)
 	logEvent(events.NewIVRCreatedEvent(msg))
 
 	return nil

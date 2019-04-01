@@ -44,7 +44,7 @@ import (
 //   @contact.urns -> [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 //   @(contact.urns[0]) -> tel:+12065551212
 //   @contact.urn -> tel:+12065551212
-//   @(map_extract(contact.groups, "name")) -> [Testers, Males]
+//   @(foreach(contact.groups, extract, "name")) -> [Testers, Males]
 //   @contact.fields -> {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
 //   @contact.fields.activation_token -> AACC55
 //   @contact.fields.gender -> Male

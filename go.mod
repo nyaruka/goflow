@@ -2,7 +2,7 @@ module github.com/nyaruka/goflow
 
 require (
 	github.com/Masterminds/semver v1.4.2
-	github.com/antlr/antlr4 v0.0.0-20181218183534-70d9ddcd0a58
+	github.com/antlr/antlr4 v0.0.0-20190325153624-837aa60e2c47
 	github.com/buger/jsonparser v0.0.0-20180131123142-4be68c93a244
 	github.com/davecgh/go-spew v1.1.0 // indirect
 	github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4

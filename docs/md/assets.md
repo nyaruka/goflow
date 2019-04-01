@@ -151,5 +151,37 @@ Is a set of URLs which are subscribed to the named event.
 }
 ```
 
+<a name="asset:template"></a>
+
+## Template
+
+Is a message template, currently only used by WhatsApp channels
+
+
+```objectivec
+{
+    "name": "revive-issue",
+    "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+    "translations": [
+        {
+            "language": "eng",
+            "content": "Hi {{1}}, are you still experiencing your issue?",
+            "channel": {
+                "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
+                "name": "Twilio Channel"
+            }
+        },
+        {
+            "language": "fra",
+            "content": "Bonjour {{1}}",
+            "channel": {
+                "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
+                "name": "Twilio Channel"
+            }
+        }
+    ]
+}
+```
+
 
 </div>

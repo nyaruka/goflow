@@ -351,6 +351,24 @@
         ]
     },
     {
+<<<<<<< HEAD
+=======
+        "signature": "extract(array, properties...)",
+        "summary": "Takes a dict and returns a new dict by extracting only them named properties.",
+        "detail": "If a single property is specified, the function returns that single value. If multiple properties\nare specified the returned value is a new dict with those properties.",
+        "examples": [
+            {
+                "template": "@(extract(contact.groups[0], \"name\"))",
+                "output": "Testers"
+            },
+            {
+                "template": "@(extract(contact, \"height\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
+>>>>>>> fp
         "signature": "field(text, index, delimiter)",
         "summary": "Splits `text` using the given `delimiter` and returns the field at `index`.",
         "detail": "The index starts at zero. When splitting with a space, the delimiter is considered to be all whitespace.",
@@ -378,6 +396,21 @@
             {
                 "template": "@(field(\"a,b,c\", \"foo\", \",\"))",
                 "output": "ERROR"
+            }
+        ]
+    },
+    {
+        "signature": "foreach(array, func)",
+        "summary": "Takes an array of objects and returns a new array by applying the given function to each item.",
+        "detail": "If the given function takes more than one argument, you can pass additional arguments after the function.",
+        "examples": [
+            {
+                "template": "@(foreach(array(\"a\", \"b\", \"c\"), upper))",
+                "output": "[A, B, C]"
+            },
+            {
+                "template": "@(foreach(array(\"the man\", \"fox\", \"jumped up\"), word, 0))",
+                "output": "[the, fox, jumped]"
             }
         ]
     },
