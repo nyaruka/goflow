@@ -23,6 +23,7 @@ var xi = types.NewXNumberFromInt
 var xdt = types.NewXDateTime
 var xd = types.NewXDate
 var xt = types.NewXTime
+var xf = functions.Lookup
 
 var ERROR = types.NewXErrorf("any error")
 
@@ -229,6 +230,8 @@ func TestFunctions(t *testing.T) {
 		{"field", dmy, []types.XValue{xs("hello"), ERROR, xs(",")}, ERROR},
 		{"field", dmy, []types.XValue{xs("hello"), xs("1"), ERROR}, ERROR},
 		{"field", dmy, []types.XValue{}, ERROR},
+
+		{"foreach", dmy, []types.XValue{types.NewXArray(xs("a"), xs("b"), xs("c")), xf("upper")}, types.NewXArray(xs("A"), xs("B"), xs("C"))},
 
 		{"format_date", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977")},
 		{"format_date", mdy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("06-23-1977")},

@@ -105,7 +105,7 @@ func init() {
 		"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
 		"format_time":     ArgCountCheck(1, 2, FormatTime),
 		"format_location": OneTextFunction(FormatLocation),
-		"format_number":   FormatNumber,
+		"format_number":   ArgCountCheck(1, 3, FormatNumber),
 		"format_urn":      OneTextFunction(FormatURN),
 
 		// utility functions
@@ -114,6 +114,7 @@ func init() {
 		"legacy_add": TwoArgFunction(LegacyAdd),
 		"read_chars": OneTextFunction(ReadChars),
 		"extract":    InitialArrayFunction(1, -1, Extract),
+		"foreach":    ArgCountCheck(2, -1, ForEach),
 	}
 
 	for name, fn := range std {
@@ -1674,10 +1675,6 @@ func FormatTime(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function format_number(number, places [, humanize])
 func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) < 1 || len(args) > 3 {
-		return types.NewXErrorf("takes 1 to 3 arguments, got %d", len(args))
-	}
-
 	num, err := types.ToXNumber(env, args[0])
 	if err != nil {
 		return err
@@ -1845,6 +1842,36 @@ func Extract(env utils.Environment, array types.XArray, properties ...types.XTex
 			}
 			result.Append(newItem)
 		}
+	}
+
+	return result
+}
+
+// ForEach takes an array of objects and returns a new array by applying the given function to each item.
+//
+//   @(foreach(array("a", "b", "c"), upper)) -> [A, B, C]
+//
+// @function foreach(array, func)
+func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
+	array, isArray := args[0].(types.XArray)
+	if !isArray {
+		return types.NewXErrorf("requires an array as its first argument")
+	}
+
+	function, isFunction := args[1].(types.XFunction)
+	if !isFunction {
+		return types.NewXErrorf("requires an function as its second argument")
+	}
+
+	result := types.NewXArray()
+
+	for i := 0; i < array.Length(); i++ {
+		oldItem := array.Index(i)
+		newItem := Call(env, function.Describe(), function, []types.XValue{oldItem})
+		if types.IsXError(newItem) {
+			return newItem
+		}
+		result.Append(newItem)
 	}
 
 	return result

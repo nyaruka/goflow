@@ -394,6 +394,17 @@
         ]
     },
     {
+        "signature": "foreach(array, func)",
+        "summary": "Takes an array of objects and returns a new array by applying the given function to each item.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(foreach(array(\"a\", \"b\", \"c\"), upper))",
+                "output": "[A, B, C]"
+            }
+        ]
+    },
+    {
         "signature": "format_date(date, [,format])",
         "summary": "Formats `date` as text according to the given `format`. If `format` is not",
         "detail": "specified then the environment's default format is used.\n\nThe format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31",

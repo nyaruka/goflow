@@ -555,6 +555,17 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 @(field("a,b,c", "foo", ",")) → ERROR
 ```
 
+<a name="function:foreach"></a>
+
+## foreach(array, func)
+
+Takes an array of objects and returns a new array by applying the given function to each item.
+
+
+```objectivec
+@(foreach(array("a", "b", "c"), upper)) → [A, B, C]
+```
+
 <a name="function:format_date"></a>
 
 ## format_date(date, [,format])
