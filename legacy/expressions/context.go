@@ -299,7 +299,7 @@ func newMigrationVars() map[string]interface{} {
 				"attachments": &arrayMapper{
 					varMapper: varMapper{
 						substitutions: map[string]interface{}{
-							"__default__": `map_extract(map_apply(input.attachments, "attachment_parts"), "url")`,
+							"__default__": `foreach(foreach(input.attachments, attachment_parts), extract, "url")`,
 						},
 					},
 					substitutionFunc: func(index string) string {

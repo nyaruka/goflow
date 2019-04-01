@@ -21,7 +21,7 @@ var DefaultWebhookPayload = `{
 	"path": @(json(run.path)),
 	"results": @(json(run.results)),
 	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
-	"input": @(json(if(input, dict("attachments", map_apply(input.attachments, "attachment_parts"), "channel", input.channel, "created_on", input.created_on, "text", input.text, "type", input.type, "urn", if(input.urn, dict("display", default(format_urn(input.urn), ""), "path", urn_parts(input.urn).path, "scheme", urn_parts(input.urn).scheme), null), "uuid", input.uuid), null))),
+	"input": @(json(if(input, dict("attachments", foreach(input.attachments, attachment_parts), "channel", input.channel, "created_on", input.created_on, "text", input.text, "type", input.type, "urn", if(input.urn, dict("display", default(format_urn(input.urn), ""), "path", urn_parts(input.urn).path, "scheme", urn_parts(input.urn).scheme), null), "uuid", input.uuid), null))),
 	"channel": @(json(if(input, input.channel, null)))
 }`
 

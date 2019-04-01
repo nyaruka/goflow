@@ -90,11 +90,7 @@ Examples:
 @contact.urns → [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
 @(contact.urns[0]) → tel:+12065551212
 @contact.urn → tel:+12065551212
-<<<<<<< HEAD
-@(map_extract(contact.groups, "name")) → [Testers, Males]
-=======
 @(foreach(contact.groups, extract, "name")) → [Testers, Males]
->>>>>>> fp
 @contact.fields → {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
@@ -136,11 +132,7 @@ Examples:
 
 
 ```objectivec
-<<<<<<< HEAD
-@(map_extract(contact.groups, "name")) → [Testers, Males]
-=======
 @(foreach(contact.groups, extract, "name")) → [Testers, Males]
->>>>>>> fp
 @(contact.groups[0].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
 @(contact.groups[1].name) → Males
 @(json(contact.groups[1])) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
@@ -521,13 +513,11 @@ The returned number can contain fractional seconds.
 @(round_down(epoch("2017-06-12T16:56:59.123456Z"))) → 1497286619
 ```
 
-<<<<<<< HEAD
-=======
 <a name="function:extract"></a>
 
 ## extract(array, properties...)
 
-Takes a dict and returns a new dict by extracting only them named properties.
+Takes a dict and returns a new dict by extracting only the named properties.
 
 If a single property is specified, the function returns that single value. If multiple properties
 are specified the returned value is a new dict with those properties.
@@ -538,7 +528,6 @@ are specified the returned value is a new dict with those properties.
 @(extract(contact, "height")) → ERROR
 ```
 
->>>>>>> fp
 <a name="function:field"></a>
 
 ## field(text, index, delimiter)
@@ -559,7 +548,7 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 
 <a name="function:foreach"></a>
 
-## foreach(array, func)
+## foreach(array, func, [args...])
 
 Takes an array of objects and returns a new array by applying the given function to each item.
 
@@ -805,34 +794,6 @@ Converts `text` to lowercase.
 @(lower("hello")) → hello
 @(lower("123")) → 123
 @(lower("😀")) → 😀
-```
-
-<a name="function:map_apply"></a>
-
-## map_apply(array, properties...)
-
-Takes an array of objects and returns a new array by applying the named function to each item.
-
-
-```objectivec
-@(map_apply(map_extract(contact.groups, "name"), "upper")) → [TESTERS, MALES]
-```
-
-<a name="function:map_extract"></a>
-
-## map_extract(array, properties...)
-
-Takes an array of objects and returns a new array by extracting named properties from each item.
-
-If a single property is specified, the returned array is a flat array of values. If multiple properties
-are specified then each item is a dict of with those properties.
-
-
-```objectivec
-@(map_extract(contact.groups, "name")) → [Testers, Males]
-@(map_extract(array(dict("foo", 123), dict("foo", 256)), "foo")) → [123, 256]
-@(map_extract(array(dict("a", 123, "b", "xyz", "c", true), dict("a", 345, "b", "zyx", "c", false)), "a", "c")) → [{a: 123, c: true}, {a: 345, c: false}]
-@(map_extract(array(dict("foo", 123), dict("foo", 256)), "bar")) → ERROR
 ```
 
 <a name="function:max"></a>

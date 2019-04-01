@@ -93,8 +93,9 @@ func init() {
 		"parse_time":      ArgCountCheck(2, 2, ParseTime),
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
-		// URN functions
-		"urn_parts": OneTextFunction(URNParts),
+		// encoded text functions
+		"urn_parts":        OneTextFunction(URNParts),
+		"attachment_parts": OneTextFunction(AttachmentParts),
 
 		// json functions
 		"json":       OneArgFunction(JSON),
@@ -1894,28 +1895,6 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 
 		newItem := Call(env, function.Describe(), function, funcArgs)
-		if types.IsXError(newItem) {
-			return newItem
-		}
-		result.Append(newItem)
-	}
-
-	return result
-}
-
-// MapApply takes an array of objects and returns a new array by applying the named function to each item.
-//
-//   @(map_apply(map_extract(contact.groups, "name"), "upper")) -> [TESTERS, MALES]
-//
-// @function map_apply(array, properties...)
-func MapApply(env utils.Environment, array types.XArray, args ...types.XText) types.XValue {
-	funcName := args[0]
-
-	result := types.NewXArray()
-
-	for i := 0; i < array.Length(); i++ {
-		oldItem := array.Index(i)
-		newItem := Call(env, funcName.Native(), []types.XValue{oldItem})
 		if types.IsXError(newItem) {
 			return newItem
 		}
