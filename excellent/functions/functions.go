@@ -1815,7 +1815,7 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 	return value
 }
 
-// Extract takes a dict and returns a new dict by extracting only them named properties.
+// Extract takes a dict and returns a new dict by extracting only the named properties.
 //
 // If a single property is specified, the function returns that single value. If multiple properties
 // are specified the returned value is a new dict with those properties.
@@ -1858,7 +1858,7 @@ func Extract(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(foreach(array("a", "b", "c"), upper)) -> [A, B, C]
 //   @(foreach(array("the man", "fox", "jumped up"), word, 0)) -> [the, fox, jumped]
 //
-// @function foreach(array, func)
+// @function foreach(array, func, [args...])
 func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 	array, xerr := types.ToXArray(env, args[0])
 	if xerr != nil {
