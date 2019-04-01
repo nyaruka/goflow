@@ -166,8 +166,12 @@ func TestFunctions(t *testing.T) {
 
 		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("foo")}, xs("hello")},
 		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("bar")}, nil},
+		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("foo"), xs("bar")}, ERROR},
+		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")})}, ERROR},
+		{"extract", dmy, []types.XValue{}, ERROR},
+
 		{
-			"extract",
+			"extract_dict",
 			dmy,
 			[]types.XValue{
 				types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
@@ -177,7 +181,16 @@ func TestFunctions(t *testing.T) {
 			types.NewXDict(map[string]types.XValue{"a": xi(123), "c": types.XBooleanTrue}),
 		},
 		{
-			"extract",
+			"extract_dict",
+			dmy,
+			[]types.XValue{
+				types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
+				xs("a"),
+			},
+			types.NewXDict(map[string]types.XValue{"a": xi(123)}),
+		},
+		{
+			"extract_dict",
 			dmy,
 			[]types.XValue{
 				types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
@@ -186,7 +199,7 @@ func TestFunctions(t *testing.T) {
 			},
 			types.NewXDict(map[string]types.XValue{"a": xi(123), "d": nil}),
 		},
-		{"extract", dmy, []types.XValue{}, ERROR},
+		{"extract_dict", dmy, []types.XValue{}, ERROR},
 
 		{"epoch", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619")},
 		{"epoch", dmy, []types.XValue{ERROR}, ERROR},

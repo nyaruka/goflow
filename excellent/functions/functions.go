@@ -110,12 +110,13 @@ func init() {
 		"format_urn":      OneTextFunction(FormatURN),
 
 		// utility functions
-		"length":     OneArgFunction(Length),
-		"default":    TwoArgFunction(Default),
-		"legacy_add": TwoArgFunction(LegacyAdd),
-		"read_chars": OneTextFunction(ReadChars),
-		"extract":    ArgCountCheck(2, -1, Extract),
-		"foreach":    ArgCountCheck(2, -1, ForEach),
+		"length":       OneArgFunction(Length),
+		"default":      TwoArgFunction(Default),
+		"legacy_add":   TwoArgFunction(LegacyAdd),
+		"read_chars":   OneTextFunction(ReadChars),
+		"extract":      ArgCountCheck(2, 2, Extract),
+		"extract_dict": ArgCountCheck(2, -1, ExtractDict),
+		"foreach":      ArgCountCheck(2, -1, ForEach),
 	}
 
 	for name, fn := range std {
@@ -1831,16 +1832,33 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 	return value
 }
 
-// Extract takes a dict and returns a new dict by extracting only the named properties.
-//
-// If a single property is specified, the function returns that single value. If multiple properties
-// are specified the returned value is a new dict with those properties.
+// Extract takes a dict and extracts the named property.
 //
 //   @(extract(contact.groups[0], "name")) -> Testers
 //   @(extract(contact, "height")) -> ERROR
 //
-// @function extract(array, properties...)
+// @function extract(dict, properties...)
 func Extract(env utils.Environment, args ...types.XValue) types.XValue {
+	dict, xerr := types.ToXDict(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	property, xerr := types.ToXText(env, args[1])
+	if xerr != nil {
+		return xerr
+	}
+
+	return dict.Get(property.Native())
+}
+
+// ExtractDict takes a dict and returns a new dict by extracting only the named properties.
+//
+//   @(extract_dict(contact.groups[0], "name")) -> {name: Testers}
+//   @(extract_dict(contact, "height")) -> ERROR
+//
+// @function extract_dict(dict, properties...)
+func ExtractDict(env utils.Environment, args ...types.XValue) types.XValue {
 	dict, xerr := types.ToXDict(env, args[0])
 	if xerr != nil {
 		return xerr
@@ -1853,10 +1871,6 @@ func Extract(env utils.Environment, args ...types.XValue) types.XValue {
 			return xerr
 		}
 		properties = append(properties, asText.Native())
-	}
-
-	if len(properties) == 1 {
-		return dict.Get(properties[0])
 	}
 
 	result := types.NewEmptyXDict()
