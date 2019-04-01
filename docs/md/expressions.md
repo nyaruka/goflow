@@ -524,15 +524,24 @@ The returned number can contain fractional seconds.
 
 ## extract(dict, properties...)
 
-Takes a dict and returns a new dict by extracting only the named properties.
-
-If a single property is specified, the function returns that single value. If multiple properties
-are specified the returned value is a new dict with those properties.
+Takes a dict and extracts the named property.
 
 
 ```objectivec
 @(extract(contact.groups[0], "name")) → Testers
 @(extract(contact, "height")) → ERROR
+```
+
+<a name="function:extract_dict"></a>
+
+## extract_dict(dict, properties...)
+
+Takes a dict and returns a new dict by extracting only the named properties.
+
+
+```objectivec
+@(extract_dict(contact.groups[0], "name")) → {name: Testers}
+@(extract_dict(contact, "height")) → ERROR
 ```
 
 <a name="function:field"></a>

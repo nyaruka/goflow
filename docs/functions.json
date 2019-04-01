@@ -341,8 +341,8 @@
     },
     {
         "signature": "extract(dict, properties...)",
-        "summary": "Takes a dict and returns a new dict by extracting only the named properties.",
-        "detail": "If a single property is specified, the function returns that single value. If multiple properties\nare specified the returned value is a new dict with those properties.",
+        "summary": "Takes a dict and extracts the named property.",
+        "detail": "",
         "examples": [
             {
                 "template": "@(extract(contact.groups[0], \"name\"))",
@@ -350,6 +350,21 @@
             },
             {
                 "template": "@(extract(contact, \"height\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
+        "signature": "extract_dict(dict, properties...)",
+        "summary": "Takes a dict and returns a new dict by extracting only the named properties.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(extract_dict(contact.groups[0], \"name\"))",
+                "output": "{name: Testers}"
+            },
+            {
+                "template": "@(extract_dict(contact, \"height\"))",
                 "output": "ERROR"
             }
         ]
