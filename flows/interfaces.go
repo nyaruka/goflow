@@ -146,6 +146,7 @@ type Localizable interface {
 //
 // @context flow
 type Flow interface {
+	types.XRepresentable
 
 	// spec properties
 	UUID() assets.FlowUUID
@@ -164,7 +165,6 @@ type Flow interface {
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
-	Context(utils.Environment) types.XValue
 
 	ExtractTemplates() []string
 	RewriteTemplates(func(string) string)
@@ -276,6 +276,7 @@ type Position interface {
 // @context trigger
 type Trigger interface {
 	utils.Typed
+	types.XRepresentable
 
 	Initialize(Session, EventCallback) error
 	InitializeRun(FlowRun, EventCallback) error
@@ -286,8 +287,6 @@ type Trigger interface {
 	Connection() *Connection
 	Params() types.XValue
 	TriggeredOn() time.Time
-
-	Context(utils.Environment) types.XValue
 }
 
 // TriggerWithRun is special case of trigger that provides a parent run to the session
@@ -363,13 +362,14 @@ type Input interface {
 }
 
 type Step interface {
+	types.XRepresentable
+
 	UUID() StepUUID
 	NodeUUID() NodeUUID
 	ExitUUID() ExitUUID
 	ArrivedOn() time.Time
 
 	Leave(ExitUUID)
-	Context(utils.Environment) types.XValue
 }
 
 type Engine interface {

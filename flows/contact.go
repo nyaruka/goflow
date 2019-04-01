@@ -265,23 +265,15 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "created_on":
 		return types.NewXDateTime(c.createdOn)
 	case "urns":
-		return c.urns.Context(env)
+		return c.urns.ToXValue(env)
 	case "urn":
-		urn := c.PreferredURN()
-		if urn != nil {
-			return urn.Context(env)
-		}
-		return nil
+		return types.ToXValue(env, c.PreferredURN())
 	case "groups":
-		return c.groups.Context(env)
+		return c.groups.ToXValue(env)
 	case "fields":
-		return c.Fields().Context(env)
+		return c.Fields().ToXValue(env)
 	case "channel":
-		ch := c.PreferredChannel()
-		if ch != nil {
-			return ch.Context(env)
-		}
-		return nil
+		return types.ToXValue(env, c.PreferredChannel())
 	}
 
 	return types.NewXResolveError(c, key)

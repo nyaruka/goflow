@@ -204,7 +204,7 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 	// iterate through the groups looking for one with the same UUID as passed in
 	group := contact.Groups().FindByUUID(assets.GroupUUID(groupUUID.Native()))
 	if group != nil {
-		return NewTrueResult(group.Context(env))
+		return NewTrueResult(group.ToXValue(env))
 	}
 
 	return nil

@@ -75,8 +75,8 @@ func (g *Group) Reference() *assets.GroupReference {
 	return assets.NewGroupReference(g.UUID(), g.Name())
 }
 
-// Context returns a representation of this object for use in expressions
-func (g *Group) Context(env utils.Environment) types.XValue {
+// ToXValue returns a representation of this object for use in expressions
+func (g *Group) ToXValue(env utils.Environment) types.XValue {
 	return types.NewXDict(map[string]types.XValue{
 		"uuid": types.NewXText(string(g.UUID())),
 		"name": types.NewXText(g.Name()),
@@ -154,11 +154,11 @@ func (l *GroupList) Count() int {
 	return len(l.groups)
 }
 
-// Context returns a representation of this object for use in expressions
-func (l GroupList) Context(env utils.Environment) types.XValue {
+// ToXValue returns a representation of this object for use in expressions
+func (l GroupList) ToXValue(env utils.Environment) types.XValue {
 	array := types.NewXArray()
 	for _, group := range l.groups {
-		array.Append(group.Context(env))
+		array.Append(group.ToXValue(env))
 	}
 	return array
 }

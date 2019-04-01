@@ -77,8 +77,8 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 	return nil
 }
 
-// Context returns a representation of this object for use in expressions
-func (t *baseTrigger) Context(env utils.Environment) types.XValue {
+// ToXValue returns a representation of this object for use in expressions
+func (t *baseTrigger) ToXValue(env utils.Environment) types.XValue {
 	return types.NewXDict(map[string]types.XValue{
 		"type":   types.NewXText(t.type_),
 		"params": t.params,

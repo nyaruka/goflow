@@ -70,9 +70,9 @@ func TestContact(t *testing.T) {
 		"jiochat":   nil,
 		"line":      nil,
 		"mailto":    nil,
-		"tel":       flows.NewContactURN(urns.URN("tel:+16364646466?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).Context(env),
+		"tel":       flows.NewContactURN(urns.URN("tel:+16364646466?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
 		"telegram":  nil,
-		"twitter":   flows.NewContactURN(urns.URN("twitter:joey"), nil).Context(env),
+		"twitter":   flows.NewContactURN(urns.URN("twitter:joey"), nil).ToXValue(env),
 		"twitterid": nil,
 		"viber":     nil,
 		"wechat":    nil,
@@ -95,11 +95,11 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Resolve(env, "name"))
 	assert.Equal(t, types.NewXText("Joe"), contact.Resolve(env, "first_name"))
 	assert.Equal(t, types.NewXDateTime(contact.CreatedOn()), contact.Resolve(env, "created_on"))
-	assert.Equal(t, contact.URNs().Context(env), contact.Resolve(env, "urns"))
-	assert.Equal(t, contact.URNs()[0].Context(env), contact.Resolve(env, "urn"))
-	assert.Equal(t, contact.Fields().Context(env), contact.Resolve(env, "fields"))
-	assert.Equal(t, contact.Groups().Context(env), contact.Resolve(env, "groups"))
-	assert.Equal(t, android.Context(env), contact.Resolve(env, "channel"))
+	assert.Equal(t, contact.URNs().ToXValue(env), contact.Resolve(env, "urns"))
+	assert.Equal(t, contact.URNs()[0].ToXValue(env), contact.Resolve(env, "urn"))
+	assert.Equal(t, contact.Fields().ToXValue(env), contact.Resolve(env, "fields"))
+	assert.Equal(t, contact.Groups().ToXValue(env), contact.Resolve(env, "groups"))
+	assert.Equal(t, android.ToXValue(env), contact.Resolve(env, "channel"))
 	assert.Equal(t, types.NewXResolveError(contact, "xxx"), contact.Resolve(env, "xxx"))
 	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Reduce(env))
 	assert.Equal(t, "contact", contact.Describe())

@@ -55,11 +55,11 @@ func TestContactURN(t *testing.T) {
 
 	// check using URN in expressions
 	env := utils.NewEnvironmentBuilder().Build()
-	assert.Equal(t, types.NewXText("tel:+250781234567"), urn.Context(env))
+	assert.Equal(t, types.NewXText("tel:+250781234567"), urn.ToXValue(env))
 
 	// check when URNs have to be redacted
 	env = utils.NewEnvironmentBuilder().WithRedactionPolicy(utils.RedactionPolicyURNs).Build()
-	assert.Equal(t, types.NewXText("********"), urn.Context(env))
+	assert.Equal(t, types.NewXText("********"), urn.ToXValue(env))
 
 	// we can clear the channel affinity
 	urn.SetChannel(nil)
@@ -90,5 +90,5 @@ func TestURNList(t *testing.T) {
 		types.NewXText("tel:+250781234567"),
 		types.NewXText("twitter:134252511151#billy_bob"),
 		types.NewXText("tel:+250781111222"),
-	), urnList.Context(env))
+	), urnList.ToXValue(env))
 }

@@ -267,7 +267,7 @@ func TestNewFlow(t *testing.T) {
 		"name":     types.NewXText("Test Flow"),
 		"revision": types.NewXNumberFromInt(123),
 		"uuid":     types.NewXText("8ca44c09-791d-453a-9799-a70dd3303306"),
-	}), flow.Context(session.Environment()))
+	}), flow.ToXValue(session.Environment()))
 
 	// add expected dependencies and result names to our expected JSON
 	flowRaw, err := utils.JSONDecodeGeneric([]byte(flowDef))

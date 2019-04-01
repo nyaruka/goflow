@@ -70,7 +70,7 @@ func (c *Channel) HasParent() bool {
 }
 
 // Resolve resolves the given key when this channel is referenced in an expression
-func (c *Channel) Context(env utils.Environment) types.XValue {
+func (c *Channel) ToXValue(env utils.Environment) types.XValue {
 	return types.NewXDict(map[string]types.XValue{
 		"uuid":    types.NewXText(string(c.UUID())),
 		"name":    types.NewXText(c.Name()),

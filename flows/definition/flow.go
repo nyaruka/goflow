@@ -157,8 +157,8 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 	return nil
 }
 
-// Context returns a representation of this object for use in expressions
-func (f *flow) Context(env utils.Environment) types.XValue {
+// ToXValue returns a representation of this object for use in expressions
+func (f *flow) ToXValue(env utils.Environment) types.XValue {
 	return types.NewXDict(map[string]types.XValue{
 		"uuid":     types.NewXText(string(f.UUID())),
 		"name":     types.NewXText(f.name),

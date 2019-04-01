@@ -43,13 +43,13 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 		return nil
 	case "fields":
 		if c.run.Contact() != nil {
-			return c.run.Contact().Fields().Context(env)
+			return c.run.Contact().Fields().ToXValue(env)
 		}
 		return nil
 
 	// other
 	case "trigger":
-		return c.run.Session().Trigger().Context(env)
+		return c.run.Session().Trigger().ToXValue(env)
 	case "input":
 		return c.run.Session().Input()
 	case "legacy_extra":
@@ -103,12 +103,12 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 		return nil
 	case "fields":
 		if c.run.Contact() != nil {
-			return c.run.Contact().Fields().Context(env)
+			return c.run.Contact().Fields().ToXValue(env)
 		}
 		return nil
 
 	case "flow":
-		return c.run.Flow().Context(env)
+		return c.run.Flow().ToXValue(env)
 	case "status":
 		return types.NewXText(string(c.run.Status()))
 	case "results":

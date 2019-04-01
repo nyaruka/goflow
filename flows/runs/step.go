@@ -34,8 +34,8 @@ func (s *step) Leave(exit flows.ExitUUID) {
 	s.exitUUID = exit
 }
 
-// Context returns a representation of this object for use in expressions
-func (s *step) Context(env utils.Environment) types.XValue {
+// ToXValue returns a representation of this object for use in expressions
+func (s *step) ToXValue(env utils.Environment) types.XValue {
 	return types.NewXDict(map[string]types.XValue{
 		"uuid":       types.NewXText(string(s.UUID())),
 		"node_uuid":  types.NewXText(string(s.NodeUUID())),
@@ -49,11 +49,11 @@ var _ flows.Step = (*step)(nil)
 // Path is the steps taken in a run
 type Path []flows.Step
 
-// Context returns a representation of this object for use in expressions
-func (p Path) Context(env utils.Environment) types.XValue {
+// ToXValue returns a representation of this object for use in expressions
+func (p Path) ToXValue(env utils.Environment) types.XValue {
 	array := types.NewXArray()
 	for _, step := range p {
-		array.Append(step.Context(env))
+		array.Append(step.ToXValue(env))
 	}
 	return array
 }

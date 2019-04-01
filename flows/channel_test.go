@@ -33,7 +33,7 @@ func TestChannel(t *testing.T) {
 		"uuid":    types.NewXText(string(ch.UUID())),
 		"name":    types.NewXText("Android"),
 		"address": types.NewXText("+250961111111"),
-	}), ch.Context(env))
+	}), ch.ToXValue(env))
 
 	assert.Equal(t, assets.NewChannelReference(ch.UUID(), "Android"), ch.Reference())
 	assert.True(t, ch.HasRole(assets.ChannelRoleSend))

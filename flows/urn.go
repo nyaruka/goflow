@@ -116,8 +116,8 @@ func (u *ContactURN) withoutQuery() urns.URN {
 	return urn
 }
 
-// Context returns a representation of this object for use in expressions
-func (u *ContactURN) Context(env utils.Environment) types.XValue {
+// ToXValue returns a representation of this object for use in expressions
+func (u *ContactURN) ToXValue(env utils.Environment) types.XValue {
 	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
 		return redactedURN
 	}
@@ -185,11 +185,11 @@ func (l URNList) WithScheme(scheme string) URNList {
 	return matching
 }
 
-// Context returns a representation of this object for use in expressions
-func (l URNList) Context(env utils.Environment) types.XValue {
+// ToXValue returns a representation of this object for use in expressions
+func (l URNList) ToXValue(env utils.Environment) types.XValue {
 	array := types.NewXArray()
 	for _, urn := range l {
-		array.Append(urn.Context(env))
+		array.Append(urn.ToXValue(env))
 	}
 	return array
 }
@@ -201,7 +201,7 @@ func (l URNList) MapContext(env utils.Environment) types.XValue {
 	for _, u := range l {
 		scheme := u.URN().Scheme()
 		if _, seen := byScheme[scheme]; !seen {
-			byScheme[scheme] = u.Context(env)
+			byScheme[scheme] = u.ToXValue(env)
 		}
 	}
 

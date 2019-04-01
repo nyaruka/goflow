@@ -271,13 +271,13 @@ func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 	case "contact":
 		return r.Contact()
 	case "flow":
-		return r.Flow().Context(env)
+		return r.Flow().ToXValue(env)
 	case "status":
 		return types.NewXText(string(r.Status()))
 	case "results":
 		return r.Results()
 	case "path":
-		return r.path.Context(env)
+		return r.path.ToXValue(env)
 	case "created_on":
 		return types.NewXDateTime(r.CreatedOn())
 	case "exited_on":

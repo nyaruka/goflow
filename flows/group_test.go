@@ -21,8 +21,8 @@ func TestGroupList(t *testing.T) {
 
 	// check use in expressions
 	assert.Equal(t, types.NewXArray(
-		customers.Context(env),
-		testers.Context(env),
-		males.Context(env),
-	), groups.Context(env))
+		customers.ToXValue(env),
+		testers.ToXValue(env),
+		males.ToXValue(env),
+	), groups.ToXValue(env))
 }
