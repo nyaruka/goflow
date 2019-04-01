@@ -340,8 +340,8 @@
         ]
     },
     {
-        "signature": "extract(array, properties...)",
-        "summary": "Takes a dict and returns a new dict by extracting only them named properties.",
+        "signature": "extract(dict, properties...)",
+        "summary": "Takes a dict and returns a new dict by extracting only the named properties.",
         "detail": "If a single property is specified, the function returns that single value. If multiple properties\nare specified the returned value is a new dict with those properties.",
         "examples": [
             {
@@ -386,7 +386,7 @@
         ]
     },
     {
-        "signature": "foreach(array, func)",
+        "signature": "foreach(array, func, [args...])",
         "summary": "Takes an array of objects and returns a new array by applying the given function to each item.",
         "detail": "If the given function takes more than one argument, you can pass additional arguments after the function.",
         "examples": [

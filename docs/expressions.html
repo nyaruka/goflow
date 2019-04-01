@@ -318,8 +318,8 @@
 <a class="sourceLine" id="cb26-3" title="3">@(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>)) → <span class="fl">1497286619.123456</span></a>
 <a class="sourceLine" id="cb26-4" title="4">@(round_down(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>))) → <span class="dv">1497286619</span></a></code></pre></div>
 <p><a name="function:extract"></a></p>
-<h2 id="extractarray-properties">extract(array, properties…)</h2>
-<p>Takes a dict and returns a new dict by extracting only them named properties.</p>
+<h2 id="extractdict-properties">extract(dict, properties…)</h2>
+<p>Takes a dict and returns a new dict by extracting only the named properties.</p>
 <p>If a single property is specified, the function returns that single value. If multiple properties are specified the returned value is a new dict with those properties.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" title="1">@(extract(contact.groups[<span class="dv">0</span>], <span class="st">&quot;name&quot;</span>)) → Testers</a>
 <a class="sourceLine" id="cb27-2" title="2">@(extract(contact, <span class="st">&quot;height&quot;</span>)) → ERROR</a></code></pre></div>
@@ -334,7 +334,7 @@
 <a class="sourceLine" id="cb28-5" title="5">@(field(<span class="st">&quot;a</span><span class="sc">\t\t</span><span class="st">b</span><span class="sc">\t</span><span class="st">c</span><span class="sc">\t</span><span class="st">d&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) →</a>
 <a class="sourceLine" id="cb28-6" title="6">@(field(<span class="st">&quot;a,b,c&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;,&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:foreach"></a></p>
-<h2 id="foreacharray-func">foreach(array, func)</h2>
+<h2 id="foreacharray-func-args">foreach(array, func, [args…])</h2>
 <p>Takes an array of objects and returns a new array by applying the given function to each item.</p>
 <p>If the given function takes more than one argument, you can pass additional arguments after the function.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" title="1">@(foreach(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), upper)) → [A, B, C]</a>

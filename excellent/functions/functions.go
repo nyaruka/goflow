@@ -1823,7 +1823,7 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 //   @(extract(contact.groups[0], "name")) -> Testers
 //   @(extract(contact, "height")) -> ERROR
 //
-// @function extract(array, properties...)
+// @function extract(dict, properties...)
 func Extract(env utils.Environment, args ...types.XValue) types.XValue {
 	dict, xerr := types.ToXDict(env, args[0])
 	if xerr != nil {

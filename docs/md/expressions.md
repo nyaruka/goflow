@@ -522,9 +522,9 @@ The returned number can contain fractional seconds.
 
 <a name="function:extract"></a>
 
-## extract(array, properties...)
+## extract(dict, properties...)
 
-Takes a dict and returns a new dict by extracting only them named properties.
+Takes a dict and returns a new dict by extracting only the named properties.
 
 If a single property is specified, the function returns that single value. If multiple properties
 are specified the returned value is a new dict with those properties.
@@ -555,7 +555,7 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 
 <a name="function:foreach"></a>
 
-## foreach(array, func)
+## foreach(array, func, [args...])
 
 Takes an array of objects and returns a new array by applying the given function to each item.
 
