@@ -235,7 +235,14 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewIVRCreatedEvent(flows.NewMsgOut(urns.URN("tel:+12345678900"), assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"), "Hi there", nil, nil)),
+			events.NewIVRCreatedEvent(
+				flows.NewMsgOut(
+					urns.URN("tel:+12345678900"),
+					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
+					"Hi there",
+					nil,
+					nil,
+					nil)),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"msg": {

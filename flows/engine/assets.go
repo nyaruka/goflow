@@ -19,6 +19,7 @@ type sessionAssets struct {
 	labels    *flows.LabelAssets
 	locations *flows.LocationAssets
 	resthooks *flows.ResthookAssets
+	templates *flows.TemplateAssets
 }
 
 var _ flows.SessionAssets = (*sessionAssets)(nil)
@@ -49,6 +50,10 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 	if err != nil {
 		return nil, err
 	}
+	templates, err := source.Templates()
+	if err != nil {
+		return nil, err
+	}
 
 	return &sessionAssets{
 		source:    source,
@@ -59,6 +64,7 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 		labels:    flows.NewLabelAssets(labels),
 		locations: flows.NewLocationAssets(locations),
 		resthooks: flows.NewResthookAssets(resthooks),
+		templates: flows.NewTemplateAssets(templates),
 	}, nil
 }
 
@@ -69,6 +75,7 @@ func (s *sessionAssets) Groups() *flows.GroupAssets       { return s.groups }
 func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
 func (s *sessionAssets) Locations() *flows.LocationAssets { return s.locations }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets { return s.resthooks }
+func (s *sessionAssets) Templates() *flows.TemplateAssets { return s.templates }
 
 // Validate ensures that the given flow exists, is correct, and all its dependent flows are also valid
 func (s *sessionAssets) Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error) {
