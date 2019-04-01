@@ -37,7 +37,7 @@ func init() {
 		"char":              OneNumberFunction(Char),
 		"code":              OneTextFunction(Code),
 		"split":             TwoTextFunction(Split),
-		"join":              InitialArrayFunction(1, 1, Join),
+		"join":              ArgCountCheck(2, 2, Join),
 		"title":             OneTextFunction(Title),
 		"word":              InitialTextFunction(1, 2, Word),
 		"remove_first_word": OneTextFunction(RemoveFirstWord),
@@ -402,8 +402,16 @@ func Split(env utils.Environment, text types.XText, delimiters types.XText) type
 //   @(join(split("a.b.c", "."), " ")) -> a b c
 //
 // @function join(array, separator)
-func Join(env utils.Environment, array types.XArray, args ...types.XText) types.XValue {
-	separator := args[0]
+func Join(env utils.Environment, args ...types.XValue) types.XValue {
+	array, xerr := types.ToXArray(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	separator, xerr := types.ToXText(env, args[1])
+	if xerr != nil {
+		return xerr
+	}
 
 	var output bytes.Buffer
 	for i := 0; i < array.Length(); i++ {
@@ -1852,9 +1860,9 @@ func Extract(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function foreach(array, func)
 func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
-	array, isArray := args[0].(types.XArray)
-	if !isArray {
-		return types.NewXErrorf("requires an array as its first argument")
+	array, xerr := types.ToXArray(env, args[0])
+	if xerr != nil {
+		return xerr
 	}
 
 	function, isFunction := args[1].(types.XFunction)

@@ -29,3 +29,30 @@ func TestXArray(t *testing.T) {
 	assert.Equal(t, types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)), types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)))
 	assert.NotEqual(t, types.NewXArray(types.NewXText("abc")), types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)))
 }
+
+func TestToXArray(t *testing.T) {
+	var tests = []struct {
+		value    types.XValue
+		asArray  types.XArray
+		hasError bool
+	}{
+		{nil, types.XArrayEmpty, false},
+		{types.NewXErrorf("Error"), types.XArrayEmpty, true},
+		{types.NewXNumberFromInt(123), types.XArrayEmpty, true},
+		{types.NewXText(""), types.XArrayEmpty, true},
+		{types.NewXArray(types.NewXText("foo"), types.NewXText("bar")), types.NewXArray(types.NewXText("foo"), types.NewXText("bar")), false},
+	}
+
+	env := utils.NewEnvironmentBuilder().Build()
+
+	for _, test := range tests {
+		array, err := types.ToXArray(env, test.value)
+
+		if test.hasError {
+			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)
+		} else {
+			assert.NoError(t, err, "unexpected error for input %T{%s}", test.value, test.value)
+			assert.Equal(t, test.asArray, array, "array mismatch for input %T{%s}", test.value, test.value)
+		}
+	}
+}
