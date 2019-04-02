@@ -16,12 +16,12 @@
                             "text": "Hi @contact.name! What is your favorite color?"
                         }
                     ],
-                    "wait": {
-                        "type": "msg",
-                        "timeout": 600
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "timeout": 600
+                        },
                         "result_name": "Favorite Color",
                         "categories": [
                             {

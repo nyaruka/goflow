@@ -10,11 +10,11 @@
             "nodes": [
                 {
                     "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "wait": {
-                        "type": "msg"
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
                         "result_name": "Command",
                         "categories": [
                             {

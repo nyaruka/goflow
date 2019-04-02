@@ -59,11 +59,11 @@
         },
         "expected_node": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-            "wait": {
-                "type": "msg"
-            },
             "router": {
                 "type": "switch",
+                "wait": {
+                    "type": "msg"
+                },
                 "result_name": "Beer",
                 "categories": [
                     {
@@ -346,11 +346,11 @@
         },
         "expected_node": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-            "wait": {
-                "type": "msg"
-            },
             "router": {
                 "type": "switch",
+                "wait": {
+                    "type": "msg"
+                },
                 "result_name": "Beer",
                 "categories": [
                     {
@@ -456,11 +456,11 @@
         },
         "expected_node": {
             "uuid": "bd531ace-911e-4722-8e53-6730d6122fe1",
-            "wait": {
-                "type": "msg"
-            },
             "router": {
                 "type": "switch",
+                "wait": {
+                    "type": "msg"
+                },
                 "result_name": "age",
                 "categories": [
                     {
@@ -543,14 +543,14 @@
         },
         "expected_node": {
             "uuid": "bf8bcadf-7a26-4c4b-a5ab-577987ac3c20",
-            "wait": {
-                "type": "msg",
-                "hint": {
-                    "type": "image"
-                }
-            },
             "router": {
                 "type": "switch",
+                "wait": {
+                    "type": "msg",
+                    "hint": {
+                        "type": "image"
+                    }
+                },
                 "result_name": "Selfie",
                 "categories": [
                     {
@@ -1406,6 +1406,10 @@
             "uuid": "0e191a4b-b815-4bdc-b7d7-00ab2882a17f",
             "router": {
                 "type": "switch",
+                "wait": {
+                    "type": "msg",
+                    "timeout": 300
+                },
                 "result_name": "Name",
                 "categories": [
                     {
@@ -1459,11 +1463,7 @@
                     "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                     "uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f"
                 }
-            ],
-            "wait": {
-                "type": "msg",
-                "timeout": 300
-            }
+            ]
         },
         "expected_localization": {},
         "expected_ui": {
@@ -1973,15 +1973,15 @@
         },
         "expected_node": {
             "uuid": "c4c3b4d0-4372-4065-8d10-187736098bab",
-            "wait": {
-                "hint": {
-                    "terminated_by": "#",
-                    "type": "digits"
-                },
-                "type": "msg"
-            },
             "router": {
                 "type": "switch",
+                "wait": {
+                    "hint": {
+                        "terminated_by": "#",
+                        "type": "digits"
+                    },
+                    "type": "msg"
+                },
                 "result_name": "Phone",
                 "categories": [
                     {

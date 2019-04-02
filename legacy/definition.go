@@ -578,7 +578,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		// subflow rulesets operate on the child flow status
-		router = routers.NewSwitchRouter(resultName, categories, "@child.status", cases, defaultCategory)
+		router = routers.NewSwitchRouter(nil, resultName, categories, "@child.status", cases, defaultCategory)
 		uiType = UINodeTypeSplitBySubflow
 
 	case "webhook":
@@ -605,7 +605,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		// webhook rulesets operate on the webhook status, saved as category
 		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
-		router = routers.NewSwitchRouter("", categories, operand, cases, defaultCategory)
+		router = routers.NewSwitchRouter(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByWebhook
 
 	case "resthook":
@@ -615,13 +615,13 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		// resthook rulesets operate on the webhook status, saved as category
 		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
-		router = routers.NewSwitchRouter("", categories, operand, cases, defaultCategory)
+		router = routers.NewSwitchRouter(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByResthook
 
 	case "form_field":
 		operand, _ := expressions.MigrateTemplate(r.Operand, nil)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
-		router = routers.NewSwitchRouter(resultName, categories, operand, cases, defaultCategory)
+		router = routers.NewSwitchRouter(nil, resultName, categories, operand, cases, defaultCategory)
 
 		lastDot := strings.LastIndex(r.Operand, ".")
 		if lastDot > -1 {
@@ -637,7 +637,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 	case "group":
 		// in legacy flows these rulesets have their operand as @step.value but it's not used
-		router = routers.NewSwitchRouter(resultName, categories, "@contact", cases, defaultCategory)
+		router = routers.NewSwitchRouter(nil, resultName, categories, "@contact", cases, defaultCategory)
 		uiType = UINodeTypeSplitByGroups
 
 	case "wait_message", "wait_audio", "wait_video", "wait_photo", "wait_gps", "wait_recording", "wait_digit", "wait_digits":
@@ -714,9 +714,9 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			operand = "@(format_input(input))"
 		}
 
-		router = routers.NewSwitchRouter(resultName, categories, operand, cases, defaultCategory)
+		router = routers.NewSwitchRouter(wait, resultName, categories, operand, cases, defaultCategory)
 	case "random":
-		router = routers.NewRandomRouter(resultName, categories)
+		router = routers.NewRandomRouter(nil, resultName, categories)
 		uiType = UINodeTypeSplitByRandom
 
 	case "airtime":
@@ -743,14 +743,14 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
-		router = routers.NewSwitchRouter("", categories, operand, cases, defaultCategory)
+		router = routers.NewSwitchRouter(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByAirtime
 
 	default:
 		return nil, "", nil, errors.Errorf("unrecognized ruleset type: %s", r.Type)
 	}
 
-	return definition.NewNode(r.UUID, newActions, wait, router, exits), uiType, uiNodeConfig, nil
+	return definition.NewNode(r.UUID, newActions, router, exits), uiType, uiNodeConfig, nil
 }
 
 func migrateRuleSetToHint(r RuleSet) flows.Hint {
@@ -995,7 +995,7 @@ func migrateActionSet(lang utils.Language, a ActionSet, localization flows.Local
 
 	exit := definition.NewExit(a.ExitUUID, a.Destination)
 
-	return definition.NewNode(a.UUID, actions, nil, nil, []flows.Exit{exit}), nil
+	return definition.NewNode(a.UUID, actions, nil, []flows.Exit{exit}), nil
 }
 
 // ReadLegacyFlow reads a single legacy formatted flow

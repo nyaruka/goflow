@@ -89,12 +89,12 @@
                             ]
                         }
                     ],
-                    "wait": {
-                        "type": "msg",
-                        "timeout": 600
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "timeout": 600
+                        },
                         "result_name": "Favorite Color",
                         "categories": [
                             {
@@ -163,12 +163,12 @@
                             "text": "@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
                         }
                     ],
-                    "wait": {
-                        "type": "msg",
-                        "timeout": 600
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "timeout": 600
+                        },
                         "categories": [
                             {
                                 "uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492",

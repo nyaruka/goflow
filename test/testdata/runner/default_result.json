@@ -25,11 +25,11 @@
                 },
                 {
                     "uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                    "wait": {
-                        "type": "msg"
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
                         "result_name": "Contact Name",
                         "categories": [
                             {

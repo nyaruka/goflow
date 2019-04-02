@@ -22,8 +22,8 @@ type RandomRouter struct {
 }
 
 // NewRandomRouter creates a new random router
-func NewRandomRouter(resultName string, categories []*Category) *RandomRouter {
-	return &RandomRouter{newBaseRouter(TypeRandom, resultName, categories)}
+func NewRandomRouter(wait flows.Wait, resultName string, categories []*Category) *RandomRouter {
+	return &RandomRouter{newBaseRouter(TypeRandom, wait, resultName, categories)}
 }
 
 // Validate validates that the fields on this router are valid

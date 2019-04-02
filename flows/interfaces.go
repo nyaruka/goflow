@@ -204,6 +204,7 @@ type Router interface {
 	utils.Typed
 	Inspectable
 
+	Wait() Wait
 	ResultName() string
 
 	PickExit(FlowRun, Step, EventCallback) (ExitUUID, error)

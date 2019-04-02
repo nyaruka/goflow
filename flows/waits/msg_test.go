@@ -26,14 +26,25 @@ var initialWaitJSON = `{
             "type": "messaging",
             "nodes": [
                 {
-                    "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "wait": {
-                        "type": "msg"
-                    },
+					"uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+					"router": {
+						"type": "switch",
+						"wait": {
+							"type": "msg"
+						},
+						"categories": [
+							{
+								"uuid": "c82e161f-fa2d-4e7d-a338-c27f6c349445",
+								"name": "All Responses",
+								"exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+							}
+						],
+						"operand": "@input.text",
+						"default_category_uuid": "c82e161f-fa2d-4e7d-a338-c27f6c349445"
+					},
                     "exits": [
                         {
-                            "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
-                            "name": "All Responses"
+                            "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
                         }
                     ]
                 }

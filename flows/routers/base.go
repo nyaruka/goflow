@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -33,16 +34,20 @@ func RegisteredTypes() []string {
 // BaseRouter is the base class for all our router classes
 type BaseRouter struct {
 	type_      string
+	wait       flows.Wait
 	resultName string
 	categories []*Category
 }
 
-func newBaseRouter(typeName string, resultName string, categories []*Category) BaseRouter {
-	return BaseRouter{type_: typeName, resultName: resultName, categories: categories}
+func newBaseRouter(typeName string, wait flows.Wait, resultName string, categories []*Category) BaseRouter {
+	return BaseRouter{type_: typeName, wait: wait, resultName: resultName, categories: categories}
 }
 
 // Type returns the type of this router
 func (r *BaseRouter) Type() string { return r.type_ }
+
+// Wait returns the optional wait on this router
+func (r *BaseRouter) Wait() flows.Wait { return r.wait }
 
 // ResultName returns the name which the result of this router should be saved as (if any)
 func (r *BaseRouter) ResultName() string { return r.resultName }
@@ -137,9 +142,10 @@ func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categor
 //------------------------------------------------------------------------------------------
 
 type baseRouterEnvelope struct {
-	Type       string      `json:"type"                  validate:"required"`
-	ResultName string      `json:"result_name,omitempty"`
-	Categories []*Category `json:"categories,omitempty"  validate:"required,min=1"`
+	Type       string          `json:"type"                  validate:"required"`
+	Wait       json.RawMessage `json:"wait,omitempty"`
+	ResultName string          `json:"result_name,omitempty"`
+	Categories []*Category     `json:"categories,omitempty"  validate:"required,min=1"`
 }
 
 // ReadRouter reads a router from the given JSON
@@ -161,6 +167,16 @@ func (r *BaseRouter) unmarshal(e *baseRouterEnvelope) error {
 	r.type_ = e.Type
 	r.resultName = e.ResultName
 	r.categories = e.Categories
+
+	var err error
+
+	if e.Wait != nil {
+		r.wait, err = waits.ReadWait(e.Wait)
+		if err != nil {
+			return errors.Wrap(err, "unable to read wait")
+		}
+	}
+
 	return nil
 }
 
@@ -168,5 +184,14 @@ func (r *BaseRouter) marshal(e *baseRouterEnvelope) error {
 	e.Type = r.type_
 	e.ResultName = r.resultName
 	e.Categories = r.categories
+
+	var err error
+
+	if r.wait != nil {
+		e.Wait, err = json.Marshal(r.wait)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
