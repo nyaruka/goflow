@@ -160,7 +160,7 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 
 func (s *ChannelAssets) getForSchemeAndRole(scheme string, role assets.ChannelRole) *Channel {
 	for _, ch := range s.all {
-		if ch.HasRole(assets.ChannelRoleSend) && ch.SupportsScheme(scheme) {
+		if ch.HasRole(role) && ch.SupportsScheme(scheme) {
 			return s.getDelegate(ch, role)
 		}
 	}
