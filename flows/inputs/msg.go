@@ -2,7 +2,6 @@ package inputs
 
 import (
 	"encoding/json"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -59,18 +58,6 @@ func (i *MsgInput) ToXValue(env utils.Environment) types.XValue {
 		"text":        types.NewXText(i.text),
 		"attachments": attachments,
 	})
-}
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (i *MsgInput) Reduce(env utils.Environment) types.XPrimitive {
-	var parts []string
-	if i.text != "" {
-		parts = append(parts, i.text)
-	}
-	for _, attachment := range i.attachments {
-		parts = append(parts, attachment.URL())
-	}
-	return types.NewXText(strings.Join(parts, "\n"))
 }
 
 var _ flows.Input = (*MsgInput)(nil)
