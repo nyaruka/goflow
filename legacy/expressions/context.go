@@ -294,8 +294,8 @@ func newMigrationVars() map[string]interface{} {
 		"step": &varMapper{
 			substitutions: map[string]interface{}{
 				"contact":     contact,
-				"__default__": "input.text",
-				"value":       `input.text`,
+				"__default__": "format_input(input)",
+				"value":       "format_input(input)",
 				"attachments": &arrayMapper{
 					varMapper: varMapper{
 						substitutions: map[string]interface{}{

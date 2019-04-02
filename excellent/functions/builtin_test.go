@@ -272,6 +272,24 @@ func TestFunctions(t *testing.T) {
 		{"format_location", dmy, []types.XValue{ERROR}, ERROR},
 		{"format_location", dmy, []types.XValue{}, ERROR},
 
+		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{})}, xs("")},
+		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
+			"text": xs("Hi there"),
+		})}, xs("Hi there")},
+		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
+			"text":        xs("Hi there"),
+			"attachments": types.NewXArray(xs("image/jpeg:http://s3.com/test.jpg"), xs("audio/mp3:http://s3.com/test.mp3")),
+		})}, xs("Hi there\nhttp://s3.com/test.jpg\nhttp://s3.com/test.mp3")},
+		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
+			"text": ERROR,
+		})}, ERROR},
+		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
+			"text":        xs("Hi there"),
+			"attachments": types.NewXArray(xs("image/jpeg:http://s3.com/test.jpg"), ERROR),
+		})}, ERROR},
+		{"format_input", dmy, []types.XValue{ERROR}, ERROR},
+		{"format_input", dmy, []types.XValue{}, ERROR},
+
 		{"format_number", dmy, []types.XValue{xn("31337")}, xs("31,337.00")},
 		{"format_number", dmy, []types.XValue{xn("31337"), xi(0), types.XBooleanFalse}, xs("31337")},
 		{"format_number", dmy, []types.XValue{xn("31337"), xs("xxx")}, ERROR},
