@@ -34,13 +34,6 @@ func (n *node) Actions() []flows.Action { return n.actions }
 func (n *node) Router() flows.Router    { return n.router }
 func (n *node) Exits() []flows.Exit     { return n.exits }
 
-func (n *node) Wait() flows.Wait {
-	if n.router != nil {
-		return n.router.Wait()
-	}
-	return nil
-}
-
 func (n *node) AddAction(action flows.Action) {
 	n.actions = append(n.actions, action)
 }

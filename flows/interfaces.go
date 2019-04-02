@@ -180,7 +180,6 @@ type Node interface {
 	Actions() []Action
 	Router() Router
 	Exits() []Exit
-	Wait() Wait
 
 	AddAction(Action)
 	SetRouter(Router)
