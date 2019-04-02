@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -14,7 +15,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSwitch, func() flows.Router { return &SwitchRouter{} })
+	RegisterType(TypeSwitch, readSwitchRouter)
 }
 
 // TypeSwitch is the constant for our switch router
@@ -89,30 +90,33 @@ func (c *Case) EnumerateResults(include func(*flows.ResultSpec)) {}
 // whichever case returns true, or if none do, then taking the default category
 type SwitchRouter struct {
 	BaseRouter
-	Operand string             `json:"operand"             validate:"required"`
-	Cases   []*Case            `json:"cases"`
-	Default flows.CategoryUUID `json:"default_category_uuid"   validate:"omitempty,uuid4"`
+
+	operand  string
+	cases    []*Case
+	default_ flows.CategoryUUID
 }
 
 // NewSwitchRouter creates a new switch router
 func NewSwitchRouter(resultName string, categories []*Category, operand string, cases []*Case, defaultCategory flows.CategoryUUID) *SwitchRouter {
 	return &SwitchRouter{
 		BaseRouter: newBaseRouter(TypeSwitch, resultName, categories),
-		Default:    defaultCategory,
-		Operand:    operand,
-		Cases:      cases,
+		default_:   defaultCategory,
+		operand:    operand,
+		cases:      cases,
 	}
 }
+
+func (r *SwitchRouter) Cases() []*Case { return r.cases }
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 	// check the default category is valid
-	if r.Default != "" && !r.isValidCategory(r.Default) {
-		return errors.Errorf("default category %s is not a valid category", r.Default)
+	if r.default_ != "" && !r.isValidCategory(r.default_) {
+		return errors.Errorf("default category %s is not a valid category", r.default_)
 	}
 
 	// check each case points to a valid category
-	for _, c := range r.Cases {
+	for _, c := range r.cases {
 		if !r.isValidCategory(c.CategoryUUID) {
 			return errors.Errorf("case category %s is not a valid category", c.CategoryUUID)
 		}
@@ -126,7 +130,7 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 	env := run.Environment()
 
 	// first evaluate our operand
-	operand, err := run.EvaluateTemplateValue(r.Operand)
+	operand, err := run.EvaluateTemplateValue(r.operand)
 	if err != nil {
 		run.LogError(step, err)
 	}
@@ -146,7 +150,7 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 	}
 
 	// none of our cases matched, so try to use the default
-	if categoryUUID == "" && r.Default != "" {
+	if categoryUUID == "" && r.default_ != "" {
 		// evaluate our operand as a string
 		value, xerr := types.ToXText(env, operand)
 		if xerr != nil {
@@ -154,14 +158,14 @@ func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 		}
 
 		match = value.Native()
-		categoryUUID = r.Default
+		categoryUUID = r.default_
 	}
 
 	return r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
 }
 
 func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, types.XDict, error) {
-	for _, c := range r.Cases {
+	for _, c := range r.cases {
 		test := strings.ToLower(c.Type)
 
 		// try to look up our function
@@ -222,21 +226,67 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
 	inspect(r)
 
-	for _, cs := range r.Cases {
+	for _, cs := range r.cases {
 		cs.Inspect(inspect)
 	}
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(r.Operand)
+	include(r.operand)
 }
 
 // RewriteTemplates rewrites all templates on this object and its children
 func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	r.Operand = rewrite(r.Operand)
+	r.operand = rewrite(r.operand)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+}
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+type switchRouterEnvelope struct {
+	baseRouterEnvelope
+
+	Operand string             `json:"operand"               validate:"required"`
+	Cases   []*Case            `json:"cases"`
+	Default flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid4"`
+}
+
+func readSwitchRouter(data json.RawMessage) (flows.Router, error) {
+	e := &switchRouterEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
+	r := &SwitchRouter{
+		operand:  e.Operand,
+		cases:    e.Cases,
+		default_: e.Default,
+	}
+
+	if err := r.unmarshal(&e.baseRouterEnvelope); err != nil {
+		return nil, err
+	}
+
+	return r, nil
+}
+
+// MarshalJSON marshals this resume into JSON
+func (r *SwitchRouter) MarshalJSON() ([]byte, error) {
+	e := &switchRouterEnvelope{
+		Operand: r.operand,
+		Cases:   r.cases,
+		Default: r.default_,
+	}
+
+	if err := r.marshal(&e.baseRouterEnvelope); err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(e)
 }
