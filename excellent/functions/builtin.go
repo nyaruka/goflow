@@ -22,7 +22,7 @@ var nanosPerSecond = decimal.RequireFromString("1000000000")
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
 func init() {
-	std := map[string]types.XFunction{
+	builtin := map[string]types.XFunction{
 		// type conversion
 		"text":     OneArgFunction(Text),
 		"boolean":  OneArgFunction(Boolean),
@@ -108,6 +108,7 @@ func init() {
 		"format_location": OneTextFunction(FormatLocation),
 		"format_number":   ArgCountCheck(1, 3, FormatNumber),
 		"format_urn":      OneTextFunction(FormatURN),
+		"format_input":    OneDictFunction(FormatInput),
 
 		// utility functions
 		"length":       OneArgFunction(Length),
@@ -119,7 +120,7 @@ func init() {
 		"foreach":      ArgCountCheck(2, -1, ForEach),
 	}
 
-	for name, fn := range std {
+	for name, fn := range builtin {
 		RegisterXFunction(name, fn)
 	}
 }
@@ -1773,6 +1774,40 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 	}
 
 	return types.NewXText(urn.Format())
+}
+
+// FormatInput formats `input` to be the text followed by the URLs of any attachment, separated by newlines.
+//
+//   @(format_input(input)) -> Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
+//   @(format_input("NOT INPUT")) -> ERROR
+//
+// @function format_input(urn)
+func FormatInput(env utils.Environment, input types.XDict) types.XValue {
+	text, xerr := types.ToXText(env, input.Get("text"))
+	if xerr != nil {
+		return xerr
+	}
+
+	attachments, xerr := types.ToXArray(env, input.Get("attachments"))
+	if xerr != nil {
+		return xerr
+	}
+
+	lines := make([]string, 0)
+	if text.Native() != "" {
+		lines = append(lines, text.Native())
+	}
+
+	for a := 0; a < attachments.Length(); a++ {
+		asText, xerr := types.ToXText(env, attachments.Index(a))
+		if xerr != nil {
+			return xerr
+		}
+
+		lines = append(lines, utils.Attachment(asText.Native()).URL())
+	}
+
+	return types.NewXText(strings.Join(lines, "\n"))
 }
 
 //------------------------------------------------------------------------------------------

@@ -711,7 +711,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		operand, _ := expressions.MigrateTemplate(r.Operand, &expressions.MigrateOptions{DefaultToSelf: defaultToSelf})
 		if operand == "" {
-			operand = "@input"
+			operand = "@(format_input(input))"
 		}
 
 		router = routers.NewSwitchRouter(resultName, categories, operand, cases, defaultCategory)
@@ -833,6 +833,14 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 		}
 
 		cases = append(cases, kase)
+	}
+
+	// timeout rules come last in legacy flows but for now need to come first until we remove them
+	if len(cases) > 0 {
+		lastCase := cases[len(cases)-1]
+		if lastCase.Type == "has_wait_timed_out" {
+			cases = append([]*routers.Case{lastCase}, cases[0:len(cases)-1]...)
+		}
 	}
 
 	return cases, categories, defaultCategoryUUID, exits, nil

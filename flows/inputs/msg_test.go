@@ -44,12 +44,15 @@ func TestMsgInput(t *testing.T) {
 	assert.Equal(t, time.Date(2018, 10, 22, 16, 12, 30, 123456, time.UTC), input.CreatedOn())
 
 	// check use in expressions
-	assert.Equal(t, "input", input.Describe())
-	assert.Equal(t, types.NewXText("Hi there!\nhttp://example.com/test.jpg\nhttp://example.com/test.mp4"), input.Reduce(env))
-	assert.Equal(t, types.NewXText("Hi there!"), input.Resolve(env, "text"))
-	assert.Equal(t, channel.ToXValue(env), input.Resolve(env, "channel"))
-	assert.Equal(t, types.NewXArray(types.NewXText("image/jpg:http://example.com/test.jpg"), types.NewXText("video/mp4:http://example.com/test.mp4")), input.Resolve(env, "attachments"))
-	assert.Equal(t, types.NewXText(`{"attachments":["image/jpg:http://example.com/test.jpg","video/mp4:http://example.com/test.mp4"],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-10-22T16:12:30.000123Z","text":"Hi there!","type":"msg","urn":"tel:+1234567890","uuid":"f51d7220-10b3-4faa-a91c-1ae70beaae3e"}`), input.ToXJSON(env))
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+		"type":        types.NewXText("msg"),
+		"uuid":        types.NewXText("f51d7220-10b3-4faa-a91c-1ae70beaae3e"),
+		"channel":     channel.ToXValue(env),
+		"created_on":  types.NewXDateTime(input.CreatedOn()),
+		"urn":         types.NewXText("tel:+1234567890"),
+		"text":        types.NewXText("Hi there!"),
+		"attachments": types.NewXArray(types.NewXText("image/jpg:http://example.com/test.jpg"), types.NewXText("video/mp4:http://example.com/test.mp4")),
+	}), input.ToXValue(env))
 
 	// check marshaling to JSON
 	marshaled, err := json.Marshal(input)

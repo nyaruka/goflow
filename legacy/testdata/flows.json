@@ -474,7 +474,7 @@
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
                         ],
-                        "operand": "@input",
+                        "operand": "@(format_input(input))",
                         "cases": [
                             {
                                 "arguments": [

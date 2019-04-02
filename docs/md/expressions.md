@@ -160,7 +160,7 @@ Examples:
 
 
 ```objectivec
-@input → Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
+@input → {attachments: [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3], channel: {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}, created_on: 2017-12-31T11:35:10.035757-02:00, text: Hi there, type: msg, urn: tel:+12065551212, uuid: 9bf91c2b-ce58-4cef-aacc-281e03f69ab5}
 @input.type → msg
 @input.text → Hi there
 @input.attachments → [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]
@@ -640,6 +640,18 @@ will be used. An error will be returned if the timezone is not recognized.
 @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY")) → 1979
 @(format_datetime("1979-07-18T15:00:00.000000Z", "M")) → 7
 @(format_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
+```
+
+<a name="function:format_input"></a>
+
+## format_input(urn)
+
+Formats `input` to be the text followed by the URLs of any attachment, separated by newlines.
+
+
+```objectivec
+@(format_input(input)) → Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
+@(format_input("NOT INPUT")) → ERROR
 ```
 
 <a name="function:format_location"></a>

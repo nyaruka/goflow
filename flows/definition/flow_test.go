@@ -113,7 +113,7 @@ func TestNewFlow(t *testing.T) {
             },
             "router": {
 				"type": "switch",
-				"operand": "@input",
+				"operand": "@input.text",
                 "cases": [
                     {
                         "uuid": "9f593e22-7886-4c08-a52f-0e8780504d75",
@@ -215,7 +215,7 @@ func TestNewFlow(t *testing.T) {
 							flows.ExitUUID("8943c032-2a91-456c-8080-2a249f1b420c"),
 						),
 					},
-					"@input",
+					"@input.text",
 					[]*routers.Case{
 						routers.NewCase(utils.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, false, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
 					},
@@ -451,7 +451,7 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 				`Red`,
 				`Blue`,
 				`Quelle est votres couleur preferee? (rouge/blue)`,
-				`@input`,
+				`@input.text`,
 				`red`,
 				`rouge`,
 				`blue`,
@@ -459,7 +459,7 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 				`fra`,
 				`@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)`,
 				`@(TITLE(results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)`,
-				`@input`,
+				`@input.text`,
 				`pepsi`,
 				`coke coca cola`,
 				`http://localhost/?cmd=success`,

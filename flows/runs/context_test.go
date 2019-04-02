@@ -53,7 +53,7 @@ var sessionAssets = `{
                                 "exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
                             }
                         ],
-                        "operand": "@input",
+                        "operand": "@input.text",
                         "default_category_uuid": "d7342563-7c9d-4576-b6d1-0c1f148765d2"
                     },
                     "exits": [

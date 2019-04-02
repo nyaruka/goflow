@@ -2,11 +2,9 @@ package inputs
 
 import (
 	"encoding/json"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -44,22 +42,6 @@ func (i *baseInput) Type() string { return i.type_ }
 func (i *baseInput) UUID() flows.InputUUID   { return i.uuid }
 func (i *baseInput) Channel() *flows.Channel { return i.channel }
 func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
-
-// Resolve resolves the given key when this input is referenced in an expression
-func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "type":
-		return types.NewXText(i.type_)
-	case "uuid":
-		return types.NewXText(string(i.uuid))
-	case "created_on":
-		return types.NewXDateTime(i.createdOn)
-	case "channel":
-		return types.ToXValue(env, i.channel)
-	}
-
-	return types.NewXResolveError(i, key)
-}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

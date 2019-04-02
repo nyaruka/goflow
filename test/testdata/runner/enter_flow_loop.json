@@ -87,7 +87,7 @@
                             }
                         ],
                         "default_category_uuid": "2aed2241-1003-45d5-a77b-060a5b444a00",
-                        "operand": "@input",
+                        "operand": "@input.text",
                         "cases": [
                             {
                                 "uuid": "e2d0f3b0-56c7-4ff0-b57c-793711b4d0df",
