@@ -1,3 +1,9 @@
+v0.32.0
+----------
+ * Convert almost all complex types to be represented in expressions as simple XDicts
+ * Add functional programming basics
+ * Add template assets to goflow
+
 v0.31.3
 ----------
  * Add check to call_resthook that payload is valid JSON
