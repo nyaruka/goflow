@@ -427,21 +427,10 @@ func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface
 	}
 
 	// try as a contact field
-	var nativeValue interface{}
-
-	switch typed := c.fields[key].TypedValue().(type) {
-	case nil:
+	nativeValue := c.fields[key].QueryValue()
+	if nativeValue == nil {
 		return nil
-	case LocationPath:
-		nativeValue = typed.Name()
-	case types.XText:
-		nativeValue = typed.Native()
-	case types.XNumber:
-		nativeValue = typed.Native()
-	case types.XDateTime:
-		nativeValue = typed.Native()
 	}
-
 	return []interface{}{nativeValue}
 }
 

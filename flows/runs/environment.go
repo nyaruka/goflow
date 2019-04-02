@@ -95,7 +95,7 @@ func (e *runEnvironment) FindLocationsFuzzy(text string, level utils.LocationLev
 	return []*utils.Location{}, nil
 }
 
-func (e *runEnvironment) LookupLocation(path flows.LocationPath) (*utils.Location, error) {
+func (e *runEnvironment) LookupLocation(path utils.LocationPath) (*utils.Location, error) {
 	locations, err := e.Locations()
 	if err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (e *runEnvironment) LookupLocation(path flows.LocationPath) (*utils.Locatio
 		return nil, errors.Errorf("can't lookup locations in environment which is not location enabled")
 	}
 
-	return locations.FindByPath(path.String()), nil
+	return locations.FindByPath(path), nil
 }
 
 var _ flows.RunEnvironment = (*runEnvironment)(nil)

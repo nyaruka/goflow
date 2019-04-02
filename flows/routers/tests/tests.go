@@ -571,7 +571,7 @@ func HasState(env utils.Environment, text types.XText) types.XValue {
 		return types.NewXError(err)
 	}
 	if len(states) > 0 {
-		return NewTrueResult(types.NewXText(states[0].Path()))
+		return NewTrueResult(types.NewXText(string(states[0].Path())))
 	}
 	return nil
 }
@@ -615,7 +615,7 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 			return types.NewXError(err)
 		}
 		if len(districts) > 0 {
-			return NewTrueResult(types.NewXText(districts[0].Path()))
+			return NewTrueResult(types.NewXText(string(districts[0].Path())))
 		}
 	}
 
@@ -626,7 +626,7 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 			return types.NewXError(err)
 		}
 		if len(districts) == 1 {
-			return NewTrueResult(types.NewXText(districts[0].Path()))
+			return NewTrueResult(types.NewXText(string(districts[0].Path())))
 		}
 	}
 
@@ -682,7 +682,7 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 				return types.NewXError(err)
 			}
 			if len(wards) > 0 {
-				return NewTrueResult(types.NewXText(wards[0].Path()))
+				return NewTrueResult(types.NewXText(string(wards[0].Path())))
 			}
 		}
 	}
@@ -694,7 +694,7 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 			return types.NewXError(err)
 		}
 		if len(wards) == 1 {
-			return NewTrueResult(types.NewXText(wards[0].Path()))
+			return NewTrueResult(types.NewXText(string(wards[0].Path())))
 		}
 	}
 

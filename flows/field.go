@@ -31,16 +31,16 @@ func (f *Field) Reference() *assets.FieldReference {
 
 // Value represents a value in each of the field types
 type Value struct {
-	Text     types.XText      `json:"text" validate:"required"`
-	Datetime *types.XDateTime `json:"datetime,omitempty"`
-	Number   *types.XNumber   `json:"number,omitempty"`
-	State    LocationPath     `json:"state,omitempty"`
-	District LocationPath     `json:"district,omitempty"`
-	Ward     LocationPath     `json:"ward,omitempty"`
+	Text     types.XText        `json:"text" validate:"required"`
+	Datetime *types.XDateTime   `json:"datetime,omitempty"`
+	Number   *types.XNumber     `json:"number,omitempty"`
+	State    utils.LocationPath `json:"state,omitempty"`
+	District utils.LocationPath `json:"district,omitempty"`
+	Ward     utils.LocationPath `json:"ward,omitempty"`
 }
 
 // NewValue creates an empty value
-func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *Value {
+func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber, state utils.LocationPath, district utils.LocationPath, ward utils.LocationPath) *Value {
 	return &Value{
 		Text:     text,
 		Datetime: datetime,
@@ -77,8 +77,8 @@ func NewFieldValue(field *Field, value *Value) *FieldValue {
 	return &FieldValue{field: field, Value: value}
 }
 
-// TypedValue returns the value in its proper type or nil if there is no value in that type
-func (v *FieldValue) TypedValue() types.XValue {
+// ToXValue returns a representation of this object for use in expressions
+func (v *FieldValue) ToXValue(env utils.Environment) types.XValue {
 	// the typed value of no value is nil
 	if v == nil {
 		return nil
@@ -97,35 +97,55 @@ func (v *FieldValue) TypedValue() types.XValue {
 		}
 	case assets.FieldTypeState:
 		if v.State != "" {
-			return v.State
+			return types.NewXText(string(v.State))
 		}
 	case assets.FieldTypeDistrict:
 		if v.District != "" {
-			return v.District
+			return types.NewXText(string(v.District))
 		}
 	case assets.FieldTypeWard:
 		if v.Ward != "" {
-			return v.Ward
+			return types.NewXText(string(v.Ward))
 		}
 	}
 	return nil
 }
 
-// Describe returns a representation of this type for error messages
-func (v *FieldValue) Describe() string { return "field value" }
+// QueryValue returns the value for use in contact queries
+func (v *FieldValue) QueryValue() interface{} {
+	// the typed value of no value is nil
+	if v == nil {
+		return nil
+	}
 
-// Reduce is called when this object needs to be reduced to a primitive
-func (v *FieldValue) Reduce(env utils.Environment) types.XPrimitive {
-	return types.Reduce(env, v.TypedValue())
+	switch v.field.Type() {
+	case assets.FieldTypeText:
+		return v.Text.Native()
+	case assets.FieldTypeDatetime:
+		if v.Datetime != nil {
+			return (*v.Datetime).Native()
+		}
+	case assets.FieldTypeNumber:
+		if v.Number != nil {
+			return (*v.Number).Native()
+		}
+
+	// we only search against location names and not full paths
+	case assets.FieldTypeState:
+		if v.State != "" {
+			return v.State.Name()
+		}
+	case assets.FieldTypeDistrict:
+		if v.District != "" {
+			return v.District.Name()
+		}
+	case assets.FieldTypeWard:
+		if v.Ward != "" {
+			return v.Ward.Name()
+		}
+	}
+	return nil
 }
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (v *FieldValue) ToXJSON(env utils.Environment) types.XText {
-	j, _ := types.ToXJSON(env, v.Reduce(env))
-	return j
-}
-
-var _ types.XValue = (*FieldValue)(nil)
 
 // FieldValues is the set of all field values for a contact
 type FieldValues map[string]*FieldValue
@@ -213,8 +233,8 @@ func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Fi
 	var asLocation *utils.Location
 
 	// for locations, if it has a '>' then it is explicit, look it up that way
-	if IsPossibleLocationPath(rawValue) {
-		asLocation, _ = runEnv.LookupLocation(LocationPath(rawValue))
+	if utils.IsPossibleLocationPath(rawValue) {
+		asLocation, _ = runEnv.LookupLocation(utils.LocationPath(rawValue))
 	} else {
 		var matchingLocations []*utils.Location
 
@@ -237,18 +257,18 @@ func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Fi
 		}
 	}
 
-	var asState, asDistrict, asWard LocationPath
+	var asState, asDistrict, asWard utils.LocationPath
 	if asLocation != nil {
 		switch asLocation.Level() {
 		case LocationLevelState:
-			asState = LocationPath(asLocation.Path())
+			asState = utils.LocationPath(asLocation.Path())
 		case LocationLevelDistrict:
-			asState = LocationPath(asLocation.Parent().Path())
-			asDistrict = LocationPath(asLocation.Path())
+			asState = utils.LocationPath(asLocation.Parent().Path())
+			asDistrict = utils.LocationPath(asLocation.Path())
 		case LocationLevelWard:
-			asState = LocationPath(asLocation.Parent().Parent().Path())
-			asDistrict = LocationPath(asLocation.Parent().Path())
-			asWard = LocationPath(asLocation.Path())
+			asState = utils.LocationPath(asLocation.Parent().Parent().Path())
+			asDistrict = utils.LocationPath(asLocation.Parent().Path())
+			asWard = utils.LocationPath(asLocation.Path())
 		}
 	}
 
@@ -266,7 +286,7 @@ func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Fi
 func (f FieldValues) ToXValue(env utils.Environment) types.XPrimitive {
 	values := types.NewEmptyXDict()
 	for k, v := range f {
-		values.Put(string(k), v)
+		values.Put(string(k), v.ToXValue(env))
 	}
 	return values
 }
@@ -278,12 +298,12 @@ func (f FieldValues) getFirstLocationValue(env RunEnvironment, fields *FieldAsse
 		return nil
 	}
 	// does this contact have a value for that field?
-	value := f[field.Key()].TypedValue()
+	value := f[field.Key()].ToXValue(env)
 	if value == nil {
 		return nil
 	}
 
-	location, err := env.LookupLocation(value.(LocationPath))
+	location, err := env.LookupLocation(utils.LocationPath(value.(types.XText).Native()))
 	if err != nil {
 		return nil
 	}

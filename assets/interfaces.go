@@ -163,7 +163,7 @@ type Label interface {
 //
 // @asset location
 type LocationHierarchy interface {
-	FindByPath(path string) *utils.Location
+	FindByPath(path utils.LocationPath) *utils.Location
 	FindByName(name string, level utils.LocationLevel, parent *utils.Location) []*utils.Location
 }
 

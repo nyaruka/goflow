@@ -9,6 +9,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestLocationPaths(t *testing.T) {
+	assert.True(t, utils.IsPossibleLocationPath("Ireland > Antrim"))
+	assert.True(t, utils.IsPossibleLocationPath("Ireland>Antrim"))
+	assert.False(t, utils.IsPossibleLocationPath("Antrim"))
+
+	assert.Equal(t, "Antrim", utils.LocationPath("Ireland > Antrim").Name())
+	assert.Equal(t, "Ireland", utils.LocationPath("Ireland").Name())
+	assert.Equal(t, "", utils.LocationPath("").Name())
+	assert.Equal(t, "Ireland > Antrim", string(utils.LocationPath("Ireland > Antrim")))
+
+	assert.Equal(t, utils.LocationPath("Ireland > Antrim Town"), utils.LocationPath("ireLAND>antrim   town.").Normalize())
+}
+
 var locationHierarchyJSON = `
 {
 	"name": "Rwanda",
@@ -50,7 +63,7 @@ func TestLocationHierarchy(t *testing.T) {
 	rwanda := hierarchy.Root()
 	assert.Equal(t, utils.LocationLevel(0), rwanda.Level())
 	assert.Equal(t, "Rwanda", rwanda.Name())
-	assert.Equal(t, "Rwanda", rwanda.Path())
+	assert.Equal(t, utils.LocationPath("Rwanda"), rwanda.Path())
 	assert.Equal(t, []string{"Ruanda"}, rwanda.Aliases())
 	assert.Nil(t, rwanda.Parent())
 	assert.Equal(t, 2, len(rwanda.Children()))
@@ -58,7 +71,7 @@ func TestLocationHierarchy(t *testing.T) {
 	kigali := rwanda.Children()[0]
 	assert.Equal(t, utils.LocationLevel(1), kigali.Level())
 	assert.Equal(t, "Kigali City", kigali.Name())
-	assert.Equal(t, "Rwanda > Kigali City", kigali.Path())
+	assert.Equal(t, utils.LocationPath("Rwanda > Kigali City"), kigali.Path())
 	assert.Equal(t, []string{"Kigali", "Kigari"}, kigali.Aliases())
 	assert.Equal(t, rwanda, kigali.Parent())
 	assert.Equal(t, 2, len(kigali.Children()))
@@ -66,14 +79,14 @@ func TestLocationHierarchy(t *testing.T) {
 	gasabo := kigali.Children()[0]
 	assert.Equal(t, utils.LocationLevel(2), gasabo.Level())
 	assert.Equal(t, "Gasabo", gasabo.Name())
-	assert.Equal(t, "Rwanda > Kigali City > Gasabo", gasabo.Path())
+	assert.Equal(t, utils.LocationPath("Rwanda > Kigali City > Gasabo"), gasabo.Path())
 	assert.Equal(t, kigali, gasabo.Parent())
 	assert.Equal(t, 2, len(gasabo.Children()))
 
 	ndera := gasabo.Children()[1]
 	assert.Equal(t, utils.LocationLevel(3), ndera.Level())
 	assert.Equal(t, "Ndera", ndera.Name())
-	assert.Equal(t, "Rwanda > Kigali City > Gasabo > Ndera", ndera.Path())
+	assert.Equal(t, utils.LocationPath("Rwanda > Kigali City > Gasabo > Ndera"), ndera.Path())
 	assert.Equal(t, gasabo, ndera.Parent())
 	assert.Equal(t, 0, len(ndera.Children()))
 
@@ -90,7 +103,7 @@ func TestLocationHierarchy(t *testing.T) {
 	assert.Equal(t, []*utils.Location{}, hierarchy.FindByName("kigari", utils.LocationLevel(2), nil))    // wrong level
 	assert.Equal(t, []*utils.Location{}, hierarchy.FindByName("kigari", utils.LocationLevel(2), gasabo)) // wrong parent
 
-	assert.Equal(t, rwanda, hierarchy.FindByPath("RWANDA"))
+	assert.Equal(t, rwanda, hierarchy.FindByPath(utils.LocationPath("RWANDA")))
 	assert.Equal(t, kigali, hierarchy.FindByPath("RWANDA > KIGALI 	 CITY"))
 	assert.Equal(t, kigali, hierarchy.FindByPath("RWANDA > KIGALI CITY."))
 	assert.Equal(t, kigali, hierarchy.FindByPath("RWANDA >KIGALI CITY"))
