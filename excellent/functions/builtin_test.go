@@ -1,6 +1,7 @@
 package functions_test
 
 import (
+	"fmt"
 	"math"
 	"testing"
 	"time"
@@ -23,8 +24,8 @@ var xi = types.NewXNumberFromInt
 var xdt = types.NewXDateTime
 var xd = types.NewXDate
 var xt = types.NewXTime
+var xa = types.NewXArray
 var xf = functions.Lookup
-
 var ERROR = types.NewXErrorf("any error")
 
 func TestFunctions(t *testing.T) {
@@ -55,8 +56,8 @@ func TestFunctions(t *testing.T) {
 		{"and", dmy, []types.XValue{ERROR}, ERROR},
 		{"and", dmy, []types.XValue{}, ERROR},
 
-		{"array", dmy, []types.XValue{}, types.NewXArray()},
-		{"array", dmy, []types.XValue{xi(123), xs("abc")}, types.NewXArray(xi(123), xs("abc"))},
+		{"array", dmy, []types.XValue{}, xa()},
+		{"array", dmy, []types.XValue{xi(123), xs("abc")}, xa(xi(123), xs("abc"))},
 		{"array", dmy, []types.XValue{xi(123), ERROR, xs("abc")}, ERROR},
 
 		{"attachment_parts", dmy, []types.XValue{xs("image/jpeg:http://s3.com/test.jpg")}, types.NewXDict(map[string]types.XValue{
@@ -73,8 +74,8 @@ func TestFunctions(t *testing.T) {
 		{"boolean", dmy, []types.XValue{xs("abc")}, types.XBooleanTrue},
 		{"boolean", dmy, []types.XValue{xs("false")}, types.XBooleanFalse},
 		{"boolean", dmy, []types.XValue{xs("FALSE")}, types.XBooleanFalse},
-		{"boolean", dmy, []types.XValue{types.NewXArray()}, types.XBooleanFalse},
-		{"boolean", dmy, []types.XValue{types.NewXArray(xi(1))}, types.XBooleanTrue},
+		{"boolean", dmy, []types.XValue{xa()}, types.XBooleanFalse},
+		{"boolean", dmy, []types.XValue{xa(xi(1))}, types.XBooleanTrue},
 		{"boolean", dmy, []types.XValue{ERROR}, ERROR},
 		{"boolean", dmy, []types.XValue{}, ERROR},
 
@@ -230,8 +231,8 @@ func TestFunctions(t *testing.T) {
 		{"field", dmy, []types.XValue{xs("hello"), xs("1"), ERROR}, ERROR},
 		{"field", dmy, []types.XValue{}, ERROR},
 
-		{"foreach", dmy, []types.XValue{types.NewXArray(xs("a"), xs("b"), xs("c")), xf("upper")}, types.NewXArray(xs("A"), xs("B"), xs("C"))},
-		{"foreach", dmy, []types.XValue{types.NewXArray(xs("the man"), xs("fox"), xs("jumped up")), xf("word"), xi(0)}, types.NewXArray(xs("the"), xs("fox"), xs("jumped"))},
+		{"foreach", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xf("upper")}, xa(xs("A"), xs("B"), xs("C"))},
+		{"foreach", dmy, []types.XValue{xa(xs("the man"), xs("fox"), xs("jumped up")), xf("word"), xi(0)}, xa(xs("the"), xs("fox"), xs("jumped"))},
 
 		{"format_date", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977")},
 		{"format_date", mdy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("06-23-1977")},
@@ -278,14 +279,14 @@ func TestFunctions(t *testing.T) {
 		})}, xs("Hi there")},
 		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
 			"text":        xs("Hi there"),
-			"attachments": types.NewXArray(xs("image/jpeg:http://s3.com/test.jpg"), xs("audio/mp3:http://s3.com/test.mp3")),
+			"attachments": xa(xs("image/jpeg:http://s3.com/test.jpg"), xs("audio/mp3:http://s3.com/test.mp3")),
 		})}, xs("Hi there\nhttp://s3.com/test.jpg\nhttp://s3.com/test.mp3")},
 		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
 			"text": ERROR,
 		})}, ERROR},
 		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
 			"text":        xs("Hi there"),
-			"attachments": types.NewXArray(xs("image/jpeg:http://s3.com/test.jpg"), ERROR),
+			"attachments": xa(xs("image/jpeg:http://s3.com/test.jpg"), ERROR),
 		})}, ERROR},
 		{"format_input", dmy, []types.XValue{ERROR}, ERROR},
 		{"format_input", dmy, []types.XValue{}, ERROR},
@@ -315,14 +316,14 @@ func TestFunctions(t *testing.T) {
 		{"if", dmy, []types.XValue{}, ERROR},
 		{"if", dmy, []types.XValue{errorArg, xs("10"), xs("20")}, errorArg},
 
-		{"join", dmy, []types.XValue{types.NewXArray(xs("1"), xs("2"), xs("3")), xs(",")}, xs("1,2,3")},
-		{"join", dmy, []types.XValue{types.NewXArray(), xs(",")}, xs("")},
-		{"join", dmy, []types.XValue{types.NewXArray(xs("1")), xs(",")}, xs("1")},
-		{"join", dmy, []types.XValue{types.NewXArray(xs("1"), xs("2")), ERROR}, ERROR},
-		{"join", dmy, []types.XValue{types.NewXArray(xs("1"), ERROR), xs(",")}, ERROR},
+		{"join", dmy, []types.XValue{xa(xs("1"), xs("2"), xs("3")), xs(",")}, xs("1,2,3")},
+		{"join", dmy, []types.XValue{xa(), xs(",")}, xs("")},
+		{"join", dmy, []types.XValue{xa(xs("1")), xs(",")}, xs("1")},
+		{"join", dmy, []types.XValue{xa(xs("1"), xs("2")), ERROR}, ERROR},
+		{"join", dmy, []types.XValue{xa(xs("1"), ERROR), xs(",")}, ERROR},
 		{"join", dmy, []types.XValue{xs("1,2,3"), nil}, ERROR},
-		{"join", dmy, []types.XValue{types.NewXArray(xs("1,2,3")), nil}, xs("1,2,3")},
-		{"join", dmy, []types.XValue{types.NewXArray(xs("1"))}, ERROR},
+		{"join", dmy, []types.XValue{xa(xs("1,2,3")), nil}, xs("1,2,3")},
+		{"join", dmy, []types.XValue{xa(xs("1"))}, ERROR},
 
 		{"json", dmy, []types.XValue{xs("hello")}, xs(`"hello"`)},
 		{"json", dmy, []types.XValue{nil}, xs(`null`)},
@@ -352,8 +353,8 @@ func TestFunctions(t *testing.T) {
 		{"length", dmy, []types.XValue{xs("hello")}, xi(5)},
 		{"length", dmy, []types.XValue{xs("")}, xi(0)},
 		{"length", dmy, []types.XValue{xs("😁😁")}, xi(2)},
-		{"length", dmy, []types.XValue{types.NewXArray(xs("hello"))}, xi(1)},
-		{"length", dmy, []types.XValue{types.NewXArray()}, xi(0)},
+		{"length", dmy, []types.XValue{xa(xs("hello"))}, xi(1)},
+		{"length", dmy, []types.XValue{xa()}, xi(0)},
 		{"length", dmy, []types.XValue{nil}, xi(0)},
 		{"length", dmy, []types.XValue{types.XArray(nil)}, xi(0)},
 		{"length", dmy, []types.XValue{xi(1234)}, ERROR},
@@ -506,9 +507,9 @@ func TestFunctions(t *testing.T) {
 		{"round_up", dmy, []types.XValue{xs("not_num")}, ERROR},
 		{"round_up", dmy, []types.XValue{}, ERROR},
 
-		{"split", dmy, []types.XValue{xs("1,2,3"), xs(",")}, types.NewXArray(xs("1"), xs("2"), xs("3"))},
-		{"split", dmy, []types.XValue{xs("1,2,3"), xs(".")}, types.NewXArray(xs("1,2,3"))},
-		{"split", dmy, []types.XValue{xs("1,2,3"), nil}, types.NewXArray(xs("1,2,3"))},
+		{"split", dmy, []types.XValue{xs("1,2,3"), xs(",")}, xa(xs("1"), xs("2"), xs("3"))},
+		{"split", dmy, []types.XValue{xs("1,2,3"), xs(".")}, xa(xs("1,2,3"))},
+		{"split", dmy, []types.XValue{xs("1,2,3"), nil}, xa(xs("1,2,3"))},
 		{"split", dmy, []types.XValue{ERROR, xs(",")}, ERROR},
 		{"split", dmy, []types.XValue{xs("1,2,3"), ERROR}, ERROR},
 		{"split", dmy, []types.XValue{}, ERROR},
@@ -620,24 +621,20 @@ func TestFunctions(t *testing.T) {
 	utils.SetRand(utils.NewSeededRand(123456))
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
-	for _, test := range funcTests {
-		xFunc, exists := functions.XFUNCTIONS[test.name]
-		require.True(t, exists, "no such registered function: %s", test.name)
+	for _, tc := range funcTests {
+		testID := fmt.Sprintf("%s(%#v)", tc.name, tc.args)
 
-		result := xFunc(test.env, test.args...)
+		xFunc, exists := functions.XFUNCTIONS[tc.name]
+		require.True(t, exists, "no such registered function: %s", tc.name)
 
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("panic running function %s(%#v): %#v", test.name, test.args, r)
-			}
-		}()
+		result := xFunc(tc.env, tc.args...)
 
 		// don't check error equality - just check that we got an error if we expected one
-		if test.expected == ERROR {
-			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for function %s(%T{%s})", result, result, test.name, test.args, test.args)
+		if tc.expected == ERROR {
+			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for ", result, result, testID)
 		} else {
-			if !types.Equals(test.env, result, test.expected) {
-				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%T{%s})", test.expected, test.expected, result, result, test.name, test.args, test.args)
+			if !types.Equals(tc.env, result, tc.expected) {
+				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for ", tc.expected, tc.expected, result, result, testID)
 			}
 		}
 	}

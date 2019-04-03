@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -185,15 +184,15 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 
 // HasGroup returns whether the `contact` is part of group with the passed in UUID
 //
-//   @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) -> {match: {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}}
-//   @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) ->
+//   @(has_group(contact.groups, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) -> {match: {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}}
+//   @(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) ->
 //
 // @test has_group(contact, group_uuid)
 func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	// is the first argument a contact?
-	contact, isContact := arg1.(*flows.Contact)
-	if !isContact {
-		return types.NewXErrorf("must have a contact as its first argument")
+	// is the first argument an array
+	array, xerr := types.ToXArray(env, arg1)
+	if xerr != nil {
+		return xerr
 	}
 
 	groupUUID, xerr := types.ToXText(env, arg2)
@@ -201,10 +200,20 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 		return xerr
 	}
 
-	// iterate through the groups looking for one with the same UUID as passed in
-	group := contact.Groups().FindByUUID(assets.GroupUUID(groupUUID.Native()))
-	if group != nil {
-		return NewTrueResult(group.ToXValue(env))
+	for i := 0; i < array.Length(); i++ {
+		group, xerr := types.ToXDict(env, array.Index(i))
+		if xerr != nil {
+			return xerr
+		}
+
+		uuid, xerr := types.ToXText(env, group.Get("uuid"))
+		if xerr != nil {
+			return xerr
+		}
+
+		if uuid.Equals(groupUUID) {
+			return NewTrueResult(group)
+		}
 	}
 
 	return nil

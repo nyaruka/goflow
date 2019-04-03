@@ -37,7 +37,7 @@ func init() {
 		"char":              OneNumberFunction(Char),
 		"code":              OneTextFunction(Code),
 		"split":             TwoTextFunction(Split),
-		"join":              ArgCountCheck(2, 2, Join),
+		"join":              TwoArgFunction(Join),
 		"title":             OneTextFunction(Title),
 		"word":              InitialTextFunction(1, 2, Word),
 		"remove_first_word": OneTextFunction(RemoveFirstWord),
@@ -78,7 +78,7 @@ func init() {
 		"datetime_from_epoch": OneNumberFunction(DateTimeFromEpoch),
 		"datetime_diff":       ThreeArgFunction(DateTimeDiff),
 		"datetime_add":        DateTimeAdd,
-		"replace_time":        ArgCountCheck(2, 2, ReplaceTime),
+		"replace_time":        TwoArgFunction(ReplaceTime),
 		"tz":                  OneDateTimeFunction(TZ),
 		"tz_offset":           OneDateTimeFunction(TZOffset),
 		"now":                 NoArgFunction(Now),
@@ -90,7 +90,7 @@ func init() {
 		"today":           NoArgFunction(Today),
 
 		// time functions
-		"parse_time":      ArgCountCheck(2, 2, ParseTime),
+		"parse_time":      TwoArgFunction(ParseTime),
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
 		// encoded text functions
@@ -115,7 +115,7 @@ func init() {
 		"default":      TwoArgFunction(Default),
 		"legacy_add":   TwoArgFunction(LegacyAdd),
 		"read_chars":   OneTextFunction(ReadChars),
-		"extract":      ArgCountCheck(2, 2, Extract),
+		"extract":      TwoArgFunction(Extract),
 		"extract_dict": ArgCountCheck(2, -1, ExtractDict),
 		"foreach":      ArgCountCheck(2, -1, ForEach),
 	}
@@ -405,13 +405,13 @@ func Split(env utils.Environment, text types.XText, delimiters types.XText) type
 //   @(join(split("a.b.c", "."), " ")) -> a b c
 //
 // @function join(array, separator)
-func Join(env utils.Environment, args ...types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, args[0])
+func Join(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+	array, xerr := types.ToXArray(env, arg1)
 	if xerr != nil {
 		return xerr
 	}
 
-	separator, xerr := types.ToXText(env, args[1])
+	separator, xerr := types.ToXText(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -1252,12 +1252,12 @@ func DateTimeAdd(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(replace_time("foo", "10:30")) -> ERROR
 //
 // @function replace_time(date)
-func ReplaceTime(env utils.Environment, args ...types.XValue) types.XValue {
-	date, xerr := types.ToXDateTime(env, args[0])
+func ReplaceTime(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+	date, xerr := types.ToXDateTime(env, arg1)
 	if xerr != nil {
 		return xerr
 	}
-	t, xerr := types.ToXTime(env, args[1])
+	t, xerr := types.ToXTime(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -1392,13 +1392,13 @@ func Today(env utils.Environment) types.XValue {
 //   @(parse_time("NOT TIME", "tt:mm")) -> ERROR
 //
 // @function parse_time(text, format)
-func ParseTime(env utils.Environment, args ...types.XValue) types.XValue {
-	str, xerr := types.ToXText(env, args[0])
+func ParseTime(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+	str, xerr := types.ToXText(env, arg1)
 	if xerr != nil {
 		return xerr
 	}
 
-	format, xerr := types.ToXText(env, args[1])
+	format, xerr := types.ToXText(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -1873,13 +1873,13 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 //   @(extract(contact, "height")) -> ERROR
 //
 // @function extract(dict, properties...)
-func Extract(env utils.Environment, args ...types.XValue) types.XValue {
-	dict, xerr := types.ToXDict(env, args[0])
+func Extract(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+	dict, xerr := types.ToXDict(env, arg1)
 	if xerr != nil {
 		return xerr
 	}
 
-	property, xerr := types.ToXText(env, args[1])
+	property, xerr := types.ToXText(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
