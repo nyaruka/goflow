@@ -7,7 +7,7 @@ import (
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows/routers/tests"
+	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -63,17 +63,20 @@ var testTests = []struct {
 	{"has_any_word", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
 	{"has_any_word", []types.XValue{xs("but foo"), nil}, nil},
 	{"has_any_word", []types.XValue{nil, xs("but foo")}, nil},
+	{"has_any_word", []types.XValue{}, ERROR},
 
 	{"has_all_words", []types.XValue{xs("this.is.my.word"), xs("WORD word")}, result(xs("word"))},
 	{"has_all_words", []types.XValue{xs("this World too"), xs("world too")}, result(xs("World too"))},
 	{"has_all_words", []types.XValue{xs("BUT not this one"), xs("world")}, nil},
 	{"has_all_words", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
+	{"has_all_words", []types.XValue{}, ERROR},
 
 	{"has_phrase", []types.XValue{xs("you Must resist"), xs("must resist")}, result(xs("Must resist"))},
 	{"has_phrase", []types.XValue{xs("this world Too"), xs("world too")}, result(xs("world Too"))},
 	{"has_phrase", []types.XValue{xs("this world Too"), xs("")}, result(xs(""))},
 	{"has_phrase", []types.XValue{xs("this is not world"), xs("this world")}, nil},
 	{"has_phrase", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
+	{"has_phrase", []types.XValue{}, ERROR},
 
 	{"has_only_phrase", []types.XValue{xs("Must resist"), xs("must resist")}, result(xs("Must resist"))},
 	{"has_only_phrase", []types.XValue{xs(" world Too "), xs("world too")}, result(xs("world Too"))},
@@ -82,12 +85,14 @@ var testTests = []struct {
 	{"has_only_phrase", []types.XValue{xs("this world is my world"), xs("this world")}, nil},
 	{"has_only_phrase", []types.XValue{xs("this world"), xs("this mighty")}, nil},
 	{"has_only_phrase", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
+	{"has_only_phrase", []types.XValue{}, ERROR},
 
 	{"has_beginning", []types.XValue{xs("Must resist"), xs("must resist")}, result(xs("Must resist"))},
 	{"has_beginning", []types.XValue{xs(" 2061212"), xs("206")}, result(xs("206"))},
 	{"has_beginning", []types.XValue{xs(" world Too foo"), xs("world too")}, result(xs("world Too"))},
 	{"has_beginning", []types.XValue{xs("but this world"), xs("this world")}, nil},
 	{"has_beginning", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
+	{"has_beginning", []types.XValue{}, ERROR},
 
 	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`<\w+>`)}, resultWithExtra(xs("<html>"), types.NewXDict(map[string]types.XValue{"0": xs("<html>")}))},
 	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`HTML`)}, resultWithExtra(xs("html"), types.NewXDict(map[string]types.XValue{"0": xs("html")}))},
@@ -96,6 +101,7 @@ var testTests = []struct {
 	{"has_pattern", []types.XValue{xs("12345 "), xs(`\A\d{5}\z`)}, nil},
 	{"has_pattern", []types.XValue{xs(" 12345"), xs(`\A\d{5}\z`)}, nil},
 	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`[`)}, ERROR},
+	{"has_pattern", []types.XValue{}, ERROR},
 
 	{"has_number", []types.XValue{xs("the number 10")}, result(xn("10"))},
 	{"has_number", []types.XValue{xs("the number -10")}, result(xn("-10"))},
@@ -110,6 +116,7 @@ var testTests = []struct {
 	{"has_number", []types.XValue{xs("nothing here")}, nil},
 	{"has_number", []types.XValue{xs("1OO l00")}, nil}, // no longer do substitutions
 	{"has_number", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
+	{"has_number", []types.XValue{}, ERROR},
 
 	{"has_number_lt", []types.XValue{xs("the number 10"), xs("11")}, result(xn("10"))},
 	{"has_number_lt", []types.XValue{xs("another is -12.51"), xs("12")}, result(xn("-12.51"))},
@@ -118,30 +125,35 @@ var testTests = []struct {
 	{"has_number_lt", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
 	{"has_number_lt", []types.XValue{xs("but foo"), nil}, ERROR},
 	{"has_number_lt", []types.XValue{nil, xs("but foo")}, ERROR},
+	{"has_number_lt", []types.XValue{}, ERROR},
 
 	{"has_number_lte", []types.XValue{xs("the number 10"), xs("11")}, result(xn("10"))},
 	{"has_number_lte", []types.XValue{xs("another is -12.51"), xs("12")}, result(xn("-12.51"))},
 	{"has_number_lte", []types.XValue{xs("nothing here"), xs("12")}, nil},
 	{"has_number_lte", []types.XValue{xs("too big 15"), xs("12")}, nil},
 	{"has_number_lte", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
+	{"has_number_lte", []types.XValue{}, ERROR},
 
 	{"has_number_eq", []types.XValue{xs("the number 10"), xs("10")}, result(xn("10"))},
 	{"has_number_eq", []types.XValue{xs("another is -12.51"), xs("-12.51")}, result(xn("-12.51"))},
 	{"has_number_eq", []types.XValue{xs("nothing here"), xs("12")}, nil},
 	{"has_number_eq", []types.XValue{xs("wrong .51"), xs(".61")}, nil},
 	{"has_number_eq", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
+	{"has_number_eq", []types.XValue{}, ERROR},
 
 	{"has_number_gte", []types.XValue{xs("the number 10"), xs("9")}, result(xn("10"))},
 	{"has_number_gte", []types.XValue{xs("another is -12.51"), xs("-13")}, result(xn("-12.51"))},
 	{"has_number_gte", []types.XValue{xs("nothing here"), xs("12")}, nil},
 	{"has_number_gte", []types.XValue{xs("too small -12"), xs("-11")}, nil},
 	{"has_number_gte", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
+	{"has_number_gte", []types.XValue{}, ERROR},
 
 	{"has_number_gt", []types.XValue{xs("the number 10"), xs("9")}, result(xn("10"))},
 	{"has_number_gt", []types.XValue{xs("another is -12.51"), xs("-13")}, result(xn("-12.51"))},
 	{"has_number_gt", []types.XValue{xs("nothing here"), xs("12")}, nil},
 	{"has_number_gt", []types.XValue{xs("not great -12.51"), xs("-12.51")}, nil},
 	{"has_number_gt", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
+	{"has_number_gt", []types.XValue{}, ERROR},
 
 	{"has_number_between", []types.XValue{xs("the number 10"), xs("8"), xs("12")}, result(xn("10"))},
 	{"has_number_between", []types.XValue{xs("24ans"), xn("20"), xn("24")}, result(xn("24"))},
@@ -151,12 +163,14 @@ var testTests = []struct {
 	{"has_number_between", []types.XValue{xs("but foo"), nil, xs("10")}, ERROR},
 	{"has_number_between", []types.XValue{nil, xs("but foo"), xs("10")}, ERROR},
 	{"has_number_between", []types.XValue{xs("a string"), xs("10"), xs("not number")}, ERROR},
+	{"has_number_between", []types.XValue{}, ERROR},
 
 	{"has_date", []types.XValue{xs("last date was 1.10.2017")}, result(xd(time.Date(2017, 10, 1, 15, 24, 30, 123456000, kgl)))},
 	{"has_date", []types.XValue{xs("last date was 1.10.99")}, result(xd(time.Date(1999, 10, 1, 15, 24, 30, 123456000, kgl)))},
 	{"has_date", []types.XValue{xs("this isn't a valid date 33.2.99")}, nil},
 	{"has_date", []types.XValue{xs("no date at all")}, nil},
 	{"has_date", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
+	{"has_date", []types.XValue{}, ERROR},
 
 	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2017")}, result(xd(time.Date(2017, 10, 1, 15, 24, 30, 123456000, kgl)))},
 	{"has_date_lt", []types.XValue{xs("last date was 1.10.99"), xs("3.10.98")}, nil},
@@ -164,6 +178,7 @@ var testTests = []struct {
 	{"has_date_lt", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
 	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), nil}, ERROR},
 	{"has_date_lt", []types.XValue{nil, xs("but foo")}, ERROR},
+	{"has_date_lt", []types.XValue{}, ERROR},
 
 	{"has_date_eq", []types.XValue{xs("last date was 1.10.2017"), xs("1.10.2017")}, result(xd(time.Date(2017, 10, 1, 15, 24, 30, 123456000, kgl)))},
 	{"has_date_eq", []types.XValue{xs("last date was 1.10.99"), xs("3.10.98")}, nil},
@@ -171,16 +186,19 @@ var testTests = []struct {
 	{"has_date_eq", []types.XValue{xs("2017-10-01T23:55:55.123456+01:00"), xs("1.10.2017")}, nil}, // would have been 2017-10-02 in env timezone
 	{"has_date_eq", []types.XValue{xs("no date at all"), xs("3.10.98")}, nil},
 	{"has_date_eq", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
+	{"has_date_eq", []types.XValue{}, ERROR},
 
 	{"has_date_gt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2016")}, result(xd(time.Date(2017, 10, 1, 15, 24, 30, 123456000, kgl)))},
 	{"has_date_gt", []types.XValue{xs("last date was 1.10.99"), xs("3.10.01")}, nil},
 	{"has_date_gt", []types.XValue{xs("no date at all"), xs("3.10.98")}, nil},
 	{"has_date_gt", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
+	{"has_date_gt", []types.XValue{}, ERROR},
 
 	{"has_time", []types.XValue{xs("last time was 10:30")}, result(xt(utils.NewTimeOfDay(10, 30, 0, 0)))},
 	{"has_time", []types.XValue{xs("this isn't a valid time 59:77")}, nil},
 	{"has_time", []types.XValue{xs("no time at all")}, nil},
 	{"has_time", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
+	{"has_time", []types.XValue{}, ERROR},
 
 	{"has_email", []types.XValue{xs("my email is foo@bar.com.")}, result(xs("foo@bar.com"))},
 	{"has_email", []types.XValue{xs("my email is <foo1@bar-2.com>")}, result(xs("foo1@bar-2.com"))},
@@ -190,6 +208,7 @@ var testTests = []struct {
 	{"has_email", []types.XValue{xs("email is foo@bar")}, nil},
 	{"has_email", []types.XValue{nil}, nil},
 	{"has_email", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
+	{"has_email", []types.XValue{}, ERROR},
 
 	{"has_phone", []types.XValue{xs("my number is +250788123123")}, result(xs("+250788123123"))},
 	{"has_phone", []types.XValue{xs("my number is +593979111111")}, result(xs("+593979111111"))},
@@ -203,11 +222,11 @@ var testTests = []struct {
 	{"has_phone", []types.XValue{xs("my number is 10000"), xs("US")}, nil},
 	{"has_phone", []types.XValue{xs("my number is 12067799294"), xs("BW")}, nil},
 	{"has_phone", []types.XValue{xs("my number is none of your business"), xs("US")}, nil},
-	{"has_phone", []types.XValue{}, ERROR},
 	{"has_phone", []types.XValue{ERROR}, ERROR},
 	{"has_phone", []types.XValue{xs("3245"), ERROR}, ERROR},
 	{"has_phone", []types.XValue{xs("number"), nil}, nil},
 	{"has_phone", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
+	{"has_phone", []types.XValue{}, ERROR},
 
 	{
 		"has_group",
@@ -222,8 +241,10 @@ var testTests = []struct {
 			"match": types.NewXDict(map[string]types.XValue{"uuid": xs("group-uuid-2"), "name": xs("Customers")}),
 		}),
 	},
+	{"has_group", []types.XValue{xa(ERROR), xs("group-uuid-2")}, ERROR},
 	{"has_group", []types.XValue{xa(), xs("group-uuid-1")}, nil},
-	{"has_group", []types.XValue{ERROR, ERROR}, ERROR},
+	{"has_group", []types.XValue{ERROR, xs("group-uuid-1")}, ERROR},
+	{"has_group", []types.XValue{xa(), ERROR}, ERROR},
 	{"has_group", []types.XValue{}, ERROR},
 }
 

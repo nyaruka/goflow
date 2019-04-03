@@ -28,7 +28,7 @@ var docSets = []struct {
 	{[]string{"excellent/functions"}, "function", renderFunctionDoc},
 	{[]string{"assets"}, "asset", renderAssetDoc},
 	{[]string{"flows"}, "context", renderContextDoc},
-	{[]string{"flows/routers/tests"}, "test", renderFunctionDoc},
+	{[]string{"flows/routers/cases"}, "test", renderFunctionDoc},
 	{[]string{"flows/actions"}, "action", renderActionDoc},
 	{[]string{"flows/events"}, "event", renderEventDoc},
 	{[]string{"flows/triggers"}, "trigger", renderTriggerDoc},
