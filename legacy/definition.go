@@ -687,6 +687,9 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 							"name": "Name",
 						},
 					}
+				} else if fieldKey == "groups" {
+					uiType = UINodeTypeSplitByExpression
+
 				} else if urns.IsValidScheme(fieldKey) {
 					uiNodeConfig = flows.UINodeConfig{
 						"operand": map[string]string{
