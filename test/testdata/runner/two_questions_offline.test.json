@@ -134,7 +134,6 @@
                 },
                 "type": "messaging_offline",
                 "wait": {
-                    "timeout": 600,
                     "timeout_on": "2018-07-06T12:40:06.123456789Z",
                     "type": "msg"
                 }
@@ -350,7 +349,6 @@
                 },
                 "type": "messaging_offline",
                 "wait": {
-                    "timeout": 600,
                     "timeout_on": "2018-07-06T12:40:22.123456789Z",
                     "type": "msg"
                 }

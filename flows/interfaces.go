@@ -219,9 +219,14 @@ type Wait interface {
 	utils.Typed
 
 	Timeout() *int
-	TimeoutOn() *time.Time
 
-	Begin(FlowRun, EventCallback) bool
+	Begin(FlowRun, EventCallback) ActivatedWait
+}
+
+type ActivatedWait interface {
+	utils.Typed
+
+	TimeoutOn() *time.Time
 	End(Resume, Node) error
 }
 
@@ -409,7 +414,7 @@ type Session interface {
 	Status() SessionStatus
 	Trigger() Trigger
 	PushFlow(Flow, FlowRun, bool)
-	Wait() Wait
+	Wait() ActivatedWait
 
 	Start(Trigger) (Sprint, error)
 	Resume(Resume) (Sprint, error)

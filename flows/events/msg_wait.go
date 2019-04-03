@@ -58,7 +58,7 @@ type msgWaitEnvelope struct {
 	Hint      json.RawMessage `json:"hint,omitempty"`
 }
 
-// UnmarshalJSON unmarshals a flow node from the given JSON
+// UnmarshalJSON unmarshals this event from the given JSON
 func (e *MsgWaitEvent) UnmarshalJSON(data []byte) error {
 	v := &msgWaitEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, v); err != nil {

@@ -7,9 +7,9 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
+	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -32,7 +32,7 @@ type session struct {
 	contact *flows.Contact
 	runs    []flows.FlowRun
 	status  flows.SessionStatus
-	wait    flows.Wait
+	wait    flows.ActivatedWait
 	input   flows.Input
 
 	// state which is temporary to each call
@@ -92,7 +92,7 @@ func (s *session) ParentRun() flows.RunSummary {
 }
 
 func (s *session) Status() flows.SessionStatus { return s.status }
-func (s *session) Wait() flows.Wait            { return s.wait }
+func (s *session) Wait() flows.ActivatedWait   { return s.wait }
 
 // looks through this session's run for the one that is waiting
 func (s *session) waitingRun() flows.FlowRun {
@@ -378,10 +378,11 @@ func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.N
 	if wait != nil {
 
 		// waits have the option to skip themselves
-		if wait.Begin(run, logEvent) {
+		activatedWait := wait.Begin(run, logEvent)
+		if activatedWait != nil {
 			// mark ouselves as waiting and hand back to
 			run.SetStatus(flows.RunStatusWaiting)
-			s.wait = wait
+			s.wait = activatedWait
 			s.status = flows.SessionStatusWaiting
 
 			return step, noDestination, nil
@@ -498,7 +499,7 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 
 	// and our wait and input
 	if e.Wait != nil {
-		s.wait, err = waits.ReadWait(e.Wait)
+		s.wait, err = waits.ReadActivatedWait(e.Wait)
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to read wait")
 		}
