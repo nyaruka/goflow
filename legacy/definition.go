@@ -357,7 +357,6 @@ var testTypeMappings = map[string]string{
 	"regex":                "has_pattern",
 	"starts":               "has_beginning",
 	"state":                "has_state",
-	"timeout":              "has_wait_timed_out",
 	"ward":                 "has_ward",
 }
 
@@ -849,21 +848,12 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 		cases = append(cases, kase)
 	}
 
-	// timeout rules come last in legacy flows but for now need to come first until we remove them
-	if len(cases) > 0 {
-		lastCase := cases[len(cases)-1]
-		if lastCase.Type == "has_wait_timed_out" {
-			cases = append([]*routers.Case{lastCase}, cases[0:len(cases)-1]...)
-		}
-	}
-
 	return cases, categories, defaultCategoryUUID, timeoutCategoryUUID, exits, nil
 }
 
 // migrates the given legacy rule to a router case
 func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category, localization flows.Localization) (*routers.Case, error) {
 	newType, _ := testTypeMappings[r.Test.Type]
-	var omitOperand bool
 	var arguments []string
 	var err error
 
@@ -961,10 +951,6 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 			arguments = []string{"Failure"}
 		}
 
-	case "timeout":
-		omitOperand = true
-		arguments = []string{"@run"}
-
 	case "district":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
@@ -991,7 +977,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 		return nil, errors.Errorf("migration of '%s' tests no supported", r.Test.Type)
 	}
 
-	return routers.NewCase(caseUUID, newType, arguments, omitOperand, category.UUID()), err
+	return routers.NewCase(caseUUID, newType, arguments, category.UUID()), err
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit

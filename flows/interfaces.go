@@ -206,8 +206,8 @@ type Router interface {
 	Wait() Wait
 	ResultName() string
 
-	PickExit(FlowRun, Step, EventCallback) (ExitUUID, error)
 	Validate([]Exit) error
+	Route(FlowRun, Step, EventCallback) (ExitUUID, error)
 }
 
 type Exit interface {

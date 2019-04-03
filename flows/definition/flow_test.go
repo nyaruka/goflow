@@ -217,7 +217,7 @@ func TestNewFlow(t *testing.T) {
 					},
 					"@input.text",
 					[]*routers.Case{
-						routers.NewCase(utils.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, false, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
+						routers.NewCase(utils.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
 					},
 					flows.CategoryUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
 				),

@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -100,6 +101,38 @@ func (r *BaseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 		}
 	}
 	return false
+}
+
+type routerFunc func(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error)
+
+func (r *BaseRouter) doRouting(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback, route routerFunc) (flows.ExitUUID, error) {
+	// look to see if the last input event was a message or a timeout
+	var timedOutOn time.Time
+	runEvents := run.Events()
+	for e := len(runEvents) - 1; e >= 0; e-- {
+		event := runEvents[e]
+
+		_, isTimeout := event.(*events.WaitTimedOutEvent)
+		if isTimeout {
+			timedOutOn = event.CreatedOn()
+		}
+
+		_, isInput := event.(*events.MsgReceivedEvent)
+		if isInput {
+			break
+		}
+	}
+
+	// if we have a timeout, route through the timeout category
+	if !timedOutOn.IsZero() {
+		if r.wait == nil || r.wait.Timeout() == nil {
+			return "", errors.New("router can't handle timeout as it no longer has a wait with a timeout")
+		}
+
+		return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), utils.DateTimeToISO(timedOutOn), nil, nil, logEvent)
+	}
+
+	return route(run, step, logEvent)
 }
 
 func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input *string, extra types.XDict, logEvent flows.EventCallback) (flows.ExitUUID, error) {

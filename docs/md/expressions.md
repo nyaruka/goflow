@@ -1810,17 +1810,6 @@ value.
 @(has_value("hello")) → {match: hello}
 ```
 
-<a name="test:has_wait_timed_out"></a>
-
-## has_wait_timed_out(run)
-
-Returns whether the last wait timed out.
-
-
-```objectivec
-@(has_wait_timed_out(run)) →
-```
-
 <a name="test:has_ward"></a>
 
 ## has_ward(text, district, state)

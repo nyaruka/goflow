@@ -967,38 +967,34 @@
 <a class="sourceLine" id="cb107-3" title="3">@(has_value(contact.fields.unset)) →</a>
 <a class="sourceLine" id="cb107-4" title="4">@(has_value(<span class="st">&quot;&quot;</span>)) →</a>
 <a class="sourceLine" id="cb107-5" title="5">@(has_value(<span class="st">&quot;hello&quot;</span>)) → {match: hello}</a></code></pre></div>
-<p><a name="test:has_wait_timed_out"></a></p>
-<h2 id="has_wait_timed_outrun">has_wait_timed_out(run)</h2>
-<p>Returns whether the last wait timed out.</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb108-1" title="1">@(has_wait_timed_out(run)) →</a></code></pre></div>
 <p><a name="test:has_ward"></a></p>
 <h2 id="has_wardtext-district-state">has_ward(text, district, state)</h2>
 <p>Tests whether a ward name is contained in the <code>text</code></p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb109-1" title="1">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi}</a>
-<a class="sourceLine" id="cb109-2" title="2">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi}</a>
-<a class="sourceLine" id="cb109-3" title="3">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) →</a>
-<a class="sourceLine" id="cb109-4" title="4">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) →</a>
-<a class="sourceLine" id="cb109-5" title="5">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) →</a>
-<a class="sourceLine" id="cb109-6" title="6">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) →</a>
-<a class="sourceLine" id="cb109-7" title="7">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi}</a></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb108-1" title="1">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi}</a>
+<a class="sourceLine" id="cb108-2" title="2">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi}</a>
+<a class="sourceLine" id="cb108-3" title="3">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) →</a>
+<a class="sourceLine" id="cb108-4" title="4">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) →</a>
+<a class="sourceLine" id="cb108-5" title="5">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) →</a>
+<a class="sourceLine" id="cb108-6" title="6">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) →</a>
+<a class="sourceLine" id="cb108-7" title="7">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → {match: Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi}</a></code></pre></div>
 <p><a name="test:is_error"></a></p>
 <h2 id="is_errorvalue">is_error(value)</h2>
 <p>Returns whether <code>value</code> is an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb110-1" title="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → {match: error calling DATETIME: unable to convert <span class="st">&quot;foo&quot;</span> to a datetime}</a>
-<a class="sourceLine" id="cb110-2" title="2">@(is_error(run.not.existing)) → {match: run has no property &#39;not&#39;}</a>
-<a class="sourceLine" id="cb110-3" title="3">@(is_error(contact.fields.unset)) → {match: dict has no property &#39;unset&#39;}</a>
-<a class="sourceLine" id="cb110-4" title="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb109-1" title="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → {match: error calling DATETIME: unable to convert <span class="st">&quot;foo&quot;</span> to a datetime}</a>
+<a class="sourceLine" id="cb109-2" title="2">@(is_error(run.not.existing)) → {match: run has no property &#39;not&#39;}</a>
+<a class="sourceLine" id="cb109-3" title="3">@(is_error(contact.fields.unset)) → {match: dict has no property &#39;unset&#39;}</a>
+<a class="sourceLine" id="cb109-4" title="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:is_text_eq"></a></p>
 <h2 id="is_text_eqtext1-text2">is_text_eq(text1, text2)</h2>
 <p>Returns whether two text values are equal (case sensitive). In the case that they are, it will return the text as the match.</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb111-1" title="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → {match: foo}</a>
-<a class="sourceLine" id="cb111-2" title="2">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;FOO&quot;</span>)) →</a>
-<a class="sourceLine" id="cb111-3" title="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) →</a>
-<a class="sourceLine" id="cb111-4" title="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) →</a>
-<a class="sourceLine" id="cb111-5" title="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → {match: completed}</a>
-<a class="sourceLine" id="cb111-6" title="6">@(is_text_eq(results.webhook.category, <span class="st">&quot;Success&quot;</span>)) → {match: Success}</a>
-<a class="sourceLine" id="cb111-7" title="7">@(is_text_eq(results.webhook.category, <span class="st">&quot;Failure&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb110-1" title="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → {match: foo}</a>
+<a class="sourceLine" id="cb110-2" title="2">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;FOO&quot;</span>)) →</a>
+<a class="sourceLine" id="cb110-3" title="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) →</a>
+<a class="sourceLine" id="cb110-4" title="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) →</a>
+<a class="sourceLine" id="cb110-5" title="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → {match: completed}</a>
+<a class="sourceLine" id="cb110-6" title="6">@(is_text_eq(results.webhook.category, <span class="st">&quot;Success&quot;</span>)) → {match: Success}</a>
+<a class="sourceLine" id="cb110-7" title="7">@(is_text_eq(results.webhook.category, <span class="st">&quot;Failure&quot;</span>)) →</a></code></pre></div>
 </div>
 
     </body>

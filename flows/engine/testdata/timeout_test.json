@@ -47,15 +47,6 @@
                         "operand": "@input.text",
                         "cases": [
                             {
-                                "uuid": "7ea92692-a2c8-4add-8c84-6c74a963c198",
-                                "type": "has_wait_timed_out",
-                                "arguments": [
-                                    "@run"
-                                ],
-                                "omit_operand": true,
-                                "category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
-                            },
-                            {
                                 "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
                                 "type": "has_any_word",
                                 "arguments": [
