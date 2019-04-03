@@ -210,6 +210,7 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 		if xerr != nil {
 			return xerr
 		}
+
 		if uuid.Equals(groupUUID) {
 			return NewTrueResult(group)
 		}
