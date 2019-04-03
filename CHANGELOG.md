@@ -1,3 +1,10 @@
+v0.32.1
+----------
+ * Operand of group split should be @contact.groups
+ * Migrate a ruleset of type contact_field that splits on @contact.groups to an expression split
+ * Add hint to msg_wait event, move waits into router package
+ * Update engine to look for wait on router instead of node
+
 v0.32.0
 ----------
  * Convert almost all complex types to be represented in expressions as simple XDicts
