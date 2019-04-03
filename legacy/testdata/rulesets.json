@@ -1258,6 +1258,97 @@
     },
     {
         "legacy_ruleset": {
+            "uuid": "9e4078de-2304-4751-b6e7-35532cc5ab8f",
+            "x": 708,
+            "y": 1611,
+            "label": "Response 14",
+            "rules": [
+                {
+                    "uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
+                    "category": {
+                        "eng": "Tester"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "destination_type": "A",
+                    "test": {
+                        "type": "contains_any",
+                        "test": {
+                            "eng": "testers"
+                        }
+                    },
+                    "label": null
+                },
+                {
+                    "uuid": "85038c16-0060-486c-97be-898c65587658",
+                    "category": {
+                        "eng": "Other"
+                    },
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "destination_type": "A",
+                    "test": {
+                        "type": "true"
+                    },
+                    "label": null
+                }
+            ],
+            "finished_key": null,
+            "ruleset_type": "contact_field",
+            "response_type": "",
+            "operand": "@contact.groups",
+            "config": {}
+        },
+        "expected_node": {
+            "uuid": "9e4078de-2304-4751-b6e7-35532cc5ab8f",
+            "router": {
+                "type": "switch",
+                "result_name": "Response 14",
+                "categories": [
+                    {
+                        "exit_uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
+                        "name": "Tester",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "exit_uuid": "85038c16-0060-486c-97be-898c65587658",
+                        "name": "Other",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "operand": "@(join(contact.groups, \",\"))",
+                "cases": [
+                    {
+                        "arguments": [
+                            "testers"
+                        ],
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_any_word",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ],
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+            },
+            "exits": [
+                {
+                    "uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
+                },
+                {
+                    "uuid": "85038c16-0060-486c-97be-898c65587658",
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
+                }
+            ]
+        },
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "split_by_expression",
+            "position": {
+                "left": 708,
+                "top": 1611
+            }
+        }
+    },
+    {
+        "legacy_ruleset": {
             "uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
             "x": 428,
             "y": 374,
