@@ -82,9 +82,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:25.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "timeout_on": "2018-07-06T12:40:24.123456789Z",
                     "type": "msg_wait"
                 }
             ],
@@ -195,9 +194,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:25.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                                "timeout_on": "2018-07-06T12:40:24.123456789Z",
                                 "type": "msg_wait"
                             }
                         ],
@@ -207,7 +205,7 @@
                             "name": "Legacy Extra",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:27.123456789Z",
+                        "modified_on": "2018-07-06T12:30:26.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -285,7 +283,6 @@
                 },
                 "type": "messaging",
                 "wait": {
-                    "timeout_on": "2018-07-06T12:40:24.123456789Z",
                     "type": "msg"
                 }
             }
@@ -293,7 +290,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:30.123456789Z",
+                    "created_on": "2018-07-06T12:30:29.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -308,7 +305,7 @@
                 },
                 {
                     "category": "",
-                    "created_on": "2018-07-06T12:30:35.123456789Z",
+                    "created_on": "2018-07-06T12:30:34.123456789Z",
                     "input": "Ryan Lewis",
                     "name": "Continue",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -316,7 +313,7 @@
                     "value": "Ryan Lewis"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:38.123456789Z",
+                    "created_on": "2018-07-06T12:30:37.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -448,13 +445,12 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:25.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                                "timeout_on": "2018-07-06T12:40:24.123456789Z",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -469,7 +465,7 @@
                             },
                             {
                                 "category": "",
-                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -477,7 +473,7 @@
                                 "value": "Ryan Lewis"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "created_on": "2018-07-06T12:30:37.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -491,13 +487,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:40.123456789Z",
-                        "expires_on": "2018-07-06T12:30:28.123456789Z",
+                        "exited_on": "2018-07-06T12:30:39.123456789Z",
+                        "expires_on": "2018-07-06T12:30:27.123456789Z",
                         "flow": {
                             "name": "Legacy Extra",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:40.123456789Z",
+                        "modified_on": "2018-07-06T12:30:39.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -518,7 +514,7 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:36.123456789Z",
                                 "exit_uuid": "82765044-5c8e-4678-a1c8-8e4f348f903a",
                                 "node_uuid": "e9666140-dcf1-46ab-a27e-ecb2a5e8b73d",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -526,7 +522,7 @@
                         ],
                         "results": {
                             "continue": {
-                                "created_on": "2018-07-06T12:30:33.123456789Z",
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",

@@ -33,7 +33,7 @@ type MsgWait struct {
 }
 
 // NewMsgWait creates a new message wait
-func NewMsgWait(timeout *int, hint flows.Hint) *MsgWait {
+func NewMsgWait(timeout *Timeout, hint flows.Hint) *MsgWait {
 	return &MsgWait{
 		baseWait: newBaseWait(TypeMsg, timeout),
 		hint:     hint,
@@ -48,7 +48,7 @@ func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.Activa
 	var timeoutOn *time.Time
 
 	if w.timeout != nil {
-		t := utils.Now().Add(time.Second * time.Duration(*w.timeout))
+		t := utils.Now().Add(time.Second * time.Duration(w.timeout.Seconds()))
 		timeoutOn = &t
 	}
 

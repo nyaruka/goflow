@@ -44,7 +44,10 @@ var sessionAssets = `{
                         "type": "switch",
                         "wait": {
                             "type": "msg",
-                            "timeout": 600
+                            "timeout": {
+                                "seconds": 600,
+                                "category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126"
+                            }
                         },
                         "categories": [
                             {

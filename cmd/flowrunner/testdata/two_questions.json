@@ -21,7 +21,10 @@
                         "type": "switch",
                         "wait": {
                             "type": "msg",
-                            "timeout": 600
+                            "timeout": {
+                                "seconds": 600,
+                                "category_uuid": "1024833c-91aa-4873-a3b5-3bac1ef55812"
+                            }
                         },
                         "result_name": "Favorite Color",
                         "categories": [
@@ -39,6 +42,11 @@
                                 "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
                                 "name": "Other",
                                 "exit_uuid": "84696f43-07b5-4fde-9991-73d10f8406a5"
+                            },
+                            {
+                                "uuid": "1024833c-91aa-4873-a3b5-3bac1ef55812",
+                                "name": "No Response",
+                                "exit_uuid": "f0649239-6ab2-4903-b5c5-f813beb5539d"
                             }
                         ],
                         "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
@@ -74,6 +82,9 @@
                         {
                             "uuid": "84696f43-07b5-4fde-9991-73d10f8406a5",
                             "destination_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
+                        },
+                        {
+                            "uuid": "f0649239-6ab2-4903-b5c5-f813beb5539d"
                         }
                     ]
                 },
@@ -94,8 +105,7 @@
                     "router": {
                         "type": "switch",
                         "wait": {
-                            "type": "msg",
-                            "timeout": 600
+                            "type": "msg"
                         },
                         "result_name": "Soda",
                         "categories": [

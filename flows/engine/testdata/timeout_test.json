@@ -20,7 +20,10 @@
                         "type": "switch",
                         "wait": {
                             "type": "msg",
-                            "timeout": 600
+                            "timeout": {
+                                "seconds": 600,
+                                "category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
+                            }
                         },
                         "result_name": "Favorite Color",
                         "categories": [

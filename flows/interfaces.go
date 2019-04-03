@@ -215,10 +215,15 @@ type Exit interface {
 	DestinationUUID() NodeUUID
 }
 
+type Timeout interface {
+	Seconds() int
+	CategoryUUID() CategoryUUID
+}
+
 type Wait interface {
 	utils.Typed
 
-	Timeout() *int
+	Timeout() Timeout
 
 	Begin(FlowRun, EventCallback) ActivatedWait
 }

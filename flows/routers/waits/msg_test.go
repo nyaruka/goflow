@@ -6,9 +6,9 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -60,10 +60,13 @@ func TestMsgWait(t *testing.T) {
 	assert.Equal(t, `{"type":"msg"}`, string(marshaled))
 
 	// timeout and image hint
-	timeout := 5
-	wait = waits.NewMsgWait(&timeout, hints.NewImageHint())
-	marshaled, _ = json.Marshal(wait)
-	assert.Equal(t, `{"type":"msg","timeout":5,"hint":{"type":"image"}}`, string(marshaled))
+	wait = waits.NewMsgWait(
+		waits.NewTimeout(5, flows.CategoryUUID("63fca57d-5ef6-4afd-9bcd-7bdcf653cea8")),
+		hints.NewImageHint(),
+	)
+	marshaled, err := json.Marshal(wait)
+	require.NoError(t, err)
+	assert.Equal(t, `{"type":"msg","timeout":{"seconds":5,"category_uuid":"63fca57d-5ef6-4afd-9bcd-7bdcf653cea8"},"hint":{"type":"image"}}`, string(marshaled))
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {

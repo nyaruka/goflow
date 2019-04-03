@@ -71,8 +71,7 @@ var sessionAssets = `{
                     "router": {
                         "type": "switch",
                         "wait": {
-                            "type": "msg",
-                            "timeout": 600
+                            "type": "msg"
                         },
                         "categories": [
                             {
