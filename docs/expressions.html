@@ -858,8 +858,8 @@
 <p><a name="test:has_group"></a></p>
 <h2 id="has_groupcontact-group_uuid">has_group(contact, group_uuid)</h2>
 <p>Returns whether the <code>contact</code> is part of group with the passed in UUID</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb92-1" title="1">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>)) → {match: {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}}</a>
-<a class="sourceLine" id="cb92-2" title="2">@(has_group(contact, <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) →</a></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb92-1" title="1">@(has_group(contact.groups, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>)) → {match: {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}}</a>
+<a class="sourceLine" id="cb92-2" title="2">@(has_group(array(), <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_number"></a></p>
 <h2 id="has_numbertext">has_number(text)</h2>
 <p>Tests whether <code>text</code> contains a number</p>

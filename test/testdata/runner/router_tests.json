@@ -72,7 +72,7 @@
                             }
                         ],
                         "default_category_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
-                        "operand": "@contact",
+                        "operand": "@contact.groups",
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",

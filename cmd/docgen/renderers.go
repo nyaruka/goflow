@@ -267,10 +267,15 @@ func checkExample(session flows.Session, line string) error {
 
 	if expected == "ERROR" {
 		if err == nil {
-			return errors.Errorf("expected example '%s' to error but it didn't", test)
+			return errors.Errorf("expected example '%s' to error but it didn't", strconv.Quote(test))
 		}
-	} else if val != expected {
-		return errors.Errorf("expected %s from example: %s, but got %s", strconv.Quote(expected), strconv.Quote(test), strconv.Quote(val))
+	} else {
+		if err != nil {
+			return errors.Errorf("unexpected error from example '%s': %s", strconv.Quote(test), err)
+		}
+		if val != expected {
+			return errors.Errorf("expected %s from example: %s, but got %s", strconv.Quote(expected), strconv.Quote(test), strconv.Quote(val))
+		}
 	}
 
 	return nil

@@ -1586,8 +1586,8 @@ Returns whether the `contact` is part of group with the passed in UUID
 
 
 ```objectivec
-@(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) → {match: {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}}
-@(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) →
+@(has_group(contact.groups, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) → {match: {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}}
+@(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) →
 ```
 
 <a name="test:has_number"></a>

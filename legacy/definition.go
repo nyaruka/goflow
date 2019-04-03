@@ -637,7 +637,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 	case "group":
 		// in legacy flows these rulesets have their operand as @step.value but it's not used
-		router = routers.NewSwitchRouter(nil, resultName, categories, "@contact", cases, defaultCategory)
+		router = routers.NewSwitchRouter(nil, resultName, categories, "@contact.groups", cases, defaultCategory)
 		uiType = UINodeTypeSplitByGroups
 
 	case "wait_message", "wait_audio", "wait_video", "wait_photo", "wait_gps", "wait_recording", "wait_digit", "wait_digits":
