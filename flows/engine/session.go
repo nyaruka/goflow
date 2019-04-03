@@ -9,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/flows/waits"
+	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"

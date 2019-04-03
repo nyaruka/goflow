@@ -220,9 +220,27 @@
                         {
                             "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
                             "type": "send_msg",
-                            "text": "Great, you are done and like @results.soda!"
+                            "text": "Great, you like @results.soda. Finish by sending us a selfie!"
                         }
                     ],
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "hint": {
+                                "type": "image"
+                            }
+                        },
+                        "operand": "@input.text",
+                        "categories": [
+                            {
+                                "uuid": "c6f2938b-04d3-4038-9a1e-3de7cfa5170a",
+                                "name": "All Responses",
+                                "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d"
+                            }
+                        ],
+                        "default_category_uuid": "c6f2938b-04d3-4038-9a1e-3de7cfa5170a"
+                    },
                     "exits": [
                         {
                             "uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d"

@@ -6,8 +6,8 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
+	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/flows/waits/hints"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -55,7 +55,7 @@ func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) bool {
 		return false
 	}
 
-	log(events.NewMsgWait(w.timeoutOn))
+	log(events.NewMsgWait(w.timeoutOn, w.hint))
 	return true
 }
 

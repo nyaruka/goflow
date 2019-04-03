@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -28,6 +29,7 @@ func TestEventMarshaling(t *testing.T) {
 	require.NoError(t, err)
 
 	tz, _ := time.LoadLocation("Africa/Kigali")
+	now := time.Date(2019, 4, 3, 10, 21, 30, 123456, time.UTC)
 
 	gender := session.Assets().Fields().Get("gender")
 
@@ -255,6 +257,15 @@ func TestEventMarshaling(t *testing.T) {
 					"uuid": "08d3c3e2-f1ea-4b52-97e4-99d56e963fc9"
 				},
 				"type": "ivr_created"
+			}`,
+		},
+		{
+			events.NewMsgWait(&now, hints.NewImageHint()),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"hint": {"type": "image"},
+				"timeout_on": "2019-04-03T10:21:30.000123456Z",
+				"type": "msg_wait"
 			}`,
 		},
 		{

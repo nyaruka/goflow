@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/nyaruka/goflow/flows/waits"
+	"github.com/nyaruka/goflow/flows/routers/waits"
 
 	"github.com/stretchr/testify/assert"
 )

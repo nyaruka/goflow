@@ -654,7 +654,10 @@ the number of seconds in the timeout to resume it.
 ```json
 {
     "type": "msg_wait",
-    "created_on": "2006-01-02T15:04:05Z"
+    "created_on": "2006-01-02T15:04:05Z",
+    "hint": {
+        "type": "image"
+    }
 }
 ```
 </div>

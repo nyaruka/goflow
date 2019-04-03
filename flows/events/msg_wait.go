@@ -1,9 +1,14 @@
 package events
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/routers/waits/hints"
+	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -20,7 +25,10 @@ const TypeMsgWait string = "msg_wait"
 //   {
 //     "type": "msg_wait",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "timeout": 300
+//     "timeout": 300,
+//     "hint": {
+//        "type": "image"
+//     }
 //   }
 //
 // @event msg_wait
@@ -28,12 +36,44 @@ type MsgWaitEvent struct {
 	BaseEvent
 
 	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
+	Hint      flows.Hint `json:"hint,omitempty"`
 }
 
 // NewMsgWait returns a new msg wait with the passed in timeout
-func NewMsgWait(timeoutOn *time.Time) *MsgWaitEvent {
+func NewMsgWait(timeoutOn *time.Time, hint flows.Hint) *MsgWaitEvent {
 	return &MsgWaitEvent{
 		BaseEvent: NewBaseEvent(TypeMsgWait),
 		TimeoutOn: timeoutOn,
+		Hint:      hint,
 	}
+}
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+type msgWaitEnvelope struct {
+	BaseEvent
+	TimeoutOn *time.Time      `json:"timeout_on,omitempty"`
+	Hint      json.RawMessage `json:"hint,omitempty"`
+}
+
+// UnmarshalJSON unmarshals a flow node from the given JSON
+func (e *MsgWaitEvent) UnmarshalJSON(data []byte) error {
+	v := &msgWaitEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, v); err != nil {
+		return err
+	}
+
+	e.BaseEvent = v.BaseEvent
+	e.TimeoutOn = v.TimeoutOn
+
+	var err error
+	if v.Hint != nil {
+		if e.Hint, err = hints.ReadHint(v.Hint); err != nil {
+			return errors.Wrap(err, "unable to read hint")
+		}
+	}
+
+	return nil
 }
