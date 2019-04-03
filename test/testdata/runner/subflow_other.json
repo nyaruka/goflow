@@ -98,11 +98,11 @@
                 },
                 {
                     "uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                    "wait": {
-                        "type": "msg"
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
                         "result_name": "Answer",
                         "categories": [
                             {
@@ -201,11 +201,11 @@
                 },
                 {
                     "uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "wait": {
-                        "type": "msg"
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
                         "result_name": "Answer",
                         "categories": [
                             {

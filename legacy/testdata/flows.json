@@ -456,11 +456,11 @@
                 },
                 {
                     "uuid": "80f2ae0b-492b-4bb1-9628-fb3dc191ab82",
-                    "wait": {
-                        "type": "msg"
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
                         "result_name": "number",
                         "categories": [
                             {

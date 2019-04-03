@@ -102,8 +102,20 @@
                             "text": "This is the child flow. What's your name?"
                         }
                     ],
-                    "wait": {
-                        "type": "msg"
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "c82e161f-fa2d-4e7d-a338-c27f6c349445",
+                                "name": "All Responses",
+                                "exit_uuid": "f72c2fe8-c61f-498b-8976-1deb589a8b9b"
+                            }
+                        ],
+                        "operand": "@input.text",
+                        "default_category_uuid": "c82e161f-fa2d-4e7d-a338-c27f6c349445"
                     },
                     "exits": [
                         {

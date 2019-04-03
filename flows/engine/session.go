@@ -369,8 +369,12 @@ func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.N
 		return step, noDestination, nil
 	}
 
-	// our node might have wait
-	wait := node.Wait()
+	// our node might have a router with a wait
+	var wait flows.Wait
+	if node.Router() != nil {
+		wait = node.Router().Wait()
+	}
+
 	if wait != nil {
 
 		// waits have the option to skip themselves

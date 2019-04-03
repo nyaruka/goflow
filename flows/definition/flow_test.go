@@ -105,14 +105,14 @@ func TestNewFlow(t *testing.T) {
                    "text": "Do you like beer?"
                 }
             ],
-            "wait": {
-                "type": "msg",
-                "hint": {
-                    "type": "image"
-                }
-            },
             "router": {
 				"type": "switch",
+				"wait": {
+					"type": "msg",
+					"hint": {
+						"type": "image"
+					}
+				},
 				"operand": "@input.text",
                 "cases": [
                     {
@@ -200,8 +200,8 @@ func TestNewFlow(t *testing.T) {
 						false,
 					),
 				},
-				waits.NewMsgWait(nil, hints.NewImageHint()),
 				routers.NewSwitchRouter(
+					waits.NewMsgWait(nil, hints.NewImageHint()),
 					"Response 1",
 					[]*routers.Category{
 						routers.NewCategory(
@@ -243,7 +243,6 @@ func TestNewFlow(t *testing.T) {
 						},
 					),
 				},
-				nil, // no wait
 				nil, // no router
 				[]flows.Exit{
 					definition.NewExit(flows.ExitUUID("3e077111-7b62-4407-b8a4-4fddaf0d2f24"), ""),

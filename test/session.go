@@ -68,12 +68,12 @@ var sessionAssets = `{
                 },
                 {
                     "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                    "wait": {
-                        "type": "msg",
-                        "timeout": 600
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "timeout": 600
+                        },
                         "categories": [
                             {
                                 "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",

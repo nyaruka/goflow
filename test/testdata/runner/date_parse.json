@@ -16,12 +16,12 @@
                             "text": "Hi @contact.name! When were you born, enter in format YYYY.MM.DD"
                         }
                     ],
-                    "wait": {
-                        "type": "msg",
-                        "timeout": 600
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "timeout": 600
+                        },
                         "result_name": "Birth Date",
                         "categories": [
                             {

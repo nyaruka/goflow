@@ -248,7 +248,7 @@ func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
 	include := func(e flows.ExitUUID) { exitUUIDs = append(exitUUIDs, e) }
 
 	for _, n := range f.nodes {
-		if n.Wait() != nil {
+		if n.Router() != nil && n.Router().Wait() != nil {
 			for _, e := range n.Exits() {
 				include(e.UUID())
 			}

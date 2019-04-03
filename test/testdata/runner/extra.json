@@ -86,12 +86,12 @@
                             "text": "Extra: @legacy_extra"
                         }
                     ],
-                    "wait": {
-                        "type": "msg",
-                        "timeout": 600
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "timeout": 600
+                        },
                         "categories": [
                             {
                                 "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",

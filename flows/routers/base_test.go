@@ -39,7 +39,7 @@ func TestRouterTypes(t *testing.T) {
 
 	server := test.NewTestHTTPServer(49993)
 
-	for typeName := range routers.RegisteredTypes() {
+	for _, typeName := range routers.RegisteredTypes() {
 		testRouterType(t, assetsJSON, typeName, server.URL)
 	}
 }

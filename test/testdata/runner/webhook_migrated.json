@@ -9,11 +9,11 @@
             "nodes": [
                 {
                     "uuid": "5b5abbf2-5f12-4f83-a804-90695e6c4302",
-                    "wait": {
-                        "type": "msg"
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
                         "result_name": "Country Response",
                         "categories": [
                             {

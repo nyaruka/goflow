@@ -63,11 +63,11 @@
                 },
                 {
                     "uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
-                    "wait": {
-                        "type": "msg"
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
                         "result_name": "Command",
                         "categories": [
                             {

@@ -90,11 +90,11 @@
                 },
                 {
                     "uuid": "d08e402f-0d6f-413c-8336-bd8a3bcc432b",
-                    "wait": {
-                        "type": "msg"
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
                         "categories": [
                             {
                                 "uuid": "dd0d800b-97ce-418f-9eb7-f0985df89f08",

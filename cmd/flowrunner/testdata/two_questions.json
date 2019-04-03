@@ -17,12 +17,12 @@
                             "text": "Hi @contact.name! What is your favorite color? (red/blue)"
                         }
                     ],
-                    "wait": {
-                        "type": "msg",
-                        "timeout": 600
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "timeout": 600
+                        },
                         "result_name": "Favorite Color",
                         "categories": [
                             {
@@ -91,12 +91,12 @@
                             "text": "@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
                         }
                     ],
-                    "wait": {
-                        "type": "msg",
-                        "timeout": 600
-                    },
                     "router": {
                         "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "timeout": 600
+                        },
                         "result_name": "Soda",
                         "categories": [
                             {

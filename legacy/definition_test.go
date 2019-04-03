@@ -196,10 +196,10 @@ func TestTestMigration(t *testing.T) {
 
 		migratedRouter := migratedFlow.Nodes()[0].Router().(*routers.SwitchRouter)
 
-		if len(migratedRouter.Cases) == 0 {
+		if len(migratedRouter.Cases()) == 0 {
 			t.Errorf("Got no migrated case from legacy test:\n%s\n\n", string(tc.LegacyTest))
 		} else {
-			migratedCase := migratedRouter.Cases[0]
+			migratedCase := migratedRouter.Cases()[0]
 			migratedCaseJSON, err := utils.JSONMarshal(migratedCase)
 			require.NoError(t, err)
 

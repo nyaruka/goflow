@@ -1,6 +1,8 @@
 package routers
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -8,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeRandom, func() flows.Router { return &RandomRouter{} })
+	RegisterType(TypeRandom, readRandomRouter)
 }
 
 // TypeRandom is the type for a random router
@@ -20,8 +22,8 @@ type RandomRouter struct {
 }
 
 // NewRandomRouter creates a new random router
-func NewRandomRouter(resultName string, categories []*Category) *RandomRouter {
-	return &RandomRouter{newBaseRouter(TypeRandom, resultName, categories)}
+func NewRandomRouter(wait flows.Wait, resultName string, categories []*Category) *RandomRouter {
+	return &RandomRouter{newBaseRouter(TypeRandom, wait, resultName, categories)}
 }
 
 // Validate validates that the fields on this router are valid
@@ -33,8 +35,8 @@ func (r *RandomRouter) Validate(exits []flows.Exit) error {
 func (r *RandomRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
 	// pick a random category
 	rand := utils.RandDecimal()
-	categoryNum := rand.Mul(decimal.New(int64(len(r.Categories_)), 0)).IntPart()
-	categoryUUID := r.Categories_[categoryNum].UUID()
+	categoryNum := rand.Mul(decimal.New(int64(len(r.categories)), 0)).IntPart()
+	categoryUUID := r.categories[categoryNum].UUID()
 
 	// TODO should raw rand value be iput and category number the match ?
 	return r.routeToCategory(run, step, categoryUUID, rand.String(), nil, nil, logEvent)
@@ -43,4 +45,34 @@ func (r *RandomRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flo
 // Inspect inspects this object and any children
 func (r *RandomRouter) Inspect(inspect func(flows.Inspectable)) {
 	inspect(r)
+}
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+func readRandomRouter(data json.RawMessage) (flows.Router, error) {
+	e := &baseRouterEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
+	r := &RandomRouter{}
+
+	if err := r.unmarshal(e); err != nil {
+		return nil, err
+	}
+
+	return r, nil
+}
+
+// MarshalJSON marshals this resume into JSON
+func (r *RandomRouter) MarshalJSON() ([]byte, error) {
+	e := &baseRouterEnvelope{}
+
+	if err := r.marshal(e); err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(e)
 }
