@@ -21,8 +21,10 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:06.123456789Z",
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "timeout_on": "2018-07-06T12:40:06.123456789Z",
+                    "timeout_seconds": 600,
                     "type": "msg_wait"
                 }
             ],
@@ -84,8 +86,10 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_on": "2018-07-06T12:40:06.123456789Z",
+                                "timeout_seconds": 600,
                                 "type": "msg_wait"
                             }
                         ],
@@ -95,7 +99,7 @@
                             "name": "U-Report Registration Flow",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:08.123456789Z",
+                        "modified_on": "2018-07-06T12:30:09.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -152,6 +156,8 @@
                 },
                 "type": "messaging",
                 "wait": {
+                    "timeout_on": "2018-07-06T12:40:06.123456789Z",
+                    "timeout_seconds": 600,
                     "type": "msg"
                 }
             }
@@ -159,7 +165,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:10.123456789Z",
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
                     "run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "run_expired"
@@ -223,24 +229,26 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_on": "2018-07-06T12:40:06.123456789Z",
+                                "timeout_seconds": 600,
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:10.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "run_expired"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:09.123456789Z",
+                        "exited_on": "2018-07-06T12:30:10.123456789Z",
                         "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "U-Report Registration Flow",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:11.123456789Z",
+                        "modified_on": "2018-07-06T12:30:12.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

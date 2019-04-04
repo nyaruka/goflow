@@ -46,8 +46,12 @@ func (w *MsgWait) Hint() flows.Hint { return w.hint }
 // Begin beings waiting at this wait
 func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.ActivatedWait {
 	var timeoutOn *time.Time
+	var timeoutSeconds *int
 
 	if w.timeout != nil {
+		seconds := w.timeout.Seconds()
+		timeoutSeconds = &seconds
+
 		t := utils.Now().Add(time.Second * time.Duration(w.timeout.Seconds()))
 		timeoutOn = &t
 	}
@@ -59,10 +63,10 @@ func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.Activa
 		return nil
 	}
 
-	log(events.NewMsgWait(timeoutOn, w.hint))
+	log(events.NewMsgWait(timeoutOn, timeoutSeconds, w.hint))
 
 	return &ActivatedMsgWait{
-		baseActivatedWait: baseActivatedWait{type_: TypeMsg, timeoutOn: timeoutOn},
+		baseActivatedWait: baseActivatedWait{type_: TypeMsg, timeoutOn: timeoutOn, timeoutSeconds: timeoutSeconds},
 		hint:              w.hint,
 	}
 }

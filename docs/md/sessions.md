@@ -656,6 +656,7 @@ the number of seconds in the timeout to resume it.
     "type": "msg_wait",
     "created_on": "2019-01-02T15:04:05Z",
     "timeout_on": "2019-01-02T16:04:05Z",
+    "timeout_seconds": 300,
     "hint": {
         "type": "image"
     }

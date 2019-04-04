@@ -29,6 +29,7 @@ func TestEventMarshaling(t *testing.T) {
 	require.NoError(t, err)
 
 	tz, _ := time.LoadLocation("Africa/Kigali")
+	timeout := 500
 	now := time.Date(2019, 4, 3, 10, 21, 30, 123456, time.UTC)
 
 	gender := session.Assets().Fields().Get("gender")
@@ -260,11 +261,12 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewMsgWait(&now, hints.NewImageHint()),
+			events.NewMsgWait(&now, &timeout, hints.NewImageHint()),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"hint": {"type": "image"},
 				"timeout_on": "2019-04-03T10:21:30.000123456Z",
+				"timeout_seconds": 500,
 				"type": "msg_wait"
 			}`,
 		},

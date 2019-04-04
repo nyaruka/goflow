@@ -26,6 +26,7 @@ const TypeMsgWait string = "msg_wait"
 //     "type": "msg_wait",
 //     "created_on": "2019-01-02T15:04:05Z",
 //     "timeout_on": "2019-01-02T16:04:05Z",
+//     "timeout_seconds": 300,
 //     "hint": {
 //        "type": "image"
 //     }
@@ -35,16 +36,18 @@ const TypeMsgWait string = "msg_wait"
 type MsgWaitEvent struct {
 	BaseEvent
 
-	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
-	Hint      flows.Hint `json:"hint,omitempty"`
+	TimeoutOn      *time.Time `json:"timeout_on,omitempty"`
+	TimeoutSeconds *int       `json:"timeout_seconds,omitempty"`
+	Hint           flows.Hint `json:"hint,omitempty"`
 }
 
 // NewMsgWait returns a new msg wait with the passed in timeout
-func NewMsgWait(timeoutOn *time.Time, hint flows.Hint) *MsgWaitEvent {
+func NewMsgWait(timeoutOn *time.Time, timeoutSeconds *int, hint flows.Hint) *MsgWaitEvent {
 	return &MsgWaitEvent{
-		BaseEvent: NewBaseEvent(TypeMsgWait),
-		TimeoutOn: timeoutOn,
-		Hint:      hint,
+		BaseEvent:      NewBaseEvent(TypeMsgWait),
+		TimeoutSeconds: timeoutSeconds,
+		TimeoutOn:      timeoutOn,
+		Hint:           hint,
 	}
 }
 
@@ -54,8 +57,10 @@ func NewMsgWait(timeoutOn *time.Time, hint flows.Hint) *MsgWaitEvent {
 
 type msgWaitEnvelope struct {
 	BaseEvent
-	TimeoutOn *time.Time      `json:"timeout_on,omitempty"`
-	Hint      json.RawMessage `json:"hint,omitempty"`
+
+	TimeoutOn      *time.Time      `json:"timeout_on,omitempty"`
+	TimeoutSeconds *int            `json:"timeout_seconds,omitempty"`
+	Hint           json.RawMessage `json:"hint,omitempty"`
 }
 
 // UnmarshalJSON unmarshals this event from the given JSON
@@ -67,6 +72,7 @@ func (e *MsgWaitEvent) UnmarshalJSON(data []byte) error {
 
 	e.BaseEvent = v.BaseEvent
 	e.TimeoutOn = v.TimeoutOn
+	e.TimeoutSeconds = v.TimeoutSeconds
 
 	var err error
 	if v.Hint != nil {

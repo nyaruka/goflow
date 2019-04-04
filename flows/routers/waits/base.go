@@ -54,13 +54,16 @@ func (w *baseWait) Type() string { return w.type_ }
 func (w *baseWait) Timeout() flows.Timeout { return w.timeout }
 
 type baseActivatedWait struct {
-	type_     string
-	timeoutOn *time.Time
+	type_          string
+	timeoutOn      *time.Time
+	timeoutSeconds *int
 }
 
 func (w *baseActivatedWait) Type() string { return w.type_ }
 
 func (w *baseActivatedWait) TimeoutOn() *time.Time { return w.timeoutOn }
+
+func (w *baseActivatedWait) TimeoutSeconds() *int { return w.timeoutSeconds }
 
 // End ends this wait or returns an error
 func (w *baseActivatedWait) End(resume flows.Resume, node flows.Node) error {
@@ -132,18 +135,21 @@ func ReadActivatedWait(data json.RawMessage) (flows.ActivatedWait, error) {
 }
 
 type baseActivatedWaitEnvelope struct {
-	Type      string     `json:"type" validate:"required"`
-	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
+	Type           string     `json:"type" validate:"required"`
+	TimeoutOn      *time.Time `json:"timeout_on,omitempty"`
+	TimeoutSeconds *int       `json:"timeout_seconds,omitempty"`
 }
 
 func (w *baseActivatedWait) unmarshal(e *baseActivatedWaitEnvelope) error {
 	w.type_ = e.Type
 	w.timeoutOn = e.TimeoutOn
+	w.timeoutSeconds = e.TimeoutSeconds
 	return nil
 }
 
 func (w *baseActivatedWait) marshal(e *baseActivatedWaitEnvelope) error {
 	e.Type = w.type_
 	e.TimeoutOn = w.timeoutOn
+	e.TimeoutSeconds = w.timeoutSeconds
 	return nil
 }
