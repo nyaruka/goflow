@@ -43,6 +43,11 @@ func TestFlowReadingAndValidation(t *testing.T) {
 			false,
 		},
 		{
+			"flow_with_invalid_timeout_category.json",
+			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
+			false,
+		},
+		{
 			"flow_with_invalid_default_exit.json",
 			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
 			false,
@@ -217,7 +222,7 @@ func TestNewFlow(t *testing.T) {
 					},
 					"@input.text",
 					[]*routers.Case{
-						routers.NewCase(utils.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, false, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
+						routers.NewCase(utils.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
 					},
 					flows.CategoryUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
 				),

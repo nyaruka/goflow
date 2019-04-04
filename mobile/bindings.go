@@ -299,7 +299,7 @@ func (h *Hint) Type() string {
 }
 
 type Wait struct {
-	target flows.Wait
+	target flows.ActivatedWait
 }
 
 func (w *Wait) Type() string {
@@ -307,7 +307,7 @@ func (w *Wait) Type() string {
 }
 
 func (w *Wait) Hint() *Hint {
-	asMsgWait, isMsgWait := w.target.(*waits.MsgWait)
+	asMsgWait, isMsgWait := w.target.(*waits.ActivatedMsgWait)
 	if isMsgWait && asMsgWait.Hint() != nil {
 		return &Hint{target: asMsgWait.Hint()}
 	}

@@ -26,17 +26,15 @@ type Case struct {
 	UUID         utils.UUID         `json:"uuid"                   validate:"required"`
 	Type         string             `json:"type"                   validate:"required"`
 	Arguments    []string           `json:"arguments,omitempty"`
-	OmitOperand  bool               `json:"omit_operand,omitempty"`
 	CategoryUUID flows.CategoryUUID `json:"category_uuid"          validate:"required"`
 }
 
 // NewCase creates a new case
-func NewCase(uuid utils.UUID, type_ string, arguments []string, omitOperand bool, categoryUUID flows.CategoryUUID) *Case {
+func NewCase(uuid utils.UUID, type_ string, arguments []string, categoryUUID flows.CategoryUUID) *Case {
 	return &Case{
 		UUID:         uuid,
 		Type:         type_,
 		Arguments:    arguments,
-		OmitOperand:  omitOperand,
 		CategoryUUID: categoryUUID,
 	}
 }
@@ -125,8 +123,12 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 	return r.validate(exits)
 }
 
-// PickExit determines which exit to take from a node
-func (r *SwitchRouter) PickExit(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+// Route determines which exit to take from a node
+func (r *SwitchRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+	return r.BaseRouter.route(run, step, logEvent, r.route)
+}
+
+func (r *SwitchRouter) route(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
 	env := run.Environment()
 
 	// first evaluate our operand
@@ -174,11 +176,8 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 			return "", "", nil, errors.Errorf("unknown case test '%s'", c.Type)
 		}
 
-		// build our argument list
-		args := make([]types.XValue, 0, 1)
-		if !c.OmitOperand {
-			args = append(args, operand)
-		}
+		// build our argument list which starts with the operand
+		args := []types.XValue{operand}
 
 		localizedArgs := run.GetTextArray(c.UUID, "arguments", c.Arguments)
 		for i := range c.Arguments {

@@ -92,8 +92,7 @@
                     "router": {
                         "type": "switch",
                         "wait": {
-                            "type": "msg",
-                            "timeout": 600
+                            "type": "msg"
                         },
                         "result_name": "Favorite Color",
                         "categories": [
@@ -166,8 +165,7 @@
                     "router": {
                         "type": "switch",
                         "wait": {
-                            "type": "msg",
-                            "timeout": 600
+                            "type": "msg"
                         },
                         "categories": [
                             {

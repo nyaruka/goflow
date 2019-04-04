@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/nyaruka/phonenumbers"
@@ -38,9 +37,6 @@ var XTESTS = map[string]types.XFunction{
 	"is_error":  functions.OneArgFunction(IsError),
 	"has_value": functions.OneArgFunction(HasValue),
 
-	"has_group":          functions.TwoArgFunction(HasGroup),
-	"has_wait_timed_out": functions.OneArgFunction(HasWaitTimedOut),
-
 	"is_text_eq":      functions.TwoTextFunction(IsTextEQ),
 	"has_phrase":      functions.TwoTextFunction(HasPhrase),
 	"has_only_phrase": functions.TwoTextFunction(HasOnlyPhrase),
@@ -66,6 +62,7 @@ var XTESTS = map[string]types.XFunction{
 	"has_time":  functions.OneTextFunction(HasTime),
 	"has_phone": functions.InitialTextFunction(0, 1, HasPhone),
 	"has_email": functions.OneTextFunction(HasEmail),
+	"has_group": functions.TwoArgFunction(HasGroup),
 
 	"has_state":    functions.OneTextFunction(HasState),
 	"has_district": HasDistrict,
@@ -149,37 +146,6 @@ func HasValue(env utils.Environment, value types.XValue) types.XValue {
 	}
 
 	return NewTrueResult(value)
-}
-
-// HasWaitTimedOut returns whether the last wait timed out.
-//
-//   @(has_wait_timed_out(run)) ->
-//
-// @test has_wait_timed_out(run)
-func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
-	// first parameter needs to be a flow run
-	run, isRun := value.(flows.FlowRun)
-	if !isRun {
-		return types.NewXErrorf("must be called with a run as first argument")
-	}
-
-	// look to see if the last input event was a message or a timeout
-	runEvents := run.Events()
-	for e := len(runEvents) - 1; e >= 0; e-- {
-		event := runEvents[e]
-
-		_, isTimeout := event.(*events.WaitTimedOutEvent)
-		if isTimeout {
-			return NewTrueResult(types.NewXDateTime(event.CreatedOn()))
-		}
-
-		_, isInput := event.(*events.MsgReceivedEvent)
-		if isInput {
-			break
-		}
-	}
-
-	return nil
 }
 
 // HasGroup returns whether the `contact` is part of group with the passed in UUID

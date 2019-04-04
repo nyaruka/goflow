@@ -357,7 +357,6 @@ var testTypeMappings = map[string]string{
 	"regex":                "has_pattern",
 	"starts":               "has_beginning",
 	"state":                "has_state",
-	"timeout":              "has_wait_timed_out",
 	"ward":                 "has_ward",
 }
 
@@ -555,7 +554,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 	var uiType flows.UINodeType
 	var uiNodeConfig flows.UINodeConfig
 
-	cases, categories, defaultCategory, exits, err := migrateRules(lang, r, localization)
+	cases, categories, defaultCategory, timeoutCategory, exits, err := migrateRules(lang, r, localization)
 	if err != nil {
 		return nil, "", nil, err
 	}
@@ -642,17 +641,21 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 	case "wait_message", "wait_audio", "wait_video", "wait_photo", "wait_gps", "wait_recording", "wait_digit", "wait_digits":
 		// look for timeout test on the legacy ruleset
-		var timeout *int
+		timeoutSeconds := 0
 		for _, rule := range r.Rules {
 			if rule.Test.Type == "timeout" {
 				test := timeoutTest{}
 				if err := json.Unmarshal(rule.Test.Data, &test); err != nil {
 					return nil, "", nil, err
 				}
-				t := 60 * test.Minutes
-				timeout = &t
+				timeoutSeconds = 60 * test.Minutes
 				break
 			}
+		}
+
+		var timeout *waits.Timeout
+		if timeoutSeconds > 0 && timeoutCategory != "" {
+			timeout = waits.NewTimeout(timeoutSeconds, timeoutCategory)
 		}
 
 		wait = waits.NewMsgWait(timeout, migrateRuleSetToHint(r))
@@ -782,11 +785,12 @@ type categoryAndExit struct {
 }
 
 // migrates a set of legacy rules to sets of categories, cases and exits
-func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization) ([]*routers.Case, []*routers.Category, flows.CategoryUUID, []flows.Exit, error) {
+func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization) ([]*routers.Case, []*routers.Category, flows.CategoryUUID, flows.CategoryUUID, []flows.Exit, error) {
 	cases := make([]*routers.Case, 0, len(r.Rules))
 	categories := make([]*routers.Category, 0, len(r.Rules))
 	exits := make([]flows.Exit, 0, len(r.Rules))
-	var defaultCategoryUUID flows.CategoryUUID
+
+	var defaultCategoryUUID, timeoutCategoryUUID flows.CategoryUUID
 
 	convertedByRuleUUID := make(map[flows.ExitUUID]*categoryAndExit, len(r.Rules))
 	convertedByCategoryName := make(map[string]*categoryAndExit, len(r.Rules))
@@ -821,10 +825,16 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 	for _, rule := range r.Rules {
 		converted := convertedByRuleUUID[rule.UUID]
 
-		// implicit Other rules don't become cases, but instead become the router default
 		if rule.Test.Type == "true" {
+			// implicit Other rules don't become cases, but instead become the router default
 			defaultCategoryUUID = converted.category.UUID()
 			continue
+
+		} else if rule.Test.Type == "timeout" {
+			// timeout rules become category setting on the wait
+			timeoutCategoryUUID = converted.category.UUID()
+			continue
+
 		} else if rule.Test.Type == "webhook_status" {
 			// default case for a webhook ruleset is the last migrated rule (failure)
 			defaultCategoryUUID = converted.category.UUID()
@@ -832,27 +842,18 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 
 		kase, err := migrateRule(baseLanguage, rule, converted.category, localization)
 		if err != nil {
-			return nil, nil, "", nil, err
+			return nil, nil, "", "", nil, err
 		}
 
 		cases = append(cases, kase)
 	}
 
-	// timeout rules come last in legacy flows but for now need to come first until we remove them
-	if len(cases) > 0 {
-		lastCase := cases[len(cases)-1]
-		if lastCase.Type == "has_wait_timed_out" {
-			cases = append([]*routers.Case{lastCase}, cases[0:len(cases)-1]...)
-		}
-	}
-
-	return cases, categories, defaultCategoryUUID, exits, nil
+	return cases, categories, defaultCategoryUUID, timeoutCategoryUUID, exits, nil
 }
 
 // migrates the given legacy rule to a router case
 func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category, localization flows.Localization) (*routers.Case, error) {
 	newType, _ := testTypeMappings[r.Test.Type]
-	var omitOperand bool
 	var arguments []string
 	var err error
 
@@ -950,10 +951,6 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 			arguments = []string{"Failure"}
 		}
 
-	case "timeout":
-		omitOperand = true
-		arguments = []string{"@run"}
-
 	case "district":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
@@ -980,7 +977,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 		return nil, errors.Errorf("migration of '%s' tests no supported", r.Test.Type)
 	}
 
-	return routers.NewCase(caseUUID, newType, arguments, omitOperand, category.UUID()), err
+	return routers.NewCase(caseUUID, newType, arguments, category.UUID()), err
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit

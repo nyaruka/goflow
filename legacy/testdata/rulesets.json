@@ -1499,7 +1499,10 @@
                 "type": "switch",
                 "wait": {
                     "type": "msg",
-                    "timeout": 300
+                    "timeout": {
+                        "seconds": 300,
+                        "category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
                 },
                 "result_name": "Name",
                 "categories": [
@@ -1521,15 +1524,6 @@
                 ],
                 "operand": "@(format_input(input))",
                 "cases": [
-                    {
-                        "arguments": [
-                            "@run"
-                        ],
-                        "category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                        "omit_operand": true,
-                        "type": "has_wait_timed_out",
-                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
-                    },
                     {
                         "arguments": [
                             "yeah yes"

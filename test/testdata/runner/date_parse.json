@@ -19,8 +19,7 @@
                     "router": {
                         "type": "switch",
                         "wait": {
-                            "type": "msg",
-                            "timeout": 600
+                            "type": "msg"
                         },
                         "result_name": "Birth Date",
                         "categories": [

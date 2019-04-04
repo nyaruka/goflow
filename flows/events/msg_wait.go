@@ -24,8 +24,8 @@ const TypeMsgWait string = "msg_wait"
 //
 //   {
 //     "type": "msg_wait",
-//     "created_on": "2006-01-02T15:04:05Z",
-//     "timeout": 300,
+//     "created_on": "2019-01-02T15:04:05Z",
+//     "timeout_on": "2019-01-02T16:04:05Z",
 //     "hint": {
 //        "type": "image"
 //     }
@@ -58,7 +58,7 @@ type msgWaitEnvelope struct {
 	Hint      json.RawMessage `json:"hint,omitempty"`
 }
 
-// UnmarshalJSON unmarshals a flow node from the given JSON
+// UnmarshalJSON unmarshals this event from the given JSON
 func (e *MsgWaitEvent) UnmarshalJSON(data []byte) error {
 	v := &msgWaitEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, v); err != nil {

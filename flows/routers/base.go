@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -49,6 +50,11 @@ func (r *BaseRouter) Type() string { return r.type_ }
 // Wait returns the optional wait on this router
 func (r *BaseRouter) Wait() flows.Wait { return r.wait }
 
+// AllowTimeout returns whether this router can be resumed at with a timeout
+func (r *BaseRouter) AllowTimeout() bool {
+	return r.wait != nil && !utils.IsNil(r.wait.Timeout())
+}
+
 // ResultName returns the name which the result of this router should be saved as (if any)
 func (r *BaseRouter) ResultName() string { return r.resultName }
 
@@ -75,12 +81,18 @@ func (r *BaseRouter) EnumerateResults(include func(*flows.ResultSpec)) {
 }
 
 func (r *BaseRouter) validate(exits []flows.Exit) error {
+	// check wait timeout category is valid
+	if r.AllowTimeout() && !r.isValidCategory(r.wait.Timeout().CategoryUUID()) {
+		return errors.Errorf("timeout category %s is not a valid category", r.wait.Timeout().CategoryUUID())
+	}
+
 	// check each category points to a valid exit
 	for _, c := range r.categories {
 		if c.ExitUUID() != "" && !r.isValidExit(c.ExitUUID(), exits) {
 			return errors.Errorf("category exit %s is not a valid exit", c.ExitUUID())
 		}
 	}
+
 	return nil
 }
 
@@ -100,6 +112,38 @@ func (r *BaseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 		}
 	}
 	return false
+}
+
+type routerFunc func(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error)
+
+func (r *BaseRouter) route(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback, route routerFunc) (flows.ExitUUID, error) {
+	// look to see if the last input event was a message or a timeout
+	var timedOutOn time.Time
+	runEvents := run.Events()
+	for e := len(runEvents) - 1; e >= 0; e-- {
+		event := runEvents[e]
+
+		_, isTimeout := event.(*events.WaitTimedOutEvent)
+		if isTimeout {
+			timedOutOn = event.CreatedOn()
+		}
+
+		_, isInput := event.(*events.MsgReceivedEvent)
+		if isInput {
+			break
+		}
+	}
+
+	// if we have a timeout, route through the timeout category
+	if !timedOutOn.IsZero() {
+		if !r.AllowTimeout() {
+			return "", errors.New("router can't handle timeout as it no longer has a wait with a timeout")
+		}
+
+		return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), utils.DateTimeToISO(timedOutOn), nil, nil, logEvent)
+	}
+
+	return route(run, step, logEvent)
 }
 
 func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input *string, extra types.XDict, logEvent flows.EventCallback) (flows.ExitUUID, error) {

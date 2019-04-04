@@ -2,6 +2,7 @@ package waits
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -14,7 +15,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsg, readMsgWait)
+	RegisterType(TypeMsg, readMsgWait, readActivatedMsgWait)
 }
 
 // TypeMsg is the type of our message wait
@@ -32,7 +33,7 @@ type MsgWait struct {
 }
 
 // NewMsgWait creates a new message wait
-func NewMsgWait(timeout *int, hint flows.Hint) *MsgWait {
+func NewMsgWait(timeout *Timeout, hint flows.Hint) *MsgWait {
 	return &MsgWait{
 		baseWait: newBaseWait(TypeMsg, timeout),
 		hint:     hint,
@@ -43,33 +44,51 @@ func NewMsgWait(timeout *int, hint flows.Hint) *MsgWait {
 func (w *MsgWait) Hint() flows.Hint { return w.hint }
 
 // Begin beings waiting at this wait
-func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) bool {
-	if !w.baseWait.Begin(run) {
-		return false
+func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.ActivatedWait {
+	var timeoutOn *time.Time
+
+	if w.timeout != nil {
+		t := utils.Now().Add(time.Second * time.Duration(w.timeout.Seconds()))
+		timeoutOn = &t
 	}
 
 	// if we have a msg trigger and we're the first thing to happen... then we skip ourselves
 	triggerHasMsg := run.Session().Trigger().Type() == triggers.TypeMsg
 
 	if triggerHasMsg && len(run.Session().Runs()) == 1 && len(run.Path()) == 1 {
-		return false
+		return nil
 	}
 
-	log(events.NewMsgWait(w.timeoutOn, w.hint))
-	return true
+	log(events.NewMsgWait(timeoutOn, w.hint))
+
+	return &ActivatedMsgWait{
+		baseActivatedWait: baseActivatedWait{type_: TypeMsg, timeoutOn: timeoutOn},
+		hint:              w.hint,
+	}
 }
 
+var _ flows.Wait = (*MsgWait)(nil)
+
+type ActivatedMsgWait struct {
+	baseActivatedWait
+
+	hint flows.Hint
+}
+
+// Hint returns the hint (optional)
+func (w *ActivatedMsgWait) Hint() flows.Hint { return w.hint }
+
 // End ends this wait or returns an error
-func (w *MsgWait) End(resume flows.Resume, node flows.Node) error {
+func (w *ActivatedMsgWait) End(resume flows.Resume, node flows.Node) error {
 	// if we have a message we can definitely resume
 	if resume.Type() == resumes.TypeMsg {
 		return nil
 	}
 
-	return w.baseWait.End(resume, node)
+	return w.baseActivatedWait.End(resume, node)
 }
 
-var _ flows.Wait = (*MsgWait)(nil)
+var _ flows.ActivatedWait = (*ActivatedMsgWait)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -104,6 +123,48 @@ func (w *MsgWait) MarshalJSON() ([]byte, error) {
 	e := &msgWaitEnvelope{}
 
 	if err := w.marshal(&e.baseWaitEnvelope); err != nil {
+		return nil, err
+	}
+
+	var err error
+	if w.hint != nil {
+		if e.Hint, err = json.Marshal(w.hint); err != nil {
+			return nil, err
+		}
+	}
+
+	return json.Marshal(e)
+}
+
+type activatedMsgWaitEnvelope struct {
+	baseActivatedWaitEnvelope
+
+	Hint json.RawMessage `json:"hint,omitempty"`
+}
+
+func readActivatedMsgWait(data json.RawMessage) (flows.ActivatedWait, error) {
+	e := &activatedMsgWaitEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
+	w := &ActivatedMsgWait{}
+
+	var err error
+	if e.Hint != nil {
+		if w.hint, err = hints.ReadHint(e.Hint); err != nil {
+			return nil, errors.Wrap(err, "unable to read hint")
+		}
+	}
+
+	return w, w.unmarshal(&e.baseActivatedWaitEnvelope)
+}
+
+// MarshalJSON marshals this wait into JSON
+func (w *ActivatedMsgWait) MarshalJSON() ([]byte, error) {
+	e := &activatedMsgWaitEnvelope{}
+
+	if err := w.marshal(&e.baseActivatedWaitEnvelope); err != nil {
 		return nil, err
 	}
 
