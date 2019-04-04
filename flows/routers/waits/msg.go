@@ -66,6 +66,16 @@ func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.Activa
 	}
 }
 
+// End ends this wait or returns an error
+func (w *MsgWait) End(resume flows.Resume) error {
+	// if we have a message we can definitely resume
+	if resume.Type() == resumes.TypeMsg {
+		return nil
+	}
+
+	return w.baseWait.End(resume)
+}
+
 var _ flows.Wait = (*MsgWait)(nil)
 
 type ActivatedMsgWait struct {
@@ -76,16 +86,6 @@ type ActivatedMsgWait struct {
 
 // Hint returns the hint (optional)
 func (w *ActivatedMsgWait) Hint() flows.Hint { return w.hint }
-
-// End ends this wait or returns an error
-func (w *ActivatedMsgWait) End(resume flows.Resume, node flows.Node) error {
-	// if we have a message we can definitely resume
-	if resume.Type() == resumes.TypeMsg {
-		return nil
-	}
-
-	return w.baseActivatedWait.End(resume, node)
-}
 
 var _ flows.ActivatedWait = (*ActivatedMsgWait)(nil)
 

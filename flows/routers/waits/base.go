@@ -52,6 +52,20 @@ func (w *baseWait) Type() string { return w.type_ }
 // Timeout returns the timeout of this wait or nil if no timeout is set
 func (w *baseWait) Timeout() flows.Timeout { return w.timeout }
 
+// End ends this wait or returns an error
+func (w *baseWait) End(resume flows.Resume) error {
+	switch resume.Type() {
+	case resumes.TypeRunExpiration:
+		// expired runs always end a wait
+		return nil
+	case resumes.TypeWaitTimeout:
+		if w.timeout == nil {
+			return errors.Errorf("can't end with timeout as wait doesn't have a timeout")
+		}
+	}
+	return nil
+}
+
 type baseActivatedWait struct {
 	type_          string
 	timeoutSeconds *int
@@ -60,20 +74,6 @@ type baseActivatedWait struct {
 func (w *baseActivatedWait) Type() string { return w.type_ }
 
 func (w *baseActivatedWait) TimeoutSeconds() *int { return w.timeoutSeconds }
-
-// End ends this wait or returns an error
-func (w *baseActivatedWait) End(resume flows.Resume, node flows.Node) error {
-	switch resume.Type() {
-	case resumes.TypeRunExpiration:
-		// expired runs always end a wait
-		return nil
-	case resumes.TypeWaitTimeout:
-		if node.Router() == nil || !node.Router().AllowTimeout() {
-			return errors.Errorf("can't end with timeout as node no longer has a wait timeout")
-		}
-	}
-	return nil
-}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
