@@ -2,7 +2,6 @@ package waits
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -45,15 +44,11 @@ func (w *MsgWait) Hint() flows.Hint { return w.hint }
 
 // Begin beings waiting at this wait
 func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.ActivatedWait {
-	var timeoutOn *time.Time
 	var timeoutSeconds *int
 
 	if w.timeout != nil {
 		seconds := w.timeout.Seconds()
 		timeoutSeconds = &seconds
-
-		t := utils.Now().Add(time.Second * time.Duration(w.timeout.Seconds()))
-		timeoutOn = &t
 	}
 
 	// if we have a msg trigger and we're the first thing to happen... then we skip ourselves
@@ -63,10 +58,10 @@ func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.Activa
 		return nil
 	}
 
-	log(events.NewMsgWait(timeoutOn, timeoutSeconds, w.hint))
+	log(events.NewMsgWait(timeoutSeconds, w.hint))
 
 	return &ActivatedMsgWait{
-		baseActivatedWait: baseActivatedWait{type_: TypeMsg, timeoutOn: timeoutOn, timeoutSeconds: timeoutSeconds},
+		baseActivatedWait: baseActivatedWait{type_: TypeMsg, timeoutSeconds: timeoutSeconds},
 		hint:              w.hint,
 	}
 }

@@ -232,7 +232,7 @@ type Wait interface {
 type ActivatedWait interface {
 	utils.Typed
 
-	TimeoutOn() *time.Time
+	TimeoutSeconds() *int
 	End(Resume, Node) error
 }
 

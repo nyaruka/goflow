@@ -228,7 +228,6 @@ func TestWaitTimeout(t *testing.T) {
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	t1 := time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
-	t2 := t1.Add(time.Minute * 10)
 	utils.SetTimeSource(utils.NewFixedTimeSource(t1))
 
 	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
@@ -255,18 +254,9 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, "msg_created", sprint.Events()[0].Type())
 	require.Equal(t, "msg_wait", sprint.Events()[1].Type())
 
-	// check that our timeout is 10 minutes in the future
+	// check our wait has a timeout
 	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
-	require.Equal(t, &t2, waitEvent.TimeoutOn)
-
-	// should fail with error event if we try to timeout immediately
-	sprint, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil))
-	require.NoError(t, err)
-	require.Equal(t, 1, len(sprint.Events()))
-	require.Equal(t, "error", sprint.Events()[0].Type())
-
-	// mock our current time to be 10 seconds after the wait times out
-	utils.SetTimeSource(utils.NewFixedTimeSource(t2.Add(time.Second * 10)))
+	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
 	_, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil))
 	require.NoError(t, err)
@@ -277,6 +267,6 @@ func TestWaitTimeout(t *testing.T) {
 
 	result := run.Results().Get("favorite_color")
 	require.Equal(t, "Timeout", result.Category)
-	require.Equal(t, "2018-04-11T13:34:40.123456Z", result.Value)
+	require.Equal(t, "2018-04-11T13:24:30.123456Z", result.Value)
 	require.Nil(t, result.Input)
 }
