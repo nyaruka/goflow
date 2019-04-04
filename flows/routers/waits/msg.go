@@ -60,10 +60,7 @@ func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.Activa
 
 	log(events.NewMsgWait(timeoutSeconds, w.hint))
 
-	return &ActivatedMsgWait{
-		baseActivatedWait: baseActivatedWait{type_: TypeMsg, timeoutSeconds: timeoutSeconds},
-		hint:              w.hint,
-	}
+	return NewActivatedMsgWait(timeoutSeconds, w.hint)
 }
 
 // End ends this wait or returns an error
@@ -82,6 +79,13 @@ type ActivatedMsgWait struct {
 	baseActivatedWait
 
 	hint flows.Hint
+}
+
+func NewActivatedMsgWait(timeoutSeconds *int, hint flows.Hint) *ActivatedMsgWait {
+	return &ActivatedMsgWait{
+		baseActivatedWait: baseActivatedWait{type_: TypeMsg, timeoutSeconds: timeoutSeconds},
+		hint:              hint,
+	}
 }
 
 // Hint returns the hint (optional)
