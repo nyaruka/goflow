@@ -33,7 +33,7 @@ func (r *RandomRouter) Validate(exits []flows.Exit) error {
 
 // Route determines which exit to take from a node
 func (r *RandomRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
-	return r.doRouting(run, step, logEvent, r.route)
+	return r.BaseRouter.route(run, step, logEvent, r.route)
 }
 
 func (r *RandomRouter) route(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {

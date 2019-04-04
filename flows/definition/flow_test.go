@@ -43,6 +43,11 @@ func TestFlowReadingAndValidation(t *testing.T) {
 			false,
 		},
 		{
+			"flow_with_invalid_timeout_category.json",
+			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
+			false,
+		},
+		{
 			"flow_with_invalid_default_exit.json",
 			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
 			false,

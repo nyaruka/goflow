@@ -207,6 +207,7 @@ type Router interface {
 	ResultName() string
 
 	Validate([]Exit) error
+	AllowTimeout() bool
 	Route(FlowRun, Step, EventCallback) (ExitUUID, error)
 }
 

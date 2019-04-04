@@ -69,7 +69,7 @@ func (w *baseActivatedWait) End(resume flows.Resume, node flows.Node) error {
 		// expired runs always end a wait
 		return nil
 	case resumes.TypeWaitTimeout:
-		if node.Router() == nil || node.Router().Wait() == nil || node.Router().Wait().Timeout() == nil {
+		if node.Router() == nil || !node.Router().AllowTimeout() {
 			return errors.Errorf("can't end with timeout as node no longer has a wait timeout")
 		}
 		if w.TimeoutOn() == nil {
