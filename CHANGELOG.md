@@ -1,3 +1,8 @@
+v0.33.1
+----------
+ * Simplify resuming sessions so we only look at the wait on the actual node
+ * Use relative timeout value in activated wait and msg_wait event
+
 v0.33.0
 ----------
  * Add category_uuid to timeouts on waits, migrate legacy timeout rules to that
