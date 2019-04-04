@@ -603,7 +603,7 @@ func TestExtractResults(t *testing.T) {
 			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]*flows.ResultSpec{
-				{Key: "favorite_color", Name: "Favorite Color", Categories: []string{"Red", "Blue", "Other"}},
+				{Key: "favorite_color", Name: "Favorite Color", Categories: []string{"Red", "Blue", "Other", "No Response"}},
 				{Key: "soda", Name: "Soda", Categories: []string{"Pepsi", "Coke", "Other"}},
 			},
 		},

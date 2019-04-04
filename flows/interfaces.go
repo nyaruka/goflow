@@ -227,13 +227,13 @@ type Wait interface {
 	Timeout() Timeout
 
 	Begin(FlowRun, EventCallback) ActivatedWait
+	End(Resume) error
 }
 
 type ActivatedWait interface {
 	utils.Typed
 
-	TimeoutOn() *time.Time
-	End(Resume, Node) error
+	TimeoutSeconds() *int
 }
 
 type Hint interface {

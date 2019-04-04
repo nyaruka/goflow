@@ -184,8 +184,12 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 		return err
 	}
 
+	if node.Router() == nil || node.Router().Wait() == nil {
+		return errors.New("can't resume from node without a router or wait")
+	}
+
 	// try to end our wait which will return and log an error if it can't be ended with this resume
-	if err := s.wait.End(resume, node); err != nil {
+	if err := node.Router().Wait().End(resume); err != nil {
 		sprint.LogEvent(events.NewErrorEvent(err))
 		return nil
 	}

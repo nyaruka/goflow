@@ -23,6 +23,7 @@
                 {
                     "created_on": "2018-07-06T12:30:06.123456789Z",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "timeout_seconds": 600,
                     "type": "msg_wait"
                 }
             ],
@@ -86,6 +87,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_seconds": 600,
                                 "type": "msg_wait"
                             }
                         ],
@@ -152,6 +154,7 @@
                 },
                 "type": "messaging",
                 "wait": {
+                    "timeout_seconds": 600,
                     "type": "msg"
                 }
             }
@@ -330,6 +333,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_seconds": 600,
                                 "type": "msg_wait"
                             },
                             {
@@ -639,6 +643,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_seconds": 600,
                                 "type": "msg_wait"
                             },
                             {

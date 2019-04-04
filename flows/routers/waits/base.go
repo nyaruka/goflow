@@ -2,7 +2,6 @@ package waits
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/resumes"
@@ -53,34 +52,28 @@ func (w *baseWait) Type() string { return w.type_ }
 // Timeout returns the timeout of this wait or nil if no timeout is set
 func (w *baseWait) Timeout() flows.Timeout { return w.timeout }
 
-type baseActivatedWait struct {
-	type_     string
-	timeoutOn *time.Time
-}
-
-func (w *baseActivatedWait) Type() string { return w.type_ }
-
-func (w *baseActivatedWait) TimeoutOn() *time.Time { return w.timeoutOn }
-
 // End ends this wait or returns an error
-func (w *baseActivatedWait) End(resume flows.Resume, node flows.Node) error {
+func (w *baseWait) End(resume flows.Resume) error {
 	switch resume.Type() {
 	case resumes.TypeRunExpiration:
 		// expired runs always end a wait
 		return nil
 	case resumes.TypeWaitTimeout:
-		if node.Router() == nil || !node.Router().AllowTimeout() {
-			return errors.Errorf("can't end with timeout as node no longer has a wait timeout")
-		}
-		if w.TimeoutOn() == nil {
-			return errors.Errorf("can't end with timeout as session wait has no timeout")
-		}
-		if utils.Now().Before(*w.TimeoutOn()) {
-			return errors.Errorf("can't end with timeout before wait has timed out")
+		if w.timeout == nil {
+			return errors.Errorf("can't end with timeout as wait doesn't have a timeout")
 		}
 	}
 	return nil
 }
+
+type baseActivatedWait struct {
+	type_          string
+	timeoutSeconds *int
+}
+
+func (w *baseActivatedWait) Type() string { return w.type_ }
+
+func (w *baseActivatedWait) TimeoutSeconds() *int { return w.timeoutSeconds }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -132,18 +125,18 @@ func ReadActivatedWait(data json.RawMessage) (flows.ActivatedWait, error) {
 }
 
 type baseActivatedWaitEnvelope struct {
-	Type      string     `json:"type" validate:"required"`
-	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
+	Type           string `json:"type" validate:"required"`
+	TimeoutSeconds *int   `json:"timeout_seconds,omitempty"`
 }
 
 func (w *baseActivatedWait) unmarshal(e *baseActivatedWaitEnvelope) error {
 	w.type_ = e.Type
-	w.timeoutOn = e.TimeoutOn
+	w.timeoutSeconds = e.TimeoutSeconds
 	return nil
 }
 
 func (w *baseActivatedWait) marshal(e *baseActivatedWaitEnvelope) error {
 	e.Type = w.type_
-	e.TimeoutOn = w.timeoutOn
+	e.TimeoutSeconds = w.timeoutSeconds
 	return nil
 }
