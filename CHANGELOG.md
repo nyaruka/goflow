@@ -1,3 +1,7 @@
+v0.33.0
+----------
+ * Add category_uuid to timeouts on waits, migrate legacy timeout rules to that
+
 v0.32.1
 ----------
  * Operand of group split should be @contact.groups
