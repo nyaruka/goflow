@@ -1,3 +1,7 @@
+v0.33.2
+----------
+ * Add NewActivatedMsgWait
+
 v0.33.1
 ----------
  * Simplify resuming sessions so we only look at the wait on the actual node
