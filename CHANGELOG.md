@@ -1,3 +1,7 @@
+v0.33.3
+----------
+ * Fix auditing context refs like foo.0
+
 v0.33.2
 ----------
  * Add NewActivatedMsgWait
