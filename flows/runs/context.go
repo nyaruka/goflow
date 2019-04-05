@@ -24,7 +24,7 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 	switch strings.ToLower(key) {
 	// the different runs accessible
 	case "run":
-		return c.run
+		return c.run.ToXValue(env)
 	case "child":
 		return newRelatedRunContext(c.run.Session().GetCurrentChild(c.run))
 	case "parent":

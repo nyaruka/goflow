@@ -978,7 +978,7 @@
 <p>Returns whether <code>value</code> is an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
 <div class="sourceCode" id="cb109"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb109-1" title="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → {match: error calling DATETIME: unable to convert <span class="st">&quot;foo&quot;</span> to a datetime}</a>
-<a class="sourceLine" id="cb109-2" title="2">@(is_error(run.not.existing)) → {match: run has no property &#39;not&#39;}</a>
+<a class="sourceLine" id="cb109-2" title="2">@(is_error(run.not.existing)) → {match: dict has no property &#39;not&#39;}</a>
 <a class="sourceLine" id="cb109-3" title="3">@(is_error(contact.fields.unset)) → {match: dict has no property &#39;unset&#39;}</a>
 <a class="sourceLine" id="cb109-4" title="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:is_text_eq"></a></p>

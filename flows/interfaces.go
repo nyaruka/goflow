@@ -468,8 +468,7 @@ type RunEnvironment interface {
 //
 // @context run
 type FlowRun interface {
-	types.XValue
-	types.XResolvable
+	types.XRepresentable
 	RunSummary
 
 	Environment() RunEnvironment

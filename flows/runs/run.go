@@ -2,7 +2,6 @@ package runs
 
 import (
 	"encoding/json"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -263,50 +262,29 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 	return native
 }
 
-// Resolve resolves the given key when this run is referenced in an expression
-func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "uuid":
-		return types.NewXText(string(r.UUID()))
-	case "contact":
-		return types.ToXValue(env, r.Contact())
-	case "flow":
-		return r.Flow().ToXValue(env)
-	case "status":
-		return types.NewXText(string(r.Status()))
-	case "results":
-		return r.Results().ToXValue(env)
-	case "path":
-		return r.path.ToXValue(env)
-	case "created_on":
-		return types.NewXDateTime(r.CreatedOn())
-	case "exited_on":
-		if r.exitedOn != nil {
-			return types.NewXDateTime(*r.exitedOn)
-		}
-		return nil
+// ToXValue returns a representation of this object for use in expressions
+func (r *flowRun) ToXValue(env utils.Environment) types.XValue {
+	var exitedOn types.XValue
+	if r.exitedOn != nil {
+		exitedOn = types.NewXDateTime(*r.exitedOn)
 	}
 
-	return types.NewXResolveError(r, key)
-}
-
-// Describe returns a representation of this type for error messages
-func (r *flowRun) Describe() string { return "run" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (r *flowRun) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(string(r.uuid))
-}
-
-func (r *flowRun) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, r, "uuid", "contact", "flow", "input", "status", "results", "created_on", "exited_on").ToXJSON(env)
+	return types.NewXDict(map[string]types.XValue{
+		"uuid":       types.NewXText(string(r.UUID())),
+		"contact":    types.ToXValue(env, r.Contact()),
+		"flow":       r.Flow().ToXValue(env),
+		"status":     types.NewXText(string(r.Status())),
+		"results":    r.Results().ToXValue(env),
+		"path":       r.path.ToXValue(env),
+		"created_on": types.NewXDateTime(r.CreatedOn()),
+		"exited_on":  exitedOn,
+	})
 }
 
 func (r *flowRun) Snapshot() flows.RunSummary {
 	return newRunSummaryFromRun(r)
 }
 
-var _ flows.FlowRun = (*flowRun)(nil)
 var _ flows.RunSummary = (*flowRun)(nil)
 
 //------------------------------------------------------------------------------------------

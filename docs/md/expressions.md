@@ -1836,7 +1836,7 @@ value.
 
 ```objectivec
 @(is_error(datetime("foo"))) → {match: error calling DATETIME: unable to convert "foo" to a datetime}
-@(is_error(run.not.existing)) → {match: run has no property 'not'}
+@(is_error(run.not.existing)) → {match: dict has no property 'not'}
 @(is_error(contact.fields.unset)) → {match: dict has no property 'unset'}
 @(is_error("hello")) →
 ```
