@@ -38,7 +38,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@contact.id`, new: `@contact.id`},
 		{old: `@contact.name`, new: `@contact.name`},
 		{old: `@contact.NAME`, new: `@contact.name`},
-		{old: `@contact.first_name`, new: `@contact.first_name`},
+		{old: `@contact.first_name`, new: `@(word(contact.name, 0))`},
 		{old: `@contact.gender`, new: `@fields.gender`},
 		{old: `@contact.groups`, new: `@(join(contact.groups, ","))`},
 		{old: `@contact.language`, new: `@contact.language`},
@@ -84,6 +84,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@parent.role.value`, new: `@parent.results.role.value`},
 		{old: `@parent.contact`, new: `@parent.contact`},
 		{old: `@parent.contact.name`, new: `@parent.contact.name`},
+		{old: `@parent.contact.first_name`, new: `@(word(parent.contact.name, 0))`},
 		{old: `@parent.contact.groups`, new: `@(join(parent.contact.groups, ","))`},
 		{old: `@parent.contact.gender`, new: `@parent.fields.gender`},
 		{old: `@parent.contact.tel`, new: `@(format_urn(parent.urns.tel))`},
@@ -194,7 +195,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 		// misc edge cases
 		{old: `@`, new: `@`},
-		{old: `@contact.first_name...?`, new: `@contact.first_name...?`},
+		{old: `@contact.name...?`, new: `@contact.name...?`},
 		{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@results.favorite_color @@flow.favorite_color @results.favorite_color @nyaruka @ @`},
 	}
 

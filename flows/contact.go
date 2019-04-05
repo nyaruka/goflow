@@ -37,7 +37,6 @@ import (
 //
 //   @contact -> Ryan Lewis
 //   @contact.name -> Ryan Lewis
-//   @contact.first_name -> Ryan
 //   @contact.language -> eng
 //   @contact.timezone -> America/Guayaquil
 //   @contact.created_on -> 2018-06-20T11:40:30.123456Z
@@ -249,12 +248,6 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 		return types.NewXNumberFromInt(int(c.id))
 	case "name":
 		return types.NewXText(c.name)
-	case "first_name":
-		names := utils.TokenizeString(c.name)
-		if len(names) >= 1 {
-			return types.NewXText(names[0])
-		}
-		return nil
 	case "language":
 		return types.NewXText(string(c.language))
 	case "timezone":

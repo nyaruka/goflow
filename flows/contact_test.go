@@ -93,7 +93,6 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, types.NewXText(string(contact.UUID())), contact.Resolve(env, "uuid"))
 	assert.Equal(t, types.NewXNumberFromInt(12345), contact.Resolve(env, "id"))
 	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Resolve(env, "name"))
-	assert.Equal(t, types.NewXText("Joe"), contact.Resolve(env, "first_name"))
 	assert.Equal(t, types.NewXDateTime(contact.CreatedOn()), contact.Resolve(env, "created_on"))
 	assert.Equal(t, contact.URNs().ToXValue(env), contact.Resolve(env, "urns"))
 	assert.Equal(t, contact.URNs()[0].ToXValue(env), contact.Resolve(env, "urn"))

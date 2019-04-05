@@ -33,7 +33,6 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@contact.id", "1234567", ""},
 		{"@CONTACT.NAME", "Ryan Lewis", ""},
 		{"@contact.name", "Ryan Lewis", ""},
-		{"@contact.first_name", "Ryan", ""},
 		{"@contact.language", "eng", ""},
 		{"@contact.timezone", "America/Guayaquil", ""},
 

@@ -83,7 +83,6 @@ Examples:
 ```objectivec
 @contact → Ryan Lewis
 @contact.name → Ryan Lewis
-@contact.first_name → Ryan
 @contact.language → eng
 @contact.timezone → America/Guayaquil
 @contact.created_on → 2018-06-20T11:40:30.123456Z

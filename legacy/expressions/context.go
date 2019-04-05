@@ -252,13 +252,13 @@ func newContactMapper(prefix string) *varMapper {
 			"uuid":       "uuid",
 			"id":         "id",
 			"name":       "name",
-			"first_name": "first_name",
 			"language":   "language",
 			"created_on": "created_on",
 		},
 		substitutions: map[string]interface{}{
-			"groups":   fmt.Sprintf("join(%scontact.groups, \",\")", prefix),
-			"tel_e164": "urn_parts(urns.tel).path",
+			"first_name": fmt.Sprintf("word(%scontact.name, 0)", prefix),
+			"groups":     fmt.Sprintf("join(%scontact.groups, \",\")", prefix),
+			"tel_e164":   "urn_parts(urns.tel).path",
 		},
 		arbitraryBase: prefix + "fields",
 	}
