@@ -32,13 +32,13 @@ type Result struct {
 	Category          string          `json:"category,omitempty"`
 	CategoryLocalized string          `json:"category_localized,omitempty"`
 	NodeUUID          NodeUUID        `json:"node_uuid"`
-	Input             *string         `json:"input,omitempty"`
+	Input             string          `json:"input,omitempty"`
 	Extra             json.RawMessage `json:"extra,omitempty"`
 	CreatedOn         time.Time       `json:"created_on"`
 }
 
 // NewResult creates a new result
-func NewResult(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input *string, extra json.RawMessage, createdOn time.Time) *Result {
+func NewResult(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input string, extra json.RawMessage, createdOn time.Time) *Result {
 	return &Result{
 		Name:              name,
 		Value:             value,
@@ -58,17 +58,12 @@ func (r *Result) ToXValue(env utils.Environment) types.XValue {
 		categoryLocalized = r.Category
 	}
 
-	var input types.XValue
-	if r.Input != nil {
-		input = types.NewXText(*r.Input)
-	}
-
 	return types.NewXDict(map[string]types.XValue{
 		"name":               types.NewXText(r.Name),
 		"value":              types.NewXText(r.Value),
 		"category":           types.NewXText(r.Category),
 		"category_localized": types.NewXText(categoryLocalized),
-		"input":              input,
+		"input":              types.NewXText(r.Input),
 		"extra":              types.JSONToXValue(r.Extra),
 		"node_uuid":          types.NewXText(string(r.NodeUUID)),
 		"created_on":         types.NewXDateTime(r.CreatedOn),

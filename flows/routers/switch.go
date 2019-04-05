@@ -133,12 +133,11 @@ func (r *SwitchRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.
 		run.LogError(step, err)
 	}
 
-	var input *string
+	var input string
 
 	if operand != nil {
 		asText, _ := types.ToXText(env, operand)
-		asString := asText.Native()
-		input = &asString
+		input = asText.Native()
 	}
 
 	// find first matching case

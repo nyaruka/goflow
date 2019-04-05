@@ -64,7 +64,7 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		categoryLocalized = ""
 	}
 
-	a.saveResult(run, step, a.Name, value, a.Category, categoryLocalized, nil, nil, logEvent)
+	a.saveResult(run, step, a.Name, value, a.Category, categoryLocalized, "", nil, logEvent)
 	return nil
 }
 

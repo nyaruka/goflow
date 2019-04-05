@@ -236,7 +236,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, actionURNs []ur
 }
 
 // helper to save a run result and log it as an event
-func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input *string, extra json.RawMessage, logEvent flows.EventCallback) {
+func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input string, extra json.RawMessage, logEvent flows.EventCallback) {
 	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, utils.Now())
 	run.SaveResult(result)
 	logEvent(events.NewRunResultChangedEvent(result))
@@ -260,7 +260,7 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 		extra, _ = json.Marshal(string(body))
 	}
 
-	a.saveResult(run, step, name, value, category, "", &input, extra, logEvent)
+	a.saveResult(run, step, name, value, category, "", input, extra, logEvent)
 }
 
 // helper to apply a contact modifier

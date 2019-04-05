@@ -134,10 +134,10 @@ func (r *BaseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent f
 		}
 	}
 
-	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), utils.DateTimeToISO(timedOutOn), nil, nil, logEvent)
+	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), utils.DateTimeToISO(timedOutOn), "", nil, logEvent)
 }
 
-func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input *string, extra types.XDict, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input string, extra types.XDict, logEvent flows.EventCallback) (flows.ExitUUID, error) {
 	if categoryUUID == "" {
 		return "", errors.New("switch router failed to pick an exit")
 	}
