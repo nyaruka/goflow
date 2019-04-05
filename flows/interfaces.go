@@ -209,6 +209,7 @@ type Router interface {
 	Validate([]Exit) error
 	AllowTimeout() bool
 	Route(FlowRun, Step, EventCallback) (ExitUUID, error)
+	RouteTimeout(FlowRun, Step, EventCallback) (ExitUUID, error)
 }
 
 type Exit interface {

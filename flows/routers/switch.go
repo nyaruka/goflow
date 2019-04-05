@@ -125,10 +125,6 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 
 // Route determines which exit to take from a node
 func (r *SwitchRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
-	return r.BaseRouter.route(run, step, logEvent, r.route)
-}
-
-func (r *SwitchRouter) route(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
 	env := run.Environment()
 
 	// first evaluate our operand

@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -204,7 +205,9 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 		return err
 	}
 
-	destination, err := s.findResumeDestination(sprint, waitingRun)
+	_, isTimeout := resume.(*resumes.WaitTimeoutResume)
+
+	destination, err := s.findResumeDestination(sprint, waitingRun, isTimeout)
 	if err != nil {
 		return err
 	}
@@ -214,7 +217,7 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 }
 
 // finds the next destination in a run that may have been waiting or a parent paused for a child subflow
-func (s *session) findResumeDestination(sprint flows.Sprint, run flows.FlowRun) (flows.NodeUUID, error) {
+func (s *session) findResumeDestination(sprint flows.Sprint, run flows.FlowRun, isTimeout bool) (flows.NodeUUID, error) {
 	// we might have no immediate destination in this run, but continueUntilWait can resume a parent run
 	if run.Status() != flows.RunStatusActive {
 		return noDestination, nil
@@ -230,7 +233,7 @@ func (s *session) findResumeDestination(sprint flows.Sprint, run flows.FlowRun) 
 	}
 
 	// see if this node can now pick a destination
-	destination, err := s.pickNodeExit(run, node, step, logEvent)
+	destination, err := s.pickNodeExit(run, node, step, isTimeout, logEvent)
 	if err != nil {
 		return noDestination, err
 	}
@@ -283,7 +286,7 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
-					if destination, err = s.findResumeDestination(sprint, currentRun); err != nil {
+					if destination, err = s.findResumeDestination(sprint, currentRun, false); err != nil {
 						fatalError(sprint, currentRun, step, errors.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
@@ -392,17 +395,22 @@ func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.N
 	}
 
 	// use our node's router to determine where to go next
-	destinationUUID, err := s.pickNodeExit(run, node, step, logEvent)
+	destinationUUID, err := s.pickNodeExit(run, node, step, false, logEvent)
 	return step, destinationUUID, err
 }
 
 // picks the exit to use on the given node
-func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step, logEvent flows.EventCallback) (flows.NodeUUID, error) {
+func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step, isTimeout bool, logEvent flows.EventCallback) (flows.NodeUUID, error) {
 	var exitUUID flows.ExitUUID
 	var err error
 
 	if node.Router() != nil {
-		exitUUID, err = node.Router().Route(run, step, logEvent)
+		if isTimeout {
+			exitUUID, err = node.Router().RouteTimeout(run, step, logEvent)
+		} else {
+			exitUUID, err = node.Router().Route(run, step, logEvent)
+		}
+
 		if err != nil {
 			return noDestination, errors.Wrapf(err, "error routing from node[uuid=%s]", node.UUID())
 		}
