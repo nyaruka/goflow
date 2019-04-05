@@ -603,7 +603,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		// webhook rulesets operate on the webhook status, saved as category
-		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
+		operand := fmt.Sprintf("@run.results.%s.category", utils.Snakify(resultName))
 		router = routers.NewSwitchRouter(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByWebhook
 
@@ -613,7 +613,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		// resthook rulesets operate on the webhook status, saved as category
-		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
+		operand := fmt.Sprintf("@run.results.%s.category", utils.Snakify(resultName))
 		router = routers.NewSwitchRouter(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByResthook
 
@@ -748,7 +748,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			transferto.NewTransferAirtimeAction(flows.ActionUUID(utils.NewUUID()), currencyAmounts, resultName),
 		}
 
-		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
+		operand := fmt.Sprintf("@run.results.%s.category", utils.Snakify(resultName))
 		router = routers.NewSwitchRouter(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByAirtime
 
