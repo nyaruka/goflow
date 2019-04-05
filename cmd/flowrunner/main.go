@@ -136,9 +136,17 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		fmt.Fprintf(out, "> ")
 		scanner.Scan()
 
+		text := scanner.Text()
+		var resume flows.Resume
+
 		// create our resume
-		msg := createMessage(contact, scanner.Text())
-		resume := resumes.NewMsgResume(nil, nil, msg)
+		if text == "/timeout" {
+			resume = resumes.NewWaitTimeoutResume(nil, nil)
+		} else {
+			msg := createMessage(contact, scanner.Text())
+			resume = resumes.NewMsgResume(nil, nil, msg)
+		}
+
 		repro.Resumes = append(repro.Resumes, resume)
 
 		sprint, err := session.Resume(resume)

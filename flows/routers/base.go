@@ -116,8 +116,13 @@ func (r *BaseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 
 type routerFunc func(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error)
 
-func (r *BaseRouter) route(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback, route routerFunc) (flows.ExitUUID, error) {
-	// look to see if the last input event was a message or a timeout
+// RouteTimeout routes in the case that this router's wait timed out
+func (r *BaseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+	if !r.AllowTimeout() {
+		return "", errors.New("can't call route timeout on router with no timeout")
+	}
+
+	// find last timeout event to use as time of timeout
 	var timedOutOn time.Time
 	runEvents := run.Events()
 	for e := len(runEvents) - 1; e >= 0; e-- {
@@ -127,23 +132,9 @@ func (r *BaseRouter) route(run flows.FlowRun, step flows.Step, logEvent flows.Ev
 		if isTimeout {
 			timedOutOn = event.CreatedOn()
 		}
-
-		_, isInput := event.(*events.MsgReceivedEvent)
-		if isInput {
-			break
-		}
 	}
 
-	// if we have a timeout, route through the timeout category
-	if !timedOutOn.IsZero() {
-		if !r.AllowTimeout() {
-			return "", errors.New("router can't handle timeout as it no longer has a wait with a timeout")
-		}
-
-		return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), utils.DateTimeToISO(timedOutOn), nil, nil, logEvent)
-	}
-
-	return route(run, step, logEvent)
+	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), utils.DateTimeToISO(timedOutOn), nil, nil, logEvent)
 }
 
 func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input *string, extra types.XDict, logEvent flows.EventCallback) (flows.ExitUUID, error) {
