@@ -1064,10 +1064,11 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 
 	nodes = append(entryNodes, otherNodes...)
 
-	var ui flows.UI
+	var uiJSON json.RawMessage
+	var err error
 
 	if includeUI {
-		ui = definition.NewUI()
+		ui := definition.NewUI()
 
 		for _, actionSet := range f.ActionSets {
 			ui.AddNode(actionSet.UUID, nodeUI[actionSet.UUID])
@@ -1077,6 +1078,11 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 		}
 		for _, note := range f.Metadata.Notes {
 			ui.AddSticky(note.Migrate())
+		}
+
+		uiJSON, err = json.Marshal(ui)
+		if err != nil {
+			return nil, err
 		}
 	}
 
@@ -1089,6 +1095,6 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 		f.Metadata.Expires,
 		localization,
 		nodes,
-		ui,
+		uiJSON,
 	), nil
 }

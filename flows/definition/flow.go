@@ -30,7 +30,7 @@ type flow struct {
 	nodes              []flows.Node
 
 	// optional properties not used by engine itself
-	ui flows.UI
+	ui json.RawMessage
 
 	// properties set after validation
 	dependencies *dependencies
@@ -43,7 +43,7 @@ type flow struct {
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui flows.UI) flows.Flow {
+func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage) flows.Flow {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
@@ -74,7 +74,7 @@ func (f *flow) Type() flows.FlowType                   { return f.flowType }
 func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Localization() flows.Localization       { return f.localization }
-func (f *flow) UI() flows.UI                           { return f.ui }
+func (f *flow) UI() json.RawMessage                    { return f.ui }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
 // Validates that we are structurally currect. The SessionAssets `sa` is optional but if provided,
@@ -277,13 +277,13 @@ type flowHeader struct {
 type flowEnvelope struct {
 	flowHeader
 
-	Language           utils.Language `json:"language" validate:"required"`
-	Type               flows.FlowType `json:"type" validate:"required,flow_type"`
-	Revision           int            `json:"revision"`
-	ExpireAfterMinutes int            `json:"expire_after_minutes"`
-	Localization       localization   `json:"localization"`
-	Nodes              []*node        `json:"nodes"`
-	UI                 *ui            `json:"_ui,omitempty"`
+	Language           utils.Language  `json:"language" validate:"required"`
+	Type               flows.FlowType  `json:"type" validate:"required,flow_type"`
+	Revision           int             `json:"revision"`
+	ExpireAfterMinutes int             `json:"expire_after_minutes"`
+	Localization       localization    `json:"localization"`
+	Nodes              []*node         `json:"nodes"`
+	UI                 json.RawMessage `json:"_ui,omitempty"`
 }
 
 // additional properties that a validated flow can have
@@ -329,7 +329,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		e.Localization = make(localization)
 	}
 
-	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil), nil
+	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, e.UI), nil
 }
 
 // MarshalJSON marshals this flow into JSON
@@ -346,11 +346,9 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		ExpireAfterMinutes: f.expireAfterMinutes,
 		Localization:       f.localization.(localization),
 		Nodes:              make([]*node, len(f.nodes)),
+		UI:                 f.ui,
 	}
 
-	if f.ui != nil {
-		e.UI = f.ui.(*ui)
-	}
 	for i := range f.nodes {
 		e.Nodes[i] = f.nodes[i].(*node)
 	}

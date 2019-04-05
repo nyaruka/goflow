@@ -156,9 +156,7 @@ type Flow interface {
 	Type() FlowType
 	ExpireAfterMinutes() int
 	Localization() Localization
-
-	// optional spec properties
-	UI() UI
+	UI() json.RawMessage
 
 	Validate(SessionAssets) error
 	ValidateRecursively(SessionAssets, func(assets.Reference)) error
