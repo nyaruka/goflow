@@ -150,11 +150,9 @@ func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
 
 	if err := s.tryToResume(sprint, waitingRun, resume); err != nil {
 		// if we got an error, add it to the log and shut everything down
-		for _, run := range s.runs {
-			run.Exit(flows.RunStatusErrored)
-		}
+		fatalError(sprint, waitingRun, nil, err)
+
 		s.status = flows.SessionStatusErrored
-		sprint.LogEvent(events.NewErrorEvent(err))
 	}
 
 	return sprint, nil
