@@ -1021,7 +1021,7 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 	localization := definition.NewLocalization()
 	numNodes := len(f.ActionSets) + len(f.RuleSets)
 	nodes := make([]flows.Node, numNodes)
-	nodeUI := make(map[flows.NodeUUID]UINodeDetails, numNodes)
+	nodeUI := make(map[flows.NodeUUID]*UINodeDetails, numNodes)
 
 	for i, actionSet := range f.ActionSets {
 		node, err := migrateActionSet(f.BaseLanguage, actionSet, localization, baseMediaURL)

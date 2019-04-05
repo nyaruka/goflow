@@ -31,43 +31,24 @@ const (
 	UINodeTypeSplitByRandom             UINodeType = "split_by_random"
 )
 
-// UI is a optional section in a flow definition with editor specific information
-type UI interface {
-	AddNode(uuid flows.NodeUUID, details UINodeDetails)
-	AddSticky(sticky Sticky)
-
-	GetNode(uuid flows.NodeUUID) UINodeDetails
-}
-
-// UINodeDetails is the top level ui details for a node
-type UINodeDetails interface {
-	Position() Position
-}
-
-// Position holds coordinates for a node
-type Position interface {
-	Left() int
-	Top() int
-}
-
 //------------------------------------------------------------------------------------------
 // Top level UI section
 //------------------------------------------------------------------------------------------
 
-type ui struct {
-	nodes    map[flows.NodeUUID]UINodeDetails
+type UI struct {
+	nodes    map[flows.NodeUUID]*UINodeDetails
 	stickies map[utils.UUID]Sticky
 }
 
 // NewUI creates a new UI section
-func NewUI() UI {
-	return &ui{
-		nodes:    make(map[flows.NodeUUID]UINodeDetails),
+func NewUI() *UI {
+	return &UI{
+		nodes:    make(map[flows.NodeUUID]*UINodeDetails),
 		stickies: make(map[utils.UUID]Sticky),
 	}
 }
 
-func (u *ui) MarshalJSON() ([]byte, error) {
+func (u *UI) MarshalJSON() ([]byte, error) {
 	return json.Marshal(map[string]interface{}{
 		"nodes":    u.nodes,
 		"stickies": u.stickies,
@@ -75,16 +56,16 @@ func (u *ui) MarshalJSON() ([]byte, error) {
 }
 
 // AddNode adds information about a node
-func (u *ui) AddNode(uuid flows.NodeUUID, nodeDetails UINodeDetails) {
+func (u *UI) AddNode(uuid flows.NodeUUID, nodeDetails *UINodeDetails) {
 	u.nodes[uuid] = nodeDetails
 }
 
-func (u *ui) GetNode(uuid flows.NodeUUID) UINodeDetails {
+func (u *UI) GetNode(uuid flows.NodeUUID) *UINodeDetails {
 	return u.nodes[uuid]
 }
 
 // AddSticky adds a new sticky note
-func (u *ui) AddSticky(sticky Sticky) {
+func (u *UI) AddSticky(sticky Sticky) {
 	u.stickies[utils.NewUUID()] = sticky
 }
 
@@ -95,42 +76,42 @@ type Sticky map[string]interface{}
 // Details for a specific node's configuration
 //------------------------------------------------------------------------------------------
 
-type position struct {
+type Position struct {
 	left int
 	top  int
 }
 
-func (p position) MarshalJSON() ([]byte, error) {
+func (p Position) MarshalJSON() ([]byte, error) {
 	return json.Marshal(map[string]interface{}{
 		"left": p.left,
 		"top":  p.top,
 	})
 }
 
-func (p position) Left() int {
+func (p Position) Left() int {
 	return p.left
 }
 
-func (p position) Top() int {
+func (p Position) Top() int {
 	return p.top
 }
 
-type uiNodeDetails struct {
+type UINodeDetails struct {
 	NodeType_     UINodeType   `json:"type,omitempty"`
 	UiNodeConfig_ UINodeConfig `json:"config,omitempty"`
 	Position_     Position     `json:"position"`
 }
 
-func (n *uiNodeDetails) Position() Position {
+func (n *UINodeDetails) Position() Position {
 	return n.Position_
 }
 
 // NewUINodeDetails creates a ui configuration for a specific
-func NewUINodeDetails(x, y int, nodeType UINodeType, uiNodeConfig UINodeConfig) UINodeDetails {
-	return &uiNodeDetails{
+func NewUINodeDetails(x, y int, nodeType UINodeType, uiNodeConfig UINodeConfig) *UINodeDetails {
+	return &UINodeDetails{
 		NodeType_:     nodeType,
 		UiNodeConfig_: uiNodeConfig,
-		Position_: position{
+		Position_: Position{
 			left: x,
 			top:  y,
 		},
