@@ -90,11 +90,14 @@ func (x *xdict) Length() int {
 }
 
 func (x *xdict) Resolve(env utils.Environment, key string) XValue {
-	val, found := x.values[key]
-	if !found {
-		return NewXResolveError(x, key)
+	key = strings.ToLower(key)
+	for k, v := range x.values {
+		if strings.ToLower(k) == key {
+			return v
+		}
 	}
-	return val
+
+	return NewXResolveError(x, key)
 }
 
 // Get retrieves the named item from this dict
