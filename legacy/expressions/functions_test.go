@@ -57,7 +57,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(NOW())`, new: `@(now())`},
 		{old: `@(OR(contact.gender = "M", contact.gender = "F", contact.gender = "NB"))`, new: `@(or(fields.gender = "M", fields.gender = "F", fields.gender = "NB"))`},
 		{old: `@(POWER(2, 3))`, new: `@(2 ^ 3)`, val: `8`},
-		{old: `@(PROPER(contact))`, new: `@(title(contact))`, val: `Ryan Lewis`},
+		{old: `@(PROPER(contact))`, new: `@(title(contact.display))`, val: `Ryan Lewis`},
 		{old: `@(RAND())`, new: `@(rand())`},
 		{old: `@(RANDBETWEEN(1, 10))`, new: `@(rand_between(1, 10))`},
 		{old: `@(REGEX_GROUP(flow.favorite_color, "\w(\w+)", 1))`, new: `@(regex_match(results.favorite_color, "\w(\w+)", 1))`},

@@ -248,6 +248,8 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 		return types.NewXNumberFromInt(int(c.id))
 	case "name":
 		return types.NewXText(c.name)
+	case "display":
+		return types.NewXText(c.Format(env))
 	case "language":
 		return types.NewXText(string(c.language))
 	case "timezone":

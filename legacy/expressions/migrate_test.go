@@ -32,8 +32,8 @@ func TestMigrateTemplate(t *testing.T) {
 	var tests = []testTemplate{
 
 		// contact variables
-		{old: `@contact`, new: `@contact`},
-		{old: `@CONTACT`, new: `@contact`},
+		{old: `@contact`, new: `@contact.display`},
+		{old: `@CONTACT`, new: `@contact.display`},
 		{old: `@contact.uuid`, new: `@contact.uuid`},
 		{old: `@contact.id`, new: `@contact.id`},
 		{old: `@contact.name`, new: `@contact.name`},
@@ -66,7 +66,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@flow.1`, new: `@(results["1"])`, dontEval: true},
 		{old: `@(flow.1337)`, new: `@(results["1337"])`, dontEval: true},
 		{old: `@(flow.1337.category)`, new: `@(run.results["1337"].category_localized)`, dontEval: true},
-		{old: `@flow.contact`, new: `@contact`},
+		{old: `@flow.contact`, new: `@contact.display`},
 		{old: `@flow.contact.name`, new: `@contact.name`},
 
 		{old: `@child.age`, new: `@child.results.age.value`},
@@ -74,7 +74,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@child.age.text`, new: `@child.results.age.input`},
 		{old: `@child.age.time`, new: `@child.results.age.created_on`},
 		{old: `@child.age.value`, new: `@child.results.age.value`},
-		{old: `@child.contact`, new: `@child.contact`},
+		{old: `@child.contact`, new: `@child.contact.display`},
 		{old: `@child.contact.age`, new: `@child.fields.age`},
 
 		{old: `@parent.role`, new: `@parent.results.role.value`},
@@ -82,7 +82,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@parent.role.text`, new: `@parent.results.role.input`},
 		{old: `@parent.role.time`, new: `@parent.results.role.created_on`},
 		{old: `@parent.role.value`, new: `@parent.results.role.value`},
-		{old: `@parent.contact`, new: `@parent.contact`},
+		{old: `@parent.contact`, new: `@parent.contact.display`},
 		{old: `@parent.contact.name`, new: `@parent.contact.name`},
 		{old: `@parent.contact.first_name`, new: `@(word(parent.contact.name, 0))`},
 		{old: `@parent.contact.groups`, new: `@(join(parent.contact.groups, ","))`},
@@ -102,7 +102,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@step.attachments.0`, new: `@(attachment_parts(input.attachments[0]).url)`},
 		{old: `@step.attachments.10`, new: `@(attachment_parts(input.attachments[10]).url)`, dontEval: true}, // out of range
 		{old: `@step.time`, new: `@input.created_on`},
-		{old: `@step.contact`, new: `@contact`},
+		{old: `@step.contact`, new: `@contact.display`},
 		{old: `@step.contact.name`, new: `@contact.name`},
 		{old: `@step.contact.age`, new: `@fields.age`},
 

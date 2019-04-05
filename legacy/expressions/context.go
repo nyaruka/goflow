@@ -256,9 +256,10 @@ func newContactMapper(prefix string) *varMapper {
 			"created_on": "created_on",
 		},
 		substitutions: map[string]interface{}{
-			"first_name": fmt.Sprintf("word(%scontact.name, 0)", prefix),
-			"groups":     fmt.Sprintf("join(%scontact.groups, \",\")", prefix),
-			"tel_e164":   "urn_parts(urns.tel).path",
+			"__default__": fmt.Sprintf("%scontact.display", prefix),
+			"first_name":  fmt.Sprintf("word(%scontact.name, 0)", prefix),
+			"groups":      fmt.Sprintf("join(%scontact.groups, \",\")", prefix),
+			"tel_e164":    "urn_parts(urns.tel).path",
 		},
 		arbitraryBase: prefix + "fields",
 	}
