@@ -1,3 +1,7 @@
+v0.33.4
+----------
+ * Ensure an error from a resume is logged to the run
+
 v0.33.3
 ----------
  * Fix auditing context refs like foo.0
