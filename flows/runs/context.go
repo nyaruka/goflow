@@ -34,7 +34,7 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 	case "contact":
 		return c.run.Contact()
 	case "results":
-		return c.run.Results()
+		return c.run.Results().ToSimpleXDict(env)
 
 	case "urns":
 		if c.run.Contact() != nil {
@@ -112,7 +112,7 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 	case "status":
 		return types.NewXText(string(c.run.Status()))
 	case "results":
-		return c.run.Results()
+		return c.run.Results().ToXValue(env)
 	}
 
 	return types.NewXResolveError(c, key)

@@ -95,8 +95,8 @@ func NewTrueResultWithExtra(match types.XValue, extra types.XDict) types.XDict {
 //   @(is_text_eq("foo", "bar")) ->
 //   @(is_text_eq("foo", " foo ")) ->
 //   @(is_text_eq(run.status, "completed")) -> {match: completed}
-//   @(is_text_eq(results.webhook.category, "Success")) -> {match: Success}
-//   @(is_text_eq(results.webhook.category, "Failure")) ->
+//   @(is_text_eq(run.results.webhook.category, "Success")) -> {match: Success}
+//   @(is_text_eq(run.results.webhook.category, "Failure")) ->
 //
 // @test is_text_eq(text1, text2)
 func IsTextEQ(env utils.Environment, text1 types.XText, text2 types.XText) types.XValue {

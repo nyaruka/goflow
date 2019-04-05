@@ -36,7 +36,7 @@
                             }
                         ],
                         "default_category_uuid": "",
-                        "operand": "@results.transfer.category",
+                        "operand": "@run.results.transfer.category",
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",

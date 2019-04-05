@@ -645,7 +645,7 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
-                "operand": "@results.response_1.category",
+                "operand": "@run.results.response_1.category",
                 "cases": [
                     {
                         "arguments": [
@@ -768,7 +768,7 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
-                "operand": "@results.response_1.category",
+                "operand": "@run.results.response_1.category",
                 "cases": [
                     {
                         "arguments": [
@@ -873,7 +873,7 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
-                "operand": "@results.response_1.category",
+                "operand": "@run.results.response_1.category",
                 "cases": [
                     {
                         "arguments": [
@@ -1641,7 +1641,7 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
-                "operand": "@results.transfer.category",
+                "operand": "@run.results.transfer.category",
                 "cases": [
                     {
                         "arguments": [

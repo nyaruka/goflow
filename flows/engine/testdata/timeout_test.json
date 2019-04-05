@@ -85,7 +85,7 @@
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "You said @results.favorite_color.category_localized. Thanks!"
+                            "text": "You said @run.results.favorite_color.category_localized. Thanks!"
                         }
                     ],
                     "exits": [

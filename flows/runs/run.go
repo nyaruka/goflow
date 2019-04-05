@@ -275,7 +275,7 @@ func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 	case "status":
 		return types.NewXText(string(r.Status()))
 	case "results":
-		return r.Results()
+		return r.Results().ToXValue(env)
 	case "path":
 		return r.path.ToXValue(env)
 	case "created_on":

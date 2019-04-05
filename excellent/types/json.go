@@ -93,6 +93,10 @@ var _ XIndexable = XJSONArray{}
 var _ json.Marshaler = XJSONArray{}
 
 func JSONToXValue(data []byte) XValue {
+	if len(data) == 0 {
+		return nil
+	}
+
 	val, valType, _, err := jsonparser.Get(data)
 	if err != nil {
 		return NewXError(err)

@@ -1,10 +1,9 @@
 package flows
 
 import (
-	"encoding/json"
 	"testing"
+	"time"
 
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -12,38 +11,26 @@ import (
 )
 
 func TestResults(t *testing.T) {
-	var ERROR = types.NewXErrorf("any error")
-
-	var tests = []struct {
-		JSON     []byte
-		lookup   string
-		expected types.XValue
-	}{
-		{[]byte(`{}`), "key", ERROR},
-		{[]byte(`{ "name": { "result_name": "Name", "value": "Ryan Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), `results.key`, ERROR},
-		{[]byte(`{ "name": { "result_name": "Name", "value": "Ryan Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), `results.name`, types.NewXText("Ryan Lewis")},
-		{[]byte(`{ "last_name": { "result_name": "Last Name", "value": "Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), `results.last_name`, types.NewXText("Lewis")},
-		{[]byte(`{ "last_name": { "result_name": "Last Name", "value": "Lewis", "node": "uuid", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), `results["Last Name"]`, types.NewXText("Lewis")},
-	}
-
 	env := utils.NewEnvironmentBuilder().Build()
-	for _, test := range tests {
-		results := NewResults()
-		err := json.Unmarshal(test.JSON, &results)
-		if err != nil {
-			t.Errorf("Error unmarshalling: '%s'", err)
-			continue
-		}
-		context := types.NewXDict(map[string]types.XValue{"results": results})
-		value := excellent.EvaluateExpression(env, context, test.lookup)
 
-		// don't check error equality - just check that we got an error if we expected one
-		if test.expected == ERROR {
-			assert.True(t, types.IsXError(value), "expecting error, got %T{%s} for lookup %s", value, value, test.lookup)
-		} else {
-			if !types.Equals(env, value, test.expected) {
-				t.Errorf("Expected: '%s' Got: '%s' for lookup: '%s' and Results:\n%s", test.expected, value, test.lookup, test.JSON)
-			}
-		}
-	}
+	result := NewResult("Beer", "skol!", "Skol", "", NodeUUID("26493ebb-a254-4461-a28d-c7761784e276"), nil, nil, time.Date(2019, 4, 5, 14, 16, 30, 123456, time.UTC))
+	results := NewResults()
+	results.Save(result)
+
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+		"beer": types.NewXText("skol!"),
+	}), results.ToSimpleXDict(env))
+
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+		"beer": types.NewXDict(map[string]types.XValue{
+			"category":           types.NewXText("Skol"),
+			"category_localized": types.NewXText("Skol"),
+			"created_on":         types.NewXDateTime(time.Date(2019, 4, 5, 14, 16, 30, 123456, time.UTC)),
+			"extra":              nil,
+			"input":              nil,
+			"name":               types.NewXText("Beer"),
+			"node_uuid":          types.NewXText("26493ebb-a254-4461-a28d-c7761784e276"),
+			"value":              types.NewXText("skol!"),
+		}),
+	}), results.ToXValue(env))
 }

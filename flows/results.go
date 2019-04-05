@@ -2,7 +2,6 @@ package flows
 
 import (
 	"encoding/json"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -22,9 +21,9 @@ import (
 //
 // Examples:
 //
-//   @results.favorite_color -> red
-//   @results.favorite_color.value -> red
-//   @results.favorite_color.category -> Red
+//   @run.results.favorite_color -> {value: red}
+//   @run.results.favorite_color.value -> red
+//   @run.results.favorite_color.category -> Red
 //
 // @context result
 type Result struct {
@@ -52,51 +51,29 @@ func NewResult(name string, value string, category string, categoryLocalized str
 	}
 }
 
-// Resolve resolves the passed in key to a value. Result values have a name, value, category, node and created_on
-func (r *Result) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "name":
-		return types.NewXText(r.Name)
-	case "value":
-		return types.NewXText(r.Value)
-	case "category":
-		return types.NewXText(r.Category)
-	case "category_localized":
-		if r.CategoryLocalized == "" {
-			return types.NewXText(r.Category)
-		}
-		return types.NewXText(r.CategoryLocalized)
-	case "input":
-		if r.Input != nil {
-			return types.NewXText(*r.Input)
-		}
-		return nil
-	case "extra":
-		return types.JSONToXValue(r.Extra)
-	case "node_uuid":
-		return types.NewXText(string(r.NodeUUID))
-	case "created_on":
-		return types.NewXDateTime(r.CreatedOn)
+// ToXValue returns a representation of this object for use in expressions
+func (r *Result) ToXValue(env utils.Environment) types.XValue {
+	categoryLocalized := r.CategoryLocalized
+	if categoryLocalized == "" {
+		categoryLocalized = r.Category
 	}
 
-	return types.NewXResolveError(r, key)
+	var input types.XValue
+	if r.Input != nil {
+		input = types.NewXText(*r.Input)
+	}
+
+	return types.NewXDict(map[string]types.XValue{
+		"name":               types.NewXText(r.Name),
+		"value":              types.NewXText(r.Value),
+		"category":           types.NewXText(r.Category),
+		"category_localized": types.NewXText(categoryLocalized),
+		"input":              input,
+		"extra":              types.JSONToXValue(r.Extra),
+		"node_uuid":          types.NewXText(string(r.NodeUUID)),
+		"created_on":         types.NewXDateTime(r.CreatedOn),
+	})
 }
-
-// Describe returns a representation of this type for error messages
-func (r *Result) Describe() string { return "run result" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (r *Result) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(r.Value)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (r *Result) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, r, "name", "value", "category", "category_localized", "input", "node_uuid", "created_on").ToXJSON(env)
-}
-
-var _ types.XValue = (*Result)(nil)
-var _ types.XResolvable = (*Result)(nil)
 
 // Results is our wrapper around a map of snakified result names to result objects
 type Results map[string]*Result
@@ -125,49 +102,20 @@ func (r Results) Get(key string) *Result {
 	return r[key]
 }
 
-// Length is called to get the length of this object
-func (r Results) Length() int {
-	return len(r)
-}
-
-// Resolve resolves the passed in key, which is snakified before lookup
-func (r Results) Resolve(env utils.Environment, key string) types.XValue {
-	key = utils.Snakify(key)
-
-	result, exists := r[key]
-	if !exists {
-		return types.NewXErrorf("no such run result '%s'", key)
-	}
-	return result
-}
-
-// Describe returns a representation of this type for error messages
-func (r Results) Describe() string { return "run results" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (r Results) Reduce(env utils.Environment) types.XPrimitive {
-	return r.toMap(true)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (r Results) ToXJSON(env utils.Environment) types.XText {
-	return r.toMap(false).ToXJSON(env)
-}
-
-func (r Results) toMap(namesAsKeys bool) types.XDict {
+// ToXValue returns a representation of this object for use in expressions
+func (r Results) ToXValue(env utils.Environment) types.XDict {
 	results := types.NewEmptyXDict()
-	if namesAsKeys {
-		for _, v := range r {
-			results.Put(v.Name, v)
-		}
-	} else {
-		for k, v := range r {
-			results.Put(k, v)
-		}
+	for k, v := range r {
+		results.Put(k, v.ToXValue(env))
 	}
 	return results
 }
 
-var _ types.XValue = (Results)(nil)
-var _ types.XLengthable = (Results)(nil)
-var _ types.XResolvable = (Results)(nil)
+// ToSimpleXDict returns a simplifed representation of this object for use in expressions
+func (r Results) ToSimpleXDict(env utils.Environment) types.XDict {
+	results := types.NewEmptyXDict()
+	for k, v := range r {
+		results.Put(k, types.NewXText(v.Value))
+	}
+	return results
+}

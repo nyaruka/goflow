@@ -186,7 +186,7 @@
                                 "key": "gender",
                                 "name": "Gender"
                             },
-                            "value": "@results.gender.category"
+                            "value": "@run.results.gender.category"
                         },
                         {
                             "uuid": "f5650691-b046-4fc7-8b11-359e9d8d02a1",

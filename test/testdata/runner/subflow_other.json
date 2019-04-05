@@ -168,7 +168,7 @@
                     ],
                     "actions": [
                         {
-                            "text": "All Done! You said @child.results.answer.value in the child and @results.answer.value here.",
+                            "text": "All Done! You said @child.results.answer.value in the child and @results.answer here.",
                             "type": "send_msg",
                             "uuid": "bd387e9c-1ea9-49c8-a292-858d8a23a2d0"
                         }
