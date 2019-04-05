@@ -1869,8 +1869,8 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 
 // Extract takes a dict and extracts the named property.
 //
+//   @(extract(contact, "name")) -> Ryan Lewis
 //   @(extract(contact.groups[0], "name")) -> Testers
-//   @(extract(contact, "height")) -> ERROR
 //
 // @function extract(dict, properties...)
 func Extract(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
@@ -1890,7 +1890,6 @@ func Extract(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.
 // ExtractDict takes a dict and returns a new dict by extracting only the named properties.
 //
 //   @(extract_dict(contact.groups[0], "name")) -> {name: Testers}
-//   @(extract_dict(contact, "height")) -> ERROR
 //
 // @function extract_dict(dict, properties...)
 func ExtractDict(env utils.Environment, args ...types.XValue) types.XValue {

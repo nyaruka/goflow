@@ -90,19 +90,20 @@ func TestContact(t *testing.T) {
 	mrNil := (*flows.Contact)(nil)
 	assert.Nil(t, mrNil.Clone())
 
-	assert.Equal(t, types.NewXText(string(contact.UUID())), contact.Resolve(env, "uuid"))
-	assert.Equal(t, types.NewXNumberFromInt(12345), contact.Resolve(env, "id"))
-	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Resolve(env, "name"))
-	assert.Equal(t, types.NewXDateTime(contact.CreatedOn()), contact.Resolve(env, "created_on"))
-	assert.Equal(t, contact.URNs().ToXValue(env), contact.Resolve(env, "urns"))
-	assert.Equal(t, contact.URNs()[0].ToXValue(env), contact.Resolve(env, "urn"))
-	assert.Equal(t, contact.Fields().ToXValue(env), contact.Resolve(env, "fields"))
-	assert.Equal(t, contact.Groups().ToXValue(env), contact.Resolve(env, "groups"))
-	assert.Equal(t, android.ToXValue(env), contact.Resolve(env, "channel"))
-	assert.Equal(t, types.NewXResolveError(contact, "xxx"), contact.Resolve(env, "xxx"))
-	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Reduce(env))
-	assert.Equal(t, "contact", contact.Describe())
-	assert.Equal(t, types.NewXText(`{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"294a14d4-c998-41e5-a314-5941b97b89d7"},"created_on":"2017-12-15T10:00:00.000000Z","fields":{},"groups":[],"language":"eng","name":"Joe Bloggs","timezone":"UTC","urns":["tel:+16364646466","twitter:joey"],"uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), contact.ToXJSON(env))
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+		"channel":    android.ToXValue(env),
+		"created_on": types.NewXDateTime(contact.CreatedOn()),
+		"display":    types.NewXText("Joe Bloggs"),
+		"fields":     contact.Fields().ToXValue(env),
+		"groups":     contact.Groups().ToXValue(env),
+		"id":         types.NewXNumberFromInt(12345),
+		"language":   types.NewXText("eng"),
+		"name":       types.NewXText("Joe Bloggs"),
+		"timezone":   types.NewXText("UTC"),
+		"urn":        contact.URNs()[0].ToXValue(env),
+		"urns":       contact.URNs().ToXValue(env),
+		"uuid":       types.NewXText(string(contact.UUID())),
+	}), contact.ToXValue(env))
 }
 
 func TestContactFormat(t *testing.T) {

@@ -269,7 +269,7 @@ func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 	case "uuid":
 		return types.NewXText(string(r.UUID()))
 	case "contact":
-		return r.Contact()
+		return types.ToXValue(env, r.Contact())
 	case "flow":
 		return r.Flow().ToXValue(env)
 	case "status":

@@ -65,7 +65,6 @@ Represents a person who is interacting with the flow. It renders as the person's
 
  * `uuid` the UUID of the contact
  * `name` the full name of the contact
- * `first_name` the first name of the contact
  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
  * `timezone` the timezone name of the contact
  * `created_on` the datetime when the contact was created
@@ -81,7 +80,6 @@ Examples:
 
 
 ```objectivec
-@contact → Ryan Lewis
 @contact.name → Ryan Lewis
 @contact.language → eng
 @contact.timezone → America/Guayaquil
@@ -520,8 +518,8 @@ Takes a dict and extracts the named property.
 
 
 ```objectivec
+@(extract(contact, "name")) → Ryan Lewis
 @(extract(contact.groups[0], "name")) → Testers
-@(extract(contact, "height")) → ERROR
 ```
 
 <a name="function:extract_dict"></a>
@@ -533,7 +531,6 @@ Takes a dict and returns a new dict by extracting only the named properties.
 
 ```objectivec
 @(extract_dict(contact.groups[0], "name")) → {name: Testers}
-@(extract_dict(contact, "height")) → ERROR
 ```
 
 <a name="function:field"></a>

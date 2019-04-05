@@ -32,7 +32,7 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 
 	// shortcuts to things on the current run
 	case "contact":
-		return c.run.Contact()
+		return types.ToXValue(env, c.run.Contact())
 	case "results":
 		return c.run.Results().ToSimpleXDict(env)
 
@@ -95,7 +95,7 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 		return types.NewXText(string(c.run.UUID()))
 
 	case "contact":
-		return c.run.Contact()
+		return types.ToXValue(env, c.run.Contact())
 	case "urns":
 		if c.run.Contact() != nil {
 			return c.run.Contact().URNs().MapContext(env)
