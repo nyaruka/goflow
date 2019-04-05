@@ -27,14 +27,22 @@ type varMapper struct {
 	// recognized fixed subitems, e.g. "name" or "uuid"
 	baseVars map[string]interface{}
 
+	// field to add to root, e.g. "value"
+	baseRootField string
+
 	// nesting for arbitrary subitems, e.g. contact fields or run results
 	arbitraryNesting string
+
+	arbitrarySubstitutions map[string]interface{}
 
 	// or move arbitrary subitems to new base
 	arbitraryBase string
 
 	// mapper for each arbitrary item
 	arbitraryVars map[string]interface{}
+
+	// field to add to root of each arbitrary item, e.g. "value"
+	arbitraryRootField string
 }
 
 // returns a copy of this mapper with a prefix applied to the previous base
@@ -46,12 +54,15 @@ func (v *varMapper) rebase(prefix string) *varMapper {
 		newBase = v.base
 	}
 	return &varMapper{
-		substitutions:    v.substitutions,
-		base:             newBase,
-		baseVars:         v.baseVars,
-		arbitraryNesting: v.arbitraryNesting,
-		arbitraryVars:    v.arbitraryVars,
-		arbitraryBase:    v.arbitraryBase,
+		substitutions:          v.substitutions,
+		base:                   newBase,
+		baseVars:               v.baseVars,
+		baseRootField:          v.baseRootField,
+		arbitraryNesting:       v.arbitraryNesting,
+		arbitrarySubstitutions: v.arbitrarySubstitutions,
+		arbitraryVars:          v.arbitraryVars,
+		arbitraryBase:          v.arbitraryBase,
+		arbitraryRootField:     v.arbitraryRootField,
 	}
 }
 
@@ -61,6 +72,11 @@ func (v *varMapper) Resolve(key string) interface{} {
 
 	// is this a complete substitution?
 	if substitute, ok := v.substitutions[key]; ok {
+		asFunction, isFunction := substitute.(func(string) string)
+		if isFunction {
+			return asFunction(v.base)
+		}
+
 		return substitute
 	}
 
@@ -111,8 +127,10 @@ func (v *varMapper) Resolve(key string) interface{} {
 
 	if v.arbitraryVars != nil {
 		return &varMapper{
-			base:     flattenPath(newPath),
-			baseVars: v.arbitraryVars,
+			substitutions: v.arbitrarySubstitutions,
+			base:          flattenPath(newPath),
+			baseVars:      v.arbitraryVars,
+			baseRootField: v.arbitraryRootField,
 		}
 	}
 
@@ -146,7 +164,17 @@ func (v *varMapper) String() string {
 		if isString {
 			return asString
 		}
+
+		asFunction, isFunction := sub.(func(string) string)
+		if isFunction {
+			return asFunction(v.base)
+		}
 	}
+
+	if v.baseRootField != "" {
+		return fmt.Sprintf("%s.%s", v.base, v.baseRootField)
+	}
+
 	return v.base
 }
 
@@ -199,6 +227,7 @@ func (m *extraMapper) Resolve(key string) interface{} {
 		return &varMapper{
 			base: "parent.results",
 			arbitraryVars: map[string]interface{}{
+				"value":    "value",
 				"category": "category_localized",
 				"text":     "input",
 				"time":     "created_on",
@@ -259,18 +288,31 @@ func newMigrationVars() map[string]interface{} {
 		},
 		arbitraryNesting: "results",
 		arbitraryVars: map[string]interface{}{
+			"value":    "value",
 			"category": "category_localized",
 			"text":     "input",
 			"time":     "created_on",
 		},
+		arbitraryRootField: "value",
+	}
+
+	resultValueShortcut := func(path string) string {
+		if strings.HasPrefix(path, "run.") {
+			path = path[4:]
+		}
+		return path
 	}
 
 	return map[string]interface{}{
 		"contact": contact,
 		"flow": &varMapper{
-			base: "results",
 			substitutions: map[string]interface{}{
 				"contact": contact,
+			},
+			base: "run.results",
+			arbitrarySubstitutions: map[string]interface{}{
+				"__default__": resultValueShortcut,
+				"value":       resultValueShortcut,
 			},
 			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
@@ -286,10 +328,12 @@ func newMigrationVars() map[string]interface{} {
 			},
 			arbitraryNesting: "results",
 			arbitraryVars: map[string]interface{}{
+				"value":    "value",
 				"category": "category_localized",
 				"text":     "input",
 				"time":     "created_on",
 			},
+			arbitraryRootField: "value",
 		},
 		"step": &varMapper{
 			substitutions: map[string]interface{}{

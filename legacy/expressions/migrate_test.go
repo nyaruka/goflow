@@ -55,21 +55,21 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@contact.mailto`, new: `@(format_urn(urns.mailto))`},
 
 		// run variables
-		{old: `@flow`, new: `@results`},
+		{old: `@flow`, new: `@run.results`},
 		{old: `@flow.favorite_color`, new: `@results.favorite_color`},
-		{old: `@flow.favorite_color.category`, new: `@results.favorite_color.category_localized`},
-		{old: `@flow.favorite_color.text`, new: `@results.favorite_color.input`},
-		{old: `@flow.favorite_color.time`, new: `@results.favorite_color.created_on`},
-		{old: `@flow.favorite_color.value`, new: `@results.favorite_color.value`},
+		{old: `@flow.favorite_color.category`, new: `@run.results.favorite_color.category_localized`},
+		{old: `@flow.favorite_color.text`, new: `@run.results.favorite_color.input`},
+		{old: `@flow.favorite_color.time`, new: `@run.results.favorite_color.created_on`},
+		{old: `@flow.favorite_color.value`, new: `@results.favorite_color`},
 		{old: `@flow.2factor`, new: `@(results["2factor"])`},
-		{old: `@flow.2factor.value`, new: `@(results["2factor"].value)`},
+		{old: `@flow.2factor.value`, new: `@(results["2factor"])`},
 		{old: `@flow.1`, new: `@(results["1"])`, dontEval: true},
 		{old: `@(flow.1337)`, new: `@(results["1337"])`, dontEval: true},
-		{old: `@(flow.1337.category)`, new: `@(results["1337"].category_localized)`, dontEval: true},
+		{old: `@(flow.1337.category)`, new: `@(run.results["1337"].category_localized)`, dontEval: true},
 		{old: `@flow.contact`, new: `@contact`},
 		{old: `@flow.contact.name`, new: `@contact.name`},
 
-		{old: `@child.age`, new: `@child.results.age`},
+		{old: `@child.age`, new: `@child.results.age.value`},
 		{old: `@child.age.category`, new: `@child.results.age.category_localized`},
 		{old: `@child.age.text`, new: `@child.results.age.input`},
 		{old: `@child.age.time`, new: `@child.results.age.created_on`},
@@ -77,7 +77,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@child.contact`, new: `@child.contact`},
 		{old: `@child.contact.age`, new: `@child.fields.age`},
 
-		{old: `@parent.role`, new: `@parent.results.role`},
+		{old: `@parent.role`, new: `@parent.results.role.value`},
 		{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
 		{old: `@parent.role.text`, new: `@parent.results.role.input`},
 		{old: `@parent.role.time`, new: `@parent.results.role.created_on`},
@@ -225,11 +225,11 @@ func TestMigrateTemplate(t *testing.T) {
 			options := &expressions.MigrateOptions{DefaultToSelf: tc.defaultToSelf}
 			migratedTemplate, err := expressions.MigrateTemplate(tc.old, options)
 
-			defer func() {
+			/*defer func() {
 				if r := recover(); r != nil {
 					t.Errorf("panic migrating template '%s': %#v", tc.old, r)
 				}
-			}()
+			}()*/
 
 			assert.NoError(t, err, "error migrating template '%s'", tc.old)
 			assert.Equal(t, tc.new, migratedTemplate, "migrating template '%s' failed", tc.old)

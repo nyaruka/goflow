@@ -73,7 +73,7 @@
                     ],
                     "actions": [
                         {
-                            "text": "Hooray, you did it and said @child.results.answer. Say yes or no!",
+                            "text": "Hooray, you did it and said @child.results.answer.value. Say yes or no!",
                             "type": "send_msg",
                             "uuid": "54b10283-9863-4edf-abfa-705cf24a64fc"
                         }
@@ -168,7 +168,7 @@
                     ],
                     "actions": [
                         {
-                            "text": "All Done! You said @child.results.answer in the child and @results.answer here.",
+                            "text": "All Done! You said @child.results.answer.value in the child and @results.answer.value here.",
                             "type": "send_msg",
                             "uuid": "bd387e9c-1ea9-49c8-a292-858d8a23a2d0"
                         }

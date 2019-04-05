@@ -124,16 +124,6 @@ func toString(params interface{}) (string, error) {
 		return typed, nil
 	case Resolvable:
 		return typed.String(), nil
-	case []interface{}:
-		strArr := make([]string, len(typed))
-		for i := range strArr {
-			str, err := toString(typed[i])
-			if err != nil {
-				return "", err
-			}
-			strArr[i] = str
-		}
-		return strings.Join(strArr, ", "), nil
 	default:
 		panic(fmt.Sprintf("can't toString a %T %s", typed, typed))
 	}
