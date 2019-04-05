@@ -26,9 +26,9 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 	case "run":
 		return c.run.ToXValue(env)
 	case "child":
-		return newRelatedRunContext(c.run.Session().GetCurrentChild(c.run))
+		return RelatedRunToXValue(env, c.run.Session().GetCurrentChild(c.run))
 	case "parent":
-		return newRelatedRunContext(c.run.Parent())
+		return RelatedRunToXValue(env, c.run.Parent())
 
 	// shortcuts to things on the current run
 	case "contact":
@@ -75,60 +75,27 @@ func (c *runContext) ToXJSON(env utils.Environment) types.XText {
 var _ types.XValue = (*runContext)(nil)
 var _ types.XResolvable = (*runContext)(nil)
 
-// wraps parent/child runs and provides a reduced set of keys in the context
-type relatedRunContext struct {
-	run flows.RunSummary
-}
-
-// creates a new context for related runs
-func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
-	if run != nil {
-		return &relatedRunContext{run: run}
-	}
-	return nil
-}
-
-// Resolve resolves the given key when this related run is referenced in an expression
-func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "uuid":
-		return types.NewXText(string(c.run.UUID()))
-
-	case "contact":
-		return types.ToXValue(env, c.run.Contact())
-	case "urns":
-		if c.run.Contact() != nil {
-			return c.run.Contact().URNs().MapContext(env)
-		}
+// RelatedRunToXValue returns a representation of a related run for use in expressions
+func RelatedRunToXValue(env utils.Environment, run flows.RunSummary) types.XValue {
+	if run == nil {
 		return nil
-	case "fields":
-		if c.run.Contact() != nil {
-			return c.run.Contact().Fields().ToXValue(env)
-		}
-		return nil
-
-	case "flow":
-		return c.run.Flow().ToXValue(env)
-	case "status":
-		return types.NewXText(string(c.run.Status()))
-	case "results":
-		return c.run.Results().ToXValue(env)
 	}
 
-	return types.NewXResolveError(c, key)
+	var urns, fields types.XValue
+	if run.Contact() != nil {
+		urns = run.Contact().URNs().MapContext(env)
+	}
+	if run.Contact() != nil {
+		fields = run.Contact().Fields().ToXValue(env)
+	}
+
+	return types.NewXDict(map[string]types.XValue{
+		"uuid":    types.NewXText(string(run.UUID())),
+		"contact": types.ToXValue(env, run.Contact()),
+		"urns":    urns,
+		"fields":  fields,
+		"flow":    run.Flow().ToXValue(env),
+		"status":  types.NewXText(string(run.Status())),
+		"results": run.Results().ToXValue(env),
+	})
 }
-
-// Describe returns a representation of this type for error messages
-func (c *relatedRunContext) Describe() string { return "related run" }
-
-func (c *relatedRunContext) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(string(c.run.UUID()))
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (c *relatedRunContext) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, c, "uuid", "contact", "flow", "status", "results").ToXJSON(env)
-}
-
-var _ types.XValue = (*relatedRunContext)(nil)
-var _ types.XResolvable = (*relatedRunContext)(nil)
