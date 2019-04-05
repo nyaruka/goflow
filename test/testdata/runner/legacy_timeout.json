@@ -1,0 +1,212 @@
+{
+    "legacy_flows": [
+        {
+            "entry": "b98d7730-ca23-4973-a6b8-9369ccbe85dc",
+            "action_sets": [
+                {
+                    "uuid": "b98d7730-ca23-4973-a6b8-9369ccbe85dc",
+                    "x": 100,
+                    "y": 0,
+                    "destination": "339368e7-8d2b-4538-8555-7f929cdce342",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "4dd3526f-9b48-4e29-8a15-18ed045fc2e1",
+                            "msg": {
+                                "eng": "Hi there. Do you want to take part?"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "3d6040e4-168e-4994-801f-befebf95b79a"
+                },
+                {
+                    "uuid": "964bfaae-54e6-4919-8549-5df5f272d322",
+                    "x": 91,
+                    "y": 270,
+                    "destination": null,
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "4db12c0a-aa98-4e37-8bb1-074f11b1b5ef",
+                            "msg": {
+                                "eng": "Great, you'll be hearing from us"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "c24902d4-2d04-4335-9cbe-2be0f6e406a0"
+                },
+                {
+                    "uuid": "fa7f6ac6-aa6c-4ea3-8ff2-d67471fbdf72",
+                    "x": 350,
+                    "y": 351,
+                    "destination": null,
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "b9f4baf2-dac2-44ab-ab17-e85264379b24",
+                            "msg": {
+                                "eng": "Ok, sorry to bother you"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "b2daeb39-fdf5-485e-a874-5f5844115d8d"
+                },
+                {
+                    "uuid": "9f4ea7c8-071a-4afb-83b4-6a1f932829d3",
+                    "x": 717,
+                    "y": 34,
+                    "destination": "339368e7-8d2b-4538-8555-7f929cdce342",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "76f95ec0-1316-439e-86ca-88ab09d52e2e",
+                            "msg": {
+                                "eng": "What?"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "a61fac4d-4195-4401-8867-0a23550c0050"
+                }
+            ],
+            "rule_sets": [
+                {
+                    "uuid": "339368e7-8d2b-4538-8555-7f929cdce342",
+                    "x": 285,
+                    "y": 113,
+                    "label": "Take Part",
+                    "rules": [
+                        {
+                            "uuid": "9f85a750-1f86-4e8b-80fd-1a7ed4b7a1cb",
+                            "category": {
+                                "eng": "Yes"
+                            },
+                            "destination": "964bfaae-54e6-4919-8549-5df5f272d322",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "contains_any",
+                                "test": {
+                                    "eng": "yes"
+                                }
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "6292ac66-c2a8-437b-bbb7-e64f508478df",
+                            "category": {
+                                "eng": "No"
+                            },
+                            "destination": "fa7f6ac6-aa6c-4ea3-8ff2-d67471fbdf72",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "contains_any",
+                                "test": {
+                                    "eng": "no"
+                                }
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "fc4adfd6-2d0e-4c9a-951e-9d140892c672",
+                            "category": {
+                                "eng": "Other"
+                            },
+                            "destination": "9f4ea7c8-071a-4afb-83b4-6a1f932829d3",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "true"
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "9fe5f0c2-5734-4014-885c-1e8413857916",
+                            "category": {
+                                "eng": "No Response"
+                            },
+                            "destination": "cfb8674d-1a45-4271-8deb-40b2f6994949",
+                            "destination_type": "R",
+                            "test": {
+                                "type": "timeout",
+                                "minutes": 5
+                            },
+                            "label": null
+                        }
+                    ],
+                    "finished_key": null,
+                    "ruleset_type": "wait_message",
+                    "response_type": "",
+                    "operand": "@step.value",
+                    "config": {}
+                },
+                {
+                    "uuid": "cfb8674d-1a45-4271-8deb-40b2f6994949",
+                    "x": 541,
+                    "y": 248,
+                    "label": "Older",
+                    "rules": [
+                        {
+                            "uuid": "f8e3ea2e-d788-4806-91b2-baf78f19e842",
+                            "category": {
+                                "eng": "> 30"
+                            },
+                            "destination": null,
+                            "destination_type": null,
+                            "test": {
+                                "type": "gt",
+                                "test": "30"
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "67db43bb-846c-4184-b79a-71a075bb5a00",
+                            "category": {
+                                "eng": "Other"
+                            },
+                            "destination": null,
+                            "destination_type": null,
+                            "test": {
+                                "type": "true"
+                            },
+                            "label": null
+                        }
+                    ],
+                    "finished_key": null,
+                    "ruleset_type": "contact_field",
+                    "response_type": "",
+                    "operand": "@contact.age",
+                    "config": {}
+                }
+            ],
+            "base_language": "eng",
+            "flow_type": "M",
+            "version": "11.12",
+            "metadata": {
+                "name": "Legacy Timeout",
+                "saved_on": "2019-04-05T15:05:40.627417Z",
+                "revision": 196,
+                "uuid": "eaae833a-4970-4be1-aed4-2e6295903b8f",
+                "expires": 10080
+            }
+        }
+    ],
+    "other_assets": {
+        "fields": [
+            {
+                "key": "age",
+                "name": "Age",
+                "type": "number"
+            }
+        ]
+    }
+}
