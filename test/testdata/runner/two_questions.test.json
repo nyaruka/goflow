@@ -94,7 +94,7 @@
                         "exited_on": null,
                         "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
-                            "name": "U-Report Registration Flow",
+                            "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
                         "modified_on": "2018-07-06T12:30:08.123456789Z",
@@ -146,7 +146,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Registration",
+                        "name": "Two Questions",
                         "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -436,7 +436,7 @@
                         "exited_on": null,
                         "expires_on": "2018-07-06T12:30:09.123456789Z",
                         "flow": {
-                            "name": "U-Report Registration Flow",
+                            "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
                         "modified_on": "2018-07-06T12:30:29.123456789Z",
@@ -504,7 +504,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Registration",
+                        "name": "Two Questions",
                         "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -795,7 +795,7 @@
                         "exited_on": "2018-07-06T12:30:46.123456789Z",
                         "expires_on": "2018-07-06T12:30:30.123456789Z",
                         "flow": {
-                            "name": "U-Report Registration Flow",
+                            "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
                         "modified_on": "2018-07-06T12:30:46.123456789Z",
@@ -879,7 +879,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Registration",
+                        "name": "Two Questions",
                         "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -979,7 +979,7 @@
             "timezone": "America/Los_Angeles"
         },
         "flow": {
-            "name": "Registration",
+            "name": "Two Questions",
             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
         },
         "triggered_on": "2000-01-01T00:00:00.000000000-00:00",

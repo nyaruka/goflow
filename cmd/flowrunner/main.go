@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -168,22 +169,77 @@ func printEvents(log []flows.Event, out io.Writer) {
 	for _, event := range log {
 		var msg string
 		switch typed := event.(type) {
-		case *events.ContactNameChangedEvent:
-			msg = fmt.Sprintf("📛 name changed to %s", typed.Name)
+		case *events.BroadcastCreatedEvent:
+			text := typed.Translations[typed.BaseLanguage].Text
+			msg = fmt.Sprintf("🔉 broadcasted '%s' to ...", text)
+		case *events.ContactFieldChangedEvent:
+			var action string
+			if typed.Value != nil {
+				action = fmt.Sprintf("changed to '%s'", typed.Value.Text)
+			} else {
+				action = "cleared"
+			}
+			msg = fmt.Sprintf("✏️ field '%s' %s", typed.Field.Key, action)
+		case *events.ContactGroupsChangedEvent:
+			msgs := make([]string, 0)
+			if len(typed.GroupsAdded) > 0 {
+				groups := make([]string, len(typed.GroupsAdded))
+				for g, group := range typed.GroupsAdded {
+					groups[g] = fmt.Sprintf("'%s'", group.Name)
+				}
+				msgs = append(msgs, "added to "+strings.Join(groups, ", "))
+			}
+			if len(typed.GroupsRemoved) > 0 {
+				groups := make([]string, len(typed.GroupsRemoved))
+				for g, group := range typed.GroupsRemoved {
+					groups[g] = fmt.Sprintf("'%s'", group.Name)
+				}
+				msgs = append(msgs, "removed from "+strings.Join(groups, ", "))
+			}
+			msg = fmt.Sprintf("👪 %s", strings.Join(msgs, ", "))
 		case *events.ContactLanguageChangedEvent:
-			msg = fmt.Sprintf("🌐 language changed to %s", typed.Language)
+			msg = fmt.Sprintf("🌐 language changed to '%s'", typed.Language)
+		case *events.ContactNameChangedEvent:
+			msg = fmt.Sprintf("📛 name changed to '%s'", typed.Name)
+		case *events.ContactRefreshedEvent:
+			msg = "👤 contact refreshed on resume"
 		case *events.ContactTimezoneChangedEvent:
-			msg = fmt.Sprintf("🕑 timezone changed to %s", typed.Timezone)
+			msg = fmt.Sprintf("🕑 timezone changed to '%s'", typed.Timezone)
+		case *events.EnvironmentRefreshedEvent:
+			msg = "⚙️ environment refreshed on resume"
 		case *events.ErrorEvent:
 			msg = fmt.Sprintf("⚠️ %s", typed.Text)
+		case *events.FlowEnteredEvent:
+			msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
+		case *events.InputLabelsAddedEvent:
+			labels := make([]string, len(typed.Labels))
+			for l, label := range typed.Labels {
+				labels[l] = fmt.Sprintf("'%s'", label.Name)
+			}
+			msg = fmt.Sprintf("🏷️ labeled with %s", strings.Join(labels, ", "))
+		case *events.IVRCreatedEvent:
+			msg = fmt.Sprintf("📞 IVR created \"%s\"", typed.Msg.Text())
 		case *events.MsgCreatedEvent:
-			msg = fmt.Sprintf("💬 \"%s\"", typed.Msg.Text())
+			msg = fmt.Sprintf("💬 message created \"%s\"", typed.Msg.Text())
 		case *events.MsgReceivedEvent:
-			msg = fmt.Sprintf("📥 received message '%s'", typed.Msg.Text())
+			msg = fmt.Sprintf("📥 message received \"%s\"", typed.Msg.Text())
 		case *events.MsgWaitEvent:
-			msg = fmt.Sprintf("⏳ waiting for message....")
+			if typed.TimeoutSeconds != nil {
+				msg = fmt.Sprintf("⏳ waiting for message (%d sec timeout, type /timeout to simulate)....", *typed.TimeoutSeconds)
+			} else {
+				msg = "⏳ waiting for message...."
+			}
+		case *events.RunExpiredEvent:
+			msg = "📆 exiting due to expiration"
 		case *events.RunResultChangedEvent:
 			msg = fmt.Sprintf("📈 run result '%s' changed to '%s'", typed.Name, typed.Value)
+		case *events.SessionTriggeredEvent:
+			msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
+		case *events.WaitTimedOutEvent:
+			msg = "⏲️ resuming due to wait timeout"
+		case *events.WebhookCalledEvent:
+			url := truncate(typed.URL, 50)
+			msg = fmt.Sprintf("☁️ called %s", url)
 		default:
 			msg = fmt.Sprintf("❓ %s event", typed.Type())
 		}
@@ -196,4 +252,13 @@ func printEvents(log []flows.Event, out io.Writer) {
 type Repro struct {
 	Trigger flows.Trigger  `json:"trigger"`
 	Resumes []flows.Resume `json:"resumes"`
+}
+
+func truncate(str string, length int) string {
+	ending := "..."
+	runes := []rune(str)
+	if len(runes) > length {
+		return string(runes[0:length-len(ending)]) + ending
+	}
+	return str
 }

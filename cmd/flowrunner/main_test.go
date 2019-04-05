@@ -25,16 +25,16 @@ func TestRunFlow(t *testing.T) {
 	assert.Equal(t, []string{
 		"Starting flow 'Two Questions'....",
 		"---------------------------------------",
-		"💬 \"Hi Ben Haggerty! What is your favorite color? (red/blue)\"",
-		"⏳ waiting for message....",
-		"📥 received message 'I like red'",
+		"💬 message created \"Hi Ben Haggerty! What is your favorite color? (red/blue)\"",
+		"⏳ waiting for message (600 sec timeout, type /timeout to simulate)....",
+		"📥 message received \"I like red\"",
 		"📈 run result 'Favorite Color' changed to 'red'",
-		"🌐 language changed to fra",
-		"💬 \"Red it is! What is your favorite soda? (pepsi/coke)\"",
+		"🌐 language changed to 'fra'",
+		"💬 message created \"Red it is! What is your favorite soda? (pepsi/coke)\"",
 		"⏳ waiting for message....",
-		"📥 received message 'pepsi'",
+		"📥 message received \"pepsi\"",
 		"📈 run result 'Soda' changed to 'pepsi'",
-		"💬 \"Great, you are done!\"",
+		"💬 message created \"Great, you are done!\"",
 		"",
 	}, lines)
 }
