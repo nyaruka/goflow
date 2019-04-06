@@ -105,6 +105,12 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@step.contact.name`, new: `@contact.name`},
 		{old: `@step.contact.age`, new: `@fields.age`},
 
+		// channel
+		{old: `@channel`, new: `@contact.channel.address`},
+		{old: `@channel.tel`, new: `@contact.channel.address`},
+		{old: `@channel.tel_e164`, new: `@contact.channel.address`},
+		{old: `@channel.name`, new: `@contact.channel.name`},
+
 		// dates
 		{old: `@date`, new: `@(now())`},
 		{old: `@date.now`, new: `@(now())`},
