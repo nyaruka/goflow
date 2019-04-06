@@ -89,8 +89,9 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
 		{"@input.channel.name", "My Android Phone", ""},
 
-		{"@results", "{2factor: 34634624463525, favorite_color: red, phone_number: +12344563452}", ""},
-		{"@results.favorite_color", "red", ""},
+		{"@results.favorite_color", "{category: Red, value: red}", ""},
+		{"@results.favorite_color.value", "red", ""},
+		{"@results.favorite_color.category", "Red", ""},
 		{"@run.results.favorite_color", "{category: Red, category_localized: Red, created_on: 2018-09-13T13:36:30.123456Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}", ""},
 		{"@run.results.favorite_color.value", "red", ""},
 		{"@run.results.favorite_color.category", "Red", ""},
@@ -105,7 +106,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(length(trigger.params.address))", "1", ""},
 
 		// migrated split by expressions
-		{`@(if(is_error(results.favorite_color), "@flow.favorite_color", results.favorite_color))`, `red`, ""},
+		{`@(if(is_error(results.favorite_color.value), "@flow.favorite_color", results.favorite_color.value))`, `red`, ""},
 		{`@(if(is_error(legacy_extra.0.default_city), "@extra.0.default_city", legacy_extra.0.default_city))`, `@extra.0.default_city`, ""},
 
 		// non-expressions

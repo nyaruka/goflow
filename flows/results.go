@@ -110,7 +110,10 @@ func (r Results) ToXValue(env utils.Environment) types.XDict {
 func (r Results) ToSimpleXDict(env utils.Environment) types.XDict {
 	results := types.NewEmptyXDict()
 	for k, v := range r {
-		results.Put(k, types.NewXText(v.Value))
+		results.Put(k, types.NewXDict(map[string]types.XValue{
+			"value":    types.NewXText(v.Value),
+			"category": types.NewXText(v.Category),
+		}))
 	}
 	return results
 }

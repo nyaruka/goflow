@@ -49,7 +49,7 @@
                             }
                         ],
                         "default_category_uuid": "3699df6c-15f0-4a86-b7f8-9fe1497e7854",
-                        "operand": "@run.results.webhook.category",
+                        "operand": "@results.webhook.category",
                         "cases": [
                             {
                                 "arguments": [

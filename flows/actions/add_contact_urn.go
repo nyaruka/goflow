@@ -25,7 +25,7 @@ const TypeAddContactURN string = "add_contact_urn"
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "add_contact_urn",
 //     "scheme": "tel",
-//     "path": "@results.phone_number"
+//     "path": "@results.phone_number.value"
 //   }
 //
 // @action add_contact_urn

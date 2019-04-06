@@ -297,11 +297,13 @@ func newMigrationVars() map[string]interface{} {
 		arbitraryRootField: "value",
 	}
 
-	resultValueShortcut := func(path string) string {
-		if strings.HasPrefix(path, "run.") {
-			path = path[4:]
+	resultValueShortcut := func(key string) func(path string) string {
+		return func(path string) string {
+			if strings.HasPrefix(path, "run.") {
+				path = path[4:]
+			}
+			return path + "." + key
 		}
-		return path
 	}
 
 	return map[string]interface{}{
@@ -312,8 +314,9 @@ func newMigrationVars() map[string]interface{} {
 			},
 			base: "run.results",
 			arbitrarySubstitutions: map[string]interface{}{
-				"__default__": resultValueShortcut,
-				"value":       resultValueShortcut,
+				"__default__": resultValueShortcut("value"),
+				"value":       resultValueShortcut("value"),
+				"category":    resultValueShortcut("category"),
 			},
 			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",

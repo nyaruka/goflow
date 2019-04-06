@@ -70,7 +70,7 @@
                     },
                     "0a8467eb-911a-41db-8101-ccf415c48e6a": {
                         "text": [
-                            "Parfait, vous avez finis et tu aimes @run.results.soda.category"
+                            "Parfait, vous avez finis et tu aimes @results.soda.category"
                         ]
                     }
                 }
@@ -241,12 +241,12 @@
                             "type": "call_webhook",
                             "url": "http://localhost/?cmd=success",
                             "method": "POST",
-                            "body": "{ \"contact\": @(json(contact.uuid)), \"soda\": @(json(results.soda)) }"
+                            "body": "{ \"contact\": @(json(contact.uuid)), \"soda\": @(json(results.soda.value)) }"
                         },
                         {
                             "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
                             "type": "send_msg",
-                            "text": "Great, you are done and like @results.soda! Webhook status was @results.webhook"
+                            "text": "Great, you are done and like @results.soda.value! Webhook status was @results.webhook.value"
                         }
                     ],
                     "exits": [

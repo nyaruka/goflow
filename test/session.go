@@ -161,7 +161,7 @@ var sessionAssets = `{
                             "key": "age",
                             "name": "Age"
                         },
-                        "value": "@results.age"
+                        "value": "@results.age.value"
                     }
                 ],
                 "exits": [

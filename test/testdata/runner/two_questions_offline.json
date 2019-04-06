@@ -70,7 +70,7 @@
                     },
                     "0a8467eb-911a-41db-8101-ccf415c48e6a": {
                         "text": [
-                            "Parfait, vous avez finis et tu aimes @run.results.soda.category"
+                            "Parfait, vous avez finis et tu aimes @results.soda.category"
                         ]
                     }
                 }
@@ -218,7 +218,7 @@
                         {
                             "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
                             "type": "send_msg",
-                            "text": "Great, you like @results.soda. Finish by sending us a selfie!"
+                            "text": "Great, you like @results.soda.value. Finish by sending us a selfie!"
                         }
                     ],
                     "router": {
