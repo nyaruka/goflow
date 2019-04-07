@@ -40,31 +40,18 @@ func init() {
 		{re(`^(?:(?:flow|child|step)\.)?(parent\.)?contact\.(\w+)$`), `${1}fields.$2`},
 
 		{re(`^flow$`), `results`},
-		{re(`^flow\.(\d\w*)$`), `results["$1"]`},
-		{re(`^flow\.(\d\w*)\.value$`), `results["$1"].value`},
-		{re(`^flow\.(\d\w*)\.category$`), `results["$1"].category_localized`},
-		{re(`^flow\.(\d\w*)\.text$`), `results["$1"].input`},
-		{re(`^flow\.(\d\w*)\.time$`), `results["$1"].created_on`},
 		{re(`^flow\.(\w+)$`), `results.$1`},
 		{re(`^flow\.(\w+)\.value$`), `results.$1.value`},
 		{re(`^flow\.(\w+)\.category$`), `results.$1.category_localized`},
 		{re(`^flow\.(\w+)\.text$`), `results.$1.input`},
 		{re(`^flow\.(\w+)\.time$`), `results.$1.created_on`},
 
-		{re(`^child\.(\d\w*)\.value$`), `child.results["$1"].value`},
-		{re(`^child\.(\d\w*)\.category$`), `child.results["$1"].category_localized`},
-		{re(`^child\.(\d\w*)\.text$`), `child.results["$1"].input`},
-		{re(`^child\.(\d\w*)\.time$`), `child.results["$1"].created_on`},
 		{re(`^child\.(\w+)$`), `child.results.$1`},
 		{re(`^child\.(\w+)\.value$`), `child.results.$1.value`},
 		{re(`^child\.(\w+)\.category$`), `child.results.$1.category_localized`},
 		{re(`^child\.(\w+)\.text$`), `child.results.$1.input`},
 		{re(`^child\.(\w+)\.time$`), `child.results.$1.created_on`},
 
-		{re(`^(?:parent|extra\.flow)\.(\d\w*)\.value$`), `parent.results["$1"].value`},
-		{re(`^(?:parent|extra\.flow)\.(\d\w*)\.category$`), `parent.results["$1"].category_localized`},
-		{re(`^(?:parent|extra\.flow)\.(\d\w*)\.text$`), `parent.results["$1"].input`},
-		{re(`^(?:parent|extra\.flow)\.(\d\w*)\.time$`), `parent.results["$1"].created_on`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)$`), `parent.results.$1`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.value$`), `parent.results.$1.value`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.category$`), `parent.results.$1.category_localized`},
@@ -99,9 +86,20 @@ func MigrateContextReference(path string) (string, bool) {
 		if mapping.pattern.MatchString(path) {
 			//fmt.Printf("context ref '%s' matched '%s'\n", path, mapping.pattern)
 
-			return mapping.pattern.ReplaceAllString(path, mapping.replace), true
+			return fixLookups(mapping.pattern.ReplaceAllString(path, mapping.replace)), true
 		}
 	}
 
 	return path, false
+}
+
+var numericLookupRegex = regexp.MustCompile(`\.\d+\w*`)
+
+// fixes property lookups
+//  .1 => ["1"]
+//  .1foo  => ["1foo"]
+func fixLookups(path string) string {
+	return numericLookupRegex.ReplaceAllStringFunc(path, func(lookup string) string {
+		return `["` + lookup[1:] + `"]`
+	})
 }

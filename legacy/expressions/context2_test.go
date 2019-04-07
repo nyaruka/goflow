@@ -97,7 +97,7 @@ var testCases = []struct {
 
 	{old: `extra`, new: `legacy_extra`},
 	{old: `extra.address.state`, new: `legacy_extra.address.state`},
-	{old: `extra.results.1`, new: `legacy_extra.results.1`},
+	{old: `extra.results.1`, new: `legacy_extra.results["1"]`},
 	{old: `extra.flow.role`, new: `parent.results.role`},
 }
 
