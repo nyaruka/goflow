@@ -40,17 +40,6 @@ func (v *legacyVisitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) inte
 	return decStr
 }
 
-// VisitDotLookup deals with lookups like foo.0 or foo.bar
-func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	value := v.Visit(ctx.Atom(0))
-	expression := v.Visit(ctx.Atom(1))
-	lookup, err := toString(expression)
-	if err != nil {
-		return err
-	}
-	return resolveLookup(v.env, value, lookup)
-}
-
 // VisitStringLiteral deals with string literals such as "asdf"
 func (v *legacyVisitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} {
 	return MigrateStringLiteral(ctx.GetText())
@@ -127,8 +116,8 @@ func (v *legacyVisitor) VisitNegation(ctx *gen.NegationContext) interface{} {
 	return "-" + dec
 }
 
-// VisitExponent deals with exponenets such as 5^5
-func (v *legacyVisitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
+// VisitExponentExpression deals with exponenets such as 5^5
+func (v *legacyVisitor) VisitExponentExpression(ctx *gen.ExponentExpressionContext) interface{} {
 	arg1, err := toString(v.Visit(ctx.Expression(0)))
 	if err != nil {
 		return err
@@ -162,8 +151,8 @@ func (v *legacyVisitor) VisitConcatenation(ctx *gen.ConcatenationContext) interf
 	return buffer.String()
 }
 
-// VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
-func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionContext) interface{} {
+// VisitAdditionOrSubtractionExpression deals with addition and subtraction like 5+5 and 5-3
+func (v *legacyVisitor) VisitAdditionOrSubtractionExpression(ctx *gen.AdditionOrSubtractionExpressionContext) interface{} {
 	arg1, err := toString(v.Visit(ctx.Expression(0)))
 	if err != nil {
 		return err
@@ -231,7 +220,7 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 }
 
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
-func (v *legacyVisitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
+func (v *legacyVisitor) VisitEqualityExpression(ctx *gen.EqualityExpressionContext) interface{} {
 	arg1 := v.Visit(ctx.Expression(0))
 	err, isErr := arg1.(error)
 	if isErr {
@@ -251,13 +240,8 @@ func (v *legacyVisitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 	return fmt.Sprintf("%s != %s", arg1, arg2)
 }
 
-// VisitAtomReference deals with visiting a single atom in our expression
-func (v *legacyVisitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} {
-	return v.Visit(ctx.Atom())
-}
-
 // VisitMultiplicationOrDivision deals with division and multiplication such as 5*5 or 5/2
-func (v *legacyVisitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisionContext) interface{} {
+func (v *legacyVisitor) VisitMultiplicationOrDivisionExpression(ctx *gen.MultiplicationOrDivisionExpressionContext) interface{} {
 	arg1 := v.Visit(ctx.Expression(0))
 	str1, err := toString(arg1)
 	if err != nil {
@@ -278,7 +262,7 @@ func (v *legacyVisitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrD
 }
 
 // VisitComparison deals with visiting a comparison between two values, such as 5<3 or 3>5
-func (v *legacyVisitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
+func (v *legacyVisitor) VisitComparisonExpression(ctx *gen.ComparisonExpressionContext) interface{} {
 	arg1 := v.Visit(ctx.Expression(0))
 	arg2 := v.Visit(ctx.Expression(1))
 
