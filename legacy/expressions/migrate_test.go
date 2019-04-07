@@ -74,8 +74,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@child.age.text`, new: `@child.results.age.input`},
 		{old: `@child.age.time`, new: `@child.results.age.created_on`},
 		{old: `@child.age.value`, new: `@child.results.age.value`},
-		{old: `@child.contact`, new: `@child.contact`},
-		{old: `@child.contact.age`, new: `@child.fields.age`},
+		{old: `@child.contact`, new: `@contact`},
+		{old: `@child.contact.age`, new: `@fields.age`},
 
 		{old: `@parent.role`, new: `@parent.results.role`},
 		{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
@@ -91,7 +91,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@parent.contact.tel.scheme`, new: `@(urn_parts(parent.urns.tel).scheme)`},
 		{old: `@parent.contact.tel.path`, new: `@(urn_parts(parent.urns.tel).path)`},
 		{old: `@parent.contact.tel.urn`, new: `@parent.urns.tel`},
-		{old: `@parent.contact.tel_e164`, new: `@(urn_parts(urns.tel).path)`},
+		{old: `@parent.contact.tel_e164`, new: `@(urn_parts(parent.urns.tel).path)`},
 
 		// input
 		{old: `@step`, new: `@(format_input(input))`},
@@ -121,7 +121,7 @@ func TestMigrateTemplate(t *testing.T) {
 		// extra
 		{old: `@extra`, new: `@legacy_extra`},
 		{old: `@extra.address.state`, new: `@legacy_extra.address.state`},
-		{old: `@extra.results.1`, new: `@legacy_extra.results.1`},
+		{old: `@extra.results.1`, new: `@(legacy_extra.results["1"])`},
 		{old: `@extra.flow.role`, new: `@parent.results.role`},
 
 		// variables in parens

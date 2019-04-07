@@ -79,18 +79,18 @@ func init() {
 }
 
 // MigrateContextReference migrates a context reference in a legacy expression
-func MigrateContextReference(path string) (string, bool) {
+func MigrateContextReference(path string) string {
 	path = strings.ToLower(path)
 
 	for _, mapping := range mappings {
 		if mapping.pattern.MatchString(path) {
 			//fmt.Printf("context ref '%s' matched '%s'\n", path, mapping.pattern)
 
-			return fixLookups(mapping.pattern.ReplaceAllString(path, mapping.replace)), true
+			return fixLookups(mapping.pattern.ReplaceAllString(path, mapping.replace))
 		}
 	}
 
-	return path, false
+	return path
 }
 
 var numericLookupRegex = regexp.MustCompile(`\.\d+\w*`)
