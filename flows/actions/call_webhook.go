@@ -2,6 +2,7 @@ package actions
 
 import (
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -13,6 +14,8 @@ import (
 func init() {
 	RegisterType(TypeCallWebhook, func() flows.Action { return &CallWebhookAction{} })
 }
+
+var headerNameRegex = regexp.MustCompile(`^[\w\-]+$`)
 
 // TypeCallWebhook is the type for the call webhook action
 const TypeCallWebhook string = "call_webhook"
@@ -62,6 +65,12 @@ func NewCallWebhookAction(uuid flows.ActionUUID, method string, url string, head
 func (a *CallWebhookAction) Validate() error {
 	if a.Body != "" && a.Method == "GET" {
 		return errors.Errorf("can't specify body if method is GET")
+	}
+
+	for key := range a.Headers {
+		if !headerNameRegex.MatchString(key) {
+			return errors.Errorf("header '%s' is not a valid HTTP header", key)
+		}
 	}
 
 	return nil

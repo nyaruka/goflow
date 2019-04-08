@@ -547,12 +547,12 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, flows.UINodeType, flows.UINodeConfig, error) {
+func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, UINodeType, UINodeConfig, error) {
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
-	var uiType flows.UINodeType
-	var uiNodeConfig flows.UINodeConfig
+	var uiType UINodeType
+	var uiNodeConfig UINodeConfig
 
 	cases, categories, defaultCategory, timeoutCategory, exits, err := migrateRules(lang, r, localization)
 	if err != nil {
@@ -595,7 +595,10 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		for _, header := range config.WebhookHeaders {
-			headers[header.Name], _ = expressions.MigrateTemplate(header.Value, nil)
+			// ignore empty headers sometimes left in flow definitions
+			if header.Name != "" {
+				headers[header.Name], _ = expressions.MigrateTemplate(header.Value, nil)
+			}
 		}
 
 		newActions = []flows.Action{
@@ -625,7 +628,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		lastDot := strings.LastIndex(r.Operand, ".")
 		if lastDot > -1 {
 			fieldKey := r.Operand[lastDot+1:]
-			uiNodeConfig = flows.UINodeConfig{
+			uiNodeConfig = UINodeConfig{
 				"operand":   map[string]string{"id": fieldKey},
 				"delimiter": config.FieldDelimiter,
 				"index":     config.FieldIndex,
@@ -672,7 +675,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			lastDot := strings.LastIndex(r.Operand, ".")
 			if lastDot > -1 {
 				fieldKey := r.Operand[lastDot+1:]
-				uiNodeConfig = flows.UINodeConfig{
+				uiNodeConfig = UINodeConfig{
 					"operand": map[string]string{"id": fieldKey},
 				}
 			}
@@ -683,7 +686,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			if lastDot > -1 {
 				fieldKey := r.Operand[lastDot+1:]
 				if fieldKey == "name" {
-					uiNodeConfig = flows.UINodeConfig{
+					uiNodeConfig = UINodeConfig{
 						"operand": map[string]string{
 							"type": "property",
 							"id":   "name",
@@ -694,14 +697,14 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 					uiType = UINodeTypeSplitByExpression
 
 				} else if urns.IsValidScheme(fieldKey) {
-					uiNodeConfig = flows.UINodeConfig{
+					uiNodeConfig = UINodeConfig{
 						"operand": map[string]string{
 							"type": "scheme",
 							"id":   fieldKey,
 						},
 					}
 				} else {
-					uiNodeConfig = flows.UINodeConfig{
+					uiNodeConfig = UINodeConfig{
 						"operand": map[string]string{
 							"type": "field",
 							"id":   fieldKey,
@@ -1021,7 +1024,7 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 	localization := definition.NewLocalization()
 	numNodes := len(f.ActionSets) + len(f.RuleSets)
 	nodes := make([]flows.Node, numNodes)
-	nodeUI := make(map[flows.NodeUUID]flows.UINodeDetails, numNodes)
+	nodeUI := make(map[flows.NodeUUID]*UINodeDetails, numNodes)
 
 	for i, actionSet := range f.ActionSets {
 		node, err := migrateActionSet(f.BaseLanguage, actionSet, localization, baseMediaURL)
@@ -1029,7 +1032,7 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 			return nil, errors.Wrapf(err, "error migrating action_set[uuid=%s]", actionSet.UUID)
 		}
 		nodes[i] = node
-		nodeUI[node.UUID()] = definition.NewUINodeDetails(actionSet.X, actionSet.Y, UINodeTypeActionSet, nil)
+		nodeUI[node.UUID()] = NewUINodeDetails(actionSet.X, actionSet.Y, UINodeTypeActionSet, nil)
 	}
 
 	for i, ruleSet := range f.RuleSets {
@@ -1038,7 +1041,7 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 			return nil, errors.Wrapf(err, "error migrating rule_set[uuid=%s]", ruleSet.UUID)
 		}
 		nodes[len(f.ActionSets)+i] = node
-		nodeUI[node.UUID()] = definition.NewUINodeDetails(ruleSet.X, ruleSet.Y, uiType, uiNodeConfig)
+		nodeUI[node.UUID()] = NewUINodeDetails(ruleSet.X, ruleSet.Y, uiType, uiNodeConfig)
 	}
 
 	// make sure our entry node is first
@@ -1064,10 +1067,11 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 
 	nodes = append(entryNodes, otherNodes...)
 
-	var ui flows.UI
+	var uiJSON json.RawMessage
+	var err error
 
 	if includeUI {
-		ui = definition.NewUI()
+		ui := NewUI()
 
 		for _, actionSet := range f.ActionSets {
 			ui.AddNode(actionSet.UUID, nodeUI[actionSet.UUID])
@@ -1077,6 +1081,11 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 		}
 		for _, note := range f.Metadata.Notes {
 			ui.AddSticky(note.Migrate())
+		}
+
+		uiJSON, err = json.Marshal(ui)
+		if err != nil {
+			return nil, err
 		}
 	}
 
@@ -1089,6 +1098,6 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 		f.Metadata.Expires,
 		localization,
 		nodes,
-		ui,
+		uiJSON,
 	), nil
 }

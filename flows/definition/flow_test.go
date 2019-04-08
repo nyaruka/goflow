@@ -439,6 +439,44 @@ func TestReadFlow(t *testing.T) {
     "nodes": []
   }`))
 	assert.EqualError(t, err, "field 'type' is required")
+
+	// try reading a definition with UI
+	flow, err := definition.ReadFlow([]byte(`{
+		"uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
+		"name": "Test Flow",
+		"spec_version": "12.9999",
+		"language": "eng",
+		"type": "messaging",
+		"revision": 123,
+		"expire_after_minutes": 30,
+		"nodes": [
+			{
+				"uuid": "b1c5f247-565d-4a7a-8763-c59abbed0a57",
+				"exits": [
+					{
+						"uuid": "9c2412f7-4e8f-44f1-9b4f-0e8f1a274261"
+					}
+				]
+			}
+		],
+		"_ui": { 
+			"nodes": {
+				"b1c5f247-565d-4a7a-8763-c59abbed0a57": {
+                    "type": "execute_actions"
+				}
+			},
+            "stickies": {}
+		}
+	  }`))
+	assert.NoError(t, err)
+	test.AssertEqualJSON(t, []byte(`{
+		"nodes": {
+			"b1c5f247-565d-4a7a-8763-c59abbed0a57": {
+				"type": "execute_actions"
+			}
+		},
+		"stickies": {}
+	}`), flow.UI(), "ui mismatch for read flow")
 }
 
 func TestExtractAndRewriteTemplates(t *testing.T) {

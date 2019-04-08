@@ -247,7 +247,12 @@ func TestRuleSetMigration(t *testing.T) {
 
 			test.AssertEqualJSON(t, tc.ExpectedNode, migratedNodeJSON, "migrated ruleset produced unexpected JSON")
 
-			migratedNodeUIJSON, err := utils.JSONMarshal(migratedFlow.UI().GetNode(migratedNode.UUID()))
+			uiMap, err := utils.JSONDecodeGeneric(migratedFlow.UI())
+			require.NoError(t, err)
+
+			uiNodesMap := uiMap.(map[string]interface{})["nodes"].(map[string]interface{})
+
+			migratedNodeUIJSON, err := utils.JSONMarshal(uiNodesMap[string(migratedNode.UUID())])
 			require.NoError(t, err)
 
 			test.AssertEqualJSON(t, tc.ExpectedUI, migratedNodeUIJSON, "migrated ruleset produced unexpected UI JSON")
