@@ -11,6 +11,20 @@
         "validation_error": "can't specify body if method is GET"
     },
     {
+        "description": "Validation fails if header name is invalid",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "http://localhost:49996/?cmd=success",
+            "body": "Hi there!",
+            "headers": {
+                "Accept:": "something"
+            }
+        },
+        "validation_error": "header 'Accept:' is not a valid HTTP header"
+    },
+    {
         "description": "Error event created if URL, header or body contain expression errors",
         "action": {
             "type": "call_webhook",
