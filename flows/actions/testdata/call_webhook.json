@@ -115,13 +115,16 @@
             "method": "POST",
             "url": "http://localhost:49996/?cmd=success",
             "body": "Hi there!",
+            "headers": {
+                "X-Something": "@fields.gender"
+            },
             "result_name": "My Webhook"
         },
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "elapsed_ms": 0,
-                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
+                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nX-Something: Male\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                 "status": "success",
                 "status_code": 200,
@@ -145,9 +148,12 @@
         "inspection": {
             "templates": [
                 "http://localhost:49996/?cmd=success",
-                "Hi there!"
+                "Hi there!",
+                "@fields.gender"
             ],
-            "dependencies": [],
+            "dependencies": [
+                "field[key=gender,name=]"
+            ],
             "results": [
                 {
                     "key": "my_webhook",
