@@ -595,7 +595,10 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		for _, header := range config.WebhookHeaders {
-			headers[header.Name], _ = expressions.MigrateTemplate(header.Value, nil)
+			// ignore empty headers sometimes left in flow definitions
+			if header.Name != "" {
+				headers[header.Name], _ = expressions.MigrateTemplate(header.Value, nil)
+			}
 		}
 
 		newActions = []flows.Action{
