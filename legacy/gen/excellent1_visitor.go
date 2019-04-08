@@ -1,4 +1,4 @@
-// Code generated from Excellent1.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent1.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent1
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -13,8 +13,29 @@ type Excellent1Visitor interface {
 	// Visit a parse tree produced by Excellent1Parser#decimalLiteral.
 	VisitDecimalLiteral(ctx *DecimalLiteralContext) interface{}
 
-	// Visit a parse tree produced by Excellent1Parser#dotLookup.
-	VisitDotLookup(ctx *DotLookupContext) interface{}
+	// Visit a parse tree produced by Excellent1Parser#parentheses.
+	VisitParentheses(ctx *ParenthesesContext) interface{}
+
+	// Visit a parse tree produced by Excellent1Parser#negation.
+	VisitNegation(ctx *NegationContext) interface{}
+
+	// Visit a parse tree produced by Excellent1Parser#exponentExpression.
+	VisitExponentExpression(ctx *ExponentExpressionContext) interface{}
+
+	// Visit a parse tree produced by Excellent1Parser#additionOrSubtractionExpression.
+	VisitAdditionOrSubtractionExpression(ctx *AdditionOrSubtractionExpressionContext) interface{}
+
+	// Visit a parse tree produced by Excellent1Parser#false.
+	VisitFalse(ctx *FalseContext) interface{}
+
+	// Visit a parse tree produced by Excellent1Parser#contextReference.
+	VisitContextReference(ctx *ContextReferenceContext) interface{}
+
+	// Visit a parse tree produced by Excellent1Parser#comparisonExpression.
+	VisitComparisonExpression(ctx *ComparisonExpressionContext) interface{}
+
+	// Visit a parse tree produced by Excellent1Parser#concatenation.
+	VisitConcatenation(ctx *ConcatenationContext) interface{}
 
 	// Visit a parse tree produced by Excellent1Parser#stringLiteral.
 	VisitStringLiteral(ctx *StringLiteralContext) interface{}
@@ -25,38 +46,11 @@ type Excellent1Visitor interface {
 	// Visit a parse tree produced by Excellent1Parser#true.
 	VisitTrue(ctx *TrueContext) interface{}
 
-	// Visit a parse tree produced by Excellent1Parser#false.
-	VisitFalse(ctx *FalseContext) interface{}
+	// Visit a parse tree produced by Excellent1Parser#equalityExpression.
+	VisitEqualityExpression(ctx *EqualityExpressionContext) interface{}
 
-	// Visit a parse tree produced by Excellent1Parser#contextReference.
-	VisitContextReference(ctx *ContextReferenceContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#parentheses.
-	VisitParentheses(ctx *ParenthesesContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#negation.
-	VisitNegation(ctx *NegationContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#comparison.
-	VisitComparison(ctx *ComparisonContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#concatenation.
-	VisitConcatenation(ctx *ConcatenationContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#multiplicationOrDivision.
-	VisitMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#atomReference.
-	VisitAtomReference(ctx *AtomReferenceContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#additionOrSubtraction.
-	VisitAdditionOrSubtraction(ctx *AdditionOrSubtractionContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#equality.
-	VisitEquality(ctx *EqualityContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#exponent.
-	VisitExponent(ctx *ExponentContext) interface{}
+	// Visit a parse tree produced by Excellent1Parser#multiplicationOrDivisionExpression.
+	VisitMultiplicationOrDivisionExpression(ctx *MultiplicationOrDivisionExpressionContext) interface{}
 
 	// Visit a parse tree produced by Excellent1Parser#fnname.
 	VisitFnname(ctx *FnnameContext) interface{}

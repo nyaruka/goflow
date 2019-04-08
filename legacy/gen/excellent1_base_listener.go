@@ -1,4 +1,4 @@
-// Code generated from Excellent1.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent1.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent1
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -32,11 +32,55 @@ func (s *BaseExcellent1Listener) EnterDecimalLiteral(ctx *DecimalLiteralContext)
 // ExitDecimalLiteral is called when production decimalLiteral is exited.
 func (s *BaseExcellent1Listener) ExitDecimalLiteral(ctx *DecimalLiteralContext) {}
 
-// EnterDotLookup is called when production dotLookup is entered.
-func (s *BaseExcellent1Listener) EnterDotLookup(ctx *DotLookupContext) {}
+// EnterParentheses is called when production parentheses is entered.
+func (s *BaseExcellent1Listener) EnterParentheses(ctx *ParenthesesContext) {}
 
-// ExitDotLookup is called when production dotLookup is exited.
-func (s *BaseExcellent1Listener) ExitDotLookup(ctx *DotLookupContext) {}
+// ExitParentheses is called when production parentheses is exited.
+func (s *BaseExcellent1Listener) ExitParentheses(ctx *ParenthesesContext) {}
+
+// EnterNegation is called when production negation is entered.
+func (s *BaseExcellent1Listener) EnterNegation(ctx *NegationContext) {}
+
+// ExitNegation is called when production negation is exited.
+func (s *BaseExcellent1Listener) ExitNegation(ctx *NegationContext) {}
+
+// EnterExponentExpression is called when production exponentExpression is entered.
+func (s *BaseExcellent1Listener) EnterExponentExpression(ctx *ExponentExpressionContext) {}
+
+// ExitExponentExpression is called when production exponentExpression is exited.
+func (s *BaseExcellent1Listener) ExitExponentExpression(ctx *ExponentExpressionContext) {}
+
+// EnterAdditionOrSubtractionExpression is called when production additionOrSubtractionExpression is entered.
+func (s *BaseExcellent1Listener) EnterAdditionOrSubtractionExpression(ctx *AdditionOrSubtractionExpressionContext) {
+}
+
+// ExitAdditionOrSubtractionExpression is called when production additionOrSubtractionExpression is exited.
+func (s *BaseExcellent1Listener) ExitAdditionOrSubtractionExpression(ctx *AdditionOrSubtractionExpressionContext) {
+}
+
+// EnterFalse is called when production false is entered.
+func (s *BaseExcellent1Listener) EnterFalse(ctx *FalseContext) {}
+
+// ExitFalse is called when production false is exited.
+func (s *BaseExcellent1Listener) ExitFalse(ctx *FalseContext) {}
+
+// EnterContextReference is called when production contextReference is entered.
+func (s *BaseExcellent1Listener) EnterContextReference(ctx *ContextReferenceContext) {}
+
+// ExitContextReference is called when production contextReference is exited.
+func (s *BaseExcellent1Listener) ExitContextReference(ctx *ContextReferenceContext) {}
+
+// EnterComparisonExpression is called when production comparisonExpression is entered.
+func (s *BaseExcellent1Listener) EnterComparisonExpression(ctx *ComparisonExpressionContext) {}
+
+// ExitComparisonExpression is called when production comparisonExpression is exited.
+func (s *BaseExcellent1Listener) ExitComparisonExpression(ctx *ComparisonExpressionContext) {}
+
+// EnterConcatenation is called when production concatenation is entered.
+func (s *BaseExcellent1Listener) EnterConcatenation(ctx *ConcatenationContext) {}
+
+// ExitConcatenation is called when production concatenation is exited.
+func (s *BaseExcellent1Listener) ExitConcatenation(ctx *ConcatenationContext) {}
 
 // EnterStringLiteral is called when production stringLiteral is entered.
 func (s *BaseExcellent1Listener) EnterStringLiteral(ctx *StringLiteralContext) {}
@@ -56,71 +100,19 @@ func (s *BaseExcellent1Listener) EnterTrue(ctx *TrueContext) {}
 // ExitTrue is called when production true is exited.
 func (s *BaseExcellent1Listener) ExitTrue(ctx *TrueContext) {}
 
-// EnterFalse is called when production false is entered.
-func (s *BaseExcellent1Listener) EnterFalse(ctx *FalseContext) {}
+// EnterEqualityExpression is called when production equalityExpression is entered.
+func (s *BaseExcellent1Listener) EnterEqualityExpression(ctx *EqualityExpressionContext) {}
 
-// ExitFalse is called when production false is exited.
-func (s *BaseExcellent1Listener) ExitFalse(ctx *FalseContext) {}
+// ExitEqualityExpression is called when production equalityExpression is exited.
+func (s *BaseExcellent1Listener) ExitEqualityExpression(ctx *EqualityExpressionContext) {}
 
-// EnterContextReference is called when production contextReference is entered.
-func (s *BaseExcellent1Listener) EnterContextReference(ctx *ContextReferenceContext) {}
+// EnterMultiplicationOrDivisionExpression is called when production multiplicationOrDivisionExpression is entered.
+func (s *BaseExcellent1Listener) EnterMultiplicationOrDivisionExpression(ctx *MultiplicationOrDivisionExpressionContext) {
+}
 
-// ExitContextReference is called when production contextReference is exited.
-func (s *BaseExcellent1Listener) ExitContextReference(ctx *ContextReferenceContext) {}
-
-// EnterParentheses is called when production parentheses is entered.
-func (s *BaseExcellent1Listener) EnterParentheses(ctx *ParenthesesContext) {}
-
-// ExitParentheses is called when production parentheses is exited.
-func (s *BaseExcellent1Listener) ExitParentheses(ctx *ParenthesesContext) {}
-
-// EnterNegation is called when production negation is entered.
-func (s *BaseExcellent1Listener) EnterNegation(ctx *NegationContext) {}
-
-// ExitNegation is called when production negation is exited.
-func (s *BaseExcellent1Listener) ExitNegation(ctx *NegationContext) {}
-
-// EnterComparison is called when production comparison is entered.
-func (s *BaseExcellent1Listener) EnterComparison(ctx *ComparisonContext) {}
-
-// ExitComparison is called when production comparison is exited.
-func (s *BaseExcellent1Listener) ExitComparison(ctx *ComparisonContext) {}
-
-// EnterConcatenation is called when production concatenation is entered.
-func (s *BaseExcellent1Listener) EnterConcatenation(ctx *ConcatenationContext) {}
-
-// ExitConcatenation is called when production concatenation is exited.
-func (s *BaseExcellent1Listener) ExitConcatenation(ctx *ConcatenationContext) {}
-
-// EnterMultiplicationOrDivision is called when production multiplicationOrDivision is entered.
-func (s *BaseExcellent1Listener) EnterMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) {}
-
-// ExitMultiplicationOrDivision is called when production multiplicationOrDivision is exited.
-func (s *BaseExcellent1Listener) ExitMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) {}
-
-// EnterAtomReference is called when production atomReference is entered.
-func (s *BaseExcellent1Listener) EnterAtomReference(ctx *AtomReferenceContext) {}
-
-// ExitAtomReference is called when production atomReference is exited.
-func (s *BaseExcellent1Listener) ExitAtomReference(ctx *AtomReferenceContext) {}
-
-// EnterAdditionOrSubtraction is called when production additionOrSubtraction is entered.
-func (s *BaseExcellent1Listener) EnterAdditionOrSubtraction(ctx *AdditionOrSubtractionContext) {}
-
-// ExitAdditionOrSubtraction is called when production additionOrSubtraction is exited.
-func (s *BaseExcellent1Listener) ExitAdditionOrSubtraction(ctx *AdditionOrSubtractionContext) {}
-
-// EnterEquality is called when production equality is entered.
-func (s *BaseExcellent1Listener) EnterEquality(ctx *EqualityContext) {}
-
-// ExitEquality is called when production equality is exited.
-func (s *BaseExcellent1Listener) ExitEquality(ctx *EqualityContext) {}
-
-// EnterExponent is called when production exponent is entered.
-func (s *BaseExcellent1Listener) EnterExponent(ctx *ExponentContext) {}
-
-// ExitExponent is called when production exponent is exited.
-func (s *BaseExcellent1Listener) ExitExponent(ctx *ExponentContext) {}
+// ExitMultiplicationOrDivisionExpression is called when production multiplicationOrDivisionExpression is exited.
+func (s *BaseExcellent1Listener) ExitMultiplicationOrDivisionExpression(ctx *MultiplicationOrDivisionExpressionContext) {
+}
 
 // EnterFnname is called when production fnname is entered.
 func (s *BaseExcellent1Listener) EnterFnname(ctx *FnnameContext) {}
