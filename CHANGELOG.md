@@ -1,3 +1,9 @@
+v0.33.6
+----------
+ * Ignore empty webhook headers during flow migration and validate that header namews are valid during validation
+ * ReadFlow should maintain UI.. but as raw JSON
+ * Flowrunner improvements
+
 v0.33.5
 ----------
  * Fix routing after a timeout
