@@ -255,27 +255,16 @@ func BenchmarkMigrateTemplate(b *testing.B) {
 
 type legacyVariables map[string]interface{}
 
-func (v legacyVariables) Resolve(env utils.Environment, key string) types.XValue {
-	key = strings.ToLower(key)
+// ToXValue returns a representation of this object for use in expressions
+func (v legacyVariables) ToXValue(env utils.Environment) types.XValue {
+	dict := types.NewEmptyXDict()
 	for k, val := range v {
-		if strings.ToLower(k) == key {
-			return toXType(val)
-		}
+		dict.Put(strings.ToLower(k), toXType(env, val))
 	}
-	return nil
+	return dict
 }
 
-func (v legacyVariables) Describe() string {
-	return "legacy vars"
-}
-
-func (v legacyVariables) Reduce(env utils.Environment) types.XPrimitive {
-	return toXType(v["*"]).(types.XPrimitive)
-}
-
-func (v legacyVariables) ToXJSON(env utils.Environment) types.XText { return types.NewXText("LEGACY") }
-
-func toXType(val interface{}) types.XValue {
+func toXType(env utils.Environment, val interface{}) types.XValue {
 	if utils.IsNil(val) {
 		return nil
 	}
@@ -286,7 +275,7 @@ func toXType(val interface{}) types.XValue {
 	case json.Number:
 		return types.RequireXNumberFromString(string(typed))
 	case map[string]interface{}:
-		return legacyVariables(typed)
+		return legacyVariables(typed).ToXValue(env)
 	}
 	panic(fmt.Sprintf("unsupported type: %s", reflect.TypeOf(val)))
 }
@@ -375,7 +364,7 @@ func TestLegacyTests(t *testing.T) {
 				defer utils.SetTimeSource(utils.DefaultTimeSource)
 			}
 
-			migratedVars := tc.Context.Variables.Migrate()
+			migratedVars := tc.Context.Variables.Migrate().ToXValue(env)
 			migratedVarsJSON, _ := json.Marshal(migratedVars)
 
 			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate, flows.RunContextTopLevels)
