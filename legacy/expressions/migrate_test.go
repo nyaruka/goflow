@@ -74,8 +74,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@child.age.text`, new: `@child.results.age.input`},
 		{old: `@child.age.time`, new: `@child.results.age.created_on`},
 		{old: `@child.age.value`, new: `@child.results.age.value`},
-		{old: `@child.contact`, new: `@contact`},
-		{old: `@child.contact.age`, new: `@fields.age`},
+		{old: `@child.contact`, new: `@child.contact`},
+		{old: `@child.contact.age`, new: `@child.fields.age`},
 
 		{old: `@parent.role`, new: `@parent.results.role`},
 		{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
