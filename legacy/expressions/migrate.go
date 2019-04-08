@@ -13,8 +13,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/pkg/errors"
 )
+
+// ContextTopLevels are the allowed top-level identifiers in legacy expressions, i.e. @contact.bar is valid but @foo.bar isn't
+var ContextTopLevels = []string{"channel", "child", "contact", "date", "extra", "flow", "parent", "step"}
 
 var functionReturnTypes = map[string]string{
 	"abs":                 "number",
@@ -52,10 +54,10 @@ func MigrateTemplate(template string, options *MigrateOptions) (string, error) {
 		options = defaultOptions
 	}
 
-	return migrateLegacyTemplateAsString(migrationContext, template, options)
+	return migrateLegacyTemplateAsString(template, options)
 }
 
-func migrateLegacyTemplateAsString(resolver Resolvable, template string, options *MigrateOptions) (string, error) {
+func migrateLegacyTemplateAsString(template string, options *MigrateOptions) (string, error) {
 	var buf bytes.Buffer
 	scanner := excellent.NewXScanner(strings.NewReader(template), ContextTopLevels)
 	scanner.SetUnescapeBody(false)
@@ -66,22 +68,15 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string, options
 		case excellent.BODY:
 			buf.WriteString(token)
 		case excellent.IDENTIFIER:
-			value := resolveLookup(nil, resolver, token)
-			if value == nil {
-				errors.Add(fmt.Sprintf("@%s", token), "unable to migrate variable")
-				buf.WriteString("@")
-				buf.WriteString(token)
-			} else {
-				strValue, _ := toString(value)
+			value := MigrateContextReference(token)
 
-				var errorAs string
-				if options.DefaultToSelf {
-					errorAs = "@" + token
-				}
-
-				// optionally wrap expression so that it is URL encoded or defaults to itself on error
-				buf.WriteString(wrapRawExpression(strValue, errorAs, options.URLEncode))
+			var errorAs string
+			if options.DefaultToSelf {
+				errorAs = "@" + token
 			}
+
+			// optionally wrap expression so that it is URL encoded or defaults to itself on error
+			buf.WriteString(wrapRawExpression(value, errorAs, options.URLEncode))
 
 		case excellent.EXPRESSION:
 			// special case of @("") which was a common workaround for the editor requiring a
@@ -90,22 +85,20 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string, options
 				continue
 			}
 
-			value, err := migrateExpression(nil, resolver, token)
+			value, err := migrateExpression(nil, token)
 			if err != nil {
 				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
 				buf.WriteString("@(")
 				buf.WriteString(token)
 				buf.WriteString(")")
 			} else {
-				strValue, _ := toString(value)
-
 				var errorAs string
 				if options.DefaultToSelf {
 					errorAs = "@(" + token + ")"
 				}
 
 				// optionally wrap expression so that it is URL encoded or defaults to itself on error
-				buf.WriteString(wrapRawExpression(strValue, errorAs, options.URLEncode))
+				buf.WriteString(wrapRawExpression(value, errorAs, options.URLEncode))
 			}
 		}
 	}
@@ -116,21 +109,8 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string, options
 	return buf.String(), nil
 }
 
-func toString(params interface{}) (string, error) {
-	switch typed := params.(type) {
-	case error:
-		return "", typed
-	case string:
-		return typed, nil
-	case Resolvable:
-		return typed.String(), nil
-	default:
-		panic(fmt.Sprintf("can't toString a %T %s", typed, typed))
-	}
-}
-
 // migrates an old expression into a new format expression
-func migrateExpression(env utils.Environment, resolver interface{}, expression string) (interface{}, error) {
+func migrateExpression(env utils.Environment, expression string) (string, error) {
 	errListener := excellent.NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)
@@ -147,83 +127,20 @@ func migrateExpression(env utils.Environment, resolver interface{}, expression s
 
 	// if we ran into errors parsing, return the first one
 	if len(errListener.Errors()) > 0 {
-		return nil, errListener.Errors()[0]
+		return "", errListener.Errors()[0]
 	}
 
-	visitor := newLegacyVisitor(env, resolver)
+	visitor := newLegacyVisitor(env)
 	value := visitor.Visit(tree)
 	err, isErr := value.(error)
 
 	// did our evaluation result in an error? return that
 	if isErr {
-		return nil, err
+		return "", err
 	}
 
 	// all is good, return our value
-	return value, nil
-}
-
-func resolveLookup(env utils.Environment, variable interface{}, key string) interface{} {
-	// self referencing
-	if key == "" {
-		return variable
-	}
-
-	// strip leading '.'
-	if key[0] == '.' {
-		key = key[1:]
-	}
-
-	rest := key
-	for rest != "" {
-		key, rest = popNextVariable(rest)
-
-		if utils.IsNil(variable) {
-			return errors.Errorf("%s has no property '%s'", variable, key)
-		}
-
-		resolver, isResolver := variable.(Resolvable)
-
-		// look it up in our resolver
-		if isResolver {
-			variable = resolver.Resolve(key)
-
-			_, isErr := variable.(error)
-			if isErr {
-				return variable
-			}
-
-		} else {
-			return errors.Errorf("%s has no property '%s'", variable, key)
-		}
-	}
-
-	return variable
-}
-
-// popNextVariable pops the next variable off our string:
-//     foo.bar.baz -> "foo", "bar.baz"
-//     foo.0.bar -> "foo", "0.baz"
-func popNextVariable(input string) (string, string) {
-	var keyStart = 0
-	var keyEnd = -1
-	var restStart = -1
-
-	for i, c := range input {
-		if c == '.' {
-			keyEnd = i
-			restStart = i + 1
-			break
-		}
-	}
-
-	if keyEnd == -1 {
-		return input, ""
-	}
-
-	key := strings.Trim(input[keyStart:keyEnd], "\"")
-	rest := input[restStart:]
-	return key, rest
+	return value.(string), nil
 }
 
 var functionCallRegex = regexp.MustCompile(`^(\w+)\(`)

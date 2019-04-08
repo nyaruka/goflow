@@ -18,7 +18,10 @@ func TestResults(t *testing.T) {
 	results.Save(result)
 
 	assert.Equal(t, types.NewXDict(map[string]types.XValue{
-		"beer": types.NewXText("skol!"),
+		"beer": types.NewXDict(map[string]types.XValue{
+			"category": types.NewXText("Skol"),
+			"value":    types.NewXText("skol!"),
+		}),
 	}), results.ToSimpleXDict(env))
 
 	assert.Equal(t, types.NewXDict(map[string]types.XValue{

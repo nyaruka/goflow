@@ -224,7 +224,7 @@ will be created when this action is encountered.
     "type": "add_contact_urn",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "scheme": "tel",
-    "path": "@results.phone_number"
+    "path": "@results.phone_number.value"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>

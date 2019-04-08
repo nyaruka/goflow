@@ -1,4 +1,4 @@
-// Code generated from Excellent1.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent1.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent1
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -13,8 +13,29 @@ type Excellent1Listener interface {
 	// EnterDecimalLiteral is called when entering the decimalLiteral production.
 	EnterDecimalLiteral(c *DecimalLiteralContext)
 
-	// EnterDotLookup is called when entering the dotLookup production.
-	EnterDotLookup(c *DotLookupContext)
+	// EnterParentheses is called when entering the parentheses production.
+	EnterParentheses(c *ParenthesesContext)
+
+	// EnterNegation is called when entering the negation production.
+	EnterNegation(c *NegationContext)
+
+	// EnterExponentExpression is called when entering the exponentExpression production.
+	EnterExponentExpression(c *ExponentExpressionContext)
+
+	// EnterAdditionOrSubtractionExpression is called when entering the additionOrSubtractionExpression production.
+	EnterAdditionOrSubtractionExpression(c *AdditionOrSubtractionExpressionContext)
+
+	// EnterFalse is called when entering the false production.
+	EnterFalse(c *FalseContext)
+
+	// EnterContextReference is called when entering the contextReference production.
+	EnterContextReference(c *ContextReferenceContext)
+
+	// EnterComparisonExpression is called when entering the comparisonExpression production.
+	EnterComparisonExpression(c *ComparisonExpressionContext)
+
+	// EnterConcatenation is called when entering the concatenation production.
+	EnterConcatenation(c *ConcatenationContext)
 
 	// EnterStringLiteral is called when entering the stringLiteral production.
 	EnterStringLiteral(c *StringLiteralContext)
@@ -25,38 +46,11 @@ type Excellent1Listener interface {
 	// EnterTrue is called when entering the true production.
 	EnterTrue(c *TrueContext)
 
-	// EnterFalse is called when entering the false production.
-	EnterFalse(c *FalseContext)
+	// EnterEqualityExpression is called when entering the equalityExpression production.
+	EnterEqualityExpression(c *EqualityExpressionContext)
 
-	// EnterContextReference is called when entering the contextReference production.
-	EnterContextReference(c *ContextReferenceContext)
-
-	// EnterParentheses is called when entering the parentheses production.
-	EnterParentheses(c *ParenthesesContext)
-
-	// EnterNegation is called when entering the negation production.
-	EnterNegation(c *NegationContext)
-
-	// EnterComparison is called when entering the comparison production.
-	EnterComparison(c *ComparisonContext)
-
-	// EnterConcatenation is called when entering the concatenation production.
-	EnterConcatenation(c *ConcatenationContext)
-
-	// EnterMultiplicationOrDivision is called when entering the multiplicationOrDivision production.
-	EnterMultiplicationOrDivision(c *MultiplicationOrDivisionContext)
-
-	// EnterAtomReference is called when entering the atomReference production.
-	EnterAtomReference(c *AtomReferenceContext)
-
-	// EnterAdditionOrSubtraction is called when entering the additionOrSubtraction production.
-	EnterAdditionOrSubtraction(c *AdditionOrSubtractionContext)
-
-	// EnterEquality is called when entering the equality production.
-	EnterEquality(c *EqualityContext)
-
-	// EnterExponent is called when entering the exponent production.
-	EnterExponent(c *ExponentContext)
+	// EnterMultiplicationOrDivisionExpression is called when entering the multiplicationOrDivisionExpression production.
+	EnterMultiplicationOrDivisionExpression(c *MultiplicationOrDivisionExpressionContext)
 
 	// EnterFnname is called when entering the fnname production.
 	EnterFnname(c *FnnameContext)
@@ -70,8 +64,29 @@ type Excellent1Listener interface {
 	// ExitDecimalLiteral is called when exiting the decimalLiteral production.
 	ExitDecimalLiteral(c *DecimalLiteralContext)
 
-	// ExitDotLookup is called when exiting the dotLookup production.
-	ExitDotLookup(c *DotLookupContext)
+	// ExitParentheses is called when exiting the parentheses production.
+	ExitParentheses(c *ParenthesesContext)
+
+	// ExitNegation is called when exiting the negation production.
+	ExitNegation(c *NegationContext)
+
+	// ExitExponentExpression is called when exiting the exponentExpression production.
+	ExitExponentExpression(c *ExponentExpressionContext)
+
+	// ExitAdditionOrSubtractionExpression is called when exiting the additionOrSubtractionExpression production.
+	ExitAdditionOrSubtractionExpression(c *AdditionOrSubtractionExpressionContext)
+
+	// ExitFalse is called when exiting the false production.
+	ExitFalse(c *FalseContext)
+
+	// ExitContextReference is called when exiting the contextReference production.
+	ExitContextReference(c *ContextReferenceContext)
+
+	// ExitComparisonExpression is called when exiting the comparisonExpression production.
+	ExitComparisonExpression(c *ComparisonExpressionContext)
+
+	// ExitConcatenation is called when exiting the concatenation production.
+	ExitConcatenation(c *ConcatenationContext)
 
 	// ExitStringLiteral is called when exiting the stringLiteral production.
 	ExitStringLiteral(c *StringLiteralContext)
@@ -82,38 +97,11 @@ type Excellent1Listener interface {
 	// ExitTrue is called when exiting the true production.
 	ExitTrue(c *TrueContext)
 
-	// ExitFalse is called when exiting the false production.
-	ExitFalse(c *FalseContext)
+	// ExitEqualityExpression is called when exiting the equalityExpression production.
+	ExitEqualityExpression(c *EqualityExpressionContext)
 
-	// ExitContextReference is called when exiting the contextReference production.
-	ExitContextReference(c *ContextReferenceContext)
-
-	// ExitParentheses is called when exiting the parentheses production.
-	ExitParentheses(c *ParenthesesContext)
-
-	// ExitNegation is called when exiting the negation production.
-	ExitNegation(c *NegationContext)
-
-	// ExitComparison is called when exiting the comparison production.
-	ExitComparison(c *ComparisonContext)
-
-	// ExitConcatenation is called when exiting the concatenation production.
-	ExitConcatenation(c *ConcatenationContext)
-
-	// ExitMultiplicationOrDivision is called when exiting the multiplicationOrDivision production.
-	ExitMultiplicationOrDivision(c *MultiplicationOrDivisionContext)
-
-	// ExitAtomReference is called when exiting the atomReference production.
-	ExitAtomReference(c *AtomReferenceContext)
-
-	// ExitAdditionOrSubtraction is called when exiting the additionOrSubtraction production.
-	ExitAdditionOrSubtraction(c *AdditionOrSubtractionContext)
-
-	// ExitEquality is called when exiting the equality production.
-	ExitEquality(c *EqualityContext)
-
-	// ExitExponent is called when exiting the exponent production.
-	ExitExponent(c *ExponentContext)
+	// ExitMultiplicationOrDivisionExpression is called when exiting the multiplicationOrDivisionExpression production.
+	ExitMultiplicationOrDivisionExpression(c *MultiplicationOrDivisionExpressionContext)
 
 	// ExitFnname is called when exiting the fnname production.
 	ExitFnname(c *FnnameContext)

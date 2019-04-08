@@ -1,71 +1,60 @@
 grammar Excellent1;
 
-// rebuild with % antlr4 -Dlanguage=Go Excellent1.g4 -o ../legacy/gen -package gen -visitor
+// rebuild with % antlr -Dlanguage=Go Excellent1.g4 -o ../legacy/gen -package gen -visitor
 
 import LexUnicode;
 
-COMMA      : ',';
-LPAREN     : '(';
-RPAREN     : ')';
-LBRACK     : '[';
-RBRACK     : ']';
+COMMA: ',';
+LPAREN: '(';
+RPAREN: ')';
 
-DOT        : '.';
+PLUS: '+';
+MINUS: '-';
+TIMES: '*';
+DIVIDE: '/';
+EXPONENT: '^';
 
-PLUS       : '+';
-MINUS      : '-';
-TIMES      : '*';
-DIVIDE     : '/';
-EXPONENT   : '^';
+EQ: '=';
+NEQ: '<>';
 
-EQ         : '=';
-NEQ        : '<>';
+LTE: '<=';
+LT: '<';
+GTE: '>=';
+GT: '>';
 
-LTE        : '<=';
-LT         : '<';
-GTE        : '>=';
-GT         : '>';
+AMPERSAND: '&';
 
-AMPERSAND  : '&';
+DECIMAL: [0-9]+ ('.' [0-9]+)?;
+STRING: '"' (~["] | '""')* '"';
 
-DECIMAL    : [0-9]+('.'[0-9]+)?;
-STRING     : '"' (~["] | '""')* '"';
+TRUE: [Tt][Rr][Uu][Ee];
+FALSE: [Ff][Aa][Ll][Ss][Ee];
 
-TRUE       : [Tt][Rr][Uu][Ee];
-FALSE      : [Ff][Aa][Ll][Ss][Ee];
+NAME:
+	UnicodeLetter+ (UnicodeLetter | UnicodeDigit | '_' | '.')*;
 
-NAME       : UnicodeLetter+ (UnicodeLetter | UnicodeDigit | '_')*;    // variable names, e.g. contact.name or function names, e.g. SUM
+WS: [ \t\n\r]+ -> skip; // ignore whitespace
 
-WS         : [ \t\n\r]+ -> skip;        // ignore whitespace
+ERROR: .;
 
-ERROR      : . ;
+parse: expression EOF;
 
-parse      : expression EOF;
+expression:
+	fnname LPAREN parameters? RPAREN					# functionCall
+	| MINUS expression									# negation
+	| expression EXPONENT expression					# exponentExpression
+	| expression op = (TIMES | DIVIDE) expression		# multiplicationOrDivisionExpression
+	| expression op = (PLUS | MINUS) expression			# additionOrSubtractionExpression
+	| expression op = (LTE | LT | GTE | GT) expression	# comparisonExpression
+	| expression op = (EQ | NEQ) expression				# equalityExpression
+	| expression AMPERSAND expression					# concatenation
+	| STRING											# stringLiteral
+	| DECIMAL											# decimalLiteral
+	| TRUE												# true
+	| FALSE												# false
+	| NAME												# contextReference
+	| LPAREN expression RPAREN							# parentheses;
 
-atom       : fnname LPAREN parameters? RPAREN             # functionCall
-           | atom DOT atom                                # dotLookup
-           | NAME                                         # contextReference
-           | STRING                                       # stringLiteral
-           | DECIMAL                                      # decimalLiteral
-           | TRUE                                         # true
-           | FALSE                                        # false
-           ;
+fnname: NAME | TRUE | FALSE;
 
-expression : atom                                            # atomReference
-           | MINUS expression                                # negation
-           | expression EXPONENT expression                  # exponent
-           | expression op=(TIMES | DIVIDE) expression       # multiplicationOrDivision
-           | expression op=(PLUS | MINUS) expression         # additionOrSubtraction
-           | expression op=(LTE | LT | GTE | GT) expression  # comparison
-           | expression op=(EQ | NEQ) expression             # equality
-           | expression AMPERSAND expression                 # concatenation
-           | LPAREN expression RPAREN                        # parentheses
-           ;
-
-fnname     : NAME
-           | TRUE
-           | FALSE
-           ;
-
-parameters : expression (COMMA expression)*               # functionParameters
-           ;
+parameters: expression (COMMA expression)* # functionParameters;

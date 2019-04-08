@@ -1,4 +1,4 @@
-// Code generated from Excellent1.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent1.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package gen // Excellent1
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -15,7 +15,35 @@ func (v *BaseExcellent1Visitor) VisitDecimalLiteral(ctx *DecimalLiteralContext) 
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseExcellent1Visitor) VisitDotLookup(ctx *DotLookupContext) interface{} {
+func (v *BaseExcellent1Visitor) VisitParentheses(ctx *ParenthesesContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent1Visitor) VisitNegation(ctx *NegationContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent1Visitor) VisitExponentExpression(ctx *ExponentExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent1Visitor) VisitAdditionOrSubtractionExpression(ctx *AdditionOrSubtractionExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent1Visitor) VisitFalse(ctx *FalseContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent1Visitor) VisitContextReference(ctx *ContextReferenceContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent1Visitor) VisitComparisonExpression(ctx *ComparisonExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent1Visitor) VisitConcatenation(ctx *ConcatenationContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -31,47 +59,11 @@ func (v *BaseExcellent1Visitor) VisitTrue(ctx *TrueContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseExcellent1Visitor) VisitFalse(ctx *FalseContext) interface{} {
+func (v *BaseExcellent1Visitor) VisitEqualityExpression(ctx *EqualityExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseExcellent1Visitor) VisitContextReference(ctx *ContextReferenceContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitParentheses(ctx *ParenthesesContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitNegation(ctx *NegationContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitComparison(ctx *ComparisonContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitConcatenation(ctx *ConcatenationContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitAtomReference(ctx *AtomReferenceContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitAdditionOrSubtraction(ctx *AdditionOrSubtractionContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitEquality(ctx *EqualityContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitExponent(ctx *ExponentContext) interface{} {
+func (v *BaseExcellent1Visitor) VisitMultiplicationOrDivisionExpression(ctx *MultiplicationOrDivisionExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
