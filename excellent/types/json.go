@@ -1,7 +1,6 @@
 package types
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
@@ -10,87 +9,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
-
-// XJSON is the base type for XJSONObject and XJSONArray
-type XJSON []byte
-
-func (x XJSON) ToXJSON(env utils.Environment) XText { return NewXText(string(x)) }
-
-func (x XJSON) Reduce(env utils.Environment) XPrimitive { return x.ToXJSON(env) }
-
-// String converts this type to native string
-func (x XJSON) String() string {
-	return string(x)
-}
-
-func (x XJSON) MarshalJSON() ([]byte, error) {
-	return []byte(x), nil
-}
-
-type XJSONObject struct {
-	XJSON
-}
-
-func NewXJSONObject(data []byte) XJSONObject {
-	return XJSONObject{XJSON: data}
-}
-
-// Describe returns a representation of this type for error messages
-func (x XJSONObject) Describe() string { return "json object" }
-
-func (x XJSONObject) Length() int {
-	length := 0
-	jsonparser.ObjectEach(x.XJSON, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
-		length++
-		return nil
-	})
-	return length
-}
-
-func (x XJSONObject) Resolve(env utils.Environment, key string) XValue {
-	val, valType, _, err := jsonparser.Get(x.XJSON, key)
-	if err != nil {
-		return NewXResolveError(x, key)
-	}
-
-	return jsonTypeToXValue(val, valType)
-}
-
-var _ XValue = XJSONObject{}
-var _ XLengthable = XJSONObject{}
-var _ XResolvable = XJSONObject{}
-var _ json.Marshaler = XJSONObject{}
-
-type XJSONArray struct {
-	XJSON
-}
-
-func NewXJSONArray(data []byte) XJSONArray {
-	return XJSONArray{XJSON: data}
-}
-
-// Describe returns a representation of this type for error messages
-func (x XJSONArray) Describe() string { return "json array" }
-
-func (x XJSONArray) Length() int {
-	length := 0
-	jsonparser.ArrayEach(x.XJSON, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-		length++
-	})
-	return length
-}
-
-func (x XJSONArray) Index(index int) XValue {
-	val, valType, _, err := jsonparser.Get(x.XJSON, fmt.Sprintf("[%d]", index))
-	if err != nil {
-		return NewXError(err)
-	}
-	return jsonTypeToXValue(val, valType)
-}
-
-var _ XValue = XJSONArray{}
-var _ XIndexable = XJSONArray{}
-var _ json.Marshaler = XJSONArray{}
 
 func JSONToXValue(data []byte) XValue {
 	if len(data) == 0 {
@@ -124,12 +42,29 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 			return NewXBoolean(boolVal)
 		}
 	case jsonparser.Array:
-		return NewXJSONArray(data)
+		return jsonToArray(data)
 	case jsonparser.Object:
-		return NewXJSONObject(data)
+		return jsonToDict(data)
 	}
 
 	return NewXError(errors.Errorf("unknown JSON parsing error"))
+}
+
+func jsonToDict(data []byte) XDict {
+	dict := NewEmptyXDict()
+	jsonparser.ObjectEach(data, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
+		dict.Put(string(key), jsonTypeToXValue(value, dataType))
+		return nil
+	})
+	return dict
+}
+
+func jsonToArray(data []byte) XArray {
+	array := NewXArray()
+	jsonparser.ArrayEach(data, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
+		array.Append(jsonTypeToXValue(value, dataType))
+	})
+	return array
 }
 
 // ToXJSON converts the given value to a JSON string

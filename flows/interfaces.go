@@ -252,8 +252,8 @@ type Translations interface {
 // Examples:
 //
 //   @trigger.type -> flow_action
-//   @trigger.params -> {"source": "website","address": {"state": "WA"}}
-//   @(json(trigger)) -> {"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}
+//   @trigger.params -> {address: {state: WA}, source: website}
+//   @(json(trigger)) -> {"params":{"address":{"state":"WA"},"source":"website"},"type":"flow_action"}
 //
 // @context trigger
 type Trigger interface {

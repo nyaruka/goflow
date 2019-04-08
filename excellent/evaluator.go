@@ -195,10 +195,15 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 
 	expression := toXValue(v.Visit(ctx.Expression()))
 
-	// if the resolved expression is a number, this is an array lookup
-	asNumber, isNumber := expression.(types.XNumber)
-	if isNumber {
-		return lookupIndex(v.env, context, asNumber)
+	// if left-hand side is an array, then this is an index
+	asArray, isArray := context.(types.XArray)
+	if isArray {
+		index, xerr := types.ToInteger(v.env, expression)
+		if xerr != nil {
+			return xerr
+		}
+
+		return lookupIndex(v.env, asArray, index)
 	}
 
 	// if not it is a property lookup so stringify the key
@@ -389,23 +394,18 @@ func toXValue(val interface{}) types.XValue {
 }
 
 // lookup an index on the given value
-func lookupIndex(env utils.Environment, value types.XValue, index types.XNumber) types.XValue {
+func lookupIndex(env utils.Environment, value types.XValue, index int) types.XValue {
 	indexable, isIndexable := value.(types.XIndexable)
 
 	if !isIndexable || utils.IsNil(indexable) {
 		return types.NewXErrorf("%s is not indexable", value.Describe())
 	}
 
-	indexAsInt, xerr := types.ToInteger(env, index)
-	if xerr != nil {
-		return xerr
+	if index >= indexable.Length() || index < -indexable.Length() {
+		return types.NewXErrorf("index %d out of range for %d items", index, indexable.Length())
 	}
-
-	if indexAsInt >= indexable.Length() || indexAsInt < -indexable.Length() {
-		return types.NewXErrorf("index %d out of range for %d items", indexAsInt, indexable.Length())
+	if index < 0 {
+		index += indexable.Length()
 	}
-	if indexAsInt < 0 {
-		indexAsInt += indexable.Length()
-	}
-	return indexable.Index(indexAsInt)
+	return indexable.Index(index)
 }

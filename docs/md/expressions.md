@@ -224,8 +224,8 @@ Examples:
 
 ```objectivec
 @trigger.type → flow_action
-@trigger.params → {"source": "website","address": {"state": "WA"}}
-@(json(trigger)) → {"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}
+@trigger.params → {address: {state: WA}, source: website}
+@(json(trigger)) → {"params":{"address":{"state":"WA"},"source":"website"},"type":"flow_action"}
 ```
 
 <a name="context:urn"></a>

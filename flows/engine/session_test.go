@@ -101,7 +101,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		{"@run.status", "completed", ""},
 
-		{"@trigger.params", `{"source": "website","address": {"state": "WA"}}`, ""},
+		{"@trigger.params", `{address: {state: WA}, source: website}`, ""},
 		{"@trigger.params.source", "website", ""},
 		{"@(length(trigger.params.address))", "1", ""},
 

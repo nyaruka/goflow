@@ -10,23 +10,26 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestXJSON(t *testing.T) {
-	jobj := types.JSONToXValue([]byte(`{"foo": "x", "bar": null}`)).(types.XJSONObject)
-	assert.Equal(t, `{"foo": "x", "bar": null}`, jobj.String())
-	assert.Equal(t, `json object`, jobj.Describe())
+func TestJSONToXValue(t *testing.T) {
+	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+		"foo": types.NewXText("x"),
+		"bar": nil,
+		"sub": types.NewXDict(map[string]types.XValue{
+			"x": types.NewXNumberFromInt(3),
+		}),
+	}), types.JSONToXValue([]byte(`{"foo": "x", "bar": null, "sub": {"x": 3}}`)))
 
-	jarr := types.JSONToXValue([]byte(`["one", "two", "three"]`)).(types.XJSONArray)
-	assert.Equal(t, `["one", "two", "three"]`, jarr.String())
-	assert.Equal(t, 3, jarr.Length())
-	assert.Equal(t, types.NewXText("two"), jarr.Index(1))
-	assert.True(t, types.IsXError(jarr.Index(7)))
-	assert.Equal(t, `json array`, jarr.Describe())
+	assert.Equal(t, types.NewXArray(
+		types.NewXText("foo"),
+		types.NewXNumberFromInt(123),
+		nil,
+		types.NewXArray(types.NewXNumberFromInt(2), types.NewXNumberFromInt(3)),
+	), types.JSONToXValue([]byte(`["foo", 123, null, [2, 3]]`)))
 
-	num := types.JSONToXValue([]byte(`37.27903`)).(types.XNumber)
-	assert.Equal(t, num, types.RequireXNumberFromString(`37.27903`))
+	assert.Equal(t, types.RequireXNumberFromString(`37.27903`), types.JSONToXValue([]byte(`37.27903`)))
 
-	jerr := types.JSONToXValue([]byte(`fish`)).(types.XError)
-	assert.Equal(t, `Unknown value type`, jerr.Error())
+	xerr := types.JSONToXValue([]byte(`fish`)).(types.XError)
+	assert.Equal(t, `Unknown value type`, xerr.Error())
 }
 
 func TestXJSONResolve(t *testing.T) {
@@ -60,8 +63,8 @@ func TestXJSONResolve(t *testing.T) {
 		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `j.key["key-with-dash"]`, types.NewXText("val2"), false},
 		{[]byte(`{"key": {"key with space": "val2"}}`), `j.key["key with space"]`, types.NewXText("val2"), false},
 
-		{[]byte(`{"arr": ["one", "two"]}`), "j.arr", types.NewXJSONArray([]byte(`["one", "two"]`)), false},
-		{[]byte(`{"arr": {"foo": "bar"}}`), "j.arr", types.NewXJSONObject([]byte(`{"foo": "bar"}`)), false},
+		//{[]byte(`{"arr": ["one", "two"]}`), "j.arr", types.NewXJSONArray([]byte(`["one", "two"]`)), false},
+		//{[]byte(`{"arr": {"foo": "bar"}}`), "j.arr", types.NewXJSONDict([]byte(`{"foo": "bar"}`)), false},
 
 		// resolve errors
 		{[]byte(`{"foo": "x", "bar": "one"}`), "j.zed", nil, true},

@@ -170,8 +170,8 @@
 </ul>
 <p>Examples:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb8-1" title="1">@trigger.type → flow_action</a>
-<a class="sourceLine" id="cb8-2" title="2">@trigger.params → {<span class="st">&quot;source&quot;</span>: <span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>: {<span class="st">&quot;state&quot;</span>: <span class="st">&quot;WA&quot;</span>}}</a>
-<a class="sourceLine" id="cb8-3" title="3">@(json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>}},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb8-2" title="2">@trigger.params → {address: {state: WA}, source: website}</a>
+<a class="sourceLine" id="cb8-3" title="3">@(json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>},<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre></div>
 <p><a name="context:urn"></a></p>
 <h2 id="urn">Urn</h2>
 <p>Represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3 components: scheme, path, and display (optional). For example:</p>

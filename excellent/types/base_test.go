@@ -214,7 +214,8 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asText:         "{first: Hello, second: World}",
 			asBool:         true,
 			isEmpty:        false,
-		}, {
+		},
+		/*{
 			value:          types.NewXJSONArray([]byte(`[]`)),
 			asInternalJSON: `[]`,
 			asJSON:         `[]`,
@@ -229,20 +230,21 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asBool:         true,
 			isEmpty:        false,
 		}, {
-			value:          types.NewXJSONObject([]byte(`{}`)),
+			value:          types.NewXJSONDict([]byte(`{}`)),
 			asInternalJSON: `{}`,
 			asJSON:         `{}`,
 			asText:         `{}`,
 			asBool:         false,
 			isEmpty:        false,
 		}, {
-			value:          types.NewXJSONObject([]byte(`{"foo":"World","bar":456}`)),
+			value:          types.NewXJSONDict([]byte(`{"foo":"World","bar":456}`)),
 			asInternalJSON: `{"foo":"World","bar":456}`,
 			asJSON:         `{"foo":"World","bar":456}`,
 			asText:         `{"foo":"World","bar":456}`,
 			asBool:         true,
 			isEmpty:        false,
-		}, {
+		},*/
+		{
 			value:          types.NewXError(errors.Errorf("it failed")), // once an error, always an error
 			asInternalJSON: "",
 			asJSON:         "",

@@ -54,7 +54,7 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 		return types.ToXValue(env, c.run.Session().Input())
 	case "legacy_extra":
 		c.extra.update()
-		return c.extra
+		return c.extra.ToXValue(env)
 	}
 
 	return types.NewXResolveError(c, key)
