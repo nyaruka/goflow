@@ -19,9 +19,6 @@ func NewXDateTime(value time.Time) XDateTime {
 // Describe returns a representation of this type for error messages
 func (x XDateTime) Describe() string { return "datetime" }
 
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x XDateTime) Reduce(env utils.Environment) XPrimitive { return x }
-
 // ToXText converts this type to text
 func (x XDateTime) ToXText(env utils.Environment) XText {
 	return NewXText(utils.DateTimeToISO(x.Native()))
@@ -95,7 +92,7 @@ func (x *XDateTime) UnmarshalJSON(data []byte) error {
 
 // XDateTimeZero is the zero time value
 var XDateTimeZero = NewXDateTime(utils.ZeroDateTime)
-var _ XPrimitive = XDateTimeZero
+var _ XValue = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible
 func ToXDateTime(env utils.Environment, x XValue) (XDateTime, XError) {
@@ -110,8 +107,6 @@ func ToXDateTimeWithTimeFill(env utils.Environment, x XValue) (XDateTime, XError
 // converts the given value to a time or returns an error if that isn't possible
 func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XError) {
 	if !utils.IsNil(x) {
-		x = x.Reduce(env)
-
 		switch typed := x.(type) {
 		case XError:
 			return XDateTimeZero, typed

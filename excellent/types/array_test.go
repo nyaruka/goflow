@@ -22,7 +22,6 @@ func TestXArray(t *testing.T) {
 	assert.Equal(t, types.NewXText(`["abc",123,false]`), arr1.ToXJSON(env))
 	assert.Equal(t, types.NewXText(`[abc, 123, false]`), arr1.ToXText(env))
 	assert.Equal(t, `[abc, 123, false]`, arr1.String())
-	assert.Equal(t, arr1, arr1.Reduce(utils.NewEnvironmentBuilder().Build()))
 	assert.Equal(t, "array", arr1.Describe())
 
 	// test equality

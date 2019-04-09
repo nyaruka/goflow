@@ -15,49 +15,13 @@ var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
 var xd = types.NewXDateTime
-
-type testXObject struct {
-	foo string
-	bar int
-}
-
-func NewTestXObject(foo string, bar int) *testXObject {
-	return &testXObject{foo: foo, bar: bar}
-}
-
-// Describe returns a representation of this type for error messages
-func (v *testXObject) Describe() string { return "test" }
-
-func (v *testXObject) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(v.foo) }
-
-func (v *testXObject) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "foo":
-		return types.NewXText("bar")
-	case "zed":
-		return types.NewXNumberFromInt(123)
-	case "missing":
-		return nil
-	default:
-		return types.NewXResolveError(v, key)
-	}
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (v *testXObject) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, v, "foo", "bar").ToXJSON(env)
-}
-
-var _ types.XValue = &testXObject{}
-var _ types.XResolvable = &testXObject{}
-
 var ERROR = types.NewXErrorf("any error")
 
 func TestEvaluateTemplateValue(t *testing.T) {
 	array1d := types.NewXArray(types.NewXText("a"), types.NewXText("b"), types.NewXText("c"))
 	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")))
 
-	vars := types.NewXDict(map[string]types.XValue{
+	context := types.NewXDict(map[string]types.XValue{
 		"string1": types.NewXText("foo"),
 		"string2": types.NewXText("bar"),
 		"key":     types.NewXText("four"),
@@ -198,7 +162,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	}
 
 	for _, test := range evaluateTests {
-		result, err := EvaluateTemplateValue(env, vars, test.template, vars.Keys())
+		result, err := EvaluateTemplateValue(env, context, test.template, context.Keys())
 		assert.NoError(t, err)
 
 		// don't check error equality - just check that we got an error if we expected one
@@ -224,8 +188,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		"dec2":    types.RequireXNumberFromString("2.5"),
 		"words":   types.NewXText("one two three"),
 		"array1":  types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
-		"thing":   NewTestXObject("hello", 123),
-		"err":     types.NewXError(errors.Errorf("an error")),
+		"thing": types.NewXDict(map[string]types.XValue{
+			"foo":     types.NewXText("bar"),
+			"zed":     types.NewXNumberFromInt(123),
+			"missing": nil,
+		}),
+		"err": types.NewXError(errors.Errorf("an error")),
 	})
 
 	evaluateAsStringTests := []struct {
@@ -297,7 +265,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		{`@(thing.foo)`, "bar", false},
 		{`@(thing["foo"])`, "bar", false},
-		{`@(thing["FOO"])`, "", true}, // array notation is strict about case
+		{`@(thing["FOO"])`, "bar", false}, // array notation also not case-sensitive
 		{`@(thing[lower("FOO")])`, "bar", false},
 		{`@(thing["f" & "o" & "o"])`, "bar", false},
 		{`@(thing[string1])`, "bar", false},

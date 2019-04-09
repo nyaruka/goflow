@@ -9,7 +9,7 @@ import (
 
 // XArray is an array primitive in Excellent expressions
 type XArray interface {
-	XPrimitive
+	XValue
 	XIndexable
 
 	Append(XValue)
@@ -29,9 +29,6 @@ func NewXArray(values ...XValue) XArray {
 
 // Describe returns a representation of this type for error messages
 func (a *xarray) Describe() string { return "array" }
-
-// Reduce returns the primitive version of this type (i.e. itself)
-func (a *xarray) Reduce(env utils.Environment) XPrimitive { return a }
 
 // ToXText converts this type to text
 func (a *xarray) ToXText(env utils.Environment) XText {
@@ -92,8 +89,6 @@ var _ json.Marshaler = (*xarray)(nil)
 
 // ToXArray converts the given value to an array
 func ToXArray(env utils.Environment, x XValue) (XArray, XError) {
-	x = Reduce(env, x)
-
 	if utils.IsNil(x) {
 		return XArrayEmpty, nil
 	}

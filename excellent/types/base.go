@@ -9,18 +9,12 @@ import (
 
 // XValue is the base interface of all Excellent types
 type XValue interface {
-	Describe() string
-	ToXJSON(env utils.Environment) XText
-	Reduce(env utils.Environment) XPrimitive
-}
-
-// XPrimitive is the base interface of all Excellent primitive types
-type XPrimitive interface {
-	XValue
 	fmt.Stringer
 
+	Describe() string
 	ToXText(env utils.Environment) XText
 	ToXBoolean(env utils.Environment) XBoolean
+	ToXJSON(env utils.Environment) XText
 }
 
 // XResolvable is the interface for types which can be keyed into, e.g. foo.bar
@@ -59,9 +53,6 @@ func Equals(env utils.Environment, x1 XValue, x2 XValue) bool {
 		return false
 	}
 
-	x1 = x1.Reduce(env)
-	x2 = x2.Reduce(env)
-
 	// different types aren't equal
 	if reflect.TypeOf(x1) != reflect.TypeOf(x2) {
 		return false
@@ -99,13 +90,6 @@ func IsEmpty(x XValue) bool {
 	}
 
 	return false
-}
-
-func Reduce(env utils.Environment, x XValue) XPrimitive {
-	if utils.IsNil(x) {
-		return nil
-	}
-	return x.Reduce(env)
 }
 
 // Describe returns a representation of the given value for use in error messages

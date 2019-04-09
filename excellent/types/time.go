@@ -17,9 +17,6 @@ func NewXTime(value utils.TimeOfDay) XTime {
 // Describe returns a representation of this type for error messages
 func (x XTime) Describe() string { return "time" }
 
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x XTime) Reduce(env utils.Environment) XPrimitive { return x }
-
 // ToXText converts this type to text
 func (x XTime) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
 
@@ -51,13 +48,11 @@ func (x XTime) Compare(other XTime) int {
 
 // XTimeZero is the zero time value
 var XTimeZero = NewXTime(utils.ZeroTimeOfDay)
-var _ XPrimitive = XTimeZero
+var _ XValue = XTimeZero
 
 // ToXTime converts the given value to a time or returns an error if that isn't possible
 func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
 	if !utils.IsNil(x) {
-		x = x.Reduce(env)
-
 		switch typed := x.(type) {
 		case XError:
 			return XTimeZero, typed

@@ -9,7 +9,7 @@ import (
 // XError is an error
 type XError interface {
 	error
-	XPrimitive
+	XValue
 	Equals(XError) bool
 }
 
@@ -35,9 +35,6 @@ func NewXResolveError(resolvable XResolvable, key string) XError {
 
 // Describe returns a representation of this type for error messages
 func (x xerror) Describe() string { return "error" }
-
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x xerror) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
 func (x xerror) ToXText(env utils.Environment) XText { return NewXText(x.Native().Error()) }

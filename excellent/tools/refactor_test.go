@@ -11,30 +11,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type testXObject struct {
-	bar types.XNumber
-}
-
-func newTestXObject(bar int) *testXObject {
-	return &testXObject{bar: types.NewXNumberFromInt(bar)}
-}
-
-// Describe returns a representation of this type for error messages
-func (v *testXObject) Describe() string { return "test" }
-
-func (v *testXObject) Reduce(env utils.Environment) types.XPrimitive { return v.bar }
-
-func (v *testXObject) Resolve(env utils.Environment, key string) types.XValue {
-	return v.bar
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (v *testXObject) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, v, "bar").ToXJSON(env)
-}
-
-var _ types.XValue = &testXObject{}
-
 func TestRefactorTemplate(t *testing.T) {
 	testCases := []struct {
 		template   string
@@ -59,8 +35,10 @@ func TestRefactorTemplate(t *testing.T) {
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
-	vars := types.NewXDict(map[string]types.XValue{
-		"foo": newTestXObject(123),
+	context := types.NewXDict(map[string]types.XValue{
+		"foo": types.NewXDict(map[string]types.XValue{
+			"bar": types.NewXNumberFromInt(123),
+		}),
 	})
 	topLevels := []string{"foo"}
 
@@ -75,8 +53,8 @@ func TestRefactorTemplate(t *testing.T) {
 			assert.NoError(t, err, "unexpected error for template: %s, err: %s", tc.template, err)
 
 			// test that the original and the refactored template evaluate equally
-			originalValue, _ := excellent.EvaluateTemplate(env, vars, tc.template, topLevels)
-			refactoredValue, _ := excellent.EvaluateTemplate(env, vars, actual, topLevels)
+			originalValue, _ := excellent.EvaluateTemplate(env, context, tc.template, topLevels)
+			refactoredValue, _ := excellent.EvaluateTemplate(env, context, actual, topLevels)
 
 			assert.Equal(t, originalValue, refactoredValue, "refactoring of template %s gives different value: %s", tc.template, refactoredValue)
 		}

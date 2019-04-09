@@ -29,7 +29,6 @@ func TestXDict(t *testing.T) {
 	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), dict.ToXText(env))
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), dict.ToXJSON(env))
 	assert.Equal(t, "{bar: 123, foo: abc, zed: false}", dict.String())
-	assert.Equal(t, dict, dict.Reduce(utils.NewEnvironmentBuilder().Build()))
 	assert.Equal(t, "dict", dict.Describe())
 
 	// test equality

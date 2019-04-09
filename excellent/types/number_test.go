@@ -56,8 +56,6 @@ func TestToXNumberAndInteger(t *testing.T) {
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), 123, false},
 		{types.NewXText("15.5"), types.RequireXNumberFromString("15.5"), 15, false},
 		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true}, // out of int range
-		{NewTestXObject("Hello", 123), types.XNumberZero, 0, true},
-		{NewTestXObject("123.45000", 123), types.RequireXNumberFromString("123.45"), 123, false},
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()

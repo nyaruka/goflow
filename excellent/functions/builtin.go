@@ -1838,13 +1838,6 @@ func Length(env utils.Environment, value types.XValue) types.XValue {
 		return types.NewXNumberFromInt(lengthable.Length())
 	}
 
-	// or reduceable to something with length
-	value = types.Reduce(env, value)
-	lengthable, isLengthable = value.(types.XLengthable)
-	if isLengthable {
-		return types.NewXNumberFromInt(lengthable.Length())
-	}
-
 	return types.NewXErrorf("value doesn't have length")
 }
 

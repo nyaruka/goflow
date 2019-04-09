@@ -11,7 +11,7 @@ import (
 
 // XDict is a map primitive in Excellent expressions
 type XDict interface {
-	XPrimitive
+	XValue
 	XResolvable
 	XLengthable
 
@@ -40,9 +40,6 @@ func NewEmptyXDict() XDict {
 
 // Describe returns a representation of this type for error messages
 func (x *xdict) Describe() string { return "dict" }
-
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x *xdict) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
 func (x *xdict) ToXText(env utils.Environment) XText {
@@ -128,8 +125,6 @@ var _ json.Marshaler = (*xdict)(nil)
 
 // ToXDict converts the given value to a dict
 func ToXDict(env utils.Environment, x XValue) (XDict, XError) {
-	x = Unlazy(env, x)
-
 	if utils.IsNil(x) {
 		return XDictEmpty, nil
 	}

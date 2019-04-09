@@ -10,9 +10,6 @@ type XFunction func(env utils.Environment, args ...XValue) XValue
 // Describe returns a representation of this type for error messages
 func (x XFunction) Describe() string { return x.String() }
 
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x XFunction) Reduce(env utils.Environment) XPrimitive { return x }
-
 // ToXText converts this type to text
 func (x XFunction) ToXText(env utils.Environment) XText {
 	return NewXText(x.String())
@@ -27,4 +24,4 @@ func (x XFunction) ToXJSON(env utils.Environment) XText { return MustMarshalToXT
 // String returns the native string representation of this type
 func (x XFunction) String() string { return "function" }
 
-var _ XPrimitive = XFunction(nil)
+var _ XValue = XFunction(nil)

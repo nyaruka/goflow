@@ -13,7 +13,6 @@ import (
 
 func TestXTime(t *testing.T) {
 	t1 := types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0))
-	assert.Equal(t, t1, t1.Reduce(utils.NewEnvironmentBuilder().Build()))
 	assert.Equal(t, `time`, t1.Describe())
 	assert.Equal(t, `17:01:30.000000`, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).String())
 
@@ -43,8 +42,6 @@ func TestToXTime(t *testing.T) {
 		{types.NewXText("10"), types.NewXTime(utils.NewTimeOfDay(10, 0, 0, 0)), false},
 		{types.NewXText("10 PM"), types.NewXTime(utils.NewTimeOfDay(22, 0, 0, 0)), false},
 		{types.NewXText("wha?"), types.XTimeZero, true},
-		{NewTestXObject("Hello", 123), types.XTimeZero, true},
-		{NewTestXObject("10:30:24", 123), types.NewXTime(utils.NewTimeOfDay(10, 30, 24, 0)), false},
 		{types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)), types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)), false},
 		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)), false},
 	}

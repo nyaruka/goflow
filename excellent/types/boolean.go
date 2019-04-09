@@ -20,9 +20,6 @@ func NewXBoolean(value bool) XBoolean {
 // Describe returns a representation of this type for error messages
 func (x XBoolean) Describe() string { return strconv.FormatBool(x.Native()) }
 
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x XBoolean) Reduce(env utils.Environment) XPrimitive { return x }
-
 // ToXText converts this type to text
 func (x XBoolean) ToXText(env utils.Environment) XText {
 	return NewXText(strconv.FormatBool(x.Native()))
@@ -73,7 +70,7 @@ var XBooleanFalse = NewXBoolean(false)
 // XBooleanTrue is the true boolean value
 var XBooleanTrue = NewXBoolean(true)
 
-var _ XPrimitive = XBooleanFalse
+var _ XValue = XBooleanFalse
 
 // ToXBoolean converts the given value to a boolean
 func ToXBoolean(env utils.Environment, x XValue) (XBoolean, XError) {
@@ -84,15 +81,5 @@ func ToXBoolean(env utils.Environment, x XValue) (XBoolean, XError) {
 		return XBooleanFalse, x.(XError)
 	}
 
-	primitive, isPrimitive := x.(XPrimitive)
-	if isPrimitive {
-		return primitive.ToXBoolean(env), nil
-	}
-
-	lengthable, isLengthable := x.(XLengthable)
-	if isLengthable {
-		return NewXBoolean(lengthable.Length() > 0), nil
-	}
-
-	return ToXBoolean(env, x.Reduce(env))
+	return x.ToXBoolean(env), nil
 }

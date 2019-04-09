@@ -12,54 +12,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type testXObject struct {
-	foo string
-	bar int
-}
-
-func NewTestXObject(foo string, bar int) *testXObject {
-	return &testXObject{foo: foo, bar: bar}
-}
-
-func (v *testXObject) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "foo":
-		return types.NewXText(v.foo)
-	case "bar":
-		return types.NewXNumberFromInt(v.bar)
-	}
-	return types.NewXResolveError(v, key)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (v *testXObject) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, v, "foo", "bar").ToXJSON(env)
-}
-
-// MarshalJSON converts this type to its internal JSON representation which can differ from ToJSON
-func (v *testXObject) MarshalJSON() ([]byte, error) {
-	e := struct {
-		Foo string `json:"foo"`
-	}{
-		Foo: v.foo,
-	}
-	return utils.JSONMarshal(e)
-}
-
-// Describe returns a representation of this type for error messages
-func (v *testXObject) Describe() string { return "test" }
-
-func (v *testXObject) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(v.foo) }
-
-var _ types.XValue = &testXObject{}
-var _ types.XResolvable = &testXObject{}
-
 func TestXValueRequiredConversions(t *testing.T) {
 	chi, err := time.LoadLocation("America/Chicago")
 	require.NoError(t, err)
 
 	date1 := time.Date(2017, 6, 23, 15, 30, 0, 0, time.UTC)
 	date2 := time.Date(2017, 7, 18, 15, 30, 0, 0, chi)
+	dict1 := types.NewXDict(map[string]types.XValue{
+		"foo": types.NewXText("Hello"),
+		"bar": types.NewXNumberFromInt(123),
+	})
+	dict2 := types.NewXDict(map[string]types.XValue{
+		"foo": types.NewXText("World"),
+		"bar": types.NewXNumberFromInt(456),
+	})
 
 	env := utils.NewEnvironmentBuilder().Build()
 
@@ -177,24 +143,10 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asBool:         true,
 			isEmpty:        false,
 		}, {
-			value:          NewTestXObject("Hello", 123),
-			asInternalJSON: `{"foo":"Hello"}`,
-			asJSON:         `{"bar":123,"foo":"Hello"}`,
-			asText:         "Hello",
-			asBool:         true,
-			isEmpty:        false,
-		}, {
-			value:          NewTestXObject("", 123),
-			asInternalJSON: `{"foo":""}`,
-			asJSON:         `{"bar":123,"foo":""}`,
-			asText:         "",
-			asBool:         false, // because it reduces to a string which itself is false
-			isEmpty:        false,
-		}, {
-			value:          types.NewXArray(NewTestXObject("Hello", 123), NewTestXObject("World", 456)),
-			asInternalJSON: `[{"foo":"Hello"},{"foo":"World"}]`,
+			value:          types.NewXArray(dict1, dict2),
+			asInternalJSON: `[{"bar":123,"foo":"Hello"},{"bar":456,"foo":"World"}]`,
 			asJSON:         `[{"bar":123,"foo":"Hello"},{"bar":456,"foo":"World"}]`,
-			asText:         `[Hello, World]`,
+			asText:         `[{bar: 123, foo: Hello}, {bar: 456, foo: World}]`,
 			asBool:         true,
 			isEmpty:        false,
 		}, {
@@ -205,46 +157,13 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asBool:         false,
 			isEmpty:        true,
 		}, {
-			value: types.NewXDict(map[string]types.XValue{
-				"first":  NewTestXObject("Hello", 123),
-				"second": NewTestXObject("World", 456),
-			}),
-			asInternalJSON: `{"first":{"foo":"Hello"},"second":{"foo":"World"}}`,
+			value:          types.NewXDict(map[string]types.XValue{"first": dict1, "second": dict2}),
+			asInternalJSON: `{"first":{"bar":123,"foo":"Hello"},"second":{"bar":456,"foo":"World"}}`,
 			asJSON:         `{"first":{"bar":123,"foo":"Hello"},"second":{"bar":456,"foo":"World"}}`,
-			asText:         "{first: Hello, second: World}",
-			asBool:         true,
-			isEmpty:        false,
-		},
-		/*{
-			value:          types.NewXJSONArray([]byte(`[]`)),
-			asInternalJSON: `[]`,
-			asJSON:         `[]`,
-			asText:         `[]`,
-			asBool:         false,
-			isEmpty:        false,
-		}, {
-			value:          types.NewXJSONArray([]byte(`[5,     "x"]`)),
-			asInternalJSON: `[5,"x"]`,
-			asJSON:         `[5,     "x"]`,
-			asText:         `[5,     "x"]`,
+			asText:         `{first: {bar: 123, foo: Hello}, second: {bar: 456, foo: World}}`,
 			asBool:         true,
 			isEmpty:        false,
 		}, {
-			value:          types.NewXJSONDict([]byte(`{}`)),
-			asInternalJSON: `{}`,
-			asJSON:         `{}`,
-			asText:         `{}`,
-			asBool:         false,
-			isEmpty:        false,
-		}, {
-			value:          types.NewXJSONDict([]byte(`{"foo":"World","bar":456}`)),
-			asInternalJSON: `{"foo":"World","bar":456}`,
-			asJSON:         `{"foo":"World","bar":456}`,
-			asText:         `{"foo":"World","bar":456}`,
-			asBool:         true,
-			isEmpty:        false,
-		},*/
-		{
 			value:          types.NewXError(errors.Errorf("it failed")), // once an error, always an error
 			asInternalJSON: "",
 			asJSON:         "",
@@ -286,8 +205,6 @@ func TestEquals(t *testing.T) {
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(124), false},
 		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), true},
 		{types.NewXDateTime(time.Date(2019, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
-		{NewTestXObject("Hello", 123), NewTestXObject("Hello", 123), true},
-		{NewTestXObject("Hello", 456), NewTestXObject("Hello", 123), true},
 	}
 
 	for _, test := range tests {
@@ -305,11 +222,4 @@ func TestIsEmpty(t *testing.T) {
 	assert.False(t, types.IsEmpty(types.XBooleanTrue))
 	assert.False(t, types.IsEmpty(types.NewXNumberFromInt(0)))
 	assert.False(t, types.IsEmpty(types.NewXNumberFromInt(123)))
-}
-
-func TestReduce(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
-
-	assert.Nil(t, types.Reduce(env, nil))
-	assert.Equal(t, types.NewXText("Hello"), types.Reduce(env, NewTestXObject("Hello", 123)))
 }

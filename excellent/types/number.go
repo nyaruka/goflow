@@ -40,9 +40,6 @@ func RequireXNumberFromString(value string) XNumber {
 // Describe returns a representation of this type for error messages
 func (x XNumber) Describe() string { return x.ToXText(nil).Native() }
 
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x XNumber) Reduce(env utils.Environment) XPrimitive { return x }
-
 // ToXText converts this type to text
 func (x XNumber) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
 
@@ -83,13 +80,11 @@ func (x *XNumber) UnmarshalJSON(data []byte) error {
 
 // XNumberZero is the zero number value
 var XNumberZero = NewXNumber(decimal.Zero)
-var _ XPrimitive = XNumberZero
+var _ XValue = XNumberZero
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
 func ToXNumber(env utils.Environment, x XValue) (XNumber, XError) {
 	if !utils.IsNil(x) {
-		x = x.Reduce(env)
-
 		switch typed := x.(type) {
 		case XError:
 			return XNumberZero, typed
