@@ -234,14 +234,14 @@ func (r *flowRun) ToXValue(env utils.Environment) types.XValue {
 func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
 	context := r.Context(r.Environment())
 
-	return excellent.EvaluateTemplateValue(r.Environment(), context, template, flows.RunContextTopLevels)
+	return excellent.EvaluateTemplateValue(r.Environment(), context, template)
 }
 
 // EvaluateTemplateAsString evaluates the given template as a string in the context of this run
 func (r *flowRun) EvaluateTemplate(template string) (string, error) {
 	context := r.Context(r.Environment())
 
-	return excellent.EvaluateTemplate(r.Environment(), context, template, flows.RunContextTopLevels)
+	return excellent.EvaluateTemplate(r.Environment(), context, template)
 }
 
 // get the ordered list of languages to be used for localization in this run

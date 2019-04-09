@@ -12,7 +12,6 @@ import (
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -281,7 +280,10 @@ func toXType(env utils.Environment, val interface{}) types.XValue {
 }
 
 func (v legacyVariables) Migrate() legacyVariables {
-	migrated := make(map[string]interface{})
+	migrated := map[string]interface{}{
+		"fields":  map[string]interface{}{},
+		"results": map[string]interface{}{},
+	}
 
 	for key, val := range v {
 		key = strings.ToLower(key)
@@ -367,7 +369,7 @@ func TestLegacyTests(t *testing.T) {
 			migratedVars := tc.Context.Variables.Migrate().Context(env)
 			migratedVarsJSON, _ := json.Marshal(migratedVars)
 
-			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate, flows.RunContextTopLevels)
+			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate)
 
 			if len(tc.Errors) > 0 {
 				assert.Error(t, err, "expecting error evaluating template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)

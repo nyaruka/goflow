@@ -13,10 +13,10 @@ import (
 )
 
 // EvaluateTemplate evaluates the passed in template
-func EvaluateTemplate(env utils.Environment, context *types.XDict, template string, allowedTopLevels []string) (string, error) {
+func EvaluateTemplate(env utils.Environment, context *types.XDict, template string) (string, error) {
 	var buf strings.Builder
 
-	err := VisitTemplate(template, allowedTopLevels, func(tokenType XTokenType, token string) error {
+	err := VisitTemplate(template, context.Keys(), func(tokenType XTokenType, token string) error {
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
@@ -41,9 +41,9 @@ func EvaluateTemplate(env utils.Environment, context *types.XDict, template stri
 // EvaluateTemplateValue is equivalent to EvaluateTemplate except in the case where the template contains
 // a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In these cases we return
 // the typed value from EvaluateExpression instead of stringifying the result.
-func EvaluateTemplateValue(env utils.Environment, context *types.XDict, template string, allowedTopLevels []string) (types.XValue, error) {
+func EvaluateTemplateValue(env utils.Environment, context *types.XDict, template string) (types.XValue, error) {
 	template = strings.TrimSpace(template)
-	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
+	scanner := NewXScanner(strings.NewReader(template), context.Keys())
 
 	// parse our first token
 	tokenType, token := scanner.Scan()
@@ -60,7 +60,7 @@ func EvaluateTemplateValue(env utils.Environment, context *types.XDict, template
 	}
 
 	// otherwise fallback to full template evaluation
-	asStr, err := EvaluateTemplate(env, context, template, allowedTopLevels)
+	asStr, err := EvaluateTemplate(env, context, template)
 	return types.NewXText(asStr), err
 }
 

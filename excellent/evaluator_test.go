@@ -162,7 +162,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	}
 
 	for _, test := range evaluateTests {
-		result, err := EvaluateTemplateValue(env, context, test.template, context.Keys())
+		result, err := EvaluateTemplateValue(env, context, test.template)
 		assert.NoError(t, err)
 
 		// don't check error equality - just check that we got an error if we expected one
@@ -283,7 +283,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			}
 		}()
 
-		eval, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
+		eval, err := EvaluateTemplate(env, vars, test.template)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
@@ -337,7 +337,7 @@ func TestEvaluationErrors(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
 	for _, tc := range errorTests {
-		result, err := EvaluateTemplate(env, vars, tc.template, vars.Keys())
+		result, err := EvaluateTemplate(env, vars, tc.template)
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
 
@@ -355,7 +355,7 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 		env := utils.NewEnvironmentBuilder().Build()
 
 		for _, tc := range errorTests {
-			EvaluateTemplate(env, vars, tc.template, vars.Keys())
+			EvaluateTemplate(env, vars, tc.template)
 		}
 	}
 }

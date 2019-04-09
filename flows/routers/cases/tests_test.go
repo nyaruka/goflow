@@ -307,7 +307,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	env := utils.NewEnvironmentBuilder().Build()
 	for _, test := range evalTests {
-		eval, err := excellent.EvaluateTemplate(env, vars, test.template, vars.Keys())
+		eval, err := excellent.EvaluateTemplate(env, vars, test.template)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
