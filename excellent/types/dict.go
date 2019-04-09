@@ -91,11 +91,6 @@ func (x *XDict) Get(key string) (XValue, bool) {
 	return nil, false
 }
 
-// Put adds the given item to this dict
-func (x *XDict) Put(key string, value XValue) {
-	x.values[key] = value
-}
-
 // Keys returns the keys of this dict
 func (x *XDict) Keys() []string {
 	keys := make([]string, 0, len(x.values))
@@ -108,7 +103,9 @@ func (x *XDict) Keys() []string {
 // String returns the native string representation of this type
 func (x *XDict) String() string { return x.ToXText(nil).Native() }
 
+// XDictEmpty is the empty dict
 var XDictEmpty = NewEmptyXDict()
+
 var _ json.Marshaler = (*XDict)(nil)
 
 // ToXDict converts the given value to a dict

@@ -99,21 +99,23 @@ func (r Results) Get(key string) *Result {
 
 // ToXValue returns a representation of this object for use in expressions
 func (r Results) ToXValue(env utils.Environment) types.XValue {
-	results := types.NewEmptyXDict()
+	entries := make(map[string]types.XValue, len(r))
+
 	for k, v := range r {
-		results.Put(k, v.ToXValue(env))
+		entries[k] = v.ToXValue(env)
 	}
-	return results
+	return types.NewXDict(entries)
 }
 
 // ToSimpleXDict returns a simplifed representation of this object for use in expressions
 func (r Results) ToSimpleXDict(env utils.Environment) *types.XDict {
-	results := types.NewEmptyXDict()
+	entries := make(map[string]types.XValue, len(r))
+
 	for k, v := range r {
-		results.Put(k, types.NewXDict(map[string]types.XValue{
+		entries[k] = types.NewXDict(map[string]types.XValue{
 			"value":    types.NewXText(v.Value),
 			"category": types.NewXText(v.Category),
-		}))
+		})
 	}
-	return results
+	return types.NewXDict(entries)
 }

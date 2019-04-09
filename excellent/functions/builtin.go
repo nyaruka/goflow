@@ -391,12 +391,12 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 //
 // @function split(text, delimiters)
 func Split(env utils.Environment, text types.XText, delimiters types.XText) types.XValue {
-	splits := types.NewXArray()
+	splits := make([]types.XValue, 0)
 	allSplits := utils.TokenizeStringByChars(text.Native(), delimiters.Native())
 	for i := range allSplits {
-		splits.Append(types.NewXText(allSplits[i]))
+		splits = append(splits, types.NewXText(allSplits[i]))
 	}
-	return splits
+	return types.NewXArray(splits...)
 }
 
 // Join joins the given `array` of strings with `separator` to make text.
@@ -1903,13 +1903,13 @@ func ExtractDict(env utils.Environment, args ...types.XValue) types.XValue {
 		properties = append(properties, asText.Native())
 	}
 
-	result := types.NewEmptyXDict()
+	result := make(map[string]types.XValue, len(properties))
 	for _, prop := range properties {
 		value, _ := dict.Get(prop)
-		result.Put(prop, value)
+		result[prop] = value
 	}
 
-	return result
+	return types.NewXDict(result)
 }
 
 // ForEach takes an array of objects and returns a new array by applying the given function to each item.
@@ -1933,7 +1933,7 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 
 	otherArgs := args[2:]
 
-	result := types.NewXArray()
+	result := make([]types.XValue, array.Length())
 
 	for i := 0; i < array.Length(); i++ {
 		oldItem := array.Get(i)
@@ -1943,10 +1943,10 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 		if types.IsXError(newItem) {
 			return newItem
 		}
-		result.Append(newItem)
+		result[i] = newItem
 	}
 
-	return result
+	return types.NewXArray(result...)
 }
 
 // LegacyAdd simulates our old + operator, which operated differently based on whether

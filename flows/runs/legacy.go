@@ -20,12 +20,12 @@ func legacyExtraKey(key string) string {
 }
 
 type legacyExtra struct {
-	dict *types.XDict
+	values map[string]types.XValue
 }
 
 // creates a new legacy extra which will be lazily initialized on first call to .update()
 func newLegacyExtra(run flows.FlowRun) *legacyExtra {
-	e := &legacyExtra{dict: types.NewEmptyXDict()}
+	e := &legacyExtra{values: make(map[string]types.XValue)}
 
 	// if trigger params is a JSON object, we include it in @extra
 	triggerParams := run.Session().Trigger().Params()
@@ -46,7 +46,7 @@ func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 }
 
 func (e *legacyExtra) ToXValue(env utils.Environment) types.XValue {
-	return e.dict
+	return types.NewXDict(e.values)
 }
 
 func (e *legacyExtra) addResults(results flows.Results) {
@@ -70,7 +70,7 @@ func (e *legacyExtra) addResult(result *flows.Result) {
 		return
 	}
 
-	e.dict.Put(utils.Snakify(result.Name), types.NewXText(string(result.Extra)))
+	e.values[utils.Snakify(result.Name)] = types.NewXText(string(result.Extra))
 
 	values := types.JSONToXValue(result.Extra)
 	e.addValues(values)
@@ -81,7 +81,7 @@ func (e *legacyExtra) addValues(values types.XValue) {
 	case *types.XDict:
 		for _, key := range typed.Keys() {
 			value, _ := typed.Get(key)
-			e.dict.Put(legacyExtraKey(key), value)
+			e.values[legacyExtraKey(key)] = value
 		}
 	case *types.XArray:
 		e.addValues(arrayToDict(typed))

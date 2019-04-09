@@ -44,9 +44,10 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 
 // ToXValue returns a representation of this object for use in expressions
 func (i *MsgInput) ToXValue(env utils.Environment) types.XValue {
-	attachments := types.NewXArray()
-	for _, attachment := range i.attachments {
-		attachments.Append(types.NewXText(string(attachment)))
+	attachments := make([]types.XValue, len(i.attachments))
+
+	for a, attachment := range i.attachments {
+		attachments[a] = types.NewXText(string(attachment))
 	}
 
 	return types.NewXDict(map[string]types.XValue{
@@ -56,7 +57,7 @@ func (i *MsgInput) ToXValue(env utils.Environment) types.XValue {
 		"channel":     types.ToXValue(env, i.channel),
 		"urn":         types.ToXValue(env, i.urn),
 		"text":        types.NewXText(i.text),
-		"attachments": attachments,
+		"attachments": types.NewXArray(attachments...),
 	})
 }
 

@@ -256,11 +256,12 @@ func BenchmarkMigrateTemplate(b *testing.B) {
 type legacyVariables map[string]interface{}
 
 func (v legacyVariables) Context(env utils.Environment) *types.XDict {
-	dict := types.NewEmptyXDict()
+	entries := make(map[string]types.XValue, len(v))
+
 	for k, val := range v {
-		dict.Put(strings.ToLower(k), toXType(env, val))
+		entries[strings.ToLower(k)] = toXType(env, val)
 	}
-	return dict
+	return types.NewXDict(entries)
 }
 
 func toXType(env utils.Environment, val interface{}) types.XValue {

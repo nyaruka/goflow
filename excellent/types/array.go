@@ -70,15 +70,12 @@ func (a *XArray) Length() int {
 	return len(a.values)
 }
 
-// Append adds the given item to this array
-func (a *XArray) Append(value XValue) {
-	a.values = append(a.values, value)
-}
-
 // String returns the native string representation of this type
 func (a *XArray) String() string { return a.ToXText(nil).Native() }
 
+// XArrayEmpty is the empty array
 var XArrayEmpty = NewXArray()
+
 var _ json.Marshaler = (*XArray)(nil)
 
 // ToXArray converts the given value to an array

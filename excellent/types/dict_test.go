@@ -15,13 +15,10 @@ func TestXDict(t *testing.T) {
 	dict := types.NewXDict(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
 		"bar": types.NewXNumberFromInt(123),
+		"zed": types.XBooleanFalse,
 	})
-	assert.Equal(t, 2, dict.Length())
-	assert.ElementsMatch(t, []string{"foo", "bar"}, dict.Keys())
-
-	dict.Put("zed", types.XBooleanFalse)
-
 	assert.Equal(t, 3, dict.Length())
+	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, dict.Keys())
 
 	val, exists := dict.Get("foo")
 	assert.True(t, exists)

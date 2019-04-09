@@ -51,20 +51,22 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 }
 
 func jsonToDict(data []byte) *XDict {
-	dict := NewEmptyXDict()
+	entries := make(map[string]XValue, 0)
+
 	jsonparser.ObjectEach(data, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
-		dict.Put(string(key), jsonTypeToXValue(value, dataType))
+		entries[string(key)] = jsonTypeToXValue(value, dataType)
 		return nil
 	})
-	return dict
+	return NewXDict(entries)
 }
 
 func jsonToArray(data []byte) *XArray {
-	array := NewXArray()
+	items := make([]XValue, 0)
+
 	jsonparser.ArrayEach(data, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-		array.Append(jsonTypeToXValue(value, dataType))
+		items = append(items, jsonTypeToXValue(value, dataType))
 	})
-	return array
+	return NewXArray(items...)
 }
 
 // ToXJSON converts the given value to a JSON string
