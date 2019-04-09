@@ -57,6 +57,7 @@ var testTests = []struct {
 	{"has_any_word", []types.XValue{xs("this.is.my.βήτα"), xs("βήτα")}, result(xs("βήτα"))},
 	{"has_any_word", []types.XValue{xs("I say to you📴"), xs("📴")}, result(xs("📴"))},
 	{"has_any_word", []types.XValue{xs("this World too"), xs("world")}, result(xs("World"))},
+	{"has_any_word", []types.XValue{xs("I don't like it"), xs("don't dont")}, result(xs("don't"))},
 	{"has_any_word", []types.XValue{xs("BUT not this one"), xs("world")}, nil},
 	{"has_any_word", []types.XValue{xs(""), xs("world")}, nil},
 	{"has_any_word", []types.XValue{xs("world"), xs("foo")}, nil},

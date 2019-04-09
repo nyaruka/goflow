@@ -20,7 +20,7 @@
         "legacy_test": {
             "type": "contains",
             "test": {
-                "eng": "yes yeah @contact.affirmative",
+                "eng": "yes yeah y'up @contact.affirmative",
                 "fra": "oui @contact.affirmative"
             }
         },
@@ -28,7 +28,7 @@
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
             "type": "has_all_words",
             "arguments": [
-                "yes yeah @fields.affirmative"
+                "yes yeah y'up @fields.affirmative"
             ],
             "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
         },
