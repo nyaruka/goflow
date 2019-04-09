@@ -311,7 +311,7 @@ var errorTests = []struct {
 	{`@("abc".v)`, `error evaluating @("abc".v): "abc" has no property 'v'`},
 	{`@(False.g)`, `error evaluating @(False.g): false has no property 'g'`},
 	{`@(1.1.0)`, `error evaluating @(1.1.0): 1.1 has no property '0'`},
-	{`@(hello)`, `error evaluating @(hello): dict has no property 'hello'`}, // this context is a map
+	{`@(hello)`, `error evaluating @(hello): context has no property 'hello'`},
 	{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
 	{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},
 	{`@(array(1, 2)[5])`, `error evaluating @(array(1, 2)[5]): index 5 out of range for 2 items`},

@@ -22,9 +22,14 @@ func TestXDict(t *testing.T) {
 	dict.Put("zed", types.XBooleanFalse)
 
 	assert.Equal(t, 3, dict.Length())
-	assert.Equal(t, types.XBooleanFalse, dict.Get("zed"))
-	assert.Equal(t, types.NewXNumberFromInt(123), dict.Resolve(nil, "bar"))
-	assert.True(t, types.IsXError(dict.Resolve(nil, "xxxx")))
+
+	val, exists := dict.Get("foo")
+	assert.True(t, exists)
+	assert.Equal(t, types.NewXText("abc"), val)
+
+	val, exists = dict.Get("xxx")
+	assert.False(t, exists)
+	assert.Nil(t, val)
 
 	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), dict.ToXText(env))
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), dict.ToXJSON(env))

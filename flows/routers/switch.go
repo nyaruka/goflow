@@ -193,8 +193,8 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 			// test functions can return an error
 			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typed.Error()))
 		case *types.XDict:
-			match := typed.Get("match")
-			extra := typed.Get("extra")
+			match, _ := typed.Get("match")
+			extra, _ := typed.Get("extra")
 
 			extraAsDict, isDict := extra.(*types.XDict)
 			if extra != nil && !isDict {

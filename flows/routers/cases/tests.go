@@ -172,7 +172,8 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 			return xerr
 		}
 
-		uuid, xerr := types.ToXText(env, group.Get("uuid"))
+		uuidValue, _ := group.Get("uuid")
+		uuid, xerr := types.ToXText(env, uuidValue)
 		if xerr != nil {
 			return xerr
 		}

@@ -17,11 +17,6 @@ type XValue interface {
 	ToXJSON(env utils.Environment) XText
 }
 
-// XResolvable is the interface for types which can be keyed into, e.g. foo.bar
-type XResolvable interface {
-	Resolve(env utils.Environment, key string) XValue
-}
-
 // XLengthable is the interface for types which have a length
 type XLengthable interface {
 	Length() int
@@ -89,17 +84,6 @@ func Describe(x XValue) string {
 		return "null"
 	}
 	return x.Describe()
-}
-
-// Resolve resolves a named property on the given value
-func Resolve(env utils.Environment, variable XValue, property string) XValue {
-	resolver, isResolver := variable.(XResolvable)
-
-	if !isResolver || utils.IsNil(resolver) {
-		return NewXErrorf("%s has no property '%s'", Describe(variable), property)
-	}
-
-	return resolver.Resolve(env, property)
 }
 
 // XRepresentable is the interface for any object which can be represented in an expression

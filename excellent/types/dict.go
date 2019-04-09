@@ -12,7 +12,6 @@ import (
 // XDict is a map primitive in Excellent expressions
 type XDict struct {
 	XValue
-	XResolvable
 	XLengthable
 
 	values map[string]XValue
@@ -80,20 +79,16 @@ func (x *XDict) Length() int {
 	return len(x.values)
 }
 
-func (x *XDict) Resolve(env utils.Environment, key string) XValue {
+// Get retrieves the named item from this dict
+func (x *XDict) Get(key string) (XValue, bool) {
 	key = strings.ToLower(key)
 	for k, v := range x.values {
 		if strings.ToLower(k) == key {
-			return v
+			return v, true
 		}
 	}
 
-	return NewXResolveError(x, key)
-}
-
-// Get retrieves the named item from this dict
-func (x *XDict) Get(key string) XValue {
-	return x.values[key]
+	return nil, false
 }
 
 // Put adds the given item to this dict

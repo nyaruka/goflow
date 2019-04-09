@@ -80,7 +80,8 @@ func (e *legacyExtra) addValues(values types.XValue) {
 	switch typed := values.(type) {
 	case *types.XDict:
 		for _, key := range typed.Keys() {
-			e.dict.Put(legacyExtraKey(key), typed.Get(key))
+			value, _ := typed.Get(key)
+			e.dict.Put(legacyExtraKey(key), value)
 		}
 	case *types.XArray:
 		e.addValues(arrayToDict(typed))

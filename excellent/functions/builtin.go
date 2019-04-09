@@ -1783,12 +1783,14 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 //
 // @function format_input(urn)
 func FormatInput(env utils.Environment, input *types.XDict) types.XValue {
-	text, xerr := types.ToXText(env, input.Get("text"))
+	textValue, _ := input.Get("text")
+	text, xerr := types.ToXText(env, textValue)
 	if xerr != nil {
 		return xerr
 	}
 
-	attachments, xerr := types.ToXArray(env, input.Get("attachments"))
+	attachmentsValue, _ := input.Get("attachments")
+	attachments, xerr := types.ToXArray(env, attachmentsValue)
 	if xerr != nil {
 		return xerr
 	}
@@ -1877,7 +1879,8 @@ func Extract(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.
 		return xerr
 	}
 
-	return dict.Get(property.Native())
+	value, _ := dict.Get(property.Native())
+	return value
 }
 
 // ExtractDict takes a dict and returns a new dict by extracting only the named properties.
@@ -1902,7 +1905,8 @@ func ExtractDict(env utils.Environment, args ...types.XValue) types.XValue {
 
 	result := types.NewEmptyXDict()
 	for _, prop := range properties {
-		result.Put(prop, dict.Get(prop))
+		value, _ := dict.Get(prop)
+		result.Put(prop, value)
 	}
 
 	return result

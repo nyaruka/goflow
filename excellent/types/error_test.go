@@ -19,7 +19,4 @@ func TestXError(t *testing.T) {
 	assert.Equal(t, types.XBooleanFalse, err1.ToXBoolean(env))
 	assert.Equal(t, "I failed", err1.String())
 	assert.Equal(t, "I failed", err1.Error())
-
-	err2 := types.NewXResolveError(nil, "foo")
-	assert.Equal(t, "null has no property 'foo'", err2.Error())
 }
