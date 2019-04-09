@@ -179,7 +179,13 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 			return xerr
 		}
 
-		return lookupIndex(v.env, asArray, index)
+		if index >= asArray.Length() || index < -asArray.Length() {
+			return types.NewXErrorf("index %d out of range for %d items", index, asArray.Length())
+		}
+		if index < 0 {
+			index += asArray.Length()
+		}
+		return asArray.Get(index)
 	}
 
 	// if left-hand side is a dict, then this is a property lookup
@@ -411,21 +417,4 @@ func toXValue(val interface{}) types.XValue {
 		panic("Attempt to convert a non XValue to an XValue")
 	}
 	return asX
-}
-
-// lookup an index on the given value
-func lookupIndex(env utils.Environment, value types.XValue, index int) types.XValue {
-	indexable, isIndexable := value.(types.XIndexable)
-
-	if !isIndexable || utils.IsNil(indexable) {
-		return types.NewXErrorf("%s is not indexable", value.Describe())
-	}
-
-	if index >= indexable.Length() || index < -indexable.Length() {
-		return types.NewXErrorf("index %d out of range for %d items", index, indexable.Length())
-	}
-	if index < 0 {
-		index += indexable.Length()
-	}
-	return indexable.Index(index)
 }

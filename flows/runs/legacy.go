@@ -91,7 +91,7 @@ func (e *legacyExtra) addValues(values types.XValue) {
 func arrayToDict(array *types.XArray) *types.XDict {
 	m := make(map[string]types.XValue, array.Length())
 	for i := 0; i < array.Length(); i++ {
-		m[strconv.Itoa(i)] = array.Index(i)
+		m[strconv.Itoa(i)] = array.Get(i)
 	}
 	return types.NewXDict(m)
 }

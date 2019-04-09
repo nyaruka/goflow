@@ -421,7 +421,7 @@ func Join(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XVa
 		if i > 0 {
 			output.WriteString(separator.Native())
 		}
-		itemAsStr, xerr := types.ToXText(env, array.Index(i))
+		itemAsStr, xerr := types.ToXText(env, array.Get(i))
 		if xerr != nil {
 			return xerr
 		}
@@ -1801,7 +1801,7 @@ func FormatInput(env utils.Environment, input *types.XDict) types.XValue {
 	}
 
 	for a := 0; a < attachments.Length(); a++ {
-		asText, xerr := types.ToXText(env, attachments.Index(a))
+		asText, xerr := types.ToXText(env, attachments.Get(a))
 		if xerr != nil {
 			return xerr
 		}
@@ -1936,7 +1936,7 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 	result := types.NewXArray()
 
 	for i := 0; i < array.Length(); i++ {
-		oldItem := array.Index(i)
+		oldItem := array.Get(i)
 		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 
 		newItem := Call(env, function.Describe(), function, funcArgs)

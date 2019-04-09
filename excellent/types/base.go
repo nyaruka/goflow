@@ -22,14 +22,6 @@ type XLengthable interface {
 	Length() int
 }
 
-// XIndexable is the interface for types which can be indexed into, e.g. foo.0. Such objects
-// also need to be lengthable so that the engine knows what is a valid index and what isn't.
-type XIndexable interface {
-	XLengthable
-
-	Index(index int) XValue
-}
-
 // Equals checks for equality between the two give values
 func Equals(env utils.Environment, x1 XValue, x2 XValue) bool {
 	// nil == nil

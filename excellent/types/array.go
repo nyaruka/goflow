@@ -10,7 +10,6 @@ import (
 // XArray is an array primitive in Excellent expressions
 type XArray struct {
 	XValue
-	XIndexable
 
 	values []XValue
 }
@@ -61,8 +60,8 @@ func (a *XArray) MarshalJSON() ([]byte, error) {
 	return utils.JSONMarshal(a.values)
 }
 
-// Index is called when this object is indexed into in an expression
-func (a *XArray) Index(index int) XValue {
+// Get is called when this object is indexed
+func (a *XArray) Get(index int) XValue {
 	return a.values[index]
 }
 

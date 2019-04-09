@@ -17,7 +17,7 @@ func TestXArray(t *testing.T) {
 
 	arr1.Append(types.XBooleanFalse)
 	assert.Equal(t, 3, arr1.Length())
-	assert.Equal(t, types.NewXNumberFromInt(123), arr1.Index(1))
+	assert.Equal(t, types.NewXNumberFromInt(123), arr1.Get(1))
 
 	assert.Equal(t, types.NewXText(`["abc",123,false]`), arr1.ToXJSON(env))
 	assert.Equal(t, types.NewXText(`[abc, 123, false]`), arr1.ToXText(env))
