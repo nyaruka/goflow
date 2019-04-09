@@ -10,39 +10,33 @@ import (
 )
 
 // XDict is a map primitive in Excellent expressions
-type XDict interface {
+type XDict struct {
 	XValue
 	XResolvable
 	XLengthable
 
-	Get(string) XValue
-	Put(string, XValue)
-	Keys() []string
-}
-
-type xdict struct {
 	values map[string]XValue
 }
 
 // NewXDict returns a new map with the given items
-func NewXDict(values map[string]XValue) XDict {
-	return &xdict{
+func NewXDict(values map[string]XValue) *XDict {
+	return &XDict{
 		values: values,
 	}
 }
 
 // NewEmptyXDict returns a new empty map
-func NewEmptyXDict() XDict {
-	return &xdict{
+func NewEmptyXDict() *XDict {
+	return &XDict{
 		values: make(map[string]XValue),
 	}
 }
 
 // Describe returns a representation of this type for error messages
-func (x *xdict) Describe() string { return "dict" }
+func (x *XDict) Describe() string { return "dict" }
 
 // ToXText converts this type to text
-func (x *xdict) ToXText(env utils.Environment) XText {
+func (x *XDict) ToXText(env utils.Environment) XText {
 	// get our keys sorted A-Z
 	sortedKeys := x.Keys()
 	sort.Strings(sortedKeys)
@@ -60,12 +54,12 @@ func (x *xdict) ToXText(env utils.Environment) XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (x *xdict) ToXBoolean(env utils.Environment) XBoolean {
+func (x *XDict) ToXBoolean(env utils.Environment) XBoolean {
 	return NewXBoolean(len(x.values) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x *xdict) ToXJSON(env utils.Environment) XText {
+func (x *XDict) ToXJSON(env utils.Environment) XText {
 	marshaled := make(map[string]json.RawMessage, len(x.values))
 	for k, v := range x.values {
 		asJSON, err := ToXJSON(env, v)
@@ -77,16 +71,16 @@ func (x *xdict) ToXJSON(env utils.Environment) XText {
 }
 
 // MarshalJSON converts this type to internal JSON
-func (x *xdict) MarshalJSON() ([]byte, error) {
+func (x *XDict) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.values)
 }
 
 // Length is called when the length of this object is requested in an expression
-func (x *xdict) Length() int {
+func (x *XDict) Length() int {
 	return len(x.values)
 }
 
-func (x *xdict) Resolve(env utils.Environment, key string) XValue {
+func (x *XDict) Resolve(env utils.Environment, key string) XValue {
 	key = strings.ToLower(key)
 	for k, v := range x.values {
 		if strings.ToLower(k) == key {
@@ -98,17 +92,17 @@ func (x *xdict) Resolve(env utils.Environment, key string) XValue {
 }
 
 // Get retrieves the named item from this dict
-func (x *xdict) Get(key string) XValue {
+func (x *XDict) Get(key string) XValue {
 	return x.values[key]
 }
 
 // Put adds the given item to this dict
-func (x *xdict) Put(key string, value XValue) {
+func (x *XDict) Put(key string, value XValue) {
 	x.values[key] = value
 }
 
 // Keys returns the keys of this dict
-func (x *xdict) Keys() []string {
+func (x *XDict) Keys() []string {
 	keys := make([]string, 0, len(x.values))
 	for key := range x.values {
 		keys = append(keys, key)
@@ -117,14 +111,13 @@ func (x *xdict) Keys() []string {
 }
 
 // String returns the native string representation of this type
-func (x *xdict) String() string { return x.ToXText(nil).Native() }
+func (x *XDict) String() string { return x.ToXText(nil).Native() }
 
 var XDictEmpty = NewEmptyXDict()
-var _ XDict = (*xdict)(nil)
-var _ json.Marshaler = (*xdict)(nil)
+var _ json.Marshaler = (*XDict)(nil)
 
 // ToXDict converts the given value to a dict
-func ToXDict(env utils.Environment, x XValue) (XDict, XError) {
+func ToXDict(env utils.Environment, x XValue) (*XDict, XError) {
 	if utils.IsNil(x) {
 		return XDictEmpty, nil
 	}
@@ -132,7 +125,7 @@ func ToXDict(env utils.Environment, x XValue) (XDict, XError) {
 		return XDictEmpty, x.(XError)
 	}
 
-	asDict, isDict := x.(XDict)
+	asDict, isDict := x.(*XDict)
 	if isDict {
 		return asDict, nil
 	}

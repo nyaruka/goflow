@@ -356,7 +356,6 @@ func TestFunctions(t *testing.T) {
 		{"length", dmy, []types.XValue{xa(xs("hello"))}, xi(1)},
 		{"length", dmy, []types.XValue{xa()}, xi(0)},
 		{"length", dmy, []types.XValue{nil}, xi(0)},
-		{"length", dmy, []types.XValue{types.XArray(nil)}, xi(0)},
 		{"length", dmy, []types.XValue{xi(1234)}, ERROR},
 		{"length", dmy, []types.XValue{ERROR}, ERROR},
 		{"length", dmy, []types.XValue{}, ERROR},

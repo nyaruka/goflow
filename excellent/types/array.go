@@ -8,30 +8,26 @@ import (
 )
 
 // XArray is an array primitive in Excellent expressions
-type XArray interface {
+type XArray struct {
 	XValue
 	XIndexable
 
-	Append(XValue)
-}
-
-type xarray struct {
 	values []XValue
 }
 
 // NewXArray returns a new array with the given items
-func NewXArray(values ...XValue) XArray {
+func NewXArray(values ...XValue) *XArray {
 	if values == nil {
 		values = []XValue{}
 	}
-	return &xarray{values: values}
+	return &XArray{values: values}
 }
 
 // Describe returns a representation of this type for error messages
-func (a *xarray) Describe() string { return "array" }
+func (a *XArray) Describe() string { return "array" }
 
 // ToXText converts this type to text
-func (a *xarray) ToXText(env utils.Environment) XText {
+func (a *XArray) ToXText(env utils.Environment) XText {
 	parts := make([]string, a.Length())
 	for i, v := range a.values {
 		vAsText, xerr := ToXText(env, v)
@@ -44,12 +40,12 @@ func (a *xarray) ToXText(env utils.Environment) XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (a *xarray) ToXBoolean(env utils.Environment) XBoolean {
+func (a *XArray) ToXBoolean(env utils.Environment) XBoolean {
 	return NewXBoolean(len(a.values) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (a *xarray) ToXJSON(env utils.Environment) XText {
+func (a *XArray) ToXJSON(env utils.Environment) XText {
 	marshaled := make([]json.RawMessage, len(a.values))
 	for i, v := range a.values {
 		asJSON, err := ToXJSON(env, v)
@@ -61,34 +57,33 @@ func (a *xarray) ToXJSON(env utils.Environment) XText {
 }
 
 // MarshalJSON converts this type to internal JSON
-func (a *xarray) MarshalJSON() ([]byte, error) {
+func (a *XArray) MarshalJSON() ([]byte, error) {
 	return utils.JSONMarshal(a.values)
 }
 
 // Index is called when this object is indexed into in an expression
-func (a *xarray) Index(index int) XValue {
+func (a *XArray) Index(index int) XValue {
 	return a.values[index]
 }
 
 // Length is called when the length of this object is requested in an expression
-func (a *xarray) Length() int {
+func (a *XArray) Length() int {
 	return len(a.values)
 }
 
 // Append adds the given item to this array
-func (a *xarray) Append(value XValue) {
+func (a *XArray) Append(value XValue) {
 	a.values = append(a.values, value)
 }
 
 // String returns the native string representation of this type
-func (a *xarray) String() string { return a.ToXText(nil).Native() }
+func (a *XArray) String() string { return a.ToXText(nil).Native() }
 
 var XArrayEmpty = NewXArray()
-var _ XArray = (*xarray)(nil)
-var _ json.Marshaler = (*xarray)(nil)
+var _ json.Marshaler = (*XArray)(nil)
 
 // ToXArray converts the given value to an array
-func ToXArray(env utils.Environment, x XValue) (XArray, XError) {
+func ToXArray(env utils.Environment, x XValue) (*XArray, XError) {
 	if utils.IsNil(x) {
 		return XArrayEmpty, nil
 	}
@@ -96,7 +91,7 @@ func ToXArray(env utils.Environment, x XValue) (XArray, XError) {
 		return XArrayEmpty, x.(XError)
 	}
 
-	asArray, isArray := x.(XArray)
+	asArray, isArray := x.(*XArray)
 	if isArray {
 		return asArray, nil
 	}

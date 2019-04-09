@@ -161,7 +161,7 @@ func (r *SwitchRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.
 	return r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
 }
 
-func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, types.XDict, error) {
+func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, *types.XDict, error) {
 	for _, c := range r.cases {
 		test := strings.ToLower(c.Type)
 
@@ -192,11 +192,11 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 		case types.XError:
 			// test functions can return an error
 			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typed.Error()))
-		case types.XDict:
+		case *types.XDict:
 			match := typed.Get("match")
 			extra := typed.Get("extra")
 
-			extraAsDict, isDict := extra.(types.XDict)
+			extraAsDict, isDict := extra.(*types.XDict)
 			if extra != nil && !isDict {
 				run.LogError(step, errors.Errorf("test %s returned non-dict extra", strings.ToUpper(test)))
 			}

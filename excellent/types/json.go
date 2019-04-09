@@ -50,7 +50,7 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 	return NewXError(errors.Errorf("unknown JSON parsing error"))
 }
 
-func jsonToDict(data []byte) XDict {
+func jsonToDict(data []byte) *XDict {
 	dict := NewEmptyXDict()
 	jsonparser.ObjectEach(data, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
 		dict.Put(string(key), jsonTypeToXValue(value, dataType))
@@ -59,7 +59,7 @@ func jsonToDict(data []byte) XDict {
 	return dict
 }
 
-func jsonToArray(data []byte) XArray {
+func jsonToArray(data []byte) *XArray {
 	array := NewXArray()
 	jsonparser.ArrayEach(data, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
 		array.Append(jsonTypeToXValue(value, dataType))

@@ -1782,7 +1782,7 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 //   @(format_input("NOT INPUT")) -> ERROR
 //
 // @function format_input(urn)
-func FormatInput(env utils.Environment, input types.XDict) types.XValue {
+func FormatInput(env utils.Environment, input *types.XDict) types.XValue {
 	text, xerr := types.ToXText(env, input.Get("text"))
 	if xerr != nil {
 		return xerr

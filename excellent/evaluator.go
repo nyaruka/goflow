@@ -196,7 +196,7 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	expression := toXValue(v.Visit(ctx.Expression()))
 
 	// if left-hand side is an array, then this is an index
-	asArray, isArray := context.(types.XArray)
+	asArray, isArray := context.(*types.XArray)
 	if isArray {
 		index, xerr := types.ToInteger(v.env, expression)
 		if xerr != nil {

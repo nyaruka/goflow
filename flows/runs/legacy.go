@@ -20,7 +20,7 @@ func legacyExtraKey(key string) string {
 }
 
 type legacyExtra struct {
-	dict types.XDict
+	dict *types.XDict
 }
 
 // creates a new legacy extra which will be lazily initialized on first call to .update()
@@ -29,7 +29,7 @@ func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 
 	// if trigger params is a JSON object, we include it in @extra
 	triggerParams := run.Session().Trigger().Params()
-	asDict, isDict := triggerParams.(types.XDict)
+	asDict, isDict := triggerParams.(*types.XDict)
 	if isDict {
 		e.addValues(asDict)
 	}
@@ -78,16 +78,16 @@ func (e *legacyExtra) addResult(result *flows.Result) {
 
 func (e *legacyExtra) addValues(values types.XValue) {
 	switch typed := values.(type) {
-	case types.XDict:
+	case *types.XDict:
 		for _, key := range typed.Keys() {
 			e.dict.Put(legacyExtraKey(key), typed.Get(key))
 		}
-	case types.XArray:
+	case *types.XArray:
 		e.addValues(arrayToDict(typed))
 	}
 }
 
-func arrayToDict(array types.XArray) types.XDict {
+func arrayToDict(array *types.XArray) *types.XDict {
 	m := make(map[string]types.XValue, array.Length())
 	for i := 0; i < array.Length(); i++ {
 		m[strconv.Itoa(i)] = array.Index(i)

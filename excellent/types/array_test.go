@@ -32,7 +32,7 @@ func TestXArray(t *testing.T) {
 func TestToXArray(t *testing.T) {
 	var tests = []struct {
 		value    types.XValue
-		asArray  types.XArray
+		asArray  *types.XArray
 		hasError bool
 	}{
 		{nil, types.XArrayEmpty, false},

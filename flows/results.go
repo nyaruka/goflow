@@ -98,7 +98,7 @@ func (r Results) Get(key string) *Result {
 }
 
 // ToXValue returns a representation of this object for use in expressions
-func (r Results) ToXValue(env utils.Environment) types.XDict {
+func (r Results) ToXValue(env utils.Environment) types.XValue {
 	results := types.NewEmptyXDict()
 	for k, v := range r {
 		results.Put(k, v.ToXValue(env))
@@ -107,7 +107,7 @@ func (r Results) ToXValue(env utils.Environment) types.XDict {
 }
 
 // ToSimpleXDict returns a simplifed representation of this object for use in expressions
-func (r Results) ToSimpleXDict(env utils.Environment) types.XDict {
+func (r Results) ToSimpleXDict(env utils.Environment) *types.XDict {
 	results := types.NewEmptyXDict()
 	for k, v := range r {
 		results.Put(k, types.NewXDict(map[string]types.XValue{

@@ -74,12 +74,12 @@ var XTESTS = map[string]types.XFunction{
 //------------------------------------------------------------------------------------------
 
 // NewTrueResult creates a new true result with a match
-func NewTrueResult(match types.XValue) types.XDict {
+func NewTrueResult(match types.XValue) *types.XDict {
 	return types.NewXDict(map[string]types.XValue{"match": match})
 }
 
 // NewTrueResultWithExtra creates a new true result with a match and extra
-func NewTrueResultWithExtra(match types.XValue, extra types.XDict) types.XDict {
+func NewTrueResultWithExtra(match types.XValue, extra *types.XDict) *types.XDict {
 	return types.NewXDict(map[string]types.XValue{"match": match, "extra": extra})
 }
 

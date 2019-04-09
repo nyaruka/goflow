@@ -46,7 +46,7 @@ func TestXDict(t *testing.T) {
 func TestToXDict(t *testing.T) {
 	var tests = []struct {
 		value    types.XValue
-		asDict   types.XDict
+		asDict   *types.XDict
 		hasError bool
 	}{
 		{nil, types.XDictEmpty, false},
