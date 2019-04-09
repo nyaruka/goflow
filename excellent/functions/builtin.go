@@ -1939,7 +1939,7 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 		oldItem := array.Get(i)
 		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 
-		newItem := Call(env, function.Describe(), function, funcArgs)
+		newItem := Call(env, function.Describe(env), function, funcArgs)
 		if types.IsXError(newItem) {
 			return newItem
 		}

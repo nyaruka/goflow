@@ -8,7 +8,7 @@ import (
 type XFunction func(env utils.Environment, args ...XValue) XValue
 
 // Describe returns a representation of this type for error messages
-func (x XFunction) Describe() string { return x.String() }
+func (x XFunction) Describe(env utils.Environment) string { return x.String() }
 
 // ToXText converts this type to text
 func (x XFunction) ToXText(env utils.Environment) XText {

@@ -12,8 +12,10 @@ import (
 )
 
 func TestXTime(t *testing.T) {
+	env := utils.NewEnvironmentBuilder().Build()
+
 	t1 := types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0))
-	assert.Equal(t, `time`, t1.Describe())
+	assert.Equal(t, `time`, t1.Describe(env))
 	assert.Equal(t, `17:01:30.000000`, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).String())
 
 	// test equality

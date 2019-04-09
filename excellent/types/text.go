@@ -20,7 +20,7 @@ func NewXText(value string) XText {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XText) Describe() string { return fmt.Sprintf(`"%s"`, x.native) }
+func (x XText) Describe(env utils.Environment) string { return fmt.Sprintf(`"%s"`, x.native) }
 
 // ToXText converts this type to text
 func (x XText) ToXText(env utils.Environment) XText { return x }

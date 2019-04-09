@@ -12,8 +12,10 @@ import (
 )
 
 func TestXDate(t *testing.T) {
+	env := utils.NewEnvironmentBuilder().Build()
+
 	d1 := types.NewXDate(utils.NewDate(2019, 2, 20))
-	assert.Equal(t, `date`, d1.Describe())
+	assert.Equal(t, `date`, d1.Describe(env))
 	assert.Equal(t, `2019-02-20`, d1.String())
 
 	// test equality

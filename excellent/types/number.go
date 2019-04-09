@@ -38,7 +38,7 @@ func RequireXNumberFromString(value string) XNumber {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XNumber) Describe() string { return x.ToXText(nil).Native() }
+func (x XNumber) Describe(env utils.Environment) string { return x.ToXText(nil).Native() }
 
 // ToXText converts this type to text
 func (x XNumber) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
@@ -98,7 +98,7 @@ func ToXNumber(env utils.Environment, x XValue) (XNumber, XError) {
 		}
 	}
 
-	return XNumberZero, NewXErrorf("unable to convert %s to a number", Describe(x))
+	return XNumberZero, NewXErrorf("unable to convert %s to a number", Describe(env, x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible

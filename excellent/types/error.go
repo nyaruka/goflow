@@ -28,7 +28,7 @@ func NewXErrorf(format string, a ...interface{}) XError {
 }
 
 // Describe returns a representation of this type for error messages
-func (x xerror) Describe() string { return "error" }
+func (x xerror) Describe(env utils.Environment) string { return "error" }
 
 // ToXText converts this type to text
 func (x xerror) ToXText(env utils.Environment) XText { return NewXText(x.Native().Error()) }

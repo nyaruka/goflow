@@ -13,6 +13,8 @@ import (
 )
 
 func TestXDateTime(t *testing.T) {
+	env := utils.NewEnvironmentBuilder().Build()
+
 	// test stringing
 	assert.Equal(t, `2018-04-09T17:01:30.000000Z`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).String())
 
@@ -28,7 +30,7 @@ func TestXDateTime(t *testing.T) {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 
 	d1 := types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, la))
-	assert.Equal(t, `datetime`, d1.Describe())
+	assert.Equal(t, `datetime`, d1.Describe(env))
 
 	d2 := d1.ReplaceTime(types.NewXTime(utils.NewTimeOfDay(16, 20, 30, 123456789)))
 	assert.Equal(t, 2018, d2.Native().Year())

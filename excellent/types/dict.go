@@ -32,7 +32,7 @@ func NewEmptyXDict() *XDict {
 }
 
 // Describe returns a representation of this type for error messages
-func (x *XDict) Describe() string { return "dict" }
+func (x *XDict) Describe(env utils.Environment) string { return "dict" }
 
 // ToXText converts this type to text
 func (x *XDict) ToXText(env utils.Environment) XText {
@@ -122,5 +122,5 @@ func ToXDict(env utils.Environment, x XValue) (*XDict, XError) {
 		return asDict, nil
 	}
 
-	return XDictEmpty, NewXErrorf("unable to convert %s to a dict", Describe(x))
+	return XDictEmpty, NewXErrorf("unable to convert %s to a dict", Describe(env, x))
 }

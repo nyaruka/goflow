@@ -17,7 +17,7 @@ func NewXDateTime(value time.Time) XDateTime {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XDateTime) Describe() string { return "datetime" }
+func (x XDateTime) Describe(env utils.Environment) string { return "datetime" }
 
 // ToXText converts this type to text
 func (x XDateTime) ToXText(env utils.Environment) XText {
@@ -122,5 +122,5 @@ func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XEr
 		}
 	}
 
-	return XDateTimeZero, NewXErrorf("unable to convert %s to a datetime", Describe(x))
+	return XDateTimeZero, NewXErrorf("unable to convert %s to a datetime", Describe(env, x))
 }

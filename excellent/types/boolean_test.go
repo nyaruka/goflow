@@ -5,11 +5,14 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestXBoolean(t *testing.T) {
+	env := utils.NewEnvironmentBuilder().Build()
+
 	// test equality
 	assert.True(t, types.XBooleanFalse.Equals(types.XBooleanFalse))
 	assert.True(t, types.XBooleanTrue.Equals(types.XBooleanTrue))
@@ -24,8 +27,8 @@ func TestXBoolean(t *testing.T) {
 	assert.Equal(t, "false", types.XBooleanFalse.String())
 	assert.Equal(t, "true", types.XBooleanTrue.String())
 
-	assert.Equal(t, "true", types.XBooleanTrue.Describe())
-	assert.Equal(t, "false", types.XBooleanFalse.Describe())
+	assert.Equal(t, "true", types.XBooleanTrue.Describe(env))
+	assert.Equal(t, "false", types.XBooleanFalse.Describe(env))
 
 	// unmarshal
 	var val types.XBoolean

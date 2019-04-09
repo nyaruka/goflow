@@ -23,7 +23,7 @@ func NewXArray(values ...XValue) *XArray {
 }
 
 // Describe returns a representation of this type for error messages
-func (a *XArray) Describe() string { return "array" }
+func (a *XArray) Describe(env utils.Environment) string { return "array" }
 
 // ToXText converts this type to text
 func (a *XArray) ToXText(env utils.Environment) XText {
@@ -92,5 +92,5 @@ func ToXArray(env utils.Environment, x XValue) (*XArray, XError) {
 		return asArray, nil
 	}
 
-	return XArrayEmpty, NewXErrorf("unable to convert %s to an array", Describe(x))
+	return XArrayEmpty, NewXErrorf("unable to convert %s to an array", Describe(env, x))
 }

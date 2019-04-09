@@ -18,7 +18,7 @@ func NewXBoolean(value bool) XBoolean {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XBoolean) Describe() string { return strconv.FormatBool(x.Native()) }
+func (x XBoolean) Describe(env utils.Environment) string { return strconv.FormatBool(x.Native()) }
 
 // ToXText converts this type to text
 func (x XBoolean) ToXText(env utils.Environment) XText {

@@ -11,7 +11,7 @@ import (
 type XValue interface {
 	fmt.Stringer
 
-	Describe() string
+	Describe(env utils.Environment) string
 	ToXText(env utils.Environment) XText
 	ToXBoolean(env utils.Environment) XBoolean
 	ToXJSON(env utils.Environment) XText
@@ -71,11 +71,11 @@ func IsEmpty(x XValue) bool {
 }
 
 // Describe returns a representation of the given value for use in error messages
-func Describe(x XValue) string {
+func Describe(env utils.Environment, x XValue) string {
 	if utils.IsNil(x) {
 		return "null"
 	}
-	return x.Describe()
+	return x.Describe(env)
 }
 
 // XRepresentable is the interface for any object which can be represented in an expression

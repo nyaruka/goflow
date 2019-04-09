@@ -15,7 +15,7 @@ func NewXDate(value utils.Date) XDate {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XDate) Describe() string { return "date" }
+func (x XDate) Describe(env utils.Environment) string { return "date" }
 
 // ToXText converts this type to text
 func (x XDate) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
@@ -68,5 +68,5 @@ func ToXDate(env utils.Environment, x XValue) (XDate, XError) {
 		}
 	}
 
-	return XDateZero, NewXErrorf("unable to convert %s to a date", Describe(x))
+	return XDateZero, NewXErrorf("unable to convert %s to a date", Describe(env, x))
 }
