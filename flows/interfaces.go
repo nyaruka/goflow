@@ -443,7 +443,6 @@ type FlowRun interface {
 
 	Environment() RunEnvironment
 	Session() Session
-	Context() types.XValue
 	SaveResult(*Result)
 	SetStatus(RunStatus)
 

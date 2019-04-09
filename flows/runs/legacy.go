@@ -5,7 +5,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -22,69 +21,59 @@ func legacyExtraKey(key string) string {
 
 type legacyExtra struct {
 	dict types.XDict
-
-	run            flows.FlowRun
-	lastResultTime time.Time
 }
 
 // creates a new legacy extra which will be lazily initialized on first call to .update()
 func newLegacyExtra(run flows.FlowRun) *legacyExtra {
-	return &legacyExtra{run: run}
-}
-
-func (e *legacyExtra) ToXValue(env utils.Environment) types.XValue {
-	return e.dict
-}
-
-func (e *legacyExtra) initialize() {
-	e.dict = types.NewEmptyXDict()
+	e := &legacyExtra{dict: types.NewEmptyXDict()}
 
 	// if trigger params is a JSON object, we include it in @extra
-	triggerParams := e.run.Session().Trigger().Params()
+	triggerParams := run.Session().Trigger().Params()
 	asDict, isDict := triggerParams.(types.XDict)
 	if isDict {
 		e.addValues(asDict)
 	}
 
 	// if trigger has results (i.e. a flow_action type trigger with a parent run) use them too
-	asExtraContrib, isExtraContrib := e.run.Session().Trigger().(flows.LegacyExtraContributor)
+	asExtraContrib, isExtraContrib := run.Session().Trigger().(flows.LegacyExtraContributor)
 	if isExtraContrib {
-		e.addResults(asExtraContrib.LegacyExtra(), time.Time{})
+		e.addResults(asExtraContrib.LegacyExtra())
 	}
+
+	// add any existing results from this run
+	e.addResults(run.Results())
+	return e
 }
 
-// updates @legacy_extra by looking for new results since we last updated
-func (e *legacyExtra) update() {
-	// lazy initialize if necessary
-	if e.dict == nil {
-		e.initialize()
-	}
-
-	prevLastResultTime := e.lastResultTime
-
-	e.addResults(e.run.Results(), prevLastResultTime)
+func (e *legacyExtra) ToXValue(env utils.Environment) types.XValue {
+	return e.dict
 }
 
-// adds any results with extra to this blob of all extras
-func (e *legacyExtra) addResults(results flows.Results, after time.Time) {
-	// get all results with extra created since the last update
-	newExtras := make([]*flows.Result, 0)
-	for _, result := range results {
-		if result.Extra != nil && result.CreatedOn.After(after) {
-			newExtras = append(newExtras, result)
-		}
-		e.lastResultTime = result.CreatedOn
-	}
+func (e *legacyExtra) addResults(results flows.Results) {
 	// sort by created time
-	sort.SliceStable(newExtras, func(i, j int) bool { return newExtras[i].CreatedOn.Before(newExtras[j].CreatedOn) })
+	sortedResults := make([]*flows.Result, 0)
+	for _, result := range results {
+		sortedResults = append(sortedResults, result)
 
-	// add each extra blob to our master extra
-	for _, result := range newExtras {
-		e.dict.Put(utils.Snakify(result.Name), types.NewXText(string(result.Extra)))
-
-		values := types.JSONToXValue(result.Extra)
-		e.addValues(values)
 	}
+	sort.SliceStable(sortedResults, func(i, j int) bool { return sortedResults[i].CreatedOn.Before(sortedResults[j].CreatedOn) })
+
+	// add each result in order
+	for _, result := range sortedResults {
+		e.addResult(result)
+	}
+}
+
+// adds any extra from the given result
+func (e *legacyExtra) addResult(result *flows.Result) {
+	if result.Extra == nil {
+		return
+	}
+
+	e.dict.Put(utils.Snakify(result.Name), types.NewXText(string(result.Extra)))
+
+	values := types.JSONToXValue(result.Extra)
+	e.addValues(values)
 }
 
 func (e *legacyExtra) addValues(values types.XValue) {

@@ -128,7 +128,7 @@ var _ json.Marshaler = (*xdict)(nil)
 
 // ToXDict converts the given value to a dict
 func ToXDict(env utils.Environment, x XValue) (XDict, XError) {
-	x = Reduce(env, x)
+	x = Unlazy(env, x)
 
 	if utils.IsNil(x) {
 		return XDictEmpty, nil

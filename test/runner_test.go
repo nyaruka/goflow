@@ -26,11 +26,13 @@ import (
 )
 
 var writeOutput bool
+var includeTests string
 var serverURL = ""
 var testFilePattern = regexp.MustCompile(`(\w+)\.(\w+)\.json`)
 
 func init() {
 	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite test output")
+	flag.StringVar(&includeTests, "include", "", "include only test names containing")
 }
 
 type runnerTest struct {
@@ -61,7 +63,9 @@ func loadTestCases() ([]runnerTest, error) {
 			assetsFile := directory + assetsName + ".json"
 			outputFile := directory + groups[0]
 
-			tests = append(tests, runnerTest{testName, assetsName, outputFile, assetsFile})
+			if includeTests == "" || strings.Contains(assetsName+"."+testName, includeTests) {
+				tests = append(tests, runnerTest{testName, assetsName, outputFile, assetsFile})
+			}
 		}
 	}
 

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -31,6 +32,30 @@ func newRunSummaryFromRun(run flows.FlowRun) flows.RunSummary {
 		status:  run.Status(),
 		results: run.Results().Clone(),
 	}
+}
+
+func RunSummaryToXValue(env utils.Environment, r flows.RunSummary) types.XValue {
+	if utils.IsNil(r) {
+		return nil
+	}
+
+	var urns, fields types.XValue
+	if r.Contact() != nil {
+		urns = r.Contact().URNs().MapContext(env)
+	}
+	if r.Contact() != nil {
+		fields = r.Contact().Fields().ToXValue(env)
+	}
+
+	return types.NewXDict(map[string]types.XValue{
+		"uuid":    types.NewXText(string(r.UUID())),
+		"contact": types.ToXValue(env, r.Contact()),
+		"urns":    urns,
+		"fields":  fields,
+		"flow":    r.Flow().ToXValue(env),
+		"status":  types.NewXText(string(r.Status())),
+		"results": r.Results().ToXValue(env),
+	})
 }
 
 var _ flows.RunSummary = (*runSummary)(nil)
