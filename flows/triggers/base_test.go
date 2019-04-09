@@ -116,7 +116,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				flow,
 				contact,
 				triggers.NewChannelEvent(triggers.ChannelEventTypeNewConversation, channel),
-				types.NewEmptyXDict(),
+				types.XDictEmpty,
 			),
 			`{
 				"contact": {

@@ -174,7 +174,7 @@ func TestFunctions(t *testing.T) {
 		{"dict", dmy, []types.XValue{ERROR, xs("hello")}, ERROR},
 		{"dict", dmy, []types.XValue{xs("foo"), ERROR}, ERROR},
 		{"dict", dmy, []types.XValue{xs("foo")}, ERROR},
-		{"dict", dmy, []types.XValue{}, types.NewEmptyXDict()},
+		{"dict", dmy, []types.XValue{}, types.XDictEmpty},
 
 		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("foo")}, xs("hello")},
 		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("bar")}, nil},

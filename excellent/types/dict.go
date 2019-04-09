@@ -24,13 +24,6 @@ func NewXDict(values map[string]XValue) *XDict {
 	}
 }
 
-// NewEmptyXDict returns a new empty map
-func NewEmptyXDict() *XDict {
-	return &XDict{
-		values: make(map[string]XValue),
-	}
-}
-
 // Describe returns a representation of this type for error messages
 func (x *XDict) Describe(env utils.Environment) string { return "dict" }
 
@@ -104,7 +97,7 @@ func (x *XDict) Keys() []string {
 func (x *XDict) String() string { return x.ToXText(nil).Native() }
 
 // XDictEmpty is the empty dict
-var XDictEmpty = NewEmptyXDict()
+var XDictEmpty = NewXDict(map[string]XValue{})
 
 var _ json.Marshaler = (*XDict)(nil)
 
