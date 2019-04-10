@@ -23,12 +23,24 @@ func TestXBoolean(t *testing.T) {
 	assert.Equal(t, 1, types.XBooleanTrue.Compare(types.XBooleanFalse))
 	assert.Equal(t, -1, types.XBooleanFalse.Compare(types.XBooleanTrue))
 
+	// test to text
+	assert.Equal(t, types.NewXText("false"), types.XBooleanFalse.ToXText(env))
+	assert.Equal(t, types.NewXText("true"), types.XBooleanTrue.ToXText(env))
+
+	// test to boolean
+	assert.Equal(t, types.XBooleanFalse, types.XBooleanFalse.ToXBoolean())
+	assert.Equal(t, types.XBooleanTrue, types.XBooleanTrue.ToXBoolean())
+
+	// test to JSON
+	assert.Equal(t, types.NewXText("false"), types.XBooleanFalse.ToXJSON())
+	assert.Equal(t, types.NewXText("true"), types.XBooleanTrue.ToXJSON())
+
 	// test stringify
 	assert.Equal(t, "XBoolean(false)", types.XBooleanFalse.String())
 	assert.Equal(t, "XBoolean(true)", types.XBooleanTrue.String())
 
-	assert.Equal(t, "true", types.XBooleanTrue.Describe(env))
-	assert.Equal(t, "false", types.XBooleanFalse.Describe(env))
+	assert.Equal(t, "true", types.XBooleanTrue.Describe())
+	assert.Equal(t, "false", types.XBooleanFalse.Describe())
 
 	// unmarshal
 	var val types.XBoolean

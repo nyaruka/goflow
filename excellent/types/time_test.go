@@ -15,7 +15,7 @@ func TestXTime(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
 	t1 := types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0))
-	assert.Equal(t, `time`, t1.Describe(env))
+	assert.Equal(t, `time`, t1.Describe())
 	assert.Equal(t, types.NewXText(`17:01:30.000000`), types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).ToXText(env))
 	assert.Equal(t, `XTime(17, 1, 30, 0)`, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).String())
 

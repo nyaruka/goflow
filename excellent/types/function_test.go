@@ -16,5 +16,5 @@ func TestXFunction(t *testing.T) {
 
 	assert.Equal(t, types.NewXText(`function`), func1.ToXText(env))
 	assert.Equal(t, `XFunction`, func1.String())
-	assert.Equal(t, `function`, func1.Describe(env))
+	assert.Equal(t, `function`, func1.Describe())
 }

@@ -16,18 +16,18 @@ func NewXDate(value utils.Date) XDate {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XDate) Describe(env utils.Environment) string { return "date" }
+func (x XDate) Describe() string { return "date" }
 
 // ToXText converts this type to text
 func (x XDate) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
 
 // ToXBoolean converts this type to a bool
-func (x XDate) ToXBoolean(env utils.Environment) XBoolean {
+func (x XDate) ToXBoolean() XBoolean {
 	return NewXBoolean(x != XDateZero)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XDate) ToXJSON(env utils.Environment) XText {
+func (x XDate) ToXJSON() XText {
 	return MustMarshalToXText(x.Native().String())
 }
 
@@ -71,5 +71,5 @@ func ToXDate(env utils.Environment, x XValue) (XDate, XError) {
 		}
 	}
 
-	return XDateZero, NewXErrorf("unable to convert %s to a date", Describe(env, x))
+	return XDateZero, NewXErrorf("unable to convert %s to a date", Describe(x))
 }

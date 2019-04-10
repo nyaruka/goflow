@@ -8,7 +8,7 @@ import (
 type XFunction func(env utils.Environment, args ...XValue) XValue
 
 // Describe returns a representation of this type for error messages
-func (x XFunction) Describe(env utils.Environment) string { return "function" }
+func (x XFunction) Describe() string { return "function" }
 
 // ToXText converts this type to text
 func (x XFunction) ToXText(env utils.Environment) XText {
@@ -16,10 +16,10 @@ func (x XFunction) ToXText(env utils.Environment) XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (x XFunction) ToXBoolean(env utils.Environment) XBoolean { return XBooleanTrue }
+func (x XFunction) ToXBoolean() XBoolean { return XBooleanTrue }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XFunction) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.String()) }
+func (x XFunction) ToXJSON() XText { return MustMarshalToXText(x.String()) }
 
 // String returns the native string representation of this type
 func (x XFunction) String() string {

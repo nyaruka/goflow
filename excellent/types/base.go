@@ -11,10 +11,10 @@ import (
 type XValue interface {
 	fmt.Stringer
 
-	Describe(env utils.Environment) string
+	Describe() string
 	ToXText(env utils.Environment) XText
-	ToXBoolean(env utils.Environment) XBoolean
-	ToXJSON(env utils.Environment) XText
+	ToXBoolean() XBoolean
+	ToXJSON() XText
 }
 
 // XLengthable is the interface for types which have a length
@@ -89,11 +89,11 @@ func String(x XValue) string {
 }
 
 // Describe returns a representation of the given value for use in error messages
-func Describe(env utils.Environment, x XValue) string {
+func Describe(x XValue) string {
 	if utils.IsNil(x) {
 		return "null"
 	}
-	return x.Describe(env)
+	return x.Describe()
 }
 
 // XRepresentable is the interface for any object which can be represented in an expression

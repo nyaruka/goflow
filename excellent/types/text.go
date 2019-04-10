@@ -20,18 +20,18 @@ func NewXText(value string) XText {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XText) Describe(env utils.Environment) string { return fmt.Sprintf(`"%s"`, x.native) }
+func (x XText) Describe() string { return fmt.Sprintf(`"%s"`, x.native) }
 
 // ToXText converts this type to text
 func (x XText) ToXText(env utils.Environment) XText { return x }
 
 // ToXBoolean converts this type to a bool
-func (x XText) ToXBoolean(env utils.Environment) XBoolean {
+func (x XText) ToXBoolean() XBoolean {
 	return NewXBoolean(!x.Empty() && strings.ToLower(x.Native()) != "false")
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XText) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native()) }
+func (x XText) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XText) Native() string { return x.native }

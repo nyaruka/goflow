@@ -31,7 +31,7 @@ func NewXLazyArray(source func() []XValue) *XArray {
 }
 
 // Describe returns a representation of this type for error messages
-func (x *XArray) Describe(env utils.Environment) string { return "array" }
+func (x *XArray) Describe() string { return "array" }
 
 // ToXText converts this type to text
 func (x *XArray) ToXText(env utils.Environment) XText {
@@ -47,15 +47,15 @@ func (x *XArray) ToXText(env utils.Environment) XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (x *XArray) ToXBoolean(env utils.Environment) XBoolean {
+func (x *XArray) ToXBoolean() XBoolean {
 	return NewXBoolean(len(x.values()) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x *XArray) ToXJSON(env utils.Environment) XText {
+func (x *XArray) ToXJSON() XText {
 	marshaled := make([]json.RawMessage, len(x.values()))
 	for i, v := range x.values() {
-		asJSON, err := ToXJSON(env, v)
+		asJSON, err := ToXJSON(v)
 		if err == nil {
 			marshaled[i] = json.RawMessage(asJSON.Native())
 		}
@@ -127,5 +127,5 @@ func ToXArray(env utils.Environment, x XValue) (*XArray, XError) {
 		return asArray, nil
 	}
 
-	return XArrayEmpty, NewXErrorf("unable to convert %s to an array", Describe(env, x))
+	return XArrayEmpty, NewXErrorf("unable to convert %s to an array", Describe(x))
 }

@@ -33,7 +33,7 @@ func NewXLazyDict(source func() map[string]XValue) *XDict {
 }
 
 // Describe returns a representation of this type for error messages
-func (x *XDict) Describe(env utils.Environment) string { return "dict" }
+func (x *XDict) Describe() string { return "dict" }
 
 // ToXText converts this type to text
 func (x *XDict) ToXText(env utils.Environment) XText {
@@ -50,15 +50,15 @@ func (x *XDict) ToXText(env utils.Environment) XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (x *XDict) ToXBoolean(env utils.Environment) XBoolean {
+func (x *XDict) ToXBoolean() XBoolean {
 	return NewXBoolean(len(x.values()) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x *XDict) ToXJSON(env utils.Environment) XText {
+func (x *XDict) ToXJSON() XText {
 	marshaled := make(map[string]json.RawMessage, len(x.values()))
 	for k, v := range x.values() {
-		asJSON, err := ToXJSON(env, v)
+		asJSON, err := ToXJSON(v)
 		if err == nil {
 			marshaled[k] = json.RawMessage(asJSON.Native())
 		}
@@ -161,5 +161,5 @@ func ToXDict(env utils.Environment, x XValue) (*XDict, XError) {
 		return asDict, nil
 	}
 
-	return XDictEmpty, NewXErrorf("unable to convert %s to a dict", Describe(env, x))
+	return XDictEmpty, NewXErrorf("unable to convert %s to a dict", Describe(x))
 }

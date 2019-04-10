@@ -18,7 +18,7 @@ func NewXDateTime(value time.Time) XDateTime {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XDateTime) Describe(env utils.Environment) string { return "datetime" }
+func (x XDateTime) Describe() string { return "datetime" }
 
 // ToXText converts this type to text
 func (x XDateTime) ToXText(env utils.Environment) XText {
@@ -26,12 +26,12 @@ func (x XDateTime) ToXText(env utils.Environment) XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (x XDateTime) ToXBoolean(env utils.Environment) XBoolean {
+func (x XDateTime) ToXBoolean() XBoolean {
 	return NewXBoolean(!x.Native().IsZero())
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XDateTime) ToXJSON(env utils.Environment) XText {
+func (x XDateTime) ToXJSON() XText {
 	return MustMarshalToXText(utils.DateTimeToISO(x.Native()))
 }
 
@@ -125,5 +125,5 @@ func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XEr
 		}
 	}
 
-	return XDateTimeZero, NewXErrorf("unable to convert %s to a datetime", Describe(env, x))
+	return XDateTimeZero, NewXErrorf("unable to convert %s to a datetime", Describe(x))
 }

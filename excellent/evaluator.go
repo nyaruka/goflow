@@ -159,7 +159,7 @@ func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 		}
 	}
 
-	return types.NewXErrorf("%s has no property '%s'", types.Describe(v.env, container), lookup)
+	return types.NewXErrorf("%s has no property '%s'", types.Describe(container), lookup)
 }
 
 // VisitArrayLookup deals with lookups such as foo[5] or foo["key with spaces"]
@@ -201,7 +201,7 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 		return value
 	}
 
-	return types.NewXErrorf("%s is not indexable", types.Describe(v.env, container))
+	return types.NewXErrorf("%s is not indexable", types.Describe(container))
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)

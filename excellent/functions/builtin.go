@@ -156,7 +156,7 @@ func Text(env utils.Environment, value types.XValue) types.XValue {
 //
 // @function boolean(value)
 func Boolean(env utils.Environment, value types.XValue) types.XValue {
-	str, xerr := types.ToXBoolean(env, value)
+	str, xerr := types.ToXBoolean(value)
 	if xerr != nil {
 		return xerr
 	}
@@ -304,7 +304,7 @@ func Dict(env utils.Environment, pairs ...types.XValue) types.XValue {
 // @function and(values...)
 func And(env utils.Environment, values ...types.XValue) types.XValue {
 	for _, arg := range values {
-		asBool, xerr := types.ToXBoolean(env, arg)
+		asBool, xerr := types.ToXBoolean(arg)
 		if xerr != nil {
 			return xerr
 		}
@@ -323,7 +323,7 @@ func And(env utils.Environment, values ...types.XValue) types.XValue {
 // @function or(values...)
 func Or(env utils.Environment, values ...types.XValue) types.XValue {
 	for _, arg := range values {
-		asBool, xerr := types.ToXBoolean(env, arg)
+		asBool, xerr := types.ToXBoolean(arg)
 		if xerr != nil {
 			return xerr
 		}
@@ -343,7 +343,7 @@ func Or(env utils.Environment, values ...types.XValue) types.XValue {
 //
 // @function if(test, value1, value2)
 func If(env utils.Environment, test types.XValue, value1 types.XValue, value2 types.XValue) types.XValue {
-	asBool, err := types.ToXBoolean(env, test)
+	asBool, err := types.ToXBoolean(test)
 	if err != nil {
 		return err
 	}
@@ -1497,7 +1497,7 @@ func ParseJSON(env utils.Environment, text types.XText) types.XValue {
 //
 // @function json(value)
 func JSON(env utils.Environment, value types.XValue) types.XValue {
-	asJSON, xerr := types.ToXJSON(env, value)
+	asJSON, xerr := types.ToXJSON(value)
 	if xerr != nil {
 		return xerr
 	}
@@ -1718,7 +1718,7 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 
 	human := types.XBooleanTrue
 	if len(args) > 2 {
-		if human, err = types.ToXBoolean(env, args[2]); err != nil {
+		if human, err = types.ToXBoolean(args[2]); err != nil {
 			return err
 		}
 	}
@@ -1939,7 +1939,7 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 		oldItem := array.Get(i)
 		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 
-		newItem := Call(env, function.Describe(env), function, funcArgs)
+		newItem := Call(env, function.Describe(), function, funcArgs)
 		if types.IsXError(newItem) {
 			return newItem
 		}

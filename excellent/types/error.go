@@ -28,16 +28,16 @@ func NewXErrorf(format string, a ...interface{}) XError {
 }
 
 // Describe returns a representation of this type for error messages
-func (x xerror) Describe(env utils.Environment) string { return "error" }
+func (x xerror) Describe() string { return "error" }
 
 // ToXText converts this type to text
 func (x xerror) ToXText(env utils.Environment) XText { return NewXText(x.Native().Error()) }
 
 // ToXBoolean converts this type to a bool
-func (x xerror) ToXBoolean(env utils.Environment) XBoolean { return XBooleanFalse }
+func (x xerror) ToXBoolean() XBoolean { return XBooleanFalse }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x xerror) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native().Error()) }
+func (x xerror) ToXJSON() XText { return MustMarshalToXText(x.Native().Error()) }
 
 // MarshalJSON converts this type to internal JSON
 func (x xerror) MarshalJSON() ([]byte, error) {

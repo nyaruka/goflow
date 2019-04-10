@@ -38,18 +38,18 @@ func RequireXNumberFromString(value string) XNumber {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XNumber) Describe(env utils.Environment) string { return x.ToXText(nil).Native() }
+func (x XNumber) Describe() string { return x.ToXText(nil).Native() }
 
 // ToXText converts this type to text
 func (x XNumber) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
 
 // ToXBoolean converts this type to a bool
-func (x XNumber) ToXBoolean(env utils.Environment) XBoolean {
+func (x XNumber) ToXBoolean() XBoolean {
 	return NewXBoolean(!x.Equals(XNumberZero))
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XNumber) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native()) }
+func (x XNumber) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return x.native }
@@ -98,7 +98,7 @@ func ToXNumber(env utils.Environment, x XValue) (XNumber, XError) {
 		}
 	}
 
-	return XNumberZero, NewXErrorf("unable to convert %s to a number", Describe(env, x))
+	return XNumberZero, NewXErrorf("unable to convert %s to a number", Describe(x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible

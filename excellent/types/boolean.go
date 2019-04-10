@@ -18,7 +18,7 @@ func NewXBoolean(value bool) XBoolean {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XBoolean) Describe(env utils.Environment) string { return strconv.FormatBool(x.Native()) }
+func (x XBoolean) Describe() string { return strconv.FormatBool(x.Native()) }
 
 // ToXText converts this type to text
 func (x XBoolean) ToXText(env utils.Environment) XText {
@@ -26,10 +26,10 @@ func (x XBoolean) ToXText(env utils.Environment) XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (x XBoolean) ToXBoolean(env utils.Environment) XBoolean { return x }
+func (x XBoolean) ToXBoolean() XBoolean { return x }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XBoolean) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native()) }
+func (x XBoolean) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XBoolean) Native() bool { return x.native }
@@ -73,7 +73,7 @@ var XBooleanTrue = NewXBoolean(true)
 var _ XValue = XBooleanFalse
 
 // ToXBoolean converts the given value to a boolean
-func ToXBoolean(env utils.Environment, x XValue) (XBoolean, XError) {
+func ToXBoolean(x XValue) (XBoolean, XError) {
 	if utils.IsNil(x) {
 		return XBooleanFalse, nil
 	}
@@ -81,5 +81,5 @@ func ToXBoolean(env utils.Environment, x XValue) (XBoolean, XError) {
 		return XBooleanFalse, x.(XError)
 	}
 
-	return x.ToXBoolean(env), nil
+	return x.ToXBoolean(), nil
 }

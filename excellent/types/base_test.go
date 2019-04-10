@@ -174,9 +174,9 @@ func TestXValueRequiredConversions(t *testing.T) {
 	}
 	for _, test := range tests {
 		asInternalJSON, _ := utils.JSONMarshal(test.value)
-		asJSON, _ := types.ToXJSON(env, test.value)
+		asJSON, _ := types.ToXJSON(test.value)
 		asText, _ := types.ToXText(env, test.value)
-		asBool, _ := types.ToXBoolean(env, test.value)
+		asBool, _ := types.ToXBoolean(test.value)
 
 		assert.Equal(t, test.asInternalJSON, string(asInternalJSON), "json.Marshal failed for %T{%s}", test.value, test.value)
 		assert.Equal(t, types.NewXText(test.asJSON), asJSON, "ToXJSON failed for %T{%s}", test.value, test.value)

@@ -75,7 +75,7 @@ func jsonToArray(data []byte) *XArray {
 }
 
 // ToXJSON converts the given value to a JSON string
-func ToXJSON(env utils.Environment, x XValue) (XText, XError) {
+func ToXJSON(x XValue) (XText, XError) {
 	if utils.IsNil(x) {
 		return NewXText(`null`), nil
 	}
@@ -83,7 +83,7 @@ func ToXJSON(env utils.Environment, x XValue) (XText, XError) {
 		return XTextEmpty, x.(XError)
 	}
 
-	return x.ToXJSON(env), nil
+	return x.ToXJSON(), nil
 }
 
 // MustMarshalToXText calls json.Marshal in the given value and panics in the case of an error
