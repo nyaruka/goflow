@@ -24,8 +24,8 @@ func TestXNumber(t *testing.T) {
 	assert.Equal(t, -1, types.NewXNumberFromInt(123).Compare(types.NewXNumberFromInt(124)))
 	assert.Equal(t, 1, types.NewXNumberFromInt(124).Compare(types.NewXNumberFromInt(123)))
 
-	assert.Equal(t, `123`, types.NewXNumberFromInt64(123).String())
-	assert.Equal(t, `123.45`, types.RequireXNumberFromString("123.45").String())
+	assert.Equal(t, `XNumber(123)`, types.NewXNumberFromInt64(123).String())
+	assert.Equal(t, `XNumber(123.45)`, types.RequireXNumberFromString("123.45").String())
 
 	// unmarshal with quotes
 	var num types.XNumber

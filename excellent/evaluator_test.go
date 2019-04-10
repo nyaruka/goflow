@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/functions"
+	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -161,17 +162,15 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{"@string1 @string2", xs("foo bar")}, // falls back to template evaluation if necessary
 	}
 
-	for _, test := range evaluateTests {
-		result, err := EvaluateTemplateValue(env, context, test.template)
+	for _, tc := range evaluateTests {
+		result, err := EvaluateTemplateValue(env, context, tc.template)
 		assert.NoError(t, err)
 
 		// don't check error equality - just check that we got an error if we expected one
-		if test.expected == ERROR {
-			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, test.template)
+		if tc.expected == ERROR {
+			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, tc.template)
 		} else {
-			if !types.Equals(env, result, test.expected) {
-				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} evaluating template '%s'", test.expected, test.expected, result, result, test.template)
-			}
+			test.AssertEqual(t, result, tc.expected, "output mismatch for template '%s'", tc.template)
 		}
 	}
 }
@@ -276,23 +275,20 @@ func TestEvaluateTemplate(t *testing.T) {
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
-	for _, test := range evaluateAsStringTests {
+	for _, tc := range evaluateAsStringTests {
 		defer func() {
 			if r := recover(); r != nil {
-				t.Errorf("panic evaluating template %s", test.template)
+				t.Errorf("panic evaluating template %s", tc.template)
 			}
 		}()
 
-		eval, err := EvaluateTemplate(env, vars, test.template)
+		eval, err := EvaluateTemplate(env, vars, tc.template)
 
-		if test.hasError {
-			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
+		if tc.hasError {
+			assert.Error(t, err, "expected error evaluating template '%s'", tc.template)
 		} else {
-			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
-
-			if eval != test.expected {
-				t.Errorf("Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
-			}
+			assert.NoError(t, err, "unexpected error evaluating template '%s'", tc.template)
+			assert.Equal(t, tc.expected, eval, " output mismatch for template: '%s'", tc.template)
 		}
 	}
 }

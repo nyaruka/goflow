@@ -23,12 +23,12 @@ func NewXArray(values ...XValue) *XArray {
 }
 
 // Describe returns a representation of this type for error messages
-func (a *XArray) Describe(env utils.Environment) string { return "array" }
+func (x *XArray) Describe(env utils.Environment) string { return "array" }
 
 // ToXText converts this type to text
-func (a *XArray) ToXText(env utils.Environment) XText {
-	parts := make([]string, a.Length())
-	for i, v := range a.values {
+func (x *XArray) ToXText(env utils.Environment) XText {
+	parts := make([]string, x.Length())
+	for i, v := range x.values {
 		vAsText, xerr := ToXText(env, v)
 		if xerr != nil {
 			vAsText = xerr.ToXText(env)
@@ -39,14 +39,14 @@ func (a *XArray) ToXText(env utils.Environment) XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (a *XArray) ToXBoolean(env utils.Environment) XBoolean {
-	return NewXBoolean(len(a.values) > 0)
+func (x *XArray) ToXBoolean(env utils.Environment) XBoolean {
+	return NewXBoolean(len(x.values) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (a *XArray) ToXJSON(env utils.Environment) XText {
-	marshaled := make([]json.RawMessage, len(a.values))
-	for i, v := range a.values {
+func (x *XArray) ToXJSON(env utils.Environment) XText {
+	marshaled := make([]json.RawMessage, len(x.values))
+	for i, v := range x.values {
 		asJSON, err := ToXJSON(env, v)
 		if err == nil {
 			marshaled[i] = json.RawMessage(asJSON.Native())
@@ -56,22 +56,42 @@ func (a *XArray) ToXJSON(env utils.Environment) XText {
 }
 
 // MarshalJSON converts this type to internal JSON
-func (a *XArray) MarshalJSON() ([]byte, error) {
-	return utils.JSONMarshal(a.values)
+func (x *XArray) MarshalJSON() ([]byte, error) {
+	return utils.JSONMarshal(x.values)
 }
 
 // Get is called when this object is indexed
-func (a *XArray) Get(index int) XValue {
-	return a.values[index]
+func (x *XArray) Get(index int) XValue {
+	return x.values[index]
 }
 
 // Length is called when the length of this object is requested in an expression
-func (a *XArray) Length() int {
-	return len(a.values)
+func (x *XArray) Length() int {
+	return len(x.values)
 }
 
 // String returns the native string representation of this type
-func (a *XArray) String() string { return a.ToXText(nil).Native() }
+func (x *XArray) String() string {
+	parts := make([]string, x.Length())
+	for i, v := range x.values {
+		parts[i] = String(v)
+	}
+	return `XArray[` + strings.Join(parts, ", ") + `]`
+}
+
+// Equals determines equality for this type
+func (x *XArray) Equals(other *XArray) bool {
+	if x.Length() != other.Length() {
+		return false
+	}
+
+	for i, v := range x.values {
+		if !Equals(v, other.values[i]) {
+			return false
+		}
+	}
+	return true
+}
 
 // XArrayEmpty is the empty array
 var XArrayEmpty = NewXArray()

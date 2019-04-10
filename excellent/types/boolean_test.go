@@ -24,8 +24,8 @@ func TestXBoolean(t *testing.T) {
 	assert.Equal(t, -1, types.XBooleanFalse.Compare(types.XBooleanTrue))
 
 	// test stringify
-	assert.Equal(t, "false", types.XBooleanFalse.String())
-	assert.Equal(t, "true", types.XBooleanTrue.String())
+	assert.Equal(t, "XBoolean(false)", types.XBooleanFalse.String())
+	assert.Equal(t, "XBoolean(true)", types.XBooleanTrue.String())
 
 	assert.Equal(t, "true", types.XBooleanTrue.Describe(env))
 	assert.Equal(t, "false", types.XBooleanFalse.Describe(env))

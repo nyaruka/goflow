@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/utils"
@@ -271,9 +272,7 @@ func TestTests(t *testing.T) {
 		if tc.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for ", result, result, testID)
 		} else {
-			if !types.Equals(env, result, tc.expected) {
-				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for ", tc.expected, tc.expected, result, result, testID)
-			}
+			test.AssertEqual(t, tc.expected, result, "result mismatch for %s", testID)
 		}
 	}
 }

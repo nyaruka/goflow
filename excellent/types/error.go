@@ -49,7 +49,10 @@ func (x xerror) Native() error { return x.native }
 
 func (x xerror) Error() string { return x.Native().Error() }
 
-func (x xerror) String() string { return x.Native().Error() }
+// String returns the native string representation of this type for debugging
+func (x xerror) String() string {
+	return `XError("` + x.Native().Error() + `")`
+}
 
 // Equals determines equality for this type
 func (x xerror) Equals(other XError) bool {

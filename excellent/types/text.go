@@ -36,8 +36,8 @@ func (x XText) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(
 // Native returns the native value of this type
 func (x XText) Native() string { return x.native }
 
-// String returns the native string representation of this type
-func (x XText) String() string { return x.Native() }
+// String returns the native string representation of this type for debugging
+func (x XText) String() string { return `XText("` + x.Native() + `")` }
 
 // Equals determines equality for this type
 func (x XText) Equals(other XText) bool {

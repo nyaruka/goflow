@@ -51,13 +51,15 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 }
 
 func jsonToDict(data []byte) *XDict {
-	entries := make(map[string]XValue, 0)
+	return NewXLazyDict(func() map[string]XValue {
+		entries := make(map[string]XValue, 0)
 
-	jsonparser.ObjectEach(data, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
-		entries[string(key)] = jsonTypeToXValue(value, dataType)
-		return nil
+		jsonparser.ObjectEach(data, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
+			entries[string(key)] = jsonTypeToXValue(value, dataType)
+			return nil
+		})
+		return entries
 	})
-	return NewXDict(entries)
 }
 
 func jsonToArray(data []byte) *XArray {

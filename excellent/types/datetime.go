@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
@@ -38,7 +39,9 @@ func (x XDateTime) ToXJSON(env utils.Environment) XText {
 func (x XDateTime) Native() time.Time { return x.native }
 
 // String returns the native string representation of this type
-func (x XDateTime) String() string { return x.ToXText(nil).Native() }
+func (x XDateTime) String() string {
+	return fmt.Sprintf(`XDateTime(`+x.native.Format("2006, 1, 2, 15, 4, 5, %d, MST")+`)`, x.native.Nanosecond())
+}
 
 // Date returns the date part of this datetime
 func (x XDateTime) Date() XDate {

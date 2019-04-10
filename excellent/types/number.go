@@ -55,7 +55,7 @@ func (x XNumber) ToXJSON(env utils.Environment) XText { return MustMarshalToXTex
 func (x XNumber) Native() decimal.Decimal { return x.native }
 
 // String returns the native string representation of this type
-func (x XNumber) String() string { return x.ToXText(nil).Native() }
+func (x XNumber) String() string { return `XNumber(` + x.ToXText(nil).Native() + `)` }
 
 // Equals determines equality for this type
 func (x XNumber) Equals(other XNumber) bool {

@@ -16,21 +16,22 @@ func TestXDict(t *testing.T) {
 		"foo": types.NewXText("abc"),
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
+		"xxx": nil,
 	})
-	assert.Equal(t, 3, dict.Length())
-	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, dict.Keys())
+	assert.Equal(t, 4, dict.Length())
+	assert.ElementsMatch(t, []string{"foo", "bar", "zed", "xxx"}, dict.Keys())
 
 	val, exists := dict.Get("foo")
 	assert.True(t, exists)
 	assert.Equal(t, types.NewXText("abc"), val)
 
-	val, exists = dict.Get("xxx")
+	val, exists = dict.Get("doh")
 	assert.False(t, exists)
 	assert.Nil(t, val)
 
-	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), dict.ToXText(env))
-	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), dict.ToXJSON(env))
-	assert.Equal(t, "{bar: 123, foo: abc, zed: false}", dict.String())
+	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, xxx: , zed: false}"), dict.ToXText(env))
+	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","xxx":null,"zed":false}`), dict.ToXJSON(env))
+	assert.Equal(t, `XDict{bar: XNumber(123), foo: XText("abc"), xxx: nil, zed: XBoolean(false)}`, dict.String())
 	assert.Equal(t, "dict", dict.Describe(env))
 
 	// test equality
@@ -38,11 +39,31 @@ func TestXDict(t *testing.T) {
 		"foo": types.NewXText("abc"),
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
+		"xxx": nil,
 	}))
 	assert.NotEqual(t, dict, types.NewXDict(map[string]types.XValue{
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
+		"xxx": nil,
 	}))
+}
+
+func TestXLazyDict(t *testing.T) {
+	env := utils.NewEnvironmentBuilder().Build()
+
+	dict := types.NewXLazyDict(func() map[string]types.XValue {
+		return map[string]types.XValue{
+			"foo": types.NewXText("abc"),
+			"bar": types.NewXNumberFromInt(123),
+			"zed": types.XBooleanFalse,
+		}
+	})
+
+	assert.Equal(t, 3, dict.Length())
+	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, dict.Keys())
+	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), dict.ToXText(env))
+	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), dict.ToXJSON(env))
+	assert.Equal(t, "dict", dict.Describe(env))
 }
 
 func TestToXDict(t *testing.T) {

@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -34,7 +36,9 @@ func (x XTime) ToXJSON(env utils.Environment) XText {
 func (x XTime) Native() utils.TimeOfDay { return x.native }
 
 // String returns the native string representation of this type
-func (x XTime) String() string { return x.ToXText(nil).Native() }
+func (x XTime) String() string {
+	return fmt.Sprintf(`XTime(%d, %d, %d, %d)`, x.native.Hour, x.native.Minute, x.native.Second, x.native.Nanos)
+}
 
 // Equals determines equality for this type
 func (x XTime) Equals(other XTime) bool {

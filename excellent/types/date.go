@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -34,7 +35,9 @@ func (x XDate) ToXJSON(env utils.Environment) XText {
 func (x XDate) Native() utils.Date { return x.native }
 
 // String returns the native string representation of this type
-func (x XDate) String() string { return x.ToXText(nil).Native() }
+func (x XDate) String() string {
+	return fmt.Sprintf(`XDate(%d, %d, %d)`, x.native.Year, x.native.Month, x.native.Day)
+}
 
 // Equals determines equality for this type
 func (x XDate) Equals(other XDate) bool {

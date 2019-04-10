@@ -16,7 +16,7 @@ func TestXDate(t *testing.T) {
 
 	d1 := types.NewXDate(utils.NewDate(2019, 2, 20))
 	assert.Equal(t, `date`, d1.Describe(env))
-	assert.Equal(t, `2019-02-20`, d1.String())
+	assert.Equal(t, `XDate(2019, 2, 20)`, d1.String())
 
 	// test equality
 	assert.True(t, d1.Equals(types.NewXDate(utils.NewDate(2019, 2, 20))))

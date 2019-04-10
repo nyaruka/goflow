@@ -34,8 +34,8 @@ func (x XBoolean) ToXJSON(env utils.Environment) XText { return MustMarshalToXTe
 // Native returns the native value of this type
 func (x XBoolean) Native() bool { return x.native }
 
-// String returns the native string representation of this type
-func (x XBoolean) String() string { return x.ToXText(nil).Native() }
+// String returns the native string representation of this type for debugging
+func (x XBoolean) String() string { return `XBoolean(` + strconv.FormatBool(x.Native()) + `)` }
 
 // Equals determines equality for this type
 func (x XBoolean) Equals(other XBoolean) bool {

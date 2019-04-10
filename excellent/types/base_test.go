@@ -186,29 +186,65 @@ func TestXValueRequiredConversions(t *testing.T) {
 }
 
 func TestEquals(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
-
 	var tests = []struct {
 		x1     types.XValue
 		x2     types.XValue
 		result bool
 	}{
-		{nil, nil, true},
-		{nil, types.NewXText(""), false},
-		{types.NewXError(errors.Errorf("Error")), types.NewXError(errors.Errorf("Error")), true},
-		{types.NewXError(errors.Errorf("Error")), types.XDateTimeZero, false},
-		{types.NewXText("bob"), types.NewXText("bob"), true},
-		{types.NewXText("bob"), types.NewXText("abc"), false},
+
+		{nil, nil, true},                                         // nil == nil
+		{nil, types.NewXText(""), false},                         // nil != non-nil
+		{types.NewXText("1"), types.NewXNumberFromInt(1), false}, // different types are never equal
+
+		{types.NewXArray(types.XBooleanFalse, types.NewXText("bob")), types.NewXArray(types.XBooleanFalse, types.NewXText("bob")), true},
+		{types.NewXArray(types.XBooleanFalse, types.NewXText("abc")), types.NewXArray(types.XBooleanFalse, types.NewXText("bob")), false},
+		{types.NewXArray(types.XBooleanFalse, types.NewXText("bob")), types.NewXArray(types.NewXText("bob"), types.XBooleanFalse), false}, // order matters
+
 		{types.XBooleanFalse, types.XBooleanFalse, true},
 		{types.XBooleanTrue, types.XBooleanFalse, false},
-		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), true},
-		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(124), false},
+
+		{types.NewXDate(utils.NewDate(2018, 4, 9)), types.NewXDate(utils.NewDate(2018, 4, 9)), true},
+		{types.NewXDate(utils.NewDate(2019, 4, 9)), types.NewXDate(utils.NewDate(2018, 4, 10)), false},
+
 		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), true},
 		{types.NewXDateTime(time.Date(2019, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
+
+		{
+			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			true,
+		},
+		{
+			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse}),
+			false, // different number of keys
+		},
+		{
+			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "baz": types.NewXText("bob")}),
+			false, // different key
+		},
+		{
+			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("boo")}),
+			false, // different value
+		},
+
+		{types.NewXError(errors.Errorf("Error")), types.NewXError(errors.Errorf("Error")), true},
+		{types.NewXError(errors.Errorf("Error")), types.XDateTimeZero, false},
+
+		{types.NewXText("bob"), types.NewXText("bob"), true},
+		{types.NewXText("bob"), types.NewXText("abc"), false},
+
+		{types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 123456789)), types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 123456789)), true},
+		{types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 123456789)), types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 987654321)), false},
+
+		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), true},
+		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(124), false},
 	}
 
-	for _, test := range tests {
-		assert.Equal(t, test.result, types.Equals(env, test.x1, test.x2), "equality mismatch for inputs '%s' and '%s'", test.x1, test.x2)
+	for _, tc := range tests {
+		assert.Equal(t, tc.result, types.Equals(tc.x1, tc.x2), "equality mismatch for inputs '%s' and '%s'", tc.x1, tc.x2)
 	}
 }
 
