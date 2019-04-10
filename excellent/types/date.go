@@ -1,7 +1,9 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
+
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -26,13 +28,13 @@ func (x XDate) ToXBoolean() XBoolean {
 	return NewXBoolean(x != XDateZero)
 }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (x XDate) ToXJSON() XText {
-	return MustMarshalToXText(x.Native().String())
-}
-
 // Native returns the native value of this type
 func (x XDate) Native() utils.Date { return x.native }
+
+// MarshalJSON is called when a struct containing this type is marshaled
+func (x XDate) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x.Native().String())
+}
 
 // String returns the native string representation of this type
 func (x XDate) String() string {

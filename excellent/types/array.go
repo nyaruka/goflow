@@ -51,23 +51,6 @@ func (x *XArray) ToXBoolean() XBoolean {
 	return NewXBoolean(len(x.values()) > 0)
 }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (x *XArray) ToXJSON() XText {
-	marshaled := make([]json.RawMessage, len(x.values()))
-	for i, v := range x.values() {
-		asJSON, err := ToXJSON(v)
-		if err == nil {
-			marshaled[i] = json.RawMessage(asJSON.Native())
-		}
-	}
-	return MustMarshalToXText(marshaled)
-}
-
-// MarshalJSON converts this type to internal JSON
-func (x *XArray) MarshalJSON() ([]byte, error) {
-	return utils.JSONMarshal(x.values())
-}
-
 // Get is called when this object is indexed
 func (x *XArray) Get(index int) XValue {
 	return x.values()[index]
@@ -76,6 +59,18 @@ func (x *XArray) Get(index int) XValue {
 // Length is called when the length of this object is requested in an expression
 func (x *XArray) Length() int {
 	return len(x.values())
+}
+
+// MarshalJSON converts this type to internal JSON
+func (x *XArray) MarshalJSON() ([]byte, error) {
+	marshaled := make([]json.RawMessage, len(x.values()))
+	for i, v := range x.values() {
+		asJSON, err := ToXJSON(v)
+		if err == nil {
+			marshaled[i] = json.RawMessage(asJSON.Native())
+		}
+	}
+	return json.Marshal(marshaled)
 }
 
 // String returns the native string representation of this type
@@ -110,8 +105,6 @@ func (x *XArray) values() []XValue {
 
 // XArrayEmpty is the empty array
 var XArrayEmpty = NewXArray()
-
-var _ json.Marshaler = (*XArray)(nil)
 
 // ToXArray converts the given value to an array
 func ToXArray(env utils.Environment, x XValue) (*XArray, XError) {

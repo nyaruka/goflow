@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
@@ -27,17 +28,17 @@ func (x XTime) ToXBoolean() XBoolean {
 	return NewXBoolean(x != XTimeZero)
 }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (x XTime) ToXJSON() XText {
-	return MustMarshalToXText(x.Native().String())
-}
-
 // Native returns the native value of this type
 func (x XTime) Native() utils.TimeOfDay { return x.native }
 
 // String returns the native string representation of this type
 func (x XTime) String() string {
 	return fmt.Sprintf(`XTime(%d, %d, %d, %d)`, x.native.Hour, x.native.Minute, x.native.Second, x.native.Nanos)
+}
+
+// MarshalJSON is called when a struct containing this type is marshaled
+func (x XTime) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x.Native())
 }
 
 // Equals determines equality for this type

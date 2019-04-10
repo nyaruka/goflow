@@ -1047,7 +1047,7 @@ will be created and it's the responsibility of the caller to act on that by init
                 },
                 "join_date": {
                     "text": "2017-12-02",
-                    "datetime": "2017-12-02T00:00:00-02:00"
+                    "datetime": "2017-12-02T00:00:00.000000-02:00"
                 }
             }
         },

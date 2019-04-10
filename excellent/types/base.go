@@ -1,20 +1,26 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 
 	"github.com/nyaruka/goflow/utils"
 )
 
-// XValue is the base interface of all Excellent types
+// XValue is the base interface of all excellent types
 type XValue interface {
 	fmt.Stringer
+	json.Marshaler
 
+	// Describe returns a representation for use in error messages
 	Describe() string
+
+	// ToXText converts this type to text
 	ToXText(env utils.Environment) XText
+
+	// ToXBoolean converts this type to a boolean
 	ToXBoolean() XBoolean
-	ToXJSON() XText
 }
 
 // XLengthable is the interface for types which have a length

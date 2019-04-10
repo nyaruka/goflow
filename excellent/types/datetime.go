@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -28,11 +29,6 @@ func (x XDateTime) ToXText(env utils.Environment) XText {
 // ToXBoolean converts this type to a bool
 func (x XDateTime) ToXBoolean() XBoolean {
 	return NewXBoolean(!x.Native().IsZero())
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (x XDateTime) ToXJSON() XText {
-	return MustMarshalToXText(utils.DateTimeToISO(x.Native()))
 }
 
 // Native returns the native value of this type
@@ -84,7 +80,7 @@ func (x XDateTime) Compare(other XDateTime) int {
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XDateTime) MarshalJSON() ([]byte, error) {
-	return x.Native().MarshalJSON()
+	return json.Marshal(utils.DateTimeToISO(x.Native()))
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled

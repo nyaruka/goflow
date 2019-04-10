@@ -28,11 +28,13 @@ func (x XBoolean) ToXText(env utils.Environment) XText {
 // ToXBoolean converts this type to a bool
 func (x XBoolean) ToXBoolean() XBoolean { return x }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (x XBoolean) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
-
 // Native returns the native value of this type
 func (x XBoolean) Native() bool { return x.native }
+
+// MarshalJSON is called when a struct containing this type is marshaled
+func (x XBoolean) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x.Native())
+}
 
 // String returns the native string representation of this type for debugging
 func (x XBoolean) String() string { return `XBoolean(` + strconv.FormatBool(x.Native()) + `)` }
@@ -52,11 +54,6 @@ func (x XBoolean) Compare(other XBoolean) int {
 	default:
 		return 0
 	}
-}
-
-// MarshalJSON is called when a struct containing this type is marshaled
-func (x XBoolean) MarshalJSON() ([]byte, error) {
-	return json.Marshal(x.Native())
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled

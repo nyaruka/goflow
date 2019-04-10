@@ -1,6 +1,8 @@
 package types
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -18,12 +20,14 @@ func (x XFunction) ToXText(env utils.Environment) XText {
 // ToXBoolean converts this type to a bool
 func (x XFunction) ToXBoolean() XBoolean { return XBooleanTrue }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (x XFunction) ToXJSON() XText { return MustMarshalToXText(x.String()) }
-
 // String returns the native string representation of this type
 func (x XFunction) String() string {
 	return `XFunction`
+}
+
+// MarshalJSON converts this type to JSON
+func (x XFunction) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x.Describe()) // TODO
 }
 
 // Equals determines equality for this type

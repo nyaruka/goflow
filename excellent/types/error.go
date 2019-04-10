@@ -36,10 +36,7 @@ func (x xerror) ToXText(env utils.Environment) XText { return NewXText(x.Native(
 // ToXBoolean converts this type to a bool
 func (x xerror) ToXBoolean() XBoolean { return XBooleanFalse }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (x xerror) ToXJSON() XText { return MustMarshalToXText(x.Native().Error()) }
-
-// MarshalJSON converts this type to internal JSON
+// MarshalJSON converts this type to JSON
 func (x xerror) MarshalJSON() ([]byte, error) {
 	return nil, nil
 }

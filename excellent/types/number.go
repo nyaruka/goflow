@@ -48,9 +48,6 @@ func (x XNumber) ToXBoolean() XBoolean {
 	return NewXBoolean(!x.Equals(XNumberZero))
 }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (x XNumber) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
-
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return x.native }
 

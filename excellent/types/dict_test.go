@@ -30,9 +30,11 @@ func TestXDict(t *testing.T) {
 	assert.Nil(t, val)
 
 	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, xxx: , zed: false}"), dict.ToXText(env))
-	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","xxx":null,"zed":false}`), dict.ToXJSON())
 	assert.Equal(t, `XDict{bar: XNumber(123), foo: XText("abc"), xxx: nil, zed: XBoolean(false)}`, dict.String())
 	assert.Equal(t, "dict", dict.Describe())
+
+	asJSON, _ := types.ToXJSON(dict)
+	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","xxx":null,"zed":false}`), asJSON)
 
 	// test equality
 	assert.Equal(t, dict, types.NewXDict(map[string]types.XValue{
@@ -62,8 +64,10 @@ func TestXLazyDict(t *testing.T) {
 	assert.Equal(t, 3, dict.Length())
 	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, dict.Keys())
 	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), dict.ToXText(env))
-	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), dict.ToXJSON())
 	assert.Equal(t, "dict", dict.Describe())
+
+	asJSON, _ := types.ToXJSON(dict)
+	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), asJSON)
 }
 
 func TestToXDict(t *testing.T) {

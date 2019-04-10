@@ -54,8 +54,8 @@ func (x *XDict) ToXBoolean() XBoolean {
 	return NewXBoolean(len(x.values()) > 0)
 }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (x *XDict) ToXJSON() XText {
+// MarshalJSON converts this type to internal JSON
+func (x *XDict) MarshalJSON() ([]byte, error) {
 	marshaled := make(map[string]json.RawMessage, len(x.values()))
 	for k, v := range x.values() {
 		asJSON, err := ToXJSON(v)
@@ -63,12 +63,7 @@ func (x *XDict) ToXJSON() XText {
 			marshaled[k] = json.RawMessage(asJSON.Native())
 		}
 	}
-	return MustMarshalToXText(marshaled)
-}
-
-// MarshalJSON converts this type to internal JSON
-func (x *XDict) MarshalJSON() ([]byte, error) {
-	return json.Marshal(x.values())
+	return json.Marshal(marshaled)
 }
 
 // Length is called when the length of this object is requested in an expression

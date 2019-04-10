@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
@@ -83,7 +84,12 @@ func ToXJSON(x XValue) (XText, XError) {
 		return XTextEmpty, x.(XError)
 	}
 
-	return x.ToXJSON(), nil
+	marshaled, err := json.Marshal(x)
+	if err != nil {
+		return XTextEmpty, NewXError(err)
+	}
+
+	return NewXText(string(marshaled)), nil
 }
 
 // MustMarshalToXText calls json.Marshal in the given value and panics in the case of an error

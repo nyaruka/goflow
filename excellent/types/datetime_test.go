@@ -18,8 +18,10 @@ func TestXDateTime(t *testing.T) {
 	// test stringing
 	assert.Equal(t, types.NewXText(`2018-04-09T17:01:30.123456Z`), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).ToXText(env))
 	assert.Equal(t, types.XBooleanTrue, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).ToXBoolean())
-	assert.Equal(t, types.NewXText(`"2018-04-09T17:01:30.123456Z"`), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).ToXJSON())
 	assert.Equal(t, `XDateTime(2018, 4, 9, 17, 1, 30, 123456789, UTC)`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).String())
+
+	asJSON, _ := types.ToXJSON(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)))
+	assert.Equal(t, types.NewXText(`"2018-04-09T17:01:30.123456Z"`), asJSON)
 
 	// test equality
 	assert.True(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).Equals(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
@@ -54,7 +56,7 @@ func TestXDateTime(t *testing.T) {
 	// test marshaling
 	data, err := json.Marshal(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)))
 	assert.NoError(t, err)
-	assert.Equal(t, []byte(`"2018-04-09T17:01:30Z"`), data)
+	assert.Equal(t, `"2018-04-09T17:01:30.000000Z"`, string(data))
 }
 
 func TestToXDateTime(t *testing.T) {

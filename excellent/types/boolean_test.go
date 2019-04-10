@@ -32,8 +32,10 @@ func TestXBoolean(t *testing.T) {
 	assert.Equal(t, types.XBooleanTrue, types.XBooleanTrue.ToXBoolean())
 
 	// test to JSON
-	assert.Equal(t, types.NewXText("false"), types.XBooleanFalse.ToXJSON())
-	assert.Equal(t, types.NewXText("true"), types.XBooleanTrue.ToXJSON())
+	asJSON, _ := types.ToXJSON(types.XBooleanFalse)
+	assert.Equal(t, types.NewXText("false"), asJSON)
+	asJSON, _ = types.ToXJSON(types.XBooleanTrue)
+	assert.Equal(t, types.NewXText("true"), asJSON)
 
 	// test stringify
 	assert.Equal(t, "XBoolean(false)", types.XBooleanFalse.String())
