@@ -63,7 +63,7 @@ func TestContact(t *testing.T) {
 	assert.True(t, contact.HasURN("tel:+16364646466"))
 	assert.False(t, contact.HasURN("tel:+16300000000"))
 
-	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
 		"ext":       nil,
 		"facebook":  nil,
 		"fcm":       nil,
@@ -77,7 +77,7 @@ func TestContact(t *testing.T) {
 		"viber":     nil,
 		"wechat":    nil,
 		"whatsapp":  nil,
-	}), contact.URNs().MapContext(env))
+	}), flows.ContextFunc(env, contact.URNs().MapContext))
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
@@ -90,11 +90,11 @@ func TestContact(t *testing.T) {
 	mrNil := (*flows.Contact)(nil)
 	assert.Nil(t, mrNil.Clone())
 
-	assert.Equal(t, types.NewXDict(map[string]types.XValue{
-		"channel":    android.ToXValue(env),
+	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
+		"channel":    flows.Context(env, android),
 		"created_on": types.NewXDateTime(contact.CreatedOn()),
 		"display":    types.NewXText("Joe Bloggs"),
-		"fields":     contact.Fields().ToXValue(env),
+		"fields":     flows.Context(env, contact.Fields()),
 		"groups":     contact.Groups().ToXValue(env),
 		"id":         types.NewXNumberFromInt(12345),
 		"language":   types.NewXText("eng"),
@@ -103,7 +103,7 @@ func TestContact(t *testing.T) {
 		"urn":        contact.URNs()[0].ToXValue(env),
 		"urns":       contact.URNs().ToXValue(env),
 		"uuid":       types.NewXText(string(contact.UUID())),
-	}), contact.ToXValue(env))
+	}), flows.Context(env, contact))
 }
 
 func TestContactFormat(t *testing.T) {

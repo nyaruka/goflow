@@ -31,8 +31,11 @@ func TestXArray(t *testing.T) {
 
 func TestXLazyArray(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
+	initialized := false
 
 	arr1 := types.NewXLazyArray(func() []types.XValue {
+		initialized = true
+
 		return []types.XValue{
 			types.NewXText("abc"),
 			types.NewXNumberFromInt(123),
@@ -40,12 +43,16 @@ func TestXLazyArray(t *testing.T) {
 		}
 	})
 
+	assert.False(t, initialized)
+
 	assert.Equal(t, 3, arr1.Length())
 	assert.Equal(t, types.NewXText("abc"), arr1.Get(0))
 	assert.Equal(t, types.NewXNumberFromInt(123), arr1.Get(1))
 	assert.Equal(t, types.NewXText(`[abc, 123, false]`), arr1.ToXText(env))
 	assert.Equal(t, `XArray[XText("abc"), XNumber(123), XBoolean(false)]`, arr1.String())
 	assert.Equal(t, "array", arr1.Describe())
+
+	assert.True(t, initialized)
 
 	asJSON, _ := types.ToXJSON(arr1)
 	assert.Equal(t, types.NewXText(`["abc",123,false]`), asJSON)

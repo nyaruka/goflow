@@ -121,6 +121,10 @@ type Localizable interface {
 	LocalizationUUID() utils.UUID
 }
 
+type XContextable interface {
+	Context(env utils.Environment) map[string]types.XValue
+}
+
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
 // properties which can be accessed:
 //
@@ -137,7 +141,7 @@ type Localizable interface {
 //
 // @context flow
 type Flow interface {
-	types.XRepresentable
+	XContextable
 
 	// spec properties
 	UUID() assets.FlowUUID
@@ -258,7 +262,7 @@ type Translations interface {
 // @context trigger
 type Trigger interface {
 	utils.Typed
-	types.XRepresentable
+	XContextable
 
 	Initialize(Session, EventCallback) error
 	InitializeRun(FlowRun, EventCallback) error
@@ -336,7 +340,7 @@ type EventCallback func(Event)
 // @context input
 type Input interface {
 	utils.Typed
-	types.XRepresentable
+	XContextable
 
 	UUID() InputUUID
 	CreatedOn() time.Time
@@ -344,7 +348,7 @@ type Input interface {
 }
 
 type Step interface {
-	types.XRepresentable
+	XContextable
 
 	UUID() StepUUID
 	NodeUUID() NodeUUID
@@ -438,7 +442,7 @@ type RunEnvironment interface {
 //
 // @context run
 type FlowRun interface {
-	types.XRepresentable
+	XContextable
 	RunSummary
 
 	Environment() RunEnvironment

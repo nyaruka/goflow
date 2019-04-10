@@ -185,61 +185,61 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
 // Context returns the overall context for expression evaluation
-func (r *flowRun) Context(env utils.Environment) *types.XDict {
+func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if r.Contact() != nil {
-		urns = r.Contact().URNs().MapContext(env)
-		fields = r.Contact().Fields().ToXValue(env)
+		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
+		fields = flows.Context(env, r.Contact().Fields())
 	}
 
-	return types.NewXDict(map[string]types.XValue{
+	return map[string]types.XValue{
 		// the available runs
-		"run":    r.ToXValue(env),
+		"run":    flows.Context(env, r),
 		"child":  RunSummaryToXValue(env, r.Session().GetCurrentChild(r)),
 		"parent": RunSummaryToXValue(env, r.Parent()),
 
 		// shortcuts to things on the current run
-		"contact": types.ToXValue(env, r.Contact()),
-		"results": r.Results().ToSimpleXDict(env),
+		"contact": flows.Context(env, r.Contact()),
+		"results": flows.ContextFunc(env, r.Results().SimpleContext),
 		"urns":    urns,
 		"fields":  fields,
 
 		// other
-		"trigger":      r.Session().Trigger().ToXValue(env),
-		"input":        types.ToXValue(env, r.Session().Input()),
+		"trigger":      flows.Context(env, r.Session().Trigger()),
+		"input":        flows.Context(env, r.Session().Input()),
 		"legacy_extra": r.legacyExtra.ToXValue(env),
-	})
+	}
 }
 
-// ToXValue returns a representation of this object for use in expressions
-func (r *flowRun) ToXValue(env utils.Environment) types.XValue {
+// Context returns a dict of properties available in expressions
+func (r *flowRun) Context(env utils.Environment) map[string]types.XValue {
 	var exitedOn types.XValue
 	if r.exitedOn != nil {
 		exitedOn = types.NewXDateTime(*r.exitedOn)
 	}
 
-	return types.NewXDict(map[string]types.XValue{
+	return map[string]types.XValue{
 		"uuid":       types.NewXText(string(r.UUID())),
-		"contact":    types.ToXValue(env, r.Contact()),
-		"flow":       r.Flow().ToXValue(env),
+		"contact":    flows.Context(env, r.Contact()),
+		"flow":       flows.Context(env, r.Flow()),
 		"status":     types.NewXText(string(r.Status())),
-		"results":    r.Results().ToXValue(env),
+		"results":    flows.Context(env, r.Results()),
 		"path":       r.path.ToXValue(env),
 		"created_on": types.NewXDateTime(r.CreatedOn()),
 		"exited_on":  exitedOn,
-	})
+	}
 }
 
 // EvaluateTemplate evaluates the given template in the context of this run
 func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
-	context := r.Context(r.Environment())
+	context := types.NewXDict(r.RootContext(r.Environment()))
 
 	return excellent.EvaluateTemplateValue(r.Environment(), context, template)
 }
 
 // EvaluateTemplateAsString evaluates the given template as a string in the context of this run
 func (r *flowRun) EvaluateTemplate(template string) (string, error) {
-	context := r.Context(r.Environment())
+	context := types.NewXDict(r.RootContext(r.Environment()))
 
 	return excellent.EvaluateTemplate(r.Environment(), context, template)
 }

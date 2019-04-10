@@ -29,11 +29,11 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, "+250961111111", ch.Address())
 	assert.Equal(t, "+250961111111 (Android)", fmt.Sprintf("%s", ch))
 
-	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
 		"uuid":    types.NewXText(string(ch.UUID())),
 		"name":    types.NewXText("Android"),
 		"address": types.NewXText("+250961111111"),
-	}), ch.ToXValue(env))
+	}), flows.Context(env, ch))
 
 	assert.Equal(t, assets.NewChannelReference(ch.UUID(), "Android"), ch.Reference())
 	assert.True(t, ch.HasRole(assets.ChannelRoleSend))

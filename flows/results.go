@@ -51,14 +51,14 @@ func NewResult(name string, value string, category string, categoryLocalized str
 	}
 }
 
-// ToXValue returns a representation of this object for use in expressions
-func (r *Result) ToXValue(env utils.Environment) types.XValue {
+// Context returns a dict of properties available in expressions
+func (r *Result) Context(env utils.Environment) map[string]types.XValue {
 	categoryLocalized := r.CategoryLocalized
 	if categoryLocalized == "" {
 		categoryLocalized = r.Category
 	}
 
-	return types.NewXDict(map[string]types.XValue{
+	return map[string]types.XValue{
 		"name":               types.NewXText(r.Name),
 		"value":              types.NewXText(r.Value),
 		"category":           types.NewXText(r.Category),
@@ -67,7 +67,20 @@ func (r *Result) ToXValue(env utils.Environment) types.XValue {
 		"extra":              types.JSONToXValue(r.Extra),
 		"node_uuid":          types.NewXText(string(r.NodeUUID)),
 		"created_on":         types.NewXDateTime(r.CreatedOn),
-	})
+	}
+}
+
+// SimpleContext returns a simpler representation of this result exposed at @results.x
+func (r *Result) SimpleContext(env utils.Environment) map[string]types.XValue {
+	categoryLocalized := r.CategoryLocalized
+	if categoryLocalized == "" {
+		categoryLocalized = r.Category
+	}
+
+	return map[string]types.XValue{
+		"value":    types.NewXText(r.Value),
+		"category": types.NewXText(r.Category),
+	}
 }
 
 // Results is our wrapper around a map of snakified result names to result objects
@@ -97,25 +110,22 @@ func (r Results) Get(key string) *Result {
 	return r[key]
 }
 
-// ToXValue returns a representation of this object for use in expressions
-func (r Results) ToXValue(env utils.Environment) types.XValue {
+// Context returns a dict of properties available in expressions
+func (r Results) Context(env utils.Environment) map[string]types.XValue {
 	entries := make(map[string]types.XValue, len(r))
 
 	for k, v := range r {
-		entries[k] = v.ToXValue(env)
+		entries[k] = Context(env, v)
 	}
-	return types.NewXDict(entries)
+	return entries
 }
 
-// ToSimpleXDict returns a simplifed representation of this object for use in expressions
-func (r Results) ToSimpleXDict(env utils.Environment) *types.XDict {
+// SimpleContext returns a simpler representation of these results exposed at @results
+func (r Results) SimpleContext(env utils.Environment) map[string]types.XValue {
 	entries := make(map[string]types.XValue, len(r))
 
 	for k, v := range r {
-		entries[k] = types.NewXDict(map[string]types.XValue{
-			"value":    types.NewXText(v.Value),
-			"category": types.NewXText(v.Category),
-		})
+		entries[k] = ContextFunc(env, v.SimpleContext)
 	}
-	return types.NewXDict(entries)
+	return entries
 }

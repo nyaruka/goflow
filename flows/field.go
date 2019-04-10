@@ -282,14 +282,14 @@ func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Fi
 	}
 }
 
-// ToXValue returns a representation of this object for use in expressions
-func (f FieldValues) ToXValue(env utils.Environment) types.XValue {
+// Context returns a dict of properties available in expressions
+func (f FieldValues) Context(env utils.Environment) map[string]types.XValue {
 	entries := make(map[string]types.XValue, len(f))
 
 	for k, v := range f {
 		entries[string(k)] = v.ToXValue(env)
 	}
-	return types.NewXDict(entries)
+	return entries
 }
 
 func (f FieldValues) getFirstLocationValue(env RunEnvironment, fields *FieldAssets, valueType assets.FieldType) *utils.Location {

@@ -69,13 +69,13 @@ func (c *Channel) HasParent() bool {
 	return c.Parent() != nil
 }
 
-// Resolve resolves the given key when this channel is referenced in an expression
-func (c *Channel) ToXValue(env utils.Environment) types.XValue {
-	return types.NewXDict(map[string]types.XValue{
+// Context returns a dict of properties available in expressions
+func (c *Channel) Context(env utils.Environment) map[string]types.XValue {
+	return map[string]types.XValue{
 		"uuid":    types.NewXText(string(c.UUID())),
 		"name":    types.NewXText(c.Name()),
 		"address": types.NewXText(c.Address()),
-	})
+	}
 }
 
 func (c *Channel) String() string {

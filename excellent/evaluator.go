@@ -152,7 +152,7 @@ func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	}
 
 	asDict, isDict := container.(*types.XDict)
-	if isDict {
+	if isDict && asDict != nil {
 		value, exists := asDict.Get(lookup)
 		if exists {
 			return value
@@ -173,7 +173,7 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 
 	// if left-hand side is an array, then this is an index
 	asArray, isArray := container.(*types.XArray)
-	if isArray {
+	if isArray && asArray != nil {
 		index, xerr := types.ToInteger(v.env, expression)
 		if xerr != nil {
 			return xerr
@@ -190,7 +190,7 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 
 	// if left-hand side is a dict, then this is a property lookup
 	asDict, isDict := container.(*types.XDict)
-	if isDict {
+	if isDict && asDict != nil {
 		lookup, xerr := types.ToXText(v.env, expression)
 		if xerr != nil {
 			return xerr

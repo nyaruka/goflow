@@ -236,14 +236,18 @@ func (c *Contact) Format(env utils.Environment) string {
 	return ""
 }
 
-// ToXValue returns a representation of this object for use in expressions
-func (c *Contact) ToXValue(env utils.Environment) types.XValue {
-	var timezone types.XValue
+// Context returns a dict of properties available in expressions
+func (c *Contact) Context(env utils.Environment) map[string]types.XValue {
+	var urn, timezone types.XValue
 	if c.timezone != nil {
 		timezone = types.NewXText(c.timezone.String())
 	}
+	preferredURN := c.PreferredURN()
+	if preferredURN != nil {
+		urn = preferredURN.ToXValue(env)
+	}
 
-	return types.NewXDict(map[string]types.XValue{
+	return map[string]types.XValue{
 		"uuid":       types.NewXText(string(c.uuid)),
 		"id":         types.NewXNumberFromInt(int(c.id)),
 		"name":       types.NewXText(c.name),
@@ -252,11 +256,11 @@ func (c *Contact) ToXValue(env utils.Environment) types.XValue {
 		"timezone":   timezone,
 		"created_on": types.NewXDateTime(c.createdOn),
 		"urns":       c.urns.ToXValue(env),
-		"urn":        types.ToXValue(env, c.PreferredURN()),
+		"urn":        urn,
 		"groups":     c.groups.ToXValue(env),
-		"fields":     c.Fields().ToXValue(env),
-		"channel":    types.ToXValue(env, c.PreferredChannel()),
-	})
+		"fields":     Context(env, c.Fields()),
+		"channel":    Context(env, c.PreferredChannel()),
+	}
 }
 
 // Destination is a sendable channel and URN pair

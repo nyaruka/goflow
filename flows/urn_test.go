@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
@@ -86,7 +87,7 @@ func TestURNList(t *testing.T) {
 	assert.False(t, urnList.Equal(flows.URNList{urn1, urn2}))
 
 	// check use in expressions
-	assert.Equal(t, types.NewXArray(
+	test.AssertXEqual(t, types.NewXArray(
 		types.NewXText("tel:+250781234567"),
 		types.NewXText("twitter:134252511151#billy_bob"),
 		types.NewXText("tel:+250781111222"),

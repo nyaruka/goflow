@@ -52,8 +52,11 @@ func TestXDict(t *testing.T) {
 
 func TestXLazyDict(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
+	initialized := false
 
 	dict := types.NewXLazyDict(func() map[string]types.XValue {
+		initialized = true
+		
 		return map[string]types.XValue{
 			"foo": types.NewXText("abc"),
 			"bar": types.NewXNumberFromInt(123),
@@ -61,10 +64,14 @@ func TestXLazyDict(t *testing.T) {
 		}
 	})
 
+	assert.False(t, initialized)
+
 	assert.Equal(t, 3, dict.Length())
 	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, dict.Keys())
 	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), dict.ToXText(env))
 	assert.Equal(t, "dict", dict.Describe())
+
+	assert.True(t, initialized)
 
 	asJSON, _ := types.ToXJSON(dict)
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), asJSON)

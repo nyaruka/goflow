@@ -5,7 +5,24 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/tools"
+	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
+
+func Context(env utils.Environment, contextable XContextable) *types.XDict {
+	if !utils.IsNil(contextable) {
+		return types.NewXLazyDict(func() map[string]types.XValue {
+			return contextable.Context(env)
+		})
+	}
+	return nil
+}
+
+func ContextFunc(env utils.Environment, fn func(utils.Environment) map[string]types.XValue) *types.XDict {
+	return types.NewXLazyDict(func() map[string]types.XValue {
+		return fn(env)
+	})
+}
 
 // RunContextTopLevels are the allowed top-level variables for expression evaluations
 var RunContextTopLevels = []string{

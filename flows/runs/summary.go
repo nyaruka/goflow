@@ -39,22 +39,22 @@ func RunSummaryToXValue(env utils.Environment, r flows.RunSummary) types.XValue 
 		return nil
 	}
 
-	var urns, fields types.XValue
-	if r.Contact() != nil {
-		urns = r.Contact().URNs().MapContext(env)
-	}
-	if r.Contact() != nil {
-		fields = r.Contact().Fields().ToXValue(env)
-	}
+	return types.NewXLazyDict(func() map[string]types.XValue {
+		var urns, fields types.XValue
+		if r.Contact() != nil {
+			urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
+			fields = flows.Context(env, r.Contact().Fields())
+		}
 
-	return types.NewXDict(map[string]types.XValue{
-		"uuid":    types.NewXText(string(r.UUID())),
-		"contact": types.ToXValue(env, r.Contact()),
-		"urns":    urns,
-		"fields":  fields,
-		"flow":    r.Flow().ToXValue(env),
-		"status":  types.NewXText(string(r.Status())),
-		"results": r.Results().ToXValue(env),
+		return map[string]types.XValue{
+			"uuid":    types.NewXText(string(r.UUID())),
+			"contact": flows.Context(env, r.Contact()),
+			"urns":    urns,
+			"fields":  fields,
+			"flow":    flows.Context(env, r.Flow()),
+			"status":  types.NewXText(string(r.Status())),
+			"results": flows.Context(env, r.Results()),
+		}
 	})
 }
 

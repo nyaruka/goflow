@@ -101,16 +101,3 @@ func Describe(x XValue) string {
 	}
 	return x.Describe()
 }
-
-// XRepresentable is the interface for any object which can be represented in an expression
-type XRepresentable interface {
-	ToXValue(env utils.Environment) XValue
-}
-
-// ToXValue is a utility to convert the given XRepresentable to an XValue
-func ToXValue(env utils.Environment, obj XRepresentable) XValue {
-	if utils.IsNil(obj) {
-		return nil
-	}
-	return obj.ToXValue(env)
-}
