@@ -25,7 +25,7 @@ func NewXDict(data map[string]XValue) *XDict {
 	}
 }
 
-// NewXLazyDict returns a new lazy dict with the given items
+// NewXLazyDict returns a new lazy dict with the source function
 func NewXLazyDict(source func() map[string]XValue) *XDict {
 	return &XDict{
 		source: source,

@@ -63,12 +63,15 @@ func jsonToDict(data []byte) *XDict {
 }
 
 func jsonToArray(data []byte) *XArray {
-	items := make([]XValue, 0)
+	return NewXLazyArray(func() []XValue {
 
-	jsonparser.ArrayEach(data, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-		items = append(items, jsonTypeToXValue(value, dataType))
+		items := make([]XValue, 0)
+
+		jsonparser.ArrayEach(data, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
+			items = append(items, jsonTypeToXValue(value, dataType))
+		})
+		return items
 	})
-	return NewXArray(items...)
 }
 
 // ToXJSON converts the given value to a JSON string
