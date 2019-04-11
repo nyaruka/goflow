@@ -1,3 +1,7 @@
+v0.33.8
+----------
+ * Expressions refactor
+
 v0.33.7
 ----------
  * Ignore errors migrating legacy expressions
