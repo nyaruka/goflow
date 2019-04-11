@@ -137,29 +137,24 @@ func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interf
 	return value
 }
 
-// VisitDotLookup deals with lookups like foo.0 or foo.bar
+// VisitDotLookup deals with property lookups like foo.bar
 func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	container := toXValue(v.Visit(ctx.Atom()))
 	if types.IsXError(container) {
 		return container
 	}
 
-	var lookup string
-	if ctx.NAME() != nil {
-		lookup = ctx.NAME().GetText()
-	} else {
-		lookup = ctx.NUMBER().GetText()
-	}
+	property := ctx.NAME().GetText()
 
 	asDict, isDict := container.(*types.XDict)
 	if isDict && asDict != nil {
-		value, exists := asDict.Get(lookup)
+		value, exists := asDict.Get(property)
 		if exists {
 			return value
 		}
 	}
 
-	return types.NewXErrorf("%s has no property '%s'", types.Describe(container), lookup)
+	return types.NewXErrorf("%s has no property '%s'", types.Describe(container), property)
 }
 
 // VisitArrayLookup deals with lookups such as foo[5] or foo["key with spaces"]

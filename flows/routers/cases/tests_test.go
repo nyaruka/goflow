@@ -297,7 +297,6 @@ func TestEvaluateTemplate(t *testing.T) {
 		hasError bool
 	}{
 		{"@(is_error(array1[100]))", "{match: index 100 out of range for 3 items}", false}, // errors are like any other value
-		{"@(is_error(array1.100))", "{match: array has no property '100'}", false},
 		{`@(is_error(round("foo", "bar")))`, "{match: error calling ROUND: unable to convert \"foo\" to a number}", false},
 		{`@(is_error(err))`, "{match: an error}", false},
 		{"@(is_error(thing.foo))", "", false},

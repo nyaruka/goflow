@@ -112,7 +112,7 @@ var templateTests = []struct {
 
 	// migrated split by expressions
 	{`@(if(is_error(results.favorite_color.value), "@flow.favorite_color", results.favorite_color.value))`, `red`, ""},
-	{`@(if(is_error(legacy_extra.0.default_city), "@extra.0.default_city", legacy_extra.0.default_city))`, `@extra.0.default_city`, ""},
+	{`@(if(is_error(legacy_extra["0"].default_city), "@extra.0.default_city", legacy_extra["0"].default_city))`, `@extra.0.default_city`, ""},
 
 	// non-expressions
 	{"bob@nyaruka.com", "bob@nyaruka.com", ""},

@@ -30,7 +30,7 @@ func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 	// if trigger params is a JSON object, we include it in @extra
 	triggerParams := run.Session().Trigger().Params()
 	asDict, isDict := triggerParams.(*types.XDict)
-	if isDict {
+	if isDict && asDict != nil {
 		e.addValues(asDict)
 	}
 

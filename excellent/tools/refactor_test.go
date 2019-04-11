@@ -23,7 +23,6 @@ func TestRefactorTemplate(t *testing.T) {
 		{`@( "Hello"+12345.123 )`, `@("Hello" + 12345.123)`, false},
 		{`@foo.bar`, `@foo.bar`, false},
 		{`@(foo . bar)`, `@(foo.bar)`, false},
-		{`@foo.0`, `@foo.0`, false},
 		{`@(OR(TRUE, False, Null))`, `@(or(true, false, null))`, false},
 		{`@(foo[ 1 ] + foo[ "x" ])`, `@(foo[1] + foo["x"])`, false},
 		{`@(-1+( 2/3 )*4^5)`, `@(-1 + (2 / 3) * 4 ^ 5)`, false},

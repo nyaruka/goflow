@@ -67,19 +67,14 @@ func (v *auditContextVisitor) VisitContextReference(ctx *gen.ContextReferenceCon
 	return nil
 }
 
-// VisitDotLookup deals with lookups like foo.0 or foo.bar
+// VisitDotLookup deals with lookups like foo.bar
 func (v *auditContextVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	path, isPath := v.Visit(ctx.Atom()).([]string)
 
-	var prop string
-	if ctx.NAME() != nil {
-		prop = ctx.NAME().GetText()
-	} else {
-		prop = ctx.NUMBER().GetText()
-	}
+	property := ctx.NAME().GetText()
 
 	if isPath {
-		path = append(path, prop)
+		path = append(path, property)
 		v.callback(path)
 		return path
 	}

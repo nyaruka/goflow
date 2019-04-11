@@ -84,15 +84,11 @@ func (v *refactorVisitor) VisitContextReference(ctx *gen.ContextReferenceContext
 	return strings.ToLower(ctx.NAME().GetText())
 }
 
-// VisitDotLookup deals with lookups like foo.0 or foo.bar
+// VisitDotLookup deals with lookups like foo.bar
 func (v *refactorVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	var lookup string
-	if ctx.NAME() != nil {
-		lookup = ctx.NAME().GetText()
-	} else {
-		lookup = ctx.NUMBER().GetText()
-	}
-	return fmt.Sprintf("%s.%s", v.Visit(ctx.Atom()), strings.ToLower(lookup))
+	property := ctx.NAME().GetText()
+
+	return fmt.Sprintf("%s.%s", v.Visit(ctx.Atom()), strings.ToLower(property))
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)

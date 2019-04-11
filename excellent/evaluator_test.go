@@ -301,12 +301,12 @@ var errorTests = []struct {
 	{`@('x')`, `error evaluating @('x'): syntax error at 'x'`},
 	{`@(0 / )`, `error evaluating @(0 / ): syntax error at `},
 	{`@(0 / )@('x')`, `error evaluating @(0 / ): syntax error at , error evaluating @('x'): syntax error at 'x'`},
+	{`@(1.1.0)`, `error evaluating @(1.1.0): syntax error at 0`},
 
 	// resolver errors
 	{`@(NULL.x)`, `error evaluating @(NULL.x): null has no property 'x'`},
 	{`@("abc".v)`, `error evaluating @("abc".v): "abc" has no property 'v'`},
 	{`@(False.g)`, `error evaluating @(False.g): false has no property 'g'`},
-	{`@(1.1.0)`, `error evaluating @(1.1.0): 1.1 has no property '0'`},
 	{`@(hello)`, `error evaluating @(hello): context has no property 'hello'`},
 	{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
 	{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},
