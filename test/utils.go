@@ -5,12 +5,18 @@ import (
 	"fmt"
 	"testing"
 
+	xtest "github.com/nyaruka/goflow/excellent/test"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	diff "github.com/sergi/go-diff/diffmatchpatch"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func AssertXEqual(t *testing.T, expected types.XValue, actual types.XValue, msgAndArgs ...interface{}) bool {
+	return xtest.AssertEqual(t, expected, actual, msgAndArgs...)
+}
 
 // NormalizeJSON re-formats the given JSON
 func NormalizeJSON(data json.RawMessage) ([]byte, error) {

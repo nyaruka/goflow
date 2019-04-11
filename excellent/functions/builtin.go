@@ -156,7 +156,7 @@ func Text(env utils.Environment, value types.XValue) types.XValue {
 //
 // @function boolean(value)
 func Boolean(env utils.Environment, value types.XValue) types.XValue {
-	str, xerr := types.ToXBoolean(env, value)
+	str, xerr := types.ToXBoolean(value)
 	if xerr != nil {
 		return xerr
 	}
@@ -304,7 +304,7 @@ func Dict(env utils.Environment, pairs ...types.XValue) types.XValue {
 // @function and(values...)
 func And(env utils.Environment, values ...types.XValue) types.XValue {
 	for _, arg := range values {
-		asBool, xerr := types.ToXBoolean(env, arg)
+		asBool, xerr := types.ToXBoolean(arg)
 		if xerr != nil {
 			return xerr
 		}
@@ -323,7 +323,7 @@ func And(env utils.Environment, values ...types.XValue) types.XValue {
 // @function or(values...)
 func Or(env utils.Environment, values ...types.XValue) types.XValue {
 	for _, arg := range values {
-		asBool, xerr := types.ToXBoolean(env, arg)
+		asBool, xerr := types.ToXBoolean(arg)
 		if xerr != nil {
 			return xerr
 		}
@@ -343,7 +343,7 @@ func Or(env utils.Environment, values ...types.XValue) types.XValue {
 //
 // @function if(test, value1, value2)
 func If(env utils.Environment, test types.XValue, value1 types.XValue, value2 types.XValue) types.XValue {
-	asBool, err := types.ToXBoolean(env, test)
+	asBool, err := types.ToXBoolean(test)
 	if err != nil {
 		return err
 	}
@@ -391,12 +391,12 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 //
 // @function split(text, delimiters)
 func Split(env utils.Environment, text types.XText, delimiters types.XText) types.XValue {
-	splits := types.NewXArray()
+	splits := make([]types.XValue, 0)
 	allSplits := utils.TokenizeStringByChars(text.Native(), delimiters.Native())
 	for i := range allSplits {
-		splits.Append(types.NewXText(allSplits[i]))
+		splits = append(splits, types.NewXText(allSplits[i]))
 	}
-	return splits
+	return types.NewXArray(splits...)
 }
 
 // Join joins the given `array` of strings with `separator` to make text.
@@ -421,7 +421,7 @@ func Join(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XVa
 		if i > 0 {
 			output.WriteString(separator.Native())
 		}
-		itemAsStr, xerr := types.ToXText(env, array.Index(i))
+		itemAsStr, xerr := types.ToXText(env, array.Get(i))
 		if xerr != nil {
 			return xerr
 		}
@@ -1497,7 +1497,7 @@ func ParseJSON(env utils.Environment, text types.XText) types.XValue {
 //
 // @function json(value)
 func JSON(env utils.Environment, value types.XValue) types.XValue {
-	asJSON, xerr := types.ToXJSON(env, value)
+	asJSON, xerr := types.ToXJSON(value)
 	if xerr != nil {
 		return xerr
 	}
@@ -1718,7 +1718,7 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 
 	human := types.XBooleanTrue
 	if len(args) > 2 {
-		if human, err = types.ToXBoolean(env, args[2]); err != nil {
+		if human, err = types.ToXBoolean(args[2]); err != nil {
 			return err
 		}
 	}
@@ -1782,13 +1782,15 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 //   @(format_input("NOT INPUT")) -> ERROR
 //
 // @function format_input(urn)
-func FormatInput(env utils.Environment, input types.XDict) types.XValue {
-	text, xerr := types.ToXText(env, input.Get("text"))
+func FormatInput(env utils.Environment, input *types.XDict) types.XValue {
+	textValue, _ := input.Get("text")
+	text, xerr := types.ToXText(env, textValue)
 	if xerr != nil {
 		return xerr
 	}
 
-	attachments, xerr := types.ToXArray(env, input.Get("attachments"))
+	attachmentsValue, _ := input.Get("attachments")
+	attachments, xerr := types.ToXArray(env, attachmentsValue)
 	if xerr != nil {
 		return xerr
 	}
@@ -1799,7 +1801,7 @@ func FormatInput(env utils.Environment, input types.XDict) types.XValue {
 	}
 
 	for a := 0; a < attachments.Length(); a++ {
-		asText, xerr := types.ToXText(env, attachments.Index(a))
+		asText, xerr := types.ToXText(env, attachments.Get(a))
 		if xerr != nil {
 			return xerr
 		}
@@ -1838,13 +1840,6 @@ func Length(env utils.Environment, value types.XValue) types.XValue {
 		return types.NewXNumberFromInt(lengthable.Length())
 	}
 
-	// or reduceable to something with length
-	value = types.Reduce(env, value)
-	lengthable, isLengthable = value.(types.XLengthable)
-	if isLengthable {
-		return types.NewXNumberFromInt(lengthable.Length())
-	}
-
 	return types.NewXErrorf("value doesn't have length")
 }
 
@@ -1869,8 +1864,8 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 
 // Extract takes a dict and extracts the named property.
 //
+//   @(extract(contact, "name")) -> Ryan Lewis
 //   @(extract(contact.groups[0], "name")) -> Testers
-//   @(extract(contact, "height")) -> ERROR
 //
 // @function extract(dict, properties...)
 func Extract(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
@@ -1884,13 +1879,13 @@ func Extract(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.
 		return xerr
 	}
 
-	return dict.Get(property.Native())
+	value, _ := dict.Get(property.Native())
+	return value
 }
 
 // ExtractDict takes a dict and returns a new dict by extracting only the named properties.
 //
 //   @(extract_dict(contact.groups[0], "name")) -> {name: Testers}
-//   @(extract_dict(contact, "height")) -> ERROR
 //
 // @function extract_dict(dict, properties...)
 func ExtractDict(env utils.Environment, args ...types.XValue) types.XValue {
@@ -1908,12 +1903,13 @@ func ExtractDict(env utils.Environment, args ...types.XValue) types.XValue {
 		properties = append(properties, asText.Native())
 	}
 
-	result := types.NewEmptyXDict()
+	result := make(map[string]types.XValue, len(properties))
 	for _, prop := range properties {
-		result.Put(prop, dict.Get(prop))
+		value, _ := dict.Get(prop)
+		result[prop] = value
 	}
 
-	return result
+	return types.NewXDict(result)
 }
 
 // ForEach takes an array of objects and returns a new array by applying the given function to each item.
@@ -1937,20 +1933,20 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 
 	otherArgs := args[2:]
 
-	result := types.NewXArray()
+	result := make([]types.XValue, array.Length())
 
 	for i := 0; i < array.Length(); i++ {
-		oldItem := array.Index(i)
+		oldItem := array.Get(i)
 		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 
 		newItem := Call(env, function.Describe(), function, funcArgs)
 		if types.IsXError(newItem) {
 			return newItem
 		}
-		result.Append(newItem)
+		result[i] = newItem
 	}
 
-	return result
+	return types.NewXArray(result...)
 }
 
 // LegacyAdd simulates our old + operator, which operated differently based on whether

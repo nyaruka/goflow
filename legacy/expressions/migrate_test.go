@@ -12,7 +12,6 @@ import (
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -31,8 +30,8 @@ type testTemplate struct {
 var tests = []testTemplate{
 
 	// contact variables
-	{old: `@contact`, new: `@contact`},
-	{old: `@CONTACT`, new: `@contact`},
+	{old: `@contact`, new: `@contact.display`},
+	{old: `@CONTACT`, new: `@contact.display`},
 	{old: `@contact.uuid`, new: `@contact.uuid`},
 	{old: `@contact.id`, new: `@contact.id`},
 	{old: `@contact.name`, new: `@contact.name`},
@@ -55,33 +54,37 @@ var tests = []testTemplate{
 
 	// run variables
 	{old: `@flow`, new: `@results`},
-	{old: `@flow.favorite_color`, new: `@results.favorite_color`},
+	{old: `@flow.favorite_color`, new: `@results.favorite_color.value`},
 	{old: `@flow.favorite_color.category`, new: `@results.favorite_color.category_localized`},
 	{old: `@flow.favorite_color.text`, new: `@results.favorite_color.input`},
 	{old: `@flow.favorite_color.time`, new: `@results.favorite_color.created_on`},
 	{old: `@flow.favorite_color.value`, new: `@results.favorite_color.value`},
-	{old: `@flow.2factor`, new: `@(results["2factor"])`},
+	{old: `@flow.2factor`, new: `@(results["2factor"].value)`},
 	{old: `@flow.2factor.value`, new: `@(results["2factor"].value)`},
-	{old: `@flow.1`, new: `@(results["1"])`, dontEval: true},
-	{old: `@(flow.1337)`, new: `@(results["1337"])`, dontEval: true},
+	{old: `@flow.1`, new: `@(results["1"].value)`, dontEval: true},
+	{old: `@(flow.1337)`, new: `@(results["1337"].value)`, dontEval: true},
 	{old: `@(flow.1337.category)`, new: `@(results["1337"].category_localized)`, dontEval: true},
-	{old: `@flow.contact`, new: `@contact`},
+	{old: `@flow.contact`, new: `@contact.display`},
 	{old: `@flow.contact.name`, new: `@contact.name`},
+	{old: `@flow.contact.age`, new: `@fields.age`},
 
-	{old: `@child.age`, new: `@child.results.age`},
-	{old: `@child.age.category`, new: `@child.results.age.category_localized`},
+	{old: `@child`, new: `@child.results`},
+	{old: `@child.age`, new: `@(child.results.age.values[0])`},
+	{old: `@child.age.value`, new: `@(child.results.age.values[0])`},
+	{old: `@child.age.category`, new: `@(child.results.age.categories_localized[0])`},
 	{old: `@child.age.text`, new: `@child.results.age.input`},
 	{old: `@child.age.time`, new: `@child.results.age.created_on`},
-	{old: `@child.age.value`, new: `@child.results.age.value`},
-	{old: `@child.contact`, new: `@child.contact`},
+	{old: `@child.contact`, new: `@child.contact.display`},
+	{old: `@child.contact.name`, new: `@child.contact.name`},
 	{old: `@child.contact.age`, new: `@child.fields.age`},
 
-	{old: `@parent.role`, new: `@parent.results.role`},
-	{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
+	{old: `@parent`, new: `@parent.results`},
+	{old: `@parent.role`, new: `@(parent.results.role.values[0])`},
+	{old: `@parent.role.value`, new: `@(parent.results.role.values[0])`},
+	{old: `@parent.role.category`, new: `@(parent.results.role.categories_localized[0])`},
 	{old: `@parent.role.text`, new: `@parent.results.role.input`},
 	{old: `@parent.role.time`, new: `@parent.results.role.created_on`},
-	{old: `@parent.role.value`, new: `@parent.results.role.value`},
-	{old: `@parent.contact`, new: `@parent.contact`},
+	{old: `@parent.contact`, new: `@parent.contact.display`},
 	{old: `@parent.contact.name`, new: `@parent.contact.name`},
 	{old: `@parent.contact.groups`, new: `@(join(parent.contact.groups, ","))`},
 	{old: `@parent.contact.gender`, new: `@parent.fields.gender`},
@@ -100,7 +103,7 @@ var tests = []testTemplate{
 	{old: `@step.attachments.0`, new: `@(attachment_parts(input.attachments[0]).url)`},
 	{old: `@step.attachments.10`, new: `@(attachment_parts(input.attachments[10]).url)`, dontEval: true}, // out of range
 	{old: `@step.time`, new: `@input.created_on`},
-	{old: `@step.contact`, new: `@contact`},
+	{old: `@step.contact`, new: `@contact.display`},
 	{old: `@step.contact.name`, new: `@contact.name`},
 	{old: `@step.contact.age`, new: `@fields.age`},
 
@@ -115,12 +118,12 @@ var tests = []testTemplate{
 	{old: `@extra`, new: `@legacy_extra`},
 	{old: `@extra.address.state`, new: `@legacy_extra.address.state`},
 	{old: `@extra.results.1`, new: `@(legacy_extra.results["1"])`},
-	{old: `@extra.flow.role`, new: `@parent.results.role`},
+	{old: `@extra.flow.role`, new: `@(parent.results.role.values[0])`},
 
 	// variables in parens
 	{old: `@(contact.tel)`, new: `@(format_urn(urns.tel))`},
 	{old: `@(contact.gender)`, new: `@fields.gender`},
-	{old: `@(flow.favorite_color)`, new: `@results.favorite_color`},
+	{old: `@(flow.favorite_color)`, new: `@results.favorite_color.value`},
 
 	// booleans
 	{old: `@(TRUE)`, new: `@(true)`},
@@ -173,7 +176,7 @@ var tests = []testTemplate{
 	// date+time addition should get converted to replace_time
 	{old: `@(today() + TIME(15, 30, 0))`, new: `@(replace_time(today(), time_from_parts(15, 30, 0)))`},
 	{old: `@(TODAY()+TIMEVALUE("10:30"))`, new: `@(replace_time(today(), time("10:30")))`},
-	{old: `@(DATEVALUE(date.today) + TIMEVALUE(CONCATENATE(flow.time_input, ":00")))`, new: `@(replace_time(date(format_date(today())), time(results.time_input & ":00")))`, dontEval: true},
+	{old: `@(DATEVALUE(date.today) + TIMEVALUE(CONCATENATE(flow.time_input, ":00")))`, new: `@(replace_time(date(format_date(today())), time(results.time_input.value & ":00")))`, dontEval: true},
 	{old: `@(contact.join_date + TIME(2, 30, 0))`, new: `@(replace_time(fields.join_date, time_from_parts(2, 30, 0)))`},
 
 	// legacy_add permutations
@@ -193,8 +196,8 @@ var tests = []testTemplate{
 
 	// misc edge cases
 	{old: `@`, new: `@`},
-	{old: `@contact.first_name...?`, new: `@contact.first_name...?`},
-	{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@results.favorite_color @@flow.favorite_color @results.favorite_color @nyaruka @ @`},
+	{old: `@contact.name...?`, new: `@contact.name...?`},
+	{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@results.favorite_color.value @@flow.favorite_color @results.favorite_color.value @nyaruka @ @`},
 }
 
 func TestMigrateTemplate(t *testing.T) {
@@ -251,27 +254,16 @@ func BenchmarkMigrateTemplate(b *testing.B) {
 
 type legacyVariables map[string]interface{}
 
-func (v legacyVariables) Resolve(env utils.Environment, key string) types.XValue {
-	key = strings.ToLower(key)
+func (v legacyVariables) Context(env utils.Environment) *types.XDict {
+	entries := make(map[string]types.XValue, len(v))
+
 	for k, val := range v {
-		if strings.ToLower(k) == key {
-			return toXType(val)
-		}
+		entries[strings.ToLower(k)] = toXType(env, val)
 	}
-	return nil
+	return types.NewXDict(entries)
 }
 
-func (v legacyVariables) Describe() string {
-	return "legacy vars"
-}
-
-func (v legacyVariables) Reduce(env utils.Environment) types.XPrimitive {
-	return toXType(v["*"]).(types.XPrimitive)
-}
-
-func (v legacyVariables) ToXJSON(env utils.Environment) types.XText { return types.NewXText("LEGACY") }
-
-func toXType(val interface{}) types.XValue {
+func toXType(env utils.Environment, val interface{}) types.XValue {
 	if utils.IsNil(val) {
 		return nil
 	}
@@ -282,13 +274,16 @@ func toXType(val interface{}) types.XValue {
 	case json.Number:
 		return types.RequireXNumberFromString(string(typed))
 	case map[string]interface{}:
-		return legacyVariables(typed)
+		return legacyVariables(typed).Context(env)
 	}
 	panic(fmt.Sprintf("unsupported type: %s", reflect.TypeOf(val)))
 }
 
 func (v legacyVariables) Migrate() legacyVariables {
-	migrated := make(map[string]interface{})
+	migrated := map[string]interface{}{
+		"fields":  map[string]interface{}{},
+		"results": map[string]interface{}{},
+	}
 
 	for key, val := range v {
 		key = strings.ToLower(key)
@@ -371,10 +366,10 @@ func TestLegacyTests(t *testing.T) {
 				defer utils.SetTimeSource(utils.DefaultTimeSource)
 			}
 
-			migratedVars := tc.Context.Variables.Migrate()
+			migratedVars := tc.Context.Variables.Migrate().Context(env)
 			migratedVarsJSON, _ := json.Marshal(migratedVars)
 
-			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate, flows.RunContextTopLevels)
+			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate)
 
 			if len(tc.Errors) > 0 {
 				assert.Error(t, err, "expecting error evaluating template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)

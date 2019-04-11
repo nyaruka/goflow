@@ -12,10 +12,16 @@ import (
 )
 
 func TestXDate(t *testing.T) {
+	env := utils.NewEnvironmentBuilder().Build()
+
 	d1 := types.NewXDate(utils.NewDate(2019, 2, 20))
-	assert.Equal(t, d1, d1.Reduce(utils.NewEnvironmentBuilder().Build()))
 	assert.Equal(t, `date`, d1.Describe())
-	assert.Equal(t, `2019-02-20`, d1.String())
+	assert.Equal(t, types.NewXText(`2019-02-20`), d1.ToXText(env))
+	assert.Equal(t, types.XBooleanTrue, d1.ToXBoolean())
+	assert.Equal(t, `XDate(2019, 2, 20)`, d1.String())
+
+	asJSON, _ := types.ToXJSON(d1)
+	assert.Equal(t, types.NewXText(`"2019-02-20"`), asJSON)
 
 	// test equality
 	assert.True(t, d1.Equals(types.NewXDate(utils.NewDate(2019, 2, 20))))

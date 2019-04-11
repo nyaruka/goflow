@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/functions"
+	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -15,49 +16,13 @@ var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
 var xd = types.NewXDateTime
-
-type testXObject struct {
-	foo string
-	bar int
-}
-
-func NewTestXObject(foo string, bar int) *testXObject {
-	return &testXObject{foo: foo, bar: bar}
-}
-
-// Describe returns a representation of this type for error messages
-func (v *testXObject) Describe() string { return "test" }
-
-func (v *testXObject) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(v.foo) }
-
-func (v *testXObject) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "foo":
-		return types.NewXText("bar")
-	case "zed":
-		return types.NewXNumberFromInt(123)
-	case "missing":
-		return nil
-	default:
-		return types.NewXResolveError(v, key)
-	}
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (v *testXObject) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, v, "foo", "bar").ToXJSON(env)
-}
-
-var _ types.XValue = &testXObject{}
-var _ types.XResolvable = &testXObject{}
-
 var ERROR = types.NewXErrorf("any error")
 
 func TestEvaluateTemplateValue(t *testing.T) {
 	array1d := types.NewXArray(types.NewXText("a"), types.NewXText("b"), types.NewXText("c"))
 	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")))
 
-	vars := types.NewXDict(map[string]types.XValue{
+	context := types.NewXDict(map[string]types.XValue{
 		"string1": types.NewXText("foo"),
 		"string2": types.NewXText("bar"),
 		"key":     types.NewXText("four"),
@@ -197,17 +162,15 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{"@string1 @string2", xs("foo bar")}, // falls back to template evaluation if necessary
 	}
 
-	for _, test := range evaluateTests {
-		result, err := EvaluateTemplateValue(env, vars, test.template, vars.Keys())
+	for _, tc := range evaluateTests {
+		result, err := EvaluateTemplateValue(env, context, tc.template)
 		assert.NoError(t, err)
 
 		// don't check error equality - just check that we got an error if we expected one
-		if test.expected == ERROR {
-			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, test.template)
+		if tc.expected == ERROR {
+			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, tc.template)
 		} else {
-			if !types.Equals(env, result, test.expected) {
-				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} evaluating template '%s'", test.expected, test.expected, result, result, test.template)
-			}
+			test.AssertEqual(t, result, tc.expected, "output mismatch for template '%s'", tc.template)
 		}
 	}
 }
@@ -224,8 +187,13 @@ func TestEvaluateTemplate(t *testing.T) {
 		"dec2":    types.RequireXNumberFromString("2.5"),
 		"words":   types.NewXText("one two three"),
 		"array1":  types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
-		"thing":   NewTestXObject("hello", 123),
-		"err":     types.NewXError(errors.Errorf("an error")),
+		"thing": types.NewXDict(map[string]types.XValue{
+			"foo":     types.NewXText("bar"),
+			"zed":     types.NewXNumberFromInt(123),
+			"missing": nil,
+		}),
+		"func": functions.Lookup("upper"),
+		"err":  types.NewXError(errors.Errorf("an error")),
 	})
 
 	evaluateAsStringTests := []struct {
@@ -245,6 +213,8 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		// functions are values too
 		{`@(title)`, "function", false},
+		{`@((title)("xyz"))`, "Xyz", false},
+		{`@(func("xyz"))`, "XYZ", false},
 		{`@(array(upper)[0]("hello"))`, "HELLO", false},
 		{`@(dict("a", lower, "b", upper).a("Hello"))`, "hello", false},
 
@@ -296,8 +266,9 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(split(words, \" \")[-1])", "three", false},
 
 		{`@(thing.foo)`, "bar", false},
+		{`@((thing).foo)`, "bar", false},
 		{`@(thing["foo"])`, "bar", false},
-		{`@(thing["FOO"])`, "", true}, // array notation is strict about case
+		{`@(thing["FOO"])`, "bar", false}, // array notation also not case-sensitive
 		{`@(thing[lower("FOO")])`, "bar", false},
 		{`@(thing["f" & "o" & "o"])`, "bar", false},
 		{`@(thing[string1])`, "bar", false},
@@ -308,23 +279,20 @@ func TestEvaluateTemplate(t *testing.T) {
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
-	for _, test := range evaluateAsStringTests {
+	for _, tc := range evaluateAsStringTests {
 		defer func() {
 			if r := recover(); r != nil {
-				t.Errorf("panic evaluating template %s", test.template)
+				t.Errorf("panic evaluating template %s", tc.template)
 			}
 		}()
 
-		eval, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
+		eval, err := EvaluateTemplate(env, vars, tc.template)
 
-		if test.hasError {
-			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
+		if tc.hasError {
+			assert.Error(t, err, "expected error evaluating template '%s'", tc.template)
 		} else {
-			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
-
-			if eval != test.expected {
-				t.Errorf("Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
-			}
+			assert.NoError(t, err, "unexpected error evaluating template '%s'", tc.template)
+			assert.Equal(t, tc.expected, eval, " output mismatch for template: '%s'", tc.template)
 		}
 	}
 }
@@ -337,13 +305,15 @@ var errorTests = []struct {
 	{`@('x')`, `error evaluating @('x'): syntax error at 'x'`},
 	{`@(0 / )`, `error evaluating @(0 / ): syntax error at `},
 	{`@(0 / )@('x')`, `error evaluating @(0 / ): syntax error at , error evaluating @('x'): syntax error at 'x'`},
+	{`@(1.1.0)`, `error evaluating @(1.1.0): syntax error at .0`},
+	{`@(NULL.x)`, `error evaluating @(NULL.x): syntax error at .x`},
+	{`@(False.g)`, `error evaluating @(False.g): syntax error at .g`},
+	{`@("abc".v)`, `error evaluating @("abc".v): syntax error at .v`},
 
-	// resolver errors
-	{`@(NULL.x)`, `error evaluating @(NULL.x): null has no property 'x'`},
-	{`@("abc".v)`, `error evaluating @("abc".v): "abc" has no property 'v'`},
-	{`@(False.g)`, `error evaluating @(False.g): false has no property 'g'`},
-	{`@(1.1.0)`, `error evaluating @(1.1.0): 1.1 has no property '0'`},
-	{`@(hello)`, `error evaluating @(hello): dict has no property 'hello'`}, // this context is a map
+	// lookup errors
+	{`@(hello)`, `error evaluating @(hello): context has no property 'hello'`},
+	{`@((1).x)`, `error evaluating @((1).x): 1 has no property 'x'`},
+	{`@((TRUE).x)`, `error evaluating @((TRUE).x): true has no property 'x'`},
 	{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
 	{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},
 	{`@(array(1, 2)[5])`, `error evaluating @(array(1, 2)[5]): index 5 out of range for 2 items`},
@@ -369,7 +339,7 @@ func TestEvaluationErrors(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
 	for _, tc := range errorTests {
-		result, err := EvaluateTemplate(env, vars, tc.template, vars.Keys())
+		result, err := EvaluateTemplate(env, vars, tc.template)
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
 
@@ -387,7 +357,7 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 		env := utils.NewEnvironmentBuilder().Build()
 
 		for _, tc := range errorTests {
-			EvaluateTemplate(env, vars, tc.template, vars.Keys())
+			EvaluateTemplate(env, vars, tc.template)
 		}
 	}
 }

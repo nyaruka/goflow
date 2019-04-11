@@ -81,7 +81,6 @@ Examples:
 
 
 ```objectivec
-@contact → Ryan Lewis
 @contact.name → Ryan Lewis
 @contact.first_name → Ryan
 @contact.language → eng
@@ -186,7 +185,7 @@ Examples:
 
 
 ```objectivec
-@results.favorite_color → red
+@results.favorite_color → {category: Red, category_localized: Red, created_on: 2018-04-11T18:24:30.123456Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}
 @results.favorite_color.value → red
 @results.favorite_color.category → Red
 ```
@@ -227,8 +226,8 @@ Examples:
 
 ```objectivec
 @trigger.type → flow_action
-@trigger.params → {"source": "website","address": {"state": "WA"}}
-@(json(trigger)) → {"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}
+@trigger.params → {address: {state: WA}, source: website}
+@(json(trigger)) → {"params":{"address":{"state":"WA"},"source":"website"},"type":"flow_action"}
 ```
 
 <a name="context:urn"></a>
@@ -521,8 +520,8 @@ Takes a dict and extracts the named property.
 
 
 ```objectivec
+@(extract(contact, "name")) → Ryan Lewis
 @(extract(contact.groups[0], "name")) → Testers
-@(extract(contact, "height")) → ERROR
 ```
 
 <a name="function:extract_dict"></a>
@@ -534,7 +533,6 @@ Takes a dict and returns a new dict by extracting only the named properties.
 
 ```objectivec
 @(extract_dict(contact.groups[0], "name")) → {name: Testers}
-@(extract_dict(contact, "height")) → ERROR
 ```
 
 <a name="function:field"></a>
@@ -1840,7 +1838,7 @@ value.
 
 ```objectivec
 @(is_error(datetime("foo"))) → {match: error calling DATETIME: unable to convert "foo" to a datetime}
-@(is_error(run.not.existing)) → {match: run has no property 'not'}
+@(is_error(run.not.existing)) → {match: dict has no property 'not'}
 @(is_error(contact.fields.unset)) → {match: dict has no property 'unset'}
 @(is_error("hello")) →
 ```

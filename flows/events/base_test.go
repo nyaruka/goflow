@@ -153,7 +153,7 @@ func TestEventMarshaling(t *testing.T) {
 							"text": "Male"
 						},
 						"join_date": {
-							"datetime": "2017-12-02T00:00:00-02:00",
+							"datetime": "2017-12-02T00:00:00.000000-02:00",
 							"text": "2017-12-02"
 						}
 					},

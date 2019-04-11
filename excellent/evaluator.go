@@ -13,10 +13,10 @@ import (
 )
 
 // EvaluateTemplate evaluates the passed in template
-func EvaluateTemplate(env utils.Environment, context types.XValue, template string, allowedTopLevels []string) (string, error) {
+func EvaluateTemplate(env utils.Environment, context *types.XDict, template string) (string, error) {
 	var buf strings.Builder
 
-	err := VisitTemplate(template, allowedTopLevels, func(tokenType XTokenType, token string) error {
+	err := VisitTemplate(template, context.Keys(), func(tokenType XTokenType, token string) error {
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
@@ -41,9 +41,9 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 // EvaluateTemplateValue is equivalent to EvaluateTemplate except in the case where the template contains
 // a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In these cases we return
 // the typed value from EvaluateExpression instead of stringifying the result.
-func EvaluateTemplateValue(env utils.Environment, context types.XValue, template string, allowedTopLevels []string) (types.XValue, error) {
+func EvaluateTemplateValue(env utils.Environment, context *types.XDict, template string) (types.XValue, error) {
 	template = strings.TrimSpace(template)
-	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
+	scanner := NewXScanner(strings.NewReader(template), context.Keys())
 
 	// parse our first token
 	tokenType, token := scanner.Scan()
@@ -60,13 +60,13 @@ func EvaluateTemplateValue(env utils.Environment, context types.XValue, template
 	}
 
 	// otherwise fallback to full template evaluation
-	asStr, err := EvaluateTemplate(env, context, template, allowedTopLevels)
+	asStr, err := EvaluateTemplate(env, context, template)
 	return types.NewXText(asStr), err
 }
 
 // EvaluateExpression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
-func EvaluateExpression(env utils.Environment, context types.XValue, expression string) types.XValue {
+func EvaluateExpression(env utils.Environment, context *types.XDict, expression string) types.XValue {
 	visitor := newEvaluationVisitor(env, context)
 	output, err := VisitExpression(expression, visitor)
 	if err != nil {
@@ -80,13 +80,13 @@ func EvaluateExpression(env utils.Environment, context types.XValue, expression 
 type visitor struct {
 	gen.BaseExcellent2Visitor
 
-	env      utils.Environment
-	resolver types.XValue
+	env     utils.Environment
+	context *types.XDict
 }
 
 // creates a new visitor for evaluation
-func newEvaluationVisitor(env utils.Environment, resolver types.XValue) *visitor {
-	return &visitor{env: env, resolver: resolver}
+func newEvaluationVisitor(env utils.Environment, context *types.XDict) *visitor {
+	return &visitor{env: env, context: context}
 }
 
 // Visit the top level parse tree
@@ -129,24 +129,74 @@ func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interf
 		return toXValue(function)
 	}
 
-	return types.Resolve(v.env, v.resolver, name)
+	value, exists := v.context.Get(name)
+	if !exists {
+		return types.NewXErrorf("context has no property '%s'", name)
+	}
+
+	return value
 }
 
-// VisitDotLookup deals with lookups like foo.0 or foo.bar
+// VisitDotLookup deals with property lookups like foo.bar
 func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	context := toXValue(v.Visit(ctx.Atom()))
-	if types.IsXError(context) {
-		return context
+	container := toXValue(v.Visit(ctx.Atom()))
+	if types.IsXError(container) {
+		return container
 	}
 
-	var lookup string
-	if ctx.NAME() != nil {
-		lookup = ctx.NAME().GetText()
-	} else {
-		lookup = ctx.NUMBER().GetText()
+	property := ctx.NAME().GetText()
+
+	asDict, isDict := container.(*types.XDict)
+	if isDict && asDict != nil {
+		value, exists := asDict.Get(property)
+		if exists {
+			return value
+		}
 	}
 
-	return types.Resolve(v.env, context, lookup)
+	return types.NewXErrorf("%s has no property '%s'", types.Describe(container), property)
+}
+
+// VisitArrayLookup deals with lookups such as foo[5] or foo["key with spaces"]
+func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
+	container := toXValue(v.Visit(ctx.Atom()))
+	if types.IsXError(container) {
+		return container
+	}
+
+	expression := toXValue(v.Visit(ctx.Expression()))
+
+	// if left-hand side is an array, then this is an index
+	asArray, isArray := container.(*types.XArray)
+	if isArray && asArray != nil {
+		index, xerr := types.ToInteger(v.env, expression)
+		if xerr != nil {
+			return xerr
+		}
+
+		if index >= asArray.Length() || index < -asArray.Length() {
+			return types.NewXErrorf("index %d out of range for %d items", index, asArray.Length())
+		}
+		if index < 0 {
+			index += asArray.Length()
+		}
+		return asArray.Get(index)
+	}
+
+	// if left-hand side is a dict, then this is a property lookup
+	asDict, isDict := container.(*types.XDict)
+	if isDict && asDict != nil {
+		lookup, xerr := types.ToXText(v.env, expression)
+		if xerr != nil {
+			return xerr
+		}
+
+		// [] notation doesn't error
+		value, _ := asDict.Get(lookup.Native())
+		return value
+	}
+
+	return types.NewXErrorf("%s is not indexable", types.Describe(container))
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
@@ -184,30 +234,6 @@ func (v *visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 // VisitNull deals with the `null` reserved word
 func (v *visitor) VisitNull(ctx *gen.NullContext) interface{} {
 	return nil
-}
-
-// VisitArrayLookup deals with lookups such as foo[5] or foo["key with spaces"]
-func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
-	context := toXValue(v.Visit(ctx.Atom()))
-	if types.IsXError(context) {
-		return context
-	}
-
-	expression := toXValue(v.Visit(ctx.Expression()))
-
-	// if the resolved expression is a number, this is an array lookup
-	asNumber, isNumber := expression.(types.XNumber)
-	if isNumber {
-		return lookupIndex(v.env, context, asNumber)
-	}
-
-	// if not it is a property lookup so stringify the key
-	lookup, xerr := types.ToXText(v.env, expression)
-	if xerr != nil {
-		return xerr
-	}
-
-	return types.Resolve(v.env, context, lookup.Native())
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)
@@ -386,26 +412,4 @@ func toXValue(val interface{}) types.XValue {
 		panic("Attempt to convert a non XValue to an XValue")
 	}
 	return asX
-}
-
-// lookup an index on the given value
-func lookupIndex(env utils.Environment, value types.XValue, index types.XNumber) types.XValue {
-	indexable, isIndexable := value.(types.XIndexable)
-
-	if !isIndexable || utils.IsNil(indexable) {
-		return types.NewXErrorf("%s is not indexable", value.Describe())
-	}
-
-	indexAsInt, xerr := types.ToInteger(env, index)
-	if xerr != nil {
-		return xerr
-	}
-
-	if indexAsInt >= indexable.Length() || indexAsInt < -indexable.Length() {
-		return types.NewXErrorf("index %d out of range for %d items", indexAsInt, indexable.Length())
-	}
-	if indexAsInt < 0 {
-		indexAsInt += indexable.Length()
-	}
-	return indexable.Index(indexAsInt)
 }

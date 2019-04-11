@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/utils"
@@ -272,9 +273,7 @@ func TestTests(t *testing.T) {
 		if tc.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for ", result, result, testID)
 		} else {
-			if !types.Equals(env, result, tc.expected) {
-				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for ", tc.expected, tc.expected, result, result, testID)
-			}
+			test.AssertEqual(t, tc.expected, result, "result mismatch for %s", testID)
 		}
 	}
 }
@@ -298,7 +297,6 @@ func TestEvaluateTemplate(t *testing.T) {
 		hasError bool
 	}{
 		{"@(is_error(array1[100]))", "{match: index 100 out of range for 3 items}", false}, // errors are like any other value
-		{"@(is_error(array1.100))", "{match: array has no property '100'}", false},
 		{`@(is_error(round("foo", "bar")))`, "{match: error calling ROUND: unable to convert \"foo\" to a number}", false},
 		{`@(is_error(err))`, "{match: an error}", false},
 		{"@(is_error(thing.foo))", "", false},
@@ -308,7 +306,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	env := utils.NewEnvironmentBuilder().Build()
 	for _, test := range evalTests {
-		eval, err := excellent.EvaluateTemplate(env, vars, test.template, vars.Keys())
+		eval, err := excellent.EvaluateTemplate(env, vars, test.template)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)

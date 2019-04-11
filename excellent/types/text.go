@@ -22,25 +22,19 @@ func NewXText(value string) XText {
 // Describe returns a representation of this type for error messages
 func (x XText) Describe() string { return fmt.Sprintf(`"%s"`, x.native) }
 
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x XText) Reduce(env utils.Environment) XPrimitive { return x }
-
 // ToXText converts this type to text
 func (x XText) ToXText(env utils.Environment) XText { return x }
 
 // ToXBoolean converts this type to a bool
-func (x XText) ToXBoolean(env utils.Environment) XBoolean {
+func (x XText) ToXBoolean() XBoolean {
 	return NewXBoolean(!x.Empty() && strings.ToLower(x.Native()) != "false")
 }
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (x XText) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XText) Native() string { return x.native }
 
-// String returns the native string representation of this type
-func (x XText) String() string { return x.Native() }
+// String returns the native string representation of this type for debugging
+func (x XText) String() string { return `XText("` + x.Native() + `")` }
 
 // Equals determines equality for this type
 func (x XText) Equals(other XText) bool {
@@ -76,7 +70,7 @@ func (x *XText) UnmarshalJSON(data []byte) error {
 
 // XTextEmpty is the empty text value
 var XTextEmpty = NewXText("")
-var _ XPrimitive = XTextEmpty
+var _ XValue = XTextEmpty
 var _ XLengthable = XTextEmpty
 
 // ToXText converts the given value to a string
@@ -88,10 +82,5 @@ func ToXText(env utils.Environment, x XValue) (XText, XError) {
 		return XTextEmpty, x.(XError)
 	}
 
-	primitive, isPrimitive := x.(XPrimitive)
-	if isPrimitive {
-		return primitive.ToXText(env), nil
-	}
-
-	return ToXText(env, x.Reduce(env))
+	return x.ToXText(env), nil
 }

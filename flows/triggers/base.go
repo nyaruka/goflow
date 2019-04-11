@@ -77,12 +77,12 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 	return nil
 }
 
-// ToXValue returns a representation of this object for use in expressions
-func (t *baseTrigger) ToXValue(env utils.Environment) types.XValue {
-	return types.NewXDict(map[string]types.XValue{
+// Context returns a dict of properties available in expressions
+func (t *baseTrigger) Context(env utils.Environment) map[string]types.XValue {
+	return map[string]types.XValue{
 		"type":   types.NewXText(t.type_),
 		"params": t.params,
-	})
+	}
 }
 
 // EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as

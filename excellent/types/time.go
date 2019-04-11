@@ -1,6 +1,9 @@
 package types
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -17,27 +20,26 @@ func NewXTime(value utils.TimeOfDay) XTime {
 // Describe returns a representation of this type for error messages
 func (x XTime) Describe() string { return "time" }
 
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x XTime) Reduce(env utils.Environment) XPrimitive { return x }
-
 // ToXText converts this type to text
 func (x XTime) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
 
 // ToXBoolean converts this type to a bool
-func (x XTime) ToXBoolean(env utils.Environment) XBoolean {
+func (x XTime) ToXBoolean() XBoolean {
 	return NewXBoolean(x != XTimeZero)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (x XTime) ToXJSON(env utils.Environment) XText {
-	return MustMarshalToXText(x.Native().String())
 }
 
 // Native returns the native value of this type
 func (x XTime) Native() utils.TimeOfDay { return x.native }
 
 // String returns the native string representation of this type
-func (x XTime) String() string { return x.ToXText(nil).Native() }
+func (x XTime) String() string {
+	return fmt.Sprintf(`XTime(%d, %d, %d, %d)`, x.native.Hour, x.native.Minute, x.native.Second, x.native.Nanos)
+}
+
+// MarshalJSON is called when a struct containing this type is marshaled
+func (x XTime) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x.Native())
+}
 
 // Equals determines equality for this type
 func (x XTime) Equals(other XTime) bool {
@@ -51,13 +53,11 @@ func (x XTime) Compare(other XTime) int {
 
 // XTimeZero is the zero time value
 var XTimeZero = NewXTime(utils.ZeroTimeOfDay)
-var _ XPrimitive = XTimeZero
+var _ XValue = XTimeZero
 
 // ToXTime converts the given value to a time or returns an error if that isn't possible
 func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
 	if !utils.IsNil(x) {
-		x = x.Reduce(env)
-
 		switch typed := x.(type) {
 		case XError:
 			return XTimeZero, typed

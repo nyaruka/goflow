@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/functions"
+	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -174,7 +175,7 @@ func TestFunctions(t *testing.T) {
 		{"dict", dmy, []types.XValue{ERROR, xs("hello")}, ERROR},
 		{"dict", dmy, []types.XValue{xs("foo"), ERROR}, ERROR},
 		{"dict", dmy, []types.XValue{xs("foo")}, ERROR},
-		{"dict", dmy, []types.XValue{}, types.NewEmptyXDict()},
+		{"dict", dmy, []types.XValue{}, types.XDictEmpty},
 
 		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("foo")}, xs("hello")},
 		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("bar")}, nil},
@@ -356,7 +357,6 @@ func TestFunctions(t *testing.T) {
 		{"length", dmy, []types.XValue{xa(xs("hello"))}, xi(1)},
 		{"length", dmy, []types.XValue{xa()}, xi(0)},
 		{"length", dmy, []types.XValue{nil}, xi(0)},
-		{"length", dmy, []types.XValue{types.XArray(nil)}, xi(0)},
 		{"length", dmy, []types.XValue{xi(1234)}, ERROR},
 		{"length", dmy, []types.XValue{ERROR}, ERROR},
 		{"length", dmy, []types.XValue{}, ERROR},
@@ -633,9 +633,7 @@ func TestFunctions(t *testing.T) {
 		if tc.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for ", result, result, testID)
 		} else {
-			if !types.Equals(tc.env, result, tc.expected) {
-				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for ", tc.expected, tc.expected, result, result, testID)
-			}
+			test.AssertEqual(t, tc.expected, result, "result mismatch for %s", testID)
 		}
 	}
 }

@@ -24,7 +24,7 @@ func init() {
 	var re = regexp.MustCompile
 
 	mappings = []mapping{
-		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact$`), `${1}contact`},
+		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact$`), `${1}contact.display`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.uuid$`), `${1}contact.uuid`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.id$`), `${1}contact.id`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.name$`), `${1}contact.name`},
@@ -40,21 +40,20 @@ func init() {
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.(\w+)$`), `${1}fields.$2`},
 
 		{re(`^flow$`), `results`},
-		{re(`^flow\.(\w+)$`), `results.$1`},
-		{re(`^flow\.(\w+)\.value$`), `results.$1.value`},
+		{re(`^flow\.(\w+)(\.value)?$`), `results.$1.value`},
 		{re(`^flow\.(\w+)\.category$`), `results.$1.category_localized`},
 		{re(`^flow\.(\w+)\.text$`), `results.$1.input`},
 		{re(`^flow\.(\w+)\.time$`), `results.$1.created_on`},
 
-		{re(`^child\.(\w+)$`), `child.results.$1`},
-		{re(`^child\.(\w+)\.value$`), `child.results.$1.value`},
-		{re(`^child\.(\w+)\.category$`), `child.results.$1.category_localized`},
+		{re(`^child$`), `child.results`},
+		{re(`^child\.(\w+)(\.value)?$`), `child.results.$1.values[0]`},
+		{re(`^child\.(\w+)\.category$`), `child.results.$1.categories_localized[0]`},
 		{re(`^child\.(\w+)\.text$`), `child.results.$1.input`},
 		{re(`^child\.(\w+)\.time$`), `child.results.$1.created_on`},
 
-		{re(`^(?:parent|extra\.flow)\.(\w+)$`), `parent.results.$1`},
-		{re(`^(?:parent|extra\.flow)\.(\w+)\.value$`), `parent.results.$1.value`},
-		{re(`^(?:parent|extra\.flow)\.(\w+)\.category$`), `parent.results.$1.category_localized`},
+		{re(`^(?:parent|extra\.flow)$`), `parent.results`},
+		{re(`^(?:parent|extra\.flow)\.(\w+)(\.value)?$`), `parent.results.$1.values[0]`},
+		{re(`^(?:parent|extra\.flow)\.(\w+)\.category$`), `parent.results.$1.categories_localized[0]`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.text$`), `parent.results.$1.input`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.time$`), `parent.results.$1.created_on`},
 

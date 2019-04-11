@@ -117,6 +117,7 @@ type SessionAssets interface {
 	Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error)
 }
 
+// Localizable is anything in the flow definition which can be localized and therefore needs a UUID
 type Localizable interface {
 	LocalizationUUID() utils.UUID
 }
@@ -137,7 +138,7 @@ type Localizable interface {
 //
 // @context flow
 type Flow interface {
-	types.XRepresentable
+	Contextable
 
 	// spec properties
 	UUID() assets.FlowUUID
@@ -252,13 +253,13 @@ type Translations interface {
 // Examples:
 //
 //   @trigger.type -> flow_action
-//   @trigger.params -> {"source": "website","address": {"state": "WA"}}
-//   @(json(trigger)) -> {"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}
+//   @trigger.params -> {address: {state: WA}, source: website}
+//   @(json(trigger)) -> {"params":{"address":{"state":"WA"},"source":"website"},"type":"flow_action"}
 //
 // @context trigger
 type Trigger interface {
 	utils.Typed
-	types.XRepresentable
+	Contextable
 
 	Initialize(Session, EventCallback) error
 	InitializeRun(FlowRun, EventCallback) error
@@ -336,7 +337,7 @@ type EventCallback func(Event)
 // @context input
 type Input interface {
 	utils.Typed
-	types.XRepresentable
+	Contextable
 
 	UUID() InputUUID
 	CreatedOn() time.Time
@@ -344,7 +345,7 @@ type Input interface {
 }
 
 type Step interface {
-	types.XRepresentable
+	Contextable
 
 	UUID() StepUUID
 	NodeUUID() NodeUUID
@@ -438,13 +439,11 @@ type RunEnvironment interface {
 //
 // @context run
 type FlowRun interface {
-	types.XValue
-	types.XResolvable
+	Contextable
 	RunSummary
 
 	Environment() RunEnvironment
 	Session() Session
-	Context() types.XValue
 	SaveResult(*Result)
 	SetStatus(RunStatus)
 

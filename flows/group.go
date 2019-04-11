@@ -156,11 +156,11 @@ func (l *GroupList) Count() int {
 
 // ToXValue returns a representation of this object for use in expressions
 func (l GroupList) ToXValue(env utils.Environment) types.XValue {
-	array := types.NewXArray()
-	for _, group := range l.groups {
-		array.Append(group.ToXValue(env))
+	array := make([]types.XValue, len(l.groups))
+	for g, group := range l.groups {
+		array[g] = group.ToXValue(env)
 	}
-	return array
+	return types.NewXArray(array...)
 }
 
 // GroupAssets provides access to all group assets

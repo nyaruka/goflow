@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -35,7 +34,6 @@ import (
 //
 // Examples:
 //
-//   @contact -> Ryan Lewis
 //   @contact.name -> Ryan Lewis
 //   @contact.first_name -> Ryan
 //   @contact.language -> eng
@@ -240,60 +238,39 @@ func (c *Contact) Format(env utils.Environment) string {
 	return ""
 }
 
-// Resolve resolves the given key when this contact is referenced in an expression
-func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "uuid":
-		return types.NewXText(string(c.uuid))
-	case "id":
-		return types.NewXNumberFromInt(int(c.id))
-	case "name":
-		return types.NewXText(c.name)
-	case "first_name":
-		names := utils.TokenizeString(c.name)
-		if len(names) >= 1 {
-			return types.NewXText(names[0])
-		}
-		return nil
-	case "language":
-		return types.NewXText(string(c.language))
-	case "timezone":
-		if c.timezone != nil {
-			return types.NewXText(c.timezone.String())
-		}
-		return nil
-	case "created_on":
-		return types.NewXDateTime(c.createdOn)
-	case "urns":
-		return c.urns.ToXValue(env)
-	case "urn":
-		return types.ToXValue(env, c.PreferredURN())
-	case "groups":
-		return c.groups.ToXValue(env)
-	case "fields":
-		return c.Fields().ToXValue(env)
-	case "channel":
-		return types.ToXValue(env, c.PreferredChannel())
+// Context returns a dict of properties available in expressions
+func (c *Contact) Context(env utils.Environment) map[string]types.XValue {
+	var urn, timezone types.XValue
+	if c.timezone != nil {
+		timezone = types.NewXText(c.timezone.String())
+	}
+	preferredURN := c.PreferredURN()
+	if preferredURN != nil {
+		urn = preferredURN.ToXValue(env)
 	}
 
-	return types.NewXResolveError(c, key)
+	var firstName types.XValue
+	names := utils.TokenizeString(c.name)
+	if len(names) >= 1 {
+		firstName = types.NewXText(names[0])
+	}
+
+	return map[string]types.XValue{
+		"uuid":       types.NewXText(string(c.uuid)),
+		"id":         types.NewXNumberFromInt(int(c.id)),
+		"name":       types.NewXText(c.name),
+		"first_name": firstName,
+		"display":    types.NewXText(c.Format(env)),
+		"language":   types.NewXText(string(c.language)),
+		"timezone":   timezone,
+		"created_on": types.NewXDateTime(c.createdOn),
+		"urns":       c.urns.ToXValue(env),
+		"urn":        urn,
+		"groups":     c.groups.ToXValue(env),
+		"fields":     Context(env, c.Fields()),
+		"channel":    Context(env, c.PreferredChannel()),
+	}
 }
-
-// Describe returns a representation of this type for error messages
-func (c *Contact) Describe() string { return "contact" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (c *Contact) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(c.Format(env))
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (c *Contact) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, c, "uuid", "name", "language", "timezone", "created_on", "urns", "groups", "fields", "channel").ToXJSON(env)
-}
-
-var _ types.XValue = (*Contact)(nil)
-var _ types.XResolvable = (*Contact)(nil)
 
 // Destination is a sendable channel and URN pair
 type Destination struct {

@@ -356,12 +356,12 @@
         "detail": "",
         "examples": [
             {
-                "template": "@(extract(contact.groups[0], \"name\"))",
-                "output": "Testers"
+                "template": "@(extract(contact, \"name\"))",
+                "output": "Ryan Lewis"
             },
             {
-                "template": "@(extract(contact, \"height\"))",
-                "output": "ERROR"
+                "template": "@(extract(contact.groups[0], \"name\"))",
+                "output": "Testers"
             }
         ]
     },
@@ -373,10 +373,6 @@
             {
                 "template": "@(extract_dict(contact.groups[0], \"name\"))",
                 "output": "{name: Testers}"
-            },
-            {
-                "template": "@(extract_dict(contact, \"height\"))",
-                "output": "ERROR"
             }
         ]
     },

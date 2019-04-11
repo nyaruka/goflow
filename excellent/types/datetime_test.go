@@ -13,8 +13,15 @@ import (
 )
 
 func TestXDateTime(t *testing.T) {
+	env := utils.NewEnvironmentBuilder().Build()
+
 	// test stringing
-	assert.Equal(t, `2018-04-09T17:01:30.000000Z`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).String())
+	assert.Equal(t, types.NewXText(`2018-04-09T17:01:30.123456Z`), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).ToXText(env))
+	assert.Equal(t, types.XBooleanTrue, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).ToXBoolean())
+	assert.Equal(t, `XDateTime(2018, 4, 9, 17, 1, 30, 123456789, UTC)`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).String())
+
+	asJSON, _ := types.ToXJSON(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)))
+	assert.Equal(t, types.NewXText(`"2018-04-09T17:01:30.123456Z"`), asJSON)
 
 	// test equality
 	assert.True(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).Equals(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
@@ -28,7 +35,6 @@ func TestXDateTime(t *testing.T) {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 
 	d1 := types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, la))
-	assert.Equal(t, d1, d1.Reduce(utils.NewEnvironmentBuilder().Build()))
 	assert.Equal(t, `datetime`, d1.Describe())
 
 	d2 := d1.ReplaceTime(types.NewXTime(utils.NewTimeOfDay(16, 20, 30, 123456789)))
@@ -50,7 +56,7 @@ func TestXDateTime(t *testing.T) {
 	// test marshaling
 	data, err := json.Marshal(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)))
 	assert.NoError(t, err)
-	assert.Equal(t, []byte(`"2018-04-09T17:01:30Z"`), data)
+	assert.Equal(t, `"2018-04-09T17:01:30.000000Z"`, string(data))
 }
 
 func TestToXDateTime(t *testing.T) {
@@ -64,8 +70,6 @@ func TestToXDateTime(t *testing.T) {
 		{types.NewXNumberFromInt(123), types.XDateTimeZero, true},
 		{types.NewXText("2018-06-05"), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
 		{types.NewXText("wha?"), types.XDateTimeZero, true},
-		{NewTestXObject("Hello", 123), types.XDateTimeZero, true},
-		{NewTestXObject("2018/6/5", 123), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
 		{types.NewXDate(utils.NewDate(2018, 4, 9)), types.NewXDateTime(time.Date(2018, 4, 9, 0, 0, 0, 0, time.UTC)), false},
 		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
 	}

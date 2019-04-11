@@ -187,15 +187,17 @@ func (l URNList) WithScheme(scheme string) URNList {
 
 // ToXValue returns a representation of this object for use in expressions
 func (l URNList) ToXValue(env utils.Environment) types.XValue {
-	array := types.NewXArray()
-	for _, urn := range l {
-		array.Append(urn.ToXValue(env))
-	}
-	return array
+	return types.NewXLazyArray(func() []types.XValue {
+		array := make([]types.XValue, len(l))
+		for u, urn := range l {
+			array[u] = urn.ToXValue(env)
+		}
+		return array
+	})
 }
 
 // MapContext returns a map of the highest priority URN for each scheme - exposed in expressions as @urns
-func (l URNList) MapContext(env utils.Environment) types.XValue {
+func (l URNList) MapContext(env utils.Environment) map[string]types.XValue {
 	byScheme := make(map[string]types.XValue)
 
 	for _, u := range l {
@@ -212,5 +214,5 @@ func (l URNList) MapContext(env utils.Environment) types.XValue {
 		}
 	}
 
-	return types.NewXDict(byScheme)
+	return byScheme
 }

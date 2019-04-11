@@ -9,7 +9,7 @@ import (
 // XError is an error
 type XError interface {
 	error
-	XPrimitive
+	XValue
 	Equals(XError) bool
 }
 
@@ -27,28 +27,16 @@ func NewXErrorf(format string, a ...interface{}) XError {
 	return NewXError(fmt.Errorf(format, a...))
 }
 
-// NewXResolveError creates a new XError when a key can't be resolved on an XResolvable
-func NewXResolveError(resolvable XResolvable, key string) XError {
-	val, _ := resolvable.(XValue)
-	return NewXError(fmt.Errorf("%s has no property '%s'", Describe(val), key))
-}
-
 // Describe returns a representation of this type for error messages
 func (x xerror) Describe() string { return "error" }
-
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x xerror) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
 func (x xerror) ToXText(env utils.Environment) XText { return NewXText(x.Native().Error()) }
 
 // ToXBoolean converts this type to a bool
-func (x xerror) ToXBoolean(env utils.Environment) XBoolean { return XBooleanFalse }
+func (x xerror) ToXBoolean() XBoolean { return XBooleanFalse }
 
-// ToXJSON is called when this type is passed to @(json(...))
-func (x xerror) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native().Error()) }
-
-// MarshalJSON converts this type to internal JSON
+// MarshalJSON converts this type to JSON
 func (x xerror) MarshalJSON() ([]byte, error) {
 	return nil, nil
 }
@@ -58,7 +46,10 @@ func (x xerror) Native() error { return x.native }
 
 func (x xerror) Error() string { return x.Native().Error() }
 
-func (x xerror) String() string { return x.Native().Error() }
+// String returns the native string representation of this type for debugging
+func (x xerror) String() string {
+	return `XError("` + x.Native().Error() + `")`
+}
 
 // Equals determines equality for this type
 func (x xerror) Equals(other XError) bool {

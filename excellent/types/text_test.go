@@ -31,7 +31,7 @@ func TestXText(t *testing.T) {
 	assert.Equal(t, types.NewXText("cd"), types.NewXText("abcdef").Slice(2, 4))
 	assert.Equal(t, types.NewXText("😁😁"), types.NewXText("😁😁😁😁").Slice(2, 4))
 
-	assert.Equal(t, "abc", types.NewXText("abc").String())
+	assert.Equal(t, `XText("abc")`, types.NewXText("abc").String())
 
 	// unmarshal
 	var val types.XText

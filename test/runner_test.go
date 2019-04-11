@@ -26,11 +26,13 @@ import (
 )
 
 var writeOutput bool
+var includeTests string
 var serverURL = ""
 var testFilePattern = regexp.MustCompile(`(\w+)\.(\w+)\.json`)
 
 func init() {
 	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite test output")
+	flag.StringVar(&includeTests, "include", "", "include only test names containing")
 }
 
 type runnerTest struct {
@@ -61,7 +63,9 @@ func loadTestCases() ([]runnerTest, error) {
 			assetsFile := directory + assetsName + ".json"
 			outputFile := directory + groups[0]
 
-			tests = append(tests, runnerTest{testName, assetsName, outputFile, assetsFile})
+			if includeTests == "" || strings.Contains(assetsName+"."+testName, includeTests) {
+				tests = append(tests, runnerTest{testName, assetsName, outputFile, assetsFile})
+			}
 		}
 	}
 
@@ -294,6 +298,30 @@ func TestFlows(t *testing.T) {
 					}
 				}
 			}
+		}
+	}
+}
+
+func BenchmarkFlows(b *testing.B) {
+	testCases, _ := loadTestCases()
+
+	server := NewTestHTTPServer(49990)
+	defer server.Close()
+
+	// save away our server URL so we can rewrite our URLs
+	serverURL = server.URL
+
+	for n := 0; n < b.N; n++ {
+		for _, tc := range testCases {
+			testJSON, err := ioutil.ReadFile(tc.outputFile)
+			require.NoError(b, err, "error reading output file %s", tc.outputFile)
+
+			flowTest := &FlowTest{}
+			err = json.Unmarshal(json.RawMessage(testJSON), &flowTest)
+			require.NoError(b, err, "error unmarshalling output file %s", tc.outputFile)
+
+			_, err = runFlow(tc.assetsFile, flowTest.Trigger, flowTest.Resumes)
+			require.NoError(b, err, "error running flow %s", tc.testName)
 		}
 	}
 }

@@ -94,7 +94,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 	if a.ResultName != "" && transfer != nil {
 		value := transfer.actualAmount.String()
 		category := statusCategories[transfer.status]
-		result := flows.NewResult(a.ResultName, value, category, "", step.NodeUUID(), nil, nil, utils.Now())
+		result := flows.NewResult(a.ResultName, value, category, "", step.NodeUUID(), "", nil, utils.Now())
 
 		run.SaveResult(result)
 		logEvent(events.NewRunResultChangedEvent(result))

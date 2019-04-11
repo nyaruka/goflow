@@ -1,6 +1,8 @@
 package types
 
 import (
+	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
@@ -19,29 +21,23 @@ func NewXDateTime(value time.Time) XDateTime {
 // Describe returns a representation of this type for error messages
 func (x XDateTime) Describe() string { return "datetime" }
 
-// Reduce returns the primitive version of this type (i.e. itself)
-func (x XDateTime) Reduce(env utils.Environment) XPrimitive { return x }
-
 // ToXText converts this type to text
 func (x XDateTime) ToXText(env utils.Environment) XText {
 	return NewXText(utils.DateTimeToISO(x.Native()))
 }
 
 // ToXBoolean converts this type to a bool
-func (x XDateTime) ToXBoolean(env utils.Environment) XBoolean {
+func (x XDateTime) ToXBoolean() XBoolean {
 	return NewXBoolean(!x.Native().IsZero())
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (x XDateTime) ToXJSON(env utils.Environment) XText {
-	return MustMarshalToXText(utils.DateTimeToISO(x.Native()))
 }
 
 // Native returns the native value of this type
 func (x XDateTime) Native() time.Time { return x.native }
 
 // String returns the native string representation of this type
-func (x XDateTime) String() string { return x.ToXText(nil).Native() }
+func (x XDateTime) String() string {
+	return fmt.Sprintf(`XDateTime(`+x.native.Format("2006, 1, 2, 15, 4, 5, %d, MST")+`)`, x.native.Nanosecond())
+}
 
 // Date returns the date part of this datetime
 func (x XDateTime) Date() XDate {
@@ -84,7 +80,7 @@ func (x XDateTime) Compare(other XDateTime) int {
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XDateTime) MarshalJSON() ([]byte, error) {
-	return x.Native().MarshalJSON()
+	return json.Marshal(utils.DateTimeToISO(x.Native()))
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
@@ -95,7 +91,7 @@ func (x *XDateTime) UnmarshalJSON(data []byte) error {
 
 // XDateTimeZero is the zero time value
 var XDateTimeZero = NewXDateTime(utils.ZeroDateTime)
-var _ XPrimitive = XDateTimeZero
+var _ XValue = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible
 func ToXDateTime(env utils.Environment, x XValue) (XDateTime, XError) {
@@ -110,8 +106,6 @@ func ToXDateTimeWithTimeFill(env utils.Environment, x XValue) (XDateTime, XError
 // converts the given value to a time or returns an error if that isn't possible
 func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XError) {
 	if !utils.IsNil(x) {
-		x = x.Reduce(env)
-
 		switch typed := x.(type) {
 		case XError:
 			return XDateTimeZero, typed

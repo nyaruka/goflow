@@ -24,8 +24,8 @@ func TestXNumber(t *testing.T) {
 	assert.Equal(t, -1, types.NewXNumberFromInt(123).Compare(types.NewXNumberFromInt(124)))
 	assert.Equal(t, 1, types.NewXNumberFromInt(124).Compare(types.NewXNumberFromInt(123)))
 
-	assert.Equal(t, `123`, types.NewXNumberFromInt64(123).String())
-	assert.Equal(t, `123.45`, types.RequireXNumberFromString("123.45").String())
+	assert.Equal(t, `XNumber(123)`, types.NewXNumberFromInt64(123).String())
+	assert.Equal(t, `XNumber(123.45)`, types.RequireXNumberFromString("123.45").String())
 
 	// unmarshal with quotes
 	var num types.XNumber
@@ -56,8 +56,6 @@ func TestToXNumberAndInteger(t *testing.T) {
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), 123, false},
 		{types.NewXText("15.5"), types.RequireXNumberFromString("15.5"), 15, false},
 		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true}, // out of int range
-		{NewTestXObject("Hello", 123), types.XNumberZero, 0, true},
-		{NewTestXObject("123.45000", 123), types.RequireXNumberFromString("123.45"), 123, false},
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()

@@ -4,29 +4,33 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestXJSON(t *testing.T) {
-	jobj := types.JSONToXValue([]byte(`{"foo": "x", "bar": null}`)).(types.XJSONObject)
-	assert.Equal(t, `{"foo": "x", "bar": null}`, jobj.String())
-	assert.Equal(t, `json object`, jobj.Describe())
+func TestJSONToXValue(t *testing.T) {
+	test.AssertEqual(t, types.NewXDict(map[string]types.XValue{
+		"foo": types.NewXText("x"),
+		"bar": nil,
+		"sub": types.NewXDict(map[string]types.XValue{
+			"x": types.NewXNumberFromInt(3),
+		}),
+	}), types.JSONToXValue([]byte(`{"foo": "x", "bar": null, "sub": {"x": 3}}`)))
 
-	jarr := types.JSONToXValue([]byte(`["one", "two", "three"]`)).(types.XJSONArray)
-	assert.Equal(t, `["one", "two", "three"]`, jarr.String())
-	assert.Equal(t, 3, jarr.Length())
-	assert.Equal(t, types.NewXText("two"), jarr.Index(1))
-	assert.True(t, types.IsXError(jarr.Index(7)))
-	assert.Equal(t, `json array`, jarr.Describe())
+	test.AssertEqual(t, types.NewXArray(
+		types.NewXText("foo"),
+		types.NewXNumberFromInt(123),
+		nil,
+		types.NewXArray(types.NewXNumberFromInt(2), types.NewXNumberFromInt(3)),
+	), types.JSONToXValue([]byte(`["foo", 123, null, [2, 3]]`)))
 
-	num := types.JSONToXValue([]byte(`37.27903`)).(types.XNumber)
-	assert.Equal(t, num, types.RequireXNumberFromString(`37.27903`))
+	test.AssertEqual(t, types.RequireXNumberFromString(`37.27903`), types.JSONToXValue([]byte(`37.27903`)))
 
-	jerr := types.JSONToXValue([]byte(`fish`)).(types.XError)
-	assert.Equal(t, `Unknown value type`, jerr.Error())
+	xerr := types.JSONToXValue([]byte(`fish`)).(types.XError)
+	assert.Equal(t, `Unknown value type`, xerr.Error())
 }
 
 func TestXJSONResolve(t *testing.T) {
@@ -60,8 +64,8 @@ func TestXJSONResolve(t *testing.T) {
 		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `j.key["key-with-dash"]`, types.NewXText("val2"), false},
 		{[]byte(`{"key": {"key with space": "val2"}}`), `j.key["key with space"]`, types.NewXText("val2"), false},
 
-		{[]byte(`{"arr": ["one", "two"]}`), "j.arr", types.NewXJSONArray([]byte(`["one", "two"]`)), false},
-		{[]byte(`{"arr": {"foo": "bar"}}`), "j.arr", types.NewXJSONObject([]byte(`{"foo": "bar"}`)), false},
+		{[]byte(`{"arr": ["one", "two"]}`), "j.arr", types.NewXArray(types.NewXText("one"), types.NewXText("two")), false},
+		{[]byte(`{"arr": {"foo": "bar"}}`), "j.arr", types.NewXDict(map[string]types.XValue{"foo": types.NewXText("bar")}), false},
 
 		// resolve errors
 		{[]byte(`{"foo": "x", "bar": "one"}`), "j.zed", nil, true},
@@ -70,18 +74,18 @@ func TestXJSONResolve(t *testing.T) {
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
-	for _, test := range jsonTests {
-		fragment := types.JSONToXValue(test.JSON)
+	for _, tc := range jsonTests {
+		fragment := types.JSONToXValue(tc.JSON)
 		context := types.NewXDict(map[string]types.XValue{"j": fragment})
 
-		value := excellent.EvaluateExpression(env, context, test.expression)
+		value := excellent.EvaluateExpression(env, context, tc.expression)
 		err, _ := value.(error)
 
-		if test.hasError {
-			assert.Error(t, err, "expected error resolving '%s' for '%s'", test.expression, test.JSON)
+		if tc.hasError {
+			assert.Error(t, err, "expected error resolving '%s' for '%s'", tc.expression, tc.JSON)
 		} else {
-			assert.NoError(t, err, "unexpected error resolving '%s' for '%s'", test.expression, test.JSON)
-			assert.Equal(t, test.expected, value, "Actual '%s' does not match expected '%s' resolving '%s' for '%s'", value, test.expected, test.expression, test.JSON)
+			assert.NoError(t, err, "unexpected error resolving '%s' for '%s'", tc.expression, tc.JSON)
+			test.AssertEqual(t, tc.expected, value, "unexpected result resolving '%s' for '%s'", tc.expression, tc.JSON)
 		}
 	}
 }

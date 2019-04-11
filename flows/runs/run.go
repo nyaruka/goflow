@@ -2,7 +2,6 @@ package runs
 
 import (
 	"encoding/json"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -20,11 +19,8 @@ type flowRun struct {
 	session     flows.Session
 	environment flows.RunEnvironment
 
-	flow flows.Flow
-
-	context types.XValue
+	flow    flows.Flow
 	parent  flows.FlowRun
-
 	results flows.Results
 	path    Path
 	events  []flows.Event
@@ -34,6 +30,8 @@ type flowRun struct {
 	modifiedOn time.Time
 	expiresOn  *time.Time
 	exitedOn   *time.Time
+
+	legacyExtra *legacyExtra
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
@@ -52,9 +50,9 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)
-	r.context = newRunContext(r)
-
 	r.ResetExpiration(nil)
+
+	r.legacyExtra = newLegacyExtra(r)
 
 	return r
 }
@@ -65,7 +63,6 @@ func (r *flowRun) Environment() flows.RunEnvironment { return r.environment }
 
 func (r *flowRun) Flow() flows.Flow        { return r.flow }
 func (r *flowRun) Contact() *flows.Contact { return r.session.Contact() }
-func (r *flowRun) Context() types.XValue   { return r.context }
 func (r *flowRun) Events() []flows.Event   { return r.events }
 
 func (r *flowRun) Results() flows.Results { return r.results }
@@ -77,6 +74,8 @@ func (r *flowRun) SaveResult(result *flows.Result) {
 
 	r.results.Save(result)
 	r.modifiedOn = utils.Now()
+
+	r.legacyExtra.addResult(result)
 }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
@@ -185,14 +184,67 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 
 func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
+// Context returns the overall context for expression evaluation
+func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
+	var urns, fields types.XValue
+	if r.Contact() != nil {
+		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
+		fields = flows.Context(env, r.Contact().Fields())
+	}
+
+	var child = newRelatedRunContext(r.Session().GetCurrentChild(r))
+	var parent = newRelatedRunContext(r.Parent())
+
+	return map[string]types.XValue{
+		// the available runs
+		"run":    flows.Context(env, r),
+		"child":  flows.Context(env, child),
+		"parent": flows.Context(env, parent),
+
+		// shortcuts to things on the current run
+		"contact": flows.Context(env, r.Contact()),
+		"results": flows.ContextFunc(env, r.Results().SimpleContext),
+		"urns":    urns,
+		"fields":  fields,
+
+		// other
+		"trigger":      flows.Context(env, r.Session().Trigger()),
+		"input":        flows.Context(env, r.Session().Input()),
+		"legacy_extra": r.legacyExtra.ToXValue(env),
+	}
+}
+
+// Context returns a dict of properties available in expressions
+func (r *flowRun) Context(env utils.Environment) map[string]types.XValue {
+	var exitedOn types.XValue
+	if r.exitedOn != nil {
+		exitedOn = types.NewXDateTime(*r.exitedOn)
+	}
+
+	return map[string]types.XValue{
+		"uuid":       types.NewXText(string(r.UUID())),
+		"contact":    flows.Context(env, r.Contact()),
+		"flow":       flows.Context(env, r.Flow()),
+		"status":     types.NewXText(string(r.Status())),
+		"results":    flows.Context(env, r.Results()),
+		"path":       r.path.ToXValue(env),
+		"created_on": types.NewXDateTime(r.CreatedOn()),
+		"exited_on":  exitedOn,
+	}
+}
+
 // EvaluateTemplate evaluates the given template in the context of this run
 func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
-	return excellent.EvaluateTemplateValue(r.Environment(), r.Context(), template, flows.RunContextTopLevels)
+	context := types.NewXDict(r.RootContext(r.Environment()))
+
+	return excellent.EvaluateTemplateValue(r.Environment(), context, template)
 }
 
 // EvaluateTemplateAsString evaluates the given template as a string in the context of this run
 func (r *flowRun) EvaluateTemplate(template string) (string, error) {
-	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template, flows.RunContextTopLevels)
+	context := types.NewXDict(r.RootContext(r.Environment()))
+
+	return excellent.EvaluateTemplate(r.Environment(), context, template)
 }
 
 // get the ordered list of languages to be used for localization in this run
@@ -263,50 +315,10 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 	return native
 }
 
-// Resolve resolves the given key when this run is referenced in an expression
-func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
-	switch strings.ToLower(key) {
-	case "uuid":
-		return types.NewXText(string(r.UUID()))
-	case "contact":
-		return r.Contact()
-	case "flow":
-		return r.Flow().ToXValue(env)
-	case "status":
-		return types.NewXText(string(r.Status()))
-	case "results":
-		return r.Results()
-	case "path":
-		return r.path.ToXValue(env)
-	case "created_on":
-		return types.NewXDateTime(r.CreatedOn())
-	case "exited_on":
-		if r.exitedOn != nil {
-			return types.NewXDateTime(*r.exitedOn)
-		}
-		return nil
-	}
-
-	return types.NewXResolveError(r, key)
-}
-
-// Describe returns a representation of this type for error messages
-func (r *flowRun) Describe() string { return "run" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (r *flowRun) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(string(r.uuid))
-}
-
-func (r *flowRun) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, r, "uuid", "contact", "flow", "input", "status", "results", "created_on", "exited_on").ToXJSON(env)
-}
-
 func (r *flowRun) Snapshot() flows.RunSummary {
 	return newRunSummaryFromRun(r)
 }
 
-var _ flows.FlowRun = (*flowRun)(nil)
 var _ flows.RunSummary = (*flowRun)(nil)
 
 //------------------------------------------------------------------------------------------
@@ -382,7 +394,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 
 	// create a run specific environment and context
 	r.environment = newRunEnvironment(session.Environment(), r)
-	r.context = newRunContext(r)
+	r.legacyExtra = newLegacyExtra(r)
 
 	return r, nil
 }

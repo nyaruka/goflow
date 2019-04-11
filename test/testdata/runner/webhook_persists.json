@@ -77,7 +77,7 @@
                     "actions": [
                         {
                             "uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
-                            "text": "The status is @results.webhook.extra.ok. Send something",
+                            "text": "The status is @run.results.webhook.extra.ok. Send something",
                             "type": "send_msg"
                         }
                     ],
@@ -118,7 +118,7 @@
                     "actions": [
                         {
                             "uuid": "09cd20fb-9a8a-49a2-9c98-fac728c35300",
-                            "text": "The status is now @results.webhook.extra.ok",
+                            "text": "The status is now @run.results.webhook.extra.ok",
                             "type": "send_msg"
                         }
                     ],

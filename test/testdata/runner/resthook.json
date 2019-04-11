@@ -69,7 +69,7 @@
                         {
                             "uuid": "945db2dd-690c-4eb6-98a0-4681415d51d8",
                             "type": "send_msg",
-                            "text": "Resthook: @(json(results.response_1.extra))"
+                            "text": "Resthook: @(json(run.results.response_1.extra))"
                         }
                     ],
                     "exits": [

@@ -36,7 +36,7 @@ type RunResultChangedEvent struct {
 	Value             string          `json:"value"`
 	Category          string          `json:"category"`
 	CategoryLocalized string          `json:"category_localized,omitempty"`
-	Input             *string         `json:"input,omitempty"`
+	Input             string          `json:"input,omitempty"`
 	Extra             json.RawMessage `json:"extra,omitempty"`
 }
 

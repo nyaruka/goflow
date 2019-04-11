@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
 
+// concrete run summary which might be stored on a trigger or event
 type runSummary struct {
 	uuid    flows.RunUUID
 	flow    flows.Flow
@@ -15,12 +17,6 @@ type runSummary struct {
 	status  flows.RunStatus
 	results flows.Results
 }
-
-func (r *runSummary) UUID() flows.RunUUID     { return r.uuid }
-func (r *runSummary) Flow() flows.Flow        { return r.flow }
-func (r *runSummary) Contact() *flows.Contact { return r.contact }
-func (r *runSummary) Status() flows.RunStatus { return r.status }
-func (r *runSummary) Results() flows.Results  { return r.results }
 
 // creates a new run summary from the given run
 func newRunSummaryFromRun(run flows.FlowRun) flows.RunSummary {
@@ -33,7 +29,43 @@ func newRunSummaryFromRun(run flows.FlowRun) flows.RunSummary {
 	}
 }
 
+func (r *runSummary) UUID() flows.RunUUID     { return r.uuid }
+func (r *runSummary) Flow() flows.Flow        { return r.flow }
+func (r *runSummary) Contact() *flows.Contact { return r.contact }
+func (r *runSummary) Status() flows.RunStatus { return r.status }
+func (r *runSummary) Results() flows.Results  { return r.results }
+
 var _ flows.RunSummary = (*runSummary)(nil)
+
+// wrapper for a run summary (concrete like runSummary or view of child run via interface)
+type relatedRunContext struct {
+	run flows.RunSummary
+}
+
+func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
+	if utils.IsNil(run) {
+		return nil
+	}
+	return &relatedRunContext{run: run}
+}
+
+func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XValue {
+	var urns, fields types.XValue
+	if c.run.Contact() != nil {
+		urns = flows.ContextFunc(env, c.run.Contact().URNs().MapContext)
+		fields = flows.Context(env, c.run.Contact().Fields())
+	}
+
+	return map[string]types.XValue{
+		"uuid":    types.NewXText(string(c.run.UUID())),
+		"contact": flows.Context(env, c.run.Contact()),
+		"urns":    urns,
+		"fields":  fields,
+		"flow":    flows.Context(env, c.run.Flow()),
+		"status":  types.NewXText(string(c.run.Status())),
+		"results": flows.Context(env, c.run.Results()),
+	}
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

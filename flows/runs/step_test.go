@@ -32,12 +32,12 @@ func TestStep(t *testing.T) {
 
 	// test use in expressions
 	env := utils.NewEnvironmentBuilder().Build()
-	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
 		"arrived_on": types.NewXDateTime(d),
 		"exit_uuid":  types.XTextEmpty,
 		"node_uuid":  types.NewXText("5fb4f555-7662-4c4c-8387-226e359526e4"),
 		"uuid":       types.NewXText("c00e5d67-c275-4389-aded-7d8b151cbd5b"),
-	}), step.ToXValue(env))
+	}), flows.Context(env, step))
 
 	// test marshaling
 	marshaled, err := json.Marshal(step)

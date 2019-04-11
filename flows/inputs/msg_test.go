@@ -44,15 +44,15 @@ func TestMsgInput(t *testing.T) {
 	assert.Equal(t, time.Date(2018, 10, 22, 16, 12, 30, 123456, time.UTC), input.CreatedOn())
 
 	// check use in expressions
-	assert.Equal(t, types.NewXDict(map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
 		"type":        types.NewXText("msg"),
 		"uuid":        types.NewXText("f51d7220-10b3-4faa-a91c-1ae70beaae3e"),
-		"channel":     channel.ToXValue(env),
+		"channel":     flows.Context(env, channel),
 		"created_on":  types.NewXDateTime(input.CreatedOn()),
 		"urn":         types.NewXText("tel:+1234567890"),
 		"text":        types.NewXText("Hi there!"),
 		"attachments": types.NewXArray(types.NewXText("image/jpg:http://example.com/test.jpg"), types.NewXText("video/mp4:http://example.com/test.mp4")),
-	}), input.ToXValue(env))
+	}), flows.Context(env, input))
 
 	// check marshaling to JSON
 	marshaled, err := json.Marshal(input)

@@ -42,22 +42,28 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 	}, nil
 }
 
-// ToXValue returns a representation of this object for use in expressions
-func (i *MsgInput) ToXValue(env utils.Environment) types.XValue {
-	attachments := types.NewXArray()
-	for _, attachment := range i.attachments {
-		attachments.Append(types.NewXText(string(attachment)))
+// Context returns a dict of properties available in expressions
+func (i *MsgInput) Context(env utils.Environment) map[string]types.XValue {
+	attachments := make([]types.XValue, len(i.attachments))
+
+	for a, attachment := range i.attachments {
+		attachments[a] = types.NewXText(string(attachment))
 	}
 
-	return types.NewXDict(map[string]types.XValue{
+	var urn types.XValue
+	if i.urn != nil {
+		urn = i.urn.ToXValue(env)
+	}
+
+	return map[string]types.XValue{
 		"type":        types.NewXText(i.type_),
 		"uuid":        types.NewXText(string(i.uuid)),
 		"created_on":  types.NewXDateTime(i.createdOn),
-		"channel":     types.ToXValue(env, i.channel),
-		"urn":         types.ToXValue(env, i.urn),
+		"channel":     flows.Context(env, i.channel),
+		"urn":         urn,
 		"text":        types.NewXText(i.text),
-		"attachments": attachments,
-	})
+		"attachments": types.NewXArray(attachments...),
+	}
 }
 
 var _ flows.Input = (*MsgInput)(nil)

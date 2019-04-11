@@ -65,12 +65,12 @@
                                 "key": "birth_date",
                                 "name": "Birth Date"
                             },
-                            "value": "@results.birth_date"
+                            "value": "@results.birth_date.value"
                         },
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "Awesome, you were born on @(format_datetime(results.birth_date, \"MM-DD-YYYY\")) at @(format_datetime(results.birth_date, \"tt:mm\"))"
+                            "text": "Awesome, you were born on @(format_datetime(results.birth_date.value, \"MM-DD-YYYY\")) at @(format_datetime(results.birth_date.value, \"tt:mm\"))"
                         }
                     ],
                     "exits": [
