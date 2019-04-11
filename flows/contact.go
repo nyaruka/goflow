@@ -247,10 +247,17 @@ func (c *Contact) Context(env utils.Environment) map[string]types.XValue {
 		urn = preferredURN.ToXValue(env)
 	}
 
+	var firstName types.XValue
+	names := utils.TokenizeString(c.name)
+	if len(names) >= 1 {
+		firstName = types.NewXText(names[0])
+	}
+
 	return map[string]types.XValue{
 		"uuid":       types.NewXText(string(c.uuid)),
 		"id":         types.NewXNumberFromInt(int(c.id)),
 		"name":       types.NewXText(c.name),
+		"first_name": firstName,
 		"display":    types.NewXText(c.Format(env)),
 		"language":   types.NewXText(string(c.language)),
 		"timezone":   timezone,

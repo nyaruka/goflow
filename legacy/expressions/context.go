@@ -28,7 +28,7 @@ func init() {
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.uuid$`), `${1}contact.uuid`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.id$`), `${1}contact.id`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.name$`), `${1}contact.name`},
-		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.first_name$`), `word(${1}contact.name, 0)`},
+		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.first_name$`), `${1}contact.first_name`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.created_on$`), `${1}contact.created_on`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.language$`), `${1}contact.language`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.groups$`), `join(${1}contact.groups, ",")`},

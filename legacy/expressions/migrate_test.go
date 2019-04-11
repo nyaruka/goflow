@@ -36,7 +36,7 @@ var tests = []testTemplate{
 	{old: `@contact.id`, new: `@contact.id`},
 	{old: `@contact.name`, new: `@contact.name`},
 	{old: `@contact.NAME`, new: `@contact.name`},
-	{old: `@contact.first_name`, new: `@(word(contact.name, 0))`},
+	{old: `@contact.first_name`, new: `@contact.first_name`},
 	{old: `@contact.gender`, new: `@fields.gender`},
 	{old: `@contact.groups`, new: `@(join(contact.groups, ","))`},
 	{old: `@contact.language`, new: `@contact.language`},

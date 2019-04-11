@@ -159,8 +159,36 @@ func TestContextToJSON(t *testing.T) {
 		{"contact.urns[0]", `"tel:+12065551212"`},
 		{"contact.fields", `{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`},
 		{"contact.fields.age", `23`},
-		{"contact", `{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-06-20T11:40:30.123456Z","display":"Ryan Lewis","fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"id":1234567,"language":"eng","name":"Ryan Lewis","timezone":"America/Guayaquil","urn":"tel:+12065551212","urns":["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"}`},
-		{"input", `{"attachments":["image/jpeg:http://s3.amazon.com/bucket/test.jpg","audio/mp3:http://s3.amazon.com/bucket/test.mp3"],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":"tel:+12065551212","uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}`},
+		{
+			"contact",
+			`{
+				"channel": {"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
+				"created_on": "2018-06-20T11:40:30.123456Z", 
+				"display": "Ryan Lewis",
+				"fields": {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
+				"first_name": "Ryan",
+				"groups": [{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
+				"id": 1234567,
+				"language": "eng",
+				"name": "Ryan Lewis",
+				"timezone": "America/Guayaquil",
+				"urn": "tel:+12065551212",
+				"urns": ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"],
+				"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+			}`,
+		},
+		{
+			"input",
+			`{
+				"attachments":["image/jpeg:http://s3.amazon.com/bucket/test.jpg","audio/mp3:http://s3.amazon.com/bucket/test.mp3"],
+				"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
+				"created_on":"2017-12-31T11:35:10.035757-02:00",
+				"text":"Hi there",
+				"type":"msg",
+				"urn":"tel:+12065551212",
+				"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+			}`,
+		},
 		{
 			"run",
 			`{
@@ -169,6 +197,7 @@ func TestContextToJSON(t *testing.T) {
 					"created_on":"2018-06-20T11:40:30.123456Z",
 					"display":"Ryan Lewis",
 					"fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
+					"first_name":"Ryan",
 					"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
 					"id":1234567,
 					"language":"eng",
@@ -205,6 +234,7 @@ func TestContextToJSON(t *testing.T) {
 					"created_on":"2018-06-20T11:40:30.123456Z",
 					"display":"Ryan Lewis",
 					"fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
+					"first_name": "Ryan",
 					"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
 					"id":1234567,
 					"language":"eng",
@@ -250,6 +280,7 @@ func TestContextToJSON(t *testing.T) {
 					"created_on":"2018-01-01T12:00:00.000000Z",
 					"display":"Jasmine",
 					"fields":{"activation_token":null,"age":33,"gender":"Female","join_date":null,"not_set":null},"groups":[],
+					"first_name": "Jasmine",
 					"id":0,
 					"language":"spa",
 					"name":"Jasmine",

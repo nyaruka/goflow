@@ -95,6 +95,7 @@ func TestContact(t *testing.T) {
 		"created_on": types.NewXDateTime(contact.CreatedOn()),
 		"display":    types.NewXText("Joe Bloggs"),
 		"fields":     flows.Context(env, contact.Fields()),
+		"first_name": types.NewXText("Joe"),
 		"groups":     contact.Groups().ToXValue(env),
 		"id":         types.NewXNumberFromInt(12345),
 		"language":   types.NewXText("eng"),
