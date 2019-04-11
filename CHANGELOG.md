@@ -1,3 +1,8 @@
+v0.33.7
+----------
+ * Ignore errors migrating legacy expressions
+ * Regexes for migrating context references
+
 v0.33.6
 ----------
  * Ignore empty webhook headers during flow migration and validate that header namews are valid during validation
