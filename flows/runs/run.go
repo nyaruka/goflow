@@ -192,11 +192,14 @@ func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
 		fields = flows.Context(env, r.Contact().Fields())
 	}
 
+	var child = newRelatedRunContext(r.Session().GetCurrentChild(r))
+	var parent = newRelatedRunContext(r.Parent())
+
 	return map[string]types.XValue{
 		// the available runs
 		"run":    flows.Context(env, r),
-		"child":  RunSummaryToXValue(env, r.Session().GetCurrentChild(r)),
-		"parent": RunSummaryToXValue(env, r.Parent()),
+		"child":  flows.Context(env, child),
+		"parent": flows.Context(env, parent),
 
 		// shortcuts to things on the current run
 		"contact": flows.Context(env, r.Contact()),
