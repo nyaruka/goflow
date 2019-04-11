@@ -40,7 +40,7 @@
                     },
                     "d2a4052a-3fa9-4608-ab3e-5b9631440447": {
                         "text": [
-                            "@(TITLE(run.results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
+                            "@(TITLE(results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
                         ]
                     },
                     "e27c3bce-1095-4d08-9164-dc4530a0688a": {
@@ -171,7 +171,7 @@
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "@(TITLE(run.results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
+                            "text": "@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
                         }
                     ],
                     "router": {

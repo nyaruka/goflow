@@ -64,6 +64,7 @@
 <ul>
 <li><code>uuid</code> the UUID of the contact</li>
 <li><code>name</code> the full name of the contact</li>
+<li><code>first_name</code> the first name of the contact</li>
 <li><code>language</code> the <a href="http://www-01.sil.org/iso639-3/">ISO-639-3</a> language code of the contact</li>
 <li><code>timezone</code> the timezone name of the contact</li>
 <li><code>created_on</code> the datetime when the contact was created</li>
@@ -77,16 +78,17 @@
 </ul>
 <p>Examples:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb2-1" title="1">@contact.name → Ryan Lewis</a>
-<a class="sourceLine" id="cb2-2" title="2">@contact.language → eng</a>
-<a class="sourceLine" id="cb2-3" title="3">@contact.timezone → America/Guayaquil</a>
-<a class="sourceLine" id="cb2-4" title="4">@contact.created_on → <span class="dv">2018-06</span>-20T11:<span class="dv">40</span>:<span class="fl">30.123456</span>Z</a>
-<a class="sourceLine" id="cb2-5" title="5">@contact.urns → [tel:+<span class="dv">12065551212</span>, twitterid:<span class="dv">54784326227</span>#nyaruka, mailto:foo@bar.com]</a>
-<a class="sourceLine" id="cb2-6" title="6">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb2-7" title="7">@contact.urn → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb2-8" title="8">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
-<a class="sourceLine" id="cb2-9" title="9">@contact.fields → {activation_token: AACC55, age: <span class="dv">23</span>, gender: Male, join_date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span>, not_set: }</a>
-<a class="sourceLine" id="cb2-10" title="10">@contact.fields.activation_token → AACC55</a>
-<a class="sourceLine" id="cb2-11" title="11">@contact.fields.gender → Male</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" title="2">@contact.first_name → Ryan</a>
+<a class="sourceLine" id="cb2-3" title="3">@contact.language → eng</a>
+<a class="sourceLine" id="cb2-4" title="4">@contact.timezone → America/Guayaquil</a>
+<a class="sourceLine" id="cb2-5" title="5">@contact.created_on → <span class="dv">2018-06</span>-20T11:<span class="dv">40</span>:<span class="fl">30.123456</span>Z</a>
+<a class="sourceLine" id="cb2-6" title="6">@contact.urns → [tel:+<span class="dv">12065551212</span>, twitterid:<span class="dv">54784326227</span>#nyaruka, mailto:foo@bar.com]</a>
+<a class="sourceLine" id="cb2-7" title="7">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
+<a class="sourceLine" id="cb2-8" title="8">@contact.urn → tel:+<span class="dv">12065551212</span></a>
+<a class="sourceLine" id="cb2-9" title="9">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
+<a class="sourceLine" id="cb2-10" title="10">@contact.fields → {activation_token: AACC55, age: <span class="dv">23</span>, gender: Male, join_date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span>, not_set: }</a>
+<a class="sourceLine" id="cb2-11" title="11">@contact.fields.activation_token → AACC55</a>
+<a class="sourceLine" id="cb2-12" title="12">@contact.fields.gender → Male</a></code></pre></div>
 <p><a name="context:flow"></a></p>
 <h2 id="flow">Flow</h2>
 <p>Describes the ordered logic of actions and routers. It renders as its name in a template, and has the following properties which can be accessed:</p>
@@ -145,9 +147,9 @@
 <li><code>created_on</code> the time when the result was created</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" title="1">@run.results.favorite_color → {category: Red, category_localized: Red, created_on: <span class="dv">2018-04</span>-11T18:<span class="dv">24</span>:<span class="fl">30.123456</span>Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}</a>
-<a class="sourceLine" id="cb6-2" title="2">@run.results.favorite_color.value → red</a>
-<a class="sourceLine" id="cb6-3" title="3">@run.results.favorite_color.category → Red</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" title="1">@results.favorite_color → {category: Red, category_localized: Red, created_on: <span class="dv">2018-04</span>-11T18:<span class="dv">24</span>:<span class="fl">30.123456</span>Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}</a>
+<a class="sourceLine" id="cb6-2" title="2">@results.favorite_color.value → red</a>
+<a class="sourceLine" id="cb6-3" title="3">@results.favorite_color.category → Red</a></code></pre></div>
 <p><a name="context:run"></a></p>
 <h2 id="run">Run</h2>
 <p>Is a single contact’s journey through a flow. It records the path they have taken, and the results that have been collected. It has several properties which can be accessed in expressions:</p>
@@ -989,8 +991,8 @@
 <a class="sourceLine" id="cb110-3" title="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) →</a>
 <a class="sourceLine" id="cb110-4" title="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) →</a>
 <a class="sourceLine" id="cb110-5" title="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → {match: completed}</a>
-<a class="sourceLine" id="cb110-6" title="6">@(is_text_eq(run.results.webhook.category, <span class="st">&quot;Success&quot;</span>)) → {match: Success}</a>
-<a class="sourceLine" id="cb110-7" title="7">@(is_text_eq(run.results.webhook.category, <span class="st">&quot;Failure&quot;</span>)) →</a></code></pre></div>
+<a class="sourceLine" id="cb110-6" title="6">@(is_text_eq(results.webhook.category, <span class="st">&quot;Success&quot;</span>)) → {match: Success}</a>
+<a class="sourceLine" id="cb110-7" title="7">@(is_text_eq(results.webhook.category, <span class="st">&quot;Failure&quot;</span>)) →</a></code></pre></div>
 </div>
 
     </body>

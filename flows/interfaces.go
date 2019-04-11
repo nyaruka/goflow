@@ -117,12 +117,9 @@ type SessionAssets interface {
 	Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error)
 }
 
+// Localizable is anything in the flow definition which can be localized and therefore needs a UUID
 type Localizable interface {
 	LocalizationUUID() utils.UUID
-}
-
-type XContextable interface {
-	Context(env utils.Environment) map[string]types.XValue
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
@@ -141,7 +138,7 @@ type XContextable interface {
 //
 // @context flow
 type Flow interface {
-	XContextable
+	Contextable
 
 	// spec properties
 	UUID() assets.FlowUUID
@@ -262,7 +259,7 @@ type Translations interface {
 // @context trigger
 type Trigger interface {
 	utils.Typed
-	XContextable
+	Contextable
 
 	Initialize(Session, EventCallback) error
 	InitializeRun(FlowRun, EventCallback) error
@@ -340,7 +337,7 @@ type EventCallback func(Event)
 // @context input
 type Input interface {
 	utils.Typed
-	XContextable
+	Contextable
 
 	UUID() InputUUID
 	CreatedOn() time.Time
@@ -348,7 +345,7 @@ type Input interface {
 }
 
 type Step interface {
-	XContextable
+	Contextable
 
 	UUID() StepUUID
 	NodeUUID() NodeUUID
@@ -442,7 +439,7 @@ type RunEnvironment interface {
 //
 // @context run
 type FlowRun interface {
-	XContextable
+	Contextable
 	RunSummary
 
 	Environment() RunEnvironment

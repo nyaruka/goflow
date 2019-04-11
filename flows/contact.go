@@ -20,6 +20,7 @@ import (
 //
 //  * `uuid` the UUID of the contact
 //  * `name` the full name of the contact
+//  * `first_name` the first name of the contact
 //  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
 //  * `timezone` the timezone name of the contact
 //  * `created_on` the datetime when the contact was created
@@ -34,6 +35,7 @@ import (
 // Examples:
 //
 //   @contact.name -> Ryan Lewis
+//   @contact.first_name -> Ryan
 //   @contact.language -> eng
 //   @contact.timezone -> America/Guayaquil
 //   @contact.created_on -> 2018-06-20T11:40:30.123456Z

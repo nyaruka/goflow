@@ -88,15 +88,21 @@ var templateTests = []struct {
 	{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
 	{"@input.channel.name", "My Android Phone", ""},
 
-	{"@results.favorite_color", "{category: Red, value: red}", ""},
+	{"@results.favorite_color", `{category: Red, category_localized: Red, created_on: 2018-09-13T13:36:30.123456Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}`, ""},
 	{"@results.favorite_color.value", "red", ""},
 	{"@results.favorite_color.category", "Red", ""},
-	{"@run.results.favorite_color", "{category: Red, category_localized: Red, created_on: 2018-09-13T13:36:30.123456Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}", ""},
-	{"@run.results.favorite_color.value", "red", ""},
-	{"@run.results.favorite_color.category", "Red", ""},
-	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: dict has no property 'favorite_icecream'"},
+	{"@results.favorite_color.category_localized", "Red", ""},
 	{"@(is_error(results.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
 	{"@(length(results))", "3", ""},
+
+	{"@run.results.favorite_color", `{categories: [Red], categories_localized: [Red], created_on: 2018-09-13T13:36:30.123456Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, values: [red]}`, ""},
+	{"@run.results.favorite_color.values", "[red]", ""},
+	{`@(run.results.favorite_color.values[0])`, `red`, ""},
+	{"@run.results.favorite_color.categories", "[Red]", ""},
+	{`@(run.results.favorite_color.categories[0])`, `Red`, ""},
+	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: dict has no property 'favorite_icecream'"},
+	{"@(is_error(run.results.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
+	{"@(length(run.results))", "3", ""},
 
 	{"@run.status", "completed", ""},
 
@@ -217,10 +223,46 @@ func TestContextToJSON(t *testing.T) {
 					{"arrived_on":"2018-04-11T13:24:30.123456Z","exit_uuid":"9fc5f8b4-2247-43db-b899-ab1ac50ba06c","node_uuid":"c0781400-737f-4940-9a6c-1ec1c3df0325","uuid":"5ecda5fc-951c-437b-a17e-f85e49829fb9"}
 				],
 				"results":{
-					"2factor":{"category":"","category_localized":"","created_on":"2018-04-11T13:24:30.123456Z","extra":null,"input":"","name":"2Factor","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"34634624463525"},
-					"favorite_color":{"category":"Red","category_localized":"Red","created_on":"2018-04-11T13:24:30.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"},
-					"phone_number":{"category":"","category_localized":"","created_on":"2018-04-11T13:24:30.123456Z","extra":null,"input":"","name":"Phone Number","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"+12344563452"},
-					"webhook":{"category":"Success","category_localized":"Success","created_on":"2018-04-11T13:24:30.123456Z","extra":{"results":[{"state":"WA"},{"state":"IN"}]},"input":"GET http://127.0.0.1:49992/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D","name":"webhook","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"200"}
+					"2factor":{
+						"categories":[""],
+						"categories_localized":[""],
+						"created_on":"2018-04-11T13:24:30.123456Z",
+						"extra":null,
+						"input":"",
+						"name":"2Factor",
+						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"values":["34634624463525"]
+					},
+					"favorite_color":{
+						"categories":["Red"],
+						"categories_localized":["Red"],
+						"created_on":"2018-04-11T13:24:30.123456Z",
+						"extra":null,
+						"input":"",
+						"name":"Favorite Color",
+						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"values":["red"]
+					},
+					"phone_number":{
+						"categories":[""],
+						"categories_localized":[""],
+						"created_on":"2018-04-11T13:24:30.123456Z",
+						"extra":null,
+						"input":"",
+						"name":"Phone Number",
+						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"values":["+12344563452"]
+					},
+					"webhook":{
+						"categories":["Success"],
+						"categories_localized":["Success"],
+						"created_on":"2018-04-11T13:24:30.123456Z",
+						"extra":{"results":[{"state":"WA"},{"state":"IN"}]},
+						"input":"GET http://127.0.0.1:49992/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
+						"name":"webhook",
+						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"values":["200"]
+					}
 				},
 				"status":"completed",
 				"uuid":"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
@@ -252,7 +294,18 @@ func TestContextToJSON(t *testing.T) {
 					"not_set": null
 				},
 				"flow":{"name":"Collect Age","revision":0,"uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},
-				"results":{"age":{"category":"Youth","category_localized":"Youth","created_on":"2018-04-11T13:24:30.123456Z","extra":null,"input":"","name":"Age","node_uuid":"d9dba561-b5ee-4f62-ba44-60c4dc242b84","value":"23"}},
+				"results":{
+					"age":{
+						"categories":["Youth"],
+						"categories_localized":["Youth"],
+						"created_on":"2018-04-11T13:24:30.123456Z",
+						"extra":null,
+						"input":"",
+						"name":"Age",
+						"node_uuid":"d9dba561-b5ee-4f62-ba44-60c4dc242b84",
+						"values":["23"]
+					}
+				},
 				"status":"completed",
 				"urns": {
 					"ext": null,
@@ -297,7 +350,18 @@ func TestContextToJSON(t *testing.T) {
 					"not_set": null
 				},
 				"flow": {"name":"Parent","revision":0,"uuid":"fece6eac-9127-4343-9269-56e88f391562"},
-				"results":{"role":{"category":"Reporter","category_localized":"Reporter","created_on":"2000-01-01T00:00:00.000000Z","extra":null,"input":"a reporter","name":"Role","node_uuid":"385cb848-5043-448e-9123-05cbcf26ad74","value":"reporter"}},
+				"results":{
+					"role":{
+						"categories":["Reporter"],
+						"categories_localized":["Reporter"],
+						"created_on":"2000-01-01T00:00:00.000000Z",
+						"extra":null,
+						"input":"a reporter",
+						"name":"Role",
+						"node_uuid":"385cb848-5043-448e-9123-05cbcf26ad74",
+						"values":["reporter"]
+					}
+				},
 				"status":"active",
 				"urns": {
 					"ext": null,

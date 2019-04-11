@@ -75,7 +75,7 @@
                         {
                             "uuid": "5d51eae6-be0f-4cc7-9402-150aa1ed80a1",
                             "type": "send_msg",
-                            "text": "Flow succeeded, they said @child.results.name.value"
+                            "text": "Flow succeeded, they said @(child.results.name.values[0])"
                         }
                     ],
                     "exits": [

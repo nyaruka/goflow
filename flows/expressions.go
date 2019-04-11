@@ -9,7 +9,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-func Context(env utils.Environment, contextable XContextable) *types.XDict {
+// Contextable is an object that can accessed in expressions as a dict
+type Contextable interface {
+	Context(env utils.Environment) map[string]types.XValue
+}
+
+// Context generates a lazy dict for use in expressions
+func Context(env utils.Environment, contextable Contextable) *types.XDict {
 	if !utils.IsNil(contextable) {
 		return types.NewXLazyDict(func() map[string]types.XValue {
 			return contextable.Context(env)
@@ -18,6 +24,7 @@ func Context(env utils.Environment, contextable XContextable) *types.XDict {
 	return nil
 }
 
+// ContextFunc generates a lazy dict for use in expressions
 func ContextFunc(env utils.Environment, fn func(utils.Environment) map[string]types.XValue) *types.XDict {
 	return types.NewXLazyDict(func() map[string]types.XValue {
 		return fn(env)

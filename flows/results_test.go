@@ -24,21 +24,26 @@ func TestResults(t *testing.T) {
 
 	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
 		"beer": types.NewXDict(map[string]types.XValue{
-			"category": types.NewXText("Skol"),
-			"value":    types.NewXText("skol!"),
+			"category":           types.NewXText("Skol"),
+			"category_localized": types.NewXText("Skol"),
+			"created_on":         types.NewXDateTime(time.Date(2019, 4, 5, 14, 16, 30, 123456, time.UTC)),
+			"input":              types.XTextEmpty,
+			"name":               types.NewXText("Beer"),
+			"node_uuid":          types.NewXText("26493ebb-a254-4461-a28d-c7761784e276"),
+			"value":              types.NewXText("skol!"),
 		}),
 	}), flows.ContextFunc(env, results.SimpleContext))
 
 	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
 		"beer": types.NewXDict(map[string]types.XValue{
-			"category":           types.NewXText("Skol"),
-			"category_localized": types.NewXText("Skol"),
-			"created_on":         types.NewXDateTime(time.Date(2019, 4, 5, 14, 16, 30, 123456, time.UTC)),
-			"extra":              nil,
-			"input":              types.XTextEmpty,
-			"name":               types.NewXText("Beer"),
-			"node_uuid":          types.NewXText("26493ebb-a254-4461-a28d-c7761784e276"),
-			"value":              types.NewXText("skol!"),
+			"categories":           types.NewXArray(types.NewXText("Skol")),
+			"categories_localized": types.NewXArray(types.NewXText("Skol")),
+			"created_on":           types.NewXDateTime(time.Date(2019, 4, 5, 14, 16, 30, 123456, time.UTC)),
+			"extra":                nil,
+			"input":                types.XTextEmpty,
+			"name":                 types.NewXText("Beer"),
+			"node_uuid":            types.NewXText("26493ebb-a254-4461-a28d-c7761784e276"),
+			"values":               types.NewXArray(types.NewXText("skol!")),
 		}),
 	}), flows.Context(env, results))
 }

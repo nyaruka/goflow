@@ -65,6 +65,7 @@ Represents a person who is interacting with the flow. It renders as the person's
 
  * `uuid` the UUID of the contact
  * `name` the full name of the contact
+ * `first_name` the first name of the contact
  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
  * `timezone` the timezone name of the contact
  * `created_on` the datetime when the contact was created
@@ -81,6 +82,7 @@ Examples:
 
 ```objectivec
 @contact.name → Ryan Lewis
+@contact.first_name → Ryan
 @contact.language → eng
 @contact.timezone → America/Guayaquil
 @contact.created_on → 2018-06-20T11:40:30.123456Z
@@ -183,9 +185,9 @@ Examples:
 
 
 ```objectivec
-@run.results.favorite_color → {category: Red, category_localized: Red, created_on: 2018-04-11T18:24:30.123456Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}
-@run.results.favorite_color.value → red
-@run.results.favorite_color.category → Red
+@results.favorite_color → {category: Red, category_localized: Red, created_on: 2018-04-11T18:24:30.123456Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}
+@results.favorite_color.value → red
+@results.favorite_color.category → Red
 ```
 
 <a name="context:run"></a>
@@ -1855,8 +1857,8 @@ are, it will return the text as the match.
 @(is_text_eq("foo", "bar")) →
 @(is_text_eq("foo", " foo ")) →
 @(is_text_eq(run.status, "completed")) → {match: completed}
-@(is_text_eq(run.results.webhook.category, "Success")) → {match: Success}
-@(is_text_eq(run.results.webhook.category, "Failure")) →
+@(is_text_eq(results.webhook.category, "Success")) → {match: Success}
+@(is_text_eq(results.webhook.category, "Failure")) →
 ```
 
 
