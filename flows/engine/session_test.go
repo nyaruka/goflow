@@ -22,98 +22,98 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var templateTests = []struct {
+	template string
+	expected string
+	errorMsg string
+}{
+	// contact basic properties
+	{"@contact.uuid", "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f", ""},
+	{"@contact.id", "1234567", ""},
+	{"@CONTACT.NAME", "Ryan Lewis", ""},
+	{"@contact.name", "Ryan Lewis", ""},
+	{"@contact.language", "eng", ""},
+	{"@contact.timezone", "America/Guayaquil", ""},
+
+	// contact single URN access
+	{"@contact.urn", `tel:+12065551212`, ""},
+	{"@(urn_parts(contact.urn).scheme)", `tel`, ""},
+	{"@(urn_parts(contact.urn).path)", `+12065551212`, ""},
+	{"@(format_urn(contact.urn))", `(206) 555-1212`, ""},
+
+	// contact URN list access
+	{"@contact.urns", `[tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]`, ""},
+	{"@(contact.urns[0])", "tel:+12065551212", ""},
+	{"@(contact.urns[110])", "", "error evaluating @(contact.urns[110]): index 110 out of range for 3 items"},
+	{"@(urn_parts(contact.urns[0]).scheme)", "tel", ""},
+	{"@(urn_parts(contact.urns[0]).path)", "+12065551212", ""},
+	{"@(urn_parts(contact.urns[0]).display)", "", ""},
+	{"@(contact.urns[1])", "twitterid:54784326227#nyaruka", ""},
+	{"@(format_urn(contact.urns[0]))", "(206) 555-1212", ""},
+
+	// simplified URN access
+	{"@urns", `{ext: , facebook: , fcm: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , wechat: , whatsapp: }`, ""},
+	{"@urns.tel", `tel:+12065551212`, ""},
+	{"@urns.mailto", `mailto:foo@bar.com`, ""},
+	{"@urns.viber", ``, ""},
+	{"@(format_urn(urns.tel))", "(206) 555-1212", ""},
+
+	// contact groups
+	{`@(foreach(contact.groups, extract, "name"))`, `[Testers, Males]`, ""},
+	{`@(join(foreach(contact.groups, extract, "name"), "|"))`, `Testers|Males`, ""},
+	{`@(length(contact.groups))`, "2", ""},
+
+	// contact fields
+	{"@contact.fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},
+	{"@contact.fields.activation_token", "AACC55", ""},
+	{"@contact.fields.age", "23", ""},
+	{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
+	{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: dict has no property 'favorite_icecream'"},
+	{"@(is_error(contact.fields.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
+	{"@(length(contact.fields))", "5", ""},
+
+	// simplifed field access
+	{"@fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},
+	{"@fields.activation_token", "AACC55", ""},
+	{"@fields.age", "23", ""},
+	{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
+	{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: dict has no property 'favorite_icecream'"},
+	{"@(is_error(fields.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
+	{"@(length(fields))", "5", ""},
+
+	{"@input", "{attachments: [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3], channel: {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}, created_on: 2017-12-31T11:35:10.035757-02:00, text: Hi there, type: msg, urn: tel:+12065551212, uuid: 9bf91c2b-ce58-4cef-aacc-281e03f69ab5}", ""},
+	{"@input.text", "Hi there", ""},
+	{"@input.attachments", `[image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]`, ""},
+	{"@(input.attachments[0])", "image/jpeg:http://s3.amazon.com/bucket/test.jpg", ""},
+	{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
+	{"@input.channel.name", "My Android Phone", ""},
+
+	{"@results.favorite_color", "{category: Red, value: red}", ""},
+	{"@results.favorite_color.value", "red", ""},
+	{"@results.favorite_color.category", "Red", ""},
+	{"@run.results.favorite_color", "{category: Red, category_localized: Red, created_on: 2018-09-13T13:36:30.123456Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}", ""},
+	{"@run.results.favorite_color.value", "red", ""},
+	{"@run.results.favorite_color.category", "Red", ""},
+	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: dict has no property 'favorite_icecream'"},
+	{"@(is_error(results.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
+	{"@(length(results))", "3", ""},
+
+	{"@run.status", "completed", ""},
+
+	{"@trigger.params", `{address: {state: WA}, source: website}`, ""},
+	{"@trigger.params.source", "website", ""},
+	{"@(length(trigger.params.address))", "1", ""},
+
+	// migrated split by expressions
+	{`@(if(is_error(results.favorite_color.value), "@flow.favorite_color", results.favorite_color.value))`, `red`, ""},
+	{`@(if(is_error(legacy_extra.0.default_city), "@extra.0.default_city", legacy_extra.0.default_city))`, `@extra.0.default_city`, ""},
+
+	// non-expressions
+	{"bob@nyaruka.com", "bob@nyaruka.com", ""},
+	{"@twitter_handle", "@twitter_handle", ""},
+}
+
 func TestEvaluateTemplate(t *testing.T) {
-	tests := []struct {
-		template string
-		expected string
-		errorMsg string
-	}{
-		// contact basic properties
-		{"@contact.uuid", "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f", ""},
-		{"@contact.id", "1234567", ""},
-		{"@CONTACT.NAME", "Ryan Lewis", ""},
-		{"@contact.name", "Ryan Lewis", ""},
-		{"@contact.language", "eng", ""},
-		{"@contact.timezone", "America/Guayaquil", ""},
-
-		// contact single URN access
-		{"@contact.urn", `tel:+12065551212`, ""},
-		{"@(urn_parts(contact.urn).scheme)", `tel`, ""},
-		{"@(urn_parts(contact.urn).path)", `+12065551212`, ""},
-		{"@(format_urn(contact.urn))", `(206) 555-1212`, ""},
-
-		// contact URN list access
-		{"@contact.urns", `[tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]`, ""},
-		{"@(contact.urns[0])", "tel:+12065551212", ""},
-		{"@(contact.urns[110])", "", "error evaluating @(contact.urns[110]): index 110 out of range for 3 items"},
-		{"@(urn_parts(contact.urns[0]).scheme)", "tel", ""},
-		{"@(urn_parts(contact.urns[0]).path)", "+12065551212", ""},
-		{"@(urn_parts(contact.urns[0]).display)", "", ""},
-		{"@(contact.urns[1])", "twitterid:54784326227#nyaruka", ""},
-		{"@(format_urn(contact.urns[0]))", "(206) 555-1212", ""},
-
-		// simplified URN access
-		{"@urns", `{ext: , facebook: , fcm: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , wechat: , whatsapp: }`, ""},
-		{"@urns.tel", `tel:+12065551212`, ""},
-		{"@urns.mailto", `mailto:foo@bar.com`, ""},
-		{"@urns.viber", ``, ""},
-		{"@(format_urn(urns.tel))", "(206) 555-1212", ""},
-
-		// contact groups
-		{`@(foreach(contact.groups, extract, "name"))`, `[Testers, Males]`, ""},
-		{`@(join(foreach(contact.groups, extract, "name"), "|"))`, `Testers|Males`, ""},
-		{`@(length(contact.groups))`, "2", ""},
-
-		// contact fields
-		{"@contact.fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},
-		{"@contact.fields.activation_token", "AACC55", ""},
-		{"@contact.fields.age", "23", ""},
-		{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-		{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: dict has no property 'favorite_icecream'"},
-		{"@(is_error(contact.fields.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
-		{"@(length(contact.fields))", "5", ""},
-
-		// simplifed field access
-		{"@fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},
-		{"@fields.activation_token", "AACC55", ""},
-		{"@fields.age", "23", ""},
-		{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-		{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: dict has no property 'favorite_icecream'"},
-		{"@(is_error(fields.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
-		{"@(length(fields))", "5", ""},
-
-		{"@input", "{attachments: [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3], channel: {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}, created_on: 2017-12-31T11:35:10.035757-02:00, text: Hi there, type: msg, urn: tel:+12065551212, uuid: 9bf91c2b-ce58-4cef-aacc-281e03f69ab5}", ""},
-		{"@input.text", "Hi there", ""},
-		{"@input.attachments", `[image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]`, ""},
-		{"@(input.attachments[0])", "image/jpeg:http://s3.amazon.com/bucket/test.jpg", ""},
-		{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
-		{"@input.channel.name", "My Android Phone", ""},
-
-		{"@results.favorite_color", "{category: Red, value: red}", ""},
-		{"@results.favorite_color.value", "red", ""},
-		{"@results.favorite_color.category", "Red", ""},
-		{"@run.results.favorite_color", "{category: Red, category_localized: Red, created_on: 2018-09-13T13:36:30.123456Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}", ""},
-		{"@run.results.favorite_color.value", "red", ""},
-		{"@run.results.favorite_color.category", "Red", ""},
-		{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: dict has no property 'favorite_icecream'"},
-		{"@(is_error(results.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
-		{"@(length(results))", "3", ""},
-
-		{"@run.status", "completed", ""},
-
-		{"@trigger.params", `{address: {state: WA}, source: website}`, ""},
-		{"@trigger.params.source", "website", ""},
-		{"@(length(trigger.params.address))", "1", ""},
-
-		// migrated split by expressions
-		{`@(if(is_error(results.favorite_color.value), "@flow.favorite_color", results.favorite_color.value))`, `red`, ""},
-		{`@(if(is_error(legacy_extra.0.default_city), "@extra.0.default_city", legacy_extra.0.default_city))`, `@extra.0.default_city`, ""},
-
-		// non-expressions
-		{"bob@nyaruka.com", "bob@nyaruka.com", ""},
-		{"@twitter_handle", "@twitter_handle", ""},
-	}
-
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
@@ -122,16 +122,29 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	run := session.Runs()[0]
 
-	for _, test := range tests {
-		eval, err := run.EvaluateTemplate(test.template)
+	for _, tc := range templateTests {
+		eval, err := run.EvaluateTemplate(tc.template)
 
 		var actualErrorMsg string
 		if err != nil {
 			actualErrorMsg = err.Error()
 		}
 
-		assert.Equal(t, test.expected, eval, "output mismatch evaluating template: '%s'", test.template)
-		assert.Equal(t, test.errorMsg, actualErrorMsg, "error mismatch evaluating template: '%s'", test.template)
+		assert.Equal(t, tc.expected, eval, "output mismatch evaluating template: '%s'", tc.template)
+		assert.Equal(t, tc.errorMsg, actualErrorMsg, "error mismatch evaluating template: '%s'", tc.template)
+	}
+}
+
+func BenchmarkEvaluateTemplate(b *testing.B) {
+	session, _, err := test.CreateTestSession("http://localhost", nil)
+	require.NoError(b, err)
+
+	run := session.Runs()[0]
+
+	for n := 0; n < b.N; n++ {
+		for _, tc := range templateTests {
+			run.EvaluateTemplate(tc.template)
+		}
 	}
 }
 
