@@ -312,6 +312,8 @@ var errorTests = []struct {
 
 	// lookup errors
 	{`@(hello)`, `error evaluating @(hello): context has no property 'hello'`},
+	{`@((1).x)`, `error evaluating @((1).x): 1 has no property 'x'`},
+	{`@((TRUE).x)`, `error evaluating @((TRUE).x): true has no property 'x'`},
 	{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
 	{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},
 	{`@(array(1, 2)[5])`, `error evaluating @(array(1, 2)[5]): index 5 out of range for 2 items`},
