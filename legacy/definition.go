@@ -872,38 +872,38 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 	case "eq", "gt", "gte", "lt", "lte":
 		test := numericTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedTest, err := expressions.MigrateTemplate(string(test.Test), nil)
 		if err != nil {
 			return nil, err
 		}
+		migratedTest, _ := expressions.MigrateTemplate(string(test.Test), nil)
 		arguments = []string{migratedTest}
 
 	case "between":
 		test := betweenTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedMin, err := expressions.MigrateTemplate(test.Min, nil)
 		if err != nil {
 			return nil, err
 		}
-		migratedMax, err := expressions.MigrateTemplate(test.Max, nil)
-		if err != nil {
-			return nil, err
-		}
+
+		migratedMin, _ := expressions.MigrateTemplate(test.Min, nil)
+		migratedMax, _ := expressions.MigrateTemplate(test.Max, nil)
+
 		arguments = []string{migratedMin, migratedMax}
 
 	// tests against a single localized string
 	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
 		test := localizedStringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
+		if err != nil {
+			return nil, err
+		}
 
 		baseTest := test.Test.Base(baseLanguage)
 
 		// all the tests are evaluated as templates.. except regex
 		if r.Test.Type != "regex" {
-			baseTest, err = expressions.MigrateTemplate(baseTest, nil)
-			if err != nil {
-				return nil, err
-			}
+			baseTest, _ = expressions.MigrateTemplate(baseTest, nil)
+
 		}
 		arguments = []string{baseTest}
 
@@ -916,10 +916,8 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 		if err != nil {
 			return nil, err
 		}
-		migratedTest, err := expressions.MigrateTemplate(test.Test, nil)
-		if err != nil {
-			return nil, err
-		}
+		migratedTest, _ := expressions.MigrateTemplate(test.Test, nil)
+
 		arguments = []string{migratedTest}
 
 	// tests against a single group value
@@ -957,23 +955,24 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 	case "district":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedState, err := expressions.MigrateTemplate(test.Test, nil)
 		if err != nil {
 			return nil, err
 		}
+
+		migratedState, _ := expressions.MigrateTemplate(test.Test, nil)
+
 		arguments = []string{migratedState}
 
 	case "ward":
 		test := wardTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedDistrict, err := expressions.MigrateTemplate(test.District, nil)
 		if err != nil {
 			return nil, err
 		}
-		migratedState, err := expressions.MigrateTemplate(test.State, nil)
-		if err != nil {
-			return nil, err
-		}
+
+		migratedDistrict, _ := expressions.MigrateTemplate(test.District, nil)
+		migratedState, _ := expressions.MigrateTemplate(test.State, nil)
+
 		arguments = []string{migratedDistrict, migratedState}
 
 	default:
