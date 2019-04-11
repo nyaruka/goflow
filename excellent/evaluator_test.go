@@ -192,7 +192,8 @@ func TestEvaluateTemplate(t *testing.T) {
 			"zed":     types.NewXNumberFromInt(123),
 			"missing": nil,
 		}),
-		"err": types.NewXError(errors.Errorf("an error")),
+		"func": functions.Lookup("upper"),
+		"err":  types.NewXError(errors.Errorf("an error")),
 	})
 
 	evaluateAsStringTests := []struct {
@@ -212,6 +213,8 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		// functions are values too
 		{`@(title)`, "function", false},
+		{`@((title)("xyz"))`, "Xyz", false},
+		{`@(func("xyz"))`, "XYZ", false},
 		{`@(array(upper)[0]("hello"))`, "HELLO", false},
 		{`@(dict("a", lower, "b", upper).a("Hello"))`, "hello", false},
 
@@ -263,6 +266,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(split(words, \" \")[-1])", "three", false},
 
 		{`@(thing.foo)`, "bar", false},
+		{`@((thing).foo)`, "bar", false},
 		{`@(thing["foo"])`, "bar", false},
 		{`@(thing["FOO"])`, "bar", false}, // array notation also not case-sensitive
 		{`@(thing[lower("FOO")])`, "bar", false},
@@ -301,12 +305,12 @@ var errorTests = []struct {
 	{`@('x')`, `error evaluating @('x'): syntax error at 'x'`},
 	{`@(0 / )`, `error evaluating @(0 / ): syntax error at `},
 	{`@(0 / )@('x')`, `error evaluating @(0 / ): syntax error at , error evaluating @('x'): syntax error at 'x'`},
-	{`@(1.1.0)`, `error evaluating @(1.1.0): syntax error at 0`},
+	{`@(1.1.0)`, `error evaluating @(1.1.0): syntax error at .0`},
+	{`@(NULL.x)`, `error evaluating @(NULL.x): syntax error at .x`},
+	{`@(False.g)`, `error evaluating @(False.g): syntax error at .g`},
+	{`@("abc".v)`, `error evaluating @("abc".v): syntax error at .v`},
 
-	// resolver errors
-	{`@(NULL.x)`, `error evaluating @(NULL.x): null has no property 'x'`},
-	{`@("abc".v)`, `error evaluating @("abc".v): "abc" has no property 'v'`},
-	{`@(False.g)`, `error evaluating @(False.g): false has no property 'g'`},
+	// lookup errors
 	{`@(hello)`, `error evaluating @(hello): context has no property 'hello'`},
 	{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
 	{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},

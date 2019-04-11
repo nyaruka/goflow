@@ -44,17 +44,6 @@ ERROR: .;
 
 parse: expression EOF;
 
-atom:
-	atom LPAREN parameters? RPAREN	# functionCall
-	| atom DOT NAME					# dotLookup
-	| atom LBRACK expression RBRACK	# arrayLookup
-	| NAME							# contextReference
-	| TEXT							# textLiteral
-	| NUMBER						# numberLiteral
-	| TRUE							# true
-	| FALSE							# false
-	| NULL							# null;
-
 expression:
 	atom												# atomReference
 	| MINUS expression									# negation
@@ -64,6 +53,18 @@ expression:
 	| expression op = (LTE | LT | GTE | GT) expression	# comparison
 	| expression op = (EQ | NEQ) expression				# equality
 	| expression AMPERSAND expression					# concatenation
-	| LPAREN expression RPAREN							# parentheses;
+	| TEXT												# textLiteral
+	| NUMBER											# numberLiteral
+	| TRUE												# true
+	| FALSE												# false
+	| NULL												# null;
+
+// a subset of expressions which can be followed by (), [] or .
+atom:
+	atom LPAREN parameters? RPAREN	# functionCall
+	| atom DOT NAME					# dotLookup
+	| atom LBRACK expression RBRACK	# arrayLookup
+	| LPAREN expression RPAREN		# parentheses
+	| NAME							# contextReference;
 
 parameters: expression (COMMA expression)* # functionParameters;

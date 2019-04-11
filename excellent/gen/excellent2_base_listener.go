@@ -26,66 +26,6 @@ func (s *BaseExcellent2Listener) EnterParse(ctx *ParseContext) {}
 // ExitParse is called when production parse is exited.
 func (s *BaseExcellent2Listener) ExitParse(ctx *ParseContext) {}
 
-// EnterDotLookup is called when production dotLookup is entered.
-func (s *BaseExcellent2Listener) EnterDotLookup(ctx *DotLookupContext) {}
-
-// ExitDotLookup is called when production dotLookup is exited.
-func (s *BaseExcellent2Listener) ExitDotLookup(ctx *DotLookupContext) {}
-
-// EnterNull is called when production null is entered.
-func (s *BaseExcellent2Listener) EnterNull(ctx *NullContext) {}
-
-// ExitNull is called when production null is exited.
-func (s *BaseExcellent2Listener) ExitNull(ctx *NullContext) {}
-
-// EnterFunctionCall is called when production functionCall is entered.
-func (s *BaseExcellent2Listener) EnterFunctionCall(ctx *FunctionCallContext) {}
-
-// ExitFunctionCall is called when production functionCall is exited.
-func (s *BaseExcellent2Listener) ExitFunctionCall(ctx *FunctionCallContext) {}
-
-// EnterTrue is called when production true is entered.
-func (s *BaseExcellent2Listener) EnterTrue(ctx *TrueContext) {}
-
-// ExitTrue is called when production true is exited.
-func (s *BaseExcellent2Listener) ExitTrue(ctx *TrueContext) {}
-
-// EnterFalse is called when production false is entered.
-func (s *BaseExcellent2Listener) EnterFalse(ctx *FalseContext) {}
-
-// ExitFalse is called when production false is exited.
-func (s *BaseExcellent2Listener) ExitFalse(ctx *FalseContext) {}
-
-// EnterArrayLookup is called when production arrayLookup is entered.
-func (s *BaseExcellent2Listener) EnterArrayLookup(ctx *ArrayLookupContext) {}
-
-// ExitArrayLookup is called when production arrayLookup is exited.
-func (s *BaseExcellent2Listener) ExitArrayLookup(ctx *ArrayLookupContext) {}
-
-// EnterContextReference is called when production contextReference is entered.
-func (s *BaseExcellent2Listener) EnterContextReference(ctx *ContextReferenceContext) {}
-
-// ExitContextReference is called when production contextReference is exited.
-func (s *BaseExcellent2Listener) ExitContextReference(ctx *ContextReferenceContext) {}
-
-// EnterTextLiteral is called when production textLiteral is entered.
-func (s *BaseExcellent2Listener) EnterTextLiteral(ctx *TextLiteralContext) {}
-
-// ExitTextLiteral is called when production textLiteral is exited.
-func (s *BaseExcellent2Listener) ExitTextLiteral(ctx *TextLiteralContext) {}
-
-// EnterNumberLiteral is called when production numberLiteral is entered.
-func (s *BaseExcellent2Listener) EnterNumberLiteral(ctx *NumberLiteralContext) {}
-
-// ExitNumberLiteral is called when production numberLiteral is exited.
-func (s *BaseExcellent2Listener) ExitNumberLiteral(ctx *NumberLiteralContext) {}
-
-// EnterParentheses is called when production parentheses is entered.
-func (s *BaseExcellent2Listener) EnterParentheses(ctx *ParenthesesContext) {}
-
-// ExitParentheses is called when production parentheses is exited.
-func (s *BaseExcellent2Listener) ExitParentheses(ctx *ParenthesesContext) {}
-
 // EnterNegation is called when production negation is entered.
 func (s *BaseExcellent2Listener) EnterNegation(ctx *NegationContext) {}
 
@@ -98,23 +38,11 @@ func (s *BaseExcellent2Listener) EnterComparison(ctx *ComparisonContext) {}
 // ExitComparison is called when production comparison is exited.
 func (s *BaseExcellent2Listener) ExitComparison(ctx *ComparisonContext) {}
 
-// EnterConcatenation is called when production concatenation is entered.
-func (s *BaseExcellent2Listener) EnterConcatenation(ctx *ConcatenationContext) {}
+// EnterFalse is called when production false is entered.
+func (s *BaseExcellent2Listener) EnterFalse(ctx *FalseContext) {}
 
-// ExitConcatenation is called when production concatenation is exited.
-func (s *BaseExcellent2Listener) ExitConcatenation(ctx *ConcatenationContext) {}
-
-// EnterMultiplicationOrDivision is called when production multiplicationOrDivision is entered.
-func (s *BaseExcellent2Listener) EnterMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) {}
-
-// ExitMultiplicationOrDivision is called when production multiplicationOrDivision is exited.
-func (s *BaseExcellent2Listener) ExitMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) {}
-
-// EnterAtomReference is called when production atomReference is entered.
-func (s *BaseExcellent2Listener) EnterAtomReference(ctx *AtomReferenceContext) {}
-
-// ExitAtomReference is called when production atomReference is exited.
-func (s *BaseExcellent2Listener) ExitAtomReference(ctx *AtomReferenceContext) {}
+// ExitFalse is called when production false is exited.
+func (s *BaseExcellent2Listener) ExitFalse(ctx *FalseContext) {}
 
 // EnterAdditionOrSubtraction is called when production additionOrSubtraction is entered.
 func (s *BaseExcellent2Listener) EnterAdditionOrSubtraction(ctx *AdditionOrSubtractionContext) {}
@@ -122,17 +50,89 @@ func (s *BaseExcellent2Listener) EnterAdditionOrSubtraction(ctx *AdditionOrSubtr
 // ExitAdditionOrSubtraction is called when production additionOrSubtraction is exited.
 func (s *BaseExcellent2Listener) ExitAdditionOrSubtraction(ctx *AdditionOrSubtractionContext) {}
 
+// EnterTextLiteral is called when production textLiteral is entered.
+func (s *BaseExcellent2Listener) EnterTextLiteral(ctx *TextLiteralContext) {}
+
+// ExitTextLiteral is called when production textLiteral is exited.
+func (s *BaseExcellent2Listener) ExitTextLiteral(ctx *TextLiteralContext) {}
+
+// EnterConcatenation is called when production concatenation is entered.
+func (s *BaseExcellent2Listener) EnterConcatenation(ctx *ConcatenationContext) {}
+
+// ExitConcatenation is called when production concatenation is exited.
+func (s *BaseExcellent2Listener) ExitConcatenation(ctx *ConcatenationContext) {}
+
+// EnterNull is called when production null is entered.
+func (s *BaseExcellent2Listener) EnterNull(ctx *NullContext) {}
+
+// ExitNull is called when production null is exited.
+func (s *BaseExcellent2Listener) ExitNull(ctx *NullContext) {}
+
+// EnterMultiplicationOrDivision is called when production multiplicationOrDivision is entered.
+func (s *BaseExcellent2Listener) EnterMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) {}
+
+// ExitMultiplicationOrDivision is called when production multiplicationOrDivision is exited.
+func (s *BaseExcellent2Listener) ExitMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) {}
+
+// EnterTrue is called when production true is entered.
+func (s *BaseExcellent2Listener) EnterTrue(ctx *TrueContext) {}
+
+// ExitTrue is called when production true is exited.
+func (s *BaseExcellent2Listener) ExitTrue(ctx *TrueContext) {}
+
+// EnterAtomReference is called when production atomReference is entered.
+func (s *BaseExcellent2Listener) EnterAtomReference(ctx *AtomReferenceContext) {}
+
+// ExitAtomReference is called when production atomReference is exited.
+func (s *BaseExcellent2Listener) ExitAtomReference(ctx *AtomReferenceContext) {}
+
 // EnterEquality is called when production equality is entered.
 func (s *BaseExcellent2Listener) EnterEquality(ctx *EqualityContext) {}
 
 // ExitEquality is called when production equality is exited.
 func (s *BaseExcellent2Listener) ExitEquality(ctx *EqualityContext) {}
 
+// EnterNumberLiteral is called when production numberLiteral is entered.
+func (s *BaseExcellent2Listener) EnterNumberLiteral(ctx *NumberLiteralContext) {}
+
+// ExitNumberLiteral is called when production numberLiteral is exited.
+func (s *BaseExcellent2Listener) ExitNumberLiteral(ctx *NumberLiteralContext) {}
+
 // EnterExponent is called when production exponent is entered.
 func (s *BaseExcellent2Listener) EnterExponent(ctx *ExponentContext) {}
 
 // ExitExponent is called when production exponent is exited.
 func (s *BaseExcellent2Listener) ExitExponent(ctx *ExponentContext) {}
+
+// EnterParentheses is called when production parentheses is entered.
+func (s *BaseExcellent2Listener) EnterParentheses(ctx *ParenthesesContext) {}
+
+// ExitParentheses is called when production parentheses is exited.
+func (s *BaseExcellent2Listener) ExitParentheses(ctx *ParenthesesContext) {}
+
+// EnterDotLookup is called when production dotLookup is entered.
+func (s *BaseExcellent2Listener) EnterDotLookup(ctx *DotLookupContext) {}
+
+// ExitDotLookup is called when production dotLookup is exited.
+func (s *BaseExcellent2Listener) ExitDotLookup(ctx *DotLookupContext) {}
+
+// EnterFunctionCall is called when production functionCall is entered.
+func (s *BaseExcellent2Listener) EnterFunctionCall(ctx *FunctionCallContext) {}
+
+// ExitFunctionCall is called when production functionCall is exited.
+func (s *BaseExcellent2Listener) ExitFunctionCall(ctx *FunctionCallContext) {}
+
+// EnterArrayLookup is called when production arrayLookup is entered.
+func (s *BaseExcellent2Listener) EnterArrayLookup(ctx *ArrayLookupContext) {}
+
+// ExitArrayLookup is called when production arrayLookup is exited.
+func (s *BaseExcellent2Listener) ExitArrayLookup(ctx *ArrayLookupContext) {}
+
+// EnterContextReference is called when production contextReference is entered.
+func (s *BaseExcellent2Listener) EnterContextReference(ctx *ContextReferenceContext) {}
+
+// ExitContextReference is called when production contextReference is exited.
+func (s *BaseExcellent2Listener) ExitContextReference(ctx *ContextReferenceContext) {}
 
 // EnterFunctionParameters is called when production functionParameters is entered.
 func (s *BaseExcellent2Listener) EnterFunctionParameters(ctx *FunctionParametersContext) {}
