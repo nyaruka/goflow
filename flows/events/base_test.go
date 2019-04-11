@@ -221,7 +221,7 @@ func TestEventMarshaling(t *testing.T) {
 						"eng",
 						"spa"
 					],
-					"date_format": "YYYY-MM-DD",
+					"date_format": "DD-MM-YYYY",
 					"default_language": "eng",
 					"max_value_length": 640,
 					"number_format": {
@@ -229,7 +229,7 @@ func TestEventMarshaling(t *testing.T) {
 						"digit_grouping_symbol": ","
 					},
 					"redaction_policy": "none",
-					"time_format": "hh:mm",
+					"time_format": "tt:mm",
 					"timezone": "America/Guayaquil"
 				},
 				"type": "environment_refreshed"

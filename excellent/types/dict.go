@@ -9,7 +9,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// XDict is a map primitive in Excellent expressions
+// XDict is a dictionary of keys and values.
+//
+//   @(dict("foo", 1, "bar", "x")) -> {bar: x, foo: 1}
+//   @(length(dict("foo", 1, "bar", "x"))) -> 2
+//   @(json(dict("foo", 1, "bar", "x"))) -> {"bar":"x","foo":1}
+//
+// @type dict
 type XDict struct {
 	XValue
 	XLengthable

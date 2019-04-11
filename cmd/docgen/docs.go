@@ -25,6 +25,7 @@ var docSets = []struct {
 	tag        string
 	renderer   renderFunc
 }{
+	{[]string{"excellent/types"}, "type", renderTypeDoc},
 	{[]string{"excellent/functions"}, "function", renderFunctionDoc},
 	{[]string{"assets"}, "asset", renderAssetDoc},
 	{[]string{"flows"}, "context", renderContextDoc},

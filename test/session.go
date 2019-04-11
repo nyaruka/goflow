@@ -310,14 +310,14 @@ var sessionTrigger = `{
         "status": "active"
     },
     "environment": {
-        "date_format": "YYYY-MM-DD",
+        "date_format": "DD-MM-YYYY",
         "default_language": "eng",
         "allowed_languages": [
             "eng", 
             "spa"
         ],
         "redaction_policy": "none",
-        "time_format": "hh:mm",
+        "time_format": "tt:mm",
         "timezone": "America/Guayaquil"
     },
     "params": {"source": "website","address": {"state": "WA"}}

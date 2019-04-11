@@ -12,7 +12,14 @@ func init() {
 	decimal.MarshalJSONWithoutQuotes = true
 }
 
-// XNumber is any whole or fractional number
+// XNumber is a whole or fractional number.
+//
+//   @(1234) -> 1234
+//   @(1234.5678) -> 1234.5678
+//   @(format_number(1234.5678)) -> 1,234.57
+//   @(json(1234.5678)) -> 1234.5678
+//
+// @type number
 type XNumber struct {
 	native decimal.Decimal
 }

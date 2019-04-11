@@ -7,7 +7,14 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// XBoolean is a boolean true or false
+// XBoolean is a boolean `true` or `false`.
+//
+//   @(true) -> true
+//   @(1 = 1) -> true
+//   @(1 = 2) -> false
+//   @(json(true)) -> true
+//
+// @type boolean
 type XBoolean struct {
 	native bool
 }

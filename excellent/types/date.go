@@ -7,7 +7,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// XDate is a date value
+// XDate is a Gregorian calendar date value.
+//
+//   @(date_from_parts(2019, 4, 11)) -> 2019-04-11
+//   @(format_date(date_from_parts(2019, 4, 11))) -> 11-04-2019
+//   @(json(date_from_parts(2019, 4, 11))) -> "2019-04-11"
+//
+// @type date
 type XDate struct {
 	native utils.Date
 }

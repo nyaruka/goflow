@@ -9,7 +9,14 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// XText is a simple tex value
+// XText is a string of characters.
+//
+//   @("abc") -> abc
+//   @(length("abc")) -> 3
+//   @(upper("abc")) -> ABC
+//   @(json("abc")) -> "abc"
+//
+// @type text
 type XText struct {
 	native string
 }

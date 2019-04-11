@@ -165,7 +165,7 @@
                 "output": "1979-07-18"
             },
             {
-                "template": "@(date(\"2010 05 10\"))",
+                "template": "@(date(\"10/05/2010\"))",
                 "output": "2010-05-10"
             },
             {
@@ -207,7 +207,7 @@
                 "output": "1979-07-18T10:30:45.123456Z"
             },
             {
-                "template": "@(datetime(\"2010 05 10\"))",
+                "template": "@(datetime(\"10/05/2010\"))",
                 "output": "2010-05-10T00:00:00.000000-05:00"
             },
             {
@@ -429,7 +429,7 @@
         "examples": [
             {
                 "template": "@(format_date(\"1979-07-18T15:00:00.000000Z\"))",
-                "output": "1979-07-18"
+                "output": "18-07-1979"
             },
             {
                 "template": "@(format_date(\"1979-07-18T15:00:00.000000Z\", \"YYYY-MM-DD\"))",
@@ -460,7 +460,7 @@
         "examples": [
             {
                 "template": "@(format_datetime(\"1979-07-18T15:00:00.000000Z\"))",
-                "output": "1979-07-18 10:00"
+                "output": "18-07-1979 10:00"
             },
             {
                 "template": "@(format_datetime(\"1979-07-18T15:00:00.000000Z\", \"YYYY-MM-DD\"))",
@@ -552,15 +552,11 @@
         "examples": [
             {
                 "template": "@(format_time(\"14:50:30.000000\"))",
-                "output": "02:50"
+                "output": "14:50"
             },
             {
                 "template": "@(format_time(\"14:50:30.000000\", \"h:mm aa\"))",
                 "output": "2:50 pm"
-            },
-            {
-                "template": "@(format_time(\"14:50:30.000000\", \"tt:mm\"))",
-                "output": "14:50"
             },
             {
                 "template": "@(format_time(\"15:00:27.000000\", \"s\"))",

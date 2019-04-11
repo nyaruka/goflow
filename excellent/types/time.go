@@ -7,7 +7,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// XTime is a time of day value
+// XTime is a time of day.
+//
+//   @(time_from_parts(16, 30, 45)) -> 16:30:45.000000
+//   @(format_time(time_from_parts(16, 30, 45))) -> 16:30
+//   @(json(time_from_parts(16, 30, 45))) -> "16:30:45.000000"
+//
+// @type time
 type XTime struct {
 	native utils.TimeOfDay
 }
@@ -38,7 +44,7 @@ func (x XTime) String() string {
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(x.Native())
+	return json.Marshal(x.Native().String())
 }
 
 // Equals determines equality for this type

@@ -187,7 +187,7 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 //
 //   @(date("1979-07-18")) -> 1979-07-18
 //   @(date("1979-07-18T10:30:45.123456Z")) -> 1979-07-18
-//   @(date("2010 05 10")) -> 2010-05-10
+//   @(date("10/05/2010")) -> 2010-05-10
 //   @(date("NOT DATE")) -> ERROR
 //
 // @function date(value)
@@ -206,7 +206,7 @@ func Date(env utils.Environment, value types.XValue) types.XValue {
 //
 //   @(datetime("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
 //   @(datetime("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
-//   @(datetime("2010 05 10")) -> 2010-05-10T00:00:00.000000-05:00
+//   @(datetime("10/05/2010")) -> 2010-05-10T00:00:00.000000-05:00
 //   @(datetime("NOT DATE")) -> ERROR
 //
 // @function datetime(value)
@@ -1521,7 +1521,7 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // * `D`         - day of month, 1-31
 // * `DD`        - day of month, zero padded 0-31
 //
-//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 1979-07-18
+//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 18-07-1979
 //   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
 //   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD")) -> 2010 5 10
 //   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
@@ -1585,7 +1585,7 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified, the current timezone
 // will be used. An error will be returned if the timezone is not recognized.
 //
-//   @(format_datetime("1979-07-18T15:00:00.000000Z")) -> 1979-07-18 10:00
+//   @(format_datetime("1979-07-18T15:00:00.000000Z")) -> 18-07-1979 10:00
 //   @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
 //   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 14:50
 //   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
@@ -1657,9 +1657,8 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 // * `aa`        - am or pm
 // * `AA`        - AM or PM
 //
-//   @(format_time("14:50:30.000000")) -> 02:50
+//   @(format_time("14:50:30.000000")) -> 14:50
 //   @(format_time("14:50:30.000000", "h:mm aa")) -> 2:50 pm
-//   @(format_time("14:50:30.000000", "tt:mm")) -> 14:50
 //   @(format_time("15:00:27.000000", "s")) -> 27
 //   @(format_time("NOT TIME", "hh:mm")) -> ERROR
 //

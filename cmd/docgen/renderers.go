@@ -55,6 +55,30 @@ func renderAssetDoc(output *strings.Builder, item *documentedItem, session flows
 	return nil
 }
 
+func renderTypeDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+	if len(item.examples) == 0 {
+		return errors.Errorf("no examples found for type %s/%s", item.tagValue, item.typeName)
+	}
+
+	// check the examples
+	for _, ex := range item.examples {
+		if err := checkExample(session, ex); err != nil {
+			return err
+		}
+	}
+
+	output.WriteString(fmt.Sprintf("<a name=\"type:%s\"></a>\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
+	output.WriteString(strings.Join(item.description, "\n"))
+	output.WriteString("\n")
+	output.WriteString("```objectivec\n")
+	output.WriteString(strings.Join(item.examples, "\n"))
+	output.WriteString("\n")
+	output.WriteString("```\n")
+	output.WriteString("\n")
+	return nil
+}
+
 func renderContextDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	if len(item.examples) == 0 {
 		return errors.Errorf("no examples found for context item %s/%s", item.tagValue, item.typeName)

@@ -6,7 +6,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// XFunction is a callable function
+// XFunction is a callable function.
+//
+//   @(upper) -> function
+//   @(array(upper)[0]("abc")) -> ABC
+//   @(json(upper)) -> "function"
+//
+// @type function
 type XFunction func(env utils.Environment, args ...XValue) XValue
 
 // Describe returns a representation of this type for error messages

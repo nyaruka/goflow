@@ -7,7 +7,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// XArray is an array primitive in Excellent expressions
+// XArray is an array of items.
+//
+//   @(array(1, "x", true)) -> [1, x, true]
+//   @(length(array(1, "x", true))) -> 3
+//   @(json(array(1, "x", true))) -> [1,"x",true]
+//
+// @type array
 type XArray struct {
 	XValue
 
