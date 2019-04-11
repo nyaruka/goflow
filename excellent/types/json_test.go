@@ -64,8 +64,8 @@ func TestXJSONResolve(t *testing.T) {
 		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `j.key["key-with-dash"]`, types.NewXText("val2"), false},
 		{[]byte(`{"key": {"key with space": "val2"}}`), `j.key["key with space"]`, types.NewXText("val2"), false},
 
-		//{[]byte(`{"arr": ["one", "two"]}`), "j.arr", types.NewXJSONArray([]byte(`["one", "two"]`)), false},
-		//{[]byte(`{"arr": {"foo": "bar"}}`), "j.arr", types.NewXJSONDict([]byte(`{"foo": "bar"}`)), false},
+		{[]byte(`{"arr": ["one", "two"]}`), "j.arr", types.NewXArray(types.NewXText("one"), types.NewXText("two")), false},
+		{[]byte(`{"arr": {"foo": "bar"}}`), "j.arr", types.NewXDict(map[string]types.XValue{"foo": types.NewXText("bar")}), false},
 
 		// resolve errors
 		{[]byte(`{"foo": "x", "bar": "one"}`), "j.zed", nil, true},
@@ -74,18 +74,18 @@ func TestXJSONResolve(t *testing.T) {
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
-	for _, test := range jsonTests {
-		fragment := types.JSONToXValue(test.JSON)
+	for _, tc := range jsonTests {
+		fragment := types.JSONToXValue(tc.JSON)
 		context := types.NewXDict(map[string]types.XValue{"j": fragment})
 
-		value := excellent.EvaluateExpression(env, context, test.expression)
+		value := excellent.EvaluateExpression(env, context, tc.expression)
 		err, _ := value.(error)
 
-		if test.hasError {
-			assert.Error(t, err, "expected error resolving '%s' for '%s'", test.expression, test.JSON)
+		if tc.hasError {
+			assert.Error(t, err, "expected error resolving '%s' for '%s'", tc.expression, tc.JSON)
 		} else {
-			assert.NoError(t, err, "unexpected error resolving '%s' for '%s'", test.expression, test.JSON)
-			assert.Equal(t, test.expected, value, "Actual '%s' does not match expected '%s' resolving '%s' for '%s'", value, test.expected, test.expression, test.JSON)
+			assert.NoError(t, err, "unexpected error resolving '%s' for '%s'", tc.expression, tc.JSON)
+			test.AssertEqual(t, tc.expected, value, "unexpected result resolving '%s' for '%s'", tc.expression, tc.JSON)
 		}
 	}
 }
