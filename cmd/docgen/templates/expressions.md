@@ -11,7 +11,8 @@ character. For example the template `Hi @foo` contains a single variable which a
 with the value of `foo` in the context.
 
 More complex expressions can be embedded using the `@(...)` syntax. For example the template `Hi @("Dr " & upper(foo))` 
-takes the value of `foo`, converts it to uppercase, and the prefixes it with another string.
+takes the value of `foo`, converts it to uppercase, and the prefixes it with another string. Note than within a 
+complex expression you don't prefix variables with `@`.
 
 The `@` symbol can be escaped in templates by repeating it, ie, `Hi @@twitter` would output `Hi @twitter`.
 
@@ -31,4 +32,20 @@ Excellent has the following types:
 
 <div class="types">
 {{ .typeDocs }}
+</div>
+
+# Operators
+
+<div class="operators">
+{{ .operatorDocs }}
+</div>
+
+# Functions
+
+Expressions have access to a set of built-in functions which can be used to perform more complex tasks. Functions are called 
+using the `@(function_name(args..))` syntax, and can take as arguments either literal values `@(length(split("1 2 3", " "))` 
+or variables in the context `@(title(contact.name))`.
+
+<div class="functions">
+{{ .functionDocs }}
 </div>

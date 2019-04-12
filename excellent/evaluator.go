@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/gen"
+	"github.com/nyaruka/goflow/excellent/operators"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -245,12 +246,7 @@ func (v *visitor) VisitParentheses(ctx *gen.ParenthesesContext) interface{} {
 func (v *visitor) VisitNegation(ctx *gen.NegationContext) interface{} {
 	arg := toXValue(v.Visit(ctx.Expression()))
 
-	number, xerr := types.ToXNumber(v.env, arg)
-	if xerr != nil {
-		return xerr
-	}
-
-	return types.NewXNumber(number.Native().Neg())
+	return operators.Negate(v.env, arg)
 }
 
 // VisitExponent deals with exponenets such as 5^5
@@ -258,16 +254,7 @@ func (v *visitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	num1, xerr := types.ToXNumber(v.env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	num2, xerr := types.ToXNumber(v.env, arg2)
-	if xerr != nil {
-		return xerr
-	}
-
-	return types.NewXNumber(num1.Native().Pow(num2.Native()))
+	return operators.Exponent(v.env, arg1, arg2)
 }
 
 // VisitConcatenation deals with string concatenations like "foo" & "bar"
@@ -275,20 +262,7 @@ func (v *visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} 
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	str1, xerr := types.ToXText(v.env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	str2, xerr := types.ToXText(v.env, arg2)
-	if xerr != nil {
-		return xerr
-	}
-
-	var buffer strings.Builder
-	buffer.WriteString(str1.Native())
-	buffer.WriteString(str2.Native())
-
-	return types.NewXText(buffer.String())
+	return operators.Concatenate(v.env, arg1, arg2)
 }
 
 // VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
@@ -296,47 +270,10 @@ func (v *visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionConte
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	num1, xerr := types.ToXNumber(v.env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	num2, xerr := types.ToXNumber(v.env, arg2)
-	if xerr != nil {
-		return xerr
-	}
-
 	if ctx.PLUS() != nil {
-		return types.NewXNumber(num1.Native().Add(num2.Native()))
+		return operators.Add(v.env, arg1, arg2)
 	}
-	return types.NewXNumber(num1.Native().Sub(num2.Native()))
-}
-
-// VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
-func (v *visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
-	arg1 := toXValue(v.Visit(ctx.Expression(0)))
-	arg2 := toXValue(v.Visit(ctx.Expression(1)))
-
-	str1, xerr := types.ToXText(v.env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	str2, xerr := types.ToXText(v.env, arg2)
-	if xerr != nil {
-		return xerr
-	}
-
-	isEqual := str1.Equals(str2)
-
-	if ctx.EQ() != nil {
-		return types.NewXBoolean(isEqual)
-	}
-
-	return types.NewXBoolean(!isEqual)
-}
-
-// VisitAtomReference deals with visiting a single atom in our expression
-func (v *visitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} {
-	return v.Visit(ctx.Atom())
+	return operators.Subtract(v.env, arg1, arg2)
 }
 
 // VisitMultiplicationOrDivision deals with division and multiplication such as 5*5 or 5/2
@@ -344,25 +281,21 @@ func (v *visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisio
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	num1, xerr := types.ToXNumber(v.env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	num2, xerr := types.ToXNumber(v.env, arg2)
-	if xerr != nil {
-		return xerr
-	}
-
 	if ctx.TIMES() != nil {
-		return types.NewXNumber(num1.Native().Mul(num2.Native()))
+		return operators.Multiply(v.env, arg1, arg2)
 	}
+	return operators.Divide(v.env, arg1, arg2)
+}
 
-	// division!
-	if num2.Equals(types.XNumberZero) {
-		return types.NewXErrorf("division by zero")
+// VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
+func (v *visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
+	arg1 := toXValue(v.Visit(ctx.Expression(0)))
+	arg2 := toXValue(v.Visit(ctx.Expression(1)))
+
+	if ctx.EQ() != nil {
+		return operators.Equal(v.env, arg1, arg2)
 	}
-
-	return types.NewXNumber(num1.Native().Div(num2.Native()))
+	return operators.NotEqual(v.env, arg1, arg2)
 }
 
 // VisitComparison deals with visiting a comparison between two values, such as 5<3 or 3>5
@@ -370,27 +303,21 @@ func (v *visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	num1, xerr := types.ToXNumber(v.env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	num2, xerr := types.ToXNumber(v.env, arg2)
-	if xerr != nil {
-		return xerr
-	}
-
-	cmp := num1.Compare(num2)
-
 	switch {
 	case ctx.LT() != nil:
-		return types.NewXBoolean(cmp < 0)
+		return operators.LessThan(v.env, arg1, arg2)
 	case ctx.LTE() != nil:
-		return types.NewXBoolean(cmp <= 0)
+		return operators.LessThanOrEqual(v.env, arg1, arg2)
 	case ctx.GTE() != nil:
-		return types.NewXBoolean(cmp >= 0)
-	default: // ctx.GT() != nil
-		return types.NewXBoolean(cmp > 0)
+		return operators.GreaterThanOrEqual(v.env, arg1, arg2)
+	default:
+		return operators.GreaterThan(v.env, arg1, arg2)
 	}
+}
+
+// VisitAtomReference deals with visiting a single atom in our expression
+func (v *visitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} {
+	return v.Visit(ctx.Atom())
 }
 
 // VisitFunctionParameters deals with the parameters to a function call
