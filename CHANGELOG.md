@@ -1,3 +1,9 @@
+v0.33.9
+----------
+ * Ingore broken recording dicts on legacy say actions
+ * Add is_error as a regular function and has_error as a router case test
+ * Fix JSONing time values
+
 v0.33.8
 ----------
  * Expressions refactor
