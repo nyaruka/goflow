@@ -615,6 +615,25 @@
         ]
     },
     {
+        "signature": "is_error(value)",
+        "summary": "Returns whether `value` is an error",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(is_error(datetime(\"foo\")))",
+                "output": "true"
+            },
+            {
+                "template": "@(is_error(run.not.existing))",
+                "output": "true"
+            },
+            {
+                "template": "@(is_error(\"hello\"))",
+                "output": "false"
+            }
+        ]
+    },
+    {
         "signature": "join(array, separator)",
         "summary": "Joins the given `array` of strings with `separator` to make text.",
         "detail": "",

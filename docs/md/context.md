@@ -742,6 +742,19 @@ If the first argument is an error that error is returned.
 @(if("foo" > "bar", "foo", "bar")) → ERROR
 ```
 
+<a name="function:is_error"></a>
+
+## is_error(value)
+
+Returns whether `value` is an error
+
+
+```objectivec
+@(is_error(datetime("foo"))) → true
+@(is_error(run.not.existing)) → true
+@(is_error("hello")) → false
+```
+
 <a name="function:join"></a>
 
 ## join(array, separator)
@@ -1575,6 +1588,20 @@ Tests whether an email is contained in `text`
 @(has_email("i'm not sharing my email")) →
 ```
 
+<a name="test:has_error"></a>
+
+## has_error(value)
+
+Returns whether `value` is an error
+
+
+```objectivec
+@(has_error(datetime("foo"))) → {match: error calling DATETIME: unable to convert "foo" to a datetime}
+@(has_error(run.not.existing)) → {match: dict has no property 'not'}
+@(has_error(contact.fields.unset)) → {match: dict has no property 'unset'}
+@(has_error("hello")) →
+```
+
 <a name="test:has_group"></a>
 
 ## has_group(contact, group_uuid)
@@ -1822,24 +1849,6 @@ Tests whether a ward name is contained in the `text`
 @(has_ward("Brooklyn", "Gasabo", "Kigali")) →
 @(has_ward("Gasabo")) →
 @(has_ward("Gisozi")) → {match: Rwanda > Kigali City > Gasabo > Gisozi}
-```
-
-<a name="test:is_error"></a>
-
-## is_error(value)
-
-Returns whether `value` is an error
-
-Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
-to try to retrieve a value from fields or results which don't exist, rather these return an empty
-value.
-
-
-```objectivec
-@(is_error(datetime("foo"))) → {match: error calling DATETIME: unable to convert "foo" to a datetime}
-@(is_error(run.not.existing)) → {match: dict has no property 'not'}
-@(is_error(contact.fields.unset)) → {match: dict has no property 'unset'}
-@(is_error("hello")) →
 ```
 
 <a name="test:is_text_eq"></a>

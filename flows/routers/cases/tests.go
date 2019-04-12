@@ -34,7 +34,7 @@ func RegisterXTest(name string, function types.XFunction) {
 
 // XTESTS is our mapping of the excellent test names to their actual functions
 var XTESTS = map[string]types.XFunction{
-	"is_error":  functions.OneArgFunction(IsError),
+	"has_error": functions.OneArgFunction(HasError),
 	"has_value": functions.OneArgFunction(HasValue),
 
 	"is_text_eq":      functions.TwoTextFunction(IsTextEQ),
@@ -107,19 +107,15 @@ func IsTextEQ(env utils.Environment, text1 types.XText, text2 types.XText) types
 	return nil
 }
 
-// IsError returns whether `value` is an error
+// HasError returns whether `value` is an error
 //
-// Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
-// to try to retrieve a value from fields or results which don't exist, rather these return an empty
-// value.
+//   @(has_error(datetime("foo"))) -> {match: error calling DATETIME: unable to convert "foo" to a datetime}
+//   @(has_error(run.not.existing)) -> {match: dict has no property 'not'}
+//   @(has_error(contact.fields.unset)) -> {match: dict has no property 'unset'}
+//   @(has_error("hello")) ->
 //
-//   @(is_error(datetime("foo"))) -> {match: error calling DATETIME: unable to convert "foo" to a datetime}
-//   @(is_error(run.not.existing)) -> {match: dict has no property 'not'}
-//   @(is_error(contact.fields.unset)) -> {match: dict has no property 'unset'}
-//   @(is_error("hello")) ->
-//
-// @test is_error(value)
-func IsError(env utils.Environment, value types.XValue) types.XValue {
+// @test has_error(value)
+func HasError(env utils.Environment, value types.XValue) types.XValue {
 	if types.IsXError(value) {
 		return NewTrueResult(value)
 	}

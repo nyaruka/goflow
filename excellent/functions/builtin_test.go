@@ -317,6 +317,11 @@ func TestFunctions(t *testing.T) {
 		{"if", dmy, []types.XValue{}, ERROR},
 		{"if", dmy, []types.XValue{errorArg, xs("10"), xs("20")}, errorArg},
 
+		{"is_error", dmy, []types.XValue{xs("hello")}, types.XBooleanFalse},
+		{"is_error", dmy, []types.XValue{nil}, types.XBooleanFalse},
+		{"is_error", dmy, []types.XValue{types.NewXErrorf("I am error")}, types.XBooleanTrue},
+		{"is_error", dmy, []types.XValue{}, ERROR},
+
 		{"join", dmy, []types.XValue{xa(xs("1"), xs("2"), xs("3")), xs(",")}, xs("1,2,3")},
 		{"join", dmy, []types.XValue{xa(), xs(",")}, xs("")},
 		{"join", dmy, []types.XValue{xa(xs("1")), xs(",")}, xs("1")},
