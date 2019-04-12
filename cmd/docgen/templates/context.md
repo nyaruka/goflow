@@ -1,14 +1,3 @@
-# Templates
-
-Some properties of entities in the flow specification are _templates_ - that is their values are dynamic and are evaluated at runtime. 
-Templates can contain single variables or more complex expressions. A single variable is embedded using the `@` character. For example 
-the template `Hi @contact.name` contains a single variable which at runtime will be replaced with the name of the current contact.
-
-More complex expressions can be embedded using the `@(...)` syntax. For example the template `Hi @("Dr " & upper(contact.name))` takes 
-the contact name, converts it to uppercase, and the prefixes it with another string.
-
-The `@` symbol can be escaped in templates by repeating it, ie, `Hi @@twitter` would output `Hi @twitter`.
-
 # Context
 
 The context is all the variables which are accessible in expressions and contains the following top-level variables:
@@ -37,14 +26,3 @@ The following types appear in the context:
 {{ .contextDocs }}
 </div>
 
-
-# Router Tests
-
-Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but 
-all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using
-the `match` component of the result. The flow editor builds these expressions using UI widgets, but they can be used anywhere a normal template
-function is used.
-
-<div class="tests">
-{{ .testDocs }}
-</div>

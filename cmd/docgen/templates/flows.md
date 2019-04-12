@@ -28,7 +28,6 @@ A Node consists of:
 
  * `uuid` the UUID
  * `actions` a list of 0-n actions which will be executed upon first entering a node
- * `wait` an optional pause in the flow waiting for some event to occur, such as a contact responding, a timeout for that response or a subflow completing
  * `router` an optional router which determines which exit to take
  * `exit` a list of 0-n exits which can be used to link to other nodes
 
@@ -83,6 +82,7 @@ A switch router may also define a `result_name` parameters which will save the r
 
 A switch router consists of:
 
+ * `wait` an optional pause in the flow waiting for some event to occur, such as a contact responding, a timeout for that response or a subflow completing
  * `result_name` the name of the result which should be written when the switch is evaluated (optional)
  * `operand` the expression which will be evaluated against each of our cases
  * `cases` a list of 1-n cases which are evaluated in order until one is true

@@ -33,10 +33,11 @@ var templates = []struct {
 	containsTypes []string
 }{
 	{"Flow Specification", "index.md", nil},
-	{"Expressions", "expressions.md", []string{"type", "operator", "function"}},
-	{"Context", "context.md", []string{"context", "test"}},
 	{"Flows", "flows.md", []string{"action", "router", "wait"}},
-	{"Sessions", "sessions.md", []string{"event", "trigger"}},
+	{"Expressions", "expressions.md", []string{"type", "operator", "function"}},
+	{"Context", "context.md", []string{"context"}},
+	{"Routing", "routing.md", []string{"test"}},
+	{"Sessions", "sessions.md", []string{"event", "trigger", "resume"}},
 	{"Assets", "assets.md", []string{"asset"}},
 }
 

@@ -40,7 +40,6 @@
 <ul>
 <li><code>uuid</code> the UUID</li>
 <li><code>actions</code> a list of 0-n actions which will be executed upon first entering a node</li>
-<li><code>wait</code> an optional pause in the flow waiting for some event to occur, such as a contact responding, a timeout for that response or a subflow completing</li>
 <li><code>router</code> an optional router which determines which exit to take</li>
 <li><code>exit</code> a list of 0-n exits which can be used to link to other nodes</li>
 </ul>
@@ -78,6 +77,7 @@
 <p>A switch router may also define a <code>result_name</code> parameters which will save the result of the case which evaluated as true.</p>
 <p>A switch router consists of:</p>
 <ul>
+<li><code>wait</code> an optional pause in the flow waiting for some event to occur, such as a contact responding, a timeout for that response or a subflow completing</li>
 <li><code>result_name</code> the name of the result which should be written when the switch is evaluated (optional)</li>
 <li><code>operand</code> the expression which will be evaluated against each of our cases</li>
 <li><code>cases</code> a list of 1-n cases which are evaluated in order until one is true</li>
