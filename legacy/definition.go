@@ -529,7 +529,9 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		// make audio URLs absolute
 		for lang, audioURL := range recording {
-			recording[lang] = URLJoin(baseMediaURL, audioURL)
+			if audioURL != "" {
+				recording[lang] = URLJoin(baseMediaURL, audioURL)
+			}
 		}
 
 		migratedText := addTranslationMap(baseLanguage, localization, msg, utils.UUID(a.UUID), "text")

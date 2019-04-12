@@ -356,6 +356,25 @@
         }
     },
     {
+        "description": "say action with broken recording",
+        "legacy_action": {
+            "type": "say",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "msg": {
+                "eng": "Welcome"
+            },
+            "recording": {
+                "eng": null
+            }
+        },
+        "expected_action": {
+            "type": "say_msg",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "text": "Welcome"
+        },
+        "expected_localization": {}
+    },
+    {
         "legacy_action": {
             "type": "send",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",

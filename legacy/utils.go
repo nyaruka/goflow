@@ -12,6 +12,7 @@ import (
 // Translations is an inline translation map used for localization
 type Translations map[utils.Language]string
 
+// ReadTranslations reads a translations map
 func ReadTranslations(data json.RawMessage) (Translations, error) {
 	if data == nil {
 		return nil, nil
