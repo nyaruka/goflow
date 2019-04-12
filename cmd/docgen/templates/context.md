@@ -37,16 +37,6 @@ The following types appear in the context:
 {{ .contextDocs }}
 </div>
 
-# Functions
-
-Templates also have access to a set of functions which can be used to further manipulate the context. Functions are called 
-using the `@(function_name(args..))` syntax. For example, to title-case a contact's name in a message, you can use `@(title(contact.name))`. 
-Context variables referred to within functions do not need a leading `@`. Functions can also use literal numbers or strings as arguments, for example
-`@(length(split("1 2 3", " "))`.
-
-<div class="functions">
-{{ .functionDocs }}
-</div>
 
 # Router Tests
 

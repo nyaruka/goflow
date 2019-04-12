@@ -12,6 +12,8 @@ import (
 // XDict is a dictionary of keys and values.
 //
 //   @(dict("foo", 1, "bar", "x")) -> {bar: x, foo: 1}
+//   @(dict("foo", 1, "bar", "x").bar) -> x
+//   @(dict("foo", 1, "bar", "x")["bar"]) -> x
 //   @(length(dict("foo", 1, "bar", "x"))) -> 2
 //   @(json(dict("foo", 1, "bar", "x"))) -> {"bar":"x","foo":1}
 //

@@ -26,6 +26,7 @@ var docSets = []struct {
 	renderer   renderFunc
 }{
 	{[]string{"excellent/types"}, "type", renderTypeDoc},
+	{[]string{"excellent/operators"}, "operator", renderOperatorDoc},
 	{[]string{"excellent/functions"}, "function", renderFunctionDoc},
 	{[]string{"assets"}, "asset", renderAssetDoc},
 	{[]string{"flows"}, "context", renderContextDoc},
@@ -135,6 +136,11 @@ func findDocumentedItems(baseDir string, searchDir string, tag string) ([]*docum
 		for _, t := range p.Funcs {
 			if strings.Contains(t.Doc, tag) {
 				documentedItems = append(documentedItems, parseDocString(tag, t.Doc, t.Name))
+			}
+		}
+		for _, t := range p.Vars {
+			if strings.Contains(t.Doc, tag) {
+				documentedItems = append(documentedItems, parseDocString(tag, t.Doc, t.Names[0]))
 			}
 		}
 	}

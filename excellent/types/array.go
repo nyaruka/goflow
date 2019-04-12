@@ -10,6 +10,7 @@ import (
 // XArray is an array of items.
 //
 //   @(array(1, "x", true)) -> [1, x, true]
+//   @(array(1, "x", true)[1]) -> x
 //   @(length(array(1, "x", true))) -> 3
 //   @(json(array(1, "x", true))) -> [1,"x",true]
 //
