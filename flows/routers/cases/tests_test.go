@@ -33,10 +33,10 @@ var testTests = []struct {
 	args     []types.XValue
 	expected types.XValue
 }{
-	{"is_error", []types.XValue{xs("hello")}, nil},
-	{"is_error", []types.XValue{nil}, nil},
-	{"is_error", []types.XValue{types.NewXErrorf("I am error")}, result(types.NewXErrorf("I am error"))},
-	{"is_error", []types.XValue{}, ERROR},
+	{"has_error", []types.XValue{xs("hello")}, nil},
+	{"has_error", []types.XValue{nil}, nil},
+	{"has_error", []types.XValue{types.NewXErrorf("I am error")}, result(types.NewXErrorf("I am error"))},
+	{"has_error", []types.XValue{}, ERROR},
 
 	{"has_text", []types.XValue{xs("hello")}, result(xs("hello"))},
 	{"has_text", []types.XValue{xs("  ")}, nil},
@@ -296,12 +296,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		expected string
 		hasError bool
 	}{
-		{"@(is_error(array1[100]))", "{match: index 100 out of range for 3 items}", false}, // errors are like any other value
-		{`@(is_error(round("foo", "bar")))`, "{match: error calling ROUND: unable to convert \"foo\" to a number}", false},
-		{`@(is_error(err))`, "{match: an error}", false},
-		{"@(is_error(thing.foo))", "", false},
-		{"@(is_error(thing.xxx))", "{match: dict has no property 'xxx'}", false},
-		{"@(is_error(1 / 0))", "{match: division by zero}", false},
+		{"@(has_error(array1[100]))", "{match: index 100 out of range for 3 items}", false}, // errors are like any other value
+		{`@(has_error(round("foo", "bar")))`, "{match: error calling ROUND: unable to convert \"foo\" to a number}", false},
+		{`@(has_error(err))`, "{match: an error}", false},
+		{"@(has_error(thing.foo))", "", false},
+		{"@(has_error(thing.xxx))", "{match: dict has no property 'xxx'}", false},
+		{"@(has_error(1 / 0))", "{match: division by zero}", false},
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()

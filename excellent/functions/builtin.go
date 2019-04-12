@@ -111,6 +111,7 @@ func init() {
 		"format_input":    OneDictFunction(FormatInput),
 
 		// utility functions
+		"is_error":     OneArgFunction(IsError),
 		"length":       OneArgFunction(Length),
 		"default":      TwoArgFunction(Default),
 		"legacy_add":   TwoArgFunction(LegacyAdd),
@@ -1814,6 +1815,17 @@ func FormatInput(env utils.Environment, input *types.XDict) types.XValue {
 //------------------------------------------------------------------------------------------
 // Utility Functions
 //------------------------------------------------------------------------------------------
+
+// IsError returns whether `value` is an error
+//
+//   @(is_error(datetime("foo"))) -> true
+//   @(is_error(run.not.existing)) -> true
+//   @(is_error("hello")) -> false
+//
+// @function is_error(value)
+func IsError(env utils.Environment, value types.XValue) types.XValue {
+	return types.NewXBoolean(types.IsXError(value))
+}
 
 // Length returns the length of the passed in text or array.
 //
