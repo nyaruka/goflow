@@ -1,3 +1,10 @@
+v0.34.0
+----------
+ * dict/keys -> object/properties
+ * Split length() into count() and text_length()
+ * Support != operator in contact queries
+ * Extract operators into their own functions which can then be documented and have live examples
+
 v0.33.9
 ----------
  * Ingore broken recording dicts on legacy say actions
