@@ -21,8 +21,9 @@ func TestParseQuery(t *testing.T) {
 		{`will or felix or matt`, "OR(OR(*=will, *=felix), *=matt)"},
 		{`Name=will`, "name=will"},
 		{`Name ~ "felix"`, "name~felix"},
-		{`name is ""`, `name=""`},  // is not set
-		{`name != ""`, `name!=""`}, // is set
+		{`name is ""`, `name=""`},          // is not set
+		{`name != ""`, `name!=""`},         // is set
+		{`name != "felix"`, `name!=felix`}, // is set
 		{`name=will or Name ~ "felix"`, "OR(name=will, name~felix)"},
 		{`Name is will or Name has felix`, "OR(name=will, name~felix)"}, // comparator aliases
 		{`will or Name ~ "felix"`, "OR(*=will, name~felix)"},
@@ -91,6 +92,8 @@ func TestEvaluateQuery(t *testing.T) {
 		{`Gender = male`, true},
 		{`Gender is MALE`, true},
 		{`gender = "female"`, false},
+		{`gender != "female"`, true},
+		{`gender != "male"`, false},
 
 		// number field condition
 		{`age = 36`, true},
@@ -126,6 +129,8 @@ func TestEvaluateQuery(t *testing.T) {
 		{`ward = ndera`, true},
 		{`ward = solano`, false},
 		{`ward ~ era`, true},
+		{`ward != ndera`, false},
+		{`ward != solano`, true},
 
 		// existence
 		{`age = ""`, false},
