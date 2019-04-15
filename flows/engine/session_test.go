@@ -68,9 +68,9 @@ var templateTests = []struct {
 	{"@contact.fields.activation_token", "AACC55", ""},
 	{"@contact.fields.age", "23", ""},
 	{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-	{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: dict has no property 'favorite_icecream'"},
+	{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(contact.fields.favorite_icecream))", "true", ""},
-	{"@(has_error(contact.fields.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
+	{"@(has_error(contact.fields.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
 	{"@(count(contact.fields))", "5", ""},
 
 	// simplifed field access
@@ -78,9 +78,9 @@ var templateTests = []struct {
 	{"@fields.activation_token", "AACC55", ""},
 	{"@fields.age", "23", ""},
 	{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-	{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: dict has no property 'favorite_icecream'"},
+	{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(fields.favorite_icecream))", "true", ""},
-	{"@(has_error(fields.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
+	{"@(has_error(fields.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
 	{"@(count(fields))", "5", ""},
 
 	{"@input", "{attachments: [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3], channel: {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}, created_on: 2017-12-31T11:35:10.035757-02:00, text: Hi there, type: msg, urn: tel:+12065551212, uuid: 9bf91c2b-ce58-4cef-aacc-281e03f69ab5}", ""},
@@ -95,7 +95,7 @@ var templateTests = []struct {
 	{"@results.favorite_color.category", "Red", ""},
 	{"@results.favorite_color.category_localized", "Red", ""},
 	{"@(is_error(results.favorite_icecream))", "true", ""},
-	{"@(has_error(results.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
+	{"@(has_error(results.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
 	{"@(count(results))", "3", ""},
 
 	{"@run.results.favorite_color", `{categories: [Red], categories_localized: [Red], created_on: 2018-09-13T13:36:30.123456Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, values: [red]}`, ""},
@@ -103,9 +103,9 @@ var templateTests = []struct {
 	{`@(run.results.favorite_color.values[0])`, `red`, ""},
 	{"@run.results.favorite_color.categories", "[Red]", ""},
 	{`@(run.results.favorite_color.categories[0])`, `Red`, ""},
-	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: dict has no property 'favorite_icecream'"},
+	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(run.results.favorite_icecream))", "true", ""},
-	{"@(has_error(run.results.favorite_icecream))", "{match: dict has no property 'favorite_icecream'}", ""},
+	{"@(has_error(run.results.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
 	{"@(count(run.results))", "3", ""},
 
 	{"@run.status", "completed", ""},

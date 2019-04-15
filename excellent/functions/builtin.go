@@ -31,7 +31,7 @@ func init() {
 		"datetime": OneArgFunction(DateTime),
 		"time":     OneArgFunction(Time),
 		"array":    Array,
-		"dict":     Dict,
+		"object":   Object,
 
 		// text functions
 		"char":              OneNumberFunction(Char),
@@ -109,17 +109,17 @@ func init() {
 		"format_location": OneTextFunction(FormatLocation),
 		"format_number":   ArgCountCheck(1, 3, FormatNumber),
 		"format_urn":      OneTextFunction(FormatURN),
-		"format_input":    OneDictFunction(FormatInput),
+		"format_input":    OneObjectFunction(FormatInput),
 
 		// utility functions
-		"is_error":     OneArgFunction(IsError),
-		"count":        OneArgFunction(Count),
-		"default":      TwoArgFunction(Default),
-		"legacy_add":   TwoArgFunction(LegacyAdd),
-		"read_chars":   OneTextFunction(ReadChars),
-		"extract":      TwoArgFunction(Extract),
-		"extract_dict": ArgCountCheck(2, -1, ExtractDict),
-		"foreach":      ArgCountCheck(2, -1, ForEach),
+		"is_error":       OneArgFunction(IsError),
+		"count":          OneArgFunction(Count),
+		"default":        TwoArgFunction(Default),
+		"legacy_add":     TwoArgFunction(LegacyAdd),
+		"read_chars":     OneTextFunction(ReadChars),
+		"extract":        TwoArgFunction(Extract),
+		"extract_object": ArgCountCheck(2, -1, ExtractObject),
+		"foreach":        ArgCountCheck(2, -1, ForEach),
 	}
 
 	for name, fn := range builtin {
@@ -258,14 +258,14 @@ func Array(env utils.Environment, values ...types.XValue) types.XValue {
 	return types.NewXArray(values...)
 }
 
-// Dict takes key value pairs and returns them as an dict.
+// Object takes property name value pairs and returns them as a new object.
 //
-//   @(dict()) -> {}
-//   @(dict("a", 123, "b", "hello")) -> {a: 123, b: hello}
-//   @(dict("a")) -> ERROR
+//   @(object()) -> {}
+//   @(object("a", 123, "b", "hello")) -> {a: 123, b: hello}
+//   @(object("a")) -> ERROR
 //
-// @function dict(pairs...)
-func Dict(env utils.Environment, pairs ...types.XValue) types.XValue {
+// @function object(pairs...)
+func Object(env utils.Environment, pairs ...types.XValue) types.XValue {
 	// check none of our args are errors
 	for _, arg := range pairs {
 		if types.IsXError(arg) {
@@ -277,7 +277,7 @@ func Dict(env utils.Environment, pairs ...types.XValue) types.XValue {
 		return types.NewXErrorf("requires an even number of arguments")
 	}
 
-	dict := make(map[string]types.XValue, len(pairs)/2)
+	properties := make(map[string]types.XValue, len(pairs)/2)
 
 	for a := 0; a < len(pairs); a += 2 {
 		key := pairs[a]
@@ -288,10 +288,10 @@ func Dict(env utils.Environment, pairs ...types.XValue) types.XValue {
 			return xerr
 		}
 
-		dict[keyAsText.Native()] = value
+		properties[keyAsText.Native()] = value
 	}
 
-	return types.NewXDict(dict)
+	return types.NewXObject(properties)
 }
 
 //------------------------------------------------------------------------------------------
@@ -1461,7 +1461,7 @@ func URNParts(env utils.Environment, urn types.XText) types.XValue {
 	u := urns.URN(urn.Native())
 	scheme, path, _, display := u.ToParts()
 
-	return types.NewXDict(map[string]types.XValue{
+	return types.NewXObject(map[string]types.XValue{
 		"scheme":  types.NewXText(scheme),
 		"path":    types.NewXText(path),
 		"display": types.NewXText(display),
@@ -1477,7 +1477,7 @@ func AttachmentParts(env utils.Environment, attachment types.XText) types.XValue
 	a := utils.Attachment(attachment.Native())
 	contentType, url := a.ToParts()
 
-	return types.NewXDict(map[string]types.XValue{
+	return types.NewXObject(map[string]types.XValue{
 		"content_type": types.NewXText(contentType),
 		"url":          types.NewXText(url),
 	})
@@ -1793,7 +1793,7 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 //   @(format_input("NOT INPUT")) -> ERROR
 //
 // @function format_input(urn)
-func FormatInput(env utils.Environment, input *types.XDict) types.XValue {
+func FormatInput(env utils.Environment, input *types.XObject) types.XValue {
 	textValue, _ := input.Get("text")
 	text, xerr := types.ToXText(env, textValue)
 	if xerr != nil {
@@ -1838,7 +1838,7 @@ func IsError(env utils.Environment, value types.XValue) types.XValue {
 	return types.NewXBoolean(types.IsXError(value))
 }
 
-// Count returns the number of items in the given array or dict.
+// Count returns the number of items in the given array or properties on an object.
 //
 // It will return an error if it is passed an item which isn't countable.
 //
@@ -1882,14 +1882,14 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 	return value
 }
 
-// Extract takes a dict and extracts the named property.
+// Extract takes an object and extracts the named property.
 //
 //   @(extract(contact, "name")) -> Ryan Lewis
 //   @(extract(contact.groups[0], "name")) -> Testers
 //
-// @function extract(dict, properties...)
+// @function extract(object, properties...)
 func Extract(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	dict, xerr := types.ToXDict(env, arg1)
+	object, xerr := types.ToXObject(env, arg1)
 	if xerr != nil {
 		return xerr
 	}
@@ -1899,17 +1899,17 @@ func Extract(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.
 		return xerr
 	}
 
-	value, _ := dict.Get(property.Native())
+	value, _ := object.Get(property.Native())
 	return value
 }
 
-// ExtractDict takes a dict and returns a new dict by extracting only the named properties.
+// ExtractObject takes an object and returns a new object by extracting only the named properties.
 //
-//   @(extract_dict(contact.groups[0], "name")) -> {name: Testers}
+//   @(extract_object(contact.groups[0], "name")) -> {name: Testers}
 //
-// @function extract_dict(dict, properties...)
-func ExtractDict(env utils.Environment, args ...types.XValue) types.XValue {
-	dict, xerr := types.ToXDict(env, args[0])
+// @function extract_object(object, properties...)
+func ExtractObject(env utils.Environment, args ...types.XValue) types.XValue {
+	object, xerr := types.ToXObject(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -1925,11 +1925,11 @@ func ExtractDict(env utils.Environment, args ...types.XValue) types.XValue {
 
 	result := make(map[string]types.XValue, len(properties))
 	for _, prop := range properties {
-		value, _ := dict.Get(prop)
+		value, _ := object.Get(prop)
 		result[prop] = value
 	}
 
-	return types.NewXDict(result)
+	return types.NewXObject(result)
 }
 
 // ForEach takes an array of objects and returns a new array by applying the given function to each item.

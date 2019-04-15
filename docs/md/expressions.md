@@ -24,9 +24,9 @@ Excellent has the following types:
  * [Boolean](#type:boolean)
  * [Date](#type:date)
  * [DateTime](#type:datetime)
- * [Dict](#type:dict)
  * [Function](#type:function)
  * [Number](#type:number)
+ * [Object](#type:object)
  * [Text](#type:text)
  * [Time](#type:time)
 
@@ -85,21 +85,6 @@ Is a datetime value.
 @(json(datetime("1979-07-18T10:30:45.123456Z"))) → "1979-07-18T10:30:45.123456Z"
 ```
 
-<a name="type:dict"></a>
-
-## Dict
-
-Is a dictionary of keys and values.
-
-
-```objectivec
-@(dict("foo", 1, "bar", "x")) → {bar: x, foo: 1}
-@(dict("foo", 1, "bar", "x").bar) → x
-@(dict("foo", 1, "bar", "x")["bar"]) → x
-@(count(dict("foo", 1, "bar", "x"))) → 2
-@(json(dict("foo", 1, "bar", "x"))) → {"bar":"x","foo":1}
-```
-
 <a name="type:function"></a>
 
 ## Function
@@ -125,6 +110,21 @@ Is a whole or fractional number.
 @(1234.5678) → 1234.5678
 @(format_number(1234.5678)) → 1,234.57
 @(json(1234.5678)) → 1234.5678
+```
+
+<a name="type:object"></a>
+
+## Object
+
+Is an object with named properties.
+
+
+```objectivec
+@(object("foo", 1, "bar", "x")) → {bar: x, foo: 1}
+@(object("foo", 1, "bar", "x").bar) → x
+@(object("foo", 1, "bar", "x")["bar"]) → x
+@(count(object("foo", 1, "bar", "x"))) → 2
+@(json(object("foo", 1, "bar", "x"))) → {"bar":"x","foo":1}
 ```
 
 <a name="type:text"></a>
@@ -446,7 +446,7 @@ It is the inverse of [char](expressions.html#function:char).
 
 ## count(value)
 
-Returns the number of items in the given array or dict.
+Returns the number of items in the given array or properties on an object.
 
 It will return an error if it is passed an item which isn't countable.
 
@@ -567,19 +567,6 @@ Returns `value` if is not empty or an error, otherwise it returns `default`.
 @(default(format_urn("invalid-urn"), "ok")) → ok
 ```
 
-<a name="function:dict"></a>
-
-## dict(pairs...)
-
-Takes key value pairs and returns them as an dict.
-
-
-```objectivec
-@(dict()) → {}
-@(dict("a", 123, "b", "hello")) → {a: 123, b: hello}
-@(dict("a")) → ERROR
-```
-
 <a name="function:epoch"></a>
 
 ## epoch(date)
@@ -598,9 +585,9 @@ The returned number can contain fractional seconds.
 
 <a name="function:extract"></a>
 
-## extract(dict, properties...)
+## extract(object, properties...)
 
-Takes a dict and extracts the named property.
+Takes an object and extracts the named property.
 
 
 ```objectivec
@@ -608,15 +595,15 @@ Takes a dict and extracts the named property.
 @(extract(contact.groups[0], "name")) → Testers
 ```
 
-<a name="function:extract_dict"></a>
+<a name="function:extract_object"></a>
 
-## extract_dict(dict, properties...)
+## extract_object(object, properties...)
 
-Takes a dict and returns a new dict by extracting only the named properties.
+Takes an object and returns a new object by extracting only the named properties.
 
 
 ```objectivec
-@(extract_dict(contact.groups[0], "name")) → {name: Testers}
+@(extract_object(contact.groups[0], "name")) → {name: Testers}
 ```
 
 <a name="function:field"></a>
@@ -969,6 +956,19 @@ An error is returned if the value can't be converted.
 @(number(10)) → 10
 @(number("123.45000")) → 123.45
 @(number("what?")) → ERROR
+```
+
+<a name="function:object"></a>
+
+## object(pairs...)
+
+Takes property name value pairs and returns them as a new object.
+
+
+```objectivec
+@(object()) → {}
+@(object("a", 123, "b", "hello")) → {a: 123, b: hello}
+@(object("a")) → ERROR
 ```
 
 <a name="function:or"></a>

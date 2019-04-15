@@ -18,11 +18,11 @@ func TestXValueRequiredConversions(t *testing.T) {
 
 	date1 := time.Date(2017, 6, 23, 15, 30, 0, 0, time.UTC)
 	date2 := time.Date(2017, 7, 18, 15, 30, 0, 0, chi)
-	dict1 := types.NewXDict(map[string]types.XValue{
+	object1 := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("Hello"),
 		"bar": types.NewXNumberFromInt(123),
 	})
-	dict2 := types.NewXDict(map[string]types.XValue{
+	object2 := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("World"),
 		"bar": types.NewXNumberFromInt(456),
 	})
@@ -127,19 +127,19 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asBool:  true,
 			isEmpty: false,
 		}, {
-			value:   types.NewXArray(dict1, dict2),
+			value:   types.NewXArray(object1, object2),
 			asJSON:  `[{"bar":123,"foo":"Hello"},{"bar":456,"foo":"World"}]`,
 			asText:  `[{bar: 123, foo: Hello}, {bar: 456, foo: World}]`,
 			asBool:  true,
 			isEmpty: false,
 		}, {
-			value:   types.XDictEmpty,
+			value:   types.XObjectEmpty,
 			asJSON:  `{}`,
 			asText:  `{}`,
 			asBool:  false,
 			isEmpty: true,
 		}, {
-			value:   types.NewXDict(map[string]types.XValue{"first": dict1, "second": dict2}),
+			value:   types.NewXObject(map[string]types.XValue{"first": object1, "second": object2}),
 			asJSON:  `{"first":{"bar":123,"foo":"Hello"},"second":{"bar":456,"foo":"World"}}`,
 			asText:  `{first: {bar: 123, foo: Hello}, second: {bar: 456, foo: World}}`,
 			asBool:  true,
@@ -190,23 +190,23 @@ func TestEquals(t *testing.T) {
 		{types.NewXDateTime(time.Date(2019, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
 
 		{
-			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
-			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
 			true,
 		},
 		{
-			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
-			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse}),
+			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse}),
 			false, // different number of keys
 		},
 		{
-			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
-			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "baz": types.NewXText("bob")}),
+			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "baz": types.NewXText("bob")}),
 			false, // different key
 		},
 		{
-			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
-			types.NewXDict(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("boo")}),
+			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("boo")}),
 			false, // different value
 		},
 
@@ -231,7 +231,7 @@ func TestEquals(t *testing.T) {
 func TestIsEmpty(t *testing.T) {
 	assert.True(t, types.IsEmpty(nil))
 	assert.True(t, types.IsEmpty(types.NewXArray()))
-	assert.True(t, types.IsEmpty(types.XDictEmpty))
+	assert.True(t, types.IsEmpty(types.XObjectEmpty))
 	assert.True(t, types.IsEmpty(types.NewXText("")))
 	assert.False(t, types.IsEmpty(types.NewXText("a")))
 	assert.False(t, types.IsEmpty(types.XBooleanFalse))

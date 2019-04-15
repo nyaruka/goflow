@@ -63,7 +63,7 @@ func TestContact(t *testing.T) {
 	assert.True(t, contact.HasURN("tel:+16364646466"))
 	assert.False(t, contact.HasURN("tel:+16300000000"))
 
-	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"ext":       nil,
 		"facebook":  nil,
 		"fcm":       nil,
@@ -90,7 +90,7 @@ func TestContact(t *testing.T) {
 	mrNil := (*flows.Contact)(nil)
 	assert.Nil(t, mrNil.Clone())
 
-	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"channel":    flows.Context(env, android),
 		"created_on": types.NewXDateTime(contact.CreatedOn()),
 		"display":    types.NewXText("Joe Bloggs"),

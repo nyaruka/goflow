@@ -157,7 +157,7 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 	return nil
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (f *flow) Context(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"uuid":     types.NewXText(string(f.UUID())),

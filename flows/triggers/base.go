@@ -77,7 +77,7 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 	return nil
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (t *baseTrigger) Context(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"type":   types.NewXText(t.type_),

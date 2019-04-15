@@ -238,7 +238,7 @@ func (c *Contact) Format(env utils.Environment) string {
 	return ""
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (c *Contact) Context(env utils.Environment) map[string]types.XValue {
 	var urn, timezone types.XValue
 	if c.timezone != nil {

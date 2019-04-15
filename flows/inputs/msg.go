@@ -42,7 +42,7 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 	}, nil
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (i *MsgInput) Context(env utils.Environment) map[string]types.XValue {
 	attachments := make([]types.XValue, len(i.attachments))
 

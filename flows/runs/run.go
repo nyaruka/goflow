@@ -214,7 +214,7 @@ func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
 	}
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (r *flowRun) Context(env utils.Environment) map[string]types.XValue {
 	var exitedOn types.XValue
 	if r.exitedOn != nil {
@@ -235,14 +235,14 @@ func (r *flowRun) Context(env utils.Environment) map[string]types.XValue {
 
 // EvaluateTemplate evaluates the given template in the context of this run
 func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
-	context := types.NewXDict(r.RootContext(r.Environment()))
+	context := types.NewXObject(r.RootContext(r.Environment()))
 
 	return excellent.EvaluateTemplateValue(r.Environment(), context, template)
 }
 
 // EvaluateTemplateAsString evaluates the given template as a string in the context of this run
 func (r *flowRun) EvaluateTemplate(template string) (string, error) {
-	context := types.NewXDict(r.RootContext(r.Environment()))
+	context := types.NewXObject(r.RootContext(r.Environment()))
 
 	return excellent.EvaluateTemplate(r.Environment(), context, template)
 }

@@ -14,7 +14,7 @@ import (
 )
 
 // EvaluateTemplate evaluates the passed in template
-func EvaluateTemplate(env utils.Environment, context *types.XDict, template string) (string, error) {
+func EvaluateTemplate(env utils.Environment, context *types.XObject, template string) (string, error) {
 	var buf strings.Builder
 
 	err := VisitTemplate(template, context.Keys(), func(tokenType XTokenType, token string) error {
@@ -42,7 +42,7 @@ func EvaluateTemplate(env utils.Environment, context *types.XDict, template stri
 // EvaluateTemplateValue is equivalent to EvaluateTemplate except in the case where the template contains
 // a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In these cases we return
 // the typed value from EvaluateExpression instead of stringifying the result.
-func EvaluateTemplateValue(env utils.Environment, context *types.XDict, template string) (types.XValue, error) {
+func EvaluateTemplateValue(env utils.Environment, context *types.XObject, template string) (types.XValue, error) {
 	template = strings.TrimSpace(template)
 	scanner := NewXScanner(strings.NewReader(template), context.Keys())
 
@@ -67,7 +67,7 @@ func EvaluateTemplateValue(env utils.Environment, context *types.XDict, template
 
 // EvaluateExpression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
-func EvaluateExpression(env utils.Environment, context *types.XDict, expression string) types.XValue {
+func EvaluateExpression(env utils.Environment, context *types.XObject, expression string) types.XValue {
 	visitor := newEvaluationVisitor(env, context)
 	output, err := VisitExpression(expression, visitor)
 	if err != nil {
@@ -82,11 +82,11 @@ type visitor struct {
 	gen.BaseExcellent2Visitor
 
 	env     utils.Environment
-	context *types.XDict
+	context *types.XObject
 }
 
 // creates a new visitor for evaluation
-func newEvaluationVisitor(env utils.Environment, context *types.XDict) *visitor {
+func newEvaluationVisitor(env utils.Environment, context *types.XObject) *visitor {
 	return &visitor{env: env, context: context}
 }
 
@@ -147,9 +147,9 @@ func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 
 	property := ctx.NAME().GetText()
 
-	asDict, isDict := container.(*types.XDict)
-	if isDict && asDict != nil {
-		value, exists := asDict.Get(property)
+	object, isObject := container.(*types.XObject)
+	if isObject && object != nil {
+		value, exists := object.Get(property)
 		if exists {
 			return value
 		}
@@ -168,32 +168,32 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	expression := toXValue(v.Visit(ctx.Expression()))
 
 	// if left-hand side is an array, then this is an index
-	asArray, isArray := container.(*types.XArray)
-	if isArray && asArray != nil {
+	array, isArray := container.(*types.XArray)
+	if isArray && array != nil {
 		index, xerr := types.ToInteger(v.env, expression)
 		if xerr != nil {
 			return xerr
 		}
 
-		if index >= asArray.Count() || index < -asArray.Count() {
-			return types.NewXErrorf("index %d out of range for %d items", index, asArray.Count())
+		if index >= array.Count() || index < -array.Count() {
+			return types.NewXErrorf("index %d out of range for %d items", index, array.Count())
 		}
 		if index < 0 {
-			index += asArray.Count()
+			index += array.Count()
 		}
-		return asArray.Get(index)
+		return array.Get(index)
 	}
 
-	// if left-hand side is a dict, then this is a property lookup
-	asDict, isDict := container.(*types.XDict)
-	if isDict && asDict != nil {
+	// if left-hand side is an object, then this is a property lookup
+	object, isObject := container.(*types.XObject)
+	if isObject && object != nil {
 		lookup, xerr := types.ToXText(v.env, expression)
 		if xerr != nil {
 			return xerr
 		}
 
 		// [] notation doesn't error
-		value, _ := asDict.Get(lookup.Native())
+		value, _ := object.Get(lookup.Native())
 		return value
 	}
 

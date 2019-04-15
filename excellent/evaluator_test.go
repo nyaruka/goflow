@@ -22,7 +22,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	array1d := types.NewXArray(types.NewXText("a"), types.NewXText("b"), types.NewXText("c"))
 	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")))
 
-	context := types.NewXDict(map[string]types.XValue{
+	context := types.NewXObject(map[string]types.XValue{
 		"string1": types.NewXText("foo"),
 		"string2": types.NewXText("bar"),
 		"key":     types.NewXText("four"),
@@ -177,7 +177,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 
 func TestEvaluateTemplate(t *testing.T) {
 
-	vars := types.NewXDict(map[string]types.XValue{
+	vars := types.NewXObject(map[string]types.XValue{
 		"string1": types.NewXText("foo"),
 		"string2": types.NewXText("bar"),
 		"汉字":      types.NewXText("simplified chinese"),
@@ -187,7 +187,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		"dec2":    types.RequireXNumberFromString("2.5"),
 		"words":   types.NewXText("one two three"),
 		"array1":  types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
-		"thing": types.NewXDict(map[string]types.XValue{
+		"thing": types.NewXObject(map[string]types.XValue{
 			"foo":     types.NewXText("bar"),
 			"zed":     types.NewXNumberFromInt(123),
 			"missing": nil,
@@ -216,7 +216,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@((title)("xyz"))`, "Xyz", false},
 		{`@(func("xyz"))`, "XYZ", false},
 		{`@(array(upper)[0]("hello"))`, "HELLO", false},
-		{`@(dict("a", lower, "b", upper).a("Hello"))`, "hello", false},
+		{`@(object("a", lower, "b", upper).a("Hello"))`, "hello", false},
 
 		// an identifier which isn't valid top-level is ignored completely
 		{"@hello", "@hello", false},
@@ -333,7 +333,7 @@ var errorTests = []struct {
 }
 
 func TestEvaluationErrors(t *testing.T) {
-	vars := types.NewXDict(map[string]types.XValue{
+	vars := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("bar"),
 	})
 	env := utils.NewEnvironmentBuilder().Build()
@@ -351,7 +351,7 @@ func TestEvaluationErrors(t *testing.T) {
 
 func BenchmarkEvaluationErrors(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		vars := types.NewXDict(map[string]types.XValue{
+		vars := types.NewXObject(map[string]types.XValue{
 			"foo": types.NewXText("bar"),
 		})
 		env := utils.NewEnvironmentBuilder().Build()

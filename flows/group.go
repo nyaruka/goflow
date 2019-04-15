@@ -77,7 +77,7 @@ func (g *Group) Reference() *assets.GroupReference {
 
 // ToXValue returns a representation of this object for use in expressions
 func (g *Group) ToXValue(env utils.Environment) types.XValue {
-	return types.NewXDict(map[string]types.XValue{
+	return types.NewXObject(map[string]types.XValue{
 		"uuid": types.NewXText(string(g.UUID())),
 		"name": types.NewXText(g.Name()),
 	})

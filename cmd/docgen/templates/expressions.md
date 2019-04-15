@@ -24,9 +24,9 @@ Excellent has the following types:
  * [Boolean](#type:boolean)
  * [Date](#type:date)
  * [DateTime](#type:datetime)
- * [Dict](#type:dict)
  * [Function](#type:function)
  * [Number](#type:number)
+ * [Object](#type:object)
  * [Text](#type:text)
  * [Time](#type:time)
 

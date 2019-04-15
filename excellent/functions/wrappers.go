@@ -253,14 +253,14 @@ func OneDateTimeFunction(f func(utils.Environment, types.XDateTime) types.XValue
 	})
 }
 
-// OneDictFunction creates an XFunction from a single dict function
-func OneDictFunction(f func(utils.Environment, *types.XDict) types.XValue) types.XFunction {
+// OneObjectFunction creates an XFunction from a single object function
+func OneObjectFunction(f func(utils.Environment, *types.XObject) types.XValue) types.XFunction {
 	return ArgCountCheck(1, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
-		dict, xerr := types.ToXDict(env, args[0])
+		object, xerr := types.ToXObject(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
 
-		return f(env, dict)
+		return f(env, object)
 	})
 }

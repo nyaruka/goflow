@@ -140,8 +140,8 @@ Returns whether `value` is an error
 
 ```objectivec
 @(has_error(datetime("foo"))) → {match: error calling DATETIME: unable to convert "foo" to a datetime}
-@(has_error(run.not.existing)) → {match: dict has no property 'not'}
-@(has_error(contact.fields.unset)) → {match: dict has no property 'unset'}
+@(has_error(run.not.existing)) → {match: object has no property 'not'}
+@(has_error(contact.fields.unset)) → {match: object has no property 'unset'}
 @(has_error("hello")) →
 ```
 

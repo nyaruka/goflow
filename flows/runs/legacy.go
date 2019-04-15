@@ -29,9 +29,9 @@ func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 
 	// if trigger params is a JSON object, we include it in @extra
 	triggerParams := run.Session().Trigger().Params()
-	asDict, isDict := triggerParams.(*types.XDict)
-	if isDict && asDict != nil {
-		e.addValues(asDict)
+	object, isObject := triggerParams.(*types.XObject)
+	if isObject && object != nil {
+		e.addValues(object)
 	}
 
 	// if trigger has results (i.e. a flow_action type trigger with a parent run) use them too
@@ -46,7 +46,7 @@ func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 }
 
 func (e *legacyExtra) ToXValue(env utils.Environment) types.XValue {
-	return types.NewXDict(e.values)
+	return types.NewXObject(e.values)
 }
 
 func (e *legacyExtra) addResults(results flows.Results) {
@@ -78,20 +78,20 @@ func (e *legacyExtra) addResult(result *flows.Result) {
 
 func (e *legacyExtra) addValues(values types.XValue) {
 	switch typed := values.(type) {
-	case *types.XDict:
+	case *types.XObject:
 		for _, key := range typed.Keys() {
 			value, _ := typed.Get(key)
 			e.values[legacyExtraKey(key)] = value
 		}
 	case *types.XArray:
-		e.addValues(arrayToDict(typed))
+		e.addValues(arrayToObject(typed))
 	}
 }
 
-func arrayToDict(array *types.XArray) *types.XDict {
-	m := make(map[string]types.XValue, array.Count())
+func arrayToObject(array *types.XArray) *types.XObject {
+	properties := make(map[string]types.XValue, array.Count())
 	for i := 0; i < array.Count(); i++ {
-		m[strconv.Itoa(i)] = array.Get(i)
+		properties[strconv.Itoa(i)] = array.Get(i)
 	}
-	return types.NewXDict(m)
+	return types.NewXObject(properties)
 }

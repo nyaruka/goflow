@@ -34,7 +34,7 @@ func (s *step) Leave(exit flows.ExitUUID) {
 	s.exitUUID = exit
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (s *step) Context(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"uuid":       types.NewXText(string(s.UUID())),

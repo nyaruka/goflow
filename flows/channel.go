@@ -69,7 +69,7 @@ func (c *Channel) HasParent() bool {
 	return c.Parent() != nil
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (c *Channel) Context(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"uuid":    types.NewXText(string(c.UUID())),

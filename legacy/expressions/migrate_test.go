@@ -254,13 +254,13 @@ func BenchmarkMigrateTemplate(b *testing.B) {
 
 type legacyVariables map[string]interface{}
 
-func (v legacyVariables) Context(env utils.Environment) *types.XDict {
+func (v legacyVariables) Context(env utils.Environment) *types.XObject {
 	entries := make(map[string]types.XValue, len(v))
 
 	for k, val := range v {
 		entries[strings.ToLower(k)] = toXType(env, val)
 	}
-	return types.NewXDict(entries)
+	return types.NewXObject(entries)
 }
 
 func toXType(env utils.Environment, val interface{}) types.XValue {

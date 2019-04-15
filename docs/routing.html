@@ -77,8 +77,8 @@
 <h2 id="has_errorvalue">has_error(value)</h2>
 <p>Returns whether <code>value</code> is an error</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" title="1">@(has_error(datetime(<span class="st">&quot;foo&quot;</span>))) → {match: error calling DATETIME: unable to convert <span class="st">&quot;foo&quot;</span> to a datetime}</a>
-<a class="sourceLine" id="cb10-2" title="2">@(has_error(run.not.existing)) → {match: dict has no property &#39;not&#39;}</a>
-<a class="sourceLine" id="cb10-3" title="3">@(has_error(contact.fields.unset)) → {match: dict has no property &#39;unset&#39;}</a>
+<a class="sourceLine" id="cb10-2" title="2">@(has_error(run.not.existing)) → {match: object has no property &#39;not&#39;}</a>
+<a class="sourceLine" id="cb10-3" title="3">@(has_error(contact.fields.unset)) → {match: object has no property &#39;unset&#39;}</a>
 <a class="sourceLine" id="cb10-4" title="4">@(has_error(<span class="st">&quot;hello&quot;</span>)) →</a></code></pre></div>
 <p><a name="test:has_group"></a></p>
 <h2 id="has_groupcontact-group_uuid">has_group(contact, group_uuid)</h2>

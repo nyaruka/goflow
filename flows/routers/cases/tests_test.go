@@ -96,10 +96,10 @@ var testTests = []struct {
 	{"has_beginning", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
 	{"has_beginning", []types.XValue{}, ERROR},
 
-	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`<\w+>`)}, resultWithExtra(xs("<html>"), types.NewXDict(map[string]types.XValue{"0": xs("<html>")}))},
-	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`HTML`)}, resultWithExtra(xs("html"), types.NewXDict(map[string]types.XValue{"0": xs("html")}))},
+	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`<\w+>`)}, resultWithExtra(xs("<html>"), types.NewXObject(map[string]types.XValue{"0": xs("<html>")}))},
+	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`HTML`)}, resultWithExtra(xs("html"), types.NewXObject(map[string]types.XValue{"0": xs("html")}))},
 	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`(?-i)HTML`)}, nil},
-	{"has_pattern", []types.XValue{xs("12345"), xs(`\A\d{5}\z`)}, resultWithExtra(xs("12345"), types.NewXDict(map[string]types.XValue{"0": xs("12345")}))},
+	{"has_pattern", []types.XValue{xs("12345"), xs(`\A\d{5}\z`)}, resultWithExtra(xs("12345"), types.NewXObject(map[string]types.XValue{"0": xs("12345")}))},
 	{"has_pattern", []types.XValue{xs("12345 "), xs(`\A\d{5}\z`)}, nil},
 	{"has_pattern", []types.XValue{xs(" 12345"), xs(`\A\d{5}\z`)}, nil},
 	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`[`)}, ERROR},
@@ -234,13 +234,13 @@ var testTests = []struct {
 		"has_group",
 		[]types.XValue{
 			xa(
-				types.NewXDict(map[string]types.XValue{"uuid": xs("group-uuid-1"), "name": xs("Testers")}),
-				types.NewXDict(map[string]types.XValue{"uuid": xs("group-uuid-2"), "name": xs("Customers")}),
+				types.NewXObject(map[string]types.XValue{"uuid": xs("group-uuid-1"), "name": xs("Testers")}),
+				types.NewXObject(map[string]types.XValue{"uuid": xs("group-uuid-2"), "name": xs("Customers")}),
 			),
 			xs("group-uuid-2"),
 		},
-		types.NewXDict(map[string]types.XValue{
-			"match": types.NewXDict(map[string]types.XValue{"uuid": xs("group-uuid-2"), "name": xs("Customers")}),
+		types.NewXObject(map[string]types.XValue{
+			"match": types.NewXObject(map[string]types.XValue{"uuid": xs("group-uuid-2"), "name": xs("Customers")}),
 		}),
 	},
 	{"has_group", []types.XValue{xa(ERROR), xs("group-uuid-2")}, ERROR},
@@ -279,11 +279,11 @@ func TestTests(t *testing.T) {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	vars := types.NewXDict(map[string]types.XValue{
+	vars := types.NewXObject(map[string]types.XValue{
 		"int1":   types.NewXNumberFromInt(1),
 		"int2":   types.NewXNumberFromInt(2),
 		"array1": types.NewXArray(xs("one"), xs("two"), xs("three")),
-		"thing": types.NewXDict(map[string]types.XValue{
+		"thing": types.NewXObject(map[string]types.XValue{
 			"foo":     types.NewXText("bar"),
 			"zed":     types.NewXNumberFromInt(123),
 			"missing": nil,
@@ -300,7 +300,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@(has_error(round("foo", "bar")))`, "{match: error calling ROUND: unable to convert \"foo\" to a number}", false},
 		{`@(has_error(err))`, "{match: an error}", false},
 		{"@(has_error(thing.foo))", "", false},
-		{"@(has_error(thing.xxx))", "{match: dict has no property 'xxx'}", false},
+		{"@(has_error(thing.xxx))", "{match: object has no property 'xxx'}", false},
 		{"@(has_error(1 / 0))", "{match: division by zero}", false},
 	}
 

@@ -74,13 +74,13 @@ var XTESTS = map[string]types.XFunction{
 //------------------------------------------------------------------------------------------
 
 // NewTrueResult creates a new true result with a match
-func NewTrueResult(match types.XValue) *types.XDict {
-	return types.NewXDict(map[string]types.XValue{"match": match})
+func NewTrueResult(match types.XValue) *types.XObject {
+	return types.NewXObject(map[string]types.XValue{"match": match})
 }
 
 // NewTrueResultWithExtra creates a new true result with a match and extra
-func NewTrueResultWithExtra(match types.XValue, extra *types.XDict) *types.XDict {
-	return types.NewXDict(map[string]types.XValue{"match": match, "extra": extra})
+func NewTrueResultWithExtra(match types.XValue, extra *types.XObject) *types.XObject {
+	return types.NewXObject(map[string]types.XValue{"match": match, "extra": extra})
 }
 
 //------------------------------------------------------------------------------------------
@@ -110,8 +110,8 @@ func IsTextEQ(env utils.Environment, text1 types.XText, text2 types.XText) types
 // HasError returns whether `value` is an error
 //
 //   @(has_error(datetime("foo"))) -> {match: error calling DATETIME: unable to convert "foo" to a datetime}
-//   @(has_error(run.not.existing)) -> {match: dict has no property 'not'}
-//   @(has_error(contact.fields.unset)) -> {match: dict has no property 'unset'}
+//   @(has_error(run.not.existing)) -> {match: object has no property 'not'}
+//   @(has_error(contact.fields.unset)) -> {match: object has no property 'unset'}
 //   @(has_error("hello")) ->
 //
 // @test has_error(value)
@@ -163,7 +163,7 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 	}
 
 	for i := 0; i < array.Count(); i++ {
-		group, xerr := types.ToXDict(env, array.Get(i))
+		group, xerr := types.ToXObject(env, array.Get(i))
 		if xerr != nil {
 			return xerr
 		}
@@ -310,7 +310,7 @@ func HasPattern(env utils.Environment, text types.XText, pattern types.XText) ty
 		for g, group := range matches {
 			extra[strconv.Itoa(g)] = types.NewXText(group)
 		}
-		return NewTrueResultWithExtra(types.NewXText(matches[0]), types.NewXDict(extra))
+		return NewTrueResultWithExtra(types.NewXText(matches[0]), types.NewXObject(extra))
 	}
 
 	return nil

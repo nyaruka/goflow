@@ -59,7 +59,7 @@ func TestUnmarshalAndValidateWithLimit(t *testing.T) {
 
 func TestJSONDecodeGeneric(t *testing.T) {
 	// parse a JSON object into a map
-	data := []byte(`{"bool": true, "number": 123.34, "text": "hello", "dict": {"foo": "bar"}, "list": [1, "x"]}`)
+	data := []byte(`{"bool": true, "number": 123.34, "text": "hello", "object": {"foo": "bar"}, "array": [1, "x"]}`)
 	vals, err := utils.JSONDecodeGeneric(data)
 	assert.NoError(t, err)
 
@@ -67,8 +67,8 @@ func TestJSONDecodeGeneric(t *testing.T) {
 	assert.Equal(t, true, asMap["bool"])
 	assert.Equal(t, json.Number("123.34"), asMap["number"])
 	assert.Equal(t, "hello", asMap["text"])
-	assert.Equal(t, map[string]interface{}{"foo": "bar"}, asMap["dict"])
-	assert.Equal(t, []interface{}{json.Number("1"), "x"}, asMap["list"])
+	assert.Equal(t, map[string]interface{}{"foo": "bar"}, asMap["object"])
+	assert.Equal(t, []interface{}{json.Number("1"), "x"}, asMap["array"])
 
 	// parse a JSON array into a slice
 	data = []byte(`[{"foo": 123}, {"foo": 456}]`)

@@ -45,27 +45,26 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 	case jsonparser.Array:
 		return jsonToArray(data)
 	case jsonparser.Object:
-		return jsonToDict(data)
+		return jsonToObject(data)
 	}
 
 	return NewXError(errors.Errorf("unknown JSON parsing error"))
 }
 
-func jsonToDict(data []byte) *XDict {
-	return NewXLazyDict(func() map[string]XValue {
-		entries := make(map[string]XValue, 0)
+func jsonToObject(data []byte) *XObject {
+	return NewXLazyObject(func() map[string]XValue {
+		properties := make(map[string]XValue, 0)
 
 		jsonparser.ObjectEach(data, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
-			entries[string(key)] = jsonTypeToXValue(value, dataType)
+			properties[string(key)] = jsonTypeToXValue(value, dataType)
 			return nil
 		})
-		return entries
+		return properties
 	})
 }
 
 func jsonToArray(data []byte) *XArray {
 	return NewXLazyArray(func() []XValue {
-
 		items := make([]XValue, 0)
 
 		jsonparser.ArrayEach(data, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {

@@ -282,7 +282,7 @@ func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Fi
 	}
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (f FieldValues) Context(env utils.Environment) map[string]types.XValue {
 	entries := make(map[string]types.XValue, len(f))
 

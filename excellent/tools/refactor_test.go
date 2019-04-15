@@ -34,8 +34,8 @@ func TestRefactorTemplate(t *testing.T) {
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()
-	context := types.NewXDict(map[string]types.XValue{
-		"foo": types.NewXDict(map[string]types.XValue{
+	context := types.NewXObject(map[string]types.XValue{
+		"foo": types.NewXObject(map[string]types.XValue{
 			"bar": types.NewXNumberFromInt(123),
 		}),
 	})

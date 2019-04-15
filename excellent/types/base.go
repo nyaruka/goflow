@@ -53,14 +53,14 @@ func Equals(x1 XValue, x2 XValue) bool {
 		return typed.Equals(x2.(XDate))
 	case XDateTime:
 		return typed.Equals(x2.(XDateTime))
-	case *XDict:
-		return typed.Equals(x2.(*XDict))
 	case XError:
 		return typed.Equals(x2.(XError))
 	case XFunction:
 		return typed.Equals(x2.(XFunction))
 	case XNumber:
 		return typed.Equals(x2.(XNumber))
+	case *XObject:
+		return typed.Equals(x2.(*XObject))
 	case XText:
 		return typed.Equals(x2.(XText))
 	case XTime:

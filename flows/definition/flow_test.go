@@ -267,7 +267,7 @@ func TestNewFlow(t *testing.T) {
 	assert.NoError(t, err)
 
 	// check in expressions
-	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"name":     types.NewXText("Test Flow"),
 		"revision": types.NewXNumberFromInt(123),
 		"uuid":     types.NewXText("8ca44c09-791d-453a-9799-a70dd3303306"),

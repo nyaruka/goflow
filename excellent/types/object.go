@@ -9,16 +9,16 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// XDict is a dictionary of keys and values.
+// XObject is an object with named properties.
 //
-//   @(dict("foo", 1, "bar", "x")) -> {bar: x, foo: 1}
-//   @(dict("foo", 1, "bar", "x").bar) -> x
-//   @(dict("foo", 1, "bar", "x")["bar"]) -> x
-//   @(count(dict("foo", 1, "bar", "x"))) -> 2
-//   @(json(dict("foo", 1, "bar", "x"))) -> {"bar":"x","foo":1}
+//   @(object("foo", 1, "bar", "x")) -> {bar: x, foo: 1}
+//   @(object("foo", 1, "bar", "x").bar) -> x
+//   @(object("foo", 1, "bar", "x")["bar"]) -> x
+//   @(count(object("foo", 1, "bar", "x"))) -> 2
+//   @(json(object("foo", 1, "bar", "x"))) -> {"bar":"x","foo":1}
 //
-// @type dict
-type XDict struct {
+// @type object
+type XObject struct {
 	XValue
 	XCountable
 
@@ -26,25 +26,25 @@ type XDict struct {
 	source func() map[string]XValue
 }
 
-// NewXDict returns a new dict with the given items
-func NewXDict(data map[string]XValue) *XDict {
-	return &XDict{
-		data: data,
+// NewXObject returns a new object with the given properties
+func NewXObject(properties map[string]XValue) *XObject {
+	return &XObject{
+		data: properties,
 	}
 }
 
-// NewXLazyDict returns a new lazy dict with the source function
-func NewXLazyDict(source func() map[string]XValue) *XDict {
-	return &XDict{
+// NewXLazyObject returns a new lazy object with the source function
+func NewXLazyObject(source func() map[string]XValue) *XObject {
+	return &XObject{
 		source: source,
 	}
 }
 
 // Describe returns a representation of this type for error messages
-func (x *XDict) Describe() string { return "dict" }
+func (x *XObject) Describe() string { return "object" }
 
 // ToXText converts this type to text
-func (x *XDict) ToXText(env utils.Environment) XText {
+func (x *XObject) ToXText(env utils.Environment) XText {
 	pairs := make([]string, 0, x.Count())
 	for _, k := range x.keys(true) {
 		vAsText, xerr := ToXText(env, x.values()[k])
@@ -58,12 +58,12 @@ func (x *XDict) ToXText(env utils.Environment) XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (x *XDict) ToXBoolean() XBoolean {
+func (x *XObject) ToXBoolean() XBoolean {
 	return NewXBoolean(x.Count() > 0)
 }
 
 // MarshalJSON converts this type to internal JSON
-func (x *XDict) MarshalJSON() ([]byte, error) {
+func (x *XObject) MarshalJSON() ([]byte, error) {
 	marshaled := make(map[string]json.RawMessage, x.Count())
 	for k, v := range x.values() {
 		asJSON, err := ToXJSON(v)
@@ -75,12 +75,12 @@ func (x *XDict) MarshalJSON() ([]byte, error) {
 }
 
 // Count is called when the length of this object is requested in an expression
-func (x *XDict) Count() int {
+func (x *XObject) Count() int {
 	return len(x.values())
 }
 
-// Get retrieves the named item from this dict
-func (x *XDict) Get(key string) (XValue, bool) {
+// Get retrieves the named property
+func (x *XObject) Get(key string) (XValue, bool) {
 	key = strings.ToLower(key)
 	for k, v := range x.values() {
 		if strings.ToLower(k) == key {
@@ -91,22 +91,22 @@ func (x *XDict) Get(key string) (XValue, bool) {
 	return nil, false
 }
 
-// Keys returns the keys of this dict
-func (x *XDict) Keys() []string {
+// Keys returns the properties of this object
+func (x *XObject) Keys() []string {
 	return x.keys(false)
 }
 
 // String returns the native string representation of this type for debugging
-func (x *XDict) String() string {
+func (x *XObject) String() string {
 	pairs := make([]string, 0, x.Count())
 	for _, k := range x.keys(true) {
 		pairs = append(pairs, fmt.Sprintf("%s: %s", k, String(x.values()[k])))
 	}
-	return "XDict{" + strings.Join(pairs, ", ") + "}"
+	return "XObject{" + strings.Join(pairs, ", ") + "}"
 }
 
 // Equals determines equality for this type
-func (x *XDict) Equals(other *XDict) bool {
+func (x *XObject) Equals(other *XObject) bool {
 	keys1 := x.keys(true)
 	keys2 := other.keys(true)
 
@@ -127,7 +127,7 @@ func (x *XDict) Equals(other *XDict) bool {
 	return true
 }
 
-func (x *XDict) keys(sorted bool) []string {
+func (x *XObject) keys(sorted bool) []string {
 	keys := make([]string, 0, x.Count())
 	for key := range x.values() {
 		keys = append(keys, key)
@@ -138,31 +138,31 @@ func (x *XDict) keys(sorted bool) []string {
 	return keys
 }
 
-func (x *XDict) values() map[string]XValue {
+func (x *XObject) values() map[string]XValue {
 	if x.data == nil {
 		x.data = x.source()
 	}
 	return x.data
 }
 
-// XDictEmpty is the empty dict
-var XDictEmpty = NewXDict(map[string]XValue{})
+// XObjectEmpty is the empty empty
+var XObjectEmpty = NewXObject(map[string]XValue{})
 
-var _ json.Marshaler = (*XDict)(nil)
+var _ json.Marshaler = (*XObject)(nil)
 
-// ToXDict converts the given value to a dict
-func ToXDict(env utils.Environment, x XValue) (*XDict, XError) {
+// ToXObject converts the given value to an object
+func ToXObject(env utils.Environment, x XValue) (*XObject, XError) {
 	if utils.IsNil(x) {
-		return XDictEmpty, nil
+		return XObjectEmpty, nil
 	}
 	if IsXError(x) {
-		return XDictEmpty, x.(XError)
+		return XObjectEmpty, x.(XError)
 	}
 
-	asDict, isDict := x.(*XDict)
-	if isDict {
-		return asDict, nil
+	object, isObject := x.(*XObject)
+	if isObject && object != nil {
+		return object, nil
 	}
 
-	return XDictEmpty, NewXErrorf("unable to convert %s to a dict", Describe(x))
+	return XObjectEmpty, NewXErrorf("unable to convert %s to an object", Describe(x))
 }

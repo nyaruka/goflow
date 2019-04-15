@@ -32,7 +32,7 @@ func TestStep(t *testing.T) {
 
 	// test use in expressions
 	env := utils.NewEnvironmentBuilder().Build()
-	test.AssertXEqual(t, types.NewXDict(map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"arrived_on": types.NewXDateTime(d),
 		"exit_uuid":  types.XTextEmpty,
 		"node_uuid":  types.NewXText("5fb4f555-7662-4c4c-8387-226e359526e4"),

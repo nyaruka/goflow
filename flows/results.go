@@ -51,7 +51,7 @@ func NewResult(name string, value string, category string, categoryLocalized str
 	}
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (r *Result) Context(env utils.Environment) map[string]types.XValue {
 	categoryLocalized := r.CategoryLocalized
 	if categoryLocalized == "" {
@@ -115,7 +115,7 @@ func (r Results) Get(key string) *Result {
 	return r[key]
 }
 
-// Context returns a dict of properties available in expressions
+// Context returns the properties available in expressions
 func (r Results) Context(env utils.Environment) map[string]types.XValue {
 	entries := make(map[string]types.XValue, len(r))
 

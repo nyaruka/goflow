@@ -61,11 +61,11 @@ func TestFunctions(t *testing.T) {
 		{"array", dmy, []types.XValue{xi(123), xs("abc")}, xa(xi(123), xs("abc"))},
 		{"array", dmy, []types.XValue{xi(123), ERROR, xs("abc")}, ERROR},
 
-		{"attachment_parts", dmy, []types.XValue{xs("image/jpeg:http://s3.com/test.jpg")}, types.NewXDict(map[string]types.XValue{
+		{"attachment_parts", dmy, []types.XValue{xs("image/jpeg:http://s3.com/test.jpg")}, types.NewXObject(map[string]types.XValue{
 			"content_type": xs("image/jpeg"),
 			"url":          xs("http://s3.com/test.jpg"),
 		})},
-		{"attachment_parts", dmy, []types.XValue{xs("not_a_thing")}, types.NewXDict(map[string]types.XValue{
+		{"attachment_parts", dmy, []types.XValue{xs("not_a_thing")}, types.NewXObject(map[string]types.XValue{
 			"content_type": xs(""),
 			"url":          xs("not_a_thing"),
 		})},
@@ -96,7 +96,7 @@ func TestFunctions(t *testing.T) {
 		{
 			"count",
 			dmy,
-			[]types.XValue{types.NewXDict(map[string]types.XValue{"a": xs("hello"), "b": xi(3)})},
+			[]types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("hello"), "b": xi(3)})},
 			xi(2),
 		},
 		{"count", dmy, []types.XValue{xa(xs("hello"), xi(3))}, xi(2)},
@@ -183,49 +183,42 @@ func TestFunctions(t *testing.T) {
 		{"default", dmy, []types.XValue{types.NewXErrorf("This is error"), xs("20")}, xs("20")},
 		{"default", dmy, []types.XValue{}, ERROR},
 
-		{"dict", dmy, []types.XValue{xs("foo"), xs("hello"), xs("bar"), xi(123)}, types.NewXDict(map[string]types.XValue{"foo": xs("hello"), "bar": xi(123)})},
-		{"dict", dmy, []types.XValue{xi(0), xs("hello")}, types.NewXDict(map[string]types.XValue{"0": xs("hello")})},
-		{"dict", dmy, []types.XValue{ERROR, xs("hello")}, ERROR},
-		{"dict", dmy, []types.XValue{xs("foo"), ERROR}, ERROR},
-		{"dict", dmy, []types.XValue{xs("foo")}, ERROR},
-		{"dict", dmy, []types.XValue{}, types.XDictEmpty},
-
-		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("foo")}, xs("hello")},
-		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("bar")}, nil},
-		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")}), xs("foo"), xs("bar")}, ERROR},
-		{"extract", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{"foo": xs("hello")})}, ERROR},
+		{"extract", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"foo": xs("hello")}), xs("foo")}, xs("hello")},
+		{"extract", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"foo": xs("hello")}), xs("bar")}, nil},
+		{"extract", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"foo": xs("hello")}), xs("foo"), xs("bar")}, ERROR},
+		{"extract", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"foo": xs("hello")})}, ERROR},
 		{"extract", dmy, []types.XValue{}, ERROR},
 
 		{
-			"extract_dict",
+			"extract_object",
 			dmy,
 			[]types.XValue{
-				types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
+				types.NewXObject(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
 				xs("a"),
 				xs("c"),
 			},
-			types.NewXDict(map[string]types.XValue{"a": xi(123), "c": types.XBooleanTrue}),
+			types.NewXObject(map[string]types.XValue{"a": xi(123), "c": types.XBooleanTrue}),
 		},
 		{
-			"extract_dict",
+			"extract_object",
 			dmy,
 			[]types.XValue{
-				types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
+				types.NewXObject(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
 				xs("a"),
 			},
-			types.NewXDict(map[string]types.XValue{"a": xi(123)}),
+			types.NewXObject(map[string]types.XValue{"a": xi(123)}),
 		},
 		{
-			"extract_dict",
+			"extract_object",
 			dmy,
 			[]types.XValue{
-				types.NewXDict(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
+				types.NewXObject(map[string]types.XValue{"a": xi(123), "b": xs("xyz"), "c": types.XBooleanTrue}),
 				xs("a"),
 				xs("d"),
 			},
-			types.NewXDict(map[string]types.XValue{"a": xi(123), "d": nil}),
+			types.NewXObject(map[string]types.XValue{"a": xi(123), "d": nil}),
 		},
-		{"extract_dict", dmy, []types.XValue{}, ERROR},
+		{"extract_object", dmy, []types.XValue{}, ERROR},
 
 		{"epoch", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619")},
 		{"epoch", dmy, []types.XValue{ERROR}, ERROR},
@@ -287,18 +280,18 @@ func TestFunctions(t *testing.T) {
 		{"format_location", dmy, []types.XValue{ERROR}, ERROR},
 		{"format_location", dmy, []types.XValue{}, ERROR},
 
-		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{})}, xs("")},
-		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
+		{"format_input", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{})}, xs("")},
+		{"format_input", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{
 			"text": xs("Hi there"),
 		})}, xs("Hi there")},
-		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
+		{"format_input", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{
 			"text":        xs("Hi there"),
 			"attachments": xa(xs("image/jpeg:http://s3.com/test.jpg"), xs("audio/mp3:http://s3.com/test.mp3")),
 		})}, xs("Hi there\nhttp://s3.com/test.jpg\nhttp://s3.com/test.mp3")},
-		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
+		{"format_input", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{
 			"text": ERROR,
 		})}, ERROR},
-		{"format_input", dmy, []types.XValue{types.NewXDict(map[string]types.XValue{
+		{"format_input", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{
 			"text":        xs("Hi there"),
 			"attachments": xa(xs("image/jpeg:http://s3.com/test.jpg"), ERROR),
 		})}, ERROR},
@@ -405,6 +398,13 @@ func TestFunctions(t *testing.T) {
 		{"number", dmy, []types.XValue{xn("10")}, xn("10")},
 		{"number", dmy, []types.XValue{xs("123.45000")}, xn("123.45")},
 		{"number", dmy, []types.XValue{xs("what?")}, ERROR},
+
+		{"object", dmy, []types.XValue{xs("foo"), xs("hello"), xs("bar"), xi(123)}, types.NewXObject(map[string]types.XValue{"foo": xs("hello"), "bar": xi(123)})},
+		{"object", dmy, []types.XValue{xi(0), xs("hello")}, types.NewXObject(map[string]types.XValue{"0": xs("hello")})},
+		{"object", dmy, []types.XValue{ERROR, xs("hello")}, ERROR},
+		{"object", dmy, []types.XValue{xs("foo"), ERROR}, ERROR},
+		{"object", dmy, []types.XValue{xs("foo")}, ERROR},
+		{"object", dmy, []types.XValue{}, types.XObjectEmpty},
 
 		{"or", dmy, []types.XValue{types.XBooleanTrue}, types.XBooleanTrue},
 		{"or", dmy, []types.XValue{types.XBooleanFalse}, types.XBooleanFalse},
@@ -578,17 +578,17 @@ func TestFunctions(t *testing.T) {
 		{"upper", dmy, []types.XValue{xs("")}, xs("")},
 		{"upper", dmy, []types.XValue{}, ERROR},
 
-		{"urn_parts", dmy, []types.XValue{xs("tel:+593979012345")}, types.NewXDict(map[string]types.XValue{
+		{"urn_parts", dmy, []types.XValue{xs("tel:+593979012345")}, types.NewXObject(map[string]types.XValue{
 			"scheme":  xs("tel"),
 			"path":    xs("+593979012345"),
 			"display": types.XTextEmpty,
 		})},
-		{"urn_parts", dmy, []types.XValue{xs("twitterid:23454556#bobby")}, types.NewXDict(map[string]types.XValue{
+		{"urn_parts", dmy, []types.XValue{xs("twitterid:23454556#bobby")}, types.NewXObject(map[string]types.XValue{
 			"scheme":  xs("twitterid"),
 			"path":    xs("23454556"),
 			"display": xs("bobby"),
 		})},
-		{"urn_parts", dmy, []types.XValue{xs("not_a_urn")}, types.NewXDict(map[string]types.XValue{
+		{"urn_parts", dmy, []types.XValue{xs("not_a_urn")}, types.NewXObject(map[string]types.XValue{
 			"scheme":  types.XTextEmpty,
 			"path":    xs("not_a_urn"),
 			"display": types.XTextEmpty,
