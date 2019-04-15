@@ -22,8 +22,13 @@ func (x XFunction) Describe() string { return "function" }
 func (x XFunction) Truthy() bool { return true }
 
 // Render returns the canonical text representation
-func (x XFunction) Render(env utils.Environment) string {
+func (x XFunction) Render() string {
 	return "function"
+}
+
+// Format returns the pretty text representation
+func (x XFunction) Format(env utils.Environment) string {
+	return x.Render()
 }
 
 // MarshalJSON converts this type to JSON

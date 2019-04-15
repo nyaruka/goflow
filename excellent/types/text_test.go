@@ -5,11 +5,14 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestXText(t *testing.T) {
+	env := utils.NewEnvironmentBuilder().Build()
+
 	// test equality
 	assert.True(t, types.NewXText("abc").Equals(types.NewXText("abc")))
 	assert.False(t, types.NewXText("abc").Equals(types.NewXText("def")))
@@ -31,6 +34,8 @@ func TestXText(t *testing.T) {
 	assert.Equal(t, types.NewXText("cd"), types.NewXText("abcdef").Slice(2, 4))
 	assert.Equal(t, types.NewXText("😁😁"), types.NewXText("😁😁😁😁").Slice(2, 4))
 
+	assert.Equal(t, `abc`, types.NewXText("abc").Render())
+	assert.Equal(t, `abc`, types.NewXText("abc").Format(env))
 	assert.Equal(t, `XText("abc")`, types.NewXText("abc").String())
 
 	// unmarshal

@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -653,27 +652,5 @@ func TestFunctions(t *testing.T) {
 		} else {
 			test.AssertEqual(t, tc.expected, result, "result mismatch for %s", testID)
 		}
-	}
-}
-
-func TestFormatDecimal(t *testing.T) {
-	fmtTests := []struct {
-		input       decimal.Decimal
-		format      *utils.NumberFormat
-		places      int
-		groupDigits bool
-		expected    string
-	}{
-		{decimal.RequireFromString("1234"), utils.DefaultNumberFormat, 2, true, "1,234.00"},
-		{decimal.RequireFromString("1234"), utils.DefaultNumberFormat, 0, false, "1234"},
-		{decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat, 2, true, "1,234.57"},
-		{decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat, 2, false, "1234.57"},
-		{decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}, 2, true, "1.234,57"},
-	}
-
-	for _, test := range fmtTests {
-		val := functions.FormatDecimal(test.input, test.format, test.places, test.groupDigits)
-
-		assert.Equal(t, test.expected, val, "format decimal failed for input '%s'", test.input)
 	}
 }

@@ -23,7 +23,10 @@ type XValue interface {
 	Truthy() bool
 
 	// Render returns the canonical text representation
-	Render(env utils.Environment) string
+	Render() string
+
+	// Format returns the pretty text representation
+	Format(env utils.Environment) string
 }
 
 // XCountable is the interface for types which can be counted
@@ -104,11 +107,11 @@ func Describe(x XValue) string {
 }
 
 // Render returns the canonical text representation
-func Render(env utils.Environment, x XValue) string {
+func Render(x XValue) string {
 	if utils.IsNil(x) {
 		return ""
 	}
-	return x.Render(env)
+	return x.Render()
 }
 
 // String returns a representation of the given value for use in debugging

@@ -13,12 +13,13 @@ import (
 )
 
 func TestXDateTime(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Build()
 
 	assert.True(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).Truthy())
 
 	// test stringing
-	assert.Equal(t, `2018-04-09T17:01:30.123456Z`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).Render(env))
+	assert.Equal(t, `2018-04-09T17:01:30.123456Z`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).Render())
+	assert.Equal(t, `09-04-2018 17:01`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).Format(env))
 	assert.Equal(t, `XDateTime(2018, 4, 9, 17, 1, 30, 123456789, UTC)`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).String())
 
 	asJSON, _ := types.ToXJSON(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)))

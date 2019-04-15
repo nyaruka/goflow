@@ -32,7 +32,22 @@ func (x XTime) Truthy() bool {
 }
 
 // Render returns the canonical text representation
-func (x XTime) Render(env utils.Environment) string { return x.Native().String() }
+func (x XTime) Render() string { return x.Native().String() }
+
+// Format returns the pretty text representation
+func (x XTime) Format(env utils.Environment) string {
+	formatted, _ := x.FormatCustom(env.TimeFormat())
+	return formatted
+}
+
+// FormatCustom provides customised formatting
+func (x XTime) FormatCustom(format utils.TimeFormat) (string, error) {
+	goFormat, err := utils.ToGoDateFormat(string(format), utils.TimeOnlyFormatting)
+	if err != nil {
+		return "", err
+	}
+	return x.Native().Format(goFormat), nil
+}
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XTime) MarshalJSON() ([]byte, error) {

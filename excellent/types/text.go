@@ -35,7 +35,12 @@ func (x XText) Truthy() bool {
 }
 
 // Render returns the canonical text representation
-func (x XText) Render(env utils.Environment) string { return x.Native() }
+func (x XText) Render() string { return x.Native() }
+
+// Format returns the pretty text representation
+func (x XText) Format(env utils.Environment) string {
+	return x.Render()
+}
 
 // String returns the native string representation of this type for debugging
 func (x XText) String() string { return `XText("` + x.Native() + `")` }
@@ -88,5 +93,5 @@ func ToXText(env utils.Environment, x XValue) (XText, XError) {
 		return XTextEmpty, x.(XError)
 	}
 
-	return NewXText(x.Render(env)), nil
+	return NewXText(x.Render()), nil
 }

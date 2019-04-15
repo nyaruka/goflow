@@ -1,10 +1,13 @@
 package types
 
 import (
+	"fmt"
 	"math"
+	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 
+	humanize "github.com/dustin/go-humanize"
 	"github.com/shopspring/decimal"
 )
 
@@ -45,7 +48,7 @@ func RequireXNumberFromString(value string) XNumber {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XNumber) Describe() string { return x.Render(nil) }
+func (x XNumber) Describe() string { return x.Render() }
 
 // Truthy determines truthiness for this type
 func (x XNumber) Truthy() bool {
@@ -53,10 +56,37 @@ func (x XNumber) Truthy() bool {
 }
 
 // Render returns the canonical text representation
-func (x XNumber) Render(env utils.Environment) string { return x.Native().String() }
+func (x XNumber) Render() string { return x.Native().String() }
+
+// Format returns the pretty text representation
+func (x XNumber) Format(env utils.Environment) string {
+	return x.FormatCustom(env.NumberFormat(), 2, true)
+}
+
+// FormatCustom provides customised formatting
+func (x XNumber) FormatCustom(format *utils.NumberFormat, places int, groupDigits bool) string {
+	// build our format string
+	formatStr := strings.Builder{}
+	if groupDigits {
+		formatStr.WriteString(fmt.Sprintf("#%s###", format.DigitGroupingSymbol))
+	} else {
+		formatStr.WriteString("####")
+	}
+
+	formatStr.WriteString(format.DecimalSymbol)
+
+	if places > 0 {
+		for i := 0; i < places; i++ {
+			formatStr.WriteString("#")
+		}
+	}
+
+	f64, _ := x.Native().Float64()
+	return humanize.FormatFloat(formatStr.String(), f64)
+}
 
 // String returns the native string representation of this type
-func (x XNumber) String() string { return `XNumber(` + x.Render(nil) + `)` }
+func (x XNumber) String() string { return `XNumber(` + x.Render() + `)` }
 
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return x.native }
@@ -115,7 +145,7 @@ func ToInteger(env utils.Environment, x XValue) (int, XError) {
 	intPart := number.Native().IntPart()
 
 	if intPart < math.MinInt32 || intPart > math.MaxInt32 {
-		return 0, NewXErrorf("number value %s is out of range for an integer", number.Render(env))
+		return 0, NewXErrorf("number value %s is out of range for an integer", number.Render())
 	}
 
 	return int(intPart), nil

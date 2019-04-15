@@ -34,7 +34,12 @@ func (x xerror) Describe() string { return "error" }
 func (x xerror) Truthy() bool { return false }
 
 // Render returns the canonical text representation
-func (x xerror) Render(env utils.Environment) string { return x.Native().Error() }
+func (x xerror) Render() string { return x.Native().Error() }
+
+// Format returns the pretty text representation
+func (x xerror) Format(env utils.Environment) string {
+	return x.Render()
+}
 
 // MarshalJSON converts this type to JSON
 func (x xerror) MarshalJSON() ([]byte, error) {
