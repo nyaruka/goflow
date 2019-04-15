@@ -47,7 +47,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(IF(contact.gender = "M", "Sir", "Madam"))`, new: `@(if(fields.gender = "M", "Sir", "Madam"))`, val: `Madam`},
 		{old: `@(INT(contact.age))`, new: `@(round_down(fields.age))`, val: `23`},
 		{old: `@(LEFT(contact.name, 4))`, new: `@(left(contact.name, 4))`, val: `Ryan`},
-		{old: `@(LEN(contact.first_name))`, new: `@(length(contact.first_name))`, val: `4`},
+		{old: `@(LEN(contact.first_name))`, new: `@(text_length(contact.first_name))`, val: `4`},
 		{old: `@(LOWER(contact.first_name))`, new: `@(lower(contact.first_name))`, val: `ryan`},
 		{old: `@(MAX(child.age, 10))`, new: `@(max(child.results.age.values[0], 10))`, val: `23`},
 		{old: `@(MIN(child.age, 10))`, new: `@(min(child.results.age.values[0], 10))`, val: `10`},

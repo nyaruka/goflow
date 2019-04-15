@@ -124,7 +124,7 @@ var callMigrators = map[string]callMigrator{
 	"if":                asIs(),
 	"int":               asRename(`round_down`),
 	"left":              asIs(),
-	"len":               asRename(`length`),
+	"len":               asRename(`text_length`),
 	"lower":             asIs(),
 	"max":               asIs(),
 	"min":               asIs(),

@@ -49,6 +49,7 @@ func init() {
 		"lower":             OneTextFunction(Lower),
 		"right":             TextAndIntegerFunction(Right),
 		"regex_match":       InitialTextFunction(1, 2, RegexMatch),
+		"text_length":       OneTextFunction(TextLength),
 		"text_compare":      TwoTextFunction(TextCompare),
 		"repeat":            TextAndIntegerFunction(Repeat),
 		"replace":           ThreeTextFunction(Replace),
@@ -112,7 +113,7 @@ func init() {
 
 		// utility functions
 		"is_error":     OneArgFunction(IsError),
-		"length":       OneArgFunction(Length),
+		"count":        OneArgFunction(Count),
 		"default":      TwoArgFunction(Default),
 		"legacy_add":   TwoArgFunction(LegacyAdd),
 		"read_chars":   OneTextFunction(ReadChars),
@@ -242,8 +243,8 @@ func Time(env utils.Environment, value types.XValue) types.XValue {
 //
 //   @(array("a", "b", 356)[1]) -> b
 //   @(join(array("a", "b", "c"), "|")) -> a|b|c
-//   @(length(array())) -> 0
-//   @(length(array("a", "b"))) -> 2
+//   @(count(array())) -> 0
+//   @(count(array("a", "b"))) -> 2
 //
 // @function array(values...)
 func Array(env utils.Environment, values ...types.XValue) types.XValue {
@@ -418,7 +419,7 @@ func Join(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XVa
 	}
 
 	var output bytes.Buffer
-	for i := 0; i < array.Length(); i++ {
+	for i := 0; i < array.Count(); i++ {
 		if i > 0 {
 			output.WriteString(separator.Native())
 		}
@@ -777,6 +778,16 @@ func Right(env utils.Environment, text types.XText, count int) types.XValue {
 	}
 
 	return types.NewXText(output.String())
+}
+
+// TextLength returns the length (number of characters) of `value` when converted to text.
+//
+//   @(text_length("abc")) -> 3
+//   @(text_length(array(2, 3))) -> 6
+//
+// @function text_length(value)
+func TextLength(env utils.Environment, value types.XText) types.XValue {
+	return types.NewXNumberFromInt(value.Length())
 }
 
 // TextCompare returns the dictionary order of `text1` and `text2`.
@@ -1800,7 +1811,7 @@ func FormatInput(env utils.Environment, input *types.XDict) types.XValue {
 		lines = append(lines, text.Native())
 	}
 
-	for a := 0; a < attachments.Length(); a++ {
+	for a := 0; a < attachments.Count(); a++ {
 		asText, xerr := types.ToXText(env, attachments.Get(a))
 		if xerr != nil {
 			return xerr
@@ -1827,31 +1838,29 @@ func IsError(env utils.Environment, value types.XValue) types.XValue {
 	return types.NewXBoolean(types.IsXError(value))
 }
 
-// Length returns the length of the passed in text or array.
+// Count returns the number of items in the given array or dict.
 //
-// length will return an error if it is passed an item which doesn't have length.
+// It will return an error if it is passed an item which isn't countable.
 //
-//   @(length("Hello")) -> 5
-//   @(length(contact.fields.gender)) -> 4
-//   @(length("😀😃😄😁")) -> 4
-//   @(length(array())) -> 0
-//   @(length(array("a", "b", "c"))) -> 3
-//   @(length(1234)) -> ERROR
+//   @(count(contact.fields)) -> 5
+//   @(count(array())) -> 0
+//   @(count(array("a", "b", "c"))) -> 3
+//   @(count(1234)) -> ERROR
 //
-// @function length(value)
-func Length(env utils.Environment, value types.XValue) types.XValue {
-	// a nil has length of zero
+// @function count(value)
+func Count(env utils.Environment, value types.XValue) types.XValue {
+	// a nil has count of zero
 	if utils.IsNil(value) {
 		return types.XNumberZero
 	}
 
-	// argument must be a value with length
-	lengthable, isLengthable := value.(types.XLengthable)
-	if isLengthable {
-		return types.NewXNumberFromInt(lengthable.Length())
+	// argument must be a countable value
+	countable, isCountable := value.(types.XCountable)
+	if isCountable {
+		return types.NewXNumberFromInt(countable.Count())
 	}
 
-	return types.NewXErrorf("value doesn't have length")
+	return types.NewXErrorf("value isn't countable")
 }
 
 // Default returns `value` if is not empty or an error, otherwise it returns `default`.
@@ -1944,9 +1953,9 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 
 	otherArgs := args[2:]
 
-	result := make([]types.XValue, array.Length())
+	result := make([]types.XValue, array.Count())
 
-	for i := 0; i < array.Length(); i++ {
+	for i := 0; i < array.Count(); i++ {
 		oldItem := array.Get(i)
 		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 

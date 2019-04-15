@@ -162,7 +162,7 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 		return xerr
 	}
 
-	for i := 0; i < array.Length(); i++ {
+	for i := 0; i < array.Count(); i++ {
 		group, xerr := types.ToXDict(env, array.Get(i))
 		if xerr != nil {
 			return xerr

@@ -93,6 +93,19 @@ func TestFunctions(t *testing.T) {
 		{"code", dmy, []types.XValue{ERROR}, ERROR},
 		{"code", dmy, []types.XValue{}, ERROR},
 
+		{
+			"count",
+			dmy,
+			[]types.XValue{types.NewXDict(map[string]types.XValue{"a": xs("hello"), "b": xi(3)})},
+			xi(2),
+		},
+		{"count", dmy, []types.XValue{xa(xs("hello"), xi(3))}, xi(2)},
+		{"count", dmy, []types.XValue{xa()}, xi(0)},
+		{"count", dmy, []types.XValue{nil}, xi(0)},
+		{"count", dmy, []types.XValue{xi(1234)}, ERROR},
+		{"count", dmy, []types.XValue{ERROR}, ERROR},
+		{"count", dmy, []types.XValue{}, ERROR},
+
 		{"clean", dmy, []types.XValue{xs("hello")}, xs("hello")},
 		{"clean", dmy, []types.XValue{xs("😃 Hello \nwo\tr\rld")}, xs("😃 Hello world")},
 		{"clean", dmy, []types.XValue{xs("")}, xs("")},
@@ -356,16 +369,6 @@ func TestFunctions(t *testing.T) {
 		{"legacy_add", dmy, []types.XValue{xs("10"), xs("xxx")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{}, ERROR},
 
-		{"length", dmy, []types.XValue{xs("hello")}, xi(5)},
-		{"length", dmy, []types.XValue{xs("")}, xi(0)},
-		{"length", dmy, []types.XValue{xs("😁😁")}, xi(2)},
-		{"length", dmy, []types.XValue{xa(xs("hello"))}, xi(1)},
-		{"length", dmy, []types.XValue{xa()}, xi(0)},
-		{"length", dmy, []types.XValue{nil}, xi(0)},
-		{"length", dmy, []types.XValue{xi(1234)}, ERROR},
-		{"length", dmy, []types.XValue{ERROR}, ERROR},
-		{"length", dmy, []types.XValue{}, ERROR},
-
 		{"lower", dmy, []types.XValue{xs("HEllo")}, xs("hello")},
 		{"lower", dmy, []types.XValue{xs("  HELLO  WORLD")}, xs("  hello  world")},
 		{"lower", dmy, []types.XValue{xs("")}, xs("")},
@@ -529,6 +532,16 @@ func TestFunctions(t *testing.T) {
 		{"text_compare", dmy, []types.XValue{xs("def"), xs("abc")}, xi(1)},
 		{"text_compare", dmy, []types.XValue{xs("abc"), types.NewXErrorf("error")}, ERROR},
 		{"text_compare", dmy, []types.XValue{}, ERROR},
+
+		{"text_length", dmy, []types.XValue{xs("hello")}, xi(5)},
+		{"text_length", dmy, []types.XValue{xs("")}, xi(0)},
+		{"text_length", dmy, []types.XValue{xs("😁😁")}, xi(2)},
+		{"text_length", dmy, []types.XValue{xa(xs("hello"))}, xi(7)}, // [hello]
+		{"text_length", dmy, []types.XValue{xa()}, xi(2)},            // []
+		{"text_length", dmy, []types.XValue{nil}, xi(0)},
+		{"text_length", dmy, []types.XValue{xi(1234)}, xi(4)},
+		{"text_length", dmy, []types.XValue{ERROR}, ERROR},
+		{"text_length", dmy, []types.XValue{}, ERROR},
 
 		{"time", dmy, []types.XValue{xs("10:30")}, xt(utils.NewTimeOfDay(10, 30, 0, 0))},
 		{"time", dmy, []types.XValue{ERROR}, ERROR},

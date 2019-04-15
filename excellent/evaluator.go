@@ -175,11 +175,11 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 			return xerr
 		}
 
-		if index >= asArray.Length() || index < -asArray.Length() {
-			return types.NewXErrorf("index %d out of range for %d items", index, asArray.Length())
+		if index >= asArray.Count() || index < -asArray.Count() {
+			return types.NewXErrorf("index %d out of range for %d items", index, asArray.Count())
 		}
 		if index < 0 {
-			index += asArray.Length()
+			index += asArray.Count()
 		}
 		return asArray.Get(index)
 	}

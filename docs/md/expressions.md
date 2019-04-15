@@ -41,7 +41,7 @@ Is an array of items.
 ```objectivec
 @(array(1, "x", true)) → [1, x, true]
 @(array(1, "x", true)[1]) → x
-@(length(array(1, "x", true))) → 3
+@(count(array(1, "x", true))) → 3
 @(json(array(1, "x", true))) → [1,"x",true]
 ```
 
@@ -96,7 +96,7 @@ Is a dictionary of keys and values.
 @(dict("foo", 1, "bar", "x")) → {bar: x, foo: 1}
 @(dict("foo", 1, "bar", "x").bar) → x
 @(dict("foo", 1, "bar", "x")["bar"]) → x
-@(length(dict("foo", 1, "bar", "x"))) → 2
+@(count(dict("foo", 1, "bar", "x"))) → 2
 @(json(dict("foo", 1, "bar", "x"))) → {"bar":"x","foo":1}
 ```
 
@@ -136,7 +136,7 @@ Is a string of characters.
 
 ```objectivec
 @("abc") → abc
-@(length("abc")) → 3
+@(text_length("abc")) → 3
 @(upper("abc")) → ABC
 @(json("abc")) → "abc"
 ```
@@ -367,8 +367,8 @@ Takes multiple `values` and returns them as an array.
 ```objectivec
 @(array("a", "b", 356)[1]) → b
 @(join(array("a", "b", "c"), "|")) → a|b|c
-@(length(array())) → 0
-@(length(array("a", "b"))) → 2
+@(count(array())) → 0
+@(count(array("a", "b"))) → 2
 ```
 
 <a name="function:attachment_parts"></a>
@@ -440,6 +440,22 @@ It is the inverse of [char](expressions.html#function:char).
 @(code("15")) → 49
 @(code(15)) → 49
 @(code("")) → ERROR
+```
+
+<a name="function:count"></a>
+
+## count(value)
+
+Returns the number of items in the given array or dict.
+
+It will return an error if it is passed an item which isn't countable.
+
+
+```objectivec
+@(count(contact.fields)) → 5
+@(count(array())) → 0
+@(count(array("a", "b", "c"))) → 3
+@(count(1234)) → ERROR
 ```
 
 <a name="function:date"></a>
@@ -861,24 +877,6 @@ Returns the `count` left-most characters in `text`
 @(left("hello", 7)) → hello
 @(left("😀😃😄😁", 2)) → 😀😃
 @(left("hello", -1)) → ERROR
-```
-
-<a name="function:length"></a>
-
-## length(value)
-
-Returns the length of the passed in text or array.
-
-length will return an error if it is passed an item which doesn't have length.
-
-
-```objectivec
-@(length("Hello")) → 5
-@(length(contact.fields.gender)) → 4
-@(length("😀😃😄😁")) → 4
-@(length(array())) → 0
-@(length(array("a", "b", "c"))) → 3
-@(length(1234)) → ERROR
 ```
 
 <a name="function:lower"></a>
@@ -1318,6 +1316,18 @@ and 1 if `text1` comes after `text2`.
 @(text_compare("abc", "abc")) → 0
 @(text_compare("abc", "def")) → -1
 @(text_compare("zzz", "aaa")) → 1
+```
+
+<a name="function:text_length"></a>
+
+## text_length(value)
+
+Returns the length (number of characters) of `value` when converted to text.
+
+
+```objectivec
+@(text_length("abc")) → 3
+@(text_length(array(2, 3))) → 6
 ```
 
 <a name="function:time"></a>
