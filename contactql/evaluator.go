@@ -32,6 +32,8 @@ func textComparison(objectVal string, comparator string, queryVal string) (bool,
 	switch comparator {
 	case "=":
 		return strings.ToLower(objectVal) == strings.ToLower(queryVal), nil
+	case "!=":
+		return strings.ToLower(objectVal) != strings.ToLower(queryVal), nil
 	case "~":
 		return icontains(objectVal, queryVal), nil
 	}
