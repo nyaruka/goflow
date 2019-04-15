@@ -23,9 +23,9 @@ type XValue interface {
 	ToXBoolean() XBoolean
 }
 
-// XLengthable is the interface for types which have a length
-type XLengthable interface {
-	Length() int
+// XCountable is the interface for types which can be counted
+type XCountable interface {
+	Count() int
 }
 
 // Equals checks for equality between the two give values. This is only used for testing as x = y
@@ -77,9 +77,15 @@ func IsEmpty(x XValue) bool {
 		return true
 	}
 
-	// anything with length of zero is empty
-	asLengthable, isLengthable := x.(XLengthable)
-	if isLengthable && asLengthable.Length() == 0 {
+	// empty string is empty
+	text, isText := x.(XText)
+	if isText && text.Length() == 0 {
+		return true
+	}
+
+	// anything with count of zero is empty
+	countable, isCountable := x.(XCountable)
+	if isCountable && countable != nil && countable.Count() == 0 {
 		return true
 	}
 

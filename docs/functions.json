@@ -47,11 +47,11 @@
                 "output": "a|b|c"
             },
             {
-                "template": "@(length(array()))",
+                "template": "@(count(array()))",
                 "output": "0"
             },
             {
-                "template": "@(length(array(\"a\", \"b\")))",
+                "template": "@(count(array(\"a\", \"b\")))",
                 "output": "2"
             }
         ]
@@ -147,6 +147,29 @@
             },
             {
                 "template": "@(code(\"\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
+        "signature": "count(value)",
+        "summary": "Returns the number of items in the given array or dict.",
+        "detail": "It will return an error if it is passed an item which isn't countable.",
+        "examples": [
+            {
+                "template": "@(count(contact.fields))",
+                "output": "5"
+            },
+            {
+                "template": "@(count(array()))",
+                "output": "0"
+            },
+            {
+                "template": "@(count(array(\"a\", \"b\", \"c\")))",
+                "output": "3"
+            },
+            {
+                "template": "@(count(1234))",
                 "output": "ERROR"
             }
         ]
@@ -690,37 +713,6 @@
             },
             {
                 "template": "@(left(\"hello\", -1))",
-                "output": "ERROR"
-            }
-        ]
-    },
-    {
-        "signature": "length(value)",
-        "summary": "Returns the length of the passed in text or array.",
-        "detail": "length will return an error if it is passed an item which doesn't have length.",
-        "examples": [
-            {
-                "template": "@(length(\"Hello\"))",
-                "output": "5"
-            },
-            {
-                "template": "@(length(contact.fields.gender))",
-                "output": "4"
-            },
-            {
-                "template": "@(length(\"😀😃😄😁\"))",
-                "output": "4"
-            },
-            {
-                "template": "@(length(array()))",
-                "output": "0"
-            },
-            {
-                "template": "@(length(array(\"a\", \"b\", \"c\")))",
-                "output": "3"
-            },
-            {
-                "template": "@(length(1234))",
                 "output": "ERROR"
             }
         ]
@@ -1271,6 +1263,21 @@
             {
                 "template": "@(text_compare(\"zzz\", \"aaa\"))",
                 "output": "1"
+            }
+        ]
+    },
+    {
+        "signature": "text_length(value)",
+        "summary": "Returns the length (number of characters) of `value` when converted to text.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(text_length(\"abc\"))",
+                "output": "3"
+            },
+            {
+                "template": "@(text_length(array(2, 3)))",
+                "output": "6"
             }
         ]
     },

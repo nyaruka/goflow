@@ -14,13 +14,13 @@ import (
 //   @(dict("foo", 1, "bar", "x")) -> {bar: x, foo: 1}
 //   @(dict("foo", 1, "bar", "x").bar) -> x
 //   @(dict("foo", 1, "bar", "x")["bar"]) -> x
-//   @(length(dict("foo", 1, "bar", "x"))) -> 2
+//   @(count(dict("foo", 1, "bar", "x"))) -> 2
 //   @(json(dict("foo", 1, "bar", "x"))) -> {"bar":"x","foo":1}
 //
 // @type dict
 type XDict struct {
 	XValue
-	XLengthable
+	XCountable
 
 	data   map[string]XValue
 	source func() map[string]XValue
@@ -45,7 +45,7 @@ func (x *XDict) Describe() string { return "dict" }
 
 // ToXText converts this type to text
 func (x *XDict) ToXText(env utils.Environment) XText {
-	pairs := make([]string, 0, x.Length())
+	pairs := make([]string, 0, x.Count())
 	for _, k := range x.keys(true) {
 		vAsText, xerr := ToXText(env, x.values()[k])
 		if xerr != nil {
@@ -59,12 +59,12 @@ func (x *XDict) ToXText(env utils.Environment) XText {
 
 // ToXBoolean converts this type to a bool
 func (x *XDict) ToXBoolean() XBoolean {
-	return NewXBoolean(len(x.values()) > 0)
+	return NewXBoolean(x.Count() > 0)
 }
 
 // MarshalJSON converts this type to internal JSON
 func (x *XDict) MarshalJSON() ([]byte, error) {
-	marshaled := make(map[string]json.RawMessage, len(x.values()))
+	marshaled := make(map[string]json.RawMessage, x.Count())
 	for k, v := range x.values() {
 		asJSON, err := ToXJSON(v)
 		if err == nil {
@@ -74,8 +74,8 @@ func (x *XDict) MarshalJSON() ([]byte, error) {
 	return json.Marshal(marshaled)
 }
 
-// Length is called when the length of this object is requested in an expression
-func (x *XDict) Length() int {
+// Count is called when the length of this object is requested in an expression
+func (x *XDict) Count() int {
 	return len(x.values())
 }
 
@@ -98,7 +98,7 @@ func (x *XDict) Keys() []string {
 
 // String returns the native string representation of this type for debugging
 func (x *XDict) String() string {
-	pairs := make([]string, 0, x.Length())
+	pairs := make([]string, 0, x.Count())
 	for _, k := range x.keys(true) {
 		pairs = append(pairs, fmt.Sprintf("%s: %s", k, String(x.values()[k])))
 	}
@@ -128,7 +128,7 @@ func (x *XDict) Equals(other *XDict) bool {
 }
 
 func (x *XDict) keys(sorted bool) []string {
-	keys := make([]string, 0, len(x.values()))
+	keys := make([]string, 0, x.Count())
 	for key := range x.values() {
 		keys = append(keys, key)
 	}

@@ -11,7 +11,7 @@ import (
 //
 //   @(array(1, "x", true)) -> [1, x, true]
 //   @(array(1, "x", true)[1]) -> x
-//   @(length(array(1, "x", true))) -> 3
+//   @(count(array(1, "x", true))) -> 3
 //   @(json(array(1, "x", true))) -> [1,"x",true]
 //
 // @type array
@@ -42,7 +42,7 @@ func (x *XArray) Describe() string { return "array" }
 
 // ToXText converts this type to text
 func (x *XArray) ToXText(env utils.Environment) XText {
-	parts := make([]string, x.Length())
+	parts := make([]string, x.Count())
 	for i, v := range x.values() {
 		vAsText, xerr := ToXText(env, v)
 		if xerr != nil {
@@ -55,7 +55,7 @@ func (x *XArray) ToXText(env utils.Environment) XText {
 
 // ToXBoolean converts this type to a bool
 func (x *XArray) ToXBoolean() XBoolean {
-	return NewXBoolean(len(x.values()) > 0)
+	return NewXBoolean(x.Count() > 0)
 }
 
 // Get is called when this object is indexed
@@ -63,14 +63,14 @@ func (x *XArray) Get(index int) XValue {
 	return x.values()[index]
 }
 
-// Length is called when the length of this object is requested in an expression
-func (x *XArray) Length() int {
+// Count is called when the length of this object is requested in an expression
+func (x *XArray) Count() int {
 	return len(x.values())
 }
 
 // MarshalJSON converts this type to internal JSON
 func (x *XArray) MarshalJSON() ([]byte, error) {
-	marshaled := make([]json.RawMessage, len(x.values()))
+	marshaled := make([]json.RawMessage, x.Count())
 	for i, v := range x.values() {
 		asJSON, err := ToXJSON(v)
 		if err == nil {
@@ -82,7 +82,7 @@ func (x *XArray) MarshalJSON() ([]byte, error) {
 
 // String returns the native string representation of this type
 func (x *XArray) String() string {
-	parts := make([]string, x.Length())
+	parts := make([]string, x.Count())
 	for i, v := range x.values() {
 		parts[i] = String(v)
 	}
@@ -91,7 +91,7 @@ func (x *XArray) String() string {
 
 // Equals determines equality for this type
 func (x *XArray) Equals(other *XArray) bool {
-	if x.Length() != other.Length() {
+	if x.Count() != other.Count() {
 		return false
 	}
 

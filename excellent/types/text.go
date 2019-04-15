@@ -12,7 +12,7 @@ import (
 // XText is a string of characters.
 //
 //   @("abc") -> abc
-//   @(length("abc")) -> 3
+//   @(text_length("abc")) -> 3
 //   @(upper("abc")) -> ABC
 //   @(json("abc")) -> "abc"
 //
@@ -78,7 +78,6 @@ func (x *XText) UnmarshalJSON(data []byte) error {
 // XTextEmpty is the empty text value
 var XTextEmpty = NewXText("")
 var _ XValue = XTextEmpty
-var _ XLengthable = XTextEmpty
 
 // ToXText converts the given value to a string
 func ToXText(env utils.Environment, x XValue) (XText, XError) {

@@ -327,7 +327,7 @@ var errorTests = []struct {
 
 	// function call errors
 	{`@(FOO())`, `error evaluating @(FOO()): FOO is not a function`},
-	{`@(length(1))`, `error evaluating @(length(1)): error calling LENGTH: value doesn't have length`},
+	{`@(count(1))`, `error evaluating @(count(1)): error calling COUNT: value isn't countable`},
 	{`@(word_count())`, `error evaluating @(word_count()): error calling WORD_COUNT: need 1 to 2 argument(s), got 0`},
 	{`@(word_count("a", "b", "c"))`, `error evaluating @(word_count("a", "b", "c")): error calling WORD_COUNT: need 1 to 2 argument(s), got 3`},
 }

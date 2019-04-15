@@ -18,7 +18,7 @@ func TestXDict(t *testing.T) {
 		"zed": types.XBooleanFalse,
 		"xxx": nil,
 	})
-	assert.Equal(t, 4, dict.Length())
+	assert.Equal(t, 4, dict.Count())
 	assert.ElementsMatch(t, []string{"foo", "bar", "zed", "xxx"}, dict.Keys())
 
 	val, exists := dict.Get("foo")
@@ -56,7 +56,7 @@ func TestXLazyDict(t *testing.T) {
 
 	dict := types.NewXLazyDict(func() map[string]types.XValue {
 		initialized = true
-		
+
 		return map[string]types.XValue{
 			"foo": types.NewXText("abc"),
 			"bar": types.NewXNumberFromInt(123),
@@ -66,7 +66,7 @@ func TestXLazyDict(t *testing.T) {
 
 	assert.False(t, initialized)
 
-	assert.Equal(t, 3, dict.Length())
+	assert.Equal(t, 3, dict.Count())
 	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, dict.Keys())
 	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), dict.ToXText(env))
 	assert.Equal(t, "dict", dict.Describe())
