@@ -37,27 +37,6 @@ func NewXLazyArray(source func() []XValue) *XArray {
 	}
 }
 
-// Describe returns a representation of this type for error messages
-func (x *XArray) Describe() string { return "array" }
-
-// ToXText converts this type to text
-func (x *XArray) ToXText(env utils.Environment) XText {
-	parts := make([]string, x.Count())
-	for i, v := range x.values() {
-		vAsText, xerr := ToXText(env, v)
-		if xerr != nil {
-			vAsText = xerr.ToXText(env)
-		}
-		parts[i] = vAsText.Native()
-	}
-	return NewXText("[" + strings.Join(parts, ", ") + "]")
-}
-
-// ToXBoolean converts this type to a bool
-func (x *XArray) ToXBoolean() XBoolean {
-	return NewXBoolean(x.Count() > 0)
-}
-
 // Get is called when this object is indexed
 func (x *XArray) Get(index int) XValue {
 	return x.values()[index]
@@ -66,6 +45,23 @@ func (x *XArray) Get(index int) XValue {
 // Count is called when the length of this object is requested in an expression
 func (x *XArray) Count() int {
 	return len(x.values())
+}
+
+// Describe returns a representation of this type for error messages
+func (x *XArray) Describe() string { return "array" }
+
+// Truthy determines truthiness for this type
+func (x *XArray) Truthy() bool {
+	return x.Count() > 0
+}
+
+// Render returns the canonical text representation
+func (x *XArray) Render(env utils.Environment) string {
+	parts := make([]string, x.Count())
+	for i, v := range x.values() {
+		parts[i] = Render(env, v)
+	}
+	return "[" + strings.Join(parts, ", ") + "]"
 }
 
 // MarshalJSON converts this type to internal JSON

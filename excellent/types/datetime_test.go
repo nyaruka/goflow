@@ -15,9 +15,10 @@ import (
 func TestXDateTime(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
+	assert.True(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).Truthy())
+
 	// test stringing
-	assert.Equal(t, types.NewXText(`2018-04-09T17:01:30.123456Z`), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).ToXText(env))
-	assert.Equal(t, types.XBooleanTrue, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).ToXBoolean())
+	assert.Equal(t, `2018-04-09T17:01:30.123456Z`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).Render(env))
 	assert.Equal(t, `XDateTime(2018, 4, 9, 17, 1, 30, 123456789, UTC)`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).String())
 
 	asJSON, _ := types.ToXJSON(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)))

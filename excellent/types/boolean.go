@@ -27,16 +27,13 @@ func NewXBoolean(value bool) XBoolean {
 // Describe returns a representation of this type for error messages
 func (x XBoolean) Describe() string { return strconv.FormatBool(x.Native()) }
 
-// ToXText converts this type to text
-func (x XBoolean) ToXText(env utils.Environment) XText {
-	return NewXText(strconv.FormatBool(x.Native()))
+// Truthy determines truthiness for this type
+func (x XBoolean) Truthy() bool { return x.Native() }
+
+// Render returns the canonical text representation
+func (x XBoolean) Render(env utils.Environment) string {
+	return strconv.FormatBool(x.Native())
 }
-
-// ToXBoolean converts this type to a bool
-func (x XBoolean) ToXBoolean() XBoolean { return x }
-
-// Native returns the native value of this type
-func (x XBoolean) Native() bool { return x.native }
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XBoolean) MarshalJSON() ([]byte, error) {
@@ -45,6 +42,9 @@ func (x XBoolean) MarshalJSON() ([]byte, error) {
 
 // String returns the native string representation of this type for debugging
 func (x XBoolean) String() string { return `XBoolean(` + strconv.FormatBool(x.Native()) + `)` }
+
+// Native returns the native value of this type
+func (x XBoolean) Native() bool { return x.native }
 
 // Equals determines equality for this type
 func (x XBoolean) Equals(other XBoolean) bool {
@@ -85,5 +85,5 @@ func ToXBoolean(x XValue) (XBoolean, XError) {
 		return XBooleanFalse, x.(XError)
 	}
 
-	return x.ToXBoolean(), nil
+	return NewXBoolean(x.Truthy()), nil
 }

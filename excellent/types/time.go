@@ -26,26 +26,26 @@ func NewXTime(value utils.TimeOfDay) XTime {
 // Describe returns a representation of this type for error messages
 func (x XTime) Describe() string { return "time" }
 
-// ToXText converts this type to text
-func (x XTime) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
-
-// ToXBoolean converts this type to a bool
-func (x XTime) ToXBoolean() XBoolean {
-	return NewXBoolean(x != XTimeZero)
+// Truthy determines truthiness for this type
+func (x XTime) Truthy() bool {
+	return x != XTimeZero
 }
 
-// Native returns the native value of this type
-func (x XTime) Native() utils.TimeOfDay { return x.native }
+// Render returns the canonical text representation
+func (x XTime) Render(env utils.Environment) string { return x.Native().String() }
+
+// MarshalJSON is called when a struct containing this type is marshaled
+func (x XTime) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x.Native().String())
+}
 
 // String returns the native string representation of this type
 func (x XTime) String() string {
 	return fmt.Sprintf(`XTime(%d, %d, %d, %d)`, x.native.Hour, x.native.Minute, x.native.Second, x.native.Nanos)
 }
 
-// MarshalJSON is called when a struct containing this type is marshaled
-func (x XTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(x.Native().String())
-}
+// Native returns the native value of this type
+func (x XTime) Native() utils.TimeOfDay { return x.native }
 
 // Equals determines equality for this type
 func (x XTime) Equals(other XTime) bool {

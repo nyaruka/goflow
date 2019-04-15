@@ -27,21 +27,21 @@ func NewXText(value string) XText {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XText) Describe() string { return fmt.Sprintf(`"%s"`, x.native) }
+func (x XText) Describe() string { return fmt.Sprintf(`"%s"`, x.Native()) }
 
-// ToXText converts this type to text
-func (x XText) ToXText(env utils.Environment) XText { return x }
-
-// ToXBoolean converts this type to a bool
-func (x XText) ToXBoolean() XBoolean {
-	return NewXBoolean(!x.Empty() && strings.ToLower(x.Native()) != "false")
+// Truthy determines truthiness for this type
+func (x XText) Truthy() bool {
+	return !x.Empty() && strings.ToLower(x.Native()) != "false"
 }
 
-// Native returns the native value of this type
-func (x XText) Native() string { return x.native }
+// Render returns the canonical text representation
+func (x XText) Render(env utils.Environment) string { return x.Native() }
 
 // String returns the native string representation of this type for debugging
 func (x XText) String() string { return `XText("` + x.Native() + `")` }
+
+// Native returns the native value of this type
+func (x XText) Native() string { return x.native }
 
 // Equals determines equality for this type
 func (x XText) Equals(other XText) bool {
@@ -88,5 +88,5 @@ func ToXText(env utils.Environment, x XValue) (XText, XError) {
 		return XTextEmpty, x.(XError)
 	}
 
-	return x.ToXText(env), nil
+	return NewXText(x.Render(env)), nil
 }

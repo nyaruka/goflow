@@ -16,8 +16,8 @@ func TestXDate(t *testing.T) {
 
 	d1 := types.NewXDate(utils.NewDate(2019, 2, 20))
 	assert.Equal(t, `date`, d1.Describe())
-	assert.Equal(t, types.NewXText(`2019-02-20`), d1.ToXText(env))
-	assert.Equal(t, types.XBooleanTrue, d1.ToXBoolean())
+	assert.Equal(t, `2019-02-20`, d1.Render(env))
+	assert.True(t, d1.Truthy())
 	assert.Equal(t, `XDate(2019, 2, 20)`, d1.String())
 
 	asJSON, _ := types.ToXJSON(d1)

@@ -27,23 +27,23 @@ func NewXDateTime(value time.Time) XDateTime {
 // Describe returns a representation of this type for error messages
 func (x XDateTime) Describe() string { return "datetime" }
 
-// ToXText converts this type to text
-func (x XDateTime) ToXText(env utils.Environment) XText {
-	return NewXText(utils.DateTimeToISO(x.Native()))
+// Truthy determines truthiness for this type
+func (x XDateTime) Truthy() bool {
+	return !x.Native().IsZero()
 }
 
-// ToXBoolean converts this type to a bool
-func (x XDateTime) ToXBoolean() XBoolean {
-	return NewXBoolean(!x.Native().IsZero())
+// Render returns the canonical text representation
+func (x XDateTime) Render(env utils.Environment) string {
+	return utils.DateTimeToISO(x.Native())
 }
-
-// Native returns the native value of this type
-func (x XDateTime) Native() time.Time { return x.native }
 
 // String returns the native string representation of this type
 func (x XDateTime) String() string {
 	return fmt.Sprintf(`XDateTime(`+x.native.Format("2006, 1, 2, 15, 4, 5, %d, MST")+`)`, x.native.Nanosecond())
 }
+
+// Native returns the native value of this type
+func (x XDateTime) Native() time.Time { return x.native }
 
 // Date returns the date part of this datetime
 func (x XDateTime) Date() XDate {

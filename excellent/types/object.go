@@ -43,23 +43,19 @@ func NewXLazyObject(source func() map[string]XValue) *XObject {
 // Describe returns a representation of this type for error messages
 func (x *XObject) Describe() string { return "object" }
 
-// ToXText converts this type to text
-func (x *XObject) ToXText(env utils.Environment) XText {
-	pairs := make([]string, 0, x.Count())
-	for _, k := range x.keys(true) {
-		vAsText, xerr := ToXText(env, x.values()[k])
-		if xerr != nil {
-			vAsText = xerr.ToXText(env)
-		}
-
-		pairs = append(pairs, fmt.Sprintf("%s: %s", k, vAsText.Native()))
-	}
-	return NewXText("{" + strings.Join(pairs, ", ") + "}")
+// Truthy determines truthiness for this type
+func (x *XObject) Truthy() bool {
+	return x.Count() > 0
 }
 
-// ToXBoolean converts this type to a bool
-func (x *XObject) ToXBoolean() XBoolean {
-	return NewXBoolean(x.Count() > 0)
+// Render returns the canonical text representation
+func (x *XObject) Render(env utils.Environment) string {
+	pairs := make([]string, 0, x.Count())
+	for _, k := range x.keys(true) {
+		vAsText := Render(env, x.values()[k])
+		pairs = append(pairs, fmt.Sprintf("%s: %s", k, vAsText))
+	}
+	return "{" + strings.Join(pairs, ", ") + "}"
 }
 
 // MarshalJSON converts this type to internal JSON
@@ -72,6 +68,15 @@ func (x *XObject) MarshalJSON() ([]byte, error) {
 		}
 	}
 	return json.Marshal(marshaled)
+}
+
+// String returns the native string representation of this type for debugging
+func (x *XObject) String() string {
+	pairs := make([]string, 0, x.Count())
+	for _, k := range x.keys(true) {
+		pairs = append(pairs, fmt.Sprintf("%s: %s", k, String(x.values()[k])))
+	}
+	return "XObject{" + strings.Join(pairs, ", ") + "}"
 }
 
 // Count is called when the length of this object is requested in an expression
@@ -94,15 +99,6 @@ func (x *XObject) Get(key string) (XValue, bool) {
 // Keys returns the properties of this object
 func (x *XObject) Keys() []string {
 	return x.keys(false)
-}
-
-// String returns the native string representation of this type for debugging
-func (x *XObject) String() string {
-	pairs := make([]string, 0, x.Count())
-	for _, k := range x.keys(true) {
-		pairs = append(pairs, fmt.Sprintf("%s: %s", k, String(x.values()[k])))
-	}
-	return "XObject{" + strings.Join(pairs, ", ") + "}"
 }
 
 // Equals determines equality for this type

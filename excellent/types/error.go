@@ -30,26 +30,26 @@ func NewXErrorf(format string, a ...interface{}) XError {
 // Describe returns a representation of this type for error messages
 func (x xerror) Describe() string { return "error" }
 
-// ToXText converts this type to text
-func (x xerror) ToXText(env utils.Environment) XText { return NewXText(x.Native().Error()) }
+// Truthy determines truthiness for this type
+func (x xerror) Truthy() bool { return false }
 
-// ToXBoolean converts this type to a bool
-func (x xerror) ToXBoolean() XBoolean { return XBooleanFalse }
+// Render returns the canonical text representation
+func (x xerror) Render(env utils.Environment) string { return x.Native().Error() }
 
 // MarshalJSON converts this type to JSON
 func (x xerror) MarshalJSON() ([]byte, error) {
 	return nil, nil
 }
 
-// Native returns the native value of this type
-func (x xerror) Native() error { return x.native }
-
-func (x xerror) Error() string { return x.Native().Error() }
-
 // String returns the native string representation of this type for debugging
 func (x xerror) String() string {
 	return `XError("` + x.Native().Error() + `")`
 }
+
+// Native returns the native value of this type
+func (x xerror) Native() error { return x.native }
+
+func (x xerror) Error() string { return x.Native().Error() }
 
 // Equals determines equality for this type
 func (x xerror) Equals(other XError) bool {

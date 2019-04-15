@@ -26,16 +26,13 @@ func NewXDate(value utils.Date) XDate {
 // Describe returns a representation of this type for error messages
 func (x XDate) Describe() string { return "date" }
 
-// ToXText converts this type to text
-func (x XDate) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
-
-// ToXBoolean converts this type to a bool
-func (x XDate) ToXBoolean() XBoolean {
-	return NewXBoolean(x != XDateZero)
+// Truthy determines truthiness for this type
+func (x XDate) Truthy() bool {
+	return x != XDateZero
 }
 
-// Native returns the native value of this type
-func (x XDate) Native() utils.Date { return x.native }
+// Render returns the canonical text representation
+func (x XDate) Render(env utils.Environment) string { return x.Native().String() }
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XDate) MarshalJSON() ([]byte, error) {
@@ -46,6 +43,9 @@ func (x XDate) MarshalJSON() ([]byte, error) {
 func (x XDate) String() string {
 	return fmt.Sprintf(`XDate(%d, %d, %d)`, x.native.Year, x.native.Month, x.native.Day)
 }
+
+// Native returns the native value of this type
+func (x XDate) Native() utils.Date { return x.native }
 
 // Equals determines equality for this type
 func (x XDate) Equals(other XDate) bool {

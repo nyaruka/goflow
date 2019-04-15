@@ -45,21 +45,21 @@ func RequireXNumberFromString(value string) XNumber {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XNumber) Describe() string { return x.ToXText(nil).Native() }
+func (x XNumber) Describe() string { return x.Render(nil) }
 
-// ToXText converts this type to text
-func (x XNumber) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
-
-// ToXBoolean converts this type to a bool
-func (x XNumber) ToXBoolean() XBoolean {
-	return NewXBoolean(!x.Equals(XNumberZero))
+// Truthy determines truthiness for this type
+func (x XNumber) Truthy() bool {
+	return !x.Equals(XNumberZero)
 }
+
+// Render returns the canonical text representation
+func (x XNumber) Render(env utils.Environment) string { return x.Native().String() }
+
+// String returns the native string representation of this type
+func (x XNumber) String() string { return `XNumber(` + x.Render(nil) + `)` }
 
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return x.native }
-
-// String returns the native string representation of this type
-func (x XNumber) String() string { return `XNumber(` + x.ToXText(nil).Native() + `)` }
 
 // Equals determines equality for this type
 func (x XNumber) Equals(other XNumber) bool {
@@ -115,7 +115,7 @@ func ToInteger(env utils.Environment, x XValue) (int, XError) {
 	intPart := number.Native().IntPart()
 
 	if intPart < math.MinInt32 || intPart > math.MaxInt32 {
-		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXText(env).Native())
+		return 0, NewXErrorf("number value %s is out of range for an integer", number.Render(env))
 	}
 
 	return int(intPart), nil

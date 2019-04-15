@@ -10,17 +10,20 @@ import (
 
 // XValue is the base interface of all excellent types
 type XValue interface {
+	// How type is rendered in console for debugging
 	fmt.Stringer
+
+	// How the type JSONifies
 	json.Marshaler
 
 	// Describe returns a representation for use in error messages
 	Describe() string
 
-	// ToXText converts this type to text
-	ToXText(env utils.Environment) XText
+	// Truthy determines truthiness for this type
+	Truthy() bool
 
-	// ToXBoolean converts this type to a boolean
-	ToXBoolean() XBoolean
+	// Render returns the canonical text representation
+	Render(env utils.Environment) string
 }
 
 // XCountable is the interface for types which can be counted
@@ -92,18 +95,26 @@ func IsEmpty(x XValue) bool {
 	return false
 }
 
-// String returns a representation of the given value for use in debugging
-func String(x XValue) string {
-	if utils.IsNil(x) {
-		return "nil"
-	}
-	return x.String()
-}
-
 // Describe returns a representation of the given value for use in error messages
 func Describe(x XValue) string {
 	if utils.IsNil(x) {
 		return "null"
 	}
 	return x.Describe()
+}
+
+// Render returns the canonical text representation
+func Render(env utils.Environment, x XValue) string {
+	if utils.IsNil(x) {
+		return ""
+	}
+	return x.Render(env)
+}
+
+// String returns a representation of the given value for use in debugging
+func String(x XValue) string {
+	if utils.IsNil(x) {
+		return "nil"
+	}
+	return x.String()
 }

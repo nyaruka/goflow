@@ -29,7 +29,7 @@ func TestXObject(t *testing.T) {
 	assert.False(t, exists)
 	assert.Nil(t, val)
 
-	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, xxx: , zed: false}"), object.ToXText(env))
+	assert.Equal(t, `{bar: 123, foo: abc, xxx: , zed: false}`, object.Render(env))
 	assert.Equal(t, `XObject{bar: XNumber(123), foo: XText("abc"), xxx: nil, zed: XBoolean(false)}`, object.String())
 	assert.Equal(t, "object", object.Describe())
 
@@ -68,7 +68,7 @@ func TestXLazyObject(t *testing.T) {
 
 	assert.Equal(t, 3, object.Count())
 	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, object.Keys())
-	assert.Equal(t, types.NewXText("{bar: 123, foo: abc, zed: false}"), object.ToXText(env))
+	assert.Equal(t, `{bar: 123, foo: abc, zed: false}`, object.Render(env))
 	assert.Equal(t, "object", object.Describe())
 
 	assert.True(t, initialized)
