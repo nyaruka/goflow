@@ -249,5 +249,16 @@ func generateFunctionListing(outputDir string, funcItems []*documentedItem) erro
 
 	listingPath := path.Join(outputDir, "functions.json")
 
-	return ioutil.WriteFile(listingPath, []byte(data), 0666)
+	if err := ioutil.WriteFile(listingPath, []byte(data), 0666); err != nil {
+		return err
+	}
+
+	// print table of function signatures and summaries
+	fmt.Printf("|Summary                                      |Signature                                                                                           |\n")
+	fmt.Printf("|---------------------------------------------|----------------------------------------------------------------------------------------------------|\n")
+	for _, fn := range listings {
+		fmt.Printf("|%-45s|%-100s|\n", fn.Signature, fn.Summary)
+	}
+
+	return nil
 }

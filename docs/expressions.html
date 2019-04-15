@@ -176,8 +176,8 @@
 <p>Expressions have access to a set of built-in functions which can be used to perform more complex tasks. Functions are called using the <code>@(function_name(args..))</code> syntax, and can take as arguments either literal values <code>@(length(split("1 2 3", " "))</code> or variables in the context <code>@(title(contact.name))</code>.</p>
 <div class="functions">
 <p><a name="function:abs"></a></p>
-<h2 id="absnum">abs(num)</h2>
-<p>Returns the absolute value of <code>num</code>.</p>
+<h2 id="absnumber">abs(number)</h2>
+<p>Returns the absolute value of <code>number</code>.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb23-1" title="1">@(abs(-<span class="dv">10</span>)) → <span class="dv">10</span></a>
 <a class="sourceLine" id="cb23-2" title="2">@(abs(<span class="fl">10.5</span>)) → <span class="fl">10.5</span></a>
 <a class="sourceLine" id="cb23-3" title="3">@(abs(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
@@ -257,8 +257,8 @@
 <a class="sourceLine" id="cb34-3" title="3">@(datetime(<span class="st">&quot;10/05/2010&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb34-4" title="4">@(datetime(<span class="st">&quot;NOT DATE&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:datetime_add"></a></p>
-<h2 id="datetime_adddate-offset-unit">datetime_add(date, offset, unit)</h2>
-<p>Calculates the date value arrived at by adding <code>offset</code> number of <code>unit</code> to the <code>date</code></p>
+<h2 id="datetime_adddatetime-offset-unit">datetime_add(datetime, offset, unit)</h2>
+<p>Calculates the date value arrived at by adding <code>offset</code> number of <code>unit</code> to the <code>datetime</code></p>
 <p>Valid durations are “Y” for years, “M” for months, “W” for weeks, “D” for days, “h” for hour, “m” for minutes, “s” for seconds</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb35-1" title="1">@(datetime_add(<span class="st">&quot;2017-01-15&quot;</span>, <span class="dv">5</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2017-01</span>-20T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb35-2" title="2">@(datetime_add(<span class="st">&quot;2017-01-15 10:45&quot;</span>, <span class="dv">30</span>, <span class="st">&quot;m&quot;</span>)) → <span class="dv">2017-01</span>-15T11:<span class="dv">15</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
@@ -314,15 +314,15 @@
 <a class="sourceLine" id="cb42-5" title="5">@(field(<span class="st">&quot;a</span><span class="sc">\t\t</span><span class="st">b</span><span class="sc">\t</span><span class="st">c</span><span class="sc">\t</span><span class="st">d&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) →</a>
 <a class="sourceLine" id="cb42-6" title="6">@(field(<span class="st">&quot;a,b,c&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;,&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:foreach"></a></p>
-<h2 id="foreacharray-func-args">foreach(array, func, [args…])</h2>
-<p>Takes an array of objects and returns a new array by applying the given function to each item.</p>
+<h2 id="foreachvalues-func-args">foreach(values, func, [args…])</h2>
+<p>Creates a new array by applying <code>func</code> to each value in <code>values</code>.</p>
 <p>If the given function takes more than one argument, you can pass additional arguments after the function.</p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb43-1" title="1">@(foreach(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), upper)) → [A, B, C]</a>
 <a class="sourceLine" id="cb43-2" title="2">@(foreach(array(<span class="st">&quot;the man&quot;</span>, <span class="st">&quot;fox&quot;</span>, <span class="st">&quot;jumped up&quot;</span>), word, <span class="dv">0</span>)) → [the, fox, jumped]</a></code></pre></div>
 <p><a name="function:format_date"></a></p>
 <h2 id="format_datedate-format">format_date(date, [,format])</h2>
-<p>Formats <code>date</code> as text according to the given <code>format</code>. If <code>format</code> is not specified then the environment’s default format is used.</p>
-<p>The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
+<p>Formats <code>date</code> as text according to the given <code>format</code>.</p>
+<p>If <code>format</code> is not specified then the environment’s default format is used. The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
 <li><code>YY</code> - last two digits of year 0-99</li>
 <li><code>YYYY</code> - four digits of year 0000-9999</li>
@@ -338,9 +338,9 @@
 <a class="sourceLine" id="cb44-5" title="5">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;M&quot;</span>)) → <span class="dv">7</span></a>
 <a class="sourceLine" id="cb44-6" title="6">@(format_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:format_datetime"></a></p>
-<h2 id="format_datetimedate-format-timezone">format_datetime(date [,format [,timezone]])</h2>
-<p>Formats <code>date</code> as text according to the given <code>format</code>. If <code>format</code> is not specified then the environment’s default format is used.</p>
-<p>The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
+<h2 id="format_datetimedatetime-format-timezone">format_datetime(datetime [,format [,timezone]])</h2>
+<p>Formats <code>datetime</code> as text according to the given <code>format</code>.</p>
+<p>If <code>format</code> is not specified then the environment’s default format is used. The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
 <li><code>YY</code> - last two digits of year 0-99</li>
 <li><code>YYYY</code> - four digits of year 0000-9999</li>
@@ -392,8 +392,8 @@
 <a class="sourceLine" id="cb48-5" title="5">@(format_number(<span class="st">&quot;foo&quot;</span>, <span class="dv">2</span>, false)) → ERROR</a></code></pre></div>
 <p><a name="function:format_time"></a></p>
 <h2 id="format_timetime-format">format_time(time [,format])</h2>
-<p>Formats <code>time</code> as text according to the given <code>format</code>. If <code>format</code> is not specified then the environment’s default format is used.</p>
-<p>The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
+<p>Formats <code>time</code> as text according to the given <code>format</code>.</p>
+<p>If <code>format</code> is not specified then the environment’s default format is used. The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
 <li><code>h</code> - hour of the day 1-12</li>
 <li><code>hh</code> - hour of the day 01-12</li>
@@ -460,20 +460,20 @@
 <a class="sourceLine" id="cb56-3" title="3">@(lower(<span class="st">&quot;123&quot;</span>)) → <span class="dv">123</span></a>
 <a class="sourceLine" id="cb56-4" title="4">@(lower(<span class="st">&quot;😀&quot;</span>)) → 😀</a></code></pre></div>
 <p><a name="function:max"></a></p>
-<h2 id="maxvalues">max(values…)</h2>
-<p>Returns the maximum value in <code>values</code>.</p>
+<h2 id="maxnumbers">max(numbers…)</h2>
+<p>Returns the maximum value in <code>numbers</code>.</p>
 <div class="sourceCode" id="cb57"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb57-1" title="1">@(max(<span class="dv">1</span>, <span class="dv">2</span>)) → <span class="dv">2</span></a>
 <a class="sourceLine" id="cb57-2" title="2">@(max(<span class="dv">1</span>, <span class="dv">-1</span>, <span class="dv">10</span>)) → <span class="dv">10</span></a>
 <a class="sourceLine" id="cb57-3" title="3">@(max(<span class="dv">1</span>, <span class="dv">10</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:mean"></a></p>
-<h2 id="meanvalues">mean(values)</h2>
-<p>Returns the arithmetic mean of the numbers in <code>values</code>.</p>
+<h2 id="meannumbers">mean(numbers…)</h2>
+<p>Returns the arithmetic mean of <code>numbers</code>.</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb58-1" title="1">@(mean(<span class="dv">1</span>, <span class="dv">2</span>)) → <span class="fl">1.5</span></a>
 <a class="sourceLine" id="cb58-2" title="2">@(mean(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">6</span>)) → <span class="dv">3</span></a>
 <a class="sourceLine" id="cb58-3" title="3">@(mean(<span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:min"></a></p>
-<h2 id="minvalues">min(values)</h2>
-<p>Returns the minimum value in <code>values</code>.</p>
+<h2 id="minnumbers">min(numbers…)</h2>
+<p>Returns the minimum value in <code>numbers</code>.</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb59-1" title="1">@(min(<span class="dv">1</span>, <span class="dv">2</span>)) → <span class="dv">1</span></a>
 <a class="sourceLine" id="cb59-2" title="2">@(min(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">-10</span>)) → <span class="dv">-10</span></a>
 <a class="sourceLine" id="cb59-3" title="3">@(min(<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
@@ -569,8 +569,8 @@
 <a class="sourceLine" id="cb67-2" title="2">@(parse_time(<span class="st">&quot;2:40 pm&quot;</span>, <span class="st">&quot;h:mm aa&quot;</span>)) → <span class="dv">14</span>:<span class="dv">40</span>:<span class="fl">00.000000</span></a>
 <a class="sourceLine" id="cb67-3" title="3">@(parse_time(<span class="st">&quot;NOT TIME&quot;</span>, <span class="st">&quot;tt:mm&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:percent"></a></p>
-<h2 id="percentnum">percent(num)</h2>
-<p>Formats <code>num</code> as a percentage.</p>
+<h2 id="percentnumber">percent(number)</h2>
+<p>Formats <code>number</code> as a percentage.</p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb68-1" title="1">@(percent(<span class="fl">0.54234</span>)) → <span class="dv">54</span>%</a>
 <a class="sourceLine" id="cb68-2" title="2">@(percent(<span class="fl">1.2</span>)) → <span class="dv">120</span>%</a>
 <a class="sourceLine" id="cb68-3" title="3">@(percent(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
@@ -616,8 +616,8 @@
 <div class="sourceCode" id="cb75"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb75-1" title="1">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → zap bar</a>
 <a class="sourceLine" id="cb75-2" title="2">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;baz&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → foo bar</a></code></pre></div>
 <p><a name="function:replace_time"></a></p>
-<h2 id="replace_timedate">replace_time(date)</h2>
-<p>Returns the a new date time with the time part replaced by the <code>time</code>.</p>
+<h2 id="replace_timedatetime">replace_time(datetime)</h2>
+<p>Returns a new datetime with the time part replaced by the <code>time</code>.</p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb76-1" title="1">@(replace_time(now(), <span class="st">&quot;10:30&quot;</span>)) → <span class="dv">2018-04</span>-11T10:<span class="dv">30</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb76-2" title="2">@(replace_time(<span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;10:30&quot;</span>)) → <span class="dv">2017-01</span>-15T10:<span class="dv">30</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb76-3" title="3">@(replace_time(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;10:30&quot;</span>)) → ERROR</a></code></pre></div>
@@ -629,8 +629,8 @@
 <a class="sourceLine" id="cb77-3" title="3">@(right(<span class="st">&quot;😀😃😄😁&quot;</span>, <span class="dv">2</span>)) → 😄😁</a>
 <a class="sourceLine" id="cb77-4" title="4">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">-1</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round"></a></p>
-<h2 id="roundnum-places">round(num [,places])</h2>
-<p>Rounds <code>num</code> to the nearest value.</p>
+<h2 id="roundnumber-places">round(number [,places])</h2>
+<p>Rounds <code>number</code> to the nearest value.</p>
 <p>You can optionally pass in the number of decimal places to round to as <code>places</code>. If <code>places</code> &lt; 0, it will round the integer part to the nearest 10^(-places).</p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb78-1" title="1">@(round(<span class="dv">12</span>)) → <span class="dv">12</span></a>
 <a class="sourceLine" id="cb78-2" title="2">@(round(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
@@ -640,8 +640,8 @@
 <a class="sourceLine" id="cb78-6" title="6">@(round(<span class="fl">12.146</span>, <span class="dv">-1</span>)) → <span class="dv">10</span></a>
 <a class="sourceLine" id="cb78-7" title="7">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_down"></a></p>
-<h2 id="round_downnum-places">round_down(num [,places])</h2>
-<p>Rounds <code>num</code> down to the nearest integer value.</p>
+<h2 id="round_downnumber-places">round_down(number [,places])</h2>
+<p>Rounds <code>number</code> down to the nearest integer value.</p>
 <p>You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb79-1" title="1">@(round_down(<span class="dv">12</span>)) → <span class="dv">12</span></a>
 <a class="sourceLine" id="cb79-2" title="2">@(round_down(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
@@ -650,8 +650,8 @@
 <a class="sourceLine" id="cb79-5" title="5">@(round_down(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
 <a class="sourceLine" id="cb79-6" title="6">@(round_down(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_up"></a></p>
-<h2 id="round_upnum-places">round_up(num [,places])</h2>
-<p>Rounds <code>num</code> up to the nearest integer value.</p>
+<h2 id="round_upnumber-places">round_up(number [,places])</h2>
+<p>Rounds <code>number</code> up to the nearest integer value.</p>
 <p>You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
 <div class="sourceCode" id="cb80"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb80-1" title="1">@(round_up(<span class="dv">12</span>)) → <span class="dv">12</span></a>
 <a class="sourceLine" id="cb80-2" title="2">@(round_up(<span class="fl">12.141</span>)) → <span class="dv">13</span></a>

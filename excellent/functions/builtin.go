@@ -843,13 +843,13 @@ func Upper(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXText(strings.ToUpper(text.Native()))
 }
 
-// Percent formats `num` as a percentage.
+// Percent formats `number` as a percentage.
 //
 //   @(percent(0.54234)) -> 54%
 //   @(percent(1.2)) -> 120%
 //   @(percent("foo")) -> ERROR
 //
-// @function percent(num)
+// @function percent(number)
 func Percent(env utils.Environment, num types.XNumber) types.XValue {
 	// multiply by 100 and floor
 	percent := num.Native().Mul(decimal.NewFromFloat(100)).Round(0)
@@ -874,18 +874,18 @@ func URLEncode(env utils.Environment, text types.XText) types.XValue {
 // Number Functions
 //------------------------------------------------------------------------------------------
 
-// Abs returns the absolute value of `num`.
+// Abs returns the absolute value of `number`.
 //
 //   @(abs(-10)) -> 10
 //   @(abs(10.5)) -> 10.5
 //   @(abs("foo")) -> ERROR
 //
-// @function abs(num)
+// @function abs(number)
 func Abs(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXNumber(num.Native().Abs())
 }
 
-// Round rounds `num` to the nearest value.
+// Round rounds `number` to the nearest value.
 //
 // You can optionally pass in the number of decimal places to round to as `places`. If `places` < 0,
 // it will round the integer part to the nearest 10^(-places).
@@ -898,12 +898,12 @@ func Abs(env utils.Environment, num types.XNumber) types.XValue {
 //   @(round(12.146, -1)) -> 10
 //   @(round("notnum", 2)) -> ERROR
 //
-// @function round(num [,places])
+// @function round(number [,places])
 func Round(env utils.Environment, num types.XNumber, places int) types.XValue {
 	return types.NewXNumber(num.Native().Round(int32(places)))
 }
 
-// RoundUp rounds `num` up to the nearest integer value.
+// RoundUp rounds `number` up to the nearest integer value.
 //
 // You can optionally pass in the number of decimal places to round to as `places`.
 //
@@ -914,7 +914,7 @@ func Round(env utils.Environment, num types.XNumber, places int) types.XValue {
 //   @(round_up(12.146, 2)) -> 12.15
 //   @(round_up("foo")) -> ERROR
 //
-// @function round_up(num [,places])
+// @function round_up(number [,places])
 func RoundUp(env utils.Environment, num types.XNumber, places int) types.XValue {
 	dec := num.Native()
 	if dec.Round(int32(places)).Equal(dec) {
@@ -927,7 +927,7 @@ func RoundUp(env utils.Environment, num types.XNumber, places int) types.XValue 
 	return types.NewXNumber(roundedDec)
 }
 
-// RoundDown rounds `num` down to the nearest integer value.
+// RoundDown rounds `number` down to the nearest integer value.
 //
 // You can optionally pass in the number of decimal places to round to as `places`.
 //
@@ -938,7 +938,7 @@ func RoundUp(env utils.Environment, num types.XNumber, places int) types.XValue 
 //   @(round_down(12.146, 2)) -> 12.14
 //   @(round_down("foo")) -> ERROR
 //
-// @function round_down(num [,places])
+// @function round_down(number [,places])
 func RoundDown(env utils.Environment, num types.XNumber, places int) types.XValue {
 	dec := num.Native()
 	if dec.Round(int32(places)).Equal(dec) {
@@ -951,13 +951,13 @@ func RoundDown(env utils.Environment, num types.XNumber, places int) types.XValu
 	return types.NewXNumber(roundedDec)
 }
 
-// Max returns the maximum value in `values`.
+// Max returns the maximum value in `numbers`.
 //
 //   @(max(1, 2)) -> 2
 //   @(max(1, -1, 10)) -> 10
 //   @(max(1, 10, "foo")) -> ERROR
 //
-// @function max(values...)
+// @function max(numbers...)
 func Max(env utils.Environment, values ...types.XValue) types.XValue {
 	max, xerr := types.ToXNumber(env, values[0])
 	if xerr != nil {
@@ -977,13 +977,13 @@ func Max(env utils.Environment, values ...types.XValue) types.XValue {
 	return max
 }
 
-// Min returns the minimum value in `values`.
+// Min returns the minimum value in `numbers`.
 //
 //   @(min(1, 2)) -> 1
 //   @(min(2, 2, -10)) -> -10
 //   @(min(1, 2, "foo")) -> ERROR
 //
-// @function min(values)
+// @function min(numbers...)
 func Min(env utils.Environment, values ...types.XValue) types.XValue {
 	max, xerr := types.ToXNumber(env, values[0])
 	if xerr != nil {
@@ -1003,13 +1003,13 @@ func Min(env utils.Environment, values ...types.XValue) types.XValue {
 	return max
 }
 
-// Mean returns the arithmetic mean of the numbers in `values`.
+// Mean returns the arithmetic mean of `numbers`.
 //
 //   @(mean(1, 2)) -> 1.5
 //   @(mean(1, 2, 6)) -> 3
 //   @(mean(1, "foo")) -> ERROR
 //
-// @function mean(values)
+// @function mean(numbers...)
 func Mean(env utils.Environment, args ...types.XValue) types.XValue {
 	sum := decimal.Zero
 
@@ -1208,7 +1208,7 @@ func DateTimeDiff(env utils.Environment, arg1 types.XValue, arg2 types.XValue, a
 	return types.NewXErrorf("unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit)
 }
 
-// DateTimeAdd calculates the date value arrived at by adding `offset` number of `unit` to the `date`
+// DateTimeAdd calculates the date value arrived at by adding `offset` number of `unit` to the `datetime`
 //
 // Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 // "m" for minutes, "s" for seconds
@@ -1216,7 +1216,7 @@ func DateTimeDiff(env utils.Environment, arg1 types.XValue, arg2 types.XValue, a
 //   @(datetime_add("2017-01-15", 5, "D")) -> 2017-01-20T00:00:00.000000-05:00
 //   @(datetime_add("2017-01-15 10:45", 30, "m")) -> 2017-01-15T11:15:00.000000-05:00
 //
-// @function datetime_add(date, offset, unit)
+// @function datetime_add(datetime, offset, unit)
 func DateTimeAdd(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 3 {
 		return types.NewXErrorf("takes exactly three arguments, received %d", len(args))
@@ -1257,13 +1257,13 @@ func DateTimeAdd(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXErrorf("unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit)
 }
 
-// ReplaceTime returns the a new date time with the time part replaced by the `time`.
+// ReplaceTime returns a new datetime with the time part replaced by the `time`.
 //
 //   @(replace_time(now(), "10:30")) -> 2018-04-11T10:30:00.000000-05:00
 //   @(replace_time("2017-01-15", "10:30")) -> 2017-01-15T10:30:00.000000-05:00
 //   @(replace_time("foo", "10:30")) -> ERROR
 //
-// @function replace_time(date)
+// @function replace_time(datetime)
 func ReplaceTime(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
 	date, xerr := types.ToXDateTime(env, arg1)
 	if xerr != nil {
@@ -1520,11 +1520,11 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // Formatting Functions
 //----------------------------------------------------------------------------------------
 
-// FormatDate formats `date` as text according to the given `format`. If `format` is not
-// specified then the environment's default format is used.
+// FormatDate formats `date` as text according to the given `format`.
 //
-// The format string can consist of the following characters. The characters
-// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+// If `format` is not specified then the environment's default format is used. The format
+// string can consist of the following characters. The characters ' ', ':', ',', 'T', '-'
+// and '_' are ignored. Any other character is an error.
 //
 // * `YY`        - last two digits of year 0-99
 // * `YYYY`      - four digits of year 0000-9999
@@ -1566,11 +1566,11 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(date.Native().Format(goFormat))
 }
 
-// FormatDateTime formats `date` as text according to the given `format`. If `format` is not
-// specified then the environment's default format is used.
+// FormatDateTime formats `datetime` as text according to the given `format`.
 //
-// The format string can consist of the following characters. The characters
-// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+// If `format` is not specified then the environment's default format is used. The format
+// string can consist of the following characters. The characters ' ', ':', ',', 'T', '-'
+// and '_' are ignored. Any other character is an error.
 //
 // * `YY`        - last two digits of year 0-99
 // * `YYYY`      - four digits of year 0000-9999
@@ -1605,7 +1605,7 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(format_datetime("1979-07-18T15:00:00.000000Z", "M")) -> 7
 //   @(format_datetime("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
-// @function format_datetime(date [,format [,timezone]])
+// @function format_datetime(datetime [,format [,timezone]])
 func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	date, xerr := types.ToXDateTime(env, args[0])
 	if xerr != nil {
@@ -1650,11 +1650,11 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(date.Native().Format(goFormat))
 }
 
-// FormatTime formats `time` as text according to the given `format`. If `format` is not
-// specified then the environment's default format is used.
+// FormatTime formats `time` as text according to the given `format`.
 //
-// The format string can consist of the following characters. The characters
-// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+// If `format` is not specified then the environment's default format is used. The format
+// string can consist of the following characters. The characters ' ', ':', ',', 'T', '-'
+// and '_' are ignored. Any other character is an error.
 //
 // * `h`         - hour of the day 1-12
 // * `hh`        - hour of the day 01-12
@@ -1932,14 +1932,14 @@ func ExtractObject(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXObject(result)
 }
 
-// ForEach takes an array of objects and returns a new array by applying the given function to each item.
+// ForEach creates a new array by applying `func` to each value in `values`.
 //
 // If the given function takes more than one argument, you can pass additional arguments after the function.
 //
 //   @(foreach(array("a", "b", "c"), upper)) -> [A, B, C]
 //   @(foreach(array("the man", "fox", "jumped up"), word, 0)) -> [the, fox, jumped]
 //
-// @function foreach(array, func, [args...])
+// @function foreach(values, func, [args...])
 func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 	array, xerr := types.ToXArray(env, args[0])
 	if xerr != nil {

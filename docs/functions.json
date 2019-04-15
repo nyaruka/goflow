@@ -1,7 +1,7 @@
 [
     {
-        "signature": "abs(num)",
-        "summary": "Returns the absolute value of `num`.",
+        "signature": "abs(number)",
+        "summary": "Returns the absolute value of `number`.",
         "detail": "",
         "examples": [
             {
@@ -240,8 +240,8 @@
         ]
     },
     {
-        "signature": "datetime_add(date, offset, unit)",
-        "summary": "Calculates the date value arrived at by adding `offset` number of `unit` to the `date`",
+        "signature": "datetime_add(datetime, offset, unit)",
+        "summary": "Calculates the date value arrived at by adding `offset` number of `unit` to the `datetime`",
         "detail": "Valid durations are \"Y\" for years, \"M\" for months, \"W\" for weeks, \"D\" for days, \"h\" for hour,\n\"m\" for minutes, \"s\" for seconds",
         "examples": [
             {
@@ -412,8 +412,8 @@
         ]
     },
     {
-        "signature": "foreach(array, func, [args...])",
-        "summary": "Takes an array of objects and returns a new array by applying the given function to each item.",
+        "signature": "foreach(values, func, [args...])",
+        "summary": "Creates a new array by applying `func` to each value in `values`.",
         "detail": "If the given function takes more than one argument, you can pass additional arguments after the function.",
         "examples": [
             {
@@ -428,8 +428,8 @@
     },
     {
         "signature": "format_date(date, [,format])",
-        "summary": "Formats `date` as text according to the given `format`. If `format` is not",
-        "detail": "specified then the environment's default format is used.\n\nThe format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31",
+        "summary": "Formats `date` as text according to the given `format`.",
+        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31",
         "examples": [
             {
                 "template": "@(format_date(\"1979-07-18T15:00:00.000000Z\"))",
@@ -458,9 +458,9 @@
         ]
     },
     {
-        "signature": "format_datetime(date [,format [,timezone]])",
-        "summary": "Formats `date` as text according to the given `format`. If `format` is not",
-        "detail": "specified then the environment's default format is used.\n\nThe format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM\n* `Z`         - hour and minute offset from UTC, or Z for UTC\n* `ZZZ`       - hour and minute offset from UTC\n\nTimezone should be a location name as specified in the IANA Time Zone database, such\nas \"America/Guayaquil\" or \"America/Los_Angeles\". If not specified, the current timezone\nwill be used. An error will be returned if the timezone is not recognized.",
+        "signature": "format_datetime(datetime [,format [,timezone]])",
+        "summary": "Formats `datetime` as text according to the given `format`.",
+        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM\n* `Z`         - hour and minute offset from UTC, or Z for UTC\n* `ZZZ`       - hour and minute offset from UTC\n\nTimezone should be a location name as specified in the IANA Time Zone database, such\nas \"America/Guayaquil\" or \"America/Los_Angeles\". If not specified, the current timezone\nwill be used. An error will be returned if the timezone is not recognized.",
         "examples": [
             {
                 "template": "@(format_datetime(\"1979-07-18T15:00:00.000000Z\"))",
@@ -551,8 +551,8 @@
     },
     {
         "signature": "format_time(time [,format])",
-        "summary": "Formats `time` as text according to the given `format`. If `format` is not",
-        "detail": "specified then the environment's default format is used.\n\nThe format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM",
+        "summary": "Formats `time` as text according to the given `format`.",
+        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM",
         "examples": [
             {
                 "template": "@(format_time(\"14:50:30.000000\"))",
@@ -722,8 +722,8 @@
         ]
     },
     {
-        "signature": "max(values...)",
-        "summary": "Returns the maximum value in `values`.",
+        "signature": "max(numbers...)",
+        "summary": "Returns the maximum value in `numbers`.",
         "detail": "",
         "examples": [
             {
@@ -741,8 +741,8 @@
         ]
     },
     {
-        "signature": "mean(values)",
-        "summary": "Returns the arithmetic mean of the numbers in `values`.",
+        "signature": "mean(numbers...)",
+        "summary": "Returns the arithmetic mean of `numbers`.",
         "detail": "",
         "examples": [
             {
@@ -760,8 +760,8 @@
         ]
     },
     {
-        "signature": "min(values)",
-        "summary": "Returns the minimum value in `values`.",
+        "signature": "min(numbers...)",
+        "summary": "Returns the minimum value in `numbers`.",
         "detail": "",
         "examples": [
             {
@@ -923,8 +923,8 @@
         ]
     },
     {
-        "signature": "percent(num)",
-        "summary": "Formats `num` as a percentage.",
+        "signature": "percent(number)",
+        "summary": "Formats `number` as a percentage.",
         "detail": "",
         "examples": [
             {
@@ -1063,8 +1063,8 @@
         ]
     },
     {
-        "signature": "replace_time(date)",
-        "summary": "Returns the a new date time with the time part replaced by the `time`.",
+        "signature": "replace_time(datetime)",
+        "summary": "Returns a new datetime with the time part replaced by the `time`.",
         "detail": "",
         "examples": [
             {
@@ -1105,8 +1105,8 @@
         ]
     },
     {
-        "signature": "round(num [,places])",
-        "summary": "Rounds `num` to the nearest value.",
+        "signature": "round(number [,places])",
+        "summary": "Rounds `number` to the nearest value.",
         "detail": "You can optionally pass in the number of decimal places to round to as `places`. If `places` < 0,\nit will round the integer part to the nearest 10^(-places).",
         "examples": [
             {
@@ -1140,8 +1140,8 @@
         ]
     },
     {
-        "signature": "round_down(num [,places])",
-        "summary": "Rounds `num` down to the nearest integer value.",
+        "signature": "round_down(number [,places])",
+        "summary": "Rounds `number` down to the nearest integer value.",
         "detail": "You can optionally pass in the number of decimal places to round to as `places`.",
         "examples": [
             {
@@ -1171,8 +1171,8 @@
         ]
     },
     {
-        "signature": "round_up(num [,places])",
-        "summary": "Rounds `num` up to the nearest integer value.",
+        "signature": "round_up(number [,places])",
+        "summary": "Rounds `number` up to the nearest integer value.",
         "detail": "You can optionally pass in the number of decimal places to round to as `places`.",
         "examples": [
             {

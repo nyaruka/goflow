@@ -334,9 +334,9 @@ or variables in the context `@(title(contact.name))`.
 <div class="functions">
 <a name="function:abs"></a>
 
-## abs(num)
+## abs(number)
 
-Returns the absolute value of `num`.
+Returns the absolute value of `number`.
 
 
 ```objectivec
@@ -507,9 +507,9 @@ and time formats. An error is returned if the value can't be converted.
 
 <a name="function:datetime_add"></a>
 
-## datetime_add(date, offset, unit)
+## datetime_add(datetime, offset, unit)
 
-Calculates the date value arrived at by adding `offset` number of `unit` to the `date`
+Calculates the date value arrived at by adding `offset` number of `unit` to the `datetime`
 
 Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 "m" for minutes, "s" for seconds
@@ -626,9 +626,9 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 
 <a name="function:foreach"></a>
 
-## foreach(array, func, [args...])
+## foreach(values, func, [args...])
 
-Takes an array of objects and returns a new array by applying the given function to each item.
+Creates a new array by applying `func` to each value in `values`.
 
 If the given function takes more than one argument, you can pass additional arguments after the function.
 
@@ -642,11 +642,11 @@ If the given function takes more than one argument, you can pass additional argu
 
 ## format_date(date, [,format])
 
-Formats `date` as text according to the given `format`. If `format` is not
-specified then the environment's default format is used.
+Formats `date` as text according to the given `format`.
 
-The format string can consist of the following characters. The characters
-' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+If `format` is not specified then the environment's default format is used. The format
+string can consist of the following characters. The characters ' ', ':', ',', 'T', '-'
+and '_' are ignored. Any other character is an error.
 
 * `YY`        - last two digits of year 0-99
 * `YYYY`      - four digits of year 0000-9999
@@ -667,13 +667,13 @@ The format string can consist of the following characters. The characters
 
 <a name="function:format_datetime"></a>
 
-## format_datetime(date [,format [,timezone]])
+## format_datetime(datetime [,format [,timezone]])
 
-Formats `date` as text according to the given `format`. If `format` is not
-specified then the environment's default format is used.
+Formats `datetime` as text according to the given `format`.
 
-The format string can consist of the following characters. The characters
-' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+If `format` is not specified then the environment's default format is used. The format
+string can consist of the following characters. The characters ' ', ':', ',', 'T', '-'
+and '_' are ignored. Any other character is an error.
 
 * `YY`        - last two digits of year 0-99
 * `YYYY`      - four digits of year 0000-9999
@@ -756,11 +756,11 @@ An optional third argument `humanize` can be false to disable the use of thousan
 
 ## format_time(time [,format])
 
-Formats `time` as text according to the given `format`. If `format` is not
-specified then the environment's default format is used.
+Formats `time` as text according to the given `format`.
 
-The format string can consist of the following characters. The characters
-' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+If `format` is not specified then the environment's default format is used. The format
+string can consist of the following characters. The characters ' ', ':', ',', 'T', '-'
+and '_' are ignored. Any other character is an error.
 
 * `h`         - hour of the day 1-12
 * `hh`        - hour of the day 01-12
@@ -882,9 +882,9 @@ Converts `text` to lowercase.
 
 <a name="function:max"></a>
 
-## max(values...)
+## max(numbers...)
 
-Returns the maximum value in `values`.
+Returns the maximum value in `numbers`.
 
 
 ```objectivec
@@ -895,9 +895,9 @@ Returns the maximum value in `values`.
 
 <a name="function:mean"></a>
 
-## mean(values)
+## mean(numbers...)
 
-Returns the arithmetic mean of the numbers in `values`.
+Returns the arithmetic mean of `numbers`.
 
 
 ```objectivec
@@ -908,9 +908,9 @@ Returns the arithmetic mean of the numbers in `values`.
 
 <a name="function:min"></a>
 
-## min(values)
+## min(numbers...)
 
-Returns the minimum value in `values`.
+Returns the minimum value in `numbers`.
 
 
 ```objectivec
@@ -1083,9 +1083,9 @@ parse_time will return an error if it is unable to convert the text to a time.
 
 <a name="function:percent"></a>
 
-## percent(num)
+## percent(number)
 
-Formats `num` as a percentage.
+Formats `number` as a percentage.
 
 
 ```objectivec
@@ -1189,9 +1189,9 @@ Replaces all occurrences of `needle` with `replacement` in `text`.
 
 <a name="function:replace_time"></a>
 
-## replace_time(date)
+## replace_time(datetime)
 
-Returns the a new date time with the time part replaced by the `time`.
+Returns a new datetime with the time part replaced by the `time`.
 
 
 ```objectivec
@@ -1216,9 +1216,9 @@ Returns the `count` right-most characters in `text`
 
 <a name="function:round"></a>
 
-## round(num [,places])
+## round(number [,places])
 
-Rounds `num` to the nearest value.
+Rounds `number` to the nearest value.
 
 You can optionally pass in the number of decimal places to round to as `places`. If `places` < 0,
 it will round the integer part to the nearest 10^(-places).
@@ -1236,9 +1236,9 @@ it will round the integer part to the nearest 10^(-places).
 
 <a name="function:round_down"></a>
 
-## round_down(num [,places])
+## round_down(number [,places])
 
-Rounds `num` down to the nearest integer value.
+Rounds `number` down to the nearest integer value.
 
 You can optionally pass in the number of decimal places to round to as `places`.
 
@@ -1254,9 +1254,9 @@ You can optionally pass in the number of decimal places to round to as `places`.
 
 <a name="function:round_up"></a>
 
-## round_up(num [,places])
+## round_up(number [,places])
 
-Rounds `num` up to the nearest integer value.
+Rounds `number` up to the nearest integer value.
 
 You can optionally pass in the number of decimal places to round to as `places`.
 
