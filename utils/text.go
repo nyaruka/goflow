@@ -63,3 +63,18 @@ func StringSliceContains(slice []string, str string, caseSensitive bool) bool {
 	}
 	return false
 }
+
+// Indent indents each non-empty line in the given string
+func Indent(s string, prefix string) string {
+	output := strings.Builder{}
+
+	bol := true
+	for _, c := range s {
+		if bol && c != '\n' {
+			output.WriteString(prefix)
+		}
+		output.WriteRune(c)
+		bol = c == '\n'
+	}
+	return output.String()
+}

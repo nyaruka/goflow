@@ -114,6 +114,14 @@ func Render(x XValue) string {
 	return x.Render()
 }
 
+// Format returns the pretty text representation
+func Format(env utils.Environment, x XValue) string {
+	if utils.IsNil(x) {
+		return ""
+	}
+	return x.Format(env)
+}
+
 // String returns a representation of the given value for use in debugging
 func String(x XValue) string {
 	if utils.IsNil(x) {

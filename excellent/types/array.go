@@ -67,9 +67,24 @@ func (x *XArray) Render() string {
 // Format returns the pretty text representation
 func (x *XArray) Format(env utils.Environment) string {
 	parts := make([]string, x.Count())
+	multiline := false
+
 	for i, v := range x.values() {
-		parts[i] = Render(v)
+		parts[i] = Format(env, v)
+		if strings.ContainsRune(parts[i], '\n') {
+			multiline = true
+		}
 	}
+
+	if multiline {
+		for i, p := range parts {
+			p = utils.Indent(p, "  ")
+			parts[i] = "-" + p[1:]
+		}
+
+		return strings.Join(parts, "\n")
+	}
+
 	return strings.Join(parts, ", ")
 }
 

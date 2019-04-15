@@ -52,15 +52,20 @@ func (x *XObject) Truthy() bool {
 func (x *XObject) Render() string {
 	pairs := make([]string, 0, x.Count())
 	for _, k := range x.keys(true) {
-		vAsText := Render(x.values()[k])
-		pairs = append(pairs, fmt.Sprintf("%s: %s", k, vAsText))
+		rendered := Render(x.values()[k])
+		pairs = append(pairs, fmt.Sprintf("%s: %s", k, rendered))
 	}
 	return "{" + strings.Join(pairs, ", ") + "}"
 }
 
 // Format returns the pretty text representation
 func (x *XObject) Format(env utils.Environment) string {
-	return x.Render()
+	pairs := make([]string, 0, x.Count())
+	for _, k := range x.keys(true) {
+		formatted := Format(env, x.values()[k])
+		pairs = append(pairs, fmt.Sprintf("%s: %s", k, formatted))
+	}
+	return strings.Join(pairs, "\n")
 }
 
 // MarshalJSON converts this type to internal JSON

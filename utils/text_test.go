@@ -93,3 +93,11 @@ func TestStringSliceContains(t *testing.T) {
 	assert.False(t, utils.StringSliceContains([]string{"b", "a", "c"}, "A", true))
 	assert.True(t, utils.StringSliceContains([]string{"b", "a", "c"}, "A", false))
 }
+
+func TestIndent(t *testing.T) {
+	assert.Equal(t, "", utils.Indent("", "  "))
+	assert.Equal(t, "  x", utils.Indent("x", "  "))
+	assert.Equal(t, "  x\n  y", utils.Indent("x\ny", "  "))
+	assert.Equal(t, "  x\n\n  y", utils.Indent("x\n\ny", "  "))
+	assert.Equal(t, ">>>x", utils.Indent("x", ">>>"))
+}

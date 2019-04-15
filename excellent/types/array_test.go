@@ -18,7 +18,7 @@ func TestXArray(t *testing.T) {
 	assert.Equal(t, types.NewXNumberFromInt(123), arr1.Get(1))
 
 	assert.Equal(t, `[abc, 123, false]`, arr1.Render())
-	assert.Equal(t, `abc, 123, false`, arr1.Format(env))
+	assert.Equal(t, `abc, 123.00, false`, arr1.Format(env))
 	assert.Equal(t, `XArray[XText("abc"), XNumber(123), XBoolean(false)]`, arr1.String())
 	assert.Equal(t, "array", arr1.Describe())
 
@@ -28,6 +28,16 @@ func TestXArray(t *testing.T) {
 	// test equality
 	assert.Equal(t, types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)), types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)))
 	assert.NotEqual(t, types.NewXArray(types.NewXText("abc")), types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)))
+
+	arr2 := types.NewXArray(
+		types.NewXObject(map[string]types.XValue{
+			"foo": types.NewXNumberFromInt(123),
+			"bar": types.XBooleanFalse,
+		}),
+		types.NewXNumberFromInt(123),
+	)
+
+	assert.Equal(t, "- bar: false\n  foo: 123.00\n- 123.00", arr2.Format(env))
 }
 
 func TestXLazyArray(t *testing.T) {
