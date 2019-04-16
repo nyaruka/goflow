@@ -108,7 +108,7 @@ Is a whole or fractional number.
 ```objectivec
 @(1234) → 1234
 @(1234.5678) → 1234.5678
-@(format_number(1234.5678)) → 1,235
+@(format_number(1234.5670)) → 1,234.567
 @(json(1234.5678)) → 1234.5678
 ```
 
@@ -646,7 +646,7 @@ Formats `value` according to its type.
 
 
 ```objectivec
-@(format(1234.5678)) → 1,235
+@(format(1234.5670)) → 1,234.567
 @(format(now())) → 11-04-2018 13:24
 @(format(today())) → 11-04-2018
 ```
@@ -759,8 +759,8 @@ An optional third argument `humanize` can be false to disable the use of thousan
 
 ```objectivec
 @(format_number(1234)) → 1,234
-@(format_number(1234.5678)) → 1,235
-@(format_number(1234.5678, 2, true)) → 1,234.57
+@(format_number(1234.5670)) → 1,234.567
+@(format_number(1234.5670, 2, true)) → 1,234.57
 @(format_number(1234.5678, 0, false)) → 1235
 @(format_number("foo", 2, false)) → ERROR
 ```

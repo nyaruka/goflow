@@ -432,8 +432,8 @@
         "detail": "",
         "examples": [
             {
-                "template": "@(format(1234.5678))",
-                "output": "1,235"
+                "template": "@(format(1234.5670))",
+                "output": "1,234.567"
             },
             {
                 "template": "@(format(now()))",
@@ -551,11 +551,11 @@
                 "output": "1,234"
             },
             {
-                "template": "@(format_number(1234.5678))",
-                "output": "1,235"
+                "template": "@(format_number(1234.5670))",
+                "output": "1,234.567"
             },
             {
-                "template": "@(format_number(1234.5678, 2, true))",
+                "template": "@(format_number(1234.5670, 2, true))",
                 "output": "1,234.57"
             },
             {

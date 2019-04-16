@@ -74,7 +74,7 @@
 <p>Is a whole or fractional number.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" title="1">@(<span class="dv">1234</span>) → <span class="dv">1234</span></a>
 <a class="sourceLine" id="cb6-2" title="2">@(<span class="fl">1234.5678</span>) → <span class="fl">1234.5678</span></a>
-<a class="sourceLine" id="cb6-3" title="3">@(format_number(<span class="fl">1234.5678</span>)) → <span class="dv">1</span>,<span class="dv">235</span></a>
+<a class="sourceLine" id="cb6-3" title="3">@(format_number(<span class="fl">1234.5670</span>)) → <span class="dv">1</span>,<span class="fl">234.567</span></a>
 <a class="sourceLine" id="cb6-4" title="4">@(json(<span class="fl">1234.5678</span>)) → <span class="fl">1234.5678</span></a></code></pre></div>
 <p><a name="type:object"></a></p>
 <h2 id="object">Object</h2>
@@ -322,7 +322,7 @@
 <p><a name="function:format"></a></p>
 <h2 id="formatvalue">format(value)</h2>
 <p>Formats <code>value</code> according to its type.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb44-1" title="1">@(format(<span class="fl">1234.5678</span>)) → <span class="dv">1</span>,<span class="dv">235</span></a>
+<div class="sourceCode" id="cb44"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb44-1" title="1">@(format(<span class="fl">1234.5670</span>)) → <span class="dv">1</span>,<span class="fl">234.567</span></a>
 <a class="sourceLine" id="cb44-2" title="2">@(format(now())) → <span class="dv">11-04-2018</span> <span class="dv">13</span>:<span class="dv">24</span></a>
 <a class="sourceLine" id="cb44-3" title="3">@(format(today())) → <span class="dv">11-04-2018</span></a></code></pre></div>
 <p><a name="function:format_date"></a></p>
@@ -392,8 +392,8 @@
 <p>Formats <code>number</code> to the given number of decimal <code>places</code>.</p>
 <p>An optional third argument <code>humanize</code> can be false to disable the use of thousand separators.</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb49-1" title="1">@(format_number(<span class="dv">1234</span>)) → <span class="dv">1</span>,<span class="dv">234</span></a>
-<a class="sourceLine" id="cb49-2" title="2">@(format_number(<span class="fl">1234.5678</span>)) → <span class="dv">1</span>,<span class="dv">235</span></a>
-<a class="sourceLine" id="cb49-3" title="3">@(format_number(<span class="fl">1234.5678</span>, <span class="dv">2</span>, true)) → <span class="dv">1</span>,<span class="fl">234.57</span></a>
+<a class="sourceLine" id="cb49-2" title="2">@(format_number(<span class="fl">1234.5670</span>)) → <span class="dv">1</span>,<span class="fl">234.567</span></a>
+<a class="sourceLine" id="cb49-3" title="3">@(format_number(<span class="fl">1234.5670</span>, <span class="dv">2</span>, true)) → <span class="dv">1</span>,<span class="fl">234.57</span></a>
 <a class="sourceLine" id="cb49-4" title="4">@(format_number(<span class="fl">1234.5678</span>, <span class="dv">0</span>, false)) → <span class="dv">1235</span></a>
 <a class="sourceLine" id="cb49-5" title="5">@(format_number(<span class="st">&quot;foo&quot;</span>, <span class="dv">2</span>, false)) → ERROR</a></code></pre></div>
 <p><a name="function:format_time"></a></p>

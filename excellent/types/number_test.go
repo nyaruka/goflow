@@ -86,16 +86,46 @@ func TestFormatCustom(t *testing.T) {
 		groupDigits bool
 		expected    string
 	}{
+		// zero padding for extending decimal places
+		{types.RequireXNumberFromString("1"), utils.DefaultNumberFormat, 2, true, "1.00"},
+		{types.RequireXNumberFromString("12"), utils.DefaultNumberFormat, 2, true, "12.00"},
+		{types.RequireXNumberFromString("123"), utils.DefaultNumberFormat, 2, true, "123.00"},
 		{types.RequireXNumberFromString("1234"), utils.DefaultNumberFormat, 2, true, "1,234.00"},
+		{types.RequireXNumberFromString("123456789"), utils.DefaultNumberFormat, 2, true, "123,456,789.00"},
+
+		// rounding for truncating decimal places
+		{types.RequireXNumberFromString("1.9876"), utils.DefaultNumberFormat, 2, true, "1.99"},
+		{types.RequireXNumberFromString("12.9876"), utils.DefaultNumberFormat, 2, true, "12.99"},
+		{types.RequireXNumberFromString("123.9876"), utils.DefaultNumberFormat, 2, true, "123.99"},
+		{types.RequireXNumberFromString("1234.9876"), utils.DefaultNumberFormat, 2, true, "1,234.99"},
+
+		// rounding for truncating decimal places
+		{types.RequireXNumberFromString("1.1111"), utils.DefaultNumberFormat, 0, true, "1"},
+		{types.RequireXNumberFromString("12.1111"), utils.DefaultNumberFormat, 0, true, "12"},
+		{types.RequireXNumberFromString("123.1111"), utils.DefaultNumberFormat, 0, true, "123"},
+		{types.RequireXNumberFromString("1234.1111"), utils.DefaultNumberFormat, 0, true, "1,234"},
+
+		{types.RequireXNumberFromString("1.9876"), utils.DefaultNumberFormat, 0, true, "2"},
+		{types.RequireXNumberFromString("12.9876"), utils.DefaultNumberFormat, 0, true, "13"},
+		{types.RequireXNumberFromString("123.9876"), utils.DefaultNumberFormat, 0, true, "124"},
+		{types.RequireXNumberFromString("1234.9876"), utils.DefaultNumberFormat, 0, true, "1,235"},
+
+		// places -1 means keep significant decimals
+		{types.RequireXNumberFromString("1234"), utils.DefaultNumberFormat, -1, true, "1,234"},
+		{types.RequireXNumberFromString("1234.000"), utils.DefaultNumberFormat, -1, true, "1,234"},
+		{types.RequireXNumberFromString("1234.500"), utils.DefaultNumberFormat, -1, true, "1,234.5"},
+
+		// grouping is optional
 		{types.RequireXNumberFromString("1234"), utils.DefaultNumberFormat, 0, false, "1234"},
-		{types.RequireXNumberFromString("1234.567"), utils.DefaultNumberFormat, 2, true, "1,234.57"},
 		{types.RequireXNumberFromString("1234.567"), utils.DefaultNumberFormat, 2, false, "1234.57"},
+
+		// custom number format
 		{types.RequireXNumberFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}, 2, true, "1.234,57"},
 	}
 
 	for _, tc := range fmtTests {
 		val := tc.input.FormatCustom(tc.format, tc.places, tc.groupDigits)
 
-		assert.Equal(t, tc.expected, val, "format decimal failed for input '%s'", tc.input)
+		assert.Equal(t, tc.expected, val, "format decimal failed for input=%s, places=%d", tc.input, tc.places)
 	}
 }

@@ -1,13 +1,11 @@
 package types
 
 import (
-	"fmt"
 	"math"
 	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 
-	humanize "github.com/dustin/go-humanize"
 	"github.com/shopspring/decimal"
 )
 
@@ -19,7 +17,7 @@ func init() {
 //
 //   @(1234) -> 1234
 //   @(1234.5678) -> 1234.5678
-//   @(format_number(1234.5678)) -> 1,235
+//   @(format_number(1234.5670)) -> 1,234.567
 //   @(json(1234.5678)) -> 1234.5678
 //
 // @type number
@@ -60,29 +58,36 @@ func (x XNumber) Render() string { return x.Native().String() }
 
 // Format returns the pretty text representation
 func (x XNumber) Format(env utils.Environment) string {
-	return x.FormatCustom(env.NumberFormat(), 0, true)
+	return x.FormatCustom(env.NumberFormat(), -1, true)
 }
 
 // FormatCustom provides customised formatting
 func (x XNumber) FormatCustom(format *utils.NumberFormat, places int, groupDigits bool) string {
-	// build our format string
-	formatStr := strings.Builder{}
-	if groupDigits {
-		formatStr.WriteString(fmt.Sprintf("#%s###", format.DigitGroupingSymbol))
+	var formatted string
+
+	if places >= 0 {
+		formatted = x.Native().StringFixed(int32(places))
 	} else {
-		formatStr.WriteString("####")
+		formatted = x.Native().String()
 	}
 
-	formatStr.WriteString(format.DecimalSymbol)
+	parts := strings.Split(formatted, ".")
 
-	if places > 0 {
-		for i := 0; i < places; i++ {
-			formatStr.WriteString("#")
+	// add thousands separators
+	if groupDigits {
+		sb := strings.Builder{}
+		for i, r := range parts[0] {
+			sb.WriteRune(r)
+
+			d := (len(parts[0]) - 1) - i
+			if d%3 == 0 && d > 0 {
+				sb.WriteString(format.DigitGroupingSymbol)
+			}
 		}
+		parts[0] = sb.String()
 	}
 
-	f64, _ := x.Native().Float64()
-	return humanize.FormatFloat(formatStr.String(), f64)
+	return strings.Join(parts, format.DecimalSymbol)
 }
 
 // String returns the native string representation of this type

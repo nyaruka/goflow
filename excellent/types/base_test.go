@@ -90,7 +90,7 @@ func TestXValue(t *testing.T) {
 			value:     types.RequireXNumberFromString("1234.5678"),
 			marshaled: `1234.5678`,
 			rendered:  "1234.5678",
-			formatted: "1,235",
+			formatted: "1,234.5678",
 			asBool:    true,
 			isEmpty:   false,
 		}, {
