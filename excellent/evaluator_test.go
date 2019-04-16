@@ -113,6 +113,8 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{"@(1.1234 = 1.10)", types.XBooleanFalse},
 		{`@(1 = number("1.0"))`, types.XBooleanTrue},
 		{"@(11=11=11)", types.XBooleanFalse}, // 11=11 -> TRUE, then TRUE != 11
+		{"@(2 + 1 = 3)", types.XBooleanTrue},
+		{"@(7 != 2 + 1)", types.XBooleanTrue},
 
 		// date equality
 		{`@(datetime("2018-04-16") = datetime("2018-04-16"))`, types.XBooleanTrue},
