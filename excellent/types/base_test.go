@@ -165,7 +165,7 @@ func TestXValue(t *testing.T) {
 			isEmpty:   false,
 		}, {
 			value:     types.NewXError(errors.Errorf("it failed")), // once an error, always an error
-			marshaled: "",
+			marshaled: `null`,
 			rendered:  "",
 			formatted: "",
 			asBool:    false,
@@ -173,17 +173,23 @@ func TestXValue(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		asInternalJSON, _ := utils.JSONMarshal(test.value)
-		marshaled, _ := types.ToXJSON(test.value)
+		marshaled, _ := utils.JSONMarshal(test.value)
 		rendered, _ := types.ToXText(env, test.value)
 		formatted := types.Format(env, test.value)
 		asBool, _ := types.ToXBoolean(test.value)
 
-		assert.Equal(t, test.marshaled, string(asInternalJSON), "json.Marshal mismatch for %T{%s}", test.value, test.value)
-		assert.Equal(t, types.NewXText(test.marshaled), marshaled, "ToXJSON mismatch for %T{%s}", test.value, test.value)
+		assert.Equal(t, test.marshaled, string(marshaled), "json.Marshal mismatch for %T{%s}", test.value, test.value)
 		assert.Equal(t, types.NewXText(test.rendered), rendered, "ToXText mismatch for %T{%s}", test.value, test.value)
 		assert.Equal(t, test.formatted, formatted, "Format mismatch for %T{%s}", test.value, test.value)
 		assert.Equal(t, types.NewXBoolean(test.asBool), asBool, "ToXBool mismatch for %T{%s}", test.value, test.value)
+
+		if types.IsXError(test.value) {
+			_, xerr := types.ToXJSON(test.value)
+			assert.Error(t, xerr)
+		} else {
+			marshaled, _ := types.ToXJSON(test.value)
+			assert.Equal(t, types.NewXText(test.marshaled), marshaled, "ToXJSON mismatch for %T{%s}", test.value, test.value)
+		}
 	}
 }
 
@@ -248,6 +254,13 @@ func TestEquals(t *testing.T) {
 	for _, tc := range tests {
 		assert.Equal(t, tc.result, types.Equals(tc.x1, tc.x2), "equality mismatch for inputs '%s' and '%s'", tc.x1, tc.x2)
 	}
+
+	// test we get panic if we forgot to code Equals for a new xvalue type
+	assert.Panics(t, func() { types.Equals(&XBogusType{}, &XBogusType{}) })
+}
+
+type XBogusType struct {
+	types.XText
 }
 
 func TestIsEmpty(t *testing.T) {

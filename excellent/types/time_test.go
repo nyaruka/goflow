@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -16,9 +17,21 @@ func TestXTime(t *testing.T) {
 
 	t1 := types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0))
 	assert.Equal(t, `time`, t1.Describe())
+	assert.True(t, t1.Truthy())
 	assert.Equal(t, `17:01:30.000000`, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).Render())
 	assert.Equal(t, `17:01`, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).Format(env))
 	assert.Equal(t, `XTime(17, 1, 30, 0)`, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).String())
+
+	formatted, err := t1.FormatCustom(utils.TimeFormat("ss"))
+	assert.NoError(t, err)
+	assert.Equal(t, `30`, formatted)
+
+	formatted, err = t1.FormatCustom(utils.TimeFormat("ssssss"))
+	assert.EqualError(t, err, "invalid date format, invalid count of 's' format: 6")
+
+	marshaled, err := json.Marshal(t1)
+	assert.NoError(t, err)
+	assert.Equal(t, `"17:01:30.000000"`, string(marshaled))
 
 	// test equality
 	assert.True(t, t1.Equals(types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0))))

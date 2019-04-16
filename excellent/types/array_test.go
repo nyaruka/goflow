@@ -26,8 +26,16 @@ func TestXArray(t *testing.T) {
 	assert.Equal(t, types.NewXText(`["abc",123,false]`), asJSON)
 
 	// test equality
-	assert.Equal(t, types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)), types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)))
-	assert.NotEqual(t, types.NewXArray(types.NewXText("abc")), types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)))
+	assert.True(t,
+		types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)).Equals(
+			types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)),
+		),
+	)
+	assert.False(t,
+		types.NewXArray(types.NewXText("abc")).Equals(
+			types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123)),
+		),
+	)
 
 	arr2 := types.NewXArray(
 		types.NewXObject(map[string]types.XValue{

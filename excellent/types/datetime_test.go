@@ -39,6 +39,13 @@ func TestXDateTime(t *testing.T) {
 	d1 := types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, la))
 	assert.Equal(t, `datetime`, d1.Describe())
 
+	formatted, err := d1.FormatCustom("YYYY", nil)
+	assert.NoError(t, err)
+	assert.Equal(t, `2018`, formatted)
+
+	formatted, err = d1.FormatCustom("YYYYYY", nil)
+	assert.EqualError(t, err, "invalid date format, invalid count of 'Y' format: 6")
+
 	d2 := d1.ReplaceTime(types.NewXTime(utils.NewTimeOfDay(16, 20, 30, 123456789)))
 	assert.Equal(t, 2018, d2.Native().Year())
 	assert.Equal(t, time.Month(4), d2.Native().Month())
@@ -51,7 +58,7 @@ func TestXDateTime(t *testing.T) {
 
 	// test unmarshaling
 	var date types.XDateTime
-	err := json.Unmarshal([]byte(`"2018-04-09T17:01:30Z"`), &date)
+	err = json.Unmarshal([]byte(`"2018-04-09T17:01:30Z"`), &date)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), date)
 

@@ -95,7 +95,7 @@ Is a callable function.
 ```objectivec
 @(upper) → function
 @(array(upper)[0]("abc")) → ABC
-@(json(upper)) → "function"
+@(json(upper)) → null
 ```
 
 <a name="type:number"></a>

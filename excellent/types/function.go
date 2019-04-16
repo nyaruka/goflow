@@ -10,7 +10,7 @@ import (
 //
 //   @(upper) -> function
 //   @(array(upper)[0]("abc")) -> ABC
-//   @(json(upper)) -> "function"
+//   @(json(upper)) -> null
 //
 // @type function
 type XFunction func(env utils.Environment, args ...XValue) XValue
@@ -33,7 +33,7 @@ func (x XFunction) Format(env utils.Environment) string {
 
 // MarshalJSON converts this type to JSON
 func (x XFunction) MarshalJSON() ([]byte, error) {
-	return json.Marshal(x.Describe()) // TODO
+	return json.Marshal(nil)
 }
 
 // String returns the native string representation of this type

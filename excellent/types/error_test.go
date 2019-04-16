@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -14,6 +15,7 @@ func TestXError(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
 	err1 := types.NewXError(errors.Errorf("I failed"))
+	assert.Equal(t, "error", err1.Describe())
 	assert.Equal(t, "I failed", err1.Render())
 	assert.Equal(t, "", err1.Format(env))
 	assert.False(t, err1.Truthy())
@@ -22,4 +24,8 @@ func TestXError(t *testing.T) {
 
 	asJSON, _ := types.ToXJSON(err1)
 	assert.Equal(t, types.NewXText(""), asJSON)
+
+	marshaled, err := json.Marshal(err1)
+	assert.NoError(t, err)
+	assert.Equal(t, `null`, string(marshaled))
 }

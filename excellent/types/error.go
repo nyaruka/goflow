@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
@@ -40,7 +41,7 @@ func (x xerror) Render() string { return x.Native().Error() }
 func (x xerror) Format(env utils.Environment) string { return "" }
 
 // MarshalJSON converts this type to JSON
-func (x xerror) MarshalJSON() ([]byte, error) { return nil, nil }
+func (x xerror) MarshalJSON() ([]byte, error) { return json.Marshal(nil) }
 
 // String returns the native string representation of this type for debugging
 func (x xerror) String() string { return `XError("` + x.Native().Error() + `")` }

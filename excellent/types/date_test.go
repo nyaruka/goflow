@@ -18,8 +18,16 @@ func TestXDate(t *testing.T) {
 	assert.Equal(t, `date`, d1.Describe())
 	assert.Equal(t, `2019-02-20`, d1.Render())
 	assert.Equal(t, `20-02-2019`, d1.Format(env))
+
 	assert.True(t, d1.Truthy())
 	assert.Equal(t, `XDate(2019, 2, 20)`, d1.String())
+
+	formatted, err := d1.FormatCustom(utils.DateFormat("YYYY"))
+	assert.NoError(t, err)
+	assert.Equal(t, `2019`, formatted)
+
+	formatted, err = d1.FormatCustom(utils.DateFormat("YYYYYY"))
+	assert.EqualError(t, err, "invalid date format, invalid count of 'Y' format: 6")
 
 	asJSON, _ := types.ToXJSON(d1)
 	assert.Equal(t, types.NewXText(`"2019-02-20"`), asJSON)
