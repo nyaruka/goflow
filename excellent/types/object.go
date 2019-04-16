@@ -63,7 +63,13 @@ func (x *XObject) Format(env utils.Environment) string {
 	pairs := make([]string, 0, x.Count())
 	for _, k := range x.keys(true) {
 		formatted := Format(env, x.values()[k])
-		pairs = append(pairs, fmt.Sprintf("%s: %s", k, formatted))
+		if strings.ContainsRune(formatted, '\n') {
+			formatted = utils.Indent(formatted, "  ")
+			formatted = fmt.Sprintf("%s:\n%s", k, formatted)
+		} else {
+			formatted = fmt.Sprintf("%s: %s", k, formatted)
+		}
+		pairs = append(pairs, formatted)
 	}
 	return strings.Join(pairs, "\n")
 }

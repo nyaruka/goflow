@@ -1,0 +1,25 @@
+channel:
+  address: +12345671111
+  name: My Android Phone
+  uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d
+created_on: 20-06-2018 06:40
+display: Ryan Lewis
+fields:
+  activation_token: AACC55
+  age: 23.00
+  gender: Male
+  join_date: 01-12-2017 21:00
+  not_set: 
+first_name: Ryan
+groups:
+  - name: Testers
+    uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
+  - name: Males
+    uuid: 4f1f98fc-27a7-4a69-bbdb-24744ba739a9
+id: 1234567
+language: eng
+name: Ryan Lewis
+timezone: America/Guayaquil
+urn: tel:+12065551212
+urns: tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com
+uuid: 5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f

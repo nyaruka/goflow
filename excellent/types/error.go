@@ -38,7 +38,7 @@ func (x xerror) Render() string { return x.Native().Error() }
 
 // Format returns the pretty text representation
 func (x xerror) Format(env utils.Environment) string {
-	return x.Render()
+	return ""
 }
 
 // MarshalJSON converts this type to JSON

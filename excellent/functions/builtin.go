@@ -102,6 +102,7 @@ func init() {
 		"parse_json": OneTextFunction(ParseJSON),
 
 		// formatting functions
+		"format":          OneArgFunction(Format),
 		"format_date":     ArgCountCheck(1, 2, FormatDate),
 		"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
 		"format_time":     ArgCountCheck(1, 2, FormatTime),
@@ -1518,6 +1519,15 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 //----------------------------------------------------------------------------------------
 // Formatting Functions
 //----------------------------------------------------------------------------------------
+
+// Format formats `date` as text according to the given `format`.
+//
+//   @(format("1979-07-18T15:00:00.000000Z")) -> 18-07-1979
+//
+// @function format(value)
+func Format(env utils.Environment, value types.XValue) types.XValue {
+	return types.NewXText(value.Format(env))
+}
 
 // FormatDate formats `date` as text according to the given `format`.
 //
