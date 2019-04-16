@@ -373,6 +373,15 @@
                     "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                     "type": "run_result_changed",
                     "value": "Pilsner"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:36.123456789Z",
+                    "msg": {
+                        "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
+                        "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
+                    },
+                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
+                    "type": "msg_created"
                 }
             ],
             "session": {
@@ -487,15 +496,24 @@
                                 "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                                 "type": "run_result_changed",
                                 "value": "Pilsner"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:36.123456789Z",
+                                "msg": {
+                                    "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
+                                    "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
+                                },
+                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
+                                "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:35.123456789Z",
+                        "exited_on": "2018-07-06T12:30:38.123456789Z",
                         "expires_on": "2018-07-13T12:30:26.123456789Z",
                         "flow": {
                             "name": "Favorites",
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
                         },
-                        "modified_on": "2018-07-06T12:30:35.123456789Z",
+                        "modified_on": "2018-07-06T12:30:38.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -520,6 +538,12 @@
                                 "exit_uuid": "a3078f7d-63b3-4486-9481-ea97c5c4e49a",
                                 "node_uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
                                 "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:35.123456789Z",
+                                "exit_uuid": "80818696-0e64-4834-9452-335b273f5417",
+                                "node_uuid": "1134cc64-ecdf-44a8-9134-ff88b1dc9fcc",
+                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             }
                         ],
                         "results": {

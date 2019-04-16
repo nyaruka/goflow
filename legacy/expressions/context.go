@@ -39,19 +39,19 @@ func init() {
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.(` + schemesRe + `)\.urn$`), `${1}urns.$2`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.(\w+)$`), `${1}fields.$2`},
 
-		{re(`^flow$`), `results`},
+		{re(`^flow$`), `format_results(results)`},
 		{re(`^flow\.(\w+)(\.value)?$`), `results.$1.value`},
 		{re(`^flow\.(\w+)\.category$`), `results.$1.category_localized`},
 		{re(`^flow\.(\w+)\.text$`), `results.$1.input`},
 		{re(`^flow\.(\w+)\.time$`), `results.$1.created_on`},
 
-		{re(`^child$`), `child.results`},
+		{re(`^child$`), `format_results(child.results)`},
 		{re(`^child\.(\w+)(\.value)?$`), `child.results.$1.values[0]`},
 		{re(`^child\.(\w+)\.category$`), `child.results.$1.categories_localized[0]`},
 		{re(`^child\.(\w+)\.text$`), `child.results.$1.input`},
 		{re(`^child\.(\w+)\.time$`), `child.results.$1.created_on`},
 
-		{re(`^(?:parent|extra\.flow)$`), `parent.results`},
+		{re(`^(?:parent|extra\.flow)$`), `format_results(parent.results)`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)(\.value)?$`), `parent.results.$1.values[0]`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.category$`), `parent.results.$1.categories_localized[0]`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.text$`), `parent.results.$1.input`},
