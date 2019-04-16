@@ -1,3 +1,8 @@
+v0.34.1
+----------
+ * Add format_results and migrate @flow to @(format_results(results))
+ * Add type-aware format() function 
+
 v0.34.0
 ----------
  * dict/keys -> object/properties
