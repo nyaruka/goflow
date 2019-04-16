@@ -19,7 +19,7 @@ func init() {
 //
 //   @(1234) -> 1234
 //   @(1234.5678) -> 1234.5678
-//   @(format_number(1234.5678)) -> 1,234.57
+//   @(format_number(1234.5678)) -> 1,235
 //   @(json(1234.5678)) -> 1234.5678
 //
 // @type number
@@ -60,7 +60,7 @@ func (x XNumber) Render() string { return x.Native().String() }
 
 // Format returns the pretty text representation
 func (x XNumber) Format(env utils.Environment) string {
-	return x.FormatCustom(env.NumberFormat(), 2, true)
+	return x.FormatCustom(env.NumberFormat(), 0, true)
 }
 
 // FormatCustom provides customised formatting

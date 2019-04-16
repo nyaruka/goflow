@@ -23,6 +23,14 @@ func IsNil(v interface{}) bool {
 	return false
 }
 
+// MaxInt returns the maximum of two integers
+func MaxInt(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}
+
 // MinInt returns the minimum of two integers
 func MinInt(x, y int) int {
 	if x < y {

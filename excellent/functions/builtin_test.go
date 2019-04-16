@@ -297,7 +297,9 @@ func TestFunctions(t *testing.T) {
 		{"format_input", dmy, []types.XValue{ERROR}, ERROR},
 		{"format_input", dmy, []types.XValue{}, ERROR},
 
-		{"format_number", dmy, []types.XValue{xn("31337")}, xs("31,337.00")},
+		{"format_number", dmy, []types.XValue{xn("1234.5678")}, xs("1,235")},
+		{"format_number", dmy, []types.XValue{xn("1234.5678"), xi(2)}, xs("1,234.57")},
+		{"format_number", dmy, []types.XValue{xn("1234.5678"), xi(5), types.XBooleanFalse}, xs("1234.56780")},
 		{"format_number", dmy, []types.XValue{xn("31337"), xi(0), types.XBooleanFalse}, xs("31337")},
 		{"format_number", dmy, []types.XValue{xn("31337"), xs("xxx")}, ERROR},
 		{"format_number", dmy, []types.XValue{xn("31337"), xi(12345)}, ERROR},

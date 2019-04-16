@@ -6,7 +6,7 @@ created_on: 20-06-2018 06:40
 display: Ryan Lewis
 fields:
   activation_token: AACC55
-  age: 23.00
+  age: 23
   gender: Male
   join_date: 01-12-2017 21:00
   not_set: 

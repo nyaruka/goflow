@@ -69,28 +69,28 @@ func TestXValue(t *testing.T) {
 			value:     types.NewXNumberFromInt(0),
 			marshaled: `0`,
 			rendered:  "0",
-			formatted: "0.00",
+			formatted: "0",
 			asBool:    false, // because any decimal != 0 is true
 			isEmpty:   false,
 		}, {
 			value:     types.NewXNumberFromInt(1234),
 			marshaled: `1234`,
 			rendered:  "1234",
-			formatted: "1,234.00",
+			formatted: "1,234",
 			asBool:    true, // because any decimal != 0 is true
 			isEmpty:   false,
 		}, {
 			value:     types.RequireXNumberFromString("123.00"),
 			marshaled: `123`,
 			rendered:  "123",
-			formatted: "123.00",
+			formatted: "123",
 			asBool:    true,
 			isEmpty:   false,
 		}, {
-			value:     types.RequireXNumberFromString("123.4567"),
-			marshaled: `123.4567`,
-			rendered:  "123.4567",
-			formatted: "123.46",
+			value:     types.RequireXNumberFromString("1234.5678"),
+			marshaled: `1234.5678`,
+			rendered:  "1234.5678",
+			formatted: "1,235",
 			asBool:    true,
 			isEmpty:   false,
 		}, {
@@ -132,7 +132,7 @@ func TestXValue(t *testing.T) {
 			value:     types.NewXArray(types.NewXNumberFromInt(1), types.NewXNumberFromInt(2)),
 			marshaled: `[1,2]`,
 			rendered:  `[1, 2]`,
-			formatted: "1.00, 2.00",
+			formatted: "1, 2",
 			asBool:    true,
 			isEmpty:   false,
 		}, {
@@ -146,7 +146,7 @@ func TestXValue(t *testing.T) {
 			value:     types.NewXArray(object1, object2),
 			marshaled: `[{"bar":123,"foo":"Hello"},{"bar":456,"foo":"World"}]`,
 			rendered:  `[{bar: 123, foo: Hello}, {bar: 456, foo: World}]`,
-			formatted: "- bar: 123.00\n  foo: Hello\n- bar: 456.00\n  foo: World",
+			formatted: "- bar: 123\n  foo: Hello\n- bar: 456\n  foo: World",
 			asBool:    true,
 			isEmpty:   false,
 		}, {
@@ -160,7 +160,7 @@ func TestXValue(t *testing.T) {
 			value:     types.NewXObject(map[string]types.XValue{"first": object1, "second": object2}),
 			marshaled: `{"first":{"bar":123,"foo":"Hello"},"second":{"bar":456,"foo":"World"}}`,
 			rendered:  `{first: {bar: 123, foo: Hello}, second: {bar: 456, foo: World}}`,
-			formatted: "first:\n  bar: 123.00\n  foo: Hello\nsecond:\n  bar: 456.00\n  foo: World",
+			formatted: "first:\n  bar: 123\n  foo: Hello\nsecond:\n  bar: 456\n  foo: World",
 			asBool:    true,
 			isEmpty:   false,
 		}, {

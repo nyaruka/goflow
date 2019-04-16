@@ -433,7 +433,7 @@
         "examples": [
             {
                 "template": "@(format(1234.5678))",
-                "output": "1,234.57"
+                "output": "1,235"
             },
             {
                 "template": "@(format(now()))",
@@ -547,20 +547,20 @@
         "detail": "An optional third argument `humanize` can be false to disable the use of thousand separators.",
         "examples": [
             {
-                "template": "@(format_number(31337))",
-                "output": "31,337.00"
+                "template": "@(format_number(1234))",
+                "output": "1,234"
             },
             {
-                "template": "@(format_number(31337, 2))",
-                "output": "31,337.00"
+                "template": "@(format_number(1234.5678))",
+                "output": "1,235"
             },
             {
-                "template": "@(format_number(31337, 2, true))",
-                "output": "31,337.00"
+                "template": "@(format_number(1234.5678, 2, true))",
+                "output": "1,234.57"
             },
             {
-                "template": "@(format_number(31337, 0, false))",
-                "output": "31337"
+                "template": "@(format_number(1234.5678, 0, false))",
+                "output": "1235"
             },
             {
                 "template": "@(format_number(\"foo\", 2, false))",

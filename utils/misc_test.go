@@ -14,6 +14,12 @@ func TestIsNil(t *testing.T) {
 	assert.False(t, utils.IsNil(""))
 }
 
+func TestMaxInt(t *testing.T) {
+	assert.Equal(t, 1, utils.MaxInt(0, 1))
+	assert.Equal(t, 1, utils.MaxInt(1, 0))
+	assert.Equal(t, 1, utils.MaxInt(1, -1))
+}
+
 func TestMinInt(t *testing.T) {
 	assert.Equal(t, 0, utils.MinInt(0, 1))
 	assert.Equal(t, 0, utils.MinInt(1, 0))

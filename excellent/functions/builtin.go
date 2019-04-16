@@ -1522,7 +1522,7 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 
 // Format formats `value` according to its type.
 //
-//   @(format(1234.5678)) -> 1,234.57
+//   @(format(1234.5678)) -> 1,235
 //   @(format(now())) -> 11-04-2018 13:24
 //   @(format(today())) -> 11-04-2018
 //
@@ -1706,10 +1706,10 @@ func FormatTime(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // An optional third argument `humanize` can be false to disable the use of thousand separators.
 //
-//   @(format_number(31337)) -> 31,337.00
-//   @(format_number(31337, 2)) -> 31,337.00
-//   @(format_number(31337, 2, true)) -> 31,337.00
-//   @(format_number(31337, 0, false)) -> 31337
+//   @(format_number(1234)) -> 1,234
+//   @(format_number(1234.5678)) -> 1,235
+//   @(format_number(1234.5678, 2, true)) -> 1,234.57
+//   @(format_number(1234.5678, 0, false)) -> 1235
 //   @(format_number("foo", 2, false)) -> ERROR
 //
 // @function format_number(number, places [, humanize])
@@ -1719,7 +1719,7 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 		return err
 	}
 
-	places := 2
+	places := 0
 	if len(args) > 1 {
 		if places, err = types.ToInteger(env, args[1]); err != nil {
 			return err
