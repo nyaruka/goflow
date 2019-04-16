@@ -569,6 +569,21 @@
         ]
     },
     {
+        "signature": "format_results(urn)",
+        "summary": "Formats `results` to be name and value pairs, separated by newlines.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(format_results(results))",
+                "output": "2Factor: 34634624463525\\nFavorite Color: red\\nPhone Number: +12344563452\\nwebhook: 200"
+            },
+            {
+                "template": "@(format_results(\"NOT RESULTS\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
         "signature": "format_time(time [,format])",
         "summary": "Formats `time` as text according to the given `format`.",
         "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM",

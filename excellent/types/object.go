@@ -51,7 +51,7 @@ func (x *XObject) Truthy() bool {
 // Render returns the canonical text representation
 func (x *XObject) Render() string {
 	pairs := make([]string, 0, x.Count())
-	for _, k := range x.keys(true) {
+	for _, k := range x.Keys() {
 		rendered := Render(x.values()[k])
 		pairs = append(pairs, fmt.Sprintf("%s: %s", k, rendered))
 	}
@@ -61,7 +61,7 @@ func (x *XObject) Render() string {
 // Format returns the pretty text representation
 func (x *XObject) Format(env utils.Environment) string {
 	pairs := make([]string, 0, x.Count())
-	for _, k := range x.keys(true) {
+	for _, k := range x.Keys() {
 		formatted := Format(env, x.values()[k])
 		if strings.ContainsRune(formatted, '\n') {
 			formatted = utils.Indent(formatted, "  ")
@@ -89,7 +89,7 @@ func (x *XObject) MarshalJSON() ([]byte, error) {
 // String returns the native string representation of this type for debugging
 func (x *XObject) String() string {
 	pairs := make([]string, 0, x.Count())
-	for _, k := range x.keys(true) {
+	for _, k := range x.Keys() {
 		pairs = append(pairs, fmt.Sprintf("%s: %s", k, String(x.values()[k])))
 	}
 	return "XObject{" + strings.Join(pairs, ", ") + "}"
@@ -112,15 +112,20 @@ func (x *XObject) Get(key string) (XValue, bool) {
 	return nil, false
 }
 
-// Keys returns the properties of this object
+// Keys returns the sorted property names of this object
 func (x *XObject) Keys() []string {
-	return x.keys(false)
+	keys := make([]string, 0, x.Count())
+	for key := range x.values() {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	return keys
 }
 
 // Equals determines equality for this type
 func (x *XObject) Equals(other *XObject) bool {
-	keys1 := x.keys(true)
-	keys2 := other.keys(true)
+	keys1 := x.Keys()
+	keys2 := other.Keys()
 
 	if len(keys1) != len(keys2) {
 		return false
@@ -137,17 +142,6 @@ func (x *XObject) Equals(other *XObject) bool {
 	}
 
 	return true
-}
-
-func (x *XObject) keys(sorted bool) []string {
-	keys := make([]string, 0, x.Count())
-	for key := range x.values() {
-		keys = append(keys, key)
-	}
-	if sorted {
-		sort.Strings(keys)
-	}
-	return keys
 }
 
 func (x *XObject) values() map[string]XValue {

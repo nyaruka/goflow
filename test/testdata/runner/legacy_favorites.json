@@ -51,7 +51,7 @@
                             "type": "reply",
                             "uuid": "2d663da7-4e21-4b6a-8587-8fed96a45db0",
                             "msg": {
-                                "eng": "If only they made @flow.color.category @flow.beer.category !!"
+                                "eng": "If only they made @flow.color.category @flow.beer.category !!\n\n@flow"
                             },
                             "media": {},
                             "quick_replies": [],
@@ -181,8 +181,8 @@
                             "category": {
                                 "eng": "Pilsner"
                             },
-                            "destination": null,
-                            "destination_type": null,
+                            "destination": "1134cc64-ecdf-44a8-9134-ff88b1dc9fcc",
+                            "destination_type": "A",
                             "test": {
                                 "type": "contains_any",
                                 "test": {

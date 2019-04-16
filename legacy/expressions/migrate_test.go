@@ -53,7 +53,7 @@ var tests = []testTemplate{
 	{old: `@contact.mailto`, new: `@(format_urn(urns.mailto))`},
 
 	// run variables
-	{old: `@flow`, new: `@results`},
+	{old: `@flow`, new: `@(format_results(results))`},
 	{old: `@flow.favorite_color`, new: `@results.favorite_color.value`},
 	{old: `@flow.favorite_color.category`, new: `@results.favorite_color.category_localized`},
 	{old: `@flow.favorite_color.text`, new: `@results.favorite_color.input`},
@@ -68,7 +68,7 @@ var tests = []testTemplate{
 	{old: `@flow.contact.name`, new: `@contact.name`},
 	{old: `@flow.contact.age`, new: `@fields.age`},
 
-	{old: `@child`, new: `@child.results`},
+	{old: `@child`, new: `@(format_results(child.results))`},
 	{old: `@child.age`, new: `@(child.results.age.values[0])`},
 	{old: `@child.age.value`, new: `@(child.results.age.values[0])`},
 	{old: `@child.age.category`, new: `@(child.results.age.categories_localized[0])`},
@@ -78,7 +78,7 @@ var tests = []testTemplate{
 	{old: `@child.contact.name`, new: `@child.contact.name`},
 	{old: `@child.contact.age`, new: `@child.fields.age`},
 
-	{old: `@parent`, new: `@parent.results`},
+	{old: `@parent`, new: `@(format_results(parent.results))`},
 	{old: `@parent.role`, new: `@(parent.results.role.values[0])`},
 	{old: `@parent.role.value`, new: `@(parent.results.role.values[0])`},
 	{old: `@parent.role.category`, new: `@(parent.results.role.categories_localized[0])`},
