@@ -427,6 +427,25 @@
         ]
     },
     {
+        "signature": "format(value)",
+        "summary": "Formats `value` according to its type.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(format(1234.5678))",
+                "output": "1,234.57"
+            },
+            {
+                "template": "@(format(now()))",
+                "output": "11-04-2018 13:24"
+            },
+            {
+                "template": "@(format(today()))",
+                "output": "11-04-2018"
+            }
+        ]
+    },
+    {
         "signature": "format_date(date, [,format])",
         "summary": "Formats `date` as text according to the given `format`.",
         "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31",

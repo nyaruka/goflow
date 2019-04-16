@@ -638,6 +638,19 @@ If the given function takes more than one argument, you can pass additional argu
 @(foreach(array("the man", "fox", "jumped up"), word, 0)) → [the, fox, jumped]
 ```
 
+<a name="function:format"></a>
+
+## format(value)
+
+Formats `value` according to its type.
+
+
+```objectivec
+@(format(1234.5678)) → 1,234.57
+@(format(now())) → 11-04-2018 13:24
+@(format(today())) → 11-04-2018
+```
+
 <a name="function:format_date"></a>
 
 ## format_date(date, [,format])

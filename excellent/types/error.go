@@ -37,19 +37,13 @@ func (x xerror) Truthy() bool { return false }
 func (x xerror) Render() string { return x.Native().Error() }
 
 // Format returns the pretty text representation
-func (x xerror) Format(env utils.Environment) string {
-	return ""
-}
+func (x xerror) Format(env utils.Environment) string { return "" }
 
 // MarshalJSON converts this type to JSON
-func (x xerror) MarshalJSON() ([]byte, error) {
-	return nil, nil
-}
+func (x xerror) MarshalJSON() ([]byte, error) { return nil, nil }
 
 // String returns the native string representation of this type for debugging
-func (x xerror) String() string {
-	return `XError("` + x.Native().Error() + `")`
-}
+func (x xerror) String() string { return `XError("` + x.Native().Error() + `")` }
 
 // Native returns the native value of this type
 func (x xerror) Native() error { return x.native }

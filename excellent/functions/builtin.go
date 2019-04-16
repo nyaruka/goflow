@@ -1520,9 +1520,11 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // Formatting Functions
 //----------------------------------------------------------------------------------------
 
-// Format formats `date` as text according to the given `format`.
+// Format formats `value` according to its type.
 //
-//   @(format("1979-07-18T15:00:00.000000Z")) -> 18-07-1979
+//   @(format(1234.5678)) -> 1,234.57
+//   @(format(now())) -> 11-04-2018 13:24
+//   @(format(today())) -> 11-04-2018
 //
 // @function format(value)
 func Format(env utils.Environment, value types.XValue) types.XValue {
