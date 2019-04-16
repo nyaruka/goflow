@@ -24,8 +24,10 @@ func TestXBoolean(t *testing.T) {
 	assert.Equal(t, -1, types.XBooleanFalse.Compare(types.XBooleanTrue))
 
 	// test to text
-	assert.Equal(t, "false", types.XBooleanFalse.Render(env))
-	assert.Equal(t, "true", types.XBooleanTrue.Render(env))
+	assert.Equal(t, "false", types.XBooleanFalse.Render())
+	assert.Equal(t, "true", types.XBooleanTrue.Render())
+	assert.Equal(t, "false", types.XBooleanFalse.Format(env))
+	assert.Equal(t, "true", types.XBooleanTrue.Format(env))
 
 	// test truthniess
 	assert.False(t, types.XBooleanFalse.Truthy())

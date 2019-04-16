@@ -56,12 +56,36 @@ func (x *XArray) Truthy() bool {
 }
 
 // Render returns the canonical text representation
-func (x *XArray) Render(env utils.Environment) string {
+func (x *XArray) Render() string {
 	parts := make([]string, x.Count())
 	for i, v := range x.values() {
-		parts[i] = Render(env, v)
+		parts[i] = Render(v)
 	}
 	return "[" + strings.Join(parts, ", ") + "]"
+}
+
+// Format returns the pretty text representation
+func (x *XArray) Format(env utils.Environment) string {
+	parts := make([]string, x.Count())
+	multiline := false
+
+	for i, v := range x.values() {
+		parts[i] = Format(env, v)
+		if strings.ContainsRune(parts[i], '\n') {
+			multiline = true
+		}
+	}
+
+	if multiline {
+		for i, p := range parts {
+			p = utils.Indent(p, "  ")
+			parts[i] = "-" + p[1:]
+		}
+
+		return strings.Join(parts, "\n")
+	}
+
+	return strings.Join(parts, ", ")
 }
 
 // MarshalJSON converts this type to internal JSON

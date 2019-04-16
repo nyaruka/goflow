@@ -14,7 +14,8 @@ func TestXError(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
 	err1 := types.NewXError(errors.Errorf("I failed"))
-	assert.Equal(t, "I failed", err1.Render(env))
+	assert.Equal(t, "I failed", err1.Render())
+	assert.Equal(t, "", err1.Format(env))
 	assert.False(t, err1.Truthy())
 	assert.Equal(t, `XError("I failed")`, err1.String())
 	assert.Equal(t, "I failed", err1.Error())

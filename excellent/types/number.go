@@ -2,6 +2,7 @@ package types
 
 import (
 	"math"
+	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 
@@ -16,7 +17,7 @@ func init() {
 //
 //   @(1234) -> 1234
 //   @(1234.5678) -> 1234.5678
-//   @(format_number(1234.5678)) -> 1,234.57
+//   @(format_number(1234.5670)) -> 1,234.567
 //   @(json(1234.5678)) -> 1234.5678
 //
 // @type number
@@ -45,7 +46,7 @@ func RequireXNumberFromString(value string) XNumber {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XNumber) Describe() string { return x.Render(nil) }
+func (x XNumber) Describe() string { return x.Render() }
 
 // Truthy determines truthiness for this type
 func (x XNumber) Truthy() bool {
@@ -53,10 +54,44 @@ func (x XNumber) Truthy() bool {
 }
 
 // Render returns the canonical text representation
-func (x XNumber) Render(env utils.Environment) string { return x.Native().String() }
+func (x XNumber) Render() string { return x.Native().String() }
+
+// Format returns the pretty text representation
+func (x XNumber) Format(env utils.Environment) string {
+	return x.FormatCustom(env.NumberFormat(), -1, true)
+}
+
+// FormatCustom provides customised formatting
+func (x XNumber) FormatCustom(format *utils.NumberFormat, places int, groupDigits bool) string {
+	var formatted string
+
+	if places >= 0 {
+		formatted = x.Native().StringFixed(int32(places))
+	} else {
+		formatted = x.Native().String()
+	}
+
+	parts := strings.Split(formatted, ".")
+
+	// add thousands separators
+	if groupDigits {
+		sb := strings.Builder{}
+		for i, r := range parts[0] {
+			sb.WriteRune(r)
+
+			d := (len(parts[0]) - 1) - i
+			if d%3 == 0 && d > 0 {
+				sb.WriteString(format.DigitGroupingSymbol)
+			}
+		}
+		parts[0] = sb.String()
+	}
+
+	return strings.Join(parts, format.DecimalSymbol)
+}
 
 // String returns the native string representation of this type
-func (x XNumber) String() string { return `XNumber(` + x.Render(nil) + `)` }
+func (x XNumber) String() string { return `XNumber(` + x.Render() + `)` }
 
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return x.native }
@@ -115,7 +150,7 @@ func ToInteger(env utils.Environment, x XValue) (int, XError) {
 	intPart := number.Native().IntPart()
 
 	if intPart < math.MinInt32 || intPart > math.MaxInt32 {
-		return 0, NewXErrorf("number value %s is out of range for an integer", number.Render(env))
+		return 0, NewXErrorf("number value %s is out of range for an integer", number.Render())
 	}
 
 	return int(intPart), nil

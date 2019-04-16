@@ -33,8 +33,30 @@ func (x XDateTime) Truthy() bool {
 }
 
 // Render returns the canonical text representation
-func (x XDateTime) Render(env utils.Environment) string {
+func (x XDateTime) Render() string {
 	return utils.DateTimeToISO(x.Native())
+}
+
+// Format returns the pretty text representation
+func (x XDateTime) Format(env utils.Environment) string {
+	formatted, _ := x.FormatCustom(string(env.DateFormat())+" "+string(env.TimeFormat()), env.Timezone())
+	return formatted
+}
+
+// FormatCustom provides customised formatting
+func (x XDateTime) FormatCustom(format string, tz *time.Location) (string, error) {
+	goFormat, err := utils.ToGoDateFormat(format, utils.DateTimeFormatting)
+	if err != nil {
+		return "", err
+	}
+
+	// convert to our timezone if we have one (otherwise we remain in the date's default)
+	dt := x.Native()
+	if tz != nil {
+		dt = dt.In(tz)
+	}
+
+	return dt.Format(goFormat), nil
 }
 
 // String returns the native string representation of this type

@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/goflow/utils"
+
 	"github.com/pkg/errors"
 )
 
@@ -54,15 +56,26 @@ func asJoin(delimiter string) callMigrator {
 
 // migrates a function call using migrators for each parameter
 func asParamMigrators(newName string, paramMigrators ...paramMigrator) callMigrator {
-	return func(funcName string, params []string) (string, error) {
-		if len(params) > len(paramMigrators) {
-			return "", errors.Errorf("don't know how to migrate call to %s with %d parameters", funcName, len(params))
+	return asParamMigratorsWithDefaults(newName, nil, paramMigrators...)
+}
+
+// migrates a function call using migrators for each parameter and also defaults for params not provided
+func asParamMigratorsWithDefaults(newName string, defaults []string, paramMigrators ...paramMigrator) callMigrator {
+	return func(funcName string, oldParams []string) (string, error) {
+		if len(oldParams) > len(paramMigrators) {
+			return "", errors.Errorf("don't know how to migrate call to %s with %d parameters", funcName, len(oldParams))
 		}
 
-		newParams := make([]string, len(params))
+		newParams := make([]string, utils.MaxInt(len(oldParams), len(defaults)))
 
-		for p := range params {
-			newParams[p] = paramMigrators[p](params[p])
+		for p := range newParams {
+			var param string
+			if p < len(oldParams) {
+				param = oldParams[p]
+			} else {
+				param = defaults[p]
+			}
+			newParams[p] = paramMigrators[p](param)
 		}
 
 		return renderCall(newName, newParams)
@@ -117,7 +130,7 @@ var callMigrators = map[string]callMigrator{
 	"false":             asTemplate(`false`), // becomes just a keyword
 	"field":             asParamMigrators(`field`, paramAsIs(), paramDecremented(), paramAsIs()),
 	"first_word":        asTemplate(`word(%s, 0)`),
-	"fixed":             asParamMigrators(`format_number`, paramAsIs(), paramAsIs(), paramAsIs()),
+	"fixed":             asParamMigratorsWithDefaults(`format_number`, []string{"", "2"}, paramAsIs(), paramAsIs(), paramAsIs()),
 	"format_date":       asRename(`format_datetime`),
 	"format_location":   asIs(),
 	"hour":              asTemplate(`format_datetime(%s, "tt")`),

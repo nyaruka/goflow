@@ -108,7 +108,7 @@ Is a whole or fractional number.
 ```objectivec
 @(1234) → 1234
 @(1234.5678) → 1234.5678
-@(format_number(1234.5678)) → 1,234.57
+@(format_number(1234.5670)) → 1,234.567
 @(json(1234.5678)) → 1234.5678
 ```
 
@@ -638,6 +638,19 @@ If the given function takes more than one argument, you can pass additional argu
 @(foreach(array("the man", "fox", "jumped up"), word, 0)) → [the, fox, jumped]
 ```
 
+<a name="function:format"></a>
+
+## format(value)
+
+Formats `value` according to its type.
+
+
+```objectivec
+@(format(1234.5670)) → 1,234.567
+@(format(now())) → 11-04-2018 13:24
+@(format(today())) → 11-04-2018
+```
+
 <a name="function:format_date"></a>
 
 ## format_date(date, [,format])
@@ -745,10 +758,10 @@ An optional third argument `humanize` can be false to disable the use of thousan
 
 
 ```objectivec
-@(format_number(31337)) → 31,337.00
-@(format_number(31337, 2)) → 31,337.00
-@(format_number(31337, 2, true)) → 31,337.00
-@(format_number(31337, 0, false)) → 31337
+@(format_number(1234)) → 1,234
+@(format_number(1234.5670)) → 1,234.567
+@(format_number(1234.5670, 2, true)) → 1,234.57
+@(format_number(1234.5678, 0, false)) → 1235
 @(format_number("foo", 2, false)) → ERROR
 ```
 

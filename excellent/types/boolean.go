@@ -31,8 +31,13 @@ func (x XBoolean) Describe() string { return strconv.FormatBool(x.Native()) }
 func (x XBoolean) Truthy() bool { return x.Native() }
 
 // Render returns the canonical text representation
-func (x XBoolean) Render(env utils.Environment) string {
+func (x XBoolean) Render() string {
 	return strconv.FormatBool(x.Native())
+}
+
+// Format returns the pretty text representation
+func (x XBoolean) Format(env utils.Environment) string {
+	return x.Render()
 }
 
 // MarshalJSON is called when a struct containing this type is marshaled

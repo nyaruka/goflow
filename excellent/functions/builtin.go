@@ -14,7 +14,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
-	humanize "github.com/dustin/go-humanize"
 	"github.com/shopspring/decimal"
 )
 
@@ -103,6 +102,7 @@ func init() {
 		"parse_json": OneTextFunction(ParseJSON),
 
 		// formatting functions
+		"format":          OneArgFunction(Format),
 		"format_date":     ArgCountCheck(1, 2, FormatDate),
 		"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
 		"format_time":     ArgCountCheck(1, 2, FormatTime),
@@ -1520,6 +1520,17 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // Formatting Functions
 //----------------------------------------------------------------------------------------
 
+// Format formats `value` according to its type.
+//
+//   @(format(1234.5670)) -> 1,234.567
+//   @(format(now())) -> 11-04-2018 13:24
+//   @(format(today())) -> 11-04-2018
+//
+// @function format(value)
+func Format(env utils.Environment, value types.XValue) types.XValue {
+	return types.NewXText(value.Format(env))
+}
+
 // FormatDate formats `date` as text according to the given `format`.
 //
 // If `format` is not specified then the environment's default format is used. The format
@@ -1547,23 +1558,21 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	var format types.XText
 	if len(args) >= 2 {
-		format, xerr = types.ToXText(env, args[1])
+		format, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
-	} else {
-		format = types.NewXText(env.DateFormat().String())
+
+		formatted, err := date.FormatCustom(utils.DateFormat(format.Native()))
+		if err != nil {
+			return types.NewXError(err)
+		}
+
+		return types.NewXText(formatted)
 	}
 
-	// try to turn it to a go format
-	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.DateOnlyFormatting)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	return types.NewXText(date.Native().Format(goFormat))
+	return types.NewXText(date.Format(env))
 }
 
 // FormatDateTime formats `datetime` as text according to the given `format`.
@@ -1622,13 +1631,8 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 		format = types.NewXText(fmt.Sprintf("%s %s", env.DateFormat().String(), env.TimeFormat().String()))
 	}
 
-	// try to turn it to a go format
-	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.DateTimeFormatting)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
 	// grab our location
+	var err error
 	location := env.Timezone()
 	if len(args) == 3 {
 		arg3, xerr := types.ToXText(env, args[2])
@@ -1642,12 +1646,12 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 		}
 	}
 
-	// convert to our timezone if we have one (otherwise we remain in the date's default)
-	if location != nil {
-		date = types.NewXDateTime(date.Native().In(location))
+	formatted, err := date.FormatCustom(format.Native(), location)
+	if err != nil {
+		return types.NewXError(err)
 	}
 
-	return types.NewXText(date.Native().Format(goFormat))
+	return types.NewXText(formatted)
 }
 
 // FormatTime formats `time` as text according to the given `format`.
@@ -1681,33 +1685,31 @@ func FormatTime(env utils.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	var format types.XText
 	if len(args) >= 2 {
-		format, xerr = types.ToXText(env, args[1])
+		format, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
-	} else {
-		format = types.NewXText(env.TimeFormat().String())
+
+		formatted, err := t.FormatCustom(utils.TimeFormat(format.Native()))
+		if err != nil {
+			return types.NewXError(err)
+		}
+
+		return types.NewXText(formatted)
 	}
 
-	// try to turn it to a go format
-	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.TimeOnlyFormatting)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	return types.NewXText(t.Native().Format(goFormat))
+	return types.NewXText(t.Format(env))
 }
 
 // FormatNumber formats `number` to the given number of decimal `places`.
 //
 // An optional third argument `humanize` can be false to disable the use of thousand separators.
 //
-//   @(format_number(31337)) -> 31,337.00
-//   @(format_number(31337, 2)) -> 31,337.00
-//   @(format_number(31337, 2, true)) -> 31,337.00
-//   @(format_number(31337, 0, false)) -> 31337
+//   @(format_number(1234)) -> 1,234
+//   @(format_number(1234.5670)) -> 1,234.567
+//   @(format_number(1234.5670, 2, true)) -> 1,234.57
+//   @(format_number(1234.5678, 0, false)) -> 1235
 //   @(format_number("foo", 2, false)) -> ERROR
 //
 // @function format_number(number, places [, humanize])
@@ -1717,7 +1719,7 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 		return err
 	}
 
-	places := 2
+	places := -1
 	if len(args) > 1 {
 		if places, err = types.ToInteger(env, args[1]); err != nil {
 			return err
@@ -1734,26 +1736,7 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 		}
 	}
 
-	return types.NewXText(FormatDecimal(num.Native(), env.NumberFormat(), places, human.Native()))
-}
-
-// FormatDecimal formats the given decimal
-func FormatDecimal(value decimal.Decimal, format *utils.NumberFormat, places int, groupDigits bool) string {
-	// build our format string
-	formatStr := strings.Builder{}
-	if groupDigits {
-		formatStr.WriteString(fmt.Sprintf("#%s###", format.DigitGroupingSymbol))
-	} else {
-		formatStr.WriteString("####")
-	}
-	formatStr.WriteString(format.DecimalSymbol)
-	if places > 0 {
-		for i := 0; i < places; i++ {
-			formatStr.WriteString("#")
-		}
-	}
-	f64, _ := value.Float64()
-	return humanize.FormatFloat(formatStr.String(), f64)
+	return types.NewXText(num.FormatCustom(env.NumberFormat(), places, human.Native()))
 }
 
 // FormatLocation formats the given `location` as its name.

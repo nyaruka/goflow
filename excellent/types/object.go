@@ -49,13 +49,29 @@ func (x *XObject) Truthy() bool {
 }
 
 // Render returns the canonical text representation
-func (x *XObject) Render(env utils.Environment) string {
+func (x *XObject) Render() string {
 	pairs := make([]string, 0, x.Count())
 	for _, k := range x.keys(true) {
-		vAsText := Render(env, x.values()[k])
-		pairs = append(pairs, fmt.Sprintf("%s: %s", k, vAsText))
+		rendered := Render(x.values()[k])
+		pairs = append(pairs, fmt.Sprintf("%s: %s", k, rendered))
 	}
 	return "{" + strings.Join(pairs, ", ") + "}"
+}
+
+// Format returns the pretty text representation
+func (x *XObject) Format(env utils.Environment) string {
+	pairs := make([]string, 0, x.Count())
+	for _, k := range x.keys(true) {
+		formatted := Format(env, x.values()[k])
+		if strings.ContainsRune(formatted, '\n') {
+			formatted = utils.Indent(formatted, "  ")
+			formatted = fmt.Sprintf("%s:\n%s", k, formatted)
+		} else {
+			formatted = fmt.Sprintf("%s: %s", k, formatted)
+		}
+		pairs = append(pairs, formatted)
+	}
+	return strings.Join(pairs, "\n")
 }
 
 // MarshalJSON converts this type to internal JSON

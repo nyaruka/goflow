@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"strings"
 	"testing"
 	"time"
 
@@ -158,6 +159,47 @@ func BenchmarkEvaluateTemplate(b *testing.B) {
 	}
 }
 
+func TestContextFormat(t *testing.T) {
+	tests := []struct {
+		path     string
+		expected string
+	}{
+		{"contact.name", "Ryan Lewis"},
+		{"contact.channel", "address: +12345671111\nname: My Android Phone\nuuid: 57f1078f-88aa-46f4-a59a-948a5739c03d"},
+		{"contact", "testdata/format_contact.txt"},
+		{"results", "testdata/format_results.txt"},
+	}
+
+	server := test.NewTestHTTPServer(49992)
+	defer server.Close()
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
+
+	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+
+	session, _, err := test.CreateTestSession(server.URL, nil)
+	require.NoError(t, err)
+
+	run := session.Runs()[0]
+
+	for _, tc := range tests {
+		template := fmt.Sprintf("@(format(%s))", tc.path)
+		actual, err := run.EvaluateTemplate(template)
+		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)
+
+		expected := tc.expected
+		if strings.HasSuffix(expected, ".txt") {
+			file, err := ioutil.ReadFile(expected)
+			require.NoError(t, err)
+
+			expected = string(file)
+		}
+
+		assert.Equal(t, expected, actual, "format(...) mismatch for test %s", template)
+	}
+}
+
 func TestContextToJSON(t *testing.T) {
 	tests := []struct {
 		path     string
@@ -178,7 +220,7 @@ func TestContextToJSON(t *testing.T) {
 				"fields": {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
 				"first_name": "Ryan",
 				"groups": [{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
-				"id": 1234567,
+				"id": "1234567",
 				"language": "eng",
 				"name": "Ryan Lewis",
 				"timezone": "America/Guayaquil",
@@ -209,7 +251,7 @@ func TestContextToJSON(t *testing.T) {
 					"fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
 					"first_name":"Ryan",
 					"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
-					"id":1234567,
+					"id":"1234567",
 					"language":"eng",
 					"name":"Ryan Lewis",
 					"timezone":"America/Guayaquil",
@@ -282,7 +324,7 @@ func TestContextToJSON(t *testing.T) {
 					"fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
 					"first_name": "Ryan",
 					"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
-					"id":1234567,
+					"id":"1234567",
 					"language":"eng",
 					"name":"Ryan Lewis",
 					"timezone":"America/Guayaquil",
@@ -338,7 +380,7 @@ func TestContextToJSON(t *testing.T) {
 					"display":"Jasmine",
 					"fields":{"activation_token":null,"age":33,"gender":"Female","join_date":null,"not_set":null},"groups":[],
 					"first_name": "Jasmine",
-					"id":0,
+					"id":"0",
 					"language":"spa",
 					"name":"Jasmine",
 					"timezone":null,
@@ -407,7 +449,7 @@ func TestContextToJSON(t *testing.T) {
 
 		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)
 
-		test.AssertEqualJSON(t, []byte(tc.expected), []byte(actualJSON), "json mismatch for test %s", template)
+		test.AssertEqualJSON(t, []byte(tc.expected), []byte(actualJSON), "json(...) mismatch for test %s", template)
 	}
 }
 

@@ -257,7 +257,7 @@ func (c *Contact) Context(env utils.Environment) map[string]types.XValue {
 
 	return map[string]types.XValue{
 		"uuid":       types.NewXText(string(c.uuid)),
-		"id":         types.NewXNumberFromInt(int(c.id)),
+		"id":         types.NewXText(strconv.Itoa(int(c.id))),
 		"name":       types.NewXText(c.name),
 		"first_name": firstName,
 		"display":    types.NewXText(c.Format(env)),
