@@ -318,19 +318,42 @@ func TestContextToJSON(t *testing.T) {
 			"child",
 			`{
 				"contact": {
-					"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
-					"created_on":"2018-06-20T11:40:30.123456Z",
-					"display":"Ryan Lewis",
-					"fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
+					"channel": {
+						"address": "+12345671111",
+						"name": "My Android Phone",
+						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+					},
+					"created_on": "2018-06-20T11:40:30.123456Z",
+					"display": "Ryan Lewis",
+					"fields": {
+						"activation_token": "AACC55",
+						"age": 23,
+						"gender": "Male",
+						"join_date": "2017-12-02T00:00:00.000000-02:00",
+						"not_set": null
+					},
 					"first_name": "Ryan",
-					"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
-					"id":"1234567",
-					"language":"eng",
-					"name":"Ryan Lewis",
-					"timezone":"America/Guayaquil",
-					"urn":"tel:+12065551212",
-					"urns":["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"],
-					"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+					"groups": [
+						{
+							"name": "Testers",
+							"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+						},
+						{
+							"name": "Males",
+							"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9"
+						}
+					],
+					"id": "1234567",
+					"language": "eng",
+					"name": "Ryan Lewis",
+					"timezone": "America/Guayaquil",
+					"urn": "tel:+12065551212",
+					"urns": [
+						"tel:+12065551212",
+						"twitterid:54784326227#nyaruka",
+						"mailto:foo@bar.com"
+					],
+					"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 				},
 				"fields": {
 					"activation_token": "AACC55",
@@ -339,20 +362,82 @@ func TestContextToJSON(t *testing.T) {
 					"join_date": "2017-12-02T00:00:00.000000-02:00",
 					"not_set": null
 				},
-				"flow":{"name":"Collect Age","revision":0,"uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},
-				"results":{
-					"age":{
-						"categories":["Youth"],
-						"categories_localized":["Youth"],
-						"created_on":"2018-04-11T13:24:30.123456Z",
-						"extra":null,
-						"input":"",
-						"name":"Age",
-						"node_uuid":"d9dba561-b5ee-4f62-ba44-60c4dc242b84",
-						"values":["23"]
+				"results": {
+					"age": {
+						"category": "Youth",
+						"category_localized": "Youth",
+						"created_on": "2018-04-11T13:24:30.123456Z",
+						"input": "",
+						"name": "Age",
+						"node_uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
+						"value": "23"
 					}
 				},
-				"status":"completed",
+				"run": {
+					"contact": {
+						"channel": {
+							"address": "+12345671111",
+							"name": "My Android Phone",
+							"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+						},
+						"created_on": "2018-06-20T11:40:30.123456Z",
+						"display": "Ryan Lewis",
+						"fields": {
+							"activation_token": "AACC55",
+							"age": 23,
+							"gender": "Male",
+							"join_date": "2017-12-02T00:00:00.000000-02:00",
+							"not_set": null
+						},
+						"first_name": "Ryan",
+						"groups": [
+							{
+								"name": "Testers",
+								"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+							},
+							{
+								"name": "Males",
+								"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9"
+							}
+						],
+						"id": "1234567",
+						"language": "eng",
+						"name": "Ryan Lewis",
+						"timezone": "America/Guayaquil",
+						"urn": "tel:+12065551212",
+						"urns": [
+							"tel:+12065551212",
+							"twitterid:54784326227#nyaruka",
+							"mailto:foo@bar.com"
+						],
+						"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+					},
+					"flow": {
+						"name": "Collect Age",
+						"revision": 0,
+						"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+					},
+					"results": {
+						"age": {
+							"categories": [
+								"Youth"
+							],
+							"categories_localized": [
+								"Youth"
+							],
+							"created_on": "2018-04-11T13:24:30.123456Z",
+							"extra": null,
+							"input": "",
+							"name": "Age",
+							"node_uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
+							"values": [
+								"23"
+							]
+						}
+					},
+					"status": "completed",
+					"uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+				},
 				"urns": {
 					"ext": null,
 					"facebook": null,
@@ -367,26 +452,38 @@ func TestContextToJSON(t *testing.T) {
 					"viber": null,
 					"wechat": null,
 					"whatsapp": null
-				},
-				"uuid":"8720f157-ca1c-432f-9c0b-2014ddc77094"
+				}
 			}`,
 		},
 		{
-			"parent", `
-			{
+			"parent",
+			`{
 				"contact": {
-					"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
-					"created_on":"2018-01-01T12:00:00.000000Z",
-					"display":"Jasmine",
-					"fields":{"activation_token":null,"age":33,"gender":"Female","join_date":null,"not_set":null},"groups":[],
+					"channel": {
+						"address": "+12345671111",
+						"name": "My Android Phone",
+						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+					},
+					"created_on": "2018-01-01T12:00:00.000000Z",
+					"display": "Jasmine",
+					"fields": {
+						"activation_token": null,
+						"age": 33,
+						"gender": "Female",
+						"join_date": null,
+						"not_set": null
+					},
 					"first_name": "Jasmine",
-					"id":"0",
-					"language":"spa",
-					"name":"Jasmine",
-					"timezone":null,
-					"urn":"tel:+593979111222",
-					"urns":["tel:+593979111222"],
-					"uuid":"c59b0033-e748-4240-9d4c-e85eb6800151"
+					"groups": [],
+					"id": "0",
+					"language": "spa",
+					"name": "Jasmine",
+					"timezone": null,
+					"urn": "tel:+593979111222",
+					"urns": [
+						"tel:+593979111222"
+					],
+					"uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
 				},
 				"fields": {
 					"activation_token": null,
@@ -395,20 +492,71 @@ func TestContextToJSON(t *testing.T) {
 					"join_date": null,
 					"not_set": null
 				},
-				"flow": {"name":"Parent","revision":0,"uuid":"fece6eac-9127-4343-9269-56e88f391562"},
-				"results":{
-					"role":{
-						"categories":["Reporter"],
-						"categories_localized":["Reporter"],
-						"created_on":"2000-01-01T00:00:00.000000Z",
-						"extra":null,
-						"input":"a reporter",
-						"name":"Role",
-						"node_uuid":"385cb848-5043-448e-9123-05cbcf26ad74",
-						"values":["reporter"]
+				"results": {
+					"role": {
+						"category": "Reporter",
+						"category_localized": "Reporter",
+						"created_on": "2000-01-01T00:00:00.000000Z",
+						"input": "a reporter",
+						"name": "Role",
+						"node_uuid": "385cb848-5043-448e-9123-05cbcf26ad74",
+						"value": "reporter"
 					}
 				},
-				"status":"active",
+				"run": {
+					"contact": {
+						"channel": {
+							"address": "+12345671111",
+							"name": "My Android Phone",
+							"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+						},
+						"created_on": "2018-01-01T12:00:00.000000Z",
+						"display": "Jasmine",
+						"fields": {
+							"activation_token": null,
+							"age": 33,
+							"gender": "Female",
+							"join_date": null,
+							"not_set": null
+						},
+						"first_name": "Jasmine",
+						"groups": [],
+						"id": "0",
+						"language": "spa",
+						"name": "Jasmine",
+						"timezone": null,
+						"urn": "tel:+593979111222",
+						"urns": [
+							"tel:+593979111222"
+						],
+						"uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
+					},
+					"flow": {
+						"name": "Parent",
+						"revision": 0,
+						"uuid": "fece6eac-9127-4343-9269-56e88f391562"
+					},
+					"results": {
+						"role": {
+							"categories": [
+								"Reporter"
+							],
+							"categories_localized": [
+								"Reporter"
+							],
+							"created_on": "2000-01-01T00:00:00.000000Z",
+							"extra": null,
+							"input": "a reporter",
+							"name": "Role",
+							"node_uuid": "385cb848-5043-448e-9123-05cbcf26ad74",
+							"values": [
+								"reporter"
+							]
+						}
+					},
+					"status": "active",
+					"uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
+				},
 				"urns": {
 					"ext": null,
 					"facebook": null,
@@ -423,8 +571,7 @@ func TestContextToJSON(t *testing.T) {
 					"viber": null,
 					"wechat": null,
 					"whatsapp": null
-				},
-				"uuid":"4213ac47-93fd-48c4-af12-7da8218ef09d"
+				}
 			}`,
 		},
 		{"trigger", `{"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}`},

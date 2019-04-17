@@ -69,9 +69,9 @@ var tests = []testTemplate{
 	{old: `@flow.contact.age`, new: `@fields.age`},
 
 	{old: `@child`, new: `@(format_results(child.results))`},
-	{old: `@child.age`, new: `@(child.results.age.values[0])`},
-	{old: `@child.age.value`, new: `@(child.results.age.values[0])`},
-	{old: `@child.age.category`, new: `@(child.results.age.categories_localized[0])`},
+	{old: `@child.age`, new: `@child.results.age.value`},
+	{old: `@child.age.value`, new: `@child.results.age.value`},
+	{old: `@child.age.category`, new: `@child.results.age.category_localized`},
 	{old: `@child.age.text`, new: `@child.results.age.input`},
 	{old: `@child.age.time`, new: `@child.results.age.created_on`},
 	{old: `@child.contact`, new: `@child.contact.display`},
@@ -79,9 +79,9 @@ var tests = []testTemplate{
 	{old: `@child.contact.age`, new: `@child.fields.age`},
 
 	{old: `@parent`, new: `@(format_results(parent.results))`},
-	{old: `@parent.role`, new: `@(parent.results.role.values[0])`},
-	{old: `@parent.role.value`, new: `@(parent.results.role.values[0])`},
-	{old: `@parent.role.category`, new: `@(parent.results.role.categories_localized[0])`},
+	{old: `@parent.role`, new: `@parent.results.role.value`},
+	{old: `@parent.role.value`, new: `@parent.results.role.value`},
+	{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
 	{old: `@parent.role.text`, new: `@parent.results.role.input`},
 	{old: `@parent.role.time`, new: `@parent.results.role.created_on`},
 	{old: `@parent.contact`, new: `@parent.contact.display`},
@@ -118,7 +118,7 @@ var tests = []testTemplate{
 	{old: `@extra`, new: `@legacy_extra`},
 	{old: `@extra.address.state`, new: `@legacy_extra.address.state`},
 	{old: `@extra.results.1`, new: `@(legacy_extra.results["1"])`},
-	{old: `@extra.flow.role`, new: `@(parent.results.role.values[0])`},
+	{old: `@extra.flow.role`, new: `@parent.results.role.value`},
 
 	// variables in parens
 	{old: `@(contact.tel)`, new: `@(format_urn(urns.tel))`},

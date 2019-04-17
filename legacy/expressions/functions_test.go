@@ -52,7 +52,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(FALSE())`, new: `@(false)`, val: `false`},
 
 		{old: `@(FIELD(flow.favorite_color, 2, ","))`, new: `@(field(results.favorite_color.value, 1, ","))`, val: ``},
-		{old: `@(FIELD(flow.favorite_color, child.age, ","))`, new: `@(field(results.favorite_color.value, child.results.age.values[0] - 1, ","))`, val: ``},
+		{old: `@(FIELD(flow.favorite_color, child.age, ","))`, new: `@(field(results.favorite_color.value, child.results.age.value - 1, ","))`, val: ``},
 
 		{old: `@(FIRST_WORD(flow.favorite_color))`, new: `@(word(results.favorite_color.value, 0))`, val: `red`},
 		{old: `@(FIRST_WORD(WORD_SLICE("bee cat dog elf", 2, 4)))`, new: `@(word(word_slice("bee cat dog elf", 1, 3), 0))`, val: `cat`},
@@ -73,9 +73,9 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(LOWER(contact.first_name))`, new: `@(lower(contact.first_name))`, val: `ryan`},
 
-		{old: `@(MAX(child.age, 10))`, new: `@(max(child.results.age.values[0], 10))`, val: `23`},
+		{old: `@(MAX(child.age, 10))`, new: `@(max(child.results.age.value, 10))`, val: `23`},
 
-		{old: `@(MIN(child.age, 10))`, new: `@(min(child.results.age.values[0], 10))`, val: `10`},
+		{old: `@(MIN(child.age, 10))`, new: `@(min(child.results.age.value, 10))`, val: `10`},
 
 		{old: `@(MINUTE(NOW()))`, new: `@(format_datetime(now(), "m"))`},
 
@@ -115,7 +115,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(SECOND(NOW()))`, new: `@(format_datetime(now(), "s"))`},
 
-		{old: `@(SUM(contact.age, child.age))`, new: `@(fields.age + child.results.age.values[0])`},
+		{old: `@(SUM(contact.age, child.age))`, new: `@(fields.age + child.results.age.value)`},
 
 		{old: `@(TRUE())`, new: `@(true)`},
 
@@ -133,7 +133,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(WORD(flow.favorite_color, 1, FALSE))`, new: `@(word(results.favorite_color.value, 0, NULL))`},
 		{old: `@(WORD(flow.favorite_color, 1, TRUE))`, new: `@(word(results.favorite_color.value, 0, " \t"))`},
 		{old: `@(WORD(flow.favorite_color, 1))`, new: `@(word(results.favorite_color.value, 0))`},
-		{old: `@(WORD(flow.favorite_color, child.age - 22))`, new: `@(word(results.favorite_color.value, legacy_add(child.results.age.values[0], -22) - 1))`},
+		{old: `@(WORD(flow.favorite_color, child.age - 22))`, new: `@(word(results.favorite_color.value, legacy_add(child.results.age.value, -22) - 1))`},
 
 		{old: `@(YEAR(date.now))`, new: `@(format_date(now(), "YYYY"))`},
 		{old: `@(YEAR(NOW()))`, new: `@(format_date(now(), "YYYY"))`},

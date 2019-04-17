@@ -46,14 +46,14 @@ func init() {
 		{re(`^flow\.(\w+)\.time$`), `results.$1.created_on`},
 
 		{re(`^child$`), `format_results(child.results)`},
-		{re(`^child\.(\w+)(\.value)?$`), `child.results.$1.values[0]`},
-		{re(`^child\.(\w+)\.category$`), `child.results.$1.categories_localized[0]`},
+		{re(`^child\.(\w+)(\.value)?$`), `child.results.$1.value`},
+		{re(`^child\.(\w+)\.category$`), `child.results.$1.category_localized`},
 		{re(`^child\.(\w+)\.text$`), `child.results.$1.input`},
 		{re(`^child\.(\w+)\.time$`), `child.results.$1.created_on`},
 
 		{re(`^(?:parent|extra\.flow)$`), `format_results(parent.results)`},
-		{re(`^(?:parent|extra\.flow)\.(\w+)(\.value)?$`), `parent.results.$1.values[0]`},
-		{re(`^(?:parent|extra\.flow)\.(\w+)\.category$`), `parent.results.$1.categories_localized[0]`},
+		{re(`^(?:parent|extra\.flow)\.(\w+)(\.value)?$`), `parent.results.$1.value`},
+		{re(`^(?:parent|extra\.flow)\.(\w+)\.category$`), `parent.results.$1.category_localized`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.text$`), `parent.results.$1.input`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.time$`), `parent.results.$1.created_on`},
 

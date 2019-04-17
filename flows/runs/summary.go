@@ -49,7 +49,12 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 	return &relatedRunContext{run: run}
 }
 
+// RootContext returns the properties available in expressions for @parent and @child
 func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XValue {
+	if utils.IsNil(c.run) {
+		return nil
+	}
+
 	var urns, fields types.XValue
 	if c.run.Contact() != nil {
 		urns = flows.ContextFunc(env, c.run.Contact().URNs().MapContext)
@@ -57,10 +62,20 @@ func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XVal
 	}
 
 	return map[string]types.XValue{
-		"uuid":    types.NewXText(string(c.run.UUID())),
+		"run":     flows.ContextFunc(env, c.RunContext),
 		"contact": flows.Context(env, c.run.Contact()),
 		"urns":    urns,
 		"fields":  fields,
+		"results": flows.ContextFunc(env, c.run.Results().SimpleContext),
+	}
+}
+
+// Context returns the properties available in expressions. Run summaries expose a
+// subset of the properties exposed by a real run.
+func (c *relatedRunContext) RunContext(env utils.Environment) map[string]types.XValue {
+	return map[string]types.XValue{
+		"uuid":    types.NewXText(string(c.run.UUID())),
+		"contact": flows.Context(env, c.run.Contact()),
 		"flow":    flows.Context(env, c.run.Flow()),
 		"status":  types.NewXText(string(c.run.Status())),
 		"results": flows.Context(env, c.run.Results()),
