@@ -51,10 +51,6 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 
 // RootContext returns the properties available in expressions for @parent and @child
 func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XValue {
-	if utils.IsNil(c.run) {
-		return nil
-	}
-
 	var urns, fields types.XValue
 	if c.run.Contact() != nil {
 		urns = flows.ContextFunc(env, c.run.Contact().URNs().MapContext)
