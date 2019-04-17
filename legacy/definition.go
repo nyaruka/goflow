@@ -276,6 +276,8 @@ type wardTest struct {
 	District string `json:"district"`
 }
 
+var relativeDateTest = regexp.MustCompile(`@\(date\.today\s+(\+|\-)\s+(\d+)\)`)
+
 var flowTypeMapping = map[string]flows.FlowType{
 	"F": flows.FlowTypeMessaging,
 	"M": flows.FlowTypeMessaging,
@@ -853,8 +855,6 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 
 	return cases, categories, defaultCategoryUUID, timeoutCategoryUUID, exits, nil
 }
-
-var relativeDateTest = regexp.MustCompile(`@\(date\.today\s+(\+|\-)\s+(\d+)\)`)
 
 // migrates the given legacy rule to a router case
 func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category, localization flows.Localization) (*routers.Case, map[string]interface{}, error) {
