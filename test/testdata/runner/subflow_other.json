@@ -43,7 +43,7 @@
                                 "exit_uuid": "d6ed7786-a703-48af-9005-217636db5844"
                             }
                         ],
-                        "operand": "@child.status",
+                        "operand": "@child.run.status",
                         "cases": [
                             {
                                 "type": "has_only_text",
@@ -73,7 +73,7 @@
                     ],
                     "actions": [
                         {
-                            "text": "Hooray, you did it and said @(child.results.answer.values[0]). Say yes or no!",
+                            "text": "Hooray, you did it and said @child.results.answer.value. Say yes or no!",
                             "type": "send_msg",
                             "uuid": "54b10283-9863-4edf-abfa-705cf24a64fc"
                         }
@@ -168,7 +168,7 @@
                     ],
                     "actions": [
                         {
-                            "text": "All Done! You said @(child.results.answer.values[0]) in the child and @results.answer.value here.",
+                            "text": "All Done! You said @child.results.answer.value in the child and @results.answer.value here.",
                             "type": "send_msg",
                             "uuid": "bd387e9c-1ea9-49c8-a292-858d8a23a2d0"
                         }
