@@ -21,7 +21,7 @@
                 "cases": [
                     {
                         "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
-                        "type": "is_text_eq",
+                        "type": "has_only_text",
                         "arguments": [
                             "M"
                         ],

@@ -37,7 +37,7 @@ var XTESTS = map[string]types.XFunction{
 	"has_error": functions.OneArgFunction(HasError),
 	"has_value": functions.OneArgFunction(HasValue),
 
-	"is_text_eq":      functions.TwoTextFunction(IsTextEQ),
+	"has_only_text":   functions.TwoTextFunction(HasOnlyText),
 	"has_phrase":      functions.TwoTextFunction(HasPhrase),
 	"has_only_phrase": functions.TwoTextFunction(HasOnlyPhrase),
 	"has_any_word":    functions.TwoTextFunction(HasAnyWord),
@@ -87,19 +87,19 @@ func NewTrueResultWithExtra(match types.XValue, extra *types.XObject) *types.XOb
 // Tests
 //------------------------------------------------------------------------------------------
 
-// IsTextEQ returns whether two text values are equal (case sensitive). In the case that they
+// HasOnlyText returns whether two text values are equal (case sensitive). In the case that they
 // are, it will return the text as the match.
 //
-//   @(is_text_eq("foo", "foo")) -> {match: foo}
-//   @(is_text_eq("foo", "FOO")) ->
-//   @(is_text_eq("foo", "bar")) ->
-//   @(is_text_eq("foo", " foo ")) ->
-//   @(is_text_eq(run.status, "completed")) -> {match: completed}
-//   @(is_text_eq(results.webhook.category, "Success")) -> {match: Success}
-//   @(is_text_eq(results.webhook.category, "Failure")) ->
+//   @(has_only_text("foo", "foo")) -> {match: foo}
+//   @(has_only_text("foo", "FOO")) ->
+//   @(has_only_text("foo", "bar")) ->
+//   @(has_only_text("foo", " foo ")) ->
+//   @(has_only_text(run.status, "completed")) -> {match: completed}
+//   @(has_only_text(results.webhook.category, "Success")) -> {match: Success}
+//   @(has_only_text(results.webhook.category, "Failure")) ->
 //
-// @test is_text_eq(text1, text2)
-func IsTextEQ(env utils.Environment, text1 types.XText, text2 types.XText) types.XValue {
+// @test has_only_text(text1, text2)
+func HasOnlyText(env utils.Environment, text1 types.XText, text2 types.XText) types.XValue {
 	if text1.Equals(text2) {
 		return NewTrueResult(text1)
 	}

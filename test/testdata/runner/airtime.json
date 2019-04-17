@@ -40,7 +40,7 @@
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                                "type": "is_text_eq",
+                                "type": "has_only_text",
                                 "arguments": [
                                     "Success"
                                 ],
@@ -48,7 +48,7 @@
                             },
                             {
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "type": "is_text_eq",
+                                "type": "has_only_text",
                                 "arguments": [
                                     "Failure"
                                 ],
