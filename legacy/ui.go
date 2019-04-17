@@ -10,9 +10,6 @@ import (
 // UINodeType tells the editor how to render a particular node
 type UINodeType string
 
-// UINodeConfig contains config unique to its type
-type UINodeConfig map[string]interface{}
-
 // the different node types supported by the editor
 const (
 	UINodeTypeActionSet                 UINodeType = "execute_actions"
@@ -35,20 +32,20 @@ const (
 
 // UI is the _ui section of the flow definition used by the editor
 type UI struct {
-	Nodes    map[flows.NodeUUID]*UINodeDetails `json:"nodes"`
-	Stickies map[utils.UUID]Sticky             `json:"stickies"`
+	Nodes    map[flows.NodeUUID]*NodeUI `json:"nodes"`
+	Stickies map[utils.UUID]Sticky      `json:"stickies"`
 }
 
 // NewUI creates a new UI section
 func NewUI() *UI {
 	return &UI{
-		Nodes:    make(map[flows.NodeUUID]*UINodeDetails),
+		Nodes:    make(map[flows.NodeUUID]*NodeUI),
 		Stickies: make(map[utils.UUID]Sticky),
 	}
 }
 
 // AddNode adds information about a node
-func (u *UI) AddNode(uuid flows.NodeUUID, nodeDetails *UINodeDetails) {
+func (u *UI) AddNode(uuid flows.NodeUUID, nodeDetails *NodeUI) {
 	u.Nodes[uuid] = nodeDetails
 }
 
@@ -63,22 +60,38 @@ type Position struct {
 	Top  int `json:"top"`
 }
 
-// UINodeDetails are the node specific UI details
-type UINodeDetails struct {
-	Type     UINodeType   `json:"type,omitempty"`
-	Config   UINodeConfig `json:"config,omitempty"`
-	Position Position     `json:"position"`
+// NodeUIConfig holds node type specific configuration
+type NodeUIConfig map[string]interface{}
+
+// AddCaseConfig adds a case specific UI configuration
+func (c NodeUIConfig) AddCaseConfig(uuid utils.UUID, config map[string]interface{}) {
+	var caseMap map[utils.UUID]interface{}
+	cases, hasCases := c["cases"]
+	if !hasCases {
+		caseMap = make(map[utils.UUID]interface{})
+		c["cases"] = caseMap
+	} else {
+		caseMap = cases.(map[utils.UUID]interface{})
+	}
+	caseMap[uuid] = config
 }
 
-// NewUINodeDetails creates a ui configuration for a specific
-func NewUINodeDetails(x, y int, nodeType UINodeType, uiNodeConfig UINodeConfig) *UINodeDetails {
-	return &UINodeDetails{
-		Type:   nodeType,
-		Config: uiNodeConfig,
+// NodeUI is a node specific UI configuration
+type NodeUI struct {
+	Type     UINodeType   `json:"type,omitempty"`
+	Position Position     `json:"position"`
+	Config   NodeUIConfig `json:"config,omitempty"`
+}
+
+// NewNodeUI creates a new node specific UI configuration
+func NewNodeUI(nodeType UINodeType, x, y int, config NodeUIConfig) *NodeUI {
+	return &NodeUI{
+		Type: nodeType,
 		Position: Position{
 			Left: x,
 			Top:  y,
 		},
+		Config: config,
 	}
 }
 
