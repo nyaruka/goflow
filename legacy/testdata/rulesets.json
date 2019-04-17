@@ -1244,6 +1244,18 @@
         "expected_localization": {},
         "expected_ui": {
             "config": {
+                "cases": {
+                    "5802813d-6c58-4292-8228-9728778b6c98": {
+                        "arguments": [
+                            "0"
+                        ]
+                    },
+                    "c34b6c7d-fa06-4563-92a3-d648ab64bccb": {
+                        "arguments": [
+                            "-1"
+                        ]
+                    }
+                },
                 "operand": {
                     "id": "reporting_date",
                     "type": "field"
