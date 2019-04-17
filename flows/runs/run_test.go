@@ -112,24 +112,61 @@ func TestRunContext(t *testing.T) {
 
 	run := session.Runs()[0]
 
-	val, err := run.EvaluateTemplateValue(`@(json(contact.fields))`)
-	assert.NoError(t, err)
-	assert.Equal(t, types.NewXText(`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`), val)
+	testCases := []struct {
+		template string
+		expected string
+	}{
+		{
+			`@(json(contact.fields))`,
+			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`,
+		},
+		{
+			`@(json(fields))`,
+			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`,
+		},
+		{
+			`@(json(contact.urns))`,
+			`["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`,
+		},
+		{
+			`@(json(urns))`,
+			`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"wechat":null,"whatsapp":null}`,
+		},
+		{
+			`@(json(results.favorite_color))`,
+			`{"category":"Red","category_localized":"Red","created_on":"2018-09-13T13:36:30.123456Z","input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+		},
+		{
+			`@(json(run.results.favorite_color))`,
+			`{"categories":["Red"],"categories_localized":["Red"],"created_on":"2018-09-13T13:36:30.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","values":["red"]}`,
+		},
+		{
+			`@parent.contact.name`,
+			`Jasmine`,
+		},
+		{
+			`@child.contact.name`,
+			`Ryan Lewis`,
+		},
+		{
+			`@(json(parent.contact.urns))`,
+			`["tel:+593979111222"]`,
+		},
+		{
+			`@(json(parent.urns))`,
+			`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+593979111222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"wechat":null,"whatsapp":null}`,
+		},
+		{
+			`@(json(parent.fields))`,
+			`{"activation_token":null,"age":33,"gender":"Female","join_date":null,"not_set":null}`,
+		},
+	}
 
-	val, err = run.EvaluateTemplateValue(`@(json(fields))`)
-	assert.Equal(t, types.NewXText(`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`), val)
-
-	val, err = run.EvaluateTemplateValue(`@(json(contact.urns))`)
-	assert.Equal(t, types.NewXText(`["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`), val)
-
-	val, err = run.EvaluateTemplateValue(`@(json(urns))`)
-	assert.Equal(t, types.NewXText(`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"wechat":null,"whatsapp":null}`), val)
-
-	val, err = run.EvaluateTemplateValue(`@(json(results.favorite_color))`)
-	assert.Equal(t, types.NewXText(`{"category":"Red","category_localized":"Red","created_on":"2018-09-13T13:36:30.123456Z","input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`), val)
-
-	val, err = run.EvaluateTemplateValue(`@(json(run.results.favorite_color))`)
-	assert.Equal(t, types.NewXText(`{"categories":["Red"],"categories_localized":["Red"],"created_on":"2018-09-13T13:36:30.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","values":["red"]}`), val)
+	for _, tc := range testCases {
+		actual, err := run.EvaluateTemplate(tc.template)
+		assert.NoError(t, err)
+		assert.Equal(t, tc.expected, actual)
+	}
 }
 
 func TestMissingRelatedRunContext(t *testing.T) {
