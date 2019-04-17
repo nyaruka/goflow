@@ -665,7 +665,7 @@ func Field(env utils.Environment, text types.XText, args ...types.XValue) types.
 	return types.NewXText(strings.TrimSpace(fields[field]))
 }
 
-// Clean strips any non-printable characters from `text`.
+// Clean removes any non-printable characters from `text`.
 //
 //   @(clean("😃 Hello \nwo\tr\rld")) -> 😃 Hello world
 //   @(clean(123)) -> 123
@@ -1894,7 +1894,7 @@ func Default(env utils.Environment, value types.XValue, def types.XValue) types.
 //   @(extract(contact, "name")) -> Ryan Lewis
 //   @(extract(contact.groups[0], "name")) -> Testers
 //
-// @function extract(object, properties...)
+// @function extract(object, properties)
 func Extract(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
 	object, xerr := types.ToXObject(env, arg1)
 	if xerr != nil {

@@ -213,7 +213,7 @@
 <a class="sourceLine" id="cb28-3" title="3">@(<span class="dt">char</span>(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:clean"></a></p>
 <h2 id="cleantext">clean(text)</h2>
-<p>Strips any non-printable characters from <code>text</code>.</p>
+<p>Removes any non-printable characters from <code>text</code>.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" title="1">@(clean(<span class="st">&quot;😃 Hello </span><span class="sc">\n</span><span class="st">wo</span><span class="sc">\t</span><span class="st">r</span><span class="sc">\r</span><span class="st">ld&quot;</span>)) → 😃 Hello world</a>
 <a class="sourceLine" id="cb29-2" title="2">@(clean(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre></div>
 <p><a name="function:code"></a></p>
@@ -295,7 +295,7 @@
 <a class="sourceLine" id="cb39-3" title="3">@(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>)) → <span class="fl">1497286619.123456</span></a>
 <a class="sourceLine" id="cb39-4" title="4">@(round_down(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>))) → <span class="dv">1497286619</span></a></code></pre></div>
 <p><a name="function:extract"></a></p>
-<h2 id="extractobject-properties">extract(object, properties…)</h2>
+<h2 id="extractobject-properties">extract(object, properties)</h2>
 <p>Takes an object and extracts the named property.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb40-1" title="1">@(extract(contact, <span class="st">&quot;name&quot;</span>)) → Ryan Lewis</a>
 <a class="sourceLine" id="cb40-2" title="2">@(extract(contact.groups[<span class="dv">0</span>], <span class="st">&quot;name&quot;</span>)) → Testers</a></code></pre></div>
