@@ -1061,7 +1061,7 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 		u2 := nodeUI[otherNodes[j].UUID()]
 
 		if u1 != nil && u2 != nil {
-			return u1.Position().Top() < u2.Position().Top()
+			return u1.Position.Top < u2.Position.Top
 		}
 		return false
 	})
