@@ -81,7 +81,7 @@
                         "cases": [
                             {
                                 "uuid": "518a925a-480e-4d44-a56d-98034df486a3",
-                                "type": "is_text_eq",
+                                "type": "has_only_text",
                                 "arguments": [
                                     "Success"
                                 ],
@@ -89,7 +89,7 @@
                             },
                             {
                                 "uuid": "a01a04b1-d9a8-4919-b745-a3532f5fdb89",
-                                "type": "is_text_eq",
+                                "type": "has_only_text",
                                 "arguments": [
                                     "Failure"
                                 ],

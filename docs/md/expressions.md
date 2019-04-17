@@ -416,7 +416,7 @@ It is the inverse of [code](expressions.html#function:code).
 
 ## clean(text)
 
-Strips any non-printable characters from `text`.
+Removes any non-printable characters from `text`.
 
 
 ```objectivec
@@ -585,7 +585,7 @@ The returned number can contain fractional seconds.
 
 <a name="function:extract"></a>
 
-## extract(object, properties...)
+## extract(object, properties)
 
 Takes an object and extracts the named property.
 

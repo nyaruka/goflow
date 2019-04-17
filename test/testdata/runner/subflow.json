@@ -42,7 +42,7 @@
                         "cases": [
                             {
                                 "uuid": "19a95efc-ac69-4b6a-a90b-f84a60b49e4f",
-                                "type": "is_text_eq",
+                                "type": "has_only_text",
                                 "arguments": [
                                     "completed"
                                 ],
@@ -50,7 +50,7 @@
                             },
                             {
                                 "uuid": "8b4def38-17ca-4207-8b6f-d81fb64a2dc6",
-                                "type": "is_text_eq",
+                                "type": "has_only_text",
                                 "arguments": [
                                     "expired"
                                 ],

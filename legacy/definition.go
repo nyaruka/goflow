@@ -929,13 +929,13 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 		arguments = []string{string(test.Test.UUID)}
 
 	case "subflow":
-		newType = "is_text_eq"
+		newType = "has_only_text"
 		test := subflowTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.ExitType}
 
 	case "webhook_status":
-		newType = "is_text_eq"
+		newType = "has_only_text"
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
@@ -945,7 +945,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 		}
 
 	case "airtime_status":
-		newType = "is_text_eq"
+		newType = "has_only_text"
 		test := airtimeTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.ExitStatus == "success" {

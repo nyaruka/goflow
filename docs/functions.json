@@ -107,7 +107,7 @@
     },
     {
         "signature": "clean(text)",
-        "summary": "Strips any non-printable characters from `text`.",
+        "summary": "Removes any non-printable characters from `text`.",
         "detail": "",
         "examples": [
             {
@@ -355,7 +355,7 @@
         ]
     },
     {
-        "signature": "extract(object, properties...)",
+        "signature": "extract(object, properties)",
         "summary": "Takes an object and extracts the named property.",
         "detail": "",
         "examples": [

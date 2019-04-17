@@ -2,11 +2,13 @@ package runs_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -100,7 +102,74 @@ var sessionTrigger = `{
     }
 }`
 
-func TestRunContexts(t *testing.T) {
+func TestRunContext(t *testing.T) {
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
+
+	// create a run with no parent or child
+	session, _, err := test.CreateTestSession("", nil)
+	require.NoError(t, err)
+
+	run := session.Runs()[0]
+
+	testCases := []struct {
+		template string
+		expected string
+	}{
+		{
+			`@(json(contact.fields))`,
+			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`,
+		},
+		{
+			`@(json(fields))`,
+			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`,
+		},
+		{
+			`@(json(contact.urns))`,
+			`["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`,
+		},
+		{
+			`@(json(urns))`,
+			`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"wechat":null,"whatsapp":null}`,
+		},
+		{
+			`@(json(results.favorite_color))`,
+			`{"category":"Red","category_localized":"Red","created_on":"2018-09-13T13:36:30.123456Z","input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+		},
+		{
+			`@(json(run.results.favorite_color))`,
+			`{"categories":["Red"],"categories_localized":["Red"],"created_on":"2018-09-13T13:36:30.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","values":["red"]}`,
+		},
+		{
+			`@parent.contact.name`,
+			`Jasmine`,
+		},
+		{
+			`@child.contact.name`,
+			`Ryan Lewis`,
+		},
+		{
+			`@(json(parent.contact.urns))`,
+			`["tel:+593979111222"]`,
+		},
+		{
+			`@(json(parent.urns))`,
+			`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+593979111222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"wechat":null,"whatsapp":null}`,
+		},
+		{
+			`@(json(parent.fields))`,
+			`{"activation_token":null,"age":33,"gender":"Female","join_date":null,"not_set":null}`,
+		},
+	}
+
+	for _, tc := range testCases {
+		actual, err := run.EvaluateTemplate(tc.template)
+		assert.NoError(t, err)
+		assert.Equal(t, tc.expected, actual)
+	}
+}
+
+func TestMissingRelatedRunContext(t *testing.T) {
 	// create a run with no parent or child
 	session, err := test.CreateSession([]byte(sessionAssets), "")
 	require.NoError(t, err)
@@ -113,25 +182,22 @@ func TestRunContexts(t *testing.T) {
 
 	run := session.Runs()[0]
 
-	val, err := run.EvaluateTemplateValue(`@(json(contact.fields))`)
+	// since we have no parent, check that it resolves to nil
+	val, err := run.EvaluateTemplateValue(`@parent`)
 	assert.NoError(t, err)
-	assert.Equal(t, types.NewXText(`{"gender":"M"}`), val)
+	assert.Nil(t, val)
 
-	val, err = run.EvaluateTemplateValue(`@(json(fields))`)
-	assert.Equal(t, types.NewXText(`{"gender":"M"}`), val)
-
-	val, err = run.EvaluateTemplateValue(`@(json(contact.urns))`)
-	assert.Equal(t, types.NewXText(`["tel:+12065551212"]`), val)
-
-	val, err = run.EvaluateTemplateValue(`@(json(urns))`)
-	assert.Equal(t, types.NewXText(`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":null,"viber":null,"wechat":null,"whatsapp":null}`), val)
-
-	// since we have no parent, check that trying to resolve parent is an error
+	// check that trying to resolve a property of parent is an error
 	val, err = run.EvaluateTemplateValue(`@parent.contact`)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)
 
-	// we also have no child, check that trying to resolve child is an error
+	// we also have no child, check that it resolves to nil
+	val, err = run.EvaluateTemplateValue(`@child`)
+	assert.NoError(t, err)
+	assert.Nil(t, val)
+
+	// check that trying to resolve a property of child is an error
 	val, err = run.EvaluateTemplateValue(`@child.contact`)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)

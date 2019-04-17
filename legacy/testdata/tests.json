@@ -428,7 +428,7 @@
         },
         "expected_case": {
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-            "type": "is_text_eq",
+            "type": "has_only_text",
             "arguments": [
                 "completed"
             ],
@@ -443,7 +443,7 @@
         },
         "expected_case": {
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-            "type": "is_text_eq",
+            "type": "has_only_text",
             "arguments": [
                 "expired"
             ],
@@ -475,7 +475,7 @@
         },
         "expected_case": {
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-            "type": "is_text_eq",
+            "type": "has_only_text",
             "arguments": [
                 "Success"
             ],
@@ -490,7 +490,7 @@
         },
         "expected_case": {
             "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-            "type": "is_text_eq",
+            "type": "has_only_text",
             "arguments": [
                 "Failure"
             ],

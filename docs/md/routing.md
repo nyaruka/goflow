@@ -270,6 +270,24 @@ The phrase must be the only text in the text to match
 @(has_only_phrase("The Quick Brown Fox", "red fox")) →
 ```
 
+<a name="test:has_only_text"></a>
+
+## has_only_text(text1, text2)
+
+Returns whether two text values are equal (case sensitive). In the case that they
+are, it will return the text as the match.
+
+
+```objectivec
+@(has_only_text("foo", "foo")) → {match: foo}
+@(has_only_text("foo", "FOO")) →
+@(has_only_text("foo", "bar")) →
+@(has_only_text("foo", " foo ")) →
+@(has_only_text(run.status, "completed")) → {match: completed}
+@(has_only_text(results.webhook.category, "Success")) → {match: Success}
+@(has_only_text(results.webhook.category, "Failure")) →
+```
+
 <a name="test:has_pattern"></a>
 
 ## has_pattern(text, pattern)
@@ -392,24 +410,6 @@ Tests whether a ward name is contained in the `text`
 @(has_ward("Brooklyn", "Gasabo", "Kigali")) →
 @(has_ward("Gasabo")) →
 @(has_ward("Gisozi")) → {match: Rwanda > Kigali City > Gasabo > Gisozi}
-```
-
-<a name="test:is_text_eq"></a>
-
-## is_text_eq(text1, text2)
-
-Returns whether two text values are equal (case sensitive). In the case that they
-are, it will return the text as the match.
-
-
-```objectivec
-@(is_text_eq("foo", "foo")) → {match: foo}
-@(is_text_eq("foo", "FOO")) →
-@(is_text_eq("foo", "bar")) →
-@(is_text_eq("foo", " foo ")) →
-@(is_text_eq(run.status, "completed")) → {match: completed}
-@(is_text_eq(results.webhook.category, "Success")) → {match: Success}
-@(is_text_eq(results.webhook.category, "Failure")) →
 ```
 
 
