@@ -1,3 +1,9 @@
+v0.35.0
+----------
+ * Migrate date_ tests to set delta value in UI config
+ * is_text_eq -> has_only_text
+ * @child and @parent should mirror root of context, not @run
+
 v0.34.1
 ----------
  * Add format_results and migrate @flow to @(format_results(results))
