@@ -15,7 +15,7 @@ import (
 )
 
 // CurrentSpecVersion is the flow spec version supported by this library
-var CurrentSpecVersion = semver.MustParse("12.0")
+var CurrentSpecVersion = semver.MustParse("13.0")
 
 type flow struct {
 	// spec properties
@@ -298,7 +298,8 @@ type validatedFlowEnvelope struct {
 // IsSpecVersionSupported determines if we can read the given flow version
 func IsSpecVersionSupported(ver *semver.Version) bool {
 	// major versions change flow schema
-	return ver.Major() <= CurrentSpecVersion.Major()
+	// we currently have no support for migrations but that will change in future
+	return ver.Major() == CurrentSpecVersion.Major()
 }
 
 // ReadFlow reads a single flow definition from the passed in byte array

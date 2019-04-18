@@ -39,6 +39,12 @@ func IsSpecVersionSupported(ver string) bool {
 	if err != nil {
 		return false
 	}
+
+	// we can migrate up to date legacy v11 flows
+	if v.Major() == 11 {
+		return true
+	}
+
 	return definition.IsSpecVersionSupported(v)
 }
 

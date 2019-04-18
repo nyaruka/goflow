@@ -614,7 +614,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 			{
 				"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 				"name": "Registration",
-				"spec_version": "12.0",
+				"spec_version": "13.0",
 				"language": "eng",
 				"type": "messaging",
 				"revision": 123,
@@ -623,7 +623,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 			{
 				"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 				"name": "Collect Age",
-				"spec_version": "12.0",
+				"spec_version": "13.0",
 				"language": "eng",
 				"type": "messaging",
 				"nodes": []

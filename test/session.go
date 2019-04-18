@@ -42,7 +42,7 @@ var sessionAssets = `{
         {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration",
-            "spec_version": "12.0",
+            "spec_version": "13.0",
             "language": "eng",
             "type": "messaging",
             "revision": 123,
@@ -141,7 +141,7 @@ var sessionAssets = `{
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Collect Age",
-            "spec_version": "12.0",
+            "spec_version": "13.0",
             "language": "eng",
             "type": "messaging",
             "nodes": [{
@@ -174,7 +174,7 @@ var sessionAssets = `{
         {
             "uuid": "fece6eac-9127-4343-9269-56e88f391562",
             "name": "Parent",
-            "spec_version": "12.0",
+            "spec_version": "13.0",
             "language": "eng",
             "type": "messaging",
             "nodes": []
@@ -182,7 +182,7 @@ var sessionAssets = `{
         {
             "uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf",
             "name": "Voice Test",
-            "spec_version": "12.0",
+            "spec_version": "13.0",
             "language": "eng",
             "type": "voice",
             "nodes": []
@@ -362,7 +362,7 @@ var voiceSessionAssets = `{
         {
             "uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf",
             "name": "Voice Test",
-            "spec_version": "12.0",
+            "spec_version": "13.0",
             "language": "eng",
             "type": "voice",
             "nodes": [

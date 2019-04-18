@@ -14,7 +14,7 @@
         "expected": {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Empty",
-            "spec_version": "12.0.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "revision": 1,
@@ -35,7 +35,7 @@
         "expected": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "name": "",
-            "spec_version": "12.0.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "revision": 0,
@@ -92,7 +92,7 @@
         "expected": {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Simple",
-            "spec_version": "12.0.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "revision": 123,
@@ -198,7 +198,7 @@
         "expected": {
             "uuid": "aaf52597-9485-45fb-9d38-56b2aa548d55",
             "name": "Node Ordering Test",
-            "spec_version": "12.0.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "revision": 123,
@@ -538,7 +538,7 @@
                 }
             ],
             "revision": 0,
-            "spec_version": "12.0.0",
+            "spec_version": "13.0.0",
             "type": "messaging",
             "uuid": "40730a2d-edaa-4ff0-9d2f-81ca2131ddfe"
         }

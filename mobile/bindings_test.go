@@ -11,10 +11,20 @@ import (
 )
 
 func TestMobileBindings(t *testing.T) {
+	// legacy v11 flows can be migrated
 	assert.True(t, mobile.IsSpecVersionSupported("11.6"))
-	assert.True(t, mobile.IsSpecVersionSupported("12"))
-	assert.True(t, mobile.IsSpecVersionSupported("12.5"))
-	assert.False(t, mobile.IsSpecVersionSupported("13.3"))
+
+	// can handle anything that is this major version
+	assert.True(t, mobile.IsSpecVersionSupported("13"))
+	assert.True(t, mobile.IsSpecVersionSupported("13.3"))
+	assert.True(t, mobile.IsSpecVersionSupported("13.3.7"))
+
+	// currently have no support for major version migrations (may change in future)
+	assert.False(t, mobile.IsSpecVersionSupported("12"))
+	assert.False(t, mobile.IsSpecVersionSupported("12.5"))
+
+	// and obviously can't handle versions from the future
+	assert.False(t, mobile.IsSpecVersionSupported("14.0"))
 
 	// error if we try to create assets from invalid JSON
 	_, err := mobile.NewAssetsSource("{")

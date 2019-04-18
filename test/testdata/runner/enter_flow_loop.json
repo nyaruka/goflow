@@ -3,7 +3,7 @@
         {
             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
             "name": "Start Actions Parent",
-            "spec_version": "12.0.0",
+            "spec_version": "13.0.0",
             "language": "base",
             "type": "messaging",
             "revision": 15,
@@ -126,7 +126,7 @@
         {
             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
             "name": "Start Actions Child",
-            "spec_version": "12.0.0",
+            "spec_version": "13.0.0",
             "language": "base",
             "type": "messaging",
             "revision": 15,

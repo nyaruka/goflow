@@ -17,7 +17,7 @@ func TestIsLegacyDefinition(t *testing.T) {
 	assert.False(t, mobile.IsLegacyDefinition(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Simple",
-		"spec_version": "12.0",
+		"spec_version": "13.0",
 		"language": "eng",
 		"type": "messaging",
 		"nodes": []
@@ -54,7 +54,7 @@ func TestMigrateLegacyDefinition(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(`{
 		"uuid": "061be894-4507-470c-a20b-34273bf915be",
 		"name": "Survey",
-		"spec_version": "12.0.0",
+		"spec_version": "13.0.0",
 		"type": "messaging_offline",
 		"expire_after_minutes": 0,
 		"language": "eng",
