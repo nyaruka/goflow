@@ -1,3 +1,7 @@
+v0.36.0
+----------
+ * Bump current flow spec version to 13
+
 v0.35.0
 ----------
  * Migrate date_ tests to set delta value in UI config
