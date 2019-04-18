@@ -15,6 +15,7 @@ func RegisterXFunction(name string, function types.XFunction) {
 	XFUNCTIONS[name] = function
 }
 
+// Lookup returns the function with the given name (case-insensitive) or nil
 func Lookup(name string) types.XFunction {
 	return XFUNCTIONS[strings.ToLower(name)]
 }

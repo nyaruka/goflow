@@ -356,9 +356,9 @@ func TestFunctions(t *testing.T) {
 
 		{"if", dmy, []types.XValue{types.XBooleanTrue, xs("10"), xs("20")}, xs("10")},
 		{"if", dmy, []types.XValue{types.XBooleanFalse, xs("10"), xs("20")}, xs("20")},
-		{"if", dmy, []types.XValue{types.XBooleanTrue, errorArg, xs("20")}, errorArg},
+		{"if", dmy, []types.XValue{types.XBooleanTrue, errorArg, xs("20")}, types.NewXErrorf("error calling IF: I am error")},
 		{"if", dmy, []types.XValue{}, ERROR},
-		{"if", dmy, []types.XValue{errorArg, xs("10"), xs("20")}, errorArg},
+		{"if", dmy, []types.XValue{errorArg, xs("10"), xs("20")}, types.NewXErrorf("error calling IF: I am error")},
 
 		{"is_error", dmy, []types.XValue{xs("hello")}, types.XBooleanFalse},
 		{"is_error", dmy, []types.XValue{nil}, types.XBooleanFalse},
@@ -449,6 +449,13 @@ func TestFunctions(t *testing.T) {
 		{"or", dmy, []types.XValue{ERROR}, ERROR},
 		{"or", dmy, []types.XValue{}, ERROR},
 
+		{"parse_time", dmy, []types.XValue{xs("15:28"), xs("tt:mm")}, xt(utils.NewTimeOfDay(15, 28, 0, 0))},
+		{"parse_time", dmy, []types.XValue{xs("2:40 pm"), xs("h:mm aa")}, xt(utils.NewTimeOfDay(14, 40, 0, 0))},
+		{"parse_time", dmy, []types.XValue{xs("xxxx"), xs("tt:mm")}, ERROR}, // unparseable input
+		{"parse_time", dmy, []types.XValue{xs("xxxx"), xs("ttttt")}, ERROR}, // invalid format
+		{"parse_time", dmy, []types.XValue{ERROR, xs("tt:mm")}, ERROR},      // error as input
+		{"parse_time", dmy, []types.XValue{xs("15:28"), ERROR}, ERROR},      // error as format
+
 		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xdt(time.Date(1977, 06, 23, 8, 34, 0, 0, la))},
 		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23T15:34:00.1234Z"), xs("YYYY-MM-DDTtt:mm:ssZ"), xs("America/Los_Angeles")}, xdt(time.Date(1977, 06, 23, 8, 34, 0, 123400000, la))},
 		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD tt:mm"), xs("America/Los_Angeles")}, xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
@@ -457,9 +464,9 @@ func TestFunctions(t *testing.T) {
 		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), xs("ttttttttt")}, ERROR},                // invalid format
 		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD"), xs("Cuenca")}, ERROR}, // invalid timezone
 		{"parse_datetime", dmy, []types.XValue{xs("abcd"), xs("YYYY-MM-DD")}, ERROR},                           // unparseable date
-		{"parse_datetime", dmy, []types.XValue{ERROR, xs("YYYY-MM-DD")}, ERROR},
-		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), ERROR}, ERROR},
-		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD"), ERROR}, ERROR},
+		{"parse_datetime", dmy, []types.XValue{ERROR, xs("YYYY-MM-DD")}, ERROR},                                // error as input
+		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), ERROR}, ERROR},                          // error as format
+		{"parse_datetime", dmy, []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD"), ERROR}, ERROR},        // error as timezone
 		{"parse_datetime", dmy, []types.XValue{}, ERROR},
 
 		{"parse_json", dmy, []types.XValue{xs(`"hello"`)}, xs(`hello`)},
@@ -484,7 +491,11 @@ func TestFunctions(t *testing.T) {
 
 		{"regex_match", dmy, []types.XValue{xs("zAbc"), xs(`a\w`)}, xs(`Ab`)},
 		{"regex_match", dmy, []types.XValue{xs("<html>"), xs(`<(\w+)>`), xn("1")}, xs(`html`)},
-		{"regex_match", dmy, []types.XValue{xs("<html>"), xs(`<(\w+)>`), xn("2")}, ERROR},
+		{"regex_match", dmy, []types.XValue{xs("<html>"), xs(`<(\w+)>`), xn("2")}, ERROR}, // invalid group
+		{"regex_match", dmy, []types.XValue{xs("<html>"), xs(`(??`)}, ERROR},              // invalid regex
+		{"regex_match", dmy, []types.XValue{ERROR, xs(`a\w`)}, ERROR},                     // input is error
+		{"regex_match", dmy, []types.XValue{xs("zAbc"), ERROR}, ERROR},                    // regex is error
+		{"regex_match", dmy, []types.XValue{xs("zAbc"), xs(`a\w`), ERROR}, ERROR},         // group is error
 
 		{"remove_first_word", dmy, []types.XValue{xs("hello World")}, xs("World")},
 		{"remove_first_word", dmy, []types.XValue{xs("hello")}, xs("")},
@@ -637,8 +648,11 @@ func TestFunctions(t *testing.T) {
 		{"word", dmy, []types.XValue{xs(""), xi(0)}, ERROR},
 		{"word", dmy, []types.XValue{xs("cat dog bee"), xi(-1)}, xs("bee")},
 		{"word", dmy, []types.XValue{xs("😁 hello World"), xi(0)}, xs("😁")},
-		{"word", dmy, []types.XValue{xs(" hello World"), xi(2)}, ERROR},
-		{"word", dmy, []types.XValue{xs("hello World"), nil}, ERROR},
+		{"word", dmy, []types.XValue{xs("bee.*cat,dog"), xi(1), xs(".*=|")}, xs("cat,dog")},
+		{"word", dmy, []types.XValue{xs("bee.*cat,dog"), xi(1), ERROR}, ERROR}, // delimiters is error
+		{"word", dmy, []types.XValue{xs(" hello World"), xi(2)}, ERROR},        // out of range
+		{"word", dmy, []types.XValue{xs("hello World"), nil}, ERROR},           // non-number
+		{"word", dmy, []types.XValue{ERROR, xi(1)}, ERROR},                     // input is error
 		{"word", dmy, []types.XValue{}, ERROR},
 
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(0), xi(2)}, xs("hello world")},
@@ -650,13 +664,17 @@ func TestFunctions(t *testing.T) {
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xs("x"), xi(3)}, ERROR},
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(3), xs("x")}, ERROR},
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), ERROR, xi(2)}, ERROR},
-		{"word_slice", dmy, []types.XValue{ERROR, xi(0), xi(2)}, ERROR},
+		{"word_slice", dmy, []types.XValue{xs("bee.*cat,dog"), xi(1), xi(-1), xs(".*=|,")}, xs("cat dog")},
+		{"word_slice", dmy, []types.XValue{xs("bee.*cat,dog"), xi(1), xi(-1), ERROR}, ERROR}, // delimiters is error
+		{"word_slice", dmy, []types.XValue{ERROR, xi(0), xi(2)}, ERROR},                      // input is error
 		{"word_slice", dmy, []types.XValue{ERROR}, ERROR},
 
 		{"word_count", dmy, []types.XValue{xs("hello World")}, xi(2)},
 		{"word_count", dmy, []types.XValue{xs("hello")}, xi(1)},
 		{"word_count", dmy, []types.XValue{xs("")}, xi(0)},
 		{"word_count", dmy, []types.XValue{xs("😁😁")}, xi(2)},
+		{"word_count", dmy, []types.XValue{xs("bee.*cat,dog"), xs(".*=|")}, xi(2)},
+		{"word_count", dmy, []types.XValue{xs("bee.*cat,dog"), ERROR}, ERROR},
 		{"word_count", dmy, []types.XValue{}, ERROR},
 
 		{"weekday", dmy, []types.XValue{xs("01-12-2017")}, xi(5)},
@@ -679,10 +697,10 @@ func TestFunctions(t *testing.T) {
 	for _, tc := range funcTests {
 		testID := fmt.Sprintf("%s(%#v)", tc.name, tc.args)
 
-		xFunc, exists := functions.XFUNCTIONS[tc.name]
-		require.True(t, exists, "no such registered function: %s", tc.name)
+		xFunc := functions.Lookup(tc.name)
+		require.NotNil(t, "no such registered function: %s", tc.name)
 
-		result := xFunc(tc.env, tc.args...)
+		result := functions.Call(tc.env, tc.name, xFunc, tc.args)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {
