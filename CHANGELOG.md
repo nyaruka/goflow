@@ -1,3 +1,7 @@
+v0.36.1
+----------
+ * better error message for not being able to resume
+
 v0.36.0
 ----------
  * Bump current flow spec version to 13
