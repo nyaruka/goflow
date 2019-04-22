@@ -50,7 +50,9 @@ func testHTTPHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Header().Set("Content-Length", sizeParam)
-
+	case "textjs":
+		contentType = "text/javascript; charset=iso-8859-1"
+		data = []byte(`{ "ok": "true" }`)
 	case "typeless":
 		w.Header().Set("Content-Type", "")
 	case "unavailable":
