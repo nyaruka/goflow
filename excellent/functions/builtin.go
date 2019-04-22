@@ -824,7 +824,7 @@ func Repeat(env utils.Environment, text types.XText, count int) types.XValue {
 	return types.NewXText(output.String())
 }
 
-// Replace up to `count` occurrences of `needle` with `replacement` in `text`. If `count` is
+// Replace replaces up to `count` occurrences of `needle` with `replacement` in `text`. If `count` is
 // ommitted or is less than 0 then all occurrences are replaced.
 //
 //   @(replace("foo bar foo", "foo", "zap")) -> zap bar zap
