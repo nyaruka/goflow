@@ -1204,8 +1204,9 @@ Returns `text` repeated `count` number of times.
 
 ## replace(text, needle, replacement [, count])
 
-Replaces up to `count` occurrences of `needle` with `replacement` in `text`. If `count` is
-ommitted or is less than 0 then all occurrences are replaced.
+Replaces up to `count` occurrences of `needle` with `replacement` in `text`.
+
+If `count` is ommitted or is less than 0 then all occurrences are replaced.
 
 
 ```objectivec
