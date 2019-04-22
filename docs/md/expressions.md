@@ -1355,6 +1355,23 @@ Returns the length (number of characters) of `value` when converted to text.
 @(text_length(array(2, 3))) → 6
 ```
 
+<a name="function:text_slice"></a>
+
+## text_slice(text, start [, end])
+
+Returns the portion of `text` between `start` and `end` (inclusive).
+
+If `end` is not specified then the entire rest of `text` will be included. Negative values
+for `start` or `end` start at the end of `text`.
+
+
+```objectivec
+@(text_slice("hello", 2)) → llo
+@(text_slice("hello", 1, 3)) → el
+@(text_slice("hello😁", -3, -1)) → lo
+@(text_slice("hello", 7)) →
+```
+
 <a name="function:time"></a>
 
 ## time(value)

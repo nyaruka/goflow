@@ -1316,6 +1316,29 @@
         ]
     },
     {
+        "signature": "text_slice(text, start [, end])",
+        "summary": "Returns the portion of `text` between `start` and `end` (inclusive).",
+        "detail": "If `end` is not specified then the entire rest of `text` will be included. Negative values\nfor `start` or `end` start at the end of `text`.",
+        "examples": [
+            {
+                "template": "@(text_slice(\"hello\", 2))",
+                "output": "llo"
+            },
+            {
+                "template": "@(text_slice(\"hello\", 1, 3))",
+                "output": "el"
+            },
+            {
+                "template": "@(text_slice(\"hello😁\", -3, -1))",
+                "output": "lo"
+            },
+            {
+                "template": "@(text_slice(\"hello\", 7))",
+                "output": ""
+            }
+        ]
+    },
+    {
         "signature": "time(value)",
         "summary": "Tries to convert `value` to a time.",
         "detail": "If it is text then it will be parsed into a time using the default time format.\nAn error is returned if the value can't be converted.",

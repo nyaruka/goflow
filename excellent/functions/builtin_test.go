@@ -541,6 +541,18 @@ func TestFunctions(t *testing.T) {
 		{"right", dmy, []types.XValue{xs("hello"), ERROR}, ERROR},
 		{"right", dmy, []types.XValue{}, ERROR},
 
+		{"text_slice", dmy, []types.XValue{xs("hello"), xs("2")}, xs("llo")},
+		{"text_slice", dmy, []types.XValue{xs("hello"), xs("-2")}, xs("lo")},
+		{"text_slice", dmy, []types.XValue{xs("hello"), xs("-7")}, xs("hello")},
+		{"text_slice", dmy, []types.XValue{xs("hello"), xs("7")}, xs("")},
+		{"text_slice", dmy, []types.XValue{xs("hello"), xs("-3"), xs("-1")}, xs("ll")},
+		{"text_slice", dmy, []types.XValue{xs("hello"), xs("7"), xs("-7")}, xs("")},
+		{"text_slice", dmy, []types.XValue{nil, xs("2")}, xs("")},
+		{"text_slice", dmy, []types.XValue{xs("hello"), nil}, ERROR},
+		{"text_slice", dmy, []types.XValue{ERROR, xi(3)}, ERROR},
+		{"text_slice", dmy, []types.XValue{xs("hello"), ERROR}, ERROR},
+		{"text_slice", dmy, []types.XValue{}, ERROR},
+
 		{"round", dmy, []types.XValue{xs("10.5"), xs("0")}, xi(11)},
 		{"round", dmy, []types.XValue{xs("10.5"), xs("1")}, xn("10.5")},
 		{"round", dmy, []types.XValue{xs("10.51"), xs("1")}, xn("10.5")},

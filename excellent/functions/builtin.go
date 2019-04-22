@@ -45,8 +45,9 @@ func init() {
 		"field":             InitialTextFunction(2, 2, Field),
 		"clean":             OneTextFunction(Clean),
 		"left":              TextAndIntegerFunction(Left),
-		"lower":             OneTextFunction(Lower),
 		"right":             TextAndIntegerFunction(Right),
+		"text_slice":        InitialTextFunction(1, 3, TextSlice),
+		"lower":             OneTextFunction(Lower),
 		"regex_match":       InitialTextFunction(1, 2, RegexMatch),
 		"text_length":       OneTextFunction(TextLength),
 		"text_compare":      TwoTextFunction(TextCompare),
@@ -673,6 +674,48 @@ func Field(env utils.Environment, text types.XText, args ...types.XValue) types.
 // @function clean(text)
 func Clean(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXText(nonPrintableRegex.ReplaceAllString(text.Native(), ""))
+}
+
+// TextSlice returns the portion of `text` between `start` and `end` (inclusive).
+//
+// If `end` is not specified then the entire rest of `text` will be included. Negative values
+// for `start` or `end` start at the end of `text`.
+//
+//   @(text_slice("hello", 2)) -> llo
+//   @(text_slice("hello", 1, 3)) -> el
+//   @(text_slice("hello😁", -3, -1)) -> lo
+//   @(text_slice("hello", 7)) ->
+//
+// @function text_slice(text, start [, end])
+func TextSlice(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	length := utf8.RuneCountInString(text.Native())
+
+	start, xerr := types.ToInteger(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+	if start < 0 {
+		start = length + start
+	}
+
+	end := utf8.RuneCountInString(text.Native())
+	if len(args) == 2 {
+		if end, xerr = types.ToInteger(env, args[1]); xerr != nil {
+			return xerr
+		}
+	}
+	if end < 0 {
+		end = length + end
+	}
+
+	var output bytes.Buffer
+	for i, r := range text.Native() {
+		if i >= start && i < end {
+			output.WriteRune(r)
+		}
+	}
+
+	return types.NewXText(output.String())
 }
 
 // Left returns the `count` left-most characters in `text`
