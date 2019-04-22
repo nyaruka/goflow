@@ -33,6 +33,7 @@ var fetchResponseContentTypes = map[string]bool{
 	"text/html":              true,
 	"text/plain":             true,
 	"text/xml":               true,
+	"text/javascript":        true,
 }
 
 // WebhookStatus represents the status of a WebhookRequest
