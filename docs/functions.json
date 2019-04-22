@@ -1082,13 +1082,17 @@
         ]
     },
     {
-        "signature": "replace(text, needle, replacement)",
-        "summary": "Replaces all occurrences of `needle` with `replacement` in `text`.",
-        "detail": "",
+        "signature": "replace(text, needle, replacement [, count])",
+        "summary": "Up to `count` occurrences of `needle` with `replacement` in `text`. If `count` is",
+        "detail": "ommitted or is less than 0 then all occurrences are replaced.",
         "examples": [
             {
-                "template": "@(replace(\"foo bar\", \"foo\", \"zap\"))",
-                "output": "zap bar"
+                "template": "@(replace(\"foo bar foo\", \"foo\", \"zap\"))",
+                "output": "zap bar zap"
+            },
+            {
+                "template": "@(replace(\"foo bar foo\", \"baz\", \"zap\", 1))",
+                "output": "foo bar foo"
             },
             {
                 "template": "@(replace(\"foo bar\", \"baz\", \"zap\"))",
