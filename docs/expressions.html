@@ -626,7 +626,7 @@
 <p>Replaces up to <code>count</code> occurrences of <code>needle</code> with <code>replacement</code> in <code>text</code>.</p>
 <p>If <code>count</code> is ommitted or is less than 0 then all occurrences are replaced.</p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb77-1" data-line-number="1">@(replace(<span class="st">&quot;foo bar foo&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → zap bar zap</a>
-<a class="sourceLine" id="cb77-2" data-line-number="2">@(replace(<span class="st">&quot;foo bar foo&quot;</span>, <span class="st">&quot;baz&quot;</span>, <span class="st">&quot;zap&quot;</span>, <span class="dv">1</span>)) → foo bar foo</a>
+<a class="sourceLine" id="cb77-2" data-line-number="2">@(replace(<span class="st">&quot;foo bar foo&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>, <span class="dv">1</span>)) → zap bar foo</a>
 <a class="sourceLine" id="cb77-3" data-line-number="3">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;baz&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → foo bar</a></code></pre></div>
 <p><a name="function:replace_time"></a></p>
 <h2 id="replace_timedatetime">replace_time(datetime)</h2>

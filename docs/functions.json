@@ -1091,8 +1091,8 @@
                 "output": "zap bar zap"
             },
             {
-                "template": "@(replace(\"foo bar foo\", \"baz\", \"zap\", 1))",
-                "output": "foo bar foo"
+                "template": "@(replace(\"foo bar foo\", \"foo\", \"zap\", 1))",
+                "output": "zap bar foo"
             },
             {
                 "template": "@(replace(\"foo bar\", \"baz\", \"zap\"))",

@@ -829,7 +829,7 @@ func Repeat(env utils.Environment, text types.XText, count int) types.XValue {
 // If `count` is ommitted or is less than 0 then all occurrences are replaced.
 //
 //   @(replace("foo bar foo", "foo", "zap")) -> zap bar zap
-//   @(replace("foo bar foo", "baz", "zap", 1)) -> foo bar foo
+//   @(replace("foo bar foo", "foo", "zap", 1)) -> zap bar foo
 //   @(replace("foo bar", "baz", "zap")) -> foo bar
 //
 // @function replace(text, needle, replacement [, count])
