@@ -1,3 +1,7 @@
+v0.36.2
+----------
+ * accept text/javascript as a content type in webhooks
+
 v0.36.1
 ----------
  * better error message for not being able to resume
