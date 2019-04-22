@@ -584,6 +584,7 @@ func TestFunctions(t *testing.T) {
 		{"text_length", dmy, []types.XValue{xs("hello")}, xi(5)},
 		{"text_length", dmy, []types.XValue{xs("")}, xi(0)},
 		{"text_length", dmy, []types.XValue{xs("😁😁")}, xi(2)},
+		{"text_length", dmy, []types.XValue{xs(" 2♣️ ")}, xi(5)},     // emoji color modifier
 		{"text_length", dmy, []types.XValue{xa(xs("hello"))}, xi(7)}, // [hello]
 		{"text_length", dmy, []types.XValue{xa()}, xi(2)},            // []
 		{"text_length", dmy, []types.XValue{nil}, xi(0)},

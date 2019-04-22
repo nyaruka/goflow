@@ -102,5 +102,34 @@
                 }
             ]
         }
+    },
+    {
+        "description": "Run result can be cleared",
+        "action": {
+            "type": "set_run_result",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "name": "Response 1",
+            "value": ""
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Response 1",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "run_result_changed",
+                "value": "",
+                "category": ""
+            }
+        ],
+        "inspection": {
+            "templates": [],
+            "dependencies": [],
+            "results": [
+                {
+                    "key": "response_1",
+                    "name": "Response 1"
+                }
+            ]
+        }
     }
 ]
