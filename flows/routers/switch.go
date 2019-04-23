@@ -113,10 +113,15 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 		return errors.Errorf("default category %s is not a valid category", r.default_)
 	}
 
-	// check each case points to a valid category
 	for _, c := range r.cases {
+		// check each case points to a valid category
 		if !r.isValidCategory(c.CategoryUUID) {
 			return errors.Errorf("case category %s is not a valid category", c.CategoryUUID)
+		}
+
+		// and each case test is valid
+		if _, exists := cases.XTESTS[c.Type]; !exists {
+			return errors.Errorf("case test %s is not a registered test function", c.Type)
 		}
 	}
 
@@ -166,7 +171,7 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 		test := strings.ToLower(c.Type)
 
 		// try to look up our function
-		xtest := tests.XTESTS[test]
+		xtest := cases.XTESTS[test]
 		if xtest == nil {
 			return "", "", nil, errors.Errorf("unknown case test '%s'", c.Type)
 		}
