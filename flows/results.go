@@ -2,6 +2,9 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -21,6 +24,7 @@ import (
 //
 // Examples:
 //
+//   @results -> 2Factor: 34634624463525\nFavorite Color: red\nPhone Number: +12344563452\nwebhook: 200
 //   @results.favorite_color -> red
 //   @results.favorite_color.value -> red
 //   @results.favorite_color.category -> Red
@@ -119,7 +123,8 @@ func (r Results) Get(key string) *Result {
 
 // Context returns the properties available in expressions
 func (r Results) Context(env utils.Environment) map[string]types.XValue {
-	entries := make(map[string]types.XValue, len(r))
+	entries := make(map[string]types.XValue, len(r)+1)
+	entries["__default__"] = types.NewXText(r.format())
 
 	for k, v := range r {
 		entries[k] = Context(env, v)
@@ -129,10 +134,20 @@ func (r Results) Context(env utils.Environment) map[string]types.XValue {
 
 // SimpleContext returns a simpler representation of these results exposed at @results
 func (r Results) SimpleContext(env utils.Environment) map[string]types.XValue {
-	entries := make(map[string]types.XValue, len(r))
+	entries := make(map[string]types.XValue, len(r)+1)
+	entries["__default__"] = types.NewXText(r.format())
 
 	for k, v := range r {
 		entries[k] = ContextFunc(env, v.SimpleContext)
 	}
 	return entries
+}
+
+func (r Results) format() string {
+	lines := make([]string, 0, len(r))
+	for _, v := range r {
+		lines = append(lines, fmt.Sprintf("%s: %s", v.Name, v.Value))
+	}
+	sort.SliceStable(lines, func(i, j int) bool { return strings.Compare(lines[i], lines[j]) < 0 })
+	return strings.Join(lines, "\n")
 }

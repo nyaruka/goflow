@@ -109,7 +109,6 @@ func init() {
 		"format_location": OneTextFunction(FormatLocation),
 		"format_number":   ArgCountCheck(1, 3, FormatNumber),
 		"format_urn":      OneTextFunction(FormatURN),
-		"format_results":  OneObjectFunction(FormatResults),
 
 		// utility functions
 		"is_error":       OneArgFunction(IsError),
@@ -1792,29 +1791,6 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 	}
 
 	return types.NewXText(urn.Format())
-}
-
-// FormatResults formats `results` to be name and value pairs, separated by newlines.
-//
-//   @(format_results(results)) -> 2Factor: 34634624463525\nFavorite Color: red\nPhone Number: +12344563452\nwebhook: 200
-//   @(format_results("NOT RESULTS")) -> ERROR
-//
-// @function format_results(urn)
-func FormatResults(env utils.Environment, results *types.XObject) types.XValue {
-	lines := make([]string, 0, results.Count())
-
-	for _, key := range results.Properties() {
-		result, _ := results.Get(key)
-
-		object, isObject := result.(*types.XObject)
-		if isObject && object != nil {
-			name, _ := object.Get("name")
-			value, _ := object.Get("value")
-			lines = append(lines, fmt.Sprintf("%s: %s", types.Render(name), types.Render(value)))
-		}
-	}
-
-	return types.NewXText(strings.Join(lines, "\n"))
 }
 
 //------------------------------------------------------------------------------------------

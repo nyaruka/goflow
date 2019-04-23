@@ -174,6 +174,7 @@ Examples:
 
 
 ```objectivec
+@results → 2Factor: 34634624463525\nFavorite Color: red\nPhone Number: +12344563452\nwebhook: 200
 @results.favorite_color → red
 @results.favorite_color.value → red
 @results.favorite_color.category → Red

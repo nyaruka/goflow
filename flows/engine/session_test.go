@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"strings"
 	"testing"
 	"time"
 
@@ -167,7 +166,7 @@ func TestContextFormat(t *testing.T) {
 		{"contact", "Ryan Lewis"},
 		{"contact.name", "Ryan Lewis"},
 		{"contact.channel", "address: +12345671111\nname: My Android Phone\nuuid: 57f1078f-88aa-46f4-a59a-948a5739c03d"},
-		{"results", "testdata/format_results.txt"},
+		{"results", "2Factor: 34634624463525\nFavorite Color: red\nPhone Number: +12344563452\nwebhook: 200"},
 	}
 
 	server := test.NewTestHTTPServer(49992)
@@ -187,16 +186,7 @@ func TestContextFormat(t *testing.T) {
 		template := fmt.Sprintf("@(format(%s))", tc.path)
 		actual, err := run.EvaluateTemplate(template)
 		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)
-
-		expected := tc.expected
-		if strings.HasSuffix(expected, ".txt") {
-			file, err := ioutil.ReadFile(expected)
-			require.NoError(t, err)
-
-			expected = string(file)
-		}
-
-		assert.Equal(t, expected, actual, "format(...) mismatch for test %s", template)
+		assert.Equal(t, tc.expected, actual, "format(...) mismatch for test %s", template)
 	}
 }
 

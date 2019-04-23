@@ -140,9 +140,10 @@
 <li><code>created_on</code> the time when the result was created</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" title="1">@results.favorite_color → red</a>
-<a class="sourceLine" id="cb6-2" title="2">@results.favorite_color.value → red</a>
-<a class="sourceLine" id="cb6-3" title="3">@results.favorite_color.category → Red</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" title="1">@results → 2Factor: <span class="dv">34634624463525</span>\nFavorite Color: red\nPhone Number: +<span class="dv">12344563452</span>\nwebhook: <span class="dv">200</span></a>
+<a class="sourceLine" id="cb6-2" title="2">@results.favorite_color → red</a>
+<a class="sourceLine" id="cb6-3" title="3">@results.favorite_color.value → red</a>
+<a class="sourceLine" id="cb6-4" title="4">@results.favorite_color.category → Red</a></code></pre></div>
 <p><a name="context:run"></a></p>
 <h2 id="run">Run</h2>
 <p>Is a single contact’s journey through a flow. It records the path they have taken, and the results that have been collected. It has several properties which can be accessed in expressions:</p>

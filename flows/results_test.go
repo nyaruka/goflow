@@ -23,6 +23,7 @@ func TestResults(t *testing.T) {
 	assert.Nil(t, results.Get("xxx"))
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
+		"__default__": types.NewXText("Beer: skol!"),
 		"beer": types.NewXObject(map[string]types.XValue{
 			"__default__":        types.NewXText("skol!"),
 			"category":           types.NewXText("Skol"),
@@ -36,6 +37,7 @@ func TestResults(t *testing.T) {
 	}), flows.ContextFunc(env, results.SimpleContext))
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
+		"__default__": types.NewXText("Beer: skol!"),
 		"beer": types.NewXObject(map[string]types.XValue{
 			"__default__":          types.NewXArray(types.NewXText("skol!")),
 			"categories":           types.NewXArray(types.NewXText("Skol")),

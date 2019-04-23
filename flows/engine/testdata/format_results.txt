@@ -1,4 +1,0 @@
-2factor: 34634624463525
-favorite_color: red
-phone_number: +12344563452
-webhook: 200
