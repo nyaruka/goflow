@@ -51,7 +51,7 @@ func init() {
 		"text_length":       OneTextFunction(TextLength),
 		"text_compare":      TwoTextFunction(TextCompare),
 		"repeat":            TextAndIntegerFunction(Repeat),
-		"replace":           ThreeTextFunction(Replace),
+		"replace":           ArgCountCheck(3, 4, Replace),
 		"upper":             OneTextFunction(Upper),
 		"percent":           OneNumberFunction(Percent),
 		"url_encode":        OneTextFunction(URLEncode),
@@ -824,14 +824,38 @@ func Repeat(env utils.Environment, text types.XText, count int) types.XValue {
 	return types.NewXText(output.String())
 }
 
-// Replace replaces all occurrences of `needle` with `replacement` in `text`.
+// Replace replaces up to `count` occurrences of `needle` with `replacement` in `text`.
 //
-//   @(replace("foo bar", "foo", "zap")) -> zap bar
+// If `count` is omitted or is less than 0 then all occurrences are replaced.
+//
+//   @(replace("foo bar foo", "foo", "zap")) -> zap bar zap
+//   @(replace("foo bar foo", "foo", "zap", 1)) -> zap bar foo
 //   @(replace("foo bar", "baz", "zap")) -> foo bar
 //
-// @function replace(text, needle, replacement)
-func Replace(env utils.Environment, text types.XText, needle types.XText, replacement types.XText) types.XValue {
-	return types.NewXText(strings.Replace(text.Native(), needle.Native(), replacement.Native(), -1))
+// @function replace(text, needle, replacement [, count])
+func Replace(env utils.Environment, args ...types.XValue) types.XValue {
+	text, xerr := types.ToXText(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+	needle, xerr := types.ToXText(env, args[1])
+	if xerr != nil {
+		return xerr
+	}
+	replacement, xerr := types.ToXText(env, args[2])
+	if xerr != nil {
+		return xerr
+	}
+
+	count := -1
+	if len(args) == 4 {
+		count, xerr = types.ToInteger(env, args[3])
+		if xerr != nil {
+			return xerr
+		}
+	}
+
+	return types.NewXText(strings.Replace(text.Native(), needle.Native(), replacement.Native(), count))
 }
 
 // Upper converts `text` to lowercase.

@@ -622,10 +622,12 @@
 <div class="sourceCode" id="cb76"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb76-1" title="1">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="dv">8</span>)) → ********</a>
 <a class="sourceLine" id="cb76-2" title="2">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:replace"></a></p>
-<h2 id="replacetext-needle-replacement">replace(text, needle, replacement)</h2>
-<p>Replaces all occurrences of <code>needle</code> with <code>replacement</code> in <code>text</code>.</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb77-1" title="1">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → zap bar</a>
-<a class="sourceLine" id="cb77-2" title="2">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;baz&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → foo bar</a></code></pre></div>
+<h2 id="replacetext-needle-replacement-count">replace(text, needle, replacement [, count])</h2>
+<p>Replaces up to <code>count</code> occurrences of <code>needle</code> with <code>replacement</code> in <code>text</code>.</p>
+<p>If <code>count</code> is omitted or is less than 0 then all occurrences are replaced.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb77-1" title="1">@(replace(<span class="st">&quot;foo bar foo&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → zap bar zap</a>
+<a class="sourceLine" id="cb77-2" title="2">@(replace(<span class="st">&quot;foo bar foo&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>, <span class="dv">1</span>)) → zap bar foo</a>
+<a class="sourceLine" id="cb77-3" title="3">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;baz&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → foo bar</a></code></pre></div>
 <p><a name="function:replace_time"></a></p>
 <h2 id="replace_timedatetime">replace_time(datetime)</h2>
 <p>Returns a new datetime with the time part replaced by the <code>time</code>.</p>
