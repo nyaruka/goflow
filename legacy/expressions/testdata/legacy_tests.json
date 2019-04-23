@@ -649,17 +649,15 @@
         "errors": []
     },
     {
-        "template": "@(LEFT(\"abcdef\", 0))|@(LEFT(\"abcdef\", 2))|@(LEFT(\"واحد\", 2))|@(LEFT(\"err\", -1))",
+        "template": "@(LEFT(\"abcdef\", 0))|@(LEFT(\"abcdef\", 2))|@(LEFT(\"واحد\", 2))|@(LEFT(\"abcdef\", -1))",
         "context": {
             "variables": {},
             "timezone": "UTC",
             "date_style": "day_first"
         },
         "url_encode": false,
-        "output": "|ab|وا|@(LEFT(\"err\", -1))",
-        "errors": [
-            "Error calling function LEFT with arguments \"err\", -1"
-        ]
+        "output": "|ab|وا|abcde",
+        "errors": []
     },
     {
         "template": "@(LEN(\"\")) @(LEN(\" \")) @(LEN(\"qwérty\")) @(LEN(\"سلام\")) @(LEN(12345))",
@@ -885,17 +883,15 @@
         ]
     },
     {
-        "template": "@(RIGHT(\"abcdef\", 0))|@(RIGHT(\"abcdef\", 2))|@(RIGHT(\"واحد\", 2))|@(RIGHT(\"err\", -1))",
+        "template": "@(RIGHT(\"abcdef\", 0))|@(RIGHT(\"abcdef\", 2))|@(RIGHT(\"واحد\", 2))|@(RIGHT(\"abcdef\", -1))",
         "context": {
             "variables": {},
             "timezone": "UTC",
             "date_style": "day_first"
         },
         "url_encode": false,
-        "output": "|ef|حد|@(RIGHT(\"err\", -1))",
-        "errors": [
-            "Error calling function RIGHT with arguments \"err\", -1"
-        ]
+        "output": "|ef|حد|bcdef",
+        "errors": []
     },
     {
         "template": "@(ROUND(2.15, 1)) @(ROUND(2.149, 1)) @(ROUND(-1.475, 2)) @(ROUND(21.5, -1)) @(ROUND(626.3, -3)) @(ROUND(1.98, -1)) @(ROUND(-50.55, -2))",
