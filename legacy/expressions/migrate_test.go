@@ -30,8 +30,8 @@ type testTemplate struct {
 var tests = []testTemplate{
 
 	// contact variables
-	{old: `@contact`, new: `@contact.display`},
-	{old: `@CONTACT`, new: `@contact.display`},
+	{old: `@contact`, new: `@contact`},
+	{old: `@CONTACT`, new: `@contact`},
 	{old: `@contact.uuid`, new: `@contact.uuid`},
 	{old: `@contact.id`, new: `@contact.id`},
 	{old: `@contact.name`, new: `@contact.name`},
@@ -64,7 +64,7 @@ var tests = []testTemplate{
 	{old: `@flow.1`, new: `@(results["1"].value)`, dontEval: true},
 	{old: `@(flow.1337)`, new: `@(results["1337"].value)`, dontEval: true},
 	{old: `@(flow.1337.category)`, new: `@(results["1337"].category_localized)`, dontEval: true},
-	{old: `@flow.contact`, new: `@contact.display`},
+	{old: `@flow.contact`, new: `@contact`},
 	{old: `@flow.contact.name`, new: `@contact.name`},
 	{old: `@flow.contact.age`, new: `@fields.age`},
 
@@ -74,7 +74,7 @@ var tests = []testTemplate{
 	{old: `@child.age.category`, new: `@child.results.age.category_localized`},
 	{old: `@child.age.text`, new: `@child.results.age.input`},
 	{old: `@child.age.time`, new: `@child.results.age.created_on`},
-	{old: `@child.contact`, new: `@child.contact.display`},
+	{old: `@child.contact`, new: `@child.contact`},
 	{old: `@child.contact.name`, new: `@child.contact.name`},
 	{old: `@child.contact.age`, new: `@child.fields.age`},
 
@@ -84,7 +84,7 @@ var tests = []testTemplate{
 	{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
 	{old: `@parent.role.text`, new: `@parent.results.role.input`},
 	{old: `@parent.role.time`, new: `@parent.results.role.created_on`},
-	{old: `@parent.contact`, new: `@parent.contact.display`},
+	{old: `@parent.contact`, new: `@parent.contact`},
 	{old: `@parent.contact.name`, new: `@parent.contact.name`},
 	{old: `@parent.contact.groups`, new: `@(join(parent.contact.groups, ","))`},
 	{old: `@parent.contact.gender`, new: `@parent.fields.gender`},
@@ -103,7 +103,7 @@ var tests = []testTemplate{
 	{old: `@step.attachments.0`, new: `@(attachment_parts(input.attachments[0]).url)`},
 	{old: `@step.attachments.10`, new: `@(attachment_parts(input.attachments[10]).url)`, dontEval: true}, // out of range
 	{old: `@step.time`, new: `@input.created_on`},
-	{old: `@step.contact`, new: `@contact.display`},
+	{old: `@step.contact`, new: `@contact`},
 	{old: `@step.contact.name`, new: `@contact.name`},
 	{old: `@step.contact.age`, new: `@fields.age`},
 

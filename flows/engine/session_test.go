@@ -164,9 +164,9 @@ func TestContextFormat(t *testing.T) {
 		path     string
 		expected string
 	}{
+		{"contact", "Ryan Lewis"},
 		{"contact.name", "Ryan Lewis"},
 		{"contact.channel", "address: +12345671111\nname: My Android Phone\nuuid: 57f1078f-88aa-46f4-a59a-948a5739c03d"},
-		{"contact", "testdata/format_contact.txt"},
 		{"results", "testdata/format_results.txt"},
 	}
 
@@ -216,7 +216,6 @@ func TestContextToJSON(t *testing.T) {
 			`{
 				"channel": {"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
 				"created_on": "2018-06-20T11:40:30.123456Z", 
-				"display": "Ryan Lewis",
 				"fields": {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
 				"first_name": "Ryan",
 				"groups": [{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
@@ -247,7 +246,6 @@ func TestContextToJSON(t *testing.T) {
 				"contact": {
 					"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
 					"created_on":"2018-06-20T11:40:30.123456Z",
-					"display":"Ryan Lewis",
 					"fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
 					"first_name":"Ryan",
 					"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
@@ -324,7 +322,6 @@ func TestContextToJSON(t *testing.T) {
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
 					"created_on": "2018-06-20T11:40:30.123456Z",
-					"display": "Ryan Lewis",
 					"fields": {
 						"activation_token": "AACC55",
 						"age": 23,
@@ -381,7 +378,6 @@ func TestContextToJSON(t *testing.T) {
 							"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 						},
 						"created_on": "2018-06-20T11:40:30.123456Z",
-						"display": "Ryan Lewis",
 						"fields": {
 							"activation_token": "AACC55",
 							"age": 23,
@@ -465,7 +461,6 @@ func TestContextToJSON(t *testing.T) {
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
 					"created_on": "2018-01-01T12:00:00.000000Z",
-					"display": "Jasmine",
 					"fields": {
 						"activation_token": null,
 						"age": 33,
@@ -511,7 +506,6 @@ func TestContextToJSON(t *testing.T) {
 							"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 						},
 						"created_on": "2018-01-01T12:00:00.000000Z",
-						"display": "Jasmine",
 						"fields": {
 							"activation_token": null,
 							"age": 33,

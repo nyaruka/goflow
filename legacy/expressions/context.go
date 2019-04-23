@@ -24,7 +24,7 @@ func init() {
 	var re = regexp.MustCompile
 
 	mappings = []mapping{
-		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact$`), `${1}contact.display`},
+		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact$`), `${1}contact`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.uuid$`), `${1}contact.uuid`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.id$`), `${1}contact.id`},
 		{re(`^(?:(?:flow|step)\.)?((?:parent|child)\.)?contact\.name$`), `${1}contact.name`},

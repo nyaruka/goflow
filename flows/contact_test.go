@@ -91,19 +91,19 @@ func TestContact(t *testing.T) {
 	assert.Nil(t, mrNil.Clone())
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
-		"channel":    flows.Context(env, android),
-		"created_on": types.NewXDateTime(contact.CreatedOn()),
-		"display":    types.NewXText("Joe Bloggs"),
-		"fields":     flows.Context(env, contact.Fields()),
-		"first_name": types.NewXText("Joe"),
-		"groups":     contact.Groups().ToXValue(env),
-		"id":         types.NewXText("12345"),
-		"language":   types.NewXText("eng"),
-		"name":       types.NewXText("Joe Bloggs"),
-		"timezone":   types.NewXText("UTC"),
-		"urn":        contact.URNs()[0].ToXValue(env),
-		"urns":       contact.URNs().ToXValue(env),
-		"uuid":       types.NewXText(string(contact.UUID())),
+		"__default__": types.NewXText("Joe Bloggs"),
+		"channel":     flows.Context(env, android),
+		"created_on":  types.NewXDateTime(contact.CreatedOn()),
+		"fields":      flows.Context(env, contact.Fields()),
+		"first_name":  types.NewXText("Joe"),
+		"groups":      contact.Groups().ToXValue(env),
+		"id":          types.NewXText("12345"),
+		"language":    types.NewXText("eng"),
+		"name":        types.NewXText("Joe Bloggs"),
+		"timezone":    types.NewXText("UTC"),
+		"urn":         contact.URNs()[0].ToXValue(env),
+		"urns":        contact.URNs().ToXValue(env),
+		"uuid":        types.NewXText(string(contact.UUID())),
 	}), flows.Context(env, contact))
 }
 

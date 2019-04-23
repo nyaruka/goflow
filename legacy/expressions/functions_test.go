@@ -89,7 +89,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(POWER(2, 3))`, new: `@(2 ^ 3)`, val: `8`},
 
-		{old: `@(PROPER(contact))`, new: `@(title(contact.display))`, val: `Ryan Lewis`},
+		{old: `@(PROPER(contact))`, new: `@(title(contact))`, val: `Ryan Lewis`},
 
 		{old: `@(RAND())`, new: `@(rand())`},
 
