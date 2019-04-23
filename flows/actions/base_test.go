@@ -198,7 +198,12 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			assert.Equal(t, tc.Inspection.Dependencies, depStrings, "inspected dependencies mismatch in %s", testName)
 
 			results := flow.ExtractResults()
-			assert.Equal(t, tc.Inspection.Results, results, "inspected results mismatch in %s", testName)
+			assert.Equal(t, len(tc.Inspection.Results), len(results), "inspected results mismatch in %s", testName)
+			if len(tc.Inspection.Results) == len(results) {
+				for i := range results {
+					assert.Equal(t, tc.Inspection.Results[i], results[i], "inspected results mismatch in %s")
+				}
+			}
 		}
 	}
 }
