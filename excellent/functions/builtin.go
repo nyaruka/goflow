@@ -1840,7 +1840,7 @@ func FormatInput(env utils.Environment, input *types.XObject) types.XValue {
 func FormatResults(env utils.Environment, results *types.XObject) types.XValue {
 	lines := make([]string, 0, results.Count())
 
-	for _, key := range results.Keys() {
+	for _, key := range results.Properties() {
 		result, _ := results.Get(key)
 
 		object, isObject := result.(*types.XObject)
