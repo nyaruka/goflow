@@ -102,7 +102,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
 
-		{old: `@(RIGHT(contact.name, 4))`, new: `@(text_slice(contact.name, -4))`},
+		{old: `@(RIGHT(contact.name, 4))`, new: `@(text_slice(contact.name, -4))`, val: "ewis"},
 
 		{old: `@(ROUND(9.4378, 3))`, new: `@(round(9.4378, 3))`},
 		{old: `@(ROUND(9.4378))`, new: `@(round(9.4378))`},
