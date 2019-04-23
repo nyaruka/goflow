@@ -44,8 +44,6 @@ func init() {
 		"word_slice":        InitialTextFunction(1, 3, WordSlice),
 		"field":             InitialTextFunction(2, 2, Field),
 		"clean":             OneTextFunction(Clean),
-		"left":              TextAndIntegerFunction(Left),
-		"right":             TextAndIntegerFunction(Right),
 		"text_slice":        InitialTextFunction(1, 3, TextSlice),
 		"lower":             OneTextFunction(Lower),
 		"regex_match":       InitialTextFunction(1, 2, RegexMatch),
@@ -676,7 +674,7 @@ func Clean(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXText(nonPrintableRegex.ReplaceAllString(text.Native(), ""))
 }
 
-// TextSlice returns the portion of `text` between `start` and `end` (inclusive).
+// TextSlice returns the portion of `text` between `start` (inclusive) and `end` (exclusive).
 //
 // If `end` is not specified then the entire rest of `text` will be included. Negative values
 // for `start` or `end` start at the end of `text`.
@@ -713,33 +711,6 @@ func TextSlice(env utils.Environment, text types.XText, args ...types.XValue) ty
 		if i >= start && i < end {
 			output.WriteRune(r)
 		}
-	}
-
-	return types.NewXText(output.String())
-}
-
-// Left returns the `count` left-most characters in `text`
-//
-//   @(left("hello", 2)) -> he
-//   @(left("hello", 7)) -> hello
-//   @(left("😀😃😄😁", 2)) -> 😀😃
-//   @(left("hello", -1)) -> ERROR
-//
-// @function left(text, count)
-func Left(env utils.Environment, text types.XText, count int) types.XValue {
-	if count < 0 {
-		return types.NewXErrorf("can't take a negative count")
-	}
-
-	// this weird construct does the right thing for multi-byte unicode
-	var output bytes.Buffer
-	i := 0
-	for _, r := range text.Native() {
-		if i >= count {
-			break
-		}
-		output.WriteRune(r)
-		i++
 	}
 
 	return types.NewXText(output.String())
@@ -794,34 +765,6 @@ func RegexMatch(env utils.Environment, text types.XText, args ...types.XValue) t
 	}
 
 	return types.NewXText(groups[groupNum])
-}
-
-// Right returns the `count` right-most characters in `text`
-//
-//   @(right("hello", 2)) -> lo
-//   @(right("hello", 7)) -> hello
-//   @(right("😀😃😄😁", 2)) -> 😄😁
-//   @(right("hello", -1)) -> ERROR
-//
-// @function right(text, count)
-func Right(env utils.Environment, text types.XText, count int) types.XValue {
-	if count < 0 {
-		return types.NewXErrorf("can't take a negative count")
-	}
-
-	start := utf8.RuneCountInString(text.Native()) - count
-
-	// this weird construct does the right thing for multi-byte unicode
-	var output bytes.Buffer
-	i := 0
-	for _, r := range text.Native() {
-		if i >= start {
-			output.WriteRune(r)
-		}
-		i++
-	}
-
-	return types.NewXText(output.String())
 }
 
 // TextLength returns the length (number of characters) of `value` when converted to text.

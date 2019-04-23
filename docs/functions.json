@@ -710,29 +710,6 @@
         ]
     },
     {
-        "signature": "left(text, count)",
-        "summary": "Returns the `count` left-most characters in `text`",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(left(\"hello\", 2))",
-                "output": "he"
-            },
-            {
-                "template": "@(left(\"hello\", 7))",
-                "output": "hello"
-            },
-            {
-                "template": "@(left(\"😀😃😄😁\", 2))",
-                "output": "😀😃"
-            },
-            {
-                "template": "@(left(\"hello\", -1))",
-                "output": "ERROR"
-            }
-        ]
-    },
-    {
         "signature": "lower(text)",
         "summary": "Converts `text` to lowercase.",
         "detail": "",
@@ -1116,29 +1093,6 @@
         ]
     },
     {
-        "signature": "right(text, count)",
-        "summary": "Returns the `count` right-most characters in `text`",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(right(\"hello\", 2))",
-                "output": "lo"
-            },
-            {
-                "template": "@(right(\"hello\", 7))",
-                "output": "hello"
-            },
-            {
-                "template": "@(right(\"😀😃😄😁\", 2))",
-                "output": "😄😁"
-            },
-            {
-                "template": "@(right(\"hello\", -1))",
-                "output": "ERROR"
-            }
-        ]
-    },
-    {
         "signature": "round(number [,places])",
         "summary": "Rounds `number` to the nearest value.",
         "detail": "You can optionally pass in the number of decimal places to round to as `places`. If `places` < 0,\nit will round the integer part to the nearest 10^(-places).",
@@ -1317,7 +1271,7 @@
     },
     {
         "signature": "text_slice(text, start [, end])",
-        "summary": "Returns the portion of `text` between `start` and `end` (inclusive).",
+        "summary": "Returns the portion of `text` between `start` (inclusive) and `end` (exclusive).",
         "detail": "If `end` is not specified then the entire rest of `text` will be included. Negative values\nfor `start` or `end` start at the end of `text`.",
         "examples": [
             {
