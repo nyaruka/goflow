@@ -1084,7 +1084,7 @@
     {
         "signature": "replace(text, needle, replacement [, count])",
         "summary": "Replaces up to `count` occurrences of `needle` with `replacement` in `text`.",
-        "detail": "If `count` is ommitted or is less than 0 then all occurrences are replaced.",
+        "detail": "If `count` is omitted or is less than 0 then all occurrences are replaced.",
         "examples": [
             {
                 "template": "@(replace(\"foo bar foo\", \"foo\", \"zap\"))",

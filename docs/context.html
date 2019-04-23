@@ -46,11 +46,11 @@
 <li><code>address</code> the address of the channel</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" data-line-number="1">@contact.channel → {address: +<span class="dv">12345671111</span>, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">@contact.channel.name → My Android Phone</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">@contact.channel.address → +<span class="dv">12345671111</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">@input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">@(json(contact.channel)) → {<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" title="1">@contact.channel → {address: +<span class="dv">12345671111</span>, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}</a>
+<a class="sourceLine" id="cb1-2" title="2">@contact.channel.name → My Android Phone</a>
+<a class="sourceLine" id="cb1-3" title="3">@contact.channel.address → +<span class="dv">12345671111</span></a>
+<a class="sourceLine" id="cb1-4" title="4">@input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d</a>
+<a class="sourceLine" id="cb1-5" title="5">@(json(contact.channel)) → {<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>}</a></code></pre></div>
 <p><a name="context:contact"></a></p>
 <h2 id="contact">Contact</h2>
 <p>Represents a person who is interacting with the flow. It renders as the person’s name (or perferred URN if name isn’t set) in a template, and has the following properties which can be accessed:</p>
@@ -70,18 +70,18 @@
 <li><code>channel</code> shorthand for <code>contact.urns[0].channel</code>, i.e. the <a href="#context:channel">channel</a> of the contact’s preferred URN</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb2-1" data-line-number="1">@contact.name → Ryan Lewis</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">@contact.first_name → Ryan</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">@contact.language → eng</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">@contact.timezone → America/Guayaquil</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">@contact.created_on → <span class="dv">2018-06</span>-20T11:<span class="dv">40</span>:<span class="fl">30.123456</span>Z</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">@contact.urns → [tel:+<span class="dv">12065551212</span>, twitterid:<span class="dv">54784326227</span>#nyaruka, mailto:foo@bar.com]</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">@contact.urn → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">@contact.fields → {activation_token: AACC55, age: <span class="dv">23</span>, gender: Male, join_date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span>, not_set: }</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">@contact.fields.activation_token → AACC55</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">@contact.fields.gender → Male</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb2-1" title="1">@contact.name → Ryan Lewis</a>
+<a class="sourceLine" id="cb2-2" title="2">@contact.first_name → Ryan</a>
+<a class="sourceLine" id="cb2-3" title="3">@contact.language → eng</a>
+<a class="sourceLine" id="cb2-4" title="4">@contact.timezone → America/Guayaquil</a>
+<a class="sourceLine" id="cb2-5" title="5">@contact.created_on → <span class="dv">2018-06</span>-20T11:<span class="dv">40</span>:<span class="fl">30.123456</span>Z</a>
+<a class="sourceLine" id="cb2-6" title="6">@contact.urns → [tel:+<span class="dv">12065551212</span>, twitterid:<span class="dv">54784326227</span>#nyaruka, mailto:foo@bar.com]</a>
+<a class="sourceLine" id="cb2-7" title="7">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
+<a class="sourceLine" id="cb2-8" title="8">@contact.urn → tel:+<span class="dv">12065551212</span></a>
+<a class="sourceLine" id="cb2-9" title="9">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
+<a class="sourceLine" id="cb2-10" title="10">@contact.fields → {activation_token: AACC55, age: <span class="dv">23</span>, gender: Male, join_date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span>, not_set: }</a>
+<a class="sourceLine" id="cb2-11" title="11">@contact.fields.activation_token → AACC55</a>
+<a class="sourceLine" id="cb2-12" title="12">@contact.fields.gender → Male</a></code></pre></div>
 <p><a name="context:flow"></a></p>
 <h2 id="flow">Flow</h2>
 <p>Describes the ordered logic of actions and routers. It renders as its name in a template, and has the following properties which can be accessed:</p>
@@ -91,10 +91,10 @@
 <li><code>revision</code> the revision number of the flow</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb3-1" data-line-number="1">@run.flow → {name: Registration, revision: <span class="dv">123</span>, uuid: 50c3706e-fedb-42c0-8eab-dda3335714b7}</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">@child.run.flow.name → Collect Age</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">@run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">@(json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;revision&quot;</span>:<span class="dv">123</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb3-1" title="1">@run.flow → {name: Registration, revision: <span class="dv">123</span>, uuid: 50c3706e-fedb-42c0-8eab-dda3335714b7}</a>
+<a class="sourceLine" id="cb3-2" title="2">@child.run.flow.name → Collect Age</a>
+<a class="sourceLine" id="cb3-3" title="3">@run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7</a>
+<a class="sourceLine" id="cb3-4" title="4">@(json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;revision&quot;</span>:<span class="dv">123</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre></div>
 <p><a name="context:group"></a></p>
 <h2 id="group">Group</h2>
 <p>Represents a grouping of contacts. It can be static (contacts are added and removed manually through <a href="#action:add_contact_groups">actions</a>) or dynamic (contacts are added automatically by a query). It renders as its name in a template, and has the following properties which can be accessed:</p>
@@ -103,16 +103,16 @@
 <li><code>name</code> the name of the group</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb4-1" data-line-number="1">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">@(contact.groups[<span class="dv">0</span>].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">@(contact.groups[<span class="dv">1</span>].name) → Males</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">@(json(contact.groups[<span class="dv">1</span>])) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb4-1" title="1">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
+<a class="sourceLine" id="cb4-2" title="2">@(contact.groups[<span class="dv">0</span>].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
+<a class="sourceLine" id="cb4-3" title="3">@(contact.groups[<span class="dv">1</span>].name) → Males</a>
+<a class="sourceLine" id="cb4-4" title="4">@(json(contact.groups[<span class="dv">1</span>])) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
 <p><a name="context:input"></a></p>
 <h2 id="input">Input</h2>
 <p>Describes input from the contact and currently we only support one type of input: <code>msg</code>. Any input has the following properties which can be accessed:</p>
 <ul>
 <li><code>uuid</code> the UUID of the input</li>
-<li><code>type</code> the type of the input, e.g. <code>msg</code></li>
+<li><code>type</code> the type of the input, e.g. <code>msg</code></li>
 <li><code>channel</code> the <a href="#context:channel">channel</a> that the input was received on</li>
 <li><code>created_on</code> the time when the input was created</li>
 </ul>
@@ -123,11 +123,11 @@
 <li><code>urn</code> the <a href="#context:urn">URN</a> that the input was received on</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" data-line-number="1">@input → {attachments: [image/jpeg:http:<span class="co">//s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3], channel: {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}, created_on: 2017-12-31T11:35:10.035757-02:00, text: Hi there, type: msg, urn: tel:+12065551212, uuid: 9bf91c2b-ce58-4cef-aacc-281e03f69ab5}</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">@input.type → msg</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">@input.text → Hi there</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">@input.attachments → [image/jpeg:http:<span class="co">//s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">@(json(input)) → {<span class="st">&quot;attachments&quot;</span>:[<span class="st">&quot;image/jpeg:http://s3.amazon.com/bucket/test.jpg&quot;</span>,<span class="st">&quot;audio/mp3:http://s3.amazon.com/bucket/test.mp3&quot;</span>],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2017-12-31T11:35:10.035757-02:00&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:<span class="st">&quot;tel:+12065551212&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1">@input → {attachments: [image/jpeg:http:<span class="co">//s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3], channel: {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}, created_on: 2017-12-31T11:35:10.035757-02:00, text: Hi there, type: msg, urn: tel:+12065551212, uuid: 9bf91c2b-ce58-4cef-aacc-281e03f69ab5}</span></a>
+<a class="sourceLine" id="cb5-2" title="2">@input.type → msg</a>
+<a class="sourceLine" id="cb5-3" title="3">@input.text → Hi there</a>
+<a class="sourceLine" id="cb5-4" title="4">@input.attachments → [image/jpeg:http:<span class="co">//s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]</span></a>
+<a class="sourceLine" id="cb5-5" title="5">@(json(input)) → {<span class="st">&quot;attachments&quot;</span>:[<span class="st">&quot;image/jpeg:http://s3.amazon.com/bucket/test.jpg&quot;</span>,<span class="st">&quot;audio/mp3:http://s3.amazon.com/bucket/test.mp3&quot;</span>],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2017-12-31T11:35:10.035757-02:00&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:<span class="st">&quot;tel:+12065551212&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
 <p><a name="context:result"></a></p>
 <h2 id="result">Result</h2>
 <p>Describes a value captured during a run’s execution. It might have been implicitly created by a router, or explicitly created by a <a href="#action:set_run_result">set_run_result</a> action.It renders as its value in a template, and has the following properties which can be accessed:</p>
@@ -140,9 +140,9 @@
 <li><code>created_on</code> the time when the result was created</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" data-line-number="1">@results.favorite_color → {category: Red, category_localized: Red, created_on: <span class="dv">2018-04</span>-11T18:<span class="dv">24</span>:<span class="fl">30.123456</span>Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">@results.favorite_color.value → red</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">@results.favorite_color.category → Red</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" title="1">@results.favorite_color → {category: Red, category_localized: Red, created_on: <span class="dv">2018-04</span>-11T18:<span class="dv">24</span>:<span class="fl">30.123456</span>Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}</a>
+<a class="sourceLine" id="cb6-2" title="2">@results.favorite_color.value → red</a>
+<a class="sourceLine" id="cb6-3" title="3">@results.favorite_color.category → Red</a></code></pre></div>
 <p><a name="context:run"></a></p>
 <h2 id="run">Run</h2>
 <p>Is a single contact’s journey through a flow. It records the path they have taken, and the results that have been collected. It has several properties which can be accessed in expressions:</p>
@@ -152,10 +152,10 @@
 <li><code>contact</code> the <a href="#context:contact">contact</a> of the flow run</li>
 <li><code>input</code> the <a href="#context:input">input</a> of the current run</li>
 <li><code>results</code> the results that have been saved for this run</li>
-<li><code>results.[snaked_result_name]</code> the value of the specific result, e.g. <code>results.age</code></li>
+<li><code>results.[snaked_result_name]</code> the value of the specific result, e.g. <code>results.age</code></li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" data-line-number="1">@run.flow.name → Registration</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" title="1">@run.flow.name → Registration</a></code></pre></div>
 <p><a name="context:trigger"></a></p>
 <h2 id="trigger">Trigger</h2>
 <p>Represents something which can initiate a session with the flow engine. It has several properties which can be accessed in expressions:</p>
@@ -164,9 +164,9 @@
 <li><code>params</code> the parameters passed to the trigger</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb8-1" data-line-number="1">@trigger.type → flow_action</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">@trigger.params → {address: {state: WA}, source: website}</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">@(json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>},<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb8-1" title="1">@trigger.type → flow_action</a>
+<a class="sourceLine" id="cb8-2" title="2">@trigger.params → {address: {state: WA}, source: website}</a>
+<a class="sourceLine" id="cb8-3" title="3">@(json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>},<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre></div>
 <p><a name="context:urn"></a></p>
 <h2 id="urn">Urn</h2>
 <p>Represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3 components: scheme, path, and display (optional). For example:</p>
@@ -177,10 +177,10 @@
 </ul>
 <p>To render a URN in a human friendly format, use the <a href="expressions.html#function:format_urn">format_urn</a> function.</p>
 <p>Examples:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb9-1" data-line-number="1">@(urns.tel) → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">@(urn_parts(urns.tel).scheme) → tel</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">@(format_urn(urns.tel)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">@(json(contact.urns[<span class="dv">0</span>])) → <span class="st">&quot;tel:+12065551212&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb9-1" title="1">@(urns.tel) → tel:+<span class="dv">12065551212</span></a>
+<a class="sourceLine" id="cb9-2" title="2">@(urn_parts(urns.tel).scheme) → tel</a>
+<a class="sourceLine" id="cb9-3" title="3">@(format_urn(urns.tel)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
+<a class="sourceLine" id="cb9-4" title="4">@(json(contact.urns[<span class="dv">0</span>])) → <span class="st">&quot;tel:+12065551212&quot;</span></a></code></pre></div>
 </div>
 
     </body>

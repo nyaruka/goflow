@@ -1206,7 +1206,7 @@ Returns `text` repeated `count` number of times.
 
 Replaces up to `count` occurrences of `needle` with `replacement` in `text`.
 
-If `count` is ommitted or is less than 0 then all occurrences are replaced.
+If `count` is omitted or is less than 0 then all occurrences are replaced.
 
 
 ```objectivec
