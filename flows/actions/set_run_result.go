@@ -34,8 +34,8 @@ type SetRunResultAction struct {
 	universalAction
 
 	Name     string `json:"name" validate:"required"`
-	Value    string `json:"value" validate:"required"`
-	Category string `json:"category"`
+	Value    string `json:"value"`
+	Category string `json:"category,omitempty"`
 }
 
 // NewSetRunResultAction creates a new set run result action
@@ -85,5 +85,9 @@ func (a *SetRunResultAction) RewriteTemplates(localization flows.Localization, r
 
 // EnumerateResults enumerates all potential results on this object
 func (a *SetRunResultAction) EnumerateResults(include func(*flows.ResultSpec)) {
-	include(flows.NewResultSpec(a.Name, []string{a.Category}))
+	if a.Category != "" {
+		include(flows.NewResultSpec(a.Name, []string{a.Category}))
+	} else {
+		include(flows.NewResultSpec(a.Name, nil))
+	}
 }

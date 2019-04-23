@@ -1,4 +1,4 @@
-package tests_test
+package cases_test
 
 import (
 	"fmt"
@@ -22,8 +22,8 @@ var xi = types.NewXNumberFromInt
 var xd = types.NewXDateTime
 var xt = types.NewXTime
 var xa = types.NewXArray
-var result = tests.NewTrueResult
-var resultWithExtra = tests.NewTrueResultWithExtra
+var result = cases.NewTrueResult
+var resultWithExtra = cases.NewTrueResultWithExtra
 var ERROR = types.NewXErrorf("any error")
 
 var kgl, _ = time.LoadLocation("Africa/Kigali")
@@ -264,7 +264,7 @@ func TestTests(t *testing.T) {
 	for _, tc := range testTests {
 		testID := fmt.Sprintf("%s(%#v)", tc.name, tc.args)
 
-		testFunc, exists := tests.XTESTS[tc.name]
+		testFunc, exists := cases.XTESTS[tc.name]
 		require.True(t, exists, "no such registered function: %s", tc.name)
 
 		result := testFunc(env, tc.args...)
@@ -331,7 +331,7 @@ func TestParseDecimalFuzzy(t *testing.T) {
 	}
 
 	for _, test := range parseTests {
-		val, err := tests.ParseDecimalFuzzy(test.input, test.format)
+		val, err := cases.ParseDecimalFuzzy(test.input, test.format)
 
 		assert.NoError(t, err)
 		assert.Equal(t, test.expected, val, "parse decimal failed for input '%s'", test.input)

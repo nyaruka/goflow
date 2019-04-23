@@ -83,25 +83,6 @@ func TwoTextFunction(f func(utils.Environment, types.XText, types.XText) types.X
 	})
 }
 
-// ThreeTextFunction creates an XFunction from a function that takes three text args
-func ThreeTextFunction(f func(utils.Environment, types.XText, types.XText, types.XText) types.XValue) types.XFunction {
-	return ArgCountCheck(3, 3, func(env utils.Environment, args ...types.XValue) types.XValue {
-		str1, xerr := types.ToXText(env, args[0])
-		if xerr != nil {
-			return xerr
-		}
-		str2, xerr := types.ToXText(env, args[1])
-		if xerr != nil {
-			return xerr
-		}
-		str3, xerr := types.ToXText(env, args[2])
-		if xerr != nil {
-			return xerr
-		}
-		return f(env, str1, str2, str3)
-	})
-}
-
 // TextAndNumberFunction creates an XFunction from a function that takes a text and a number arg
 func TextAndNumberFunction(f func(utils.Environment, types.XText, types.XNumber) types.XValue) types.XFunction {
 	return ArgCountCheck(2, 2, func(env utils.Environment, args ...types.XValue) types.XValue {

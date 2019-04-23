@@ -1,10 +1,11 @@
 package flows_test
 
 import (
-	"github.com/nyaruka/goflow/flows"
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/nyaruka/goflow/flows"
 
 	"github.com/nyaruka/goflow/test"
 
@@ -45,6 +46,14 @@ func TestWebhookParsing(t *testing.T) {
 			webhook: webhook{
 				request:  "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
 				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
+				body:     "{ \"ok\": \"true\" }",
+			},
+		}, {
+			// successful GET, text/javascrpt
+			call: call{"GET", "http://127.0.0.1:49994/?cmd=textjs", ""},
+			webhook: webhook{
+				request:  "GET /?cmd=textjs HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/javascript; charset=iso-8859-1\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
 				body:     "{ \"ok\": \"true\" }",
 			},
 		}, {

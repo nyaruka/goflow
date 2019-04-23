@@ -503,6 +503,9 @@ func TestFunctions(t *testing.T) {
 		{"repeat", dmy, []types.XValue{}, ERROR},
 
 		{"replace", dmy, []types.XValue{xs("hi ho"), xs("hi"), xs("bye")}, xs("bye ho")},
+		{"replace", dmy, []types.XValue{xs("hi ho hi"), xs("hi"), xs("bye"), xi(1)}, xs("bye ho hi")},
+		{"replace", dmy, []types.XValue{xs("hi ho hi"), xs("hi"), xs("bye"), xs("0")}, xs("hi ho hi")},
+		{"replace", dmy, []types.XValue{xs("hi ho hi"), xs("hi"), xs("bye"), xi(-1)}, xs("bye ho bye")},
 		{"replace", dmy, []types.XValue{xs("foo bar "), xs(" "), xs(".")}, xs("foo.bar.")},
 		{"replace", dmy, []types.XValue{xs("foo 😁 bar "), xs("😁"), xs("😂")}, xs("foo 😂 bar ")},
 		{"replace", dmy, []types.XValue{xs("foo bar"), xs("zap"), xs("zog")}, xs("foo bar")},
@@ -512,6 +515,7 @@ func TestFunctions(t *testing.T) {
 		{"replace", dmy, []types.XValue{ERROR, xs("hi"), xs("bye")}, ERROR},
 		{"replace", dmy, []types.XValue{xs("hi ho"), ERROR, xs("bye")}, ERROR},
 		{"replace", dmy, []types.XValue{xs("hi ho"), xs("bye"), ERROR}, ERROR},
+		{"replace", dmy, []types.XValue{xs("hi ho hi"), xs("hi"), xs("bye"), xs("num")}, ERROR},
 		{"replace", dmy, []types.XValue{}, ERROR},
 
 		{"replace_time", dmy, []types.XValue{xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), xt(utils.NewTimeOfDay(10, 30, 0, 0))}, xdt(time.Date(1977, 06, 23, 10, 30, 0, 0, la))},
@@ -573,6 +577,7 @@ func TestFunctions(t *testing.T) {
 		{"text_length", dmy, []types.XValue{xs("hello")}, xi(5)},
 		{"text_length", dmy, []types.XValue{xs("")}, xi(0)},
 		{"text_length", dmy, []types.XValue{xs("😁😁")}, xi(2)},
+		{"text_length", dmy, []types.XValue{xs(" 2♣️ ")}, xi(5)},     // emoji color modifier
 		{"text_length", dmy, []types.XValue{xa(xs("hello"))}, xi(7)}, // [hello]
 		{"text_length", dmy, []types.XValue{xa()}, xi(2)},            // []
 		{"text_length", dmy, []types.XValue{nil}, xi(0)},

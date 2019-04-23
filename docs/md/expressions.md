@@ -1188,13 +1188,16 @@ Returns `text` repeated `count` number of times.
 
 <a name="function:replace"></a>
 
-## replace(text, needle, replacement)
+## replace(text, needle, replacement [, count])
 
-Replaces all occurrences of `needle` with `replacement` in `text`.
+Replaces up to `count` occurrences of `needle` with `replacement` in `text`.
+
+If `count` is omitted or is less than 0 then all occurrences are replaced.
 
 
 ```objectivec
-@(replace("foo bar", "foo", "zap")) → zap bar
+@(replace("foo bar foo", "foo", "zap")) → zap bar zap
+@(replace("foo bar foo", "foo", "zap", 1)) → zap bar foo
 @(replace("foo bar", "baz", "zap")) → foo bar
 ```
 
