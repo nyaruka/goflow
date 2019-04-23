@@ -724,18 +724,6 @@ will be used. An error will be returned if the timezone is not recognized.
 @(format_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
-<a name="function:format_input"></a>
-
-## format_input(urn)
-
-Formats `input` to be the text followed by the URLs of any attachment, separated by newlines.
-
-
-```objectivec
-@(format_input(input)) → Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
-@(format_input("NOT INPUT")) → ERROR
-```
-
 <a name="function:format_location"></a>
 
 ## format_location(location)

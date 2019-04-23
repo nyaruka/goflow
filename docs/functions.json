@@ -512,21 +512,6 @@
         ]
     },
     {
-        "signature": "format_input(urn)",
-        "summary": "Formats `input` to be the text followed by the URLs of any attachment, separated by newlines.",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(format_input(input))",
-                "output": "Hi there\\nhttp://s3.amazon.com/bucket/test.jpg\\nhttp://s3.amazon.com/bucket/test.mp3"
-            },
-            {
-                "template": "@(format_input(\"NOT INPUT\"))",
-                "output": "ERROR"
-            }
-        ]
-    },
-    {
         "signature": "format_location(location)",
         "summary": "Formats the given `location` as its name.",
         "detail": "",

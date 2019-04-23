@@ -60,7 +60,7 @@ func init() {
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.text$`), `parent.results.$1.input`},
 		{re(`^(?:parent|extra\.flow)\.(\w+)\.time$`), `parent.results.$1.created_on`},
 
-		{re(`^step(\.value)?$`), `format_input(input)`},
+		{re(`^step(\.value)?$`), `input`},
 		{re(`^step\.text$`), `input.text`},
 		{re(`^step\.time$`), `input.created_on`},
 		{re(`^step\.attachments$`), `foreach(foreach(input.attachments, attachment_parts), extract, "url")`},

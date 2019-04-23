@@ -2,6 +2,7 @@ package inputs
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -56,6 +57,7 @@ func (i *MsgInput) Context(env utils.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
+		"__default__": types.NewXText(i.format()),
 		"type":        types.NewXText(i.type_),
 		"uuid":        types.NewXText(string(i.uuid)),
 		"created_on":  types.NewXDateTime(i.createdOn),
@@ -64,6 +66,17 @@ func (i *MsgInput) Context(env utils.Environment) map[string]types.XValue {
 		"text":        types.NewXText(i.text),
 		"attachments": types.NewXArray(attachments...),
 	}
+}
+
+func (i *MsgInput) format() string {
+	var parts []string
+	if i.text != "" {
+		parts = append(parts, i.text)
+	}
+	for _, attachment := range i.attachments {
+		parts = append(parts, attachment.URL())
+	}
+	return strings.Join(parts, "\n")
 }
 
 var _ flows.Input = (*MsgInput)(nil)

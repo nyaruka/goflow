@@ -97,8 +97,8 @@ var tests = []testTemplate{
 	{old: `@parent.contact.tel_e164`, new: `@(urn_parts(parent.urns.tel).path)`},
 
 	// input
-	{old: `@step`, new: `@(format_input(input))`},
-	{old: `@step.value`, new: `@(format_input(input))`},
+	{old: `@step`, new: `@input`},
+	{old: `@step.value`, new: `@input`},
 	{old: `@step.text`, new: `@input.text`},
 	{old: `@step.attachments`, new: `@(foreach(foreach(input.attachments, attachment_parts), extract, "url"))`},
 	{old: `@step.attachments.0`, new: `@(attachment_parts(input.attachments[0]).url)`},
