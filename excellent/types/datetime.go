@@ -146,6 +146,10 @@ func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XEr
 			if err == nil {
 				return NewXDateTime(parsed), nil
 			}
+		case *XObject:
+			if typed.hasDefault() {
+				return toXDateTime(env, typed.Default(), fillTime)
+			}
 		}
 	}
 

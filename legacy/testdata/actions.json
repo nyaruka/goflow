@@ -168,7 +168,7 @@
         "expected_action": {
             "type": "play_audio",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "audio_url": "@results.response_1.value"
+            "audio_url": "@results.response_1"
         },
         "expected_localization": {}
     },

@@ -174,7 +174,7 @@ Examples:
 
 
 ```objectivec
-@results.favorite_color → {category: Red, category_localized: Red, created_on: 2018-04-11T18:24:30.123456Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}
+@results.favorite_color → red
 @results.favorite_color.value → red
 @results.favorite_color.category → Red
 ```

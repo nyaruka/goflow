@@ -59,6 +59,10 @@ func TestToXNumberAndInteger(t *testing.T) {
 		{types.NewXErrorf("Error"), types.XNumberZero, 0, true},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), 123, false},
 		{types.NewXText("15.5"), types.RequireXNumberFromString("15.5"), 15, false},
+		{types.NewXObject(map[string]types.XValue{
+			"__default__": types.NewXNumberFromInt(123), // should use default
+			"foo":         types.NewXNumberFromInt(234),
+		}), types.NewXNumberFromInt(123), 123, false},
 		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true}, // out of int range
 	}
 

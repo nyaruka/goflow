@@ -91,6 +91,10 @@ func ToXDate(env utils.Environment, x XValue) (XDate, XError) {
 			if err == nil {
 				return NewXDate(parsed), nil
 			}
+		case *XObject:
+			if typed.hasDefault() {
+				return ToXDate(env, typed.Default())
+			}
 		}
 	}
 

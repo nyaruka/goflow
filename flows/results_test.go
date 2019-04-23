@@ -24,6 +24,7 @@ func TestResults(t *testing.T) {
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"beer": types.NewXObject(map[string]types.XValue{
+			"__default__":        types.NewXText("skol!"),
 			"category":           types.NewXText("Skol"),
 			"category_localized": types.NewXText("Skol"),
 			"created_on":         types.NewXDateTime(time.Date(2019, 4, 5, 14, 16, 30, 123456, time.UTC)),
@@ -36,6 +37,7 @@ func TestResults(t *testing.T) {
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"beer": types.NewXObject(map[string]types.XValue{
+			"__default__":          types.NewXArray(types.NewXText("skol!")),
 			"categories":           types.NewXArray(types.NewXText("Skol")),
 			"categories_localized": types.NewXArray(types.NewXText("Skol")),
 			"created_on":           types.NewXDateTime(time.Date(2019, 4, 5, 14, 16, 30, 123456, time.UTC)),

@@ -98,6 +98,10 @@ func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
 			if err == nil {
 				return NewXTime(parsed), nil
 			}
+		case *XObject:
+			if typed.hasDefault() {
+				return ToXTime(env, typed.Default())
+			}
 		}
 	}
 

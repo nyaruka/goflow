@@ -21,7 +21,7 @@ import (
 //
 // Examples:
 //
-//   @results.favorite_color -> {category: Red, category_localized: Red, created_on: 2018-04-11T18:24:30.123456Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}
+//   @results.favorite_color -> red
 //   @results.favorite_color.value -> red
 //   @results.favorite_color.category -> Red
 //
@@ -59,6 +59,7 @@ func (r *Result) Context(env utils.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
+		"__default__":          types.NewXArray(types.NewXText(r.Value)),
 		"name":                 types.NewXText(r.Name),
 		"values":               types.NewXArray(types.NewXText(r.Value)),
 		"categories":           types.NewXArray(types.NewXText(r.Category)),
@@ -78,6 +79,7 @@ func (r *Result) SimpleContext(env utils.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
+		"__default__":        types.NewXText(r.Value),
 		"name":               types.NewXText(r.Name),
 		"value":              types.NewXText(r.Value),
 		"category":           types.NewXText(r.Category),

@@ -1775,7 +1775,7 @@
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
-                "operand": "@(field(results.response_1.value, 1, \" \"))",
+                "operand": "@(field(results.response_1, 1, \" \"))",
                 "cases": [
                     {
                         "arguments": [
@@ -1905,7 +1905,7 @@
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
-                "operand": "@results.response_1.value",
+                "operand": "@results.response_1",
                 "cases": [
                     {
                         "arguments": [

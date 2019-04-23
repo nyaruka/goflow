@@ -91,7 +91,7 @@ var templateTests = []struct {
 	{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
 	{"@input.channel.name", "My Android Phone", ""},
 
-	{"@results.favorite_color", `{category: Red, category_localized: Red, created_on: 2018-09-13T13:36:30.123456Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}`, ""},
+	{"@results.favorite_color", `red`, ""},
 	{"@results.favorite_color.value", "red", ""},
 	{"@results.favorite_color.category", "Red", ""},
 	{"@results.favorite_color.category_localized", "Red", ""},
@@ -99,7 +99,7 @@ var templateTests = []struct {
 	{"@(has_error(results.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
 	{"@(count(results))", "3", ""},
 
-	{"@run.results.favorite_color", `{categories: [Red], categories_localized: [Red], created_on: 2018-09-13T13:36:30.123456Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, values: [red]}`, ""},
+	{"@run.results.favorite_color", `[red]`, ""},
 	{"@run.results.favorite_color.values", "[red]", ""},
 	{`@(run.results.favorite_color.values[0])`, `red`, ""},
 	{"@run.results.favorite_color.categories", "[Red]", ""},
