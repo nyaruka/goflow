@@ -115,6 +115,12 @@ var tests = []testTemplate{
 	{old: `@date.tomorrow`, new: `@(format_date(datetime_add(now(), 1, "D")))`},
 	{old: `@date.yesterday`, new: `@(format_date(datetime_add(now(), -1, "D")))`},
 
+	// channel
+	{old: `@channel`, new: `@contact.channel`},
+	{old: `@channel.tel`, new: `@contact.channel.address`},
+	{old: `@channel.tel_e164`, new: `@contact.channel.address`},
+	{old: `@channel.name`, new: `@contact.channel.name`},
+
 	// extra
 	{old: `@extra`, new: `@legacy_extra`},
 	{old: `@extra.address.state`, new: `@legacy_extra.address.state`},

@@ -66,7 +66,7 @@ func init() {
 		{re(`^step\.attachments$`), `foreach(foreach(input.attachments, attachment_parts), extract, "url")`},
 		{re(`^step\.attachments\.(\d+)$`), `attachment_parts(input.attachments[$1]).url`},
 
-		{re(`^channel$`), `contact.channel.address`},
+		{re(`^channel$`), `contact.channel`},
 		{re(`^channel\.(tel|tel_e164)$`), `contact.channel.address`},
 		{re(`^channel\.name$`), `contact.channel.name`},
 
