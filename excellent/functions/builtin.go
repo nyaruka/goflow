@@ -694,7 +694,7 @@ func TextSlice(env utils.Environment, text types.XText, args ...types.XValue) ty
 		start = length + start
 	}
 
-	end := utf8.RuneCountInString(text.Native())
+	end := length
 	if len(args) == 2 {
 		if end, xerr = types.ToInteger(env, args[1]); xerr != nil {
 			return xerr
@@ -705,10 +705,12 @@ func TextSlice(env utils.Environment, text types.XText, args ...types.XValue) ty
 	}
 
 	var output bytes.Buffer
-	for i, r := range text.Native() {
+	i := 0
+	for _, r := range text.Native() {
 		if i >= start && i < end {
 			output.WriteRune(r)
 		}
+		i++
 	}
 
 	return types.NewXText(output.String())

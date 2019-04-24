@@ -474,6 +474,9 @@ func TestFunctions(t *testing.T) {
 		{"replace_time", dmy, []types.XValue{ERROR, xt(utils.NewTimeOfDay(10, 30, 0, 0))}, ERROR},
 
 		{"text_slice", dmy, []types.XValue{xs("hello"), xs("2")}, xs("llo")},
+		{"text_slice", dmy, []types.XValue{xs("foo 😁 bar"), xs("2")}, xs("o 😁 bar")},
+		{"text_slice", dmy, []types.XValue{xs("foo 😁 bar"), xs("2"), xs("9")}, xs("o 😁 bar")},
+		{"text_slice", dmy, []types.XValue{xs("foo 😁 bar"), xs("0"), xs("1")}, xs("f")},
 		{"text_slice", dmy, []types.XValue{xs("hello"), xs("-2")}, xs("lo")},
 		{"text_slice", dmy, []types.XValue{xs("hello"), xs("-7")}, xs("hello")},
 		{"text_slice", dmy, []types.XValue{xs("hello"), xs("7")}, xs("")},
