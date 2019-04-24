@@ -1,3 +1,8 @@
+v0.37.1
+----------
+ * @fields defaults to table like @results
+ * Add default values to @run, @parent, @parent.run, @child, @child.run
+
 v0.37.0
 ----------
  * Add TemplateIncluder to ease inclusion of templates as strings, slices or maps
