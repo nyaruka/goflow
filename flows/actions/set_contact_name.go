@@ -67,6 +67,6 @@ func (a *SetContactNameAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactNameAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
+func (a *SetContactNameAction) EnumerateTemplates(include flows.TemplateIncluder) {
 	include.String(&a.Name)
 }

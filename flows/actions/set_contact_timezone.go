@@ -78,6 +78,6 @@ func (a *SetContactTimezoneAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactTimezoneAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
+func (a *SetContactTimezoneAction) EnumerateTemplates(include flows.TemplateIncluder) {
 	include.String(&a.Timezone)
 }

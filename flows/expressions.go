@@ -1,10 +1,6 @@
 package flows
 
 import (
-	"strings"
-
-	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/excellent/tools"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -44,90 +40,3 @@ var RunContextTopLevels = []string{
 	"trigger",
 	"urns",
 }
-
-var fieldRefPaths = [][]string{
-	{"fields"},
-	{"contact", "fields"},
-	{"parent", "fields"},
-	{"parent", "contact", "fields"},
-	{"child", "fields"},
-	{"child", "contact", "fields"},
-}
-
-// ExtractFieldReferences extracts fields references from the given template
-func ExtractFieldReferences(template string) []*assets.FieldReference {
-	fieldRefs := make([]*assets.FieldReference, 0)
-	tools.FindContextRefsInTemplate(template, RunContextTopLevels, func(path []string) {
-		isField, fieldKey := isFieldRefPath(path)
-		if isField {
-			fieldRefs = append(fieldRefs, assets.NewFieldReference(fieldKey, ""))
-		}
-	})
-	return fieldRefs
-}
-
-// checks whether the given context path is a reference to a contact field
-func isFieldRefPath(path []string) (bool, string) {
-	for _, possible := range fieldRefPaths {
-		if len(path) == len(possible)+1 {
-			matches := true
-			for i := range possible {
-				if strings.ToLower(path[i]) != possible[i] {
-					matches = false
-					break
-				}
-			}
-			if matches {
-				return true, strings.ToLower(path[len(possible)])
-			}
-		}
-	}
-	return false, ""
-}
-
-func EnumerateTemplateTranslations(localization Localization, localizable Localizable, key string, include TemplateIncluder) {
-	for _, lang := range localization.Languages() {
-		translations := localization.GetTranslations(lang)
-		include.Slice(translations.GetTextArray(localizable.LocalizationUUID(), key))
-	}
-}
-
-// wrapper for an asset reference to make it inspectable
-type inspectableReference struct {
-	ref assets.Reference
-}
-
-// InspectReference inspects the given asset reference if it's non-nil
-func InspectReference(ref assets.Reference, inspect func(Inspectable)) {
-	if ref != nil {
-		inspectableReference{ref: ref}.Inspect(inspect)
-	}
-}
-
-// Inspect inspects this object and any children
-func (r inspectableReference) Inspect(inspect func(Inspectable)) {
-	inspect(r)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (r inspectableReference) EnumerateTemplates(localization Localization, include TemplateIncluder) {
-	if r.ref != nil && r.ref.Variable() {
-		switch typed := r.ref.(type) {
-		case *assets.GroupReference:
-			include.String(&typed.NameMatch)
-		case *assets.LabelReference:
-			include.String(&typed.NameMatch)
-		}
-	}
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (r inspectableReference) EnumerateDependencies(localization Localization, include func(assets.Reference)) {
-	if r.ref != nil && !r.ref.Variable() {
-		include(r.ref)
-	}
-}
-
-// EnumerateResults enumerates all potential results on this object
-// Asset references can't contain results.
-func (r inspectableReference) EnumerateResults(include func(*ResultSpec)) {}

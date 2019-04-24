@@ -83,6 +83,6 @@ func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *StartSessionAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
+func (a *StartSessionAction) EnumerateTemplates(include flows.TemplateIncluder) {
 	include.Slice(a.LegacyVars)
 }

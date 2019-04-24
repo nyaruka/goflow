@@ -59,8 +59,9 @@ func (r *BaseRouter) AllowTimeout() bool {
 func (r *BaseRouter) ResultName() string { return r.resultName }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *BaseRouter) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
+func (r *BaseRouter) EnumerateTemplates(include flows.TemplateIncluder) {
 }
+
 // EnumerateDependencies enumerates all dependencies on this object
 func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }

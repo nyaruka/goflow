@@ -5,8 +5,26 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/excellent/tools"
 	"github.com/nyaruka/goflow/utils"
 )
+
+var fieldRefPaths = [][]string{
+	{"fields"},
+	{"contact", "fields"},
+	{"parent", "fields"},
+	{"parent", "contact", "fields"},
+	{"child", "fields"},
+	{"child", "contact", "fields"},
+}
+
+// Inspectable is implemented by various flow components to allow walking the definition and extracting things like dependencies
+type Inspectable interface {
+	Inspect(func(Inspectable))
+	EnumerateTemplates(TemplateIncluder)
+	EnumerateDependencies(Localization, func(assets.Reference))
+	EnumerateResults(func(*ResultSpec))
+}
 
 // ResultSpec is possible result that a flow might generate
 type ResultSpec struct {
@@ -58,15 +76,17 @@ type TemplateIncluder interface {
 	String(*string)
 	Slice([]string)
 	Map(map[string]string)
+	Translations(Localizable, string)
 }
 
 type templateEnumerator struct {
-	include func(string)
+	localization Localization
+	include      func(string)
 }
 
 // NewTemplateEnumerator creates a template includer for enumerating templates
-func NewTemplateEnumerator(include func(string)) TemplateIncluder {
-	return &templateEnumerator{include: include}
+func NewTemplateEnumerator(localization Localization, include func(string)) TemplateIncluder {
+	return &templateEnumerator{localization: localization, include: include}
 }
 
 func (t *templateEnumerator) String(s *string) {
@@ -85,13 +105,21 @@ func (t *templateEnumerator) Map(m map[string]string) {
 	}
 }
 
+func (t *templateEnumerator) Translations(localizable Localizable, key string) {
+	for _, lang := range t.localization.Languages() {
+		translations := t.localization.GetTranslations(lang)
+		t.Slice(translations.GetTextArray(localizable.LocalizationUUID(), key))
+	}
+}
+
 type templateRewriter struct {
-	rewrite func(string) string
+	localization Localization
+	rewrite      func(string) string
 }
 
 // NewTemplateRewriter creates a template includer for rewriting templates
-func NewTemplateRewriter(rewrite func(string) string) TemplateIncluder {
-	return &templateRewriter{rewrite: rewrite}
+func NewTemplateRewriter(localization Localization, rewrite func(string) string) TemplateIncluder {
+	return &templateRewriter{localization: localization, rewrite: rewrite}
 }
 
 func (t *templateRewriter) String(s *string) {
@@ -110,10 +138,80 @@ func (t *templateRewriter) Map(m map[string]string) {
 	}
 }
 
-// Inspectable is implemented by various flow components to allow walking the definition and extracting things like dependencies
-type Inspectable interface {
-	Inspect(func(Inspectable))
-	EnumerateTemplates(Localization, TemplateIncluder)
-	EnumerateDependencies(Localization, func(assets.Reference))
-	EnumerateResults(func(*ResultSpec))
+func (t *templateRewriter) Translations(localizable Localizable, key string) {
+	for _, lang := range t.localization.Languages() {
+		translations := t.localization.GetTranslations(lang)
+		t.Slice(translations.GetTextArray(localizable.LocalizationUUID(), key))
+	}
+}
+
+// wrapper for an asset reference to make it inspectable
+type inspectableReference struct {
+	ref assets.Reference
+}
+
+// InspectReference inspects the given asset reference if it's non-nil
+func InspectReference(ref assets.Reference, inspect func(Inspectable)) {
+	if ref != nil {
+		inspectableReference{ref: ref}.Inspect(inspect)
+	}
+}
+
+// Inspect inspects this object and any children
+func (r inspectableReference) Inspect(inspect func(Inspectable)) {
+	inspect(r)
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (r inspectableReference) EnumerateTemplates(include TemplateIncluder) {
+	if r.ref != nil && r.ref.Variable() {
+		switch typed := r.ref.(type) {
+		case *assets.GroupReference:
+			include.String(&typed.NameMatch)
+		case *assets.LabelReference:
+			include.String(&typed.NameMatch)
+		}
+	}
+}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (r inspectableReference) EnumerateDependencies(localization Localization, include func(assets.Reference)) {
+	if r.ref != nil && !r.ref.Variable() {
+		include(r.ref)
+	}
+}
+
+// EnumerateResults enumerates all potential results on this object
+// Asset references can't contain results.
+func (r inspectableReference) EnumerateResults(include func(*ResultSpec)) {}
+
+// ExtractFieldReferences extracts fields references from the given template
+func ExtractFieldReferences(template string) []*assets.FieldReference {
+	fieldRefs := make([]*assets.FieldReference, 0)
+	tools.FindContextRefsInTemplate(template, RunContextTopLevels, func(path []string) {
+		isField, fieldKey := isFieldRefPath(path)
+		if isField {
+			fieldRefs = append(fieldRefs, assets.NewFieldReference(fieldKey, ""))
+		}
+	})
+	return fieldRefs
+}
+
+// checks whether the given context path is a reference to a contact field
+func isFieldRefPath(path []string) (bool, string) {
+	for _, possible := range fieldRefPaths {
+		if len(path) == len(possible)+1 {
+			matches := true
+			for i := range possible {
+				if strings.ToLower(path[i]) != possible[i] {
+					matches = false
+					break
+				}
+			}
+			if matches {
+				return true, strings.ToLower(path[len(possible)])
+			}
+		}
+	}
+	return false, ""
 }
