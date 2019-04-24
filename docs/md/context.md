@@ -38,7 +38,7 @@ Examples:
 
 
 ```objectivec
-@contact.channel → +12345671111
+@contact.channel → My Android Phone
 @contact.channel.name → My Android Phone
 @contact.channel.address → +12345671111
 @input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d
@@ -99,7 +99,7 @@ Examples:
 
 
 ```objectivec
-@run.flow → {name: Registration, revision: 123, uuid: 50c3706e-fedb-42c0-8eab-dda3335714b7}
+@run.flow → Registration
 @child.run.flow.name → Collect Age
 @run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7
 @(json(run.flow)) → {"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}

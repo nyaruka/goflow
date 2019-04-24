@@ -131,7 +131,7 @@ type Localizable interface {
 //
 // Examples:
 //
-//   @run.flow -> {name: Registration, revision: 123, uuid: 50c3706e-fedb-42c0-8eab-dda3335714b7}
+//   @run.flow -> Registration
 //   @child.run.flow.name -> Collect Age
 //   @run.flow.uuid -> 50c3706e-fedb-42c0-8eab-dda3335714b7
 //   @(json(run.flow)) -> {"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}

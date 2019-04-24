@@ -116,7 +116,8 @@ var tests = []testTemplate{
 	{old: `@date.yesterday`, new: `@(format_date(datetime_add(now(), -1, "D")))`},
 
 	// channel
-	{old: `@channel`, new: `@contact.channel`},
+	{old: `@channel`, new: `@contact.channel.address`},
+	{old: `@channel.address`, new: `@contact.channel.address`},
 	{old: `@channel.tel`, new: `@contact.channel.address`},
 	{old: `@channel.tel_e164`, new: `@contact.channel.address`},
 	{old: `@channel.name`, new: `@contact.channel.name`},

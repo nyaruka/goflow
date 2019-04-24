@@ -30,7 +30,7 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, "+250961111111 (Android)", fmt.Sprintf("%s", ch))
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
-		"__default__": types.NewXText("+250961111111"),
+		"__default__": types.NewXText("Android"),
 		"uuid":        types.NewXText(string(ch.UUID())),
 		"name":        types.NewXText("Android"),
 		"address":     types.NewXText("+250961111111"),
