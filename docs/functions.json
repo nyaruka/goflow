@@ -512,21 +512,6 @@
         ]
     },
     {
-        "signature": "format_input(urn)",
-        "summary": "Formats `input` to be the text followed by the URLs of any attachment, separated by newlines.",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(format_input(input))",
-                "output": "Hi there\\nhttp://s3.amazon.com/bucket/test.jpg\\nhttp://s3.amazon.com/bucket/test.mp3"
-            },
-            {
-                "template": "@(format_input(\"NOT INPUT\"))",
-                "output": "ERROR"
-            }
-        ]
-    },
-    {
         "signature": "format_location(location)",
         "summary": "Formats the given `location` as its name.",
         "detail": "",
@@ -564,21 +549,6 @@
             },
             {
                 "template": "@(format_number(\"foo\", 2, false))",
-                "output": "ERROR"
-            }
-        ]
-    },
-    {
-        "signature": "format_results(urn)",
-        "summary": "Formats `results` to be name and value pairs, separated by newlines.",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(format_results(results))",
-                "output": "2Factor: 34634624463525\\nFavorite Color: red\\nPhone Number: +12344563452\\nwebhook: 200"
-            },
-            {
-                "template": "@(format_results(\"NOT RESULTS\"))",
                 "output": "ERROR"
             }
         ]

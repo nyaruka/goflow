@@ -45,6 +45,7 @@ func TestMsgInput(t *testing.T) {
 
 	// check use in expressions
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
+		"__default__": types.NewXText("Hi there!\nhttp://example.com/test.jpg\nhttp://example.com/test.mp4"),
 		"type":        types.NewXText("msg"),
 		"uuid":        types.NewXText("f51d7220-10b3-4faa-a91c-1ae70beaae3e"),
 		"channel":     flows.Context(env, channel),

@@ -134,6 +134,10 @@ func ToXNumber(env utils.Environment, x XValue) (XNumber, XError) {
 			if err == nil {
 				return NewXNumber(parsed), nil
 			}
+		case *XObject:
+			if typed.hasDefault() {
+				return ToXNumber(env, typed.Default())
+			}
 		}
 	}
 

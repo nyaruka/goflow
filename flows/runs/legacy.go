@@ -79,7 +79,7 @@ func (e *legacyExtra) addResult(result *flows.Result) {
 func (e *legacyExtra) addValues(values types.XValue) {
 	switch typed := values.(type) {
 	case *types.XObject:
-		for _, key := range typed.Keys() {
+		for _, key := range typed.Properties() {
 			value, _ := typed.Get(key)
 			e.values[legacyExtraKey(key)] = value
 		}

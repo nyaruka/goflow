@@ -268,9 +268,10 @@ func TestNewFlow(t *testing.T) {
 
 	// check in expressions
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
-		"name":     types.NewXText("Test Flow"),
-		"revision": types.NewXNumberFromInt(123),
-		"uuid":     types.NewXText("8ca44c09-791d-453a-9799-a70dd3303306"),
+		"__default__": types.NewXText("Test Flow"),
+		"name":        types.NewXText("Test Flow"),
+		"revision":    types.NewXNumberFromInt(123),
+		"uuid":        types.NewXText("8ca44c09-791d-453a-9799-a70dd3303306"),
 	}), flows.Context(session.Environment(), flow))
 
 	// add expected dependencies and result names to our expected JSON

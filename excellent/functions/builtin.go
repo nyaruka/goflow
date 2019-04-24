@@ -108,8 +108,6 @@ func init() {
 		"format_location": OneTextFunction(FormatLocation),
 		"format_number":   ArgCountCheck(1, 3, FormatNumber),
 		"format_urn":      OneTextFunction(FormatURN),
-		"format_input":    OneObjectFunction(FormatInput),
-		"format_results":  OneObjectFunction(FormatResults),
 
 		// utility functions
 		"is_error":       OneArgFunction(IsError),
@@ -1779,65 +1777,6 @@ func FormatURN(env utils.Environment, arg types.XText) types.XValue {
 	}
 
 	return types.NewXText(urn.Format())
-}
-
-// FormatInput formats `input` to be the text followed by the URLs of any attachment, separated by newlines.
-//
-//   @(format_input(input)) -> Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
-//   @(format_input("NOT INPUT")) -> ERROR
-//
-// @function format_input(urn)
-func FormatInput(env utils.Environment, input *types.XObject) types.XValue {
-	textValue, _ := input.Get("text")
-	text, xerr := types.ToXText(env, textValue)
-	if xerr != nil {
-		return xerr
-	}
-
-	attachmentsValue, _ := input.Get("attachments")
-	attachments, xerr := types.ToXArray(env, attachmentsValue)
-	if xerr != nil {
-		return xerr
-	}
-
-	lines := make([]string, 0)
-	if text.Native() != "" {
-		lines = append(lines, text.Native())
-	}
-
-	for a := 0; a < attachments.Count(); a++ {
-		asText, xerr := types.ToXText(env, attachments.Get(a))
-		if xerr != nil {
-			return xerr
-		}
-
-		lines = append(lines, utils.Attachment(asText.Native()).URL())
-	}
-
-	return types.NewXText(strings.Join(lines, "\n"))
-}
-
-// FormatResults formats `results` to be name and value pairs, separated by newlines.
-//
-//   @(format_results(results)) -> 2Factor: 34634624463525\nFavorite Color: red\nPhone Number: +12344563452\nwebhook: 200
-//   @(format_results("NOT RESULTS")) -> ERROR
-//
-// @function format_results(urn)
-func FormatResults(env utils.Environment, results *types.XObject) types.XValue {
-	lines := make([]string, 0, results.Count())
-
-	for _, key := range results.Keys() {
-		result, _ := results.Get(key)
-
-		object, isObject := result.(*types.XObject)
-		if isObject && object != nil {
-			name, _ := object.Get("name")
-			value, _ := object.Get("value")
-			lines = append(lines, fmt.Sprintf("%s: %s", types.Render(name), types.Render(value)))
-		}
-	}
-
-	return types.NewXText(strings.Join(lines, "\n"))
 }
 
 //------------------------------------------------------------------------------------------

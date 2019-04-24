@@ -474,7 +474,7 @@
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
                         ],
-                        "operand": "@(format_input(input))",
+                        "operand": "@input",
                         "cases": [
                             {
                                 "arguments": [
@@ -501,7 +501,7 @@
                 {
                     "actions": [
                         {
-                            "text": "You picked @results.number.value!",
+                            "text": "You picked @results.number!",
                             "type": "send_msg",
                             "uuid": "988b0715-a553-435a-bc05-76389570b70b"
                         }

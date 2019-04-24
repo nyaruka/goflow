@@ -106,6 +106,14 @@ func Describe(x XValue) string {
 	return x.Describe()
 }
 
+// Truthy determines truthiness for the given value
+func Truthy(x XValue) bool {
+	if utils.IsNil(x) {
+		return false
+	}
+	return x.Truthy()
+}
+
 // Render returns the canonical text representation
 func Render(x XValue) string {
 	if utils.IsNil(x) {

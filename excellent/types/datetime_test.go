@@ -81,6 +81,10 @@ func TestToXDateTime(t *testing.T) {
 		{types.NewXText("wha?"), types.XDateTimeZero, true},
 		{types.NewXDate(utils.NewDate(2018, 4, 9)), types.NewXDateTime(time.Date(2018, 4, 9, 0, 0, 0, 0, time.UTC)), false},
 		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
+		{types.NewXObject(map[string]types.XValue{
+			"__default__": types.NewXText("2018-06-05"), // should use default
+			"foo":         types.NewXNumberFromInt(234),
+		}), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()

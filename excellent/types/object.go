@@ -9,6 +9,8 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+const serializeDefaultAs = "__default__"
+
 // XObject is an object with named properties.
 //
 //   @(object("foo", 1, "bar", "x")) -> {bar: x, foo: 1}
@@ -22,18 +24,17 @@ type XObject struct {
 	XValue
 	XCountable
 
-	data   map[string]XValue
+	def    XValue
+	props  map[string]XValue
 	source func() map[string]XValue
 }
 
 // NewXObject returns a new object with the given properties
 func NewXObject(properties map[string]XValue) *XObject {
-	return &XObject{
-		data: properties,
-	}
+	return NewXLazyObject(func() map[string]XValue { return properties })
 }
 
-// NewXLazyObject returns a new lazy object with the source function
+// NewXLazyObject returns a new lazy object with the source function and default
 func NewXLazyObject(source func() map[string]XValue) *XObject {
 	return &XObject{
 		source: source,
@@ -45,14 +46,22 @@ func (x *XObject) Describe() string { return "object" }
 
 // Truthy determines truthiness for this type
 func (x *XObject) Truthy() bool {
+	if x.hasDefault() {
+		return Truthy(x.Default())
+	}
+
 	return x.Count() > 0
 }
 
 // Render returns the canonical text representation
 func (x *XObject) Render() string {
+	if x.hasDefault() {
+		return Render(x.Default())
+	}
+
 	pairs := make([]string, 0, x.Count())
-	for _, k := range x.Keys() {
-		rendered := Render(x.values()[k])
+	for _, k := range x.Properties() {
+		rendered := Render(x.properties()[k])
 		pairs = append(pairs, fmt.Sprintf("%s: %s", k, rendered))
 	}
 	return "{" + strings.Join(pairs, ", ") + "}"
@@ -60,9 +69,13 @@ func (x *XObject) Render() string {
 
 // Format returns the pretty text representation
 func (x *XObject) Format(env utils.Environment) string {
+	if x.hasDefault() {
+		return Format(env, x.Default())
+	}
+
 	pairs := make([]string, 0, x.Count())
-	for _, k := range x.Keys() {
-		formatted := Format(env, x.values()[k])
+	for _, k := range x.Properties() {
+		formatted := Format(env, x.properties()[k])
 		if strings.ContainsRune(formatted, '\n') {
 			formatted = utils.Indent(formatted, "  ")
 			formatted = fmt.Sprintf("%s:\n%s", k, formatted)
@@ -77,10 +90,10 @@ func (x *XObject) Format(env utils.Environment) string {
 // MarshalJSON converts this type to internal JSON
 func (x *XObject) MarshalJSON() ([]byte, error) {
 	marshaled := make(map[string]json.RawMessage, x.Count())
-	for k, v := range x.values() {
+	for p, v := range x.properties() {
 		asJSON, err := ToXJSON(v)
 		if err == nil {
-			marshaled[k] = json.RawMessage(asJSON.Native())
+			marshaled[p] = json.RawMessage(asJSON.Native())
 		}
 	}
 	return json.Marshal(marshaled)
@@ -89,22 +102,27 @@ func (x *XObject) MarshalJSON() ([]byte, error) {
 // String returns the native string representation of this type for debugging
 func (x *XObject) String() string {
 	pairs := make([]string, 0, x.Count())
-	for _, k := range x.Keys() {
-		pairs = append(pairs, fmt.Sprintf("%s: %s", k, String(x.values()[k])))
+
+	if x.hasDefault() {
+		pairs = append(pairs, fmt.Sprintf("%s: %s", serializeDefaultAs, String(x.Default())))
+	}
+
+	for _, k := range x.Properties() {
+		pairs = append(pairs, fmt.Sprintf("%s: %s", k, String(x.properties()[k])))
 	}
 	return "XObject{" + strings.Join(pairs, ", ") + "}"
 }
 
 // Count is called when the length of this object is requested in an expression
 func (x *XObject) Count() int {
-	return len(x.values())
+	return len(x.properties())
 }
 
 // Get retrieves the named property
 func (x *XObject) Get(key string) (XValue, bool) {
 	key = strings.ToLower(key)
-	for k, v := range x.values() {
-		if strings.ToLower(k) == key {
+	for p, v := range x.properties() {
+		if strings.ToLower(p) == key {
 			return v, true
 		}
 	}
@@ -112,31 +130,37 @@ func (x *XObject) Get(key string) (XValue, bool) {
 	return nil, false
 }
 
-// Keys returns the sorted property names of this object
-func (x *XObject) Keys() []string {
-	keys := make([]string, 0, x.Count())
-	for key := range x.values() {
-		keys = append(keys, key)
+// Properties returns the sorted property names of this object
+func (x *XObject) Properties() []string {
+	names := make([]string, 0, x.Count())
+	for name := range x.properties() {
+		names = append(names, name)
 	}
-	sort.Strings(keys)
-	return keys
+	sort.Strings(names)
+	return names
 }
 
 // Equals determines equality for this type
 func (x *XObject) Equals(other *XObject) bool {
-	keys1 := x.Keys()
-	keys2 := other.Keys()
+	if x.hasDefault() || other.hasDefault() {
+		if !Equals(x.Default(), other.Default()) {
+			return false
+		}
+	}
 
-	if len(keys1) != len(keys2) {
+	props1 := x.Properties()
+	props2 := other.Properties()
+
+	if len(props1) != len(props2) {
 		return false
 	}
 
-	for k, key := range keys1 {
-		if key != keys2[k] {
+	for p, name := range props1 {
+		if name != props2[p] {
 			return false
 		}
 
-		if !Equals(x.values()[key], other.values()[key]) {
+		if !Equals(x.properties()[name], other.properties()[name]) {
 			return false
 		}
 	}
@@ -144,11 +168,36 @@ func (x *XObject) Equals(other *XObject) bool {
 	return true
 }
 
-func (x *XObject) values() map[string]XValue {
-	if x.data == nil {
-		x.data = x.source()
+func (x *XObject) properties() map[string]XValue {
+	x.ensureInitialized()
+	return x.props
+}
+
+// Default returns the default value for this
+func (x *XObject) Default() XValue {
+	x.ensureInitialized()
+	return x.def
+}
+
+// Default returns the default value for this
+func (x *XObject) hasDefault() bool {
+	return x.Default() != x
+}
+
+func (x *XObject) ensureInitialized() {
+	if x.props == nil {
+		props := x.source()
+
+		x.def = x
+		x.props = make(map[string]XValue, len(props))
+		for p, v := range props {
+			if p == serializeDefaultAs {
+				x.def = v
+			} else {
+				x.props[p] = v
+			}
+		}
 	}
-	return x.data
 }
 
 // XObjectEmpty is the empty empty

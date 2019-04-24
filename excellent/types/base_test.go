@@ -164,6 +164,13 @@ func TestXValue(t *testing.T) {
 			asBool:    true,
 			isEmpty:   false,
 		}, {
+			value:     types.NewXObject(map[string]types.XValue{"__default__": types.NewXNumberFromInt(1), "foo": object1}),
+			marshaled: `{"foo":{"bar":123,"foo":"Hello"}}`,
+			rendered:  `1`,
+			formatted: "1",
+			asBool:    true,
+			isEmpty:   false,
+		}, {
 			value:     types.NewXError(errors.Errorf("it failed")), // once an error, always an error
 			marshaled: `null`,
 			rendered:  "",
@@ -221,6 +228,11 @@ func TestEquals(t *testing.T) {
 			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
 			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
 			true,
+		},
+		{
+			types.NewXObject(map[string]types.XValue{"__default__": types.XBooleanTrue, "bar": types.NewXText("bob")}),
+			types.NewXObject(map[string]types.XValue{"__default__": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			false, // different default
 		},
 		{
 			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),

@@ -256,19 +256,19 @@ func (c *Contact) Context(env utils.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
-		"uuid":       types.NewXText(string(c.uuid)),
-		"id":         types.NewXText(strconv.Itoa(int(c.id))),
-		"name":       types.NewXText(c.name),
-		"first_name": firstName,
-		"display":    types.NewXText(c.Format(env)),
-		"language":   types.NewXText(string(c.language)),
-		"timezone":   timezone,
-		"created_on": types.NewXDateTime(c.createdOn),
-		"urns":       c.urns.ToXValue(env),
-		"urn":        urn,
-		"groups":     c.groups.ToXValue(env),
-		"fields":     Context(env, c.Fields()),
-		"channel":    Context(env, c.PreferredChannel()),
+		"__default__": types.NewXText(c.Format(env)),
+		"uuid":        types.NewXText(string(c.uuid)),
+		"id":          types.NewXText(strconv.Itoa(int(c.id))),
+		"name":        types.NewXText(c.name),
+		"first_name":  firstName,
+		"language":    types.NewXText(string(c.language)),
+		"timezone":    timezone,
+		"created_on":  types.NewXDateTime(c.createdOn),
+		"urns":        c.urns.ToXValue(env),
+		"urn":         urn,
+		"groups":      c.groups.ToXValue(env),
+		"fields":      Context(env, c.Fields()),
+		"channel":     Context(env, c.PreferredChannel()),
 	}
 }
 

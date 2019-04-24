@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -19,7 +20,7 @@ func TestXObject(t *testing.T) {
 		"xxx": nil,
 	})
 	assert.Equal(t, 4, object.Count())
-	assert.ElementsMatch(t, []string{"foo", "bar", "zed", "xxx"}, object.Keys())
+	assert.ElementsMatch(t, []string{"foo", "bar", "zed", "xxx"}, object.Properties())
 
 	val, exists := object.Get("foo")
 	assert.True(t, exists)
@@ -38,16 +39,48 @@ func TestXObject(t *testing.T) {
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","xxx":null,"zed":false}`), asJSON)
 
 	// test equality
-	assert.Equal(t, object, types.NewXObject(map[string]types.XValue{
+	test.AssertEqual(t, object, types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
 		"xxx": nil,
 	}))
-	assert.NotEqual(t, object, types.NewXObject(map[string]types.XValue{
-		"bar": types.NewXNumberFromInt(123),
-		"zed": types.XBooleanFalse,
-		"xxx": nil,
+}
+
+func TestXObjectWithDefault(t *testing.T) {
+	env := utils.NewEnvironmentBuilder().Build()
+
+	object := types.NewXObject(map[string]types.XValue{
+		"__default__": types.NewXText("abc-123"),
+		"foo":         types.NewXText("abc"),
+		"bar":         types.NewXNumberFromInt(123),
+		"zed":         types.XBooleanFalse,
+	})
+	assert.Equal(t, 3, object.Count())
+	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, object.Properties())
+
+	val := object.Default()
+	assert.Equal(t, types.NewXText("abc-123"), val)
+
+	// can't access default like regular property
+	val, exists := object.Get("__default__")
+	assert.False(t, exists)
+	assert.Nil(t, val)
+
+	assert.Equal(t, `abc-123`, object.Render()) // because of default
+	assert.Equal(t, "abc-123", object.Format(env))
+	assert.Equal(t, `XObject{__default__: XText("abc-123"), bar: XNumber(123), foo: XText("abc"), zed: XBoolean(false)}`, object.String())
+	assert.Equal(t, "object", object.Describe())
+
+	asJSON, _ := types.ToXJSON(object)
+	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), asJSON)
+
+	// test equality
+	test.AssertEqual(t, object, types.NewXObject(map[string]types.XValue{
+		"__default__": types.NewXText("abc-123"),
+		"foo":         types.NewXText("abc"),
+		"bar":         types.NewXNumberFromInt(123),
+		"zed":         types.XBooleanFalse,
 	}))
 }
 
@@ -68,7 +101,7 @@ func TestXLazyObject(t *testing.T) {
 	assert.False(t, initialized)
 
 	assert.Equal(t, 3, object.Count())
-	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, object.Keys())
+	assert.ElementsMatch(t, []string{"foo", "bar", "zed"}, object.Properties())
 	assert.Equal(t, `{bar: 123, foo: abc, zed: false}`, object.Render())
 	assert.Equal(t, "bar: 123\nfoo: abc\nzed: false", object.Format(env))
 	assert.Equal(t, "object", object.Describe())
@@ -94,14 +127,14 @@ func TestToXObject(t *testing.T) {
 
 	env := utils.NewEnvironmentBuilder().Build()
 
-	for _, test := range tests {
-		object, err := types.ToXObject(env, test.value)
+	for _, tc := range tests {
+		object, err := types.ToXObject(env, tc.value)
 
-		if test.hasError {
-			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)
+		if tc.hasError {
+			assert.Error(t, err, "expected error for input %s", tc.value)
 		} else {
-			assert.NoError(t, err, "unexpected error for input %T{%s}", test.value, test.value)
-			assert.Equal(t, test.asObject, object, "object mismatch for input %T{%s}", test.value, test.value)
+			assert.NoError(t, err, "unexpected error for input %s", tc.value)
+			test.AssertEqual(t, tc.asObject, object, "object mismatch for input %s", tc.value)
 		}
 	}
 }

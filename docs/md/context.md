@@ -38,7 +38,7 @@ Examples:
 
 
 ```objectivec
-@contact.channel → {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}
+@contact.channel → My Android Phone
 @contact.channel.name → My Android Phone
 @contact.channel.address → +12345671111
 @input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d
@@ -99,7 +99,7 @@ Examples:
 
 
 ```objectivec
-@run.flow → {name: Registration, revision: 123, uuid: 50c3706e-fedb-42c0-8eab-dda3335714b7}
+@run.flow → Registration
 @child.run.flow.name → Collect Age
 @run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7
 @(json(run.flow)) → {"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
@@ -148,7 +148,7 @@ Examples:
 
 
 ```objectivec
-@input → {attachments: [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3], channel: {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}, created_on: 2017-12-31T11:35:10.035757-02:00, text: Hi there, type: msg, urn: tel:+12065551212, uuid: 9bf91c2b-ce58-4cef-aacc-281e03f69ab5}
+@input → Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
 @input.type → msg
 @input.text → Hi there
 @input.attachments → [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]
@@ -174,7 +174,8 @@ Examples:
 
 
 ```objectivec
-@results.favorite_color → {category: Red, category_localized: Red, created_on: 2018-04-11T18:24:30.123456Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}
+@results → 2Factor: 34634624463525\nFavorite Color: red\nPhone Number: +12344563452\nwebhook: 200
+@results.favorite_color → red
 @results.favorite_color.value → red
 @results.favorite_color.category → Red
 ```

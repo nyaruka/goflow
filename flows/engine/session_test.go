@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"strings"
 	"testing"
 	"time"
 
@@ -71,7 +70,7 @@ var templateTests = []struct {
 	{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
 	{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(contact.fields.favorite_icecream))", "true", ""},
-	{"@(has_error(contact.fields.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
+	{"@(has_error(contact.fields.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
 	{"@(count(contact.fields))", "5", ""},
 
 	// simplifed field access
@@ -81,32 +80,32 @@ var templateTests = []struct {
 	{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
 	{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(fields.favorite_icecream))", "true", ""},
-	{"@(has_error(fields.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
+	{"@(has_error(fields.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
 	{"@(count(fields))", "5", ""},
 
-	{"@input", "{attachments: [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3], channel: {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}, created_on: 2017-12-31T11:35:10.035757-02:00, text: Hi there, type: msg, urn: tel:+12065551212, uuid: 9bf91c2b-ce58-4cef-aacc-281e03f69ab5}", ""},
+	{"@input", "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3", ""},
 	{"@input.text", "Hi there", ""},
 	{"@input.attachments", `[image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]`, ""},
 	{"@(input.attachments[0])", "image/jpeg:http://s3.amazon.com/bucket/test.jpg", ""},
 	{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
 	{"@input.channel.name", "My Android Phone", ""},
 
-	{"@results.favorite_color", `{category: Red, category_localized: Red, created_on: 2018-09-13T13:36:30.123456Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}`, ""},
+	{"@results.favorite_color", `red`, ""},
 	{"@results.favorite_color.value", "red", ""},
 	{"@results.favorite_color.category", "Red", ""},
 	{"@results.favorite_color.category_localized", "Red", ""},
 	{"@(is_error(results.favorite_icecream))", "true", ""},
-	{"@(has_error(results.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
+	{"@(has_error(results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
 	{"@(count(results))", "3", ""},
 
-	{"@run.results.favorite_color", `{categories: [Red], categories_localized: [Red], created_on: 2018-09-13T13:36:30.123456Z, extra: , input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, values: [red]}`, ""},
+	{"@run.results.favorite_color", `[red]`, ""},
 	{"@run.results.favorite_color.values", "[red]", ""},
 	{`@(run.results.favorite_color.values[0])`, `red`, ""},
 	{"@run.results.favorite_color.categories", "[Red]", ""},
 	{`@(run.results.favorite_color.categories[0])`, `Red`, ""},
 	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(run.results.favorite_icecream))", "true", ""},
-	{"@(has_error(run.results.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
+	{"@(has_error(run.results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
 	{"@(count(run.results))", "3", ""},
 
 	{"@run.status", "completed", ""},
@@ -159,47 +158,6 @@ func BenchmarkEvaluateTemplate(b *testing.B) {
 	}
 }
 
-func TestContextFormat(t *testing.T) {
-	tests := []struct {
-		path     string
-		expected string
-	}{
-		{"contact.name", "Ryan Lewis"},
-		{"contact.channel", "address: +12345671111\nname: My Android Phone\nuuid: 57f1078f-88aa-46f4-a59a-948a5739c03d"},
-		{"contact", "testdata/format_contact.txt"},
-		{"results", "testdata/format_results.txt"},
-	}
-
-	server := test.NewTestHTTPServer(49992)
-	defer server.Close()
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
-
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
-	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
-
-	session, _, err := test.CreateTestSession(server.URL, nil)
-	require.NoError(t, err)
-
-	run := session.Runs()[0]
-
-	for _, tc := range tests {
-		template := fmt.Sprintf("@(format(%s))", tc.path)
-		actual, err := run.EvaluateTemplate(template)
-		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)
-
-		expected := tc.expected
-		if strings.HasSuffix(expected, ".txt") {
-			file, err := ioutil.ReadFile(expected)
-			require.NoError(t, err)
-
-			expected = string(file)
-		}
-
-		assert.Equal(t, expected, actual, "format(...) mismatch for test %s", template)
-	}
-}
-
 func TestContextToJSON(t *testing.T) {
 	tests := []struct {
 		path     string
@@ -216,7 +174,6 @@ func TestContextToJSON(t *testing.T) {
 			`{
 				"channel": {"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
 				"created_on": "2018-06-20T11:40:30.123456Z", 
-				"display": "Ryan Lewis",
 				"fields": {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
 				"first_name": "Ryan",
 				"groups": [{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
@@ -247,7 +204,6 @@ func TestContextToJSON(t *testing.T) {
 				"contact": {
 					"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
 					"created_on":"2018-06-20T11:40:30.123456Z",
-					"display":"Ryan Lewis",
 					"fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
 					"first_name":"Ryan",
 					"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],
@@ -324,7 +280,6 @@ func TestContextToJSON(t *testing.T) {
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
 					"created_on": "2018-06-20T11:40:30.123456Z",
-					"display": "Ryan Lewis",
 					"fields": {
 						"activation_token": "AACC55",
 						"age": 23,
@@ -381,7 +336,6 @@ func TestContextToJSON(t *testing.T) {
 							"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 						},
 						"created_on": "2018-06-20T11:40:30.123456Z",
-						"display": "Ryan Lewis",
 						"fields": {
 							"activation_token": "AACC55",
 							"age": 23,
@@ -465,7 +419,6 @@ func TestContextToJSON(t *testing.T) {
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
 					"created_on": "2018-01-01T12:00:00.000000Z",
-					"display": "Jasmine",
 					"fields": {
 						"activation_token": null,
 						"age": 33,
@@ -511,7 +464,6 @@ func TestContextToJSON(t *testing.T) {
 							"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 						},
 						"created_on": "2018-01-01T12:00:00.000000Z",
-						"display": "Jasmine",
 						"fields": {
 							"activation_token": null,
 							"age": 33,

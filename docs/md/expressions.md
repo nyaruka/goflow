@@ -724,18 +724,6 @@ will be used. An error will be returned if the timezone is not recognized.
 @(format_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
-<a name="function:format_input"></a>
-
-## format_input(urn)
-
-Formats `input` to be the text followed by the URLs of any attachment, separated by newlines.
-
-
-```objectivec
-@(format_input(input)) → Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
-@(format_input("NOT INPUT")) → ERROR
-```
-
 <a name="function:format_location"></a>
 
 ## format_location(location)
@@ -763,18 +751,6 @@ An optional third argument `humanize` can be false to disable the use of thousan
 @(format_number(1234.5670, 2, true)) → 1,234.57
 @(format_number(1234.5678, 0, false)) → 1235
 @(format_number("foo", 2, false)) → ERROR
-```
-
-<a name="function:format_results"></a>
-
-## format_results(urn)
-
-Formats `results` to be name and value pairs, separated by newlines.
-
-
-```objectivec
-@(format_results(results)) → 2Factor: 34634624463525\nFavorite Color: red\nPhone Number: +12344563452\nwebhook: 200
-@(format_results("NOT RESULTS")) → ERROR
 ```
 
 <a name="function:format_time"></a>

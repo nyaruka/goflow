@@ -160,9 +160,10 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 // Context returns the properties available in expressions
 func (f *flow) Context(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"uuid":     types.NewXText(string(f.UUID())),
-		"name":     types.NewXText(f.name),
-		"revision": types.NewXNumberFromInt(f.revision),
+		"__default__": types.NewXText(f.name),
+		"uuid":        types.NewXText(string(f.UUID())),
+		"name":        types.NewXText(f.name),
+		"revision":    types.NewXNumberFromInt(f.revision),
 	}
 }
 

@@ -21,7 +21,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(ABS(-1))`, new: `@(abs(-1))`, val: `1`},
 		{old: `@(Abs(5))`, new: `@(abs(5))`, val: `5`},
 
-		{old: `@(AND(contact.age > 30, flow.amount < 5))`, new: `@(and(fields.age > 30, results.amount.value < 5))`, val: `false`},
+		{old: `@(AND(contact.age > 30, flow.amount < 5))`, new: `@(and(fields.age > 30, results.amount < 5))`, val: `false`},
 		{old: `@(AND(contact.gender = "F", contact.age >= 18))`, new: `@(and(fields.gender = "F", fields.age >= 18))`, val: `false`},
 
 		{old: `@(AVERAGE(1, 2, 3, 4, 5))`, new: `@(mean(1, 2, 3, 4, 5))`, val: `3`},
@@ -51,10 +51,10 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(FALSE())`, new: `@(false)`, val: `false`},
 
-		{old: `@(FIELD(flow.favorite_color, 2, ","))`, new: `@(field(results.favorite_color.value, 1, ","))`, val: ``},
-		{old: `@(FIELD(flow.favorite_color, child.age, ","))`, new: `@(field(results.favorite_color.value, child.results.age.value - 1, ","))`, val: ``},
+		{old: `@(FIELD(flow.favorite_color, 2, ","))`, new: `@(field(results.favorite_color, 1, ","))`, val: ``},
+		{old: `@(FIELD(flow.favorite_color, child.age, ","))`, new: `@(field(results.favorite_color, child.results.age - 1, ","))`, val: ``},
 
-		{old: `@(FIRST_WORD(flow.favorite_color))`, new: `@(word(results.favorite_color.value, 0))`, val: `red`},
+		{old: `@(FIRST_WORD(flow.favorite_color))`, new: `@(word(results.favorite_color, 0))`, val: `red`},
 		{old: `@(FIRST_WORD(WORD_SLICE("bee cat dog elf", 2, 4)))`, new: `@(word(word_slice("bee cat dog elf", 1, 3), 0))`, val: `cat`},
 
 		{old: `@(FIXED(contact.age, 3, false))`, new: `@(format_number(fields.age, 3, false))`, val: `23.000`},
@@ -73,9 +73,9 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(LOWER(contact.first_name))`, new: `@(lower(contact.first_name))`, val: `ryan`},
 
-		{old: `@(MAX(child.age, 10))`, new: `@(max(child.results.age.value, 10))`, val: `23`},
+		{old: `@(MAX(child.age, 10))`, new: `@(max(child.results.age, 10))`, val: `23`},
 
-		{old: `@(MIN(child.age, 10))`, new: `@(min(child.results.age.value, 10))`, val: `10`},
+		{old: `@(MIN(child.age, 10))`, new: `@(min(child.results.age, 10))`, val: `10`},
 
 		{old: `@(MINUTE(NOW()))`, new: `@(format_datetime(now(), "m"))`},
 
@@ -89,16 +89,16 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(POWER(2, 3))`, new: `@(2 ^ 3)`, val: `8`},
 
-		{old: `@(PROPER(contact))`, new: `@(title(contact.display))`, val: `Ryan Lewis`},
+		{old: `@(PROPER(contact))`, new: `@(title(contact))`, val: `Ryan Lewis`},
 
 		{old: `@(RAND())`, new: `@(rand())`},
 
 		{old: `@(RANDBETWEEN(1, 10))`, new: `@(rand_between(1, 10))`},
 
-		{old: `@(REGEX_GROUP(flow.favorite_color, "\w(\w+)", 1))`, new: `@(regex_match(results.favorite_color.value, "\w(\w+)", 1))`},
-		{old: `@(REGEX_GROUP(flow.favorite_color, "\w\w+"))`, new: `@(regex_match(results.favorite_color.value, "\w\w+"))`},
+		{old: `@(REGEX_GROUP(flow.favorite_color, "\w(\w+)", 1))`, new: `@(regex_match(results.favorite_color, "\w(\w+)", 1))`},
+		{old: `@(REGEX_GROUP(flow.favorite_color, "\w\w+"))`, new: `@(regex_match(results.favorite_color, "\w\w+"))`},
 
-		{old: `@(REMOVE_FIRST_WORD(flow.favorite_color))`, new: `@(remove_first_word(results.favorite_color.value))`},
+		{old: `@(REMOVE_FIRST_WORD(flow.favorite_color))`, new: `@(remove_first_word(results.favorite_color))`},
 
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
 
@@ -115,25 +115,25 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(SECOND(NOW()))`, new: `@(format_datetime(now(), "s"))`},
 
-		{old: `@(SUM(contact.age, child.age))`, new: `@(fields.age + child.results.age.value)`},
+		{old: `@(SUM(contact.age, child.age))`, new: `@(fields.age + child.results.age)`},
 
 		{old: `@(TRUE())`, new: `@(true)`},
 
 		{old: `@(WEEKDAY(TODAY()))`, new: `@(weekday(today()) + 1)`},
 
-		{old: `@(WORD_COUNT(flow.favorite_color, FALSE))`, new: `@(word_count(results.favorite_color.value, NULL))`},
-		{old: `@(WORD_COUNT(flow.favorite_color, TRUE))`, new: `@(word_count(results.favorite_color.value, " \t"))`},
-		{old: `@(WORD_COUNT(flow.favorite_color))`, new: `@(word_count(results.favorite_color.value))`},
+		{old: `@(WORD_COUNT(flow.favorite_color, FALSE))`, new: `@(word_count(results.favorite_color, NULL))`},
+		{old: `@(WORD_COUNT(flow.favorite_color, TRUE))`, new: `@(word_count(results.favorite_color, " \t"))`},
+		{old: `@(WORD_COUNT(flow.favorite_color))`, new: `@(word_count(results.favorite_color))`},
 
-		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, FALSE))`, new: `@(word_slice(results.favorite_color.value, 1, 3, NULL))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, TRUE))`, new: `@(word_slice(results.favorite_color.value, 1, 3, " \t"))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4))`, new: `@(word_slice(results.favorite_color.value, 1, 3))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2))`, new: `@(word_slice(results.favorite_color.value, 1))`},
+		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, FALSE))`, new: `@(word_slice(results.favorite_color, 1, 3, NULL))`},
+		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, TRUE))`, new: `@(word_slice(results.favorite_color, 1, 3, " \t"))`},
+		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4))`, new: `@(word_slice(results.favorite_color, 1, 3))`},
+		{old: `@(WORD_SLICE(flow.favorite_color, 2))`, new: `@(word_slice(results.favorite_color, 1))`},
 
-		{old: `@(WORD(flow.favorite_color, 1, FALSE))`, new: `@(word(results.favorite_color.value, 0, NULL))`},
-		{old: `@(WORD(flow.favorite_color, 1, TRUE))`, new: `@(word(results.favorite_color.value, 0, " \t"))`},
-		{old: `@(WORD(flow.favorite_color, 1))`, new: `@(word(results.favorite_color.value, 0))`},
-		{old: `@(WORD(flow.favorite_color, child.age - 22))`, new: `@(word(results.favorite_color.value, legacy_add(child.results.age.value, -22) - 1))`},
+		{old: `@(WORD(flow.favorite_color, 1, FALSE))`, new: `@(word(results.favorite_color, 0, NULL))`},
+		{old: `@(WORD(flow.favorite_color, 1, TRUE))`, new: `@(word(results.favorite_color, 0, " \t"))`},
+		{old: `@(WORD(flow.favorite_color, 1))`, new: `@(word(results.favorite_color, 0))`},
+		{old: `@(WORD(flow.favorite_color, child.age - 22))`, new: `@(word(results.favorite_color, legacy_add(child.results.age, -22) - 1))`},
 
 		{old: `@(YEAR(date.now))`, new: `@(format_date(now(), "YYYY"))`},
 		{old: `@(YEAR(NOW()))`, new: `@(format_date(now(), "YYYY"))`},

@@ -30,8 +30,8 @@ type testTemplate struct {
 var tests = []testTemplate{
 
 	// contact variables
-	{old: `@contact`, new: `@contact.display`},
-	{old: `@CONTACT`, new: `@contact.display`},
+	{old: `@contact`, new: `@contact`},
+	{old: `@CONTACT`, new: `@contact`},
 	{old: `@contact.uuid`, new: `@contact.uuid`},
 	{old: `@contact.id`, new: `@contact.id`},
 	{old: `@contact.name`, new: `@contact.name`},
@@ -53,38 +53,39 @@ var tests = []testTemplate{
 	{old: `@contact.mailto`, new: `@(format_urn(urns.mailto))`},
 
 	// run variables
-	{old: `@flow`, new: `@(format_results(results))`},
-	{old: `@flow.favorite_color`, new: `@results.favorite_color.value`},
+	{old: `@flow`, new: `@results`},
+	{old: `@flow.favorite_color`, new: `@results.favorite_color`},
 	{old: `@flow.favorite_color.category`, new: `@results.favorite_color.category_localized`},
 	{old: `@flow.favorite_color.text`, new: `@results.favorite_color.input`},
 	{old: `@flow.favorite_color.time`, new: `@results.favorite_color.created_on`},
 	{old: `@flow.favorite_color.value`, new: `@results.favorite_color.value`},
-	{old: `@flow.2factor`, new: `@(results["2factor"].value)`},
+	{old: `@flow.2factor`, new: `@(results["2factor"])`},
 	{old: `@flow.2factor.value`, new: `@(results["2factor"].value)`},
-	{old: `@flow.1`, new: `@(results["1"].value)`, dontEval: true},
-	{old: `@(flow.1337)`, new: `@(results["1337"].value)`, dontEval: true},
+	{old: `@flow.1`, new: `@(results["1"])`, dontEval: true},
+	{old: `@(flow.1337)`, new: `@(results["1337"])`, dontEval: true},
+	{old: `@(flow.1337.value)`, new: `@(results["1337"].value)`, dontEval: true},
 	{old: `@(flow.1337.category)`, new: `@(results["1337"].category_localized)`, dontEval: true},
-	{old: `@flow.contact`, new: `@contact.display`},
+	{old: `@flow.contact`, new: `@contact`},
 	{old: `@flow.contact.name`, new: `@contact.name`},
 	{old: `@flow.contact.age`, new: `@fields.age`},
 
-	{old: `@child`, new: `@(format_results(child.results))`},
-	{old: `@child.age`, new: `@child.results.age.value`},
+	{old: `@child`, new: `@child.results`},
+	{old: `@child.age`, new: `@child.results.age`},
 	{old: `@child.age.value`, new: `@child.results.age.value`},
 	{old: `@child.age.category`, new: `@child.results.age.category_localized`},
 	{old: `@child.age.text`, new: `@child.results.age.input`},
 	{old: `@child.age.time`, new: `@child.results.age.created_on`},
-	{old: `@child.contact`, new: `@child.contact.display`},
+	{old: `@child.contact`, new: `@child.contact`},
 	{old: `@child.contact.name`, new: `@child.contact.name`},
 	{old: `@child.contact.age`, new: `@child.fields.age`},
 
-	{old: `@parent`, new: `@(format_results(parent.results))`},
-	{old: `@parent.role`, new: `@parent.results.role.value`},
+	{old: `@parent`, new: `@parent.results`},
+	{old: `@parent.role`, new: `@parent.results.role`},
 	{old: `@parent.role.value`, new: `@parent.results.role.value`},
 	{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
 	{old: `@parent.role.text`, new: `@parent.results.role.input`},
 	{old: `@parent.role.time`, new: `@parent.results.role.created_on`},
-	{old: `@parent.contact`, new: `@parent.contact.display`},
+	{old: `@parent.contact`, new: `@parent.contact`},
 	{old: `@parent.contact.name`, new: `@parent.contact.name`},
 	{old: `@parent.contact.groups`, new: `@(join(parent.contact.groups, ","))`},
 	{old: `@parent.contact.gender`, new: `@parent.fields.gender`},
@@ -96,14 +97,14 @@ var tests = []testTemplate{
 	{old: `@parent.contact.tel_e164`, new: `@(urn_parts(parent.urns.tel).path)`},
 
 	// input
-	{old: `@step`, new: `@(format_input(input))`},
-	{old: `@step.value`, new: `@(format_input(input))`},
+	{old: `@step`, new: `@input`},
+	{old: `@step.value`, new: `@input`},
 	{old: `@step.text`, new: `@input.text`},
 	{old: `@step.attachments`, new: `@(foreach(foreach(input.attachments, attachment_parts), extract, "url"))`},
 	{old: `@step.attachments.0`, new: `@(attachment_parts(input.attachments[0]).url)`},
 	{old: `@step.attachments.10`, new: `@(attachment_parts(input.attachments[10]).url)`, dontEval: true}, // out of range
 	{old: `@step.time`, new: `@input.created_on`},
-	{old: `@step.contact`, new: `@contact.display`},
+	{old: `@step.contact`, new: `@contact`},
 	{old: `@step.contact.name`, new: `@contact.name`},
 	{old: `@step.contact.age`, new: `@fields.age`},
 
@@ -114,16 +115,23 @@ var tests = []testTemplate{
 	{old: `@date.tomorrow`, new: `@(format_date(datetime_add(now(), 1, "D")))`},
 	{old: `@date.yesterday`, new: `@(format_date(datetime_add(now(), -1, "D")))`},
 
+	// channel
+	{old: `@channel`, new: `@contact.channel.address`},
+	{old: `@channel.address`, new: `@contact.channel.address`},
+	{old: `@channel.tel`, new: `@contact.channel.address`},
+	{old: `@channel.tel_e164`, new: `@contact.channel.address`},
+	{old: `@channel.name`, new: `@contact.channel.name`},
+
 	// extra
 	{old: `@extra`, new: `@legacy_extra`},
 	{old: `@extra.address.state`, new: `@legacy_extra.address.state`},
 	{old: `@extra.results.1`, new: `@(legacy_extra.results["1"])`},
-	{old: `@extra.flow.role`, new: `@parent.results.role.value`},
+	{old: `@extra.flow.role`, new: `@parent.results.role`},
 
 	// variables in parens
 	{old: `@(contact.tel)`, new: `@(format_urn(urns.tel))`},
 	{old: `@(contact.gender)`, new: `@fields.gender`},
-	{old: `@(flow.favorite_color)`, new: `@results.favorite_color.value`},
+	{old: `@(flow.favorite_color)`, new: `@results.favorite_color`},
 
 	// booleans
 	{old: `@(TRUE)`, new: `@(true)`},
@@ -176,7 +184,7 @@ var tests = []testTemplate{
 	// date+time addition should get converted to replace_time
 	{old: `@(today() + TIME(15, 30, 0))`, new: `@(replace_time(today(), time_from_parts(15, 30, 0)))`},
 	{old: `@(TODAY()+TIMEVALUE("10:30"))`, new: `@(replace_time(today(), time("10:30")))`},
-	{old: `@(DATEVALUE(date.today) + TIMEVALUE(CONCATENATE(flow.time_input, ":00")))`, new: `@(replace_time(date(format_date(today())), time(results.time_input.value & ":00")))`, dontEval: true},
+	{old: `@(DATEVALUE(date.today) + TIMEVALUE(CONCATENATE(flow.time_input, ":00")))`, new: `@(replace_time(date(format_date(today())), time(results.time_input & ":00")))`, dontEval: true},
 	{old: `@(contact.join_date + TIME(2, 30, 0))`, new: `@(replace_time(fields.join_date, time_from_parts(2, 30, 0)))`},
 
 	// legacy_add permutations
@@ -197,7 +205,7 @@ var tests = []testTemplate{
 	// misc edge cases
 	{old: `@`, new: `@`},
 	{old: `@contact.name...?`, new: `@contact.name...?`},
-	{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@results.favorite_color.value @@flow.favorite_color @results.favorite_color.value @nyaruka @ @`},
+	{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@results.favorite_color @@flow.favorite_color @results.favorite_color @nyaruka @ @`},
 }
 
 func TestMigrateTemplate(t *testing.T) {

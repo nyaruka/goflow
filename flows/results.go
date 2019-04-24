@@ -2,6 +2,9 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -21,7 +24,8 @@ import (
 //
 // Examples:
 //
-//   @results.favorite_color -> {category: Red, category_localized: Red, created_on: 2018-04-11T18:24:30.123456Z, input: , name: Favorite Color, node_uuid: f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03, value: red}
+//   @results -> 2Factor: 34634624463525\nFavorite Color: red\nPhone Number: +12344563452\nwebhook: 200
+//   @results.favorite_color -> red
 //   @results.favorite_color.value -> red
 //   @results.favorite_color.category -> Red
 //
@@ -59,6 +63,7 @@ func (r *Result) Context(env utils.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
+		"__default__":          types.NewXArray(types.NewXText(r.Value)),
 		"name":                 types.NewXText(r.Name),
 		"values":               types.NewXArray(types.NewXText(r.Value)),
 		"categories":           types.NewXArray(types.NewXText(r.Category)),
@@ -78,6 +83,7 @@ func (r *Result) SimpleContext(env utils.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
+		"__default__":        types.NewXText(r.Value),
 		"name":               types.NewXText(r.Name),
 		"value":              types.NewXText(r.Value),
 		"category":           types.NewXText(r.Category),
@@ -117,7 +123,8 @@ func (r Results) Get(key string) *Result {
 
 // Context returns the properties available in expressions
 func (r Results) Context(env utils.Environment) map[string]types.XValue {
-	entries := make(map[string]types.XValue, len(r))
+	entries := make(map[string]types.XValue, len(r)+1)
+	entries["__default__"] = types.NewXText(r.format())
 
 	for k, v := range r {
 		entries[k] = Context(env, v)
@@ -127,10 +134,20 @@ func (r Results) Context(env utils.Environment) map[string]types.XValue {
 
 // SimpleContext returns a simpler representation of these results exposed at @results
 func (r Results) SimpleContext(env utils.Environment) map[string]types.XValue {
-	entries := make(map[string]types.XValue, len(r))
+	entries := make(map[string]types.XValue, len(r)+1)
+	entries["__default__"] = types.NewXText(r.format())
 
 	for k, v := range r {
 		entries[k] = ContextFunc(env, v.SimpleContext)
 	}
 	return entries
+}
+
+func (r Results) format() string {
+	lines := make([]string, 0, len(r))
+	for _, v := range r {
+		lines = append(lines, fmt.Sprintf("%s: %s", v.Name, v.Value))
+	}
+	sort.SliceStable(lines, func(i, j int) bool { return strings.Compare(lines[i], lines[j]) < 0 })
+	return strings.Join(lines, "\n")
 }

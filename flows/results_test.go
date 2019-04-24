@@ -23,7 +23,9 @@ func TestResults(t *testing.T) {
 	assert.Nil(t, results.Get("xxx"))
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
+		"__default__": types.NewXText("Beer: skol!"),
 		"beer": types.NewXObject(map[string]types.XValue{
+			"__default__":        types.NewXText("skol!"),
 			"category":           types.NewXText("Skol"),
 			"category_localized": types.NewXText("Skol"),
 			"created_on":         types.NewXDateTime(time.Date(2019, 4, 5, 14, 16, 30, 123456, time.UTC)),
@@ -35,7 +37,9 @@ func TestResults(t *testing.T) {
 	}), flows.ContextFunc(env, results.SimpleContext))
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
+		"__default__": types.NewXText("Beer: skol!"),
 		"beer": types.NewXObject(map[string]types.XValue{
+			"__default__":          types.NewXArray(types.NewXText("skol!")),
 			"categories":           types.NewXArray(types.NewXText("Skol")),
 			"categories_localized": types.NewXArray(types.NewXText("Skol")),
 			"created_on":           types.NewXDateTime(time.Date(2019, 4, 5, 14, 16, 30, 123456, time.UTC)),

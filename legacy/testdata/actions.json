@@ -140,8 +140,8 @@
                 "bob@nyaruka.com",
                 "@fields.supervisor"
             ],
-            "subject": "Subject @(format_input(input))",
-            "body": "Body @(format_input(input))"
+            "subject": "Subject @input",
+            "body": "Body @input"
         },
         "expected_localization": {}
     },
@@ -168,7 +168,7 @@
         "expected_action": {
             "type": "play_audio",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "audio_url": "@results.response_1.value"
+            "audio_url": "@results.response_1"
         },
         "expected_localization": {}
     },
@@ -259,7 +259,7 @@
         "expected_action": {
             "type": "set_contact_name",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "name": "Bob @(format_input(input))"
+            "name": "Bob @input"
         },
         "expected_localization": {}
     },
@@ -274,7 +274,7 @@
         "expected_action": {
             "type": "set_contact_name",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "name": "@(format_input(input)) @(word_slice(contact.name, 1, -1))"
+            "name": "@input @(word_slice(contact.name, 1, -1))"
         },
         "expected_localization": {}
     },
@@ -293,7 +293,7 @@
                 "key": "gender",
                 "name": "Gender"
             },
-            "value": "@(format_input(input))"
+            "value": "@input"
         },
         "expected_localization": {}
     },

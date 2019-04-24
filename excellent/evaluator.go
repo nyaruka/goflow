@@ -17,7 +17,7 @@ import (
 func EvaluateTemplate(env utils.Environment, context *types.XObject, template string) (string, error) {
 	var buf strings.Builder
 
-	err := VisitTemplate(template, context.Keys(), func(tokenType XTokenType, token string) error {
+	err := VisitTemplate(template, context.Properties(), func(tokenType XTokenType, token string) error {
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
@@ -44,7 +44,7 @@ func EvaluateTemplate(env utils.Environment, context *types.XObject, template st
 // the typed value from EvaluateExpression instead of stringifying the result.
 func EvaluateTemplateValue(env utils.Environment, context *types.XObject, template string) (types.XValue, error) {
 	template = strings.TrimSpace(template)
-	scanner := NewXScanner(strings.NewReader(template), context.Keys())
+	scanner := NewXScanner(strings.NewReader(template), context.Properties())
 
 	// parse our first token
 	tokenType, token := scanner.Scan()

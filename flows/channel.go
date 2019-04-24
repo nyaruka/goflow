@@ -19,7 +19,7 @@ import (
 //
 // Examples:
 //
-//   @contact.channel -> {address: +12345671111, name: My Android Phone, uuid: 57f1078f-88aa-46f4-a59a-948a5739c03d}
+//   @contact.channel -> My Android Phone
 //   @contact.channel.name -> My Android Phone
 //   @contact.channel.address -> +12345671111
 //   @input.channel.uuid -> 57f1078f-88aa-46f4-a59a-948a5739c03d
@@ -72,9 +72,10 @@ func (c *Channel) HasParent() bool {
 // Context returns the properties available in expressions
 func (c *Channel) Context(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"uuid":    types.NewXText(string(c.UUID())),
-		"name":    types.NewXText(c.Name()),
-		"address": types.NewXText(c.Address()),
+		"__default__": types.NewXText(c.Name()),
+		"uuid":        types.NewXText(string(c.UUID())),
+		"name":        types.NewXText(c.Name()),
+		"address":     types.NewXText(c.Address()),
 	}
 }
 
