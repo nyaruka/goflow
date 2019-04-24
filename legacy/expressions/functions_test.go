@@ -67,7 +67,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(INT(contact.age))`, new: `@(round_down(fields.age))`, val: `23`},
 
-		{old: `@(LEFT(contact.name, 4))`, new: `@(left(contact.name, 4))`, val: `Ryan`},
+		{old: `@(LEFT(contact.name, 4))`, new: `@(text_slice(contact.name, 0, 4))`, val: `Ryan`},
 
 		{old: `@(LEN(contact.first_name))`, new: `@(text_length(contact.first_name))`, val: `4`},
 
@@ -102,7 +102,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
 
-		{old: `@(RIGHT(contact.name, 4))`, new: `@(right(contact.name, 4))`},
+		{old: `@(RIGHT(contact.name, 4))`, new: `@(text_slice(contact.name, -4))`, val: "ewis"},
 
 		{old: `@(ROUND(9.4378, 3))`, new: `@(round(9.4378, 3))`},
 		{old: `@(ROUND(9.4378))`, new: `@(round(9.4378))`},

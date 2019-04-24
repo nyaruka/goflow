@@ -853,20 +853,6 @@ Returns the JSON representation of `value`.
 @(json(contact.uuid)) → "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 ```
 
-<a name="function:left"></a>
-
-## left(text, count)
-
-Returns the `count` left-most characters in `text`
-
-
-```objectivec
-@(left("hello", 2)) → he
-@(left("hello", 7)) → hello
-@(left("😀😃😄😁", 2)) → 😀😃
-@(left("hello", -1)) → ERROR
-```
-
 <a name="function:lower"></a>
 
 ## lower(text)
@@ -1204,20 +1190,6 @@ Returns a new datetime with the time part replaced by the `time`.
 @(replace_time("foo", "10:30")) → ERROR
 ```
 
-<a name="function:right"></a>
-
-## right(text, count)
-
-Returns the `count` right-most characters in `text`
-
-
-```objectivec
-@(right("hello", 2)) → lo
-@(right("hello", 7)) → hello
-@(right("😀😃😄😁", 2)) → 😄😁
-@(right("hello", -1)) → ERROR
-```
-
 <a name="function:round"></a>
 
 ## round(number [,places])
@@ -1332,6 +1304,23 @@ Returns the length (number of characters) of `value` when converted to text.
 ```objectivec
 @(text_length("abc")) → 3
 @(text_length(array(2, 3))) → 6
+```
+
+<a name="function:text_slice"></a>
+
+## text_slice(text, start [, end])
+
+Returns the portion of `text` between `start` (inclusive) and `end` (exclusive).
+
+If `end` is not specified then the entire rest of `text` will be included. Negative values
+for `start` or `end` start at the end of `text`.
+
+
+```objectivec
+@(text_slice("hello", 2)) → llo
+@(text_slice("hello", 1, 3)) → el
+@(text_slice("hello😁", -3, -1)) → lo
+@(text_slice("hello", 7)) →
 ```
 
 <a name="function:time"></a>
