@@ -121,10 +121,12 @@ func TestRunContext(t *testing.T) {
 		{`@child.run`, `Ryan Lewis@Collect Age`},
 		{`@child.contact.name`, `Ryan Lewis`},
 		{`@child.run.contact.name`, `Ryan Lewis`},
+		{`@child.fields`, "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00"},
 		{`@parent`, `Jasmine@Parent`},
 		{`@parent.run`, `Jasmine@Parent`},
 		{`@parent.contact.name`, `Jasmine`},
 		{`@parent.run.contact.name`, `Jasmine`},
+		{`@parent.fields`, "Age: 33\nGender: Female"},
 		{
 			`@(json(contact.fields))`,
 			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`,

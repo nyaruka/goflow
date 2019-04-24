@@ -43,7 +43,7 @@ import (
 //   @(contact.urns[0]) -> tel:+12065551212
 //   @contact.urn -> tel:+12065551212
 //   @(foreach(contact.groups, extract, "name")) -> [Testers, Males]
-//   @contact.fields -> {activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }
+//   @contact.fields -> Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00
 //   @contact.fields.activation_token -> AACC55
 //   @contact.fields.gender -> Male
 //
