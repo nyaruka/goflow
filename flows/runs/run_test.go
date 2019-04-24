@@ -116,6 +116,15 @@ func TestRunContext(t *testing.T) {
 		template string
 		expected string
 	}{
+		{`@run`, `Ryan Lewis@Registration`},
+		{`@child`, `Ryan Lewis@Collect Age`},
+		{`@child.run`, `Ryan Lewis@Collect Age`},
+		{`@child.contact.name`, `Ryan Lewis`},
+		{`@child.run.contact.name`, `Ryan Lewis`},
+		{`@parent`, `Jasmine@Parent`},
+		{`@parent.run`, `Jasmine@Parent`},
+		{`@parent.contact.name`, `Jasmine`},
+		{`@parent.run.contact.name`, `Jasmine`},
 		{
 			`@(json(contact.fields))`,
 			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`,
@@ -140,11 +149,10 @@ func TestRunContext(t *testing.T) {
 			`@(json(run.results.favorite_color))`,
 			`{"categories":["Red"],"categories_localized":["Red"],"created_on":"2018-09-13T13:36:30.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","values":["red"]}`,
 		},
-		{`@parent.contact.name`, `Jasmine`},
-		{`@parent.run.contact.name`, `Jasmine`},
-		{`@child.contact.name`, `Ryan Lewis`},
-		{`@child.run.contact.name`, `Ryan Lewis`},
-		{`@(json(parent.contact.urns))`, `["tel:+593979111222"]`},
+		{
+			`@(json(parent.contact.urns))`,
+			`["tel:+593979111222"]`,
+		},
 		{
 			`@(json(parent.urns))`,
 			`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+593979111222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"wechat":null,"whatsapp":null}`,

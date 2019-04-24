@@ -222,14 +222,15 @@ func (r *flowRun) Context(env utils.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
-		"uuid":       types.NewXText(string(r.UUID())),
-		"contact":    flows.Context(env, r.Contact()),
-		"flow":       flows.Context(env, r.Flow()),
-		"status":     types.NewXText(string(r.Status())),
-		"results":    flows.Context(env, r.Results()),
-		"path":       r.path.ToXValue(env),
-		"created_on": types.NewXDateTime(r.CreatedOn()),
-		"exited_on":  exitedOn,
+		"__default__": types.NewXText(formatRunSummary(env, r)),
+		"uuid":        types.NewXText(string(r.UUID())),
+		"contact":     flows.Context(env, r.Contact()),
+		"flow":        flows.Context(env, r.Flow()),
+		"status":      types.NewXText(string(r.Status())),
+		"results":     flows.Context(env, r.Results()),
+		"path":        r.path.ToXValue(env),
+		"created_on":  types.NewXDateTime(r.CreatedOn()),
+		"exited_on":   exitedOn,
 	}
 }
 
