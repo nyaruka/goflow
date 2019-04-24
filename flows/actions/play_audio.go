@@ -79,9 +79,3 @@ func (a *PlayAudioAction) EnumerateTemplates(localization flows.Localization, in
 	include.String(&a.AudioURL)
 	flows.EnumerateTemplateTranslations(localization, a, "audio_url", include)
 }
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *PlayAudioAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.AudioURL = rewrite(a.AudioURL)
-	flows.RewriteTemplateTranslations(localization, a, "audio_url", rewrite)
-}

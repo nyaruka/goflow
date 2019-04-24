@@ -81,8 +81,3 @@ func (a *SetContactTimezoneAction) Inspect(inspect func(flows.Inspectable)) {
 func (a *SetContactTimezoneAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
 	include.String(&a.Timezone)
 }
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *SetContactTimezoneAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Timezone = rewrite(a.Timezone)
-}

@@ -81,8 +81,3 @@ func (a *SetContactLanguageAction) Inspect(inspect func(flows.Inspectable)) {
 func (a *SetContactLanguageAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
 	include.String(&a.Language)
 }
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *SetContactLanguageAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Language = rewrite(a.Language)
-}

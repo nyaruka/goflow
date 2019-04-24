@@ -86,8 +86,3 @@ func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
 func (a *StartSessionAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
 	include.Slice(a.LegacyVars)
 }
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *StartSessionAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
-}

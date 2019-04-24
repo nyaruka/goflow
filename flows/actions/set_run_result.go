@@ -78,11 +78,6 @@ func (a *SetRunResultAction) EnumerateTemplates(localization flows.Localization,
 	include.String(&a.Value)
 }
 
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *SetRunResultAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Value = rewrite(a.Value)
-}
-
 // EnumerateResults enumerates all potential results on this object
 func (a *SetRunResultAction) EnumerateResults(include func(*flows.ResultSpec)) {
 	if a.Category != "" {

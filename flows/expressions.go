@@ -85,37 +85,10 @@ func isFieldRefPath(path []string) (bool, string) {
 	return false, ""
 }
 
-// EnumerateTemplateArray enumerates each template in the array
-func EnumerateTemplateArray(templates []string, include func(string)) {
-	for _, template := range templates {
-		include(template)
-	}
-}
-
-// RewriteTemplateArray rewrites each template in the array
-func RewriteTemplateArray(templates []string, rewrite func(string) string) {
-	for t := range templates {
-		templates[t] = rewrite(templates[t])
-	}
-}
-
 func EnumerateTemplateTranslations(localization Localization, localizable Localizable, key string, include TemplateIncluder) {
 	for _, lang := range localization.Languages() {
 		translations := localization.GetTranslations(lang)
 		include.Slice(translations.GetTextArray(localizable.LocalizationUUID(), key))
-	}
-}
-
-func RewriteTemplateTranslations(localization Localization, localizable Localizable, key string, rewrite func(string) string) {
-	for _, lang := range localization.Languages() {
-		translations := localization.GetTranslations(lang)
-
-		templates := translations.GetTextArray(localizable.LocalizationUUID(), key)
-		rewritten := make([]string, len(templates))
-		for t := range templates {
-			rewritten[t] = rewrite(templates[t])
-		}
-		translations.SetTextArray(localizable.LocalizationUUID(), key, rewritten)
 	}
 }
 
@@ -144,18 +117,6 @@ func (r inspectableReference) EnumerateTemplates(localization Localization, incl
 			include.String(&typed.NameMatch)
 		case *assets.LabelReference:
 			include.String(&typed.NameMatch)
-		}
-	}
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (r inspectableReference) RewriteTemplates(localization Localization, rewrite func(string) string) {
-	if r.ref != nil && r.ref.Variable() {
-		switch typed := r.ref.(type) {
-		case *assets.GroupReference:
-			typed.NameMatch = rewrite(typed.NameMatch)
-		case *assets.LabelReference:
-			typed.NameMatch = rewrite(typed.NameMatch)
 		}
 	}
 }

@@ -88,8 +88,3 @@ func (a *AddContactURNAction) Inspect(inspect func(flows.Inspectable)) {
 func (a *AddContactURNAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
 	include.String(&a.Path)
 }
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *AddContactURNAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Path = rewrite(a.Path)
-}

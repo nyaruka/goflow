@@ -184,7 +184,7 @@ func (f *flow) inspect(inspect func(flows.Inspectable)) {
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
 	templates := make([]string, 0)
-	include := flows.NewTemplateIncluder(func(template string) {
+	include := flows.NewTemplateEnumerator(func(template string) {
 		if template != "" {
 			templates = append(templates, template)
 		}
@@ -199,7 +199,7 @@ func (f *flow) ExtractTemplates() []string {
 // RewriteTemplates rewrites all templates
 func (f *flow) RewriteTemplates(rewrite func(string) string) {
 	f.inspect(func(item flows.Inspectable) {
-		item.RewriteTemplates(f.Localization(), rewrite)
+		item.EnumerateTemplates(f.Localization(), flows.NewTemplateRewriter(rewrite))
 	})
 }
 
@@ -217,7 +217,7 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 		}
 	}
 
-	include := flows.NewTemplateIncluder(func(template string) {
+	include := flows.NewTemplateEnumerator(func(template string) {
 		fieldRefs := flows.ExtractFieldReferences(template)
 		for _, f := range fieldRefs {
 			addDependency(f)

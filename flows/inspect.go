@@ -53,33 +53,60 @@ func MergeResultSpecs(specs []*ResultSpec) []*ResultSpec {
 	return merged
 }
 
+// TemplateIncluder is interface passed to EnumerateTemplates to include templates on flow entities
 type TemplateIncluder interface {
 	String(*string)
 	Slice([]string)
 	Map(map[string]string)
 }
 
-type templateIncluder struct {
+type templateEnumerator struct {
 	include func(string)
 }
 
-func NewTemplateIncluder(include func(string)) TemplateIncluder {
-	return &templateIncluder{include: include}
+// NewTemplateEnumerator creates a template includer for enumerating templates
+func NewTemplateEnumerator(include func(string)) TemplateIncluder {
+	return &templateEnumerator{include: include}
 }
 
-func (i *templateIncluder) String(s *string) {
-	i.include(*s)
+func (t *templateEnumerator) String(s *string) {
+	t.include(*s)
 }
 
-func (i *templateIncluder) Slice(a []string) {
+func (t *templateEnumerator) Slice(a []string) {
 	for s := range a {
-		i.include(a[s])
+		t.include(a[s])
 	}
 }
 
-func (i *templateIncluder) Map(m map[string]string) {
+func (t *templateEnumerator) Map(m map[string]string) {
 	for k := range m {
-		i.include(m[k])
+		t.include(m[k])
+	}
+}
+
+type templateRewriter struct {
+	rewrite func(string) string
+}
+
+// NewTemplateRewriter creates a template includer for rewriting templates
+func NewTemplateRewriter(rewrite func(string) string) TemplateIncluder {
+	return &templateRewriter{rewrite: rewrite}
+}
+
+func (t *templateRewriter) String(s *string) {
+	*s = t.rewrite(*s)
+}
+
+func (t *templateRewriter) Slice(a []string) {
+	for s := range a {
+		a[s] = t.rewrite(a[s])
+	}
+}
+
+func (t *templateRewriter) Map(m map[string]string) {
+	for k := range m {
+		m[k] = t.rewrite(m[k])
 	}
 }
 
@@ -87,7 +114,6 @@ func (i *templateIncluder) Map(m map[string]string) {
 type Inspectable interface {
 	Inspect(func(Inspectable))
 	EnumerateTemplates(Localization, TemplateIncluder)
-	RewriteTemplates(Localization, func(string) string)
 	EnumerateDependencies(Localization, func(assets.Reference))
 	EnumerateResults(func(*ResultSpec))
 }

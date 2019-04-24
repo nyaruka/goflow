@@ -54,15 +54,6 @@ func (c *Case) EnumerateTemplates(localization flows.Localization, include flows
 	flows.EnumerateTemplateTranslations(localization, c, "arguments", include)
 }
 
-// RewriteTemplates rewrites all templates on this object and its children
-func (c *Case) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	for a := range c.Arguments {
-		c.Arguments[a] = rewrite(c.Arguments[a])
-	}
-
-	flows.RewriteTemplateTranslations(localization, c, "arguments", rewrite)
-}
-
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (c *Case) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 	// currently only the HAS_GROUP router test can produce a dependency
@@ -231,11 +222,6 @@ func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
 	include.String(&r.operand)
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (r *SwitchRouter) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	r.operand = rewrite(r.operand)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children

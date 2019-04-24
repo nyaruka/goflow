@@ -111,10 +111,3 @@ func (a *SendEmailAction) EnumerateTemplates(localization flows.Localization, in
 	include.String(&a.Body)
 	include.Slice(a.Addresses)
 }
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *SendEmailAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Subject = rewrite(a.Subject)
-	a.Body = rewrite(a.Body)
-	flows.RewriteTemplateArray(a.Addresses, rewrite)
-}

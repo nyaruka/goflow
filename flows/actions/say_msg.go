@@ -90,9 +90,3 @@ func (a *SayMsgAction) EnumerateTemplates(localization flows.Localization, inclu
 	include.String(&a.Text)
 	flows.EnumerateTemplateTranslations(localization, a, "text", include)
 }
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *SayMsgAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Text = rewrite(a.Text)
-	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
-}

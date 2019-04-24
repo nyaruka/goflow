@@ -106,13 +106,3 @@ func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization
 
 }
 
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *SendBroadcastAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Text = rewrite(a.Text)
-	flows.RewriteTemplateArray(a.Attachments, rewrite)
-	flows.RewriteTemplateArray(a.QuickReplies, rewrite)
-	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
-	flows.RewriteTemplateTranslations(localization, a, "attachments", rewrite)
-	flows.RewriteTemplateTranslations(localization, a, "quick_replies", rewrite)
-	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
-}

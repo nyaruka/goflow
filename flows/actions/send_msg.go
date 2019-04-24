@@ -141,17 +141,3 @@ func (a *SendMsgAction) EnumerateTemplates(localization flows.Localization, incl
 	flows.EnumerateTemplateTranslations(localization, a, "attachments", include)
 	flows.EnumerateTemplateTranslations(localization, a, "quick_replies", include)
 }
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *SendMsgAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Text = rewrite(a.Text)
-	flows.RewriteTemplateArray(a.Attachments, rewrite)
-	flows.RewriteTemplateArray(a.QuickReplies, rewrite)
-	if a.Templating != nil {
-		flows.RewriteTemplateArray(a.Templating.Variables, rewrite)
-	}
-
-	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
-	flows.RewriteTemplateTranslations(localization, a, "attachments", rewrite)
-	flows.RewriteTemplateTranslations(localization, a, "quick_replies", rewrite)
-}

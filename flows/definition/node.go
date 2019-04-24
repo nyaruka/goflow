@@ -107,9 +107,6 @@ func (n *node) Inspect(inspect func(flows.Inspectable)) {
 // EnumerateTemplates enumerates all expressions on this object
 func (n *node) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {}
 
-// RewriteTemplates rewrites all templates on this object
-func (n *node) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
-
 // EnumerateDependencies enumerates all dependencies on this object
 func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
