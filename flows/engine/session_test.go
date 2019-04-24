@@ -70,7 +70,7 @@ var templateTests = []struct {
 	{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
 	{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(contact.fields.favorite_icecream))", "true", ""},
-	{"@(has_error(contact.fields.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
+	{"@(has_error(contact.fields.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
 	{"@(count(contact.fields))", "5", ""},
 
 	// simplifed field access
@@ -80,7 +80,7 @@ var templateTests = []struct {
 	{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
 	{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(fields.favorite_icecream))", "true", ""},
-	{"@(has_error(fields.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
+	{"@(has_error(fields.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
 	{"@(count(fields))", "5", ""},
 
 	{"@input", "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3", ""},
@@ -95,7 +95,7 @@ var templateTests = []struct {
 	{"@results.favorite_color.category", "Red", ""},
 	{"@results.favorite_color.category_localized", "Red", ""},
 	{"@(is_error(results.favorite_icecream))", "true", ""},
-	{"@(has_error(results.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
+	{"@(has_error(results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
 	{"@(count(results))", "3", ""},
 
 	{"@run.results.favorite_color", `[red]`, ""},
@@ -105,7 +105,7 @@ var templateTests = []struct {
 	{`@(run.results.favorite_color.categories[0])`, `Red`, ""},
 	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(run.results.favorite_icecream))", "true", ""},
-	{"@(has_error(run.results.favorite_icecream))", "{match: object has no property 'favorite_icecream'}", ""},
+	{"@(has_error(run.results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
 	{"@(count(run.results))", "3", ""},
 
 	{"@run.status", "completed", ""},

@@ -198,6 +198,11 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 			// test functions can return an error
 			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typed.Error()))
 		case *types.XObject:
+			matched := typed.Truthy()
+			if !matched {
+				continue
+			}
+
 			match, _ := typed.Get("match")
 			extra, _ := typed.Get("extra")
 
@@ -212,8 +217,6 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 			}
 
 			return resultAsStr.Native(), c.CategoryUUID, extraAsObject, nil
-		case nil:
-			continue
 		default:
 			panic(fmt.Sprintf("unexpected result type from test %v: %#v", xtest, result))
 		}
