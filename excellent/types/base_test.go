@@ -230,6 +230,11 @@ func TestEquals(t *testing.T) {
 			true,
 		},
 		{
+			types.NewXObject(map[string]types.XValue{"__default__": types.XBooleanTrue, "bar": types.NewXText("bob")}),
+			types.NewXObject(map[string]types.XValue{"__default__": types.XBooleanFalse, "bar": types.NewXText("bob")}),
+			false, // different default
+		},
+		{
 			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse, "bar": types.NewXText("bob")}),
 			types.NewXObject(map[string]types.XValue{"foo": types.XBooleanFalse}),
 			false, // different number of keys
