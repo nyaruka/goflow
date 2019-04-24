@@ -94,14 +94,16 @@ func (a *SendBroadcastAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(a.Text)
-	flows.EnumerateTemplateArray(a.Attachments, include)
-	flows.EnumerateTemplateArray(a.QuickReplies, include)
+func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
+	include.String(&a.Text)
+	include.Slice(a.Attachments)
+	include.Slice(a.QuickReplies)
+	include.Slice(a.LegacyVars)
+
 	flows.EnumerateTemplateTranslations(localization, a, "text", include)
 	flows.EnumerateTemplateTranslations(localization, a, "attachments", include)
 	flows.EnumerateTemplateTranslations(localization, a, "quick_replies", include)
-	flows.EnumerateTemplateArray(a.LegacyVars, include)
+
 }
 
 // RewriteTemplates rewrites all templates on this object and its children

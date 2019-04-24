@@ -75,8 +75,8 @@ func (a *PlayAudioAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *PlayAudioAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(a.AudioURL)
+func (a *PlayAudioAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
+	include.String(&a.AudioURL)
 	flows.EnumerateTemplateTranslations(localization, a, "audio_url", include)
 }
 

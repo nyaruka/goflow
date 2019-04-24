@@ -53,10 +53,40 @@ func MergeResultSpecs(specs []*ResultSpec) []*ResultSpec {
 	return merged
 }
 
+type TemplateIncluder interface {
+	String(*string)
+	Slice([]string)
+	Map(map[string]string)
+}
+
+type templateIncluder struct {
+	include func(string)
+}
+
+func NewTemplateIncluder(include func(string)) TemplateIncluder {
+	return &templateIncluder{include: include}
+}
+
+func (i *templateIncluder) String(s *string) {
+	i.include(*s)
+}
+
+func (i *templateIncluder) Slice(a []string) {
+	for s := range a {
+		i.include(a[s])
+	}
+}
+
+func (i *templateIncluder) Map(m map[string]string) {
+	for k := range m {
+		i.include(m[k])
+	}
+}
+
 // Inspectable is implemented by various flow components to allow walking the definition and extracting things like dependencies
 type Inspectable interface {
 	Inspect(func(Inspectable))
-	EnumerateTemplates(Localization, func(string))
+	EnumerateTemplates(Localization, TemplateIncluder)
 	RewriteTemplates(Localization, func(string) string)
 	EnumerateDependencies(Localization, func(assets.Reference))
 	EnumerateResults(func(*ResultSpec))

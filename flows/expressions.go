@@ -99,12 +99,10 @@ func RewriteTemplateArray(templates []string, rewrite func(string) string) {
 	}
 }
 
-func EnumerateTemplateTranslations(localization Localization, localizable Localizable, key string, include func(string)) {
+func EnumerateTemplateTranslations(localization Localization, localizable Localizable, key string, include TemplateIncluder) {
 	for _, lang := range localization.Languages() {
 		translations := localization.GetTranslations(lang)
-		for _, tpl := range translations.GetTextArray(localizable.LocalizationUUID(), key) {
-			include(tpl)
-		}
+		include.Slice(translations.GetTextArray(localizable.LocalizationUUID(), key))
 	}
 }
 
@@ -139,13 +137,13 @@ func (r inspectableReference) Inspect(inspect func(Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r inspectableReference) EnumerateTemplates(localization Localization, include func(string)) {
+func (r inspectableReference) EnumerateTemplates(localization Localization, include TemplateIncluder) {
 	if r.ref != nil && r.ref.Variable() {
 		switch typed := r.ref.(type) {
 		case *assets.GroupReference:
-			include(typed.NameMatch)
+			include.String(&typed.NameMatch)
 		case *assets.LabelReference:
-			include(typed.NameMatch)
+			include.String(&typed.NameMatch)
 		}
 	}
 }

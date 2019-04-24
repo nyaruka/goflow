@@ -129,12 +129,12 @@ func (a *SendMsgAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendMsgAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(a.Text)
-	flows.EnumerateTemplateArray(a.Attachments, include)
-	flows.EnumerateTemplateArray(a.QuickReplies, include)
+func (a *SendMsgAction) EnumerateTemplates(localization flows.Localization, include flows.TemplateIncluder) {
+	include.String(&a.Text)
+	include.Slice(a.Attachments)
+	include.Slice(a.QuickReplies)
 	if a.Templating != nil {
-		flows.EnumerateTemplateArray(a.Templating.Variables, include)
+		include.Slice(a.Templating.Variables)
 	}
 
 	flows.EnumerateTemplateTranslations(localization, a, "text", include)
