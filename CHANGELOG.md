@@ -1,3 +1,12 @@
+v0.37.0
+----------
+ * Add TemplateIncluder to ease inclusion of templates as strings, slices or maps
+ * Remove left() and right(), replace with text_slice()
+ * Re-add defaults for several context objects
+ * Validate that switch case tests are registered XTESTs
+ * Allow passing count of replacements to replace()
+ * Allow empty results, fix empty category caltulations
+
 v0.36.2
 ----------
  * accept text/javascript as a content type in webhooks
