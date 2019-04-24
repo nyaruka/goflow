@@ -43,7 +43,7 @@ func TestFieldValues(t *testing.T) {
 	assert.Nil(t, ageVal.ToXValue(env)) // doesn't have a value in the right type
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
-		"__default__":      types.NewXText("Age: \nGender: Male"),
+		"__default__":      types.NewXText("Gender: Male"),
 		"activation_token": nil,
 		"age":              nil,
 		"gender":           types.NewXText("Male"),

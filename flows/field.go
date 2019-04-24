@@ -295,12 +295,12 @@ func (f FieldValues) Context(env utils.Environment) map[string]types.XValue {
 		val := v.ToXValue(env)
 		entries[string(k)] = val
 
-		if v != nil {
+		if !utils.IsNil(val) {
 			lines = append(lines, fmt.Sprintf("%s: %s", v.field.Name(), types.Render(val)))
 		}
 	}
 
-	sort.SliceStable(lines, func(i, j int) bool { return strings.Compare(lines[i], lines[j]) < 0 })
+	sort.Strings(lines)
 	entries["__default__"] = types.NewXText(strings.Join(lines, "\n"))
 
 	return entries

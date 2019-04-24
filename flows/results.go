@@ -148,6 +148,7 @@ func (r Results) format() string {
 	for _, v := range r {
 		lines = append(lines, fmt.Sprintf("%s: %s", v.Name, v.Value))
 	}
-	sort.SliceStable(lines, func(i, j int) bool { return strings.Compare(lines[i], lines[j]) < 0 })
+
+	sort.Strings(lines)
 	return strings.Join(lines, "\n")
 }
