@@ -58,11 +58,12 @@ func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XVal
 	}
 
 	return map[string]types.XValue{
-		"run":     flows.ContextFunc(env, c.RunContext),
-		"contact": flows.Context(env, c.run.Contact()),
-		"urns":    urns,
-		"fields":  fields,
-		"results": flows.ContextFunc(env, c.run.Results().SimpleContext),
+		"__default__": types.NewXText(formatRunSummary(env, c.run)),
+		"run":         flows.ContextFunc(env, c.RunContext),
+		"contact":     flows.Context(env, c.run.Contact()),
+		"urns":        urns,
+		"fields":      fields,
+		"results":     flows.ContextFunc(env, c.run.Results().SimpleContext),
 	}
 }
 
@@ -70,12 +71,21 @@ func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XVal
 // subset of the properties exposed by a real run.
 func (c *relatedRunContext) RunContext(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"uuid":    types.NewXText(string(c.run.UUID())),
-		"contact": flows.Context(env, c.run.Contact()),
-		"flow":    flows.Context(env, c.run.Flow()),
-		"status":  types.NewXText(string(c.run.Status())),
-		"results": flows.Context(env, c.run.Results()),
+		"__default__": types.NewXText(formatRunSummary(env, c.run)),
+		"uuid":        types.NewXText(string(c.run.UUID())),
+		"contact":     flows.Context(env, c.run.Contact()),
+		"flow":        flows.Context(env, c.run.Flow()),
+		"status":      types.NewXText(string(c.run.Status())),
+		"results":     flows.Context(env, c.run.Results()),
 	}
+}
+
+func formatRunSummary(env utils.Environment, run flows.RunSummary) string {
+	s := "@" + run.Flow().Name()
+	if run.Contact() != nil {
+		s = run.Contact().Format(env) + s
+	}
+	return s
 }
 
 //------------------------------------------------------------------------------------------

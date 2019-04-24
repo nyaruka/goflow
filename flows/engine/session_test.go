@@ -64,7 +64,7 @@ var templateTests = []struct {
 	{`@(count(contact.groups))`, "2", ""},
 
 	// contact fields
-	{"@contact.fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},
+	{"@contact.fields", "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00", ""},
 	{"@contact.fields.activation_token", "AACC55", ""},
 	{"@contact.fields.age", "23", ""},
 	{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
@@ -74,7 +74,7 @@ var templateTests = []struct {
 	{"@(count(contact.fields))", "5", ""},
 
 	// simplifed field access
-	{"@fields", "{activation_token: AACC55, age: 23, gender: Male, join_date: 2017-12-02T00:00:00.000000-02:00, not_set: }", ""},
+	{"@fields", "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00", ""},
 	{"@fields.activation_token", "AACC55", ""},
 	{"@fields.age", "23", ""},
 	{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},

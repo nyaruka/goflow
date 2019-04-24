@@ -79,7 +79,7 @@
 <a class="sourceLine" id="cb2-7" title="7">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb2-8" title="8">@contact.urn → tel:+<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb2-9" title="9">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
-<a class="sourceLine" id="cb2-10" title="10">@contact.fields → {activation_token: AACC55, age: <span class="dv">23</span>, gender: Male, join_date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span>, not_set: }</a>
+<a class="sourceLine" id="cb2-10" title="10">@contact.fields → Activation Token: AACC55\nAge: <span class="dv">23</span>\nGender: Male\nJoin Date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb2-11" title="11">@contact.fields.activation_token → AACC55</a>
 <a class="sourceLine" id="cb2-12" title="12">@contact.fields.gender → Male</a></code></pre></div>
 <p><a name="context:flow"></a></p>
@@ -156,7 +156,9 @@
 <li><code>results.[snaked_result_name]</code> the value of the specific result, e.g. <code>results.age</code></li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" title="1">@run.flow.name → Registration</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" title="1">@run → Ryan Lewis@Registration</a>
+<a class="sourceLine" id="cb7-2" title="2">@run.contact.name → Ryan Lewis</a>
+<a class="sourceLine" id="cb7-3" title="3">@run.flow.name → Registration</a></code></pre></div>
 <p><a name="context:trigger"></a></p>
 <h2 id="trigger">Trigger</h2>
 <p>Represents something which can initiate a session with the flow engine. It has several properties which can be accessed in expressions:</p>

@@ -1,6 +1,10 @@
 package flows
 
 import (
+	"fmt"
+	"sort"
+	"strings"
+
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -284,11 +288,21 @@ func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Fi
 
 // Context returns the properties available in expressions
 func (f FieldValues) Context(env utils.Environment) map[string]types.XValue {
-	entries := make(map[string]types.XValue, len(f))
+	entries := make(map[string]types.XValue, len(f)+1)
+	lines := make([]string, 0, len(f))
 
 	for k, v := range f {
-		entries[string(k)] = v.ToXValue(env)
+		val := v.ToXValue(env)
+		entries[string(k)] = val
+
+		if !utils.IsNil(val) {
+			lines = append(lines, fmt.Sprintf("%s: %s", v.field.Name(), types.Render(val)))
+		}
 	}
+
+	sort.Strings(lines)
+	entries["__default__"] = types.NewXText(strings.Join(lines, "\n"))
+
 	return entries
 }
 

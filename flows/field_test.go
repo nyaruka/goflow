@@ -39,8 +39,17 @@ func TestFieldValues(t *testing.T) {
 	genderVal := fieldVals["gender"]
 	ageVal := fieldVals["age"]
 
-	assert.Equal(t, types.NewXText("Male"), genderVal.ToXValue(env))
+	test.AssertXEqual(t, types.NewXText("Male"), genderVal.ToXValue(env))
 	assert.Nil(t, ageVal.ToXValue(env)) // doesn't have a value in the right type
+
+	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
+		"__default__":      types.NewXText("Gender: Male"),
+		"activation_token": nil,
+		"age":              nil,
+		"gender":           types.NewXText("Male"),
+		"join_date":        nil,
+		"not_set":          nil,
+	}), flows.Context(env, fieldVals))
 }
 
 func TestValues(t *testing.T) {
