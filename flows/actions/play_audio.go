@@ -75,13 +75,7 @@ func (a *PlayAudioAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *PlayAudioAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(a.AudioURL)
-	flows.EnumerateTemplateTranslations(localization, a, "audio_url", include)
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *PlayAudioAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.AudioURL = rewrite(a.AudioURL)
-	flows.RewriteTemplateTranslations(localization, a, "audio_url", rewrite)
+func (a *PlayAudioAction) EnumerateTemplates(include flows.TemplateIncluder) {
+	include.String(&a.AudioURL)
+	include.Translations(a, "audio_url")
 }

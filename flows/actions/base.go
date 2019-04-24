@@ -60,10 +60,7 @@ func (a *BaseAction) Validate() error { return nil }
 func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *BaseAction) EnumerateTemplates(localization flows.Localization, include func(string)) {}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *BaseAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {}
+func (a *BaseAction) EnumerateTemplates(include flows.TemplateIncluder) {}
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *BaseAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {

@@ -94,23 +94,12 @@ func (a *SendBroadcastAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(a.Text)
-	flows.EnumerateTemplateArray(a.Attachments, include)
-	flows.EnumerateTemplateArray(a.QuickReplies, include)
-	flows.EnumerateTemplateTranslations(localization, a, "text", include)
-	flows.EnumerateTemplateTranslations(localization, a, "attachments", include)
-	flows.EnumerateTemplateTranslations(localization, a, "quick_replies", include)
-	flows.EnumerateTemplateArray(a.LegacyVars, include)
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *SendBroadcastAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Text = rewrite(a.Text)
-	flows.RewriteTemplateArray(a.Attachments, rewrite)
-	flows.RewriteTemplateArray(a.QuickReplies, rewrite)
-	flows.RewriteTemplateTranslations(localization, a, "text", rewrite)
-	flows.RewriteTemplateTranslations(localization, a, "attachments", rewrite)
-	flows.RewriteTemplateTranslations(localization, a, "quick_replies", rewrite)
-	flows.RewriteTemplateArray(a.LegacyVars, rewrite)
+func (a *SendBroadcastAction) EnumerateTemplates(include flows.TemplateIncluder) {
+	include.String(&a.Text)
+	include.Slice(a.Attachments)
+	include.Slice(a.QuickReplies)
+	include.Translations(a, "text")
+	include.Translations(a, "attachments")
+	include.Translations(a, "quick_replies")
+	include.Slice(a.LegacyVars)
 }

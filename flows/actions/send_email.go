@@ -106,15 +106,8 @@ func (a *SendEmailAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendEmailAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(a.Subject)
-	include(a.Body)
-	flows.EnumerateTemplateArray(a.Addresses, include)
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *SendEmailAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Subject = rewrite(a.Subject)
-	a.Body = rewrite(a.Body)
-	flows.RewriteTemplateArray(a.Addresses, rewrite)
+func (a *SendEmailAction) EnumerateTemplates(include flows.TemplateIncluder) {
+	include.String(&a.Subject)
+	include.String(&a.Body)
+	include.Slice(a.Addresses)
 }

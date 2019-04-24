@@ -85,11 +85,6 @@ func (a *AddContactURNAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *AddContactURNAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(a.Path)
-}
-
-// RewriteTemplates rewrites all templates on this object and its children
-func (a *AddContactURNAction) RewriteTemplates(localization flows.Localization, rewrite func(string) string) {
-	a.Path = rewrite(a.Path)
+func (a *AddContactURNAction) EnumerateTemplates(include flows.TemplateIncluder) {
+	include.String(&a.Path)
 }
