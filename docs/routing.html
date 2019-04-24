@@ -76,6 +76,7 @@
 <a class="sourceLine" id="cb8-4" title="4">@(has_district(<span class="st">&quot;Gasabo&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo</a></code></pre></div>
 <p><a name="test:has_email"></a></p>
 <h2 id="has_emailtext">has_email(text)</h2>
+<p>Tests whether an email is contained in <code>text</code></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb9-1" title="1">@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb9-2" title="2">@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>).match) → foo1@bar.com</a>
 <a class="sourceLine" id="cb9-3" title="3">@(has_email(<span class="st">&quot;my email is &lt;foo@bar2.com&gt;&quot;</span>).match) → foo@bar2.com</a>

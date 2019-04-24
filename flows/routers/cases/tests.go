@@ -513,7 +513,6 @@ var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\
 
 // HasEmail tests whether an email is contained in `text`
 //
-
 //   @(has_email("my email is foo1@bar.com, please respond")) -> true
 //   @(has_email("my email is foo1@bar.com, please respond").match) -> foo1@bar.com
 //   @(has_email("my email is <foo@bar2.com>").match) -> foo@bar2.com

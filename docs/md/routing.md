@@ -129,6 +129,7 @@ then the returned district must be within that state.
 
 ## has_email(text)
 
+Tests whether an email is contained in `text`
 
 
 ```objectivec
