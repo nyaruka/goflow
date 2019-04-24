@@ -1,3 +1,7 @@
+v0.37.2
+----------
+ * fix text_slice for unicode strings
+
 v0.37.1
 ----------
  * @fields defaults to table like @results
