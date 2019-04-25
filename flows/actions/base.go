@@ -155,7 +155,8 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 		evaluatedAttachment, err := run.EvaluateTemplate(translatedAttachments[n])
 		if err != nil {
 			logEvent(events.NewErrorEvent(err))
-		} else if evaluatedAttachment == "" {
+		}
+		if evaluatedAttachment == "" {
 			logEvent(events.NewErrorEventf("attachment text evaluated to empty string, skipping"))
 			continue
 		}
@@ -169,7 +170,8 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 		evaluatedQuickReply, err := run.EvaluateTemplate(translatedQuickReplies[n])
 		if err != nil {
 			logEvent(events.NewErrorEvent(err))
-		} else if evaluatedQuickReply == "" {
+		}
+		if evaluatedQuickReply == "" {
 			logEvent(events.NewErrorEventf("quick reply text evaluated to empty string, skipping"))
 			continue
 		}
