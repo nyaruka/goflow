@@ -65,6 +65,8 @@ func (t *TestQueryable) ResolveQueryKey(env utils.Environment, key string) []int
 		return []interface{}{"Gasabo"}
 	case "ward":
 		return []interface{}{"Ndera"}
+	case "empty":
+		return []interface{}{""}
 	case "nope":
 		return []interface{}{t}
 	}
@@ -94,6 +96,8 @@ func TestEvaluateQuery(t *testing.T) {
 		{`gender = "female"`, false},
 		{`gender != "female"`, true},
 		{`gender != "male"`, false},
+		{`empty != "male"`, true}, // this is true because "" is not "male"
+		{`gender != ""`, true},
 
 		// number field condition
 		{`age = 36`, true},
