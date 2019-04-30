@@ -8,13 +8,13 @@ language which aims to make it easy to generate text from a context of values.
 
 Templates can contain single variables or more complex expressions. A single variable is embedded using the `@` 
 character. For example the template `Hi @foo` contains a single variable which at runtime will be replaced with 
-with the value of `foo` in the context.
+the value of `foo` in the context.
 
 More complex expressions can be embedded using the `@(...)` syntax. For example the template `Hi @("Dr " & upper(foo))` 
 takes the value of `foo`, converts it to uppercase, and the prefixes it with another string. Note than within a 
 complex expression you don't prefix variables with `@`.
 
-The `@` symbol can be escaped in templates by repeating it, ie, `Hi @@twitter` would output `Hi @twitter`.
+The `@` symbol can be escaped in templates by repeating it, e.g, `Hi @@twitter` will output `Hi @twitter`.
 
 # Types
 

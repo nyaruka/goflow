@@ -23,34 +23,27 @@ h1 {
 h2 {
     font-size: 18px;
     color: white;
-    border: 1px solid #444;
     background-color: #555;
-    padding: 5px;
+    border-radius: 5px;
+    padding: 7px 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: normal;
 }
 
 .context h2, .operators h2 {
-    background-color: rgb(153, 130, 30);
-    border: 1px solid rgb(107, 79, 17);
+    background-color: rgb(142, 94, 167);
 }
 
-.functions h2 {
-    background-color: #2B823A;
-    border: 1px solid #10621E;
-}
-
-.tests h2 {
-    background-color: #8b257e;
-    border: 1px solid rgb(78, 14, 64);
+.functions h2, .tests h2 {
+    background-color: #00B9A7;
 }
 
 .actions h2 {
     background-color: #246068;
-    border: 1px solid #0E464E;
 }
 
 .events h2 {
     background-color: #AA4139;
-    border: 1px solid #801D15;
 }
 
 h3 {
@@ -63,33 +56,6 @@ h7 {
     color: #333;
     font-size: 36px;
     padding: 20px;
-}
-
-.highlight pre {
-    background-color: #f8f8f8;
-    border: 1px solid #ccc;
-    font-size: 13px;
-    line-height: 19px;
-    overflow: auto;
-    padding: 6px 10px;
-}
-
-pre {
-    background-color: #f8f8f8;
-    border: 1px solid #ccc;
-    font-size: 13px;
-    line-height: 19px;
-    overflow: auto;
-    padding: 6px 10px;
-}
-
-code .dt {
-    color: #333;
-    font-weight: bold;
-}
-
-code .st {
-    color: #458;
 }
 
 .actions h1 {
@@ -116,17 +82,34 @@ code .st {
     color: #888;
 }
 
+/**
+ * Code snippets
+ */
+
+pre {
+    background-color: #EEE;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+
 p code, li code {
-    color: white;
-    background-color: #444;
+    color: #444;
+    background-color: #EEE;
     border-radius: 3px;
     padding: 0px 4px 1px 4px;
 }
 
-.excellent_functions ul {
-    padding-left: 15px;
+/* reserved words */
+code .dt {
+    color: #333;
+    font-weight: bold;
 }
 
-.excellent_functions ul li {
-    list-style-type: none;
+/* strings */
+code .st {
+    color: #459;
 }
