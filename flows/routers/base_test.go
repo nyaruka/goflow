@@ -59,6 +59,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		Router          json.RawMessage    `json:"router"`
 		ValidationError string             `json:"validation_error"`
 		Results         json.RawMessage    `json:"results"`
+		Events          []json.RawMessage  `json:"events"`
 		Inspection      *inspectionResults `json:"inspection"`
 	}{}
 
@@ -115,6 +116,11 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		actualResultsJSON, _ := json.Marshal(run.Results())
 		expectedResultsJSON, _ := json.Marshal(tc.Results)
 		test.AssertEqualJSON(t, expectedResultsJSON, actualResultsJSON, "results mismatch in %s", testName)
+
+		// check events are what we expected
+		actualEventsJSON, _ := json.Marshal(run.Events())
+		expectedEventsJSON, _ := json.Marshal(tc.Events)
+		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
 
 		// try marshaling the router back to JSON
 		routerJSON, err := json.Marshal(router)

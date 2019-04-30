@@ -233,7 +233,7 @@ func (s *session) findResumeDestination(sprint flows.Sprint, run flows.FlowRun, 
 	}
 
 	// see if this node can now pick a destination
-	destination, err := s.pickNodeExit(run, node, step, isTimeout, logEvent)
+	destination, err := s.pickNodeExit(sprint, run, node, step, isTimeout, logEvent)
 	if err != nil {
 		return noDestination, err
 	}
@@ -395,12 +395,12 @@ func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.N
 	}
 
 	// use our node's router to determine where to go next
-	destinationUUID, err := s.pickNodeExit(run, node, step, false, logEvent)
+	destinationUUID, err := s.pickNodeExit(sprint, run, node, step, false, logEvent)
 	return step, destinationUUID, err
 }
 
 // picks the exit to use on the given node
-func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step, isTimeout bool, logEvent flows.EventCallback) (flows.NodeUUID, error) {
+func (s *session) pickNodeExit(sprint flows.Sprint, run flows.FlowRun, node flows.Node, step flows.Step, isTimeout bool, logEvent flows.EventCallback) (flows.NodeUUID, error) {
 	var exitUUID flows.ExitUUID
 	var err error
 
@@ -414,6 +414,11 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 		if err != nil {
 			return noDestination, errors.Wrapf(err, "error routing from node[uuid=%s]", node.UUID())
 		}
+		// router didn't error.. but it failed to pick a category
+		if exitUUID == "" {
+			fatalError(sprint, run, step, errors.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
+			return noDestination, nil
+		}
 	} else if len(node.Exits()) > 0 {
 		// no router, pick our first exit if we have one
 		exitUUID = node.Exits()[0].UUID()
@@ -421,12 +426,10 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 
 	step.Leave(exitUUID)
 
-	if exitUUID != "" {
-		// find our exit
-		for _, exit := range node.Exits() {
-			if exit.UUID() == exitUUID {
-				return exit.DestinationUUID(), nil
-			}
+	// find our exit
+	for _, exit := range node.Exits() {
+		if exit.UUID() == exitUUID {
+			return exit.DestinationUUID(), nil
 		}
 	}
 

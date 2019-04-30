@@ -187,6 +187,17 @@
                 "value": "YES"
             }
         },
+        "events": [
+            {
+                "category": "Yes",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "YES!!",
+                "name": "Favorite Color",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "run_result_changed",
+                "value": "YES"
+            }
+        ],
         "inspection": {
             "templates": [
                 "@(\"YES!!\")",
@@ -252,6 +263,17 @@
                 "value": "[]"
             }
         },
+        "events": [
+            {
+                "category": "Other",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "[]",
+                "name": "Is Member",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "run_result_changed",
+                "value": "[]"
+            }
+        ],
         "inspection": {
             "templates": [
                 "@contact.groups",
@@ -326,6 +348,17 @@
                 "value": "YES"
             }
         },
+        "events": [
+            {
+                "category": "Yes",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "YES!!",
+                "name": "Favorite Color",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "run_result_changed",
+                "value": "YES"
+            }
+        ],
         "inspection": {
             "templates": [
                 "@(\"YES!!\")",
@@ -341,6 +374,73 @@
                         "Yes",
                         "Yes Again",
                         "Other"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "Fatal error if router fails to route",
+        "router": {
+            "type": "switch",
+            "result_name": "Favorite Color",
+            "categories": [
+                {
+                    "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                    "name": "Yes",
+                    "exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
+                },
+                {
+                    "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                    "name": "No",
+                    "exit_uuid": "5bd6a427-2b9a-4a4d-ad3f-eb39eaaa7e5a"
+                }
+            ],
+            "default_category_uuid": "",
+            "operand": "@(\"xxxxx\")",
+            "cases": [
+                {
+                    "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                    "type": "has_any_word",
+                    "arguments": [
+                        "yes"
+                    ],
+                    "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                },
+                {
+                    "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+                    "type": "has_any_word",
+                    "arguments": [
+                        "no"
+                    ],
+                    "category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                }
+            ]
+        },
+        "results": {},
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": true,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "router on node[uuid=64373978-e8f6-4973-b6ff-a2993f3376fc] failed to pick a category",
+                "type": "error"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "@(\"xxxxx\")",
+                "yes",
+                "no"
+            ],
+            "dependencies": [],
+            "results": [
+                {
+                    "key": "favorite_color",
+                    "name": "Favorite Color",
+                    "categories": [
+                        "Yes",
+                        "No"
                     ]
                 }
             ]
