@@ -116,8 +116,10 @@ var testTests = []struct {
 	{"has_number", []types.XValue{xs("O número é 500")}, result(xn("500"))},
 	{"has_number", []types.XValue{xs("another is -12.51")}, result(xn("-12.51"))},
 	{"has_number", []types.XValue{xs("hi.51")}, result(xn("51"))},
+	{"has_number", []types.XValue{xs("hi .51")}, result(xn("0.51"))},
+	{"has_number", []types.XValue{xs(".51")}, result(xn("0.51"))},
 	{"has_number", []types.XValue{xs("nothing here")}, falseResult},
-	{"has_number", []types.XValue{xs("1OO l00")}, falseResult}, // no longer do substitutions
+	{"has_number", []types.XValue{xs("lOO")}, falseResult}, // no longer do substitutions
 	{"has_number", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
 	{"has_number", []types.XValue{}, ERROR},
 
@@ -326,6 +328,8 @@ func TestParseDecimalFuzzy(t *testing.T) {
 		{"1234", decimal.RequireFromString("1234"), utils.DefaultNumberFormat},
 		{"1,234.567", decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat},
 		{"1.234,567", decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
+		{".1234", decimal.RequireFromString("0.1234"), utils.DefaultNumberFormat},
+		{" .1234", decimal.RequireFromString("0.1234"), utils.DefaultNumberFormat},
 		{"100.00", decimal.RequireFromString("100.00"), utils.DefaultNumberFormat},
 	}
 
