@@ -136,8 +136,9 @@ func (r *BaseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent f
 }
 
 func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input string, extra *types.XObject, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+	// router failed to pick a category
 	if categoryUUID == "" {
-		return "", errors.New("switch router failed to pick an exit")
+		return "", nil
 	}
 
 	// find the actual category

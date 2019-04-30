@@ -31,6 +31,16 @@
                 "value": "0.3849275689214193274523267973563633859157562255859375"
             }
         },
+        "events": [
+            {
+                "category": "No",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Random Result",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "run_result_changed",
+                "value": "0.3849275689214193274523267973563633859157562255859375"
+            }
+        ],
         "inspection": {
             "templates": [],
             "dependencies": [],
