@@ -1,3 +1,10 @@
+v0.37.3
+----------
+ * Omit empty variables in message templates
+ * Router failing to pick category should be fatal error event - not hard error
+ * Match number like .5 and 1OO (o's) as 1)
+ * Don't include quick replies and attachments whih both error and evaluate to empty
+
 v0.37.2
 ----------
  * fix text_slice for unicode strings
