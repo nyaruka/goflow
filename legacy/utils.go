@@ -93,6 +93,12 @@ func (e *TypedEnvelope) UnmarshalJSON(b []byte) error {
 
 // URLJoin joins two URL parts with /
 func URLJoin(base, relative string) string {
+
+	// noop if we are already absolute
+	if strings.HasPrefix(relative, "http://") || strings.HasPrefix(relative, "https://") {
+		return relative
+	}
+
 	if strings.HasSuffix(base, "/") {
 		base = base[:len(base)-1]
 	}
