@@ -194,6 +194,20 @@
                     "content": "Hi {{1}}, who's an excellent {{2}}?"
                 }
             ]
+        },
+        {
+            "name": "wakeup",
+            "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
+            "translations": [
+                {
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "language": "eng",
+                    "content": "Hi there, it's time to get up!"
+                }
+            ]
         }
     ]
 }

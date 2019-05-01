@@ -96,7 +96,7 @@ func (m *MsgOut) Templating() *MsgTemplating { return m.Templating_ }
 type MsgTemplating struct {
 	Template_  *assets.TemplateReference `json:"template"`
 	Language_  utils.Language            `json:"language"`
-	Variables_ []string                  `json:"variables"`
+	Variables_ []string                  `json:"variables,omitempty"`
 }
 
 // Template returns the template this msg template is for
