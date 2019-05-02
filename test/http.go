@@ -12,12 +12,14 @@ import (
 func NewTestHTTPServer(port int) *httptest.Server {
 	server := httptest.NewUnstartedServer(http.HandlerFunc(testHTTPHandler))
 
-	// manually create a listener for our test server so that our output is predictable
-	l, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
-	if err != nil {
-		panic(err.Error())
+	if port > 0 {
+		// manually create a listener for our test server so that our output is predictable
+		l, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
+		if err != nil {
+			panic(err.Error())
+		}
+		server.Listener = l
 	}
-	server.Listener = l
 	server.Start()
 	return server
 }

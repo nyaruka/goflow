@@ -206,12 +206,25 @@ func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
 		"results": flows.ContextFunc(env, r.Results().SimpleContext),
 		"urns":    urns,
 		"fields":  fields,
+		"webhook": r.lastWebhookResponse(),
 
 		// other
 		"trigger":      flows.Context(env, r.Session().Trigger()),
 		"input":        flows.Context(env, r.Session().Input()),
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
+}
+
+func (r *flowRun) lastWebhookResponse() types.XValue {
+	for e := len(r.events) - 1; e >= 0; e-- {
+		switch typed := r.events[e].(type) {
+		case *events.WebhookCalledEvent:
+			return types.JSONToXValue(flows.ExtractResponseBody(typed.Response))
+		default:
+			continue
+		}
+	}
+	return nil
 }
 
 // Context returns the properties available in expressions
