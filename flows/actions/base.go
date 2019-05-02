@@ -151,8 +151,8 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 	// localize and evaluate the message attachments
 	translatedAttachments := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]utils.Attachment, 0, len(translatedAttachments))
-	for n := range translatedAttachments {
-		evaluatedAttachment, err := run.EvaluateTemplate(translatedAttachments[n])
+	for _, a := range translatedAttachments {
+		evaluatedAttachment, err := run.EvaluateTemplate(a)
 		if err != nil {
 			logEvent(events.NewErrorEvent(err))
 		}
@@ -166,8 +166,8 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 	// localize and evaluate the quick replies
 	translatedQuickReplies := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
 	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
-	for n := range translatedQuickReplies {
-		evaluatedQuickReply, err := run.EvaluateTemplate(translatedQuickReplies[n])
+	for _, qr := range translatedQuickReplies {
+		evaluatedQuickReply, err := run.EvaluateTemplate(qr)
 		if err != nil {
 			logEvent(events.NewErrorEvent(err))
 		}

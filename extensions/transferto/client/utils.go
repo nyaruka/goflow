@@ -32,8 +32,8 @@ func (l *CSVDecimals) UnmarshalJSON(data []byte) error {
 
 	vals := make([]decimal.Decimal, len(asStrings))
 	var err error
-	for v := range asStrings {
-		vals[v], err = decimal.NewFromString(asStrings[v])
+	for i := range asStrings {
+		vals[i], err = decimal.NewFromString(asStrings[i])
 		if err != nil {
 			return err
 		}

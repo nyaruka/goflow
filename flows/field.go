@@ -337,9 +337,9 @@ func NewFieldAssets(fields []assets.Field) *FieldAssets {
 		all:   make([]*Field, len(fields)),
 		byKey: make(map[string]*Field, len(fields)),
 	}
-	for f, asset := range fields {
+	for i, asset := range fields {
 		field := NewField(asset)
-		s.all[f] = field
+		s.all[i] = field
 		s.byKey[field.Key()] = field
 	}
 	return s

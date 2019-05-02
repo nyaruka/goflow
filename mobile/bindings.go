@@ -61,8 +61,8 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 	}
 
 	langs := make([]utils.Language, allowedLanguages.Length())
-	for l := 0; l < allowedLanguages.Length(); l++ {
-		langs[l] = utils.Language(allowedLanguages.Get(l))
+	for i := 0; i < allowedLanguages.Length(); i++ {
+		langs[i] = utils.Language(allowedLanguages.Get(i))
 	}
 
 	return &Environment{
@@ -128,8 +128,8 @@ func NewMsgIn(uuid string, text string, attachments *StringSlice) *MsgIn {
 	var convertedAttachments []utils.Attachment
 	if attachments != nil {
 		convertedAttachments = make([]utils.Attachment, attachments.Length())
-		for a := 0; a < attachments.Length(); a++ {
-			convertedAttachments[a] = utils.Attachment(attachments.Get(a))
+		for i := 0; i < attachments.Length(); i++ {
+			convertedAttachments[i] = utils.Attachment(attachments.Get(i))
 		}
 	}
 

@@ -224,17 +224,17 @@ type functionListing struct {
 
 func generateFunctionListing(outputDir string, funcItems []*documentedItem) error {
 	listings := make([]*functionListing, len(funcItems))
-	for f, funcItem := range funcItems {
+	for i, funcItem := range funcItems {
 		summary := funcItem.description[0]
 		detail := strings.TrimSpace(strings.Join(funcItem.description[1:len(funcItem.description)-1], "\n"))
 
 		examples := make([]*functionExample, len(funcItem.examples))
-		for e := range funcItem.examples {
-			parts := strings.Split(funcItem.examples[e], "→")
-			examples[e] = &functionExample{Template: strings.TrimSpace(parts[0]), Output: strings.TrimSpace(parts[1])}
+		for j := range funcItem.examples {
+			parts := strings.Split(funcItem.examples[j], "→")
+			examples[j] = &functionExample{Template: strings.TrimSpace(parts[0]), Output: strings.TrimSpace(parts[1])}
 		}
 
-		listings[f] = &functionListing{
+		listings[i] = &functionListing{
 			Signature: funcItem.tagValue + funcItem.tagExtra,
 			Summary:   summary,
 			Detail:    detail,

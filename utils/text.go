@@ -39,10 +39,10 @@ func TokenizeStringByChars(str string, chars string) []string {
 func PrefixOverlap(s1, s2 string) int {
 	r1 := []rune(s1)
 	r2 := []rune(s2)
-	r := 0
-	for ; r < len(r1) && r < len(r2) && r1[r] == r2[r]; r++ {
+	i := 0
+	for ; i < len(r1) && i < len(r2) && r1[i] == r2[i]; i++ {
 	}
-	return r
+	return i
 }
 
 // StringSlices returns the slices of s defined by pairs of indexes in indices

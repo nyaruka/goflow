@@ -39,8 +39,8 @@ func asTemplate(template string) callMigrator {
 		}
 
 		paramsAsInterfaces := make([]interface{}, len(params))
-		for p := range params {
-			paramsAsInterfaces[p] = params[p]
+		for i := range params {
+			paramsAsInterfaces[i] = params[i]
 		}
 
 		return fmt.Sprintf(template, paramsAsInterfaces...), nil
@@ -68,14 +68,14 @@ func asParamMigratorsWithDefaults(newName string, defaults []string, paramMigrat
 
 		newParams := make([]string, utils.MaxInt(len(oldParams), len(defaults)))
 
-		for p := range newParams {
+		for i := range newParams {
 			var param string
-			if p < len(oldParams) {
-				param = oldParams[p]
+			if i < len(oldParams) {
+				param = oldParams[i]
 			} else {
-				param = defaults[p]
+				param = defaults[i]
 			}
-			newParams[p] = paramMigrators[p](param)
+			newParams[i] = paramMigrators[i](param)
 		}
 
 		return renderCall(newName, newParams)

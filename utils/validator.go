@@ -63,7 +63,7 @@ func Validate(obj interface{}) error {
 
 	newErrors := make([]error, len(validationErrs))
 
-	for v, fieldErr := range validationErrs {
+	for i, fieldErr := range validationErrs {
 		location := fieldErr.Namespace()
 
 		// the first part of the namespace is always the struct name so we remove it
@@ -110,7 +110,7 @@ func Validate(obj interface{}) error {
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}
 
-		newErrors[v] = errors.Errorf("field '%s' %s", location, problem)
+		newErrors[i] = errors.Errorf("field '%s' %s", location, problem)
 	}
 	return ValidationErrors(newErrors)
 }

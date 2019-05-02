@@ -116,8 +116,8 @@ func readGroupsModifier(assets flows.SessionAssets, data json.RawMessage, missin
 
 func (m *GroupsModifier) MarshalJSON() ([]byte, error) {
 	groupRefs := make([]*assets.GroupReference, len(m.groups))
-	for g := range m.groups {
-		groupRefs[g] = m.groups[g].Reference()
+	for i := range m.groups {
+		groupRefs[i] = m.groups[i].Reference()
 	}
 
 	return json.Marshal(&groupsModifierEnvelope{

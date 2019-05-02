@@ -331,8 +331,8 @@ func HasPattern(env utils.Environment, text types.XText, pattern types.XText) ty
 	if matches != nil {
 		extra := make(map[string]types.XValue, len(matches))
 
-		for g, group := range matches {
-			extra[strconv.Itoa(g)] = types.NewXText(group)
+		for i, group := range matches {
+			extra[strconv.Itoa(i)] = types.NewXText(group)
 		}
 		return NewTrueResultWithExtra(types.NewXText(matches[0]), types.NewXObject(extra))
 	}

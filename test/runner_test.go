@@ -124,12 +124,12 @@ func loadAssets(path string) (flows.SessionAssets, error) {
 
 	if len(la.LegacyFlows) > 0 {
 		migratedFlows := make([]json.RawMessage, len(la.LegacyFlows))
-		for f, legacyFlow := range la.LegacyFlows {
+		for i, legacyFlow := range la.LegacyFlows {
 			migrated, err := legacy.MigrateLegacyDefinition(legacyFlow, "")
 			if err != nil {
 				return nil, errors.Wrap(err, "unable to migrate legacy flow")
 			}
-			migratedFlows[f] = migrated
+			migratedFlows[i] = migrated
 		}
 
 		la.OtherAssets["flows"] = migratedFlows
@@ -176,7 +176,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	outputs := make([]*Output, 0)
 
 	// try to resume the session for each of the provided resumes
-	for r, rawResume := range rawResumes {
+	for i, rawResume := range rawResumes {
 		sessionJSON, err := utils.JSONMarshalPretty(session)
 		if err != nil {
 			return runResult{}, errors.Wrap(err, "error marshalling output")
@@ -195,7 +195,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 		// if we aren't at a wait, that's an error
 		if session.Wait() == nil {
-			return runResult{}, errors.Errorf("did not stop at expected wait, have unused resumes: %#v", rawResumes[r:])
+			return runResult{}, errors.Errorf("did not stop at expected wait, have unused resumes: %#v", rawResumes[i:])
 		}
 
 		resume, err := resumes.ReadResume(sa, rawResume, assets.PanicOnMissing)
@@ -292,8 +292,8 @@ func TestFlows(t *testing.T) {
 				}
 
 				// and then each event
-				for e := range actual.Events {
-					if !AssertEqualJSON(t, expected.Events[e], actual.Events[e], fmt.Sprintf("event[%d] is different in output[%d] in %s", e, i, tc)) {
+				for j := range actual.Events {
+					if !AssertEqualJSON(t, expected.Events[j], actual.Events[j], fmt.Sprintf("event[%d] is different in output[%d] in %s", j, i, tc)) {
 						break
 					}
 				}

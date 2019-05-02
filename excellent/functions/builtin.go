@@ -277,9 +277,9 @@ func Object(env utils.Environment, pairs ...types.XValue) types.XValue {
 
 	properties := make(map[string]types.XValue, len(pairs)/2)
 
-	for a := 0; a < len(pairs); a += 2 {
-		key := pairs[a]
-		value := pairs[a+1]
+	for i := 0; i < len(pairs); i += 2 {
+		key := pairs[i]
+		value := pairs[i+1]
 
 		keyAsText, xerr := types.ToXText(env, key)
 		if xerr != nil {

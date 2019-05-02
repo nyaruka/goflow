@@ -147,8 +147,8 @@ func (b *BoolCombination) Evaluate(env utils.Environment, queryable Queryable) (
 
 func (b *BoolCombination) String() string {
 	children := make([]string, len(b.children))
-	for c := range b.children {
-		children[c] = b.children[c].String()
+	for i := range b.children {
+		children[i] = b.children[i].String()
 	}
 	return fmt.Sprintf("%s(%s)", strings.ToUpper(string(b.op)), strings.Join(children, ", "))
 }

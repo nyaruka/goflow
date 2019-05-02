@@ -556,8 +556,8 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 		// re-extract all templates
 		rewritten := flow.ExtractTemplates()
 
-		for t := range templates {
-			templates[t] = strings.ToUpper(templates[t])
+		for i := range templates {
+			templates[i] = strings.ToUpper(templates[i])
 		}
 
 		assert.Equal(t, templates, rewritten)

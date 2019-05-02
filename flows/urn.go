@@ -131,12 +131,12 @@ type URNList []*ContactURN
 func ReadURNList(a SessionAssets, rawURNs []urns.URN, missing assets.MissingCallback) (URNList, error) {
 	l := make(URNList, len(rawURNs))
 
-	for u := range rawURNs {
-		parsed, err := ParseRawURN(a.Channels(), rawURNs[u], missing)
+	for i := range rawURNs {
+		parsed, err := ParseRawURN(a.Channels(), rawURNs[i], missing)
 		if err != nil {
 			return nil, err
 		}
-		l[u] = parsed
+		l[i] = parsed
 	}
 
 	return l, nil
@@ -145,8 +145,8 @@ func ReadURNList(a SessionAssets, rawURNs []urns.URN, missing assets.MissingCall
 // RawURNs returns the raw URNs
 func (l URNList) RawURNs() []urns.URN {
 	raw := make([]urns.URN, len(l))
-	for u := range l {
-		raw[u] = l[u].urn
+	for i := range l {
+		raw[i] = l[i].urn
 	}
 	return raw
 }
@@ -157,8 +157,8 @@ func (l URNList) Equal(other URNList) bool {
 		return false
 	}
 
-	for u := range l {
-		if !l[u].Equal(other[u]) {
+	for i := range l {
+		if !l[i].Equal(other[i]) {
 			return false
 		}
 	}
@@ -168,8 +168,8 @@ func (l URNList) Equal(other URNList) bool {
 // Clone returns a clone of this URN list
 func (l URNList) clone() URNList {
 	urns := make(URNList, len(l))
-	for u := range l {
-		urns[u] = NewContactURN(l[u].urn, l[u].channel)
+	for i := range l {
+		urns[i] = NewContactURN(l[i].urn, l[i].channel)
 	}
 	return urns
 }
@@ -189,8 +189,8 @@ func (l URNList) WithScheme(scheme string) URNList {
 func (l URNList) ToXValue(env utils.Environment) types.XValue {
 	return types.NewXLazyArray(func() []types.XValue {
 		array := make([]types.XValue, len(l))
-		for u, urn := range l {
-			array[u] = urn.ToXValue(env)
+		for i, urn := range l {
+			array[i] = urn.ToXValue(env)
 		}
 		return array
 	})

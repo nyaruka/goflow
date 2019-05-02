@@ -45,10 +45,10 @@ func (p LocationPath) Normalize() LocationPath {
 
 	// normalize casing and spacing between location parts
 	parts := strings.Split(normalized, LocationPathSeparator)
-	for p, part := range parts {
+	for i, part := range parts {
 		part = spaceRegex.ReplaceAllString(strings.TrimSpace(part), " ")
 		part = strings.Title(strings.ToLower(part))
-		parts[p] = part
+		parts[i] = part
 	}
 
 	return NewLocationPath(parts...)
@@ -139,8 +139,8 @@ func (h *LocationHierarchy) initializeFromRoot(root *Location, numLevels int) {
 	h.levelLookups = make([]locationNameLookup, numLevels)
 	h.pathLookup = make(locationPathLookup)
 
-	for l := 0; l < numLevels; l++ {
-		h.levelLookups[l] = make(locationNameLookup)
+	for i := 0; i < numLevels; i++ {
+		h.levelLookups[i] = make(locationNameLookup)
 	}
 
 	// traverse the hierarchy to setup paths and lookups
@@ -188,9 +188,9 @@ func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 			// if a parent is specified, filter the matches by it
 			if parent != nil {
 				withParent := make([]*Location, 0)
-				for m := range matches {
-					if matches[m].parent == parent {
-						withParent = append(withParent, matches[m])
+				for i := range matches {
+					if matches[i].parent == parent {
+						withParent = append(withParent, matches[i])
 					}
 				}
 				return withParent
@@ -237,8 +237,8 @@ func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel
 	}
 
 	location.children = make([]*Location, len(envelope.Children))
-	for c := range envelope.Children {
-		location.children[c] = locationFromEnvelope(envelope.Children[c], currentLevel+1, location)
+	for i := range envelope.Children {
+		location.children[i] = locationFromEnvelope(envelope.Children[i], currentLevel+1, location)
 	}
 
 	return location

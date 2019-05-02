@@ -79,9 +79,9 @@ func (s *session) addRun(run flows.FlowRun) {
 
 func (s *session) GetCurrentChild(run flows.FlowRun) flows.FlowRun {
 	// the current child of a run, is the last added run which has that run as its parent
-	for r := len(s.runs) - 1; r >= 0; r-- {
-		if s.runs[r].ParentInSession() == run {
-			return s.runs[r]
+	for i := len(s.runs) - 1; i >= 0; i-- {
+		if s.runs[i].ParentInSession() == run {
+			return s.runs[i]
 		}
 	}
 	return nil

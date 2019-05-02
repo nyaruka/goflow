@@ -97,12 +97,12 @@ func NewGroupList(groups []*Group) *GroupList {
 func NewGroupListFromAssets(a SessionAssets, groupAssets []assets.Group) (*GroupList, error) {
 	groups := make([]*Group, len(groupAssets))
 
-	for g, asset := range groupAssets {
+	for i, asset := range groupAssets {
 		group := a.Groups().Get(asset.UUID())
 		if group == nil {
 			return nil, errors.Errorf("no such group: %s", asset.UUID())
 		}
-		groups[g] = group
+		groups[i] = group
 	}
 	return &GroupList{groups: groups}, nil
 }
@@ -135,9 +135,9 @@ func (l *GroupList) Add(group *Group) bool {
 
 // Remove removes the given group from this group list
 func (l *GroupList) Remove(group *Group) bool {
-	for g := range l.groups {
-		if l.groups[g].UUID() == group.UUID() {
-			l.groups = append(l.groups[:g], l.groups[g+1:]...)
+	for i := range l.groups {
+		if l.groups[i].UUID() == group.UUID() {
+			l.groups = append(l.groups[:i], l.groups[i+1:]...)
 			return true
 		}
 	}
@@ -157,8 +157,8 @@ func (l *GroupList) Count() int {
 // ToXValue returns a representation of this object for use in expressions
 func (l GroupList) ToXValue(env utils.Environment) types.XValue {
 	array := make([]types.XValue, len(l.groups))
-	for g, group := range l.groups {
-		array[g] = group.ToXValue(env)
+	for i, group := range l.groups {
+		array[i] = group.ToXValue(env)
 	}
 	return types.NewXArray(array...)
 }
@@ -175,9 +175,9 @@ func NewGroupAssets(groups []assets.Group) *GroupAssets {
 		all:    make([]*Group, len(groups)),
 		byUUID: make(map[assets.GroupUUID]*Group, len(groups)),
 	}
-	for g, asset := range groups {
+	for i, asset := range groups {
 		group := NewGroup(asset)
-		s.all[g] = group
+		s.all[i] = group
 		s.byUUID[group.UUID()] = group
 	}
 	return s
