@@ -449,12 +449,12 @@ type FlowRun interface {
 	SaveResult(*Result)
 	SetStatus(RunStatus)
 
-	LogEvent(Step, Event)
-	LogError(Step, error)
-
 	CreateStep(Node) Step
 	Path() []Step
 	PathLocation() (Step, Node, error)
+
+	LogEvent(Step, Event)
+	LogError(Step, error)
 	Events() []Event
 
 	EvaluateTemplateValue(template string) (types.XValue, error)

@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"encoding/json"
 	"io"
 	"io/ioutil"
 	"mime"
@@ -134,15 +135,6 @@ func (w *WebhookCall) Request() string { return w.requestTrace }
 // Response returns the response trace
 func (w *WebhookCall) Response() string { return w.responseTrace }
 
-// Body returns the response body
-func (w *WebhookCall) Body() string {
-	parts := strings.SplitN(w.responseTrace, "\r\n\r\n", 2)
-	if len(parts) == 2 {
-		return parts[1]
-	}
-	return ""
-}
-
 // BodyIgnored returns whether we ignored the body because we didn't recognize the content type
 func (w *WebhookCall) BodyIgnored() bool {
 	return w.bodyIgnored
@@ -225,4 +217,25 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 	}
 
 	return w, nil
+}
+
+// ExtractResponseBody extracts a JSON body from a webhook call response trace
+func ExtractResponseBody(response string) json.RawMessage {
+	parts := strings.SplitN(response, "\r\n\r\n", 2)
+
+	// this response doesn't have a body
+	if len(parts) != 2 || len(parts[1]) == 0 {
+		return nil
+	}
+
+	body := []byte(parts[1])
+
+	// try to parse body as JSON
+	if utils.IsValidJSON(body) {
+		// if that was successful, the body is valid JSON
+		return body
+	}
+	// if not, treat body as text and encode as a JSON string
+	asString, _ := json.Marshal(string(body))
+	return asString
 }

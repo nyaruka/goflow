@@ -246,18 +246,7 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
 	value := strconv.Itoa(webhook.StatusCode())
 	category := webhookStatusCategories[webhook.Status()]
-
-	body := []byte(webhook.Body())
-	var extra json.RawMessage
-
-	// try to parse body as JSON
-	if utils.IsValidJSON(body) {
-		// if that was successful, the body is valid JSON and extra is the body
-		extra = body
-	} else {
-		// if not, treat body as text and encode as a JSON string
-		extra, _ = json.Marshal(string(body))
-	}
+	extra := flows.ExtractResponseBody(webhook.Response())
 
 	a.saveResult(run, step, name, value, category, "", input, extra, logEvent)
 }

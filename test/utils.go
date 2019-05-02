@@ -29,11 +29,15 @@ func NormalizeJSON(data json.RawMessage) ([]byte, error) {
 
 // AssertEqualJSON checks two JSON strings for equality
 func AssertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMessage, msg string, msgArgs ...interface{}) bool {
+	if expected == nil && actual == nil {
+		return true
+	}
+
 	expectedNormalized, err := NormalizeJSON(expected)
-	require.NoError(t, err)
+	require.NoError(t, err, "unable to normalize expected JSON: %s", string(expected))
 
 	actualNormalized, err := NormalizeJSON(actual)
-	require.NoError(t, err)
+	require.NoError(t, err, "unable to normalize actual JSON: %s", string(actual))
 
 	differ := diff.New()
 	diffs := differ.DiffMain(string(expectedNormalized), string(actualNormalized), false)

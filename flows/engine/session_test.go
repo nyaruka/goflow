@@ -96,7 +96,7 @@ var templateTests = []struct {
 	{"@results.favorite_color.category_localized", "Red", ""},
 	{"@(is_error(results.favorite_icecream))", "true", ""},
 	{"@(has_error(results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
-	{"@(count(results))", "3", ""},
+	{"@(count(results))", "4", ""},
 
 	{"@run.results.favorite_color", `[red]`, ""},
 	{"@run.results.favorite_color.values", "[red]", ""},
@@ -106,9 +106,14 @@ var templateTests = []struct {
 	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(run.results.favorite_icecream))", "true", ""},
 	{"@(has_error(run.results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
-	{"@(count(run.results))", "3", ""},
+	{"@(count(run.results))", "4", ""},
 
 	{"@run.status", "completed", ""},
+
+	{"@webhook", "{results: [{state: WA}, {state: IN}]}", ""},
+	{"@webhook.results", "[{state: WA}, {state: IN}]", ""},
+	{"@(webhook.results[1])", "{state: IN}", ""},
+	{"@(webhook.results[1].state)", "IN", ""},
 
 	{"@trigger.params", `{address: {state: WA}, source: website}`, ""},
 	{"@trigger.params.source", "website", ""},
@@ -127,7 +132,10 @@ func TestEvaluateTemplate(t *testing.T) {
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	session, _, err := test.CreateTestSession("http://localhost", nil)
+	server := test.NewTestHTTPServer(0)
+	defer server.Close()
+
+	session, _, err := test.CreateTestSession(server.URL, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
