@@ -87,4 +87,6 @@ func TestURLJoin(t *testing.T) {
 	assert.Equal(t, "http://myfiles.com/test.jpg", legacy.URLJoin("http://myfiles.com/", "test.jpg"))
 	assert.Equal(t, "http://myfiles.com/test.jpg", legacy.URLJoin("http://myfiles.com", "/test.jpg"))
 	assert.Equal(t, "http://myfiles.com/test.jpg", legacy.URLJoin("http://myfiles.com/", "/test.jpg"))
+	assert.Equal(t, "http://myfiles.com/test.jpg", legacy.URLJoin("http://myfiles.com/", "http://myfiles.com/test.jpg"))
+	assert.Equal(t, "https://myfiles.com/test.jpg", legacy.URLJoin("https://myfiles.com/", "https://myfiles.com/test.jpg"))
 }
