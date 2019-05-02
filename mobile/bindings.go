@@ -322,13 +322,16 @@ func NewEngine(httpUserAgent string) *Engine {
 }
 
 // NewSession creates a new session
-func (e *Engine) NewSession(sa *SessionAssets, trigger *Trigger) (*Session, *Sprint, error) {
+func (e *Engine) NewSession(sa *SessionAssets, trigger *Trigger) (*SessionAndSprint, error) {
 	session, sprint, err := e.target.NewSession(sa.target, trigger.target)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	return &Session{target: session}, &Sprint{target: sprint}, nil
+	return &SessionAndSprint{
+		session: &Session{target: session},
+		sprint:  &Sprint{target: sprint},
+	}, nil
 }
 
 // ReadSession reads an existing session from JSON
@@ -338,4 +341,18 @@ func (e *Engine) ReadSession(a *SessionAssets, data string) (*Session, error) {
 		return nil, err
 	}
 	return &Session{target: s}, nil
+}
+
+// SessionAndSprint holds a session and a sprint.. because a Java method can't return two values
+type SessionAndSprint struct {
+	session *Session
+	sprint  *Sprint
+}
+
+func (ss *SessionAndSprint) Session() *Session {
+	return ss.session
+}
+
+func (ss *SessionAndSprint) Sprint() *Sprint {
+	return ss.sprint
 }
