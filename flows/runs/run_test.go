@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -174,13 +175,14 @@ func TestRunContext(t *testing.T) {
 
 func TestMissingRelatedRunContext(t *testing.T) {
 	// create a run with no parent or child
-	session, err := test.CreateSession([]byte(sessionAssets), "")
+	sa, err := test.CreateSessionAssets([]byte(sessionAssets), "")
 	require.NoError(t, err)
 
-	trigger, err := triggers.ReadTrigger(session.Assets(), []byte(sessionTrigger), assets.IgnoreMissing)
+	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	_, err = session.Start(trigger)
+	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	session, _, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

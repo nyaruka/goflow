@@ -166,9 +166,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	}
 
 	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
-	session := eng.NewSession(sa)
-
-	sprint, err := session.Start(trigger)
+	session, sprint, err := eng.NewSession(sa, trigger)
 	if err != nil {
 		return runResult{}, err
 	}

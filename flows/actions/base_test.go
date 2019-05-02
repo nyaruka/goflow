@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -84,8 +85,8 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
 
-		// create unstarted session from our assets
-		session, err := test.CreateSession(assetsJSON, testServerURL)
+		// create session assets
+		sa, err := test.CreateSessionAssets(assetsJSON, testServerURL)
 		require.NoError(t, err)
 
 		// read the action to be tested
@@ -101,14 +102,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			flowUUID = assets.FlowUUID("bead76f5-dac4-4c9d-996c-c62b326e8c0a")
 		}
 
-		flow, err := session.Assets().Flows().Get(flowUUID)
+		flow, err := sa.Flows().Get(flowUUID)
 		require.NoError(t, err)
 
 		// if not, add it to our flow
 		flow.Nodes()[0].AddAction(action)
 
 		// if this action is expected to cause flow validation failure, check that
-		err = flow.Validate(session.Assets())
+		err = flow.Validate(sa)
 		if tc.ValidationError != "" {
 			rootErr := errors.Cause(err)
 			assert.EqualError(t, rootErr, tc.ValidationError, "validation error mismatch in %s", testName)
@@ -120,12 +121,12 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		// optionally load our contact
 		var contact *flows.Contact
 		if !tc.NoContact {
-			contact, err = flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), assets.PanicOnMissing)
+			contact, err = flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
 			require.NoError(t, err)
 
 			// optionally give our contact some URNs
 			if !tc.NoURNs {
-				channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
+				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 				contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123"), channel))
 				contact.AddURN(flows.NewContactURN(urns.URN("twitterid:54784326227#nyaruka"), nil))
 			}
@@ -143,7 +144,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		if tc.NoInput {
 			var connection *flows.Connection
 			if flow.Type() == flows.FlowTypeVoice {
-				channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
+				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
 				trigger = triggers.NewManualVoiceTrigger(env, flow.Reference(), contact, connection, nil)
 			} else {
@@ -164,7 +165,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
-		_, err = session.Start(trigger)
+		// create session
+		eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+		session, _, err := eng.NewSession(sa, trigger)
 		require.NoError(t, err)
 
 		// check events are what we expected

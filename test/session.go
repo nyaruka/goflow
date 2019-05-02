@@ -436,60 +436,62 @@ var voiceSessionTrigger = `{
 // CreateTestSession creates a standard example session for testing
 func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
 
-	session, err := CreateSession(json.RawMessage(sessionAssets), testServerURL)
+	sa, err := CreateSessionAssets(json.RawMessage(sessionAssets), testServerURL)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error creating test session")
 	}
 
 	// optional modify the main flow by adding the provided action to the last node
 	if actionToAdd != nil {
-		flow, _ := session.Assets().Flows().Get(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
+		flow, _ := sa.Flows().Get(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
 		flow.Nodes()[len(flow.Nodes())-1].AddAction(actionToAdd)
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(sessionTrigger), assets.PanicOnMissing)
+	trigger, err := triggers.ReadTrigger(sa, json.RawMessage(sessionTrigger), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	_, err = session.Start(trigger)
+	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	session, sprint, err := eng.NewSession(sa, trigger)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test session")
 	}
 
 	// read our resume
-	resume, err := resumes.ReadResume(session.Assets(), json.RawMessage(sessionResume), assets.PanicOnMissing)
+	resume, err := resumes.ReadResume(sa, json.RawMessage(sessionResume), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error reading resume")
 	}
 
-	sprint, err := session.Resume(resume)
+	sprint, err = session.Resume(resume)
 	return session, sprint.Events(), err
 }
 
 // CreateTestVoiceSession creates a standard example session for testing voice flows and actions
 func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
 
-	session, err := CreateSession(json.RawMessage(voiceSessionAssets), testServerURL)
+	sa, err := CreateSessionAssets(json.RawMessage(voiceSessionAssets), testServerURL)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "error creating test voice session")
+		return nil, nil, errors.Wrap(err, "error creating test voice session assets")
 	}
 
 	// optional modify the main flow by adding the provided action to the last node
 	if actionToAdd != nil {
-		flow, _ := session.Assets().Flows().Get(assets.FlowUUID("aa71426e-13bd-4607-a4f5-77666ff9c4bf"))
+		flow, _ := sa.Flows().Get(assets.FlowUUID("aa71426e-13bd-4607-a4f5-77666ff9c4bf"))
 		nodes := flow.Nodes()
 		nodes[len(nodes)-1].AddAction(actionToAdd)
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(voiceSessionTrigger), assets.PanicOnMissing)
+	trigger, err := triggers.ReadTrigger(sa, json.RawMessage(voiceSessionTrigger), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	sprint, err := session.Start(trigger)
+	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	session, sprint, err := eng.NewSession(sa, trigger)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test voice session")
 	}
@@ -497,8 +499,8 @@ func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flo
 	return session, sprint.Events(), err
 }
 
-// CreateSession creates a session with the given assets
-func CreateSession(assetsJSON json.RawMessage, testServerURL string) (flows.Session, error) {
+// CreateSessionAssets creates assets from given JSON
+func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flows.SessionAssets, error) {
 	// different tests different ports for the test HTTP server
 	if testServerURL != "" {
 		assetsJSON = json.RawMessage(strings.Replace(string(assetsJSON), "http://localhost", testServerURL, -1))
@@ -516,7 +518,5 @@ func CreateSession(assetsJSON json.RawMessage, testServerURL string) (flows.Sess
 		return nil, errors.Wrap(err, "error creating test session assets")
 	}
 
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
-	session := eng.NewSession(sa)
-	return session, nil
+	return sa, nil
 }

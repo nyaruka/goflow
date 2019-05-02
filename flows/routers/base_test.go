@@ -9,6 +9,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
@@ -77,8 +78,8 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 		testName := fmt.Sprintf("test '%s' for router type '%s'", tc.Description, typeName)
 
-		// create unstarted session from our assets
-		session, err := test.CreateSession(assetsJSON, testServerURL)
+		// create session assets
+		sa, err := test.CreateSessionAssets(assetsJSON, testServerURL)
 		require.NoError(t, err)
 
 		// read the router to be tested
@@ -87,14 +88,14 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		assert.Equal(t, typeName, router.Type())
 
 		// get a suitable "holder" flow
-		flow, err := session.Assets().Flows().Get("16f6eee7-9843-4333-bad2-1d7fd636452c")
+		flow, err := sa.Flows().Get("16f6eee7-9843-4333-bad2-1d7fd636452c")
 		require.NoError(t, err)
 
 		// if not, add it to our flow
 		flow.Nodes()[0].SetRouter(router)
 
 		// if this router is expected to cause flow validation failure, check that
-		err = flow.Validate(session.Assets())
+		err = flow.Validate(sa)
 		if tc.ValidationError != "" {
 			rootErr := errors.Cause(err)
 			assert.EqualError(t, rootErr, tc.ValidationError, "validation error mismatch in %s", testName)
@@ -104,11 +105,13 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		}
 
 		// load our contact
-		contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), assets.PanicOnMissing)
+		contact, err := flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
 		require.NoError(t, err)
 
 		trigger := triggers.NewManualTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, nil)
-		_, err = session.Start(trigger)
+
+		eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+		session, _, err := eng.NewSession(sa, trigger)
 		require.NoError(t, err)
 
 		// check results are what we expected

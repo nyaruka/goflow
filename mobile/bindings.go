@@ -261,15 +261,6 @@ func (s *Session) Assets() *SessionAssets {
 	return &SessionAssets{target: s.target.Assets()}
 }
 
-// Start starts this session using the given trigger
-func (s *Session) Start(trigger *Trigger) (*Sprint, error) {
-	sprint, err := s.target.Start(trigger.target)
-	if err != nil {
-		return nil, err
-	}
-	return &Sprint{target: sprint}, nil
-}
-
 // Resume resumes this session
 func (s *Session) Resume(resume *Resume) (*Sprint, error) {
 	sprint, err := s.target.Resume(resume.target)
@@ -331,8 +322,13 @@ func NewEngine(httpUserAgent string) *Engine {
 }
 
 // NewSession creates a new session
-func (e *Engine) NewSession(sa *SessionAssets) *Session {
-	return &Session{target: e.target.NewSession(sa.target)}
+func (e *Engine) NewSession(sa *SessionAssets, trigger *Trigger) (*Session, *Sprint, error) {
+	session, sprint, err := e.target.NewSession(sa.target, trigger.target)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &Session{target: session}, &Sprint{target: sprint}, nil
 }
 
 // ReadSession reads an existing session from JSON

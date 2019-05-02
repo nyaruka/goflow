@@ -613,18 +613,20 @@ func TestWaitTimeout(t *testing.T) {
 	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
 	require.NoError(t, err)
 
-	// create our engine session
-	session, err := test.CreateSession(json.RawMessage(sessionAssets), "")
+	// create our session assets
+	sa, err := test.CreateSessionAssets(json.RawMessage(sessionAssets), "")
 	require.NoError(t, err)
 
-	flow, err := session.Assets().Flows().Get(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
+	flow, err := sa.Flows().Get(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
 	require.NoError(t, err)
 
-	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
+	contact := flows.NewEmptyContact(sa, "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
 	trigger := triggers.NewManualTrigger(nil, flow.Reference(), contact, nil)
 
-	sprint, err := session.Start(trigger)
+	// create session
+	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	session, sprint, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
 
 	require.Equal(t, 1, len(session.Runs()[0].Path()))

@@ -112,10 +112,9 @@ func (s *session) Engine() flows.Engine { return s.engine }
 //------------------------------------------------------------------------------------------
 
 // Start initializes this session with the given trigger and runs the flow to the first wait
-func (s *session) Start(trigger flows.Trigger) (flows.Sprint, error) {
+func (s *session) start(trigger flows.Trigger) (flows.Sprint, error) {
 	sprint := NewEmptySprint()
-	s.trigger = trigger
-
+	
 	if err := s.prepareForSprint(); err != nil {
 		return sprint, err
 	}
