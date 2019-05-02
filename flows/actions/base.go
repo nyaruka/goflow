@@ -151,8 +151,8 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 	// localize and evaluate the message attachments
 	translatedAttachments := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]utils.Attachment, 0, len(translatedAttachments))
-	for n := range translatedAttachments {
-		evaluatedAttachment, err := run.EvaluateTemplate(translatedAttachments[n])
+	for _, a := range translatedAttachments {
+		evaluatedAttachment, err := run.EvaluateTemplate(a)
 		if err != nil {
 			logEvent(events.NewErrorEvent(err))
 		}
@@ -166,8 +166,8 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 	// localize and evaluate the quick replies
 	translatedQuickReplies := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
 	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
-	for n := range translatedQuickReplies {
-		evaluatedQuickReply, err := run.EvaluateTemplate(translatedQuickReplies[n])
+	for _, qr := range translatedQuickReplies {
+		evaluatedQuickReply, err := run.EvaluateTemplate(qr)
 		if err != nil {
 			logEvent(events.NewErrorEvent(err))
 		}
@@ -246,18 +246,7 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
 	value := strconv.Itoa(webhook.StatusCode())
 	category := webhookStatusCategories[webhook.Status()]
-
-	body := []byte(webhook.Body())
-	var extra json.RawMessage
-
-	// try to parse body as JSON
-	if utils.IsValidJSON(body) {
-		// if that was successful, the body is valid JSON and extra is the body
-		extra = body
-	} else {
-		// if not, treat body as text and encode as a JSON string
-		extra, _ = json.Marshal(string(body))
-	}
+	extra := flows.ExtractResponseBody(webhook.Response())
 
 	a.saveResult(run, step, name, value, category, "", input, extra, logEvent)
 }

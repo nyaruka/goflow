@@ -70,8 +70,8 @@ func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, incl
 func (r *BaseRouter) EnumerateResults(include func(*flows.ResultSpec)) {
 	if r.resultName != "" {
 		categoryNames := make([]string, len(r.categories))
-		for c := range r.categories {
-			categoryNames[c] = r.categories[c].Name()
+		for i := range r.categories {
+			categoryNames[i] = r.categories[i].Name()
 		}
 
 		include(flows.NewResultSpec(r.resultName, categoryNames))
@@ -123,8 +123,8 @@ func (r *BaseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent f
 	// find last timeout event to use as time of timeout
 	var timedOutOn time.Time
 	runEvents := run.Events()
-	for e := len(runEvents) - 1; e >= 0; e-- {
-		event := runEvents[e]
+	for i := len(runEvents) - 1; i >= 0; i-- {
+		event := runEvents[i]
 
 		_, isTimeout := event.(*events.WaitTimedOutEvent)
 		if isTimeout {

@@ -52,8 +52,8 @@ type Path []flows.Step
 // ToXValue returns a representation of this object for use in expressions
 func (p Path) ToXValue(env utils.Environment) types.XValue {
 	array := make([]types.XValue, len(p))
-	for s, step := range p {
-		array[s] = flows.Context(env, step)
+	for i, step := range p {
+		array[i] = flows.Context(env, step)
 	}
 	return types.NewXArray(array...)
 }

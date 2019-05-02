@@ -94,8 +94,8 @@ func (t *templateEnumerator) String(s *string) {
 }
 
 func (t *templateEnumerator) Slice(a []string) {
-	for s := range a {
-		t.include(a[s])
+	for i := range a {
+		t.include(a[i])
 	}
 }
 
@@ -127,8 +127,8 @@ func (t *templateRewriter) String(s *string) {
 }
 
 func (t *templateRewriter) Slice(a []string) {
-	for s := range a {
-		a[s] = t.rewrite(a[s])
+	for i := range a {
+		a[i] = t.rewrite(a[i])
 	}
 }
 

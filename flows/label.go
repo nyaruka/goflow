@@ -41,9 +41,9 @@ func NewLabelAssets(labels []assets.Label) *LabelAssets {
 		all:    make([]*Label, len(labels)),
 		byUUID: make(map[assets.LabelUUID]*Label, len(labels)),
 	}
-	for g, asset := range labels {
+	for i, asset := range labels {
 		label := NewLabel(asset)
-		s.all[g] = label
+		s.all[i] = label
 		s.byUUID[label.UUID()] = label
 	}
 	return s

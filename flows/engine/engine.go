@@ -21,7 +21,6 @@ func (e *engine) NewSession(sa flows.SessionAssets, trigger flows.Trigger) (flow
 	s := &session{
 		engine:     e,
 		assets:     sa,
-		env:        utils.NewEnvironmentBuilder().Build(),
 		trigger:    trigger,
 		status:     flows.SessionStatusActive,
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),

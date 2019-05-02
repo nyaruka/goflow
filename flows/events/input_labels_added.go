@@ -41,8 +41,8 @@ func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*flows.Label) 
 // converts a slice of labels to a slice of references
 func labelsToReferences(labels []*flows.Label) []*assets.LabelReference {
 	refs := make([]*assets.LabelReference, len(labels))
-	for l := range labels {
-		refs[l] = labels[l].Reference()
+	for i := range labels {
+		refs[i] = labels[i].Reference()
 	}
 	return refs
 }

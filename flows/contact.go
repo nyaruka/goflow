@@ -395,8 +395,8 @@ func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface
 		if env.RedactionPolicy() != utils.RedactionPolicyURNs {
 			urnsWithScheme := c.urns.WithScheme(key)
 			vals := make([]interface{}, len(urnsWithScheme))
-			for u := range urnsWithScheme {
-				vals[u] = string(urnsWithScheme[u].URN())
+			for i := range urnsWithScheme {
+				vals[i] = string(urnsWithScheme[i].URN())
 			}
 			return vals
 		}
@@ -531,8 +531,8 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	}
 
 	ce.Groups = make([]*assets.GroupReference, c.groups.Count())
-	for g, group := range c.groups.All() {
-		ce.Groups[g] = group.Reference()
+	for i, group := range c.groups.All() {
+		ce.Groups[i] = group.Reference()
 	}
 
 	ce.Fields = make(map[string]*Value)

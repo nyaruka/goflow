@@ -127,8 +127,8 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 			} else {
 				// otherwise error
 				depStrings := make([]string, len(missingAssets))
-				for d := range missingAssets {
-					depStrings[d] = missingAssets[d].String()
+				for i := range missingAssets {
+					depStrings[i] = missingAssets[i].String()
 				}
 				return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 			}
@@ -326,8 +326,8 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	}
 
 	nodes := make([]flows.Node, len(e.Nodes))
-	for n := range e.Nodes {
-		nodes[n] = e.Nodes[n]
+	for i := range e.Nodes {
+		nodes[i] = e.Nodes[i]
 	}
 
 	if e.Localization == nil {

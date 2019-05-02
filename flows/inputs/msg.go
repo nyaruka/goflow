@@ -47,8 +47,8 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 func (i *MsgInput) Context(env utils.Environment) map[string]types.XValue {
 	attachments := make([]types.XValue, len(i.attachments))
 
-	for a, attachment := range i.attachments {
-		attachments[a] = types.NewXText(string(attachment))
+	for i, attachment := range i.attachments {
+		attachments[i] = types.NewXText(string(attachment))
 	}
 
 	var urn types.XValue

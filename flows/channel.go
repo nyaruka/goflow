@@ -95,9 +95,9 @@ func NewChannelAssets(channels []assets.Channel) *ChannelAssets {
 		all:    make([]*Channel, len(channels)),
 		byUUID: make(map[assets.ChannelUUID]*Channel, len(channels)),
 	}
-	for c, asset := range channels {
+	for i, asset := range channels {
 		channel := NewChannel(asset)
-		s.all[c] = channel
+		s.all[i] = channel
 		s.byUUID[channel.UUID()] = channel
 	}
 	return s

@@ -206,12 +206,25 @@ func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
 		"results": flows.ContextFunc(env, r.Results().SimpleContext),
 		"urns":    urns,
 		"fields":  fields,
+		"webhook": r.lastWebhookResponse(),
 
 		// other
 		"trigger":      flows.Context(env, r.Session().Trigger()),
 		"input":        flows.Context(env, r.Session().Input()),
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
+}
+
+func (r *flowRun) lastWebhookResponse() types.XValue {
+	for i := len(r.events) - 1; i >= 0; i-- {
+		switch typed := r.events[i].(type) {
+		case *events.WebhookCalledEvent:
+			return types.JSONToXValue(flows.ExtractResponseBody(typed.Response))
+		default:
+			continue
+		}
+	}
+	return nil
 }
 
 // Context returns the properties available in expressions
@@ -303,11 +316,11 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 			}
 
 			merged := make([]string, len(native))
-			for s := range native {
-				if textArray[s] != "" {
-					merged[s] = textArray[s]
+			for i := range native {
+				if textArray[i] != "" {
+					merged[i] = textArray[i]
 				} else {
-					merged[s] = native[s]
+					merged[i] = native[i]
 				}
 			}
 			return merged

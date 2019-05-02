@@ -385,8 +385,8 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		migratedSubject, _ := expressions.MigrateTemplate(a.Subject, nil)
 		migratedBody, _ := expressions.MigrateTemplate(msg, nil)
 		migratedEmails := make([]string, len(a.Emails))
-		for e, email := range a.Emails {
-			migratedEmails[e], _ = expressions.MigrateTemplate(email, nil)
+		for i, email := range a.Emails {
+			migratedEmails[i], _ = expressions.MigrateTemplate(email, nil)
 		}
 
 		return actions.NewSendEmailAction(a.UUID, migratedEmails, migratedSubject, migratedBody), nil

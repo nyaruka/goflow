@@ -183,15 +183,15 @@ func printEvents(log []flows.Event, out io.Writer) {
 			msgs := make([]string, 0)
 			if len(typed.GroupsAdded) > 0 {
 				groups := make([]string, len(typed.GroupsAdded))
-				for g, group := range typed.GroupsAdded {
-					groups[g] = fmt.Sprintf("'%s'", group.Name)
+				for i, group := range typed.GroupsAdded {
+					groups[i] = fmt.Sprintf("'%s'", group.Name)
 				}
 				msgs = append(msgs, "added to "+strings.Join(groups, ", "))
 			}
 			if len(typed.GroupsRemoved) > 0 {
 				groups := make([]string, len(typed.GroupsRemoved))
-				for g, group := range typed.GroupsRemoved {
-					groups[g] = fmt.Sprintf("'%s'", group.Name)
+				for i, group := range typed.GroupsRemoved {
+					groups[i] = fmt.Sprintf("'%s'", group.Name)
 				}
 				msgs = append(msgs, "removed from "+strings.Join(groups, ", "))
 			}
@@ -212,8 +212,8 @@ func printEvents(log []flows.Event, out io.Writer) {
 			msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
 		case *events.InputLabelsAddedEvent:
 			labels := make([]string, len(typed.Labels))
-			for l, label := range typed.Labels {
-				labels[l] = fmt.Sprintf("'%s'", label.Name)
+			for i, label := range typed.Labels {
+				labels[i] = fmt.Sprintf("'%s'", label.Name)
 			}
 			msg = fmt.Sprintf("🏷️ labeled with %s", strings.Join(labels, ", "))
 		case *events.IVRCreatedEvent:

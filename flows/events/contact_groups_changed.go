@@ -41,8 +41,8 @@ func NewContactGroupsChangedEvent(added []*flows.Group, removed []*flows.Group) 
 // converts a slice of groups to a slice of references
 func groupsToReferences(groups []*flows.Group) []*assets.GroupReference {
 	refs := make([]*assets.GroupReference, len(groups))
-	for g := range groups {
-		refs[g] = groups[g].Reference()
+	for i := range groups {
+		refs[i] = groups[i].Reference()
 	}
 	return refs
 }

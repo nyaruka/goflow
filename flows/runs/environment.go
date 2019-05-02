@@ -85,8 +85,8 @@ func (e *runEnvironment) FindLocationsFuzzy(text string, level utils.LocationLev
 	}
 
 	// try with each pair of words
-	for w := 0; w < len(words)-1; w++ {
-		wordPair := strings.Join(words[w:w+2], " ")
+	for i := 0; i < len(words)-1; i++ {
+		wordPair := strings.Join(words[i:i+2], " ")
 		if locations, err := e.FindLocations(wordPair, level, parent); len(locations) > 0 || err != nil {
 			return locations, err
 		}
