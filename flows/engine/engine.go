@@ -17,14 +17,18 @@ type engine struct {
 }
 
 // NewSession creates a new session
-func (e *engine) NewSession(sa flows.SessionAssets) flows.Session {
-	return &session{
+func (e *engine) NewSession(sa flows.SessionAssets, trigger flows.Trigger) (flows.Session, flows.Sprint, error) {
+	s := &session{
 		engine:     e,
-		env:        utils.NewEnvironmentBuilder().Build(),
 		assets:     sa,
+		trigger:    trigger,
 		status:     flows.SessionStatusActive,
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
 	}
+
+	sprint, err := s.start(trigger)
+
+	return s, sprint, err
 }
 
 // ReadSession reads an existing session

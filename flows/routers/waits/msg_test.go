@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -70,27 +71,28 @@ func TestMsgWait(t *testing.T) {
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {
+	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
 	env := utils.NewEnvironmentBuilder().Build()
-	session, flow := initializeSession(t)
-	contact := flows.NewEmptyContact(session.Assets(), "Ben Haggerty", utils.Language("eng"), nil)
+	sa, flow := initializeSessionAssets(t)
+	contact := flows.NewEmptyContact(sa, "Ben Haggerty", utils.Language("eng"), nil)
 
 	// a manual trigger will wait at the initial wait
 	trigger := triggers.NewManualTrigger(env, flow.Reference(), contact, nil)
 
-	sprint, err := session.Start(trigger)
+	session, sprint, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.SessionStatusWaiting, session.Status())
 	assert.Equal(t, 1, len(sprint.Events()))
 	assert.Equal(t, "msg_wait", sprint.Events()[0].Type())
 
-	session, flow = initializeSession(t)
+	sa, flow = initializeSessionAssets(t)
 
 	// whereas a msg trigger will skip over it
 	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), urns.NilURN, nil, "Hi there", nil)
 	trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil)
 
-	sprint, err = session.Start(trigger)
+	session, sprint, err = eng.NewSession(sa, trigger)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
@@ -98,12 +100,12 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 	assert.Equal(t, "msg_received", sprint.Events()[0].Type())
 }
 
-func initializeSession(t *testing.T) (flows.Session, flows.Flow) {
-	session, err := test.CreateSession([]byte(initialWaitJSON), "")
+func initializeSessionAssets(t *testing.T) (flows.SessionAssets, flows.Flow) {
+	sa, err := test.CreateSessionAssets([]byte(initialWaitJSON), "")
 	require.NoError(t, err)
 
-	flow, err := session.Assets().Flows().Get("615b8a0f-588c-4d20-a05f-363b0b4ce6f4")
+	flow, err := sa.Flows().Get("615b8a0f-588c-4d20-a05f-363b0b4ce6f4")
 	require.NoError(t, err)
 
-	return session, flow
+	return sa, flow
 }

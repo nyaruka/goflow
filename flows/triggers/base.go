@@ -63,7 +63,10 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 
 	if t.environment != nil {
 		session.SetEnvironment(t.environment)
+	} else {
+		session.SetEnvironment(utils.NewEnvironmentBuilder().Build())
 	}
+
 	if t.contact != nil {
 		session.SetContact(t.contact.Clone())
 
