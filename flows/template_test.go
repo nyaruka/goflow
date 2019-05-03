@@ -58,7 +58,13 @@ func TestTemplates(t *testing.T) {
 			assert.Equal(t, "", tc.Expected)
 			continue
 		}
+		assert.NotNil(t, tr.Asset())
 
 		assert.Equal(t, tc.Expected, tr.Substitute(tc.Variables))
 	}
+
+	template = tas.Get(assets.TemplateUUID("c520cbda-e118-440f-aaf6-c0485088384f"))
+	assert.NotNil(t, template)
+	assert.Equal(t, assets.NewTemplateReference("c520cbda-e118-440f-aaf6-c0485088384f", "greeting"), template.Reference())
+	assert.Equal(t, (*assets.TemplateReference)(nil), (*Template)(nil).Reference())
 }

@@ -83,7 +83,7 @@ func (f *flow) Validate(sa flows.SessionAssets) error {
 	return f.validate(sa, false, nil)
 }
 
-// Validates that we are structurally currect, have all the dependencies we need, and all our flow dependencies are also valid
+// Validates that we are structurally correct, have all the dependencies we need, and all our flow dependencies are also valid
 func (f *flow) ValidateRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
 	return f.validate(sa, true, missing)
 }

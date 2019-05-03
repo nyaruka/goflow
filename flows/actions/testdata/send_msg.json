@@ -244,22 +244,7 @@
                 ]
             }
         },
-        "events": [
-            {
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                    "channel": {
-                        "name": "My Android Phone",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "text": "Hi Ryan Lewis, who's a good boy?",
-                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
-                },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "type": "msg_created"
-            }
-        ]
+        "validation_error": "missing dependencies: template[uuid=b620b463-8d15-427f-b2e3-4f44f9f071ec,name=missing]"
     },
     {
         "description": "Msg with a matching template",

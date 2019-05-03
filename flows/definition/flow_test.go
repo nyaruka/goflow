@@ -64,7 +64,7 @@ func TestFlowReadingAndValidation(t *testing.T) {
 		},
 		{
 			"flow_with_missing_asset.json",
-			"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered]",
+			"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered],template[uuid=5722e1fd-fe32-4e74-ac78-3cf41a6adb7e,name=affirmation]",
 			false,
 		},
 	}
