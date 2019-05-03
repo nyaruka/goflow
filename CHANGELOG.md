@@ -1,3 +1,7 @@
+v0.38.1
+----------
+ * properly return template dependencies for flows
+
 v0.38.0
 ----------
  * Rework creating and starting sessions so sessions no longer exist in limbo state between the two
