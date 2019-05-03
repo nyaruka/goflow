@@ -200,6 +200,11 @@ type TemplateReference struct {
 	Name string       `json:"name"`
 }
 
+// NewTemplateReference creates a new template reference with the given UUID and name
+func NewTemplateReference(uuid TemplateUUID, name string) *TemplateReference {
+	return &TemplateReference{UUID: uuid, Name: name}
+}
+
 // Identity returns the unique identity of the asset
 func (r *TemplateReference) Identity() string {
 	return string(r.UUID)

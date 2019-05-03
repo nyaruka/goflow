@@ -6,12 +6,13 @@ import (
 )
 
 type dependencies struct {
-	Channels []*assets.ChannelReference `json:"channels,omitempty"`
-	Contacts []*flows.ContactReference  `json:"contacts,omitempty"`
-	Fields   []*assets.FieldReference   `json:"fields,omitempty"`
-	Flows    []*assets.FlowReference    `json:"flows,omitempty"`
-	Groups   []*assets.GroupReference   `json:"groups,omitempty"`
-	Labels   []*assets.LabelReference   `json:"labels,omitempty"`
+	Channels  []*assets.ChannelReference  `json:"channels,omitempty"`
+	Contacts  []*flows.ContactReference   `json:"contacts,omitempty"`
+	Fields    []*assets.FieldReference    `json:"fields,omitempty"`
+	Flows     []*assets.FlowReference     `json:"flows,omitempty"`
+	Groups    []*assets.GroupReference    `json:"groups,omitempty"`
+	Labels    []*assets.LabelReference    `json:"labels,omitempty"`
+	Templates []*assets.TemplateReference `json:"templates,omitempty"`
 }
 
 func newDependencies(refs []assets.Reference) *dependencies {
@@ -30,6 +31,8 @@ func newDependencies(refs []assets.Reference) *dependencies {
 			d.Groups = append(d.Groups, typed)
 		case *assets.LabelReference:
 			d.Labels = append(d.Labels, typed)
+		case *assets.TemplateReference:
+			d.Templates = append(d.Templates, typed)
 		}
 	}
 	return d
@@ -75,6 +78,14 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 			missing(ref)
 		} else {
 			d.Labels[i] = a.Reference()
+		}
+	}
+	for i, ref := range d.Templates {
+		a := sa.Templates().Get(ref.UUID)
+		if a == nil {
+			missing(ref)
+		} else {
+			d.Templates[i] = a.Reference()
 		}
 	}
 }

@@ -22,6 +22,14 @@ func NewTemplate(t assets.Template) *Template {
 // Asset returns the underlying asset
 func (t *Template) Asset() assets.Template { return t.Template }
 
+// Reference returns the reference for this template
+func (t *Template) Reference() *assets.TemplateReference {
+	if t == nil {
+		return nil
+	}
+	return assets.NewTemplateReference(t.UUID(), t.Name())
+}
+
 // FindTranslation finds the matching translation for the passed in channel and languages (in priority order)
 func (t *Template) FindTranslation(channel assets.ChannelUUID, langs []utils.Language) *TemplateTranslation {
 	// first iterate through and find all translations that are for this channel
@@ -93,15 +101,20 @@ func NewTemplateAssets(ts []assets.Template) *TemplateAssets {
 	}
 }
 
+// Get returns the template with the passed in UUID if any
+func (a *TemplateAssets) Get(uuid assets.TemplateUUID) *Template {
+	return a.byUUID[uuid]
+}
+
 // FindTranslation looks through our list of templates to find the template matching the passed in uuid
 // If no template or translation is found then empty string is returned
-func (l *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, langs []utils.Language) *TemplateTranslation {
+func (a *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, langs []utils.Language) *TemplateTranslation {
 	// no channel, can't match to a template
 	if channel == nil {
 		return nil
 	}
 
-	template := l.byUUID[uuid]
+	template := a.byUUID[uuid]
 
 	// not found, no template
 	if template == nil {

@@ -11,7 +11,17 @@
                 {
                     "type": "send_msg",
                     "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
-                    "text": "Hi! What is your name?"
+                    "text": "Hi! What is your name?",
+                    "templating": {
+                        "template": {
+                            "name": "affirmation",
+                            "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e"
+                        },
+                        "variables": [
+                            "@contact.name",
+                            "boy"
+                        ]
+                    }
                 }
             ],
             "exits": [
