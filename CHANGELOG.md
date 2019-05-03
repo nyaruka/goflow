@@ -1,3 +1,9 @@
+v0.38.0
+----------
+ * Rework creating and starting sessions so sessions no longer exist in limbo state between the two
+ * Add @webhook as shortcut to .extra of last webhook result
+ * Make URLJoin honor absolute urls
+
 v0.37.3
 ----------
  * Omit empty variables in message templates
