@@ -132,7 +132,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			}
 		}
 
-		envBuilder := utils.NewEnvironmentBuilder()
+		envBuilder := utils.NewEnvironmentBuilder().WithDefaultCountry("RW")
 		if tc.RedactURNs {
 			envBuilder.WithRedactionPolicy(utils.RedactionPolicyURNs)
 		}

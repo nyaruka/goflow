@@ -60,7 +60,7 @@
                 }
             ],
             "legacy_vars": [
-                "@(\"+1098765432\")"
+                "@(\"0788123123\")"
             ]
         },
         "events": [
@@ -121,13 +121,13 @@
                 "type": "session_triggered",
                 "urns": [
                     "tel:+1234567890",
-                    "tel:+1098765432"
+                    "tel:+250788123123"
                 ]
             }
         ],
         "inspection": {
             "templates": [
-                "@(\"+1098765432\")"
+                "@(\"0788123123\")"
             ],
             "dependencies": [
                 "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]",

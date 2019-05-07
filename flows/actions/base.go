@@ -226,6 +226,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, actionURNs []ur
 			if err != nil {
 				logEvent(events.NewErrorEvent(err))
 			} else {
+				urn = urn.Normalize(string(run.Environment().DefaultCountry()))
 				urnList = append(urnList, urn)
 			}
 		}
