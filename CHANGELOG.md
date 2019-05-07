@@ -1,3 +1,7 @@
+v0.38.2
+----------
+ * Fix send_broadcast and start_session actions so telephone numbers are normalized
+
 v0.38.1
 ----------
  * properly return template dependencies for flows
