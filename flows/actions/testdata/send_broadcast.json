@@ -37,7 +37,7 @@
             "legacy_vars": [
                 "@(\"\")",
                 "@contact.fields.gender",
-                "@(\"+1098765432\")"
+                "@(\"0788123123\")"
             ],
             "text": "Hi there!"
         },
@@ -73,8 +73,8 @@
                 "type": "broadcast_created",
                 "urns": [
                     "tel:+1234567890",
-                    "tel:Male",
-                    "tel:+1098765432"
+                    "tel:male",
+                    "tel:+250788123123"
                 ]
             }
         ],
@@ -83,7 +83,7 @@
                 "Hi there!",
                 "@(\"\")",
                 "@contact.fields.gender",
-                "@(\"+1098765432\")"
+                "@(\"0788123123\")"
             ],
             "dependencies": [
                 "field[key=gender,name=]",
