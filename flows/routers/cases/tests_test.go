@@ -215,17 +215,8 @@ var testTests = []struct {
 	{"has_email", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
 	{"has_email", []types.XValue{}, ERROR},
 
-	{"has_phone", []types.XValue{xs("my number is +250788123123")}, result(xs("+250788123123"))},
-	{"has_phone", []types.XValue{xs("my number is +593979111111")}, result(xs("+593979111111"))},
-	{"has_phone", []types.XValue{xs("my number is 0788123123")}, result(xs("+250788123123"))}, // uses environment default
+	// more has_phone tests in TestHasPhone below
 	{"has_phone", []types.XValue{xs("my number is 0788123123"), xs("RW")}, result(xs("+250788123123"))},
-	{"has_phone", []types.XValue{xs("my number is +250788123123"), xs("RW")}, result(xs("+250788123123"))},
-	{"has_phone", []types.XValue{xs("my number is +12065551212"), xs("RW")}, result(xs("+12065551212"))},
-	{"has_phone", []types.XValue{xs("my number is 12065551212"), xs("US")}, result(xs("+12065551212"))},
-	{"has_phone", []types.XValue{xs("my number is 206 555 1212"), xs("US")}, result(xs("+12065551212"))},
-	{"has_phone", []types.XValue{xs("my number is +10001112222"), xs("US")}, result(xs("+10001112222"))},
-	{"has_phone", []types.XValue{xs("my number is 10000"), xs("US")}, falseResult},
-	{"has_phone", []types.XValue{xs("my number is 12067799294"), xs("BW")}, falseResult},
 	{"has_phone", []types.XValue{xs("my number is none of your business"), xs("US")}, falseResult},
 	{"has_phone", []types.XValue{ERROR}, ERROR},
 	{"has_phone", []types.XValue{xs("3245"), ERROR}, ERROR},
@@ -316,6 +307,48 @@ func TestEvaluateTemplate(t *testing.T) {
 
 			assert.Equal(t, test.expected, eval, "actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
 		}
+	}
+}
+
+func TestHasPhone(t *testing.T) {
+	tests := []struct {
+		input    string
+		country  string
+		expected string
+	}{
+		{"+250788123123", "", "+250788123123"},
+		{"+593979111111", "", "+593979111111"},
+		{"0788123123", "", "+250788123123"}, // uses environment default
+		{"0788123123", "RW", "+250788123123"},
+		{"+250788123123", "RW", "+250788123123"},
+		{"+12065551212", "RW", "+12065551212"}, // if num has country code, doesn't need to match test country
+		{"12065551212", "US", "+12065551212"},
+		{"206 555 1212", "US", "+12065551212"},
+		{"+10001112222", "US", "+10001112222"},
+		{"0815 1053 7962", "ID", "+6281510537962"}, // Indonesian numbers with 12 digits
+		{"0954 1053 7962", "ID", "+6295410537962"},
+		{"0811-1005-611", "ID", "+628111005611"}, // and with 11 digits
+		{"10000", "US", ""},
+		{"12067799294", "BW", ""},
+	}
+
+	env := utils.NewEnvironmentBuilder().WithDefaultCountry(utils.Country("RW")).Build()
+
+	for _, tc := range tests {
+		var actual, expected types.XValue
+		if tc.country != "" {
+			actual = cases.HasPhone(env, xs("my number is "+tc.input), xs(tc.country))
+		} else {
+			actual = cases.HasPhone(env, xs("my number is "+tc.input))
+		}
+
+		if tc.expected != "" {
+			expected = cases.NewTrueResult(xs(tc.expected))
+		} else {
+			expected = falseResult
+		}
+
+		test.AssertEqual(t, expected, actual, "has_phone mismatch for input=%s country=%s", tc.input, tc.country)
 	}
 }
 
