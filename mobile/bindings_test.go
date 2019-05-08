@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/mobile"
 
 	"github.com/stretchr/testify/assert"
@@ -11,8 +12,7 @@ import (
 )
 
 func TestMobileBindings(t *testing.T) {
-	// legacy v11 flows can be migrated
-	assert.True(t, mobile.IsSpecVersionSupported("11.6"))
+	assert.Equal(t, definition.CurrentSpecVersion.String(), mobile.CurrentSpecVersion())
 
 	// can handle anything that is this major version
 	assert.True(t, mobile.IsSpecVersionSupported("13"))

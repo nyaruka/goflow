@@ -33,16 +33,16 @@ import (
 	"github.com/Masterminds/semver"
 )
 
+// CurrentSpecVersion returns the current flow spec version
+func CurrentSpecVersion() string {
+	return definition.CurrentSpecVersion.String()
+}
+
 // IsSpecVersionSupported returns whether the given flow spec version is supported
 func IsSpecVersionSupported(ver string) bool {
 	v, err := semver.NewVersion(ver)
 	if err != nil {
 		return false
-	}
-
-	// we can migrate up to date legacy v11 flows
-	if v.Major() == 11 {
-		return true
 	}
 
 	return definition.IsSpecVersionSupported(v)
