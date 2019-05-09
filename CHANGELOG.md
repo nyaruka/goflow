@@ -1,3 +1,8 @@
+v0.38.3
+----------
+ * Switch to new library for UUID generation
+ * Expose current flow spec version in mobile bindings
+
 v0.38.2
 ----------
  * Fix send_broadcast and start_session actions so telephone numbers are normalized
