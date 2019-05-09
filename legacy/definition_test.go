@@ -19,6 +19,7 @@ var legacyActionHolderDef = `
 {
 	"base_language": "eng",
 	"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+	"flow_type": "%s",
 	"action_sets": [{
 		"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
 		"y": 100, 
@@ -38,6 +39,7 @@ var legacyTestHolderDef = `
 {
 	"base_language": "eng",
 	"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+	"flow_type": "F",
 	"rule_sets": [{
 		"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
 		"rules": [{
@@ -67,6 +69,7 @@ var legacyRuleSetHolderDef = `
 {
 	"base_language": "eng",
 	"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+	"flow_type": "F", 
 	"rule_sets": [%s],
 	"action_sets": [
 		{
@@ -105,6 +108,7 @@ type FlowMigrationTest struct {
 
 type ActionMigrationTest struct {
 	LegacyAction         json.RawMessage `json:"legacy_action"`
+	LegacyFlowType       string          `json:"legacy_flow_type"`
 	ExpectedAction       json.RawMessage `json:"expected_action"`
 	ExpectedLocalization json.RawMessage `json:"expected_localization"`
 }
@@ -157,7 +161,11 @@ func TestActionMigration(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		legacyFlowJSON := fmt.Sprintf(legacyActionHolderDef, string(tc.LegacyAction))
+		if tc.LegacyFlowType == "" {
+			tc.LegacyFlowType = "F"
+		}
+
+		legacyFlowJSON := fmt.Sprintf(legacyActionHolderDef, tc.LegacyFlowType, string(tc.LegacyAction))
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 

@@ -1114,5 +1114,5 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 		localization,
 		nodes,
 		uiJSON,
-	), nil
+	)
 }

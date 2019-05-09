@@ -43,7 +43,7 @@ type flow struct {
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage) flows.Flow {
+func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage) (flows.Flow, error) {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
@@ -62,7 +62,11 @@ func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowTyp
 		f.nodeMap[node.UUID()] = node
 	}
 
-	return f
+	if err := f.validateStructure(); err != nil {
+		return nil, err
+	}
+
+	return f, nil
 }
 
 func (f *flow) UUID() assets.FlowUUID                  { return f.uuid }
@@ -76,6 +80,25 @@ func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Localization() flows.Localization       { return f.localization }
 func (f *flow) UI() json.RawMessage                    { return f.ui }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
+
+func (f *flow) validateStructure() error {
+	// track UUIDs used by nodes and actions to ensure that they are unique
+	seenUUIDs := make(map[utils.UUID]bool)
+
+	for _, node := range f.nodes {
+		uuidAlreadySeen := seenUUIDs[utils.UUID(node.UUID())]
+		if uuidAlreadySeen {
+			return errors.Errorf("node UUID %s isn't unique", node.UUID())
+		}
+		seenUUIDs[utils.UUID(node.UUID())] = true
+
+		if err := node.Validate(f, seenUUIDs); err != nil {
+			return errors.Wrapf(err, "validation failed for node[uuid=%s]", node.UUID())
+		}
+	}
+
+	return nil
+}
 
 // Validates that we are structurally currect. The SessionAssets `sa` is optional but if provided,
 // we will also check that all dependencies actually exist, and refresh their names.
@@ -95,19 +118,8 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 		return nil
 	}
 
-	// track UUIDs used by nodes and actions to ensure that they are unique
-	seenUUIDs := make(map[utils.UUID]bool)
-
-	for _, node := range f.nodes {
-		uuidAlreadySeen := seenUUIDs[utils.UUID(node.UUID())]
-		if uuidAlreadySeen {
-			return errors.Errorf("node UUID %s isn't unique", node.UUID())
-		}
-		seenUUIDs[utils.UUID(node.UUID())] = true
-
-		if err := node.Validate(f, seenUUIDs); err != nil {
-			return errors.Wrapf(err, "validation failed for node[uuid=%s]", node.UUID())
-		}
+	if err := f.validateStructure(); err != nil {
+		return err
 	}
 
 	// extract all dependencies (assets, contacts)
@@ -334,7 +346,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		e.Localization = make(localization)
 	}
 
-	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, e.UI), nil
+	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, e.UI)
 }
 
 // MarshalJSON marshals this flow into JSON

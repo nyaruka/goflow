@@ -40,27 +40,27 @@ func TestFlowReadingAndValidation(t *testing.T) {
 		{
 			"flow_with_duplicate_node_uuid.json",
 			"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
-			false,
+			true,
 		},
 		{
 			"flow_with_invalid_timeout_category.json",
 			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
-			false,
+			true,
 		},
 		{
 			"flow_with_invalid_default_exit.json",
 			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-			false,
+			true,
 		},
 		{
 			"flow_with_invalid_case_category.json",
 			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-			false,
+			true,
 		},
 		{
 			"flow_with_invalid_exit_dest.json",
 			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
-			false,
+			true,
 		},
 		{
 			"flow_with_missing_asset.json",
@@ -185,7 +185,7 @@ func TestNewFlow(t *testing.T) {
 	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
-	flow := definition.NewFlow(
+	flow, err := definition.NewFlow(
 		assets.FlowUUID("8ca44c09-791d-453a-9799-a70dd3303306"),
 		"Test Flow",           // name
 		utils.Language("eng"), // base language
@@ -256,6 +256,7 @@ func TestNewFlow(t *testing.T) {
 		},
 		nil, // no UI
 	)
+	require.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
 	assert.NoError(t, err)
