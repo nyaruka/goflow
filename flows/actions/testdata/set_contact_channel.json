@@ -9,7 +9,7 @@
                 "name": "My Phone"
             }
         },
-        "validation_error": "missing dependencies: channel[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=My Phone]"
+        "dependency_error": "missing dependencies: channel[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=My Phone]"
     },
     {
         "description": "Error event if session has no contact",

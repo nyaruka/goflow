@@ -2,6 +2,7 @@
     {
         "description": "Error event and action skipped if audio URL contains expression error",
         "no_input": true,
+        "in_flow_type": "voice",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "play_audio",
@@ -27,6 +28,7 @@
     {
         "description": "Error event and action skipped if audio URL evaluates to empty",
         "no_input": true,
+        "in_flow_type": "voice",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "play_audio",
@@ -52,6 +54,7 @@
     {
         "description": "IVR created event with msg attachment if we have an audio URL",
         "no_input": true,
+        "in_flow_type": "voice",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "play_audio",
