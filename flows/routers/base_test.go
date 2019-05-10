@@ -98,7 +98,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		}
 
 		// if this router is expected to a dependency check failure, check that
-		err = flow.Validate(sa)
+		err = flow.ValidateDependencies(sa)
 		if tc.DependencyError != "" {
 			rootErr := errors.Cause(err)
 			assert.EqualError(t, rootErr, tc.DependencyError, "dependency error mismatch in %s", testName)

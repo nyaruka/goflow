@@ -149,9 +149,6 @@ type Flow interface {
 	ExpireAfterMinutes() int
 	Localization() Localization
 	UI() json.RawMessage
-
-	Validate(SessionAssets) error
-	ValidateRecursively(SessionAssets, func(assets.Reference)) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
@@ -160,6 +157,9 @@ type Flow interface {
 	RewriteTemplates(func(string) string)
 	ExtractDependencies() []assets.Reference
 	ExtractResults() []*ResultSpec
+
+	ValidateDependencies(SessionAssets) error
+	ValidateRecursively(SessionAssets, func(assets.Reference)) error
 }
 
 // Node is a single node in a flow

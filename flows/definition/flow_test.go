@@ -83,7 +83,7 @@ func TestFlowReadingAndValidation(t *testing.T) {
 		} else {
 			require.NoError(t, err)
 
-			err = flow.Validate(session.Assets())
+			err = flow.ValidateDependencies(session.Assets())
 			assert.EqualError(t, err, tc.expectedErr)
 		}
 	}
@@ -264,7 +264,7 @@ func TestNewFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
 
 	// should validate ok
-	err = flow.Validate(session.Assets())
+	err = flow.ValidateDependencies(session.Assets())
 	assert.NoError(t, err)
 
 	// check in expressions
@@ -313,7 +313,7 @@ func TestValidateEmptyFlow(t *testing.T) {
 	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
-	err = flow.Validate(nil)
+	err = flow.ValidateDependencies(nil)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
@@ -352,7 +352,7 @@ func TestValidateFlow(t *testing.T) {
 	require.NoError(t, err)
 
 	// validate with session assets
-	err = flow.Validate(sa)
+	err = flow.ValidateDependencies(sa)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
@@ -378,25 +378,6 @@ func TestValidateFlow(t *testing.T) {
 		"fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
         "43accf99-4940-44f7-926b-a8b35d9403d6"
 	]`))
-
-	// validate without session assets
-	sa, _ = test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
-	flow, _ = sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
-	err = flow.Validate(nil)
-	assert.NoError(t, err)
-
-	marshaled, err = json.Marshal(flow)
-	require.NoError(t, err)
-
-	// name of group won't have been corrected
-	assertFlowSection(t, marshaled, "_dependencies", []byte(`{
-    "groups": [
-      {
-        "name": "Registered",
-        "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
-      }
-    ]
-  }`))
 }
 
 func TestReadFlow(t *testing.T) {

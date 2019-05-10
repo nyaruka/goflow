@@ -100,18 +100,17 @@ func (f *flow) validateStructure() error {
 	return nil
 }
 
-// Validates that we are structurally currect. The SessionAssets `sa` is optional but if provided,
-// we will also check that all dependencies actually exist, and refresh their names.
-func (f *flow) Validate(sa flows.SessionAssets) error {
-	return f.validate(sa, false, nil)
+// Validate checks that all of this flow's dependencies exist and refreshes their names within the definition
+func (f *flow) ValidateDependencies(sa flows.SessionAssets) error {
+	return f.validateDependencies(sa, false, nil)
 }
 
 // Validates that we are structurally correct, have all the dependencies we need, and all our flow dependencies are also valid
 func (f *flow) ValidateRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	return f.validate(sa, true, missing)
+	return f.validateDependencies(sa, true, missing)
 }
 
-func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
+func (f *flow) validateDependencies(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
 	// if this flow has already been validated, don't need to do it again - avoid unnecessary work
 	// but also prevents looping if recursively validating flows
 	if f.validated {
@@ -122,24 +121,22 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 	deps := newDependencies(f.ExtractDependencies())
 
 	// and validate that all assets are available in the session assets
-	if sa != nil {
-		missingAssets := make([]assets.Reference, 0)
-		deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
+	missingAssets := make([]assets.Reference, 0)
+	deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
 
-		if len(missingAssets) > 0 {
-			// if we have callback for missing dependencies, call that
-			if missing != nil {
-				for _, dep := range missingAssets {
-					missing(dep)
-				}
-			} else {
-				// otherwise error
-				depStrings := make([]string, len(missingAssets))
-				for i := range missingAssets {
-					depStrings[i] = missingAssets[i].String()
-				}
-				return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
+	if len(missingAssets) > 0 {
+		// if we have callback for missing dependencies, call that
+		if missing != nil {
+			for _, dep := range missingAssets {
+				missing(dep)
 			}
+		} else {
+			// otherwise error
+			depStrings := make([]string, len(missingAssets))
+			for i := range missingAssets {
+				depStrings[i] = missingAssets[i].String()
+			}
+			return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 		}
 	}
 
@@ -149,16 +146,13 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 	f.waitingExits = f.ExtractExitsFromWaits()
 
 	if recursive {
-		if sa == nil {
-			panic("can't do recursive flow validation without session assets")
-		}
-
 		// go validate any non-missing flow dependencies
 		for _, flowRef := range deps.Flows {
 			flowDep, err := sa.Flows().Get(flowRef.UUID)
-			if err == nil {
-				flowDep.(*flow).validate(sa, true, missing)
+			if err != nil {
+				return errors.Wrapf(err, "error reading %s", flowRef.String())
 			}
+			flowDep.(*flow).validateDependencies(sa, true, missing)
 		}
 	}
 
