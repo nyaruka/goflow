@@ -11,6 +11,7 @@
                 {
                     "uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
                     "actions": [],
+                    "router": null,
                     "exits": [
                         {
                             "uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"

@@ -1,6 +1,6 @@
 [
     {
-        "description": "Validation fails for invalid default category",
+        "description": "Read fails for invalid default category",
         "router": {
             "type": "switch",
             "result_name": "Favorite Color",
@@ -42,10 +42,10 @@
                 }
             ]
         },
-        "validation_error": "default category 33c829d5-9092-484e-9683-c03614b6a446 is not a valid category"
+        "read_error": "default category 33c829d5-9092-484e-9683-c03614b6a446 is not a valid category"
     },
     {
-        "description": "Validation fails for invalid case category",
+        "description": "Read fails for invalid case category",
         "router": {
             "type": "switch",
             "result_name": "Favorite Color",
@@ -87,10 +87,10 @@
                 }
             ]
         },
-        "validation_error": "case category 33c829d5-9092-484e-9683-c03614b6a446 is not a valid category"
+        "read_error": "case category 33c829d5-9092-484e-9683-c03614b6a446 is not a valid category"
     },
     {
-        "description": "Validation fails for invalid case test",
+        "description": "Read fails for invalid case test",
         "router": {
             "type": "switch",
             "result_name": "Favorite Color",
@@ -132,7 +132,39 @@
                 }
             ]
         },
-        "validation_error": "case test has_any_icecream is not a registered test function"
+        "read_error": "case test has_any_icecream is not a registered test function"
+    },
+    {
+        "description": "Validation fails for has_group test with missing group dependency",
+        "router": {
+            "type": "switch",
+            "result_name": "In Group",
+            "categories": [
+                {
+                    "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                    "name": "Yes",
+                    "exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
+                },
+                {
+                    "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                    "name": "Other",
+                    "exit_uuid": "b787ffe3-c21a-46ad-9475-954614b52477"
+                }
+            ],
+            "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+            "operand": "@contact.groups",
+            "cases": [
+                {
+                    "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                    "type": "has_group",
+                    "arguments": [
+                        "aa33640b-43b0-4df2-992c-ba357981da71"
+                    ],
+                    "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                }
+            ]
+        },
+        "dependency_error": "missing dependencies: group[uuid=aa33640b-43b0-4df2-992c-ba357981da71,name=]"
     },
     {
         "description": "Result created with matching test result",

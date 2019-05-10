@@ -118,10 +118,6 @@ func (f *flow) validate(sa flows.SessionAssets, recursive bool, missing func(ass
 		return nil
 	}
 
-	if err := f.validateStructure(); err != nil {
-		return err
-	}
-
 	// extract all dependencies (assets, contacts)
 	deps := newDependencies(f.ExtractDependencies())
 

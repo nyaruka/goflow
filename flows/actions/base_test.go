@@ -16,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/buger/jsonparser"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -55,14 +54,6 @@ type inspectionResults struct {
 	Templates    []string            `json:"templates"`
 	Dependencies []string            `json:"dependencies"`
 	Results      []*flows.ResultSpec `json:"results"`
-}
-
-func jsonReplace(data json.RawMessage, path []string, value json.RawMessage) json.RawMessage {
-	newData, err := jsonparser.Set(data, value, path...)
-	if err != nil {
-		panic("unable to replace JSON")
-	}
-	return newData
 }
 
 func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
@@ -107,7 +98,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		// inject the action into a suitable node's actions in that flow
 		actionsPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "nodes", "[0]", "actions"}
 		actionsJson := []byte(fmt.Sprintf("[%s]", string(tc.Action)))
-		assetsJSON = jsonReplace(assetsJSON, actionsPath, actionsJson)
+		assetsJSON = test.JSONReplace(assetsJSON, actionsPath, actionsJson)
 
 		// create session assets
 		sa, err := test.CreateSessionAssets(assetsJSON, "")
