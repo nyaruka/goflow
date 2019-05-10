@@ -3,6 +3,7 @@ package definition
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/pkg/errors"
 )
 
 type dependencies struct {
@@ -39,7 +40,7 @@ func newDependencies(refs []assets.Reference) *dependencies {
 }
 
 // refreshes the asset dependencies and notifies the caller of missing assets via the callback
-func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCallback) {
+func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCallback) error {
 	for i, ref := range d.Channels {
 		a := sa.Channels().Get(ref.UUID)
 		if a == nil {
@@ -59,10 +60,11 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Flows {
 		a, err := sa.Flows().Get(ref.UUID)
 		if err != nil {
-			missing(ref)
-		} else {
-			d.Flows[i] = a.Reference()
+			// flows are the one thing that aren't allowed to be missing as we wouldn't know how to
+			// route from a subflow split with a missing flow
+			return errors.Wrapf(err, "unable to read %s", ref)
 		}
+		d.Flows[i] = a.Reference()
 	}
 	for i, ref := range d.Groups {
 		a := sa.Groups().Get(ref.UUID)
@@ -88,4 +90,6 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 			d.Templates[i] = a.Reference()
 		}
 	}
+
+	return nil
 }

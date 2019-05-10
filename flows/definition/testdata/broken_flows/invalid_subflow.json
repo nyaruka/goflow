@@ -1,0 +1,92 @@
+{
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Parent Flow",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
+                    "actions": [
+                        {
+                            "uuid": "300f02ba-e0b5-4991-bed6-4c240cdb8743",
+                            "type": "enter_flow",
+                            "flow": {
+                                "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
+                                "name": "Child Flow"
+                            }
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
+                                "name": "Completed",
+                                "exit_uuid": "4d043c51-260c-4a5f-a7d7-defd1067c9f2"
+                            },
+                            {
+                                "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
+                                "name": "Expired",
+                                "exit_uuid": "19a1c2ad-719e-4f1a-b128-863ba4222a1a"
+                            }
+                        ],
+                        "operand": "@child.run.status",
+                        "cases": [
+                            {
+                                "uuid": "19a95efc-ac69-4b6a-a90b-f84a60b49e4f",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "completed"
+                                ],
+                                "category_uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef"
+                            },
+                            {
+                                "uuid": "8b4def38-17ca-4207-8b6f-d81fb64a2dc6",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "expired"
+                                ],
+                                "category_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "4d043c51-260c-4a5f-a7d7-defd1067c9f2"
+                        },
+                        {
+                            "uuid": "19a1c2ad-719e-4f1a-b128-863ba4222a1a"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
+            "name": "Unreadable child flow due to missing text on send_msg action",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
+                    "actions": [
+                        {
+                            "uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
+                            "type": "send_msg",
+                            "text": ""
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "d856f8de-0b07-48d9-b641-87f68b46500d"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -100,7 +100,7 @@ func (f *flow) validateStructure() error {
 	return nil
 }
 
-// Validate checks that all of this flow's dependencies exist and refreshes their names within the definition
+// Validate checks that all of this flow's dependencies exist and refreshes their names
 func (f *flow) ValidateDependencies(sa flows.SessionAssets) error {
 	return f.validateDependencies(sa, false, nil)
 }
@@ -122,7 +122,10 @@ func (f *flow) validateDependencies(sa flows.SessionAssets, recursive bool, miss
 
 	// and validate that all assets are available in the session assets
 	missingAssets := make([]assets.Reference, 0)
-	deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
+	err := deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
+	if err != nil {
+		return err
+	}
 
 	if len(missingAssets) > 0 {
 		// if we have callback for missing dependencies, call that
@@ -237,7 +240,7 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 	return dependencies
 }
 
-// ExtractResultNames extracts all result names
+// ExtractResults extracts all result specs
 func (f *flow) ExtractResults() []*flows.ResultSpec {
 	specs := make([]*flows.ResultSpec, 0)
 	f.inspect(func(item flows.Inspectable) {

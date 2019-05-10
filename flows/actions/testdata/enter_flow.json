@@ -9,7 +9,7 @@
                 "name": "Long Lost Flow"
             }
         },
-        "dependency_error": "missing dependencies: flow[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Long Lost Flow]"
+        "dependency_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
     },
     {
         "description": "Fatal error event if flow is of different type",

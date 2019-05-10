@@ -234,7 +234,7 @@ var _ Reference = (*TemplateReference)(nil)
 type MissingCallback func(Reference)
 
 // PanicOnMissing panics if an asset is reported missing
-var PanicOnMissing MissingCallback = func(a Reference) { panic(fmt.Sprintf("unable to find asset %s", a.String())) }
+var PanicOnMissing MissingCallback = func(a Reference) { panic(fmt.Sprintf("missing asset: %s", a.String())) }
 
 // IgnoreMissing does nothing if an asset is reported missing
 var IgnoreMissing MissingCallback = func(Reference) {}
