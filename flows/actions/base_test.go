@@ -115,7 +115,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		}
 
 		// if this action is expected to cause a dependency check failure, check that
-		err = flow.ValidateDependencies(sa)
+		err = flow.CheckDependencies(sa)
 		if tc.DependencyError != "" {
 			rootErr := errors.Cause(err)
 			assert.EqualError(t, rootErr, tc.DependencyError, "dependency error mismatch in %s", testName)

@@ -32,14 +32,14 @@ type flow struct {
 	// optional properties not used by engine itself
 	ui json.RawMessage
 
-	// properties set after validation
+	// properties set after dependency checking
 	dependencies *dependencies
 	results      []*flows.ResultSpec
 	waitingExits []flows.ExitUUID
 
 	// internal state
-	nodeMap   map[flows.NodeUUID]flows.Node
-	validated bool
+	nodeMap map[flows.NodeUUID]flows.Node
+	checked bool
 }
 
 // NewFlow creates a new flow
@@ -100,20 +100,20 @@ func (f *flow) validateStructure() error {
 	return nil
 }
 
-// Validate checks that all of this flow's dependencies exist and refreshes their names
-func (f *flow) ValidateDependencies(sa flows.SessionAssets) error {
-	return f.validateDependencies(sa, false, nil)
+// Checks checks that all of this flow's dependencies exist, and refreshes their names
+func (f *flow) CheckDependencies(sa flows.SessionAssets) error {
+	return f.checkDependencies(sa, false, nil)
 }
 
-// Validates that we are structurally correct, have all the dependencies we need, and all our flow dependencies are also valid
-func (f *flow) ValidateRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	return f.validateDependencies(sa, true, missing)
+// CheckRecursively checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
+func (f *flow) CheckRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
+	return f.checkDependencies(sa, true, missing)
 }
 
-func (f *flow) validateDependencies(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
-	// if this flow has already been validated, don't need to do it again - avoid unnecessary work
-	// but also prevents looping if recursively validating flows
-	if f.validated {
+func (f *flow) checkDependencies(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
+	// if this flow has already been checked, don't need to do it again - avoid unnecessary work
+	// but also prevents looping if recursively checking flows
+	if f.checked {
 		return nil
 	}
 
@@ -143,7 +143,7 @@ func (f *flow) validateDependencies(sa flows.SessionAssets, recursive bool, miss
 		}
 	}
 
-	f.validated = true
+	f.checked = true
 	f.dependencies = deps
 	f.results = f.ExtractResults()
 	f.waitingExits = f.ExtractExitsFromWaits()
@@ -155,7 +155,7 @@ func (f *flow) validateDependencies(sa flows.SessionAssets, recursive bool, miss
 			if err != nil {
 				return errors.Wrapf(err, "error reading %s", flowRef.String())
 			}
-			flowDep.(*flow).validateDependencies(sa, true, missing)
+			flowDep.(*flow).checkDependencies(sa, true, missing)
 		}
 	}
 
@@ -363,7 +363,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		e.Nodes[i] = f.nodes[i].(*node)
 	}
 
-	if f.validated {
+	if f.checked {
 		return json.Marshal(&validatedFlowEnvelope{
 			flowEnvelope: e,
 			Dependencies: f.dependencies,

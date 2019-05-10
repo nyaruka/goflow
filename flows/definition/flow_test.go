@@ -88,7 +88,7 @@ func TestBrokenFlows(t *testing.T) {
 		} else {
 			require.NoError(t, err)
 
-			err = flow.ValidateRecursively(sa, nil)
+			err = flow.CheckRecursively(sa, nil)
 			assert.EqualError(t, err, tc.dependencyError)
 		}
 	}
@@ -269,7 +269,7 @@ func TestNewFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
 
 	// should validate ok
-	err = flow.ValidateDependencies(session.Assets())
+	err = flow.CheckDependencies(session.Assets())
 	assert.NoError(t, err)
 
 	// check in expressions
@@ -318,7 +318,7 @@ func TestValidateEmptyFlow(t *testing.T) {
 	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
-	err = flow.ValidateDependencies(nil)
+	err = flow.CheckDependencies(nil)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
@@ -357,7 +357,7 @@ func TestValidateFlow(t *testing.T) {
 	require.NoError(t, err)
 
 	// validate with session assets
-	err = flow.ValidateDependencies(sa)
+	err = flow.CheckDependencies(sa)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)

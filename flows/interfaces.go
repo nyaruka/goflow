@@ -114,7 +114,7 @@ type SessionAssets interface {
 	Resthooks() *ResthookAssets
 	Templates() *TemplateAssets
 
-	Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error)
+	//Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error)
 }
 
 // Localizable is anything in the flow definition which can be localized and therefore needs a UUID
@@ -158,8 +158,8 @@ type Flow interface {
 	ExtractDependencies() []assets.Reference
 	ExtractResults() []*ResultSpec
 
-	ValidateDependencies(SessionAssets) error
-	ValidateRecursively(SessionAssets, func(assets.Reference)) error
+	CheckDependencies(SessionAssets) error
+	CheckRecursively(SessionAssets, func(assets.Reference)) error
 }
 
 // Node is a single node in a flow
