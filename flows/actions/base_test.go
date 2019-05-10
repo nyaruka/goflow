@@ -61,18 +61,18 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description     string             `json:"description"`
-		NoContact       bool               `json:"no_contact"`
-		NoURNs          bool               `json:"no_urns"`
-		NoInput         bool               `json:"no_input"`
-		RedactURNs      bool               `json:"redact_urns"`
-		Action          json.RawMessage    `json:"action"`
-		InFlowType      flows.FlowType     `json:"in_flow_type"`
-		ReadError       string             `json:"read_error"`
-		DependencyError string             `json:"dependency_error"`
-		Events          []json.RawMessage  `json:"events"`
-		ContactAfter    json.RawMessage    `json:"contact_after"`
-		Inspection      *inspectionResults `json:"inspection"`
+		Description  string             `json:"description"`
+		NoContact    bool               `json:"no_contact"`
+		NoURNs       bool               `json:"no_urns"`
+		NoInput      bool               `json:"no_input"`
+		RedactURNs   bool               `json:"redact_urns"`
+		Action       json.RawMessage    `json:"action"`
+		InFlowType   flows.FlowType     `json:"in_flow_type"`
+		ReadError    string             `json:"read_error"`
+		CheckError   string             `json:"check_error"`
+		Events       []json.RawMessage  `json:"events"`
+		ContactAfter json.RawMessage    `json:"contact_after"`
+		Inspection   *inspectionResults `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -114,14 +114,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
-		// if this action is expected to cause a dependency check failure, check that
-		err = flow.CheckDependencies(sa)
-		if tc.DependencyError != "" {
+		// if this action is expected to cause a check failure, check that
+		err = flow.Check(sa)
+		if tc.CheckError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.DependencyError, "dependency error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.CheckError, "check error mismatch in %s", testName)
 			continue
 		} else {
-			assert.NoError(t, err, "unexpected dependency error in %s", testName)
+			assert.NoError(t, err, "unexpected check error in %s", testName)
 		}
 
 		// optionally load our contact

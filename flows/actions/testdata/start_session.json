@@ -15,7 +15,7 @@
                 }
             ]
         },
-        "dependency_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+        "check_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
     },
     {
         "description": "Validation fails for invalid group reference",
@@ -33,7 +33,7 @@
                 }
             ]
         },
-        "dependency_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
+        "check_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
     },
     {
         "description": "Session triggered event if new session can be triggered",

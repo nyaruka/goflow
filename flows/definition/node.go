@@ -38,10 +38,6 @@ func (n *node) AddAction(action flows.Action) {
 	n.actions = append(n.actions, action)
 }
 
-func (n *node) SetRouter(router flows.Router) {
-	n.router = router
-}
-
 func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 	// validate all the node's actions
 	for _, action := range n.Actions() {
@@ -65,14 +61,14 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 		seenUUIDs[utils.UUID(action.UUID())] = true
 
 		if err := action.Validate(); err != nil {
-			return errors.Wrapf(err, "validation failed for action[uuid=%s, type=%s]", action.UUID(), action.Type())
+			return errors.Wrapf(err, "invalid action[uuid=%s, type=%s]", action.UUID(), action.Type())
 		}
 	}
 
 	// check the router if there is one
 	if n.Router() != nil {
 		if err := n.Router().Validate(n.Exits()); err != nil {
-			return errors.Wrap(err, "validation failed for router")
+			return errors.Wrap(err, "invalid router")
 		}
 	}
 

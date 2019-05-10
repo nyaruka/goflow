@@ -62,7 +62,7 @@ func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowTyp
 		f.nodeMap[node.UUID()] = node
 	}
 
-	if err := f.validateStructure(); err != nil {
+	if err := f.validate(); err != nil {
 		return nil, err
 	}
 
@@ -81,7 +81,7 @@ func (f *flow) Localization() flows.Localization       { return f.localization }
 func (f *flow) UI() json.RawMessage                    { return f.ui }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
-func (f *flow) validateStructure() error {
+func (f *flow) validate() error {
 	// track UUIDs used by nodes and actions to ensure that they are unique
 	seenUUIDs := make(map[utils.UUID]bool)
 
@@ -93,7 +93,7 @@ func (f *flow) validateStructure() error {
 		seenUUIDs[utils.UUID(node.UUID())] = true
 
 		if err := node.Validate(f, seenUUIDs); err != nil {
-			return errors.Wrapf(err, "validation failed for node[uuid=%s]", node.UUID())
+			return errors.Wrapf(err, "invalid node[uuid=%s]", node.UUID())
 		}
 	}
 
@@ -101,16 +101,16 @@ func (f *flow) validateStructure() error {
 }
 
 // Checks checks that all of this flow's dependencies exist, and refreshes their names
-func (f *flow) CheckDependencies(sa flows.SessionAssets) error {
-	return f.checkDependencies(sa, false, nil)
+func (f *flow) Check(sa flows.SessionAssets) error {
+	return f.check(sa, false, nil)
 }
 
 // CheckRecursively checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
 func (f *flow) CheckRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	return f.checkDependencies(sa, true, missing)
+	return f.check(sa, true, missing)
 }
 
-func (f *flow) checkDependencies(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
+func (f *flow) check(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
 	// if this flow has already been checked, don't need to do it again - avoid unnecessary work
 	// but also prevents looping if recursively checking flows
 	if f.checked {
@@ -149,13 +149,13 @@ func (f *flow) checkDependencies(sa flows.SessionAssets, recursive bool, missing
 	f.waitingExits = f.ExtractExitsFromWaits()
 
 	if recursive {
-		// go validate any non-missing flow dependencies
+		// go check any non-missing flow dependencies
 		for _, flowRef := range deps.Flows {
 			flowDep, err := sa.Flows().Get(flowRef.UUID)
 			if err != nil {
 				return errors.Wrapf(err, "error reading %s", flowRef.String())
 			}
-			flowDep.(*flow).checkDependencies(sa, true, missing)
+			flowDep.(*flow).check(sa, true, missing)
 		}
 	}
 

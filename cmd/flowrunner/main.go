@@ -90,7 +90,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		return nil, err
 	}
 
-	if err := flow.CheckDependencies(sa); err != nil {
+	if err := flow.Check(sa); err != nil {
 		return nil, err
 	}
 

@@ -10,7 +10,7 @@
             },
             "value": "123"
         },
-        "dependency_error": "missing dependencies: field[key=score,name=Score]"
+        "check_error": "missing dependencies: field[key=score,name=Score]"
     },
     {
         "description": "Error event if session has no contact",

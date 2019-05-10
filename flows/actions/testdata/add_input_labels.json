@@ -11,7 +11,7 @@
                 }
             ]
         },
-        "dependency_error": "missing dependencies: label[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbing]"
+        "check_error": "missing dependencies: label[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbing]"
     },
     {
         "description": "Error event if session has no input",

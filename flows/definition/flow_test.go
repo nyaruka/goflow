@@ -23,9 +23,9 @@ import (
 
 func TestBrokenFlows(t *testing.T) {
 	testCases := []struct {
-		path            string
-		readError       string
-		dependencyError string
+		path       string
+		readError  string
+		checkError string
 	}{
 		{
 			"exitless_node.json",
@@ -43,23 +43,33 @@ func TestBrokenFlows(t *testing.T) {
 			"",
 		},
 		{
+			"invalid_action_by_tag.json",
+			"unable to read action: field 'text' is required",
+			"",
+		},
+		{
+			"invalid_action_by_method.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid action[uuid=e5a03dde-3b2f-4603-b5d0-d927f6bcc361, type=call_webhook]: can't specify body if method is GET",
+			"",
+		},
+		{
 			"invalid_timeout_category.json",
-			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
 			"",
 		},
 		{
 			"invalid_default_exit.json",
-			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
 			"",
 		},
 		{
 			"invalid_case_category.json",
-			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
 			"",
 		},
 		{
 			"invalid_exit_dest.json",
-			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
 			"",
 		},
 		{
@@ -89,7 +99,7 @@ func TestBrokenFlows(t *testing.T) {
 			require.NoError(t, err)
 
 			err = flow.CheckRecursively(sa, nil)
-			assert.EqualError(t, err, tc.dependencyError)
+			assert.EqualError(t, err, tc.checkError)
 		}
 	}
 }
@@ -269,7 +279,7 @@ func TestNewFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
 
 	// should validate ok
-	err = flow.CheckDependencies(session.Assets())
+	err = flow.Check(session.Assets())
 	assert.NoError(t, err)
 
 	// check in expressions
@@ -318,7 +328,7 @@ func TestValidateEmptyFlow(t *testing.T) {
 	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
-	err = flow.CheckDependencies(nil)
+	err = flow.Check(nil)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
@@ -357,7 +367,7 @@ func TestValidateFlow(t *testing.T) {
 	require.NoError(t, err)
 
 	// validate with session assets
-	err = flow.CheckDependencies(sa)
+	err = flow.Check(sa)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)

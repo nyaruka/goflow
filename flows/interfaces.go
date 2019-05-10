@@ -158,7 +158,7 @@ type Flow interface {
 	ExtractDependencies() []assets.Reference
 	ExtractResults() []*ResultSpec
 
-	CheckDependencies(SessionAssets) error
+	Check(SessionAssets) error
 	CheckRecursively(SessionAssets, func(assets.Reference)) error
 }
 
@@ -172,7 +172,6 @@ type Node interface {
 	Exits() []Exit
 
 	AddAction(Action)
-	SetRouter(Router)
 
 	Validate(Flow, map[utils.UUID]bool) error
 }
