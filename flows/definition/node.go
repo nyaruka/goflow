@@ -34,10 +34,6 @@ func (n *node) Actions() []flows.Action { return n.actions }
 func (n *node) Router() flows.Router    { return n.router }
 func (n *node) Exits() []flows.Exit     { return n.exits }
 
-func (n *node) AddAction(action flows.Action) {
-	n.actions = append(n.actions, action)
-}
-
 func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 	// validate all the node's actions
 	for _, action := range n.Actions() {

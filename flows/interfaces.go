@@ -171,8 +171,6 @@ type Node interface {
 	Router() Router
 	Exits() []Exit
 
-	AddAction(Action)
-
 	Validate(Flow, map[utils.UUID]bool) error
 }
 

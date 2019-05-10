@@ -2,6 +2,7 @@ package test
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -435,16 +436,18 @@ var voiceSessionTrigger = `{
 
 // CreateTestSession creates a standard example session for testing
 func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
-
-	sa, err := CreateSessionAssets(json.RawMessage(sessionAssets), testServerURL)
-	if err != nil {
-		return nil, nil, errors.Wrap(err, "error creating test session")
-	}
+	assetsJSON := json.RawMessage(sessionAssets)
 
 	// optional modify the main flow by adding the provided action to the last node
 	if actionToAdd != nil {
-		flow, _ := sa.Flows().Get(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
-		flow.Nodes()[len(flow.Nodes())-1].AddAction(actionToAdd)
+		actionJSON, _ := json.Marshal(actionToAdd)
+		actionsJSON := []byte(fmt.Sprintf("[%s]", string(actionJSON)))
+		assetsJSON = JSONReplace(json.RawMessage(assetsJSON), []string{"flows", "[0]", "nodes", "[3]", "actions"}, actionsJSON)
+	}
+
+	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "error creating test session")
 	}
 
 	// read our trigger
@@ -471,17 +474,18 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 
 // CreateTestVoiceSession creates a standard example session for testing voice flows and actions
 func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
-
-	sa, err := CreateSessionAssets(json.RawMessage(voiceSessionAssets), testServerURL)
-	if err != nil {
-		return nil, nil, errors.Wrap(err, "error creating test voice session assets")
-	}
+	assetsJSON := json.RawMessage(voiceSessionAssets)
 
 	// optional modify the main flow by adding the provided action to the last node
 	if actionToAdd != nil {
-		flow, _ := sa.Flows().Get(assets.FlowUUID("aa71426e-13bd-4607-a4f5-77666ff9c4bf"))
-		nodes := flow.Nodes()
-		nodes[len(nodes)-1].AddAction(actionToAdd)
+		actionJSON, _ := json.Marshal(actionToAdd)
+		actionsJSON := []byte(fmt.Sprintf("[%s]", string(actionJSON)))
+		assetsJSON = JSONReplace(json.RawMessage(assetsJSON), []string{"flows", "[0]", "nodes", "[0]", "actions"}, actionsJSON)
+	}
+
+	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "error creating test voice session assets")
 	}
 
 	// read our trigger
