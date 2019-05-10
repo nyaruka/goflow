@@ -152,10 +152,11 @@ func (f *flow) check(sa flows.SessionAssets, recursive bool, missing func(assets
 		// go check any non-missing flow dependencies
 		for _, flowRef := range deps.Flows {
 			flowDep, err := sa.Flows().Get(flowRef.UUID)
-			if err != nil {
-				return errors.Wrapf(err, "error reading %s", flowRef.String())
+			if err == nil {
+				if err := flowDep.(*flow).check(sa, true, missing); err != nil {
+					return errors.Wrapf(err, "invalid child %s", flowRef)
+				}
 			}
-			flowDep.(*flow).check(sa, true, missing)
 		}
 	}
 

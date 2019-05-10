@@ -82,6 +82,11 @@ func TestBrokenFlows(t *testing.T) {
 			"",
 			"unable to read flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Child Flow]: unable to read action: field 'text' is required",
 		},
+		{
+			"invalid_subflow_due_to_missing_asset.json",
+			"",
+			"invalid child flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Invalid Child]: missing dependencies: group[uuid=f4cdde0a-97b1-469a-adb8-902bdfd19b0c,name=I Don't Exist!]",
+		},
 	}
 
 	for _, tc := range testCases {
@@ -89,17 +94,17 @@ func TestBrokenFlows(t *testing.T) {
 		require.NoError(t, err)
 
 		sa, err := test.CreateSessionAssets(assetsJSON, "")
-		require.NoError(t, err)
+		require.NoError(t, err, "unable to load assets: %s", tc.path)
 
 		flow, err := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 
 		if tc.readError != "" {
-			assert.EqualError(t, err, tc.readError)
+			assert.EqualError(t, err, tc.readError, "read error mismatch for %s", tc.path)
 		} else {
 			require.NoError(t, err)
 
 			err = flow.CheckRecursively(sa, nil)
-			assert.EqualError(t, err, tc.checkError)
+			assert.EqualError(t, err, tc.checkError, "check error mismatch for %s", tc.path)
 		}
 	}
 }
