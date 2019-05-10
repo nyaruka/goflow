@@ -15,7 +15,7 @@
         "read_error": "can't specify specific groups when all_groups=true"
     },
     {
-        "description": "Validation fails for invalid group reference",
+        "description": "Check fails for invalid group reference",
         "action": {
             "type": "remove_contact_groups",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",

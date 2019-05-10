@@ -113,8 +113,6 @@ type SessionAssets interface {
 	Locations() *LocationAssets
 	Resthooks() *ResthookAssets
 	Templates() *TemplateAssets
-
-	//Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error)
 }
 
 // Localizable is anything in the flow definition which can be localized and therefore needs a UUID

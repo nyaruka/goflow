@@ -32,7 +32,7 @@ type flow struct {
 	// optional properties not used by engine itself
 	ui json.RawMessage
 
-	// properties set after dependency checking
+	// properties set after checking
 	dependencies *dependencies
 	results      []*flows.ResultSpec
 	waitingExits []flows.ExitUUID

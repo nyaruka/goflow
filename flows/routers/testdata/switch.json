@@ -135,7 +135,7 @@
         "read_error": "case test has_any_icecream is not a registered test function"
     },
     {
-        "description": "Validation fails for has_group test with missing group dependency",
+        "description": "Check fails for has_group test with missing group dependency",
         "router": {
             "type": "switch",
             "result_name": "In Group",

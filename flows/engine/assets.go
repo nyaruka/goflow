@@ -74,21 +74,3 @@ func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
 func (s *sessionAssets) Locations() *flows.LocationAssets { return s.locations }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets { return s.resthooks }
 func (s *sessionAssets) Templates() *flows.TemplateAssets { return s.templates }
-
-// Validate ensures that the given flow exists, is correct, and all its dependent flows are also valid
-/*func (s *sessionAssets) Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error) {
-	flow, err := s.Flows().Get(flowUUID)
-	if err != nil {
-		return nil, err
-	}
-
-	missingAssets := make([]assets.Reference, 0)
-	missing := func(r assets.Reference) {
-		missingAssets = append(missingAssets, r)
-	}
-
-	if err := flow.CheckRecursively(s, missing); err != nil {
-		return nil, errors.Wrapf(err, "dependency check failed for flow[uuid=%s]", flow.UUID())
-	}
-	return missingAssets, nil
-}*/

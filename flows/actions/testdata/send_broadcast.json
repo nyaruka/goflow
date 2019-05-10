@@ -1,6 +1,6 @@
 [
     {
-        "description": "Validation fails for invalid group reference",
+        "description": "Check fails for invalid group reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "send_broadcast",

@@ -1,6 +1,6 @@
 [
     {
-        "description": "Validation fails for invalid label reference",
+        "description": "Check fails for invalid label reference",
         "action": {
             "type": "add_input_labels",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
