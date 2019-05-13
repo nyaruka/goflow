@@ -61,18 +61,18 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description  string             `json:"description"`
-		NoContact    bool               `json:"no_contact"`
-		NoURNs       bool               `json:"no_urns"`
-		NoInput      bool               `json:"no_input"`
-		RedactURNs   bool               `json:"redact_urns"`
-		Action       json.RawMessage    `json:"action"`
-		InFlowType   flows.FlowType     `json:"in_flow_type"`
-		ReadError    string             `json:"read_error"`
-		CheckError   string             `json:"check_error"`
-		Events       []json.RawMessage  `json:"events"`
-		ContactAfter json.RawMessage    `json:"contact_after"`
-		Inspection   *inspectionResults `json:"inspection"`
+		Description     string             `json:"description"`
+		NoContact       bool               `json:"no_contact"`
+		NoURNs          bool               `json:"no_urns"`
+		NoInput         bool               `json:"no_input"`
+		RedactURNs      bool               `json:"redact_urns"`
+		Action          json.RawMessage    `json:"action"`
+		InFlowType      flows.FlowType     `json:"in_flow_type"`
+		ValidationError string             `json:"validation_error"`
+		InspectionError string             `json:"inspection_error"`
+		Events          []json.RawMessage  `json:"events"`
+		ContactAfter    json.RawMessage    `json:"contact_after"`
+		Inspection      *inspectionResults `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -104,21 +104,21 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		sa, err := test.CreateSessionAssets(assetsJSON, "")
 		require.NoError(t, err, "unable to create session assets in %s", testName)
 
-		// now try to read the flow, and if we expect a read error, check that
+		// now try to read the flow, and if we expect a validation error, check that
 		flow, err := sa.Flows().Get(flowUUID)
-		if tc.ReadError != "" {
+		if tc.ValidationError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.ReadError, "read error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.ValidationError, "read error mismatch in %s", testName)
 			continue
 		} else {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
-		// if this action is expected to cause a check failure, check that
-		err = flow.Check(sa)
-		if tc.CheckError != "" {
+		// if this action is expected to cause a inspection failure, check that
+		err = flow.Inspect(sa)
+		if tc.InspectionError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.CheckError, "check error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.InspectionError, "check error mismatch in %s", testName)
 			continue
 		} else {
 			assert.NoError(t, err, "unexpected check error in %s", testName)

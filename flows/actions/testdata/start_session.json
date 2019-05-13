@@ -1,6 +1,6 @@
 [
     {
-        "description": "Check fails for invalid flow reference",
+        "description": "Inspection fails for invalid flow reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "start_session",
@@ -15,10 +15,10 @@
                 }
             ]
         },
-        "check_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+        "inspection_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
     },
     {
-        "description": "Check fails for invalid group reference",
+        "description": "Inspection fails for invalid group reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "start_session",
@@ -33,7 +33,7 @@
                 }
             ]
         },
-        "check_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
+        "inspection_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
     },
     {
         "description": "Session triggered event if new session can be triggered",

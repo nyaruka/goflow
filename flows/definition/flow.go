@@ -32,14 +32,14 @@ type flow struct {
 	// optional properties not used by engine itself
 	ui json.RawMessage
 
-	// properties set after checking
+	// properties set after inspection
 	dependencies *dependencies
 	results      []*flows.ResultSpec
 	waitingExits []flows.ExitUUID
 
 	// internal state
-	nodeMap map[flows.NodeUUID]flows.Node
-	checked bool
+	nodeMap   map[flows.NodeUUID]flows.Node
+	inspected bool
 }
 
 // NewFlow creates a new flow
@@ -100,20 +100,20 @@ func (f *flow) validate() error {
 	return nil
 }
 
-// Checks checks that all of this flow's dependencies exist, and refreshes their names
-func (f *flow) Check(sa flows.SessionAssets) error {
+// Inspect enumerates dependencies, checks that they exist
+func (f *flow) Inspect(sa flows.SessionAssets) error {
 	return f.check(sa, false, nil)
 }
 
-// CheckRecursively checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
-func (f *flow) CheckRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
+// InspectRecursively checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
+func (f *flow) InspectRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
 	return f.check(sa, true, missing)
 }
 
 func (f *flow) check(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
-	// if this flow has already been checked, don't need to do it again - avoid unnecessary work
-	// but also prevents looping if recursively checking flows
-	if f.checked {
+	// if this flow has already been inspected, don't need to do it again - avoid unnecessary work
+	// but also prevents looping if recursively inspecting flows
+	if f.inspected {
 		return nil
 	}
 
@@ -143,7 +143,7 @@ func (f *flow) check(sa flows.SessionAssets, recursive bool, missing func(assets
 		}
 	}
 
-	f.checked = true
+	f.inspected = true
 	f.dependencies = deps
 	f.results = f.ExtractResults()
 	f.waitingExits = f.ExtractExitsFromWaits()
@@ -364,7 +364,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		e.Nodes[i] = f.nodes[i].(*node)
 	}
 
-	if f.checked {
+	if f.inspected {
 		return json.Marshal(&validatedFlowEnvelope{
 			flowEnvelope: e,
 			Dependencies: f.dependencies,

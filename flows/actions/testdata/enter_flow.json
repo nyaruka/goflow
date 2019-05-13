@@ -1,6 +1,6 @@
 [
     {
-        "description": "Check fails for invalid flow reference",
+        "description": "Inspection fails for invalid flow reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "enter_flow",
@@ -9,7 +9,7 @@
                 "name": "Long Lost Flow"
             }
         },
-        "check_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+        "inspection_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
     },
     {
         "description": "Fatal error event if flow is of different type",

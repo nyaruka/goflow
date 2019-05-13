@@ -23,9 +23,9 @@ import (
 
 func TestBrokenFlows(t *testing.T) {
 	testCases := []struct {
-		path       string
-		readError  string
-		checkError string
+		path            string
+		validationError string
+		checkError      string
 	}{
 		{
 			"exitless_node.json",
@@ -98,13 +98,13 @@ func TestBrokenFlows(t *testing.T) {
 
 		flow, err := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 
-		if tc.readError != "" {
-			assert.EqualError(t, err, tc.readError, "read error mismatch for %s", tc.path)
+		if tc.validationError != "" {
+			assert.EqualError(t, err, tc.validationError, "read error mismatch for %s", tc.path)
 		} else {
 			require.NoError(t, err)
 
-			err = flow.CheckRecursively(sa, nil)
-			assert.EqualError(t, err, tc.checkError, "check error mismatch for %s", tc.path)
+			err = flow.InspectRecursively(sa, nil)
+			assert.EqualError(t, err, tc.checkError, "inspection error mismatch for %s", tc.path)
 		}
 	}
 }
@@ -283,8 +283,8 @@ func TestNewFlow(t *testing.T) {
 
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
 
-	// should validate ok
-	err = flow.Check(session.Assets())
+	// should pass inspection ok
+	err = flow.Inspect(session.Assets())
 	assert.NoError(t, err)
 
 	// check in expressions
@@ -329,11 +329,11 @@ func TestNewFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(newFlowDef), marshaled, "flow definition mismatch")
 }
 
-func TestValidateEmptyFlow(t *testing.T) {
+func TestEmptyFlow(t *testing.T) {
 	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
-	err = flow.Check(nil)
+	err = flow.Inspect(nil)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
@@ -371,8 +371,8 @@ func TestValidateFlow(t *testing.T) {
 	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
 	require.NoError(t, err)
 
-	// validate with session assets
-	err = flow.Check(sa)
+	// inspect with session assets
+	err = flow.Inspect(sa)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)

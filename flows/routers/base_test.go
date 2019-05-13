@@ -56,13 +56,13 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description string             `json:"description"`
-		Router      json.RawMessage    `json:"router"`
-		ReadError   string             `json:"read_error"`
-		CheckError  string             `json:"check_error"`
-		Results     json.RawMessage    `json:"results"`
-		Events      []json.RawMessage  `json:"events"`
-		Inspection  *inspectionResults `json:"inspection"`
+		Description     string             `json:"description"`
+		Router          json.RawMessage    `json:"router"`
+		ValidationError string             `json:"validation_error"`
+		InspectionError string             `json:"inspection_error"`
+		Results         json.RawMessage    `json:"results"`
+		Events          []json.RawMessage  `json:"events"`
+		Inspection      *inspectionResults `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -87,21 +87,21 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		sa, err := test.CreateSessionAssets(assetsJSON, testServerURL)
 		require.NoError(t, err)
 
-		// now try to read the flow, and if we expect a read error, check that
+		// now try to read the flow, and if we expect a validation error, check that
 		flow, err := sa.Flows().Get("16f6eee7-9843-4333-bad2-1d7fd636452c")
-		if tc.ReadError != "" {
+		if tc.ValidationError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.ReadError, "read error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.ValidationError, "read error mismatch in %s", testName)
 			continue
 		} else {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
-		// if this router is expected to return a check failure, check that
-		err = flow.Check(sa)
-		if tc.CheckError != "" {
+		// if this router is expected to return a inspection failure, check that
+		err = flow.Inspect(sa)
+		if tc.InspectionError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.CheckError, "check error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.InspectionError, "check error mismatch in %s", testName)
 			continue
 		} else {
 			assert.NoError(t, err, "unexpected check error in %s", testName)

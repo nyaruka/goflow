@@ -156,8 +156,8 @@ type Flow interface {
 	ExtractDependencies() []assets.Reference
 	ExtractResults() []*ResultSpec
 
-	Check(SessionAssets) error
-	CheckRecursively(SessionAssets, func(assets.Reference)) error
+	Inspect(SessionAssets) error
+	InspectRecursively(SessionAssets, func(assets.Reference)) error
 }
 
 // Node is a single node in a flow
