@@ -59,7 +59,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	}
 
 	// build our payload
-	payload, err := run.EvaluateTemplate(flows.DefaultWebhookPayload)
+	payload, err := run.EvaluateTemplate(flows.LegacyWebhookPayload)
 	if err != nil {
 		// if we got an error then our payload is likely not valid JSON
 		return errors.Wrapf(err, "error evaluating resthook payload")
