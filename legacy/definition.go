@@ -597,7 +597,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		if method == "POST" {
 			headers["Content-Type"] = "application/json"
-			body = flows.DefaultWebhookPayload
+			body = flows.LegacyWebhookPayload
 		}
 
 		for _, header := range config.WebhookHeaders {
