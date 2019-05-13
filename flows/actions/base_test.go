@@ -70,6 +70,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		InFlowType      flows.FlowType     `json:"in_flow_type"`
 		ValidationError string             `json:"validation_error"`
 		InspectionError string             `json:"inspection_error"`
+		SkipInspection  bool               `json:"skip_inspection"`
 		Events          []json.RawMessage  `json:"events"`
 		ContactAfter    json.RawMessage    `json:"contact_after"`
 		Inspection      *inspectionResults `json:"inspection"`
@@ -118,10 +119,10 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		err = flow.Inspect(sa)
 		if tc.InspectionError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.InspectionError, "check error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.InspectionError, "inspection error mismatch in %s", testName)
 			continue
-		} else {
-			assert.NoError(t, err, "unexpected check error in %s", testName)
+		} else if !tc.SkipInspection {
+			assert.NoError(t, err, "unexpected inspection error in %s", testName)
 		}
 
 		// optionally load our contact

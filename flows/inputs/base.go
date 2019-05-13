@@ -77,7 +77,7 @@ func (i *baseInput) unmarshal(sessionAssets flows.SessionAssets, e *baseInputEnv
 	if e.Channel != nil {
 		i.channel = sessionAssets.Channels().Get(e.Channel.UUID)
 		if i.channel == nil {
-			missing(e.Channel)
+			missing(e.Channel, nil)
 			return nil
 		}
 	}

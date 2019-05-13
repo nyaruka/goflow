@@ -80,7 +80,7 @@ func TestBrokenFlows(t *testing.T) {
 		{
 			"invalid_subflow.json",
 			"",
-			"unable to read flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Child Flow]: unable to read action: field 'text' is required",
+			"missing dependencies: flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Child Flow] (unable to read action: field 'text' is required)",
 		},
 		{
 			"invalid_subflow_due_to_missing_asset.json",

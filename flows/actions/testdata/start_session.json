@@ -15,7 +15,7 @@
                 }
             ]
         },
-        "inspection_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+        "inspection_error": "missing dependencies: flow[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Long Lost Flow] (no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6')"
     },
     {
         "description": "Inspection fails for invalid group reference",

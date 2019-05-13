@@ -102,15 +102,20 @@ func (f *flow) validate() error {
 
 // Inspect enumerates dependencies, checks that they exist
 func (f *flow) Inspect(sa flows.SessionAssets) error {
-	return f.check(sa, false, nil)
+	return f.doInspect(sa, false, nil)
 }
 
 // InspectRecursively checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
 func (f *flow) InspectRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	return f.check(sa, true, missing)
+	return f.doInspect(sa, true, missing)
 }
 
-func (f *flow) check(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
+type brokenDependency struct {
+	dependency assets.Reference
+	reason     error
+}
+
+func (f *flow) doInspect(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
 	// if this flow has already been inspected, don't need to do it again - avoid unnecessary work
 	// but also prevents looping if recursively inspecting flows
 	if f.inspected {
@@ -121,8 +126,10 @@ func (f *flow) check(sa flows.SessionAssets, recursive bool, missing func(assets
 	deps := newDependencies(f.ExtractDependencies())
 
 	// and validate that all assets are available in the session assets
-	missingAssets := make([]assets.Reference, 0)
-	err := deps.refresh(sa, func(r assets.Reference) { missingAssets = append(missingAssets, r) })
+	missingAssets := make([]brokenDependency, 0)
+	err := deps.refresh(sa, func(r assets.Reference, err error) {
+		missingAssets = append(missingAssets, brokenDependency{r, err})
+	})
 	if err != nil {
 		return err
 	}
@@ -130,14 +137,17 @@ func (f *flow) check(sa flows.SessionAssets, recursive bool, missing func(assets
 	if len(missingAssets) > 0 {
 		// if we have callback for missing dependencies, call that
 		if missing != nil {
-			for _, dep := range missingAssets {
-				missing(dep)
+			for _, ma := range missingAssets {
+				missing(ma.dependency)
 			}
 		} else {
 			// otherwise error
 			depStrings := make([]string, len(missingAssets))
-			for i := range missingAssets {
-				depStrings[i] = missingAssets[i].String()
+			for i, ma := range missingAssets {
+				depStrings[i] = ma.dependency.String()
+				if ma.reason != nil {
+					depStrings[i] += fmt.Sprintf(" (%s)", ma.reason)
+				}
 			}
 			return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 		}
@@ -153,7 +163,7 @@ func (f *flow) check(sa flows.SessionAssets, recursive bool, missing func(assets
 		for _, flowRef := range deps.Flows {
 			flowDep, err := sa.Flows().Get(flowRef.UUID)
 			if err == nil {
-				if err := flowDep.(*flow).check(sa, true, missing); err != nil {
+				if err := flowDep.(*flow).doInspect(sa, true, missing); err != nil {
 					return errors.Wrapf(err, "invalid child %s", flowRef)
 				}
 			}

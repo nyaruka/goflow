@@ -3,7 +3,6 @@ package definition
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/pkg/errors"
 )
 
 type dependencies struct {
@@ -44,7 +43,7 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Channels {
 		a := sa.Channels().Get(ref.UUID)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Channels[i] = a.Reference()
 		}
@@ -52,7 +51,7 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Fields {
 		a := sa.Fields().Get(ref.Key)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Fields[i] = a.Reference()
 		}
@@ -60,16 +59,15 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Flows {
 		a, err := sa.Flows().Get(ref.UUID)
 		if err != nil {
-			// flows are the one thing that aren't allowed to be missing as we wouldn't know how to
-			// route from a subflow split with a missing flow
-			return errors.Wrapf(err, "unable to read %s", ref)
+			missing(ref, err)
+		} else {
+			d.Flows[i] = a.Reference()
 		}
-		d.Flows[i] = a.Reference()
 	}
 	for i, ref := range d.Groups {
 		a := sa.Groups().Get(ref.UUID)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Groups[i] = a.Reference()
 		}
@@ -77,7 +75,7 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Labels {
 		a := sa.Labels().Get(ref.UUID)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Labels[i] = a.Reference()
 		}
@@ -85,7 +83,7 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Templates {
 		a := sa.Templates().Get(ref.UUID)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Templates[i] = a.Reference()
 		}

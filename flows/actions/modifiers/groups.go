@@ -101,7 +101,7 @@ func readGroupsModifier(assets flows.SessionAssets, data json.RawMessage, missin
 	for _, groupRef := range e.Groups {
 		group := assets.Groups().Get(groupRef.UUID)
 		if group == nil {
-			missing(groupRef)
+			missing(groupRef, nil)
 		} else {
 			groups = append(groups, group)
 		}

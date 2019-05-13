@@ -47,8 +47,12 @@ func NewEnterFlowAction(uuid flows.ActionUUID, flow *assets.FlowReference, termi
 // Execute runs our action
 func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
+
+	// we ignore other missing asset types but a missing flow means we don't know how to route so we can't continue
 	if err != nil {
-		return err
+		run.Exit(flows.RunStatusErrored)
+		logEvent(events.NewFatalErrorEvent(err))
+		return nil
 	}
 
 	if run.Session().Type() != "" && run.Session().Type() != flow.Type() {
