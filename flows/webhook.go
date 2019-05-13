@@ -17,25 +17,33 @@ import (
 
 // LegacyWebhookPayload is a template that matches the JSON payload sent by legacy webhooks
 var LegacyWebhookPayload = `@(json(object(
-	"contact", object("uuid", contact.uuid, "name", contact.name, "urn", contact.urn),
-	"flow", run.flow,
-	"path", run.path,
-	"results", results,
-	"run", object("uuid", run.uuid, "created_on", run.created_on),
-	"input", if(
-		input,
-		object(
-			"attachments", foreach(input.attachments, attachment_parts),
-			"channel", input.channel,
-			"created_on", input.created_on,
-			"text", input.text,
-			"type", input.type,
-			"urn", if(input.urn, object("display", default(format_urn(input.urn), ""), "path", urn_parts(input.urn).path, "scheme", urn_parts(input.urn).scheme), null),
-			"uuid", input.uuid
-		),
-		null
-	),
-	"channel", default(input.channel, null)
+  "contact", object("uuid", contact.uuid, "name", contact.name, "urn", contact.urn),
+  "flow", run.flow,
+  "path", run.path,
+  "results", results,
+  "run", object("uuid", run.uuid, "created_on", run.created_on),
+  "input", if(
+    input,
+    object(
+      "attachments", foreach(input.attachments, attachment_parts),
+      "channel", input.channel,
+      "created_on", input.created_on,
+      "text", input.text,
+      "type", input.type,
+      "urn", if(
+        input.urn,
+        object(
+          "display", default(format_urn(input.urn), ""),
+          "path", urn_parts(input.urn).path,
+          "scheme", urn_parts(input.urn).scheme
+        ),
+        null
+      ),
+      "uuid", input.uuid
+    ),
+    null
+  ),
+  "channel", default(input.channel, null)
 )))`
 
 // response content-types that we'll fetch
