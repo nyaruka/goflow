@@ -153,7 +153,7 @@ func TestLegacyWebhookPayload(t *testing.T) {
 	session, _, err := test.CreateTestSession("", nil)
 	run := session.Runs()[0]
 
-	payload, err := run.EvaluateTemplate(flows.DefaultWebhookPayload)
+	payload, err := run.EvaluateTemplate(flows.LegacyWebhookPayload)
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
