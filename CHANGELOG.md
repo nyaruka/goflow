@@ -1,3 +1,9 @@
+v0.39.0
+----------
+ * Allow igoring of missing flow assets like any other asset type
+ * Simplify the expression used to emulate legacy webhook payloads
+ * Do structural validation in ReadFlow so flow returned from that is always valid
+
 v0.38.3
 ----------
  * Switch to new library for UUID generation
