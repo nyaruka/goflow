@@ -1,6 +1,6 @@
 [
     {
-        "description": "Validation fails for invalid field reference",
+        "description": "Inspection fails for invalid field reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "set_contact_field",
@@ -10,7 +10,7 @@
             },
             "value": "123"
         },
-        "validation_error": "missing dependencies: field[key=score,name=Score]"
+        "inspection_error": "missing dependencies: field[key=score,name=Score]"
     },
     {
         "description": "Error event if session has no contact",

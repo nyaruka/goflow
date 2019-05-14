@@ -164,15 +164,15 @@
         {
             "slug": "new-registration",
             "subscribers": [
-                "http://localhost/?cmd=success",
-                "http://localhost/?cmd=unavailable"
+                "http://localhost:49996/?cmd=success",
+                "http://localhost:49996/?cmd=unavailable"
             ]
         },
         {
             "slug": "registration-complete",
             "subscribers": [
-                "http://localhost/?cmd=success",
-                "http://localhost/?cmd=gone"
+                "http://localhost:49996/?cmd=success",
+                "http://localhost:49996/?cmd=gone"
             ]
         },
         {

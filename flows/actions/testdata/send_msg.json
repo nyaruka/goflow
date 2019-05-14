@@ -1,5 +1,17 @@
 [
     {
+        "description": "Validation fails when text is empty",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "",
+            "attachments": [
+                "http://example.com/red.jpg"
+            ]
+        },
+        "validation_error": "field 'text' is required"
+    },
+    {
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
@@ -244,7 +256,7 @@
                 ]
             }
         },
-        "validation_error": "missing dependencies: template[uuid=b620b463-8d15-427f-b2e3-4f44f9f071ec,name=missing]"
+        "inspection_error": "missing dependencies: template[uuid=b620b463-8d15-427f-b2e3-4f44f9f071ec,name=missing]"
     },
     {
         "description": "Msg with a matching template",

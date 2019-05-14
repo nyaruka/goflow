@@ -1,0 +1,111 @@
+{
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Brochure",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "type": "send_msg",
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "text": "Hi! What is your name?",
+                            "templating": {
+                                "template": {
+                                    "name": "affirmation",
+                                    "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e"
+                                },
+                                "variables": [
+                                    "@contact.name",
+                                    "boy"
+                                ]
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                            "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "Not Empty",
+                                "exit_uuid": "b9f25918-1ab3-4a31-a486-67146a0c173c"
+                            },
+                            {
+                                "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "name": "Other",
+                                "exit_uuid": "681f89a8-d1f8-437a-b1df-4c207dfcb1d5"
+                            }
+                        ],
+                        "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                        "result_name": "Name",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
+                                "type": "has_text",
+                                "category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "b9f25918-1ab3-4a31-a486-67146a0c173c",
+                            "destination_uuid": "7acb54fd-0db0-40b9-970b-93f7bfb4277b"
+                        },
+                        {
+                            "uuid": "681f89a8-d1f8-437a-b1df-4c207dfcb1d5",
+                            "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "7acb54fd-0db0-40b9-970b-93f7bfb4277b",
+                    "exits": [
+                        {
+                            "uuid": "388bbce3-8079-4573-922f-8dea469d93f3",
+                            "destination_uuid": null
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "uuid": "455ba297-f6d2-45e6-bf3e-c1ef028b55ae",
+                            "type": "set_contact_name",
+                            "name": "@input.text"
+                        },
+                        {
+                            "uuid": "b3fa763e-474b-49df-b4d6-15e86507668f",
+                            "type": "add_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8",
+                                    "name": "Registered"
+                                }
+                            ]
+                        },
+                        {
+                            "uuid": "605e3486-503d-481c-94f7-cd553f196a8a",
+                            "type": "send_msg",
+                            "text": "Great, you are @contact.name, thanks for joining!"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

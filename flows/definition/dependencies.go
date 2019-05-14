@@ -39,11 +39,11 @@ func newDependencies(refs []assets.Reference) *dependencies {
 }
 
 // refreshes the asset dependencies and notifies the caller of missing assets via the callback
-func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCallback) {
+func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCallback) error {
 	for i, ref := range d.Channels {
 		a := sa.Channels().Get(ref.UUID)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Channels[i] = a.Reference()
 		}
@@ -51,7 +51,7 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Fields {
 		a := sa.Fields().Get(ref.Key)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Fields[i] = a.Reference()
 		}
@@ -59,7 +59,7 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Flows {
 		a, err := sa.Flows().Get(ref.UUID)
 		if err != nil {
-			missing(ref)
+			missing(ref, err)
 		} else {
 			d.Flows[i] = a.Reference()
 		}
@@ -67,7 +67,7 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Groups {
 		a := sa.Groups().Get(ref.UUID)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Groups[i] = a.Reference()
 		}
@@ -75,7 +75,7 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Labels {
 		a := sa.Labels().Get(ref.UUID)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Labels[i] = a.Reference()
 		}
@@ -83,9 +83,11 @@ func (d *dependencies) refresh(sa flows.SessionAssets, missing assets.MissingCal
 	for i, ref := range d.Templates {
 		a := sa.Templates().Get(ref.UUID)
 		if a == nil {
-			missing(ref)
+			missing(ref, nil)
 		} else {
 			d.Templates[i] = a.Reference()
 		}
 	}
+
+	return nil
 }

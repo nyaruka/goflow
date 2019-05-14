@@ -500,7 +500,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		for _, g := range envelope.Groups {
 			group := sa.Groups().Get(g.UUID)
 			if group == nil {
-				missing(g)
+				missing(g, nil)
 			} else {
 				groups = append(groups, group)
 			}

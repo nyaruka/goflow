@@ -385,7 +385,7 @@ func TestTriggerMarshaling(t *testing.T) {
 
 func TestReadTrigger(t *testing.T) {
 	missingAssets := make([]assets.Reference, 0)
-	missing := func(a assets.Reference) { missingAssets = append(missingAssets, a) }
+	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
 	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource())
 	require.NoError(t, err)

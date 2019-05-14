@@ -292,7 +292,7 @@ type otherContactsAction struct {
 
 // utility struct for actions which create a message
 type createMsgAction struct {
-	Text         string   `json:"text"`
+	Text         string   `json:"text" validate:"required"`
 	Attachments  []string `json:"attachments,omitempty"`
 	QuickReplies []string `json:"quick_replies,omitempty"`
 }

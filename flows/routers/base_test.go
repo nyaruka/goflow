@@ -59,6 +59,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		Description     string             `json:"description"`
 		Router          json.RawMessage    `json:"router"`
 		ValidationError string             `json:"validation_error"`
+		InspectionError string             `json:"inspection_error"`
 		Results         json.RawMessage    `json:"results"`
 		Events          []json.RawMessage  `json:"events"`
 		Inspection      *inspectionResults `json:"inspection"`
@@ -78,30 +79,32 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 		testName := fmt.Sprintf("test '%s' for router type '%s'", tc.Description, typeName)
 
+		// inject the router into a suitable node in our test flow
+		routerPath := []string{"flows", "[0]", "nodes", "[0]", "router"}
+		assetsJSON = test.JSONReplace(assetsJSON, routerPath, tc.Router)
+
 		// create session assets
 		sa, err := test.CreateSessionAssets(assetsJSON, testServerURL)
 		require.NoError(t, err)
 
-		// read the router to be tested
-		router, err := routers.ReadRouter(tc.Router)
-		require.NoError(t, err, "error loading router in %s", testName)
-		assert.Equal(t, typeName, router.Type())
-
-		// get a suitable "holder" flow
+		// now try to read the flow, and if we expect a validation error, check that
 		flow, err := sa.Flows().Get("16f6eee7-9843-4333-bad2-1d7fd636452c")
-		require.NoError(t, err)
-
-		// if not, add it to our flow
-		flow.Nodes()[0].SetRouter(router)
-
-		// if this router is expected to cause flow validation failure, check that
-		err = flow.Validate(sa)
 		if tc.ValidationError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.ValidationError, "validation error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.ValidationError, "read error mismatch in %s", testName)
 			continue
 		} else {
-			assert.NoError(t, err, "unexpected validation error in %s", testName)
+			assert.NoError(t, err, "unexpected read error in %s", testName)
+		}
+
+		// if this router is expected to return a inspection failure, check that
+		err = flow.Inspect(sa)
+		if tc.InspectionError != "" {
+			rootErr := errors.Cause(err)
+			assert.EqualError(t, rootErr, tc.InspectionError, "check error mismatch in %s", testName)
+			continue
+		} else {
+			assert.NoError(t, err, "unexpected check error in %s", testName)
 		}
 
 		// load our contact
@@ -126,7 +129,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
 
 		// try marshaling the router back to JSON
-		routerJSON, err := json.Marshal(router)
+		routerJSON, err := json.Marshal(flow.Nodes()[0].Router())
 		test.AssertEqualJSON(t, tc.Router, routerJSON, "marshal mismatch in %s", testName)
 
 		// finally try inspecting this router

@@ -1,0 +1,22 @@
+{
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "exits": [
+                        {
+                            "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                            "destination_uuid": "714f1409-486e-4e8e-bb08-23e2943ef9f6"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

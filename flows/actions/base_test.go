@@ -67,7 +67,10 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		NoInput         bool               `json:"no_input"`
 		RedactURNs      bool               `json:"redact_urns"`
 		Action          json.RawMessage    `json:"action"`
+		InFlowType      flows.FlowType     `json:"in_flow_type"`
 		ValidationError string             `json:"validation_error"`
+		InspectionError string             `json:"inspection_error"`
+		SkipInspection  bool               `json:"skip_inspection"`
 		Events          []json.RawMessage  `json:"events"`
 		ContactAfter    json.RawMessage    `json:"contact_after"`
 		Inspection      *inspectionResults `json:"inspection"`
@@ -85,37 +88,41 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
 
-		// create session assets
-		sa, err := test.CreateSessionAssets(assetsJSON, testServerURL)
-		require.NoError(t, err)
-
-		// read the action to be tested
-		action, err := actions.ReadAction(tc.Action)
-		require.NoError(t, err, "error loading action in %s", testName)
-		assert.Equal(t, typeName, action.Type())
-
-		// get a suitable "holder" flow
-		var flowUUID assets.FlowUUID
-		if len(action.AllowedFlowTypes()) == 1 && action.AllowedFlowTypes()[0] == flows.FlowTypeVoice {
+		// pick a suitable "holder" flow in our assets JSON
+		flowIndex := 0
+		flowUUID := assets.FlowUUID("bead76f5-dac4-4c9d-996c-c62b326e8c0a")
+		if tc.InFlowType == flows.FlowTypeVoice {
+			flowIndex = 1
 			flowUUID = assets.FlowUUID("7a84463d-d209-4d3e-a0ff-79f977cd7bd0")
-		} else {
-			flowUUID = assets.FlowUUID("bead76f5-dac4-4c9d-996c-c62b326e8c0a")
 		}
 
+		// inject the action into a suitable node's actions in that flow
+		actionsPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "nodes", "[0]", "actions"}
+		actionsJson := []byte(fmt.Sprintf("[%s]", string(tc.Action)))
+		assetsJSON = test.JSONReplace(assetsJSON, actionsPath, actionsJson)
+
+		// create session assets
+		sa, err := test.CreateSessionAssets(assetsJSON, "")
+		require.NoError(t, err, "unable to create session assets in %s", testName)
+
+		// now try to read the flow, and if we expect a validation error, check that
 		flow, err := sa.Flows().Get(flowUUID)
-		require.NoError(t, err)
-
-		// if not, add it to our flow
-		flow.Nodes()[0].AddAction(action)
-
-		// if this action is expected to cause flow validation failure, check that
-		err = flow.Validate(sa)
 		if tc.ValidationError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.ValidationError, "validation error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.ValidationError, "read error mismatch in %s", testName)
 			continue
 		} else {
-			assert.NoError(t, err, "unexpected validation error in %s", testName)
+			assert.NoError(t, err, "unexpected read error in %s", testName)
+		}
+
+		// if this action is expected to cause a inspection failure, check that
+		err = flow.Inspect(sa)
+		if tc.InspectionError != "" {
+			rootErr := errors.Cause(err)
+			assert.EqualError(t, rootErr, tc.InspectionError, "inspection error mismatch in %s", testName)
+			continue
+		} else if !tc.SkipInspection {
+			assert.NoError(t, err, "unexpected inspection error in %s", testName)
 		}
 
 		// optionally load our contact
@@ -185,7 +192,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		}
 
 		// try marshaling the action back to JSON
-		actionJSON, err := json.Marshal(action)
+		actionJSON, err := json.Marshal(flow.Nodes()[0].Actions()[0])
 		test.AssertEqualJSON(t, tc.Action, actionJSON, "marshal mismatch in %s", testName)
 
 		// finally try inspecting this action

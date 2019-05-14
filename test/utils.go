@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/buger/jsonparser"
 	diff "github.com/sergi/go-diff/diffmatchpatch"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -48,4 +49,13 @@ func AssertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMess
 		return false
 	}
 	return true
+}
+
+// JSONReplace replaces a node in JSON
+func JSONReplace(data json.RawMessage, path []string, value json.RawMessage) json.RawMessage {
+	newData, err := jsonparser.Set(data, value, path...)
+	if err != nil {
+		panic("unable to replace JSON")
+	}
+	return newData
 }

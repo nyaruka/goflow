@@ -357,7 +357,7 @@ through `extra` on the result.
     "type": "call_webhook",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "method": "GET",
-    "url": "http://localhost:49998/?cmd=success",
+    "url": "http://localhost/?cmd=success",
     "headers": {
         "Authorization": "Token AAFFZZHH"
     },

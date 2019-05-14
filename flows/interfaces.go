@@ -113,8 +113,6 @@ type SessionAssets interface {
 	Locations() *LocationAssets
 	Resthooks() *ResthookAssets
 	Templates() *TemplateAssets
-
-	Validate(flowUUID assets.FlowUUID) ([]assets.Reference, error)
 }
 
 // Localizable is anything in the flow definition which can be localized and therefore needs a UUID
@@ -149,9 +147,6 @@ type Flow interface {
 	ExpireAfterMinutes() int
 	Localization() Localization
 	UI() json.RawMessage
-
-	Validate(SessionAssets) error
-	ValidateRecursively(SessionAssets, func(assets.Reference)) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
@@ -160,6 +155,9 @@ type Flow interface {
 	RewriteTemplates(func(string) string)
 	ExtractDependencies() []assets.Reference
 	ExtractResults() []*ResultSpec
+
+	Inspect(SessionAssets) error
+	InspectRecursively(SessionAssets, func(assets.Reference)) error
 }
 
 // Node is a single node in a flow
@@ -170,9 +168,6 @@ type Node interface {
 	Actions() []Action
 	Router() Router
 	Exits() []Exit
-
-	AddAction(Action)
-	SetRouter(Router)
 
 	Validate(Flow, map[utils.UUID]bool) error
 }

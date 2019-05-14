@@ -21,70 +21,90 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestFlowReadingAndValidation(t *testing.T) {
-	invalidFlows := []struct {
-		path        string
-		expectedErr string
-		duringRead  bool
+func TestBrokenFlows(t *testing.T) {
+	testCases := []struct {
+		path            string
+		validationError string
+		checkError      string
 	}{
 		{
-			"flow_with_exitless_node.json",
+			"exitless_node.json",
 			"unable to read node: field 'exits' must have a minimum of 1 items",
-			true,
+			"",
 		},
 		{
-			"flow_with_exitless_category.json",
+			"exitless_category.json",
 			"unable to read router: unable to read category: field 'exit_uuid' is required",
-			true,
+			"",
 		},
 		{
-			"flow_with_duplicate_node_uuid.json",
+			"duplicate_node_uuid.json",
 			"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
-			false,
+			"",
 		},
 		{
-			"flow_with_invalid_timeout_category.json",
-			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
-			false,
+			"invalid_action_by_tag.json",
+			"unable to read action: field 'text' is required",
+			"",
 		},
 		{
-			"flow_with_invalid_default_exit.json",
-			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-			false,
+			"invalid_action_by_method.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid action[uuid=e5a03dde-3b2f-4603-b5d0-d927f6bcc361, type=call_webhook]: can't specify body if method is GET",
+			"",
 		},
 		{
-			"flow_with_invalid_case_category.json",
-			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-			false,
+			"invalid_timeout_category.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
+			"",
 		},
 		{
-			"flow_with_invalid_exit_dest.json",
-			"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
-			false,
+			"invalid_default_exit.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
+			"",
 		},
 		{
-			"flow_with_missing_asset.json",
+			"invalid_case_category.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
+			"",
+		},
+		{
+			"invalid_exit_dest.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
+			"",
+		},
+		{
+			"missing_assets.json",
+			"",
 			"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered],template[uuid=5722e1fd-fe32-4e74-ac78-3cf41a6adb7e,name=affirmation]",
-			false,
+		},
+		{
+			"invalid_subflow.json",
+			"",
+			"missing dependencies: flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Child Flow] (unable to read action: field 'text' is required)",
+		},
+		{
+			"invalid_subflow_due_to_missing_asset.json",
+			"",
+			"invalid child flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Invalid Child]: missing dependencies: group[uuid=f4cdde0a-97b1-469a-adb8-902bdfd19b0c,name=I Don't Exist!]",
 		},
 	}
 
-	session, _, err := test.CreateTestSession("", nil)
-	require.NoError(t, err)
-
-	for _, tc := range invalidFlows {
-		assetsJSON, err := ioutil.ReadFile("testdata/" + tc.path)
+	for _, tc := range testCases {
+		assetsJSON, err := ioutil.ReadFile("testdata/broken_flows/" + tc.path)
 		require.NoError(t, err)
 
-		flow, err := definition.ReadFlow(assetsJSON)
+		sa, err := test.CreateSessionAssets(assetsJSON, "")
+		require.NoError(t, err, "unable to load assets: %s", tc.path)
 
-		if tc.duringRead {
-			assert.EqualError(t, err, tc.expectedErr)
+		flow, err := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+
+		if tc.validationError != "" {
+			assert.EqualError(t, err, tc.validationError, "read error mismatch for %s", tc.path)
 		} else {
 			require.NoError(t, err)
 
-			err = flow.Validate(session.Assets())
-			assert.EqualError(t, err, tc.expectedErr)
+			err = flow.InspectRecursively(sa, nil)
+			assert.EqualError(t, err, tc.checkError, "inspection error mismatch for %s", tc.path)
 		}
 	}
 }
@@ -185,7 +205,7 @@ func TestNewFlow(t *testing.T) {
 	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
-	flow := definition.NewFlow(
+	flow, err := definition.NewFlow(
 		assets.FlowUUID("8ca44c09-791d-453a-9799-a70dd3303306"),
 		"Test Flow",           // name
 		utils.Language("eng"), // base language
@@ -256,14 +276,15 @@ func TestNewFlow(t *testing.T) {
 		},
 		nil, // no UI
 	)
+	require.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
 	assert.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
 
-	// should validate ok
-	err = flow.Validate(session.Assets())
+	// should pass inspection ok
+	err = flow.Inspect(session.Assets())
 	assert.NoError(t, err)
 
 	// check in expressions
@@ -308,11 +329,11 @@ func TestNewFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(newFlowDef), marshaled, "flow definition mismatch")
 }
 
-func TestValidateEmptyFlow(t *testing.T) {
+func TestEmptyFlow(t *testing.T) {
 	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
-	err = flow.Validate(nil)
+	err = flow.Inspect(nil)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
@@ -350,8 +371,8 @@ func TestValidateFlow(t *testing.T) {
 	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
 	require.NoError(t, err)
 
-	// validate with session assets
-	err = flow.Validate(sa)
+	// inspect with session assets
+	err = flow.Inspect(sa)
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
@@ -377,25 +398,6 @@ func TestValidateFlow(t *testing.T) {
 		"fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
         "43accf99-4940-44f7-926b-a8b35d9403d6"
 	]`))
-
-	// validate without session assets
-	sa, _ = test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
-	flow, _ = sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
-	err = flow.Validate(nil)
-	assert.NoError(t, err)
-
-	marshaled, err = json.Marshal(flow)
-	require.NoError(t, err)
-
-	// name of group won't have been corrected
-	assertFlowSection(t, marshaled, "_dependencies", []byte(`{
-    "groups": [
-      {
-        "name": "Registered",
-        "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
-      }
-    ]
-  }`))
 }
 
 func TestReadFlow(t *testing.T) {

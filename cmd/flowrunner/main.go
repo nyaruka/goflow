@@ -85,12 +85,13 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		return nil, errors.Wrap(err, "error parsing assets")
 	}
 
-	missingAssets, err := sa.Validate(flowUUID)
+	flow, err := sa.Flows().Get(flowUUID)
 	if err != nil {
 		return nil, err
 	}
-	if len(missingAssets) > 0 {
-		return nil, errors.Errorf("missing assets: %s", missingAssets)
+
+	if err := flow.Inspect(sa); err != nil {
+		return nil, err
 	}
 
 	contact, err := flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
@@ -98,11 +99,6 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		return nil, err
 	}
 	contact.SetLanguage(contactLang)
-
-	flow, err := sa.Flows().Get(flowUUID)
-	if err != nil {
-		return nil, err
-	}
 
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")

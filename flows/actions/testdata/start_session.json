@@ -1,6 +1,6 @@
 [
     {
-        "description": "Validation fails for invalid flow reference",
+        "description": "Inspection fails for invalid flow reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "start_session",
@@ -15,10 +15,10 @@
                 }
             ]
         },
-        "validation_error": "missing dependencies: flow[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Long Lost Flow]"
+        "inspection_error": "missing dependencies: flow[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Long Lost Flow] (no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6')"
     },
     {
-        "description": "Validation fails for invalid group reference",
+        "description": "Inspection fails for invalid group reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "start_session",
@@ -33,7 +33,7 @@
                 }
             ]
         },
-        "validation_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
+        "inspection_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
     },
     {
         "description": "Session triggered event if new session can be triggered",

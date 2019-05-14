@@ -174,7 +174,7 @@ func NewFieldValues(a SessionAssets, values map[string]*Value, missing assets.Mi
 	for key := range values {
 		_, valid := fieldValues[key]
 		if !valid {
-			missing(assets.NewFieldReference(key, ""))
+			missing(assets.NewFieldReference(key, ""), nil)
 		}
 	}
 

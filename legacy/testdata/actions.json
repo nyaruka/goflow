@@ -165,6 +165,7 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "url": "@flow.response_1"
         },
+        "legacy_flow_type": "V",
         "expected_action": {
             "type": "play_audio",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
@@ -307,6 +308,7 @@
                 "fra": "Vous habitez toujours à @contact.city"
             }
         },
+        "legacy_flow_type": "V",
         "expected_action": {
             "type": "say_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
@@ -336,6 +338,7 @@
                 "fra": "bucket/question1_fr.m4a"
             }
         },
+        "legacy_flow_type": "V",
         "expected_action": {
             "type": "say_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
@@ -367,6 +370,7 @@
                 "eng": null
             }
         },
+        "legacy_flow_type": "V",
         "expected_action": {
             "type": "say_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",

@@ -1,5 +1,15 @@
 [
     {
+        "description": "Validation fails if method is empty",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "",
+            "url": "http://localhost:49996/?cmd=success"
+        },
+        "validation_error": "field 'method' is required"
+    },
+    {
         "description": "Validation fails if GET has a body",
         "action": {
             "type": "call_webhook",
