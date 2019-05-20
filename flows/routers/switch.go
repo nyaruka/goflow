@@ -72,6 +72,12 @@ func (c *Case) EnumerateDependencies(localization flows.Localization, include fu
 // EnumerateResults enumerates all potential results on this object
 func (c *Case) EnumerateResults(include func(*flows.ResultSpec)) {}
 
+// EnumerateElementUUIDs enumerates all element UUIDs on this object
+func (c *Case) EnumerateElementUUIDs(include func(*utils.UUID)) {
+	include(&c.UUID)
+	include((*utils.UUID)(&c.CategoryUUID))
+}
+
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default category
 type SwitchRouter struct {
@@ -214,6 +220,7 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 
 // Inspect inspects this object and any children
 func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
+	r.BaseRouter.Inspect(inspect)
 	inspect(r)
 
 	for _, cs := range r.cases {
@@ -226,8 +233,9 @@ func (r *SwitchRouter) EnumerateTemplates(include flows.TemplateIncluder) {
 	include.String(&r.operand)
 }
 
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+// EnumerateElementUUIDs enumerates all element UUIDs on this object
+func (r *SwitchRouter) EnumerateElementUUIDs(include func(*utils.UUID)) {
+	include((*utils.UUID)(&r.default_))
 }
 
 //------------------------------------------------------------------------------------------

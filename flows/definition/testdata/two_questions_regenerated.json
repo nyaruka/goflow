@@ -1,0 +1,259 @@
+{
+    "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+    "name": "Two Questions",
+    "spec_version": "13.0.0",
+    "language": "eng",
+    "type": "messaging",
+    "revision": 0,
+    "expire_after_minutes": 0,
+    "localization": {
+        "fra": {
+            "0a8467eb-911a-41db-8101-ccf415c48e6a": {
+                "text": [
+                    "Parfait, vous avez finis et tu aimes @results.soda.category"
+                ]
+            },
+            "2ab9b033-77a8-4e56-a558-b568c00c9492": {
+                "name": [
+                    "Pepsi"
+                ]
+            },
+            "4a6c3b0b-0658-4a93-ae37-bee68f6a6a87": {
+                "test": [
+                    "coke"
+                ]
+            },
+            "598ae7a5-2f81-48f1-afac-595262514aa1": {
+                "name": [
+                    "Rouge"
+                ]
+            },
+            "5ce6c69a-fdfe-4594-ab71-26be534d31c3": {
+                "name": [
+                    "Autres"
+                ]
+            },
+            "78ae8f05-f92e-43b2-a886-406eaea1b8e0": {
+                "name": [
+                    "Autres"
+                ]
+            },
+            "98503572-25bf-40ce-ad72-8836b6549a38": {
+                "arguments": [
+                    "rouge"
+                ]
+            },
+            "a51e5c8c-c891-401d-9c62-15fc37278c94": {
+                "arguments": [
+                    "bleu"
+                ]
+            },
+            "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e": {
+                "name": [
+                    "Bleu"
+                ]
+            },
+            "c7bca181-0cb3-4ec6-8555-f7e5644238ad": {
+                "name": [
+                    "Coke"
+                ]
+            },
+            "d2a4052a-3fa9-4608-ab3e-5b9631440447": {
+                "text": [
+                    "@(TITLE(results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
+                ]
+            },
+            "e27c3bce-1095-4d08-9164-dc4530a0688a": {
+                "test": [
+                    "pepsi"
+                ]
+            },
+            "e97cd6d5-3354-4dbd-85bc-6c1f87849eec": {
+                "text": [
+                    "Quelle est votres couleur preferee? (rouge/blue)"
+                ]
+            }
+        }
+    },
+    "nodes": [
+        {
+            "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+            "actions": [
+                {
+                    "type": "send_msg",
+                    "uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                    "text": "Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))",
+                    "quick_replies": [
+                        "Red",
+                        "Blue"
+                    ]
+                }
+            ],
+            "router": {
+                "type": "switch",
+                "wait": {
+                    "type": "msg",
+                    "timeout": {
+                        "seconds": 600,
+                        "category_uuid": "20cc4181-48cf-4344-9751-99419796decd"
+                    }
+                },
+                "result_name": "Favorite Color",
+                "categories": [
+                    {
+                        "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                        "name": "Red",
+                        "exit_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
+                    },
+                    {
+                        "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                        "name": "Blue",
+                        "exit_uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0"
+                    },
+                    {
+                        "uuid": "4fc5fda0-de88-4c64-9b07-fce5df529848",
+                        "name": "Other",
+                        "exit_uuid": "08d3c3e2-f1ea-4b52-97e4-99d56e963fc9"
+                    },
+                    {
+                        "uuid": "20cc4181-48cf-4344-9751-99419796decd",
+                        "name": "No Response",
+                        "exit_uuid": "04e910a5-d2e3-448b-958a-630e35c62431"
+                    }
+                ],
+                "operand": "@input.text",
+                "cases": [
+                    {
+                        "uuid": "94f0e964-be11-4d7b-866b-323926b4c6a0",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "red"
+                        ],
+                        "category_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                    },
+                    {
+                        "uuid": "5b835baa-3607-48cb-a489-7cc248dc15c5",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "blue"
+                        ],
+                        "category_uuid": "297611a6-b583-45c3-8587-d4e530c948f0"
+                    }
+                ],
+                "default_category_uuid": "4fc5fda0-de88-4c64-9b07-fce5df529848"
+            },
+            "exits": [
+                {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "destination_uuid": "5078c828-5e46-4bac-8c96-e8696b9ca2d2"
+                },
+                {
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
+                    "destination_uuid": "5078c828-5e46-4bac-8c96-e8696b9ca2d2"
+                },
+                {
+                    "uuid": "08d3c3e2-f1ea-4b52-97e4-99d56e963fc9",
+                    "destination_uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d"
+                },
+                {
+                    "uuid": "04e910a5-d2e3-448b-958a-630e35c62431"
+                }
+            ]
+        },
+        {
+            "uuid": "5078c828-5e46-4bac-8c96-e8696b9ca2d2",
+            "actions": [
+                {
+                    "type": "set_contact_language",
+                    "uuid": "0fcc2191-7a37-42c1-bd30-a536113d033e",
+                    "language": "fra"
+                },
+                {
+                    "type": "send_msg",
+                    "uuid": "ff99c51f-aa68-40c8-93d2-b1071c846243",
+                    "text": "@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
+                }
+            ],
+            "router": {
+                "type": "switch",
+                "wait": {
+                    "type": "msg"
+                },
+                "result_name": "Soda",
+                "categories": [
+                    {
+                        "uuid": "33dfea56-367f-4724-8b6d-a434b8534d4c",
+                        "name": "Pepsi",
+                        "exit_uuid": "7e78dd38-632d-49bb-bd50-dcf2fb739071"
+                    },
+                    {
+                        "uuid": "806f56ef-3773-4842-8b62-d6ed88831703",
+                        "name": "Coke",
+                        "exit_uuid": "e5df2762-3c91-4895-9ee2-bf4a7fe37b55"
+                    },
+                    {
+                        "uuid": "d1f2e5af-442c-4fdb-aa13-7ae972d8e4a5",
+                        "name": "Other",
+                        "exit_uuid": "4cb9ce56-3eaa-46f0-b96e-ac28a033e582"
+                    }
+                ],
+                "operand": "@input.text",
+                "cases": [
+                    {
+                        "uuid": "198c55c6-e989-4af8-a95e-b6a65e9f365f",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "pepsi"
+                        ],
+                        "category_uuid": "33dfea56-367f-4724-8b6d-a434b8534d4c"
+                    },
+                    {
+                        "uuid": "7847a42e-e6d7-4f13-96c2-29404853a3d6",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "coke coca cola"
+                        ],
+                        "category_uuid": "806f56ef-3773-4842-8b62-d6ed88831703"
+                    }
+                ],
+                "default_category_uuid": "d1f2e5af-442c-4fdb-aa13-7ae972d8e4a5"
+            },
+            "exits": [
+                {
+                    "uuid": "7e78dd38-632d-49bb-bd50-dcf2fb739071",
+                    "destination_uuid": "730dc4c7-f9c1-422f-94b7-198361b631e1"
+                },
+                {
+                    "uuid": "e5df2762-3c91-4895-9ee2-bf4a7fe37b55",
+                    "destination_uuid": "730dc4c7-f9c1-422f-94b7-198361b631e1"
+                },
+                {
+                    "uuid": "4cb9ce56-3eaa-46f0-b96e-ac28a033e582",
+                    "destination_uuid": "5078c828-5e46-4bac-8c96-e8696b9ca2d2"
+                }
+            ]
+        },
+        {
+            "uuid": "730dc4c7-f9c1-422f-94b7-198361b631e1",
+            "actions": [
+                {
+                    "type": "call_webhook",
+                    "uuid": "b274e700-73c2-4d7f-92e5-14c77069e816",
+                    "method": "POST",
+                    "url": "http://localhost/?cmd=success",
+                    "body": "{ \"contact\": @(json(contact.uuid)), \"soda\": @(json(results.soda.value)) }"
+                },
+                {
+                    "type": "send_msg",
+                    "uuid": "903721f5-78b7-4498-ada0-a0aa6cbed480",
+                    "text": "Great, you are done and like @results.soda.value! Webhook status was @results.webhook.value"
+                }
+            ],
+            "exits": [
+                {
+                    "uuid": "5d262ab2-8924-4d61-87cd-e8490979e7a0"
+                }
+            ]
+        }
+    ]
+}

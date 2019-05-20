@@ -94,6 +94,10 @@ func (n *node) Inspect(inspect func(flows.Inspectable)) {
 	if n.Router() != nil {
 		n.Router().Inspect(inspect)
 	}
+
+	for _, e := range n.Exits() {
+		e.Inspect(inspect)
+	}
 }
 
 // EnumerateTemplates enumerates all expressions on this object
@@ -105,6 +109,11 @@ func (n *node) EnumerateDependencies(localization flows.Localization, include fu
 
 // EnumerateResults enumerates all potential results on this object
 func (n *node) EnumerateResults(include func(*flows.ResultSpec)) {}
+
+// EnumerateElementUUIDs enumerates all element UUIDs on this object
+func (n *node) EnumerateElementUUIDs(include func(*utils.UUID)) {
+	include((*utils.UUID)(&n.uuid))
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

@@ -3,6 +3,7 @@ package definition
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -24,6 +25,26 @@ func (e *exit) DestinationUUID() flows.NodeUUID { return e.destination }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (e *exit) LocalizationUUID() utils.UUID { return utils.UUID(e.uuid) }
+
+func (e *exit) Inspect(inspect func(flows.Inspectable)) {
+	inspect(e)
+}
+
+// EnumerateTemplates enumerates all expressions on this object
+func (e *exit) EnumerateTemplates(include flows.TemplateIncluder) {}
+
+// EnumerateDependencies enumerates all dependencies on this object
+func (e *exit) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+}
+
+// EnumerateResults enumerates all potential results on this object
+func (e *exit) EnumerateResults(include func(*flows.ResultSpec)) {}
+
+// EnumerateElementUUIDs enumerates all element UUIDs on this object
+func (e *exit) EnumerateElementUUIDs(include func(*utils.UUID)) {
+	include((*utils.UUID)(&e.uuid))
+	include((*utils.UUID)(&e.destination))
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

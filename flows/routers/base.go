@@ -55,12 +55,24 @@ func (r *BaseRouter) AllowTimeout() bool {
 	return r.wait != nil && !utils.IsNil(r.wait.Timeout())
 }
 
+// Inspect inspects this object and any children
+func (r *BaseRouter) Inspect(inspect func(flows.Inspectable)) {
+	inspect(r)
+
+	for _, c := range r.categories {
+		inspect(c)
+	}
+
+	if r.wait != nil {
+		inspect(r.wait)
+	}
+}
+
 // ResultName returns the name which the result of this router should be saved as (if any)
 func (r *BaseRouter) ResultName() string { return r.resultName }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *BaseRouter) EnumerateTemplates(include flows.TemplateIncluder) {
-}
+func (r *BaseRouter) EnumerateTemplates(include flows.TemplateIncluder) {}
 
 // EnumerateDependencies enumerates all dependencies on this object
 func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
@@ -75,6 +87,13 @@ func (r *BaseRouter) EnumerateResults(include func(*flows.ResultSpec)) {
 		}
 
 		include(flows.NewResultSpec(r.resultName, categoryNames))
+	}
+}
+
+// EnumerateElementUUIDs enumerates all element UUIDs on this object
+func (r *BaseRouter) EnumerateElementUUIDs(include func(*utils.UUID)) {
+	if r.AllowTimeout() {
+		r.Wait().Timeout().CategoryUUID()
 	}
 }
 

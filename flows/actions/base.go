@@ -69,6 +69,11 @@ func (a *BaseAction) EnumerateDependencies(localization flows.Localization, incl
 // EnumerateResults enumerates all potential results on this object
 func (a *BaseAction) EnumerateResults(include func(*flows.ResultSpec)) {}
 
+// EnumerateElementUUIDs enumerates all element UUIDs on this object
+func (a *BaseAction) EnumerateElementUUIDs(include func(*utils.UUID)) {
+	include((*utils.UUID)(&a.UUID_))
+}
+
 // helper function for actions that have a set of group references that must be resolved to actual groups
 func (a *BaseAction) resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {
 	groupSet := run.Session().Assets().Groups()

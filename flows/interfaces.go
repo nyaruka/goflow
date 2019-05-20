@@ -155,6 +155,7 @@ type Flow interface {
 	RewriteTemplates(func(string) string)
 	ExtractDependencies() []assets.Reference
 	ExtractResults() []*ResultSpec
+	RegenerateElementUUIDs()
 
 	Inspect(SessionAssets) error
 	InspectRecursively(SessionAssets, func(assets.Reference)) error
@@ -198,6 +199,8 @@ type Router interface {
 }
 
 type Exit interface {
+	Inspectable
+
 	UUID() ExitUUID
 	DestinationUUID() NodeUUID
 }
@@ -209,6 +212,7 @@ type Timeout interface {
 
 type Wait interface {
 	utils.Typed
+	Inspectable
 
 	Timeout() Timeout
 

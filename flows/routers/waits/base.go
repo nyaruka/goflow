@@ -3,6 +3,7 @@ package waits
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/utils"
@@ -51,6 +52,27 @@ func (w *baseWait) Type() string { return w.type_ }
 
 // Timeout returns the timeout of this wait or nil if no timeout is set
 func (w *baseWait) Timeout() flows.Timeout { return w.timeout }
+
+func (w *baseWait) Inspect(inspect func(flows.Inspectable)) {
+	inspect(w)
+}
+
+// EnumerateTemplates enumerates all expressions on this object
+func (w *baseWait) EnumerateTemplates(include flows.TemplateIncluder) {}
+
+// EnumerateDependencies enumerates all dependencies on this object
+func (w *baseWait) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+}
+
+// EnumerateResults enumerates all potential results on this object
+func (w *baseWait) EnumerateResults(include func(*flows.ResultSpec)) {}
+
+// EnumerateElementUUIDs enumerates all element UUIDs on this object
+func (w *baseWait) EnumerateElementUUIDs(include func(*utils.UUID)) {
+	if w.timeout != nil {
+		include((*utils.UUID)(&w.timeout.CategoryUUID_))
+	}
+}
 
 // End ends this wait or returns an error
 func (w *baseWait) End(resume flows.Resume) error {

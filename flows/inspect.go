@@ -24,6 +24,7 @@ type Inspectable interface {
 	EnumerateTemplates(TemplateIncluder)
 	EnumerateDependencies(Localization, func(assets.Reference))
 	EnumerateResults(func(*ResultSpec))
+	EnumerateElementUUIDs(func(*utils.UUID))
 }
 
 // ResultSpec is possible result that a flow might generate
@@ -184,6 +185,9 @@ func (r inspectableReference) EnumerateDependencies(localization Localization, i
 // EnumerateResults enumerates all potential results on this object
 // Asset references can't contain results.
 func (r inspectableReference) EnumerateResults(include func(*ResultSpec)) {}
+
+// EnumerateElementUUIDs enumerates all element UUIDs on this object
+func (r inspectableReference) EnumerateElementUUIDs(include func(*utils.UUID)) {}
 
 // ExtractFieldReferences extracts fields references from the given template
 func ExtractFieldReferences(template string) []*assets.FieldReference {

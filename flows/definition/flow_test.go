@@ -658,3 +658,34 @@ func TestExtractResults(t *testing.T) {
 		assert.Equal(t, tc.results, flow.ExtractResults(), "extracted results mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 	}
 }
+
+func TestRegenerateElementUUIDs(t *testing.T) {
+	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
+	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/two_questions.json", assets.FlowUUID("615b8a0f-588c-4d20-a05f-363b0b4ce6f4"))
+	require.NoError(t, err)
+
+	flowJSON, err := json.Marshal(flow)
+	require.NoError(t, err)
+
+	test.NormalizeJSON(flowJSON)
+
+	err = ioutil.WriteFile("testdata/two_questions.json", flowJSON, 0666)
+	require.NoError(t, err)
+
+	flow.RegenerateElementUUIDs()
+
+	flowJSON, err = json.Marshal(flow)
+	require.NoError(t, err)
+
+	test.NormalizeJSON(flowJSON)
+
+	err = ioutil.WriteFile("testdata/two_questions_regenerated.json", flowJSON, 0666)
+	require.NoError(t, err)
+
+	/*expectedJSON, err := ioutil.ReadFile("testdata/two_questions_regenerated.json")
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, expectedJSON, flowJSON, "flow def mismatch")*/
+}

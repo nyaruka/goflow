@@ -280,6 +280,28 @@ func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
 	return exitUUIDs
 }
 
+// RegenerateElementUUIDs replaces all element UUIDs (i.e. doesn't include asset references) with newly generated UUIDv4 values
+func (f *flow) RegenerateElementUUIDs() {
+	mapping := make(map[utils.UUID]utils.UUID)
+	replaceUUID := func(u utils.UUID) utils.UUID {
+		if u == "" {
+			return ""
+		}
+		mapped, exists := mapping[u]
+		if !exists {
+			mapped = utils.NewUUID()
+			mapping[u] = mapped
+		}
+		return mapped
+	}
+
+	f.inspect(func(item flows.Inspectable) {
+		item.EnumerateElementUUIDs(func(uuid *utils.UUID) {
+			*uuid = replaceUUID(*uuid)
+		})
+	})
+}
+
 var _ flows.Flow = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------
