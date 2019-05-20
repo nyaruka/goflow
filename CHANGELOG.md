@@ -1,3 +1,7 @@
+v0.39.1
+----------
+ * (Re)allow inspecting without session assets
+
 v0.39.0
 ----------
  * Allow igoring of missing flow assets like any other asset type
