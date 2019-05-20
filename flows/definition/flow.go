@@ -38,8 +38,7 @@ type flow struct {
 	waitingExits []flows.ExitUUID
 
 	// internal state
-	nodeMap   map[flows.NodeUUID]flows.Node
-	inspected bool
+	nodeMap map[flows.NodeUUID]flows.Node
 }
 
 // NewFlow creates a new flow
@@ -102,12 +101,14 @@ func (f *flow) validate() error {
 
 // Inspect enumerates dependencies, checks that they exist
 func (f *flow) Inspect(sa flows.SessionAssets) error {
-	return f.doInspect(sa, false, nil)
+	return f.doInspect(sa, false, nil, nil)
 }
 
 // InspectRecursively checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
 func (f *flow) InspectRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	return f.doInspect(sa, true, missing)
+	seen := make(map[assets.FlowUUID]bool)
+
+	return f.doInspect(sa, true, seen, missing)
 }
 
 type brokenDependency struct {
@@ -115,55 +116,57 @@ type brokenDependency struct {
 	reason     error
 }
 
-func (f *flow) doInspect(sa flows.SessionAssets, recursive bool, missing func(assets.Reference)) error {
-	// if this flow has already been inspected, don't need to do it again - avoid unnecessary work
-	// but also prevents looping if recursively inspecting flows
-	if f.inspected {
+func (f *flow) doInspect(sa flows.SessionAssets, recursive bool, seen map[assets.FlowUUID]bool, missing func(assets.Reference)) error {
+	// prevent looping if recursively inspecting flows
+	if recursive && seen[f.UUID()] {
 		return nil
 	}
 
 	// extract all dependencies (assets, contacts)
 	deps := newDependencies(f.ExtractDependencies())
 
-	// and validate that all assets are available in the session assets
-	missingAssets := make([]brokenDependency, 0)
-	err := deps.refresh(sa, func(r assets.Reference, err error) {
-		missingAssets = append(missingAssets, brokenDependency{r, err})
-	})
-	if err != nil {
-		return err
-	}
+	// if we have session assets, check dependencies actually exist
+	if sa != nil {
+		missingAssets := make([]brokenDependency, 0)
+		err := deps.refresh(sa, func(r assets.Reference, err error) {
+			missingAssets = append(missingAssets, brokenDependency{r, err})
+		})
+		if err != nil {
+			return err
+		}
 
-	if len(missingAssets) > 0 {
-		// if we have callback for missing dependencies, call that
-		if missing != nil {
-			for _, ma := range missingAssets {
-				missing(ma.dependency)
-			}
-		} else {
-			// otherwise error
-			depStrings := make([]string, len(missingAssets))
-			for i, ma := range missingAssets {
-				depStrings[i] = ma.dependency.String()
-				if ma.reason != nil {
-					depStrings[i] += fmt.Sprintf(" (%s)", ma.reason)
+		if len(missingAssets) > 0 {
+			// if we have callback for missing dependencies, call that
+			if missing != nil {
+				for _, ma := range missingAssets {
+					missing(ma.dependency)
 				}
+			} else {
+				// otherwise error
+				depStrings := make([]string, len(missingAssets))
+				for i, ma := range missingAssets {
+					depStrings[i] = ma.dependency.String()
+					if ma.reason != nil {
+						depStrings[i] += fmt.Sprintf(" (%s)", ma.reason)
+					}
+				}
+				return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 			}
-			return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 		}
 	}
 
-	f.inspected = true
 	f.dependencies = deps
 	f.results = f.ExtractResults()
 	f.waitingExits = f.ExtractExitsFromWaits()
 
 	if recursive {
+		seen[f.UUID()] = true
+
 		// go check any non-missing flow dependencies
 		for _, flowRef := range deps.Flows {
 			flowDep, err := sa.Flows().Get(flowRef.UUID)
 			if err == nil {
-				if err := flowDep.(*flow).doInspect(sa, true, missing); err != nil {
+				if err := flowDep.(*flow).doInspect(sa, true, seen, missing); err != nil {
 					return errors.Wrapf(err, "invalid child %s", flowRef)
 				}
 			}
@@ -306,8 +309,8 @@ type flowEnvelope struct {
 	UI                 json.RawMessage `json:"_ui,omitempty"`
 }
 
-// additional properties that a validated flow can have
-type validatedFlowEnvelope struct {
+// additional properties that an inspected flow can have
+type inspectedFlowEnvelope struct {
 	*flowEnvelope
 
 	Dependencies *dependencies       `json:"_dependencies"`
@@ -374,8 +377,8 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		e.Nodes[i] = f.nodes[i].(*node)
 	}
 
-	if f.inspected {
-		return json.Marshal(&validatedFlowEnvelope{
+	if f.dependencies != nil {
+		return json.Marshal(&inspectedFlowEnvelope{
 			flowEnvelope: e,
 			Dependencies: f.dependencies,
 			Results:      f.results,
