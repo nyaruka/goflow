@@ -542,5 +542,80 @@
             "type": "messaging",
             "uuid": "40730a2d-edaa-4ff0-9d2f-81ca2131ddfe"
         }
+    },
+    {
+        "description": "old single message campaign event flow",
+        "legacy": {
+            "version": "11.12",
+            "entry": "59329bcc-393e-4b36-af14-27b4c9454d0c",
+            "base_language": "fra",
+            "rule_sets": [],
+            "action_sets": [
+                {
+                    "x": 100,
+                    "y": 0,
+                    "uuid": "59329bcc-393e-4b36-af14-27b4c9454d0c",
+                    "exit_uuid": "fe6d02da-7984-4027-b1b5-7b0cbfbb1cc9",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "e3c3de21-8d7c-4d46-827f-3b2a917671ea",
+                            "msg": {
+                                "fra": "Bonsoir cher parent, veuillez envoyer votre enfant dans un centre de sante demain pour la prise du Rota"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ]
+                }
+            ],
+            "metadata": {
+                "revision": 1
+            },
+            "name": "Single Message (24012)",
+            "uuid": "2306967b-0904-4c56-b071-2acf3480d20f",
+            "revision": 1,
+            "expire_after_minutes": 720
+        },
+        "expected": {
+            "uuid": "2306967b-0904-4c56-b071-2acf3480d20f",
+            "name": "Single Message (24012)",
+            "revision": 1,
+            "spec_version": "13.0.0",
+            "type": "messaging",
+            "expire_after_minutes": 0,
+            "language": "fra",
+            "localization": {},
+            "nodes": [
+                {
+                    "actions": [
+                        {
+                            "text": "Bonsoir cher parent, veuillez envoyer votre enfant dans un centre de sante demain pour la prise du Rota",
+                            "type": "send_msg",
+                            "uuid": "e3c3de21-8d7c-4d46-827f-3b2a917671ea"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "fe6d02da-7984-4027-b1b5-7b0cbfbb1cc9"
+                        }
+                    ],
+                    "uuid": "59329bcc-393e-4b36-af14-27b4c9454d0c"
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "59329bcc-393e-4b36-af14-27b4c9454d0c": {
+                        "position": {
+                            "left": 100,
+                            "top": 0
+                        },
+                        "type": "execute_actions"
+                    }
+                },
+                "stickies": {}
+            }
+        }
     }
 ]
