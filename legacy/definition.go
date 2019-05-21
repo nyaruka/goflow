@@ -32,6 +32,10 @@ type Flow struct {
 	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
 	Entry        flows.NodeUUID `json:"entry" validate:"omitempty,uuid4"`
 	Metadata     *Metadata      `json:"metadata"`
+
+	// some flows have these set here instead of in metadata
+	UUID assets.FlowUUID `json:"uuid"`
+	Name string          `json:"name"`
 }
 
 // Metadata is the metadata section of a legacy flow
@@ -279,6 +283,7 @@ type wardTest struct {
 var relativeDateTest = regexp.MustCompile(`@\(date\.today\s+(\+|\-)\s+(\d+)\)`)
 
 var flowTypeMapping = map[string]flows.FlowType{
+	"":  flows.FlowTypeMessaging, // some campaign event flows are missing this
 	"F": flows.FlowTypeMessaging,
 	"M": flows.FlowTypeMessaging,
 	"V": flows.FlowTypeVoice,
@@ -1104,9 +1109,20 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 		}
 	}
 
+	uuid := f.Metadata.UUID
+	name := f.Metadata.Name
+
+	// some flows have these set on root-level instead
+	if uuid == "" {
+		uuid = f.UUID
+	}
+	if name == "" {
+		name = f.Name
+	}
+
 	return definition.NewFlow(
-		f.Metadata.UUID,
-		f.Metadata.Name,
+		uuid,
+		name,
 		f.BaseLanguage,
 		flowTypeMapping[f.FlowType],
 		f.Metadata.Revision,
