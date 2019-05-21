@@ -1,3 +1,7 @@
+v0.39.3
+----------
+ * Handle malformed single message campaign event flows
+
 v0.39.2
 ----------
  * Fix IsLegacyDefinition
