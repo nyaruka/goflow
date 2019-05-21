@@ -1,3 +1,7 @@
+v0.39.2
+----------
+ * Fix IsLegacyDefinition
+
 v0.39.1
 ----------
  * (Re)allow inspecting without session assets
