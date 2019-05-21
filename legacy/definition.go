@@ -1028,12 +1028,8 @@ func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 		return nil, err
 	}
 
-	// add some metadata for incomplete definitions
 	if f.Metadata == nil {
 		f.Metadata = &Metadata{}
-	}
-	if f.Metadata.UUID == "" {
-		f.Metadata.UUID = assets.FlowUUID(utils.NewUUID())
 	}
 
 	return f, nil
@@ -1112,9 +1108,12 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 	uuid := f.Metadata.UUID
 	name := f.Metadata.Name
 
-	// some flows have these set on root-level instead
+	// some flows have these set on root-level instead.. or not set at all
 	if uuid == "" {
 		uuid = f.UUID
+		if uuid == "" {
+			uuid = assets.FlowUUID(utils.NewUUID())
+		}
 	}
 	if name == "" {
 		name = f.Name
