@@ -12,6 +12,7 @@ import (
 func TestIsLegacyDefinition(t *testing.T) {
 	// try reading empty JSON
 	assert.False(t, legacy.IsLegacyDefinition([]byte(`{}`)))
+	assert.True(t, legacy.IsLegacyDefinition([]byte(`{"flow_type":"M"}`)))
 
 	// try with new flow
 	assert.False(t, legacy.IsLegacyDefinition([]byte(`{
@@ -38,10 +39,9 @@ func TestIsLegacyDefinition(t *testing.T) {
 		"rule_sets": []
 	}`)))
 
-	// try with legacy flow without metadata
+	// try with legacy flow without metadata or flow_type
 	assert.True(t, legacy.IsLegacyDefinition([]byte(`{
 		"base_language": "eng",
-		"flow_type": "F",
 		"entry"
 		"version": 11,
 		"action_sets": [],
