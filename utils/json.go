@@ -99,3 +99,42 @@ func ReadTypeFromJSON(data []byte) (string, error) {
 	}
 	return t.Type, nil
 }
+
+// GenericJSON is a parsed JSON value represented as a generic hierarchy of maps and slices
+type GenericJSON struct {
+	j interface{}
+}
+
+// ReadGenericJSON reads the given JSON
+func ReadGenericJSON(data []byte) (GenericJSON, error) {
+	j, err := JSONDecodeGeneric(data)
+	if err != nil {
+		return GenericJSON{}, err
+	}
+	return GenericJSON{j}, nil
+}
+
+// AsObject returns this as a map if it's object, or nil if not
+func (g GenericJSON) AsObject() map[string]interface{} {
+	obj, _ := g.j.(map[string]interface{})
+	return obj
+}
+
+// MarshalJSON marshals this back to JSON
+func (g GenericJSON) MarshalJSON() ([]byte, error) { return json.Marshal(g.j) }
+
+// WalkObjects walks the JSON invoking the given callback for each object
+func (g GenericJSON) WalkObjects(callback func(map[string]interface{})) {
+	switch typed := g.j.(type) {
+	case map[string]interface{}:
+		callback(typed)
+
+		for _, v := range typed {
+			GenericJSON{v}.WalkObjects(callback)
+		}
+	case []interface{}:
+		for _, v := range typed {
+			GenericJSON{v}.WalkObjects(callback)
+		}
+	}
+}

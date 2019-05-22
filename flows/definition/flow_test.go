@@ -658,3 +658,37 @@ func TestExtractResults(t *testing.T) {
 		assert.Equal(t, tc.results, flow.ExtractResults(), "extracted results mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 	}
 }
+
+func TestClone(t *testing.T) {
+	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
+	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/two_questions.json", assets.FlowUUID("615b8a0f-588c-4d20-a05f-363b0b4ce6f4"))
+	require.NoError(t, err)
+
+	clone := flow.Clone(map[utils.UUID]utils.UUID{
+		"615b8a0f-588c-4d20-a05f-363b0b4ce6f4": "e0af9907-e0d3-4363-99c6-324ece7f628e",
+	})
+
+	assert.Equal(t, assets.FlowUUID("e0af9907-e0d3-4363-99c6-324ece7f628e"), clone.UUID())
+
+	flowJSON, err := json.Marshal(flow)
+	require.NoError(t, err)
+
+	originalUUIDs := utils.UUID4Regex.FindAllString(string(flowJSON), -1)
+	assert.Equal(t, 61, len(originalUUIDs))
+
+	cloneJSON, err := json.Marshal(clone)
+	require.NoError(t, err)
+
+	cloneUUIDs := utils.UUID4Regex.FindAllString(string(cloneJSON), -1)
+	assert.Equal(t, len(originalUUIDs), len(cloneUUIDs))
+
+	for _, u1 := range originalUUIDs {
+		for _, u2 := range cloneUUIDs {
+			if u1 == u2 {
+				assert.Fail(t, "uuid", "cloned flow contains UUID from original flow: %s", u1)
+			}
+		}
+	}
+}

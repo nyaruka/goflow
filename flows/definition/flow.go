@@ -280,6 +280,16 @@ func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
 	return exitUUIDs
 }
 
+// Clone clones this flow replacing all UUIDs using the provided mapping and generating new
+// random UUIDs if they aren't in the mapping
+func (f *flow) Clone(mapping map[utils.UUID]utils.UUID) flows.Flow {
+	generic := newGenericFlow(f)
+	generic.remap(mapping)
+
+	// read back as a real flow in the current spec.. since we control this it can't error in theory
+	return generic.MustRead()
+}
+
 var _ flows.Flow = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------

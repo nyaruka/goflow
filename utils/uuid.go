@@ -3,9 +3,18 @@ package utils
 import (
 	"fmt"
 	"math/rand"
+	"regexp"
 
 	"github.com/gofrs/uuid"
 )
+
+var UUID4Regex = regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}`)
+var UUID4OnlyRegex = regexp.MustCompile(`^` + UUID4Regex.String() + `$`)
+
+// IsUUIDv4 returns whether the given string contains only a valid v4 UUID
+func IsUUIDv4(s string) bool {
+	return UUID4OnlyRegex.MatchString(s)
+}
 
 // UUID is a 36 character UUID
 type UUID string
