@@ -22,6 +22,12 @@ type Reference interface {
 	Variable() bool
 }
 
+// UUIDReference is interface for all reference types that contain a UUID
+type UUIDReference interface {
+	Reference
+	GenericUUID() utils.UUID
+}
+
 // ChannelReference is used to reference a channel
 type ChannelReference struct {
 	UUID ChannelUUID `json:"uuid" validate:"required,uuid"`
@@ -38,6 +44,11 @@ func (r *ChannelReference) Type() string {
 	return "channel"
 }
 
+// GenericUUID returns the untyped UUID
+func (r *ChannelReference) GenericUUID() utils.UUID {
+	return utils.UUID(r.UUID)
+}
+
 // Identity returns the unique identity of the asset
 func (r *ChannelReference) Identity() string {
 	return string(r.UUID)
@@ -52,7 +63,7 @@ func (r *ChannelReference) String() string {
 	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
 
-var _ Reference = (*ChannelReference)(nil)
+var _ UUIDReference = (*ChannelReference)(nil)
 
 // GroupReference is used to reference a group
 type GroupReference struct {
@@ -76,6 +87,11 @@ func (r *GroupReference) Type() string {
 	return "group"
 }
 
+// GenericUUID returns the untyped UUID
+func (r *GroupReference) GenericUUID() utils.UUID {
+	return utils.UUID(r.UUID)
+}
+
 // Identity returns the unique identity of the asset
 func (r *GroupReference) Identity() string {
 	return string(r.UUID)
@@ -90,7 +106,7 @@ func (r *GroupReference) String() string {
 	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
 
-var _ Reference = (*GroupReference)(nil)
+var _ UUIDReference = (*GroupReference)(nil)
 
 // FieldReference is a reference to field
 type FieldReference struct {
@@ -140,6 +156,11 @@ func (r *FlowReference) Type() string {
 	return "flow"
 }
 
+// GenericUUID returns the untyped UUID
+func (r *FlowReference) GenericUUID() utils.UUID {
+	return utils.UUID(r.UUID)
+}
+
 // Identity returns the unique identity of the asset
 func (r *FlowReference) Identity() string {
 	return string(r.UUID)
@@ -154,7 +175,7 @@ func (r *FlowReference) String() string {
 	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
 
-var _ Reference = (*FlowReference)(nil)
+var _ UUIDReference = (*FlowReference)(nil)
 
 // LabelReference is used to reference a label
 type LabelReference struct {
@@ -178,6 +199,11 @@ func (r *LabelReference) Type() string {
 	return "label"
 }
 
+// GenericUUID returns the untyped UUID
+func (r *LabelReference) GenericUUID() utils.UUID {
+	return utils.UUID(r.UUID)
+}
+
 // Identity returns the unique identity of the asset
 func (r *LabelReference) Identity() string {
 	return string(r.UUID)
@@ -192,7 +218,7 @@ func (r *LabelReference) String() string {
 	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
 }
 
-var _ Reference = (*LabelReference)(nil)
+var _ UUIDReference = (*LabelReference)(nil)
 
 // TemplateReference is used to reference a Template
 type TemplateReference struct {
@@ -203,6 +229,11 @@ type TemplateReference struct {
 // NewTemplateReference creates a new template reference with the given UUID and name
 func NewTemplateReference(uuid TemplateUUID, name string) *TemplateReference {
 	return &TemplateReference{UUID: uuid, Name: name}
+}
+
+// GenericUUID returns the untyped UUID
+func (r *TemplateReference) GenericUUID() utils.UUID {
+	return utils.UUID(r.UUID)
 }
 
 // Identity returns the unique identity of the asset
@@ -224,7 +255,7 @@ func (r *TemplateReference) Variable() bool {
 	return false
 }
 
-var _ Reference = (*TemplateReference)(nil)
+var _ UUIDReference = (*TemplateReference)(nil)
 
 //------------------------------------------------------------------------------------------
 // Callbacks for missing assets

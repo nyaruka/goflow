@@ -280,14 +280,41 @@ func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
 	return exitUUIDs
 }
 
+// Generic returns this flow's data modelled as a hierarchy of generic maps and slices
+func (f *flow) Generic() map[string]interface{} {
+	marshaled, err := json.Marshal(f)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	g, err := utils.JSONDecodeGeneric(marshaled)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return g.(map[string]interface{})
+}
+
 // Clone clones this flow replacing all UUIDs using the provided mapping and generating new
 // random UUIDs if they aren't in the mapping
-func (f *flow) Clone(mapping map[utils.UUID]utils.UUID) flows.Flow {
-	generic := newGenericFlow(f)
-	generic.remap(mapping)
+func (f *flow) Clone(withUUID assets.FlowUUID) flows.Flow {
+	// add the desired flow UUID to the mapping
+	mapping := make(map[utils.UUID]utils.UUID)
+	mapping[utils.UUID(f.UUID())] = utils.UUID(withUUID)
+
+	// add dependency UUIDs as NOOPs to the UUID mapping
+	for _, dep := range f.ExtractDependencies() {
+		asUUIDRef, isUUIDRef := dep.(assets.UUIDReference)
+		if isUUIDRef {
+			mapping[asUUIDRef.GenericUUID()] = asUUIDRef.GenericUUID()
+		}
+	}
+
+	generic := f.Generic()
+	remapUUIDs(generic, mapping)
 
 	// read back as a real flow in the current spec.. since we control this it can't error in theory
-	return generic.MustRead()
+	return MustReadFlowFromGeneric(generic)
 }
 
 var _ flows.Flow = (*flow)(nil)

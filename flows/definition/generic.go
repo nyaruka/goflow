@@ -8,29 +8,9 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// GenericFlow is a flow stored as a generic hierarchy of maps and slices
-type GenericFlow struct {
-	data utils.GenericJSON
-}
-
-// convert a flow to a generic flow
-func newGenericFlow(flow flows.Flow) GenericFlow {
-	marshaled, err := json.Marshal(flow)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	g, err := utils.ReadGenericJSON(marshaled)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	return GenericFlow{g}
-}
-
-// Read tries to read this generic flow as a flow in the current spec
-func (g GenericFlow) Read() (flows.Flow, error) {
-	marshaled, err := json.Marshal(g.data)
+// ReadFlowFromGeneric tries to read a flow in the current spec from the given generic map
+func ReadFlowFromGeneric(data map[string]interface{}) (flows.Flow, error) {
+	marshaled, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
 	}
@@ -38,9 +18,9 @@ func (g GenericFlow) Read() (flows.Flow, error) {
 	return ReadFlow(marshaled)
 }
 
-// MustRead tries to read this generic flow, panicking if there's a problem
-func (g GenericFlow) MustRead() flows.Flow {
-	f, err := g.Read()
+// MustReadFlowFromGeneric tries to read a flow from the given generic map, panics if it can't
+func MustReadFlowFromGeneric(data map[string]interface{}) flows.Flow {
+	f, err := ReadFlowFromGeneric(data)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -48,7 +28,7 @@ func (g GenericFlow) MustRead() flows.Flow {
 }
 
 // remap all UUIDs in the flow
-func (g GenericFlow) remap(mapping map[utils.UUID]utils.UUID) {
+func remapUUIDs(data map[string]interface{}, mapping map[utils.UUID]utils.UUID) {
 	replaceUUID := func(u utils.UUID) utils.UUID {
 		if u == utils.UUID("") {
 			return utils.UUID("")
@@ -61,7 +41,7 @@ func (g GenericFlow) remap(mapping map[utils.UUID]utils.UUID) {
 		return mapped
 	}
 
-	g.data.WalkObjects(func(obj map[string]interface{}) {
+	walkObjects(data, func(obj map[string]interface{}) {
 		for k, v := range obj {
 			if k == "uuid" || strings.HasSuffix(k, "_uuid") {
 				asString, isString := v.(string)
@@ -75,4 +55,20 @@ func (g GenericFlow) remap(mapping map[utils.UUID]utils.UUID) {
 			}
 		}
 	})
+}
+
+// walks the given generic JSON invoking the given callback for each object found
+func walkObjects(j interface{}, callback func(map[string]interface{})) {
+	switch typed := j.(type) {
+	case map[string]interface{}:
+		callback(typed)
+
+		for _, v := range typed {
+			walkObjects(v, callback)
+		}
+	case []interface{}:
+		for _, v := range typed {
+			walkObjects(v, callback)
+		}
+	}
 }

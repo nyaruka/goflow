@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestJSONMarshaling(t *testing.T) {
@@ -110,40 +109,4 @@ func TestReadTypeFromJSON(t *testing.T) {
 	typeName, err := utils.ReadTypeFromJSON([]byte(`{"thing": 2, "type": "foo"}`))
 	assert.NoError(t, err)
 	assert.Equal(t, "foo", typeName)
-}
-
-func TestGenericJSON(t *testing.T) {
-	j, err := utils.ReadGenericJSON([]byte(`{"foo": {"bar": [{"doh": 123}]}}`))
-	require.NoError(t, err)
-	assert.Equal(t, map[string]interface{}{
-		"foo": map[string]interface{}{
-			"bar": []interface{}{
-				map[string]interface{}{
-					"doh": json.Number("123"),
-				},
-			},
-		},
-	}, j.AsObject())
-
-	objs := make([]map[string]interface{}, 0)
-	j.WalkObjects(func(obj map[string]interface{}) {
-		objs = append(objs, obj)
-	})
-
-	assert.Equal(t, []map[string]interface{}{
-		j.AsObject(),
-		map[string]interface{}{
-			"bar": []interface{}{
-				map[string]interface{}{
-					"doh": json.Number("123"),
-				},
-			},
-		},
-		map[string]interface{}{
-			"doh": json.Number("123"),
-		},
-	}, objs)
-
-	marshaled, err := json.Marshal(j)
-	assert.Equal(t, `{"foo":{"bar":[{"doh":123}]}}`, string(marshaled))
 }

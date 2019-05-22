@@ -296,9 +296,7 @@ func TestNewFlow(t *testing.T) {
 	}), flows.Context(session.Environment(), flow))
 
 	// add expected dependencies and result names to our expected JSON
-	flowRaw, err := utils.JSONDecodeGeneric([]byte(flowDef))
-	require.NoError(t, err)
-	flowAsMap := flowRaw.(map[string]interface{})
+	flowAsMap := flow.Generic()
 	flowAsMap[`_dependencies`] = map[string]interface{}{
 		"fields": []interface{}{
 			map[string]string{"key": "gender", "name": "Gender"},
@@ -355,12 +353,8 @@ func TestEmptyFlow(t *testing.T) {
   }`), marshaled, "flow definition mismatch")
 }
 
-func assertFlowSection(t *testing.T, definition []byte, key string, data []byte) {
-	flowAsMap, err := utils.JSONDecodeGeneric(definition)
-	require.NoError(t, err)
-
-	sectionJSON, _ := json.Marshal(flowAsMap.(map[string]interface{})[key])
-
+func assertFlowSection(t *testing.T, flow flows.Flow, key string, data []byte) {
+	sectionJSON, _ := json.Marshal(flow.Generic()[key])
 	test.AssertEqualJSON(t, data, sectionJSON, "flow JSON mismatch")
 }
 
@@ -375,11 +369,8 @@ func TestValidateFlow(t *testing.T) {
 	err = flow.Inspect(sa)
 	assert.NoError(t, err)
 
-	marshaled, err := json.Marshal(flow)
-	require.NoError(t, err)
-
 	// name of group will have been corrected
-	assertFlowSection(t, marshaled, "_dependencies", []byte(`{
+	assertFlowSection(t, flow, "_dependencies", []byte(`{
 		"groups": [
 			{
 				"name": "Registered Users",
@@ -387,14 +378,14 @@ func TestValidateFlow(t *testing.T) {
 			}
 		]
 	}`))
-	assertFlowSection(t, marshaled, "_results", []byte(`[
+	assertFlowSection(t, flow, "_results", []byte(`[
 		{
 			"key": "name",
 			"name": "Name",
 			"categories": ["Not Empty", "Other"]
 		}
 	]`))
-	assertFlowSection(t, marshaled, "_waiting_exits", []byte(`[
+	assertFlowSection(t, flow, "_waiting_exits", []byte(`[
 		"fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
         "43accf99-4940-44f7-926b-a8b35d9403d6"
 	]`))
@@ -660,34 +651,51 @@ func TestExtractResults(t *testing.T) {
 }
 
 func TestClone(t *testing.T) {
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	testCases := []struct {
+		path string
+		uuid string
+	}{
+		{"../../test/testdata/runner/two_questions.json", "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"},
+		{"../../test/testdata/runner/all_actions.json", "8ca44c09-791d-453a-9799-a70dd3303306"},
+	}
 
-	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/two_questions.json", assets.FlowUUID("615b8a0f-588c-4d20-a05f-363b0b4ce6f4"))
-	require.NoError(t, err)
+	for _, tc := range testCases {
+		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
+		defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	clone := flow.Clone(map[utils.UUID]utils.UUID{
-		"615b8a0f-588c-4d20-a05f-363b0b4ce6f4": "e0af9907-e0d3-4363-99c6-324ece7f628e",
-	})
+		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		require.NoError(t, err)
 
-	assert.Equal(t, assets.FlowUUID("e0af9907-e0d3-4363-99c6-324ece7f628e"), clone.UUID())
+		clone := flow.Clone("e0af9907-e0d3-4363-99c6-324ece7f628e") // clone with new UUID
 
-	flowJSON, err := json.Marshal(flow)
-	require.NoError(t, err)
+		assert.Equal(t, assets.FlowUUID("e0af9907-e0d3-4363-99c6-324ece7f628e"), clone.UUID())
 
-	originalUUIDs := utils.UUID4Regex.FindAllString(string(flowJSON), -1)
-	assert.Equal(t, 61, len(originalUUIDs))
+		// extract all UUIDs from original definition
+		flowJSON, err := json.Marshal(flow)
+		require.NoError(t, err)
+		originalUUIDs := utils.UUID4Regex.FindAllString(string(flowJSON), -1)
 
-	cloneJSON, err := json.Marshal(clone)
-	require.NoError(t, err)
+		// extract all UUIDs from cloned definition
+		cloneJSON, err := json.Marshal(clone)
+		require.NoError(t, err)
+		cloneUUIDs := utils.UUID4Regex.FindAllString(string(cloneJSON), -1)
 
-	cloneUUIDs := utils.UUID4Regex.FindAllString(string(cloneJSON), -1)
-	assert.Equal(t, len(originalUUIDs), len(cloneUUIDs))
+		assert.Equal(t, len(originalUUIDs), len(cloneUUIDs))
 
-	for _, u1 := range originalUUIDs {
-		for _, u2 := range cloneUUIDs {
-			if u1 == u2 {
-				assert.Fail(t, "uuid", "cloned flow contains UUID from original flow: %s", u1)
+		// extract all dependency UUIDs
+		depUUIDs := make(map[string]bool, 0)
+		for _, dep := range flow.ExtractDependencies() {
+			asUUIDRef, isUUIDRef := dep.(assets.UUIDReference)
+			if isUUIDRef {
+				depUUIDs[string(asUUIDRef.GenericUUID())] = true
+			}
+		}
+
+		for _, u1 := range originalUUIDs {
+			for _, u2 := range cloneUUIDs {
+				if u1 == u2 && !depUUIDs[u1] {
+					assert.Fail(t, "uuid", "cloned flow contains non-dependency UUID from original flow: %s", u1)
+				}
 			}
 		}
 	}
