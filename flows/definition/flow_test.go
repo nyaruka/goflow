@@ -657,6 +657,7 @@ func TestClone(t *testing.T) {
 	}{
 		{"../../test/testdata/runner/two_questions.json", "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"},
 		{"../../test/testdata/runner/all_actions.json", "8ca44c09-791d-453a-9799-a70dd3303306"},
+		{"../../test/testdata/runner/router_tests.json", "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"},
 	}
 
 	for _, tc := range testCases {
@@ -669,6 +670,10 @@ func TestClone(t *testing.T) {
 		clone := flow.Clone("e0af9907-e0d3-4363-99c6-324ece7f628e") // clone with new UUID
 
 		assert.Equal(t, assets.FlowUUID("e0af9907-e0d3-4363-99c6-324ece7f628e"), clone.UUID())
+		assert.Equal(t, flow.Name(), clone.Name())
+		assert.Equal(t, flow.Type(), clone.Type())
+		assert.Equal(t, flow.Revision(), clone.Revision())
+		assert.Equal(t, len(flow.Nodes()), len(clone.Nodes()))
 
 		// extract all UUIDs from original definition
 		flowJSON, err := json.Marshal(flow)
