@@ -138,8 +138,8 @@ func (a *CallResthookAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (a *CallResthookAction) EnumerateResults(include func(*flows.ResultSpec)) {
+func (a *CallResthookAction) EnumerateResults(include func(*flows.ResultInfo)) {
 	if a.ResultName != "" {
-		include(flows.NewResultSpec(a.ResultName, webhookCategories))
+		include(flows.NewResultInfo(a.ResultName, webhookCategories))
 	}
 }

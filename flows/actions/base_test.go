@@ -53,7 +53,7 @@ func TestActionTypes(t *testing.T) {
 type inspectionResults struct {
 	Templates    []string            `json:"templates"`
 	Dependencies []string            `json:"dependencies"`
-	Results      []*flows.ResultSpec `json:"results"`
+	Results      []*flows.ResultInfo `json:"results"`
 }
 
 func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
@@ -68,9 +68,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		RedactURNs      bool               `json:"redact_urns"`
 		Action          json.RawMessage    `json:"action"`
 		InFlowType      flows.FlowType     `json:"in_flow_type"`
+		ReadError       string             `json:"read_error"`
 		ValidationError string             `json:"validation_error"`
-		InspectionError string             `json:"inspection_error"`
-		SkipInspection  bool               `json:"skip_inspection"`
+		SkipValidation  bool               `json:"skip_validation"`
 		Events          []json.RawMessage  `json:"events"`
 		ContactAfter    json.RawMessage    `json:"contact_after"`
 		Inspection      *inspectionResults `json:"inspection"`
@@ -105,24 +105,24 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		sa, err := test.CreateSessionAssets(assetsJSON, "")
 		require.NoError(t, err, "unable to create session assets in %s", testName)
 
-		// now try to read the flow, and if we expect a validation error, check that
+		// now try to read the flow, and if we expect a read error, check that
 		flow, err := sa.Flows().Get(flowUUID)
-		if tc.ValidationError != "" {
+		if tc.ReadError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.ValidationError, "read error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.ReadError, "read error mismatch in %s", testName)
 			continue
 		} else {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
-		// if this action is expected to cause a inspection failure, check that
-		err = flow.Inspect(sa)
-		if tc.InspectionError != "" {
+		// if this action is expected to cause a validation error, check that
+		err = flow.Validate(sa, nil)
+		if tc.ValidationError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.InspectionError, "inspection error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.ValidationError, "validation error mismatch in %s", testName)
 			continue
-		} else if !tc.SkipInspection {
-			assert.NoError(t, err, "unexpected inspection error in %s", testName)
+		} else if !tc.SkipValidation {
+			assert.NoError(t, err, "unexpected validation error in %s", testName)
 		}
 
 		// optionally load our contact

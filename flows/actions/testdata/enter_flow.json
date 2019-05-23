@@ -1,6 +1,6 @@
 [
     {
-        "description": "Inspection fails for invalid flow reference",
+        "description": "Validation fails for invalid flow reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "enter_flow",
@@ -9,7 +9,7 @@
                 "name": "Long Lost Flow"
             }
         },
-        "inspection_error": "missing dependencies: flow[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Long Lost Flow] (no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6')"
+        "validation_error": "missing dependencies: flow[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Long Lost Flow] (no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6')"
     },
     {
         "description": "Fatal error event if we continue with a missing flow",
@@ -21,7 +21,7 @@
                 "name": "Long Lost Flow"
             }
         },
-        "skip_inspection": true,
+        "skip_validation": true,
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",

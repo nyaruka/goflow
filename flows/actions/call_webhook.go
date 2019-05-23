@@ -143,8 +143,8 @@ func (a *CallWebhookAction) EnumerateTemplates(include flows.TemplateIncluder) {
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (a *CallWebhookAction) EnumerateResults(include func(*flows.ResultSpec)) {
+func (a *CallWebhookAction) EnumerateResults(include func(*flows.ResultInfo)) {
 	if a.ResultName != "" {
-		include(flows.NewResultSpec(a.ResultName, webhookCategories))
+		include(flows.NewResultInfo(a.ResultName, webhookCategories))
 	}
 }
