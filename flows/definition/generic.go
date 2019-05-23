@@ -28,7 +28,13 @@ func MustReadFlowFromGeneric(data map[string]interface{}) flows.Flow {
 }
 
 // remap all UUIDs in the flow
-func remapUUIDs(data map[string]interface{}, mapping map[utils.UUID]utils.UUID) {
+func remapUUIDs(data map[string]interface{}, depMapping map[utils.UUID]utils.UUID) {
+	// copy in the dependency mappings into a master mapping of all UUIDs
+	mapping := make(map[utils.UUID]utils.UUID)
+	for k, v := range depMapping {
+		mapping[k] = v
+	}
+
 	replaceUUID := func(u utils.UUID) utils.UUID {
 		if u == utils.UUID("") {
 			return utils.UUID("")

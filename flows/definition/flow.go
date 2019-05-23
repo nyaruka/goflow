@@ -297,21 +297,9 @@ func (f *flow) Generic() map[string]interface{} {
 
 // Clone clones this flow replacing all UUIDs using the provided mapping and generating new
 // random UUIDs if they aren't in the mapping
-func (f *flow) Clone(withUUID assets.FlowUUID) flows.Flow {
-	// add the desired flow UUID to the mapping
-	mapping := make(map[utils.UUID]utils.UUID)
-	mapping[utils.UUID(f.UUID())] = utils.UUID(withUUID)
-
-	// add dependency UUIDs as NOOPs to the UUID mapping
-	for _, dep := range f.ExtractDependencies() {
-		asUUIDRef, isUUIDRef := dep.(assets.UUIDReference)
-		if isUUIDRef {
-			mapping[asUUIDRef.GenericUUID()] = asUUIDRef.GenericUUID()
-		}
-	}
-
+func (f *flow) Clone(depMapping map[utils.UUID]utils.UUID) flows.Flow {
 	generic := f.Generic()
-	remapUUIDs(generic, mapping)
+	remapUUIDs(generic, depMapping)
 
 	// read back as a real flow in the current spec.. since we control this it can't error in theory
 	return MustReadFlowFromGeneric(generic)

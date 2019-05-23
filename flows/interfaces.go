@@ -151,7 +151,7 @@ type Flow interface {
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
 	Generic() map[string]interface{}
-	Clone(assets.FlowUUID) Flow
+	Clone(map[utils.UUID]utils.UUID) Flow
 
 	ExtractTemplates() []string
 	RewriteTemplates(func(string) string)

@@ -667,7 +667,11 @@ func TestClone(t *testing.T) {
 		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
 		require.NoError(t, err)
 
-		clone := flow.Clone("e0af9907-e0d3-4363-99c6-324ece7f628e") // clone with new UUID
+		depMappings := map[utils.UUID]utils.UUID{
+			utils.UUID(tc.uuid): "e0af9907-e0d3-4363-99c6-324ece7f628e", // the flow itself
+		}
+
+		clone := flow.Clone(depMappings)
 
 		assert.Equal(t, assets.FlowUUID("e0af9907-e0d3-4363-99c6-324ece7f628e"), clone.UUID())
 		assert.Equal(t, flow.Name(), clone.Name())
@@ -687,18 +691,9 @@ func TestClone(t *testing.T) {
 
 		assert.Equal(t, len(originalUUIDs), len(cloneUUIDs))
 
-		// extract all dependency UUIDs
-		depUUIDs := make(map[string]bool, 0)
-		for _, dep := range flow.ExtractDependencies() {
-			asUUIDRef, isUUIDRef := dep.(assets.UUIDReference)
-			if isUUIDRef {
-				depUUIDs[string(asUUIDRef.GenericUUID())] = true
-			}
-		}
-
 		for _, u1 := range originalUUIDs {
 			for _, u2 := range cloneUUIDs {
-				if u1 == u2 && !depUUIDs[u1] {
+				if u1 == u2 && depMappings[utils.UUID(u1)] != "" {
 					assert.Fail(t, "uuid", "cloned flow contains non-dependency UUID from original flow: %s", u1)
 				}
 			}
