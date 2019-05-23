@@ -1,6 +1,6 @@
 [
     {
-        "description": "Inspection fails for invalid group reference",
+        "description": "Validation fails for invalid group reference",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "send_broadcast",
@@ -12,7 +12,7 @@
             ],
             "text": "Hi there!"
         },
-        "inspection_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
+        "validation_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
     },
     {
         "description": "Broadcast created event for the message",

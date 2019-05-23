@@ -24,8 +24,8 @@ import (
 func TestBrokenFlows(t *testing.T) {
 	testCases := []struct {
 		path            string
+		readError       string
 		validationError string
-		checkError      string
 	}{
 		{
 			"exitless_node.json",
@@ -85,7 +85,7 @@ func TestBrokenFlows(t *testing.T) {
 		{
 			"invalid_subflow_due_to_missing_asset.json",
 			"",
-			"invalid child flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Invalid Child]: missing dependencies: group[uuid=f4cdde0a-97b1-469a-adb8-902bdfd19b0c,name=I Don't Exist!]",
+			"invalid child flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Child Flow]: missing dependencies: group[uuid=f4cdde0a-97b1-469a-adb8-902bdfd19b0c,name=I Don't Exist!]",
 		},
 	}
 
@@ -98,13 +98,13 @@ func TestBrokenFlows(t *testing.T) {
 
 		flow, err := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 
-		if tc.validationError != "" {
-			assert.EqualError(t, err, tc.validationError, "read error mismatch for %s", tc.path)
+		if tc.readError != "" {
+			assert.EqualError(t, err, tc.readError, "read error mismatch for %s", tc.path)
 		} else {
 			require.NoError(t, err)
 
-			err = flow.InspectRecursively(sa, nil)
-			assert.EqualError(t, err, tc.checkError, "inspection error mismatch for %s", tc.path)
+			err = flow.Validate(sa, nil)
+			assert.EqualError(t, err, tc.validationError, "validation error mismatch for %s", tc.path)
 		}
 	}
 }
@@ -283,8 +283,8 @@ func TestNewFlow(t *testing.T) {
 
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
 
-	// should pass inspection ok
-	err = flow.Inspect(session.Assets())
+	// should pass validation ok
+	err = flow.Validate(session.Assets(), nil)
 	assert.NoError(t, err)
 
 	// check in expressions
@@ -295,100 +295,85 @@ func TestNewFlow(t *testing.T) {
 		"uuid":        types.NewXText("8ca44c09-791d-453a-9799-a70dd3303306"),
 	}), flows.Context(session.Environment(), flow))
 
-	// add expected dependencies and result names to our expected JSON
-	flowAsMap := flow.Generic()
-	flowAsMap[`_dependencies`] = map[string]interface{}{
-		"fields": []interface{}{
-			map[string]string{"key": "gender", "name": "Gender"},
+	// check inspection
+	info := flow.Inspect()
+
+	assert.Equal(t, &flows.Dependencies{
+		Fields: []*assets.FieldReference{
+			assets.NewFieldReference("gender", ""),
 		},
-		"labels": []interface{}{
-			map[string]string{"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"},
+		Labels: []*assets.LabelReference{
+			assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
 		},
-	}
-	flowAsMap[`_results`] = []map[string]interface{}{
-		{
-			"key":        "response_1",
-			"name":       "Response 1",
-			"categories": []string{"Yes", "No"},
+	}, info.Dependencies)
+
+	assert.Equal(t, []*flows.ResultInfo{
+		&flows.ResultInfo{
+			Name:       "Response 1",
+			Key:        "response_1",
+			Categories: []string{"Yes", "No"},
 		},
-	}
-	flowAsMap[`_waiting_exits`] = []string{
+	}, info.Results)
+
+	assert.Equal(t, []flows.ExitUUID{
 		"023a5c10-d74a-4fad-9560-990caead8170",
 		"8943c032-2a91-456c-8080-2a249f1b420c",
-	}
-
-	// now when we marshal to JSON, those should be included
-	newFlowDef, err := json.Marshal(flowAsMap)
-	require.NoError(t, err)
-
-	marshaled, err = json.Marshal(flow)
-	assert.NoError(t, err)
-
-	test.AssertEqualJSON(t, []byte(newFlowDef), marshaled, "flow definition mismatch")
+	}, info.WaitingExits)
 }
 
 func TestEmptyFlow(t *testing.T) {
 	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
-	err = flow.Inspect(nil)
-	assert.NoError(t, err)
-
 	marshaled, err := json.Marshal(flow)
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-    "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-    "name": "Empty Flow",
-    "revision": 0,
-    "spec_version": "13.0.0",
-    "type": "messaging",
-    "expire_after_minutes": 0,
-    "language": "eng",
-    "localization": {},
-    "nodes": [],
-    "_dependencies": {},
-	"_results": [],
-	"_waiting_exits": []
-  }`), marshaled, "flow definition mismatch")
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Empty Flow",
+		"revision": 0,
+		"spec_version": "13.0.0",
+		"type": "messaging",
+		"expire_after_minutes": 0,
+		"language": "eng",
+		"localization": {},
+		"nodes": []
+  	}`), marshaled, "flow definition mismatch")
+
+	info := flow.Inspect()
+
+	assert.Equal(t, &flows.Dependencies{}, info.Dependencies)
+	assert.Equal(t, []*flows.ResultInfo{}, info.Results)
+	assert.Equal(t, []flows.ExitUUID{}, info.WaitingExits)
 }
 
-func assertFlowSection(t *testing.T, flow flows.Flow, key string, data []byte) {
-	sectionJSON, _ := json.Marshal(flow.Generic()[key])
-	test.AssertEqualJSON(t, data, sectionJSON, "flow JSON mismatch")
-}
-
-func TestValidateFlow(t *testing.T) {
+func TestInspectFlow(t *testing.T) {
 	sa, err := test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
 	require.NoError(t, err)
 
 	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
 	require.NoError(t, err)
 
-	// inspect with session assets
-	err = flow.Inspect(sa)
-	assert.NoError(t, err)
+	info := flow.Inspect()
 
-	// name of group will have been corrected
-	assertFlowSection(t, flow, "_dependencies", []byte(`{
-		"groups": [
-			{
-				"name": "Registered Users",
-				"uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
-			}
-		]
-	}`))
-	assertFlowSection(t, flow, "_results", []byte(`[
-		{
-			"key": "name",
-			"name": "Name",
-			"categories": ["Not Empty", "Other"]
-		}
-	]`))
-	assertFlowSection(t, flow, "_waiting_exits", []byte(`[
+	assert.Equal(t, &flows.Dependencies{
+		Groups: []*assets.GroupReference{
+			assets.NewGroupReference("7be2f40b-38a0-4b06-9e6d-522dca592cc8", "Registered"),
+		},
+	}, info.Dependencies)
+
+	assert.Equal(t, []*flows.ResultInfo{
+		&flows.ResultInfo{
+			Name:       "Name",
+			Key:        "name",
+			Categories: []string{"Not Empty", "Other"},
+		},
+	}, info.Results)
+
+	assert.Equal(t, []flows.ExitUUID{
 		"fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
-        "43accf99-4940-44f7-926b-a8b35d9403d6"
-	]`))
+		"43accf99-4940-44f7-926b-a8b35d9403d6",
+	}, info.WaitingExits)
 }
 
 func TestReadFlow(t *testing.T) {
@@ -398,28 +383,28 @@ func TestReadFlow(t *testing.T) {
 
 	// try reading a definition with a newer major version
 	_, err = definition.ReadFlow([]byte(`{
-    "uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
-    "name": "Test Flow",
-    "spec_version": "2000.0",
-    "language": "eng",
-    "type": "messaging",
-    "revision": 123,
-    "expire_after_minutes": 30,
-    "nodes": []
-  }`))
+		"uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
+		"name": "Test Flow",
+		"spec_version": "2000.0",
+		"language": "eng",
+		"type": "messaging",
+		"revision": 123,
+		"expire_after_minutes": 30,
+		"nodes": []
+	}`))
 	assert.EqualError(t, err, "spec version 2000.0.0 is newer than this library (13.0.0)")
 
 	// try reading a definition with a newer minor version
 	_, err = definition.ReadFlow([]byte(`{
-    "uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
-    "name": "Test Flow",
-    "spec_version": "13.9999",
-    "language": "eng",
-    "type": "messaging",
-    "revision": 123,
-    "expire_after_minutes": 30,
-    "nodes": []
-  }`))
+		"uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
+		"name": "Test Flow",
+		"spec_version": "13.9999",
+		"language": "eng",
+		"type": "messaging",
+		"revision": 123,
+		"expire_after_minutes": 30,
+		"nodes": []
+	}`))
 	assert.NoError(t, err)
 
 	// try reading a definition without a type (a required field in this major version)
@@ -613,19 +598,19 @@ func TestExtractResults(t *testing.T) {
 	testCases := []struct {
 		path    string
 		uuid    string
-		results []*flows.ResultSpec
+		results []*flows.ResultInfo
 	}{
 		{
 			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
-			[]*flows.ResultSpec{
+			[]*flows.ResultInfo{
 				{Key: "gender", Name: "Gender", Categories: []string{"Male"}},
 			},
 		},
 		{
 			"../../test/testdata/runner/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			[]*flows.ResultSpec{
+			[]*flows.ResultInfo{
 				{Key: "urn_check", Name: "URN Check", Categories: []string{"Telegram", "Other"}},
 				{Key: "group_check", Name: "Group Check", Categories: []string{"Testers", "Other"}},
 				{Key: "district_check", Name: "District Check", Categories: []string{"Valid", "Invalid"}},
@@ -634,7 +619,7 @@ func TestExtractResults(t *testing.T) {
 		{
 			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			[]*flows.ResultSpec{
+			[]*flows.ResultInfo{
 				{Key: "favorite_color", Name: "Favorite Color", Categories: []string{"Red", "Blue", "Other", "No Response"}},
 				{Key: "soda", Name: "Soda", Categories: []string{"Pepsi", "Coke", "Other"}},
 			},

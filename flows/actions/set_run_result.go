@@ -79,10 +79,10 @@ func (a *SetRunResultAction) EnumerateTemplates(include flows.TemplateIncluder) 
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (a *SetRunResultAction) EnumerateResults(include func(*flows.ResultSpec)) {
+func (a *SetRunResultAction) EnumerateResults(include func(*flows.ResultInfo)) {
 	if a.Category != "" {
-		include(flows.NewResultSpec(a.Name, []string{a.Category}))
+		include(flows.NewResultInfo(a.Name, []string{a.Category}))
 	} else {
-		include(flows.NewResultSpec(a.Name, nil))
+		include(flows.NewResultInfo(a.Name, nil))
 	}
 }

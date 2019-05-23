@@ -67,14 +67,14 @@ func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, incl
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (r *BaseRouter) EnumerateResults(include func(*flows.ResultSpec)) {
+func (r *BaseRouter) EnumerateResults(include func(*flows.ResultInfo)) {
 	if r.resultName != "" {
 		categoryNames := make([]string, len(r.categories))
 		for i := range r.categories {
 			categoryNames[i] = r.categories[i].Name()
 		}
 
-		include(flows.NewResultSpec(r.resultName, categoryNames))
+		include(flows.NewResultInfo(r.resultName, categoryNames))
 	}
 }
 

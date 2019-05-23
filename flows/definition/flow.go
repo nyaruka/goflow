@@ -32,11 +32,6 @@ type flow struct {
 	// optional properties not used by engine itself
 	ui json.RawMessage
 
-	// properties set after inspection
-	dependencies *dependencies
-	results      []*flows.ResultSpec
-	waitingExits []flows.ExitUUID
-
 	// internal state
 	nodeMap map[flows.NodeUUID]flows.Node
 }
@@ -99,16 +94,20 @@ func (f *flow) validate() error {
 	return nil
 }
 
-// Inspect enumerates dependencies, checks that they exist
-func (f *flow) Inspect(sa flows.SessionAssets) error {
-	return f.doInspect(sa, false, nil, nil)
+// Inspect enumerates dependencies, results etc
+func (f *flow) Inspect() *flows.FlowInfo {
+	return &flows.FlowInfo{
+		Dependencies: flows.NewDependencies(f.ExtractDependencies()),
+		Results:      f.ExtractResults(),
+		WaitingExits: f.ExtractExitsFromWaits(),
+	}
 }
 
-// InspectRecursively checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
-func (f *flow) InspectRecursively(sa flows.SessionAssets, missing func(assets.Reference)) error {
+// Validate checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
+func (f *flow) Validate(sa flows.SessionAssets, missing func(assets.Reference)) error {
 	seen := make(map[assets.FlowUUID]bool)
 
-	return f.doInspect(sa, true, seen, missing)
+	return f.validateRecursively(sa, seen, missing)
 }
 
 type brokenDependency struct {
@@ -116,59 +115,51 @@ type brokenDependency struct {
 	reason     error
 }
 
-func (f *flow) doInspect(sa flows.SessionAssets, recursive bool, seen map[assets.FlowUUID]bool, missing func(assets.Reference)) error {
-	// prevent looping if recursively inspecting flows
-	if recursive && seen[f.UUID()] {
+func (f *flow) validateRecursively(sa flows.SessionAssets, seen map[assets.FlowUUID]bool, missing func(assets.Reference)) error {
+	// prevent looping
+	if seen[f.UUID()] {
 		return nil
 	}
 
 	// extract all dependencies (assets, contacts)
-	deps := newDependencies(f.ExtractDependencies())
+	deps := flows.NewDependencies(f.ExtractDependencies())
 
-	// if we have session assets, check dependencies actually exist
-	if sa != nil {
-		missingAssets := make([]brokenDependency, 0)
-		err := deps.refresh(sa, func(r assets.Reference, err error) {
-			missingAssets = append(missingAssets, brokenDependency{r, err})
-		})
-		if err != nil {
-			return err
-		}
+	// check dependencies actually exist
+	missingAssets := make([]brokenDependency, 0)
+	err := deps.Check(sa, func(r assets.Reference, err error) {
+		missingAssets = append(missingAssets, brokenDependency{r, err})
+	})
+	if err != nil {
+		return err
+	}
 
-		if len(missingAssets) > 0 {
-			// if we have callback for missing dependencies, call that
-			if missing != nil {
-				for _, ma := range missingAssets {
-					missing(ma.dependency)
-				}
-			} else {
-				// otherwise error
-				depStrings := make([]string, len(missingAssets))
-				for i, ma := range missingAssets {
-					depStrings[i] = ma.dependency.String()
-					if ma.reason != nil {
-						depStrings[i] += fmt.Sprintf(" (%s)", ma.reason)
-					}
-				}
-				return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
+	if len(missingAssets) > 0 {
+		// if we have callback for missing dependencies, call that
+		if missing != nil {
+			for _, ma := range missingAssets {
+				missing(ma.dependency)
 			}
+		} else {
+			// otherwise error
+			depStrings := make([]string, len(missingAssets))
+			for i, ma := range missingAssets {
+				depStrings[i] = ma.dependency.String()
+				if ma.reason != nil {
+					depStrings[i] += fmt.Sprintf(" (%s)", ma.reason)
+				}
+			}
+			return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
 		}
 	}
 
-	f.dependencies = deps
-	f.results = f.ExtractResults()
-	f.waitingExits = f.ExtractExitsFromWaits()
+	seen[f.UUID()] = true
 
-	if recursive {
-		seen[f.UUID()] = true
-
-		// go check any non-missing flow dependencies
-		for _, flowRef := range deps.Flows {
-			flowDep, err := sa.Flows().Get(flowRef.UUID)
-			if err == nil {
-				if err := flowDep.(*flow).doInspect(sa, true, seen, missing); err != nil {
-					return errors.Wrapf(err, "invalid child %s", flowRef)
-				}
+	// go check any non-missing flow dependencies
+	for _, flowRef := range deps.Flows {
+		flowDep, err := sa.Flows().Get(flowRef.UUID)
+		if err == nil {
+			if err := flowDep.(*flow).validateRecursively(sa, seen, missing); err != nil {
+				return errors.Wrapf(err, "invalid child %s", flowRef)
 			}
 		}
 	}
@@ -255,14 +246,14 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 }
 
 // ExtractResults extracts all result specs
-func (f *flow) ExtractResults() []*flows.ResultSpec {
-	specs := make([]*flows.ResultSpec, 0)
+func (f *flow) ExtractResults() []*flows.ResultInfo {
+	specs := make([]*flows.ResultInfo, 0)
 	f.inspect(func(item flows.Inspectable) {
-		item.EnumerateResults(func(spec *flows.ResultSpec) {
+		item.EnumerateResults(func(spec *flows.ResultInfo) {
 			specs = append(specs, spec)
 		})
 	})
-	return flows.MergeResultSpecs(specs)
+	return flows.MergeResultInfos(specs)
 }
 
 // ExtractExitsFromWaits extracts all exits coming from nodes with waits
@@ -334,15 +325,6 @@ type flowEnvelope struct {
 	UI                 json.RawMessage `json:"_ui,omitempty"`
 }
 
-// additional properties that an inspected flow can have
-type inspectedFlowEnvelope struct {
-	*flowEnvelope
-
-	Dependencies *dependencies       `json:"_dependencies"`
-	Results      []*flows.ResultSpec `json:"_results"`
-	WaitingExits []flows.ExitUUID    `json:"_waiting_exits"`
-}
-
 // IsSpecVersionSupported determines if we can read the given flow version
 func IsSpecVersionSupported(ver *semver.Version) bool {
 	// major versions change flow schema
@@ -400,15 +382,6 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 
 	for i := range f.nodes {
 		e.Nodes[i] = f.nodes[i].(*node)
-	}
-
-	if f.dependencies != nil {
-		return json.Marshal(&inspectedFlowEnvelope{
-			flowEnvelope: e,
-			Dependencies: f.dependencies,
-			Results:      f.results,
-			WaitingExits: f.waitingExits,
-		})
 	}
 
 	return json.Marshal(e)

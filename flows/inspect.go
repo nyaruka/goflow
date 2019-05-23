@@ -9,6 +9,82 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+type FlowInfo struct {
+	Dependencies *Dependencies `json:"_dependencies"`
+	Results      []*ResultInfo `json:"_results"`
+	WaitingExits []ExitUUID    `json:"_waiting_exits"`
+}
+
+type Dependencies struct {
+	Channels  []*assets.ChannelReference  `json:"channels,omitempty"`
+	Contacts  []*ContactReference         `json:"contacts,omitempty"`
+	Fields    []*assets.FieldReference    `json:"fields,omitempty"`
+	Flows     []*assets.FlowReference     `json:"flows,omitempty"`
+	Groups    []*assets.GroupReference    `json:"groups,omitempty"`
+	Labels    []*assets.LabelReference    `json:"labels,omitempty"`
+	Templates []*assets.TemplateReference `json:"templates,omitempty"`
+}
+
+func NewDependencies(refs []assets.Reference) *Dependencies {
+	d := &Dependencies{}
+	for _, r := range refs {
+		switch typed := r.(type) {
+		case *assets.ChannelReference:
+			d.Channels = append(d.Channels, typed)
+		case *ContactReference:
+			d.Contacts = append(d.Contacts, typed)
+		case *assets.FieldReference:
+			d.Fields = append(d.Fields, typed)
+		case *assets.FlowReference:
+			d.Flows = append(d.Flows, typed)
+		case *assets.GroupReference:
+			d.Groups = append(d.Groups, typed)
+		case *assets.LabelReference:
+			d.Labels = append(d.Labels, typed)
+		case *assets.TemplateReference:
+			d.Templates = append(d.Templates, typed)
+		}
+	}
+	return d
+}
+
+// Check checks the asset dependencies and notifies the caller of missing assets via the callback
+func (d *Dependencies) Check(sa SessionAssets, missing assets.MissingCallback) error {
+	for _, ref := range d.Channels {
+		if sa.Channels().Get(ref.UUID) == nil {
+			missing(ref, nil)
+		}
+	}
+	for _, ref := range d.Fields {
+		if sa.Fields().Get(ref.Key) == nil {
+			missing(ref, nil)
+		}
+	}
+	for _, ref := range d.Flows {
+		_, err := sa.Flows().Get(ref.UUID)
+		if err != nil {
+			missing(ref, err)
+		}
+	}
+	for _, ref := range d.Groups {
+		if sa.Groups().Get(ref.UUID) == nil {
+			missing(ref, nil)
+		}
+	}
+	for _, ref := range d.Labels {
+		if sa.Labels().Get(ref.UUID) == nil {
+			missing(ref, nil)
+		}
+	}
+	for _, ref := range d.Templates {
+		if sa.Templates().Get(ref.UUID) == nil {
+			missing(ref, nil)
+		}
+	}
+
+	return nil
+}
+
 var fieldRefPaths = [][]string{
 	{"fields"},
 	{"contact", "fields"},
@@ -23,33 +99,33 @@ type Inspectable interface {
 	Inspect(func(Inspectable))
 	EnumerateTemplates(TemplateIncluder)
 	EnumerateDependencies(Localization, func(assets.Reference))
-	EnumerateResults(func(*ResultSpec))
+	EnumerateResults(func(*ResultInfo))
 }
 
-// ResultSpec is possible result that a flow might generate
-type ResultSpec struct {
+// ResultInfo is possible result that a flow might generate
+type ResultInfo struct {
 	Key        string   `json:"key"`
 	Name       string   `json:"name"`
 	Categories []string `json:"categories,omitempty"`
 }
 
-// NewResultSpec creates a new result spec
-func NewResultSpec(name string, categories []string) *ResultSpec {
-	return &ResultSpec{
+// NewResultInfo creates a new result spec
+func NewResultInfo(name string, categories []string) *ResultInfo {
+	return &ResultInfo{
 		Key:        utils.Snakify(name),
 		Name:       name,
 		Categories: categories,
 	}
 }
 
-func (r *ResultSpec) String() string {
+func (r *ResultInfo) String() string {
 	return fmt.Sprintf("key=%s|name=%s|categories=%s", r.Key, r.Name, strings.Join(r.Categories, ","))
 }
 
-// MergeResultSpecs merges result specs based on key
-func MergeResultSpecs(specs []*ResultSpec) []*ResultSpec {
-	merged := make([]*ResultSpec, 0, len(specs))
-	byKey := make(map[string]*ResultSpec)
+// MergeResultInfos merges result specs based on key
+func MergeResultInfos(specs []*ResultInfo) []*ResultInfo {
+	merged := make([]*ResultInfo, 0, len(specs))
+	byKey := make(map[string]*ResultInfo)
 
 	for _, spec := range specs {
 		existing := byKey[spec.Key]
@@ -183,7 +259,7 @@ func (r inspectableReference) EnumerateDependencies(localization Localization, i
 
 // EnumerateResults enumerates all potential results on this object
 // Asset references can't contain results.
-func (r inspectableReference) EnumerateResults(include func(*ResultSpec)) {}
+func (r inspectableReference) EnumerateResults(include func(*ResultInfo)) {}
 
 // ExtractFieldReferences extracts fields references from the given template
 func ExtractFieldReferences(template string) []*assets.FieldReference {

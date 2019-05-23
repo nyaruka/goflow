@@ -153,13 +153,13 @@ type Flow interface {
 	Generic() map[string]interface{}
 	Clone(map[utils.UUID]utils.UUID) Flow
 
+	Inspect() *FlowInfo
+	Validate(SessionAssets, func(assets.Reference)) error
+
 	ExtractTemplates() []string
 	RewriteTemplates(func(string) string)
 	ExtractDependencies() []assets.Reference
-	ExtractResults() []*ResultSpec
-
-	Inspect(SessionAssets) error
-	InspectRecursively(SessionAssets, func(assets.Reference)) error
+	ExtractResults() []*ResultInfo
 }
 
 // Node is a single node in a flow
