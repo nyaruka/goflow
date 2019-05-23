@@ -13,6 +13,7 @@ func TestReferences(t *testing.T) {
 	channelRef := assets.NewChannelReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Nexmo")
 	assert.Equal(t, "channel", channelRef.Type())
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", channelRef.Identity())
+	assert.Equal(t, utils.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), channelRef.GenericUUID())
 	assert.Equal(t, "channel[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Nexmo]", channelRef.String())
 	assert.NoError(t, utils.Validate(channelRef))
 
@@ -31,6 +32,7 @@ func TestReferences(t *testing.T) {
 	flowRef := assets.NewFlowReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Registration")
 	assert.Equal(t, "flow", flowRef.Type())
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", flowRef.Identity())
+	assert.Equal(t, utils.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), flowRef.GenericUUID())
 	assert.Equal(t, "flow[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Registration]", flowRef.String())
 	assert.NoError(t, utils.Validate(flowRef))
 
@@ -40,6 +42,7 @@ func TestReferences(t *testing.T) {
 	groupRef := assets.NewGroupReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Testers")
 	assert.Equal(t, "group", groupRef.Type())
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", groupRef.Identity())
+	assert.Equal(t, utils.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), groupRef.GenericUUID())
 	assert.Equal(t, "group[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Testers]", groupRef.String())
 	assert.NoError(t, utils.Validate(groupRef))
 
@@ -61,6 +64,7 @@ func TestReferences(t *testing.T) {
 	labelRef := assets.NewLabelReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Spam")
 	assert.Equal(t, "label", labelRef.Type())
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", labelRef.Identity())
+	assert.Equal(t, utils.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), labelRef.GenericUUID())
 	assert.Equal(t, "label[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Spam]", labelRef.String())
 	assert.NoError(t, utils.Validate(labelRef))
 
@@ -80,6 +84,7 @@ func TestReferences(t *testing.T) {
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
 	assert.Equal(t, "template", templateRef.Type())
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", templateRef.Identity())
+	assert.Equal(t, utils.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), templateRef.GenericUUID())
 	assert.Equal(t, "template[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Affirmation]", templateRef.String())
 	assert.NoError(t, utils.Validate(templateRef))
 }
