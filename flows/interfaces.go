@@ -160,6 +160,8 @@ type Flow interface {
 	RewriteTemplates(func(string) string)
 	ExtractDependencies() []assets.Reference
 	ExtractResults() []*ResultInfo
+
+	MarshalWithInfo() ([]byte, error)
 }
 
 // Node is a single node in a flow

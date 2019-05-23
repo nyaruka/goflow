@@ -345,6 +345,24 @@ func TestEmptyFlow(t *testing.T) {
 	assert.Equal(t, &flows.Dependencies{}, info.Dependencies)
 	assert.Equal(t, []*flows.ResultInfo{}, info.Results)
 	assert.Equal(t, []flows.ExitUUID{}, info.WaitingExits)
+
+	marshaled, err = flow.MarshalWithInfo()
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Empty Flow",
+		"revision": 0,
+		"spec_version": "13.0.0",
+		"type": "messaging",
+		"expire_after_minutes": 0,
+		"language": "eng",
+		"localization": {},
+		"nodes": [],
+		"_dependencies": {},
+		"_results": [],
+		"_waiting_exits": []
+  	}`), marshaled, "flow definition mismatch")
 }
 
 func TestInspectFlow(t *testing.T) {
