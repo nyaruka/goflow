@@ -1,3 +1,7 @@
+v0.39.4
+----------
+ * Add support for cloning flows using generic JSON representations
+
 v0.39.3
 ----------
  * Handle malformed single message campaign event flows
