@@ -1,3 +1,8 @@
+v0.40.0
+----------
+ * Add temporary Flow.MarshalWithInfo to aid with moving mailroom to new endpoint
+ * Split up flow inspection and dependency validation and don't embed inspection results in the flow definition
+
 v0.39.4
 ----------
  * Add support for cloning flows using generic JSON representations
