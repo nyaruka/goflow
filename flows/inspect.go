@@ -10,9 +10,9 @@ import (
 )
 
 type FlowInfo struct {
-	Dependencies *Dependencies `json:"_dependencies"`
-	Results      []*ResultInfo `json:"_results"`
-	WaitingExits []ExitUUID    `json:"_waiting_exits"`
+	Dependencies *Dependencies `json:"dependencies"`
+	Results      []*ResultInfo `json:"results"`
+	WaitingExits []ExitUUID    `json:"waiting_exits"`
 }
 
 type Dependencies struct {
