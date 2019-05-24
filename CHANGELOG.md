@@ -1,3 +1,7 @@
+v0.40.1
+----------
+ * Make recursion optional again during flow validation
+
 v0.40.0
 ----------
  * Add temporary Flow.MarshalWithInfo to aid with moving mailroom to new endpoint
