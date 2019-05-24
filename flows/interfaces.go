@@ -155,6 +155,7 @@ type Flow interface {
 
 	Inspect() *FlowInfo
 	Validate(SessionAssets, func(assets.Reference)) error
+	ValidateRecursive(SessionAssets, func(assets.Reference)) error
 
 	ExtractTemplates() []string
 	RewriteTemplates(func(string) string)

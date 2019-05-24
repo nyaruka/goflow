@@ -90,7 +90,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		return nil, err
 	}
 
-	if err := flow.Validate(sa, nil); err != nil {
+	if err := flow.ValidateRecursive(sa, nil); err != nil {
 		return nil, err
 	}
 

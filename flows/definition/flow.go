@@ -103,11 +103,16 @@ func (f *flow) Inspect() *flows.FlowInfo {
 	}
 }
 
-// Validate checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
+// Validate checks that all of this flow's dependencies exist
 func (f *flow) Validate(sa flows.SessionAssets, missing func(assets.Reference)) error {
+	return f.validateAssets(sa, false, nil, missing)
+}
+
+// Validate checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
+func (f *flow) ValidateRecursive(sa flows.SessionAssets, missing func(assets.Reference)) error {
 	seen := make(map[assets.FlowUUID]bool)
 
-	return f.validateRecursively(sa, seen, missing)
+	return f.validateAssets(sa, true, seen, missing)
 }
 
 type brokenDependency struct {
@@ -115,9 +120,9 @@ type brokenDependency struct {
 	reason     error
 }
 
-func (f *flow) validateRecursively(sa flows.SessionAssets, seen map[assets.FlowUUID]bool, missing func(assets.Reference)) error {
-	// prevent looping
-	if seen[f.UUID()] {
+func (f *flow) validateAssets(sa flows.SessionAssets, recursive bool, seen map[assets.FlowUUID]bool, missing func(assets.Reference)) error {
+	// prevent looping if recursive
+	if recursive && seen[f.UUID()] {
 		return nil
 	}
 
@@ -152,14 +157,16 @@ func (f *flow) validateRecursively(sa flows.SessionAssets, seen map[assets.FlowU
 		}
 	}
 
-	seen[f.UUID()] = true
+	if recursive {
+		seen[f.UUID()] = true
 
-	// go check any non-missing flow dependencies
-	for _, flowRef := range deps.Flows {
-		flowDep, err := sa.Flows().Get(flowRef.UUID)
-		if err == nil {
-			if err := flowDep.(*flow).validateRecursively(sa, seen, missing); err != nil {
-				return errors.Wrapf(err, "invalid child %s", flowRef)
+		// go check any non-missing flow dependencies
+		for _, flowRef := range deps.Flows {
+			flowDep, err := sa.Flows().Get(flowRef.UUID)
+			if err == nil {
+				if err := flowDep.(*flow).validateAssets(sa, true, seen, missing); err != nil {
+					return errors.Wrapf(err, "invalid child %s", flowRef)
+				}
 			}
 		}
 	}
