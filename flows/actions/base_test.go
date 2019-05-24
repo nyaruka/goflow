@@ -567,10 +567,6 @@ func TestConstructors(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		// test validating the action
-		err := tc.action.Validate()
-		assert.NoError(t, err)
-
 		// test marshaling the action
 		actualJSON, err := json.Marshal(tc.action)
 		assert.NoError(t, err)

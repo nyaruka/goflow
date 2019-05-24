@@ -103,7 +103,7 @@ func TestBrokenFlows(t *testing.T) {
 		} else {
 			require.NoError(t, err)
 
-			err = flow.Validate(sa, nil)
+			err = flow.ValidateRecursive(sa, nil)
 			assert.EqualError(t, err, tc.validationError, "validation error mismatch for %s", tc.path)
 		}
 	}
