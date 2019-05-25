@@ -1,3 +1,7 @@
+v0.40.2
+----------
+ * Add FixedUUID4Generator for testing
+
 v0.40.1
 ----------
  * Make recursion optional again during flow validation
