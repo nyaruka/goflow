@@ -37,12 +37,27 @@ func (g defaultUUID4Generator) Next() UUID {
 	return UUID(u.String())
 }
 
+// fixedUUID4Generator returns the same single fixed v4 UUID (useful for testing)
+type fixedUUID4Generator struct {
+	value UUID
+}
+
+// Next returns the next UUID
+func (g *fixedUUID4Generator) Next() UUID {
+	return g.value
+}
+
+// NewFixedUUID4Generator creates a new fixed UUID4 generator
+func NewFixedUUID4Generator(value UUID) UUIDGenerator {
+	return &fixedUUID4Generator{value}
+}
+
 // generates a seedable random v4 UUID using math/rand
 type seededUUID4Generator struct {
 	rnd *rand.Rand
 }
 
-// NewSeededUUID4Generator creates a new SeededUUID4Generator from the given seed
+// NewSeededUUID4Generator creates a new seeded UUID4 generator from the given seed
 func NewSeededUUID4Generator(seed int64) UUIDGenerator {
 	return &seededUUID4Generator{rnd: NewSeededRand(seed)}
 }

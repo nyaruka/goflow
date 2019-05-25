@@ -21,6 +21,8 @@ func assertIsUUID4(t *testing.T, value utils.UUID) {
 }
 
 func TestUUIDGenerators(t *testing.T) {
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
 	uuid1 := utils.NewUUID()
 	uuid2 := utils.NewUUID()
 
@@ -29,7 +31,6 @@ func TestUUIDGenerators(t *testing.T) {
 	assert.NotEqual(t, uuid1, uuid2)
 
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	uuid3 := utils.NewUUID()
 	uuid4 := utils.NewUUID()
@@ -45,4 +46,11 @@ func TestUUIDGenerators(t *testing.T) {
 
 	assert.Equal(t, uuid3, uuid5)
 	assert.Equal(t, uuid4, uuid6)
+
+	utils.SetUUIDGenerator(utils.NewFixedUUID4Generator(utils.UUID("8ea764df-e117-4366-a93b-f317d61094cd")))
+
+	uuid7 := utils.NewUUID()
+	uuid8 := utils.NewUUID()
+
+	assert.Equal(t, uuid7, uuid8)
 }
