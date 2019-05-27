@@ -1,3 +1,7 @@
+v0.40.3
+----------
+ * Re-organize test utils so they're all in the test package
+
 v0.40.2
 ----------
  * Add FixedUUID4Generator for testing
