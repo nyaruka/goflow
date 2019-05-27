@@ -142,7 +142,7 @@ func TestFlowMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(tc.Legacy)
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(true, "https://myfiles.com")
+		migratedFlow, err := legacyFlow.Migrate("https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedFlowJSON, err := json.Marshal(migratedFlow)
@@ -169,7 +169,7 @@ func TestActionMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(false, "https://myfiles.com")
+		migratedFlow, err := legacyFlow.Migrate("https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
@@ -199,7 +199,7 @@ func TestTestMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(false, "https://myfiles.com")
+		migratedFlow, err := legacyFlow.Migrate("https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedRouter := migratedFlow.Nodes()[0].Router().(*routers.SwitchRouter)
@@ -235,7 +235,7 @@ func TestRuleSetMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(true, "https://myfiles.com")
+		migratedFlow, err := legacyFlow.Migrate("https://myfiles.com")
 		require.NoError(t, err)
 
 		// check we now have a new node in addition to the 3 actionsets used as destinations

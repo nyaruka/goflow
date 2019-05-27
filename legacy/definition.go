@@ -1035,8 +1035,7 @@ func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 	return f, nil
 }
 
-// Migrate migrates this legacy flow to the new format
-func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) {
+func migrateNodes(f *Flow, baseMediaURL string) ([]flows.Node, map[flows.NodeUUID]*NodeUI, flows.Localization, error) {
 	localization := definition.NewLocalization()
 	numNodes := len(f.ActionSets) + len(f.RuleSets)
 	nodes := make([]flows.Node, numNodes)
@@ -1045,7 +1044,7 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 	for i, actionSet := range f.ActionSets {
 		node, err := migrateActionSet(f.BaseLanguage, actionSet, localization, baseMediaURL)
 		if err != nil {
-			return nil, errors.Wrapf(err, "error migrating action_set[uuid=%s]", actionSet.UUID)
+			return nil, nil, nil, errors.Wrapf(err, "error migrating action_set[uuid=%s]", actionSet.UUID)
 		}
 		nodes[i] = node
 		nodeUIs[node.UUID()] = NewNodeUI(UINodeTypeActionSet, actionSet.X, actionSet.Y, nil)
@@ -1054,7 +1053,7 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 	for i, ruleSet := range f.RuleSets {
 		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, localization)
 		if err != nil {
-			return nil, errors.Wrapf(err, "error migrating rule_set[uuid=%s]", ruleSet.UUID)
+			return nil, nil, nil, errors.Wrapf(err, "error migrating rule_set[uuid=%s]", ruleSet.UUID)
 		}
 		nodes[len(f.ActionSets)+i] = node
 		nodeUIs[node.UUID()] = NewNodeUI(uiType, ruleSet.X, ruleSet.Y, uiNodeConfig)
@@ -1083,26 +1082,31 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 
 	nodes = append(entryNodes, otherNodes...)
 
-	var uiJSON json.RawMessage
-	var err error
+	return nodes, nodeUIs, localization, nil
+}
 
-	if includeUI {
-		ui := NewUI()
+// Migrate migrates this legacy flow to the new format
+func (f *Flow) Migrate(baseMediaURL string) (flows.Flow, error) {
+	nodes, nodeUIs, localization, err := migrateNodes(f, baseMediaURL)
+	if err != nil {
+		return nil, err
+	}
 
-		for _, actionSet := range f.ActionSets {
-			ui.AddNode(actionSet.UUID, nodeUIs[actionSet.UUID])
-		}
-		for _, ruleSet := range f.RuleSets {
-			ui.AddNode(ruleSet.UUID, nodeUIs[ruleSet.UUID])
-		}
-		for _, note := range f.Metadata.Notes {
-			ui.AddSticky(note.Migrate())
-		}
+	// build UI section
+	ui := NewUI()
+	for _, actionSet := range f.ActionSets {
+		ui.AddNode(actionSet.UUID, nodeUIs[actionSet.UUID])
+	}
+	for _, ruleSet := range f.RuleSets {
+		ui.AddNode(ruleSet.UUID, nodeUIs[ruleSet.UUID])
+	}
+	for _, note := range f.Metadata.Notes {
+		ui.AddSticky(note.Migrate())
+	}
 
-		uiJSON, err = json.Marshal(ui)
-		if err != nil {
-			return nil, err
-		}
+	uiJSON, err := json.Marshal(ui)
+	if err != nil {
+		return nil, err
 	}
 
 	uuid := f.Metadata.UUID
