@@ -558,14 +558,14 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, UINodeType, NodeUIConfig, error) {
+func migrateRuleSet(lang utils.Language, r RuleSet, validDests map[flows.NodeUUID]bool, localization flows.Localization) (flows.Node, UINodeType, NodeUIConfig, error) {
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
 	var uiType UINodeType
 	uiConfig := make(NodeUIConfig)
 
-	cases, categories, defaultCategory, timeoutCategory, exits, err := migrateRules(lang, r, localization, uiConfig)
+	cases, categories, defaultCategory, timeoutCategory, exits, err := migrateRules(lang, r, validDests, localization, uiConfig)
 	if err != nil {
 		return nil, "", nil, err
 	}
@@ -791,7 +791,7 @@ type categoryAndExit struct {
 }
 
 // migrates a set of legacy rules to sets of categories, cases and exits
-func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization, uiConfig NodeUIConfig) ([]*routers.Case, []*routers.Category, flows.CategoryUUID, flows.CategoryUUID, []flows.Exit, error) {
+func migrateRules(baseLanguage utils.Language, r RuleSet, validDests map[flows.NodeUUID]bool, localization flows.Localization, uiConfig NodeUIConfig) ([]*routers.Case, []*routers.Category, flows.CategoryUUID, flows.CategoryUUID, []flows.Exit, error) {
 	cases := make([]*routers.Case, 0, len(r.Rules))
 	categories := make([]*routers.Category, 0, len(r.Rules))
 	exits := make([]flows.Exit, 0, len(r.Rules))
@@ -811,8 +811,14 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 			converted = convertedByCategoryName[baseName]
 		}
 		if converted == nil {
+			// only set exit destination if it's valid
+			var destinationUUID flows.NodeUUID
+			if validDests[rule.Destination] {
+				destinationUUID = rule.Destination
+			}
+
 			// rule UUIDs in legacy flows determine path data, so their UUIDs become the exit UUIDs
-			exit := definition.NewExit(rule.UUID, rule.Destination)
+			exit := definition.NewExit(rule.UUID, destinationUUID)
 			exits = append(exits, exit)
 
 			category := routers.NewCategory(flows.CategoryUUID(utils.NewUUID()), baseName, exit.UUID())
@@ -1004,7 +1010,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
-func migrateActionSet(lang utils.Language, a ActionSet, localization flows.Localization, baseMediaURL string) (flows.Node, error) {
+func migrateActionSet(lang utils.Language, a ActionSet, validDests map[flows.NodeUUID]bool, localization flows.Localization, baseMediaURL string) (flows.Node, error) {
 	actions := make([]flows.Action, len(a.Actions))
 
 	// migrate each action
@@ -1016,7 +1022,13 @@ func migrateActionSet(lang utils.Language, a ActionSet, localization flows.Local
 		actions[i] = action
 	}
 
-	exit := definition.NewExit(a.ExitUUID, a.Destination)
+	// only set exit destination if it's valid
+	var destinationUUID flows.NodeUUID
+	if validDests[a.Destination] {
+		destinationUUID = a.Destination
+	}
+
+	exit := definition.NewExit(a.ExitUUID, destinationUUID)
 
 	return definition.NewNode(a.UUID, actions, nil, []flows.Exit{exit}), nil
 }
@@ -1035,26 +1047,34 @@ func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 	return f, nil
 }
 
-// Migrate migrates this legacy flow to the new format
-func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) {
+func migrateNodes(f *Flow, baseMediaURL string) ([]flows.Node, map[flows.NodeUUID]*NodeUI, flows.Localization, error) {
 	localization := definition.NewLocalization()
 	numNodes := len(f.ActionSets) + len(f.RuleSets)
 	nodes := make([]flows.Node, numNodes)
 	nodeUIs := make(map[flows.NodeUUID]*NodeUI, numNodes)
 
+	// get set of all node UUIDs, i.e. the valid destinations for any exit
+	validDestinations := make(map[flows.NodeUUID]bool, numNodes)
+	for _, as := range f.ActionSets {
+		validDestinations[as.UUID] = true
+	}
+	for _, rs := range f.RuleSets {
+		validDestinations[rs.UUID] = true
+	}
+
 	for i, actionSet := range f.ActionSets {
-		node, err := migrateActionSet(f.BaseLanguage, actionSet, localization, baseMediaURL)
+		node, err := migrateActionSet(f.BaseLanguage, actionSet, validDestinations, localization, baseMediaURL)
 		if err != nil {
-			return nil, errors.Wrapf(err, "error migrating action_set[uuid=%s]", actionSet.UUID)
+			return nil, nil, nil, errors.Wrapf(err, "error migrating action_set[uuid=%s]", actionSet.UUID)
 		}
 		nodes[i] = node
 		nodeUIs[node.UUID()] = NewNodeUI(UINodeTypeActionSet, actionSet.X, actionSet.Y, nil)
 	}
 
 	for i, ruleSet := range f.RuleSets {
-		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, localization)
+		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, validDestinations, localization)
 		if err != nil {
-			return nil, errors.Wrapf(err, "error migrating rule_set[uuid=%s]", ruleSet.UUID)
+			return nil, nil, nil, errors.Wrapf(err, "error migrating rule_set[uuid=%s]", ruleSet.UUID)
 		}
 		nodes[len(f.ActionSets)+i] = node
 		nodeUIs[node.UUID()] = NewNodeUI(uiType, ruleSet.X, ruleSet.Y, uiNodeConfig)
@@ -1083,26 +1103,31 @@ func (f *Flow) Migrate(includeUI bool, baseMediaURL string) (flows.Flow, error) 
 
 	nodes = append(entryNodes, otherNodes...)
 
-	var uiJSON json.RawMessage
-	var err error
+	return nodes, nodeUIs, localization, nil
+}
 
-	if includeUI {
-		ui := NewUI()
+// Migrate migrates this legacy flow to the new format
+func (f *Flow) Migrate(baseMediaURL string) (flows.Flow, error) {
+	nodes, nodeUIs, localization, err := migrateNodes(f, baseMediaURL)
+	if err != nil {
+		return nil, err
+	}
 
-		for _, actionSet := range f.ActionSets {
-			ui.AddNode(actionSet.UUID, nodeUIs[actionSet.UUID])
-		}
-		for _, ruleSet := range f.RuleSets {
-			ui.AddNode(ruleSet.UUID, nodeUIs[ruleSet.UUID])
-		}
-		for _, note := range f.Metadata.Notes {
-			ui.AddSticky(note.Migrate())
-		}
+	// build UI section
+	ui := NewUI()
+	for _, actionSet := range f.ActionSets {
+		ui.AddNode(actionSet.UUID, nodeUIs[actionSet.UUID])
+	}
+	for _, ruleSet := range f.RuleSets {
+		ui.AddNode(ruleSet.UUID, nodeUIs[ruleSet.UUID])
+	}
+	for _, note := range f.Metadata.Notes {
+		ui.AddSticky(note.Migrate())
+	}
 
-		uiJSON, err = json.Marshal(ui)
-		if err != nil {
-			return nil, err
-		}
+	uiJSON, err := json.Marshal(ui)
+	if err != nil {
+		return nil, err
 	}
 
 	uuid := f.Metadata.UUID

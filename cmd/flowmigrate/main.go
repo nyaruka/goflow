@@ -46,7 +46,7 @@ func Migrate(reader io.Reader, includeUI bool, baseMediaURL string) ([]byte, err
 		return nil, err
 	}
 
-	migrated, err := flow.Migrate(includeUI, baseMediaURL)
+	migrated, err := flow.Migrate(baseMediaURL)
 	if err != nil {
 		return nil, err
 	}

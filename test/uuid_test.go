@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSeededUUID4Generator(t *testing.T) {
+func TestSeededUUIDGenerator(t *testing.T) {
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))

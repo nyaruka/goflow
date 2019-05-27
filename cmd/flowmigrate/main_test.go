@@ -35,6 +35,10 @@ func TestMigrate(t *testing.T) {
 		"revision": 1,
 		"expire_after_minutes": 0,
 		"localization": {},
-		"nodes": []
+		"nodes": [],
+		"_ui": {
+			"nodes": {},
+			"stickies": {}
+		}
 	}`), migrated, "Migrated flow mismatch")
 }
