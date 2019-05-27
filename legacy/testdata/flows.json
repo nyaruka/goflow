@@ -617,5 +617,204 @@
                 "stickies": {}
             }
         }
+    },
+    {
+        "description": "legacy flow invalid destinations which should be ignored",
+        "legacy": {
+            "entry": "2810264e-ff2a-4298-a190-77ee715b0b44",
+            "action_sets": [
+                {
+                    "uuid": "55fc8cba-d3a1-426b-9e2a-2e94325e9fab",
+                    "x": 86,
+                    "y": 128,
+                    "destination": "01ba6317-9ddd-4196-bfa7-0ab0434effcc",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "f81e5531-c923-4c83-943d-8bd3bd9e218d",
+                            "msg": {
+                                "eng": "You said yes"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ],
+                    "exit_uuid": "6adefcb5-f369-458e-b99d-60ca9c96a939"
+                }
+            ],
+            "rule_sets": [
+                {
+                    "uuid": "2810264e-ff2a-4298-a190-77ee715b0b44",
+                    "x": 100,
+                    "y": 0,
+                    "label": "Response 1",
+                    "rules": [
+                        {
+                            "uuid": "6bbe46af-f8bb-4241-b25e-f53a314fd0d4",
+                            "category": {
+                                "eng": "Yes"
+                            },
+                            "destination": "55fc8cba-d3a1-426b-9e2a-2e94325e9fab",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "contains_any",
+                                "test": {
+                                    "eng": "yes"
+                                }
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "45e631cc-b409-47e0-a94b-2891e1397926",
+                            "category": {
+                                "eng": "No"
+                            },
+                            "destination": "cd699797-1a04-4143-9a58-a7f1dcbc285e",
+                            "destination_type": "A",
+                            "test": {
+                                "type": "contains_any",
+                                "test": {
+                                    "eng": "No"
+                                }
+                            },
+                            "label": null
+                        },
+                        {
+                            "uuid": "97a39597-fa5d-4ee4-a7bc-0aa18e56f1ec",
+                            "category": {
+                                "eng": "Other"
+                            },
+                            "destination": null,
+                            "destination_type": null,
+                            "test": {
+                                "type": "true"
+                            },
+                            "label": null
+                        }
+                    ],
+                    "finished_key": null,
+                    "ruleset_type": "wait_message",
+                    "response_type": "",
+                    "operand": "@step.value",
+                    "config": {}
+                }
+            ],
+            "base_language": "eng",
+            "flow_type": "M",
+            "version": "11.12",
+            "metadata": {
+                "uuid": "2ff042be-2563-431d-9c6c-567bf071b8c7",
+                "name": "Bad Destinations",
+                "saved_on": "2019-05-27T18:51:37.370652Z",
+                "revision": 4,
+                "expires": 10080
+            }
+        },
+        "expected": {
+            "_ui": {
+                "nodes": {
+                    "2810264e-ff2a-4298-a190-77ee715b0b44": {
+                        "position": {
+                            "left": 100,
+                            "top": 0
+                        },
+                        "type": "wait_for_response"
+                    },
+                    "55fc8cba-d3a1-426b-9e2a-2e94325e9fab": {
+                        "position": {
+                            "left": 86,
+                            "top": 128
+                        },
+                        "type": "execute_actions"
+                    }
+                },
+                "stickies": {}
+            },
+            "expire_after_minutes": 10080,
+            "language": "eng",
+            "localization": {},
+            "name": "Bad Destinations",
+            "nodes": [
+                {
+                    "exits": [
+                        {
+                            "destination_uuid": "55fc8cba-d3a1-426b-9e2a-2e94325e9fab",
+                            "uuid": "6bbe46af-f8bb-4241-b25e-f53a314fd0d4"
+                        },
+                        {
+                            "uuid": "45e631cc-b409-47e0-a94b-2891e1397926"
+                        },
+                        {
+                            "uuid": "97a39597-fa5d-4ee4-a7bc-0aa18e56f1ec"
+                        }
+                    ],
+                    "router": {
+                        "cases": [
+                            {
+                                "arguments": [
+                                    "yes"
+                                ],
+                                "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_any_word",
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                            },
+                            {
+                                "arguments": [
+                                    "No"
+                                ],
+                                "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "has_any_word",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "exit_uuid": "6bbe46af-f8bb-4241-b25e-f53a314fd0d4",
+                                "name": "Yes",
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                            },
+                            {
+                                "exit_uuid": "45e631cc-b409-47e0-a94b-2891e1397926",
+                                "name": "No",
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                            },
+                            {
+                                "exit_uuid": "97a39597-fa5d-4ee4-a7bc-0aa18e56f1ec",
+                                "name": "Other",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            }
+                        ],
+                        "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                        "operand": "@input",
+                        "result_name": "Response 1",
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        }
+                    },
+                    "uuid": "2810264e-ff2a-4298-a190-77ee715b0b44"
+                },
+                {
+                    "actions": [
+                        {
+                            "text": "You said yes",
+                            "type": "send_msg",
+                            "uuid": "f81e5531-c923-4c83-943d-8bd3bd9e218d"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "6adefcb5-f369-458e-b99d-60ca9c96a939"
+                        }
+                    ],
+                    "uuid": "55fc8cba-d3a1-426b-9e2a-2e94325e9fab"
+                }
+            ],
+            "revision": 4,
+            "spec_version": "13.0.0",
+            "type": "messaging",
+            "uuid": "2ff042be-2563-431d-9c6c-567bf071b8c7"
+        }
     }
 ]
