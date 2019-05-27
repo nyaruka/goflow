@@ -1,3 +1,8 @@
+v0.41.0
+----------
+ * Legacy flow migration should just ignore invalid actionset/rule destinations
+ * Drop includeUI as an option for flow migration and just always include it
+
 v0.40.3
 ----------
  * Re-organize test utils so they're all in the test package
