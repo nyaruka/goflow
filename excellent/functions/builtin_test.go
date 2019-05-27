@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/functions"
-	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
@@ -640,7 +640,7 @@ func TestFunctions(t *testing.T) {
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	utils.SetRand(utils.NewSeededRand(123456))
-	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	for _, tc := range funcTests {
 		testID := fmt.Sprintf("%s(%#v)", tc.name, tc.args)
@@ -654,7 +654,7 @@ func TestFunctions(t *testing.T) {
 		if tc.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for ", result, result, testID)
 		} else {
-			test.AssertEqual(t, tc.expected, result, "result mismatch for %s", testID)
+			test.AssertXEqual(t, tc.expected, result, "result mismatch for %s", testID)
 		}
 	}
 }

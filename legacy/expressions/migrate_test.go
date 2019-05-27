@@ -370,7 +370,7 @@ func TestLegacyTests(t *testing.T) {
 
 			env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).WithTimezone(tz).Build()
 			if tc.Context.Now != nil {
-				utils.SetTimeSource(utils.NewFixedTimeSource(*tc.Context.Now))
+				utils.SetTimeSource(test.NewFixedTimeSource(*tc.Context.Now))
 				defer utils.SetTimeSource(utils.DefaultTimeSource)
 			}
 

@@ -137,7 +137,7 @@ func TestFlowMigration(t *testing.T) {
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	for _, tc := range tests {
-		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
 
 		legacyFlow, err := legacy.ReadLegacyFlow(tc.Legacy)
 		require.NoError(t, err)
@@ -193,7 +193,7 @@ func TestTestMigration(t *testing.T) {
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	for _, tc := range tests {
-		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
 
 		legacyFlowJSON := fmt.Sprintf(legacyTestHolderDef, string(tc.LegacyTest))
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
@@ -229,7 +229,7 @@ func TestRuleSetMigration(t *testing.T) {
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	for _, tc := range tests {
-		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
 
 		legacyFlowJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(tc.LegacyRuleSet))
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))

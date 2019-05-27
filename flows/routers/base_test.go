@@ -73,8 +73,8 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	defer utils.SetRand(utils.DefaultRand)
 
 	for _, tc := range tests {
-		utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
+		utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
 		utils.SetRand(utils.NewSeededRand(123456))
 
 		testName := fmt.Sprintf("test '%s' for router type '%s'", tc.Description, typeName)

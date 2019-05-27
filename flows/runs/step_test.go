@@ -17,7 +17,7 @@ import (
 )
 
 func TestStep(t *testing.T) {
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
+	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	node := definition.NewNode(flows.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), nil, nil, nil)

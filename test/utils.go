@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"testing"
 
-	xtest "github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -15,8 +14,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// AssertEqual is equivalent to assert.Equal for two XValue instances
 func AssertXEqual(t *testing.T, expected types.XValue, actual types.XValue, msgAndArgs ...interface{}) bool {
-	return xtest.AssertEqual(t, expected, actual, msgAndArgs...)
+	if !types.Equals(expected, actual) {
+		return assert.Fail(t, fmt.Sprintf("Not equal: \n"+
+			"expected: %s\n"+
+			"actual  : %s", expected, actual), msgAndArgs...)
+	}
+	return true
 }
 
 // NormalizeJSON re-formats the given JSON

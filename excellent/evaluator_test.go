@@ -1,11 +1,12 @@
-package excellent
+package excellent_test
 
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/functions"
-	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -165,14 +166,14 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	}
 
 	for _, tc := range evaluateTests {
-		result, err := EvaluateTemplateValue(env, context, tc.template)
+		result, err := excellent.EvaluateTemplateValue(env, context, tc.template)
 		assert.NoError(t, err)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, tc.template)
 		} else {
-			test.AssertEqual(t, result, tc.expected, "output mismatch for template '%s'", tc.template)
+			test.AssertXEqual(t, result, tc.expected, "output mismatch for template '%s'", tc.template)
 		}
 	}
 }
@@ -288,7 +289,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			}
 		}()
 
-		eval, err := EvaluateTemplate(env, vars, tc.template)
+		eval, err := excellent.EvaluateTemplate(env, vars, tc.template)
 
 		if tc.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", tc.template)
@@ -341,7 +342,7 @@ func TestEvaluationErrors(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().Build()
 
 	for _, tc := range errorTests {
-		result, err := EvaluateTemplate(env, vars, tc.template)
+		result, err := excellent.EvaluateTemplate(env, vars, tc.template)
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
 
@@ -359,7 +360,7 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 		env := utils.NewEnvironmentBuilder().Build()
 
 		for _, tc := range errorTests {
-			EvaluateTemplate(env, vars, tc.template)
+			excellent.EvaluateTemplate(env, vars, tc.template)
 		}
 	}
 }

@@ -238,8 +238,8 @@ func TestFlows(t *testing.T) {
 	for _, tc := range testCases {
 		fmt.Printf("running %s\n", tc)
 
-		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
-		utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
+		utils.SetUUIDGenerator(NewSeededUUIDGenerator(123456))
+		utils.SetTimeSource(NewSequentialTimeSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
 
 		testJSON, err := ioutil.ReadFile(tc.outputFile)
 		require.NoError(t, err, "error reading output file %s", tc.outputFile)

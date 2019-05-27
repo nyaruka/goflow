@@ -129,7 +129,7 @@ var templateTests = []struct {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	server := test.NewTestHTTPServer(0)
@@ -542,8 +542,8 @@ func TestContextToJSON(t *testing.T) {
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
-	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
+	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	session, _, err := test.CreateTestSession(server.URL, nil)
 	require.NoError(t, err)
@@ -616,7 +616,7 @@ func TestWaitTimeout(t *testing.T) {
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	t1 := time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
-	utils.SetTimeSource(utils.NewFixedTimeSource(t1))
+	utils.SetTimeSource(test.NewFixedTimeSource(t1))
 
 	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
 	require.NoError(t, err)

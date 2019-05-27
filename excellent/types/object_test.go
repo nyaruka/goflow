@@ -3,8 +3,8 @@ package types_test
 import (
 	"testing"
 
-	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
@@ -39,7 +39,7 @@ func TestXObject(t *testing.T) {
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","xxx":null,"zed":false}`), asJSON)
 
 	// test equality
-	test.AssertEqual(t, object, types.NewXObject(map[string]types.XValue{
+	test.AssertXEqual(t, object, types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
@@ -76,7 +76,7 @@ func TestXObjectWithDefault(t *testing.T) {
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), asJSON)
 
 	// test equality
-	test.AssertEqual(t, object, types.NewXObject(map[string]types.XValue{
+	test.AssertXEqual(t, object, types.NewXObject(map[string]types.XValue{
 		"__default__": types.NewXText("abc-123"),
 		"foo":         types.NewXText("abc"),
 		"bar":         types.NewXNumberFromInt(123),
@@ -134,7 +134,7 @@ func TestToXObject(t *testing.T) {
 			assert.Error(t, err, "expected error for input %s", tc.value)
 		} else {
 			assert.NoError(t, err, "unexpected error for input %s", tc.value)
-			test.AssertEqual(t, tc.asObject, object, "object mismatch for input %s", tc.value)
+			test.AssertXEqual(t, tc.asObject, object, "object mismatch for input %s", tc.value)
 		}
 	}
 }

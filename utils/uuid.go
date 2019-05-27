@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"math/rand"
 	"regexp"
 
 	"github.com/gofrs/uuid"
@@ -34,42 +33,6 @@ func (g defaultUUID4Generator) Next() UUID {
 		// if we can't generate a UUID.. we're done
 		panic(fmt.Sprintf("unable to generate UUID: %s", err))
 	}
-	return UUID(u.String())
-}
-
-// fixedUUID4Generator returns the same single fixed v4 UUID (useful for testing)
-type fixedUUID4Generator struct {
-	value UUID
-}
-
-// Next returns the next UUID
-func (g *fixedUUID4Generator) Next() UUID {
-	return g.value
-}
-
-// NewFixedUUID4Generator creates a new fixed UUID4 generator
-func NewFixedUUID4Generator(value UUID) UUIDGenerator {
-	return &fixedUUID4Generator{value}
-}
-
-// generates a seedable random v4 UUID using math/rand
-type seededUUID4Generator struct {
-	rnd *rand.Rand
-}
-
-// NewSeededUUID4Generator creates a new seeded UUID4 generator from the given seed
-func NewSeededUUID4Generator(seed int64) UUIDGenerator {
-	return &seededUUID4Generator{rnd: NewSeededRand(seed)}
-}
-
-// Next returns the next random UUID
-func (g *seededUUID4Generator) Next() UUID {
-	u := uuid.UUID{}
-	if _, err := g.rnd.Read(u[:]); err != nil {
-		panic(err)
-	}
-	u.SetVersion(uuid.V4)
-	u.SetVariant(uuid.VariantRFC4122)
 	return UUID(u.String())
 }
 

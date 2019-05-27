@@ -4,15 +4,15 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent"
-	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestJSONToXValue(t *testing.T) {
-	test.AssertEqual(t, types.NewXObject(map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("x"),
 		"bar": nil,
 		"sub": types.NewXObject(map[string]types.XValue{
@@ -20,14 +20,14 @@ func TestJSONToXValue(t *testing.T) {
 		}),
 	}), types.JSONToXValue([]byte(`{"foo": "x", "bar": null, "sub": {"x": 3}}`)))
 
-	test.AssertEqual(t, types.NewXArray(
+	test.AssertXEqual(t, types.NewXArray(
 		types.NewXText("foo"),
 		types.NewXNumberFromInt(123),
 		nil,
 		types.NewXArray(types.NewXNumberFromInt(2), types.NewXNumberFromInt(3)),
 	), types.JSONToXValue([]byte(`["foo", 123, null, [2, 3]]`)))
 
-	test.AssertEqual(t, types.RequireXNumberFromString(`37.27903`), types.JSONToXValue([]byte(`37.27903`)))
+	test.AssertXEqual(t, types.RequireXNumberFromString(`37.27903`), types.JSONToXValue([]byte(`37.27903`)))
 
 	xerr := types.JSONToXValue([]byte(`fish`)).(types.XError)
 	assert.Equal(t, `Unknown value type`, xerr.Error())
@@ -85,7 +85,7 @@ func TestXJSONResolve(t *testing.T) {
 			assert.Error(t, err, "expected error resolving '%s' for '%s'", tc.expression, tc.JSON)
 		} else {
 			assert.NoError(t, err, "unexpected error resolving '%s' for '%s'", tc.expression, tc.JSON)
-			test.AssertEqual(t, tc.expected, value, "unexpected result resolving '%s' for '%s'", tc.expression, tc.JSON)
+			test.AssertXEqual(t, tc.expected, value, "unexpected result resolving '%s' for '%s'", tc.expression, tc.JSON)
 		}
 	}
 }

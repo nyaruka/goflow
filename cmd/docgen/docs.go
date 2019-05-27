@@ -58,8 +58,8 @@ func buildDocsContext(items map[string][]*documentedItem) (map[string]string, er
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	utils.SetRand(utils.NewSeededRand(123456))
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
-	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 18, 24, 30, 123456000, time.UTC)))
+	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
+	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 18, 24, 30, 123456000, time.UTC)))
 
 	session, _, err := test.CreateTestSession(server.URL, nil)
 	if err != nil {

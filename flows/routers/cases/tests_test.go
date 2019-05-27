@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent"
-	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/routers/cases"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -243,7 +243,7 @@ var testTests = []struct {
 }
 
 func TestTests(t *testing.T) {
-	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	env := utils.NewEnvironmentBuilder().
@@ -265,7 +265,7 @@ func TestTests(t *testing.T) {
 		if tc.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for ", result, result, testID)
 		} else {
-			test.AssertEqual(t, tc.expected, result, "result mismatch for %s", testID)
+			test.AssertXEqual(t, tc.expected, result, "result mismatch for %s", testID)
 		}
 	}
 }
@@ -348,7 +348,7 @@ func TestHasPhone(t *testing.T) {
 			expected = falseResult
 		}
 
-		test.AssertEqual(t, expected, actual, "has_phone mismatch for input=%s country=%s", tc.input, tc.country)
+		test.AssertXEqual(t, expected, actual, "has_phone mismatch for input=%s country=%s", tc.input, tc.country)
 	}
 }
 

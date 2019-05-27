@@ -47,9 +47,9 @@ var assetsJSON = `{
 
 func TestTriggerMarshaling(t *testing.T) {
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
-	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
+	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
 
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
+	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	source, err := static.NewSource([]byte(assetsJSON))

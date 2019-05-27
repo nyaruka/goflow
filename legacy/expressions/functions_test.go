@@ -146,7 +146,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 	require.NoError(t, err)
 
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
-	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	for _, tc := range tests {
 		migratedTemplate, err := expressions.MigrateTemplate(tc.old, nil)

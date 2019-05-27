@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/operators"
-	"github.com/nyaruka/goflow/excellent/test"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -109,7 +109,7 @@ func TestBinaryOperators(t *testing.T) {
 		if tc.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for ", result, result, testID)
 		} else {
-			test.AssertEqual(t, tc.expected, result, "result mismatch for %s", testID)
+			test.AssertXEqual(t, tc.expected, result, "result mismatch for %s", testID)
 		}
 	}
 }
@@ -137,7 +137,7 @@ func TestUnaryOperators(t *testing.T) {
 		if tc.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for ", result, result, testID)
 		} else {
-			test.AssertEqual(t, tc.expected, result, "result mismatch for %s", testID)
+			test.AssertXEqual(t, tc.expected, result, "result mismatch for %s", testID)
 		}
 	}
 }

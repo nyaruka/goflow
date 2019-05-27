@@ -39,7 +39,7 @@ func TestContact(t *testing.T) {
 
 	env := utils.NewEnvironmentBuilder().Build()
 
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
+	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	contact, _ := flows.NewContact(

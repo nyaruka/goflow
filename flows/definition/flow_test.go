@@ -664,7 +664,7 @@ func TestClone(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
+		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
 		defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))

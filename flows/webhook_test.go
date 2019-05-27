@@ -145,8 +145,8 @@ func TestWebhookParsing(t *testing.T) {
 }
 
 func TestLegacyWebhookPayload(t *testing.T) {
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
-	utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
+	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
+	utils.SetTimeSource(test.NewSequentialTimeSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
