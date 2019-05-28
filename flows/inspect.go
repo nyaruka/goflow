@@ -99,22 +99,24 @@ type Inspectable interface {
 	Inspect(func(Inspectable))
 	EnumerateTemplates(TemplateIncluder)
 	EnumerateDependencies(Localization, func(assets.Reference))
-	EnumerateResults(func(*ResultInfo))
+	EnumerateResults(Node, func(*ResultInfo))
 }
 
 // ResultInfo is possible result that a flow might generate
 type ResultInfo struct {
-	Key        string   `json:"key"`
-	Name       string   `json:"name"`
-	Categories []string `json:"categories,omitempty"`
+	Key        string     `json:"key"`
+	Name       string     `json:"name"`
+	Categories []string   `json:"categories"`
+	NodeUUIDs  []NodeUUID `json:"node_uuids"`
 }
 
 // NewResultInfo creates a new result spec
-func NewResultInfo(name string, categories []string) *ResultInfo {
+func NewResultInfo(name string, categories []string, node Node) *ResultInfo {
 	return &ResultInfo{
 		Key:        utils.Snakify(name),
 		Name:       name,
 		Categories: categories,
+		NodeUUIDs:  []NodeUUID{node.UUID()},
 	}
 }
 
@@ -130,14 +132,28 @@ func MergeResultInfos(specs []*ResultInfo) []*ResultInfo {
 	for _, spec := range specs {
 		existing := byKey[spec.Key]
 
+		// merge if we already have a result info with this key
 		if existing != nil {
-			// if we already have a result spec with this key, merge categories
+			// merge categories
 			for _, category := range spec.Categories {
 				if !utils.StringSliceContains(existing.Categories, category, false) {
 					existing.Categories = append(existing.Categories, category)
 				}
 			}
 
+			// merge node UUIDs
+			for _, nodeUUID := range spec.NodeUUIDs {
+				uuidSeen := false
+				for _, u := range existing.NodeUUIDs {
+					if u == nodeUUID {
+						uuidSeen = true
+						break
+					}
+				}
+				if !uuidSeen {
+					existing.NodeUUIDs = append(existing.NodeUUIDs, nodeUUID)
+				}
+			}
 		} else {
 			// if not, add as new unique result spec
 			merged = append(merged, spec)
@@ -259,7 +275,7 @@ func (r inspectableReference) EnumerateDependencies(localization Localization, i
 
 // EnumerateResults enumerates all potential results on this object
 // Asset references can't contain results.
-func (r inspectableReference) EnumerateResults(include func(*ResultInfo)) {}
+func (r inspectableReference) EnumerateResults(node Node, include func(*ResultInfo)) {}
 
 // ExtractFieldReferences extracts fields references from the given template
 func ExtractFieldReferences(template string) []*assets.FieldReference {

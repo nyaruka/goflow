@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 
@@ -86,17 +87,47 @@ func TestDependencies(t *testing.T) {
 func TestResultInfos(t *testing.T) {
 	assert.Equal(t, []*flows.ResultInfo{}, flows.MergeResultInfos(nil))
 
-	assert.Equal(t, []*flows.ResultInfo{
-		{Key: "response_1", Name: "Response 1", Categories: []string{"Red", "Green", "Blue"}},
-		{Key: "favorite_beer", Name: "Favorite Beer", Categories: []string{}},
-	}, flows.MergeResultInfos([]*flows.ResultInfo{
-		flows.NewResultInfo("Response 1", []string{"Red", "Green"}),
-		flows.NewResultInfo("Response-1", nil),
-		flows.NewResultInfo("Response-1", []string{"Green", "Blue"}),
-		flows.NewResultInfo("Favorite Beer", []string{}),
-	}))
+	node1 := definition.NewNode(
+		flows.NodeUUID("1fb823c3-599a-41e9-b59b-658266af3466"),
+		nil,
+		nil,
+		[]flows.Exit{definition.NewExit(flows.ExitUUID("3c158842-24f3-4a40-bea4-7522952c0131"), "")},
+	)
+	node2 := definition.NewNode(
+		flows.NodeUUID("0ba673a3-63b3-46f9-9246-9c727cf2917f"),
+		nil,
+		nil,
+		[]flows.Exit{definition.NewExit(flows.ExitUUID("434ac29c-abe6-4bd7-b29b-740d517b6bb5"), "")},
+	)
 
-	assert.Equal(t, `key=response_1|name=Response 1|categories=Red,Green`, flows.NewResultInfo("Response 1", []string{"Red", "Green"}).String())
+	infos := []*flows.ResultInfo{
+		flows.NewResultInfo("Response 1", []string{"Red", "Green"}, node1),
+		flows.NewResultInfo("Response-1", nil, node1),
+		flows.NewResultInfo("Response-1", []string{"Green", "Blue"}, node2),
+		flows.NewResultInfo("Favorite Beer", []string{}, node2),
+	}
+
+	assert.Equal(t, []*flows.ResultInfo{
+		{
+			Key:        "response_1",
+			Name:       "Response 1",
+			Categories: []string{"Red", "Green", "Blue"},
+			NodeUUIDs: []flows.NodeUUID{
+				flows.NodeUUID("1fb823c3-599a-41e9-b59b-658266af3466"),
+				flows.NodeUUID("0ba673a3-63b3-46f9-9246-9c727cf2917f"),
+			},
+		},
+		{
+			Key:        "favorite_beer",
+			Name:       "Favorite Beer",
+			Categories: []string{},
+			NodeUUIDs: []flows.NodeUUID{
+				flows.NodeUUID("0ba673a3-63b3-46f9-9246-9c727cf2917f"),
+			},
+		},
+	}, flows.MergeResultInfos(infos))
+
+	assert.Equal(t, `key=response_1|name=Response 1|categories=Red,Green`, flows.NewResultInfo("Response 1", []string{"Red", "Green"}, node1).String())
 }
 
 func TestFlowInfo(t *testing.T) {
@@ -106,8 +137,8 @@ func TestFlowInfo(t *testing.T) {
 			assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam"),
 		}),
 		Results: []*flows.ResultInfo{
-			{Key: "response_1", Name: "Response 1", Categories: []string{"Red", "Green", "Blue"}},
-			{Key: "favorite_beer", Name: "Favorite Beer", Categories: []string{}},
+			{Key: "response_1", Name: "Response 1", Categories: []string{"Red", "Green", "Blue"}, NodeUUIDs: []flows.NodeUUID{"edcbe7a9-3b1b-4f49-891e-9519f0309e8b"}},
+			{Key: "favorite_beer", Name: "Favorite Beer", Categories: []string{}, NodeUUIDs: []flows.NodeUUID{"0a6f263b-6258-4007-954a-23c20bcd333e"}},
 		},
 		WaitingExits: []flows.ExitUUID{
 			"9d098aea-ccc4-4723-8222-9971b64223e4",
@@ -136,17 +167,24 @@ func TestFlowInfo(t *testing.T) {
 		},
 		"results": [
 			{
+				"key": "response_1",
+				"name": "Response 1",
 				"categories": [
 					"Red",
 					"Green",
 					"Blue"
 				],
-				"key": "response_1",
-				"name": "Response 1"
+				"node_uuids": [
+					"edcbe7a9-3b1b-4f49-891e-9519f0309e8b"
+				]
 			},
 			{
 				"key": "favorite_beer",
-				"name": "Favorite Beer"
+				"name": "Favorite Beer",
+				"categories": [],
+				"node_uuids": [
+					"0a6f263b-6258-4007-954a-23c20bcd333e"
+				]
 			}
 		],
 		"waiting_exits": [

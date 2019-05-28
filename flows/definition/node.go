@@ -104,7 +104,7 @@ func (n *node) EnumerateDependencies(localization flows.Localization, include fu
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (n *node) EnumerateResults(include func(*flows.ResultInfo)) {}
+func (n *node) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

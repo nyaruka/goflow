@@ -312,6 +312,7 @@ func TestNewFlow(t *testing.T) {
 			Name:       "Response 1",
 			Key:        "response_1",
 			Categories: []string{"Yes", "No"},
+			NodeUUIDs:  []flows.NodeUUID{"a58be63b-907d-4a1a-856b-0bb5579d7507"},
 		},
 	}, info.Results)
 
@@ -385,6 +386,7 @@ func TestInspectFlow(t *testing.T) {
 			Name:       "Name",
 			Key:        "name",
 			Categories: []string{"Not Empty", "Other"},
+			NodeUUIDs:  []flows.NodeUUID{"3dcccbb4-d29c-41dd-a01f-16d814c9ab82"},
 		},
 	}, info.Results)
 
@@ -622,24 +624,54 @@ func TestExtractResults(t *testing.T) {
 			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
 			[]*flows.ResultInfo{
-				{Key: "gender", Name: "Gender", Categories: []string{"Male"}},
+				{
+					Key:        "gender",
+					Name:       "Gender",
+					Categories: []string{"Male"},
+					NodeUUIDs:  []flows.NodeUUID{"a58be63b-907d-4a1a-856b-0bb5579d7507"},
+				},
 			},
 		},
 		{
 			"../../test/testdata/runner/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]*flows.ResultInfo{
-				{Key: "urn_check", Name: "URN Check", Categories: []string{"Telegram", "Other"}},
-				{Key: "group_check", Name: "Group Check", Categories: []string{"Testers", "Other"}},
-				{Key: "district_check", Name: "District Check", Categories: []string{"Valid", "Invalid"}},
+				{
+					Key:        "urn_check",
+					Name:       "URN Check",
+					Categories: []string{"Telegram", "Other"},
+					NodeUUIDs:  []flows.NodeUUID{"46d51f50-58de-49da-8d13-dadbf322685d"},
+				},
+				{
+					Key:        "group_check",
+					Name:       "Group Check",
+					Categories: []string{"Testers", "Other"},
+					NodeUUIDs:  []flows.NodeUUID{"08d71f03-dc18-450a-a82b-496f64862a56"},
+				},
+				{
+					Key:        "district_check",
+					Name:       "District Check",
+					Categories: []string{"Valid", "Invalid"},
+					NodeUUIDs:  []flows.NodeUUID{"8476e6fe-1c22-436c-be2c-c27afdc940f3"},
+				},
 			},
 		},
 		{
 			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]*flows.ResultInfo{
-				{Key: "favorite_color", Name: "Favorite Color", Categories: []string{"Red", "Blue", "Other", "No Response"}},
-				{Key: "soda", Name: "Soda", Categories: []string{"Pepsi", "Coke", "Other"}},
+				{
+					Key:        "favorite_color",
+					Name:       "Favorite Color",
+					Categories: []string{"Red", "Blue", "Other", "No Response"},
+					NodeUUIDs:  []flows.NodeUUID{"46d51f50-58de-49da-8d13-dadbf322685d"},
+				},
+				{
+					Key:        "soda",
+					Name:       "Soda",
+					Categories: []string{"Pepsi", "Coke", "Other"},
+					NodeUUIDs:  []flows.NodeUUID{"11a772f3-3ca2-4429-8b33-20fdcfc2b69e"},
+				},
 			},
 		},
 	}

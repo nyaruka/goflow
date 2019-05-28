@@ -245,6 +245,9 @@
                         "Yes",
                         "No",
                         "Other"
+                    ],
+                    "node_uuids": [
+                        "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
             ]
@@ -322,6 +325,9 @@
                         "Yes",
                         "No",
                         "Other"
+                    ],
+                    "node_uuids": [
+                        "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
             ]
@@ -406,6 +412,9 @@
                         "Yes",
                         "Yes Again",
                         "Other"
+                    ],
+                    "node_uuids": [
+                        "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
             ]
@@ -473,6 +482,9 @@
                     "categories": [
                         "Yes",
                         "No"
+                    ],
+                    "node_uuids": [
+                        "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
             ]

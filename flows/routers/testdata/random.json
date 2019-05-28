@@ -52,6 +52,9 @@
                         "Yes",
                         "No",
                         "Other"
+                    ],
+                    "node_uuids": [
+                        "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
             ]

@@ -192,10 +192,12 @@ func (f *flow) Reference() *assets.FlowReference {
 	return assets.NewFlowReference(f.uuid, f.name)
 }
 
-func (f *flow) inspect(inspect func(flows.Inspectable)) {
+func (f *flow) inspect(inspect func(flows.Node, flows.Inspectable)) {
 	// inspect each node
 	for _, n := range f.Nodes() {
-		n.Inspect(inspect)
+		n.Inspect(func(i flows.Inspectable) {
+			inspect(n, i)
+		})
 	}
 }
 
@@ -208,7 +210,7 @@ func (f *flow) ExtractTemplates() []string {
 		}
 	})
 
-	f.inspect(func(item flows.Inspectable) {
+	f.inspect(func(node flows.Node, item flows.Inspectable) {
 		item.EnumerateTemplates(include)
 	})
 	return templates
@@ -216,7 +218,7 @@ func (f *flow) ExtractTemplates() []string {
 
 // RewriteTemplates rewrites all templates
 func (f *flow) RewriteTemplates(rewrite func(string) string) {
-	f.inspect(func(item flows.Inspectable) {
+	f.inspect(func(node flows.Node, item flows.Inspectable) {
 		item.EnumerateTemplates(flows.NewTemplateRewriter(f.Localization(), rewrite))
 	})
 }
@@ -242,7 +244,7 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 		}
 	})
 
-	f.inspect(func(item flows.Inspectable) {
+	f.inspect(func(node flows.Node, item flows.Inspectable) {
 		item.EnumerateTemplates(include)
 		item.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
 			addDependency(r)
@@ -255,8 +257,8 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 // ExtractResults extracts all result specs
 func (f *flow) ExtractResults() []*flows.ResultInfo {
 	specs := make([]*flows.ResultInfo, 0)
-	f.inspect(func(item flows.Inspectable) {
-		item.EnumerateResults(func(spec *flows.ResultInfo) {
+	f.inspect(func(node flows.Node, item flows.Inspectable) {
+		item.EnumerateResults(node, func(spec *flows.ResultInfo) {
 			specs = append(specs, spec)
 		})
 	})
