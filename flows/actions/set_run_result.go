@@ -83,6 +83,6 @@ func (a *SetRunResultAction) EnumerateResults(node flows.Node, include func(*flo
 	if a.Category != "" {
 		include(flows.NewResultInfo(a.Name, []string{a.Category}, node))
 	} else {
-		include(flows.NewResultInfo(a.Name, nil, node))
+		include(flows.NewResultInfo(a.Name, []string{}, node))
 	}
 }
