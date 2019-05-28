@@ -218,6 +218,9 @@
                     "categories": [
                         "Success",
                         "Failure"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ]
@@ -333,6 +336,9 @@
                     "categories": [
                         "Success",
                         "Failure"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ]
@@ -420,6 +426,9 @@
                     "categories": [
                         "Success",
                         "Failure"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ]
@@ -518,6 +527,9 @@
                     "categories": [
                         "Success",
                         "Failure"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ]
@@ -606,6 +618,9 @@
                     "categories": [
                         "Success",
                         "Failure"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ]

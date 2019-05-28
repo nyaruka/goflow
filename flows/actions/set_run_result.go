@@ -79,10 +79,10 @@ func (a *SetRunResultAction) EnumerateTemplates(include flows.TemplateIncluder) 
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (a *SetRunResultAction) EnumerateResults(include func(*flows.ResultInfo)) {
+func (a *SetRunResultAction) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {
 	if a.Category != "" {
-		include(flows.NewResultInfo(a.Name, []string{a.Category}))
+		include(flows.NewResultInfo(a.Name, []string{a.Category}, node))
 	} else {
-		include(flows.NewResultInfo(a.Name, nil))
+		include(flows.NewResultInfo(a.Name, []string{}, node))
 	}
 }

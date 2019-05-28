@@ -28,6 +28,9 @@
                     "name": "Response 1",
                     "categories": [
                         "Yes"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ]
@@ -63,6 +66,9 @@
                     "name": "Response 1",
                     "categories": [
                         "Yes"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ]
@@ -98,6 +104,9 @@
                     "name": "Response 1",
                     "categories": [
                         "Yes"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ]
@@ -127,7 +136,11 @@
             "results": [
                 {
                     "key": "response_1",
-                    "name": "Response 1"
+                    "name": "Response 1",
+                    "categories": [],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
                 }
             ]
         }

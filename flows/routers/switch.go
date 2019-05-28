@@ -70,7 +70,7 @@ func (c *Case) EnumerateDependencies(localization flows.Localization, include fu
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (c *Case) EnumerateResults(include func(*flows.ResultInfo)) {}
+func (c *Case) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {}
 
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default category
