@@ -1,3 +1,7 @@
+v0.41.1
+----------
+ * Include node UUIDs in result infos returned from flow inspection
+
 v0.41.0
 ----------
  * Legacy flow migration should just ignore invalid actionset/rule destinations
