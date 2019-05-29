@@ -451,11 +451,18 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		for lang, attachment := range media {
 			parts := strings.SplitN(attachment, ":", 2)
-			mediaType := parts[0]
-			mediaURL := parts[1]
+			var mediaType, mediaURL string
+			if len(parts) == 2 {
+				mediaType = parts[0]
+				mediaURL = parts[1]
+			} else {
+				// no media type defaults to image
+				mediaType = "image"
+				mediaURL = parts[0]
+			}
 
-			if strings.Contains(mediaType, "/") {
-				// attachment is a real upload and not just an expression, need to make it absolute
+			// attachment is a real upload and not just an expression, need to make it absolute
+			if !strings.Contains(mediaURL, "@") {
 				media[lang] = fmt.Sprintf("%s:%s", mediaType, URLJoin(baseMediaURL, mediaURL))
 			}
 		}
