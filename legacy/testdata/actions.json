@@ -199,8 +199,8 @@
                 "fra": "Vous habitez toujours à @contact.city"
             },
             "media": {
-                "eng": "image/jpeg:bucket/test_en.jpg?a=@contact.age",
-                "fra": "image/jpeg:bucket/test_fr.jpg?a=@contact.age"
+                "eng": "bucket/test_en.jpg",
+                "fra": "image/jpeg:bucket/test_fr.jpg"
             },
             "quick_replies": [
                 {
@@ -222,7 +222,7 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "text": "Do you still live in @fields.city?",
             "attachments": [
-                "image/jpeg:https://myfiles.com/bucket/test_en.jpg?a=@fields.age"
+                "image:https://myfiles.com/bucket/test_en.jpg"
             ],
             "quick_replies": [
                 "Yes",
@@ -235,7 +235,7 @@
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
                     "attachments": [
-                        "image/jpeg:https://myfiles.com/bucket/test_fr.jpg?a=@fields.age"
+                        "image/jpeg:https://myfiles.com/bucket/test_fr.jpg"
                     ],
                     "quick_replies": [
                         "Oui",
@@ -387,8 +387,8 @@
                 "fra": "Vous habitez toujours à @contact.city"
             },
             "media": {
-                "eng": "image/jpeg:bucket/test_en.jpg?a=@contact.age",
-                "fra": "image/jpeg:bucket/test_fr.jpg?a=@contact.age"
+                "eng": "image/jpeg:http://foo.bar/bucket/test_en.jpg?a=@contact.age",
+                "fra": "image/jpeg:http://foo.bar/bucket/test_fr.jpg?a=@contact.age"
             },
             "contacts": [
                 {
@@ -422,7 +422,7 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "text": "Do you still live in @fields.city?",
             "attachments": [
-                "image/jpeg:https://myfiles.com/bucket/test_en.jpg?a=@fields.age"
+                "image/jpeg:http://foo.bar/bucket/test_en.jpg?a=@fields.age"
             ],
             "contacts": [
                 {
@@ -453,7 +453,7 @@
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
                     "attachments": [
-                        "image/jpeg:https://myfiles.com/bucket/test_fr.jpg?a=@fields.age"
+                        "image/jpeg:http://foo.bar/bucket/test_fr.jpg?a=@fields.age"
                     ],
                     "text": [
                         "Vous habitez toujours à @fields.city"
