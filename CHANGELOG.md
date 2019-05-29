@@ -1,3 +1,7 @@
+v0.41.2
+----------
+ * handle no media type in our migration
+
 v0.41.1
 ----------
  * Include node UUIDs in result infos returned from flow inspection
