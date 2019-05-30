@@ -1,3 +1,7 @@
+v0.41.3
+----------
+ * Handle missing ruleset types in legacy flows
+
 v0.41.2
 ----------
  * handle no media type in our migration
