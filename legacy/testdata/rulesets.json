@@ -1,5 +1,6 @@
 [
     {
+        "description": "standard wait for response with translated tests and categories",
         "legacy_ruleset": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
             "rules": [
@@ -128,6 +129,122 @@
                 }
             }
         },
+        "expected_ui": {
+            "type": "wait_for_response",
+            "position": {
+                "left": 100,
+                "top": 0
+            }
+        }
+    },
+    {
+        "description": "wait for response with null ruleset_type as sometimes found in older flows",
+        "legacy_ruleset": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+            "rules": [
+                {
+                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
+                    "test": {
+                        "test": {
+                            "eng": "yeah yes"
+                        },
+                        "type": "contains_any"
+                    },
+                    "category": {
+                        "eng": "Yes"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "destination_type": "A"
+                },
+                {
+                    "uuid": "633dfe67-988e-4190-a95f-70f477494032",
+                    "test": {
+                        "test": {
+                            "eng": "affirmative"
+                        },
+                        "type": "contains_any"
+                    },
+                    "category": {
+                        "eng": "Yes"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "destination_type": "A"
+                },
+                {
+                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                    "test": {
+                        "test": "true",
+                        "type": "true"
+                    },
+                    "category": {
+                        "eng": "Other"
+                    },
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "destination_type": "A"
+                }
+            ],
+            "ruleset_type": null,
+            "label": "Beer",
+            "operand": "@step.value",
+            "finished_key": null,
+            "response_type": "",
+            "y": 0,
+            "x": 100,
+            "config": {}
+        },
+        "expected_node": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+            "router": {
+                "type": "switch",
+                "wait": {
+                    "type": "msg"
+                },
+                "result_name": "Beer",
+                "categories": [
+                    {
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "name": "Yes",
+                        "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
+                    },
+                    {
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "name": "Other",
+                        "exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8"
+                    }
+                ],
+                "operand": "@input",
+                "cases": [
+                    {
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "yeah yes"
+                        ],
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
+                    {
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "affirmative"
+                        ],
+                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
+                ],
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+            },
+            "exits": [
+                {
+                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
+                    "destination_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
+                },
+                {
+                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
+                }
+            ]
+        },
+        "expected_localization": {},
         "expected_ui": {
             "type": "wait_for_response",
             "position": {
