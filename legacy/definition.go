@@ -588,6 +588,11 @@ func migrateRuleSet(lang utils.Language, r RuleSet, validDests map[flows.NodeUUI
 		}
 	}
 
+	// sometimes old flows don't have this set
+	if r.Type == "" {
+		r.Type = "wait_message"
+	}
+
 	switch r.Type {
 	case "subflow":
 		newActions = []flows.Action{
