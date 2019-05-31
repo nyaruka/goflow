@@ -1,3 +1,7 @@
+v0.41.4
+----------
+ * Check that numbers are actually valid in our has_phone test
+
 v0.41.3
 ----------
  * Handle missing ruleset types in legacy flows
