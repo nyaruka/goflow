@@ -690,6 +690,7 @@ func TestClone(t *testing.T) {
 		path string
 		uuid string
 	}{
+		{"testdata/clone_with_ui.json", "ee765ff2-96b0-440a-b108-393f613466bb"},
 		{"../../test/testdata/runner/two_questions.json", "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"},
 		{"../../test/testdata/runner/all_actions.json", "8ca44c09-791d-453a-9799-a70dd3303306"},
 		{"../../test/testdata/runner/router_tests.json", "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"},
@@ -731,6 +732,18 @@ func TestClone(t *testing.T) {
 				if u1 == u2 && depMappings[utils.UUID(u1)] != "" {
 					assert.Fail(t, "uuid", "cloned flow contains non-dependency UUID from original flow: %s", u1)
 				}
+			}
+		}
+
+		// if flow has a UI section, check UI node UUIDs correspond to real nodes
+		if len(clone.UI()) > 0 {
+			clonedUI, err := utils.JSONDecodeGeneric(clone.UI())
+			require.NoError(t, err)
+
+			nodeMap := clonedUI.(map[string]interface{})["nodes"].(map[string]interface{})
+
+			for nodeUUID := range nodeMap {
+				assert.NotNil(t, clone.GetNode(flows.NodeUUID(nodeUUID)), "UI has node with UUID %s that doesn't exist in flow", nodeUUID)
 			}
 		}
 	}
