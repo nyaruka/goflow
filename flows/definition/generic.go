@@ -48,19 +48,32 @@ func remapUUIDs(data map[string]interface{}, depMapping map[utils.UUID]utils.UUI
 	}
 
 	walkObjects(data, func(obj map[string]interface{}) {
-		for k, v := range obj {
-			if k == "uuid" || strings.HasSuffix(k, "_uuid") {
+		props := objectProperties(obj)
+
+		for _, p := range props {
+			v := obj[p]
+
+			if p == "uuid" || strings.HasSuffix(p, "_uuid") {
 				asString, isString := v.(string)
 				if isString {
-					obj[k] = replaceUUID(utils.UUID(asString))
+					obj[p] = replaceUUID(utils.UUID(asString))
 				}
-			} else if utils.IsUUIDv4(k) {
-				newKey := string(replaceUUID(utils.UUID(k)))
-				obj[newKey] = v
-				delete(obj, k)
+			} else if utils.IsUUIDv4(p) {
+				newProperty := string(replaceUUID(utils.UUID(p)))
+				obj[newProperty] = v
+				delete(obj, p)
 			}
 		}
 	})
+}
+
+// extract the property names from a generic JSON object
+func objectProperties(obj map[string]interface{}) []string {
+	props := make([]string, 0, len(obj))
+	for k := range obj {
+		props = append(props, k)
+	}
+	return props
 }
 
 // walks the given generic JSON invoking the given callback for each object found
