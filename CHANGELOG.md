@@ -1,3 +1,7 @@
+v0.41.5
+----------
+ * Fix cloning of UI sections
+
 v0.41.4
 ----------
  * Check that numbers are actually valid in our has_phone test
