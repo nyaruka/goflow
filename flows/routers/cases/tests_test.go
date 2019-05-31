@@ -317,6 +317,8 @@ func TestHasPhone(t *testing.T) {
 		expected string
 	}{
 		{"+250788123123", "", "+250788123123"},
+		{"u812111005611", "ID", "+62812111005611"}, // we try hard to find a number, but check it is valid, it is in this case for ID
+		{"oioas812111", "ID", ""},                  // in this case we also try hard, but the final result is not a valid ID number
 		{"+593979111111", "", "+593979111111"},
 		{"0788123123", "", "+250788123123"}, // uses environment default
 		{"0788123123", "RW", "+250788123123"},
@@ -324,10 +326,10 @@ func TestHasPhone(t *testing.T) {
 		{"+12065551212", "RW", "+12065551212"}, // if num has country code, doesn't need to match test country
 		{"12065551212", "US", "+12065551212"},
 		{"206 555 1212", "US", "+12065551212"},
-		{"+10001112222", "US", "+10001112222"},
+		{"+10001112222", "US", ""},
 		{"0815 1053 7962", "ID", "+6281510537962"}, // Indonesian numbers with 12 digits
-		{"0954 1053 7962", "ID", "+6295410537962"},
-		{"0811-1005-611", "ID", "+628111005611"}, // and with 11 digits
+		{"0954 1053 7962", "ID", ""},               // Invalid Indonesian number
+		{"0811-1005-611", "ID", "+628111005611"},   // Valid with 11 digits
 		{"10000", "US", ""},
 		{"12067799294", "BW", ""},
 	}

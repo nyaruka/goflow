@@ -557,7 +557,7 @@ func HasPhone(env utils.Environment, text types.XText, args ...types.XValue) typ
 		return FalseResult
 	}
 
-	if !phonenumbers.IsPossibleNumber(phone) {
+	if !phonenumbers.IsValidNumber(phone) {
 		return FalseResult
 	}
 
