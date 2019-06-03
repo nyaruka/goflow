@@ -1,3 +1,7 @@
+v0.41.6
+----------
+ * has_group can take optional second parameter which is group name.. used only in dependency inspection
+
 v0.41.5
 ----------
  * Fix cloning of UI sections
