@@ -963,7 +963,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 	case "in_group":
 		test := groupTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{string(test.Test.UUID)}
+		arguments = []string{string(test.Test.UUID), string(test.Test.Name)}
 
 	case "subflow":
 		newType = "has_only_text"

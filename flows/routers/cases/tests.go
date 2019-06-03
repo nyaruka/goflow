@@ -62,7 +62,7 @@ var XTESTS = map[string]types.XFunction{
 	"has_time":  functions.OneTextFunction(HasTime),
 	"has_phone": functions.InitialTextFunction(0, 1, HasPhone),
 	"has_email": functions.OneTextFunction(HasEmail),
-	"has_group": functions.TwoArgFunction(HasGroup),
+	"has_group": functions.ArgCountCheck(2, 3, HasGroup),
 
 	"has_state":    functions.OneTextFunction(HasState),
 	"has_district": HasDistrict,
@@ -166,14 +166,14 @@ func HasValue(env utils.Environment, value types.XValue) types.XValue {
 //   @(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> false
 //
 // @test has_group(contact, group_uuid)
-func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+func HasGroup(env utils.Environment, args ...types.XValue) types.XValue {
 	// is the first argument an array
-	array, xerr := types.ToXArray(env, arg1)
+	array, xerr := types.ToXArray(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
-	groupUUID, xerr := types.ToXText(env, arg2)
+	groupUUID, xerr := types.ToXText(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
