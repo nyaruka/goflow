@@ -282,7 +282,8 @@
                     "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
                     "type": "has_group",
                     "arguments": [
-                        "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                        "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "Testers"
                     ],
                     "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
                 }
@@ -312,10 +313,11 @@
         "inspection": {
             "templates": [
                 "@contact.groups",
-                "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "Testers"
             ],
             "dependencies": [
-                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=]"
+                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]"
             ],
             "results": [
                 {

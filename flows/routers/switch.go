@@ -55,15 +55,24 @@ func (c *Case) EnumerateTemplates(include flows.TemplateIncluder) {
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (c *Case) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+	groupRef := func(args []string) assets.Reference {
+		// if we have two args, the second is name
+		name := ""
+		if len(args) == 2 {
+			name = args[1]
+		}
+		return assets.NewGroupReference(assets.GroupUUID(args[0]), name)
+	}
+
 	// currently only the HAS_GROUP router test can produce a dependency
 	if c.Type == "has_group" && len(c.Arguments) > 0 {
-		include(assets.NewGroupReference(assets.GroupUUID(c.Arguments[0]), ""))
+		include(groupRef(c.Arguments))
 
 		// the group UUID might be different in different translations
 		for _, lang := range localization.Languages() {
 			arguments := localization.GetTranslations(lang).GetTextArray(c.UUID, "arguments")
 			if len(arguments) > 0 {
-				include(assets.NewGroupReference(assets.GroupUUID(arguments[0]), ""))
+				include(groupRef(arguments))
 			}
 		}
 	}

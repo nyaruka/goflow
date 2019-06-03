@@ -1539,7 +1539,8 @@
                 "cases": [
                     {
                         "arguments": [
-                            "ade39253-0371-4dde-9df4-95245fe6a3a8"
+                            "ade39253-0371-4dde-9df4-95245fe6a3a8",
+                            "Testers"
                         ],
                         "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "type": "has_group",
