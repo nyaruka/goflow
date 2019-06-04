@@ -704,7 +704,8 @@ func TestClone(t *testing.T) {
 		require.NoError(t, err)
 
 		depMappings := map[utils.UUID]utils.UUID{
-			utils.UUID(tc.uuid): "e0af9907-e0d3-4363-99c6-324ece7f628e", // the flow itself
+			utils.UUID(tc.uuid):                    "e0af9907-e0d3-4363-99c6-324ece7f628e", // the flow itself
+			"2aad21f6-30b7-42c5-bd7f-1b720c154817": "cd8a68c0-6673-4a02-98a0-7fb3ac788860", // group used in has_group test
 		}
 
 		clone := flow.Clone(depMappings)
@@ -726,6 +727,7 @@ func TestClone(t *testing.T) {
 		cloneUUIDs := utils.UUID4Regex.FindAllString(string(cloneJSON), -1)
 
 		assert.Equal(t, len(originalUUIDs), len(cloneUUIDs))
+		assert.NotContains(t, cloneUUIDs, []string{"2aad21f6-30b7-42c5-bd7f-1b720c154817"}) // group used in has_group test
 
 		for _, u1 := range originalUUIDs {
 			for _, u2 := range cloneUUIDs {

@@ -47,7 +47,7 @@ func remapUUIDs(data map[string]interface{}, depMapping map[utils.UUID]utils.UUI
 		return mapped
 	}
 
-	walkObjects(data, func(obj map[string]interface{}) {
+	objectCallback := func(obj map[string]interface{}) {
 		props := objectProperties(obj)
 
 		for _, p := range props {
@@ -64,7 +64,18 @@ func remapUUIDs(data map[string]interface{}, depMapping map[utils.UUID]utils.UUI
 				delete(obj, p)
 			}
 		}
-	})
+	}
+
+	arrayCallback := func(arr []interface{}) {
+		for i, v := range arr {
+			asString, isString := v.(string)
+			if isString && utils.IsUUIDv4(asString) {
+				arr[i] = replaceUUID(utils.UUID(asString))
+			}
+		}
+	}
+
+	walk(data, objectCallback, arrayCallback)
 }
 
 // extract the property names from a generic JSON object
@@ -76,18 +87,20 @@ func objectProperties(obj map[string]interface{}) []string {
 	return props
 }
 
-// walks the given generic JSON invoking the given callback for each object found
-func walkObjects(j interface{}, callback func(map[string]interface{})) {
+// walks the given generic JSON invoking the given callbacks for each thing found
+func walk(j interface{}, objectCallback func(map[string]interface{}), arrayCallback func([]interface{})) {
 	switch typed := j.(type) {
 	case map[string]interface{}:
-		callback(typed)
+		objectCallback(typed)
 
 		for _, v := range typed {
-			walkObjects(v, callback)
+			walk(v, objectCallback, arrayCallback)
 		}
 	case []interface{}:
+		arrayCallback(typed)
+
 		for _, v := range typed {
-			walkObjects(v, callback)
+			walk(v, objectCallback, arrayCallback)
 		}
 	}
 }
