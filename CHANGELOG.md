@@ -1,3 +1,7 @@
+v0.41.7
+----------
+ * Remapping UUIDs during cloning must include UUIDs which are values in arrays
+
 v0.41.6
 ----------
  * has_group can take optional second parameter which is group name.. used only in dependency inspection
