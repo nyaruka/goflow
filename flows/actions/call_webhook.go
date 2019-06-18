@@ -2,20 +2,18 @@ package actions
 
 import (
 	"net/http"
-	"regexp"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 
 	"github.com/pkg/errors"
+	"golang.org/x/net/http/httpguts"
 )
 
 func init() {
 	RegisterType(TypeCallWebhook, func() flows.Action { return &CallWebhookAction{} })
 }
-
-var headerNameRegex = regexp.MustCompile(`^[\w\-]+$`)
 
 // TypeCallWebhook is the type for the call webhook action
 const TypeCallWebhook string = "call_webhook"
@@ -68,7 +66,7 @@ func (a *CallWebhookAction) Validate() error {
 	}
 
 	for key := range a.Headers {
-		if !headerNameRegex.MatchString(key) {
+		if !httpguts.ValidHeaderFieldName(key) {
 			return errors.Errorf("header '%s' is not a valid HTTP header", key)
 		}
 	}

@@ -15,6 +15,7 @@ require (
 	github.com/sergi/go-diff v1.0.0
 	github.com/shopspring/decimal v0.0.0-20180319170823-2df3e6ddaf6e
 	github.com/stretchr/testify v1.2.1
+	golang.org/x/net v0.0.0-20180921000356-2f5d2388922f
 	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
 	golang.org/x/text v0.3.0
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
