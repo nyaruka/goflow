@@ -1,3 +1,7 @@
+v0.41.8
+----------
+ * Use std lib function to check HTTP headers
+
 v0.41.7
 ----------
  * Remapping UUIDs during cloning must include UUIDs which are values in arrays
