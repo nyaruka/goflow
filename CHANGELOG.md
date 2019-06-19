@@ -1,3 +1,8 @@
+v0.41.9
+----------
+ * NOOP if there are no rceipients for start_session and send_broadcast
+ * Update send_broadcast and start_session to accept a URN in legacy_vars
+
 v0.41.8
 ----------
  * Use std lib function to check HTTP headers
