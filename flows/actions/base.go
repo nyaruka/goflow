@@ -181,7 +181,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies
 }
 
-func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*assets.GroupReference, actionLegacyVars []string, logEvent flows.EventCallback) ([]urns.URN, []*flows.ContactReference, []*assets.GroupReference, error) {
+func (a *BaseAction) resolveRecipients(run flows.FlowRun, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*assets.GroupReference, actionLegacyVars []string, logEvent flows.EventCallback) ([]urns.URN, []*flows.ContactReference, []*assets.GroupReference, error) {
 	groupSet := run.Session().Assets().Groups()
 
 	// copy URNs
@@ -221,13 +221,20 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, actionURNs []ur
 			// next up we look for a group with a matching name
 			groupRefs = append(groupRefs, groupByName.Reference())
 		} else {
-			// if that fails, assume this is a phone number, and let the caller worry about validation
-			urn, err := urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, "", "")
-			if err != nil {
-				logEvent(events.NewErrorEvent(err))
-			} else {
+			// next up try it as a URN
+			urn := urns.URN(evaluatedLegacyVar)
+			if urn.Validate() == nil {
 				urn = urn.Normalize(string(run.Environment().DefaultCountry()))
 				urnList = append(urnList, urn)
+			} else {
+				// if that fails, assume this is a phone number, and let the caller worry about validation
+				urn, err := urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, "", "")
+				if err != nil {
+					logEvent(events.NewErrorEvent(err))
+				} else {
+					urn = urn.Normalize(string(run.Environment().DefaultCountry()))
+					urnList = append(urnList, urn)
+				}
 			}
 		}
 	}

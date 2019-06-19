@@ -37,7 +37,8 @@
             "legacy_vars": [
                 "@(\"\")",
                 "@contact.fields.gender",
-                "@(\"0788123123\")"
+                "@(\"0788123123\")",
+                "@contact.urn"
             ],
             "text": "Hi there!"
         },
@@ -74,7 +75,8 @@
                 "urns": [
                     "tel:+1234567890",
                     "tel:male",
-                    "tel:+250788123123"
+                    "tel:+250788123123",
+                    "tel:+12065551212"
                 ]
             }
         ],
@@ -83,7 +85,8 @@
                 "Hi there!",
                 "@(\"\")",
                 "@contact.fields.gender",
-                "@(\"0788123123\")"
+                "@(\"0788123123\")",
+                "@contact.urn"
             ],
             "dependencies": [
                 "field[key=gender,name=]",

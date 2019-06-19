@@ -56,7 +56,7 @@ func NewSendBroadcastAction(uuid flows.ActionUUID, text string, attachments []st
 
 // Execute runs this action
 func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, logEvent)
+	urnList, contactRefs, groupRefs, err := a.resolveRecipients(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, logEvent)
 	if err != nil {
 		return err
 	}
