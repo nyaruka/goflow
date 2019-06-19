@@ -638,6 +638,20 @@ If the given function takes more than one argument, you can pass additional argu
 @(foreach(array("the man", "fox", "jumped up"), word, 0)) → [the, fox, jumped]
 ```
 
+<a name="function:foreach_value"></a>
+
+## foreach_value(object, func, [args...])
+
+Creates a new object by applying `func` to each property value of `object`.
+
+If the given function takes more than one argument, you can pass additional arguments after the function.
+
+
+```objectivec
+@(foreach_value(object("a", "x", "b", "y"), upper)) → {a: X, b: Y}
+@(foreach_value(object("a", "hi there", "b", "good bye"), word, 1)) → {a: there, b: bye}
+```
+
 <a name="function:format"></a>
 
 ## format(value)

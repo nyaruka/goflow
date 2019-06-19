@@ -203,7 +203,7 @@ func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
 
 		// shortcuts to things on the current run
 		"contact": flows.Context(env, r.Contact()),
-		"results": flows.ContextFunc(env, r.Results().SimpleContext),
+		"results": flows.Context(env, r.Results()),
 		"urns":    urns,
 		"fields":  fields,
 		"webhook": r.lastWebhookResponse(),

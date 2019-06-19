@@ -239,6 +239,19 @@ func TestFunctions(t *testing.T) {
 
 		{"foreach", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xf("upper")}, xa(xs("A"), xs("B"), xs("C"))},
 		{"foreach", dmy, []types.XValue{xa(xs("the man"), xs("fox"), xs("jumped up")), xf("word"), xi(0)}, xa(xs("the"), xs("fox"), xs("jumped"))},
+		{"foreach", dmy, []types.XValue{ERROR, xf("upper")}, ERROR},
+		{"foreach", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), ERROR}, ERROR},
+		{"foreach", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xf("abs")}, ERROR},
+
+		{
+			"foreach_value",
+			dmy,
+			[]types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y")}), xf("upper")},
+			types.NewXObject(map[string]types.XValue{"a": xs("X"), "b": xs("Y")}),
+		},
+		{"foreach_value", dmy, []types.XValue{ERROR, xf("upper")}, ERROR},
+		{"foreach_value", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y")}), ERROR}, ERROR},
+		{"foreach_value", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y")}), xf("abs")}, ERROR},
 
 		{"format", dmy, []types.XValue{xn("1234")}, xs("1,234")},
 		{"format", dmy, []types.XValue{xd(utils.NewDate(2017, 6, 12))}, xs("12-06-2017")},

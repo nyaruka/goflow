@@ -427,6 +427,21 @@
         ]
     },
     {
+        "signature": "foreach_value(object, func, [args...])",
+        "summary": "Creates a new object by applying `func` to each property value of `object`.",
+        "detail": "If the given function takes more than one argument, you can pass additional arguments after the function.",
+        "examples": [
+            {
+                "template": "@(foreach_value(object(\"a\", \"x\", \"b\", \"y\"), upper))",
+                "output": "{a: X, b: Y}"
+            },
+            {
+                "template": "@(foreach_value(object(\"a\", \"hi there\", \"b\", \"good bye\"), word, 1))",
+                "output": "{a: there, b: bye}"
+            }
+        ]
+    },
+    {
         "signature": "format(value)",
         "summary": "Formats `value` according to its type.",
         "detail": "",
