@@ -63,7 +63,7 @@ func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XVal
 		"contact":     flows.Context(env, c.run.Contact()),
 		"urns":        urns,
 		"fields":      fields,
-		"results":     flows.ContextFunc(env, c.run.Results().SimpleContext),
+		"results":     flows.Context(env, c.run.Results()),
 	}
 }
 

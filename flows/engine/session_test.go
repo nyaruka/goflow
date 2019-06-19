@@ -98,11 +98,15 @@ var templateTests = []struct {
 	{"@(has_error(results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
 	{"@(count(results))", "4", ""},
 
-	{"@run.results.favorite_color", `[red]`, ""},
+	{"@run.results.favorite_color", `red`, ""},
+	{"@run.results.favorite_color.value", "red", ""},
 	{"@run.results.favorite_color.values", "[red]", ""},
 	{`@(run.results.favorite_color.values[0])`, `red`, ""},
+	{"@run.results.favorite_color.category", "Red", ""},
 	{"@run.results.favorite_color.categories", "[Red]", ""},
 	{`@(run.results.favorite_color.categories[0])`, `Red`, ""},
+	{"@run.results.favorite_color.category_localized", "Red", ""},
+	{"@run.results.favorite_color.categories_localized", "[Red]", ""},
 	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'"},
 	{"@(is_error(run.results.favorite_icecream))", "true", ""},
 	{"@(has_error(run.results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
@@ -234,43 +238,55 @@ func TestContextToJSON(t *testing.T) {
 				],
 				"results":{
 					"2factor":{
+						"category":"",
 						"categories":[""],
+						"category_localized":"",
 						"categories_localized":[""],
 						"created_on":"2018-04-11T13:24:30.123456Z",
 						"extra":null,
 						"input":"",
 						"name":"2Factor",
 						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"value":"34634624463525",
 						"values":["34634624463525"]
 					},
 					"favorite_color":{
+						"category":"Red",
 						"categories":["Red"],
+						"category_localized":"Red",
 						"categories_localized":["Red"],
 						"created_on":"2018-04-11T13:24:30.123456Z",
 						"extra":null,
 						"input":"",
 						"name":"Favorite Color",
 						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"value":"red",
 						"values":["red"]
 					},
 					"phone_number":{
+						"category":"",
 						"categories":[""],
+						"category_localized":"",
 						"categories_localized":[""],
 						"created_on":"2018-04-11T13:24:30.123456Z",
 						"extra":null,
 						"input":"",
 						"name":"Phone Number",
 						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"value":"+12344563452",
 						"values":["+12344563452"]
 					},
 					"webhook":{
+						"category":"Success",
 						"categories":["Success"],
+						"category_localized":"Success",
 						"categories_localized":["Success"],
 						"created_on":"2018-04-11T13:24:30.123456Z",
 						"extra":{"results":[{"state":"WA"},{"state":"IN"}]},
 						"input":"GET http://127.0.0.1:49992/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
 						"name":"webhook",
 						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"value":"200",
 						"values":["200"]
 					}
 				},
@@ -328,12 +344,16 @@ func TestContextToJSON(t *testing.T) {
 				"results": {
 					"age": {
 						"category": "Youth",
+						"categories": ["Youth"],
 						"category_localized": "Youth",
+						"categories_localized": ["Youth"],
 						"created_on": "2018-04-11T13:24:30.123456Z",
+						"extra": null,
 						"input": "",
 						"name": "Age",
 						"node_uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
-						"value": "23"
+						"value": "23",
+						"values": ["23"]
 					}
 				},
 				"run": {
@@ -380,21 +400,18 @@ func TestContextToJSON(t *testing.T) {
 						"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
 					},
 					"results": {
-						"age": {
-							"categories": [
-								"Youth"
-							],
-							"categories_localized": [
-								"Youth"
-							],
+						"age": {						
+							"category": "Youth",
+							"categories": ["Youth"],
+							"category_localized": "Youth",
+							"categories_localized": ["Youth"],
 							"created_on": "2018-04-11T13:24:30.123456Z",
 							"extra": null,
 							"input": "",
 							"name": "Age",
 							"node_uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
-							"values": [
-								"23"
-							]
+							"value": "23",
+							"values": ["23"]
 						}
 					},
 					"status": "completed",
@@ -456,12 +473,16 @@ func TestContextToJSON(t *testing.T) {
 				"results": {
 					"role": {
 						"category": "Reporter",
+						"categories": ["Reporter"],
 						"category_localized": "Reporter",
+						"categories_localized": ["Reporter"],
 						"created_on": "2000-01-01T00:00:00.000000Z",
+						"extra": null,
 						"input": "a reporter",
 						"name": "Role",
 						"node_uuid": "385cb848-5043-448e-9123-05cbcf26ad74",
-						"value": "reporter"
+						"value": "reporter",
+						"values": ["reporter"]
 					}
 				},
 				"run": {
@@ -498,20 +519,17 @@ func TestContextToJSON(t *testing.T) {
 					},
 					"results": {
 						"role": {
-							"categories": [
-								"Reporter"
-							],
-							"categories_localized": [
-								"Reporter"
-							],
+							"category": "Reporter",
+							"categories": ["Reporter"],
+							"category_localized": "Reporter",
+							"categories_localized": ["Reporter"],
 							"created_on": "2000-01-01T00:00:00.000000Z",
 							"extra": null,
 							"input": "a reporter",
 							"name": "Role",
 							"node_uuid": "385cb848-5043-448e-9123-05cbcf26ad74",
-							"values": [
-								"reporter"
-							]
+							"value": "reporter",
+							"values": ["reporter"]
 						}
 					},
 					"status": "active",

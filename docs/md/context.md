@@ -160,7 +160,7 @@ Examples:
 ## Result
 
 Describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly
-created by a [set_run_result](#action:set_run_result) action.It renders as its value in a template, and has the following
+created by a [set_run_result](#action:set_run_result) action. It renders as its value in a template, and has the following
 properties which can be accessed:
 
  * `value` the value of the result
@@ -168,6 +168,7 @@ properties which can be accessed:
  * `category_localized` the localized category of the result
  * `input` the input associated with the result
  * `node_uuid` the UUID of the node where the result was created
+ * `extra` any additional data associated with this result
  * `created_on` the time when the result was created
 
 Examples:

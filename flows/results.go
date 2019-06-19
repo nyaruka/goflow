@@ -12,7 +12,7 @@ import (
 )
 
 // Result describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly
-// created by a [set_run_result](#action:set_run_result) action.It renders as its value in a template, and has the following
+// created by a [set_run_result](#action:set_run_result) action. It renders as its value in a template, and has the following
 // properties which can be accessed:
 //
 //  * `value` the value of the result
@@ -20,6 +20,7 @@ import (
 //  * `category_localized` the localized category of the result
 //  * `input` the input associated with the result
 //  * `node_uuid` the UUID of the node where the result was created
+//  * `extra` any additional data associated with this result
 //  * `created_on` the time when the result was created
 //
 // Examples:
@@ -63,34 +64,18 @@ func (r *Result) Context(env utils.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
-		"__default__":          types.NewXArray(types.NewXText(r.Value)),
+		"__default__":          types.NewXText(r.Value),
 		"name":                 types.NewXText(r.Name),
+		"value":                types.NewXText(r.Value),
 		"values":               types.NewXArray(types.NewXText(r.Value)),
+		"category":             types.NewXText(r.Category),
 		"categories":           types.NewXArray(types.NewXText(r.Category)),
+		"category_localized":   types.NewXText(categoryLocalized),
 		"categories_localized": types.NewXArray(types.NewXText(categoryLocalized)),
 		"input":                types.NewXText(r.Input),
 		"extra":                types.JSONToXValue(r.Extra),
 		"node_uuid":            types.NewXText(string(r.NodeUUID)),
 		"created_on":           types.NewXDateTime(r.CreatedOn),
-	}
-}
-
-// SimpleContext returns a simpler representation of this result exposed at @results.x
-func (r *Result) SimpleContext(env utils.Environment) map[string]types.XValue {
-	categoryLocalized := r.CategoryLocalized
-	if categoryLocalized == "" {
-		categoryLocalized = r.Category
-	}
-
-	return map[string]types.XValue{
-		"__default__":        types.NewXText(r.Value),
-		"name":               types.NewXText(r.Name),
-		"value":              types.NewXText(r.Value),
-		"category":           types.NewXText(r.Category),
-		"category_localized": types.NewXText(categoryLocalized),
-		"input":              types.NewXText(r.Input),
-		"node_uuid":          types.NewXText(string(r.NodeUUID)),
-		"created_on":         types.NewXDateTime(r.CreatedOn),
 	}
 }
 
@@ -128,17 +113,6 @@ func (r Results) Context(env utils.Environment) map[string]types.XValue {
 
 	for k, v := range r {
 		entries[k] = Context(env, v)
-	}
-	return entries
-}
-
-// SimpleContext returns a simpler representation of these results exposed at @results
-func (r Results) SimpleContext(env utils.Environment) map[string]types.XValue {
-	entries := make(map[string]types.XValue, len(r)+1)
-	entries["__default__"] = types.NewXText(r.format())
-
-	for k, v := range r {
-		entries[k] = ContextFunc(env, v.SimpleContext)
 	}
 	return entries
 }
