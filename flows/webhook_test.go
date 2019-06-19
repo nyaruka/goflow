@@ -227,42 +227,30 @@ func TestLegacyWebhookPayload(t *testing.T) {
 		"results": {
 			"2factor": {
 				"category": "",
-				"categories": [""],
 				"category_localized": "",
-				"categories_localized": [""],
 				"created_on": "2018-07-06T12:30:37.123456Z",
-				"extra": null,
 				"input": "",
 				"name": "2Factor",
 				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"value": "34634624463525",
-				"values": ["34634624463525"]
+				"value": "34634624463525"
 			},
 			"favorite_color": {
 				"category": "Red",
-				"categories": ["Red"],
 				"category_localized": "Red",
-				"categories_localized": ["Red"],
 				"created_on": "2018-07-06T12:30:33.123456Z",
-				"extra": null,
 				"input": "",
 				"name": "Favorite Color",
 				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"value": "red",
-				"values": ["red"]
+				"value": "red"
 			},
 			"phone_number": {
 				"category": "",
-				"categories": [""],
 				"category_localized": "",
-				"categories_localized": [""],
 				"created_on": "2018-07-06T12:30:29.123456Z",
-				"extra": null,
 				"input": "",
 				"name": "Phone Number",
 				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"value": "+12344563452",
-				"values": ["+12344563452"]
+				"value": "+12344563452"
 			}
 		},
 		"run": {

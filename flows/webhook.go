@@ -20,7 +20,7 @@ var LegacyWebhookPayload = `@(json(object(
   "contact", object("uuid", contact.uuid, "name", contact.name, "urn", contact.urn),
   "flow", run.flow,
   "path", run.path,
-  "results", results,
+  "results", foreach_value(results, extract_object, "category", "category_localized", "created_on", "input", "name", "node_uuid", "value"),
   "run", object("uuid", run.uuid, "created_on", run.created_on),
   "input", if(
     input,

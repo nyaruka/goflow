@@ -118,6 +118,7 @@ func init() {
 		"extract":        TwoArgFunction(Extract),
 		"extract_object": ArgCountCheck(2, -1, ExtractObject),
 		"foreach":        ArgCountCheck(2, -1, ForEach),
+		"foreach_value":  ArgCountCheck(2, -1, ForEachValue),
 	}
 
 	for name, fn := range builtin {
@@ -1925,6 +1926,44 @@ func ForEach(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	return types.NewXArray(result...)
+}
+
+// ForEachValue creates a new object by applying `func` to each property value of `object`.
+//
+// If the given function takes more than one argument, you can pass additional arguments after the function.
+//
+//   @(foreach_value(object("a", "x", "b", "y"), upper)) -> {a: X, b: Y}
+//   @(foreach_value(object("a", "hi there", "b", "good bye"), word, 1)) -> {a: there, b: bye}
+//
+// @function foreach_value(object, func, [args...])
+func ForEachValue(env utils.Environment, args ...types.XValue) types.XValue {
+	object, xerr := types.ToXObject(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	function, isFunction := args[1].(types.XFunction)
+	if !isFunction {
+		return types.NewXErrorf("requires an function as its second argument")
+	}
+
+	otherArgs := args[2:]
+
+	props := object.Properties()
+	result := make(map[string]types.XValue, len(props))
+
+	for _, prop := range props {
+		oldItem, _ := object.Get(prop)
+		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
+
+		newItem := Call(env, function.Describe(), function, funcArgs)
+		if types.IsXError(newItem) {
+			return newItem
+		}
+		result[prop] = newItem
+	}
+
+	return types.NewXObject(result)
 }
 
 // LegacyAdd simulates our old + operator, which operated differently based on whether
