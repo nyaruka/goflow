@@ -15,6 +15,22 @@
         "validation_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
     },
     {
+        "description": "NOOP if no recipients",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "send_broadcast",
+            "text": "Hi there!"
+        },
+        "events": [],
+        "inspection": {
+            "templates": [
+                "Hi there!"
+            ],
+            "dependencies": [],
+            "results": []
+        }
+    },
+    {
         "description": "Broadcast created event for the message",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

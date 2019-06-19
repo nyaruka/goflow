@@ -76,7 +76,10 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 		}
 	}
 
-	logEvent(events.NewBroadcastCreatedEvent(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
+	// if we have any recipients, log an event
+	if len(urnList) > 0 || len(contactRefs) > 0 || len(groupRefs) > 0 {
+		logEvent(events.NewBroadcastCreatedEvent(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
+	}
 
 	return nil
 }

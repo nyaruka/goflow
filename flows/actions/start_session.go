@@ -65,7 +65,10 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return err
 	}
 
-	logEvent(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
+	// if we have any recipients, log an event
+	if len(urnList) > 0 || len(contactRefs) > 0 || len(groupRefs) > 0 {
+		logEvent(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
+	}
 	return nil
 }
 
