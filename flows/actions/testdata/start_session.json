@@ -36,6 +36,25 @@
         "validation_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
     },
     {
+        "description": "NOOP if no recipients",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "start_session",
+            "flow": {
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Collect Age"
+            }
+        },
+        "events": [],
+        "inspection": {
+            "templates": [],
+            "dependencies": [
+                "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]"
+            ],
+            "results": []
+        }
+    },
+    {
         "description": "Session triggered event if new session can be triggered",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
