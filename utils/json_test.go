@@ -80,25 +80,6 @@ func TestJSONDecodeGeneric(t *testing.T) {
 	assert.Equal(t, map[string]interface{}{"foo": json.Number("456")}, asSlice[1])
 }
 
-func TestIsValidJSON(t *testing.T) {
-	assert.True(t, utils.IsValidJSON([]byte(`true`)))
-	assert.True(t, utils.IsValidJSON([]byte(`false`)))
-	assert.True(t, utils.IsValidJSON([]byte(`null`)))
-	assert.True(t, utils.IsValidJSON([]byte(`"abc"`)))
-	assert.True(t, utils.IsValidJSON([]byte(`123.456`)))
-	assert.True(t, utils.IsValidJSON([]byte(`{}`)))
-	assert.True(t, utils.IsValidJSON([]byte(`{"foo":"bar"}`)))
-	assert.True(t, utils.IsValidJSON([]byte(`[]`)))
-	assert.True(t, utils.IsValidJSON([]byte(`[1, "x"]`)))
-
-	assert.False(t, utils.IsValidJSON(nil))
-	assert.False(t, utils.IsValidJSON([]byte(`abc`)))
-	assert.False(t, utils.IsValidJSON([]byte(`{`)))
-	assert.False(t, utils.IsValidJSON([]byte(`{}xx`)))
-	assert.False(t, utils.IsValidJSON([]byte(`{foo:"bar"}`)))
-	assert.False(t, utils.IsValidJSON([]byte(`{0:"bar"}`)))
-}
-
 func TestReadTypeFromJSON(t *testing.T) {
 	_, err := utils.ReadTypeFromJSON([]byte(`{}`))
 	assert.EqualError(t, err, "field 'type' is required")
