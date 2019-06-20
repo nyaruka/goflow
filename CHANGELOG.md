@@ -1,3 +1,8 @@
+v0.41.10
+----------
+ * Add foreach_value function to allow us to keep legacy webhook payloads the same
+ * Make @results and @run.results the same
+
 v0.41.9
 ----------
  * NOOP if there are no rceipients for start_session and send_broadcast
