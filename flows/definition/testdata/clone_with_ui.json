@@ -78,7 +78,7 @@
           ],
           "router": {
             "type": "switch",
-            "operand": "@child.run.status",
+            "operand": "@child.status",
             "cases": [
               {
                 "uuid": "dc807281-709c-4f12-b1ca-8da079da21d4",
