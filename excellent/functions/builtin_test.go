@@ -423,6 +423,7 @@ func TestFunctions(t *testing.T) {
 		{"parse_datetime", dmy, []types.XValue{}, ERROR},
 
 		{"parse_json", dmy, []types.XValue{xs(`"hello"`)}, xs(`hello`)},
+		{"parse_json", dmy, []types.XValue{xs(`{a: b}`)}, ERROR},
 		{"parse_json", dmy, []types.XValue{ERROR}, ERROR},
 
 		{"percent", dmy, []types.XValue{xs(".54")}, xs("54%")},
