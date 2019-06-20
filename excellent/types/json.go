@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
 
@@ -20,7 +21,10 @@ func JSONToXValue(data []byte) XValue {
 		return NewXErrorf("invalid JSON")
 	}
 
-	val, valType, _, _ := jsonparser.Get(data)
+	val, valType, _, err := jsonparser.Get(data)
+	if err != nil {
+		panic(fmt.Sprintf("jsonparser errored parsing valid JSON: %s", err))
+	}
 
 	return jsonTypeToXValue(val, valType)
 }
