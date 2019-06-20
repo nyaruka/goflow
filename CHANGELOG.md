@@ -1,3 +1,8 @@
+v0.41.11
+----------
+ * parse_json should error for invalid JSON
+ * Switch to faster json.Valid for checking JSON validity
+
 v0.41.10
 ----------
  * Add foreach_value function to allow us to keep legacy webhook payloads the same
