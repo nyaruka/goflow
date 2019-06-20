@@ -7,7 +7,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 )
@@ -66,7 +65,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	}
 
 	// check the payload is valid JSON - it ends up in the session so needs to be valid
-	if !utils.IsValidJSON([]byte(payload)) {
+	if !json.Valid([]byte(payload)) {
 		return errors.Errorf("resthook payload evaluation produced invalid JSON: %s", payload)
 	}
 

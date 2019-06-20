@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
 
@@ -10,15 +11,21 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// JSONToXValue returns an X type from the given JSON
 func JSONToXValue(data []byte) XValue {
 	if len(data) == 0 {
 		return nil
 	}
 
+	if !json.Valid(data) {
+		return NewXErrorf("invalid JSON")
+	}
+
 	val, valType, _, err := jsonparser.Get(data)
 	if err != nil {
-		return NewXError(err)
+		panic(fmt.Sprintf("jsonparser errored parsing valid JSON: %s", err))
 	}
+
 	return jsonTypeToXValue(val, valType)
 }
 

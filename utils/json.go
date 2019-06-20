@@ -75,12 +75,6 @@ func JSONDecodeGeneric(data []byte) (interface{}, error) {
 	return asGeneric, decoder.Decode(&asGeneric)
 }
 
-// IsValidJSON determines whether the given bytes contain valid JSON, by trying to parse it
-func IsValidJSON(data []byte) bool {
-	var s interface{}
-	return json.Unmarshal(data, &s) == nil
-}
-
 // Typed is an interface of objects that are marshalled as typed envelopes
 type Typed interface {
 	Type() string

@@ -250,11 +250,11 @@ func ExtractResponseBody(response string) json.RawMessage {
 
 	body := []byte(parts[1])
 
-	// try to parse body as JSON
-	if utils.IsValidJSON(body) {
-		// if that was successful, the body is valid JSON
+	// check if body is valid JSON and can be returned as is
+	if json.Valid(body) {
 		return body
 	}
+
 	// if not, treat body as text and encode as a JSON string
 	asString, _ := json.Marshal(string(body))
 	return asString
