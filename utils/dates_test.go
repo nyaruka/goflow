@@ -174,6 +174,10 @@ func TestTimeFromString(t *testing.T) {
 		{"it's 10:30:45.123456789 ok", utils.NewTimeOfDay(10, 30, 45, 123456789), false},
 		{"it's 10:30:45.123456789 pm ok", utils.NewTimeOfDay(22, 30, 45, 123456789), false},
 
+		// 12 am and 12 pm
+		{"it's 12:00 AM", utils.NewTimeOfDay(0, 0, 0, 0), false},
+		{"it's 12pm", utils.NewTimeOfDay(12, 0, 0, 0), false},
+
 		// fractional component can be any length
 		{"it's 10:30:45.123456789123456789 ok", utils.NewTimeOfDay(10, 30, 45, 123456789), false},
 		{"it's 10:30:45.1 ok", utils.NewTimeOfDay(10, 30, 45, 100000000), false},
