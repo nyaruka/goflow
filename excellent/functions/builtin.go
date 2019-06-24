@@ -1540,7 +1540,10 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 //
 // @function format(value)
 func Format(env utils.Environment, value types.XValue) types.XValue {
-	return types.NewXText(value.Format(env))
+	if !utils.IsNil(value) {
+		return types.NewXText(value.Format(env))
+	}
+	return types.XTextEmpty
 }
 
 // FormatDate formats `date` as text according to the given `format`.
