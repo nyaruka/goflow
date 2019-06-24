@@ -256,6 +256,7 @@ func TestFunctions(t *testing.T) {
 		{"format", dmy, []types.XValue{xn("1234")}, xs("1,234")},
 		{"format", dmy, []types.XValue{xd(utils.NewDate(2017, 6, 12))}, xs("12-06-2017")},
 		{"format", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xs("12-06-2017 16:56")},
+		{"format", dmy, []types.XValue{nil}, xs("")},
 
 		{"format_date", dmy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977")},
 		{"format_date", mdy, []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("06-23-1977")},
