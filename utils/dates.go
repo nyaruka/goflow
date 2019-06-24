@@ -213,9 +213,11 @@ func parseTime(str string) (bool, TimeOfDay) {
 		second, _ := strconv.Atoi(match[3])
 		ampm := strings.ToLower(match[5])
 
-		// do we have an AM/PM
-		if ampm == "pm" {
+		// do we have an AM/PM marker
+		if hour < 12 && ampm == "pm" {
 			hour += 12
+		} else if hour == 12 && ampm == "am" {
+			hour -= 12
 		}
 
 		nanosStr := match[4]
