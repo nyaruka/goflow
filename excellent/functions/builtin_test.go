@@ -555,6 +555,8 @@ func TestFunctions(t *testing.T) {
 		{"text_length", dmy, []types.XValue{}, ERROR},
 
 		{"time", dmy, []types.XValue{xs("10:30")}, xt(utils.NewTimeOfDay(10, 30, 0, 0))},
+		{"time", dmy, []types.XValue{xs("12:00 AM")}, xt(utils.NewTimeOfDay(0, 0, 0, 0))},
+		{"time", dmy, []types.XValue{xs("12:00pm")}, xt(utils.NewTimeOfDay(12, 0, 0, 0))},
 		{"time", dmy, []types.XValue{ERROR}, ERROR},
 
 		{"time_from_parts", dmy, []types.XValue{xi(14), xi(40), xi(15)}, xt(utils.NewTimeOfDay(14, 40, 15, 0))},
