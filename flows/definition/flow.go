@@ -353,7 +353,14 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
 	}
 
-	// TODO flow spec migrations
+	// run migrations if necessary
+	if header.SpecVersion.LessThan(CurrentSpecVersion) {
+		var err error
+		data, err = migrateDefinition(data, header.SpecVersion)
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	e := &flowEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
