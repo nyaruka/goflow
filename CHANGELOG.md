@@ -1,3 +1,8 @@
+v0.41.12
+----------
+ * Fix format excellent function when passed a nil
+ * Fix parsing of 12AM and 12PM times
+
 v0.41.11
 ----------
  * parse_json should error for invalid JSON
