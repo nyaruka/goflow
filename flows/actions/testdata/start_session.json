@@ -155,5 +155,71 @@
             ],
             "results": []
         }
+    },
+    {
+        "description": "Session triggered event with create contact if set on action",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "start_session",
+            "flow": {
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Collect Age"
+            },
+            "create_contact": true
+        },
+        "events": [
+            {
+                "create_contact": true,
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "flow": {
+                    "name": "Collect Age",
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                },
+                "run_summary": {
+                    "contact": {
+                        "created_on": "2018-06-20T11:40:30.123456789Z",
+                        "fields": {
+                            "gender": {
+                                "text": "Male"
+                            }
+                        },
+                        "groups": [
+                            {
+                                "name": "Testers",
+                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                            },
+                            {
+                                "name": "Males",
+                                "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
+                            }
+                        ],
+                        "language": "eng",
+                        "name": "Ryan Lewis",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                            "twitterid:54784326227#nyaruka"
+                        ],
+                        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+                    },
+                    "flow": {
+                        "name": "Action Tester",
+                        "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a"
+                    },
+                    "results": {},
+                    "status": "active",
+                    "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d"
+                },
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "session_triggered"
+            }
+        ],
+        "inspection": {
+            "templates": [],
+            "dependencies": [
+                "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]"
+            ],
+            "results": []
+        }
     }
 ]
