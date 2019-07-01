@@ -22,9 +22,11 @@ const TypeMsg string = "msg"
 // MsgInput is a message which can be used as input
 type MsgInput struct {
 	baseInput
+
 	urn         *flows.ContactURN
 	text        string
 	attachments []utils.Attachment
+	externalID  string
 }
 
 // NewMsgInput creates a new user input based on a message
@@ -40,6 +42,7 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 		urn:         flows.NewContactURN(msg.URN(), nil),
 		text:        msg.Text(),
 		attachments: msg.Attachments(),
+		externalID:  msg.ExternalID(),
 	}, nil
 }
 
@@ -65,6 +68,7 @@ func (i *MsgInput) Context(env utils.Environment) map[string]types.XValue {
 		"urn":         urn,
 		"text":        types.NewXText(i.text),
 		"attachments": types.NewXArray(attachments...),
+		"external_id": types.NewXText(i.externalID),
 	}
 }
 
@@ -90,6 +94,7 @@ type msgInputEnvelope struct {
 	URN         urns.URN           `json:"urn" validate:"omitempty,urn"`
 	Text        string             `json:"text"`
 	Attachments []utils.Attachment `json:"attachments,omitempty"`
+	ExternalID  string             `json:"external_id,omitempty"`
 }
 
 func readMsgInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Input, error) {
@@ -103,6 +108,7 @@ func readMsgInput(sessionAssets flows.SessionAssets, data json.RawMessage, missi
 		urn:         flows.NewContactURN(e.URN, nil),
 		text:        e.Text,
 		attachments: e.Attachments,
+		externalID:  e.ExternalID,
 	}
 
 	if err := i.unmarshal(sessionAssets, &e.baseInputEnvelope, missing); err != nil {
@@ -118,6 +124,7 @@ func (i *MsgInput) MarshalJSON() ([]byte, error) {
 		URN:         i.urn.URN(),
 		Text:        i.text,
 		Attachments: i.attachments,
+		ExternalID:  i.externalID,
 	}
 
 	i.marshal(&e.baseInputEnvelope)
