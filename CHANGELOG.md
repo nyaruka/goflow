@@ -1,3 +1,7 @@
+v0.41.13
+----------
+ * Fix index out of bounds panic when transation for item exists but has less strings than original
+
 v0.41.12
 ----------
  * Fix format excellent function when passed a nil
