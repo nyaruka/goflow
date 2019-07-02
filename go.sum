@@ -17,8 +17,6 @@ github.com/golang/protobuf v1.2.0 h1:P3YflyNX/ehuJFLhxviNdFxQPkGK5cDcApsge1SqnvM
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/nyaruka/gocommon v0.2.0 h1:1Le4Ok0Zp2RYULue0n4/02zL+1MrykN/C79HhirGeRw=
 github.com/nyaruka/gocommon v0.2.0/go.mod h1:ZrhaOKNc+kK1qWNuCuZivskT+ygLyIwu4KZVgcaC1mw=
-github.com/nyaruka/phonenumbers v1.0.35 h1:ZOXkPjBMVBTVwaNYyUGJHN1fCiwrcTgsY4SVeo0r/tk=
-github.com/nyaruka/phonenumbers v1.0.35/go.mod h1:Hhae+eypC1YKMaQlBJUCGZDzBrIHHNWhJX1xG/8sOC8=
 github.com/nyaruka/phonenumbers v1.0.41 h1:loSZuHtv1khLKGkWS0J2gnAxDqWr2TOrvX79DPZMPbY=
 github.com/nyaruka/phonenumbers v1.0.41/go.mod h1:Hhae+eypC1YKMaQlBJUCGZDzBrIHHNWhJX1xG/8sOC8=
 github.com/pkg/errors v0.8.0 h1:WdK/asTD0HN+q6hsWO3/vpuAkAr+tw6aNJNDFFf0+qw=

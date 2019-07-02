@@ -14,17 +14,20 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type boolOp string
+// BoolOperator is a boolean operator (and or or)
+type BoolOperator string
 
 const (
-	boolOpAnd boolOp = "and"
-	boolOpOr  boolOp = "or"
+	// BoolOperatorAnd is our constant for an AND operation
+	BoolOperatorAnd BoolOperator = "and"
+
+	// BoolOperatorOr is our constant for an OR operation
+	BoolOperatorOr BoolOperator = "or"
 )
 
 // QueryNode is the base for nodes in our query parse tree
 type QueryNode interface {
 	fmt.Stringer
-
 	Evaluate(utils.Environment, Queryable) (bool, error)
 }
 
@@ -34,6 +37,15 @@ type Condition struct {
 	comparator string
 	value      string
 }
+
+// Key returns the key for the field being queried
+func (c *Condition) Key() string { return c.key }
+
+// Comparator returns the type of comparison being made
+func (c *Condition) Comparator() string { return c.comparator }
+
+// Value returns the value being compared against
+func (c *Condition) Value() string { return c.value }
 
 // Evaluate evaluates this condition against the queryable contact
 func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
@@ -108,12 +120,18 @@ func (c *Condition) String() string {
 
 // BoolCombination is a AND or OR combination of multiple conditions
 type BoolCombination struct {
-	op       boolOp
+	op       BoolOperator
 	children []QueryNode
 }
 
+// Operator returns the type of boolean operator this combination is
+func (b *BoolCombination) Operator() BoolOperator { return b.op }
+
+// Children returns the children of this boolean combination
+func (b *BoolCombination) Children() []QueryNode { return b.children }
+
 // NewBoolCombination creates a new boolean combination
-func NewBoolCombination(op boolOp, children ...QueryNode) *BoolCombination {
+func NewBoolCombination(op BoolOperator, children ...QueryNode) *BoolCombination {
 	return &BoolCombination{op: op, children: children}
 }
 
@@ -122,7 +140,7 @@ func (b *BoolCombination) Evaluate(env utils.Environment, queryable Queryable) (
 	var childRes bool
 	var err error
 
-	if b.op == boolOpAnd {
+	if b.op == BoolOperatorAnd {
 		for _, child := range b.children {
 			if childRes, err = child.Evaluate(env, queryable); err != nil {
 				return false, err
@@ -156,6 +174,8 @@ func (b *BoolCombination) String() string {
 type ContactQuery struct {
 	root QueryNode
 }
+
+func (q *ContactQuery) Root() QueryNode { return q.root }
 
 func (q *ContactQuery) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
 	return q.root.Evaluate(env, queryable)
