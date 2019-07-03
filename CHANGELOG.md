@@ -1,3 +1,8 @@
+v0.41.15
+----------
+ * Tweak to goflow interfaces to allow introspection into contactql
+ * Include external ID of msg on input expression context
+
 v0.41.14
 ----------
  * Fix start_session when create_contact is true
