@@ -55,21 +55,21 @@ func (v *Visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 func (v *Visitor) VisitCombinationAnd(ctx *gen.CombinationAndContext) interface{} {
 	child1 := v.Visit(ctx.Expression(0)).(QueryNode)
 	child2 := v.Visit(ctx.Expression(1)).(QueryNode)
-	return NewBoolCombination(boolOpAnd, child1, child2)
+	return NewBoolCombination(BoolOperatorAnd, child1, child2)
 }
 
 // expression : expression expression
 func (v *Visitor) VisitCombinationImpicitAnd(ctx *gen.CombinationImpicitAndContext) interface{} {
 	child1 := v.Visit(ctx.Expression(0)).(QueryNode)
 	child2 := v.Visit(ctx.Expression(1)).(QueryNode)
-	return NewBoolCombination(boolOpAnd, child1, child2)
+	return NewBoolCombination(BoolOperatorAnd, child1, child2)
 }
 
 // expression : expression OR expression
 func (v *Visitor) VisitCombinationOr(ctx *gen.CombinationOrContext) interface{} {
 	child1 := v.Visit(ctx.Expression(0)).(QueryNode)
 	child2 := v.Visit(ctx.Expression(1)).(QueryNode)
-	return NewBoolCombination(boolOpOr, child1, child2)
+	return NewBoolCombination(BoolOperatorOr, child1, child2)
 }
 
 // expression : LPAREN expression RPAREN
