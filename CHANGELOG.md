@@ -1,3 +1,21 @@
+v0.41.15
+----------
+ * Tweak to goflow interfaces to allow introspection into contactql
+ * Include external ID of msg on input expression context
+
+v0.41.14
+----------
+ * Fix start_session when create_contact is true
+
+v0.41.13
+----------
+ * Fix index out of bounds panic when transation for item exists but has less strings than original
+
+v0.41.12
+----------
+ * Fix format excellent function when passed a nil
+ * Fix parsing of 12AM and 12PM times
+
 v0.41.11
 ----------
  * parse_json should error for invalid JSON

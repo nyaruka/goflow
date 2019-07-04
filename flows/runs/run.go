@@ -317,7 +317,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 
 			merged := make([]string, len(native))
 			for i := range native {
-				if textArray[i] != "" {
+				if i < len(textArray) && textArray[i] != "" {
 					merged[i] = textArray[i]
 				} else {
 					merged[i] = native[i]
