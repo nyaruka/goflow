@@ -139,7 +139,8 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil)
-	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
+	twitter1 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
+	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 
 	contact := flows.NewEmptyContact(sa, "Joe", utils.NilLanguage, nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
@@ -156,18 +157,19 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].URN())
 	assert.Nil(t, contact.URNs()[2].Channel())
 
-	contact.UpdatePreferredChannel(twitter)
+	// same only applies to URNs of other schemes if they don't have a channel already
+	contact.UpdatePreferredChannel(twitter1)
+	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
 
-	// same doesn't apply to URNs of other schemes
-	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].URN())
-	assert.Nil(t, contact.URNs()[2].Channel())
+	contact.UpdatePreferredChannel(twitter2)
+	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
 
-	// unless they are already associated with that channel
-	contact.URNs()[2].SetChannel(twitter)
-	contact.UpdatePreferredChannel(twitter)
+	// if they are already associated with the channel, then they become the preferred URN
+	contact.UpdatePreferredChannel(android)
+	contact.UpdatePreferredChannel(twitter1)
 
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter.UUID())), contact.URNs()[0].URN())
-	assert.Equal(t, twitter, contact.URNs()[0].Channel())
+	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
+	assert.Equal(t, twitter1, contact.URNs()[0].Channel())
 }
 
 func TestReevaluateDynamicGroups(t *testing.T) {

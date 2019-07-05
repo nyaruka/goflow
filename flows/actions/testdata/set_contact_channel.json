@@ -67,7 +67,7 @@
         ]
     },
     {
-        "description": "NOOP if channel isn't a tel channel because only tel URNs change affinity",
+        "description": "URNs changed event if channel is changed on non-tel URN without an existing channel",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "set_contact_channel",
@@ -76,7 +76,17 @@
                 "name": "Twitter Channel"
             }
         },
-        "events": []
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_urns_changed",
+                "urns": [
+                    "twitterid:54784326227?channel=8e21f093-99aa-413b-b55b-758b54308fcb#nyaruka",
+                    "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123"
+                ]
+            }
+        ]
     },
     {
         "description": "URNs changed event if channel is cleared",

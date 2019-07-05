@@ -331,6 +331,12 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 				urn.SetChannel(channel)
 			}
 
+			// If URN doesn't have a channel and is a scheme supported by the channel, then we can set its
+			// channel. This may result in unsendable URN/channel pairing but can't do much about that.
+			if urn.Channel() == nil && channel.SupportsScheme(urn.URN().Scheme()) {
+				urn.SetChannel(channel)
+			}
+
 			// move any URNs with this channel to the front of the list
 			if urn.Channel() == channel {
 				priorityURNs = append(priorityURNs, urn)
