@@ -1,3 +1,8 @@
+v0.41.16
+----------
+ * Allow setting channel on a non-tel URN if it doesn't have a channel
+ * Deprecate parent.run and child.run in the context and move those fields up one level
+
 v0.41.15
 ----------
  * Tweak to goflow interfaces to allow introspection into contactql
