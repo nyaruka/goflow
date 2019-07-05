@@ -43,7 +43,7 @@
                                 "exit_uuid": "d6ed7786-a703-48af-9005-217636db5844"
                             }
                         ],
-                        "operand": "@child.run.status",
+                        "operand": "@child.status",
                         "cases": [
                             {
                                 "type": "has_only_text",
