@@ -1,5 +1,10 @@
 package context
 
+import "regexp"
+
+// matches a context property description, e.g. groups:[]group -> the groups the contact belongs to
+var contextPropRegexp = regexp.MustCompile(`(\w+)\:(\[\])?(\w+)\s→\s([\w\s]+)`)
+
 // Type is a type that exists in the context
 type Type interface {
 	TypeName() string
@@ -46,6 +51,19 @@ func NewProperty(name, description string, typeRef string) *Property {
 // NewArrayProperty creates a new array property
 func NewArrayProperty(name, description string, typeRef string) *Property {
 	return &Property{Name: name, Description: description, TypeRef: typeRef, Array: true}
+}
+
+func ParseProperty(line string) *Property {
+	matches := contextPropRegexp.FindStringSubmatch(line)
+	if len(matches) != 5 {
+		return nil
+	}
+	return &Property{
+		Name:        matches[1],
+		Description: matches[4],
+		TypeRef:     matches[3],
+		Array:       len(matches[2]) > 0,
+	}
 }
 
 type staticType struct {

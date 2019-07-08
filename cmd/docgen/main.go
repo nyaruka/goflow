@@ -14,6 +14,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/nyaruka/goflow/cmd/docgen/context"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -23,6 +24,8 @@ const (
 	templateDir string = "cmd/docgen/templates"
 	outputDir          = "docs"
 )
+
+var ctx = context.NewContext()
 
 type urlResolver func(string, string) (string, error)
 
@@ -74,6 +77,12 @@ func GenerateDocs(baseDir string, outputDir string) error {
 			return errors.Wrap(err, "error copying resource")
 		}
 		fmt.Printf(" > Copied %s > %s\n", src, dst)
+	}
+
+	fmt.Println("Generating context map...")
+
+	if err := generateContextMap(outputDir, ctx); err != nil {
+		return errors.Wrap(err, "error generating context map")
 	}
 
 	fmt.Println("Generating function listing...")
@@ -254,11 +263,26 @@ func generateFunctionListing(outputDir string, funcItems []*documentedItem) erro
 	}
 
 	// print table of function signatures and summaries
-	fmt.Printf("|Summary                                      |Signature                                                                                           |\n")
-	fmt.Printf("|---------------------------------------------|----------------------------------------------------------------------------------------------------|\n")
-	for _, fn := range listings {
-		fmt.Printf("|%-45s|%-100s|\n", fn.Signature, fn.Summary)
+	//fmt.Printf("|Summary                                      |Signature                                                                                           |\n")
+	//fmt.Printf("|---------------------------------------------|----------------------------------------------------------------------------------------------------|\n")
+	//for _, fn := range listings {
+	//	fmt.Printf("|%-45s|%-100s|\n", fn.Signature, fn.Summary)
+	//}
+
+	return nil
+}
+
+func generateContextMap(outputDir string, ctx *context.Context) error {
+	// the dynamic types in the context aren't described in the code so we add them manually here
+	ctx.AddType(context.NewDynamicType("fields", "field-keys", context.NewProperty("{key}", "{key} for the contact", "any")))
+	ctx.AddType(context.NewDynamicType("results", "result-keys", context.NewProperty("{key}", "{key} value for the run", "result")))
+	ctx.AddType(context.NewDynamicType("urns", "urn-schemes", context.NewProperty("{key}", "the {key} URN for the contact", "text")))
+
+	if err := ctx.Validate(); err != nil {
+		return err
 	}
 
+	marshaled, _ := utils.JSONMarshalPretty(ctx)
+	ioutil.WriteFile(path.Join(outputDir, "context.json"), marshaled, 0755)
 	return nil
 }

@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/cmd/docgen/context"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -104,25 +105,28 @@ func renderOperatorDoc(output *strings.Builder, item *documentedItem, session fl
 }
 
 func renderContextDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
-	if len(item.examples) == 0 {
-		return errors.Errorf("no examples found for context item %s/%s", item.tagValue, item.typeName)
+	// examples are actually property descriptors for context items
+	properties := make([]*context.Property, len(item.examples))
+	for i, propDesc := range item.examples {
+		prop := context.ParseProperty(propDesc)
+		if prop == nil {
+			return errors.Errorf("invalid format for property description \"%s\"", propDesc)
+		}
+		properties[i] = prop
 	}
 
-	// check the examples
-	for _, ex := range item.examples {
-		if err := checkExample(session, ex); err != nil {
-			return err
-		}
+	if item.tagValue == "root" {
+		ctx.SetRoot(properties)
+	} else {
+		ctx.AddType(context.NewStaticType(item.tagValue, properties))
 	}
 
 	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", item.tagValue))
 	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
-	output.WriteString(strings.Join(item.description, "\n"))
-	output.WriteString("\n")
-	output.WriteString("```objectivec\n")
-	output.WriteString(strings.Join(item.examples, "\n"))
-	output.WriteString("\n")
-	output.WriteString("```\n")
+	for _, p := range properties {
+		typeLink := fmt.Sprintf("[%s](#context:%s)", p.TypeRef, p.TypeRef)
+		output.WriteString(fmt.Sprintf(" * `%s` %s (%s)\n", p.Name, p.Description, typeLink))
+	}
 	output.WriteString("\n")
 	return nil
 }

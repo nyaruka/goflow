@@ -1,0 +1,205 @@
+{
+    "types": [
+        {
+            "type": "channel",
+            "properties": [
+                {
+                    "name": "__default__",
+                    "description": "the name of the channel",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "uuid",
+                    "description": "the UUID of the channel",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "name",
+                    "description": "the name of the channel",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "address",
+                    "description": "the address of the channel",
+                    "type_ref": "text"
+                }
+            ]
+        },
+        {
+            "type": "contact",
+            "properties": [
+                {
+                    "name": "__default__",
+                    "description": "the name or URN of the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "uuid",
+                    "description": "the UUID of the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "id",
+                    "description": "the numeric ID of the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "first_name",
+                    "description": "the first name of the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "name",
+                    "description": "the name of the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "language",
+                    "description": "the language of the contact as 3",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "created_on",
+                    "description": "the creation date of the contact",
+                    "type_ref": "datetime"
+                },
+                {
+                    "name": "urns",
+                    "description": "the URNs belonging to the contact",
+                    "type_ref": "text",
+                    "array": true
+                },
+                {
+                    "name": "groups",
+                    "description": "the groups the contact belongs to",
+                    "type_ref": "group",
+                    "array": true
+                },
+                {
+                    "name": "fields",
+                    "description": "the custom field values of the contact",
+                    "type_ref": "fields"
+                },
+                {
+                    "name": "channel",
+                    "description": "the preferred channel of the contact",
+                    "type_ref": "channel"
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "properties": [
+                {
+                    "name": "uuid",
+                    "description": "the UUID of the group",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "name",
+                    "description": "the name of the group",
+                    "type_ref": "text"
+                }
+            ]
+        },
+        {
+            "type": "result",
+            "properties": [
+                {
+                    "name": "__default__",
+                    "description": "the value of the result",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "name",
+                    "description": "the name of the result",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "value",
+                    "description": "the value of the result",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "category",
+                    "description": "the category of the result",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "category_localized",
+                    "description": "the localized category of the result",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "input",
+                    "description": "the input of the result",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "extra",
+                    "description": "the extra data of the result such as a webhook response",
+                    "type_ref": "any"
+                },
+                {
+                    "name": "node_uuid",
+                    "description": "the UUIF of the node in the flow that generated the result",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "created_on",
+                    "description": "the creation date of the result",
+                    "type_ref": "datetime"
+                }
+            ]
+        },
+        {
+            "type": "fields",
+            "source": "field-keys",
+            "property_template": {
+                "name": "{key}",
+                "description": "{key} for the contact",
+                "type_ref": "any"
+            }
+        },
+        {
+            "type": "results",
+            "source": "result-keys",
+            "property_template": {
+                "name": "{key}",
+                "description": "{key} value for the run",
+                "type_ref": "result"
+            }
+        },
+        {
+            "type": "urns",
+            "source": "urn-schemes",
+            "property_template": {
+                "name": "{key}",
+                "description": "the {key} URN for the contact",
+                "type_ref": "text"
+            }
+        }
+    ],
+    "root": [
+        {
+            "name": "contact",
+            "description": "the current contact",
+            "type_ref": "contact"
+        },
+        {
+            "name": "fields",
+            "description": "the current contact custom fields values",
+            "type_ref": "fields"
+        },
+        {
+            "name": "urns",
+            "description": "the current contact URN values",
+            "type_ref": "urns"
+        },
+        {
+            "name": "results",
+            "description": "the current run results",
+            "type_ref": "results"
+        }
+    ]
+}

@@ -184,7 +184,14 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 
 func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
-// Context returns the overall context for expression evaluation
+// RootContext returns the root context for expression evaluation
+//
+//   contact:contact -> the current contact
+//   fields:fields -> the current contact custom fields values
+//   urns:urns -> the current contact URN values
+//   results:results -> the current run results
+//
+// @context root
 func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if r.Contact() != nil {

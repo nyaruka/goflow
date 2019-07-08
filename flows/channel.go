@@ -10,22 +10,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// Channel represents a means for sending and receiving input during a flow run. It renders as its name in a template,
-// and has the following properties which can be accessed:
-//
-//  * `uuid` the UUID of the channel
-//  * `name` the name of the channel
-//  * `address` the address of the channel
-//
-// Examples:
-//
-//   @contact.channel -> My Android Phone
-//   @contact.channel.name -> My Android Phone
-//   @contact.channel.address -> +12345671111
-//   @input.channel.uuid -> 57f1078f-88aa-46f4-a59a-948a5739c03d
-//   @(json(contact.channel)) -> {"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"}
-//
-// @context channel
+// Channel represents a means for sending and receiving input during a flow run
 type Channel struct {
 	assets.Channel
 }
@@ -70,6 +55,13 @@ func (c *Channel) HasParent() bool {
 }
 
 // Context returns the properties available in expressions
+//
+//   __default__:text -> the name of the channel
+//   uuid:text -> the UUID of the channel
+//   name:text -> the name of the channel
+//   address:text -> the address of the channel
+//
+// @context channel
 func (c *Channel) Context(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"__default__": types.NewXText(c.Name()),

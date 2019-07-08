@@ -29,7 +29,7 @@ var docSets = []struct {
 	{[]string{"excellent/operators"}, "operator", renderOperatorDoc},
 	{[]string{"excellent/functions"}, "function", renderFunctionDoc},
 	{[]string{"assets"}, "asset", renderAssetDoc},
-	{[]string{"flows"}, "context", renderContextDoc},
+	{[]string{"flows", "flows/runs"}, "context", renderContextDoc},
 	{[]string{"flows/routers/cases"}, "test", renderFunctionDoc},
 	{[]string{"flows/actions"}, "action", renderActionDoc},
 	{[]string{"flows/events"}, "event", renderEventDoc},
@@ -127,10 +127,15 @@ func findDocumentedItems(baseDir string, searchDir string, tag string) ([]*docum
 	tag = "@" + tag
 
 	for _, f := range pkgs {
-		p := doc.New(f, "./", 0)
+		p := doc.New(f, "./", doc.AllDecls)
 		for _, t := range p.Types {
 			if strings.Contains(t.Doc, tag) {
 				documentedItems = append(documentedItems, parseDocString(tag, t.Doc, t.Name))
+			}
+			for _, m := range t.Methods {
+				if strings.Contains(m.Doc, tag) {
+					documentedItems = append(documentedItems, parseDocString(tag, m.Doc, m.Name))
+				}
 			}
 		}
 		for _, t := range p.Funcs {
