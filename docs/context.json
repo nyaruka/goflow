@@ -158,6 +158,11 @@
                     "array": true
                 },
                 {
+                    "name": "urn",
+                    "description": "the preferred URN of the contact",
+                    "type_ref": "text"
+                },
+                {
                     "name": "groups",
                     "description": "the groups the contact belongs to",
                     "type_ref": "group",
@@ -176,6 +181,31 @@
             ]
         },
         {
+            "type": "flow",
+            "properties": [
+                {
+                    "name": "__default__",
+                    "description": "the name of the flow",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "uuid",
+                    "description": "the UUID of the flow",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "name",
+                    "description": "the name of the flow",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "revision",
+                    "description": "the revision number of the flow",
+                    "type_ref": "text"
+                }
+            ]
+        },
+        {
             "type": "group",
             "properties": [
                 {
@@ -186,6 +216,92 @@
                 {
                     "name": "name",
                     "description": "the name of the group",
+                    "type_ref": "text"
+                }
+            ]
+        },
+        {
+            "type": "input",
+            "properties": [
+                {
+                    "name": "__default__",
+                    "description": "the text and attachments of the input",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "uuid",
+                    "description": "the UUID of the input",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "created_on",
+                    "description": "the creation date of the input",
+                    "type_ref": "datetime"
+                },
+                {
+                    "name": "channel",
+                    "description": "the channel that the input was received on",
+                    "type_ref": "channel"
+                },
+                {
+                    "name": "urn",
+                    "description": "the contact URN that the input was received on",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "text",
+                    "description": "the text part of the input",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "attachments",
+                    "description": "any attachments on the input",
+                    "type_ref": "text",
+                    "array": true
+                },
+                {
+                    "name": "external_id",
+                    "description": "the external ID of the input",
+                    "type_ref": "text"
+                }
+            ]
+        },
+        {
+            "type": "related_run",
+            "properties": [
+                {
+                    "name": "uuid",
+                    "description": "the UUID of the run",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "contact",
+                    "description": "the contact of the run",
+                    "type_ref": "contact"
+                },
+                {
+                    "name": "flow",
+                    "description": "the flow of the run",
+                    "type_ref": "flow"
+                },
+                {
+                    "name": "fields",
+                    "description": "the custom fields values of the run",
+                    "type_ref": "fields"
+                },
+                {
+                    "name": "urns",
+                    "description": "the URN values of the run",
+                    "type_ref": "urns"
+                },
+                {
+                    "name": "results",
+                    "description": "the results saved by the run",
+                    "type_ref": "results"
+                },
+                {
+                    "name": "status",
+                    "description": "the current status of the run",
                     "type_ref": "text"
                 }
             ]
@@ -239,6 +355,136 @@
                     "type_ref": "datetime"
                 }
             ]
+        },
+        {
+            "type": "run",
+            "properties": [
+                {
+                    "name": "uuid",
+                    "description": "the UUID of the run",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "contact",
+                    "description": "the contact of the run",
+                    "type_ref": "contact"
+                },
+                {
+                    "name": "flow",
+                    "description": "the flow of the run",
+                    "type_ref": "flow"
+                },
+                {
+                    "name": "status",
+                    "description": "the current status of the run",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "results",
+                    "description": "the results saved by the run",
+                    "type_ref": "results"
+                },
+                {
+                    "name": "created_on",
+                    "description": "the creation date of the run",
+                    "type_ref": "datetime"
+                },
+                {
+                    "name": "exited_on",
+                    "description": "the exit date of the run",
+                    "type_ref": "datetime"
+                }
+            ]
+        },
+        {
+            "type": "trigger",
+            "properties": [
+                {
+                    "name": "type",
+                    "description": "the type of trigger that started this session",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "params",
+                    "description": "the parameters passed to the trigger",
+                    "type_ref": "any"
+                }
+            ]
+        },
+        {
+            "type": "trigger",
+            "properties": [
+                {
+                    "name": "type",
+                    "description": "the type of trigger that started this session",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "params",
+                    "description": "the parameters passed to the trigger",
+                    "type_ref": "any"
+                }
+            ]
+        },
+        {
+            "type": "trigger",
+            "properties": [
+                {
+                    "name": "type",
+                    "description": "the type of trigger that started this session",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "params",
+                    "description": "the parameters passed to the trigger",
+                    "type_ref": "any"
+                }
+            ]
+        },
+        {
+            "type": "trigger",
+            "properties": [
+                {
+                    "name": "type",
+                    "description": "the type of trigger that started this session",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "params",
+                    "description": "the parameters passed to the trigger",
+                    "type_ref": "any"
+                }
+            ]
+        },
+        {
+            "type": "trigger",
+            "properties": [
+                {
+                    "name": "type",
+                    "description": "the type of trigger that started this session",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "params",
+                    "description": "the parameters passed to the trigger",
+                    "type_ref": "any"
+                }
+            ]
+        },
+        {
+            "type": "trigger",
+            "properties": [
+                {
+                    "name": "type",
+                    "description": "the type of trigger that started this session",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "params",
+                    "description": "the parameters passed to the trigger",
+                    "type_ref": "any"
+                }
+            ]
         }
     ],
     "root": [
@@ -249,18 +495,48 @@
         },
         {
             "name": "fields",
-            "description": "the current contact custom fields values",
+            "description": "the custom field values of the current contact",
             "type_ref": "fields"
         },
         {
             "name": "urns",
-            "description": "the current contact URN values",
+            "description": "the URN values of the current contact",
             "type_ref": "urns"
         },
         {
             "name": "results",
             "description": "the current run results",
             "type_ref": "results"
+        },
+        {
+            "name": "input",
+            "description": "the current input from the contact",
+            "type_ref": "input"
+        },
+        {
+            "name": "run",
+            "description": "the current run",
+            "type_ref": "run"
+        },
+        {
+            "name": "child",
+            "description": "the last child run",
+            "type_ref": "related_run"
+        },
+        {
+            "name": "parent",
+            "description": "the parent of the run",
+            "type_ref": "related_run"
+        },
+        {
+            "name": "webhook",
+            "description": "the parsed JSON response of the last webhook call",
+            "type_ref": "any"
+        },
+        {
+            "name": "trigger",
+            "description": "the trigger that started this session",
+            "type_ref": "trigger"
         }
     ]
 }

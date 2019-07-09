@@ -216,6 +216,7 @@ func (c *Contact) Format(env utils.Environment) string {
 //   language:text -> the language of the contact as 3-letter ISO code
 //   created_on:datetime -> the creation date of the contact
 //   urns:[]text -> the URNs belonging to the contact
+//   urn:text -> the preferred URN of the contact
 //   groups:[]group -> the groups the contact belongs to
 //   fields:fields -> the custom field values of the contact
 //   channel:channel -> the preferred channel of the contact

@@ -49,7 +49,17 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 	return &relatedRunContext{run: run}
 }
 
-// RootContext returns the properties available in expressions for @parent and @child
+// Context returns the properties available in expressions for @parent and @child
+//
+//   uuid:text -> the UUID of the run
+//   contact:contact -> the contact of the run
+//   flow:flow -> the flow of the run
+//   fields:fields -> the custom fields values of the run's contact
+//   urns:urns -> the URN values of the run's contact
+//   results:results -> the results saved by the run
+//   status:text -> the current status of the run
+//
+// @context related_run
 func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if c.run.Contact() != nil {
