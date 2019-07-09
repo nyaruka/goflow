@@ -7,7 +7,6 @@ import (
 	"os/exec"
 	"path"
 	"regexp"
-	"sort"
 	"strings"
 	"text/template"
 	"time"
@@ -241,9 +240,6 @@ func buildDocsContext(items map[string][]*TaggedItem) (map[string]string, error)
 
 // builds a docset for the given tag type
 func buildTagContext(tag string, tagItems []*TaggedItem, renderer renderFunc, session flows.Session) (string, error) {
-	// sort documented items by their tag value
-	sort.SliceStable(tagItems, func(i, j int) bool { return tagItems[i].tagValue < tagItems[j].tagValue })
-
 	buffer := &strings.Builder{}
 
 	for _, item := range tagItems {

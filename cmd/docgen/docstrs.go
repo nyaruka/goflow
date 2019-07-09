@@ -6,6 +6,7 @@ import (
 	"go/token"
 	"path"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -46,6 +47,11 @@ func FindAllTaggedItems(baseDir string) (map[string][]*TaggedItem, error) {
 		if err != nil {
 			return nil, err
 		}
+	}
+
+	for _, v := range items {
+		// sort items by their tag value
+		sort.SliceStable(v, func(i, j int) bool { return v[i].tagValue < v[j].tagValue })
 	}
 
 	return items, nil

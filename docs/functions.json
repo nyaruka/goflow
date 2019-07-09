@@ -657,6 +657,21 @@
         ]
     },
     {
+        "signature": "join(array, separator)",
+        "summary": "Joins the given `array` of strings with `separator` to make text.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(join(array(\"a\", \"b\", \"c\"), \"|\"))",
+                "output": "a|b|c"
+            },
+            {
+                "template": "@(join(split(\"a.b.c\", \".\"), \" \"))",
+                "output": "a b c"
+            }
+        ]
+    },
+    {
         "signature": "json(value)",
         "summary": "Returns the JSON representation of `value`.",
         "detail": "",
@@ -676,21 +691,6 @@
             {
                 "template": "@(json(contact.uuid))",
                 "output": "\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\""
-            }
-        ]
-    },
-    {
-        "signature": "join(array, separator)",
-        "summary": "Joins the given `array` of strings with `separator` to make text.",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(join(array(\"a\", \"b\", \"c\"), \"|\"))",
-                "output": "a|b|c"
-            },
-            {
-                "template": "@(join(split(\"a.b.c\", \".\"), \" \"))",
-                "output": "a b c"
             }
         ]
     },
@@ -1206,52 +1206,6 @@
         ]
     },
     {
-        "signature": "tz(date)",
-        "summary": "Returns the name of the timezone of `date`.",
-        "detail": "If no timezone information is present in the date, then the current timezone will be returned.",
-        "examples": [
-            {
-                "template": "@(tz(\"2017-01-15T02:15:18.123456Z\"))",
-                "output": "UTC"
-            },
-            {
-                "template": "@(tz(\"2017-01-15 02:15:18PM\"))",
-                "output": "America/Guayaquil"
-            },
-            {
-                "template": "@(tz(\"2017-01-15\"))",
-                "output": "America/Guayaquil"
-            },
-            {
-                "template": "@(tz(\"foo\"))",
-                "output": "ERROR"
-            }
-        ]
-    },
-    {
-        "signature": "tz_offset(date)",
-        "summary": "Returns the offset of the timezone of `date`.",
-        "detail": "The offset is returned in the format `[+/-]HH:MM`. If no timezone information is present in the date,\nthen the current timezone offset will be returned.",
-        "examples": [
-            {
-                "template": "@(tz_offset(\"2017-01-15T02:15:18.123456Z\"))",
-                "output": "+0000"
-            },
-            {
-                "template": "@(tz_offset(\"2017-01-15 02:15:18PM\"))",
-                "output": "-0500"
-            },
-            {
-                "template": "@(tz_offset(\"2017-01-15\"))",
-                "output": "-0500"
-            },
-            {
-                "template": "@(tz_offset(\"foo\"))",
-                "output": "ERROR"
-            }
-        ]
-    },
-    {
         "signature": "text(value)",
         "summary": "Tries to convert `value` to text.",
         "detail": "An error is returned if the value can't be converted.",
@@ -1404,6 +1358,67 @@
         ]
     },
     {
+        "signature": "tz(date)",
+        "summary": "Returns the name of the timezone of `date`.",
+        "detail": "If no timezone information is present in the date, then the current timezone will be returned.",
+        "examples": [
+            {
+                "template": "@(tz(\"2017-01-15T02:15:18.123456Z\"))",
+                "output": "UTC"
+            },
+            {
+                "template": "@(tz(\"2017-01-15 02:15:18PM\"))",
+                "output": "America/Guayaquil"
+            },
+            {
+                "template": "@(tz(\"2017-01-15\"))",
+                "output": "America/Guayaquil"
+            },
+            {
+                "template": "@(tz(\"foo\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
+        "signature": "tz_offset(date)",
+        "summary": "Returns the offset of the timezone of `date`.",
+        "detail": "The offset is returned in the format `[+/-]HH:MM`. If no timezone information is present in the date,\nthen the current timezone offset will be returned.",
+        "examples": [
+            {
+                "template": "@(tz_offset(\"2017-01-15T02:15:18.123456Z\"))",
+                "output": "+0000"
+            },
+            {
+                "template": "@(tz_offset(\"2017-01-15 02:15:18PM\"))",
+                "output": "-0500"
+            },
+            {
+                "template": "@(tz_offset(\"2017-01-15\"))",
+                "output": "-0500"
+            },
+            {
+                "template": "@(tz_offset(\"foo\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
+        "signature": "upper(text)",
+        "summary": "Converts `text` to lowercase.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(upper(\"Asdf\"))",
+                "output": "ASDF"
+            },
+            {
+                "template": "@(upper(123))",
+                "output": "123"
+            }
+        ]
+    },
+    {
         "signature": "url_encode(text)",
         "summary": "Encodes `text` for use as a URL parameter.",
         "detail": "",
@@ -1430,21 +1445,6 @@
             {
                 "template": "@(urn_parts(\"twitterid:3263621177#bobby\"))",
                 "output": "{display: bobby, path: 3263621177, scheme: twitterid}"
-            }
-        ]
-    },
-    {
-        "signature": "upper(text)",
-        "summary": "Converts `text` to lowercase.",
-        "detail": "",
-        "examples": [
-            {
-                "template": "@(upper(\"Asdf\"))",
-                "output": "ASDF"
-            },
-            {
-                "template": "@(upper(123))",
-                "output": "123"
             }
         ]
     },
