@@ -4,9 +4,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path"
+	"sort"
+	"strings"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/cmd/docgen/context"
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/pkg/errors"
 )
 
@@ -20,7 +24,9 @@ func generateContextMap(baseDir string, outputDir string, items map[string][]*Ta
 	// the dynamic types in the context aren't described in the code so we add them manually here
 	ctx.AddType(context.NewDynamicType("fields", "field-keys", context.NewProperty("{key}", "{key} for the contact", "any")))
 	ctx.AddType(context.NewDynamicType("results", "result-keys", context.NewProperty("{key}", "{key} value for the run", "result")))
-	ctx.AddType(context.NewDynamicType("urns", "urn-schemes", context.NewProperty("{key}", "the {key} URN for the contact", "text")))
+
+	// the urns type also added here as it's "dynamic" in sense that keys are known at build time
+	ctx.AddType(createURNsType())
 
 	// now add the types from tagged docstrings
 	for _, item := range items["context"] {
@@ -52,4 +58,15 @@ func generateContextMap(baseDir string, outputDir string, items map[string][]*Ta
 	fmt.Printf(" > %d context types written to %s\n", len(items["context"]), path)
 
 	return nil
+}
+
+func createURNsType() context.Type {
+	properties := make([]*context.Property, 0, len(urns.ValidSchemes))
+	for k := range urns.ValidSchemes {
+		name := strings.Title(k)
+		properties = append(properties, context.NewProperty(k, name+" URN for the contact", "text"))
+	}
+	sort.SliceStable(properties, func(i, j int) bool { return properties[i].Name < properties[j].Name })
+
+	return context.NewStaticType("urns", properties)
 }

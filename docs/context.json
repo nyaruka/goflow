@@ -20,12 +20,73 @@
         },
         {
             "type": "urns",
-            "source": "urn-schemes",
-            "property_template": {
-                "name": "{key}",
-                "description": "the {key} URN for the contact",
-                "type_ref": "text"
-            }
+            "properties": [
+                {
+                    "name": "ext",
+                    "description": "Ext URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "facebook",
+                    "description": "Facebook URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "fcm",
+                    "description": "Fcm URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "jiochat",
+                    "description": "Jiochat URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "line",
+                    "description": "Line URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "mailto",
+                    "description": "Mailto URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "tel",
+                    "description": "Tel URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "telegram",
+                    "description": "Telegram URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "twitter",
+                    "description": "Twitter URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "twitterid",
+                    "description": "Twitterid URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "viber",
+                    "description": "Viber URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "wechat",
+                    "description": "Wechat URN for the contact",
+                    "type_ref": "text"
+                },
+                {
+                    "name": "whatsapp",
+                    "description": "Whatsapp URN for the contact",
+                    "type_ref": "text"
+                }
+            ]
         },
         {
             "type": "channel",
