@@ -1,6 +1,33 @@
 {
     "types": [
         {
+            "type": "fields",
+            "source": "field-keys",
+            "property_template": {
+                "name": "{key}",
+                "description": "{key} for the contact",
+                "type_ref": "any"
+            }
+        },
+        {
+            "type": "results",
+            "source": "result-keys",
+            "property_template": {
+                "name": "{key}",
+                "description": "{key} value for the run",
+                "type_ref": "result"
+            }
+        },
+        {
+            "type": "urns",
+            "source": "urn-schemes",
+            "property_template": {
+                "name": "{key}",
+                "description": "the {key} URN for the contact",
+                "type_ref": "text"
+            }
+        },
+        {
             "type": "channel",
             "properties": [
                 {
@@ -151,33 +178,6 @@
                     "type_ref": "datetime"
                 }
             ]
-        },
-        {
-            "type": "fields",
-            "source": "field-keys",
-            "property_template": {
-                "name": "{key}",
-                "description": "{key} for the contact",
-                "type_ref": "any"
-            }
-        },
-        {
-            "type": "results",
-            "source": "result-keys",
-            "property_template": {
-                "name": "{key}",
-                "description": "{key} value for the run",
-                "type_ref": "result"
-            }
-        },
-        {
-            "type": "urns",
-            "source": "urn-schemes",
-            "property_template": {
-                "name": "{key}",
-                "description": "the {key} URN for the contact",
-                "type_ref": "text"
-            }
         }
     ],
     "root": [

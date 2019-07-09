@@ -21,7 +21,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func renderAssetDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderAssetDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	if len(item.examples) == 0 {
 		return errors.Errorf("no examples found for asset item %s/%s", item.tagValue, item.typeName)
 	}
@@ -56,7 +56,7 @@ func renderAssetDoc(output *strings.Builder, item *documentedItem, session flows
 	return nil
 }
 
-func renderTypeDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderTypeDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	if len(item.examples) == 0 {
 		return errors.Errorf("no examples found for type %s/%s", item.tagValue, item.typeName)
 	}
@@ -80,7 +80,7 @@ func renderTypeDoc(output *strings.Builder, item *documentedItem, session flows.
 	return nil
 }
 
-func renderOperatorDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderOperatorDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	if len(item.examples) == 0 {
 		return errors.Errorf("no examples found for operator %s/%s", item.tagValue, item.typeName)
 	}
@@ -104,7 +104,7 @@ func renderOperatorDoc(output *strings.Builder, item *documentedItem, session fl
 	return nil
 }
 
-func renderContextDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	// examples are actually property descriptors for context items
 	properties := make([]*context.Property, len(item.examples))
 	for i, propDesc := range item.examples {
@@ -113,12 +113,6 @@ func renderContextDoc(output *strings.Builder, item *documentedItem, session flo
 			return errors.Errorf("invalid format for property description \"%s\"", propDesc)
 		}
 		properties[i] = prop
-	}
-
-	if item.tagValue == "root" {
-		ctx.SetRoot(properties)
-	} else {
-		ctx.AddType(context.NewStaticType(item.tagValue, properties))
 	}
 
 	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", item.tagValue))
@@ -131,7 +125,7 @@ func renderContextDoc(output *strings.Builder, item *documentedItem, session flo
 	return nil
 }
 
-func renderFunctionDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderFunctionDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	if len(item.examples) == 0 {
 		return errors.Errorf("no examples found for function %s", item.tagValue)
 	}
@@ -161,7 +155,7 @@ func renderFunctionDoc(output *strings.Builder, item *documentedItem, session fl
 	return nil
 }
 
-func renderEventDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderEventDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	event, err := events.ReadEvent(exampleJSON)
@@ -196,7 +190,7 @@ func renderEventDoc(output *strings.Builder, item *documentedItem, session flows
 	return nil
 }
 
-func renderActionDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	action, err := actions.ReadAction(exampleJSON)
@@ -243,7 +237,7 @@ func renderActionDoc(output *strings.Builder, item *documentedItem, session flow
 	return nil
 }
 
-func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
 	trigger, err := triggers.ReadTrigger(session.Assets(), exampleJSON, assets.PanicOnMissing)
@@ -274,7 +268,7 @@ func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flo
 	return nil
 }
 
-func renderResumeDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
 	resume, err := resumes.ReadResume(session.Assets(), exampleJSON, assets.PanicOnMissing)
