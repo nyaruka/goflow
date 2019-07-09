@@ -65,7 +65,7 @@ The context is all the variables which are accessible in expressions:
  * `uuid` the UUID of the run ([text](#context:text))
  * `contact` the contact of the run ([contact](#context:contact))
  * `flow` the flow of the run ([flow](#context:flow))
- * `fields` the custom fields values of the run ([fields](#context:fields))
+ * `fields` the custom field values of the run ([fields](#context:fields))
  * `urns` the URN values of the run ([urns](#context:urns))
  * `results` the results saved by the run ([results](#context:results))
  * `status` the current status of the run ([text](#context:text))

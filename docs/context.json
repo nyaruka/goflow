@@ -286,7 +286,7 @@
                 },
                 {
                     "name": "fields",
-                    "description": "the custom fields values of the run",
+                    "description": "the custom field values of the run",
                     "type_ref": "fields"
                 },
                 {

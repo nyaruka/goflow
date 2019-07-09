@@ -1,11 +1,9 @@
 package context_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/nyaruka/goflow/cmd/docgen/context"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -16,7 +14,7 @@ func TestContext(t *testing.T) {
 		context.NewProperty("name", "the name of the group", "text"),
 	})
 
-	fieldsType := context.NewDynamicType("fields", "field_keys", context.NewProperty("{key}", "the value of {key}", "any"))
+	fieldsType := context.NewDynamicType("fields", "field-keys", context.NewProperty("{key}", "the value of {key}", "any"))
 
 	contactType := context.NewStaticType("contact", []*context.Property{
 		context.NewProperty("name", "the full name of the contact", "text"),
@@ -30,7 +28,7 @@ func TestContext(t *testing.T) {
 		context.NewProperty("category", "the category of the result", "text"),
 	})
 
-	resultsType := context.NewDynamicType("results", "result_keys", context.NewProperty("{key}", "the result of {key}", "result"))
+	resultsType := context.NewDynamicType("results", "result-keys", context.NewProperty("{key}", "the result of {key}", "result"))
 
 	ctx := context.NewContext()
 	ctx.AddType(groupType)
@@ -44,7 +42,4 @@ func TestContext(t *testing.T) {
 	})
 
 	assert.Nil(t, ctx.Validate())
-
-	marshaled, _ := utils.JSONMarshalPretty(ctx)
-	fmt.Println(string(marshaled))
 }

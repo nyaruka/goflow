@@ -51,11 +51,23 @@ func generateContextMap(baseDir string, outputDir string, items map[string][]*Ta
 		return err
 	}
 
-	path := path.Join(outputDir, "context.json")
+	mapPath := path.Join(outputDir, "context.json")
 	marshaled, _ := utils.JSONMarshalPretty(ctx)
-	ioutil.WriteFile(path, marshaled, 0755)
+	ioutil.WriteFile(mapPath, marshaled, 0755)
 
-	fmt.Printf(" > %d context types written to %s\n", len(items["context"]), path)
+	fmt.Printf(" > %d context types written to %s\n", len(items["context"]), mapPath)
+
+	nodes := ctx.EnumerateNodes(map[string][]string{
+		"field-keys":  []string{"age", "gender"},
+		"result-keys": []string{"response_1"},
+	})
+	nodeOutput := &strings.Builder{}
+	for _, n := range nodes {
+		nodeOutput.WriteString(fmt.Sprintf("%s -> %s\n", n.Path, n.Description))
+	}
+
+	listPath := path.Join(outputDir, "context.txt")
+	ioutil.WriteFile(listPath, []byte(nodeOutput.String()), 0755)
 
 	return nil
 }
