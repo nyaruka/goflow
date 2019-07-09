@@ -4,8 +4,8 @@
             "type": "fields",
             "source": "field-keys",
             "property_template": {
-                "name": "{key}",
-                "description": "{key} for the contact",
+                "key": "{key}",
+                "help": "{key} for the contact",
                 "type_ref": "any"
             }
         },
@@ -13,8 +13,8 @@
             "type": "results",
             "source": "result-keys",
             "property_template": {
-                "name": "{key}",
-                "description": "{key} value for the run",
+                "key": "{key}",
+                "help": "{key} value for the run",
                 "type_ref": "result"
             }
         },
@@ -22,68 +22,68 @@
             "type": "urns",
             "properties": [
                 {
-                    "name": "ext",
-                    "description": "Ext URN for the contact",
+                    "key": "ext",
+                    "help": "Ext URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "facebook",
-                    "description": "Facebook URN for the contact",
+                    "key": "facebook",
+                    "help": "Facebook URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "fcm",
-                    "description": "Fcm URN for the contact",
+                    "key": "fcm",
+                    "help": "Fcm URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "jiochat",
-                    "description": "Jiochat URN for the contact",
+                    "key": "jiochat",
+                    "help": "Jiochat URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "line",
-                    "description": "Line URN for the contact",
+                    "key": "line",
+                    "help": "Line URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "mailto",
-                    "description": "Mailto URN for the contact",
+                    "key": "mailto",
+                    "help": "Mailto URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "tel",
-                    "description": "Tel URN for the contact",
+                    "key": "tel",
+                    "help": "Tel URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "telegram",
-                    "description": "Telegram URN for the contact",
+                    "key": "telegram",
+                    "help": "Telegram URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "twitter",
-                    "description": "Twitter URN for the contact",
+                    "key": "twitter",
+                    "help": "Twitter URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "twitterid",
-                    "description": "Twitterid URN for the contact",
+                    "key": "twitterid",
+                    "help": "Twitterid URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "viber",
-                    "description": "Viber URN for the contact",
+                    "key": "viber",
+                    "help": "Viber URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "wechat",
-                    "description": "Wechat URN for the contact",
+                    "key": "wechat",
+                    "help": "Wechat URN for the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "whatsapp",
-                    "description": "Whatsapp URN for the contact",
+                    "key": "whatsapp",
+                    "help": "Whatsapp URN for the contact",
                     "type_ref": "text"
                 }
             ]
@@ -92,23 +92,23 @@
             "type": "channel",
             "properties": [
                 {
-                    "name": "__default__",
-                    "description": "the name of the channel",
+                    "key": "__default__",
+                    "help": "the name of the channel",
                     "type_ref": "text"
                 },
                 {
-                    "name": "uuid",
-                    "description": "the UUID of the channel",
+                    "key": "uuid",
+                    "help": "the UUID of the channel",
                     "type_ref": "text"
                 },
                 {
-                    "name": "name",
-                    "description": "the name of the channel",
+                    "key": "name",
+                    "help": "the name of the channel",
                     "type_ref": "text"
                 },
                 {
-                    "name": "address",
-                    "description": "the address of the channel",
+                    "key": "address",
+                    "help": "the address of the channel",
                     "type_ref": "text"
                 }
             ]
@@ -117,65 +117,65 @@
             "type": "contact",
             "properties": [
                 {
-                    "name": "__default__",
-                    "description": "the name or URN of the contact",
+                    "key": "__default__",
+                    "help": "the name or URN of the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "uuid",
-                    "description": "the UUID of the contact",
+                    "key": "uuid",
+                    "help": "the UUID of the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "id",
-                    "description": "the numeric ID of the contact",
+                    "key": "id",
+                    "help": "the numeric ID of the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "first_name",
-                    "description": "the first name of the contact",
+                    "key": "first_name",
+                    "help": "the first name of the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "name",
-                    "description": "the name of the contact",
+                    "key": "name",
+                    "help": "the name of the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "language",
-                    "description": "the language of the contact as 3",
+                    "key": "language",
+                    "help": "the language of the contact as 3",
                     "type_ref": "text"
                 },
                 {
-                    "name": "created_on",
-                    "description": "the creation date of the contact",
+                    "key": "created_on",
+                    "help": "the creation date of the contact",
                     "type_ref": "datetime"
                 },
                 {
-                    "name": "urns",
-                    "description": "the URNs belonging to the contact",
+                    "key": "urns",
+                    "help": "the URNs belonging to the contact",
                     "type_ref": "text",
                     "array": true
                 },
                 {
-                    "name": "urn",
-                    "description": "the preferred URN of the contact",
+                    "key": "urn",
+                    "help": "the preferred URN of the contact",
                     "type_ref": "text"
                 },
                 {
-                    "name": "groups",
-                    "description": "the groups the contact belongs to",
+                    "key": "groups",
+                    "help": "the groups the contact belongs to",
                     "type_ref": "group",
                     "array": true
                 },
                 {
-                    "name": "fields",
-                    "description": "the custom field values of the contact",
+                    "key": "fields",
+                    "help": "the custom field values of the contact",
                     "type_ref": "fields"
                 },
                 {
-                    "name": "channel",
-                    "description": "the preferred channel of the contact",
+                    "key": "channel",
+                    "help": "the preferred channel of the contact",
                     "type_ref": "channel"
                 }
             ]
@@ -184,23 +184,23 @@
             "type": "flow",
             "properties": [
                 {
-                    "name": "__default__",
-                    "description": "the name of the flow",
+                    "key": "__default__",
+                    "help": "the name of the flow",
                     "type_ref": "text"
                 },
                 {
-                    "name": "uuid",
-                    "description": "the UUID of the flow",
+                    "key": "uuid",
+                    "help": "the UUID of the flow",
                     "type_ref": "text"
                 },
                 {
-                    "name": "name",
-                    "description": "the name of the flow",
+                    "key": "name",
+                    "help": "the name of the flow",
                     "type_ref": "text"
                 },
                 {
-                    "name": "revision",
-                    "description": "the revision number of the flow",
+                    "key": "revision",
+                    "help": "the revision number of the flow",
                     "type_ref": "text"
                 }
             ]
@@ -209,13 +209,13 @@
             "type": "group",
             "properties": [
                 {
-                    "name": "uuid",
-                    "description": "the UUID of the group",
+                    "key": "uuid",
+                    "help": "the UUID of the group",
                     "type_ref": "text"
                 },
                 {
-                    "name": "name",
-                    "description": "the name of the group",
+                    "key": "name",
+                    "help": "the name of the group",
                     "type_ref": "text"
                 }
             ]
@@ -224,44 +224,44 @@
             "type": "input",
             "properties": [
                 {
-                    "name": "__default__",
-                    "description": "the text and attachments of the input",
+                    "key": "__default__",
+                    "help": "the text and attachments of the input",
                     "type_ref": "text"
                 },
                 {
-                    "name": "uuid",
-                    "description": "the UUID of the input",
+                    "key": "uuid",
+                    "help": "the UUID of the input",
                     "type_ref": "text"
                 },
                 {
-                    "name": "created_on",
-                    "description": "the creation date of the input",
+                    "key": "created_on",
+                    "help": "the creation date of the input",
                     "type_ref": "datetime"
                 },
                 {
-                    "name": "channel",
-                    "description": "the channel that the input was received on",
+                    "key": "channel",
+                    "help": "the channel that the input was received on",
                     "type_ref": "channel"
                 },
                 {
-                    "name": "urn",
-                    "description": "the contact URN that the input was received on",
+                    "key": "urn",
+                    "help": "the contact URN that the input was received on",
                     "type_ref": "text"
                 },
                 {
-                    "name": "text",
-                    "description": "the text part of the input",
+                    "key": "text",
+                    "help": "the text part of the input",
                     "type_ref": "text"
                 },
                 {
-                    "name": "attachments",
-                    "description": "any attachments on the input",
+                    "key": "attachments",
+                    "help": "any attachments on the input",
                     "type_ref": "text",
                     "array": true
                 },
                 {
-                    "name": "external_id",
-                    "description": "the external ID of the input",
+                    "key": "external_id",
+                    "help": "the external ID of the input",
                     "type_ref": "text"
                 }
             ]
@@ -270,38 +270,38 @@
             "type": "related_run",
             "properties": [
                 {
-                    "name": "uuid",
-                    "description": "the UUID of the run",
+                    "key": "uuid",
+                    "help": "the UUID of the run",
                     "type_ref": "text"
                 },
                 {
-                    "name": "contact",
-                    "description": "the contact of the run",
+                    "key": "contact",
+                    "help": "the contact of the run",
                     "type_ref": "contact"
                 },
                 {
-                    "name": "flow",
-                    "description": "the flow of the run",
+                    "key": "flow",
+                    "help": "the flow of the run",
                     "type_ref": "flow"
                 },
                 {
-                    "name": "fields",
-                    "description": "the custom field values of the run",
+                    "key": "fields",
+                    "help": "the custom field values of the run",
                     "type_ref": "fields"
                 },
                 {
-                    "name": "urns",
-                    "description": "the URN values of the run",
+                    "key": "urns",
+                    "help": "the URN values of the run",
                     "type_ref": "urns"
                 },
                 {
-                    "name": "results",
-                    "description": "the results saved by the run",
+                    "key": "results",
+                    "help": "the results saved by the run",
                     "type_ref": "results"
                 },
                 {
-                    "name": "status",
-                    "description": "the current status of the run",
+                    "key": "status",
+                    "help": "the current status of the run",
                     "type_ref": "text"
                 }
             ]
@@ -310,48 +310,48 @@
             "type": "result",
             "properties": [
                 {
-                    "name": "__default__",
-                    "description": "the value of the result",
+                    "key": "__default__",
+                    "help": "the value of the result",
                     "type_ref": "text"
                 },
                 {
-                    "name": "name",
-                    "description": "the name of the result",
+                    "key": "name",
+                    "help": "the name of the result",
                     "type_ref": "text"
                 },
                 {
-                    "name": "value",
-                    "description": "the value of the result",
+                    "key": "value",
+                    "help": "the value of the result",
                     "type_ref": "text"
                 },
                 {
-                    "name": "category",
-                    "description": "the category of the result",
+                    "key": "category",
+                    "help": "the category of the result",
                     "type_ref": "text"
                 },
                 {
-                    "name": "category_localized",
-                    "description": "the localized category of the result",
+                    "key": "category_localized",
+                    "help": "the localized category of the result",
                     "type_ref": "text"
                 },
                 {
-                    "name": "input",
-                    "description": "the input of the result",
+                    "key": "input",
+                    "help": "the input of the result",
                     "type_ref": "text"
                 },
                 {
-                    "name": "extra",
-                    "description": "the extra data of the result such as a webhook response",
+                    "key": "extra",
+                    "help": "the extra data of the result such as a webhook response",
                     "type_ref": "any"
                 },
                 {
-                    "name": "node_uuid",
-                    "description": "the UUIF of the node in the flow that generated the result",
+                    "key": "node_uuid",
+                    "help": "the UUID of the node in the flow that generated the result",
                     "type_ref": "text"
                 },
                 {
-                    "name": "created_on",
-                    "description": "the creation date of the result",
+                    "key": "created_on",
+                    "help": "the creation date of the result",
                     "type_ref": "datetime"
                 }
             ]
@@ -360,38 +360,38 @@
             "type": "run",
             "properties": [
                 {
-                    "name": "uuid",
-                    "description": "the UUID of the run",
+                    "key": "uuid",
+                    "help": "the UUID of the run",
                     "type_ref": "text"
                 },
                 {
-                    "name": "contact",
-                    "description": "the contact of the run",
+                    "key": "contact",
+                    "help": "the contact of the run",
                     "type_ref": "contact"
                 },
                 {
-                    "name": "flow",
-                    "description": "the flow of the run",
+                    "key": "flow",
+                    "help": "the flow of the run",
                     "type_ref": "flow"
                 },
                 {
-                    "name": "status",
-                    "description": "the current status of the run",
+                    "key": "status",
+                    "help": "the current status of the run",
                     "type_ref": "text"
                 },
                 {
-                    "name": "results",
-                    "description": "the results saved by the run",
+                    "key": "results",
+                    "help": "the results saved by the run",
                     "type_ref": "results"
                 },
                 {
-                    "name": "created_on",
-                    "description": "the creation date of the run",
+                    "key": "created_on",
+                    "help": "the creation date of the run",
                     "type_ref": "datetime"
                 },
                 {
-                    "name": "exited_on",
-                    "description": "the exit date of the run",
+                    "key": "exited_on",
+                    "help": "the exit date of the run",
                     "type_ref": "datetime"
                 }
             ]
@@ -400,13 +400,13 @@
             "type": "trigger",
             "properties": [
                 {
-                    "name": "type",
-                    "description": "the type of trigger that started this session",
+                    "key": "type",
+                    "help": "the type of trigger that started this session",
                     "type_ref": "text"
                 },
                 {
-                    "name": "params",
-                    "description": "the parameters passed to the trigger",
+                    "key": "params",
+                    "help": "the parameters passed to the trigger",
                     "type_ref": "any"
                 }
             ]
@@ -415,13 +415,13 @@
             "type": "trigger",
             "properties": [
                 {
-                    "name": "type",
-                    "description": "the type of trigger that started this session",
+                    "key": "type",
+                    "help": "the type of trigger that started this session",
                     "type_ref": "text"
                 },
                 {
-                    "name": "params",
-                    "description": "the parameters passed to the trigger",
+                    "key": "params",
+                    "help": "the parameters passed to the trigger",
                     "type_ref": "any"
                 }
             ]
@@ -430,13 +430,13 @@
             "type": "trigger",
             "properties": [
                 {
-                    "name": "type",
-                    "description": "the type of trigger that started this session",
+                    "key": "type",
+                    "help": "the type of trigger that started this session",
                     "type_ref": "text"
                 },
                 {
-                    "name": "params",
-                    "description": "the parameters passed to the trigger",
+                    "key": "params",
+                    "help": "the parameters passed to the trigger",
                     "type_ref": "any"
                 }
             ]
@@ -445,13 +445,13 @@
             "type": "trigger",
             "properties": [
                 {
-                    "name": "type",
-                    "description": "the type of trigger that started this session",
+                    "key": "type",
+                    "help": "the type of trigger that started this session",
                     "type_ref": "text"
                 },
                 {
-                    "name": "params",
-                    "description": "the parameters passed to the trigger",
+                    "key": "params",
+                    "help": "the parameters passed to the trigger",
                     "type_ref": "any"
                 }
             ]
@@ -460,13 +460,13 @@
             "type": "trigger",
             "properties": [
                 {
-                    "name": "type",
-                    "description": "the type of trigger that started this session",
+                    "key": "type",
+                    "help": "the type of trigger that started this session",
                     "type_ref": "text"
                 },
                 {
-                    "name": "params",
-                    "description": "the parameters passed to the trigger",
+                    "key": "params",
+                    "help": "the parameters passed to the trigger",
                     "type_ref": "any"
                 }
             ]
@@ -475,13 +475,13 @@
             "type": "trigger",
             "properties": [
                 {
-                    "name": "type",
-                    "description": "the type of trigger that started this session",
+                    "key": "type",
+                    "help": "the type of trigger that started this session",
                     "type_ref": "text"
                 },
                 {
-                    "name": "params",
-                    "description": "the parameters passed to the trigger",
+                    "key": "params",
+                    "help": "the parameters passed to the trigger",
                     "type_ref": "any"
                 }
             ]
@@ -489,53 +489,53 @@
     ],
     "root": [
         {
-            "name": "contact",
-            "description": "the current contact",
+            "key": "contact",
+            "help": "the current contact",
             "type_ref": "contact"
         },
         {
-            "name": "fields",
-            "description": "the custom field values of the current contact",
+            "key": "fields",
+            "help": "the custom field values of the current contact",
             "type_ref": "fields"
         },
         {
-            "name": "urns",
-            "description": "the URN values of the current contact",
+            "key": "urns",
+            "help": "the URN values of the current contact",
             "type_ref": "urns"
         },
         {
-            "name": "results",
-            "description": "the current run results",
+            "key": "results",
+            "help": "the current run results",
             "type_ref": "results"
         },
         {
-            "name": "input",
-            "description": "the current input from the contact",
+            "key": "input",
+            "help": "the current input from the contact",
             "type_ref": "input"
         },
         {
-            "name": "run",
-            "description": "the current run",
+            "key": "run",
+            "help": "the current run",
             "type_ref": "run"
         },
         {
-            "name": "child",
-            "description": "the last child run",
+            "key": "child",
+            "help": "the last child run",
             "type_ref": "related_run"
         },
         {
-            "name": "parent",
-            "description": "the parent of the run",
+            "key": "parent",
+            "help": "the parent of the run",
             "type_ref": "related_run"
         },
         {
-            "name": "webhook",
-            "description": "the parsed JSON response of the last webhook call",
+            "key": "webhook",
+            "help": "the parsed JSON response of the last webhook call",
             "type_ref": "any"
         },
         {
-            "name": "trigger",
-            "description": "the trigger that started this session",
+            "key": "trigger",
+            "help": "the trigger that started this session",
             "type_ref": "trigger"
         }
     ]

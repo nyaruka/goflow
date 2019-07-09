@@ -37,32 +37,33 @@ var primitiveTypes = []Type{
 
 // Property is a field of a context type which can be accessed in the context with the dot operator
 type Property struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	TypeRef     string `json:"type_ref"`
-	Array       bool   `json:"array,omitempty"`
+	Key     string `json:"key"`
+	Help    string `json:"help"`
+	TypeRef string `json:"type_ref"`
+	Array   bool   `json:"array,omitempty"`
 }
 
 // NewProperty creates a new property
-func NewProperty(name, description string, typeRef string) *Property {
-	return &Property{Name: name, Description: description, TypeRef: typeRef, Array: false}
+func NewProperty(key, help string, typeRef string) *Property {
+	return &Property{Key: key, Help: help, TypeRef: typeRef, Array: false}
 }
 
 // NewArrayProperty creates a new array property
-func NewArrayProperty(name, description string, typeRef string) *Property {
-	return &Property{Name: name, Description: description, TypeRef: typeRef, Array: true}
+func NewArrayProperty(key, help string, typeRef string) *Property {
+	return &Property{Key: key, Help: help, TypeRef: typeRef, Array: true}
 }
 
+// ParseProperty parses a property from a docstring line
 func ParseProperty(line string) *Property {
 	matches := contextPropRegexp.FindStringSubmatch(line)
 	if len(matches) != 5 {
 		return nil
 	}
 	return &Property{
-		Name:        matches[1],
-		Description: matches[4],
-		TypeRef:     matches[3],
-		Array:       len(matches[2]) > 0,
+		Key:     matches[1],
+		Help:    matches[4],
+		TypeRef: matches[3],
+		Array:   len(matches[2]) > 0,
 	}
 }
 
@@ -71,6 +72,7 @@ type staticType struct {
 	Properties []*Property `json:"properties"`
 }
 
+// NewStaticType creates a new static type, i.e. fixed properties
 func NewStaticType(name string, properties []*Property) Type {
 	return &staticType{Name: name, Properties: properties}
 }
@@ -94,6 +96,7 @@ type dynamicType struct {
 	PropertyTemplate *Property `json:"property_template"`
 }
 
+// NewDynamicType creates a new dynamic type, i.e. properties determined at runtime
 func NewDynamicType(name, source string, propertyTemplate *Property) Type {
 	return &dynamicType{Name: name, Source: source, PropertyTemplate: propertyTemplate}
 }

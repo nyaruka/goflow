@@ -81,7 +81,7 @@ The context is all the variables which are accessible in expressions:
  * `category_localized` the localized category of the result ([text](#context:text))
  * `input` the input of the result ([text](#context:text))
  * `extra` the extra data of the result such as a webhook response ([any](#context:any))
- * `node_uuid` the UUIF of the node in the flow that generated the result ([text](#context:text))
+ * `node_uuid` the UUID of the node in the flow that generated the result ([text](#context:text))
  * `created_on` the creation date of the result ([datetime](#context:datetime))
 
 <a name="context:root"></a>

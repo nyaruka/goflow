@@ -63,7 +63,7 @@ func generateContextMap(baseDir string, outputDir string, items map[string][]*Ta
 	})
 	nodeOutput := &strings.Builder{}
 	for _, n := range nodes {
-		nodeOutput.WriteString(fmt.Sprintf("%s -> %s\n", n.Path, n.Description))
+		nodeOutput.WriteString(fmt.Sprintf("%s -> %s\n", n.Path, n.Help))
 	}
 
 	listPath := path.Join(outputDir, "context.txt")
@@ -78,7 +78,7 @@ func createURNsType() context.Type {
 		name := strings.Title(k)
 		properties = append(properties, context.NewProperty(k, name+" URN for the contact", "text"))
 	}
-	sort.SliceStable(properties, func(i, j int) bool { return properties[i].Name < properties[j].Name })
+	sort.SliceStable(properties, func(i, j int) bool { return properties[i].Key < properties[j].Key })
 
 	return context.NewStaticType("urns", properties)
 }

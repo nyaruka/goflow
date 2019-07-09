@@ -48,10 +48,11 @@ func (c *Context) Validate() error {
 }
 
 type Node struct {
-	Path        string
-	Description string
+	Path string
+	Help string
 }
 
+// EnumerateNodes walks the context to enumerate all posible nodes
 func (c *Context) EnumerateNodes(sources map[string][]string) []Node {
 	// make a lookup of all types by their name
 	types := make(map[string]Type, len(c.Types))
@@ -64,8 +65,8 @@ func (c *Context) EnumerateNodes(sources map[string][]string) []Node {
 
 	nodes := make([]Node, 0)
 
-	callback := func(path, desc string) {
-		nodes = append(nodes, Node{path, desc})
+	callback := func(path, help string) {
+		nodes = append(nodes, Node{path, help})
 	}
 	for _, p := range c.Root {
 		enumeratePaths("", p, types, sources, callback)
@@ -74,18 +75,18 @@ func (c *Context) EnumerateNodes(sources map[string][]string) []Node {
 	return nodes
 }
 
-func enumeratePaths(base string, p *Property, types map[string]Type, sources map[string][]string, callback func(path, desc string)) {
+func enumeratePaths(base string, p *Property, types map[string]Type, sources map[string][]string, callback func(path, help string)) {
 	t := types[p.TypeRef]
 
-	path := p.Name
+	path := p.Key
 	if base != "" {
 		path = base + "." + path
 	}
-	callback(path, p.Description)
+	callback(path, p.Help)
 
 	if p.Array {
 		path += "[0]"
-		callback(path, "first of "+p.Description)
+		callback(path, "first of "+p.Help)
 	}
 
 	switch typed := t.(type) {
@@ -96,8 +97,8 @@ func enumeratePaths(base string, p *Property, types map[string]Type, sources map
 			enumeratePaths(path, pp, types, sources, callback)
 		}
 	case *dynamicType:
-		nameTemplate := typed.PropertyTemplate.Name
-		descTemplate := typed.PropertyTemplate.Description
+		nameTemplate := typed.PropertyTemplate.Key
+		descTemplate := typed.PropertyTemplate.Help
 
 		for _, key := range sources[typed.Source] {
 			name := strings.Replace(nameTemplate, "{key}", key, -1)

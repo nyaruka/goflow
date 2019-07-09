@@ -119,7 +119,7 @@ func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.S
 	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
 	for _, p := range properties {
 		typeLink := fmt.Sprintf("[%s](#context:%s)", p.TypeRef, p.TypeRef)
-		output.WriteString(fmt.Sprintf(" * `%s` %s (%s)\n", p.Name, p.Description, typeLink))
+		output.WriteString(fmt.Sprintf(" * `%s` %s (%s)\n", p.Key, p.Help, typeLink))
 	}
 	output.WriteString("\n")
 	return nil
