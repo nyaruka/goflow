@@ -8,7 +8,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
-	"github.com/nyaruka/goflow/cmd/docgen/context"
+	"github.com/nyaruka/goflow/cmd/docgen/completion"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -105,10 +105,10 @@ func renderOperatorDoc(output *strings.Builder, item *TaggedItem, session flows.
 }
 
 func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
-	// examples are actually property descriptors for context items
-	properties := make([]*context.Property, len(item.examples))
+	// examples are actually auto-completion property descriptors
+	properties := make([]*completion.Property, len(item.examples))
 	for i, propDesc := range item.examples {
-		prop := context.ParseProperty(propDesc)
+		prop := completion.ParseProperty(propDesc)
 		if prop == nil {
 			return errors.Errorf("invalid format for property description \"%s\"", propDesc)
 		}

@@ -2,7 +2,7 @@
     "types": [
         {
             "type": "fields",
-            "source": "field-keys",
+            "key_source": "fields",
             "property_template": {
                 "key": "{key}",
                 "help": "{key} for the contact",
@@ -11,7 +11,7 @@
         },
         {
             "type": "results",
-            "source": "result-keys",
+            "key_source": "results",
             "property_template": {
                 "key": "{key}",
                 "help": "{key} value for the run",

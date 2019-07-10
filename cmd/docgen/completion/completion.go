@@ -1,29 +1,22 @@
-package context
+package completion
 
 import (
-	"strings"
-
 	"github.com/pkg/errors"
 )
 
-type Context struct {
+// Completion generates auto-complete paths
+type Completion struct {
 	Types []Type      `json:"types"`
 	Root  []*Property `json:"root"`
 }
 
-func NewContext() *Context {
-	return &Context{}
+// NewCompletion creates a new empty completion
+func NewCompletion(types []Type, root []*Property) *Completion {
+	return &Completion{Types: types, Root: root}
 }
 
-func (c *Context) SetRoot(root []*Property) {
-	c.Root = root
-}
-
-func (c *Context) AddType(t Type) {
-	c.Types = append(c.Types, t)
-}
-
-func (c *Context) Validate() error {
+// Validate checks that all type references are valid
+func (c *Completion) Validate() error {
 	knownTypes := make(map[string]bool, len(c.Types))
 	for _, t := range primitiveTypes {
 		knownTypes[t.TypeName()] = true
@@ -47,13 +40,14 @@ func (c *Context) Validate() error {
 	return nil
 }
 
+// Node represents a part of the context that can be referenced
 type Node struct {
 	Path string
 	Help string
 }
 
 // EnumerateNodes walks the context to enumerate all posible nodes
-func (c *Context) EnumerateNodes(sources map[string][]string) []Node {
+func (c *Completion) EnumerateNodes(context *Context) []Node {
 	// make a lookup of all types by their name
 	types := make(map[string]Type, len(c.Types))
 	for _, t := range primitiveTypes {
@@ -69,13 +63,13 @@ func (c *Context) EnumerateNodes(sources map[string][]string) []Node {
 		nodes = append(nodes, Node{path, help})
 	}
 	for _, p := range c.Root {
-		enumeratePaths("", p, types, sources, callback)
+		enumeratePaths("", p, types, context, callback)
 	}
 
 	return nodes
 }
 
-func enumeratePaths(base string, p *Property, types map[string]Type, sources map[string][]string, callback func(path, help string)) {
+func enumeratePaths(base string, p *Property, types map[string]Type, context *Context, callback func(path, help string)) {
 	t := types[p.TypeRef]
 
 	path := p.Key
@@ -89,22 +83,7 @@ func enumeratePaths(base string, p *Property, types map[string]Type, sources map
 		callback(path, "first of "+p.Help)
 	}
 
-	switch typed := t.(type) {
-	case *primitiveType:
-		// primitives don't have properties
-	case *staticType:
-		for _, pp := range typed.Properties {
-			enumeratePaths(path, pp, types, sources, callback)
-		}
-	case *dynamicType:
-		nameTemplate := typed.PropertyTemplate.Key
-		descTemplate := typed.PropertyTemplate.Help
-
-		for _, key := range sources[typed.Source] {
-			name := strings.Replace(nameTemplate, "{key}", key, -1)
-			description := strings.Replace(descTemplate, "{key}", key, -1)
-			pp := NewProperty(name, description, typed.PropertyTemplate.TypeRef)
-			enumeratePaths(path, pp, types, sources, callback)
-		}
+	for _, pp := range t.EnumerateProperties(context) {
+		enumeratePaths(path, pp, types, context, callback)
 	}
 }
