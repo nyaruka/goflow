@@ -208,7 +208,6 @@ func (c *Contact) Format(env utils.Environment) string {
 
 // Context returns the properties available in expressions
 //
-//   __default__:text -> the name or URN of the contact
 //   uuid:text -> the UUID of the contact
 //   id:text -> the numeric ID of the contact
 //   first_name:text -> the first name of the contact

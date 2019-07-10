@@ -92,11 +92,6 @@
             "type": "channel",
             "properties": [
                 {
-                    "key": "__default__",
-                    "help": "the name of the channel",
-                    "type_ref": "text"
-                },
-                {
                     "key": "uuid",
                     "help": "the UUID of the channel",
                     "type_ref": "text"
@@ -116,11 +111,6 @@
         {
             "type": "contact",
             "properties": [
-                {
-                    "key": "__default__",
-                    "help": "the name or URN of the contact",
-                    "type_ref": "text"
-                },
                 {
                     "key": "uuid",
                     "help": "the UUID of the contact",
@@ -184,11 +174,6 @@
             "type": "flow",
             "properties": [
                 {
-                    "key": "__default__",
-                    "help": "the name of the flow",
-                    "type_ref": "text"
-                },
-                {
                     "key": "uuid",
                     "help": "the UUID of the flow",
                     "type_ref": "text"
@@ -223,11 +208,6 @@
         {
             "type": "input",
             "properties": [
-                {
-                    "key": "__default__",
-                    "help": "the text and attachments of the input",
-                    "type_ref": "text"
-                },
                 {
                     "key": "uuid",
                     "help": "the UUID of the input",
@@ -309,11 +289,6 @@
         {
             "type": "result",
             "properties": [
-                {
-                    "key": "__default__",
-                    "help": "the value of the result",
-                    "type_ref": "text"
-                },
                 {
                     "key": "name",
                     "help": "the name of the result",

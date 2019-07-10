@@ -7,7 +7,6 @@ The context is all the variables which are accessible in expressions:
 
 ## Channel
 
- * `__default__` the name of the channel ([text](#context:text))
  * `uuid` the UUID of the channel ([text](#context:text))
  * `name` the name of the channel ([text](#context:text))
  * `address` the address of the channel ([text](#context:text))
@@ -16,7 +15,6 @@ The context is all the variables which are accessible in expressions:
 
 ## Contact
 
- * `__default__` the name or URN of the contact ([text](#context:text))
  * `uuid` the UUID of the contact ([text](#context:text))
  * `id` the numeric ID of the contact ([text](#context:text))
  * `first_name` the first name of the contact ([text](#context:text))
@@ -33,7 +31,6 @@ The context is all the variables which are accessible in expressions:
 
 ## Flow
 
- * `__default__` the name of the flow ([text](#context:text))
  * `uuid` the UUID of the flow ([text](#context:text))
  * `name` the name of the flow ([text](#context:text))
  * `revision` the revision number of the flow ([text](#context:text))
@@ -49,7 +46,6 @@ The context is all the variables which are accessible in expressions:
 
 ## Input
 
- * `__default__` the text and attachments of the input ([text](#context:text))
  * `uuid` the UUID of the input ([text](#context:text))
  * `created_on` the creation date of the input ([datetime](#context:datetime))
  * `channel` the channel that the input was received on ([channel](#context:channel))
@@ -74,7 +70,6 @@ The context is all the variables which are accessible in expressions:
 
 ## Result
 
- * `__default__` the value of the result ([text](#context:text))
  * `name` the name of the result ([text](#context:text))
  * `value` the value of the result ([text](#context:text))
  * `category` the category of the result ([text](#context:text))

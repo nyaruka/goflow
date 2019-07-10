@@ -48,7 +48,6 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 
 // Context returns the properties available in expressions
 //
-//   __default__:text -> the text and attachments of the input
 //   uuid:text -> the UUID of the input
 //   created_on:datetime -> the creation date of the input
 //   channel:channel -> the channel that the input was received on
