@@ -10,7 +10,7 @@ var contextPropRegexp = regexp.MustCompile(`(\w+)\:(\[\])?(\w+)\s→\s([\w\s]+)`
 
 // Type is a type that exists in the context
 type Type interface {
-	TypeName() string
+	Name() string
 	TypeRefs() []string
 	EnumerateProperties(context *Context) []*Property
 }
@@ -24,7 +24,7 @@ func newPrimitiveType(name string) *primitiveType {
 }
 
 // TypeName returns the name that is used to reference this type in a property
-func (t *primitiveType) TypeName() string {
+func (t *primitiveType) Name() string {
 	return t.name
 }
 
@@ -47,20 +47,20 @@ var primitiveTypes = []Type{
 
 // Property is a field of a context type which can be accessed in the context with the dot operator
 type Property struct {
-	Key     string `json:"key"`
-	Help    string `json:"help"`
-	TypeRef string `json:"type_ref"`
-	Array   bool   `json:"array,omitempty"`
+	Key   string `json:"key"`
+	Help  string `json:"help"`
+	Type  string `json:"type"`
+	Array bool   `json:"array,omitempty"`
 }
 
 // NewProperty creates a new property
 func NewProperty(key, help string, typeRef string) *Property {
-	return &Property{Key: key, Help: help, TypeRef: typeRef, Array: false}
+	return &Property{Key: key, Help: help, Type: typeRef, Array: false}
 }
 
 // NewArrayProperty creates a new array property
 func NewArrayProperty(key, help string, typeRef string) *Property {
-	return &Property{Key: key, Help: help, TypeRef: typeRef, Array: true}
+	return &Property{Key: key, Help: help, Type: typeRef, Array: true}
 }
 
 // ParseProperty parses a property from a docstring line
@@ -70,34 +70,34 @@ func ParseProperty(line string) *Property {
 		return nil
 	}
 	return &Property{
-		Key:     matches[1],
-		Help:    matches[4],
-		TypeRef: matches[3],
-		Array:   len(matches[2]) > 0,
+		Key:   matches[1],
+		Help:  matches[4],
+		Type:  matches[3],
+		Array: len(matches[2]) > 0,
 	}
 }
 
 // a type with fixed properties
 type staticType struct {
-	Name       string      `json:"type"`
+	Name_      string      `json:"name"`
 	Properties []*Property `json:"properties"`
 }
 
 // NewStaticType creates a new static type
 func NewStaticType(name string, properties []*Property) Type {
-	return &staticType{Name: name, Properties: properties}
+	return &staticType{Name_: name, Properties: properties}
 }
 
 // TypeName returns the name that is used to reference this type in a property
-func (t *staticType) TypeName() string {
-	return t.Name
+func (t *staticType) Name() string {
+	return t.Name_
 }
 
 // TypeRefs returns any references to other types
 func (t *staticType) TypeRefs() []string {
 	refs := make([]string, len(t.Properties))
 	for i, p := range t.Properties {
-		refs[i] = p.TypeRef
+		refs[i] = p.Type
 	}
 	return refs
 }
@@ -108,24 +108,24 @@ func (t *staticType) EnumerateProperties(context *Context) []*Property {
 }
 
 type dynamicType struct {
-	Name             string    `json:"type"`
+	Name_            string    `json:"name"`
 	KeySource        string    `json:"key_source"`
 	PropertyTemplate *Property `json:"property_template"`
 }
 
 // NewDynamicType creates a new dynamic type, i.e. properties determined at runtime
 func NewDynamicType(name, keySource string, propertyTemplate *Property) Type {
-	return &dynamicType{Name: name, KeySource: keySource, PropertyTemplate: propertyTemplate}
+	return &dynamicType{Name_: name, KeySource: keySource, PropertyTemplate: propertyTemplate}
 }
 
 // TypeName returns the name that is used to reference this type in a property
-func (t *dynamicType) TypeName() string {
-	return t.Name
+func (t *dynamicType) Name() string {
+	return t.Name_
 }
 
 // TypeRefs returns any references to other types
 func (t *dynamicType) TypeRefs() []string {
-	return []string{t.PropertyTemplate.TypeRef}
+	return []string{t.PropertyTemplate.Type}
 }
 
 // EnumerateProperties enumerates runtime properties
@@ -139,7 +139,7 @@ func (t *dynamicType) EnumerateProperties(context *Context) []*Property {
 	for i, key := range keys {
 		key := strings.Replace(keyTemplate, "{key}", key, -1)
 		help := strings.Replace(helpTemplate, "{key}", key, -1)
-		properties[i] = NewProperty(key, help, t.PropertyTemplate.TypeRef)
+		properties[i] = NewProperty(key, help, t.PropertyTemplate.Type)
 	}
 	return properties
 }

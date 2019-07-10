@@ -19,22 +19,22 @@ func NewCompletion(types []Type, root []*Property) *Completion {
 func (c *Completion) Validate() error {
 	knownTypes := make(map[string]bool, len(c.Types))
 	for _, t := range primitiveTypes {
-		knownTypes[t.TypeName()] = true
+		knownTypes[t.Name()] = true
 	}
 	for _, t := range c.Types {
-		knownTypes[t.TypeName()] = true
+		knownTypes[t.Name()] = true
 	}
 
 	for _, t := range c.Types {
 		for _, ref := range t.TypeRefs() {
 			if !knownTypes[ref] {
-				return errors.Errorf("context type %s references unknown type %s", t.TypeName(), ref)
+				return errors.Errorf("context type %s references unknown type %s", t.Name(), ref)
 			}
 		}
 	}
 	for _, p := range c.Root {
-		if !knownTypes[p.TypeRef] {
-			return errors.Errorf("context root references unknown type %s", p.TypeRef)
+		if !knownTypes[p.Type] {
+			return errors.Errorf("context root references unknown type %s", p.Type)
 		}
 	}
 	return nil
@@ -51,10 +51,10 @@ func (c *Completion) EnumerateNodes(context *Context) []Node {
 	// make a lookup of all types by their name
 	types := make(map[string]Type, len(c.Types))
 	for _, t := range primitiveTypes {
-		types[t.TypeName()] = t
+		types[t.Name()] = t
 	}
 	for _, t := range c.Types {
-		types[t.TypeName()] = t
+		types[t.Name()] = t
 	}
 
 	nodes := make([]Node, 0)
@@ -70,7 +70,7 @@ func (c *Completion) EnumerateNodes(context *Context) []Node {
 }
 
 func enumeratePaths(base string, p *Property, types map[string]Type, context *Context, callback func(path, help string)) {
-	t := types[p.TypeRef]
+	t := types[p.Type]
 
 	path := p.Key
 	if base != "" {
