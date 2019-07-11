@@ -1,3 +1,10 @@
+v0.41.17
+----------
+ * Add SetURN function to Msg
+ * Fix localization UUID in test action holder flow
+ * Update send_email action to allow localization of subject and body
+ * Reorganize docgen code to make it easier to add new doc outputs
+
 v0.41.16
 ----------
  * Allow setting channel on a non-tel URN if it doesn't have a channel
