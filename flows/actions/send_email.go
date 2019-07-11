@@ -110,8 +110,8 @@ func (a *SendEmailAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SendEmailAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Subject)
-	include.String(&a.Body)
+	include.String(a.Subject)
+	include.String(a.Body)
 	include.Slice(a.Addresses)
 
 	include.Translations(a, "subject")

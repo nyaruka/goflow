@@ -34,7 +34,7 @@ type SayMsgAction struct {
 	BaseAction
 	voiceAction
 
-	Text     string `json:"text" validate:"required"`
+	Text     string `json:"text" validate:"required" engine:"evaluate,localize"`
 	AudioURL string `json:"audio_url,omitempty"`
 }
 
@@ -87,6 +87,6 @@ func (a *SayMsgAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SayMsgAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Text)
+	include.String(a.Text)
 	include.Translations(a, "text")
 }

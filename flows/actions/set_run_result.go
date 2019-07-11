@@ -75,7 +75,7 @@ func (a *SetRunResultAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetRunResultAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Value)
+	include.String(a.Value)
 }
 
 // EnumerateResults enumerates all potential results on this object

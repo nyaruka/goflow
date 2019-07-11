@@ -232,7 +232,7 @@ func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (r *SwitchRouter) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&r.operand)
+	include.String(r.operand)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children

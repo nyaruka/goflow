@@ -80,5 +80,5 @@ func (a *SetContactFieldAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetContactFieldAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Value)
+	include.String(a.Value)
 }

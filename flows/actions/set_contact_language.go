@@ -79,5 +79,5 @@ func (a *SetContactLanguageAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetContactLanguageAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Language)
+	include.String(a.Language)
 }

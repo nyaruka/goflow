@@ -216,13 +216,6 @@ func (f *flow) ExtractTemplates() []string {
 	return templates
 }
 
-// RewriteTemplates rewrites all templates
-func (f *flow) RewriteTemplates(rewrite func(string) string) {
-	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateTemplates(flows.NewTemplateRewriter(f.Localization(), rewrite))
-	})
-}
-
 // ExtractDependencies extracts all asset dependencies
 func (f *flow) ExtractDependencies() []assets.Reference {
 	dependencies := make([]assets.Reference, 0)

@@ -165,7 +165,7 @@ func MergeResultInfos(specs []*ResultInfo) []*ResultInfo {
 
 // TemplateIncluder is interface passed to EnumerateTemplates to include templates on flow entities
 type TemplateIncluder interface {
-	String(*string)
+	String(string)
 	Slice([]string)
 	Map(map[string]string)
 	Translations(Localizable, string)
@@ -181,8 +181,8 @@ func NewTemplateEnumerator(localization Localization, include func(string)) Temp
 	return &templateEnumerator{localization: localization, include: include}
 }
 
-func (t *templateEnumerator) String(s *string) {
-	t.include(*s)
+func (t *templateEnumerator) String(s string) {
+	t.include(s)
 }
 
 func (t *templateEnumerator) Slice(a []string) {
@@ -198,39 +198,6 @@ func (t *templateEnumerator) Map(m map[string]string) {
 }
 
 func (t *templateEnumerator) Translations(localizable Localizable, key string) {
-	for _, lang := range t.localization.Languages() {
-		translations := t.localization.GetTranslations(lang)
-		t.Slice(translations.GetTextArray(localizable.LocalizationUUID(), key))
-	}
-}
-
-type templateRewriter struct {
-	localization Localization
-	rewrite      func(string) string
-}
-
-// NewTemplateRewriter creates a template includer for rewriting templates
-func NewTemplateRewriter(localization Localization, rewrite func(string) string) TemplateIncluder {
-	return &templateRewriter{localization: localization, rewrite: rewrite}
-}
-
-func (t *templateRewriter) String(s *string) {
-	*s = t.rewrite(*s)
-}
-
-func (t *templateRewriter) Slice(a []string) {
-	for i := range a {
-		a[i] = t.rewrite(a[i])
-	}
-}
-
-func (t *templateRewriter) Map(m map[string]string) {
-	for k := range m {
-		m[k] = t.rewrite(m[k])
-	}
-}
-
-func (t *templateRewriter) Translations(localizable Localizable, key string) {
 	for _, lang := range t.localization.Languages() {
 		translations := t.localization.GetTranslations(lang)
 		t.Slice(translations.GetTextArray(localizable.LocalizationUUID(), key))
@@ -259,9 +226,9 @@ func (r inspectableReference) EnumerateTemplates(include TemplateIncluder) {
 	if r.ref != nil && r.ref.Variable() {
 		switch typed := r.ref.(type) {
 		case *assets.GroupReference:
-			include.String(&typed.NameMatch)
+			include.String(typed.NameMatch)
 		case *assets.LabelReference:
-			include.String(&typed.NameMatch)
+			include.String(typed.NameMatch)
 		}
 	}
 }

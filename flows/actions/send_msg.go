@@ -130,7 +130,7 @@ func (a *SendMsgAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SendMsgAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Text)
+	include.String(a.Text)
 	include.Slice(a.Attachments)
 	include.Slice(a.QuickReplies)
 	if a.Templating != nil {
