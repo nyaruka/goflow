@@ -85,6 +85,9 @@
                 "translations": {
                     "eng": {
                         "text": "Hi there!"
+                    },
+                    "spa": {
+                        "text": "Hi there!"
                     }
                 },
                 "type": "broadcast_created",

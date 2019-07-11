@@ -163,5 +163,48 @@
                 "body": "So I was thinking..."
             }
         ]
+    },
+    {
+        "description": "Subject and body can be localized",
+        "action": {
+            "type": "send_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "addresses": [
+                "bob@example.com"
+            ],
+            "subject": "Hi there",
+            "body": "So I was thinking..."
+        },
+        "localization": {
+            "subject": [
+                "Hola"
+            ],
+            "body": [
+                "Pues estuve pensando..."
+            ]
+        },
+        "events": [
+            {
+                "type": "email_created",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "addresses": [
+                    "bob@example.com"
+                ],
+                "subject": "Hola",
+                "body": "Pues estuve pensando..."
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "Hi there",
+                "So I was thinking...",
+                "bob@example.com",
+                "Hola",
+                "Pues estuve pensando..."
+            ],
+            "dependencies": [],
+            "results": []
+        }
     }
 ]

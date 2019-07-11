@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -50,25 +51,27 @@ func NewSendEmailAction(uuid flows.ActionUUID, addresses []string, subject strin
 
 // Execute creates the email events
 func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	subject, err := run.EvaluateTemplate(a.Subject)
+	localizedSubject := run.GetText(utils.UUID(a.UUID()), "subject", a.Subject)
+	evaluatedSubject, err := run.EvaluateTemplate(localizedSubject)
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))
 	}
 
 	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
-	subject = regexp.MustCompile(`\s+`).ReplaceAllString(subject, " ")
-	subject = strings.TrimSpace(subject)
+	evaluatedSubject = regexp.MustCompile(`\s+`).ReplaceAllString(evaluatedSubject, " ")
+	evaluatedSubject = strings.TrimSpace(evaluatedSubject)
 
-	if subject == "" {
+	if evaluatedSubject == "" {
 		logEvent(events.NewErrorEventf("email subject evaluated to empty string, skipping"))
 		return nil
 	}
 
-	body, err := run.EvaluateTemplate(a.Body)
+	localizedBody := run.GetText(utils.UUID(a.UUID()), "body", a.Body)
+	evaluatedBody, err := run.EvaluateTemplate(localizedBody)
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))
 	}
-	if body == "" {
+	if evaluatedBody == "" {
 		logEvent(events.NewErrorEventf("email body evaluated to empty string, skipping"))
 		return nil
 	}
@@ -94,7 +97,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	}
 
 	if len(evaluatedAddresses) > 0 {
-		logEvent(events.NewEmailCreatedEvent(evaluatedAddresses, subject, body))
+		logEvent(events.NewEmailCreatedEvent(evaluatedAddresses, evaluatedSubject, evaluatedBody))
 	}
 
 	return nil
@@ -110,4 +113,7 @@ func (a *SendEmailAction) EnumerateTemplates(include flows.TemplateIncluder) {
 	include.String(&a.Subject)
 	include.String(&a.Body)
 	include.Slice(a.Addresses)
+
+	include.Translations(a, "subject")
+	include.Translations(a, "body")
 }
