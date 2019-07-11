@@ -167,7 +167,6 @@ func MergeResultInfos(specs []*ResultInfo) []*ResultInfo {
 type TemplateIncluder interface {
 	String(string)
 	Slice([]string)
-	Map(map[string]string)
 	Translations(Localizable, string)
 }
 
@@ -188,12 +187,6 @@ func (t *templateEnumerator) String(s string) {
 func (t *templateEnumerator) Slice(a []string) {
 	for i := range a {
 		t.include(a[i])
-	}
-}
-
-func (t *templateEnumerator) Map(m map[string]string) {
-	for k := range m {
-		t.include(m[k])
 	}
 }
 

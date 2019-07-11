@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 
 	"github.com/pkg/errors"
 )
@@ -34,7 +35,7 @@ type AddContactURNAction struct {
 	universalAction
 
 	Scheme string `json:"scheme" validate:"urnscheme"`
-	Path   string `json:"path" validate:"required"`
+	Path   string `json:"path" validate:"required" engine:"evaluated"`
 }
 
 // NewAddContactURNAction creates a new add URN action
@@ -86,5 +87,5 @@ func (a *AddContactURNAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *AddContactURNAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Path)
+	inspect.TemplateValuesByTags(a, include)
 }

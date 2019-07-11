@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 
 	"github.com/pkg/errors"
 	"golang.org/x/net/http/httpguts"
@@ -41,9 +42,9 @@ type CallWebhookAction struct {
 	onlineAction
 
 	Method     string            `json:"method" validate:"required,http_method"`
-	URL        string            `json:"url" validate:"required"`
-	Headers    map[string]string `json:"headers,omitempty"`
-	Body       string            `json:"body,omitempty"`
+	URL        string            `json:"url" validate:"required" engine:"evaluated"`
+	Headers    map[string]string `json:"headers,omitempty" engine:"evaluated"`
+	Body       string            `json:"body,omitempty" engine:"evaluated"`
 	ResultName string            `json:"result_name,omitempty"`
 }
 
@@ -135,9 +136,7 @@ func (a *CallWebhookAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *CallWebhookAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.URL)
-	include.String(a.Body)
-	include.Map(a.Headers)
+	inspect.TemplateValuesByTags(a, include)
 }
 
 // EnumerateResults enumerates all potential results on this object

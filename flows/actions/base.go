@@ -299,9 +299,9 @@ type otherContactsAction struct {
 
 // utility struct for actions which create a message
 type createMsgAction struct {
-	Text         string   `json:"text" validate:"required"`
-	Attachments  []string `json:"attachments,omitempty"`
-	QuickReplies []string `json:"quick_replies,omitempty"`
+	Text         string   `json:"text" validate:"required" engine:"evaluated,localized"`
+	Attachments  []string `json:"attachments,omitempty" engine:"evaluated,localized"`
+	QuickReplies []string `json:"quick_replies,omitempty" engine:"evaluated,localized"`
 }
 
 //------------------------------------------------------------------------------------------
