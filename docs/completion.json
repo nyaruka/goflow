@@ -14,7 +14,7 @@
             "key_source": "results",
             "property_template": {
                 "key": "{key}",
-                "help": "{key} value for the run",
+                "help": "result for {key}",
                 "type": "result"
             }
         },

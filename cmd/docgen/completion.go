@@ -22,7 +22,7 @@ func generateCompletionMap(baseDir string, outputDir string, items map[string][]
 	types := []completion.Type{
 		// the dynamic types in the context aren't described in the code so we add them manually here
 		completion.NewDynamicType("fields", "fields", completion.NewProperty("{key}", "{key} for the contact", "any")),
-		completion.NewDynamicType("results", "results", completion.NewProperty("{key}", "{key} value for the run", "result")),
+		completion.NewDynamicType("results", "results", completion.NewProperty("{key}", "result for {key}", "result")),
 
 		// the urns type also added here as it's "dynamic" in sense that keys are known at build time
 		createURNsType(),
@@ -62,8 +62,8 @@ func generateCompletionMap(baseDir string, outputDir string, items map[string][]
 	fmt.Printf(" > %d completion map written to %s\n", len(items["context"]), mapPath)
 
 	context := completion.NewContext(map[string][]string{
-		"field-keys":  []string{"age", "gender"},
-		"result-keys": []string{"response_1"},
+		"fields":  []string{"age", "gender"},
+		"results": []string{"response_1"},
 	})
 	nodes := c.EnumerateNodes(context)
 

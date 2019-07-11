@@ -1,6 +1,23 @@
-# Context
+# Root
 
-The context is all the variables which are accessible in expressions:
+These are the top-level variables that can be accessed in the context:
+
+ * `contact` the contact ([contact](context.html#context:contact))
+ * `fields` the custom field values of the contact (fields)
+ * `urns` the URN values of the contact (urns)
+ * `results` the current run results (results)
+ * `input` the current input from the contact ([input](context.html#context:input))
+ * `run` the current run ([run](context.html#context:run))
+ * `child` the last child run ([related_run](context.html#context:related_run))
+ * `parent` the parent of the run ([related_run](context.html#context:related_run))
+ * `webhook` the parsed JSON response of the last webhook call (any)
+ * `trigger` the trigger that started this session ([trigger](context.html#context:trigger))
+
+
+
+# Types
+
+The following types are found in the context:
 
 <div class="context">
 <a name="context:channel"></a>
@@ -90,21 +107,6 @@ Defaults to the value ([text](expressions.html#type:text))
  * `extra` the extra data of the result such as a webhook response (any)
  * `node_uuid` the UUID of the node in the flow that generated the result ([text](expressions.html#type:text))
  * `created_on` the creation date of the result ([datetime](expressions.html#type:datetime))
-
-<a name="context:root"></a>
-
-## Root
-
- * `contact` the contact ([contact](context.html#context:contact))
- * `fields` the custom field values of the contact (fields)
- * `urns` the URN values of the contact (urns)
- * `results` the current run results (results)
- * `input` the current input from the contact ([input](context.html#context:input))
- * `run` the current run ([run](context.html#context:run))
- * `child` the last child run ([related_run](context.html#context:related_run))
- * `parent` the parent of the run ([related_run](context.html#context:related_run))
- * `webhook` the parsed JSON response of the last webhook call (any)
- * `trigger` the trigger that started this session ([trigger](context.html#context:trigger))
 
 <a name="context:run"></a>
 
