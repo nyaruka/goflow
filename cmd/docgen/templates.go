@@ -32,7 +32,7 @@ var resources = []string{"styles.css"}
 var templates = []struct {
 	title         string
 	path          string
-	containsTypes []string
+	containsTypes []string // used for resolving links
 }{
 	{"Flow Specification", "index.md", nil},
 	{"Flows", "flows.md", []string{"action", "router", "wait"}},

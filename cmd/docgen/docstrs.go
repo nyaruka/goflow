@@ -43,9 +43,17 @@ type TaggedItem struct {
 func FindAllTaggedItems(baseDir string) (map[string][]*TaggedItem, error) {
 	items := make(map[string][]*TaggedItem)
 
+	// if tagged method is on a base class, we'll "find" it on each type that embeds that base
+	// so need to ignore repeats
+	seen := make(map[string]bool)
+
 	for _, dir := range searchDirs {
 		err := findTaggedItems(baseDir, dir, func(item *TaggedItem) {
-			items[item.tagName] = append(items[item.tagName], item)
+			fullTag := item.tagName + ":" + item.tagValue
+			if !seen[fullTag] {
+				items[item.tagName] = append(items[item.tagName], item)
+				seen[fullTag] = true
+			}
 		})
 		if err != nil {
 			return nil, err

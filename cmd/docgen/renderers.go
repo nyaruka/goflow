@@ -118,7 +118,15 @@ func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.S
 	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", item.tagValue))
 	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
 	for _, p := range properties {
-		typeLink := fmt.Sprintf("[%s](#context:%s)", p.Type, p.Type)
+		var typeLink string
+		if p.Type == "any" || p.Type == "fields" || p.Type == "results" || p.Type == "urns" {
+			typeLink = p.Type
+		} else if p.Type == "text" || p.Type == "number" || p.Type == "datetime" {
+			typeLink = fmt.Sprintf("[type:%s]", p.Type)
+		} else {
+			typeLink = fmt.Sprintf("[context:%s]", p.Type)
+		}
+
 		output.WriteString(fmt.Sprintf(" * `%s` %s (%s)\n", p.Key, p.Help, typeLink))
 	}
 	output.WriteString("\n")
