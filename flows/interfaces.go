@@ -120,21 +120,7 @@ type Localizable interface {
 	LocalizationUUID() utils.UUID
 }
 
-// Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
-// properties which can be accessed:
-//
-//  * `uuid` the UUID of the flow
-//  * `name` the name of the flow
-//  * `revision` the revision number of the flow
-//
-// Examples:
-//
-//   @run.flow -> Registration
-//   @child.flow.name -> Collect Age
-//   @run.flow.uuid -> 50c3706e-fedb-42c0-8eab-dda3335714b7
-//   @(json(run.flow)) -> {"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
-//
-// @context flow
+// Flow describes the ordered logic of actions and routers
 type Flow interface {
 	Contextable
 
@@ -243,19 +229,7 @@ type Translations interface {
 	SetTextArray(utils.UUID, string, []string)
 }
 
-// Trigger represents something which can initiate a session with the flow engine. It has several properties which can be
-// accessed in expressions:
-//
-//  * `type` the type of the trigger, one of "manual" or "flow"
-//  * `params` the parameters passed to the trigger
-//
-// Examples:
-//
-//   @trigger.type -> flow_action
-//   @trigger.params -> {address: {state: WA}, source: website}
-//   @(json(trigger)) -> {"params":{"address":{"state":"WA"},"source":"website"},"type":"flow_action"}
-//
-// @context trigger
+// Trigger represents something which can initiate a session with the flow engine
 type Trigger interface {
 	utils.Typed
 	Contextable
@@ -311,29 +285,7 @@ type Event interface {
 // EventCallback is a callback invoked when an event has been generated
 type EventCallback func(Event)
 
-// Input describes input from the contact and currently we only support one type of input: `msg`. Any input has the following
-// properties which can be accessed:
-//
-//  * `uuid` the UUID of the input
-//  * `type` the type of the input, e.g. `msg`
-//  * `channel` the [channel](#context:channel) that the input was received on
-//  * `created_on` the time when the input was created
-//
-// An input of type `msg` renders as its text and attachments in a template, and has the following additional properties:
-//
-//  * `text` the text of the message
-//  * `attachments` any [attachments](#context:attachment) on the message
-//  * `urn` the [URN](#context:urn) that the input was received on
-//
-// Examples:
-//
-//   @input -> Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
-//   @input.type -> msg
-//   @input.text -> Hi there
-//   @input.attachments -> [image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]
-//   @(json(input)) -> {"attachments":["image/jpeg:http://s3.amazon.com/bucket/test.jpg","audio/mp3:http://s3.amazon.com/bucket/test.mp3"],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","external_id":"","text":"Hi there","type":"msg","urn":"tel:+12065551212","uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
-//
-// @context input
+// Input describes input from the contact and currently we only support one type of input: `msg`
 type Input interface {
 	utils.Typed
 	Contextable
@@ -421,23 +373,8 @@ type RunEnvironment interface {
 	LookupLocation(utils.LocationPath) (*utils.Location, error)
 }
 
-// FlowRun is a single contact's journey through a flow. It records the path they have taken, and the results that have been
-// collected. It has several properties which can be accessed in expressions:
-//
-//  * `uuid` the UUID of the run
-//  * `flow` the [flow](#context:flow) of the run
-//  * `contact` the [contact](#context:contact) of the flow run
-//  * `input` the [input](#context:input) of the current run
-//  * `results` the results that have been saved for this run
-//  * `results.[snaked_result_name]` the value of the specific result, e.g. `results.age`
-//
-// Examples:
-//
-//   @run -> Ryan Lewis@Registration
-//   @run.contact.name -> Ryan Lewis
-//   @run.flow.name -> Registration
-//
-// @context run
+// FlowRun is a single contact's journey through a flow. It records the path they have taken,
+// and the results that have been collected.
 type FlowRun interface {
 	Contextable
 	RunSummary
