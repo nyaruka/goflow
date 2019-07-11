@@ -81,6 +81,11 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 }
 
 // Context returns the properties available in expressions
+//
+//   type:text -> the type of trigger that started this session
+//   params:any -> the parameters passed to the trigger
+//
+// @context trigger
 func (t *baseTrigger) Context(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"type":   types.NewXText(t.type_),

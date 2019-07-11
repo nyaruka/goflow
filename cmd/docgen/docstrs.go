@@ -17,14 +17,17 @@ var searchDirs = []string{
 	"excellent/types",
 	"flows",
 	"flows/actions",
+	"flows/definition",
 	"flows/events",
+	"flows/inputs",
 	"flows/resumes",
 	"flows/routers/cases",
+	"flows/runs",
 	"flows/triggers",
 }
 
 // the format of the tags which indicate a docstring is used by docgen: @name value<extra>
-var tagRegex = regexp.MustCompile(`@(?P<name>\w+)\s+(?P<value>\w+)(?P<extra>.+)?`)
+var tagRegex = regexp.MustCompile(`^@(?P<name>\w+)\s+(?P<value>\w+)(?P<extra>.+)?`)
 
 // TaggedItem is any item that is documented with a @tag to indicate it will be used by docgen
 type TaggedItem struct {
@@ -40,9 +43,17 @@ type TaggedItem struct {
 func FindAllTaggedItems(baseDir string) (map[string][]*TaggedItem, error) {
 	items := make(map[string][]*TaggedItem)
 
+	// if tagged method is on a base class, we'll "find" it on each type that embeds that base
+	// so need to ignore repeats
+	seen := make(map[string]bool)
+
 	for _, dir := range searchDirs {
 		err := findTaggedItems(baseDir, dir, func(item *TaggedItem) {
-			items[item.tagName] = append(items[item.tagName], item)
+			fullTag := item.tagName + ":" + item.tagValue
+			if !seen[fullTag] {
+				items[item.tagName] = append(items[item.tagName], item)
+				seen[fullTag] = true
+			}
 		})
 		if err != nil {
 			return nil, err
@@ -73,7 +84,7 @@ func findTaggedItems(baseDir string, searchDir string, callback func(item *Tagge
 	}
 
 	for _, f := range pkgs {
-		p := doc.New(f, "./", 0)
+		p := doc.New(f, "./", doc.AllDecls)
 		for _, t := range p.Types {
 			tryToParse(t.Doc, t.Name)
 			for _, m := range t.Methods {

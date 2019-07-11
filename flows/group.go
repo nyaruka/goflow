@@ -12,20 +12,7 @@ import (
 )
 
 // Group represents a grouping of contacts. It can be static (contacts are added and removed manually through
-// [actions](#action:add_contact_groups)) or dynamic (contacts are added automatically by a query). It renders as its name in a
-// template, and has the following properties which can be accessed:
-//
-//  * `uuid` the UUID of the group
-//  * `name` the name of the group
-//
-// Examples:
-//
-//   @(foreach(contact.groups, extract, "name")) -> [Testers, Males]
-//   @(contact.groups[0].uuid) -> b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
-//   @(contact.groups[1].name) -> Males
-//   @(json(contact.groups[1])) -> {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
-//
-// @context group
+// [actions](#action:add_contact_groups)) or dynamic (contacts are added automatically by a query).
 type Group struct {
 	assets.Group
 
@@ -76,6 +63,11 @@ func (g *Group) Reference() *assets.GroupReference {
 }
 
 // ToXValue returns a representation of this object for use in expressions
+//
+//   uuid:text -> the UUID of the group
+//   name:text -> the name of the group
+//
+// @context group
 func (g *Group) ToXValue(env utils.Environment) types.XValue {
 	return types.NewXObject(map[string]types.XValue{
 		"uuid": types.NewXText(string(g.UUID())),
