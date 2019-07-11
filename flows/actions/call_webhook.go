@@ -135,8 +135,8 @@ func (a *CallWebhookAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *CallWebhookAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.URL)
-	include.String(&a.Body)
+	include.String(a.URL)
+	include.String(a.Body)
 	include.Map(a.Headers)
 }
 

@@ -144,7 +144,6 @@ type Flow interface {
 	ValidateRecursive(SessionAssets, func(assets.Reference)) error
 
 	ExtractTemplates() []string
-	RewriteTemplates(func(string) string)
 	ExtractDependencies() []assets.Reference
 	ExtractResults() []*ResultInfo
 

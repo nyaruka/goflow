@@ -3,7 +3,6 @@ package definition_test
 import (
 	"encoding/json"
 	"io/ioutil"
-	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
@@ -478,7 +477,7 @@ func TestReadFlow(t *testing.T) {
 	}`), flow.UI(), "ui mismatch for read flow")
 }
 
-func TestExtractAndRewriteTemplates(t *testing.T) {
+func TestExtractTemplates(t *testing.T) {
 	testCases := []struct {
 		path      string
 		uuid      string
@@ -547,18 +546,6 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 		// try extracting all templates
 		templates := flow.ExtractTemplates()
 		assert.Equal(t, tc.templates, templates, "extracted templates mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
-
-		// try rewriting all templates in uppercase
-		flow.RewriteTemplates(func(t string) string { return strings.ToUpper(t) })
-
-		// re-extract all templates
-		rewritten := flow.ExtractTemplates()
-
-		for i := range templates {
-			templates[i] = strings.ToUpper(templates[i])
-		}
-
-		assert.Equal(t, templates, rewritten)
 	}
 }
 
