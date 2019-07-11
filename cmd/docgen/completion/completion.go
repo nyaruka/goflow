@@ -1,6 +1,8 @@
 package completion
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 )
 
@@ -46,7 +48,7 @@ type Node struct {
 	Help string
 }
 
-// EnumerateNodes walks the context to enumerate all posible nodes
+// EnumerateNodes walks the context to enumerate all possible nodes
 func (c *Completion) EnumerateNodes(context *Context) []Node {
 	// make a lookup of all types by their name
 	types := make(map[string]Type, len(c.Types))
@@ -76,14 +78,28 @@ func enumeratePaths(base string, p *Property, types map[string]Type, context *Co
 	if base != "" {
 		path = base + "." + path
 	}
-	callback(path, p.Help)
+
+	props := t.EnumerateProperties(context)
+	help := p.Help
+
+	// if this type has a default value, append that to the help
+	for _, pp := range props {
+		if pp.Key == "__default__" {
+			help += fmt.Sprintf(" (defaults to %s)", pp.Help)
+			break
+		}
+	}
+
+	callback(path, help)
 
 	if p.Array {
 		path += "[0]"
-		callback(path, "first of "+p.Help)
+		callback(path, "first of "+help)
 	}
 
-	for _, pp := range t.EnumerateProperties(context) {
-		enumeratePaths(path, pp, types, context, callback)
+	for _, pp := range props {
+		if pp.Key != "__default__" {
+			enumeratePaths(path, pp, types, context, callback)
+		}
 	}
 }

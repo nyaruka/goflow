@@ -95,9 +95,9 @@ Defaults to the value ([text](expressions.html#type:text))
 
 ## Root
 
- * `contact` the current contact ([contact](context.html#context:contact))
- * `fields` the custom field values of the current contact (fields)
- * `urns` the URN values of the current contact (urns)
+ * `contact` the contact ([contact](context.html#context:contact))
+ * `fields` the custom field values of the contact (fields)
+ * `urns` the URN values of the contact (urns)
  * `results` the current run results (results)
  * `input` the current input from the contact ([input](context.html#context:input))
  * `run` the current run ([run](context.html#context:run))

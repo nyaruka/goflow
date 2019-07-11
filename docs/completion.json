@@ -425,17 +425,17 @@
     "root": [
         {
             "key": "contact",
-            "help": "the current contact",
+            "help": "the contact",
             "type": "contact"
         },
         {
             "key": "fields",
-            "help": "the custom field values of the current contact",
+            "help": "the custom field values of the contact",
             "type": "fields"
         },
         {
             "key": "urns",
-            "help": "the URN values of the current contact",
+            "help": "the URN values of the contact",
             "type": "urns"
         },
         {

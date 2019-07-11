@@ -186,9 +186,9 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
 // RootContext returns the root context for expression evaluation
 //
-//   contact:contact -> the current contact
-//   fields:fields -> the custom field values of the current contact
-//   urns:urns -> the URN values of the current contact
+//   contact:contact -> the contact
+//   fields:fields -> the custom field values of the contact
+//   urns:urns -> the URN values of the contact
 //   results:results -> the current run results
 //   input:input -> the current input from the contact
 //   run:run -> the current run
