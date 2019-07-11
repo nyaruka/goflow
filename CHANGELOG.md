@@ -1,3 +1,8 @@
+v0.41.18
+----------
+ * Drop current template rewriting functionality which isn't used and can't be used with migrations
+ * Generate context map from docstrings
+
 v0.41.17
 ----------
  * Add SetURN function to Msg
