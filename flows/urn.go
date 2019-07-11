@@ -36,16 +36,6 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //  - _twitterid:54784326227#nyaruka_
 //  - _telegram:34642632786#bobby_
 //
-// To render a URN in a human friendly format, use the [function:format_urn] function.
-//
-// Examples:
-//
-//   @(urns.tel) -> tel:+12065551212
-//   @(urn_parts(urns.tel).scheme) -> tel
-//   @(format_urn(urns.tel)) -> (206) 555-1212
-//   @(json(contact.urns[0])) -> "tel:+12065551212"
-//
-// @context urn
 type ContactURN struct {
 	urn     urns.URN
 	channel *Channel

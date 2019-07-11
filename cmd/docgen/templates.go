@@ -32,7 +32,7 @@ var resources = []string{"styles.css"}
 var templates = []struct {
 	title         string
 	path          string
-	containsTypes []string
+	containsTypes []string // used for resolving links
 }{
 	{"Flow Specification", "index.md", nil},
 	{"Flows", "flows.md", []string{"action", "router", "wait"}},
@@ -43,23 +43,14 @@ var templates = []struct {
 	{"Assets", "assets.md", []string{"asset"}},
 }
 
-var docSets = []struct {
-	tag      string
-	renderer renderFunc
-}{
-	{"type", renderTypeDoc},
-	{"operator", renderOperatorDoc},
-	{"function", renderFunctionDoc},
-	{"asset", renderAssetDoc},
-	{"context", renderContextDoc},
-	{"test", renderFunctionDoc},
-	{"action", renderActionDoc},
-	{"event", renderEventDoc},
-	{"trigger", renderTriggerDoc},
-	{"resume", renderResumeDoc},
-}
+// ContextFunc is a function which produces values to put the template context
+type ContextFunc func(map[string][]*TaggedItem, flows.Session) (map[string]string, error)
 
-type renderFunc func(output *strings.Builder, item *TaggedItem, session flows.Session) error
+var contextFuncs []ContextFunc
+
+func registerContextFunc(f ContextFunc) {
+	contextFuncs = append(contextFuncs, f)
+}
 
 func generateTemplateDocs(baseDir string, outputDir string, items map[string][]*TaggedItem) error {
 	if err := renderTemplateDocs(baseDir, outputDir, items); err != nil {
@@ -80,7 +71,7 @@ func generateTemplateDocs(baseDir string, outputDir string, items map[string][]*
 
 func renderTemplateDocs(baseDir string, outputDir string, items map[string][]*TaggedItem) error {
 	// render items as context for the main doc templates
-	context, err := buildDocsContext(items)
+	context, err := buildTemplateContext(items)
 	if err != nil {
 		return errors.Wrap(err, "error building docs context")
 	}
@@ -160,9 +151,9 @@ func createLinkResolver(items map[string][]*TaggedItem) (urlResolver, map[string
 	linkTargets := make(map[string]bool)
 	typeTemplates := make(map[string]string)
 
-	for _, ds := range docSets {
-		for _, item := range items[ds.tag] {
-			linkTargets[ds.tag+":"+item.tagValue] = true
+	for tag, itemsWithTag := range items {
+		for _, item := range itemsWithTag {
+			linkTargets[tag+":"+item.tagValue] = true
 		}
 	}
 
@@ -208,7 +199,7 @@ func copyFile(src, dst string) error {
 }
 
 // builds the documentation generation context from the given documented items
-func buildDocsContext(items map[string][]*TaggedItem) (map[string]string, error) {
+func buildTemplateContext(items map[string][]*TaggedItem) (map[string]string, error) {
 	server := test.NewTestHTTPServer(49998)
 	defer server.Close()
 
@@ -225,28 +216,19 @@ func buildDocsContext(items map[string][]*TaggedItem) (map[string]string, error)
 		return nil, errors.Wrap(err, "error creating example session")
 	}
 
-	context := make(map[string]string, len(docSets))
+	context := make(map[string]string)
 
-	for _, ds := range docSets {
-		contextKey := fmt.Sprintf("%sDocs", ds.tag)
-
-		if context[contextKey], err = buildTagContext(ds.tag, items[ds.tag], ds.renderer, session); err != nil {
+	for _, f := range contextFuncs {
+		newContext, err := f(items, session)
+		if err != nil {
 			return nil, err
+		}
+
+		// add to the overall context
+		for k, v := range newContext {
+			context[k] = v
 		}
 	}
 
 	return context, nil
-}
-
-// builds a docset for the given tag type
-func buildTagContext(tag string, tagItems []*TaggedItem, renderer renderFunc, session flows.Session) (string, error) {
-	buffer := &strings.Builder{}
-
-	for _, item := range tagItems {
-		if err := renderer(buffer, item, session); err != nil {
-			return "", errors.Wrapf(err, "error rendering %s:%s", item.tagName, item.tagValue)
-		}
-	}
-
-	return buffer.String(), nil
 }
