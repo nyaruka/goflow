@@ -176,6 +176,7 @@ func (f *flow) validateAssets(sa flows.SessionAssets, recursive bool, seen map[a
 
 // Context returns the properties available in expressions
 //
+//   __default__:text -> the name
 //   uuid:text -> the UUID of the flow
 //   name:text -> the name of the flow
 //   revision:text -> the revision number of the flow

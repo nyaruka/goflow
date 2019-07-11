@@ -7,6 +7,8 @@ The context is all the variables which are accessible in expressions:
 
 ## Channel
 
+Defaults to the name ([text](expressions.html#type:text))
+
  * `uuid` the UUID of the channel ([text](expressions.html#type:text))
  * `name` the name of the channel ([text](expressions.html#type:text))
  * `address` the address of the channel ([text](expressions.html#type:text))
@@ -15,11 +17,13 @@ The context is all the variables which are accessible in expressions:
 
 ## Contact
 
+Defaults to the name or URN ([text](expressions.html#type:text))
+
  * `uuid` the UUID of the contact ([text](expressions.html#type:text))
  * `id` the numeric ID of the contact ([text](expressions.html#type:text))
  * `first_name` the first name of the contact ([text](expressions.html#type:text))
  * `name` the name of the contact ([text](expressions.html#type:text))
- * `language` the language of the contact as 3 ([text](expressions.html#type:text))
+ * `language` the language of the contact as 3-letter ISO code ([text](expressions.html#type:text))
  * `created_on` the creation date of the contact ([datetime](expressions.html#type:datetime))
  * `urns` the URNs belonging to the contact ([text](expressions.html#type:text))
  * `urn` the preferred URN of the contact ([text](expressions.html#type:text))
@@ -30,6 +34,8 @@ The context is all the variables which are accessible in expressions:
 <a name="context:flow"></a>
 
 ## Flow
+
+Defaults to the name ([text](expressions.html#type:text))
 
  * `uuid` the UUID of the flow ([text](expressions.html#type:text))
  * `name` the name of the flow ([text](expressions.html#type:text))
@@ -46,6 +52,8 @@ The context is all the variables which are accessible in expressions:
 
 ## Input
 
+Defaults to the text and attachments ([text](expressions.html#type:text))
+
  * `uuid` the UUID of the input ([text](expressions.html#type:text))
  * `created_on` the creation date of the input ([datetime](expressions.html#type:datetime))
  * `channel` the channel that the input was received on ([channel](context.html#context:channel))
@@ -58,6 +66,8 @@ The context is all the variables which are accessible in expressions:
 
 ## Related_run
 
+Defaults to the contact name and flow UUID ([text](expressions.html#type:text))
+
  * `uuid` the UUID of the run ([text](expressions.html#type:text))
  * `contact` the contact of the run ([contact](context.html#context:contact))
  * `flow` the flow of the run ([flow](context.html#context:flow))
@@ -69,6 +79,8 @@ The context is all the variables which are accessible in expressions:
 <a name="context:result"></a>
 
 ## Result
+
+Defaults to the value ([text](expressions.html#type:text))
 
  * `name` the name of the result ([text](expressions.html#type:text))
  * `value` the value of the result ([text](expressions.html#type:text))
@@ -97,6 +109,8 @@ The context is all the variables which are accessible in expressions:
 <a name="context:run"></a>
 
 ## Run
+
+Defaults to the contact name and flow UUID ([text](expressions.html#type:text))
 
  * `uuid` the UUID of the run ([text](expressions.html#type:text))
  * `contact` the contact of the run ([contact](context.html#context:contact))

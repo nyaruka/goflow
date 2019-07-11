@@ -106,28 +106,38 @@ func renderOperatorDoc(output *strings.Builder, item *TaggedItem, session flows.
 
 func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
 	// examples are actually auto-completion property descriptors
-	properties := make([]*completion.Property, len(item.examples))
-	for i, propDesc := range item.examples {
+	var defaultProp *completion.Property
+	properties := make([]*completion.Property, 0, len(item.examples))
+	for _, propDesc := range item.examples {
 		prop := completion.ParseProperty(propDesc)
 		if prop == nil {
 			return errors.Errorf("invalid format for property description \"%s\"", propDesc)
 		}
-		properties[i] = prop
+		if prop.Key == "__default__" {
+			defaultProp = prop
+		} else {
+			properties = append(properties, prop)
+		}
 	}
 
 	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", item.tagValue))
 	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
-	for _, p := range properties {
-		var typeLink string
-		if p.Type == "any" || p.Type == "fields" || p.Type == "results" || p.Type == "urns" {
-			typeLink = p.Type
-		} else if p.Type == "text" || p.Type == "number" || p.Type == "datetime" {
-			typeLink = fmt.Sprintf("[type:%s]", p.Type)
-		} else {
-			typeLink = fmt.Sprintf("[context:%s]", p.Type)
-		}
 
-		output.WriteString(fmt.Sprintf(" * `%s` %s (%s)\n", p.Key, p.Help, typeLink))
+	typeLink := func(p *completion.Property) string {
+		if p.Type == "any" || p.Type == "fields" || p.Type == "results" || p.Type == "urns" {
+			return p.Type
+		} else if p.Type == "text" || p.Type == "number" || p.Type == "datetime" {
+			return fmt.Sprintf("[type:%s]", p.Type)
+		}
+		return fmt.Sprintf("[context:%s]", p.Type)
+	}
+
+	if defaultProp != nil {
+		output.WriteString(fmt.Sprintf("Defaults to %s (%s)\n\n", defaultProp.Help, typeLink(defaultProp)))
+	}
+
+	for _, p := range properties {
+		output.WriteString(fmt.Sprintf(" * `%s` %s (%s)\n", p.Key, p.Help, typeLink(p)))
 	}
 	output.WriteString("\n")
 	return nil

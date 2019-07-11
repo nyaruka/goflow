@@ -40,6 +40,7 @@ func NewResult(name string, value string, category string, categoryLocalized str
 
 // Context returns the properties available in expressions
 //
+//   __default__:text -> the value
 //   name:text -> the name of the result
 //   value:text -> the value of the result
 //   category:text -> the category of the result

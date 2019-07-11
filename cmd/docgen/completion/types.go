@@ -6,7 +6,7 @@ import (
 )
 
 // matches a context property description, e.g. groups:[]group -> the groups the contact belongs to
-var contextPropRegexp = regexp.MustCompile(`(\w+)\:(\[\])?(\w+)\s→\s([\w\s]+)`)
+var contextPropRegexp = regexp.MustCompile(`(\w+)\:(\[\])?(\w+)\s→\s([\w\s-]+)`)
 
 // Type is a type that exists in the context
 type Type interface {

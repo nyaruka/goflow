@@ -242,6 +242,7 @@ func (r *flowRun) lastWebhookResponse() types.XValue {
 
 // Context returns the properties available in expressions
 //
+//   __default__:text -> the contact name and flow UUID
 //   uuid:text -> the UUID of the run
 //   contact:contact -> the contact of the run
 //   flow:flow -> the flow of the run

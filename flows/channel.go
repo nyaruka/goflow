@@ -56,6 +56,7 @@ func (c *Channel) HasParent() bool {
 
 // Context returns the properties available in expressions
 //
+//   __default__:text -> the name
 //   uuid:text -> the UUID of the channel
 //   name:text -> the name of the channel
 //   address:text -> the address of the channel

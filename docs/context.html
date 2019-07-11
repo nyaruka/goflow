@@ -18,6 +18,7 @@
 <div class="context">
 <p><a name="context:channel"></a></p>
 <h2 id="channel">Channel</h2>
+<p>Defaults to the name (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the channel (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>name</code> the name of the channel (<a href="expressions.html#type:text">text</a>)</li>
@@ -25,12 +26,13 @@
 </ul>
 <p><a name="context:contact"></a></p>
 <h2 id="contact">Contact</h2>
+<p>Defaults to the name or URN (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the contact (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>id</code> the numeric ID of the contact (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>first_name</code> the first name of the contact (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>name</code> the name of the contact (<a href="expressions.html#type:text">text</a>)</li>
-<li><code>language</code> the language of the contact as 3 (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>language</code> the language of the contact as 3-letter ISO code (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>created_on</code> the creation date of the contact (<a href="expressions.html#type:datetime">datetime</a>)</li>
 <li><code>urns</code> the URNs belonging to the contact (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>urn</code> the preferred URN of the contact (<a href="expressions.html#type:text">text</a>)</li>
@@ -40,6 +42,7 @@
 </ul>
 <p><a name="context:flow"></a></p>
 <h2 id="flow">Flow</h2>
+<p>Defaults to the name (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the flow (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>name</code> the name of the flow (<a href="expressions.html#type:text">text</a>)</li>
@@ -53,6 +56,7 @@
 </ul>
 <p><a name="context:input"></a></p>
 <h2 id="input">Input</h2>
+<p>Defaults to the text and attachments (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the input (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>created_on</code> the creation date of the input (<a href="expressions.html#type:datetime">datetime</a>)</li>
@@ -64,6 +68,7 @@
 </ul>
 <p><a name="context:related_run"></a></p>
 <h2 id="related_run">Related_run</h2>
+<p>Defaults to the contact name and flow UUID (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the run (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>contact</code> the contact of the run (<a href="context.html#context:contact">contact</a>)</li>
@@ -75,6 +80,7 @@
 </ul>
 <p><a name="context:result"></a></p>
 <h2 id="result">Result</h2>
+<p>Defaults to the value (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>name</code> the name of the result (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>value</code> the value of the result (<a href="expressions.html#type:text">text</a>)</li>
@@ -101,6 +107,7 @@
 </ul>
 <p><a name="context:run"></a></p>
 <h2 id="run">Run</h2>
+<p>Defaults to the contact name and flow UUID (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the run (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>contact</code> the contact of the run (<a href="context.html#context:contact">contact</a>)</li>
