@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -34,9 +35,9 @@ type SendEmailAction struct {
 	BaseAction
 	onlineAction
 
-	Addresses []string `json:"addresses" validate:"required,min=1"`
-	Subject   string   `json:"subject" validate:"required"`
-	Body      string   `json:"body" validate:"required"`
+	Addresses []string `json:"addresses" validate:"required,min=1" engine:"evaluated"`
+	Subject   string   `json:"subject" validate:"required" engine:"evaluated,localized"`
+	Body      string   `json:"body" validate:"required" engine:"evaluated,localized"`
 }
 
 // NewSendEmailAction creates a new send email action
@@ -110,10 +111,5 @@ func (a *SendEmailAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SendEmailAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Subject)
-	include.String(a.Body)
-	include.Slice(a.Addresses)
-
-	include.Translations(a, "subject")
-	include.Translations(a, "body")
+	inspect.TemplateValuesByTags(a, include)
 }

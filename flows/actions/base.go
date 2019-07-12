@@ -294,7 +294,7 @@ type otherContactsAction struct {
 	URNs       []urns.URN                `json:"urns,omitempty"`
 	Contacts   []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups     []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	LegacyVars []string                  `json:"legacy_vars,omitempty"`
+	LegacyVars []string                  `json:"legacy_vars,omitempty" engine:"evaluated"`
 }
 
 // utility struct for actions which create a message

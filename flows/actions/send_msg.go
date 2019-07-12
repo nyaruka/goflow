@@ -5,6 +5,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -130,14 +131,9 @@ func (a *SendMsgAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SendMsgAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Text)
-	include.Slice(a.Attachments)
-	include.Slice(a.QuickReplies)
+	inspect.TemplateValuesByTags(a, include)
+
 	if a.Templating != nil {
 		include.Slice(a.Templating.Variables)
 	}
-
-	include.Translations(a, "text")
-	include.Translations(a, "attachments")
-	include.Translations(a, "quick_replies")
 }

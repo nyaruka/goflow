@@ -101,11 +101,11 @@
         ],
         "inspection": {
             "templates": [
-                "Hi there!",
                 "@(\"\")",
                 "@contact.fields.gender",
                 "@(\"0788123123\")",
-                "@contact.urn"
+                "@contact.urn",
+                "Hi there!"
             ],
             "dependencies": [
                 "field[key=gender,name=]",

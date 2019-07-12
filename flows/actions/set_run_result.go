@@ -3,6 +3,7 @@ package actions
 import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -34,8 +35,8 @@ type SetRunResultAction struct {
 	universalAction
 
 	Name     string `json:"name" validate:"required"`
-	Value    string `json:"value"`
-	Category string `json:"category,omitempty"`
+	Value    string `json:"value" engine:"evaluated"`
+	Category string `json:"category,omitempty" engine:"localized"`
 }
 
 // NewSetRunResultAction creates a new set run result action
@@ -75,7 +76,7 @@ func (a *SetRunResultAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetRunResultAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Value)
+	inspect.TemplateValuesByTags(a, include)
 }
 
 // EnumerateResults enumerates all potential results on this object
