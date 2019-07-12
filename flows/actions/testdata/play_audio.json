@@ -4,7 +4,7 @@
         "no_input": true,
         "in_flow_type": "voice",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "play_audio",
             "audio_url": "@(1 / 0).mp3"
         },
@@ -30,7 +30,7 @@
         "no_input": true,
         "in_flow_type": "voice",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "play_audio",
             "audio_url": "@(\"\")"
         },
@@ -56,7 +56,7 @@
         "no_input": true,
         "in_flow_type": "voice",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "play_audio",
             "audio_url": "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
         },
@@ -78,6 +78,55 @@
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "ivr_created"
             }
-        ]
+        ],
+        "inspection": {
+            "dependencies": [],
+            "results": [],
+            "templates": [
+                "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
+            ]
+        }
+    },
+    {
+        "description": "Audio URL can be localized",
+        "no_input": true,
+        "in_flow_type": "voice",
+        "action": {
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "type": "play_audio",
+            "audio_url": "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
+        },
+        "localization": {
+            "audio_url": [
+                "http://uploads.temba.io/bienvenido/@(contact.uuid).m4a"
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "msg": {
+                    "attachments": [
+                        "audio:http://uploads.temba.io/bienvenido/5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f.m4a"
+                    ],
+                    "channel": {
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "text": "",
+                    "urn": "tel:+12065551212",
+                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                },
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "ivr_created"
+            }
+        ],
+        "inspection": {
+            "dependencies": [],
+            "templates": [
+                "http://uploads.temba.io/welcome/@(contact.uuid).m4a",
+                "http://uploads.temba.io/bienvenido/@(contact.uuid).m4a"
+            ],
+            "results": []
+        }
     }
 ]

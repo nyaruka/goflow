@@ -2,7 +2,7 @@
     {
         "description": "Validation fails for invalid flow reference",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "enter_flow",
             "flow": {
                 "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
@@ -14,7 +14,7 @@
     {
         "description": "Fatal error event if we continue with a missing flow",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "enter_flow",
             "flow": {
                 "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
@@ -35,7 +35,7 @@
     {
         "description": "Fatal error event if flow is of different type",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "enter_flow",
             "flow": {
                 "uuid": "7a84463d-d209-4d3e-a0ff-79f977cd7bd0",
@@ -55,7 +55,7 @@
     {
         "description": "Flow triggered event if flow can be started",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "enter_flow",
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
