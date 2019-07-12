@@ -2,7 +2,7 @@
     {
         "description": "Validation fails for invalid field reference",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
             "field": {
                 "key": "score",
@@ -16,7 +16,7 @@
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
             "field": {
                 "key": "age",
@@ -46,7 +46,7 @@
     {
         "description": "Error event and action skipped if value contains expression error",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
             "field": {
                 "key": "age",
@@ -76,7 +76,7 @@
     {
         "description": "NOOP if contact field value not changed",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
             "field": {
                 "key": "gender",
@@ -89,7 +89,7 @@
     {
         "description": "Field changed event and dynamic group changed events if field value changes",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
             "field": {
                 "key": "gender",
@@ -158,7 +158,7 @@
     {
         "description": "Field changed event and dynamic group changed events if field cleared",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
             "field": {
                 "key": "gender",
@@ -210,7 +210,7 @@
     {
         "description": "Field value truncated if too long",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
             "field": {
                 "key": "gender",
