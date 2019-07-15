@@ -127,8 +127,8 @@ func (a *SendMsgAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendMsgAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	inspect.TemplateValues(a, include)
+func (a *SendMsgAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children

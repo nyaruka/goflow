@@ -8,11 +8,11 @@ import (
 )
 
 // TemplateValues extracts template values by reading engine tags on a struct
-func TemplateValues(s flows.Localizable, include flows.TemplateIncluder) {
-	templateValues(reflect.ValueOf(s), s, include)
+func TemplateValues(s flows.Localizable, localization flows.Localization, include func(string)) {
+	templateValues(reflect.ValueOf(s), s, localization, include)
 }
 
-func templateValues(v reflect.Value, l flows.Localizable, include flows.TemplateIncluder) {
+func templateValues(v reflect.Value, l flows.Localizable, localization flows.Localization, include func(string)) {
 	v = derefValue(v)
 
 	if v.Type().Kind() != reflect.Struct {
@@ -25,20 +25,26 @@ func templateValues(v reflect.Value, l flows.Localizable, include flows.Template
 		fv := v.FieldByIndex(ef.index)
 
 		if ef.evaluated {
-			extractTemplatesFromField(fv, include.String)
+			extractTemplatesFromField(fv, include)
 
+			// if this field is also localized, each translation is a template and needs to be included
 			if ef.localized && l != nil {
-				include.Translations(l, ef.jsonName)
+				for _, lang := range localization.Languages() {
+					translations := localization.GetTranslations(lang)
+					for _, v := range translations.GetTextArray(l.LocalizationUUID(), ef.jsonName) {
+						include(v)
+					}
+				}
 			}
 		}
 
 		fv = derefValue(fv)
 
 		if fv.Kind() == reflect.Struct {
-			templateValues(fv, nil, include)
+			templateValues(fv, nil, localization, include)
 		} else if fv.Kind() == reflect.Slice {
 			for i := 0; i < fv.Len(); i++ {
-				templateValues(fv.Index(i), nil, include)
+				templateValues(fv.Index(i), nil, localization, include)
 			}
 		}
 	}
@@ -97,8 +103,9 @@ func extractEngineFieldsFromType(t reflect.Type, loc []int, include func(*engine
 	}
 }
 
+// Evaluated tags can be applied to fields of type string, slices of string or map of strings.
+// This method extracts templates from any such field.
 func extractTemplatesFromField(v reflect.Value, include func(string)) {
-	// extract from single strings, slices of strings or maps of string values
 	switch typed := v.Interface().(type) {
 	case map[string]string:
 		for _, i := range typed {

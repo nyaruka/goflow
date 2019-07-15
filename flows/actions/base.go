@@ -60,7 +60,7 @@ func (a *BaseAction) Validate() error { return nil }
 func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *BaseAction) EnumerateTemplates(include flows.TemplateIncluder) {}
+func (a *BaseAction) EnumerateTemplates(localization flows.Localization, include func(string)) {}
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *BaseAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
@@ -299,9 +299,9 @@ type otherContactsAction struct {
 
 // utility struct for actions which create a message
 type createMsgAction struct {
-	Text         string   `json:"text" validate:"required" engine:"evaluated,localized"`
-	Attachments  []string `json:"attachments,omitempty" engine:"evaluated,localized"`
-	QuickReplies []string `json:"quick_replies,omitempty" engine:"evaluated,localized"`
+	Text         string   `json:"text" validate:"required" engine:"localized,evaluated"`
+	Attachments  []string `json:"attachments,omitempty" engine:"localized,evaluated"`
+	QuickReplies []string `json:"quick_replies,omitempty" engine:"localized,evaluated"`
 }
 
 //------------------------------------------------------------------------------------------

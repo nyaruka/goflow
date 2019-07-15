@@ -79,8 +79,8 @@ func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *StartSessionAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	inspect.TemplateValues(a, include)
+func (a *StartSessionAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children

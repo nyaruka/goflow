@@ -66,8 +66,8 @@ func (a *AddContactGroupsAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *AddContactGroupsAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	inspect.TemplateValues(a, include)
+func (a *AddContactGroupsAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children

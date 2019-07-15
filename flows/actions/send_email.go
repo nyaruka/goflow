@@ -36,8 +36,8 @@ type SendEmailAction struct {
 	onlineAction
 
 	Addresses []string `json:"addresses" validate:"required,min=1" engine:"evaluated"`
-	Subject   string   `json:"subject" validate:"required" engine:"evaluated,localized"`
-	Body      string   `json:"body" validate:"required" engine:"evaluated,localized"`
+	Subject   string   `json:"subject" validate:"required" engine:"localized,evaluated"`
+	Body      string   `json:"body" validate:"required" engine:"localized,evaluated"`
 }
 
 // NewSendEmailAction creates a new send email action
@@ -110,6 +110,6 @@ func (a *SendEmailAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendEmailAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	inspect.TemplateValues(a, include)
+func (a *SendEmailAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
 }

@@ -97,7 +97,7 @@ var fieldRefPaths = [][]string{
 // Inspectable is implemented by various flow components to allow walking the definition and extracting things like dependencies
 type Inspectable interface {
 	Inspect(func(Inspectable))
-	EnumerateTemplates(TemplateIncluder)
+	EnumerateTemplates(Localization, func(string))
 	EnumerateDependencies(Localization, func(assets.Reference))
 	EnumerateResults(Node, func(*ResultInfo))
 }
@@ -161,40 +161,6 @@ func MergeResultInfos(specs []*ResultInfo) []*ResultInfo {
 		}
 	}
 	return merged
-}
-
-// TemplateIncluder is interface passed to EnumerateTemplates to include templates on flow entities
-type TemplateIncluder interface {
-	String(string)
-	Slice([]string)
-	Translations(Localizable, string)
-}
-
-type templateEnumerator struct {
-	localization Localization
-	include      func(string)
-}
-
-// NewTemplateEnumerator creates a template includer for enumerating templates
-func NewTemplateEnumerator(localization Localization, include func(string)) TemplateIncluder {
-	return &templateEnumerator{localization: localization, include: include}
-}
-
-func (t *templateEnumerator) String(s string) {
-	t.include(s)
-}
-
-func (t *templateEnumerator) Slice(a []string) {
-	for i := range a {
-		t.include(a[i])
-	}
-}
-
-func (t *templateEnumerator) Translations(localizable Localizable, key string) {
-	for _, lang := range t.localization.Languages() {
-		translations := t.localization.GetTranslations(lang)
-		t.Slice(translations.GetTextArray(localizable.LocalizationUUID(), key))
-	}
 }
 
 // ExtractFieldReferences extracts fields references from the given template

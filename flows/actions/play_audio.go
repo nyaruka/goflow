@@ -32,7 +32,7 @@ type PlayAudioAction struct {
 	BaseAction
 	voiceAction
 
-	AudioURL string `json:"audio_url" validate:"required" engine:"evaluated,localized"`
+	AudioURL string `json:"audio_url" validate:"required" engine:"localized,evaluated"`
 }
 
 // NewPlayAudioAction creates a new play message action
@@ -76,6 +76,6 @@ func (a *PlayAudioAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *PlayAudioAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	inspect.TemplateValues(a, include)
+func (a *PlayAudioAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
 }

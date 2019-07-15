@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -31,7 +32,7 @@ type SetContactTimezoneAction struct {
 	BaseAction
 	universalAction
 
-	Timezone string `json:"timezone"`
+	Timezone string `json:"timezone" engine:"evaluated"`
 }
 
 // NewSetContactTimezoneAction creates a new set timezone action
@@ -78,6 +79,6 @@ func (a *SetContactTimezoneAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactTimezoneAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Timezone)
+func (a *SetContactTimezoneAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
 }

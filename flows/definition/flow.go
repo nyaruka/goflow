@@ -211,14 +211,14 @@ func (f *flow) inspect(inspect func(flows.Node, flows.Inspectable)) {
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
 	templates := make([]string, 0)
-	include := flows.NewTemplateEnumerator(f.Localization(), func(template string) {
+	include := func(template string) {
 		if template != "" {
 			templates = append(templates, template)
 		}
-	})
+	}
 
 	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateTemplates(include)
+		item.EnumerateTemplates(f.Localization(), include)
 	})
 	return templates
 }
@@ -237,15 +237,15 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 		}
 	}
 
-	include := flows.NewTemplateEnumerator(f.Localization(), func(template string) {
+	include := func(template string) {
 		fieldRefs := flows.ExtractFieldReferences(template)
 		for _, f := range fieldRefs {
 			addDependency(f)
 		}
-	})
+	}
 
 	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateTemplates(include)
+		item.EnumerateTemplates(f.Localization(), include)
 		item.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
 			addDependency(r)
 		})
