@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/Masterminds/semver"
@@ -238,7 +239,7 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 	}
 
 	include := func(template string) {
-		fieldRefs := flows.ExtractFieldReferences(template)
+		fieldRefs := inspect.ExtractFieldReferences(template)
 		for _, f := range fieldRefs {
 			addDependency(f)
 		}

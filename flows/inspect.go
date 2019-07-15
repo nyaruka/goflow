@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/excellent/tools"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -85,15 +84,6 @@ func (d *Dependencies) Check(sa SessionAssets, missing assets.MissingCallback) e
 	return nil
 }
 
-var fieldRefPaths = [][]string{
-	{"fields"},
-	{"contact", "fields"},
-	{"parent", "fields"},
-	{"parent", "contact", "fields"},
-	{"child", "fields"},
-	{"child", "contact", "fields"},
-}
-
 // Inspectable is implemented by various flow components to allow walking the definition and extracting things like dependencies
 type Inspectable interface {
 	Inspect(func(Inspectable))
@@ -161,35 +151,4 @@ func MergeResultInfos(specs []*ResultInfo) []*ResultInfo {
 		}
 	}
 	return merged
-}
-
-// ExtractFieldReferences extracts fields references from the given template
-func ExtractFieldReferences(template string) []*assets.FieldReference {
-	fieldRefs := make([]*assets.FieldReference, 0)
-	tools.FindContextRefsInTemplate(template, RunContextTopLevels, func(path []string) {
-		isField, fieldKey := isFieldRefPath(path)
-		if isField {
-			fieldRefs = append(fieldRefs, assets.NewFieldReference(fieldKey, ""))
-		}
-	})
-	return fieldRefs
-}
-
-// checks whether the given context path is a reference to a contact field
-func isFieldRefPath(path []string) (bool, string) {
-	for _, possible := range fieldRefPaths {
-		if len(path) == len(possible)+1 {
-			matches := true
-			for i := range possible {
-				if strings.ToLower(path[i]) != possible[i] {
-					matches = false
-					break
-				}
-			}
-			if matches {
-				return true, strings.ToLower(path[len(possible)])
-			}
-		}
-	}
-	return false, ""
 }

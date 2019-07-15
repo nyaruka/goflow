@@ -1,70 +1,20 @@
 package inspect
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
-
-	"github.com/nyaruka/goflow/flows"
 )
 
-// TemplateValues extracts template values by reading engine tags on a struct
-func TemplateValues(s flows.Localizable, localization flows.Localization, include func(string)) {
-	templateValues(reflect.ValueOf(s), s, localization, include)
-}
-
-func templateValues(v reflect.Value, l flows.Localizable, localization flows.Localization, include func(string)) {
-	v = derefValue(v)
-
-	if v.Type().Kind() != reflect.Struct {
-		return
-	}
-
-	for _, ef := range extractEngineFields(v.Type()) {
-		//fmt.Printf("== %v.%s\n", v, ef.jsonName)
-
-		fv := v.FieldByIndex(ef.index)
-
-		if ef.evaluated {
-			extractTemplatesFromField(fv, include)
-
-			// if this field is also localized, each translation is a template and needs to be included
-			if ef.localized && l != nil {
-				for _, lang := range localization.Languages() {
-					translations := localization.GetTranslations(lang)
-					for _, v := range translations.GetTextArray(l.LocalizationUUID(), ef.jsonName) {
-						include(v)
-					}
-				}
-			}
-		}
-
-		fv = derefValue(fv)
-
-		if fv.Kind() == reflect.Struct {
-			templateValues(fv, nil, localization, include)
-		} else if fv.Kind() == reflect.Slice {
-			for i := 0; i < fv.Len(); i++ {
-				templateValues(fv.Index(i), nil, localization, include)
-			}
-		}
-	}
-}
-
-// gets the actual value if we've been given an interface or pointer
-func derefValue(v reflect.Value) reflect.Value {
-	if v.Kind() == reflect.Interface || v.Kind() == reflect.Ptr {
-		return v.Elem()
-	}
-	return v
-}
-
+// a struct field which is part of the flow spec (i.e. included in JSON) and optionally has a engine tag
 type engineField struct {
 	jsonName  string
-	evaluated bool
 	localized bool
+	evaluated bool
 	index     []int
 }
 
+// extracts all engine fields from the given type
 func extractEngineFields(t reflect.Type) []*engineField {
 	fields := make([]*engineField, 0)
 	extractEngineFieldsFromType(t, nil, func(f *engineField) {
@@ -92,32 +42,46 @@ func extractEngineFieldsFromType(t reflect.Type, loc []int, include func(*engine
 			continue
 		}
 
-		evaluated, localized := parseEngineTag(f)
+		localized, evaluated := parseEngineTag(f)
 
 		include(&engineField{
 			jsonName:  jsonName,
-			evaluated: evaluated,
 			localized: localized,
+			evaluated: evaluated,
 			index:     index,
 		})
 	}
 }
 
-// Evaluated tags can be applied to fields of type string, slices of string or map of strings.
-// This method extracts templates from any such field.
-func extractTemplatesFromField(v reflect.Value, include func(string)) {
-	switch typed := v.Interface().(type) {
-	case map[string]string:
-		for _, i := range typed {
-			include(i)
-		}
-	case []string:
-		for _, i := range typed {
-			include(i)
-		}
-	case string:
-		include(v.String())
+func walkValues(v reflect.Value, visit func(*engineField, reflect.Value)) {
+	v = derefValue(v)
+
+	if v.Type().Kind() != reflect.Struct {
+		return
 	}
+
+	for _, ef := range extractEngineFields(v.Type()) {
+		fv := v.FieldByIndex(ef.index)
+		fv = derefValue(fv)
+
+		visit(ef, fv)
+
+		if fv.Kind() == reflect.Struct {
+			walkValues(fv, visit)
+		} else if fv.Kind() == reflect.Slice {
+			for i := 0; i < fv.Len(); i++ {
+				walkValues(fv.Index(i), visit)
+			}
+		}
+	}
+}
+
+// gets the actual value if we've been given an interface or pointer
+func derefValue(v reflect.Value) reflect.Value {
+	if v.Kind() == reflect.Interface || v.Kind() == reflect.Ptr {
+		return v.Elem()
+	}
+	return v
 }
 
 // gets the JSON name of the given field
@@ -126,23 +90,32 @@ func jsonNameTag(f reflect.StructField) string {
 	if len(tagVals) > 0 {
 		return tagVals[0]
 	}
+
 	return ""
 }
 
 // parses the engine tag on a field if it exists
-func parseEngineTag(f reflect.StructField) (evaluated bool, localized bool) {
+func parseEngineTag(f reflect.StructField) (localized bool, evaluated bool) {
+	t := f.Type
 	tagVals := strings.Split(f.Tag.Get("engine"), ",")
-	evaluated = false
 	localized = false
+	evaluated = false
+
 	for _, v := range tagVals {
-		if v == "evaluated" {
-			evaluated = true
-		} else if v == "localized" {
+		if v == "localized" {
 			localized = true
+
+			if !(t.Kind() == reflect.String || (t.Kind() == reflect.Slice && t.Elem().Kind() == reflect.String)) {
+				panic(fmt.Sprintf("engine:localized tag found on unsupported type %v", t))
+			}
+		} else if v == "evaluated" {
+			evaluated = true
+
+			if !(t.Kind() == reflect.String || (t.Kind() == reflect.Slice && t.Elem().Kind() == reflect.String) || (t.Kind() == reflect.Map && t.Elem().Kind() == reflect.String)) {
+				panic(fmt.Sprintf("engine:evaluated tag found on unsupported type %v", t))
+			}
 		}
 	}
 
-	// TODO check if tags are legal for type of f
-
-	return evaluated, localized
+	return localized, evaluated
 }

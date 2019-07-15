@@ -1,10 +1,10 @@
-package flows_test
+package inspect_test
 
 import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/inspect"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -30,7 +30,7 @@ func TestExtractFieldReferences(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		actual := flows.ExtractFieldReferences(tc.template)
+		actual := inspect.ExtractFieldReferences(tc.template)
 
 		assert.Equal(t, tc.refs, actual, "field refs mismatch for template '%s'", tc.template)
 	}
