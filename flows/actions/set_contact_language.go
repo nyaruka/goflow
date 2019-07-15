@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -31,7 +32,7 @@ type SetContactLanguageAction struct {
 	BaseAction
 	universalAction
 
-	Language string `json:"language"`
+	Language string `json:"language" engine:"evaluated"`
 }
 
 // NewSetContactLanguageAction creates a new set language action
@@ -79,5 +80,5 @@ func (a *SetContactLanguageAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetContactLanguageAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Language)
+	inspect.TemplateValues(a, include)
 }

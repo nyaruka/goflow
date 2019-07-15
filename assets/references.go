@@ -69,7 +69,7 @@ var _ UUIDReference = (*ChannelReference)(nil)
 type GroupReference struct {
 	UUID      GroupUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
 	Name      string    `json:"name,omitempty"`
-	NameMatch string    `json:"name_match,omitempty"`
+	NameMatch string    `json:"name_match,omitempty" engine:"evaluated"`
 }
 
 // NewGroupReference creates a new group reference with the given UUID and name
@@ -181,7 +181,7 @@ var _ UUIDReference = (*FlowReference)(nil)
 type LabelReference struct {
 	UUID      LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
 	Name      string    `json:"name,omitempty"`
-	NameMatch string    `json:"name_match,omitempty"`
+	NameMatch string    `json:"name_match,omitempty" engine:"evaluated"`
 }
 
 // NewLabelReference creates a new label reference with the given UUID and name

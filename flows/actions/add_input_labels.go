@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -70,4 +71,9 @@ func (a *AddInputLabelsAction) Inspect(inspect func(flows.Inspectable)) {
 	for _, l := range a.Labels {
 		flows.InspectReference(l, inspect)
 	}
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *AddInputLabelsAction) EnumerateTemplates(include flows.TemplateIncluder) {
+	inspect.TemplateValues(a, include)
 }

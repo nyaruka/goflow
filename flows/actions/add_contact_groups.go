@@ -5,6 +5,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -66,4 +67,9 @@ func (a *AddContactGroupsAction) Inspect(inspect func(flows.Inspectable)) {
 	for _, g := range a.Groups {
 		flows.InspectReference(g, inspect)
 	}
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (a *AddContactGroupsAction) EnumerateTemplates(include flows.TemplateIncluder) {
+	inspect.TemplateValues(a, include)
 }

@@ -50,7 +50,7 @@ type SendMsgAction struct {
 // Templating represents the templating that should be used if possible
 type Templating struct {
 	Template  *assets.TemplateReference `json:"template" validate:"required"`
-	Variables []string                  `json:"variables"`
+	Variables []string                  `json:"variables" engine:"evaluated"`
 }
 
 // NewSendMsgAction creates a new send msg action
@@ -131,9 +131,5 @@ func (a *SendMsgAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SendMsgAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	inspect.TemplateValuesByTags(a, include)
-
-	if a.Templating != nil {
-		include.Slice(a.Templating.Variables)
-	}
+	inspect.TemplateValues(a, include)
 }

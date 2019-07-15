@@ -1,53 +1,55 @@
 package inspect
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 )
 
-// TemplateValuesByTags extracts template values by reading engine tags on a struct
-func TemplateValuesByTags(s interface{}, include flows.TemplateIncluder) {
-	templateValues(s, reflect.ValueOf(s), include)
+// TemplateValues extracts template values by reading engine tags on a struct
+func TemplateValues(s flows.Localizable, include flows.TemplateIncluder) {
+	templateValues(reflect.ValueOf(s), s, include)
 }
 
-func templateValues(s interface{}, v reflect.Value, include flows.TemplateIncluder) {
-	// get the actual struct if we've been given an interface or pointer
-	if v.Kind() == reflect.Interface || v.Kind() == reflect.Ptr {
-		v = v.Elem()
+func templateValues(v reflect.Value, l flows.Localizable, include flows.TemplateIncluder) {
+	v = derefValue(v)
+
+	if v.Type().Kind() != reflect.Struct {
+		return
 	}
 
 	for _, ef := range extractEngineFields(v.Type()) {
+		//fmt.Printf("== %v.%s\n", v, ef.jsonName)
+
 		fv := v.FieldByIndex(ef.index)
 
 		if ef.evaluated {
-			// extract from single strings, slices of strings or maps of string values
-			if fv.Type().Kind() == reflect.Map {
-				for _, v := range fv.Interface().(map[string]string) {
-					include.String(v)
-				}
-			} else if fv.Type().Kind() == reflect.Slice {
-				for _, v := range fv.Interface().([]string) {
-					include.String(v)
-				}
-			} else if fv.Type().Kind() == reflect.String {
-				include.String(fv.String())
-			} else {
-				panic(fmt.Sprintf("engine:evaluated found on field %T.%s which not a supported type (%s)", s, ef.jsonName, fv.Type()))
+			extractTemplatesFromField(fv, include.String)
+
+			if ef.localized && l != nil {
+				include.Translations(l, ef.jsonName)
 			}
+		}
 
-			if ef.localized {
-				localizable, isLocalizable := s.(flows.Localizable)
-				if !isLocalizable {
-					panic(fmt.Sprintf("engine:localized found on %T which doesn't implement Localizable", s))
-				}
+		fv = derefValue(fv)
 
-				include.Translations(localizable, ef.jsonName)
+		if fv.Kind() == reflect.Struct {
+			templateValues(fv, nil, include)
+		} else if fv.Kind() == reflect.Slice {
+			for i := 0; i < fv.Len(); i++ {
+				templateValues(fv.Index(i), nil, include)
 			}
 		}
 	}
+}
+
+// gets the actual value if we've been given an interface or pointer
+func derefValue(v reflect.Value) reflect.Value {
+	if v.Kind() == reflect.Interface || v.Kind() == reflect.Ptr {
+		return v.Elem()
+	}
+	return v
 }
 
 type engineField struct {
@@ -67,25 +69,24 @@ func extractEngineFields(t reflect.Type) []*engineField {
 
 func extractEngineFieldsFromType(t reflect.Type, loc []int, include func(*engineField)) {
 	for i := 0; i < t.NumField(); i++ {
-		ft := t.Field(i)
+		f := t.Field(i)
 
 		var index []int
 		index = append(index, loc...)
-		index = append(index, ft.Index...)
+		index = append(index, f.Index...)
 
 		// if this is an embedded base struct, inspect its fields too
-		if ft.Anonymous {
-
-			extractEngineFieldsFromType(ft.Type, index, include)
+		if f.Anonymous {
+			extractEngineFieldsFromType(f.Type, index, include)
 			continue
 		}
 
-		jsonName := jsonNameTag(ft)
+		jsonName := jsonNameTag(f)
 		if jsonName == "" {
 			continue
 		}
 
-		evaluated, localized := parseEngineTag(ft)
+		evaluated, localized := parseEngineTag(f)
 
 		include(&engineField{
 			jsonName:  jsonName,
@@ -93,6 +94,22 @@ func extractEngineFieldsFromType(t reflect.Type, loc []int, include func(*engine
 			localized: localized,
 			index:     index,
 		})
+	}
+}
+
+func extractTemplatesFromField(v reflect.Value, include func(string)) {
+	// extract from single strings, slices of strings or maps of string values
+	switch typed := v.Interface().(type) {
+	case map[string]string:
+		for _, i := range typed {
+			include(i)
+		}
+	case []string:
+		for _, i := range typed {
+			include(i)
+		}
+	case string:
+		include(v.String())
 	}
 }
 
@@ -117,5 +134,8 @@ func parseEngineTag(f reflect.StructField) (evaluated bool, localized bool) {
 			localized = true
 		}
 	}
+
+	// TODO check if tags are legal for type of f
+
 	return evaluated, localized
 }

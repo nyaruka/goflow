@@ -215,16 +215,7 @@ func (r inspectableReference) Inspect(inspect func(Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r inspectableReference) EnumerateTemplates(include TemplateIncluder) {
-	if r.ref != nil && r.ref.Variable() {
-		switch typed := r.ref.(type) {
-		case *assets.GroupReference:
-			include.String(typed.NameMatch)
-		case *assets.LabelReference:
-			include.String(typed.NameMatch)
-		}
-	}
-}
+func (r inspectableReference) EnumerateTemplates(include TemplateIncluder) {}
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (r inspectableReference) EnumerateDependencies(localization Localization, include func(assets.Reference)) {

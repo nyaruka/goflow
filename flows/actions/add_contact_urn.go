@@ -87,5 +87,5 @@ func (a *AddContactURNAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *AddContactURNAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	inspect.TemplateValuesByTags(a, include)
+	inspect.TemplateValues(a, include)
 }

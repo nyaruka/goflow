@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -87,5 +88,5 @@ func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *StartSessionAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.Slice(a.LegacyVars)
+	inspect.TemplateValues(a, include)
 }
