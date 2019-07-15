@@ -75,10 +75,14 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 // Inspect inspects this object and any children
 func (a *SetContactFieldAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-	flows.InspectReference(a.Field, inspect)
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (a *SetContactFieldAction) EnumerateTemplates(include flows.TemplateIncluder) {
 	include.String(a.Value)
+}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *SetContactFieldAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+	include(a.Field)
 }

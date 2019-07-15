@@ -197,37 +197,6 @@ func (t *templateEnumerator) Translations(localizable Localizable, key string) {
 	}
 }
 
-// wrapper for an asset reference to make it inspectable
-type inspectableReference struct {
-	ref assets.Reference
-}
-
-// InspectReference inspects the given asset reference if it's non-nil
-func InspectReference(ref assets.Reference, inspect func(Inspectable)) {
-	if ref != nil {
-		inspectableReference{ref: ref}.Inspect(inspect)
-	}
-}
-
-// Inspect inspects this object and any children
-func (r inspectableReference) Inspect(inspect func(Inspectable)) {
-	inspect(r)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (r inspectableReference) EnumerateTemplates(include TemplateIncluder) {}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (r inspectableReference) EnumerateDependencies(localization Localization, include func(assets.Reference)) {
-	if r.ref != nil && !r.ref.Variable() {
-		include(r.ref)
-	}
-}
-
-// EnumerateResults enumerates all potential results on this object
-// Asset references can't contain results.
-func (r inspectableReference) EnumerateResults(node Node, include func(*ResultInfo)) {}
-
 // ExtractFieldReferences extracts fields references from the given template
 func ExtractFieldReferences(template string) []*assets.FieldReference {
 	fieldRefs := make([]*assets.FieldReference, 0)
