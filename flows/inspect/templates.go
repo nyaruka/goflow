@@ -15,7 +15,7 @@ func TemplateValues(s flows.Localizable, localization flows.Localization, includ
 }
 
 func templateValues(v reflect.Value, l flows.Localizable, localization flows.Localization, include func(string)) {
-	walkValues(v, func(ef *engineField, fv reflect.Value) {
+	walkFields(v, func(ef *engineField, fv reflect.Value) {
 		if ef.evaluated {
 			extractTemplateValues(fv, include)
 

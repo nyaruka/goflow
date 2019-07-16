@@ -53,7 +53,7 @@ func extractEngineFieldsFromType(t reflect.Type, loc []int, include func(*engine
 	}
 }
 
-func walkValues(v reflect.Value, visit func(*engineField, reflect.Value)) {
+func walkFields(v reflect.Value, visit func(*engineField, reflect.Value)) {
 	v = derefValue(v)
 
 	if v.Type().Kind() != reflect.Struct {
@@ -62,15 +62,16 @@ func walkValues(v reflect.Value, visit func(*engineField, reflect.Value)) {
 
 	for _, ef := range extractEngineFields(v.Type()) {
 		fv := v.FieldByIndex(ef.index)
-		fv = derefValue(fv)
 
 		visit(ef, fv)
 
+		fv = derefValue(fv)
+
 		if fv.Kind() == reflect.Struct {
-			walkValues(fv, visit)
+			walkFields(fv, visit)
 		} else if fv.Kind() == reflect.Slice {
 			for i := 0; i < fv.Len(); i++ {
-				walkValues(fv.Index(i), visit)
+				walkFields(fv.Index(i), visit)
 			}
 		}
 	}

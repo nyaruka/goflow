@@ -133,7 +133,5 @@ func (a *SendMsgAction) EnumerateTemplates(localization flows.Localization, incl
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *SendMsgAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	if a.Templating != nil {
-		include(a.Templating.Template)
-	}
+	inspect.Dependencies(a, include)
 }

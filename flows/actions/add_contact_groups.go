@@ -72,9 +72,5 @@ func (a *AddContactGroupsAction) EnumerateTemplates(localization flows.Localizat
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *AddContactGroupsAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	for _, g := range a.Groups {
-		if !g.Variable() {
-			include(g)
-		}
-	}
+	inspect.Dependencies(a, include)
 }

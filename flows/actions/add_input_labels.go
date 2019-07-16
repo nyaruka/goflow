@@ -76,9 +76,5 @@ func (a *AddInputLabelsAction) EnumerateTemplates(localization flows.Localizatio
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *AddInputLabelsAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	for _, l := range a.Labels {
-		if !l.Variable() {
-			include(l)
-		}
-	}
+	inspect.Dependencies(a, include)
 }

@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 
 	"github.com/pkg/errors"
 )
@@ -73,5 +74,5 @@ func (a *EnterFlowAction) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *EnterFlowAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	include(a.Flow)
+	inspect.Dependencies(a, include)
 }

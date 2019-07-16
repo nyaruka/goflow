@@ -85,5 +85,5 @@ func (a *SetContactFieldAction) EnumerateTemplates(localization flows.Localizati
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *SetContactFieldAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	include(a.Field)
+	inspect.Dependencies(a, include)
 }

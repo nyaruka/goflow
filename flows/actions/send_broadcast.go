@@ -97,12 +97,5 @@ func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *SendBroadcastAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	for _, g := range a.Groups {
-		if !g.Variable() {
-			include(g)
-		}
-	}
-	for _, c := range a.Contacts {
-		include(c)
-	}
+	inspect.Dependencies(a, include)
 }
