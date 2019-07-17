@@ -45,9 +45,9 @@
         ],
         "inspection": {
             "templates": [
+                "bob@example.com@(1 / 0)",
                 "Hi there@(1 / 0)",
-                "So I was thinking...@(1 / 0)",
-                "bob@example.com@(1 / 0)"
+                "So I was thinking...@(1 / 0)"
             ],
             "dependencies": [],
             "results": []
@@ -197,10 +197,10 @@
         ],
         "inspection": {
             "templates": [
-                "Hi there",
-                "So I was thinking...",
                 "bob@example.com",
+                "Hi there",
                 "Hola",
+                "So I was thinking...",
                 "Pues estuve pensando..."
             ],
             "dependencies": [],

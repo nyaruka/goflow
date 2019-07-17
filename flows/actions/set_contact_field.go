@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -33,7 +34,7 @@ type SetContactFieldAction struct {
 	universalAction
 
 	Field *assets.FieldReference `json:"field" validate:"required"`
-	Value string                 `json:"value"`
+	Value string                 `json:"value" engine:"evaluated"`
 }
 
 // NewSetContactFieldAction creates a new set channel action
@@ -75,10 +76,14 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 // Inspect inspects this object and any children
 func (a *SetContactFieldAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-	flows.InspectReference(a.Field, inspect)
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactFieldAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Value)
+func (a *SetContactFieldAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
+}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *SetContactFieldAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+	inspect.Dependencies(a, include)
 }

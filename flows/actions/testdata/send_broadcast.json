@@ -101,16 +101,16 @@
         ],
         "inspection": {
             "templates": [
-                "Hi there!",
                 "@(\"\")",
                 "@contact.fields.gender",
                 "@(\"0788123123\")",
-                "@contact.urn"
+                "@contact.urn",
+                "Hi there!"
             ],
             "dependencies": [
                 "field[key=gender,name=]",
-                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]"
+                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]",
+                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]"
             ],
             "results": []
         }
@@ -182,11 +182,11 @@
             "results": [],
             "templates": [
                 "Hi there!",
+                "Hola!",
                 "http://example.com/red.jpg",
+                "http://example.com/rojo.jpg",
                 "Yes",
                 "No",
-                "Hola!",
-                "http://example.com/rojo.jpg",
                 "Si",
                 "No"
             ]

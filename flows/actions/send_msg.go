@@ -5,6 +5,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -49,7 +50,7 @@ type SendMsgAction struct {
 // Templating represents the templating that should be used if possible
 type Templating struct {
 	Template  *assets.TemplateReference `json:"template" validate:"required"`
-	Variables []string                  `json:"variables"`
+	Variables []string                  `json:"variables" engine:"evaluated"`
 }
 
 // NewSendMsgAction creates a new send msg action
@@ -123,21 +124,14 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 // Inspect inspects this object and any children
 func (a *SendMsgAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-	if a.Templating != nil {
-		flows.InspectReference(a.Templating.Template, inspect)
-	}
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendMsgAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Text)
-	include.Slice(a.Attachments)
-	include.Slice(a.QuickReplies)
-	if a.Templating != nil {
-		include.Slice(a.Templating.Variables)
-	}
+func (a *SendMsgAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
+}
 
-	include.Translations(a, "text")
-	include.Translations(a, "attachments")
-	include.Translations(a, "quick_replies")
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *SendMsgAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+	inspect.Dependencies(a, include)
 }

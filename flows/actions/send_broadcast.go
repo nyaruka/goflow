@@ -5,6 +5,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -87,22 +88,14 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 // Inspect inspects this object and any children
 func (a *SendBroadcastAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-
-	for _, g := range a.Groups {
-		flows.InspectReference(g, inspect)
-	}
-	for _, c := range a.Contacts {
-		flows.InspectReference(c, inspect)
-	}
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendBroadcastAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Text)
-	include.Slice(a.Attachments)
-	include.Slice(a.QuickReplies)
-	include.Translations(a, "text")
-	include.Translations(a, "attachments")
-	include.Translations(a, "quick_replies")
-	include.Slice(a.LegacyVars)
+func (a *SendBroadcastAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
+}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *SendBroadcastAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+	inspect.Dependencies(a, include)
 }

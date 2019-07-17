@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/utils"
 
@@ -25,7 +26,7 @@ const TypeSwitch string = "switch"
 type Case struct {
 	UUID         utils.UUID         `json:"uuid"                   validate:"required"`
 	Type         string             `json:"type"                   validate:"required"`
-	Arguments    []string           `json:"arguments,omitempty"`
+	Arguments    []string           `json:"arguments,omitempty"    engine:"localized,evaluated"`
 	CategoryUUID flows.CategoryUUID `json:"category_uuid"          validate:"required"`
 }
 
@@ -48,9 +49,8 @@ func (c *Case) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (c *Case) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.Slice(c.Arguments)
-	include.Translations(c, "arguments")
+func (c *Case) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(c, localization, include)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
@@ -231,8 +231,8 @@ func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *SwitchRouter) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(r.operand)
+func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	include(r.operand)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children

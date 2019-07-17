@@ -149,9 +149,9 @@
                 "@(\"0788123123\")"
             ],
             "dependencies": [
-                "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]",
+                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]",
                 "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]"
+                "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]"
             ],
             "results": []
         }

@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -30,7 +31,7 @@ type SetContactNameAction struct {
 	BaseAction
 	universalAction
 
-	Name string `json:"name"`
+	Name string `json:"name" engine:"evaluated"`
 }
 
 // NewSetContactNameAction creates a new set name action
@@ -67,6 +68,6 @@ func (a *SetContactNameAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactNameAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Name)
+func (a *SetContactNameAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
 }

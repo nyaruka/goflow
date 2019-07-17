@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -34,7 +35,7 @@ type SayMsgAction struct {
 	BaseAction
 	voiceAction
 
-	Text     string `json:"text" validate:"required"`
+	Text     string `json:"text" validate:"required" engine:"localized,evaluated"`
 	AudioURL string `json:"audio_url,omitempty"`
 }
 
@@ -86,7 +87,6 @@ func (a *SayMsgAction) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SayMsgAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(a.Text)
-	include.Translations(a, "text")
+func (a *SayMsgAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
 }

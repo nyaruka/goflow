@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -75,17 +76,14 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 // Inspect inspects this object and any children
 func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-	flows.InspectReference(a.Flow, inspect)
-
-	for _, g := range a.Groups {
-		flows.InspectReference(g, inspect)
-	}
-	for _, c := range a.Contacts {
-		flows.InspectReference(c, inspect)
-	}
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *StartSessionAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.Slice(a.LegacyVars)
+func (a *StartSessionAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(a, localization, include)
+}
+
+// EnumerateDependencies enumerates all dependencies on this object and its children
+func (a *StartSessionAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+	inspect.Dependencies(a, include)
 }

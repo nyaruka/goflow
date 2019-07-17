@@ -60,7 +60,7 @@ func (a *BaseAction) Validate() error { return nil }
 func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (a *BaseAction) EnumerateTemplates(include flows.TemplateIncluder) {}
+func (a *BaseAction) EnumerateTemplates(localization flows.Localization, include func(string)) {}
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (a *BaseAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
@@ -294,14 +294,14 @@ type otherContactsAction struct {
 	URNs       []urns.URN                `json:"urns,omitempty"`
 	Contacts   []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups     []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	LegacyVars []string                  `json:"legacy_vars,omitempty"`
+	LegacyVars []string                  `json:"legacy_vars,omitempty" engine:"evaluated"`
 }
 
 // utility struct for actions which create a message
 type createMsgAction struct {
-	Text         string   `json:"text" validate:"required"`
-	Attachments  []string `json:"attachments,omitempty"`
-	QuickReplies []string `json:"quick_replies,omitempty"`
+	Text         string   `json:"text" validate:"required" engine:"localized,evaluated"`
+	Attachments  []string `json:"attachments,omitempty" engine:"localized,evaluated"`
+	QuickReplies []string `json:"quick_replies,omitempty" engine:"localized,evaluated"`
 }
 
 //------------------------------------------------------------------------------------------

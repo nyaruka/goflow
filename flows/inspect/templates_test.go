@@ -1,13 +1,40 @@
-package flows_test
+package inspect_test
 
 import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/inspect"
+
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
+
+type testFlowThing struct {
+	UUID utils.UUID `json:"uuid"`                             // not a template
+	Foo  string     `json:"foo" engine:"evaluated,localized"` // a localizable template
+	Bar  string     `json:"bar" engine:"evaluated"`           // a template
+}
+
+func (t *testFlowThing) LocalizationUUID() utils.UUID {
+	return t.UUID
+}
+
+func TestTemplateValues(t *testing.T) {
+	l := definition.NewLocalization()
+	l.AddItemTranslation(utils.Language("eng"), utils.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
+
+	thing := &testFlowThing{UUID: utils.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), Foo: "Hello", Bar: "World"}
+
+	templates := make([]string, 0)
+	inspect.TemplateValues(thing, l, func(t string) {
+		templates = append(templates, t)
+	})
+
+	assert.Equal(t, []string{"Hello", "Hola", "World"}, templates)
+}
 
 func TestExtractFieldReferences(t *testing.T) {
 	testCases := []struct {
@@ -30,7 +57,7 @@ func TestExtractFieldReferences(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		actual := flows.ExtractFieldReferences(tc.template)
+		actual := inspect.ExtractFieldReferences(tc.template)
 
 		assert.Equal(t, tc.refs, actual, "field refs mismatch for template '%s'", tc.template)
 	}
