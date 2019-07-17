@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type testStruct struct {
+type badTagsStruct struct {
 	Valid1 string            `json:"valid1" engine:"localized"`
 	Valid2 []string          `json:"valid2" engine:"localized,evaluated"`
 	Valid3 map[string]string `json:"valid3" engine:"evaluated"`
@@ -17,7 +17,7 @@ type testStruct struct {
 }
 
 func TestParseEngineTag(t *testing.T) {
-	typ := reflect.TypeOf(testStruct{})
+	typ := reflect.TypeOf(badTagsStruct{})
 
 	assertTags := func(fieldIndex int, name string, localized bool, evaluated bool) {
 		f := typ.Field(fieldIndex)
@@ -36,4 +36,22 @@ func TestParseEngineTag(t *testing.T) {
 
 	assert.Panics(t, func() { parseEngineTag(typ.Field(4)) })
 	assert.Panics(t, func() { parseEngineTag(typ.Field(5)) })
+}
+
+type nestedStruct struct {
+	Foo string `json:"foo" engine:"localized,evaluated"`
+}
+
+type testTaggedStruct struct {
+	nestedStruct
+	Bar string `json:"bar"`
+}
+
+func TestExtractEngineFields(t *testing.T) {
+	typ := reflect.TypeOf(testTaggedStruct{})
+
+	assert.Equal(t, []*engineField{
+		&engineField{jsonName: "foo", localized: true, evaluated: true, index: []int{0, 0}},
+		&engineField{jsonName: "bar", localized: false, evaluated: false, index: []int{1}},
+	}, extractEngineFields(typ))
 }
