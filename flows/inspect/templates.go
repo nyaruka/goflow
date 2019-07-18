@@ -10,20 +10,22 @@ import (
 )
 
 // TemplateValues extracts template values by reading engine tags on a struct
-func TemplateValues(s flows.Localizable, localization flows.Localization, include func(string)) {
-	templateValues(reflect.ValueOf(s), s, localization, include)
+func TemplateValues(s interface{}, localization flows.Localization, include func(string)) {
+	templateValues(reflect.ValueOf(s), localization, include)
 }
 
-func templateValues(v reflect.Value, l flows.Localizable, localization flows.Localization, include func(string)) {
-	walkFields(v, func(ef *engineField, fv reflect.Value) {
+func templateValues(v reflect.Value, localization flows.Localization, include func(string)) {
+	walkFields(v, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
 		if ef.evaluated {
 			extractTemplateValues(fv, include)
 
 			// if this field is also localized, each translation is a template and needs to be included
-			if ef.localized && l != nil {
+			if ef.localized {
+				localizable := sv.Interface().(flows.Localizable)
+
 				for _, lang := range localization.Languages() {
 					translations := localization.GetTranslations(lang)
-					for _, v := range translations.GetTextArray(l.LocalizationUUID(), ef.jsonName) {
+					for _, v := range translations.GetTextArray(localizable.LocalizationUUID(), ef.jsonName) {
 						include(v)
 					}
 				}

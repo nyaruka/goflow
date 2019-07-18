@@ -55,3 +55,28 @@ func TestExtractEngineFields(t *testing.T) {
 		&engineField{jsonName: "bar", localized: false, evaluated: false, index: []int{1}},
 	}, extractEngineFields(typ))
 }
+
+func TestWalkFields(t *testing.T) {
+	// can start with a struct
+	v := reflect.ValueOf(testTaggedStruct{nestedStruct: nestedStruct{Foo:"Hello"}, Bar: "World"})
+
+	values := make([]string, 0)
+	walkFields(v, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+		values = append(values, fv.String())
+	})
+
+	assert.Equal(t, []string{"Hello", "World"}, values)
+
+	// or a slice of structs
+	v = reflect.ValueOf([]testTaggedStruct{
+		testTaggedStruct{nestedStruct: nestedStruct{Foo:"Hello"}, Bar: "World"},
+		testTaggedStruct{nestedStruct: nestedStruct{Foo:"Hola"}, Bar: "Mundo"},
+	})
+
+	values = make([]string, 0)
+	walkFields(v, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+		values = append(values, fv.String())
+	})
+
+	assert.Equal(t, []string{"Hello", "World", "Hola", "Mundo"}, values)
+}
