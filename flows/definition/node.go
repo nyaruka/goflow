@@ -85,27 +85,31 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 	return nil
 }
 
-func (n *node) Inspect(inspect func(flows.Inspectable)) {
-	inspect(n)
-
-	if n.Router() != nil {
-		n.Router().Inspect(inspect)
-	}
-}
-
 // EnumerateTemplates enumerates all expressions on this object
 func (n *node) EnumerateTemplates(localization flows.Localization, include func(string)) {
 	inspect.Templates(n.actions, localization, include)
+
+	if n.router != nil {
+		n.router.EnumerateTemplates(localization, include)
+	}
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
 func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 	inspect.Dependencies(n.actions, localization, include)
+
+	if n.router != nil {
+		n.router.EnumerateDependencies(localization, include)
+	}
 }
 
 // EnumerateResults enumerates all potential results on this object
 func (n *node) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {
 	inspect.Results(n, n.actions, include)
+
+	if n.router != nil {
+		n.router.EnumerateResults(n, include)
+	}
 }
 
 //------------------------------------------------------------------------------------------

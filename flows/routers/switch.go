@@ -207,11 +207,6 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 	return "", "", nil, nil
 }
 
-// Inspect inspects this object and any children
-func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
-	inspect(r)
-}
-
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
 	include(r.operand)

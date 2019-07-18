@@ -84,9 +84,8 @@ func (d *Dependencies) Check(sa SessionAssets, missing assets.MissingCallback) e
 	return nil
 }
 
-// Inspectable is implemented by various flow components to allow walking the definition and extracting things like dependencies
+// Inspectable allows extracting things like dependencies from flow objects
 type Inspectable interface {
-	Inspect(func(Inspectable))
 	EnumerateTemplates(Localization, func(string))
 	EnumerateDependencies(Localization, func(assets.Reference))
 	EnumerateResults(Node, func(*ResultInfo))
