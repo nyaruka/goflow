@@ -5,7 +5,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -62,9 +61,4 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 // Inspect inspects this object and any children
 func (a *SetContactChannelAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *SetContactChannelAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	inspect.Dependencies(a, include)
 }

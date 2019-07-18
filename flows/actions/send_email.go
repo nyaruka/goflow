@@ -6,7 +6,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -107,9 +106,4 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 // Inspect inspects this object and any children
 func (a *SendEmailAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendEmailAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.TemplateValues(a, localization, include)
 }

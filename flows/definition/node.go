@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
 
@@ -97,10 +98,13 @@ func (n *node) Inspect(inspect func(flows.Inspectable)) {
 }
 
 // EnumerateTemplates enumerates all expressions on this object
-func (n *node) EnumerateTemplates(localization flows.Localization, include func(string)) {}
+func (n *node) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.TemplateValues(n.actions, localization, include)
+}
 
 // EnumerateDependencies enumerates all dependencies on this object
 func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+	inspect.Dependencies(n.actions, include)
 }
 
 // EnumerateResults enumerates all potential results on this object

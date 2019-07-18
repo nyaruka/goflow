@@ -5,7 +5,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inspect"
 
 	"github.com/pkg/errors"
 )
@@ -86,9 +85,4 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 // Inspect inspects this object and any children
 func (a *RemoveContactGroupsAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *RemoveContactGroupsAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	inspect.Dependencies(a, include)
 }

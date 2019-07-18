@@ -4,7 +4,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -67,14 +66,4 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logMo
 // Inspect inspects this object and any children
 func (a *AddInputLabelsAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *AddInputLabelsAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.TemplateValues(a, localization, include)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *AddInputLabelsAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	inspect.Dependencies(a, include)
 }

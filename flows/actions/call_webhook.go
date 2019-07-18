@@ -6,7 +6,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inspect"
 
 	"github.com/pkg/errors"
 	"golang.org/x/net/http/httpguts"
@@ -132,11 +131,6 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 // Inspect inspects this object and any children
 func (a *CallWebhookAction) Inspect(inspect func(flows.Inspectable)) {
 	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *CallWebhookAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.TemplateValues(a, localization, include)
 }
 
 // EnumerateResults enumerates all potential results on this object

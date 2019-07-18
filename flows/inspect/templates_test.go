@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/inspect"
 
@@ -34,6 +36,27 @@ func TestTemplateValues(t *testing.T) {
 	})
 
 	assert.Equal(t, []string{"Hello", "Hola", "World"}, templates)
+
+	// can also extract from slice of things
+	templates = make([]string, 0)
+	inspect.TemplateValues([]*testFlowThing{thing}, l, func(t string) {
+		templates = append(templates, t)
+	})
+
+	assert.Equal(t, []string{"Hello", "Hola", "World"}, templates)
+
+	// or a slice of actions
+	actions := []flows.Action{
+		actions.NewSetContactNameAction(flows.ActionUUID("d5ecd045-a15f-467c-925a-54bcdc726b9f"), "Bob"),
+		actions.NewSetContactLanguageAction(flows.ActionUUID("d5ecd045-a15f-467c-925a-54bcdc726b9f"), "Gibberish"),
+	}
+
+	templates = make([]string, 0)
+	inspect.TemplateValues(actions, nil, func(t string) {
+		templates = append(templates, t)
+	})
+
+	assert.Equal(t, []string{"Bob", "Gibberish"}, templates)
 }
 
 func TestExtractFieldReferences(t *testing.T) {

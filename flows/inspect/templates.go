@@ -20,7 +20,7 @@ func templateValues(v reflect.Value, localization flows.Localization, include fu
 			extractTemplateValues(fv, include)
 
 			// if this field is also localized, each translation is a template and needs to be included
-			if ef.localized {
+			if ef.localized && localization != nil {
 				localizable := sv.Interface().(flows.Localizable)
 
 				for _, lang := range localization.Languages() {

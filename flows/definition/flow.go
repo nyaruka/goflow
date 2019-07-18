@@ -235,6 +235,8 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 				dependencies = append(dependencies, r)
 				dependenciesSeen[key] = true
 			}
+
+			// TODO replace if we saw a field ref without a name but now have same field with a name
 		}
 	}
 

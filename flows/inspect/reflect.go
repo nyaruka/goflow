@@ -74,8 +74,8 @@ func walkFields(v reflect.Value, visit func(reflect.Value, reflect.Value, *engin
 
 // gets the actual value if we've been given an interface or pointer
 func derefValue(v reflect.Value) reflect.Value {
-	if v.Kind() == reflect.Interface || v.Kind() == reflect.Ptr {
-		return v.Elem()
+	for v.Kind() == reflect.Interface || v.Kind() == reflect.Ptr {
+		v = v.Elem()
 	}
 	return v
 }
@@ -100,6 +100,8 @@ func parseEngineTag(f reflect.StructField) (localized bool, evaluated bool) {
 	for _, v := range tagVals {
 		if v == "localized" {
 			localized = true
+
+			// TODO check containing struct implements Localizable
 
 			if !(t.Kind() == reflect.String || (t.Kind() == reflect.Slice && t.Elem().Kind() == reflect.String)) {
 				panic(fmt.Sprintf("engine:localized tag found on unsupported type %v", t))
