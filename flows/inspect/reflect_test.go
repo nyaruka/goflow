@@ -64,12 +64,20 @@ func (s testTaggedStruct) LocalizationUUID() utils.UUID {
 }
 
 func TestExtractEngineFields(t *testing.T) {
-	typ := reflect.TypeOf(testTaggedStruct{})
+	v := testTaggedStruct{nestedStruct: nestedStruct{Foo: "Hello"}, Bar: "World"}
+	typ := reflect.TypeOf(v)
 
-	assert.Equal(t, []*engineField{
-		&engineField{jsonName: "foo", localized: true, evaluated: true, index: []int{0, 0}},
-		&engineField{jsonName: "bar", localized: false, evaluated: false, index: []int{1}},
-	}, extractEngineFields(typ, typ))
+	fields := extractEngineFields(typ, typ)
+
+	assert.Equal(t, "foo", fields[0].JSONName)
+	assert.True(t, fields[0].Localized)
+	assert.True(t, fields[0].Evaluated)
+	assert.Equal(t, "Hello", fields[0].Getter(reflect.ValueOf(v)).String())
+
+	assert.Equal(t, "bar", fields[1].JSONName)
+	assert.False(t, fields[1].Localized)
+	assert.False(t, fields[1].Evaluated)
+	assert.Equal(t, "World", fields[1].Getter(reflect.ValueOf(v)).String())
 }
 
 func TestWalkFields(t *testing.T) {
@@ -77,7 +85,7 @@ func TestWalkFields(t *testing.T) {
 	v := reflect.ValueOf(testTaggedStruct{nestedStruct: nestedStruct{Foo: "Hello"}, Bar: "World"})
 
 	values := make([]string, 0)
-	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
 		values = append(values, fv.String())
 	})
 
@@ -90,7 +98,7 @@ func TestWalkFields(t *testing.T) {
 	})
 
 	values = make([]string, 0)
-	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
 		values = append(values, fv.String())
 	})
 

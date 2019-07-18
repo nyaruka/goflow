@@ -8,7 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-func walk(v reflect.Value, visitStruct func(reflect.Value), visitField func(reflect.Value, reflect.Value, *engineField)) {
+func walk(v reflect.Value, visitStruct func(reflect.Value), visitField func(reflect.Value, reflect.Value, *EngineField)) {
 	// get the real underlying value
 	rv := derefValue(v)
 
@@ -21,8 +21,10 @@ func walk(v reflect.Value, visitStruct func(reflect.Value), visitField func(refl
 			visitStruct(v)
 		}
 
-		for _, ef := range extractEngineFields(v.Type(), rv.Type()) {
-			fv := rv.FieldByIndex(ef.index)
+		fields := extractEngineFields(v.Type(), rv.Type())
+
+		for _, ef := range fields {
+			fv := ef.Getter(rv)
 
 			if visitField != nil {
 				visitField(v, fv, ef)
@@ -33,24 +35,24 @@ func walk(v reflect.Value, visitStruct func(reflect.Value), visitField func(refl
 	}
 }
 
-// a struct field which is part of the flow spec (i.e. included in JSON) and optionally has a engine tag
-type engineField struct {
-	jsonName  string
-	localized bool
-	evaluated bool
-	index     []int
+// EngineField is a struct field which is part of the flow spec (i.e. included in JSON) and optionally has a engine tag
+type EngineField struct {
+	JSONName  string
+	Localized bool
+	Evaluated bool
+	Getter    func(reflect.Value) reflect.Value
 }
 
 // extracts all engine fields from the given type
-func extractEngineFields(t reflect.Type, rt reflect.Type) []*engineField {
-	fields := make([]*engineField, 0)
-	extractEngineFieldsFromType(t, rt, nil, func(f *engineField) {
+func extractEngineFields(t reflect.Type, rt reflect.Type) []*EngineField {
+	fields := make([]*EngineField, 0)
+	extractEngineFieldsFromType(t, rt, nil, func(f *EngineField) {
 		fields = append(fields, f)
 	})
 	return fields
 }
 
-func extractEngineFieldsFromType(ct reflect.Type, rt reflect.Type, loc []int, include func(*engineField)) {
+func extractEngineFieldsFromType(ct reflect.Type, rt reflect.Type, loc []int, include func(*EngineField)) {
 	for i := 0; i < rt.NumField(); i++ {
 		f := rt.Field(i)
 
@@ -71,11 +73,11 @@ func extractEngineFieldsFromType(ct reflect.Type, rt reflect.Type, loc []int, in
 
 		localized, evaluated := parseEngineTag(ct, f)
 
-		include(&engineField{
-			jsonName:  jsonName,
-			localized: localized,
-			evaluated: evaluated,
-			index:     index,
+		include(&EngineField{
+			JSONName:  jsonName,
+			Localized: localized,
+			Evaluated: evaluated,
+			Getter:    func(v reflect.Value) reflect.Value { return v.FieldByIndex(index) },
 		})
 	}
 }

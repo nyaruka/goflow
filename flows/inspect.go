@@ -84,13 +84,6 @@ func (d *Dependencies) Check(sa SessionAssets, missing assets.MissingCallback) e
 	return nil
 }
 
-// Inspectable allows extracting things like dependencies from flow objects
-type Inspectable interface {
-	EnumerateTemplates(Localization, func(string))
-	EnumerateDependencies(Localization, func(assets.Reference))
-	EnumerateResults(Node, func(*ResultInfo))
-}
-
 // ResultInfo is possible result that a flow might generate
 type ResultInfo struct {
 	Key        string     `json:"key"`

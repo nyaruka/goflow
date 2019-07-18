@@ -15,17 +15,17 @@ func Templates(s interface{}, localization flows.Localization, include func(stri
 }
 
 func templateValues(v reflect.Value, localization flows.Localization, include func(string)) {
-	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
-		if ef.evaluated {
+	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
+		if ef.Evaluated {
 			extractTemplates(fv, include)
 
 			// if this field is also localized, each translation is a template and needs to be included
-			if ef.localized && localization != nil {
+			if ef.Localized && localization != nil {
 				localizable := sv.Interface().(flows.Localizable)
 
 				for _, lang := range localization.Languages() {
 					translations := localization.GetTranslations(lang)
-					for _, v := range translations.GetTextArray(localizable.LocalizationUUID(), ef.jsonName) {
+					for _, v := range translations.GetTextArray(localizable.LocalizationUUID(), ef.JSONName) {
 						include(v)
 					}
 				}

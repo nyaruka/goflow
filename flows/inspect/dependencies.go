@@ -27,7 +27,7 @@ func dependencies(v reflect.Value, localization flows.Localization, include func
 				asDepCon.Dependencies(localization, include)
 			}
 		},
-		func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+		func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
 			// extract any asset.Reference fields automatically as dependencies
 			extractAssetReferences(fv, include)
 		},
