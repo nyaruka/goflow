@@ -58,10 +58,10 @@ func TestExtractEngineFields(t *testing.T) {
 
 func TestWalkFields(t *testing.T) {
 	// can start with a struct
-	v := reflect.ValueOf(testTaggedStruct{nestedStruct: nestedStruct{Foo:"Hello"}, Bar: "World"})
+	v := reflect.ValueOf(testTaggedStruct{nestedStruct: nestedStruct{Foo: "Hello"}, Bar: "World"})
 
 	values := make([]string, 0)
-	walkFields(v, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
 		values = append(values, fv.String())
 	})
 
@@ -69,12 +69,12 @@ func TestWalkFields(t *testing.T) {
 
 	// or a slice of structs
 	v = reflect.ValueOf([]testTaggedStruct{
-		testTaggedStruct{nestedStruct: nestedStruct{Foo:"Hello"}, Bar: "World"},
-		testTaggedStruct{nestedStruct: nestedStruct{Foo:"Hola"}, Bar: "Mundo"},
+		testTaggedStruct{nestedStruct: nestedStruct{Foo: "Hello"}, Bar: "World"},
+		testTaggedStruct{nestedStruct: nestedStruct{Foo: "Hola"}, Bar: "Mundo"},
 	})
 
 	values = make([]string, 0)
-	walkFields(v, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
 		values = append(values, fv.String())
 	})
 

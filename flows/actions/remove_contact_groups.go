@@ -81,8 +81,3 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove), logModifier, logEvent)
 	return nil
 }
-
-// Inspect inspects this object and any children
-func (a *RemoveContactGroupsAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}

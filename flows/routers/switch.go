@@ -50,7 +50,7 @@ func (c *Case) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (c *Case) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.TemplateValues(c, localization, include)
+	inspect.Templates(c, localization, include)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children

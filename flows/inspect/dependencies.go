@@ -12,7 +12,7 @@ func Dependencies(s interface{}, include func(assets.Reference)) {
 }
 
 func dependencies(v reflect.Value, include func(assets.Reference)) {
-	walkFields(v, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
 		extractDependencies(fv, include)
 	})
 }

@@ -71,8 +71,3 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 	a.applyModifier(run, modifiers.NewTimezoneModifier(tz), logModifier, logEvent)
 	return nil
 }
-
-// Inspect inspects this object and any children
-func (a *SetContactTimezoneAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}

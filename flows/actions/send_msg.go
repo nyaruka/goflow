@@ -119,8 +119,3 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 
 	return nil
 }
-
-// Inspect inspects this object and any children
-func (a *SendMsgAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}

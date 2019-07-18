@@ -9,15 +9,15 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-// TemplateValues extracts template values by reading engine tags on a struct
-func TemplateValues(s interface{}, localization flows.Localization, include func(string)) {
+// Templates extracts template values by reading engine tags on a struct
+func Templates(s interface{}, localization flows.Localization, include func(string)) {
 	templateValues(reflect.ValueOf(s), localization, include)
 }
 
 func templateValues(v reflect.Value, localization flows.Localization, include func(string)) {
-	walkFields(v, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
 		if ef.evaluated {
-			extractTemplateValues(fv, include)
+			extractTemplates(fv, include)
 
 			// if this field is also localized, each translation is a template and needs to be included
 			if ef.localized && localization != nil {
@@ -36,7 +36,7 @@ func templateValues(v reflect.Value, localization flows.Localization, include fu
 
 // Evaluated tags can be applied to fields of type string, slices of string or map of strings.
 // This method extracts template values from any such field.
-func extractTemplateValues(v reflect.Value, include func(string)) {
+func extractTemplates(v reflect.Value, include func(string)) {
 	switch typed := v.Interface().(type) {
 	case map[string]string:
 		for _, i := range typed {

@@ -71,8 +71,3 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 	a.applyModifier(run, modifiers.NewLanguageModifier(lang), logModifier, logEvent)
 	return nil
 }
-
-// Inspect inspects this object and any children
-func (a *SetContactLanguageAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}

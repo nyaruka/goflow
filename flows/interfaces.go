@@ -166,7 +166,6 @@ type Node interface {
 type Action interface {
 	utils.Typed
 	Localizable
-	Inspectable
 
 	UUID() ActionUUID
 	Execute(FlowRun, Step, ModifierCallback, EventCallback) error

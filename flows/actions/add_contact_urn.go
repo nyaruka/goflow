@@ -78,8 +78,3 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logMod
 	a.applyModifier(run, modifiers.NewURNModifier(urn, modifiers.URNAppend), logModifier, logEvent)
 	return nil
 }
-
-// Inspect inspects this object and any children
-func (a *AddContactURNAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}

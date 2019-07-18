@@ -88,10 +88,6 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 func (n *node) Inspect(inspect func(flows.Inspectable)) {
 	inspect(n)
 
-	for _, a := range n.Actions() {
-		a.Inspect(inspect)
-	}
-
 	if n.Router() != nil {
 		n.Router().Inspect(inspect)
 	}
@@ -99,7 +95,7 @@ func (n *node) Inspect(inspect func(flows.Inspectable)) {
 
 // EnumerateTemplates enumerates all expressions on this object
 func (n *node) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.TemplateValues(n.actions, localization, include)
+	inspect.Templates(n.actions, localization, include)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
@@ -108,7 +104,9 @@ func (n *node) EnumerateDependencies(localization flows.Localization, include fu
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (n *node) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {}
+func (n *node) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {
+	inspect.Results(n, n.actions, include)
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

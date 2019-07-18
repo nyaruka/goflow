@@ -83,8 +83,3 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 
 	return nil
 }
-
-// Inspect inspects this object and any children
-func (a *SendBroadcastAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}

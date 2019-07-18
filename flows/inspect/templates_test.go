@@ -24,14 +24,14 @@ func (t *testFlowThing) LocalizationUUID() utils.UUID {
 	return t.UUID
 }
 
-func TestTemplateValues(t *testing.T) {
+func TestTemplates(t *testing.T) {
 	l := definition.NewLocalization()
 	l.AddItemTranslation(utils.Language("eng"), utils.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
 
 	thing := &testFlowThing{UUID: utils.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), Foo: "Hello", Bar: "World"}
 
 	templates := make([]string, 0)
-	inspect.TemplateValues(thing, l, func(t string) {
+	inspect.Templates(thing, l, func(t string) {
 		templates = append(templates, t)
 	})
 
@@ -39,7 +39,7 @@ func TestTemplateValues(t *testing.T) {
 
 	// can also extract from slice of things
 	templates = make([]string, 0)
-	inspect.TemplateValues([]*testFlowThing{thing}, l, func(t string) {
+	inspect.Templates([]*testFlowThing{thing}, l, func(t string) {
 		templates = append(templates, t)
 	})
 
@@ -52,7 +52,7 @@ func TestTemplateValues(t *testing.T) {
 	}
 
 	templates = make([]string, 0)
-	inspect.TemplateValues(actions, nil, func(t string) {
+	inspect.Templates(actions, nil, func(t string) {
 		templates = append(templates, t)
 	})
 

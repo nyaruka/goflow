@@ -65,8 +65,3 @@ func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	logEvent(events.NewFlowEnteredEvent(a.Flow, run.UUID(), a.Terminal))
 	return nil
 }
-
-// Inspect inspects this object and any children
-func (a *EnterFlowAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}
