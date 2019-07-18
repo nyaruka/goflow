@@ -4,24 +4,41 @@ import (
 	"reflect"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/flows"
 )
 
-// Dependencies extracts asset dependencies
-func Dependencies(s interface{}, include func(assets.Reference)) {
-	dependencies(reflect.ValueOf(s), include)
+// DependencyContainer allows flow objects to declare other dependencies
+type DependencyContainer interface {
+	Dependencies(flows.Localization, func(assets.Reference))
 }
 
-func dependencies(v reflect.Value, include func(assets.Reference)) {
-	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *engineField) {
-		extractDependencies(fv, include)
-	})
+// Dependencies extracts dependencies
+func Dependencies(s interface{}, localization flows.Localization, include func(assets.Reference)) {
+	dependencies(reflect.ValueOf(s), localization, include)
 }
 
-func extractDependencies(v reflect.Value, include func(assets.Reference)) {
+func dependencies(v reflect.Value, localization flows.Localization, include func(assets.Reference)) {
+	walk(
+		v,
+		func(sv reflect.Value) {
+			// anything which is a DependencyContainer can explicitly provide dependencies
+			asDepCon, isDepCon := sv.Interface().(DependencyContainer)
+			if isDepCon {
+				asDepCon.Dependencies(localization, include)
+			}
+		},
+		func(sv reflect.Value, fv reflect.Value, ef *engineField) {
+			// extract any asset.Reference fields automatically as dependencies
+			extractAssetReferences(fv, include)
+		},
+	)
+}
+
+func extractAssetReferences(v reflect.Value, include func(assets.Reference)) {
 	if v.Kind() == reflect.Slice {
 		// field is a slice of asset references
 		for i := 0; i < v.Len(); i++ {
-			extractDependencies(v.Index(i), include)
+			extractAssetReferences(v.Index(i), include)
 		}
 	} else {
 		// field is a single asset reference

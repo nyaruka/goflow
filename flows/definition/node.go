@@ -100,7 +100,7 @@ func (n *node) EnumerateTemplates(localization flows.Localization, include func(
 
 // EnumerateDependencies enumerates all dependencies on this object
 func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	inspect.Dependencies(n.actions, include)
+	inspect.Dependencies(n.actions, localization, include)
 }
 
 // EnumerateResults enumerates all potential results on this object

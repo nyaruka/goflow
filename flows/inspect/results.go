@@ -6,9 +6,9 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-// ResultGenerator allows flow objects to declare that they can generate a result
-type ResultGenerator interface {
-	ResultInfo(flows.Node) *flows.ResultInfo
+// ResultContainer allows flow objects to declare that they can generate a result
+type ResultContainer interface {
+	Results(flows.Node, func(*flows.ResultInfo))
 }
 
 // Results extracts result infos
@@ -18,12 +18,9 @@ func Results(node flows.Node, s interface{}, include func(*flows.ResultInfo)) {
 
 func results(node flows.Node, v reflect.Value, include func(*flows.ResultInfo)) {
 	walk(v, func(s reflect.Value) {
-		asResultGen, isResultGen := s.Interface().(ResultGenerator)
+		asResultGen, isResultGen := s.Interface().(ResultContainer)
 		if isResultGen {
-			ri := asResultGen.ResultInfo(node)
-			if ri != nil {
-				include(ri)
-			}
+			asResultGen.Results(node, include)
 		}
 	}, nil)
 }

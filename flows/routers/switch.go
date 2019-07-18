@@ -43,18 +43,7 @@ func NewCase(uuid utils.UUID, type_ string, arguments []string, categoryUUID flo
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Case) LocalizationUUID() utils.UUID { return utils.UUID(c.UUID) }
 
-// Inspect inspects this object and any children
-func (c *Case) Inspect(inspect func(flows.Inspectable)) {
-	inspect(c)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (c *Case) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.Templates(c, localization, include)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (c *Case) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+func (c *Case) Dependencies(localization flows.Localization, include func(assets.Reference)) {
 	groupRef := func(args []string) assets.Reference {
 		// if we have two args, the second is name
 		name := ""
@@ -77,9 +66,6 @@ func (c *Case) EnumerateDependencies(localization flows.Localization, include fu
 		}
 	}
 }
-
-// EnumerateResults enumerates all potential results on this object
-func (c *Case) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {}
 
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default category
@@ -224,19 +210,18 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 // Inspect inspects this object and any children
 func (r *SwitchRouter) Inspect(inspect func(flows.Inspectable)) {
 	inspect(r)
-
-	for _, cs := range r.cases {
-		cs.Inspect(inspect)
-	}
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
 	include(r.operand)
+
+	inspect.Templates(r.cases, localization, include)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+	inspect.Dependencies(r.cases, localization, include)
 }
 
 //------------------------------------------------------------------------------------------
