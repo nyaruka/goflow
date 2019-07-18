@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inspect"
 
 	"github.com/pkg/errors"
 )
@@ -78,14 +77,4 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logMod
 
 	a.applyModifier(run, modifiers.NewURNModifier(urn, modifiers.URNAppend), logModifier, logEvent)
 	return nil
-}
-
-// Inspect inspects this object and any children
-func (a *AddContactURNAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *AddContactURNAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.TemplateValues(a, localization, include)
 }

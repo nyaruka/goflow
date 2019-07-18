@@ -200,15 +200,6 @@ func (f *flow) Reference() *assets.FlowReference {
 	return assets.NewFlowReference(f.uuid, f.name)
 }
 
-func (f *flow) inspect(inspect func(flows.Node, flows.Inspectable)) {
-	// inspect each node
-	for _, n := range f.Nodes() {
-		n.Inspect(func(i flows.Inspectable) {
-			inspect(n, i)
-		})
-	}
-}
-
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
 	templates := make([]string, 0)
@@ -218,9 +209,10 @@ func (f *flow) ExtractTemplates() []string {
 		}
 	}
 
-	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateTemplates(f.Localization(), include)
-	})
+	for _, n := range f.nodes {
+		n.EnumerateTemplates(f.Localization(), include)
+	}
+
 	return templates
 }
 
@@ -235,6 +227,8 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 				dependencies = append(dependencies, r)
 				dependenciesSeen[key] = true
 			}
+
+			// TODO replace if we saw a field ref without a name but now have same field with a name
 		}
 	}
 
@@ -245,12 +239,12 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 		}
 	}
 
-	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateTemplates(f.Localization(), include)
-		item.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
+	for _, n := range f.nodes {
+		n.EnumerateTemplates(f.Localization(), include)
+		n.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
 			addDependency(r)
 		})
-	})
+	}
 
 	return dependencies
 }
@@ -258,11 +252,13 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 // ExtractResults extracts all result specs
 func (f *flow) ExtractResults() []*flows.ResultInfo {
 	specs := make([]*flows.ResultInfo, 0)
-	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateResults(node, func(spec *flows.ResultInfo) {
+
+	for _, n := range f.nodes {
+		n.EnumerateResults(n, func(spec *flows.ResultInfo) {
 			specs = append(specs, spec)
 		})
-	})
+	}
+
 	return flows.MergeResultInfos(specs)
 }
 

@@ -152,21 +152,22 @@ type Flow interface {
 
 // Node is a single node in a flow
 type Node interface {
-	Inspectable
-
 	UUID() NodeUUID
 	Actions() []Action
 	Router() Router
 	Exits() []Exit
 
 	Validate(Flow, map[utils.UUID]bool) error
+
+	EnumerateTemplates(Localization, func(string))
+	EnumerateDependencies(Localization, func(assets.Reference))
+	EnumerateResults(Node, func(*ResultInfo))
 }
 
 // Action is an action within a flow node
 type Action interface {
 	utils.Typed
 	Localizable
-	Inspectable
 
 	UUID() ActionUUID
 	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
@@ -176,7 +177,6 @@ type Action interface {
 
 type Router interface {
 	utils.Typed
-	Inspectable
 
 	Wait() Wait
 	ResultName() string
@@ -185,6 +185,10 @@ type Router interface {
 	AllowTimeout() bool
 	Route(FlowRun, Step, EventCallback) (ExitUUID, error)
 	RouteTimeout(FlowRun, Step, EventCallback) (ExitUUID, error)
+
+	EnumerateTemplates(Localization, func(string))
+	EnumerateDependencies(Localization, func(assets.Reference))
+	EnumerateResults(Node, func(*ResultInfo))
 }
 
 type Exit interface {

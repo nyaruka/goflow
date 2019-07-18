@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
 
@@ -84,27 +85,32 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 	return nil
 }
 
-func (n *node) Inspect(inspect func(flows.Inspectable)) {
-	inspect(n)
+// EnumerateTemplates enumerates all expressions on this object
+func (n *node) EnumerateTemplates(localization flows.Localization, include func(string)) {
+	inspect.Templates(n.actions, localization, include)
 
-	for _, a := range n.Actions() {
-		a.Inspect(inspect)
-	}
-
-	if n.Router() != nil {
-		n.Router().Inspect(inspect)
+	if n.router != nil {
+		n.router.EnumerateTemplates(localization, include)
 	}
 }
-
-// EnumerateTemplates enumerates all expressions on this object
-func (n *node) EnumerateTemplates(localization flows.Localization, include func(string)) {}
 
 // EnumerateDependencies enumerates all dependencies on this object
 func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+	inspect.Dependencies(n.actions, localization, include)
+
+	if n.router != nil {
+		n.router.EnumerateDependencies(localization, include)
+	}
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (n *node) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {}
+func (n *node) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {
+	inspect.Results(n, n.actions, include)
+
+	if n.router != nil {
+		n.router.EnumerateResults(n, include)
+	}
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

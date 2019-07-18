@@ -5,7 +5,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -58,19 +57,4 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 
 	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsAdd), logModifier, logEvent)
 	return nil
-}
-
-// Inspect inspects this object and any children
-func (a *AddContactGroupsAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *AddContactGroupsAction) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.TemplateValues(a, localization, include)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *AddContactGroupsAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	inspect.Dependencies(a, include)
 }
