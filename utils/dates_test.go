@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -117,23 +118,23 @@ func TestDateFromString(t *testing.T) {
 	testCases := []struct {
 		dateFormat utils.DateFormat
 		value      string
-		expected   utils.Date
+		expected   dates.Date
 		hasError   bool
 	}{
-		{utils.DateFormatDayMonthYear, "it's 31-12-2018 ok", utils.NewDate(2018, 12, 31), false},
-		{utils.DateFormatDayMonthYear, "it's 31-12-18 ok", utils.NewDate(2018, 12, 31), false},
-		{utils.DateFormatMonthDayYear, "it's 12-31-2018 ok", utils.NewDate(2018, 12, 31), false},
-		{utils.DateFormatMonthDayYear, "it's 12-31-18 ok", utils.NewDate(2018, 12, 31), false},
-		{utils.DateFormatYearMonthDay, "it's 2018-12-31 ok", utils.NewDate(2018, 12, 31), false},
-		{utils.DateFormatYearMonthDay, "it's 18-12-31 ok", utils.NewDate(2018, 12, 31), false},
+		{utils.DateFormatDayMonthYear, "it's 31-12-2018 ok", dates.NewDate(2018, 12, 31), false},
+		{utils.DateFormatDayMonthYear, "it's 31-12-18 ok", dates.NewDate(2018, 12, 31), false},
+		{utils.DateFormatMonthDayYear, "it's 12-31-2018 ok", dates.NewDate(2018, 12, 31), false},
+		{utils.DateFormatMonthDayYear, "it's 12-31-18 ok", dates.NewDate(2018, 12, 31), false},
+		{utils.DateFormatYearMonthDay, "it's 2018-12-31 ok", dates.NewDate(2018, 12, 31), false},
+		{utils.DateFormatYearMonthDay, "it's 18-12-31 ok", dates.NewDate(2018, 12, 31), false},
 
 		// valid ISO always accepted
-		{utils.DateFormatDayMonthYear, "2018-12-31", utils.NewDate(2018, 12, 31), false},
-		{utils.DateFormatDayMonthYear, "2018-12-31T18:30:15-08:00", utils.NewDate(2018, 12, 31), false},
+		{utils.DateFormatDayMonthYear, "2018-12-31", dates.NewDate(2018, 12, 31), false},
+		{utils.DateFormatDayMonthYear, "2018-12-31T18:30:15-08:00", dates.NewDate(2018, 12, 31), false},
 
-		{utils.DateFormatDayMonthYear, "it's ok", utils.ZeroDate, true},
-		{utils.DateFormatDayMonthYear, "it's 2018-13-01 ok", utils.ZeroDate, true},
-		{utils.DateFormatDayMonthYear, "it's 2018-12-32 ok", utils.ZeroDate, true},
+		{utils.DateFormatDayMonthYear, "it's ok", dates.ZeroDate, true},
+		{utils.DateFormatDayMonthYear, "it's 2018-13-01 ok", dates.ZeroDate, true},
+		{utils.DateFormatDayMonthYear, "it's 2018-12-32 ok", dates.ZeroDate, true},
 	}
 
 	for _, tc := range testCases {
@@ -155,41 +156,41 @@ func TestDateFromString(t *testing.T) {
 func TestTimeFromString(t *testing.T) {
 	testCases := []struct {
 		value    string
-		expected utils.TimeOfDay
+		expected dates.TimeOfDay
 		hasError bool
 	}{
-		{"it's 10 ok", utils.NewTimeOfDay(10, 0, 0, 0), false},
-		{"it's 10 PM ok", utils.NewTimeOfDay(22, 0, 0, 0), false},
-		{"it's 10:30 ok", utils.NewTimeOfDay(10, 30, 0, 0), false},
-		{"it's 10:30pm ok", utils.NewTimeOfDay(22, 30, 0, 0), false},
-		{"it's 10:30 pm ok", utils.NewTimeOfDay(22, 30, 0, 0), false},
-		{"it's 1030 ok", utils.NewTimeOfDay(10, 30, 0, 0), false},
-		{"it's 1030 PM ok", utils.NewTimeOfDay(22, 30, 0, 0), false},
-		{"it's 10:30:45 ok", utils.NewTimeOfDay(10, 30, 45, 0), false},
-		{"it's 10:30:45 pm ok", utils.NewTimeOfDay(22, 30, 45, 0), false},
-		{"it's 10:30:45.123 ok", utils.NewTimeOfDay(10, 30, 45, 123000000), false},
-		{"it's 10:30:45.123 pm ok", utils.NewTimeOfDay(22, 30, 45, 123000000), false},
-		{"it's 10:30:45.123456 ok", utils.NewTimeOfDay(10, 30, 45, 123456000), false},
-		{"it's 10:30:45.123456 pm ok", utils.NewTimeOfDay(22, 30, 45, 123456000), false},
-		{"it's 10:30:45.123456789 ok", utils.NewTimeOfDay(10, 30, 45, 123456789), false},
-		{"it's 10:30:45.123456789 pm ok", utils.NewTimeOfDay(22, 30, 45, 123456789), false},
+		{"it's 10 ok", dates.NewTimeOfDay(10, 0, 0, 0), false},
+		{"it's 10 PM ok", dates.NewTimeOfDay(22, 0, 0, 0), false},
+		{"it's 10:30 ok", dates.NewTimeOfDay(10, 30, 0, 0), false},
+		{"it's 10:30pm ok", dates.NewTimeOfDay(22, 30, 0, 0), false},
+		{"it's 10:30 pm ok", dates.NewTimeOfDay(22, 30, 0, 0), false},
+		{"it's 1030 ok", dates.NewTimeOfDay(10, 30, 0, 0), false},
+		{"it's 1030 PM ok", dates.NewTimeOfDay(22, 30, 0, 0), false},
+		{"it's 10:30:45 ok", dates.NewTimeOfDay(10, 30, 45, 0), false},
+		{"it's 10:30:45 pm ok", dates.NewTimeOfDay(22, 30, 45, 0), false},
+		{"it's 10:30:45.123 ok", dates.NewTimeOfDay(10, 30, 45, 123000000), false},
+		{"it's 10:30:45.123 pm ok", dates.NewTimeOfDay(22, 30, 45, 123000000), false},
+		{"it's 10:30:45.123456 ok", dates.NewTimeOfDay(10, 30, 45, 123456000), false},
+		{"it's 10:30:45.123456 pm ok", dates.NewTimeOfDay(22, 30, 45, 123456000), false},
+		{"it's 10:30:45.123456789 ok", dates.NewTimeOfDay(10, 30, 45, 123456789), false},
+		{"it's 10:30:45.123456789 pm ok", dates.NewTimeOfDay(22, 30, 45, 123456789), false},
 
 		// 12 am and 12 pm
-		{"it's 12:00 AM", utils.NewTimeOfDay(0, 0, 0, 0), false},
-		{"it's 12pm", utils.NewTimeOfDay(12, 0, 0, 0), false},
+		{"it's 12:00 AM", dates.NewTimeOfDay(0, 0, 0, 0), false},
+		{"it's 12pm", dates.NewTimeOfDay(12, 0, 0, 0), false},
 
 		// fractional component can be any length
-		{"it's 10:30:45.123456789123456789 ok", utils.NewTimeOfDay(10, 30, 45, 123456789), false},
-		{"it's 10:30:45.1 ok", utils.NewTimeOfDay(10, 30, 45, 100000000), false},
+		{"it's 10:30:45.123456789123456789 ok", dates.NewTimeOfDay(10, 30, 45, 123456789), false},
+		{"it's 10:30:45.1 ok", dates.NewTimeOfDay(10, 30, 45, 100000000), false},
 
 		// 24 can be used to mean midnight
-		{"it's 24:00 ok", utils.NewTimeOfDay(0, 0, 0, 0), false},
-		{"it's 24:00:00 ok", utils.NewTimeOfDay(0, 0, 0, 0), false},
+		{"it's 24:00 ok", dates.NewTimeOfDay(0, 0, 0, 0), false},
+		{"it's 24:00:00 ok", dates.NewTimeOfDay(0, 0, 0, 0), false},
 
-		{"it's ok", utils.ZeroTimeOfDay, true},
-		{"it's 25:30", utils.ZeroTimeOfDay, true},
-		{"it's 10:61", utils.ZeroTimeOfDay, true},
-		{"it's 10:30:61", utils.ZeroTimeOfDay, true},
+		{"it's ok", dates.ZeroTimeOfDay, true},
+		{"it's 25:30", dates.ZeroTimeOfDay, true},
+		{"it's 10:61", dates.ZeroTimeOfDay, true},
+		{"it's 10:30:61", dates.ZeroTimeOfDay, true},
 	}
 
 	for _, tc := range testCases {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -15,11 +16,11 @@ import (
 //
 // @type date
 type XDate struct {
-	native utils.Date
+	native dates.Date
 }
 
 // NewXDate creates a new date
-func NewXDate(value utils.Date) XDate {
+func NewXDate(value dates.Date) XDate {
 	return XDate{native: value}
 }
 
@@ -60,7 +61,7 @@ func (x XDate) String() string {
 }
 
 // Native returns the native value of this type
-func (x XDate) Native() utils.Date { return x.native }
+func (x XDate) Native() dates.Date { return x.native }
 
 // Equals determines equality for this type
 func (x XDate) Equals(other XDate) bool {
@@ -73,7 +74,7 @@ func (x XDate) Compare(other XDate) int {
 }
 
 // XDateZero is the zero time value
-var XDateZero = NewXDate(utils.ZeroDate)
+var XDateZero = NewXDate(dates.ZeroDate)
 var _ XValue = XDateZero
 
 // ToXDate converts the given value to a time or returns an error if that isn't possible

@@ -1,7 +1,11 @@
-package utils
+package dates
 
 import (
 	"time"
+)
+
+const (
+	ISO8601Date = "2006-01-02"
 )
 
 // Date is a local gregorian calendar date
@@ -55,7 +59,7 @@ func (d Date) Weekday() time.Weekday {
 
 // String returns the ISO8601 representation
 func (d Date) String() string {
-	return d.Format(iso8601Date)
+	return d.Format(ISO8601Date)
 }
 
 // ZeroDate is our uninitialized date value

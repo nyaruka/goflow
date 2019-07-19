@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -14,7 +15,7 @@ import (
 func TestXDate(t *testing.T) {
 	env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Build()
 
-	d1 := types.NewXDate(utils.NewDate(2019, 2, 20))
+	d1 := types.NewXDate(dates.NewDate(2019, 2, 20))
 	assert.Equal(t, `date`, d1.Describe())
 	assert.Equal(t, `2019-02-20`, d1.Render())
 	assert.Equal(t, `20-02-2019`, d1.Format(env))
@@ -33,13 +34,13 @@ func TestXDate(t *testing.T) {
 	assert.Equal(t, types.NewXText(`"2019-02-20"`), asJSON)
 
 	// test equality
-	assert.True(t, d1.Equals(types.NewXDate(utils.NewDate(2019, 2, 20))))
-	assert.False(t, d1.Equals(types.NewXDate(utils.NewDate(2019, 2, 21))))
+	assert.True(t, d1.Equals(types.NewXDate(dates.NewDate(2019, 2, 20))))
+	assert.False(t, d1.Equals(types.NewXDate(dates.NewDate(2019, 2, 21))))
 
 	// test comparisons
-	assert.Equal(t, 0, types.NewXDate(utils.NewDate(2019, 2, 20)).Compare(d1))
-	assert.Equal(t, 1, types.NewXDate(utils.NewDate(2019, 2, 21)).Compare(d1))
-	assert.Equal(t, -1, types.NewXDate(utils.NewDate(2019, 2, 19)).Compare(d1))
+	assert.Equal(t, 0, types.NewXDate(dates.NewDate(2019, 2, 20)).Compare(d1))
+	assert.Equal(t, 1, types.NewXDate(dates.NewDate(2019, 2, 21)).Compare(d1))
+	assert.Equal(t, -1, types.NewXDate(dates.NewDate(2019, 2, 19)).Compare(d1))
 }
 
 func TestToXDate(t *testing.T) {
@@ -51,13 +52,13 @@ func TestToXDate(t *testing.T) {
 		{nil, types.XDateZero, true},
 		{types.NewXError(errors.Errorf("Error")), types.XDateZero, true},
 		{types.NewXNumberFromInt(123), types.XDateZero, true},
-		{types.NewXText("2018-01-20"), types.NewXDate(utils.NewDate(2018, 1, 20)), false},
-		{types.NewXDate(utils.NewDate(2018, 4, 19)), types.NewXDate(utils.NewDate(2018, 4, 19)), false},
-		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDate(utils.NewDate(2018, 4, 9)), false},
+		{types.NewXText("2018-01-20"), types.NewXDate(dates.NewDate(2018, 1, 20)), false},
+		{types.NewXDate(dates.NewDate(2018, 4, 19)), types.NewXDate(dates.NewDate(2018, 4, 19)), false},
+		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDate(dates.NewDate(2018, 4, 9)), false},
 		{types.NewXObject(map[string]types.XValue{
 			"__default__": types.NewXText("2018-01-20"), // should use default
 			"foo":         types.NewXNumberFromInt(234),
-		}), types.NewXDate(utils.NewDate(2018, 1, 20)), false},
+		}), types.NewXDate(dates.NewDate(2018, 1, 20)), false},
 	}
 
 	env := utils.NewEnvironmentBuilder().Build()

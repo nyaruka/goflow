@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -15,11 +16,11 @@ import (
 //
 // @type time
 type XTime struct {
-	native utils.TimeOfDay
+	native dates.TimeOfDay
 }
 
 // NewXTime creates a new time
-func NewXTime(value utils.TimeOfDay) XTime {
+func NewXTime(value dates.TimeOfDay) XTime {
 	return XTime{native: value}
 }
 
@@ -60,7 +61,7 @@ func (x XTime) String() string {
 }
 
 // Native returns the native value of this type
-func (x XTime) Native() utils.TimeOfDay { return x.native }
+func (x XTime) Native() dates.TimeOfDay { return x.native }
 
 // Equals determines equality for this type
 func (x XTime) Equals(other XTime) bool {
@@ -73,7 +74,7 @@ func (x XTime) Compare(other XTime) int {
 }
 
 // XTimeZero is the zero time value
-var XTimeZero = NewXTime(utils.ZeroTimeOfDay)
+var XTimeZero = NewXTime(dates.ZeroTimeOfDay)
 var _ XValue = XTimeZero
 
 // ToXTime converts the given value to a time or returns an error if that isn't possible
@@ -89,7 +90,7 @@ func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
 		case XNumber:
 			asInt := typed.Native().IntPart()
 			if asInt >= 0 && asInt <= 23 {
-				return NewXTime(utils.NewTimeOfDay(int(asInt), 0, 0, 0)), nil
+				return NewXTime(dates.NewTimeOfDay(int(asInt), 0, 0, 0)), nil
 			} else if asInt == 24 {
 				return XTimeZero, nil
 			}

@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/dates"
+
 	"github.com/pkg/errors"
 	validator "gopkg.in/go-playground/validator.v9"
 )
@@ -57,15 +59,13 @@ var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
 // generic format for parsing any 8601 date
 var iso8601Format = "2006-01-02T15:04:05Z07:00"
 var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
-var iso8601Date = "2006-01-02"
-var iso8601Time = "15:04:05.000000"
 
 var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat}
 
 // ZeroDateTime is our uninitialized datetime value
 var ZeroDateTime = time.Time{}
 
-func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (Date, string, error) {
+func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (dates.Date, string, error) {
 
 	matches := pattern.FindAllStringSubmatchIndex(str, -1)
 	for _, match := range matches {
@@ -95,10 +95,10 @@ func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y in
 		remainder := str[match[1]:]
 
 		// looks believable, go for it
-		return NewDate(year, month, day), remainder, nil
+		return dates.NewDate(year, month, day), remainder, nil
 	}
 
-	return ZeroDate, str, errors.Errorf("string '%s' couldn't be parsed as a date", str)
+	return dates.ZeroDate, str, errors.Errorf("string '%s' couldn't be parsed as a date", str)
 }
 
 // DaysBetween returns the number of calendar days (an int) between the two dates. Note
@@ -153,7 +153,7 @@ func DateTimeFromString(env Environment, str string, fillTime bool) (time.Time, 
 	// can we pull out a time from the remainder of the string?
 	hasTime, timeOfDay := parseTime(remainder)
 	if !hasTime && fillTime {
-		timeOfDay = ExtractTimeOfDay(env.Now())
+		timeOfDay = dates.ExtractTimeOfDay(env.Now())
 	}
 
 	// combine our date and time
@@ -162,28 +162,28 @@ func DateTimeFromString(env Environment, str string, fillTime bool) (time.Time, 
 
 // DateFromString returns a date constructed from the passed in string, or an error if we
 // are unable to extract one
-func DateFromString(env Environment, str string) (Date, error) {
+func DateFromString(env Environment, str string) (dates.Date, error) {
 	parsed, _, err := parseDate(env, str)
 	return parsed, err
 }
 
 // TimeFromString returns a time of day constructed from the passed in string, or an error if we
 // are unable to extract one
-func TimeFromString(str string) (TimeOfDay, error) {
+func TimeFromString(str string) (dates.TimeOfDay, error) {
 	hasTime, timeOfDay := parseTime(str)
 	if !hasTime {
-		return ZeroTimeOfDay, errors.Errorf("string '%s' couldn't be parsed as a time", str)
+		return dates.ZeroTimeOfDay, errors.Errorf("string '%s' couldn't be parsed as a time", str)
 	}
 	return timeOfDay, nil
 }
 
-func parseDate(env Environment, str string) (Date, string, error) {
+func parseDate(env Environment, str string) (dates.Date, string, error) {
 	str = strings.Trim(str, " \n\r\t")
 
 	// try to parse as ISO date
-	asISO, err := time.ParseInLocation(iso8601Date, str[0:MinInt(len(iso8601Date), len(str))], env.Timezone())
+	asISO, err := time.ParseInLocation(dates.ISO8601Date, str[0:MinInt(len(dates.ISO8601Date), len(str))], env.Timezone())
 	if err == nil {
-		return ExtractDate(asISO), str[len(iso8601Date):], nil
+		return dates.ExtractDate(asISO), str[len(dates.ISO8601Date):], nil
 	}
 
 	// otherwise, try to parse according to their env settings
@@ -198,14 +198,14 @@ func parseDate(env Environment, str string) (Date, string, error) {
 		return dateFromFormats(currentYear, patternMonthDayYear, 2, 1, 3, str)
 	}
 
-	return ZeroDate, "", errors.Errorf("unknown date format: %s", env.DateFormat())
+	return dates.ZeroDate, "", errors.Errorf("unknown date format: %s", env.DateFormat())
 }
 
 func replaceTime(d time.Time, t time.Time) time.Time {
 	return time.Date(d.Year(), d.Month(), d.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), t.Location())
 }
 
-func parseTime(str string) (bool, TimeOfDay) {
+func parseTime(str string) (bool, dates.TimeOfDay) {
 	matches := patternTime.FindAllStringSubmatch(str, -1)
 	for _, match := range matches {
 		hour, _ := strconv.Atoi(match[1])
@@ -247,10 +247,10 @@ func parseTime(str string) (bool, TimeOfDay) {
 			continue
 		}
 
-		return true, NewTimeOfDay(hour, minute, second, nanos)
+		return true, dates.NewTimeOfDay(hour, minute, second, nanos)
 	}
 
-	return false, ZeroTimeOfDay
+	return false, dates.ZeroTimeOfDay
 }
 
 // FormattingMode describe a mode of formatting dates, times, datetimes

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -69,12 +70,12 @@ func (x XDateTime) Native() time.Time { return x.native }
 
 // Date returns the date part of this datetime
 func (x XDateTime) Date() XDate {
-	return NewXDate(utils.ExtractDate(x.Native()))
+	return NewXDate(dates.ExtractDate(x.Native()))
 }
 
 // Time returns the time part of this datetime
 func (x XDateTime) Time() XTime {
-	return NewXTime(utils.ExtractTimeOfDay(x.Native()))
+	return NewXTime(dates.ExtractTimeOfDay(x.Native()))
 }
 
 // In returns a copy of this datetime in a different timezone
@@ -138,7 +139,7 @@ func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XEr
 		case XError:
 			return XDateTimeZero, typed
 		case XDate:
-			return NewXDateTime(typed.Native().Combine(utils.ZeroTimeOfDay, env.Timezone())), nil
+			return NewXDateTime(typed.Native().Combine(dates.ZeroTimeOfDay, env.Timezone())), nil
 		case XDateTime:
 			return typed, nil
 		case XText:
