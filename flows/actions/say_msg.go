@@ -34,7 +34,7 @@ type SayMsgAction struct {
 	BaseAction
 	voiceAction
 
-	Text     string `json:"text" validate:"required"`
+	Text     string `json:"text" validate:"required" engine:"localized,evaluated"`
 	AudioURL string `json:"audio_url,omitempty"`
 }
 
@@ -78,15 +78,4 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 	logEvent(events.NewIVRCreatedEvent(msg))
 
 	return nil
-}
-
-// Inspect inspects this object and any children
-func (a *SayMsgAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SayMsgAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Text)
-	include.Translations(a, "text")
 }

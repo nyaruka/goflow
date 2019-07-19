@@ -15,39 +15,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Contact represents a person who is interacting with the flow. It renders as the person's name
-// (or perferred URN if name isn't set) in a template, and has the following properties which can be accessed:
-//
-//  * `uuid` the UUID of the contact
-//  * `name` the full name of the contact
-//  * `first_name` the first name of the contact
-//  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
-//  * `timezone` the timezone name of the contact
-//  * `created_on` the datetime when the contact was created
-//  * `urns` all [URNs](#context:urn) the contact has set
-//  * `urns.[scheme]` all the [URNs](#context:urn) the contact has set for the particular URN scheme
-//  * `urn` shorthand for `@(format_urn(c.urns.0))`, i.e. the contact's preferred [URN](#context:urn) in friendly formatting
-//  * `groups` all the [groups](#context:group) that the contact belongs to
-//  * `fields` all the custom contact fields the contact has set
-//  * `fields.[snaked_field_name]` the value of the specific field
-//  * `channel` shorthand for `contact.urns[0].channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
-//
-// Examples:
-//
-//   @contact.name -> Ryan Lewis
-//   @contact.first_name -> Ryan
-//   @contact.language -> eng
-//   @contact.timezone -> America/Guayaquil
-//   @contact.created_on -> 2018-06-20T11:40:30.123456Z
-//   @contact.urns -> [tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]
-//   @(contact.urns[0]) -> tel:+12065551212
-//   @contact.urn -> tel:+12065551212
-//   @(foreach(contact.groups, extract, "name")) -> [Testers, Males]
-//   @contact.fields -> Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00
-//   @contact.fields.activation_token -> AACC55
-//   @contact.fields.gender -> Male
-//
-// @context contact
+// Contact represents a person who is interacting with the flow
 type Contact struct {
 	uuid      ContactUUID
 	id        ContactID
@@ -239,6 +207,21 @@ func (c *Contact) Format(env utils.Environment) string {
 }
 
 // Context returns the properties available in expressions
+//
+//   __default__:text -> the name or URN
+//   uuid:text -> the UUID of the contact
+//   id:text -> the numeric ID of the contact
+//   first_name:text -> the first name of the contact
+//   name:text -> the name of the contact
+//   language:text -> the language of the contact as 3-letter ISO code
+//   created_on:datetime -> the creation date of the contact
+//   urns:[]text -> the URNs belonging to the contact
+//   urn:text -> the preferred URN of the contact
+//   groups:[]group -> the groups the contact belongs to
+//   fields:fields -> the custom field values of the contact
+//   channel:channel -> the preferred channel of the contact
+//
+// @context contact
 func (c *Contact) Context(env utils.Environment) map[string]types.XValue {
 	var urn, timezone types.XValue
 	if c.timezone != nil {
@@ -328,6 +311,12 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 		for _, urn := range c.urns {
 			// tel URNs can be re-assigned, other URN schemes are considered channel specific
 			if urn.URN().Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
+				urn.SetChannel(channel)
+			}
+
+			// If URN doesn't have a channel and is a scheme supported by the channel, then we can set its
+			// channel. This may result in unsendable URN/channel pairing but can't do much about that.
+			if urn.Channel() == nil && channel.SupportsScheme(urn.URN().Scheme()) {
 				urn.SetChannel(channel)
 			}
 

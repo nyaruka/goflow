@@ -97,6 +97,9 @@ var sessionTrigger = `{
 }`
 
 func TestRunContext(t *testing.T) {
+	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
 	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
@@ -112,14 +115,20 @@ func TestRunContext(t *testing.T) {
 	}{
 		{`@run`, `Ryan Lewis@Registration`},
 		{`@child`, `Ryan Lewis@Collect Age`},
-		{`@child.run`, `Ryan Lewis@Collect Age`},
+		{`@child.uuid`, `59d74b86-3e2f-4a93-aece-b05d2fdcde0c`},
+		{`@child.run`, `Ryan Lewis@Collect Age`}, // to be removed in 13.1
 		{`@child.contact.name`, `Ryan Lewis`},
 		{`@child.run.contact.name`, `Ryan Lewis`},
+		{`@child.flow.name`, "Collect Age"},
+		{`@child.status`, "completed"},
 		{`@child.fields`, "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00"},
 		{`@parent`, `Jasmine@Parent`},
+		{`@parent.uuid`, `4213ac47-93fd-48c4-af12-7da8218ef09d`},
 		{`@parent.run`, `Jasmine@Parent`},
 		{`@parent.contact.name`, `Jasmine`},
 		{`@parent.run.contact.name`, `Jasmine`},
+		{`@parent.flow.name`, "Parent"},
+		{`@parent.status`, "active"},
 		{`@parent.fields`, "Age: 33\nGender: Female"},
 		{
 			`@(json(contact.fields))`,
@@ -162,7 +171,7 @@ func TestRunContext(t *testing.T) {
 	for _, tc := range testCases {
 		actual, err := run.EvaluateTemplate(tc.template)
 		assert.NoError(t, err)
-		assert.Equal(t, tc.expected, actual)
+		assert.Equal(t, tc.expected, actual, "template mismatch for %s", tc.template)
 	}
 }
 

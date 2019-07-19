@@ -49,7 +49,18 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 	return &relatedRunContext{run: run}
 }
 
-// RootContext returns the properties available in expressions for @parent and @child
+// Context returns the properties available in expressions for @parent and @child
+//
+//   __default__:text -> the contact name and flow UUID
+//   uuid:text -> the UUID of the run
+//   contact:contact -> the contact of the run
+//   flow:flow -> the flow of the run
+//   fields:fields -> the custom field values of the run's contact
+//   urns:urns -> the URN values of the run's contact
+//   results:results -> the results saved by the run
+//   status:text -> the current status of the run
+//
+// @context related_run
 func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if c.run.Contact() != nil {
@@ -59,11 +70,14 @@ func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XVal
 
 	return map[string]types.XValue{
 		"__default__": types.NewXText(formatRunSummary(env, c.run)),
-		"run":         flows.ContextFunc(env, c.RunContext),
+		"uuid":        types.NewXText(string(c.run.UUID())),
+		"run":         flows.ContextFunc(env, c.RunContext), // deprecated to be removed in 13.1
 		"contact":     flows.Context(env, c.run.Contact()),
+		"flow":        flows.Context(env, c.run.Flow()),
 		"urns":        urns,
 		"fields":      fields,
 		"results":     flows.Context(env, c.run.Results()),
+		"status":      types.NewXText(string(c.run.Status())),
 	}
 }
 

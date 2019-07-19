@@ -2,7 +2,7 @@
     {
         "description": "Validation fails for invalid group reference",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "send_broadcast",
             "groups": [
                 {
@@ -17,7 +17,7 @@
     {
         "description": "NOOP if no recipients",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "send_broadcast",
             "text": "Hi there!"
         },
@@ -33,7 +33,7 @@
     {
         "description": "Broadcast created event for the message",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "send_broadcast",
             "urns": [
                 "tel:+1234567890"
@@ -85,6 +85,9 @@
                 "translations": {
                     "eng": {
                         "text": "Hi there!"
+                    },
+                    "spa": {
+                        "text": "Hi there!"
                     }
                 },
                 "type": "broadcast_created",
@@ -98,18 +101,95 @@
         ],
         "inspection": {
             "templates": [
-                "Hi there!",
                 "@(\"\")",
                 "@contact.fields.gender",
                 "@(\"0788123123\")",
-                "@contact.urn"
+                "@contact.urn",
+                "Hi there!"
             ],
             "dependencies": [
                 "field[key=gender,name=]",
-                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]"
+                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]",
+                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]"
             ],
             "results": []
+        }
+    },
+    {
+        "description": "Text, attachments and quick replies can be localized",
+        "action": {
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "type": "send_broadcast",
+            "urns": [
+                "tel:+1234567890"
+            ],
+            "text": "Hi there!",
+            "attachments": [
+                "http://example.com/red.jpg"
+            ],
+            "quick_replies": [
+                "Yes",
+                "No"
+            ]
+        },
+        "localization": {
+            "text": [
+                "Hola!"
+            ],
+            "attachments": [
+                "http://example.com/rojo.jpg"
+            ],
+            "quick_replies": [
+                "Si",
+                "No"
+            ]
+        },
+        "events": [
+            {
+                "base_language": "eng",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "translations": {
+                    "eng": {
+                        "attachments": [
+                            "http://example.com/red.jpg"
+                        ],
+                        "quick_replies": [
+                            "Yes",
+                            "No"
+                        ],
+                        "text": "Hi there!"
+                    },
+                    "spa": {
+                        "attachments": [
+                            "http://example.com/rojo.jpg"
+                        ],
+                        "quick_replies": [
+                            "Si",
+                            "No"
+                        ],
+                        "text": "Hola!"
+                    }
+                },
+                "type": "broadcast_created",
+                "urns": [
+                    "tel:+1234567890"
+                ]
+            }
+        ],
+        "inspection": {
+            "dependencies": [],
+            "results": [],
+            "templates": [
+                "Hi there!",
+                "Hola!",
+                "http://example.com/red.jpg",
+                "http://example.com/rojo.jpg",
+                "Yes",
+                "No",
+                "Si",
+                "No"
+            ]
         }
     }
 ]

@@ -61,19 +61,20 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description     string             `json:"description"`
-		NoContact       bool               `json:"no_contact"`
-		NoURNs          bool               `json:"no_urns"`
-		NoInput         bool               `json:"no_input"`
-		RedactURNs      bool               `json:"redact_urns"`
-		Action          json.RawMessage    `json:"action"`
-		InFlowType      flows.FlowType     `json:"in_flow_type"`
-		ReadError       string             `json:"read_error"`
-		ValidationError string             `json:"validation_error"`
-		SkipValidation  bool               `json:"skip_validation"`
-		Events          []json.RawMessage  `json:"events"`
-		ContactAfter    json.RawMessage    `json:"contact_after"`
-		Inspection      *inspectionResults `json:"inspection"`
+		Description     string            `json:"description"`
+		NoContact       bool              `json:"no_contact"`
+		NoURNs          bool              `json:"no_urns"`
+		NoInput         bool              `json:"no_input"`
+		RedactURNs      bool              `json:"redact_urns"`
+		Action          json.RawMessage   `json:"action"`
+		Localization    json.RawMessage   `json:"localization"`
+		InFlowType      flows.FlowType    `json:"in_flow_type"`
+		ReadError       string            `json:"read_error"`
+		ValidationError string            `json:"validation_error"`
+		SkipValidation  bool              `json:"skip_validation"`
+		Events          []json.RawMessage `json:"events"`
+		ContactAfter    json.RawMessage   `json:"contact_after"`
+		Inspection      json.RawMessage   `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -100,6 +101,12 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		actionsPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "nodes", "[0]", "actions"}
 		actionsJson := []byte(fmt.Sprintf("[%s]", string(tc.Action)))
 		assetsJSON = test.JSONReplace(assetsJSON, actionsPath, actionsJson)
+
+		// if we have a localization section, inject that too
+		if tc.Localization != nil {
+			localizationPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "localization", "spa", "ad154980-7bf7-4ab8-8728-545fd6378912"}
+			assetsJSON = test.JSONReplace(assetsJSON, localizationPath, tc.Localization)
+		}
 
 		// create session assets
 		sa, err := test.CreateSessionAssets(assetsJSON, "")
@@ -137,9 +144,18 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 				contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123"), channel))
 				contact.AddURN(flows.NewContactURN(urns.URN("twitterid:54784326227#nyaruka"), nil))
 			}
+
+			// and switch their language
+			if tc.Localization != nil {
+				contact.SetLanguage(utils.Language("spa"))
+			}
 		}
 
-		envBuilder := utils.NewEnvironmentBuilder().WithDefaultCountry("RW")
+		envBuilder := utils.NewEnvironmentBuilder().
+			WithDefaultLanguage("eng").
+			WithAllowedLanguages([]utils.Language{"eng", "spa"}).
+			WithDefaultCountry("RW")
+
 		if tc.RedactURNs {
 			envBuilder.WithRedactionPolicy(utils.RedactionPolicyURNs)
 		}
@@ -197,23 +213,20 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 		// finally try inspecting this action
 		if tc.Inspection != nil {
-			templates := flow.ExtractTemplates()
-			assert.Equal(t, tc.Inspection.Templates, templates, "inspected templates mismatch in %s", testName)
-
 			dependencies := flow.ExtractDependencies()
 			depStrings := make([]string, len(dependencies))
 			for i := range dependencies {
 				depStrings[i] = dependencies[i].String()
 			}
-			assert.Equal(t, tc.Inspection.Dependencies, depStrings, "inspected dependencies mismatch in %s", testName)
 
-			results := flow.ExtractResults()
-			assert.Equal(t, len(tc.Inspection.Results), len(results), "inspected results mismatch in %s", testName)
-			if len(tc.Inspection.Results) == len(results) {
-				for i := range results {
-					assert.Equal(t, tc.Inspection.Results[i], results[i], "inspected result[%d] mismatch in %s", i, testName)
-				}
+			actual := &inspectionResults{
+				Templates:    flow.ExtractTemplates(),
+				Dependencies: depStrings,
+				Results:      flow.ExtractResults(),
 			}
+
+			actualJSON, _ := json.Marshal(actual)
+			test.AssertEqualJSON(t, tc.Inspection, actualJSON, "inspection mismatch in %s", testName)
 		}
 	}
 }

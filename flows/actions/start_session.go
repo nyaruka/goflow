@@ -66,26 +66,8 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	}
 
 	// if we have any recipients, log an event
-	if len(urnList) > 0 || len(contactRefs) > 0 || len(groupRefs) > 0 {
+	if len(urnList) > 0 || len(contactRefs) > 0 || len(groupRefs) > 0 || a.CreateContact {
 		logEvent(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
 	}
 	return nil
-}
-
-// Inspect inspects this object and any children
-func (a *StartSessionAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-	flows.InspectReference(a.Flow, inspect)
-
-	for _, g := range a.Groups {
-		flows.InspectReference(g, inspect)
-	}
-	for _, c := range a.Contacts {
-		flows.InspectReference(c, inspect)
-	}
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *StartSessionAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.Slice(a.LegacyVars)
 }

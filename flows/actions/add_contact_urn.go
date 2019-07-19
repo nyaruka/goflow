@@ -34,7 +34,7 @@ type AddContactURNAction struct {
 	universalAction
 
 	Scheme string `json:"scheme" validate:"urnscheme"`
-	Path   string `json:"path" validate:"required"`
+	Path   string `json:"path" validate:"required" engine:"evaluated"`
 }
 
 // NewAddContactURNAction creates a new add URN action
@@ -77,14 +77,4 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logMod
 
 	a.applyModifier(run, modifiers.NewURNModifier(urn, modifiers.URNAppend), logModifier, logEvent)
 	return nil
-}
-
-// Inspect inspects this object and any children
-func (a *AddContactURNAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *AddContactURNAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Path)
 }

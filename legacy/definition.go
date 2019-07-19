@@ -600,7 +600,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, validDests map[flows.NodeUUI
 		}
 
 		// subflow rulesets operate on the child flow status
-		router = routers.NewSwitchRouter(nil, resultName, categories, "@child.run.status", cases, defaultCategory)
+		router = routers.NewSwitchRouter(nil, resultName, categories, "@child.status", cases, defaultCategory)
 		uiType = UINodeTypeSplitBySubflow
 
 	case "webhook":

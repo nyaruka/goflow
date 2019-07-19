@@ -33,7 +33,7 @@ type SetContactFieldAction struct {
 	universalAction
 
 	Field *assets.FieldReference `json:"field" validate:"required"`
-	Value string                 `json:"value"`
+	Value string                 `json:"value" engine:"evaluated"`
 }
 
 // NewSetContactFieldAction creates a new set channel action
@@ -70,15 +70,4 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 		a.applyModifier(run, modifiers.NewFieldModifier(field, newValue), logModifier, logEvent)
 	}
 	return nil
-}
-
-// Inspect inspects this object and any children
-func (a *SetContactFieldAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-	flows.InspectReference(a.Field, inspect)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactFieldAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Value)
 }

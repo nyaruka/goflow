@@ -59,16 +59,6 @@ func (a *BaseAction) Validate() error { return nil }
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) }
 
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *BaseAction) EnumerateTemplates(include flows.TemplateIncluder) {}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (a *BaseAction) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-}
-
-// EnumerateResults enumerates all potential results on this object
-func (a *BaseAction) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {}
-
 // helper function for actions that have a set of group references that must be resolved to actual groups
 func (a *BaseAction) resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {
 	groupSet := run.Session().Assets().Groups()
@@ -294,14 +284,14 @@ type otherContactsAction struct {
 	URNs       []urns.URN                `json:"urns,omitempty"`
 	Contacts   []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups     []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	LegacyVars []string                  `json:"legacy_vars,omitempty"`
+	LegacyVars []string                  `json:"legacy_vars,omitempty" engine:"evaluated"`
 }
 
 // utility struct for actions which create a message
 type createMsgAction struct {
-	Text         string   `json:"text" validate:"required"`
-	Attachments  []string `json:"attachments,omitempty"`
-	QuickReplies []string `json:"quick_replies,omitempty"`
+	Text         string   `json:"text" validate:"required" engine:"localized,evaluated"`
+	Attachments  []string `json:"attachments,omitempty" engine:"localized,evaluated"`
+	QuickReplies []string `json:"quick_replies,omitempty" engine:"localized,evaluated"`
 }
 
 //------------------------------------------------------------------------------------------

@@ -184,7 +184,20 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 
 func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
-// Context returns the overall context for expression evaluation
+// RootContext returns the root context for expression evaluation
+//
+//   contact:contact -> the contact
+//   fields:fields -> the custom field values of the contact
+//   urns:urns -> the URN values of the contact
+//   results:results -> the current run results
+//   input:input -> the current input from the contact
+//   run:run -> the current run
+//   child:related_run -> the last child run
+//   parent:related_run -> the parent of the run
+//   webhook:any -> the parsed JSON response of the last webhook call
+//   trigger:trigger -> the trigger that started this session
+//
+// @context root
 func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if r.Contact() != nil {
@@ -228,6 +241,17 @@ func (r *flowRun) lastWebhookResponse() types.XValue {
 }
 
 // Context returns the properties available in expressions
+//
+//   __default__:text -> the contact name and flow UUID
+//   uuid:text -> the UUID of the run
+//   contact:contact -> the contact of the run
+//   flow:flow -> the flow of the run
+//   status:text -> the current status of the run
+//   results:results -> the results saved by the run
+//   created_on:datetime -> the creation date of the run
+//   exited_on:datetime -> the exit date of the run
+//
+// @context run
 func (r *flowRun) Context(env utils.Environment) map[string]types.XValue {
 	var exitedOn types.XValue
 	if r.exitedOn != nil {
@@ -317,7 +341,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 
 			merged := make([]string, len(native))
 			for i := range native {
-				if textArray[i] != "" {
+				if i < len(textArray) && textArray[i] != "" {
 					merged[i] = textArray[i]
 				} else {
 					merged[i] = native[i]

@@ -3,7 +3,7 @@
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
             "timezone": "Africa/Kigali"
         },
@@ -20,7 +20,7 @@
     {
         "description": "Error event and action skipped if timezone contains expression error",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
             "timezone": "@(1 / 0)"
         },
@@ -44,7 +44,7 @@
     {
         "description": "Error event and action skipped if timezone isn't valid",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
             "timezone": "xxxxxxxxxx"
         },
@@ -68,7 +68,7 @@
     {
         "description": "NOOP if timezone doesn't change",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
             "timezone": "America/Guayaquil"
         },
@@ -77,7 +77,7 @@
     {
         "description": "Timezone changed event if timezone cleared",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
             "timezone": ""
         },
@@ -118,7 +118,7 @@
     {
         "description": "Timezone changed event if timezone changes",
         "action": {
-            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
             "timezone": "Africa/Kigali"
         },

@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/Masterminds/semver"
@@ -175,6 +176,13 @@ func (f *flow) validateAssets(sa flows.SessionAssets, recursive bool, seen map[a
 }
 
 // Context returns the properties available in expressions
+//
+//   __default__:text -> the name
+//   uuid:text -> the UUID of the flow
+//   name:text -> the name of the flow
+//   revision:text -> the revision number of the flow
+//
+// @context flow
 func (f *flow) Context(env utils.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"__default__": types.NewXText(f.name),
@@ -192,35 +200,20 @@ func (f *flow) Reference() *assets.FlowReference {
 	return assets.NewFlowReference(f.uuid, f.name)
 }
 
-func (f *flow) inspect(inspect func(flows.Node, flows.Inspectable)) {
-	// inspect each node
-	for _, n := range f.Nodes() {
-		n.Inspect(func(i flows.Inspectable) {
-			inspect(n, i)
-		})
-	}
-}
-
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
 	templates := make([]string, 0)
-	include := flows.NewTemplateEnumerator(f.Localization(), func(template string) {
+	include := func(template string) {
 		if template != "" {
 			templates = append(templates, template)
 		}
-	})
+	}
 
-	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateTemplates(include)
-	})
+	for _, n := range f.nodes {
+		n.EnumerateTemplates(f.Localization(), include)
+	}
+
 	return templates
-}
-
-// RewriteTemplates rewrites all templates
-func (f *flow) RewriteTemplates(rewrite func(string) string) {
-	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateTemplates(flows.NewTemplateRewriter(f.Localization(), rewrite))
-	})
 }
 
 // ExtractDependencies extracts all asset dependencies
@@ -234,22 +227,24 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 				dependencies = append(dependencies, r)
 				dependenciesSeen[key] = true
 			}
+
+			// TODO replace if we saw a field ref without a name but now have same field with a name
 		}
 	}
 
-	include := flows.NewTemplateEnumerator(f.Localization(), func(template string) {
-		fieldRefs := flows.ExtractFieldReferences(template)
+	include := func(template string) {
+		fieldRefs := inspect.ExtractFieldReferences(template)
 		for _, f := range fieldRefs {
 			addDependency(f)
 		}
-	})
+	}
 
-	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateTemplates(include)
-		item.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
+	for _, n := range f.nodes {
+		n.EnumerateTemplates(f.Localization(), include)
+		n.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
 			addDependency(r)
 		})
-	})
+	}
 
 	return dependencies
 }
@@ -257,11 +252,13 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 // ExtractResults extracts all result specs
 func (f *flow) ExtractResults() []*flows.ResultInfo {
 	specs := make([]*flows.ResultInfo, 0)
-	f.inspect(func(node flows.Node, item flows.Inspectable) {
-		item.EnumerateResults(node, func(spec *flows.ResultInfo) {
+
+	for _, n := range f.nodes {
+		n.EnumerateResults(n, func(spec *flows.ResultInfo) {
 			specs = append(specs, spec)
 		})
-	})
+	}
+
 	return flows.MergeResultInfos(specs)
 }
 

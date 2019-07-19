@@ -71,6 +71,9 @@ func (m *BaseMsg) SetID(id MsgID) { m.ID_ = id }
 // URN returns the URN of this message
 func (m *BaseMsg) URN() urns.URN { return m.URN_ }
 
+// SetURN returns the URN of this message
+func (m *BaseMsg) SetURN(urn urns.URN) { m.URN_ = urn }
+
 // Channel returns the channel of this message
 func (m *BaseMsg) Channel() *assets.ChannelReference { return m.Channel_ }
 

@@ -83,26 +83,3 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 
 	return nil
 }
-
-// Inspect inspects this object and any children
-func (a *SendBroadcastAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-
-	for _, g := range a.Groups {
-		flows.InspectReference(g, inspect)
-	}
-	for _, c := range a.Contacts {
-		flows.InspectReference(c, inspect)
-	}
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SendBroadcastAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Text)
-	include.Slice(a.Attachments)
-	include.Slice(a.QuickReplies)
-	include.Translations(a, "text")
-	include.Translations(a, "attachments")
-	include.Translations(a, "quick_replies")
-	include.Slice(a.LegacyVars)
-}

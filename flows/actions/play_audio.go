@@ -31,7 +31,7 @@ type PlayAudioAction struct {
 	BaseAction
 	voiceAction
 
-	AudioURL string `json:"audio_url" validate:"required"`
+	AudioURL string `json:"audio_url" validate:"required" engine:"localized,evaluated"`
 }
 
 // NewPlayAudioAction creates a new play message action
@@ -67,15 +67,4 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	logEvent(events.NewIVRCreatedEvent(msg))
 
 	return nil
-}
-
-// Inspect inspects this object and any children
-func (a *PlayAudioAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *PlayAudioAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.AudioURL)
-	include.Translations(a, "audio_url")
 }

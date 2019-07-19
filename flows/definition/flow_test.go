@@ -3,7 +3,6 @@ package definition_test
 import (
 	"encoding/json"
 	"io/ioutil"
-	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
@@ -478,7 +477,7 @@ func TestReadFlow(t *testing.T) {
 	}`), flow.UI(), "ui mismatch for read flow")
 }
 
-func TestExtractAndRewriteTemplates(t *testing.T) {
+func TestExtractTemplates(t *testing.T) {
 	testCases := []struct {
 		path      string
 		uuid      string
@@ -489,9 +488,9 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			[]string{
 				`Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))`,
+				`Quelle est votres couleur preferee? (rouge/blue)`,
 				`Red`,
 				`Blue`,
-				`Quelle est votres couleur preferee? (rouge/blue)`,
 				`@input.text`,
 				`red`,
 				`rouge`,
@@ -517,10 +516,10 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 				`@(format_location(contact.fields.state)) Members`,
 				`@(replace(lower(contact.name), " ", "_"))`,
 				`XXX-YYY-ZZZ`,
-				"Here is your activation token",
-				"Hi @fields.first_name, Your activation token is @fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
 				"@urns.mailto",
 				"test@@example.com",
+				"Here is your activation token",
+				"Hi @fields.first_name, Your activation token is @fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
 				`Hi @contact.name, are you ready?`,
 				`Hola @contact.name, ¿estás listo?`,
 				`Hi @contact.name, are you ready for these attachments?`,
@@ -547,18 +546,6 @@ func TestExtractAndRewriteTemplates(t *testing.T) {
 		// try extracting all templates
 		templates := flow.ExtractTemplates()
 		assert.Equal(t, tc.templates, templates, "extracted templates mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
-
-		// try rewriting all templates in uppercase
-		flow.RewriteTemplates(func(t string) string { return strings.ToUpper(t) })
-
-		// re-extract all templates
-		rewritten := flow.ExtractTemplates()
-
-		for i := range templates {
-			templates[i] = strings.ToUpper(templates[i])
-		}
-
-		assert.Equal(t, templates, rewritten)
 	}
 }
 
@@ -572,15 +559,15 @@ func TestExtractDependencies(t *testing.T) {
 			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
 			[]assets.Reference{
-				assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
 				assets.NewFieldReference("state", ""),
-				assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", "Survey Audience"),
-				assets.NewFieldReference("activation_token", "Activation Token"),
 				assets.NewFieldReference("first_name", ""),
+				assets.NewFieldReference("activation_token", ""),
+				assets.NewFieldReference("raw_district", ""),
+				assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
+				assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", "Survey Audience"),
 				assets.NewFlowReference("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "Collect Language"),
 				flows.NewContactReference("820f5923-3369-41c6-b3cd-af577c0bd4b8", "Bob"),
 				assets.NewFieldReference("gender", "Gender"),
-				assets.NewFieldReference("raw_district", ""),
 				assets.NewFieldReference("district", "District"),
 				assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Android Channel"),
 			},

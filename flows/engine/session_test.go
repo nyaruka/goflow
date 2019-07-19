@@ -204,6 +204,7 @@ func TestContextToJSON(t *testing.T) {
 				"attachments":["image/jpeg:http://s3.amazon.com/bucket/test.jpg","audio/mp3:http://s3.amazon.com/bucket/test.mp3"],
 				"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
 				"created_on":"2017-12-31T11:35:10.035757-02:00",
+				"external_id":"",
 				"text":"Hi there",
 				"type":"msg",
 				"urn":"tel:+12065551212",
@@ -341,6 +342,11 @@ func TestContextToJSON(t *testing.T) {
 					"join_date": "2017-12-02T00:00:00.000000-02:00",
 					"not_set": null
 				},
+				"flow": {
+					"name": "Collect Age",
+					"revision": 0,
+					"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+				},
 				"results": {
 					"age": {
 						"category": "Youth",
@@ -417,6 +423,7 @@ func TestContextToJSON(t *testing.T) {
 					"status": "completed",
 					"uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
 				},
+				"status": "completed",
 				"urns": {
 					"ext": null,
 					"facebook": null,
@@ -431,7 +438,8 @@ func TestContextToJSON(t *testing.T) {
 					"viber": null,
 					"wechat": null,
 					"whatsapp": null
-				}
+				},
+				"uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
 			}`,
 		},
 		{
@@ -469,6 +477,11 @@ func TestContextToJSON(t *testing.T) {
 					"gender": "Female",
 					"join_date": null,
 					"not_set": null
+				},
+				"flow": {
+					"name": "Parent",
+					"revision": 0,
+					"uuid": "fece6eac-9127-4343-9269-56e88f391562"
 				},
 				"results": {
 					"role": {
@@ -535,6 +548,7 @@ func TestContextToJSON(t *testing.T) {
 					"status": "active",
 					"uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
 				},
+				"status": "active",
 				"urns": {
 					"ext": null,
 					"facebook": null,
@@ -549,7 +563,8 @@ func TestContextToJSON(t *testing.T) {
 					"viber": null,
 					"wechat": null,
 					"whatsapp": null
-				}
+				},
+				"uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
 			}`,
 		},
 		{"trigger", `{"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}`},

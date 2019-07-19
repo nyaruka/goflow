@@ -42,11 +42,6 @@ func (r *RandomRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.
 	return r.routeToCategory(run, step, categoryUUID, rand.String(), "", nil, logEvent)
 }
 
-// Inspect inspects this object and any children
-func (r *RandomRouter) Inspect(inspect func(flows.Inspectable)) {
-	inspect(r)
-}
-
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

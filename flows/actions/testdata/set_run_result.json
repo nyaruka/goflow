@@ -146,5 +146,49 @@
                 }
             ]
         }
+    },
+    {
+        "description": "Category can be localized",
+        "action": {
+            "type": "set_run_result",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "name": "Preference",
+            "value": "yeah",
+            "category": "Yes"
+        },
+        "localization": {
+            "category": [
+                "Si"
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Preference",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "run_result_changed",
+                "value": "yeah",
+                "category": "Yes",
+                "category_localized": "Si"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "yeah"
+            ],
+            "dependencies": [],
+            "results": [
+                {
+                    "key": "preference",
+                    "name": "Preference",
+                    "categories": [
+                        "Yes"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
     }
 ]

@@ -31,7 +31,7 @@ type SetContactLanguageAction struct {
 	BaseAction
 	universalAction
 
-	Language string `json:"language"`
+	Language string `json:"language" engine:"evaluated"`
 }
 
 // NewSetContactLanguageAction creates a new set language action
@@ -70,14 +70,4 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	a.applyModifier(run, modifiers.NewLanguageModifier(lang), logModifier, logEvent)
 	return nil
-}
-
-// Inspect inspects this object and any children
-func (a *SetContactLanguageAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactLanguageAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Language)
 }

@@ -10,181 +10,120 @@
         </center>
 
  <ul>
- <li><a href="#context">Context</a></li>
+ <li><a href="#root">Root</a></li>
+ <li><a href="#types">Types</a></li>
  </ul>  
 
-<h1 id="context">Context</h1>
-<p>The context is all the variables which are accessible in expressions and contains the following top-level variables:</p>
+<h1 id="root">Root</h1>
+<p>These are the top-level variables that can be accessed in the context:</p>
 <ul>
-<li><code>run</code> the current <a href="#context:run">run</a></li>
-<li><code>parent</code> the parent of the current <a href="#context:run">run</a>, i.e. the run that started the current run</li>
-<li><code>child</code> the child of the current <a href="#context:run">run</a>, i.e. the last subflow</li>
-<li><code>contact</code> the current <a href="#context:contact">contact</a>, shortcut for <code>@run.contact</code></li>
-<li><code>results</code> the current <a href="#context:result">results</a>, shortcut for <code>@run.results</code></li>
-<li><code>trigger</code> the <a href="#context:trigger">trigger</a> that initiated this session</li>
-<li><code>input</code> the last <a href="#context:input">input</a> from the contact</li>
+<li><code>contact</code> the contact (<a href="context.html#context:contact">contact</a>)</li>
+<li><code>fields</code> the custom field values of the contact (fields)</li>
+<li><code>urns</code> the URN values of the contact (urns)</li>
+<li><code>results</code> the current run results (results)</li>
+<li><code>input</code> the current input from the contact (<a href="context.html#context:input">input</a>)</li>
+<li><code>run</code> the current run (<a href="context.html#context:run">run</a>)</li>
+<li><code>child</code> the last child run (<a href="context.html#context:related_run">related_run</a>)</li>
+<li><code>parent</code> the parent of the run (<a href="context.html#context:related_run">related_run</a>)</li>
+<li><code>webhook</code> the parsed JSON response of the last webhook call (any)</li>
+<li><code>trigger</code> the trigger that started this session (<a href="context.html#context:trigger">trigger</a>)</li>
 </ul>
-<p>The following types appear in the context:</p>
-<ul>
-<li><a href="#context:channel">Channel</a></li>
-<li><a href="#context:contact">Contact</a></li>
-<li><a href="#context:flow">Flow</a></li>
-<li><a href="#context:group">Group</a></li>
-<li><a href="#context:input">Input</a></li>
-<li><a href="#context:result">Result</a></li>
-<li><a href="#context:run">Run</a></li>
-<li><a href="#context:trigger">Trigger</a></li>
-<li><a href="#context:urn">URN</a></li>
-</ul>
+<h1 id="types">Types</h1>
+<p>The following types are found in the context:</p>
 <div class="context">
 <p><a name="context:channel"></a></p>
 <h2 id="channel">Channel</h2>
-<p>Represents a means for sending and receiving input during a flow run. It renders as its name in a template, and has the following properties which can be accessed:</p>
+<p>Defaults to the name (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
-<li><code>uuid</code> the UUID of the channel</li>
-<li><code>name</code> the name of the channel</li>
-<li><code>address</code> the address of the channel</li>
+<li><code>uuid</code> the UUID of the channel (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>name</code> the name of the channel (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>address</code> the address of the channel (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p>Examples:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" title="1">@contact.channel → My Android Phone</a>
-<a class="sourceLine" id="cb1-2" title="2">@contact.channel.name → My Android Phone</a>
-<a class="sourceLine" id="cb1-3" title="3">@contact.channel.address → +<span class="dv">12345671111</span></a>
-<a class="sourceLine" id="cb1-4" title="4">@input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d</a>
-<a class="sourceLine" id="cb1-5" title="5">@(json(contact.channel)) → {<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>}</a></code></pre></div>
 <p><a name="context:contact"></a></p>
 <h2 id="contact">Contact</h2>
-<p>Represents a person who is interacting with the flow. It renders as the person’s name (or perferred URN if name isn’t set) in a template, and has the following properties which can be accessed:</p>
+<p>Defaults to the name or URN (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
-<li><code>uuid</code> the UUID of the contact</li>
-<li><code>name</code> the full name of the contact</li>
-<li><code>first_name</code> the first name of the contact</li>
-<li><code>language</code> the <a href="http://www-01.sil.org/iso639-3/">ISO-639-3</a> language code of the contact</li>
-<li><code>timezone</code> the timezone name of the contact</li>
-<li><code>created_on</code> the datetime when the contact was created</li>
-<li><code>urns</code> all <a href="#context:urn">URNs</a> the contact has set</li>
-<li><code>urns.[scheme]</code> all the <a href="#context:urn">URNs</a> the contact has set for the particular URN scheme</li>
-<li><code>urn</code> shorthand for <code>@(format_urn(c.urns.0))</code>, i.e. the contact’s preferred <a href="#context:urn">URN</a> in friendly formatting</li>
-<li><code>groups</code> all the <a href="#context:group">groups</a> that the contact belongs to</li>
-<li><code>fields</code> all the custom contact fields the contact has set</li>
-<li><code>fields.[snaked_field_name]</code> the value of the specific field</li>
-<li><code>channel</code> shorthand for <code>contact.urns[0].channel</code>, i.e. the <a href="#context:channel">channel</a> of the contact’s preferred URN</li>
+<li><code>uuid</code> the UUID of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>id</code> the numeric ID of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>first_name</code> the first name of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>name</code> the name of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>language</code> the language of the contact as 3-letter ISO code (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>created_on</code> the creation date of the contact (<a href="expressions.html#type:datetime">datetime</a>)</li>
+<li><code>urns</code> the URNs belonging to the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>urn</code> the preferred URN of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>groups</code> the groups the contact belongs to (<a href="context.html#context:group">group</a>)</li>
+<li><code>fields</code> the custom field values of the contact (fields)</li>
+<li><code>channel</code> the preferred channel of the contact (<a href="context.html#context:channel">channel</a>)</li>
 </ul>
-<p>Examples:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb2-1" title="1">@contact.name → Ryan Lewis</a>
-<a class="sourceLine" id="cb2-2" title="2">@contact.first_name → Ryan</a>
-<a class="sourceLine" id="cb2-3" title="3">@contact.language → eng</a>
-<a class="sourceLine" id="cb2-4" title="4">@contact.timezone → America/Guayaquil</a>
-<a class="sourceLine" id="cb2-5" title="5">@contact.created_on → <span class="dv">2018-06</span>-20T11:<span class="dv">40</span>:<span class="fl">30.123456</span>Z</a>
-<a class="sourceLine" id="cb2-6" title="6">@contact.urns → [tel:+<span class="dv">12065551212</span>, twitterid:<span class="dv">54784326227</span>#nyaruka, mailto:foo@bar.com]</a>
-<a class="sourceLine" id="cb2-7" title="7">@(contact.urns[<span class="dv">0</span>]) → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb2-8" title="8">@contact.urn → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb2-9" title="9">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
-<a class="sourceLine" id="cb2-10" title="10">@contact.fields → Activation Token: AACC55\nAge: <span class="dv">23</span>\nGender: Male\nJoin Date: <span class="dv">2017-12</span>-02T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-02</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb2-11" title="11">@contact.fields.activation_token → AACC55</a>
-<a class="sourceLine" id="cb2-12" title="12">@contact.fields.gender → Male</a></code></pre></div>
 <p><a name="context:flow"></a></p>
 <h2 id="flow">Flow</h2>
-<p>Describes the ordered logic of actions and routers. It renders as its name in a template, and has the following properties which can be accessed:</p>
+<p>Defaults to the name (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
-<li><code>uuid</code> the UUID of the flow</li>
-<li><code>name</code> the name of the flow</li>
-<li><code>revision</code> the revision number of the flow</li>
+<li><code>uuid</code> the UUID of the flow (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>name</code> the name of the flow (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>revision</code> the revision number of the flow (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p>Examples:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb3-1" title="1">@run.flow → Registration</a>
-<a class="sourceLine" id="cb3-2" title="2">@child.run.flow.name → Collect Age</a>
-<a class="sourceLine" id="cb3-3" title="3">@run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7</a>
-<a class="sourceLine" id="cb3-4" title="4">@(json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;revision&quot;</span>:<span class="dv">123</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre></div>
 <p><a name="context:group"></a></p>
 <h2 id="group">Group</h2>
-<p>Represents a grouping of contacts. It can be static (contacts are added and removed manually through <a href="#action:add_contact_groups">actions</a>) or dynamic (contacts are added automatically by a query). It renders as its name in a template, and has the following properties which can be accessed:</p>
 <ul>
-<li><code>uuid</code> the UUID of the group</li>
-<li><code>name</code> the name of the group</li>
+<li><code>uuid</code> the UUID of the group (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>name</code> the name of the group (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p>Examples:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb4-1" title="1">@(foreach(contact.groups, extract, <span class="st">&quot;name&quot;</span>)) → [Testers, Males]</a>
-<a class="sourceLine" id="cb4-2" title="2">@(contact.groups[<span class="dv">0</span>].uuid) → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
-<a class="sourceLine" id="cb4-3" title="3">@(contact.groups[<span class="dv">1</span>].name) → Males</a>
-<a class="sourceLine" id="cb4-4" title="4">@(json(contact.groups[<span class="dv">1</span>])) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
 <p><a name="context:input"></a></p>
 <h2 id="input">Input</h2>
-<p>Describes input from the contact and currently we only support one type of input: <code>msg</code>. Any input has the following properties which can be accessed:</p>
+<p>Defaults to the text and attachments (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
-<li><code>uuid</code> the UUID of the input</li>
-<li><code>type</code> the type of the input, e.g. <code>msg</code></li>
-<li><code>channel</code> the <a href="#context:channel">channel</a> that the input was received on</li>
-<li><code>created_on</code> the time when the input was created</li>
+<li><code>uuid</code> the UUID of the input (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>created_on</code> the creation date of the input (<a href="expressions.html#type:datetime">datetime</a>)</li>
+<li><code>channel</code> the channel that the input was received on (<a href="context.html#context:channel">channel</a>)</li>
+<li><code>urn</code> the contact URN that the input was received on (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>text</code> the text part of the input (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>attachments</code> any attachments on the input (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>external_id</code> the external ID of the input (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p>An input of type <code>msg</code> renders as its text and attachments in a template, and has the following additional properties:</p>
+<p><a name="context:related_run"></a></p>
+<h2 id="related_run">Related_run</h2>
+<p>Defaults to the contact name and flow UUID (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
-<li><code>text</code> the text of the message</li>
-<li><code>attachments</code> any <a href="#context:attachment">attachments</a> on the message</li>
-<li><code>urn</code> the <a href="#context:urn">URN</a> that the input was received on</li>
+<li><code>uuid</code> the UUID of the run (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>contact</code> the contact of the run (<a href="context.html#context:contact">contact</a>)</li>
+<li><code>flow</code> the flow of the run (<a href="context.html#context:flow">flow</a>)</li>
+<li><code>fields</code> the custom field values of the run (fields)</li>
+<li><code>urns</code> the URN values of the run (urns)</li>
+<li><code>results</code> the results saved by the run (results)</li>
+<li><code>status</code> the current status of the run (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p>Examples:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1">@input → Hi there\nhttp:<span class="co">//s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3</span></a>
-<a class="sourceLine" id="cb5-2" title="2">@input.type → msg</a>
-<a class="sourceLine" id="cb5-3" title="3">@input.text → Hi there</a>
-<a class="sourceLine" id="cb5-4" title="4">@input.attachments → [image/jpeg:http:<span class="co">//s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]</span></a>
-<a class="sourceLine" id="cb5-5" title="5">@(json(input)) → {<span class="st">&quot;attachments&quot;</span>:[<span class="st">&quot;image/jpeg:http://s3.amazon.com/bucket/test.jpg&quot;</span>,<span class="st">&quot;audio/mp3:http://s3.amazon.com/bucket/test.mp3&quot;</span>],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2017-12-31T11:35:10.035757-02:00&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:<span class="st">&quot;tel:+12065551212&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
 <p><a name="context:result"></a></p>
 <h2 id="result">Result</h2>
-<p>Describes a value captured during a run’s execution. It might have been implicitly created by a router, or explicitly created by a <a href="#action:set_run_result">set_run_result</a> action. It renders as its value in a template, and has the following properties which can be accessed:</p>
+<p>Defaults to the value (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
-<li><code>value</code> the value of the result</li>
-<li><code>category</code> the category of the result</li>
-<li><code>category_localized</code> the localized category of the result</li>
-<li><code>input</code> the input associated with the result</li>
-<li><code>node_uuid</code> the UUID of the node where the result was created</li>
-<li><code>extra</code> any additional data associated with this result</li>
-<li><code>created_on</code> the time when the result was created</li>
+<li><code>name</code> the name of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>value</code> the value of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>category</code> the category of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>category_localized</code> the localized category of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>input</code> the input of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>extra</code> the extra data of the result such as a webhook response (any)</li>
+<li><code>node_uuid</code> the UUID of the node in the flow that generated the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>created_on</code> the creation date of the result (<a href="expressions.html#type:datetime">datetime</a>)</li>
 </ul>
-<p>Examples:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" title="1">@results → 2Factor: <span class="dv">34634624463525</span>\nFavorite Color: red\nPhone Number: +<span class="dv">12344563452</span>\nwebhook: <span class="dv">200</span></a>
-<a class="sourceLine" id="cb6-2" title="2">@results.favorite_color → red</a>
-<a class="sourceLine" id="cb6-3" title="3">@results.favorite_color.value → red</a>
-<a class="sourceLine" id="cb6-4" title="4">@results.favorite_color.category → Red</a></code></pre></div>
 <p><a name="context:run"></a></p>
 <h2 id="run">Run</h2>
-<p>Is a single contact’s journey through a flow. It records the path they have taken, and the results that have been collected. It has several properties which can be accessed in expressions:</p>
+<p>Defaults to the contact name and flow UUID (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
-<li><code>uuid</code> the UUID of the run</li>
-<li><code>flow</code> the <a href="#context:flow">flow</a> of the run</li>
-<li><code>contact</code> the <a href="#context:contact">contact</a> of the flow run</li>
-<li><code>input</code> the <a href="#context:input">input</a> of the current run</li>
-<li><code>results</code> the results that have been saved for this run</li>
-<li><code>results.[snaked_result_name]</code> the value of the specific result, e.g. <code>results.age</code></li>
+<li><code>uuid</code> the UUID of the run (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>contact</code> the contact of the run (<a href="context.html#context:contact">contact</a>)</li>
+<li><code>flow</code> the flow of the run (<a href="context.html#context:flow">flow</a>)</li>
+<li><code>status</code> the current status of the run (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>results</code> the results saved by the run (results)</li>
+<li><code>created_on</code> the creation date of the run (<a href="expressions.html#type:datetime">datetime</a>)</li>
+<li><code>exited_on</code> the exit date of the run (<a href="expressions.html#type:datetime">datetime</a>)</li>
 </ul>
-<p>Examples:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" title="1">@run → Ryan Lewis@Registration</a>
-<a class="sourceLine" id="cb7-2" title="2">@run.contact.name → Ryan Lewis</a>
-<a class="sourceLine" id="cb7-3" title="3">@run.flow.name → Registration</a></code></pre></div>
 <p><a name="context:trigger"></a></p>
 <h2 id="trigger">Trigger</h2>
-<p>Represents something which can initiate a session with the flow engine. It has several properties which can be accessed in expressions:</p>
 <ul>
-<li><code>type</code> the type of the trigger, one of “manual” or “flow”</li>
-<li><code>params</code> the parameters passed to the trigger</li>
+<li><code>type</code> the type of trigger that started this session (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>params</code> the parameters passed to the trigger (any)</li>
 </ul>
-<p>Examples:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb8-1" title="1">@trigger.type → flow_action</a>
-<a class="sourceLine" id="cb8-2" title="2">@trigger.params → {address: {state: WA}, source: website}</a>
-<a class="sourceLine" id="cb8-3" title="3">@(json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>},<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre></div>
-<p><a name="context:urn"></a></p>
-<h2 id="urn">Urn</h2>
-<p>Represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3 components: scheme, path, and display (optional). For example:</p>
-<ul>
-<li><em>tel:+16303524567</em></li>
-<li><em>twitterid:54784326227#nyaruka</em></li>
-<li><em>telegram:34642632786#bobby</em></li>
-</ul>
-<p>To render a URN in a human friendly format, use the <a href="expressions.html#function:format_urn">format_urn</a> function.</p>
-<p>Examples:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb9-1" title="1">@(urns.tel) → tel:+<span class="dv">12065551212</span></a>
-<a class="sourceLine" id="cb9-2" title="2">@(urn_parts(urns.tel).scheme) → tel</a>
-<a class="sourceLine" id="cb9-3" title="3">@(format_urn(urns.tel)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
-<a class="sourceLine" id="cb9-4" title="4">@(json(contact.urns[<span class="dv">0</span>])) → <span class="st">&quot;tel:+12065551212&quot;</span></a></code></pre></div>
 </div>
 
     </body>

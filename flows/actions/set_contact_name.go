@@ -30,7 +30,7 @@ type SetContactNameAction struct {
 	BaseAction
 	universalAction
 
-	Name string `json:"name"`
+	Name string `json:"name" engine:"evaluated"`
 }
 
 // NewSetContactNameAction creates a new set name action
@@ -59,14 +59,4 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, logMo
 
 	a.applyModifier(run, modifiers.NewNameModifier(name), logModifier, logEvent)
 	return nil
-}
-
-// Inspect inspects this object and any children
-func (a *SetContactNameAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}
-
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (a *SetContactNameAction) EnumerateTemplates(include flows.TemplateIncluder) {
-	include.String(&a.Name)
 }

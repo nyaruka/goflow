@@ -58,12 +58,3 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsAdd), logModifier, logEvent)
 	return nil
 }
-
-// Inspect inspects this object and any children
-func (a *AddContactGroupsAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-
-	for _, g := range a.Groups {
-		flows.InspectReference(g, inspect)
-	}
-}

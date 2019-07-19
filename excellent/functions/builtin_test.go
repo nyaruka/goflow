@@ -154,6 +154,12 @@ func TestFunctions(t *testing.T) {
 		{"datetime_add", dmy, []types.XValue{xs("03-12-2017"), xs("2"), ERROR}, ERROR},
 		{"datetime_add", dmy, []types.XValue{xs("22-12-2017")}, ERROR},
 
+		// check across DST boundaries
+		{"datetime_add", mdy, []types.XValue{xs("03-10-2019 1:00am"), xn("3"), xs("h")}, xdt(time.Date(2019, 3, 10, 5, 0, 0, 0, la))},
+		{"datetime_add", mdy, []types.XValue{xs("03-10-2019 1:00am"), xn("24"), xs("h")}, xdt(time.Date(2019, 3, 11, 2, 0, 0, 0, la))},
+		{"datetime_add", mdy, []types.XValue{xs("03-10-2019 1:00am"), xn("1"), xs("D")}, xdt(time.Date(2019, 3, 11, 1, 0, 0, 0, la))},
+		{"datetime_add", mdy, []types.XValue{xs("11-03-2019 1:00am"), xn("1"), xs("D")}, xdt(time.Date(2019, 11, 4, 1, 0, 0, 0, la))},
+
 		{"datetime_diff", dmy, []types.XValue{xs("03-12-2017"), xs("01-12-2017"), xs("D")}, xi(-2)},
 		{"datetime_diff", mdy, []types.XValue{xs("12-03-2017"), xs("12-01-2017"), xs("D")}, xi(-2)},
 		{"datetime_diff", dmy, []types.XValue{xs("03-12-2017 10:15"), xs("03-12-2017 18:15"), xs("D")}, xi(0)},
@@ -176,6 +182,11 @@ func TestFunctions(t *testing.T) {
 		{"datetime_diff", dmy, []types.XValue{xs("01-12-2017"), xs("01-12-2017"), xs("xxx")}, ERROR},
 		{"datetime_diff", dmy, []types.XValue{xs("01-12-2017"), xs("01-12-2017"), ERROR}, ERROR},
 		{"datetime_diff", dmy, []types.XValue{}, ERROR},
+
+		// check across DST boundaries
+		{"datetime_diff", mdy, []types.XValue{xs("03-10-2019 1:00am"), xs("03-10-2019 5:00am"), xs("h")}, xi(3)},
+		{"datetime_diff", mdy, []types.XValue{xs("03-10-2019 1:00am"), xs("03-11-2019 1:00am"), xs("h")}, xi(23)},
+		{"datetime_diff", mdy, []types.XValue{xs("03-10-2019 1:00am"), xs("03-11-2019 1:00am"), xs("D")}, xi(1)},
 
 		{"default", dmy, []types.XValue{xs("10"), xs("20")}, xs("10")},
 		{"default", dmy, []types.XValue{nil, xs("20")}, xs("20")},
@@ -352,6 +363,10 @@ func TestFunctions(t *testing.T) {
 		{"legacy_add", dmy, []types.XValue{xs("xxx"), xs("10")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{xs("10"), xs("xxx")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{}, ERROR},
+
+		// check day addition across DST boundaries
+		{"legacy_add", mdy, []types.XValue{xs("03-10-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 3, 11, 1, 0, 0, 0, la))},
+		{"legacy_add", mdy, []types.XValue{xs("11-03-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 11, 4, 1, 0, 0, 0, la))},
 
 		{"lower", dmy, []types.XValue{xs("HEllo")}, xs("hello")},
 		{"lower", dmy, []types.XValue{xs("  HELLO  WORLD")}, xs("  hello  world")},

@@ -102,11 +102,6 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 	return nil
 }
 
-// Inspect inspects this object and any children
-func (a *TransferAirtimeAction) Inspect(inspect func(flows.Inspectable)) {
-	inspect(a)
-}
-
 type transferStatus string
 
 const (

@@ -83,8 +83,8 @@
         "inspection": {
             "templates": [
                 "http://localhost:49996/?cmd=success@(1 / 0)",
-                "@(3 / 0)",
-                "Token @(2 / 0)-@fields.age"
+                "Token @(2 / 0)-@fields.age",
+                "@(3 / 0)"
             ],
             "dependencies": [
                 "field[key=age,name=]"
@@ -158,8 +158,8 @@
         "inspection": {
             "templates": [
                 "http://localhost:49996/?cmd=success",
-                "Hi there!",
-                "@fields.gender"
+                "@fields.gender",
+                "Hi there!"
             ],
             "dependencies": [
                 "field[key=gender,name=]"
