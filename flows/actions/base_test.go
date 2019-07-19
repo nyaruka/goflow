@@ -17,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -83,11 +84,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	require.NoError(t, err)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
 		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 
 		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
 

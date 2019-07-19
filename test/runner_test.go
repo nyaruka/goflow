@@ -20,6 +20,7 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -230,7 +231,7 @@ func TestFlows(t *testing.T) {
 
 	server := NewTestHTTPServer(49999)
 	defer server.Close()
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	// save away our server URL so we can rewrite our URLs
@@ -239,7 +240,7 @@ func TestFlows(t *testing.T) {
 	for _, tc := range testCases {
 		fmt.Printf("running %s\n", tc)
 
-		utils.SetUUIDGenerator(NewSeededUUIDGenerator(123456))
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 		dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
 
 		testJSON, err := ioutil.ReadFile(tc.outputFile)

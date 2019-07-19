@@ -10,7 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -98,8 +98,8 @@ var sessionTrigger = `{
 }`
 
 func TestRunContext(t *testing.T) {
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
 	defer dates.SetNowSource(dates.DefaultNowSource)

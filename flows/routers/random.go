@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/random"
 
 	"github.com/shopspring/decimal"
 )
@@ -34,7 +35,7 @@ func (r *RandomRouter) Validate(exits []flows.Exit) error {
 // Route determines which exit to take from a node
 func (r *RandomRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
 	// pick a random category
-	rand := utils.RandDecimal()
+	rand := random.Decimal()
 	categoryNum := rand.Mul(decimal.New(int64(len(r.categories)), 0)).IntPart()
 	categoryUUID := r.categories[categoryNum].UUID()
 

@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -78,7 +79,7 @@ func NewContact(
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
 func NewEmptyContact(sa SessionAssets, name string, language envs.Language, timezone *time.Location) *Contact {
 	return &Contact{
-		uuid:      ContactUUID(utils.NewUUID()),
+		uuid:      ContactUUID(uuids.New()),
 		name:      name,
 		language:  language,
 		timezone:  timezone,

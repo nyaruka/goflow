@@ -14,7 +14,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -24,8 +24,8 @@ func TestEventMarshaling(t *testing.T) {
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)

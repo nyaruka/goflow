@@ -7,7 +7,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 type step struct {
@@ -20,7 +20,7 @@ type step struct {
 // NewStep creates a new step
 func NewStep(node flows.Node, arrivedOn time.Time) flows.Step {
 	return &step{
-		stepUUID:  flows.StepUUID(utils.NewUUID()),
+		stepUUID:  flows.StepUUID(uuids.New()),
 		nodeUUID:  node.UUID(),
 		arrivedOn: arrivedOn,
 	}

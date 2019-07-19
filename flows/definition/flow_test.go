@@ -16,6 +16,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -242,7 +243,7 @@ func TestNewFlow(t *testing.T) {
 					},
 					"@input.text",
 					[]*routers.Case{
-						routers.NewCase(utils.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
+						routers.NewCase(uuids.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
 					},
 					flows.CategoryUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
 				),
@@ -685,14 +686,14 @@ func TestClone(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
-		defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+		defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
 		require.NoError(t, err)
 
-		depMappings := map[utils.UUID]utils.UUID{
-			utils.UUID(tc.uuid):                    "e0af9907-e0d3-4363-99c6-324ece7f628e", // the flow itself
+		depMappings := map[uuids.UUID]uuids.UUID{
+			uuids.UUID(tc.uuid):                    "e0af9907-e0d3-4363-99c6-324ece7f628e", // the flow itself
 			"2aad21f6-30b7-42c5-bd7f-1b720c154817": "cd8a68c0-6673-4a02-98a0-7fb3ac788860", // group used in has_group test
 		}
 
@@ -707,19 +708,19 @@ func TestClone(t *testing.T) {
 		// extract all UUIDs from original definition
 		flowJSON, err := json.Marshal(flow)
 		require.NoError(t, err)
-		originalUUIDs := utils.UUID4Regex.FindAllString(string(flowJSON), -1)
+		originalUUIDs := uuids.V4Regex.FindAllString(string(flowJSON), -1)
 
 		// extract all UUIDs from cloned definition
 		cloneJSON, err := json.Marshal(clone)
 		require.NoError(t, err)
-		cloneUUIDs := utils.UUID4Regex.FindAllString(string(cloneJSON), -1)
+		cloneUUIDs := uuids.V4Regex.FindAllString(string(cloneJSON), -1)
 
 		assert.Equal(t, len(originalUUIDs), len(cloneUUIDs))
 		assert.NotContains(t, cloneUUIDs, []string{"2aad21f6-30b7-42c5-bd7f-1b720c154817"}) // group used in has_group test
 
 		for _, u1 := range originalUUIDs {
 			for _, u2 := range cloneUUIDs {
-				if u1 == u2 && depMappings[utils.UUID(u1)] != "" {
+				if u1 == u2 && depMappings[uuids.UUID(u1)] != "" {
 					assert.Fail(t, "uuid", "cloned flow contains non-dependency UUID from original flow: %s", u1)
 				}
 			}

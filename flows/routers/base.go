@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -158,7 +159,7 @@ func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categor
 	// save result if we have a result name
 	if r.resultName != "" {
 		// localize the category name
-		localizedCategory := run.GetText(utils.UUID(category.UUID()), "name", "")
+		localizedCategory := run.GetText(uuids.UUID(category.UUID()), "name", "")
 
 		var extraJSON json.RawMessage
 		if extra != nil {

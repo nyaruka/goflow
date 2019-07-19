@@ -15,7 +15,8 @@ import (
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/random"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -71,13 +72,13 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	require.NoError(t, err)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
-	defer utils.SetRand(utils.DefaultRand)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	defer random.SetGenerator(random.DefaultGenerator)
 
 	for _, tc := range tests {
 		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
-		utils.SetRand(utils.NewSeededRand(123456))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+		random.SetGenerator(random.NewSeededGenerator(123456))
 
 		testName := fmt.Sprintf("test '%s' for router type '%s'", tc.Description, typeName)
 

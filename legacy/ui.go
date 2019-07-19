@@ -2,7 +2,7 @@ package legacy
 
 import (
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/shopspring/decimal"
 )
@@ -33,14 +33,14 @@ const (
 // UI is the _ui section of the flow definition used by the editor
 type UI struct {
 	Nodes    map[flows.NodeUUID]*NodeUI `json:"nodes"`
-	Stickies map[utils.UUID]Sticky      `json:"stickies"`
+	Stickies map[uuids.UUID]Sticky      `json:"stickies"`
 }
 
 // NewUI creates a new UI section
 func NewUI() *UI {
 	return &UI{
 		Nodes:    make(map[flows.NodeUUID]*NodeUI),
-		Stickies: make(map[utils.UUID]Sticky),
+		Stickies: make(map[uuids.UUID]Sticky),
 	}
 }
 
@@ -51,7 +51,7 @@ func (u *UI) AddNode(uuid flows.NodeUUID, nodeDetails *NodeUI) {
 
 // AddSticky adds a new sticky note
 func (u *UI) AddSticky(sticky Sticky) {
-	u.Stickies[utils.NewUUID()] = sticky
+	u.Stickies[uuids.New()] = sticky
 }
 
 // Position is a position of a node in the editor canvas
@@ -64,14 +64,14 @@ type Position struct {
 type NodeUIConfig map[string]interface{}
 
 // AddCaseConfig adds a case specific UI configuration
-func (c NodeUIConfig) AddCaseConfig(uuid utils.UUID, config map[string]interface{}) {
-	var caseMap map[utils.UUID]interface{}
+func (c NodeUIConfig) AddCaseConfig(uuid uuids.UUID, config map[string]interface{}) {
+	var caseMap map[uuids.UUID]interface{}
 	cases, hasCases := c["cases"]
 	if !hasCases {
-		caseMap = make(map[utils.UUID]interface{})
+		caseMap = make(map[uuids.UUID]interface{})
 		c["cases"] = caseMap
 	} else {
-		caseMap = cases.(map[utils.UUID]interface{})
+		caseMap = cases.(map[uuids.UUID]interface{})
 	}
 	caseMap[uuid] = config
 }

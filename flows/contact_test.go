@@ -13,7 +13,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -40,11 +40,11 @@ func TestContact(t *testing.T) {
 
 	env := envs.NewEnvironmentBuilder().Build()
 
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(1234))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	contact, _ := flows.NewContact(
-		sa, flows.ContactUUID(utils.NewUUID()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"),
+		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"),
 		nil, time.Now(), nil, nil, nil,
 	)
 
@@ -119,7 +119,7 @@ func TestContactFormat(t *testing.T) {
 
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
-		sa, flows.ContactUUID(utils.NewUUID()), flows.ContactID(1234), "", envs.NilLanguage, nil, time.Now(),
+		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, nil, time.Now(),
 		nil, nil, nil,
 	)
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))

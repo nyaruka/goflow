@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/require"
 )
@@ -134,10 +135,10 @@ func TestFlowMigration(t *testing.T) {
 	err = json.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 
 		legacyFlow, err := legacy.ReadLegacyFlow(tc.Legacy)
 		require.NoError(t, err)
@@ -190,10 +191,10 @@ func TestTestMigration(t *testing.T) {
 	err = json.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 
 		legacyFlowJSON := fmt.Sprintf(legacyTestHolderDef, string(tc.LegacyTest))
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
@@ -226,10 +227,10 @@ func TestRuleSetMigration(t *testing.T) {
 	err = json.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 
 		legacyFlowJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(tc.LegacyRuleSet))
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))

@@ -9,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -146,9 +146,9 @@ func TestWebhookParsing(t *testing.T) {
 }
 
 func TestLegacyWebhookPayload(t *testing.T) {
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	session, _, err := test.CreateTestSession("", nil)

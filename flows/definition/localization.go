@@ -5,7 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // the translations for a specific item, e.g.
@@ -23,10 +23,10 @@ type itemTranslations map[string][]string
 //   },
 //   "7a1aec43-f3e1-42f0-b967-0ee75e725e3a": { ... }
 // }
-type languageTranslations map[utils.UUID]itemTranslations
+type languageTranslations map[uuids.UUID]itemTranslations
 
 // GetTextArray returns the requested item translation
-func (t languageTranslations) GetTextArray(uuid utils.UUID, property string) []string {
+func (t languageTranslations) GetTextArray(uuid uuids.UUID, property string) []string {
 	item, found := t[uuid]
 	if found {
 		translation, found := item[property]
@@ -38,7 +38,7 @@ func (t languageTranslations) GetTextArray(uuid utils.UUID, property string) []s
 }
 
 // SetTextArray updates the requested item translation
-func (t languageTranslations) SetTextArray(uuid utils.UUID, property string, translated []string) {
+func (t languageTranslations) SetTextArray(uuid uuids.UUID, property string, translated []string) {
 	_, found := t[uuid]
 	if !found {
 		t[uuid] = make(itemTranslations)
@@ -64,7 +64,7 @@ func (l localization) Languages() []envs.Language {
 }
 
 // AddItemTranslation adds a new item translation
-func (l localization) AddItemTranslation(lang envs.Language, itemUUID utils.UUID, property string, translated []string) {
+func (l localization) AddItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string, translated []string) {
 	_, found := l[lang]
 	if !found {
 		l[lang] = make(languageTranslations)

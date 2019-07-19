@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/random"
 
 	"github.com/shopspring/decimal"
 )
@@ -1056,7 +1057,7 @@ func Mod(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XVa
 //
 // @function rand()
 func Rand(env envs.Environment) types.XValue {
-	return types.NewXNumber(utils.RandDecimal())
+	return types.NewXNumber(random.Decimal())
 }
 
 // RandBetween a single random integer in the given inclusive range.
@@ -1068,7 +1069,7 @@ func Rand(env envs.Environment) types.XValue {
 func RandBetween(env envs.Environment, min types.XNumber, max types.XNumber) types.XValue {
 	span := (max.Native().Sub(min.Native())).Add(decimal.New(1, 0))
 
-	val := utils.RandDecimal().Mul(span).Add(min.Native()).Floor()
+	val := random.Decimal().Mul(span).Add(min.Native()).Floor()
 
 	return types.NewXNumber(val)
 }

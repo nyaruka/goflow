@@ -4,8 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/nyaruka/goflow/utils"
-
+	"github.com/nyaruka/goflow/utils/uuids"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,8 +23,8 @@ type containerStruct struct {
 	Slice []subType `json:"slice"`
 }
 
-func (s containerStruct) LocalizationUUID() utils.UUID {
-	return utils.UUID("11e2c40c-ae26-448b-a3b2-4c275516bcc0")
+func (s containerStruct) LocalizationUUID() uuids.UUID {
+	return uuids.UUID("11e2c40c-ae26-448b-a3b2-4c275516bcc0")
 }
 
 func TestWalk(t *testing.T) {

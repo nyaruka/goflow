@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -40,7 +41,7 @@ type flowRun struct {
 func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
 	now := dates.Now()
 	r := &flowRun{
-		uuid:       flows.RunUUID(utils.NewUUID()),
+		uuid:       flows.RunUUID(uuids.New()),
 		session:    session,
 		flow:       flow,
 		parent:     parent,
@@ -315,16 +316,16 @@ func (r *flowRun) getLanguages() []envs.Language {
 	return append(languages, r.flow.Language())
 }
 
-func (r *flowRun) GetText(uuid utils.UUID, key string, native string) string {
+func (r *flowRun) GetText(uuid uuids.UUID, key string, native string) string {
 	textArray := r.GetTextArray(uuid, key, []string{native})
 	return textArray[0]
 }
 
-func (r *flowRun) GetTextArray(uuid utils.UUID, key string, native []string) []string {
+func (r *flowRun) GetTextArray(uuid uuids.UUID, key string, native []string) []string {
 	return r.GetTranslatedTextArray(uuid, key, native, r.getLanguages())
 }
 
-func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []string, languages []envs.Language) []string {
+func (r *flowRun) GetTranslatedTextArray(uuid uuids.UUID, key string, native []string, languages []envs.Language) []string {
 	if languages == nil {
 		languages = r.getLanguages()
 	}

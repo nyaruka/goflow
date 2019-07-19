@@ -12,7 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -90,7 +90,7 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 	sa, flow = initializeSessionAssets(t)
 
 	// whereas a msg trigger will skip over it
-	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), urns.NilURN, nil, "Hi there", nil)
+	msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hi there", nil)
 	trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil)
 
 	session, sprint, err = eng.NewSession(sa, trigger)

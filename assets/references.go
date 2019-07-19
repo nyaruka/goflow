@@ -6,6 +6,7 @@ import (
 	validator "gopkg.in/go-playground/validator.v9"
 
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 func init() {
@@ -25,7 +26,7 @@ type Reference interface {
 // UUIDReference is interface for all reference types that contain a UUID
 type UUIDReference interface {
 	Reference
-	GenericUUID() utils.UUID
+	GenericUUID() uuids.UUID
 }
 
 // ChannelReference is used to reference a channel
@@ -45,8 +46,8 @@ func (r *ChannelReference) Type() string {
 }
 
 // GenericUUID returns the untyped UUID
-func (r *ChannelReference) GenericUUID() utils.UUID {
-	return utils.UUID(r.UUID)
+func (r *ChannelReference) GenericUUID() uuids.UUID {
+	return uuids.UUID(r.UUID)
 }
 
 // Identity returns the unique identity of the asset
@@ -88,8 +89,8 @@ func (r *GroupReference) Type() string {
 }
 
 // GenericUUID returns the untyped UUID
-func (r *GroupReference) GenericUUID() utils.UUID {
-	return utils.UUID(r.UUID)
+func (r *GroupReference) GenericUUID() uuids.UUID {
+	return uuids.UUID(r.UUID)
 }
 
 // Identity returns the unique identity of the asset
@@ -157,8 +158,8 @@ func (r *FlowReference) Type() string {
 }
 
 // GenericUUID returns the untyped UUID
-func (r *FlowReference) GenericUUID() utils.UUID {
-	return utils.UUID(r.UUID)
+func (r *FlowReference) GenericUUID() uuids.UUID {
+	return uuids.UUID(r.UUID)
 }
 
 // Identity returns the unique identity of the asset
@@ -200,8 +201,8 @@ func (r *LabelReference) Type() string {
 }
 
 // GenericUUID returns the untyped UUID
-func (r *LabelReference) GenericUUID() utils.UUID {
-	return utils.UUID(r.UUID)
+func (r *LabelReference) GenericUUID() uuids.UUID {
+	return uuids.UUID(r.UUID)
 }
 
 // Identity returns the unique identity of the asset
@@ -232,8 +233,8 @@ func NewTemplateReference(uuid TemplateUUID, name string) *TemplateReference {
 }
 
 // GenericUUID returns the untyped UUID
-func (r *TemplateReference) GenericUUID() utils.UUID {
-	return utils.UUID(r.UUID)
+func (r *TemplateReference) GenericUUID() uuids.UUID {
+	return uuids.UUID(r.UUID)
 }
 
 // Identity returns the unique identity of the asset

@@ -5,6 +5,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // BaseMsg represents a incoming or outgoing message with the session contact
@@ -49,7 +50,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        MsgUUID(utils.NewUUID()),
+			UUID_:        MsgUUID(uuids.New()),
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        text,

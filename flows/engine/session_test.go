@@ -17,7 +17,7 @@ import (
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -573,10 +573,10 @@ func TestContextToJSON(t *testing.T) {
 
 	server := test.NewTestHTTPServer(49992)
 	defer server.Close()
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	session, _, err := test.CreateTestSession(server.URL, nil)

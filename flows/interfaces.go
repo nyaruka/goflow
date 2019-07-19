@@ -8,34 +8,35 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // NodeUUID is a UUID of a flow node
-type NodeUUID utils.UUID
+type NodeUUID uuids.UUID
 
 // CategoryUUID is the UUID of a node category
-type CategoryUUID utils.UUID
+type CategoryUUID uuids.UUID
 
 // ExitUUID is the UUID of a node exit
-type ExitUUID utils.UUID
+type ExitUUID uuids.UUID
 
 // ActionUUID is the UUID of an action
-type ActionUUID utils.UUID
+type ActionUUID uuids.UUID
 
 // ContactID is the ID of a contact
 type ContactID int64
 
 // ContactUUID is the UUID of a contact
-type ContactUUID utils.UUID
+type ContactUUID uuids.UUID
 
 // RunUUID is the UUID of a flow run
-type RunUUID utils.UUID
+type RunUUID uuids.UUID
 
 // StepUUID is the UUID of a run step
-type StepUUID utils.UUID
+type StepUUID uuids.UUID
 
 // InputUUID is the UUID of an input
-type InputUUID utils.UUID
+type InputUUID uuids.UUID
 
 // MsgID is the ID of a message
 type MsgID int64
@@ -44,7 +45,7 @@ type MsgID int64
 const NilMsgID = MsgID(0)
 
 // MsgUUID is the UUID of a message
-type MsgUUID utils.UUID
+type MsgUUID uuids.UUID
 
 // FlowType represents the different types of flows
 type FlowType string
@@ -118,7 +119,7 @@ type SessionAssets interface {
 
 // Localizable is anything in the flow definition which can be localized and therefore needs a UUID
 type Localizable interface {
-	LocalizationUUID() utils.UUID
+	LocalizationUUID() uuids.UUID
 }
 
 // Flow describes the ordered logic of actions and routers
@@ -138,7 +139,7 @@ type Flow interface {
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
 	Generic() map[string]interface{}
-	Clone(map[utils.UUID]utils.UUID) Flow
+	Clone(map[uuids.UUID]uuids.UUID) Flow
 
 	Inspect() *FlowInfo
 	Validate(SessionAssets, func(assets.Reference)) error
@@ -158,7 +159,7 @@ type Node interface {
 	Router() Router
 	Exits() []Exit
 
-	Validate(Flow, map[utils.UUID]bool) error
+	Validate(Flow, map[uuids.UUID]bool) error
 
 	EnumerateTemplates(Localization, func(string))
 	EnumerateDependencies(Localization, func(assets.Reference))
@@ -223,15 +224,15 @@ type Hint interface {
 
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
-	AddItemTranslation(envs.Language, utils.UUID, string, []string)
+	AddItemTranslation(envs.Language, uuids.UUID, string, []string)
 	GetTranslations(envs.Language) Translations
 	Languages() []envs.Language
 }
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
 type Translations interface {
-	GetTextArray(utils.UUID, string) []string
-	SetTextArray(utils.UUID, string, []string)
+	GetTextArray(uuids.UUID, string) []string
+	SetTextArray(uuids.UUID, string, []string)
 }
 
 // Trigger represents something which can initiate a session with the flow engine
@@ -400,9 +401,9 @@ type FlowRun interface {
 	EvaluateTemplateValue(template string) (types.XValue, error)
 	EvaluateTemplate(template string) (string, error)
 
-	GetText(utils.UUID, string, string) string
-	GetTextArray(utils.UUID, string, []string) []string
-	GetTranslatedTextArray(utils.UUID, string, []string, []envs.Language) []string
+	GetText(uuids.UUID, string, string) string
+	GetTextArray(uuids.UUID, string, []string) []string
+	GetTranslatedTextArray(uuids.UUID, string, []string, []envs.Language) []string
 
 	Snapshot() RunSummary
 	Parent() RunSummary

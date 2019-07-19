@@ -14,7 +14,8 @@ import (
 	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/random"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -204,12 +205,12 @@ func buildTemplateContext(items map[string][]*TaggedItem) (map[string]string, er
 	server := test.NewTestHTTPServer(49998)
 	defer server.Close()
 
-	defer utils.SetRand(utils.DefaultRand)
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer random.SetGenerator(random.DefaultGenerator)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	utils.SetRand(utils.NewSeededRand(123456))
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
+	random.SetGenerator(random.NewSeededGenerator(123456))
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 18, 24, 30, 123456000, time.UTC)))
 
 	session, _, err := test.CreateTestSession(server.URL, nil)

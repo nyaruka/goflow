@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -24,14 +25,14 @@ const TypeSwitch string = "switch"
 
 // Case represents a single case and test in our switch
 type Case struct {
-	UUID         utils.UUID         `json:"uuid"                   validate:"required"`
+	UUID         uuids.UUID         `json:"uuid"                   validate:"required"`
 	Type         string             `json:"type"                   validate:"required"`
 	Arguments    []string           `json:"arguments,omitempty"    engine:"localized,evaluated"`
 	CategoryUUID flows.CategoryUUID `json:"category_uuid"          validate:"required"`
 }
 
 // NewCase creates a new case
-func NewCase(uuid utils.UUID, type_ string, arguments []string, categoryUUID flows.CategoryUUID) *Case {
+func NewCase(uuid uuids.UUID, type_ string, arguments []string, categoryUUID flows.CategoryUUID) *Case {
 	return &Case{
 		UUID:         uuid,
 		Type:         type_,
@@ -41,7 +42,7 @@ func NewCase(uuid utils.UUID, type_ string, arguments []string, categoryUUID flo
 }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
-func (c *Case) LocalizationUUID() utils.UUID { return utils.UUID(c.UUID) }
+func (c *Case) LocalizationUUID() uuids.UUID { return uuids.UUID(c.UUID) }
 
 func (c *Case) Dependencies(localization flows.Localization, include func(assets.Reference)) {
 	groupRef := func(args []string) assets.Reference {

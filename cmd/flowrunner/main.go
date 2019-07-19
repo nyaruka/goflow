@@ -20,6 +20,7 @@ import (
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -158,7 +159,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 }
 
 func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
-	return flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), contact.URNs()[0].URN(), nil, text, []utils.Attachment{})
+	return flows.NewMsgIn(flows.MsgUUID(uuids.New()), contact.URNs()[0].URN(), nil, text, []utils.Attachment{})
 }
 
 func printEvents(log []flows.Event, out io.Writer) {

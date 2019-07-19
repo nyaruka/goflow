@@ -15,7 +15,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -51,8 +51,8 @@ func TestTriggerMarshaling(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
 
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(1234))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)

@@ -17,7 +17,7 @@ import (
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -48,11 +48,11 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 	require.NoError(t, err)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
 		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 
 		testName := fmt.Sprintf("test '%s' for modifier type '%s'", tc.Description, typeName)
 

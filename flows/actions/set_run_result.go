@@ -3,7 +3,7 @@ package actions
 import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 func init() {
@@ -59,7 +59,7 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return nil
 	}
 
-	categoryLocalized := run.GetText(utils.UUID(a.UUID()), "category", a.Category)
+	categoryLocalized := run.GetText(uuids.UUID(a.UUID()), "category", a.Category)
 	if a.Category == categoryLocalized {
 		categoryLocalized = ""
 	}

@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
 	"github.com/pkg/errors"
@@ -79,14 +80,14 @@ func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] 
 
 func (f *flow) validate() error {
 	// track UUIDs used by nodes and actions to ensure that they are unique
-	seenUUIDs := make(map[utils.UUID]bool)
+	seenUUIDs := make(map[uuids.UUID]bool)
 
 	for _, node := range f.nodes {
-		uuidAlreadySeen := seenUUIDs[utils.UUID(node.UUID())]
+		uuidAlreadySeen := seenUUIDs[uuids.UUID(node.UUID())]
 		if uuidAlreadySeen {
 			return errors.Errorf("node UUID %s isn't unique", node.UUID())
 		}
-		seenUUIDs[utils.UUID(node.UUID())] = true
+		seenUUIDs[uuids.UUID(node.UUID())] = true
 
 		if err := node.Validate(f, seenUUIDs); err != nil {
 			return errors.Wrapf(err, "invalid node[uuid=%s]", node.UUID())
@@ -295,7 +296,7 @@ func (f *flow) Generic() map[string]interface{} {
 
 // Clone clones this flow replacing all UUIDs using the provided mapping and generating new
 // random UUIDs if they aren't in the mapping
-func (f *flow) Clone(depMapping map[utils.UUID]utils.UUID) flows.Flow {
+func (f *flow) Clone(depMapping map[uuids.UUID]uuids.UUID) flows.Flow {
 	generic := f.Generic()
 	remapUUIDs(generic, depMapping)
 

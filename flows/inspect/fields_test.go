@@ -4,7 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,8 +18,8 @@ type badTagsStruct1 struct {
 	Bad2   int `engine:"localized"` // or localized
 }
 
-func (s badTagsStruct1) LocalizationUUID() utils.UUID {
-	return utils.UUID("11e2c40c-ae26-448b-a3b2-4c275516bcc0")
+func (s badTagsStruct1) LocalizationUUID() uuids.UUID {
+	return uuids.UUID("11e2c40c-ae26-448b-a3b2-4c275516bcc0")
 }
 
 type badTagsStruct2 struct {
@@ -59,8 +60,8 @@ type taggedFieldsStruct struct {
 	Bar string `json:"bar"`
 }
 
-func (s taggedFieldsStruct) LocalizationUUID() utils.UUID {
-	return utils.UUID("11e2c40c-ae26-448b-a3b2-4c275516bcc0")
+func (s taggedFieldsStruct) LocalizationUUID() uuids.UUID {
+	return uuids.UUID("11e2c40c-ae26-448b-a3b2-4c275516bcc0")
 }
 
 func TestExtractEngineFields(t *testing.T) {

@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -35,7 +36,7 @@ func (n *node) Actions() []flows.Action { return n.actions }
 func (n *node) Router() flows.Router    { return n.router }
 func (n *node) Exits() []flows.Exit     { return n.exits }
 
-func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
+func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 	// validate all the node's actions
 	for _, action := range n.Actions() {
 
@@ -51,11 +52,11 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 			return errors.Errorf("action type '%s' is not allowed in a flow of type '%s'", action.Type(), flow.Type())
 		}
 
-		uuidAlreadySeen := seenUUIDs[utils.UUID(action.UUID())]
+		uuidAlreadySeen := seenUUIDs[uuids.UUID(action.UUID())]
 		if uuidAlreadySeen {
 			return errors.Errorf("action UUID %s isn't unique", action.UUID())
 		}
-		seenUUIDs[utils.UUID(action.UUID())] = true
+		seenUUIDs[uuids.UUID(action.UUID())] = true
 
 		if err := action.Validate(); err != nil {
 			return errors.Wrapf(err, "invalid action[uuid=%s, type=%s]", action.UUID(), action.Type())
@@ -71,11 +72,11 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
 
 	// check every exit has a unique UUID and valid destination
 	for _, exit := range n.Exits() {
-		uuidAlreadySeen := seenUUIDs[utils.UUID(exit.UUID())]
+		uuidAlreadySeen := seenUUIDs[uuids.UUID(exit.UUID())]
 		if uuidAlreadySeen {
 			return errors.Errorf("exit UUID %s isn't unique", exit.UUID())
 		}
-		seenUUIDs[utils.UUID(exit.UUID())] = true
+		seenUUIDs[uuids.UUID(exit.UUID())] = true
 
 		if exit.DestinationUUID() != "" && flow.GetNode(exit.DestinationUUID()) == nil {
 			return errors.Errorf("destination %s of exit[uuid=%s] isn't a known node", exit.DestinationUUID(), exit.UUID())
