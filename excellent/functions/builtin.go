@@ -11,10 +11,10 @@ import (
 	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/random"
 
 	"github.com/shopspring/decimal"

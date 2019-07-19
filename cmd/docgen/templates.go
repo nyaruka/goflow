@@ -11,9 +11,9 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/random"
 	"github.com/nyaruka/goflow/utils/uuids"
 

@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/extensions/transferto/client"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"

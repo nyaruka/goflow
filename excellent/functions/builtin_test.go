@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/random"
 
 	"github.com/stretchr/testify/assert"

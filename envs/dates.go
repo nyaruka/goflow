@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/pkg/errors"
 	validator "gopkg.in/go-playground/validator.v9"

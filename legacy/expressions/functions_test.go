@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

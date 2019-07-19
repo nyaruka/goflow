@@ -5,12 +5,12 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/pkg/errors"
 )
