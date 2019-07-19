@@ -392,7 +392,16 @@
             },
             "contacts": [
                 {
-                    "uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f"
+                    "id": 35266,
+                    "uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f",
+                    "name": "Horatio",
+                    "urns": [
+                        {
+                            "scheme": "tel",
+                            "path": "+18601111111",
+                            "priority": 50
+                        }
+                    ]
                 },
                 {
                     "uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42"
@@ -427,7 +436,7 @@
             "contacts": [
                 {
                     "uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f",
-                    "name": ""
+                    "name": "Horatio"
                 },
                 {
                     "uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42",
