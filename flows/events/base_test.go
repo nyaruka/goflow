@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -19,8 +20,8 @@ import (
 )
 
 func TestEventMarshaling(t *testing.T) {
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)

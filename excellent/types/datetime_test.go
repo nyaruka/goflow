@@ -7,7 +7,6 @@ import (
 
 	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -104,8 +103,8 @@ func TestToXDateTime(t *testing.T) {
 }
 
 func TestToXDateTimeWithTimeFill(t *testing.T) {
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	env := utils.NewEnvironmentBuilder().Build()
 	result, err := types.ToXDateTimeWithTimeFill(env, types.NewXText("2018/12/20"))

@@ -670,10 +670,10 @@ func TestFunctions(t *testing.T) {
 	}
 
 	defer utils.SetRand(utils.DefaultRand)
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	utils.SetRand(utils.NewSeededRand(123456))
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	for _, tc := range funcTests {
 		testID := fmt.Sprintf("%s(%#v)", tc.name, tc.args)

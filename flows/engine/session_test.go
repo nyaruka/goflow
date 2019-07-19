@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -133,8 +134,8 @@ var templateTests = []struct {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	server := test.NewTestHTTPServer(0)
 	defer server.Close()
@@ -573,10 +574,10 @@ func TestContextToJSON(t *testing.T) {
 	server := test.NewTestHTTPServer(49992)
 	defer server.Close()
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(123456))
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	session, _, err := test.CreateTestSession(server.URL, nil)
 	require.NoError(t, err)
@@ -646,10 +647,10 @@ func TestReadWithMissingAssets(t *testing.T) {
 }
 
 func TestWaitTimeout(t *testing.T) {
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	t1 := time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
-	utils.SetTimeSource(test.NewFixedTimeSource(t1))
+	dates.SetNowSource(dates.NewFixedNowSource(t1))
 
 	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
 	require.NoError(t, err)

@@ -1209,11 +1209,11 @@ func DateTimeDiff(env utils.Environment, arg1 types.XValue, arg2 types.XValue, a
 	case "h":
 		return types.NewXNumberFromInt(int(duration / time.Hour))
 	case "D":
-		return types.NewXNumberFromInt(utils.DaysBetween(date2.Native(), date1.Native()))
+		return types.NewXNumberFromInt(dates.DaysBetween(date2.Native(), date1.Native()))
 	case "W":
-		return types.NewXNumberFromInt(int(utils.DaysBetween(date2.Native(), date1.Native()) / 7))
+		return types.NewXNumberFromInt(int(dates.DaysBetween(date2.Native(), date1.Native()) / 7))
 	case "M":
-		return types.NewXNumberFromInt(utils.MonthsBetween(date2.Native(), date1.Native()))
+		return types.NewXNumberFromInt(dates.MonthsBetween(date2.Native(), date1.Native()))
 	case "Y":
 		return types.NewXNumberFromInt(date2.Native().Year() - date1.Native().Year())
 	}

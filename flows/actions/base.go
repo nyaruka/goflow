@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -234,7 +235,7 @@ func (a *BaseAction) resolveRecipients(run flows.FlowRun, actionURNs []urns.URN,
 
 // helper to save a run result and log it as an event
 func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input string, extra json.RawMessage, logEvent flows.EventCallback) {
-	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, utils.Now())
+	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, dates.Now())
 	run.SaveResult(result)
 	logEvent(events.NewRunResultChangedEvent(result))
 }

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -163,7 +164,7 @@ func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categor
 		if extra != nil {
 			extraJSON, _ = json.Marshal(extra)
 		}
-		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, utils.Now())
+		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, dates.Now())
 		run.SaveResult(result)
 		logEvent(events.NewRunResultChangedEvent(result))
 	}

@@ -244,8 +244,8 @@ var testTests = []struct {
 }
 
 func TestTests(t *testing.T) {
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	env := utils.NewEnvironmentBuilder().
 		WithDateFormat(utils.DateFormatDayMonthYear).

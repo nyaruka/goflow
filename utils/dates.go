@@ -101,29 +101,6 @@ func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y in
 	return dates.ZeroDate, str, errors.Errorf("string '%s' couldn't be parsed as a date", str)
 }
 
-// DaysBetween returns the number of calendar days (an int) between the two dates. Note
-// that if these are in different timezones then the local calendar day is used for each
-// and the difference is calculated from that.
-func DaysBetween(date1 time.Time, date2 time.Time) int {
-	d1 := time.Date(date1.Year(), date1.Month(), date1.Day(), 0, 0, 0, 0, time.UTC)
-	d2 := time.Date(date2.Year(), date2.Month(), date2.Day(), 0, 0, 0, 0, time.UTC)
-
-	return int(d1.Sub(d2) / (time.Hour * 24))
-}
-
-// MonthsBetween returns the number of calendar months (an int) between the two dates. Note
-// that if these are in different timezones then the local calendar day is used for each
-// and the difference is calculated from that.
-func MonthsBetween(date1 time.Time, date2 time.Time) int {
-	// difference in months
-	months := int(date1.Month() - date2.Month())
-
-	// difference in years
-	months += (date1.Year() - date2.Year()) * 12
-
-	return months
-}
-
 // DateTimeToISO converts the passed in time.Time to a string in ISO8601 format
 func DateTimeToISO(date time.Time) string {
 	return date.Format(iso8601Default)
@@ -187,7 +164,7 @@ func parseDate(env Environment, str string) (dates.Date, string, error) {
 	}
 
 	// otherwise, try to parse according to their env settings
-	currentYear := Now().Year()
+	currentYear := dates.Now().Year()
 
 	switch env.DateFormat() {
 	case DateFormatYearMonthDay:
@@ -199,10 +176,6 @@ func parseDate(env Environment, str string) (dates.Date, string, error) {
 	}
 
 	return dates.ZeroDate, "", errors.Errorf("unknown date format: %s", env.DateFormat())
-}
-
-func replaceTime(d time.Time, t time.Time) time.Time {
-	return time.Date(d.Year(), d.Month(), d.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), t.Location())
 }
 
 func parseTime(str string) (bool, dates.TimeOfDay) {
@@ -450,11 +423,4 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 	}
 
 	return goFormat.String(), nil
-}
-
-// DateToUTCRange returns the UTC time range of the given day
-func DateToUTCRange(d time.Time, tz *time.Location) (time.Time, time.Time) {
-	localMidnight := time.Date(d.Year(), d.Month(), d.Day(), 0, 0, 0, 0, d.Location())
-	utcMidnight := localMidnight.In(tz)
-	return utcMidnight, utcMidnight.Add(24 * time.Hour)
 }

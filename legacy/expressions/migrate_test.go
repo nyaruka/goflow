@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/legacy/expressions"
@@ -370,8 +371,8 @@ func TestLegacyTests(t *testing.T) {
 
 			env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).WithTimezone(tz).Build()
 			if tc.Context.Now != nil {
-				utils.SetTimeSource(test.NewFixedTimeSource(*tc.Context.Now))
-				defer utils.SetTimeSource(utils.DefaultTimeSource)
+				dates.SetNowSource(dates.NewFixedNowSource(*tc.Context.Now))
+				defer dates.SetNowSource(dates.DefaultNowSource)
 			}
 
 			migratedVars := tc.Context.Variables.Migrate().Context(env)

@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -57,7 +58,7 @@ func numberComparison(objectVal decimal.Decimal, comparator string, queryVal dec
 }
 
 func dateComparison(objectVal time.Time, comparator string, queryVal time.Time) (bool, error) {
-	utcDayStart, utcDayEnd := utils.DateToUTCRange(queryVal, queryVal.Location())
+	utcDayStart, utcDayEnd := dates.DayToUTCRange(queryVal, queryVal.Location())
 
 	switch comparator {
 	case "=":

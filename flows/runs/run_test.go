@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -100,8 +101,8 @@ func TestRunContext(t *testing.T) {
 	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	// create a run with no parent or child
 	session, _, err := test.CreateTestSession("", nil)

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/extensions/transferto/client"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -94,7 +95,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 	if a.ResultName != "" && transfer != nil {
 		value := transfer.actualAmount.String()
 		category := statusCategories[transfer.status]
-		result := flows.NewResult(a.ResultName, value, category, "", step.NodeUUID(), "", nil, utils.Now())
+		result := flows.NewResult(a.ResultName, value, category, "", step.NodeUUID(), "", nil, dates.Now())
 
 		run.SaveResult(result)
 		logEvent(events.NewRunResultChangedEvent(result))

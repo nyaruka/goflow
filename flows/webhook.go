@@ -10,8 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nyaruka/goflow/utils"
-
+	"github.com/nyaruka/goflow/dates"
 	"github.com/pkg/errors"
 )
 
@@ -114,9 +113,9 @@ func MakeWebhookCall(session Session, request *http.Request, resthook string) (*
 	if session.Engine().DisableWebhooks() {
 		response, requestDump, err = session.Engine().HTTPClient().MockWithDump(request, 200, "DISABLED")
 	} else {
-		start := utils.Now()
+		start := dates.Now()
 		response, requestDump, err = session.Engine().HTTPClient().DoWithDump(request)
-		timeTaken = utils.Now().Sub(start)
+		timeTaken = dates.Now().Sub(start)
 	}
 
 	if err != nil {

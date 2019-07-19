@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -80,7 +81,7 @@ func NewEmptyContact(sa SessionAssets, name string, language utils.Language, tim
 		name:      name,
 		language:  language,
 		timezone:  timezone,
-		createdOn: utils.Now(),
+		createdOn: dates.Now(),
 		urns:      URNList{},
 		groups:    NewGroupList([]*Group{}),
 		fields:    make(FieldValues),

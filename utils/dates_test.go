@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
-	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
@@ -88,8 +87,8 @@ func TestDateTimeFromString(t *testing.T) {
 		{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34.123456", "01-02-2001 03:15:34.123456 +0000 UTC", false},
 	}
 
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	for _, tc := range testCases {
 		timezone, err := time.LoadLocation(tc.Timezone)
@@ -205,42 +204,6 @@ func TestTimeFromString(t *testing.T) {
 				assert.Fail(t, "", "mismatch for time input %s, expected %s, got %s", tc.value, tc.expected, parsed)
 			}
 		}
-	}
-}
-
-func TestDaysBetween(t *testing.T) {
-	daysBetweenTests := []struct {
-		d1       time.Time
-		d2       time.Time
-		expected int
-	}{
-		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 3, 0, 30, 0, 0, time.UTC), -2},
-		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 3, 0, 30, 0, 0, laTZ), -2},
-		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2017, 12, 25, 0, 30, 0, 0, time.UTC), 7},
-		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), 0},
-	}
-
-	for _, test := range daysBetweenTests {
-		actual := utils.DaysBetween(test.d1, test.d2)
-		assert.Equal(t, test.expected, actual, "mismatch for inputs %s - %s", test.d1, test.d2)
-	}
-}
-
-func TestMonthsBetween(t *testing.T) {
-	monthsBetweenTests := []struct {
-		d1       time.Time
-		d2       time.Time
-		expected int
-	}{
-		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 3, 0, 30, 0, 0, time.UTC), 0},
-		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 3, 3, 0, 30, 0, 0, laTZ), -2},
-		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2017, 12, 25, 0, 30, 0, 0, time.UTC), 1},
-		{time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC), 0},
-	}
-
-	for _, test := range monthsBetweenTests {
-		actual := utils.MonthsBetween(test.d1, test.d2)
-		assert.Equal(t, test.expected, actual, "mismatch for inputs %s - %s", test.d1, test.d2)
 	}
 }
 

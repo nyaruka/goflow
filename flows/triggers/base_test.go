@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -46,8 +47,8 @@ var assetsJSON = `{
 }`
 
 func TestTriggerMarshaling(t *testing.T) {
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
 
 	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)

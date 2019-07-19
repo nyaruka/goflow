@@ -3,6 +3,8 @@ package utils
 import (
 	"encoding/json"
 	"time"
+
+	"github.com/nyaruka/goflow/dates"
 )
 
 type RedactionPolicy string
@@ -66,7 +68,7 @@ func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat 
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
 func (e *environment) MaxValueLength() int              { return e.maxValueLength }
 
-func (e *environment) Now() time.Time { return Now().In(e.Timezone()) }
+func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }
 
 func (e *environment) Extension(name string) json.RawMessage {
 	return e.extensions[name]
