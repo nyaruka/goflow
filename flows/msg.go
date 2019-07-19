@@ -3,7 +3,9 @@ package flows
 import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // BaseMsg represents a incoming or outgoing message with the session contact
@@ -48,7 +50,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        MsgUUID(utils.NewUUID()),
+			UUID_:        MsgUUID(uuids.New()),
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        text,
@@ -98,7 +100,7 @@ func (m *MsgOut) Templating() *MsgTemplating { return m.Templating_ }
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
 	Template_  *assets.TemplateReference `json:"template"`
-	Language_  utils.Language            `json:"language"`
+	Language_  envs.Language             `json:"language"`
 	Variables_ []string                  `json:"variables,omitempty"`
 }
 
@@ -106,13 +108,13 @@ type MsgTemplating struct {
 func (t MsgTemplating) Template() *assets.TemplateReference { return t.Template_ }
 
 // Language returns the language that should be used for the template
-func (t MsgTemplating) Language() utils.Language { return t.Language_ }
+func (t MsgTemplating) Language() envs.Language { return t.Language_ }
 
 // Variables returns the variables that should be substituted in the template
 func (t MsgTemplating) Variables() []string { return t.Variables_ }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, language utils.Language, variables []string) *MsgTemplating {
+func NewMsgTemplating(template *assets.TemplateReference, language envs.Language, variables []string) *MsgTemplating {
 	return &MsgTemplating{
 		Template_:  template,
 		Language_:  language,

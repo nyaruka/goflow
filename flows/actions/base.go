@@ -8,9 +8,12 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -57,7 +60,7 @@ func (a *BaseAction) UUID() flows.ActionUUID { return a.UUID_ }
 func (a *BaseAction) Validate() error { return nil }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
-func (a *BaseAction) LocalizationUUID() utils.UUID { return utils.UUID(a.UUID_) }
+func (a *BaseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
 func (a *BaseAction) resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {
@@ -130,16 +133,16 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, references []*assets.Label
 }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string) {
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []envs.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string) {
 	// localize and evaluate the message text
-	localizedText := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "text", []string{actionText}, languages)[0]
+	localizedText := run.GetTranslatedTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)[0]
 	evaluatedText, err := run.EvaluateTemplate(localizedText)
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))
 	}
 
 	// localize and evaluate the message attachments
-	translatedAttachments := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "attachments", actionAttachments, languages)
+	translatedAttachments := run.GetTranslatedTextArray(uuids.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]utils.Attachment, 0, len(translatedAttachments))
 	for _, a := range translatedAttachments {
 		evaluatedAttachment, err := run.EvaluateTemplate(a)
@@ -154,7 +157,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages []utils.Langua
 	}
 
 	// localize and evaluate the quick replies
-	translatedQuickReplies := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
+	translatedQuickReplies := run.GetTranslatedTextArray(uuids.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
 	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
 	for _, qr := range translatedQuickReplies {
 		evaluatedQuickReply, err := run.EvaluateTemplate(qr)
@@ -234,7 +237,7 @@ func (a *BaseAction) resolveRecipients(run flows.FlowRun, actionURNs []urns.URN,
 
 // helper to save a run result and log it as an event
 func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input string, extra json.RawMessage, logEvent flows.EventCallback) {
-	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, utils.Now())
+	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, dates.Now())
 	run.SaveResult(result)
 	logEvent(events.NewRunResultChangedEvent(result))
 }

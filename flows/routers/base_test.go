@@ -8,12 +8,15 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/random"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -68,14 +71,14 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	err = json.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
-	defer utils.SetRand(utils.DefaultRand)
+	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	defer random.SetGenerator(random.DefaultGenerator)
 
 	for _, tc := range tests {
-		utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
-		utils.SetRand(utils.NewSeededRand(123456))
+		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+		random.SetGenerator(random.NewSeededGenerator(123456))
 
 		testName := fmt.Sprintf("test '%s' for router type '%s'", tc.Description, typeName)
 
@@ -111,7 +114,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		contact, err := flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
 		require.NoError(t, err)
 
-		trigger := triggers.NewManualTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, nil)
+		trigger := triggers.NewManualTrigger(envs.NewEnvironmentBuilder().Build(), flow.Reference(), contact, nil)
 
 		eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
 		session, _, err := eng.NewSession(sa, trigger)

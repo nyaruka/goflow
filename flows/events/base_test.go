@@ -7,23 +7,25 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestEventMarshaling(t *testing.T) {
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
@@ -38,11 +40,11 @@ func TestEventMarshaling(t *testing.T) {
 	}{
 		{
 			events.NewBroadcastCreatedEvent(
-				map[utils.Language]*events.BroadcastTranslation{
+				map[envs.Language]*events.BroadcastTranslation{
 					"eng": {Text: "Hello", Attachments: nil, QuickReplies: nil},
 					"spa": {Text: "Hola", Attachments: nil, QuickReplies: nil},
 				},
-				utils.Language("eng"),
+				envs.Language("eng"),
 				[]urns.URN{urns.URN("tel:+12345678900")},
 				[]*flows.ContactReference{
 					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
@@ -129,7 +131,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactLanguageChangedEvent(utils.Language("fra")),
+			events.NewContactLanguageChangedEvent(envs.Language("fra")),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"language": "fra",

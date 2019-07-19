@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -94,7 +95,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 	if a.ResultName != "" && transfer != nil {
 		value := transfer.actualAmount.String()
 		category := statusCategories[transfer.status]
-		result := flows.NewResult(a.ResultName, value, category, "", step.NodeUUID(), "", nil, utils.Now())
+		result := flows.NewResult(a.ResultName, value, category, "", step.NodeUUID(), "", nil, dates.Now())
 
 		run.SaveResult(result)
 		logEvent(events.NewRunResultChangedEvent(result))

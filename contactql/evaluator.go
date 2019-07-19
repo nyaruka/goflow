@@ -4,7 +4,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -16,11 +17,11 @@ const (
 
 // Queryable is the interface objects must implement queried
 type Queryable interface {
-	ResolveQueryKey(utils.Environment, string) []interface{}
+	ResolveQueryKey(envs.Environment, string) []interface{}
 }
 
 // EvaluateQuery evaluates the given parsed query against a queryable object
-func EvaluateQuery(env utils.Environment, query *ContactQuery, queryable Queryable) (bool, error) {
+func EvaluateQuery(env envs.Environment, query *ContactQuery, queryable Queryable) (bool, error) {
 	return query.Evaluate(env, queryable)
 }
 
@@ -57,7 +58,7 @@ func numberComparison(objectVal decimal.Decimal, comparator string, queryVal dec
 }
 
 func dateComparison(objectVal time.Time, comparator string, queryVal time.Time) (bool, error) {
-	utcDayStart, utcDayEnd := utils.DateToUTCRange(queryVal, queryVal.Location())
+	utcDayStart, utcDayEnd := dates.DayToUTCRange(queryVal, queryVal.Location())
 
 	switch comparator {
 	case "=":

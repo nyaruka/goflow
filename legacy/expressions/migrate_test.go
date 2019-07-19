@@ -10,11 +10,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -262,7 +264,7 @@ func BenchmarkMigrateTemplate(b *testing.B) {
 
 type legacyVariables map[string]interface{}
 
-func (v legacyVariables) Context(env utils.Environment) *types.XObject {
+func (v legacyVariables) Context(env envs.Environment) *types.XObject {
 	entries := make(map[string]types.XValue, len(v))
 
 	for k, val := range v {
@@ -271,7 +273,7 @@ func (v legacyVariables) Context(env utils.Environment) *types.XObject {
 	return types.NewXObject(entries)
 }
 
-func toXType(env utils.Environment, val interface{}) types.XValue {
+func toXType(env envs.Environment, val interface{}) types.XValue {
 	if utils.IsNil(val) {
 		return nil
 	}
@@ -368,10 +370,10 @@ func TestLegacyTests(t *testing.T) {
 			tz, err := time.LoadLocation(tc.Context.Timezone)
 			require.NoError(t, err)
 
-			env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).WithTimezone(tz).Build()
+			env := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithTimezone(tz).Build()
 			if tc.Context.Now != nil {
-				utils.SetTimeSource(test.NewFixedTimeSource(*tc.Context.Now))
-				defer utils.SetTimeSource(utils.DefaultTimeSource)
+				dates.SetNowSource(dates.NewFixedNowSource(*tc.Context.Now))
+				defer dates.SetNowSource(dates.DefaultNowSource)
 			}
 
 			migratedVars := tc.Context.Variables.Migrate().Context(env)

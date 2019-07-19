@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -68,7 +69,7 @@ func (x *XObject) Render() string {
 }
 
 // Format returns the pretty text representation
-func (x *XObject) Format(env utils.Environment) string {
+func (x *XObject) Format(env envs.Environment) string {
 	if x.hasDefault() {
 		return Format(env, x.Default())
 	}
@@ -206,7 +207,7 @@ var XObjectEmpty = NewXObject(map[string]XValue{})
 var _ json.Marshaler = (*XObject)(nil)
 
 // ToXObject converts the given value to an object
-func ToXObject(env utils.Environment, x XValue) (*XObject, XError) {
+func ToXObject(env envs.Environment, x XValue) (*XObject, XError) {
 	if utils.IsNil(x) {
 		return XObjectEmpty, nil
 	}

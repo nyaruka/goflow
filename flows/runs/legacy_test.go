@@ -7,7 +7,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -50,7 +50,7 @@ func TestLegacyExtra(t *testing.T) {
 	}
 
 	// can also add something which is an array
-	result := flows.NewResult("webhook", "200", "Success", "", flows.NodeUUID(""), "", []byte(`[{"foo": 123}, {"foo": 345}]`), utils.Now())
+	result := flows.NewResult("webhook", "200", "Success", "", flows.NodeUUID(""), "", []byte(`[{"foo": 123}, {"foo": 345}]`), dates.Now())
 	run.SaveResult(result)
 
 	output, err := run.EvaluateTemplate(`@(legacy_extra[0])`)

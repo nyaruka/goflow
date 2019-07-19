@@ -10,12 +10,14 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -45,12 +47,12 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 	err = json.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
-		utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
+		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 
 		testName := fmt.Sprintf("test '%s' for modifier type '%s'", tc.Description, typeName)
 
@@ -65,7 +67,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 
 		// apply the modifier
 		logEvent := make([]flows.Event, 0)
-		modifier.Apply(utils.NewEnvironmentBuilder().Build(), sessionAssets, contact, func(e flows.Event) { logEvent = append(logEvent, e) })
+		modifier.Apply(envs.NewEnvironmentBuilder().Build(), sessionAssets, contact, func(e flows.Event) { logEvent = append(logEvent, e) })
 
 		// check contact is in the expected state
 		contactJSON, _ := json.Marshal(contact)
@@ -135,7 +137,7 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewLanguageModifier(utils.Language("fra")),
+			modifiers.NewLanguageModifier(envs.Language("fra")),
 			`{
 				"type": "language",
 				"language": "fra"

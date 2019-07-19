@@ -7,31 +7,31 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/inspect"
-
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 )
 
 type testFlowThing struct {
-	UUID utils.UUID `json:"uuid"`                             // not a template
+	UUID uuids.UUID `json:"uuid"`                             // not a template
 	Foo  string     `json:"foo" engine:"evaluated,localized"` // a localizable template
 	Bar  string     `json:"bar" engine:"evaluated"`           // a template
 }
 
-func (t *testFlowThing) LocalizationUUID() utils.UUID {
+func (t *testFlowThing) LocalizationUUID() uuids.UUID {
 	return t.UUID
 }
 
 func TestTemplates(t *testing.T) {
 	l := definition.NewLocalization()
-	l.AddItemTranslation(utils.Language("eng"), utils.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
+	l.AddItemTranslation(envs.Language("eng"), uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
 
-	thing := &testFlowThing{UUID: utils.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), Foo: "Hello", Bar: "World"}
+	thing := &testFlowThing{UUID: uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), Foo: "Hello", Bar: "World"}
 
 	templates := make([]string, 0)
 	inspect.Templates(thing, l, func(t string) {

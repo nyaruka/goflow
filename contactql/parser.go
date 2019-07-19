@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/contactql/gen"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/pkg/errors"
@@ -28,7 +28,7 @@ const (
 // QueryNode is the base for nodes in our query parse tree
 type QueryNode interface {
 	fmt.Stringer
-	Evaluate(utils.Environment, Queryable) (bool, error)
+	Evaluate(envs.Environment, Queryable) (bool, error)
 }
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
@@ -48,7 +48,7 @@ func (c *Condition) Comparator() string { return c.comparator }
 func (c *Condition) Value() string { return c.value }
 
 // Evaluate evaluates this condition against the queryable contact
-func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
+func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
 	if c.key == ImplicitKey {
 		return false, errors.Errorf("dynamic group queries can't contain implicit conditions")
 	}
@@ -84,7 +84,7 @@ func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, 
 	return false, nil
 }
 
-func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool, error) {
+func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, error) {
 	switch val.(type) {
 	case string:
 		return textComparison(val.(string), c.comparator, c.value)
@@ -97,7 +97,7 @@ func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool,
 		return numberComparison(val.(decimal.Decimal), c.comparator, asDecimal)
 
 	case time.Time:
-		asDate, err := utils.DateTimeFromString(env, c.value, false)
+		asDate, err := envs.DateTimeFromString(env, c.value, false)
 		if err != nil {
 			return false, err
 		}
@@ -136,7 +136,7 @@ func NewBoolCombination(op BoolOperator, children ...QueryNode) *BoolCombination
 }
 
 // Evaluate returns whether this combination evaluates to true or false
-func (b *BoolCombination) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
+func (b *BoolCombination) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
 	var childRes bool
 	var err error
 
@@ -177,7 +177,7 @@ type ContactQuery struct {
 
 func (q *ContactQuery) Root() QueryNode { return q.root }
 
-func (q *ContactQuery) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
+func (q *ContactQuery) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
 	return q.root.Evaluate(env, queryable)
 }
 

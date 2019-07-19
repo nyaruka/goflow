@@ -6,7 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 func init() {
@@ -51,7 +51,7 @@ func NewSendEmailAction(uuid flows.ActionUUID, addresses []string, subject strin
 
 // Execute creates the email events
 func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	localizedSubject := run.GetText(utils.UUID(a.UUID()), "subject", a.Subject)
+	localizedSubject := run.GetText(uuids.UUID(a.UUID()), "subject", a.Subject)
 	evaluatedSubject, err := run.EvaluateTemplate(localizedSubject)
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))
@@ -66,7 +66,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 		return nil
 	}
 
-	localizedBody := run.GetText(utils.UUID(a.UUID()), "body", a.Body)
+	localizedBody := run.GetText(uuids.UUID(a.UUID()), "body", a.Body)
 	evaluatedBody, err := run.EvaluateTemplate(localizedBody)
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))

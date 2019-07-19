@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/legacy"
-	"github.com/nyaruka/goflow/utils"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -32,7 +33,7 @@ func TestTranslations(t *testing.T) {
 		{"eng": "Maybe"},
 		{"eng": "Never", "fra": "Jamas"},
 	}
-	assert.Equal(t, map[utils.Language][]string{
+	assert.Equal(t, map[envs.Language][]string{
 		"eng": {"Yes", "No", "Maybe", "Never"},
 		"fra": {"Oui", "Non", "", "Jamas"},
 	}, legacy.TransformTranslations(translationSet))

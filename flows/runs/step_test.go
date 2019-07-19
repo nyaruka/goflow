@@ -5,20 +5,21 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestStep(t *testing.T) {
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(1234))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	node := definition.NewNode(flows.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), nil, nil, nil)
 
@@ -31,7 +32,7 @@ func TestStep(t *testing.T) {
 	assert.Equal(t, flows.ExitUUID(""), step.ExitUUID())
 
 	// test use in expressions
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"arrived_on": types.NewXDateTime(d),
 		"exit_uuid":  types.XTextEmpty,

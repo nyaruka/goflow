@@ -5,11 +5,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
@@ -199,7 +200,7 @@ var testTests = []struct {
 	{"has_date_gt", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
 	{"has_date_gt", []types.XValue{}, ERROR},
 
-	{"has_time", []types.XValue{xs("last time was 10:30")}, result(xt(utils.NewTimeOfDay(10, 30, 0, 0)))},
+	{"has_time", []types.XValue{xs("last time was 10:30")}, result(xt(dates.NewTimeOfDay(10, 30, 0, 0)))},
 	{"has_time", []types.XValue{xs("this isn't a valid time 59:77")}, falseResult},
 	{"has_time", []types.XValue{xs("no time at all")}, falseResult},
 	{"has_time", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
@@ -243,14 +244,14 @@ var testTests = []struct {
 }
 
 func TestTests(t *testing.T) {
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	env := utils.NewEnvironmentBuilder().
-		WithDateFormat(utils.DateFormatDayMonthYear).
-		WithTimeFormat(utils.TimeFormatHourMinuteSecond).
+	env := envs.NewEnvironmentBuilder().
+		WithDateFormat(envs.DateFormatDayMonthYear).
+		WithTimeFormat(envs.TimeFormatHourMinuteSecond).
 		WithTimezone(kgl).
-		WithDefaultCountry(utils.Country("RW")).
+		WithDefaultCountry(envs.Country("RW")).
 		Build()
 
 	for _, tc := range testTests {
@@ -296,7 +297,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(has_error(1 / 0).match)", "division by zero", false},
 	}
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	for _, test := range evalTests {
 		eval, err := excellent.EvaluateTemplate(env, vars, test.template)
 
@@ -334,7 +335,7 @@ func TestHasPhone(t *testing.T) {
 		{"12067799294", "BW", ""},
 	}
 
-	env := utils.NewEnvironmentBuilder().WithDefaultCountry(utils.Country("RW")).Build()
+	env := envs.NewEnvironmentBuilder().WithDefaultCountry(envs.Country("RW")).Build()
 
 	for _, tc := range tests {
 		var actual, expected types.XValue
@@ -358,14 +359,14 @@ func TestParseDecimalFuzzy(t *testing.T) {
 	parseTests := []struct {
 		input    string
 		expected decimal.Decimal
-		format   *utils.NumberFormat
+		format   *envs.NumberFormat
 	}{
-		{"1234", decimal.RequireFromString("1234"), utils.DefaultNumberFormat},
-		{"1,234.567", decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat},
-		{"1.234,567", decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
-		{".1234", decimal.RequireFromString("0.1234"), utils.DefaultNumberFormat},
-		{" .1234", decimal.RequireFromString("0.1234"), utils.DefaultNumberFormat},
-		{"100.00", decimal.RequireFromString("100.00"), utils.DefaultNumberFormat},
+		{"1234", decimal.RequireFromString("1234"), envs.DefaultNumberFormat},
+		{"1,234.567", decimal.RequireFromString("1234.567"), envs.DefaultNumberFormat},
+		{"1.234,567", decimal.RequireFromString("1234.567"), &envs.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
+		{".1234", decimal.RequireFromString("0.1234"), envs.DefaultNumberFormat},
+		{" .1234", decimal.RequireFromString("0.1234"), envs.DefaultNumberFormat},
+		{"100.00", decimal.RequireFromString("100.00"), envs.DefaultNumberFormat},
 	}
 
 	for _, test := range parseTests {

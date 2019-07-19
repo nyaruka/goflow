@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -32,7 +33,7 @@ func NewChannelModifier(channel *flows.Channel) *ChannelModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *ChannelModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+func (m *ChannelModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	// if URNs change in anyway, generate a URNs changed event
 	if contact.UpdatePreferredChannel(m.channel) {
 		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))

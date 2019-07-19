@@ -1,8 +1,11 @@
-package utils
+package envs
 
 import (
 	"encoding/json"
 	"time"
+
+	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 )
 
 type RedactionPolicy string
@@ -66,7 +69,7 @@ func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat 
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
 func (e *environment) MaxValueLength() int              { return e.maxValueLength }
 
-func (e *environment) Now() time.Time { return Now().In(e.Timezone()) }
+func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }
 
 func (e *environment) Extension(name string) json.RawMessage {
 	return e.extensions[name]
@@ -102,7 +105,7 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env := NewEnvironmentBuilder().Build().(*environment)
 	envelope := env.toEnvelope()
 
-	if err := UnmarshalAndValidate(data, envelope); err != nil {
+	if err := utils.UnmarshalAndValidate(data, envelope); err != nil {
 		return nil, err
 	}
 

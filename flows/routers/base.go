@@ -10,6 +10,8 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -132,7 +134,7 @@ func (r *BaseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent f
 		}
 	}
 
-	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), utils.DateTimeToISO(timedOutOn), "", nil, logEvent)
+	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), dates.FormatISO(timedOutOn), "", nil, logEvent)
 }
 
 func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input string, extra *types.XObject, logEvent flows.EventCallback) (flows.ExitUUID, error) {
@@ -157,13 +159,13 @@ func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categor
 	// save result if we have a result name
 	if r.resultName != "" {
 		// localize the category name
-		localizedCategory := run.GetText(utils.UUID(category.UUID()), "name", "")
+		localizedCategory := run.GetText(uuids.UUID(category.UUID()), "name", "")
 
 		var extraJSON json.RawMessage
 		if extra != nil {
 			extraJSON, _ = json.Marshal(extra)
 		}
-		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, utils.Now())
+		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, dates.Now())
 		run.SaveResult(result)
 		logEvent(events.NewRunResultChangedEvent(result))
 	}

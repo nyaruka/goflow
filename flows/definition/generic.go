@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // ReadFlowFromGeneric tries to read a flow in the current spec from the given generic map
@@ -28,20 +28,20 @@ func MustReadFlowFromGeneric(data map[string]interface{}) flows.Flow {
 }
 
 // remap all UUIDs in the flow
-func remapUUIDs(data map[string]interface{}, depMapping map[utils.UUID]utils.UUID) {
+func remapUUIDs(data map[string]interface{}, depMapping map[uuids.UUID]uuids.UUID) {
 	// copy in the dependency mappings into a master mapping of all UUIDs
-	mapping := make(map[utils.UUID]utils.UUID)
+	mapping := make(map[uuids.UUID]uuids.UUID)
 	for k, v := range depMapping {
 		mapping[k] = v
 	}
 
-	replaceUUID := func(u utils.UUID) utils.UUID {
-		if u == utils.UUID("") {
-			return utils.UUID("")
+	replaceUUID := func(u uuids.UUID) uuids.UUID {
+		if u == uuids.UUID("") {
+			return uuids.UUID("")
 		}
 		mapped, exists := mapping[u]
 		if !exists {
-			mapped = utils.NewUUID()
+			mapped = uuids.New()
 			mapping[u] = mapped
 		}
 		return mapped
@@ -56,10 +56,10 @@ func remapUUIDs(data map[string]interface{}, depMapping map[utils.UUID]utils.UUI
 			if p == "uuid" || strings.HasSuffix(p, "_uuid") {
 				asString, isString := v.(string)
 				if isString {
-					obj[p] = replaceUUID(utils.UUID(asString))
+					obj[p] = replaceUUID(uuids.UUID(asString))
 				}
-			} else if utils.IsUUIDv4(p) {
-				newProperty := string(replaceUUID(utils.UUID(p)))
+			} else if uuids.IsV4(p) {
+				newProperty := string(replaceUUID(uuids.UUID(p)))
 				obj[newProperty] = v
 				delete(obj, p)
 			}
@@ -69,8 +69,8 @@ func remapUUIDs(data map[string]interface{}, depMapping map[utils.UUID]utils.UUI
 	arrayCallback := func(arr []interface{}) {
 		for i, v := range arr {
 			asString, isString := v.(string)
-			if isString && utils.IsUUIDv4(asString) {
-				arr[i] = replaceUUID(utils.UUID(asString))
+			if isString && uuids.IsV4(asString) {
+				arr[i] = replaceUUID(uuids.UUID(asString))
 			}
 		}
 	}

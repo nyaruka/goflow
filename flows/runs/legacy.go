@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -45,7 +46,7 @@ func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 	return e
 }
 
-func (e *legacyExtra) ToXValue(env utils.Environment) types.XValue {
+func (e *legacyExtra) ToXValue(env envs.Environment) types.XValue {
 	return types.NewXObject(e.values)
 }
 

@@ -6,10 +6,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/random"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -29,16 +31,16 @@ var xf = functions.Lookup
 var ERROR = types.NewXErrorf("any error")
 
 func TestFunctions(t *testing.T) {
-	dmy := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Build()
-	mdy := utils.NewEnvironmentBuilder().
-		WithDateFormat(utils.DateFormatMonthDayYear).
-		WithTimeFormat(utils.TimeFormatHourMinuteAmPm).
+	dmy := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
+	mdy := envs.NewEnvironmentBuilder().
+		WithDateFormat(envs.DateFormatMonthDayYear).
+		WithTimeFormat(envs.TimeFormatHourMinuteAmPm).
 		WithTimezone(la).
 		Build()
 
 	var funcTests = []struct {
 		name     string
-		env      utils.Environment
+		env      envs.Environment
 		args     []types.XValue
 		expected types.XValue
 	}{
@@ -110,15 +112,15 @@ func TestFunctions(t *testing.T) {
 		{"clean", dmy, []types.XValue{xs("")}, xs("")},
 		{"clean", dmy, []types.XValue{}, ERROR},
 
-		{"date", dmy, []types.XValue{xs("01-12-2017")}, xd(utils.NewDate(2017, 12, 1))},
-		{"date", mdy, []types.XValue{xs("12-01-2017")}, xd(utils.NewDate(2017, 12, 1))},
-		{"date", dmy, []types.XValue{xs("01-12-2017 10:15pm")}, xd(utils.NewDate(2017, 12, 1))},
+		{"date", dmy, []types.XValue{xs("01-12-2017")}, xd(dates.NewDate(2017, 12, 1))},
+		{"date", mdy, []types.XValue{xs("12-01-2017")}, xd(dates.NewDate(2017, 12, 1))},
+		{"date", dmy, []types.XValue{xs("01-12-2017 10:15pm")}, xd(dates.NewDate(2017, 12, 1))},
 		{"date", dmy, []types.XValue{xs("01.15.2017")}, ERROR}, // month out of range
 		{"date", dmy, []types.XValue{xs("no date")}, ERROR},    // invalid date
 		{"date", dmy, []types.XValue{}, ERROR},
 
-		{"date_from_parts", dmy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(utils.NewDate(2018, 11, 3))},
-		{"date_from_parts", mdy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(utils.NewDate(2018, 11, 3))},
+		{"date_from_parts", dmy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(dates.NewDate(2018, 11, 3))},
+		{"date_from_parts", mdy, []types.XValue{xi(2018), xi(11), xi(3)}, xd(dates.NewDate(2018, 11, 3))},
 		{"date_from_parts", dmy, []types.XValue{xi(2018), xi(15), xi(3)}, ERROR}, // month out of range
 		{"date_from_parts", dmy, []types.XValue{ERROR, xi(11), xi(3)}, ERROR},
 		{"date_from_parts", dmy, []types.XValue{xi(2018), ERROR, xi(3)}, ERROR},
@@ -265,7 +267,7 @@ func TestFunctions(t *testing.T) {
 		{"foreach_value", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y")}), xf("abs")}, ERROR},
 
 		{"format", dmy, []types.XValue{xn("1234")}, xs("1,234")},
-		{"format", dmy, []types.XValue{xd(utils.NewDate(2017, 6, 12))}, xs("12-06-2017")},
+		{"format", dmy, []types.XValue{xd(dates.NewDate(2017, 6, 12))}, xs("12-06-2017")},
 		{"format", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xs("12-06-2017 16:56")},
 		{"format", dmy, []types.XValue{nil}, xs("")},
 
@@ -418,8 +420,8 @@ func TestFunctions(t *testing.T) {
 		{"or", dmy, []types.XValue{ERROR}, ERROR},
 		{"or", dmy, []types.XValue{}, ERROR},
 
-		{"parse_time", dmy, []types.XValue{xs("15:28"), xs("tt:mm")}, xt(utils.NewTimeOfDay(15, 28, 0, 0))},
-		{"parse_time", dmy, []types.XValue{xs("2:40 pm"), xs("h:mm aa")}, xt(utils.NewTimeOfDay(14, 40, 0, 0))},
+		{"parse_time", dmy, []types.XValue{xs("15:28"), xs("tt:mm")}, xt(dates.NewTimeOfDay(15, 28, 0, 0))},
+		{"parse_time", dmy, []types.XValue{xs("2:40 pm"), xs("h:mm aa")}, xt(dates.NewTimeOfDay(14, 40, 0, 0))},
 		{"parse_time", dmy, []types.XValue{xs("xxxx"), xs("tt:mm")}, ERROR}, // unparseable input
 		{"parse_time", dmy, []types.XValue{xs("xxxx"), xs("ttttt")}, ERROR}, // invalid format
 		{"parse_time", dmy, []types.XValue{ERROR, xs("tt:mm")}, ERROR},      // error as input
@@ -499,9 +501,9 @@ func TestFunctions(t *testing.T) {
 		{"replace", dmy, []types.XValue{xs("hi ho hi"), xs("hi"), xs("bye"), xs("num")}, ERROR},
 		{"replace", dmy, []types.XValue{}, ERROR},
 
-		{"replace_time", dmy, []types.XValue{xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), xt(utils.NewTimeOfDay(10, 30, 0, 0))}, xdt(time.Date(1977, 06, 23, 10, 30, 0, 0, la))},
+		{"replace_time", dmy, []types.XValue{xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), xt(dates.NewTimeOfDay(10, 30, 0, 0))}, xdt(time.Date(1977, 06, 23, 10, 30, 0, 0, la))},
 		{"replace_time", dmy, []types.XValue{xdt(time.Date(1977, 06, 23, 15, 34, 0, 0, la)), ERROR}, ERROR},
-		{"replace_time", dmy, []types.XValue{ERROR, xt(utils.NewTimeOfDay(10, 30, 0, 0))}, ERROR},
+		{"replace_time", dmy, []types.XValue{ERROR, xt(dates.NewTimeOfDay(10, 30, 0, 0))}, ERROR},
 
 		{"text_slice", dmy, []types.XValue{xs("hello"), xs("2")}, xs("llo")},
 		{"text_slice", dmy, []types.XValue{xs("foo 😁 bar"), xs("2")}, xs("o 😁 bar")},
@@ -569,12 +571,12 @@ func TestFunctions(t *testing.T) {
 		{"text_length", dmy, []types.XValue{ERROR}, ERROR},
 		{"text_length", dmy, []types.XValue{}, ERROR},
 
-		{"time", dmy, []types.XValue{xs("10:30")}, xt(utils.NewTimeOfDay(10, 30, 0, 0))},
-		{"time", dmy, []types.XValue{xs("12:00 AM")}, xt(utils.NewTimeOfDay(0, 0, 0, 0))},
-		{"time", dmy, []types.XValue{xs("12:00pm")}, xt(utils.NewTimeOfDay(12, 0, 0, 0))},
+		{"time", dmy, []types.XValue{xs("10:30")}, xt(dates.NewTimeOfDay(10, 30, 0, 0))},
+		{"time", dmy, []types.XValue{xs("12:00 AM")}, xt(dates.NewTimeOfDay(0, 0, 0, 0))},
+		{"time", dmy, []types.XValue{xs("12:00pm")}, xt(dates.NewTimeOfDay(12, 0, 0, 0))},
 		{"time", dmy, []types.XValue{ERROR}, ERROR},
 
-		{"time_from_parts", dmy, []types.XValue{xi(14), xi(40), xi(15)}, xt(utils.NewTimeOfDay(14, 40, 15, 0))},
+		{"time_from_parts", dmy, []types.XValue{xi(14), xi(40), xi(15)}, xt(dates.NewTimeOfDay(14, 40, 15, 0))},
 		{"time_from_parts", dmy, []types.XValue{xi(25), xi(40), xi(15)}, ERROR},
 		{"time_from_parts", dmy, []types.XValue{xi(14), xi(61), xi(15)}, ERROR},
 		{"time_from_parts", dmy, []types.XValue{xi(14), xi(40), xi(61)}, ERROR},
@@ -585,7 +587,7 @@ func TestFunctions(t *testing.T) {
 		{"title", dmy, []types.XValue{nil}, xs("")},
 		{"title", dmy, []types.XValue{}, ERROR},
 
-		{"today", dmy, []types.XValue{}, xd(utils.NewDate(2018, 4, 11))},
+		{"today", dmy, []types.XValue{}, xd(dates.NewDate(2018, 4, 11))},
 		{"today", dmy, []types.XValue{ERROR}, ERROR},
 
 		{"tz", dmy, []types.XValue{xs("01-12-2017")}, xs("UTC")},
@@ -668,11 +670,11 @@ func TestFunctions(t *testing.T) {
 		{"url_encode", dmy, []types.XValue{}, ERROR},
 	}
 
-	defer utils.SetRand(utils.DefaultRand)
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	defer random.SetGenerator(random.DefaultGenerator)
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	utils.SetRand(utils.NewSeededRand(123456))
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	random.SetGenerator(random.NewSeededGenerator(123456))
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	for _, tc := range funcTests {
 		testID := fmt.Sprintf("%s(%#v)", tc.name, tc.args)

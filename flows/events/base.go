@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/pkg/errors"
 )
@@ -26,7 +27,7 @@ type BaseEvent struct {
 
 // NewBaseEvent creates a new base event
 func NewBaseEvent(typeName string) BaseEvent {
-	return BaseEvent{Type_: typeName, CreatedOn_: utils.Now()}
+	return BaseEvent{Type_: typeName, CreatedOn_: dates.Now()}
 }
 
 // Type returns the type of this event

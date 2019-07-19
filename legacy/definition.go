@@ -10,6 +10,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -19,6 +20,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -26,7 +28,7 @@ import (
 
 // Flow is a flow in the legacy format
 type Flow struct {
-	BaseLanguage utils.Language `json:"base_language"`
+	BaseLanguage envs.Language  `json:"base_language"`
 	FlowType     string         `json:"flow_type"`
 	RuleSets     []RuleSet      `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
@@ -218,7 +220,7 @@ type Action struct {
 	Label string `json:"label"`
 
 	// set language
-	Language utils.Language `json:"lang"`
+	Language envs.Language `json:"lang"`
 
 	// add label action
 	Labels []LabelReference `json:"labels"`
@@ -290,7 +292,7 @@ var flowTypeMapping = map[string]flows.FlowType{
 	"S": flows.FlowTypeMessagingOffline,
 }
 
-func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped Translations, uuid utils.UUID, property string) string {
+func addTranslationMap(baseLanguage envs.Language, localization flows.Localization, mapped Translations, uuid uuids.UUID, property string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
 		expression, _ := expressions.MigrateTemplate(item, nil)
@@ -304,7 +306,7 @@ func addTranslationMap(baseLanguage utils.Language, localization flows.Localizat
 	return inBaseLanguage
 }
 
-func addTranslationMultiMap(baseLanguage utils.Language, localization flows.Localization, mapped map[utils.Language][]string, uuid utils.UUID, property string) []string {
+func addTranslationMultiMap(baseLanguage envs.Language, localization flows.Localization, mapped map[envs.Language][]string, uuid uuids.UUID, property string) []string {
 	var inBaseLanguage []string
 	for language, items := range mapped {
 		templates := make([]string, len(items))
@@ -325,9 +327,9 @@ func addTranslationMultiMap(baseLanguage utils.Language, localization flows.Loca
 //
 // [{"eng": "yes", "fra": "oui"}, {"eng": "no", "fra": "non"}] becomes {"eng": ["yes", "no"], "fra": ["oui", "non"]}
 //
-func TransformTranslations(items []Translations) map[utils.Language][]string {
+func TransformTranslations(items []Translations) map[envs.Language][]string {
 	// re-organize into a map of arrays
-	transformed := make(map[utils.Language][]string)
+	transformed := make(map[envs.Language][]string)
 
 	for i := range items {
 		for language, translation := range items[i] {
@@ -370,7 +372,7 @@ var testTypeMappings = map[string]string{
 }
 
 // migrates the given legacy action to a new action
-func migrateAction(baseLanguage utils.Language, a Action, localization flows.Localization, baseMediaURL string) (flows.Action, error) {
+func migrateAction(baseLanguage envs.Language, a Action, localization flows.Localization, baseMediaURL string) (flows.Action, error) {
 	switch a.Type {
 	case "add_label":
 		labels := make([]*assets.LabelReference, len(a.Labels))
@@ -425,7 +427,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		return actions.NewStartSessionAction(a.UUID, a.Flow.Migrate(), []urns.URN{}, contacts, groups, variables, createContact), nil
 	case "reply", "send":
 		media := make(Translations)
-		var quickReplies map[utils.Language][]string
+		var quickReplies map[envs.Language][]string
 
 		msg, err := ReadTranslations(a.Msg)
 		if err != nil {
@@ -467,9 +469,9 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			}
 		}
 
-		migratedText := addTranslationMap(baseLanguage, localization, msg, utils.UUID(a.UUID), "text")
-		migratedMedia := addTranslationMap(baseLanguage, localization, media, utils.UUID(a.UUID), "attachments")
-		migratedQuickReplies := addTranslationMultiMap(baseLanguage, localization, quickReplies, utils.UUID(a.UUID), "quick_replies")
+		migratedText := addTranslationMap(baseLanguage, localization, msg, uuids.UUID(a.UUID), "text")
+		migratedMedia := addTranslationMap(baseLanguage, localization, media, uuids.UUID(a.UUID), "attachments")
+		migratedQuickReplies := addTranslationMultiMap(baseLanguage, localization, quickReplies, uuids.UUID(a.UUID), "quick_replies")
 
 		attachments := []string{}
 		if migratedMedia != "" {
@@ -550,8 +552,8 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			}
 		}
 
-		migratedText := addTranslationMap(baseLanguage, localization, msg, utils.UUID(a.UUID), "text")
-		migratedAudioURL := addTranslationMap(baseLanguage, localization, recording, utils.UUID(a.UUID), "audio_url")
+		migratedText := addTranslationMap(baseLanguage, localization, msg, uuids.UUID(a.UUID), "text")
+		migratedAudioURL := addTranslationMap(baseLanguage, localization, recording, uuids.UUID(a.UUID), "audio_url")
 
 		return actions.NewSayMsgAction(a.UUID, migratedText, migratedAudioURL), nil
 	case "play":
@@ -565,7 +567,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r RuleSet, validDests map[flows.NodeUUID]bool, localization flows.Localization) (flows.Node, UINodeType, NodeUIConfig, error) {
+func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID]bool, localization flows.Localization) (flows.Node, UINodeType, NodeUIConfig, error) {
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
@@ -596,7 +598,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, validDests map[flows.NodeUUI
 	switch r.Type {
 	case "subflow":
 		newActions = []flows.Action{
-			actions.NewEnterFlowAction(flows.ActionUUID(utils.NewUUID()), config.Flow, false),
+			actions.NewEnterFlowAction(flows.ActionUUID(uuids.New()), config.Flow, false),
 		}
 
 		// subflow rulesets operate on the child flow status
@@ -625,7 +627,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, validDests map[flows.NodeUUI
 		}
 
 		newActions = []flows.Action{
-			actions.NewCallWebhookAction(flows.ActionUUID(utils.NewUUID()), method, migratedURL, headers, body, resultName),
+			actions.NewCallWebhookAction(flows.ActionUUID(uuids.New()), method, migratedURL, headers, body, resultName),
 		}
 
 		// webhook rulesets operate on the webhook status, saved as category
@@ -635,7 +637,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, validDests map[flows.NodeUUI
 
 	case "resthook":
 		newActions = []flows.Action{
-			actions.NewCallResthookAction(flows.ActionUUID(utils.NewUUID()), config.Resthook, resultName),
+			actions.NewCallResthookAction(flows.ActionUUID(uuids.New()), config.Resthook, resultName),
 		}
 
 		// resthook rulesets operate on the webhook status, saved as category
@@ -763,7 +765,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, validDests map[flows.NodeUUI
 		}
 
 		newActions = []flows.Action{
-			transferto.NewTransferAirtimeAction(flows.ActionUUID(utils.NewUUID()), currencyAmounts, resultName),
+			transferto.NewTransferAirtimeAction(flows.ActionUUID(uuids.New()), currencyAmounts, resultName),
 		}
 
 		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
@@ -803,7 +805,7 @@ type categoryAndExit struct {
 }
 
 // migrates a set of legacy rules to sets of categories, cases and exits
-func migrateRules(baseLanguage utils.Language, r RuleSet, validDests map[flows.NodeUUID]bool, localization flows.Localization, uiConfig NodeUIConfig) ([]*routers.Case, []*routers.Category, flows.CategoryUUID, flows.CategoryUUID, []flows.Exit, error) {
+func migrateRules(baseLanguage envs.Language, r RuleSet, validDests map[flows.NodeUUID]bool, localization flows.Localization, uiConfig NodeUIConfig) ([]*routers.Case, []*routers.Category, flows.CategoryUUID, flows.CategoryUUID, []flows.Exit, error) {
 	cases := make([]*routers.Case, 0, len(r.Rules))
 	categories := make([]*routers.Category, 0, len(r.Rules))
 	exits := make([]flows.Exit, 0, len(r.Rules))
@@ -833,7 +835,7 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, validDests map[flows.N
 			exit := definition.NewExit(rule.UUID, destinationUUID)
 			exits = append(exits, exit)
 
-			category := routers.NewCategory(flows.CategoryUUID(utils.NewUUID()), baseName, exit.UUID())
+			category := routers.NewCategory(flows.CategoryUUID(uuids.New()), baseName, exit.UUID())
 			categories = append(categories, category)
 
 			converted = &categoryAndExit{category, exit}
@@ -842,7 +844,7 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, validDests map[flows.N
 		convertedByRuleUUID[rule.UUID] = converted
 		convertedByCategoryName[baseName] = converted
 
-		addTranslationMap(baseLanguage, localization, rule.Category, utils.UUID(converted.category.UUID()), "name")
+		addTranslationMap(baseLanguage, localization, rule.Category, uuids.UUID(converted.category.UUID()), "name")
 	}
 
 	// and then a case for each rule
@@ -880,12 +882,12 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, validDests map[flows.N
 }
 
 // migrates the given legacy rule to a router case
-func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category, localization flows.Localization) (*routers.Case, map[string]interface{}, error) {
+func migrateRule(baseLanguage envs.Language, r Rule, category *routers.Category, localization flows.Localization) (*routers.Case, map[string]interface{}, error) {
 	newType, _ := testTypeMappings[r.Test.Type]
 	var arguments []string
 	var err error
 
-	caseUUID := utils.UUID(utils.NewUUID())
+	caseUUID := uuids.New()
 	var caseUI map[string]interface{}
 
 	switch r.Test.Type {
@@ -1022,7 +1024,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, category *routers.Category
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
-func migrateActionSet(lang utils.Language, a ActionSet, validDests map[flows.NodeUUID]bool, localization flows.Localization, baseMediaURL string) (flows.Node, error) {
+func migrateActionSet(lang envs.Language, a ActionSet, validDests map[flows.NodeUUID]bool, localization flows.Localization, baseMediaURL string) (flows.Node, error) {
 	actions := make([]flows.Action, len(a.Actions))
 
 	// migrate each action
@@ -1149,7 +1151,7 @@ func (f *Flow) Migrate(baseMediaURL string) (flows.Flow, error) {
 	if uuid == "" {
 		uuid = f.UUID
 		if uuid == "" {
-			uuid = assets.FlowUUID(utils.NewUUID())
+			uuid = assets.FlowUUID(uuids.New())
 		}
 	}
 	if name == "" {

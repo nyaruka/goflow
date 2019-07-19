@@ -3,9 +3,9 @@ package actions
 import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -89,7 +89,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 
 		// do we have a template defined?
 		if a.Templating != nil {
-			translation := sa.Templates().FindTranslation(a.Templating.Template.UUID, channelRef, []utils.Language{run.Contact().Language(), run.Environment().DefaultLanguage()})
+			translation := sa.Templates().FindTranslation(a.Templating.Template.UUID, channelRef, []envs.Language{run.Contact().Language(), run.Environment().DefaultLanguage()})
 			if translation != nil {
 				// evaluate our variables
 				templateVariables := make([]string, len(a.Templating.Variables))

@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 )
 
 // XDateTime is a datetime value.
@@ -34,18 +36,18 @@ func (x XDateTime) Truthy() bool {
 
 // Render returns the canonical text representation
 func (x XDateTime) Render() string {
-	return utils.DateTimeToISO(x.Native())
+	return dates.FormatISO(x.Native())
 }
 
 // Format returns the pretty text representation
-func (x XDateTime) Format(env utils.Environment) string {
+func (x XDateTime) Format(env envs.Environment) string {
 	formatted, _ := x.FormatCustom(string(env.DateFormat())+" "+string(env.TimeFormat()), env.Timezone())
 	return formatted
 }
 
 // FormatCustom provides customised formatting
 func (x XDateTime) FormatCustom(format string, tz *time.Location) (string, error) {
-	goFormat, err := utils.ToGoDateFormat(format, utils.DateTimeFormatting)
+	goFormat, err := envs.ToGoDateFormat(format, envs.DateTimeFormatting)
 	if err != nil {
 		return "", err
 	}
@@ -69,12 +71,12 @@ func (x XDateTime) Native() time.Time { return x.native }
 
 // Date returns the date part of this datetime
 func (x XDateTime) Date() XDate {
-	return NewXDate(utils.ExtractDate(x.Native()))
+	return NewXDate(dates.ExtractDate(x.Native()))
 }
 
 // Time returns the time part of this datetime
 func (x XDateTime) Time() XTime {
-	return NewXTime(utils.ExtractTimeOfDay(x.Native()))
+	return NewXTime(dates.ExtractTimeOfDay(x.Native()))
 }
 
 // In returns a copy of this datetime in a different timezone
@@ -108,7 +110,7 @@ func (x XDateTime) Compare(other XDateTime) int {
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XDateTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(utils.DateTimeToISO(x.Native()))
+	return json.Marshal(dates.FormatISO(x.Native()))
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
@@ -118,31 +120,31 @@ func (x *XDateTime) UnmarshalJSON(data []byte) error {
 }
 
 // XDateTimeZero is the zero time value
-var XDateTimeZero = NewXDateTime(utils.ZeroDateTime)
+var XDateTimeZero = NewXDateTime(envs.ZeroDateTime)
 var _ XValue = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible
-func ToXDateTime(env utils.Environment, x XValue) (XDateTime, XError) {
+func ToXDateTime(env envs.Environment, x XValue) (XDateTime, XError) {
 	return toXDateTime(env, x, false)
 }
 
 // ToXDateTimeWithTimeFill converts the given value to a time or returns an error if that isn't possible
-func ToXDateTimeWithTimeFill(env utils.Environment, x XValue) (XDateTime, XError) {
+func ToXDateTimeWithTimeFill(env envs.Environment, x XValue) (XDateTime, XError) {
 	return toXDateTime(env, x, true)
 }
 
 // converts the given value to a time or returns an error if that isn't possible
-func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XError) {
+func toXDateTime(env envs.Environment, x XValue, fillTime bool) (XDateTime, XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
 		case XError:
 			return XDateTimeZero, typed
 		case XDate:
-			return NewXDateTime(typed.Native().Combine(utils.ZeroTimeOfDay, env.Timezone())), nil
+			return NewXDateTime(typed.Native().Combine(dates.ZeroTimeOfDay, env.Timezone())), nil
 		case XDateTime:
 			return typed, nil
 		case XText:
-			parsed, err := utils.DateTimeFromString(env, typed.Native(), fillTime)
+			parsed, err := envs.DateTimeFromString(env, typed.Native(), fillTime)
 			if err == nil {
 				return NewXDateTime(parsed), nil
 			}

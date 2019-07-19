@@ -9,12 +9,15 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -80,12 +83,12 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	err = json.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
-		utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
+		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 
 		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
 
@@ -147,17 +150,17 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 			// and switch their language
 			if tc.Localization != nil {
-				contact.SetLanguage(utils.Language("spa"))
+				contact.SetLanguage(envs.Language("spa"))
 			}
 		}
 
-		envBuilder := utils.NewEnvironmentBuilder().
+		envBuilder := envs.NewEnvironmentBuilder().
 			WithDefaultLanguage("eng").
-			WithAllowedLanguages([]utils.Language{"eng", "spa"}).
+			WithAllowedLanguages([]envs.Language{"eng", "spa"}).
 			WithDefaultCountry("RW")
 
 		if tc.RedactURNs {
-			envBuilder.WithRedactionPolicy(utils.RedactionPolicyURNs)
+			envBuilder.WithRedactionPolicy(envs.RedactionPolicyURNs)
 		}
 
 		env := envBuilder.Build()

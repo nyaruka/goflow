@@ -1,3 +1,9 @@
+v0.42.0
+----------
+ * Move Environment type and environment based date parsing to new envs package
+ * Move Date and TimeOfDay types to new dates package
+ * Do template and dependency enumeration by reflection
+
 v0.41.18
 ----------
  * Drop current template rewriting functionality which isn't used and can't be used with migrations

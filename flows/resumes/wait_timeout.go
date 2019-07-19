@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -37,7 +38,7 @@ type WaitTimeoutResume struct {
 }
 
 // NewWaitTimeoutResume creates a new timeout resume with the passed in values
-func NewWaitTimeoutResume(env utils.Environment, contact *flows.Contact) *WaitTimeoutResume {
+func NewWaitTimeoutResume(env envs.Environment, contact *flows.Contact) *WaitTimeoutResume {
 	return &WaitTimeoutResume{
 		baseResume: newBaseResume(TypeWaitTimeout, env, contact),
 	}

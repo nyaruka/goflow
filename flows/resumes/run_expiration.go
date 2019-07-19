@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -37,7 +38,7 @@ type RunExpirationResume struct {
 }
 
 // NewRunExpirationResume creates a new run expired resume with the passed in values
-func NewRunExpirationResume(env utils.Environment, contact *flows.Contact) *RunExpirationResume {
+func NewRunExpirationResume(env envs.Environment, contact *flows.Contact) *RunExpirationResume {
 	return &RunExpirationResume{
 		baseResume: newBaseResume(TypeRunExpiration, env, contact),
 	}

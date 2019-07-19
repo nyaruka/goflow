@@ -5,11 +5,14 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -36,9 +39,9 @@ type flowRun struct {
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
 func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
-	now := utils.Now()
+	now := dates.Now()
 	r := &flowRun{
-		uuid:       flows.RunUUID(utils.NewUUID()),
+		uuid:       flows.RunUUID(uuids.New()),
 		session:    session,
 		flow:       flow,
 		parent:     parent,
@@ -73,13 +76,13 @@ func (r *flowRun) SaveResult(result *flows.Result) {
 	}
 
 	r.results.Save(result)
-	r.modifiedOn = utils.Now()
+	r.modifiedOn = dates.Now()
 
 	r.legacyExtra.addResult(result)
 }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
-	now := utils.Now()
+	now := dates.Now()
 
 	r.status = status
 	r.exitedOn = &now
@@ -88,7 +91,7 @@ func (r *flowRun) Exit(status flows.RunStatus) {
 func (r *flowRun) Status() flows.RunStatus { return r.status }
 func (r *flowRun) SetStatus(status flows.RunStatus) {
 	r.status = status
-	r.modifiedOn = utils.Now()
+	r.modifiedOn = dates.Now()
 }
 
 // ParentInSession returns the parent of the run within the same session if one exists
@@ -128,7 +131,7 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 	}
 
 	r.events = append(r.events, event)
-	r.modifiedOn = utils.Now()
+	r.modifiedOn = dates.Now()
 }
 
 func (r *flowRun) LogError(step flows.Step, err error) {
@@ -137,7 +140,7 @@ func (r *flowRun) LogError(step flows.Step, err error) {
 
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
-	now := utils.Now()
+	now := dates.Now()
 	step := NewStep(node, now)
 	r.path = append(r.path, step)
 	r.modifiedOn = now
@@ -166,7 +169,7 @@ func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
 	if r.Flow().ExpireAfterMinutes() >= 0 {
 		if from == nil {
-			now := utils.Now()
+			now := dates.Now()
 			from = &now
 		}
 
@@ -174,7 +177,7 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 		expiresOn := from.Add(expiresAfterMinutes * time.Minute)
 
 		r.expiresOn = &expiresOn
-		r.modifiedOn = utils.Now()
+		r.modifiedOn = dates.Now()
 	}
 
 	if r.ParentInSession() != nil {
@@ -198,7 +201,7 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 //   trigger:trigger -> the trigger that started this session
 //
 // @context root
-func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
+func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if r.Contact() != nil {
 		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
@@ -252,7 +255,7 @@ func (r *flowRun) lastWebhookResponse() types.XValue {
 //   exited_on:datetime -> the exit date of the run
 //
 // @context run
-func (r *flowRun) Context(env utils.Environment) map[string]types.XValue {
+func (r *flowRun) Context(env envs.Environment) map[string]types.XValue {
 	var exitedOn types.XValue
 	if r.exitedOn != nil {
 		exitedOn = types.NewXDateTime(*r.exitedOn)
@@ -286,14 +289,14 @@ func (r *flowRun) EvaluateTemplate(template string) (string, error) {
 }
 
 // get the ordered list of languages to be used for localization in this run
-func (r *flowRun) getLanguages() []utils.Language {
+func (r *flowRun) getLanguages() []envs.Language {
 	// TODO cache this this?
 
 	contact := r.Contact()
-	languages := make([]utils.Language, 0, 3)
+	languages := make([]envs.Language, 0, 3)
 
 	// if contact has a allowed language, it takes priority
-	if contact != nil && contact.Language() != utils.NilLanguage {
+	if contact != nil && contact.Language() != envs.NilLanguage {
 		for _, l := range r.Environment().AllowedLanguages() {
 			if l == contact.Language() {
 				languages = append(languages, contact.Language())
@@ -304,7 +307,7 @@ func (r *flowRun) getLanguages() []utils.Language {
 
 	// next we include the default language if it's different to the contact language
 	defaultLanguage := r.Environment().DefaultLanguage()
-	if defaultLanguage != utils.NilLanguage && defaultLanguage != contact.Language() {
+	if defaultLanguage != envs.NilLanguage && defaultLanguage != contact.Language() {
 		languages = append(languages, defaultLanguage)
 	}
 
@@ -313,16 +316,16 @@ func (r *flowRun) getLanguages() []utils.Language {
 	return append(languages, r.flow.Language())
 }
 
-func (r *flowRun) GetText(uuid utils.UUID, key string, native string) string {
+func (r *flowRun) GetText(uuid uuids.UUID, key string, native string) string {
 	textArray := r.GetTextArray(uuid, key, []string{native})
 	return textArray[0]
 }
 
-func (r *flowRun) GetTextArray(uuid utils.UUID, key string, native []string) []string {
+func (r *flowRun) GetTextArray(uuid uuids.UUID, key string, native []string) []string {
 	return r.GetTranslatedTextArray(uuid, key, native, r.getLanguages())
 }
 
-func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []string, languages []utils.Language) []string {
+func (r *flowRun) GetTranslatedTextArray(uuid uuids.UUID, key string, native []string, languages []envs.Language) []string {
 	if languages == nil {
 		languages = r.getLanguages()
 	}

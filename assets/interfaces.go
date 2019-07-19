@@ -3,11 +3,13 @@ package assets
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // ChannelUUID is the UUID of a channel
-type ChannelUUID utils.UUID
+type ChannelUUID uuids.UUID
 
 // ChannelRole is a role that a channel can perform
 type ChannelRole string
@@ -73,7 +75,7 @@ type Field interface {
 }
 
 // FlowUUID is the UUID of a flow
-type FlowUUID utils.UUID
+type FlowUUID uuids.UUID
 
 // Flow is graph of nodes with actions and routers.
 //
@@ -93,7 +95,7 @@ type Flow interface {
 }
 
 // GroupUUID is the UUID of a group
-type GroupUUID utils.UUID
+type GroupUUID uuids.UUID
 
 // Group is a set of contacts which can be static or dynamic (i.e. based on a query).
 //
@@ -111,7 +113,7 @@ type Group interface {
 }
 
 // LabelUUID is the UUID of a label
-type LabelUUID utils.UUID
+type LabelUUID uuids.UUID
 
 // Label is an organizational tag that can be applied to a message.
 //
@@ -182,7 +184,7 @@ type Resthook interface {
 	Subscribers() []string
 }
 
-type TemplateUUID utils.UUID
+type TemplateUUID uuids.UUID
 
 // Template is a message template, currently only used by WhatsApp channels
 //
@@ -219,7 +221,7 @@ type Template interface {
 // TemplateTranslation represents a single translation for a specific template and channel
 type TemplateTranslation interface {
 	Content() string
-	Language() utils.Language
+	Language() envs.Language
 	VariableCount() int
 	Channel() ChannelReference
 }

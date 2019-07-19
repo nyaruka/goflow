@@ -5,28 +5,29 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestXTime(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
-	t1 := types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0))
+	t1 := types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0))
 	assert.Equal(t, `time`, t1.Describe())
 	assert.True(t, t1.Truthy())
-	assert.Equal(t, `17:01:30.000000`, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).Render())
-	assert.Equal(t, `17:01`, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).Format(env))
-	assert.Equal(t, `XTime(17, 1, 30, 0)`, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).String())
+	assert.Equal(t, `17:01:30.000000`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).Render())
+	assert.Equal(t, `17:01`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).Format(env))
+	assert.Equal(t, `XTime(17, 1, 30, 0)`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).String())
 
-	formatted, err := t1.FormatCustom(utils.TimeFormat("ss"))
+	formatted, err := t1.FormatCustom(envs.TimeFormat("ss"))
 	assert.NoError(t, err)
 	assert.Equal(t, `30`, formatted)
 
-	formatted, err = t1.FormatCustom(utils.TimeFormat("ssssss"))
+	formatted, err = t1.FormatCustom(envs.TimeFormat("ssssss"))
 	assert.EqualError(t, err, "invalid date format, invalid count of 's' format: 6")
 
 	marshaled, err := json.Marshal(t1)
@@ -34,13 +35,13 @@ func TestXTime(t *testing.T) {
 	assert.Equal(t, `"17:01:30.000000"`, string(marshaled))
 
 	// test equality
-	assert.True(t, t1.Equals(types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0))))
-	assert.False(t, t1.Equals(types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 1))))
+	assert.True(t, t1.Equals(types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0))))
+	assert.False(t, t1.Equals(types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 1))))
 
 	// test comparisons
-	assert.Equal(t, 0, types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)).Compare(t1))
-	assert.Equal(t, 1, types.NewXTime(utils.NewTimeOfDay(17, 1, 31, 0)).Compare(t1))
-	assert.Equal(t, -1, types.NewXTime(utils.NewTimeOfDay(17, 1, 29, 0)).Compare(t1))
+	assert.Equal(t, 0, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).Compare(t1))
+	assert.Equal(t, 1, types.NewXTime(dates.NewTimeOfDay(17, 1, 31, 0)).Compare(t1))
+	assert.Equal(t, -1, types.NewXTime(dates.NewTimeOfDay(17, 1, 29, 0)).Compare(t1))
 }
 
 func TestToXTime(t *testing.T) {
@@ -52,22 +53,22 @@ func TestToXTime(t *testing.T) {
 		{nil, types.XTimeZero, true},
 		{types.NewXError(errors.Errorf("Error")), types.XTimeZero, true},
 		{types.NewXNumberFromInt(123), types.XTimeZero, true},
-		{types.NewXNumberFromInt(23), types.NewXTime(utils.NewTimeOfDay(23, 0, 0, 0)), false},
+		{types.NewXNumberFromInt(23), types.NewXTime(dates.NewTimeOfDay(23, 0, 0, 0)), false},
 		{types.NewXNumberFromInt(24), types.XTimeZero, false},
-		{types.NewXText("10:30"), types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 0)), false},
-		{types.NewXText("10:30 pm"), types.NewXTime(utils.NewTimeOfDay(22, 30, 0, 0)), false},
-		{types.NewXText("10"), types.NewXTime(utils.NewTimeOfDay(10, 0, 0, 0)), false},
-		{types.NewXText("10 PM"), types.NewXTime(utils.NewTimeOfDay(22, 0, 0, 0)), false},
+		{types.NewXText("10:30"), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 0)), false},
+		{types.NewXText("10:30 pm"), types.NewXTime(dates.NewTimeOfDay(22, 30, 0, 0)), false},
+		{types.NewXText("10"), types.NewXTime(dates.NewTimeOfDay(10, 0, 0, 0)), false},
+		{types.NewXText("10 PM"), types.NewXTime(dates.NewTimeOfDay(22, 0, 0, 0)), false},
 		{types.NewXText("wha?"), types.XTimeZero, true},
-		{types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)), types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)), false},
-		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXTime(utils.NewTimeOfDay(17, 1, 30, 0)), false},
+		{types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)), types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)), false},
+		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)), false},
 		{types.NewXObject(map[string]types.XValue{
 			"__default__": types.NewXText("10:30"), // should use default
 			"foo":         types.NewXNumberFromInt(234),
-		}), types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 0)), false},
+		}), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 0)), false},
 	}
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	for _, test := range tests {
 		result, err := types.ToXTime(env, test.value)

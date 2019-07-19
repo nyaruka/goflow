@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -61,7 +62,7 @@ type ChannelTrigger struct {
 }
 
 // NewChannelTrigger creates a new channel trigger with the passed in values
-func NewChannelTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, event *ChannelEvent, params types.XValue) *ChannelTrigger {
+func NewChannelTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, event *ChannelEvent, params types.XValue) *ChannelTrigger {
 	return &ChannelTrigger{
 		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, nil, params),
 		event:       event,
@@ -69,7 +70,7 @@ func NewChannelTrigger(env utils.Environment, flow *assets.FlowReference, contac
 }
 
 // NewIncomingCallTrigger creates a new channel trigger with the passed in values
-func NewIncomingCallTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, urn urns.URN, channel *assets.ChannelReference) *ChannelTrigger {
+func NewIncomingCallTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, urn urns.URN, channel *assets.ChannelReference) *ChannelTrigger {
 	event := NewChannelEvent(ChannelEventTypeIncomingCall, channel)
 	connection := flows.NewConnection(channel, urn)
 

@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 func init() {
@@ -50,7 +51,7 @@ func NewSayMsgAction(uuid flows.ActionUUID, text string, audioURL string) *SayMs
 // Execute runs this action
 func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
-	localizedText := run.GetText(utils.UUID(a.UUID()), "text", a.Text)
+	localizedText := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, err := run.EvaluateTemplate(localizedText)
 	if err != nil {
 		logEvent(events.NewErrorEvent(err))
@@ -58,7 +59,7 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 	evaluatedText = strings.TrimSpace(evaluatedText)
 
 	// localize the audio URL
-	localizedAudioURL := run.GetText(utils.UUID(a.UUID()), "audio_url", a.AudioURL)
+	localizedAudioURL := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
 
 	// if we have neither an audio URL or backdown text, skip
 	if evaluatedText == "" && localizedAudioURL == "" {

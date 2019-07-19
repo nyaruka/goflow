@@ -1,21 +1,21 @@
-package utils_test
+package envs_test
 
 import (
 	"testing"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestLanguage(t *testing.T) {
-	lang, err := utils.ParseLanguage("ENG")
+	lang, err := envs.ParseLanguage("ENG")
 	assert.NoError(t, err)
-	assert.Equal(t, utils.Language("eng"), lang)
+	assert.Equal(t, envs.Language("eng"), lang)
 
-	_, err = utils.ParseLanguage("base")
+	_, err = envs.ParseLanguage("base")
 	assert.EqualError(t, err, "iso-639-3 codes must be 3 characters, got: base")
 
-	_, err = utils.ParseLanguage("xzx")
+	_, err = envs.ParseLanguage("xzx")
 	assert.EqualError(t, err, "unrecognized language code: xzx")
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -37,7 +38,7 @@ func newBaseModifier(typeName string) baseModifier {
 func (m *baseModifier) Type() string { return m.Type_ }
 
 // helper to re-evaluate dynamic groups and log any changes to membership
-func (m *baseModifier) reevaluateDynamicGroups(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+func (m *baseModifier) reevaluateDynamicGroups(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	added, removed, errors := contact.ReevaluateDynamicGroups(env, assets.Groups())
 
 	// add error event for each group we couldn't re-evaluate

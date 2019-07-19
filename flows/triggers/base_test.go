@@ -8,12 +8,14 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -46,11 +48,11 @@ var assetsJSON = `{
 }`
 
 func TestTriggerMarshaling(t *testing.T) {
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
 
-	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(1234))
-	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
@@ -58,11 +60,11 @@ func TestTriggerMarshaling(t *testing.T) {
 	sa, err := engine.NewSessionAssets(source)
 	require.NoError(t, err)
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 
-	contact := flows.NewEmptyContact(sa, "Bob", utils.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil))
 
 	triggerTests := []struct {

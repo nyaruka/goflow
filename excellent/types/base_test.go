@@ -4,8 +4,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -27,7 +29,7 @@ func TestXValue(t *testing.T) {
 		"bar": types.NewXNumberFromInt(456),
 	})
 
-	env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Build()
+	env := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
 
 	tests := []struct {
 		value     types.XValue
@@ -218,8 +220,8 @@ func TestEquals(t *testing.T) {
 		{types.XBooleanFalse, types.XBooleanFalse, true},
 		{types.XBooleanTrue, types.XBooleanFalse, false},
 
-		{types.NewXDate(utils.NewDate(2018, 4, 9)), types.NewXDate(utils.NewDate(2018, 4, 9)), true},
-		{types.NewXDate(utils.NewDate(2019, 4, 9)), types.NewXDate(utils.NewDate(2018, 4, 10)), false},
+		{types.NewXDate(dates.NewDate(2018, 4, 9)), types.NewXDate(dates.NewDate(2018, 4, 9)), true},
+		{types.NewXDate(dates.NewDate(2019, 4, 9)), types.NewXDate(dates.NewDate(2018, 4, 10)), false},
 
 		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), true},
 		{types.NewXDateTime(time.Date(2019, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
@@ -256,8 +258,8 @@ func TestEquals(t *testing.T) {
 		{types.NewXText("bob"), types.NewXText("bob"), true},
 		{types.NewXText("bob"), types.NewXText("abc"), false},
 
-		{types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 123456789)), types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 123456789)), true},
-		{types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 123456789)), types.NewXTime(utils.NewTimeOfDay(10, 30, 0, 987654321)), false},
+		{types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 123456789)), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 123456789)), true},
+		{types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 123456789)), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 987654321)), false},
 
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), true},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(124), false},

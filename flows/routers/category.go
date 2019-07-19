@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -25,7 +26,7 @@ func (c *Category) Name() string             { return c.name }
 func (c *Category) ExitUUID() flows.ExitUUID { return c.exitUUID }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
-func (c *Category) LocalizationUUID() utils.UUID { return utils.UUID(c.uuid) }
+func (c *Category) LocalizationUUID() uuids.UUID { return uuids.UUID(c.uuid) }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

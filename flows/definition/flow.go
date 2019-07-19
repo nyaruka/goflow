@@ -6,10 +6,12 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
 	"github.com/pkg/errors"
@@ -23,7 +25,7 @@ type flow struct {
 	uuid               assets.FlowUUID
 	name               string
 	specVersion        *semver.Version
-	language           utils.Language
+	language           envs.Language
 	flowType           flows.FlowType
 	revision           int
 	expireAfterMinutes int
@@ -38,7 +40,7 @@ type flow struct {
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage) (flows.Flow, error) {
+func NewFlow(uuid assets.FlowUUID, name string, language envs.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage) (flows.Flow, error) {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
@@ -68,7 +70,7 @@ func (f *flow) UUID() assets.FlowUUID                  { return f.uuid }
 func (f *flow) Name() string                           { return f.name }
 func (f *flow) SpecVersion() *semver.Version           { return f.specVersion }
 func (f *flow) Revision() int                          { return f.revision }
-func (f *flow) Language() utils.Language               { return f.language }
+func (f *flow) Language() envs.Language                { return f.language }
 func (f *flow) Type() flows.FlowType                   { return f.flowType }
 func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
@@ -78,14 +80,14 @@ func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] 
 
 func (f *flow) validate() error {
 	// track UUIDs used by nodes and actions to ensure that they are unique
-	seenUUIDs := make(map[utils.UUID]bool)
+	seenUUIDs := make(map[uuids.UUID]bool)
 
 	for _, node := range f.nodes {
-		uuidAlreadySeen := seenUUIDs[utils.UUID(node.UUID())]
+		uuidAlreadySeen := seenUUIDs[uuids.UUID(node.UUID())]
 		if uuidAlreadySeen {
 			return errors.Errorf("node UUID %s isn't unique", node.UUID())
 		}
-		seenUUIDs[utils.UUID(node.UUID())] = true
+		seenUUIDs[uuids.UUID(node.UUID())] = true
 
 		if err := node.Validate(f, seenUUIDs); err != nil {
 			return errors.Wrapf(err, "invalid node[uuid=%s]", node.UUID())
@@ -183,7 +185,7 @@ func (f *flow) validateAssets(sa flows.SessionAssets, recursive bool, seen map[a
 //   revision:text -> the revision number of the flow
 //
 // @context flow
-func (f *flow) Context(env utils.Environment) map[string]types.XValue {
+func (f *flow) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"__default__": types.NewXText(f.name),
 		"uuid":        types.NewXText(string(f.UUID())),
@@ -294,7 +296,7 @@ func (f *flow) Generic() map[string]interface{} {
 
 // Clone clones this flow replacing all UUIDs using the provided mapping and generating new
 // random UUIDs if they aren't in the mapping
-func (f *flow) Clone(depMapping map[utils.UUID]utils.UUID) flows.Flow {
+func (f *flow) Clone(depMapping map[uuids.UUID]uuids.UUID) flows.Flow {
 	generic := f.Generic()
 	remapUUIDs(generic, depMapping)
 
@@ -322,7 +324,7 @@ type flowHeader struct {
 type flowEnvelope struct {
 	flowHeader
 
-	Language           utils.Language  `json:"language" validate:"required"`
+	Language           envs.Language   `json:"language" validate:"required"`
 	Type               flows.FlowType  `json:"type" validate:"required,flow_type"`
 	Revision           int             `json:"revision"`
 	ExpireAfterMinutes int             `json:"expire_after_minutes"`
