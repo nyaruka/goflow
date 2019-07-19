@@ -129,7 +129,7 @@ type Flow interface {
 	UUID() assets.FlowUUID
 	Name() string
 	Revision() int
-	Language() utils.Language
+	Language() envs.Language
 	Type() FlowType
 	ExpireAfterMinutes() int
 	Localization() Localization
@@ -223,9 +223,9 @@ type Hint interface {
 
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
-	AddItemTranslation(utils.Language, utils.UUID, string, []string)
-	GetTranslations(utils.Language) Translations
-	Languages() []utils.Language
+	AddItemTranslation(envs.Language, utils.UUID, string, []string)
+	GetTranslations(envs.Language) Translations
+	Languages() []envs.Language
 }
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
@@ -402,7 +402,7 @@ type FlowRun interface {
 
 	GetText(utils.UUID, string, string) string
 	GetTextArray(utils.UUID, string, []string) []string
-	GetTranslatedTextArray(utils.UUID, string, []string, []utils.Language) []string
+	GetTranslatedTextArray(utils.UUID, string, []string, []envs.Language) []string
 
 	Snapshot() RunSummary
 	Parent() RunSummary

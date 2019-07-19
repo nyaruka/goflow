@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -206,8 +207,8 @@ func TestNewFlow(t *testing.T) {
 
 	flow, err := definition.NewFlow(
 		assets.FlowUUID("8ca44c09-791d-453a-9799-a70dd3303306"),
-		"Test Flow",           // name
-		utils.Language("eng"), // base language
+		"Test Flow",          // name
+		envs.Language("eng"), // base language
 		flows.FlowTypeMessaging,
 		123, // revision
 		30,  // expires after minutes

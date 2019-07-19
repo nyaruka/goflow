@@ -21,11 +21,11 @@ const TypeLanguage string = "language"
 type LanguageModifier struct {
 	baseModifier
 
-	Language utils.Language `json:"language"`
+	Language envs.Language `json:"language"`
 }
 
 // NewLanguageModifier creates a new language modifier
-func NewLanguageModifier(language utils.Language) *LanguageModifier {
+func NewLanguageModifier(language envs.Language) *LanguageModifier {
 	return &LanguageModifier{
 		baseModifier: newBaseModifier(TypeLanguage),
 		Language:     language,

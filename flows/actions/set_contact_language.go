@@ -3,10 +3,10 @@ package actions
 import (
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -59,9 +59,9 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 	}
 
 	// language must be empty or valid language code
-	lang := utils.NilLanguage
+	lang := envs.NilLanguage
 	if language != "" {
-		lang, err = utils.ParseLanguage(language)
+		lang, err = envs.ParseLanguage(language)
 		if err != nil {
 			logEvent(events.NewErrorEvent(err))
 			return nil

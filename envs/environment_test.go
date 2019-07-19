@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -54,9 +53,9 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())
 	assert.Equal(t, envs.TimeFormatHourMinuteSecond, env.TimeFormat())
 	assert.Equal(t, kgl, env.Timezone())
-	assert.Equal(t, utils.Language("eng"), env.DefaultLanguage())
-	assert.Equal(t, []utils.Language{utils.Language("eng"), utils.Language("fra")}, env.AllowedLanguages())
-	assert.Equal(t, utils.Country("RW"), env.DefaultCountry())
+	assert.Equal(t, envs.Language("eng"), env.DefaultLanguage())
+	assert.Equal(t, []envs.Language{envs.Language("eng"), envs.Language("fra")}, env.AllowedLanguages())
+	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, json.RawMessage(`{"bar":1234}`), env.Extension("foo"))
 
 	data, err := json.Marshal(env)
@@ -95,9 +94,9 @@ func TestEnvironmentBuilder(t *testing.T) {
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithTimeFormat(envs.TimeFormatHourMinuteSecond).
 		WithTimezone(kgl).
-		WithDefaultLanguage(utils.Language("fra")).
-		WithAllowedLanguages([]utils.Language{utils.Language("fra"), utils.Language("eng")}).
-		WithDefaultCountry(utils.Country("RW")).
+		WithDefaultLanguage(envs.Language("fra")).
+		WithAllowedLanguages([]envs.Language{envs.Language("fra"), envs.Language("eng")}).
+		WithDefaultCountry(envs.Country("RW")).
 		WithNumberFormat(&envs.NumberFormat{DecimalSymbol: "'"}).
 		WithRedactionPolicy(envs.RedactionPolicyURNs).
 		WithMaxValueLength(1024).
@@ -106,9 +105,9 @@ func TestEnvironmentBuilder(t *testing.T) {
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())
 	assert.Equal(t, envs.TimeFormatHourMinuteSecond, env.TimeFormat())
 	assert.Equal(t, kgl, env.Timezone())
-	assert.Equal(t, utils.Language("fra"), env.DefaultLanguage())
-	assert.Equal(t, []utils.Language{utils.Language("fra"), utils.Language("eng")}, env.AllowedLanguages())
-	assert.Equal(t, utils.Country("RW"), env.DefaultCountry())
+	assert.Equal(t, envs.Language("fra"), env.DefaultLanguage())
+	assert.Equal(t, []envs.Language{envs.Language("fra"), envs.Language("eng")}, env.AllowedLanguages())
+	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: "'"}, env.NumberFormat())
 	assert.Equal(t, envs.RedactionPolicyURNs, env.RedactionPolicy())
 	assert.Equal(t, 1024, env.MaxValueLength())

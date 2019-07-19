@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
@@ -252,7 +251,7 @@ func TestTests(t *testing.T) {
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithTimeFormat(envs.TimeFormatHourMinuteSecond).
 		WithTimezone(kgl).
-		WithDefaultCountry(utils.Country("RW")).
+		WithDefaultCountry(envs.Country("RW")).
 		Build()
 
 	for _, tc := range testTests {
@@ -336,7 +335,7 @@ func TestHasPhone(t *testing.T) {
 		{"12067799294", "BW", ""},
 	}
 
-	env := envs.NewEnvironmentBuilder().WithDefaultCountry(utils.Country("RW")).Build()
+	env := envs.NewEnvironmentBuilder().WithDefaultCountry(envs.Country("RW")).Build()
 
 	for _, tc := range tests {
 		var actual, expected types.XValue

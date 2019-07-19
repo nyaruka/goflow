@@ -5,7 +5,8 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,9 +16,9 @@ func TestTemplate(t *testing.T) {
 		UUID: assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"),
 	}
 
-	translation := NewTemplateTranslation(channel, utils.Language("eng"), "Hello {{1}}", 1)
+	translation := NewTemplateTranslation(channel, envs.Language("eng"), "Hello {{1}}", 1)
 	assert.Equal(t, channel, translation.Channel())
-	assert.Equal(t, utils.Language("eng"), translation.Language())
+	assert.Equal(t, envs.Language("eng"), translation.Language())
 	assert.Equal(t, "Hello {{1}}", translation.Content())
 	assert.Equal(t, 1, translation.VariableCount())
 

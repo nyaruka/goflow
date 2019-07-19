@@ -149,13 +149,13 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 			// and switch their language
 			if tc.Localization != nil {
-				contact.SetLanguage(utils.Language("spa"))
+				contact.SetLanguage(envs.Language("spa"))
 			}
 		}
 
 		envBuilder := envs.NewEnvironmentBuilder().
 			WithDefaultLanguage("eng").
-			WithAllowedLanguages([]utils.Language{"eng", "spa"}).
+			WithAllowedLanguages([]envs.Language{"eng", "spa"}).
 			WithDefaultCountry("RW")
 
 		if tc.RedactURNs {

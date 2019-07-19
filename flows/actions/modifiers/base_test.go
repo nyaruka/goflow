@@ -137,7 +137,7 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewLanguageModifier(utils.Language("fra")),
+			modifiers.NewLanguageModifier(envs.Language("fra")),
 			`{
 				"type": "language",
 				"language": "fra"

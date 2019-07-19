@@ -7,11 +7,11 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/inspect"
-
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
@@ -29,7 +29,7 @@ func (t *testFlowThing) LocalizationUUID() utils.UUID {
 
 func TestTemplates(t *testing.T) {
 	l := definition.NewLocalization()
-	l.AddItemTranslation(utils.Language("eng"), utils.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
+	l.AddItemTranslation(envs.Language("eng"), utils.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
 
 	thing := &testFlowThing{UUID: utils.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), Foo: "Hello", Bar: "World"}
 

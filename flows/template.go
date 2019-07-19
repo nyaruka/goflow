@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
 )
 
 // Template represents messaging templates used by channels types such as WhatsApp
@@ -31,9 +31,9 @@ func (t *Template) Reference() *assets.TemplateReference {
 }
 
 // FindTranslation finds the matching translation for the passed in channel and languages (in priority order)
-func (t *Template) FindTranslation(channel assets.ChannelUUID, langs []utils.Language) *TemplateTranslation {
+func (t *Template) FindTranslation(channel assets.ChannelUUID, langs []envs.Language) *TemplateTranslation {
 	// first iterate through and find all translations that are for this channel
-	matches := make(map[utils.Language]assets.TemplateTranslation)
+	matches := make(map[envs.Language]assets.TemplateTranslation)
 	for _, tr := range t.Template.Translations() {
 		if tr.Channel().UUID == channel {
 			matches[tr.Language()] = tr
@@ -108,7 +108,7 @@ func (a *TemplateAssets) Get(uuid assets.TemplateUUID) *Template {
 
 // FindTranslation looks through our list of templates to find the template matching the passed in uuid
 // If no template or translation is found then empty string is returned
-func (a *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, langs []utils.Language) *TemplateTranslation {
+func (a *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, langs []envs.Language) *TemplateTranslation {
 	// no channel, can't match to a template
 	if channel == nil {
 		return nil

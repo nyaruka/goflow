@@ -75,7 +75,7 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
 	env := envs.NewEnvironmentBuilder().Build()
 	sa, flow := initializeSessionAssets(t)
-	contact := flows.NewEmptyContact(sa, "Ben Haggerty", utils.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Ben Haggerty", envs.Language("eng"), nil)
 
 	// a manual trigger will wait at the initial wait
 	trigger := triggers.NewManualTrigger(env, flow.Reference(), contact, nil)

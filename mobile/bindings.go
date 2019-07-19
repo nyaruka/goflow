@@ -61,9 +61,9 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 		return nil, err
 	}
 
-	langs := make([]utils.Language, allowedLanguages.Length())
+	langs := make([]envs.Language, allowedLanguages.Length())
 	for i := 0; i < allowedLanguages.Length(); i++ {
-		langs[i] = utils.Language(allowedLanguages.Get(i))
+		langs[i] = envs.Language(allowedLanguages.Get(i))
 	}
 
 	return &Environment{
@@ -71,9 +71,9 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 			WithDateFormat(envs.DateFormat(dateFormat)).
 			WithTimeFormat(envs.TimeFormat(timeFormat)).
 			WithTimezone(tz).
-			WithDefaultLanguage(utils.Language(defaultLanguage)).
+			WithDefaultLanguage(envs.Language(defaultLanguage)).
 			WithAllowedLanguages(langs).
-			WithDefaultCountry(utils.Country(defaultCountry)).
+			WithDefaultCountry(envs.Country(defaultCountry)).
 			WithRedactionPolicy(envs.RedactionPolicy(redactionPolicy)).
 			Build(),
 	}, nil
@@ -115,7 +115,7 @@ type Contact struct {
 // NewEmptyContact creates a new contact
 func NewEmptyContact(sa *SessionAssets) *Contact {
 	return &Contact{
-		target: flows.NewEmptyContact(sa.target, "", utils.NilLanguage, nil),
+		target: flows.NewEmptyContact(sa.target, "", envs.NilLanguage, nil),
 	}
 }
 

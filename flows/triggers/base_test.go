@@ -64,7 +64,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 
-	contact := flows.NewEmptyContact(sa, "Bob", utils.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil))
 
 	triggerTests := []struct {

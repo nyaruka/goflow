@@ -22,7 +22,7 @@ type Contact struct {
 	uuid      ContactUUID
 	id        ContactID
 	name      string
-	language  utils.Language
+	language  envs.Language
 	timezone  *time.Location
 	createdOn time.Time
 	urns      URNList
@@ -39,7 +39,7 @@ func NewContact(
 	uuid ContactUUID,
 	id ContactID,
 	name string,
-	language utils.Language,
+	language envs.Language,
 	timezone *time.Location,
 	createdOn time.Time,
 	urns []urns.URN,
@@ -76,7 +76,7 @@ func NewContact(
 }
 
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
-func NewEmptyContact(sa SessionAssets, name string, language utils.Language, timezone *time.Location) *Contact {
+func NewEmptyContact(sa SessionAssets, name string, language envs.Language, timezone *time.Location) *Contact {
 	return &Contact{
 		uuid:      ContactUUID(utils.NewUUID()),
 		name:      name,
@@ -124,10 +124,10 @@ func (c *Contact) UUID() ContactUUID { return c.uuid }
 func (c *Contact) ID() ContactID { return c.id }
 
 // SetLanguage sets the language for this contact
-func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
+func (c *Contact) SetLanguage(lang envs.Language) { c.language = lang }
 
 // Language gets the language for this contact
-func (c *Contact) Language() utils.Language { return c.language }
+func (c *Contact) Language() envs.Language { return c.language }
 
 // SetTimezone sets the timezone of this contact
 func (c *Contact) SetTimezone(tz *time.Location) {
@@ -373,7 +373,7 @@ func (c *Contact) ResolveQueryKey(env envs.Environment, key string) []interface{
 		}
 		return nil
 	case "language":
-		if c.language != utils.NilLanguage {
+		if c.language != envs.NilLanguage {
 			return []interface{}{string(c.language)}
 		}
 		return nil
@@ -444,7 +444,7 @@ type contactEnvelope struct {
 	UUID      ContactUUID              `json:"uuid" validate:"required,uuid4"`
 	ID        ContactID                `json:"id,omitempty"`
 	Name      string                   `json:"name,omitempty"`
-	Language  utils.Language           `json:"language,omitempty"`
+	Language  envs.Language            `json:"language,omitempty"`
 	Timezone  string                   `json:"timezone,omitempty"`
 	CreatedOn time.Time                `json:"created_on" validate:"required"`
 	URNs      []urns.URN               `json:"urns,omitempty" validate:"dive,urn"`
