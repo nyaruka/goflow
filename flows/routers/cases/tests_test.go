@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/routers/cases"
@@ -199,7 +200,7 @@ var testTests = []struct {
 	{"has_date_gt", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
 	{"has_date_gt", []types.XValue{}, ERROR},
 
-	{"has_time", []types.XValue{xs("last time was 10:30")}, result(xt(utils.NewTimeOfDay(10, 30, 0, 0)))},
+	{"has_time", []types.XValue{xs("last time was 10:30")}, result(xt(dates.NewTimeOfDay(10, 30, 0, 0)))},
 	{"has_time", []types.XValue{xs("this isn't a valid time 59:77")}, falseResult},
 	{"has_time", []types.XValue{xs("no time at all")}, falseResult},
 	{"has_time", []types.XValue{xs("too"), xs("many"), xs("args")}, ERROR},
@@ -243,8 +244,8 @@ var testTests = []struct {
 }
 
 func TestTests(t *testing.T) {
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	env := utils.NewEnvironmentBuilder().
 		WithDateFormat(utils.DateFormatDayMonthYear).

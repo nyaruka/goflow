@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
@@ -45,11 +46,11 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 	err = json.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	for _, tc := range tests {
-		utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
 
 		testName := fmt.Sprintf("test '%s' for modifier type '%s'", tc.Description, typeName)

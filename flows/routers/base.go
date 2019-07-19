@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -132,7 +133,7 @@ func (r *BaseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent f
 		}
 	}
 
-	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), utils.DateTimeToISO(timedOutOn), "", nil, logEvent)
+	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), dates.FormatISO(timedOutOn), "", nil, logEvent)
 }
 
 func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input string, extra *types.XObject, logEvent flows.EventCallback) (flows.ExitUUID, error) {
@@ -163,7 +164,7 @@ func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categor
 		if extra != nil {
 			extraJSON, _ = json.Marshal(extra)
 		}
-		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, utils.Now())
+		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, dates.Now())
 		run.SaveResult(result)
 		logEvent(events.NewRunResultChangedEvent(result))
 	}

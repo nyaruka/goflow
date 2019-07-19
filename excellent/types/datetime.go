@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -34,7 +35,7 @@ func (x XDateTime) Truthy() bool {
 
 // Render returns the canonical text representation
 func (x XDateTime) Render() string {
-	return utils.DateTimeToISO(x.Native())
+	return dates.FormatISO(x.Native())
 }
 
 // Format returns the pretty text representation
@@ -69,12 +70,12 @@ func (x XDateTime) Native() time.Time { return x.native }
 
 // Date returns the date part of this datetime
 func (x XDateTime) Date() XDate {
-	return NewXDate(utils.ExtractDate(x.Native()))
+	return NewXDate(dates.ExtractDate(x.Native()))
 }
 
 // Time returns the time part of this datetime
 func (x XDateTime) Time() XTime {
-	return NewXTime(utils.ExtractTimeOfDay(x.Native()))
+	return NewXTime(dates.ExtractTimeOfDay(x.Native()))
 }
 
 // In returns a copy of this datetime in a different timezone
@@ -108,7 +109,7 @@ func (x XDateTime) Compare(other XDateTime) int {
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XDateTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(utils.DateTimeToISO(x.Native()))
+	return json.Marshal(dates.FormatISO(x.Native()))
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
@@ -138,7 +139,7 @@ func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XEr
 		case XError:
 			return XDateTimeZero, typed
 		case XDate:
-			return NewXDateTime(typed.Native().Combine(utils.ZeroTimeOfDay, env.Timezone())), nil
+			return NewXDateTime(typed.Native().Combine(dates.ZeroTimeOfDay, env.Timezone())), nil
 		case XDateTime:
 			return typed, nil
 		case XText:

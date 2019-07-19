@@ -11,6 +11,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -1208,11 +1209,11 @@ func DateTimeDiff(env utils.Environment, arg1 types.XValue, arg2 types.XValue, a
 	case "h":
 		return types.NewXNumberFromInt(int(duration / time.Hour))
 	case "D":
-		return types.NewXNumberFromInt(utils.DaysBetween(date2.Native(), date1.Native()))
+		return types.NewXNumberFromInt(dates.DaysBetween(date2.Native(), date1.Native()))
 	case "W":
-		return types.NewXNumberFromInt(int(utils.DaysBetween(date2.Native(), date1.Native()) / 7))
+		return types.NewXNumberFromInt(int(dates.DaysBetween(date2.Native(), date1.Native()) / 7))
 	case "M":
-		return types.NewXNumberFromInt(utils.MonthsBetween(date2.Native(), date1.Native()))
+		return types.NewXNumberFromInt(dates.MonthsBetween(date2.Native(), date1.Native()))
 	case "Y":
 		return types.NewXNumberFromInt(date2.Native().Year() - date1.Native().Year())
 	}
@@ -1359,7 +1360,7 @@ func DateFromParts(env utils.Environment, year, month, day int) types.XValue {
 		return types.NewXErrorf("invalid value for month, must be 1-12")
 	}
 
-	return types.NewXDate(utils.NewDate(year, month, day))
+	return types.NewXDate(dates.NewDate(year, month, day))
 }
 
 // Weekday returns the day of the week for `date`.
@@ -1380,7 +1381,7 @@ func Weekday(env utils.Environment, date types.XDate) types.XValue {
 //
 // @function today()
 func Today(env utils.Environment) types.XValue {
-	return types.NewXDate(utils.ExtractDate(env.Now()))
+	return types.NewXDate(dates.ExtractDate(env.Now()))
 }
 
 //------------------------------------------------------------------------------------------
@@ -1434,7 +1435,7 @@ func ParseTime(env utils.Environment, arg1 types.XValue, arg2 types.XValue) type
 	}
 
 	// finally try to parse the date
-	parsed, err := utils.ParseTimeOfDay(goFormat, str.Native())
+	parsed, err := dates.ParseTimeOfDay(goFormat, str.Native())
 	if err != nil {
 		return types.NewXError(err)
 	}
@@ -1460,7 +1461,7 @@ func TimeFromParts(env utils.Environment, hour, minute, second int) types.XValue
 		return types.NewXErrorf("invalid value for second, must be 0-59")
 	}
 
-	return types.NewXTime(utils.NewTimeOfDay(hour, minute, second, 0))
+	return types.NewXTime(dates.NewTimeOfDay(hour, minute, second, 0))
 }
 
 // URNParts parses a URN into its different parts

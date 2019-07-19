@@ -1,7 +1,11 @@
-package utils
+package dates
 
 import (
 	"time"
+)
+
+const (
+	iso8601Time = "15:04:05.000000"
 )
 
 // TimeOfDay represents a local time of day value

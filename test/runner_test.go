@@ -12,6 +12,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/dates"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -230,7 +231,7 @@ func TestFlows(t *testing.T) {
 	server := NewTestHTTPServer(49999)
 	defer server.Close()
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	// save away our server URL so we can rewrite our URLs
 	serverURL = server.URL
@@ -239,7 +240,7 @@ func TestFlows(t *testing.T) {
 		fmt.Printf("running %s\n", tc)
 
 		utils.SetUUIDGenerator(NewSeededUUIDGenerator(123456))
-		utils.SetTimeSource(NewSequentialTimeSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
+		dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
 
 		testJSON, err := ioutil.ReadFile(tc.outputFile)
 		require.NoError(t, err, "error reading output file %s", tc.outputFile)

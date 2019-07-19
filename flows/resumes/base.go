@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -30,7 +31,7 @@ type baseResume struct {
 }
 
 func newBaseResume(typeName string, env utils.Environment, contact *flows.Contact) baseResume {
-	return baseResume{type_: typeName, environment: env, contact: contact, resumedOn: utils.Now()}
+	return baseResume{type_: typeName, environment: env, contact: contact, resumedOn: dates.Now()}
 }
 
 // Type returns the type of this resume

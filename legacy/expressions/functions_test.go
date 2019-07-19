@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -145,8 +145,8 @@ func TestMigrateFunctionCall(t *testing.T) {
 	session, _, err := test.CreateTestSession(server.URL, nil)
 	require.NoError(t, err)
 
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
-	utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	defer dates.SetNowSource(dates.DefaultNowSource)
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	for _, tc := range tests {
 		migratedTemplate, err := expressions.MigrateTemplate(tc.old, nil)

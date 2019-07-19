@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers"
@@ -68,12 +69,12 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	err = json.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
-	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 	defer utils.SetRand(utils.DefaultRand)
 
 	for _, tc := range tests {
-		utils.SetTimeSource(test.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 		utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(12345))
 		utils.SetRand(utils.NewSeededRand(123456))
 

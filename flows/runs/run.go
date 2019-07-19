@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/dates"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -36,7 +37,7 @@ type flowRun struct {
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
 func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
-	now := utils.Now()
+	now := dates.Now()
 	r := &flowRun{
 		uuid:       flows.RunUUID(utils.NewUUID()),
 		session:    session,
@@ -73,13 +74,13 @@ func (r *flowRun) SaveResult(result *flows.Result) {
 	}
 
 	r.results.Save(result)
-	r.modifiedOn = utils.Now()
+	r.modifiedOn = dates.Now()
 
 	r.legacyExtra.addResult(result)
 }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
-	now := utils.Now()
+	now := dates.Now()
 
 	r.status = status
 	r.exitedOn = &now
@@ -88,7 +89,7 @@ func (r *flowRun) Exit(status flows.RunStatus) {
 func (r *flowRun) Status() flows.RunStatus { return r.status }
 func (r *flowRun) SetStatus(status flows.RunStatus) {
 	r.status = status
-	r.modifiedOn = utils.Now()
+	r.modifiedOn = dates.Now()
 }
 
 // ParentInSession returns the parent of the run within the same session if one exists
@@ -128,7 +129,7 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 	}
 
 	r.events = append(r.events, event)
-	r.modifiedOn = utils.Now()
+	r.modifiedOn = dates.Now()
 }
 
 func (r *flowRun) LogError(step flows.Step, err error) {
@@ -137,7 +138,7 @@ func (r *flowRun) LogError(step flows.Step, err error) {
 
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
-	now := utils.Now()
+	now := dates.Now()
 	step := NewStep(node, now)
 	r.path = append(r.path, step)
 	r.modifiedOn = now
@@ -166,7 +167,7 @@ func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
 	if r.Flow().ExpireAfterMinutes() >= 0 {
 		if from == nil {
-			now := utils.Now()
+			now := dates.Now()
 			from = &now
 		}
 
@@ -174,7 +175,7 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 		expiresOn := from.Add(expiresAfterMinutes * time.Minute)
 
 		r.expiresOn = &expiresOn
-		r.modifiedOn = utils.Now()
+		r.modifiedOn = dates.Now()
 	}
 
 	if r.ParentInSession() != nil {
