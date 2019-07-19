@@ -53,9 +53,6 @@ const (
 func (df DateFormat) String() string { return string(df) }
 func (tf TimeFormat) String() string { return string(tf) }
 
-// format we use for output
-var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
-
 // generic format for parsing any 8601 date
 var iso8601Format = "2006-01-02T15:04:05Z07:00"
 var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
@@ -99,11 +96,6 @@ func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y in
 	}
 
 	return dates.ZeroDate, str, errors.Errorf("string '%s' couldn't be parsed as a date", str)
-}
-
-// DateTimeToISO converts the passed in time.Time to a string in ISO8601 format
-func DateTimeToISO(date time.Time) string {
-	return date.Format(iso8601Default)
 }
 
 // DateTimeFromString returns a datetime constructed from the passed in string, or an error if we

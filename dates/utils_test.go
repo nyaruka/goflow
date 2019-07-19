@@ -10,6 +10,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestFormatISO(t *testing.T) {
+	la, err := time.LoadLocation("America/Los_Angeles")
+	require.NoError(t, err)
+
+	assert.Equal(t, "2018-01-01T12:30:00.000000Z", dates.FormatISO(time.Date(2018, 1, 1, 12, 30, 0, 0, time.UTC)))
+	assert.Equal(t, "2018-01-01T12:30:12.123456Z", dates.FormatISO(time.Date(2018, 1, 1, 12, 30, 12, 123456789, time.UTC)))
+	assert.Equal(t, "2018-01-01T12:30:00.000000-08:00", dates.FormatISO(time.Date(2018, 1, 1, 12, 30, 0, 0, la)))
+}
+
 func TestDaysBetween(t *testing.T) {
 	la, err := time.LoadLocation("America/Los_Angeles")
 	require.NoError(t, err)

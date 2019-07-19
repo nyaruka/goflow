@@ -4,6 +4,14 @@ import (
 	"time"
 )
 
+// format we use for full ISO output
+const iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
+
+// DateTimeToISO converts the passed in time.Time to a string in full ISO8601 format
+func FormatISO(date time.Time) string {
+	return date.Format(iso8601Default)
+}
+
 // DaysBetween returns the number of calendar days (an int) between the two dates. Note
 // that if these are in different timezones then the local calendar day is used for each
 // and the difference is calculated from that.

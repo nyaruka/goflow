@@ -35,7 +35,7 @@ func (x XDateTime) Truthy() bool {
 
 // Render returns the canonical text representation
 func (x XDateTime) Render() string {
-	return utils.DateTimeToISO(x.Native())
+	return dates.FormatISO(x.Native())
 }
 
 // Format returns the pretty text representation
@@ -109,7 +109,7 @@ func (x XDateTime) Compare(other XDateTime) int {
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XDateTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(utils.DateTimeToISO(x.Native()))
+	return json.Marshal(dates.FormatISO(x.Native()))
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
