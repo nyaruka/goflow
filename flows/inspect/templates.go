@@ -51,6 +51,18 @@ func extractTemplates(v reflect.Value, include func(string)) {
 	}
 }
 
+func TemplatePaths(t reflect.Type, base string, include func(string)) {
+	walkTypes(t, base, func(path string, ef *EngineField) {
+		if ef.Evaluated {
+			if ef.Type.Kind() == reflect.Map || ef.Type.Kind() == reflect.Slice {
+				include(path + "[*]")
+			} else {
+				include(path)
+			}
+		}
+	})
+}
+
 var fieldRefPaths = [][]string{
 	{"fields"},
 	{"contact", "fields"},

@@ -50,21 +50,21 @@ func TestParseEngineTag(t *testing.T) {
 	assert.Panics(t, func() { parseEngineTag(typ2, typ2.Field(0)) })
 }
 
-type nestedStruct struct {
+type nestedFieldsStruct struct {
 	Foo string `json:"foo" engine:"localized,evaluated"`
 }
 
-type testTaggedStruct struct {
-	nestedStruct
+type taggedFieldsStruct struct {
+	nestedFieldsStruct
 	Bar string `json:"bar"`
 }
 
-func (s testTaggedStruct) LocalizationUUID() utils.UUID {
+func (s taggedFieldsStruct) LocalizationUUID() utils.UUID {
 	return utils.UUID("11e2c40c-ae26-448b-a3b2-4c275516bcc0")
 }
 
 func TestExtractEngineFields(t *testing.T) {
-	v := testTaggedStruct{nestedStruct: nestedStruct{Foo: "Hello"}, Bar: "World"}
+	v := taggedFieldsStruct{nestedFieldsStruct: nestedFieldsStruct{Foo: "Hello"}, Bar: "World"}
 	typ := reflect.TypeOf(v)
 
 	fields := extractEngineFields(typ, typ)
@@ -78,29 +78,4 @@ func TestExtractEngineFields(t *testing.T) {
 	assert.False(t, fields[1].Localized)
 	assert.False(t, fields[1].Evaluated)
 	assert.Equal(t, "World", fields[1].Getter(reflect.ValueOf(v)).String())
-}
-
-func TestWalkFields(t *testing.T) {
-	// can start with a struct
-	v := reflect.ValueOf(testTaggedStruct{nestedStruct: nestedStruct{Foo: "Hello"}, Bar: "World"})
-
-	values := make([]string, 0)
-	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
-		values = append(values, fv.String())
-	})
-
-	assert.Equal(t, []string{"Hello", "World"}, values)
-
-	// or a slice of structs
-	v = reflect.ValueOf([]testTaggedStruct{
-		testTaggedStruct{nestedStruct: nestedStruct{Foo: "Hello"}, Bar: "World"},
-		testTaggedStruct{nestedStruct: nestedStruct{Foo: "Hola"}, Bar: "Mundo"},
-	})
-
-	values = make([]string, 0)
-	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
-		values = append(values, fv.String())
-	})
-
-	assert.Equal(t, []string{"Hello", "World", "Hola", "Mundo"}, values)
 }

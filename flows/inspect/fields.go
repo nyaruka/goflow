@@ -8,35 +8,9 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-func walk(v reflect.Value, visitStruct func(reflect.Value), visitField func(reflect.Value, reflect.Value, *EngineField)) {
-	// get the real underlying value
-	rv := derefValue(v)
-
-	if rv.Kind() == reflect.Slice {
-		for i := 0; i < rv.Len(); i++ {
-			walk(rv.Index(i), visitStruct, visitField)
-		}
-	} else if rv.Kind() == reflect.Struct {
-		if visitStruct != nil {
-			visitStruct(v)
-		}
-
-		fields := extractEngineFields(v.Type(), rv.Type())
-
-		for _, ef := range fields {
-			fv := ef.Getter(rv)
-
-			if visitField != nil {
-				visitField(v, fv, ef)
-			}
-
-			walk(fv, visitStruct, visitField)
-		}
-	}
-}
-
 // EngineField is a struct field which is part of the flow spec (i.e. included in JSON) and optionally has a engine tag
 type EngineField struct {
+	Type      reflect.Type
 	JSONName  string
 	Localized bool
 	Evaluated bool
@@ -74,20 +48,13 @@ func extractEngineFieldsFromType(ct reflect.Type, rt reflect.Type, loc []int, in
 		localized, evaluated := parseEngineTag(ct, f)
 
 		include(&EngineField{
+			Type:      f.Type,
 			JSONName:  jsonName,
 			Localized: localized,
 			Evaluated: evaluated,
 			Getter:    func(v reflect.Value) reflect.Value { return v.FieldByIndex(index) },
 		})
 	}
-}
-
-// gets the actual value if we've been given an interface or pointer
-func derefValue(v reflect.Value) reflect.Value {
-	for v.Kind() == reflect.Interface || v.Kind() == reflect.Ptr {
-		v = v.Elem()
-	}
-	return v
 }
 
 // gets the JSON name of the given field
