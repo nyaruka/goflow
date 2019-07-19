@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/operators"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
@@ -19,7 +19,7 @@ var xa = types.NewXArray
 var ERROR = types.NewXErrorf("any error")
 
 func TestBinaryOperators(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	testCases := []struct {
 		operator operators.BinaryOperator
@@ -115,7 +115,7 @@ func TestBinaryOperators(t *testing.T) {
 }
 
 func TestUnaryOperators(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	testCases := []struct {
 		operator operators.UnaryOperator

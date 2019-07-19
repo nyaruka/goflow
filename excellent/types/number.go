@@ -4,6 +4,7 @@ import (
 	"math"
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -57,12 +58,12 @@ func (x XNumber) Truthy() bool {
 func (x XNumber) Render() string { return x.Native().String() }
 
 // Format returns the pretty text representation
-func (x XNumber) Format(env utils.Environment) string {
+func (x XNumber) Format(env envs.Environment) string {
 	return x.FormatCustom(env.NumberFormat(), -1, true)
 }
 
 // FormatCustom provides customised formatting
-func (x XNumber) FormatCustom(format *utils.NumberFormat, places int, groupDigits bool) string {
+func (x XNumber) FormatCustom(format *envs.NumberFormat, places int, groupDigits bool) string {
 	var formatted string
 
 	if places >= 0 {
@@ -122,7 +123,7 @@ var XNumberZero = NewXNumber(decimal.Zero)
 var _ XValue = XNumberZero
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
-func ToXNumber(env utils.Environment, x XValue) (XNumber, XError) {
+func ToXNumber(env envs.Environment, x XValue) (XNumber, XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
 		case XError:
@@ -145,7 +146,7 @@ func ToXNumber(env utils.Environment, x XValue) (XNumber, XError) {
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
-func ToInteger(env utils.Environment, x XValue) (int, XError) {
+func ToInteger(env envs.Environment, x XValue) (int, XError) {
 	number, err := ToXNumber(env, x)
 	if err != nil {
 		return 0, err

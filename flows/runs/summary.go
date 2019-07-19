@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -61,7 +62,7 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 //   status:text -> the current status of the run
 //
 // @context related_run
-func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XValue {
+func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if c.run.Contact() != nil {
 		urns = flows.ContextFunc(env, c.run.Contact().URNs().MapContext)
@@ -83,7 +84,7 @@ func (c *relatedRunContext) Context(env utils.Environment) map[string]types.XVal
 
 // Context returns the properties available in expressions. Run summaries expose a
 // subset of the properties exposed by a real run.
-func (c *relatedRunContext) RunContext(env utils.Environment) map[string]types.XValue {
+func (c *relatedRunContext) RunContext(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"__default__": types.NewXText(formatRunSummary(env, c.run)),
 		"uuid":        types.NewXText(string(c.run.UUID())),
@@ -94,7 +95,7 @@ func (c *relatedRunContext) RunContext(env utils.Environment) map[string]types.X
 	}
 }
 
-func formatRunSummary(env utils.Environment, run flows.RunSummary) string {
+func formatRunSummary(env envs.Environment, run flows.RunSummary) string {
 	s := "@" + run.Flow().Name()
 	if run.Contact() != nil {
 		s = run.Contact().Format(env) + s

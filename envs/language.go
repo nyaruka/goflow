@@ -1,12 +1,14 @@
-package utils
+package envs
 
 import (
+	"github.com/nyaruka/goflow/utils"
+	
 	"github.com/pkg/errors"
 	"golang.org/x/text/language"
 )
 
 func init() {
-	Validator.RegisterAlias("language", "eq=base|len=3")
+	utils.Validator.RegisterAlias("language", "eq=base|len=3")
 }
 
 // Language is our internal representation of a language

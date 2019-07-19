@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -82,7 +83,7 @@ func NewFieldValue(field *Field, value *Value) *FieldValue {
 }
 
 // ToXValue returns a representation of this object for use in expressions
-func (v *FieldValue) ToXValue(env utils.Environment) types.XValue {
+func (v *FieldValue) ToXValue(env envs.Environment) types.XValue {
 	// the typed value of no value is nil
 	if v == nil {
 		return nil
@@ -215,7 +216,7 @@ func (f FieldValues) Clear(field *Field) {
 }
 
 // Parse parses a raw string field value into the different possible types
-func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Field, rawValue string) *Value {
+func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Field, rawValue string) *Value {
 	if rawValue == "" {
 		return nil
 	}
@@ -287,7 +288,7 @@ func (f FieldValues) Parse(env utils.Environment, fields *FieldAssets, field *Fi
 }
 
 // Context returns the properties available in expressions
-func (f FieldValues) Context(env utils.Environment) map[string]types.XValue {
+func (f FieldValues) Context(env envs.Environment) map[string]types.XValue {
 	entries := make(map[string]types.XValue, len(f)+1)
 	lines := make([]string, 0, len(f))
 

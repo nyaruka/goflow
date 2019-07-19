@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -28,7 +29,7 @@ func TestXValue(t *testing.T) {
 		"bar": types.NewXNumberFromInt(456),
 	})
 
-	env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Build()
+	env := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
 
 	tests := []struct {
 		value     types.XValue

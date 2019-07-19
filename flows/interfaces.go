@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -128,7 +129,7 @@ type Flow interface {
 	UUID() assets.FlowUUID
 	Name() string
 	Revision() int
-	Language() utils.Language
+	Language() envs.Language
 	Type() FlowType
 	ExpireAfterMinutes() int
 	Localization() Localization
@@ -222,9 +223,9 @@ type Hint interface {
 
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
-	AddItemTranslation(utils.Language, utils.UUID, string, []string)
-	GetTranslations(utils.Language) Translations
-	Languages() []utils.Language
+	AddItemTranslation(envs.Language, utils.UUID, string, []string)
+	GetTranslations(envs.Language) Translations
+	Languages() []envs.Language
 }
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
@@ -241,7 +242,7 @@ type Trigger interface {
 	Initialize(Session, EventCallback) error
 	InitializeRun(FlowRun, EventCallback) error
 
-	Environment() utils.Environment
+	Environment() envs.Environment
 	Flow() *assets.FlowReference
 	Contact() *Contact
 	Connection() *Connection
@@ -262,7 +263,7 @@ type Resume interface {
 
 	Apply(FlowRun, EventCallback) error
 
-	Environment() utils.Environment
+	Environment() envs.Environment
 	Contact() *Contact
 	ResumedOn() time.Time
 }
@@ -271,7 +272,7 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(utils.Environment, SessionAssets, *Contact, EventCallback)
+	Apply(envs.Environment, SessionAssets, *Contact, EventCallback)
 }
 
 // ModifierCallback is a callback invoked when a modifier has been generated
@@ -335,8 +336,8 @@ type Session interface {
 	Type() FlowType
 	SetType(FlowType)
 
-	Environment() utils.Environment
-	SetEnvironment(utils.Environment)
+	Environment() envs.Environment
+	SetEnvironment(envs.Environment)
 
 	Contact() *Contact
 	SetContact(*Contact)
@@ -370,7 +371,7 @@ type RunSummary interface {
 
 // RunEnvironment is a run specific environment which adds location functionality required by some router tests
 type RunEnvironment interface {
-	utils.Environment
+	envs.Environment
 
 	FindLocations(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
 	FindLocationsFuzzy(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
@@ -401,7 +402,7 @@ type FlowRun interface {
 
 	GetText(utils.UUID, string, string) string
 	GetTextArray(utils.UUID, string, []string) []string
-	GetTranslatedTextArray(utils.UUID, string, []string, []utils.Language) []string
+	GetTranslatedTextArray(utils.UUID, string, []string, []envs.Language) []string
 
 	Snapshot() RunSummary
 	Parent() RunSummary

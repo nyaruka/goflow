@@ -9,6 +9,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers"
@@ -112,7 +113,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		contact, err := flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
 		require.NoError(t, err)
 
-		trigger := triggers.NewManualTrigger(utils.NewEnvironmentBuilder().Build(), flow.Reference(), contact, nil)
+		trigger := triggers.NewManualTrigger(envs.NewEnvironmentBuilder().Build(), flow.Reference(), contact, nil)
 
 		eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
 		session, _, err := eng.NewSession(sa, trigger)

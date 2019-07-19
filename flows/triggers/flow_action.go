@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -50,7 +51,7 @@ type FlowActionTrigger struct {
 }
 
 // NewFlowActionTrigger creates a new flow action trigger with the passed in values
-func NewFlowActionTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, runSummary json.RawMessage) *FlowActionTrigger {
+func NewFlowActionTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, runSummary json.RawMessage) *FlowActionTrigger {
 	return &FlowActionTrigger{
 		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, nil, nil),
 		runSummary:  runSummary,

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -28,7 +29,7 @@ type session struct {
 
 	// state which is maintained between engine calls
 	type_   flows.FlowType
-	env     utils.Environment
+	env     envs.Environment
 	trigger flows.Trigger
 	contact *flows.Contact
 	runs    []flows.FlowRun
@@ -50,8 +51,8 @@ func (s *session) Trigger() flows.Trigger      { return s.trigger }
 func (s *session) Type() flows.FlowType         { return s.type_ }
 func (s *session) SetType(type_ flows.FlowType) { s.type_ = type_ }
 
-func (s *session) Environment() utils.Environment       { return s.env }
-func (s *session) SetEnvironment(env utils.Environment) { s.env = env }
+func (s *session) Environment() envs.Environment       { return s.env }
+func (s *session) SetEnvironment(env envs.Environment) { s.env = env }
 
 func (s *session) Contact() *flows.Contact           { return s.contact }
 func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
@@ -114,7 +115,7 @@ func (s *session) Engine() flows.Engine { return s.engine }
 // Start initializes this session with the given trigger and runs the flow to the first wait
 func (s *session) start(trigger flows.Trigger) (flows.Sprint, error) {
 	sprint := NewEmptySprint()
-	
+
 	if err := s.prepareForSprint(); err != nil {
 		return sprint, err
 	}
@@ -481,7 +482,7 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 	}
 
 	// read our environment
-	s.env, err = utils.ReadEnvironment(e.Environment)
+	s.env, err = envs.ReadEnvironment(e.Environment)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to read environment")
 	}

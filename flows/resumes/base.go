@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -25,21 +26,21 @@ func RegisterType(name string, f readFunc) {
 
 type baseResume struct {
 	type_       string
-	environment utils.Environment
+	environment envs.Environment
 	contact     *flows.Contact
 	resumedOn   time.Time
 }
 
-func newBaseResume(typeName string, env utils.Environment, contact *flows.Contact) baseResume {
+func newBaseResume(typeName string, env envs.Environment, contact *flows.Contact) baseResume {
 	return baseResume{type_: typeName, environment: env, contact: contact, resumedOn: dates.Now()}
 }
 
 // Type returns the type of this resume
 func (r *baseResume) Type() string { return r.type_ }
 
-func (r *baseResume) Environment() utils.Environment { return r.environment }
-func (r *baseResume) Contact() *flows.Contact        { return r.contact }
-func (r *baseResume) ResumedOn() time.Time           { return r.resumedOn }
+func (r *baseResume) Environment() envs.Environment { return r.environment }
+func (r *baseResume) Contact() *flows.Contact       { return r.contact }
+func (r *baseResume) ResumedOn() time.Time          { return r.resumedOn }
 
 // Apply applies our state changes and saves any events to the run
 func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) error {
@@ -99,7 +100,7 @@ func (r *baseResume) unmarshal(sessionAssets flows.SessionAssets, e *baseResumeE
 	r.resumedOn = e.ResumedOn
 
 	if e.Environment != nil {
-		if r.environment, err = utils.ReadEnvironment(e.Environment); err != nil {
+		if r.environment, err = envs.ReadEnvironment(e.Environment); err != nil {
 			return errors.Wrap(err, "unable to read environment")
 		}
 	}

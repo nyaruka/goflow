@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -25,7 +26,7 @@ func RegisterType(name string, f readFunc) {
 
 type baseTrigger struct {
 	type_       string
-	environment utils.Environment
+	environment envs.Environment
 	flow        *assets.FlowReference
 	contact     *flows.Contact
 	connection  *flows.Connection
@@ -33,19 +34,19 @@ type baseTrigger struct {
 	triggeredOn time.Time
 }
 
-func newBaseTrigger(typeName string, env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue) baseTrigger {
+func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue) baseTrigger {
 	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, connection: connection, params: params, triggeredOn: dates.Now()}
 }
 
 // Type returns the type of this trigger
 func (t *baseTrigger) Type() string { return t.type_ }
 
-func (t *baseTrigger) Environment() utils.Environment { return t.environment }
-func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
-func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
-func (t *baseTrigger) Connection() *flows.Connection  { return t.connection }
-func (t *baseTrigger) Params() types.XValue           { return t.params }
-func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
+func (t *baseTrigger) Environment() envs.Environment { return t.environment }
+func (t *baseTrigger) Flow() *assets.FlowReference   { return t.flow }
+func (t *baseTrigger) Contact() *flows.Contact       { return t.contact }
+func (t *baseTrigger) Connection() *flows.Connection { return t.connection }
+func (t *baseTrigger) Params() types.XValue          { return t.params }
+func (t *baseTrigger) TriggeredOn() time.Time        { return t.triggeredOn }
 
 // Initialize initializes the session
 func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback) error {
@@ -65,7 +66,7 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 	if t.environment != nil {
 		session.SetEnvironment(t.environment)
 	} else {
-		session.SetEnvironment(utils.NewEnvironmentBuilder().Build())
+		session.SetEnvironment(envs.NewEnvironmentBuilder().Build())
 	}
 
 	if t.contact != nil {
@@ -87,7 +88,7 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 //   params:any -> the parameters passed to the trigger
 //
 // @context trigger
-func (t *baseTrigger) Context(env utils.Environment) map[string]types.XValue {
+func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"type":   types.NewXText(t.type_),
 		"params": t.params,
@@ -148,7 +149,7 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 	t.triggeredOn = e.TriggeredOn
 
 	if e.Environment != nil {
-		if t.environment, err = utils.ReadEnvironment(e.Environment); err != nil {
+		if t.environment, err = envs.ReadEnvironment(e.Environment); err != nil {
 			return errors.Wrap(err, "unable to read environment")
 		}
 	}

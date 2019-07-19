@@ -4,17 +4,17 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestXFunction(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
-	func1 := types.XFunction(func(env utils.Environment, args ...types.XValue) types.XValue { return nil })
-	func2 := types.XFunction(func(env utils.Environment, args ...types.XValue) types.XValue { return nil })
+	func1 := types.XFunction(func(env envs.Environment, args ...types.XValue) types.XValue { return nil })
+	func2 := types.XFunction(func(env envs.Environment, args ...types.XValue) types.XValue { return nil })
 
 	assert.True(t, func1.Truthy())
 	assert.Equal(t, `function`, func1.Render())

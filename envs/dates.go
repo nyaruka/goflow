@@ -1,4 +1,4 @@
-package utils
+package envs
 
 import (
 	"bytes"
@@ -9,17 +9,18 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
 func init() {
-	Validator.RegisterValidation("date_format", func(fl validator.FieldLevel) bool {
+	utils.Validator.RegisterValidation("date_format", func(fl validator.FieldLevel) bool {
 		_, err := ToGoDateFormat(fl.Field().String(), DateOnlyFormatting)
 		return err == nil
 	})
-	Validator.RegisterValidation("time_format", func(fl validator.FieldLevel) bool {
+	utils.Validator.RegisterValidation("time_format", func(fl validator.FieldLevel) bool {
 		_, err := ToGoDateFormat(fl.Field().String(), TimeOnlyFormatting)
 		return err == nil
 	})
@@ -66,7 +67,7 @@ func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y in
 
 	matches := pattern.FindAllStringSubmatchIndex(str, -1)
 	for _, match := range matches {
-		groups := StringSlices(str, match)
+		groups := utils.StringSlices(str, match)
 
 		// does our day look believable?
 		day, _ := strconv.Atoi(groups[d])
@@ -150,7 +151,7 @@ func parseDate(env Environment, str string) (dates.Date, string, error) {
 	str = strings.Trim(str, " \n\r\t")
 
 	// try to parse as ISO date
-	asISO, err := time.ParseInLocation(dates.ISO8601Date, str[0:MinInt(len(dates.ISO8601Date), len(str))], env.Timezone())
+	asISO, err := time.ParseInLocation(dates.ISO8601Date, str[0:utils.MinInt(len(dates.ISO8601Date), len(str))], env.Timezone())
 	if err == nil {
 		return dates.ExtractDate(asISO), str[len(dates.ISO8601Date):], nil
 	}

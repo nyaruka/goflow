@@ -5,15 +5,15 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestXDate(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Build()
+	env := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
 
 	d1 := types.NewXDate(dates.NewDate(2019, 2, 20))
 	assert.Equal(t, `date`, d1.Describe())
@@ -23,11 +23,11 @@ func TestXDate(t *testing.T) {
 	assert.True(t, d1.Truthy())
 	assert.Equal(t, `XDate(2019, 2, 20)`, d1.String())
 
-	formatted, err := d1.FormatCustom(utils.DateFormat("YYYY"))
+	formatted, err := d1.FormatCustom(envs.DateFormat("YYYY"))
 	assert.NoError(t, err)
 	assert.Equal(t, `2019`, formatted)
 
-	formatted, err = d1.FormatCustom(utils.DateFormat("YYYYYY"))
+	formatted, err = d1.FormatCustom(envs.DateFormat("YYYYYY"))
 	assert.EqualError(t, err, "invalid date format, invalid count of 'Y' format: 6")
 
 	asJSON, _ := types.ToXJSON(d1)
@@ -61,7 +61,7 @@ func TestToXDate(t *testing.T) {
 		}), types.NewXDate(dates.NewDate(2018, 1, 20)), false},
 	}
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	for _, test := range tests {
 		result, err := types.ToXDate(env, test.value)

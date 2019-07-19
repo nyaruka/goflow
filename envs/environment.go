@@ -1,10 +1,11 @@
-package utils
+package envs
 
 import (
 	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/utils"
 )
 
 type RedactionPolicy string
@@ -104,7 +105,7 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env := NewEnvironmentBuilder().Build().(*environment)
 	envelope := env.toEnvelope()
 
-	if err := UnmarshalAndValidate(data, envelope); err != nil {
+	if err := utils.UnmarshalAndValidate(data, envelope); err != nil {
 		return nil, err
 	}
 

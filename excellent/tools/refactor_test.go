@@ -3,10 +3,10 @@ package tools_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/tools"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -33,7 +33,7 @@ func TestRefactorTemplate(t *testing.T) {
 		{`@(1 / ) @(1+2)`, `@(1 / ) @(1 + 2)`, true},
 	}
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	context := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXObject(map[string]types.XValue{
 			"bar": types.NewXNumberFromInt(123),

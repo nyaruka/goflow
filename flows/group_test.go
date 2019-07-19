@@ -3,10 +3,10 @@ package flows_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -21,7 +21,7 @@ func TestGroupList(t *testing.T) {
 
 	groups := flows.NewGroupList([]*flows.Group{customers, testers, males})
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	// check use in expressions
 	test.AssertXEqual(t, types.NewXArray(

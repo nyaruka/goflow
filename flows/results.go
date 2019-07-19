@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -51,7 +52,7 @@ func NewResult(name string, value string, category string, categoryLocalized str
 //   created_on:datetime -> the creation date of the result
 //
 // @context result
-func (r *Result) Context(env utils.Environment) map[string]types.XValue {
+func (r *Result) Context(env envs.Environment) map[string]types.XValue {
 	categoryLocalized := r.CategoryLocalized
 	if categoryLocalized == "" {
 		categoryLocalized = r.Category
@@ -101,7 +102,7 @@ func (r Results) Get(key string) *Result {
 }
 
 // Context returns the properties available in expressions
-func (r Results) Context(env utils.Environment) map[string]types.XValue {
+func (r Results) Context(env envs.Environment) map[string]types.XValue {
 	entries := make(map[string]types.XValue, len(r)+1)
 	entries["__default__"] = types.NewXText(r.format())
 

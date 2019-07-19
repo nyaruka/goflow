@@ -6,15 +6,15 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestXTime(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	t1 := types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0))
 	assert.Equal(t, `time`, t1.Describe())
@@ -23,11 +23,11 @@ func TestXTime(t *testing.T) {
 	assert.Equal(t, `17:01`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).Format(env))
 	assert.Equal(t, `XTime(17, 1, 30, 0)`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).String())
 
-	formatted, err := t1.FormatCustom(utils.TimeFormat("ss"))
+	formatted, err := t1.FormatCustom(envs.TimeFormat("ss"))
 	assert.NoError(t, err)
 	assert.Equal(t, `30`, formatted)
 
-	formatted, err = t1.FormatCustom(utils.TimeFormat("ssssss"))
+	formatted, err = t1.FormatCustom(envs.TimeFormat("ssssss"))
 	assert.EqualError(t, err, "invalid date format, invalid count of 's' format: 6")
 
 	marshaled, err := json.Marshal(t1)
@@ -68,7 +68,7 @@ func TestToXTime(t *testing.T) {
 		}), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 0)), false},
 	}
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	for _, test := range tests {
 		result, err := types.ToXTime(env, test.value)

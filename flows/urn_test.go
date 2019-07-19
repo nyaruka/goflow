@@ -6,11 +6,11 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -55,11 +55,11 @@ func TestContactURN(t *testing.T) {
 	assert.False(t, urn.Equal(urn3))
 
 	// check using URN in expressions
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	assert.Equal(t, types.NewXText("tel:+250781234567"), urn.ToXValue(env))
 
 	// check when URNs have to be redacted
-	env = utils.NewEnvironmentBuilder().WithRedactionPolicy(utils.RedactionPolicyURNs).Build()
+	env = envs.NewEnvironmentBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
 	assert.Equal(t, types.NewXText("********"), urn.ToXValue(env))
 
 	// we can clear the channel affinity
@@ -79,7 +79,7 @@ func TestURNList(t *testing.T) {
 	urn3 := flows.NewContactURN("tel:+250781111222", nil)
 	urnList := flows.URNList{urn1, urn2, urn3}
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	// check equality
 	assert.True(t, urnList.Equal(flows.URNList{urn1, urn2, urn3}))

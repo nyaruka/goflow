@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestChannel(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	utils.SetUUIDGenerator(test.NewSeededUUIDGenerator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)

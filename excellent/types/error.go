@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
 )
 
 // XError is an error
@@ -38,7 +38,7 @@ func (x xerror) Truthy() bool { return false }
 func (x xerror) Render() string { return x.Native().Error() }
 
 // Format returns the pretty text representation
-func (x xerror) Format(env utils.Environment) string { return "" }
+func (x xerror) Format(env envs.Environment) string { return "" }
 
 // MarshalJSON converts this type to JSON
 func (x xerror) MarshalJSON() ([]byte, error) { return json.Marshal(nil) }

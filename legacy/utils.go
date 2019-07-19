@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/pkg/errors"
 )
 
 // Translations is an inline translation map used for localization
-type Translations map[utils.Language]string
+type Translations map[envs.Language]string
 
 // ReadTranslations reads a translations map
 func ReadTranslations(data json.RawMessage) (Translations, error) {
@@ -22,7 +24,7 @@ func ReadTranslations(data json.RawMessage) (Translations, error) {
 }
 
 // Base looks up the translation in the given base language, or "base"
-func (t Translations) Base(baseLanguage utils.Language) string {
+func (t Translations) Base(baseLanguage envs.Language) string {
 	val, exists := t[baseLanguage]
 	if exists {
 		return val
@@ -42,7 +44,7 @@ func (t *Translations) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	asMap := make(map[utils.Language]string)
+	asMap := make(map[envs.Language]string)
 	if err := json.Unmarshal(data, &asMap); err != nil {
 		return err
 	}

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -61,7 +62,7 @@ type CampaignTrigger struct {
 }
 
 // NewCampaignTrigger creates a new campaign trigger with the passed in values
-func NewCampaignTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, event *CampaignEvent) *CampaignTrigger {
+func NewCampaignTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, event *CampaignEvent) *CampaignTrigger {
 	return &CampaignTrigger{
 		baseTrigger: newBaseTrigger(TypeCampaign, env, flow, contact, nil, nil),
 		event:       event,

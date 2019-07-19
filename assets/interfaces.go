@@ -3,6 +3,7 @@ package assets
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -219,7 +220,7 @@ type Template interface {
 // TemplateTranslation represents a single translation for a specific template and channel
 type TemplateTranslation interface {
 	Content() string
-	Language() utils.Language
+	Language() envs.Language
 	VariableCount() int
 	Channel() ChannelReference
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -26,7 +27,7 @@ type XValue interface {
 	Render() string
 
 	// Format returns the pretty text representation
-	Format(env utils.Environment) string
+	Format(env envs.Environment) string
 }
 
 // XCountable is the interface for types which can be counted
@@ -123,7 +124,7 @@ func Render(x XValue) string {
 }
 
 // Format returns the pretty text representation
-func Format(env utils.Environment, x XValue) string {
+func Format(env envs.Environment, x XValue) string {
 	if utils.IsNil(x) {
 		return ""
 	}

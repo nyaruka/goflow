@@ -3,11 +3,11 @@ package excellent_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -36,7 +36,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		"array2d": array2d,
 	})
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	evaluateTests := []struct {
 		template string
@@ -281,7 +281,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@(thing.xxx)`, "", true},
 	}
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	for _, tc := range evaluateAsStringTests {
 		defer func() {
 			if r := recover(); r != nil {
@@ -339,7 +339,7 @@ func TestEvaluationErrors(t *testing.T) {
 	vars := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("bar"),
 	})
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	for _, tc := range errorTests {
 		result, err := excellent.EvaluateTemplate(env, vars, tc.template)
@@ -357,7 +357,7 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 		vars := types.NewXObject(map[string]types.XValue{
 			"foo": types.NewXText("bar"),
 		})
-		env := utils.NewEnvironmentBuilder().Build()
+		env := envs.NewEnvironmentBuilder().Build()
 
 		for _, tc := range errorTests {
 			excellent.EvaluateTemplate(env, vars, tc.template)

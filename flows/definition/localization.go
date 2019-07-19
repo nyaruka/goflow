@@ -3,6 +3,7 @@ package definition
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -47,15 +48,15 @@ func (t languageTranslations) SetTextArray(uuid utils.UUID, property string, tra
 }
 
 // our top level container for all the translations for all languages
-type localization map[utils.Language]languageTranslations
+type localization map[envs.Language]languageTranslations
 
 func NewLocalization() flows.Localization {
 	return make(localization)
 }
 
 // Languages gets the list of languages included in this localization
-func (l localization) Languages() []utils.Language {
-	languages := make([]utils.Language, 0, len(l))
+func (l localization) Languages() []envs.Language {
+	languages := make([]envs.Language, 0, len(l))
 	for lang := range l {
 		languages = append(languages, lang)
 	}
@@ -63,7 +64,7 @@ func (l localization) Languages() []utils.Language {
 }
 
 // AddItemTranslation adds a new item translation
-func (l localization) AddItemTranslation(lang utils.Language, itemUUID utils.UUID, property string, translated []string) {
+func (l localization) AddItemTranslation(lang envs.Language, itemUUID utils.UUID, property string, translated []string) {
 	_, found := l[lang]
 	if !found {
 		l[lang] = make(languageTranslations)
@@ -72,7 +73,7 @@ func (l localization) AddItemTranslation(lang utils.Language, itemUUID utils.UUI
 }
 
 // GetTranslations returns the translations for the given language
-func (l localization) GetTranslations(lang utils.Language) flows.Translations {
+func (l localization) GetTranslations(lang envs.Language) flows.Translations {
 	return l[lang]
 }
 

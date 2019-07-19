@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -199,7 +200,7 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 //   trigger:trigger -> the trigger that started this session
 //
 // @context root
-func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
+func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if r.Contact() != nil {
 		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
@@ -253,7 +254,7 @@ func (r *flowRun) lastWebhookResponse() types.XValue {
 //   exited_on:datetime -> the exit date of the run
 //
 // @context run
-func (r *flowRun) Context(env utils.Environment) map[string]types.XValue {
+func (r *flowRun) Context(env envs.Environment) map[string]types.XValue {
 	var exitedOn types.XValue
 	if r.exitedOn != nil {
 		exitedOn = types.NewXDateTime(*r.exitedOn)
@@ -287,14 +288,14 @@ func (r *flowRun) EvaluateTemplate(template string) (string, error) {
 }
 
 // get the ordered list of languages to be used for localization in this run
-func (r *flowRun) getLanguages() []utils.Language {
+func (r *flowRun) getLanguages() []envs.Language {
 	// TODO cache this this?
 
 	contact := r.Contact()
-	languages := make([]utils.Language, 0, 3)
+	languages := make([]envs.Language, 0, 3)
 
 	// if contact has a allowed language, it takes priority
-	if contact != nil && contact.Language() != utils.NilLanguage {
+	if contact != nil && contact.Language() != envs.NilLanguage {
 		for _, l := range r.Environment().AllowedLanguages() {
 			if l == contact.Language() {
 				languages = append(languages, contact.Language())
@@ -305,7 +306,7 @@ func (r *flowRun) getLanguages() []utils.Language {
 
 	// next we include the default language if it's different to the contact language
 	defaultLanguage := r.Environment().DefaultLanguage()
-	if defaultLanguage != utils.NilLanguage && defaultLanguage != contact.Language() {
+	if defaultLanguage != envs.NilLanguage && defaultLanguage != contact.Language() {
 		languages = append(languages, defaultLanguage)
 	}
 
@@ -323,7 +324,7 @@ func (r *flowRun) GetTextArray(uuid utils.UUID, key string, native []string) []s
 	return r.GetTranslatedTextArray(uuid, key, native, r.getLanguages())
 }
 
-func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []string, languages []utils.Language) []string {
+func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []string, languages []envs.Language) []string {
 	if languages == nil {
 		languages = r.getLanguages()
 	}

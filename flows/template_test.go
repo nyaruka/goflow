@@ -5,8 +5,8 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static/types"
-	"github.com/nyaruka/goflow/utils"
-	
+	"github.com/nyaruka/goflow/envs"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,7 +24,7 @@ func TestTemplateTranslation(t *testing.T) {
 	channel := assets.NewChannelReference("0bce5fd3-c215-45a0-bcb8-2386eb194175", "Test Channel")
 
 	for i, tc := range tcs {
-		tt := NewTemplateTranslation(types.NewTemplateTranslation(*channel, utils.Language("eng"), tc.Content, len(tc.Variables)))
+		tt := NewTemplateTranslation(types.NewTemplateTranslation(*channel, envs.Language("eng"), tc.Content, len(tc.Variables)))
 		result := tt.Substitute(tc.Variables)
 		assert.Equal(t, tc.Expected, result, "%d: unexpected template substitution", i)
 	}
@@ -32,8 +32,8 @@ func TestTemplateTranslation(t *testing.T) {
 
 func TestTemplates(t *testing.T) {
 	channel1 := assets.NewChannelReference("0bce5fd3-c215-45a0-bcb8-2386eb194175", "Test Channel")
-	tt1 := types.NewTemplateTranslation(*channel1, utils.Language("eng"), "Hello {{1}}", 1)
-	tt2 := types.NewTemplateTranslation(*channel1, utils.Language("spa"), "Hola {{1}}", 1)
+	tt1 := types.NewTemplateTranslation(*channel1, envs.Language("eng"), "Hello {{1}}", 1)
+	tt2 := types.NewTemplateTranslation(*channel1, envs.Language("spa"), "Hola {{1}}", 1)
 	template := NewTemplate(types.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*types.TemplateTranslation{tt1, tt2}))
 
 	tas := NewTemplateAssets([]assets.Template{template})
@@ -41,15 +41,15 @@ func TestTemplates(t *testing.T) {
 	tcs := []struct {
 		UUID      assets.TemplateUUID
 		Channel   *assets.ChannelReference
-		Languages []utils.Language
+		Languages []envs.Language
 		Variables []string
 		Expected  string
 	}{
-		{"c520cbda-e118-440f-aaf6-c0485088384f", channel1, []utils.Language{"eng", "spa"}, []string{"Chef"}, "Hello Chef"},
-		{"c520cbda-e118-440f-aaf6-c0485088384f", channel1, []utils.Language{"deu", "spa"}, []string{"Chef"}, "Hola Chef"},
-		{"c520cbda-e118-440f-aaf6-c0485088384f", nil, []utils.Language{"deu", "spa"}, []string{"Chef"}, ""},
-		{"c520cbda-e118-440f-aaf6-c0485088384f", channel1, []utils.Language{"deu"}, []string{"Chef"}, ""},
-		{"8c5d4910-114a-4521-ba1d-bde8b024865a", channel1, []utils.Language{"eng", "spa"}, []string{"Chef"}, ""},
+		{"c520cbda-e118-440f-aaf6-c0485088384f", channel1, []envs.Language{"eng", "spa"}, []string{"Chef"}, "Hello Chef"},
+		{"c520cbda-e118-440f-aaf6-c0485088384f", channel1, []envs.Language{"deu", "spa"}, []string{"Chef"}, "Hola Chef"},
+		{"c520cbda-e118-440f-aaf6-c0485088384f", nil, []envs.Language{"deu", "spa"}, []string{"Chef"}, ""},
+		{"c520cbda-e118-440f-aaf6-c0485088384f", channel1, []envs.Language{"deu"}, []string{"Chef"}, ""},
+		{"8c5d4910-114a-4521-ba1d-bde8b024865a", channel1, []envs.Language{"eng", "spa"}, []string{"Chef"}, ""},
 	}
 
 	for _, tc := range tcs {

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers/waits"
@@ -72,9 +73,9 @@ func TestMsgWait(t *testing.T) {
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {
 	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	sa, flow := initializeSessionAssets(t)
-	contact := flows.NewEmptyContact(sa, "Ben Haggerty", utils.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Ben Haggerty", envs.Language("eng"), nil)
 
 	// a manual trigger will wait at the initial wait
 	trigger := triggers.NewManualTrigger(env, flow.Reference(), contact, nil)

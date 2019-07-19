@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/legacy/gen"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 type legacyVisitor struct {
 	gen.BaseExcellent1Visitor
-	env utils.Environment
+	env envs.Environment
 }
 
-func newLegacyVisitor(env utils.Environment) *legacyVisitor {
+func newLegacyVisitor(env envs.Environment) *legacyVisitor {
 	return &legacyVisitor{env: env}
 }
 

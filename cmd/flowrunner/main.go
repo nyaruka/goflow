@@ -12,6 +12,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -59,7 +60,7 @@ func main() {
 	assetsPath := args[0]
 	flowUUID := assets.FlowUUID(args[1])
 
-	repro, err := RunFlow(assetsPath, flowUUID, initialMsg, utils.Language(contactLang), os.Stdin, os.Stdout)
+	repro, err := RunFlow(assetsPath, flowUUID, initialMsg, envs.Language(contactLang), os.Stdin, os.Stdout)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -74,7 +75,7 @@ func main() {
 }
 
 // RunFlow steps through a flow
-func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang utils.Language, in io.Reader, out io.Writer) (*Repro, error) {
+func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang envs.Language, in io.Reader, out io.Writer) (*Repro, error) {
 	source, err := static.LoadSource(assetsPath)
 	if err != nil {
 		return nil, err
@@ -102,8 +103,8 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")
-	languages := []utils.Language{flow.Language(), contact.Language()}
-	env := utils.NewEnvironmentBuilder().WithTimezone(la).WithAllowedLanguages(languages).Build()
+	languages := []envs.Language{flow.Language(), contact.Language()}
+	env := envs.NewEnvironmentBuilder().WithTimezone(la).WithAllowedLanguages(languages).Build()
 
 	repro := &Repro{}
 

@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -62,7 +63,7 @@ func (c *Channel) HasParent() bool {
 //   address:text -> the address of the channel
 //
 // @context channel
-func (c *Channel) Context(env utils.Environment) map[string]types.XValue {
+func (c *Channel) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"__default__": types.NewXText(c.Name()),
 		"uuid":        types.NewXText(string(c.UUID())),
