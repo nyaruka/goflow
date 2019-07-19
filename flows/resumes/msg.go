@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -46,7 +47,7 @@ type MsgResume struct {
 }
 
 // NewMsgResume creates a new message resume with the passed in values
-func NewMsgResume(env utils.Environment, contact *flows.Contact, msg *flows.MsgIn) *MsgResume {
+func NewMsgResume(env envs.Environment, contact *flows.Contact, msg *flows.MsgIn) *MsgResume {
 	return &MsgResume{
 		baseResume: newBaseResume(TypeMsg, env, contact),
 		msg:        msg,

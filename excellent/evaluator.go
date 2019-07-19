@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/excellent/operators"
@@ -14,7 +15,7 @@ import (
 )
 
 // EvaluateTemplate evaluates the passed in template
-func EvaluateTemplate(env utils.Environment, context *types.XObject, template string) (string, error) {
+func EvaluateTemplate(env envs.Environment, context *types.XObject, template string) (string, error) {
 	var buf strings.Builder
 
 	err := VisitTemplate(template, context.Properties(), func(tokenType XTokenType, token string) error {
@@ -42,7 +43,7 @@ func EvaluateTemplate(env utils.Environment, context *types.XObject, template st
 // EvaluateTemplateValue is equivalent to EvaluateTemplate except in the case where the template contains
 // a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In these cases we return
 // the typed value from EvaluateExpression instead of stringifying the result.
-func EvaluateTemplateValue(env utils.Environment, context *types.XObject, template string) (types.XValue, error) {
+func EvaluateTemplateValue(env envs.Environment, context *types.XObject, template string) (types.XValue, error) {
 	template = strings.TrimSpace(template)
 	scanner := NewXScanner(strings.NewReader(template), context.Properties())
 
@@ -67,7 +68,7 @@ func EvaluateTemplateValue(env utils.Environment, context *types.XObject, templa
 
 // EvaluateExpression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
-func EvaluateExpression(env utils.Environment, context *types.XObject, expression string) types.XValue {
+func EvaluateExpression(env envs.Environment, context *types.XObject, expression string) types.XValue {
 	visitor := newEvaluationVisitor(env, context)
 	output, err := VisitExpression(expression, visitor)
 	if err != nil {
@@ -81,12 +82,12 @@ func EvaluateExpression(env utils.Environment, context *types.XObject, expressio
 type visitor struct {
 	gen.BaseExcellent2Visitor
 
-	env     utils.Environment
+	env     envs.Environment
 	context *types.XObject
 }
 
 // creates a new visitor for evaluation
-func newEvaluationVisitor(env utils.Environment, context *types.XObject) *visitor {
+func newEvaluationVisitor(env envs.Environment, context *types.XObject) *visitor {
 	return &visitor{env: env, context: context}
 }
 

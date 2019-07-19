@@ -12,6 +12,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -103,7 +104,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	languages := []utils.Language{flow.Language(), contact.Language()}
-	env := utils.NewEnvironmentBuilder().WithTimezone(la).WithAllowedLanguages(languages).Build()
+	env := envs.NewEnvironmentBuilder().WithTimezone(la).WithAllowedLanguages(languages).Build()
 
 	repro := &Repro{}
 

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/routers/cases"
@@ -247,9 +248,9 @@ func TestTests(t *testing.T) {
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	env := utils.NewEnvironmentBuilder().
-		WithDateFormat(utils.DateFormatDayMonthYear).
-		WithTimeFormat(utils.TimeFormatHourMinuteSecond).
+	env := envs.NewEnvironmentBuilder().
+		WithDateFormat(envs.DateFormatDayMonthYear).
+		WithTimeFormat(envs.TimeFormatHourMinuteSecond).
 		WithTimezone(kgl).
 		WithDefaultCountry(utils.Country("RW")).
 		Build()
@@ -297,7 +298,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(has_error(1 / 0).match)", "division by zero", false},
 	}
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	for _, test := range evalTests {
 		eval, err := excellent.EvaluateTemplate(env, vars, test.template)
 
@@ -335,7 +336,7 @@ func TestHasPhone(t *testing.T) {
 		{"12067799294", "BW", ""},
 	}
 
-	env := utils.NewEnvironmentBuilder().WithDefaultCountry(utils.Country("RW")).Build()
+	env := envs.NewEnvironmentBuilder().WithDefaultCountry(utils.Country("RW")).Build()
 
 	for _, tc := range tests {
 		var actual, expected types.XValue
@@ -359,14 +360,14 @@ func TestParseDecimalFuzzy(t *testing.T) {
 	parseTests := []struct {
 		input    string
 		expected decimal.Decimal
-		format   *utils.NumberFormat
+		format   *envs.NumberFormat
 	}{
-		{"1234", decimal.RequireFromString("1234"), utils.DefaultNumberFormat},
-		{"1,234.567", decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat},
-		{"1.234,567", decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
-		{".1234", decimal.RequireFromString("0.1234"), utils.DefaultNumberFormat},
-		{" .1234", decimal.RequireFromString("0.1234"), utils.DefaultNumberFormat},
-		{"100.00", decimal.RequireFromString("100.00"), utils.DefaultNumberFormat},
+		{"1234", decimal.RequireFromString("1234"), envs.DefaultNumberFormat},
+		{"1,234.567", decimal.RequireFromString("1234.567"), envs.DefaultNumberFormat},
+		{"1.234,567", decimal.RequireFromString("1234.567"), &envs.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
+		{".1234", decimal.RequireFromString("0.1234"), envs.DefaultNumberFormat},
+		{" .1234", decimal.RequireFromString("0.1234"), envs.DefaultNumberFormat},
+		{"100.00", decimal.RequireFromString("100.00"), envs.DefaultNumberFormat},
 	}
 
 	for _, test := range parseTests {

@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -31,7 +32,7 @@ func TestStep(t *testing.T) {
 	assert.Equal(t, flows.ExitUUID(""), step.ExitUUID())
 
 	// test use in expressions
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"arrived_on": types.NewXDateTime(d),
 		"exit_uuid":  types.XTextEmpty,

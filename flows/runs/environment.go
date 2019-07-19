@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -13,13 +14,13 @@ import (
 )
 
 type runEnvironment struct {
-	utils.Environment
+	envs.Environment
 
 	run *flowRun
 }
 
 // creates a run environment based on the given run
-func newRunEnvironment(base utils.Environment, run *flowRun) flows.RunEnvironment {
+func newRunEnvironment(base envs.Environment, run *flowRun) flows.RunEnvironment {
 	return &runEnvironment{base, run}
 }
 

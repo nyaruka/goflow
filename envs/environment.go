@@ -1,10 +1,11 @@
-package utils
+package envs
 
 import (
 	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/utils"
 )
 
 type RedactionPolicy string
@@ -29,9 +30,9 @@ type Environment interface {
 	DateFormat() DateFormat
 	TimeFormat() TimeFormat
 	Timezone() *time.Location
-	DefaultLanguage() Language
-	AllowedLanguages() []Language
-	DefaultCountry() Country
+	DefaultLanguage() utils.Language
+	AllowedLanguages() []utils.Language
+	DefaultCountry() utils.Country
 	NumberFormat() *NumberFormat
 	RedactionPolicy() RedactionPolicy
 	MaxValueLength() int
@@ -49,24 +50,24 @@ type environment struct {
 	dateFormat       DateFormat
 	timeFormat       TimeFormat
 	timezone         *time.Location
-	defaultLanguage  Language
-	allowedLanguages []Language
-	defaultCountry   Country
+	defaultLanguage  utils.Language
+	allowedLanguages []utils.Language
+	defaultCountry   utils.Country
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
 	maxValueLength   int
 	extensions       map[string]json.RawMessage
 }
 
-func (e *environment) DateFormat() DateFormat           { return e.dateFormat }
-func (e *environment) TimeFormat() TimeFormat           { return e.timeFormat }
-func (e *environment) Timezone() *time.Location         { return e.timezone }
-func (e *environment) DefaultLanguage() Language        { return e.defaultLanguage }
-func (e *environment) AllowedLanguages() []Language     { return e.allowedLanguages }
-func (e *environment) DefaultCountry() Country          { return e.defaultCountry }
-func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
-func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
-func (e *environment) MaxValueLength() int              { return e.maxValueLength }
+func (e *environment) DateFormat() DateFormat             { return e.dateFormat }
+func (e *environment) TimeFormat() TimeFormat             { return e.timeFormat }
+func (e *environment) Timezone() *time.Location           { return e.timezone }
+func (e *environment) DefaultLanguage() utils.Language    { return e.defaultLanguage }
+func (e *environment) AllowedLanguages() []utils.Language { return e.allowedLanguages }
+func (e *environment) DefaultCountry() utils.Country      { return e.defaultCountry }
+func (e *environment) NumberFormat() *NumberFormat        { return e.numberFormat }
+func (e *environment) RedactionPolicy() RedactionPolicy   { return e.redactionPolicy }
+func (e *environment) MaxValueLength() int                { return e.maxValueLength }
 
 func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }
 
@@ -89,10 +90,10 @@ type envEnvelope struct {
 	DateFormat       DateFormat                 `json:"date_format" validate:"date_format"`
 	TimeFormat       TimeFormat                 `json:"time_format" validate:"time_format"`
 	Timezone         string                     `json:"timezone"`
-	DefaultLanguage  Language                   `json:"default_language,omitempty" validate:"omitempty,language"`
-	AllowedLanguages []Language                 `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
+	DefaultLanguage  utils.Language             `json:"default_language,omitempty" validate:"omitempty,language"`
+	AllowedLanguages []utils.Language           `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
 	NumberFormat     *NumberFormat              `json:"number_format,omitempty"`
-	DefaultCountry   Country                    `json:"default_country,omitempty" validate:"omitempty,country"`
+	DefaultCountry   utils.Country              `json:"default_country,omitempty" validate:"omitempty,country"`
 	RedactionPolicy  RedactionPolicy            `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
 	MaxValuelength   int                        `json:"max_value_length"`
 	Extensions       map[string]json.RawMessage `json:"extensions,omitempty"`
@@ -104,7 +105,7 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env := NewEnvironmentBuilder().Build().(*environment)
 	envelope := env.toEnvelope()
 
-	if err := UnmarshalAndValidate(data, envelope); err != nil {
+	if err := utils.UnmarshalAndValidate(data, envelope); err != nil {
 		return nil, err
 	}
 
@@ -163,9 +164,9 @@ func NewEnvironmentBuilder() *EnvironmentBuilder {
 			dateFormat:       DateFormatYearMonthDay,
 			timeFormat:       TimeFormatHourMinute,
 			timezone:         time.UTC,
-			defaultLanguage:  NilLanguage,
+			defaultLanguage:  utils.NilLanguage,
 			allowedLanguages: nil,
-			defaultCountry:   NilCountry,
+			defaultCountry:   utils.NilCountry,
 			numberFormat:     DefaultNumberFormat,
 			maxValueLength:   640,
 			redactionPolicy:  RedactionPolicyNone,
@@ -190,17 +191,17 @@ func (b *EnvironmentBuilder) WithTimezone(timezone *time.Location) *EnvironmentB
 	return b
 }
 
-func (b *EnvironmentBuilder) WithDefaultLanguage(defaultLanguage Language) *EnvironmentBuilder {
+func (b *EnvironmentBuilder) WithDefaultLanguage(defaultLanguage utils.Language) *EnvironmentBuilder {
 	b.env.defaultLanguage = defaultLanguage
 	return b
 }
 
-func (b *EnvironmentBuilder) WithAllowedLanguages(allowedLanguages []Language) *EnvironmentBuilder {
+func (b *EnvironmentBuilder) WithAllowedLanguages(allowedLanguages []utils.Language) *EnvironmentBuilder {
 	b.env.allowedLanguages = allowedLanguages
 	return b
 }
 
-func (b *EnvironmentBuilder) WithDefaultCountry(defaultCountry Country) *EnvironmentBuilder {
+func (b *EnvironmentBuilder) WithDefaultCountry(defaultCountry utils.Country) *EnvironmentBuilder {
 	b.env.defaultCountry = defaultCountry
 	return b
 }

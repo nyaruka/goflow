@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -33,7 +34,7 @@ func NewTimezoneModifier(timezone *time.Location) *TimezoneModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *TimezoneModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+func (m *TimezoneModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	if !timezonesEqual(contact.Timezone(), m.timezone) {
 		contact.SetTimezone(m.timezone)
 		log(events.NewContactTimezoneChangedEvent(m.timezone))

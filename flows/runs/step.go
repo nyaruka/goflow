@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -35,7 +36,7 @@ func (s *step) Leave(exit flows.ExitUUID) {
 }
 
 // Context returns the properties available in expressions
-func (s *step) Context(env utils.Environment) map[string]types.XValue {
+func (s *step) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"uuid":       types.NewXText(string(s.UUID())),
 		"node_uuid":  types.NewXText(string(s.NodeUUID())),
@@ -50,7 +51,7 @@ var _ flows.Step = (*step)(nil)
 type Path []flows.Step
 
 // ToXValue returns a representation of this object for use in expressions
-func (p Path) ToXValue(env utils.Environment) types.XValue {
+func (p Path) ToXValue(env envs.Environment) types.XValue {
 	array := make([]types.XValue, len(p))
 	for i, step := range p {
 		array[i] = flows.Context(env, step)

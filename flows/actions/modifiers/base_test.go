@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
@@ -66,7 +67,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 
 		// apply the modifier
 		logEvent := make([]flows.Event, 0)
-		modifier.Apply(utils.NewEnvironmentBuilder().Build(), sessionAssets, contact, func(e flows.Event) { logEvent = append(logEvent, e) })
+		modifier.Apply(envs.NewEnvironmentBuilder().Build(), sessionAssets, contact, func(e flows.Event) { logEvent = append(logEvent, e) })
 
 		// check contact is in the expected state
 		contactJSON, _ := json.Marshal(contact)

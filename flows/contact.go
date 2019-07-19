@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -190,14 +191,14 @@ func (c *Contact) Reference() *ContactReference {
 }
 
 // Format returns a friendly string version of this contact depending on what fields are set
-func (c *Contact) Format(env utils.Environment) string {
+func (c *Contact) Format(env envs.Environment) string {
 	// if contact has a name set, use that
 	if c.name != "" {
 		return c.name
 	}
 
 	// otherwise use either id or the higest priority URN depending on the env
-	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
+	if env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		return strconv.Itoa(int(c.id))
 	}
 	if len(c.urns) > 0 {
@@ -223,7 +224,7 @@ func (c *Contact) Format(env utils.Environment) string {
 //   channel:channel -> the preferred channel of the contact
 //
 // @context contact
-func (c *Contact) Context(env utils.Environment) map[string]types.XValue {
+func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	var urn, timezone types.XValue
 	if c.timezone != nil {
 		timezone = types.NewXText(c.timezone.String())
@@ -336,7 +337,7 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 }
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) ReevaluateDynamicGroups(env utils.Environment, allGroups *GroupAssets) ([]*Group, []*Group, []error) {
+func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *GroupAssets) ([]*Group, []*Group, []error) {
 	added := make([]*Group, 0)
 	removed := make([]*Group, 0)
 	errors := make([]error, 0)
@@ -364,7 +365,7 @@ func (c *Contact) ReevaluateDynamicGroups(env utils.Environment, allGroups *Grou
 }
 
 // ResolveQueryKey resolves a contact query search key for this contact
-func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface{} {
+func (c *Contact) ResolveQueryKey(env envs.Environment, key string) []interface{} {
 	switch key {
 	case "name":
 		if c.name != "" {
@@ -382,7 +383,7 @@ func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface
 
 	// try as a URN scheme
 	if urns.IsValidScheme(key) {
-		if env.RedactionPolicy() != utils.RedactionPolicyURNs {
+		if env.RedactionPolicy() != envs.RedactionPolicyURNs {
 			urnsWithScheme := c.urns.WithScheme(key)
 			vals := make([]interface{}, len(urnsWithScheme))
 			for i := range urnsWithScheme {

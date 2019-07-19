@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -58,7 +59,7 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 //   external_id:text -> the external ID of the input
 //
 // @context input
-func (i *MsgInput) Context(env utils.Environment) map[string]types.XValue {
+func (i *MsgInput) Context(env envs.Environment) map[string]types.XValue {
 	attachments := make([]types.XValue, len(i.attachments))
 
 	for i, attachment := range i.attachments {

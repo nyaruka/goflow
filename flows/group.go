@@ -5,8 +5,8 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 )
@@ -42,7 +42,7 @@ func (g *Group) ParsedQuery() (*contactql.ContactQuery, error) {
 func (g *Group) IsDynamic() bool { return g.Query() != "" }
 
 // CheckDynamicMembership returns whether the given contact belongs in this dynamic group
-func (g *Group) CheckDynamicMembership(env utils.Environment, contact *Contact) (bool, error) {
+func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact) (bool, error) {
 	if !g.IsDynamic() {
 		return false, errors.Errorf("can't check membership on a non-dynamic group")
 	}
@@ -68,7 +68,7 @@ func (g *Group) Reference() *assets.GroupReference {
 //   name:text -> the name of the group
 //
 // @context group
-func (g *Group) ToXValue(env utils.Environment) types.XValue {
+func (g *Group) ToXValue(env envs.Environment) types.XValue {
 	return types.NewXObject(map[string]types.XValue{
 		"uuid": types.NewXText(string(g.UUID())),
 		"name": types.NewXText(g.Name()),
@@ -147,7 +147,7 @@ func (l *GroupList) Count() int {
 }
 
 // ToXValue returns a representation of this object for use in expressions
-func (l GroupList) ToXValue(env utils.Environment) types.XValue {
+func (l GroupList) ToXValue(env envs.Environment) types.XValue {
 	array := make([]types.XValue, len(l.groups))
 	for i, group := range l.groups {
 		array[i] = group.ToXValue(env)

@@ -3,8 +3,8 @@ package functions
 import (
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // XFUNCTIONS is our map of functions available in Excellent which aren't tests
@@ -21,7 +21,7 @@ func Lookup(name string) types.XFunction {
 }
 
 // Call calls the given function with the given parameters
-func Call(env utils.Environment, name string, function types.XFunction, params []types.XValue) types.XValue {
+func Call(env envs.Environment, name string, function types.XFunction, params []types.XValue) types.XValue {
 	val := function(env, params...)
 
 	// if function returned an error, wrap the error with the function name

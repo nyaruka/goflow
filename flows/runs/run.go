@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -199,7 +200,7 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 //   trigger:trigger -> the trigger that started this session
 //
 // @context root
-func (r *flowRun) RootContext(env utils.Environment) map[string]types.XValue {
+func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if r.Contact() != nil {
 		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
@@ -253,7 +254,7 @@ func (r *flowRun) lastWebhookResponse() types.XValue {
 //   exited_on:datetime -> the exit date of the run
 //
 // @context run
-func (r *flowRun) Context(env utils.Environment) map[string]types.XValue {
+func (r *flowRun) Context(env envs.Environment) map[string]types.XValue {
 	var exitedOn types.XValue
 	if r.exitedOn != nil {
 		exitedOn = types.NewXDateTime(*r.exitedOn)

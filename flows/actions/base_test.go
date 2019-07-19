@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -152,13 +153,13 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			}
 		}
 
-		envBuilder := utils.NewEnvironmentBuilder().
+		envBuilder := envs.NewEnvironmentBuilder().
 			WithDefaultLanguage("eng").
 			WithAllowedLanguages([]utils.Language{"eng", "spa"}).
 			WithDefaultCountry("RW")
 
 		if tc.RedactURNs {
-			envBuilder.WithRedactionPolicy(utils.RedactionPolicyURNs)
+			envBuilder.WithRedactionPolicy(envs.RedactionPolicyURNs)
 		}
 
 		env := envBuilder.Build()

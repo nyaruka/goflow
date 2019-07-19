@@ -3,15 +3,15 @@ package types_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestXObject(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	object := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
@@ -48,7 +48,7 @@ func TestXObject(t *testing.T) {
 }
 
 func TestXObjectWithDefault(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	object := types.NewXObject(map[string]types.XValue{
 		"__default__": types.NewXText("abc-123"),
@@ -85,7 +85,7 @@ func TestXObjectWithDefault(t *testing.T) {
 }
 
 func TestXLazyObject(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	initialized := false
 
 	object := types.NewXLazyObject(func() map[string]types.XValue {
@@ -125,7 +125,7 @@ func TestToXObject(t *testing.T) {
 		{types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")}), types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")}), false},
 	}
 
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 
 	for _, tc := range tests {
 		object, err := types.ToXObject(env, tc.value)

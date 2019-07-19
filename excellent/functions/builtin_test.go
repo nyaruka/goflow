@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/test"
@@ -30,16 +31,16 @@ var xf = functions.Lookup
 var ERROR = types.NewXErrorf("any error")
 
 func TestFunctions(t *testing.T) {
-	dmy := utils.NewEnvironmentBuilder().WithDateFormat(utils.DateFormatDayMonthYear).Build()
-	mdy := utils.NewEnvironmentBuilder().
-		WithDateFormat(utils.DateFormatMonthDayYear).
-		WithTimeFormat(utils.TimeFormatHourMinuteAmPm).
+	dmy := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
+	mdy := envs.NewEnvironmentBuilder().
+		WithDateFormat(envs.DateFormatMonthDayYear).
+		WithTimeFormat(envs.TimeFormatHourMinuteAmPm).
 		WithTimezone(la).
 		Build()
 
 	var funcTests = []struct {
 		name     string
-		env      utils.Environment
+		env      envs.Environment
 		args     []types.XValue
 		expected types.XValue
 	}{

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -43,7 +44,7 @@ func NewGroupsModifier(groups []*flows.Group, modification GroupsModification) *
 }
 
 // Apply applies this modification to the given contact
-func (m *GroupsModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+func (m *GroupsModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	diff := make([]*flows.Group, 0, len(m.groups))
 	if m.modification == GroupsAdd {
 		for _, group := range m.groups {

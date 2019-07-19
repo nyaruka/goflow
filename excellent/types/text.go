@@ -6,6 +6,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -38,7 +39,7 @@ func (x XText) Truthy() bool {
 func (x XText) Render() string { return x.Native() }
 
 // Format returns the pretty text representation
-func (x XText) Format(env utils.Environment) string {
+func (x XText) Format(env envs.Environment) string {
 	return x.Render()
 }
 
@@ -85,7 +86,7 @@ var XTextEmpty = NewXText("")
 var _ XValue = XTextEmpty
 
 // ToXText converts the given value to a string
-func ToXText(env utils.Environment, x XValue) (XText, XError) {
+func ToXText(env envs.Environment, x XValue) (XText, XError) {
 	if utils.IsNil(x) {
 		return XTextEmpty, nil
 	}

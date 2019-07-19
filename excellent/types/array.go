@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -65,7 +66,7 @@ func (x *XArray) Render() string {
 }
 
 // Format returns the pretty text representation
-func (x *XArray) Format(env utils.Environment) string {
+func (x *XArray) Format(env envs.Environment) string {
 	parts := make([]string, x.Count())
 	multiline := false
 
@@ -134,7 +135,7 @@ func (x *XArray) values() []XValue {
 var XArrayEmpty = NewXArray()
 
 // ToXArray converts the given value to an array
-func ToXArray(env utils.Environment, x XValue) (*XArray, XError) {
+func ToXArray(env envs.Environment, x XValue) (*XArray, XError) {
 	if utils.IsNil(x) {
 		return XArrayEmpty, nil
 	}

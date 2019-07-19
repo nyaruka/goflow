@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -17,11 +17,11 @@ const (
 
 // Queryable is the interface objects must implement queried
 type Queryable interface {
-	ResolveQueryKey(utils.Environment, string) []interface{}
+	ResolveQueryKey(envs.Environment, string) []interface{}
 }
 
 // EvaluateQuery evaluates the given parsed query against a queryable object
-func EvaluateQuery(env utils.Environment, query *ContactQuery, queryable Queryable) (bool, error) {
+func EvaluateQuery(env envs.Environment, query *ContactQuery, queryable Queryable) (bool, error) {
 	return query.Evaluate(env, queryable)
 }
 

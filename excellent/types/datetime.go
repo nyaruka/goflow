@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -39,14 +40,14 @@ func (x XDateTime) Render() string {
 }
 
 // Format returns the pretty text representation
-func (x XDateTime) Format(env utils.Environment) string {
+func (x XDateTime) Format(env envs.Environment) string {
 	formatted, _ := x.FormatCustom(string(env.DateFormat())+" "+string(env.TimeFormat()), env.Timezone())
 	return formatted
 }
 
 // FormatCustom provides customised formatting
 func (x XDateTime) FormatCustom(format string, tz *time.Location) (string, error) {
-	goFormat, err := utils.ToGoDateFormat(format, utils.DateTimeFormatting)
+	goFormat, err := envs.ToGoDateFormat(format, envs.DateTimeFormatting)
 	if err != nil {
 		return "", err
 	}
@@ -119,21 +120,21 @@ func (x *XDateTime) UnmarshalJSON(data []byte) error {
 }
 
 // XDateTimeZero is the zero time value
-var XDateTimeZero = NewXDateTime(utils.ZeroDateTime)
+var XDateTimeZero = NewXDateTime(envs.ZeroDateTime)
 var _ XValue = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible
-func ToXDateTime(env utils.Environment, x XValue) (XDateTime, XError) {
+func ToXDateTime(env envs.Environment, x XValue) (XDateTime, XError) {
 	return toXDateTime(env, x, false)
 }
 
 // ToXDateTimeWithTimeFill converts the given value to a time or returns an error if that isn't possible
-func ToXDateTimeWithTimeFill(env utils.Environment, x XValue) (XDateTime, XError) {
+func ToXDateTimeWithTimeFill(env envs.Environment, x XValue) (XDateTime, XError) {
 	return toXDateTime(env, x, true)
 }
 
 // converts the given value to a time or returns an error if that isn't possible
-func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XError) {
+func toXDateTime(env envs.Environment, x XValue, fillTime bool) (XDateTime, XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
 		case XError:
@@ -143,7 +144,7 @@ func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XEr
 		case XDateTime:
 			return typed, nil
 		case XText:
-			parsed, err := utils.DateTimeFromString(env, typed.Native(), fillTime)
+			parsed, err := envs.DateTimeFromString(env, typed.Native(), fillTime)
 			if err == nil {
 				return NewXDateTime(parsed), nil
 			}

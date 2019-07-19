@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/dates"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -36,14 +37,14 @@ func (x XTime) Truthy() bool {
 func (x XTime) Render() string { return x.Native().String() }
 
 // Format returns the pretty text representation
-func (x XTime) Format(env utils.Environment) string {
+func (x XTime) Format(env envs.Environment) string {
 	formatted, _ := x.FormatCustom(env.TimeFormat())
 	return formatted
 }
 
 // FormatCustom provides customised formatting
-func (x XTime) FormatCustom(format utils.TimeFormat) (string, error) {
-	goFormat, err := utils.ToGoDateFormat(string(format), utils.TimeOnlyFormatting)
+func (x XTime) FormatCustom(format envs.TimeFormat) (string, error) {
+	goFormat, err := envs.ToGoDateFormat(string(format), envs.TimeOnlyFormatting)
 	if err != nil {
 		return "", err
 	}
@@ -78,7 +79,7 @@ var XTimeZero = NewXTime(dates.ZeroTimeOfDay)
 var _ XValue = XTimeZero
 
 // ToXTime converts the given value to a time or returns an error if that isn't possible
-func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
+func ToXTime(env envs.Environment, x XValue) (XTime, XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
 		case XError:
@@ -95,7 +96,7 @@ func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
 				return XTimeZero, nil
 			}
 		case XText:
-			parsed, err := utils.TimeFromString(typed.Native())
+			parsed, err := envs.TimeFromString(typed.Native())
 			if err == nil {
 				return NewXTime(parsed), nil
 			}

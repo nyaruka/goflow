@@ -22,6 +22,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -50,7 +51,7 @@ func IsSpecVersionSupported(ver string) bool {
 
 // Environment defines the environment for expression evaluation etc
 type Environment struct {
-	target utils.Environment
+	target envs.Environment
 }
 
 // NewEnvironment creates a new environment.
@@ -66,14 +67,14 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 	}
 
 	return &Environment{
-		target: utils.NewEnvironmentBuilder().
-			WithDateFormat(utils.DateFormat(dateFormat)).
-			WithTimeFormat(utils.TimeFormat(timeFormat)).
+		target: envs.NewEnvironmentBuilder().
+			WithDateFormat(envs.DateFormat(dateFormat)).
+			WithTimeFormat(envs.TimeFormat(timeFormat)).
 			WithTimezone(tz).
 			WithDefaultLanguage(utils.Language(defaultLanguage)).
 			WithAllowedLanguages(langs).
 			WithDefaultCountry(utils.Country(defaultCountry)).
-			WithRedactionPolicy(utils.RedactionPolicy(redactionPolicy)).
+			WithRedactionPolicy(envs.RedactionPolicy(redactionPolicy)).
 			Build(),
 	}, nil
 }
@@ -181,7 +182,7 @@ type Resume struct {
 
 // NewMsgResume creates a new message resume
 func NewMsgResume(environment *Environment, contact *Contact, msg *MsgIn) *Resume {
-	var e utils.Environment
+	var e envs.Environment
 	if environment != nil {
 		e = environment.target
 	}

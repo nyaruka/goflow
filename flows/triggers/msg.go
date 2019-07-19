@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -69,7 +70,7 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 }
 
 // NewMsgTrigger creates a new message trigger
-func NewMsgTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, msg *flows.MsgIn, match *KeywordMatch) flows.Trigger {
+func NewMsgTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, msg *flows.MsgIn, match *KeywordMatch) flows.Trigger {
 	return &MsgTrigger{
 		baseTrigger: newBaseTrigger(TypeMsg, env, flow, contact, nil, nil),
 		msg:         msg,

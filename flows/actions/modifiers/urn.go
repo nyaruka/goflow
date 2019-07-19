@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -43,7 +44,7 @@ func NewURNModifier(urn urns.URN, modification URNModification) *URNModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *URNModifier) Apply(env utils.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+func (m *URNModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	contactURN := flows.NewContactURN(m.URN.Normalize(string(env.DefaultCountry())), nil)
 	if contact.AddURN(contactURN) {
 		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))

@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -107,8 +108,8 @@ func (u *ContactURN) withoutQuery() urns.URN {
 }
 
 // ToXValue returns a representation of this object for use in expressions
-func (u *ContactURN) ToXValue(env utils.Environment) types.XValue {
-	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
+func (u *ContactURN) ToXValue(env envs.Environment) types.XValue {
+	if env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		return redactedURN
 	}
 	return types.NewXText(string(u.withoutQuery()))
@@ -176,7 +177,7 @@ func (l URNList) WithScheme(scheme string) URNList {
 }
 
 // ToXValue returns a representation of this object for use in expressions
-func (l URNList) ToXValue(env utils.Environment) types.XValue {
+func (l URNList) ToXValue(env envs.Environment) types.XValue {
 	return types.NewXLazyArray(func() []types.XValue {
 		array := make([]types.XValue, len(l))
 		for i, urn := range l {
@@ -187,7 +188,7 @@ func (l URNList) ToXValue(env utils.Environment) types.XValue {
 }
 
 // MapContext returns a map of the highest priority URN for each scheme - exposed in expressions as @urns
-func (l URNList) MapContext(env utils.Environment) map[string]types.XValue {
+func (l URNList) MapContext(env envs.Environment) map[string]types.XValue {
 	byScheme := make(map[string]types.XValue)
 
 	for _, u := range l {

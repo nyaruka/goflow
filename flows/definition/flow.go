@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inspect"
@@ -183,7 +184,7 @@ func (f *flow) validateAssets(sa flows.SessionAssets, recursive bool, seen map[a
 //   revision:text -> the revision number of the flow
 //
 // @context flow
-func (f *flow) Context(env utils.Environment) map[string]types.XValue {
+func (f *flow) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"__default__": types.NewXText(f.name),
 		"uuid":        types.NewXText(string(f.UUID())),

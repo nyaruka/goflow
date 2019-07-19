@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
 
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
@@ -45,7 +45,7 @@ func TestParseQuery(t *testing.T) {
 
 type TestQueryable struct{}
 
-func (t *TestQueryable) ResolveQueryKey(env utils.Environment, key string) []interface{} {
+func (t *TestQueryable) ResolveQueryKey(env envs.Environment, key string) []interface{} {
 	switch key {
 	case "tel":
 		return []interface{}{"+59313145145"}
@@ -74,7 +74,7 @@ func (t *TestQueryable) ResolveQueryKey(env utils.Environment, key string) []int
 }
 
 func TestEvaluateQuery(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	testObj := &TestQueryable{}
 
 	tests := []struct {
@@ -169,7 +169,7 @@ func TestParsingErrors(t *testing.T) {
 }
 
 func TestEvaluationErrors(t *testing.T) {
-	env := utils.NewEnvironmentBuilder().Build()
+	env := envs.NewEnvironmentBuilder().Build()
 	testObj := &TestQueryable{}
 
 	tests := []struct {

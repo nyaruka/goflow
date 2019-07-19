@@ -3,7 +3,7 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
 )
 
 // XFunction is a callable function.
@@ -13,7 +13,7 @@ import (
 //   @(json(upper)) -> null
 //
 // @type function
-type XFunction func(env utils.Environment, args ...XValue) XValue
+type XFunction func(env envs.Environment, args ...XValue) XValue
 
 // Describe returns a representation of this type for error messages
 func (x XFunction) Describe() string { return "function" }
@@ -27,7 +27,7 @@ func (x XFunction) Render() string {
 }
 
 // Format returns the pretty text representation
-func (x XFunction) Format(env utils.Environment) string {
+func (x XFunction) Format(env envs.Environment) string {
 	return x.Render()
 }
 
