@@ -1449,6 +1449,25 @@
         ]
     },
     {
+        "signature": "week_num(date)",
+        "summary": "Returns the week number (1-53) of `date`.",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(week_num(\"2019-01-01\"))",
+                "output": "1"
+            },
+            {
+                "template": "@(week_num(\"2019-07-23T16:56:59.000000Z\"))",
+                "output": "30"
+            },
+            {
+                "template": "@(week_num(\"xx\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
         "signature": "weekday(date)",
         "summary": "Returns the day of the week for `date`.",
         "detail": "The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc.",

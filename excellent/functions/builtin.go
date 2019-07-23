@@ -85,6 +85,7 @@ func init() {
 		"tz_offset":           OneDateTimeFunction(TZOffset),
 		"now":                 NoArgFunction(Now),
 		"epoch":               OneDateTimeFunction(Epoch),
+		"week_num":            OneDateTimeFunction(WeekNum),
 
 		// date functions
 		"date_from_parts": ThreeIntegerFunction(DateFromParts),
@@ -1335,6 +1336,19 @@ func TZOffset(env envs.Environment, date types.XDateTime) types.XValue {
 func Epoch(env envs.Environment, date types.XDateTime) types.XValue {
 	nanos := decimal.New(date.Native().UnixNano(), 0)
 	return types.NewXNumber(nanos.Div(nanosPerSecond))
+}
+
+// WeekNum returns the week number (1-53) of `date`.
+//
+//   @(week_num("2019-01-01")) -> 1
+//   @(week_num("2019-07-23T16:56:59.000000Z")) -> 30
+//   @(week_num("xx")) -> ERROR
+//
+// @function week_num(date)
+func WeekNum(env envs.Environment, date types.XDateTime) types.XValue {
+	_, weekNum := date.Native().ISOWeek()
+
+	return types.NewXNumberFromInt(weekNum)
 }
 
 // Now returns the current date and time in the current timezone.
