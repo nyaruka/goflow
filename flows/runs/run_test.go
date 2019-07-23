@@ -198,7 +198,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	// check that trying to resolve a property of parent is an error
 	val, err = run.EvaluateTemplateValue(`@parent.contact`)
 	assert.NoError(t, err)
-	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)
+	assert.Equal(t, types.NewXErrorf("null doesn't support lookups"), val)
 
 	// we also have no child, check that it resolves to nil
 	val, err = run.EvaluateTemplateValue(`@child`)
@@ -208,5 +208,5 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	// check that trying to resolve a property of child is an error
 	val, err = run.EvaluateTemplateValue(`@child.contact`)
 	assert.NoError(t, err)
-	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)
+	assert.Equal(t, types.NewXErrorf("null doesn't support lookups"), val)
 }

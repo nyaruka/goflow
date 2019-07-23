@@ -55,6 +55,7 @@ func TestXJSONResolve(t *testing.T) {
 		{[]byte(`["foo", 1.23]`), "j[1]", types.RequireXNumberFromString("1.23"), false},
 		{[]byte(`["foo", true]`), "j[1]", types.NewXBoolean(true), false},
 		{[]byte(`["foo", null]`), "j[1]", nil, false},
+		{[]byte(`["foo", "one"]`), "j.1", types.NewXText("one"), false},
 
 		{[]byte(`["one", "two", "three"]`), "j[0]", types.NewXText("one"), false},
 		{[]byte(`["escaped \"string\""]`), "j[0]", types.NewXText(`escaped "string"`), false},
@@ -69,7 +70,7 @@ func TestXJSONResolve(t *testing.T) {
 
 		// resolve errors
 		{[]byte(`{"foo": "x", "bar": "one"}`), "j.zed", nil, true},
-		{[]byte(`["foo", null]`), "j.0", nil, true},
+		{[]byte(`["foo", null]`), "j.3", nil, true},
 		{[]byte(`["foo", null]`), "j[3]", nil, true},
 	}
 

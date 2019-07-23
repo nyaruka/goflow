@@ -29,14 +29,14 @@ GT: '>';
 AMPERSAND: '&';
 
 TEXT: '"' (~["] | '\\"')* '"';
-NUMBER: [0-9]+ ('.' [0-9]+)?;
+INTEGER: [0-9]+;
+DECIMAL: [0-9]+ '.' [0-9]+;
 
 TRUE: [Tt][Rr][Uu][Ee];
 FALSE: [Ff][Aa][Ll][Ss][Ee];
 NULL: [Nn][Uu][Ll][Ll];
 
 NAME: UnicodeLetter+ (UnicodeLetter | UnicodeDigit | '_')*;
-// variable names, e.g. contact.name or function names, e.g. SUM
 
 WS: [ \t\n\r]+ -> skip; // ignore whitespace
 
@@ -54,7 +54,7 @@ expression:
 	| expression op = (EQ | NEQ) expression				# equality
 	| expression AMPERSAND expression					# concatenation
 	| TEXT												# textLiteral
-	| NUMBER											# numberLiteral
+	| (INTEGER | DECIMAL)								# numberLiteral
 	| TRUE												# true
 	| FALSE												# false
 	| NULL												# null;
@@ -62,7 +62,7 @@ expression:
 // a subset of expressions which can be followed by (), [] or .
 atom:
 	atom LPAREN parameters? RPAREN	# functionCall
-	| atom DOT NAME					# dotLookup
+	| atom DOT (NAME | INTEGER)		# dotLookup
 	| atom LBRACK expression RBRACK	# arrayLookup
 	| LPAREN expression RPAREN		# parentheses
 	| NAME							# contextReference;

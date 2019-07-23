@@ -146,17 +146,15 @@ func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 		return container
 	}
 
-	property := ctx.NAME().GetText()
+	var lookup types.XText
 
-	object, isObject := container.(*types.XObject)
-	if isObject && object != nil {
-		value, exists := object.Get(property)
-		if exists {
-			return value
-		}
+	if ctx.NAME() != nil {
+		lookup = types.NewXText(ctx.NAME().GetText())
+	} else {
+		lookup = types.NewXText(ctx.INTEGER().GetText())
 	}
 
-	return types.NewXErrorf("%s has no property '%s'", types.Describe(container), property)
+	return resolveLookup(v.env, container, lookup, lookupNotationDot)
 }
 
 // VisitArrayLookup deals with lookups such as foo[5] or foo["key with spaces"]
@@ -166,39 +164,9 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 		return container
 	}
 
-	expression := toXValue(v.Visit(ctx.Expression()))
+	lookup := toXValue(v.Visit(ctx.Expression()))
 
-	// if left-hand side is an array, then this is an index
-	array, isArray := container.(*types.XArray)
-	if isArray && array != nil {
-		index, xerr := types.ToInteger(v.env, expression)
-		if xerr != nil {
-			return xerr
-		}
-
-		if index >= array.Count() || index < -array.Count() {
-			return types.NewXErrorf("index %d out of range for %d items", index, array.Count())
-		}
-		if index < 0 {
-			index += array.Count()
-		}
-		return array.Get(index)
-	}
-
-	// if left-hand side is an object, then this is a property lookup
-	object, isObject := container.(*types.XObject)
-	if isObject && object != nil {
-		lookup, xerr := types.ToXText(v.env, expression)
-		if xerr != nil {
-			return xerr
-		}
-
-		// [] notation doesn't error
-		value, _ := object.Get(lookup.Native())
-		return value
-	}
-
-	return types.NewXErrorf("%s is not indexable", types.Describe(container))
+	return resolveLookup(v.env, container, lookup, lookupNotationArray)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
@@ -340,4 +308,50 @@ func toXValue(val interface{}) types.XValue {
 		panic("Attempt to convert a non XValue to an XValue")
 	}
 	return asX
+}
+
+type lookupNotation string
+
+const (
+	lookupNotationDot   lookupNotation = "dot"
+	lookupNotationArray lookupNotation = "array"
+)
+
+func resolveLookup(env envs.Environment, container types.XValue, lookup types.XValue, notation lookupNotation) types.XValue {
+	// if left-hand side is an array, then this is an index
+	array, isArray := container.(*types.XArray)
+	if isArray && array != nil {
+		index, xerr := types.ToInteger(env, lookup)
+		if xerr != nil {
+			return xerr
+		}
+
+		if index >= array.Count() || index < -array.Count() {
+			return types.NewXErrorf("index %d out of range for %d items", index, array.Count())
+		}
+		if index < 0 {
+			index += array.Count()
+		}
+		return array.Get(index)
+	}
+
+	// if left-hand side is an object, then this is a property lookup
+	object, isObject := container.(*types.XObject)
+	if isObject && object != nil {
+		property, xerr := types.ToXText(env, lookup)
+		if xerr != nil {
+			return xerr
+		}
+
+		value, exists := object.Get(property.Native())
+
+		// [] notation doesn't error for non-existent properties, . does
+		if !exists && notation == lookupNotationDot {
+			return types.NewXErrorf("%s has no property '%s'", types.Describe(container), property.Native())
+		}
+
+		return value
+	}
+
+	return types.NewXErrorf("%s doesn't support lookups", types.Describe(container))
 }
