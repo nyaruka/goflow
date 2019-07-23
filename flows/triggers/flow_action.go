@@ -58,8 +58,8 @@ func NewFlowActionTrigger(env envs.Environment, flow *assets.FlowReference, cont
 	}
 }
 
-// NewIVRFlowActionTrigger creates a new flow action trigger with the passed in values
-func NewIVRFlowActionTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage) *FlowActionTrigger {
+// NewFlowActionVoiceTrigger creates a new flow action trigger with the passed in values
+func NewFlowActionVoiceTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage) *FlowActionTrigger {
 	return &FlowActionTrigger{
 		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, connection, nil),
 		runSummary:  runSummary,
