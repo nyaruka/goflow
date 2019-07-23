@@ -58,6 +58,14 @@ func NewFlowActionTrigger(env envs.Environment, flow *assets.FlowReference, cont
 	}
 }
 
+// NewIVRFlowActionTrigger creates a new flow action trigger with the passed in values
+func NewIVRFlowActionTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage) *FlowActionTrigger {
+	return &FlowActionTrigger{
+		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, connection, nil),
+		runSummary:  runSummary,
+	}
+}
+
 // RunSummary returns the summary of the run that triggered this session
 func (t *FlowActionTrigger) RunSummary() json.RawMessage { return t.runSummary }
 
