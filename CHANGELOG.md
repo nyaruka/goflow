@@ -1,3 +1,7 @@
+v0.43.2
+----------
+ * rename voice trigger to be more consistent
+
 v0.43.1
 ----------
  * add ivr flow trigger constructor
