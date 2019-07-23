@@ -1,3 +1,7 @@
+v0.43.1
+----------
+ * add ivr flow trigger constructor
+
 v0.43.0
 ----------
  * Allow array lookups like foo.0
