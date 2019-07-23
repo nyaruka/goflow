@@ -1,3 +1,8 @@
+v0.43.0
+----------
+ * Allow array lookups like foo.0
+ * More re-organization of utils code into smaller packages
+
 v0.42.0
 ----------
  * Move Environment type and environment based date parsing to new envs package
