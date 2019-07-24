@@ -85,11 +85,11 @@ func init() {
 		"tz_offset":           OneDateTimeFunction(TZOffset),
 		"now":                 NoArgFunction(Now),
 		"epoch":               OneDateTimeFunction(Epoch),
-		"week_num":            OneDateTimeFunction(WeekNum),
 
 		// date functions
 		"date_from_parts": ThreeIntegerFunction(DateFromParts),
 		"weekday":         OneDateFunction(Weekday),
+		"week_num":        OneDateFunction(WeekNum),
 		"today":           NoArgFunction(Today),
 
 		// time functions
@@ -1338,19 +1338,6 @@ func Epoch(env envs.Environment, date types.XDateTime) types.XValue {
 	return types.NewXNumber(nanos.Div(nanosPerSecond))
 }
 
-// WeekNum returns the week number (1-53) of `date`.
-//
-//   @(week_num("2019-01-01")) -> 1
-//   @(week_num("2019-07-23T16:56:59.000000Z")) -> 30
-//   @(week_num("xx")) -> ERROR
-//
-// @function week_num(date)
-func WeekNum(env envs.Environment, date types.XDateTime) types.XValue {
-	_, weekNum := date.Native().ISOWeek()
-
-	return types.NewXNumberFromInt(weekNum)
-}
-
 // Now returns the current date and time in the current timezone.
 //
 //   @(now()) -> 2018-04-11T13:24:30.123456-05:00
@@ -1389,6 +1376,19 @@ func DateFromParts(env envs.Environment, year, month, day int) types.XValue {
 // @function weekday(date)
 func Weekday(env envs.Environment, date types.XDate) types.XValue {
 	return types.NewXNumberFromInt(int(date.Native().Weekday()))
+}
+
+// WeekNum returns the week number (1-54) of `date`.
+//
+// The week is considered to start on Sunday and week containing Jan 1st is week number 1.
+//
+//   @(week_num("2019-01-01")) -> 1
+//   @(week_num("2019-07-23T16:56:59.000000Z")) -> 30
+//   @(week_num("xx")) -> ERROR
+//
+// @function week_num(date)
+func WeekNum(env envs.Environment, date types.XDate) types.XValue {
+	return types.NewXNumberFromInt(date.Native().WeekNum())
 }
 
 // Today returns the current date in the environment timezone.

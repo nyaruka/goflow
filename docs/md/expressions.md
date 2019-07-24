@@ -1465,7 +1465,9 @@ Parses a URN into its different parts
 
 ## week_num(date)
 
-Returns the week number (1-53) of `date`.
+Returns the week number (1-54) of `date`.
+
+The week is considered to start on Sunday and week containing Jan 1st is week number 1.
 
 
 ```objectivec

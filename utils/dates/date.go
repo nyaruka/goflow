@@ -57,6 +57,21 @@ func (d Date) Weekday() time.Weekday {
 	return d.Combine(ZeroTimeOfDay, time.UTC).Weekday()
 }
 
+// YearDay returns the day of the year (1-366)
+func (d Date) YearDay() int {
+	return d.Combine(ZeroTimeOfDay, time.UTC).YearDay()
+}
+
+// WeekNum returns the number of the week (1-54)
+func (d Date) WeekNum() int {
+	wday := int(d.Weekday()) // Sun = 0, Mon = 1
+	yday := d.YearDay() - 1  // to 0-365
+
+	week := (yday - wday + 7) / 7
+
+	return week + 1
+}
+
 // String returns the ISO8601 representation
 func (d Date) String() string {
 	return d.Format(ISO8601Date)

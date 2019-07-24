@@ -748,7 +748,8 @@
 <a class="sourceLine" id="cb93-2" title="2">@(urn_parts(<span class="st">&quot;twitterid:3263621177#bobby&quot;</span>)) → {display: bobby, path: <span class="dv">3263621177</span>, scheme: twitterid}</a></code></pre></div>
 <p><a name="function:week_num"></a></p>
 <h2 id="week_numdate">week_num(date)</h2>
-<p>Returns the week number (1-53) of <code>date</code>.</p>
+<p>Returns the week number (1-54) of <code>date</code>.</p>
+<p>The week is considered to start on Sunday and week containing Jan 1st is week number 1.</p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb94-1" title="1">@(week_num(<span class="st">&quot;2019-01-01&quot;</span>)) → <span class="dv">1</span></a>
 <a class="sourceLine" id="cb94-2" title="2">@(week_num(<span class="st">&quot;2019-07-23T16:56:59.000000Z&quot;</span>)) → <span class="dv">30</span></a>
 <a class="sourceLine" id="cb94-3" title="3">@(week_num(<span class="st">&quot;xx&quot;</span>)) → ERROR</a></code></pre></div>
