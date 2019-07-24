@@ -1449,20 +1449,20 @@
         ]
     },
     {
-        "signature": "week_num(date)",
+        "signature": "week_number(date)",
         "summary": "Returns the week number (1-54) of `date`.",
         "detail": "The week is considered to start on Sunday and week containing Jan 1st is week number 1.",
         "examples": [
             {
-                "template": "@(week_num(\"2019-01-01\"))",
+                "template": "@(week_number(\"2019-01-01\"))",
                 "output": "1"
             },
             {
-                "template": "@(week_num(\"2019-07-23T16:56:59.000000Z\"))",
+                "template": "@(week_number(\"2019-07-23T16:56:59.000000Z\"))",
                 "output": "30"
             },
             {
-                "template": "@(week_num(\"xx\"))",
+                "template": "@(week_number(\"xx\"))",
                 "output": "ERROR"
             }
         ]

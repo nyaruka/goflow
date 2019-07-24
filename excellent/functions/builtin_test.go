@@ -665,11 +665,11 @@ func TestFunctions(t *testing.T) {
 		{"weekday", dmy, []types.XValue{xs("xxx")}, ERROR},
 		{"weekday", dmy, []types.XValue{}, ERROR},
 
-		{"week_num", dmy, []types.XValue{xs("01-01-2019")}, xi(1)},
-		{"week_num", dmy, []types.XValue{xs("23/07/2019")}, xi(30)},
-		{"week_num", dmy, []types.XValue{xs("2019-07-23T16:56:59.000000Z")}, xi(30)},
-		{"week_num", dmy, []types.XValue{xs("xxx")}, ERROR},
-		{"week_num", dmy, []types.XValue{}, ERROR},
+		{"week_number", dmy, []types.XValue{xs("01-01-2019")}, xi(1)},
+		{"week_number", dmy, []types.XValue{xs("23/07/2019")}, xi(30)},
+		{"week_number", dmy, []types.XValue{xs("2019-07-23T16:56:59.000000Z")}, xi(30)},
+		{"week_number", dmy, []types.XValue{xs("xxx")}, ERROR},
+		{"week_number", dmy, []types.XValue{}, ERROR},
 
 		{"url_encode", dmy, []types.XValue{xs(`hi-% ?/`)}, xs(`hi-%25%20%3F%2F`)},
 		{"url_encode", dmy, []types.XValue{ERROR}, ERROR},

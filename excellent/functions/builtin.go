@@ -89,7 +89,7 @@ func init() {
 		// date functions
 		"date_from_parts": ThreeIntegerFunction(DateFromParts),
 		"weekday":         OneDateFunction(Weekday),
-		"week_num":        OneDateFunction(WeekNum),
+		"week_number":     OneDateFunction(WeekNumber),
 		"today":           NoArgFunction(Today),
 
 		// time functions
@@ -1378,16 +1378,16 @@ func Weekday(env envs.Environment, date types.XDate) types.XValue {
 	return types.NewXNumberFromInt(int(date.Native().Weekday()))
 }
 
-// WeekNum returns the week number (1-54) of `date`.
+// WeekNumber returns the week number (1-54) of `date`.
 //
 // The week is considered to start on Sunday and week containing Jan 1st is week number 1.
 //
-//   @(week_num("2019-01-01")) -> 1
-//   @(week_num("2019-07-23T16:56:59.000000Z")) -> 30
-//   @(week_num("xx")) -> ERROR
+//   @(week_number("2019-01-01")) -> 1
+//   @(week_number("2019-07-23T16:56:59.000000Z")) -> 30
+//   @(week_number("xx")) -> ERROR
 //
-// @function week_num(date)
-func WeekNum(env envs.Environment, date types.XDate) types.XValue {
+// @function week_number(date)
+func WeekNumber(env envs.Environment, date types.XDate) types.XValue {
 	return types.NewXNumberFromInt(date.Native().WeekNum())
 }
 
