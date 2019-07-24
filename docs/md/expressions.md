@@ -1461,6 +1461,21 @@ Parses a URN into its different parts
 @(urn_parts("twitterid:3263621177#bobby")) → {display: bobby, path: 3263621177, scheme: twitterid}
 ```
 
+<a name="function:week_number"></a>
+
+## week_number(date)
+
+Returns the week number (1-54) of `date`.
+
+The week is considered to start on Sunday and week containing Jan 1st is week number 1.
+
+
+```objectivec
+@(week_number("2019-01-01")) → 1
+@(week_number("2019-07-23T16:56:59.000000Z")) → 30
+@(week_number("xx")) → ERROR
+```
+
 <a name="function:weekday"></a>
 
 ## weekday(date)
