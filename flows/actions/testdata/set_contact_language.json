@@ -11,7 +11,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "can't execute action in session without a contact",
                 "type": "error"
             }
@@ -28,7 +28,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             }
@@ -52,7 +52,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "iso-639-3 codes must be 3 characters, got: xxxxxxxxxx",
                 "type": "error"
             }
@@ -85,7 +85,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "language": "",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_language_changed"
             }
         ],
@@ -126,7 +126,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "language": "fra",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_language_changed"
             },
             {
@@ -137,7 +137,7 @@
                         "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403"
                     }
                 ],
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_groups_changed"
             }
         ],

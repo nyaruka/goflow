@@ -31,7 +31,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "can't execute action in session without a contact",
                 "type": "error"
             }
@@ -67,49 +67,49 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(xxxxx): context has no property 'xxxxx'",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "attachment text evaluated to empty string, skipping",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(xxxxx): context has no property 'xxxxx'",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "quick reply text evaluated to empty string, skipping",
                 "type": "error"
             },
@@ -129,9 +129,9 @@
                     ],
                     "text": "Hi there ",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "msg_created"
             }
         ]
@@ -153,14 +153,14 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "attachment text evaluated to empty string, skipping",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "quick reply text evaluated to empty string, skipping",
                 "type": "error"
             },
@@ -173,9 +173,9 @@
                     },
                     "text": "Hi there",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "msg_created"
             }
         ]
@@ -198,9 +198,9 @@
                     },
                     "text": "Hi there",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "msg_created"
             },
             {
@@ -212,9 +212,9 @@
                     },
                     "text": "Hi there",
                     "urn": "twitterid:54784326227#nyaruka",
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
+                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "msg_created"
             }
         ]
@@ -232,9 +232,9 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "msg": {
                     "text": "Hi there",
-                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "msg_created"
             }
         ]
@@ -285,7 +285,7 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "Hi Ryan Lewis, who's an excellent boy?",
-                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                     "templating": {
                         "template": {
                             "name": "affirmation",
@@ -298,7 +298,7 @@
                         ]
                     }
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "msg_created"
             }
         ],
@@ -338,7 +338,7 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "Hi there, it's time to get up!",
-                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                     "templating": {
                         "template": {
                             "name": "wakeup",
@@ -347,7 +347,7 @@
                         "language": "eng"
                     }
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "msg_created"
             }
         ],
@@ -404,9 +404,9 @@
                     ],
                     "text": "Hola!",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "msg_created"
             }
         ],

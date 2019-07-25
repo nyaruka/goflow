@@ -14,21 +14,21 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
@@ -38,7 +38,7 @@
                 ],
                 "body": "So I was thinking...",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "subject": "Hi there",
                 "type": "email_created"
             }
@@ -68,7 +68,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "email subject evaluated to empty string, skipping",
                 "type": "error"
             }
@@ -92,7 +92,7 @@
                 ],
                 "body": "So I was thinking...",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "subject": "Hi there Bob",
                 "type": "email_created"
             }
@@ -113,7 +113,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "email body evaluated to empty string, skipping",
                 "type": "error"
             }
@@ -134,7 +134,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "email address evaluated to empty string, skipping",
                 "type": "error"
             }
@@ -155,7 +155,7 @@
             {
                 "type": "email_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "addresses": [
                     "bob@example.com"
                 ],
@@ -187,7 +187,7 @@
             {
                 "type": "email_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "addresses": [
                     "bob@example.com"
                 ],

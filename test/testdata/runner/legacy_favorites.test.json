@@ -6,14 +6,14 @@
                     "created_on": "2018-07-06T12:30:04.123456789Z",
                     "msg": {
                         "text": "What's your favorite color?",
-                        "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
+                        "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                     },
-                    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "type": "msg_created"
                 },
                 {
                     "created_on": "2018-07-06T12:30:07.123456789Z",
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_wait"
                 }
             ],
@@ -53,14 +53,14 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite color?",
-                                    "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
+                                    "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
-                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:07.123456789Z",
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             }
                         ],
@@ -76,16 +76,16 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "370db3e8-061b-40d9-a666-06698f27bd79",
                                 "node_uuid": "20b85218-553f-4fbb-bf65-8b8df6907b82",
-                                "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                                "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:06.123456789Z",
                                 "node_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
-                                "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                        "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                     }
                 ],
                 "status": "waiting",
@@ -125,6 +125,7 @@
                     "type": "manual"
                 },
                 "type": "messaging",
+                "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                 "wait": {
                     "type": "msg"
                 }
@@ -143,7 +144,7 @@
                         "urn": "tel:+12065551212",
                         "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                     },
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_received"
                 },
                 {
@@ -151,7 +152,7 @@
                     "created_on": "2018-07-06T12:30:17.123456789Z",
                     "input": "I like blue!",
                     "name": "Color",
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "run_result_changed",
                     "value": "blue"
                 },
@@ -159,14 +160,14 @@
                     "created_on": "2018-07-06T12:30:20.123456789Z",
                     "msg": {
                         "text": "What's your favorite beer?",
-                        "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
+                        "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                     },
-                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                     "type": "msg_created"
                 },
                 {
                     "created_on": "2018-07-06T12:30:23.123456789Z",
-                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "msg_wait"
                 }
             ],
@@ -213,14 +214,14 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite color?",
-                                    "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
+                                    "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
-                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:07.123456789Z",
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             },
                             {
@@ -234,7 +235,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                 },
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_received"
                             },
                             {
@@ -242,7 +243,7 @@
                                 "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Color",
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",
                                 "value": "blue"
                             },
@@ -250,14 +251,14 @@
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite beer?",
-                                    "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
+                                    "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                                 },
-                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:23.123456789Z",
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "msg_wait"
                             }
                         ],
@@ -273,24 +274,24 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "370db3e8-061b-40d9-a666-06698f27bd79",
                                 "node_uuid": "20b85218-553f-4fbb-bf65-8b8df6907b82",
-                                "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                                "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:06.123456789Z",
                                 "exit_uuid": "8548318b-4da8-4fae-96ef-ec9eb572edfd",
                                 "node_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
-                                "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:19.123456789Z",
                                 "exit_uuid": "3c464d16-3445-4a0b-b1cd-36ba9e1f89be",
                                 "node_uuid": "0ec90220-1025-4533-8410-38f9adc0452b",
-                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
+                                "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "node_uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
-                                "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
+                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             }
                         ],
                         "results": {
@@ -304,7 +305,7 @@
                             }
                         },
                         "status": "waiting",
-                        "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                        "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                     }
                 ],
                 "status": "waiting",
@@ -344,6 +345,7 @@
                     "type": "manual"
                 },
                 "type": "messaging",
+                "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                 "wait": {
                     "type": "msg"
                 }
@@ -362,7 +364,7 @@
                         "urn": "tel:+12065551212",
                         "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
                     },
-                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "msg_received"
                 },
                 {
@@ -370,7 +372,7 @@
                     "created_on": "2018-07-06T12:30:33.123456789Z",
                     "input": "Pilsner",
                     "name": "Beer",
-                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "run_result_changed",
                     "value": "Pilsner"
                 },
@@ -378,9 +380,9 @@
                     "created_on": "2018-07-06T12:30:36.123456789Z",
                     "msg": {
                         "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
-                        "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
+                        "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                     },
-                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
+                    "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
                     "type": "msg_created"
                 }
             ],
@@ -427,14 +429,14 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite color?",
-                                    "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
+                                    "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
-                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:07.123456789Z",
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             },
                             {
@@ -448,7 +450,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                 },
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_received"
                             },
                             {
@@ -456,7 +458,7 @@
                                 "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Color",
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",
                                 "value": "blue"
                             },
@@ -464,14 +466,14 @@
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite beer?",
-                                    "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
+                                    "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                                 },
-                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:23.123456789Z",
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "msg_wait"
                             },
                             {
@@ -485,7 +487,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
                                 },
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "msg_received"
                             },
                             {
@@ -493,7 +495,7 @@
                                 "created_on": "2018-07-06T12:30:33.123456789Z",
                                 "input": "Pilsner",
                                 "name": "Beer",
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "run_result_changed",
                                 "value": "Pilsner"
                             },
@@ -501,9 +503,9 @@
                                 "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "msg": {
                                     "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
-                                    "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
+                                    "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                                 },
-                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
+                                "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
                                 "type": "msg_created"
                             }
                         ],
@@ -519,31 +521,31 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "370db3e8-061b-40d9-a666-06698f27bd79",
                                 "node_uuid": "20b85218-553f-4fbb-bf65-8b8df6907b82",
-                                "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                                "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:06.123456789Z",
                                 "exit_uuid": "8548318b-4da8-4fae-96ef-ec9eb572edfd",
                                 "node_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
-                                "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:19.123456789Z",
                                 "exit_uuid": "3c464d16-3445-4a0b-b1cd-36ba9e1f89be",
                                 "node_uuid": "0ec90220-1025-4533-8410-38f9adc0452b",
-                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
+                                "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "exit_uuid": "a3078f7d-63b3-4486-9481-ea97c5c4e49a",
                                 "node_uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
-                                "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
+                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:35.123456789Z",
                                 "exit_uuid": "80818696-0e64-4834-9452-335b273f5417",
                                 "node_uuid": "1134cc64-ecdf-44a8-9134-ff88b1dc9fcc",
-                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
+                                "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
                             }
                         ],
                         "results": {
@@ -565,7 +567,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                        "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                     }
                 ],
                 "status": "completed",
@@ -604,7 +606,8 @@
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "manual"
                 },
-                "type": "messaging"
+                "type": "messaging",
+                "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
             }
         }
     ],

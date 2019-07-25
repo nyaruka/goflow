@@ -6,12 +6,16 @@ import (
 
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/mobile"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMobileBindings(t *testing.T) {
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+
 	assert.Equal(t, definition.CurrentSpecVersion.String(), mobile.CurrentSpecVersion())
 
 	// can handle anything that is this major version
@@ -95,7 +99,7 @@ func TestMobileBindings(t *testing.T) {
 	marshaled, err := session.ToJSON()
 	require.NoError(t, err)
 
-	assert.Equal(t, `{"type":"messaging_offline","environment":{"date_f`, marshaled[:50])
+	assert.Equal(t, `{"uuid":"cdf7ed27-5ad5-4028-b664-880fc7581c77","ty`, marshaled[:50])
 
 	// and try to read it back
 	session2, err := eng.ReadSession(sa, marshaled)

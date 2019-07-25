@@ -28,6 +28,7 @@ type session struct {
 	assets flows.SessionAssets
 
 	// state which is maintained between engine calls
+	uuid    flows.SessionUUID
 	type_   flows.FlowType
 	env     envs.Environment
 	trigger flows.Trigger
@@ -47,6 +48,8 @@ type session struct {
 
 func (s *session) Assets() flows.SessionAssets { return s.assets }
 func (s *session) Trigger() flows.Trigger      { return s.trigger }
+
+func (s *session) UUID() flows.SessionUUID { return s.uuid }
 
 func (s *session) Type() flows.FlowType         { return s.type_ }
 func (s *session) SetType(type_ flows.FlowType) { s.type_ = type_ }
@@ -454,6 +457,7 @@ func fatalError(sprint flows.Sprint, run flows.FlowRun, step flows.Step, err err
 //------------------------------------------------------------------------------------------
 
 type sessionEnvelope struct {
+	UUID        flows.SessionUUID   `json:"uuid"` // TODO validate:"required"`
 	Type        flows.FlowType      `json:"type"` // TODO validate:"required"`
 	Environment json.RawMessage     `json:"environment"`
 	Trigger     json.RawMessage     `json:"trigger" validate:"required"`
@@ -476,6 +480,7 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 	s := &session{
 		engine:     eng,
 		assets:     sessionAssets,
+		uuid:       e.UUID,
 		type_:      e.Type,
 		status:     e.Status,
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
@@ -535,6 +540,7 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 // MarshalJSON marshals this session into JSON
 func (s *session) MarshalJSON() ([]byte, error) {
 	e := &sessionEnvelope{
+		UUID:   s.uuid,
 		Type:   s.type_,
 		Status: s.status,
 	}

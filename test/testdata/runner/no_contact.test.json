@@ -13,7 +13,7 @@
                         "urn": "tel:+12065551212",
                         "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "msg_received"
                 },
                 {
@@ -25,20 +25,20 @@
                             "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
                         }
                     ],
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "input_labels_added"
                 },
                 {
                     "created_on": "2018-07-06T12:30:08.123456789Z",
                     "fatal": false,
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "text": "can't execute action in session without a contact",
                     "type": "error"
                 },
                 {
                     "created_on": "2018-07-06T12:30:10.123456789Z",
                     "fatal": false,
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "text": "can't execute action in session without a contact",
                     "type": "error"
                 }
@@ -81,7 +81,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_received"
                             },
                             {
@@ -93,20 +93,20 @@
                                         "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
                                     }
                                 ],
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "input_labels_added"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "fatal": false,
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "text": "can't execute action in session without a contact",
                                 "type": "error"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "fatal": false,
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "text": "can't execute action in session without a contact",
                                 "type": "error"
                             }
@@ -123,11 +123,11 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "28039554-80a8-4a5d-9024-90ec1dacdd47",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "completed",
@@ -167,7 +167,8 @@
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "msg"
                 },
-                "type": "messaging"
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         }
     ],

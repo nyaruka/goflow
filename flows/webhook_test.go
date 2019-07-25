@@ -204,25 +204,25 @@ func TestLegacyWebhookPayload(t *testing.T) {
 				"arrived_on": "2018-07-06T12:30:03.123456Z",
 				"exit_uuid": "d7a36118-0a38-4b35-a7e4-ae89042f0d3c",
 				"node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
-				"uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+				"uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
 			},
 			{
 				"arrived_on": "2018-07-06T12:30:19.123456Z",
 				"exit_uuid": "100f2d68-2481-4137-a0a3-177620ba3c5f",
 				"node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-				"uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+				"uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
 			},
 			{
 				"arrived_on": "2018-07-06T12:30:28.123456Z",
 				"exit_uuid": "d898f9a4-f0fc-4ac4-a639-c98c602bb511",
 				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+				"uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
 			},
 			{
 				"arrived_on": "2018-07-06T12:30:45.123456Z",
 				"exit_uuid": "9fc5f8b4-2247-43db-b899-ab1ac50ba06c",
 				"node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-				"uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+				"uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
 			}
 		],
 		"results": {
@@ -256,7 +256,7 @@ func TestLegacyWebhookPayload(t *testing.T) {
 		},
 		"run": {
 			"created_on": "2018-07-06T12:30:00.123456Z",
-			"uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+			"uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
 		}
 	}`), []byte(payload), "payload mismatch")
 }

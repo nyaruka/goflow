@@ -11,14 +11,14 @@
                         },
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "msg_created"
                 },
                 {
                     "created_on": "2018-07-06T12:30:07.123456789Z",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_wait"
                 }
             ],
@@ -73,14 +73,14 @@
                                     },
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:07.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             }
                         ],
@@ -96,16 +96,16 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                                 "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:06.123456789Z",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "waiting",
@@ -155,6 +155,7 @@
                     "type": "manual"
                 },
                 "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                 "wait": {
                     "type": "msg"
                 }
@@ -173,7 +174,7 @@
                         "urn": "tel:+12065551212",
                         "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                     },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_received"
                 },
                 {
@@ -181,14 +182,14 @@
                     "created_on": "2018-07-06T12:30:17.123456789Z",
                     "input": "Ryan Lewis",
                     "name": "Name",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
                     "value": "Ryan Lewis"
                 },
                 {
                     "created_on": "2018-07-06T12:30:20.123456789Z",
                     "name": "Ryan Lewis",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_name_changed"
                 },
                 {
@@ -199,7 +200,7 @@
                             "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
                         }
                     ],
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_groups_changed"
                 },
                 {
@@ -211,9 +212,9 @@
                         },
                         "text": "Great, you are Ryan Lewis, thanks for joining!",
                         "urn": "tel:+12065551212",
-                        "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                        "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_created"
                 }
             ],
@@ -285,14 +286,14 @@
                                     },
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:07.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
@@ -306,7 +307,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                 },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_received"
                             },
                             {
@@ -314,14 +315,14 @@
                                 "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Name",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
                                 "value": "Ryan Lewis"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "name": "Ryan Lewis",
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "contact_name_changed"
                             },
                             {
@@ -332,7 +333,7 @@
                                         "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
                                     }
                                 ],
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "contact_groups_changed"
                             },
                             {
@@ -344,9 +345,9 @@
                                     },
                                     "text": "Great, you are Ryan Lewis, thanks for joining!",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                                    "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                                 },
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "msg_created"
                             }
                         ],
@@ -362,19 +363,19 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                                 "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:06.123456789Z",
                                 "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:19.123456789Z",
                                 "exit_uuid": "388bbce3-8079-4573-922f-8dea469d93f3",
                                 "node_uuid": "7acb54fd-0db0-40b9-970b-93f7bfb4277b",
-                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }
                         ],
                         "results": {
@@ -388,7 +389,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "completed",
@@ -437,7 +438,8 @@
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "manual"
                 },
-                "type": "messaging"
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         }
     ],

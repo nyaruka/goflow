@@ -38,6 +38,9 @@ type StepUUID uuids.UUID
 // InputUUID is the UUID of an input
 type InputUUID uuids.UUID
 
+// SessionUUID is the UUID of a session
+type SessionUUID uuids.UUID
+
 // MsgID is the ID of a message
 type MsgID int64
 
