@@ -47,6 +47,26 @@ func TestXObject(t *testing.T) {
 	}))
 }
 
+func TestReadXObject(t *testing.T) {
+	_, err := types.ReadXObject(nil)
+	assert.EqualError(t, err, "JSON doesn't contain an object")
+	_, err = types.ReadXObject([]byte(`null`))
+	assert.EqualError(t, err, "JSON doesn't contain an object")
+	_, err = types.ReadXObject([]byte(`[]`))
+	assert.EqualError(t, err, "JSON doesn't contain an object")
+
+	obj, err := types.ReadXObject([]byte(`{}`))
+	assert.NoError(t, err)
+	test.AssertXEqual(t, obj, types.NewXObject(map[string]types.XValue{}))
+
+	obj, err = types.ReadXObject([]byte(`{"foo": "abc", "bar": 123}`))
+	assert.NoError(t, err)
+	test.AssertXEqual(t, obj, types.NewXObject(map[string]types.XValue{
+		"foo": types.NewXText("abc"),
+		"bar": types.NewXNumberFromInt(123),
+	}))
+}
+
 func TestXObjectWithDefault(t *testing.T) {
 	env := envs.NewEnvironmentBuilder().Build()
 

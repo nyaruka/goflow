@@ -62,7 +62,7 @@ type ChannelTrigger struct {
 }
 
 // NewChannelTrigger creates a new channel trigger with the passed in values
-func NewChannelTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, event *ChannelEvent, params types.XValue) *ChannelTrigger {
+func NewChannelTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, event *ChannelEvent, params *types.XObject) *ChannelTrigger {
 	return &ChannelTrigger{
 		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, nil, params),
 		event:       event,

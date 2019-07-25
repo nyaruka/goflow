@@ -247,7 +247,7 @@ type Trigger interface {
 	Flow() *assets.FlowReference
 	Contact() *Contact
 	Connection() *Connection
-	Params() types.XValue
+	Params() *types.XObject
 	TriggeredOn() time.Time
 }
 

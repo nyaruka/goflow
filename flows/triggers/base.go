@@ -30,11 +30,11 @@ type baseTrigger struct {
 	flow        *assets.FlowReference
 	contact     *flows.Contact
 	connection  *flows.Connection
-	params      types.XValue
+	params      *types.XObject
 	triggeredOn time.Time
 }
 
-func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue) baseTrigger {
+func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params *types.XObject) baseTrigger {
 	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, connection: connection, params: params, triggeredOn: dates.Now()}
 }
 
@@ -45,7 +45,7 @@ func (t *baseTrigger) Environment() envs.Environment { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference   { return t.flow }
 func (t *baseTrigger) Contact() *flows.Contact       { return t.contact }
 func (t *baseTrigger) Connection() *flows.Connection { return t.connection }
-func (t *baseTrigger) Params() types.XValue          { return t.params }
+func (t *baseTrigger) Params() *types.XObject        { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time        { return t.triggeredOn }
 
 // Initialize initializes the session
@@ -89,9 +89,15 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 //
 // @context trigger
 func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
+	// for convenience, params is always non-null in expressions
+	params := t.params
+	if params == nil {
+		params = types.XObjectEmpty
+	}
+
 	return map[string]types.XValue{
 		"type":   types.NewXText(t.type_),
-		"params": t.params,
+		"params": params,
 	}
 }
 
@@ -159,7 +165,9 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 		}
 	}
 	if e.Params != nil {
-		t.params = types.JSONToXValue(e.Params)
+		if t.params, err = types.ReadXObject(e.Params); err != nil {
+			return errors.Wrap(err, "unable to read params")
+		}
 	}
 
 	return nil
