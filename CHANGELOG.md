@@ -1,3 +1,7 @@
+v0.44.2
+----------
+ * Add UUID() to Session interface
+
 v0.44.1
 ----------
  * Make trigger.params null for trigger types that don't use it, non-null for those that do
