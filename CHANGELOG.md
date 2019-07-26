@@ -1,3 +1,9 @@
+v0.44.0
+----------
+ * Add UUID field to sessions
+ * Rework trigger.params to be an XObject and always non-null in expressions
+ * Implement a week_number function which matches Excel's WEEKNUM
+
 v0.43.2
 ----------
  * rename voice trigger to be more consistent
