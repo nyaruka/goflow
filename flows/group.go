@@ -28,10 +28,10 @@ func NewGroup(asset assets.Group) *Group {
 func (g *Group) Asset() assets.Group { return g.Group }
 
 // ParsedQuery returns the parsed query of a dynamic group (cached)
-func (g *Group) ParsedQuery() (*contactql.ContactQuery, error) {
+func (g *Group) ParsedQuery(env envs.Environment) (*contactql.ContactQuery, error) {
 	if g.Query() != "" && g.parsedQuery == nil {
 		var err error
-		if g.parsedQuery, err = contactql.ParseQuery(g.Query()); err != nil {
+		if g.parsedQuery, err = contactql.ParseQuery(g.Query(), env.RedactionPolicy()); err != nil {
 			return nil, err
 		}
 	}
@@ -46,7 +46,7 @@ func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact) (
 	if !g.IsDynamic() {
 		return false, errors.Errorf("can't check membership on a non-dynamic group")
 	}
-	parsedQuery, err := g.ParsedQuery()
+	parsedQuery, err := g.ParsedQuery(env)
 	if err != nil {
 		return false, err
 	}
