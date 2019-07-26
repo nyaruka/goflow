@@ -49,10 +49,6 @@ func (c *Condition) Value() string { return c.value }
 
 // Evaluate evaluates this condition against the queryable contact
 func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
-	if c.key == ImplicitKey {
-		return false, errors.Errorf("dynamic group queries can't contain implicit conditions")
-	}
-
 	// contacts can return multiple values per key, e.g. multiple phone numbers in a "tel = x" condition
 	vals := queryable.ResolveQueryKey(env, c.key)
 
@@ -186,7 +182,7 @@ func (q *ContactQuery) String() string {
 }
 
 // ParseQuery parses a ContactQL query from the given input
-func ParseQuery(text string) (*ContactQuery, error) {
+func ParseQuery(text string, redaction envs.RedactionPolicy) (*ContactQuery, error) {
 	errListener := NewErrorListener()
 
 	input := antlr.NewInputStream(text)
@@ -202,7 +198,7 @@ func ParseQuery(text string) (*ContactQuery, error) {
 		return nil, errListener.Error()
 	}
 
-	visitor := NewVisitor()
+	visitor := NewVisitor(redaction)
 	rootNode := visitor.Visit(tree).(QueryNode)
 
 	return &ContactQuery{root: rootNode}, nil

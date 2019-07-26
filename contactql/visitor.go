@@ -1,12 +1,18 @@
 package contactql
 
 import (
+	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/contactql/gen"
+	"github.com/nyaruka/goflow/envs"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
+
+var telRegex = regexp.MustCompile(`^[+ \d\-\(\)]+$`)
+var cleanSpecialCharsRegex = regexp.MustCompile(`[+ \-\(\)]+`)
 
 var comparatorAliases = map[string]string{
 	"has": "~",
@@ -15,10 +21,12 @@ var comparatorAliases = map[string]string{
 
 type Visitor struct {
 	gen.BaseContactQLVisitor
+
+	redaction envs.RedactionPolicy
 }
 
 // NewVisitor creates a new ContactQL visitor
-func NewVisitor() *Visitor {
+func NewVisitor(redaction envs.RedactionPolicy) *Visitor {
 	return &Visitor{}
 }
 
@@ -34,7 +42,20 @@ func (v *Visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 
 // expression : TEXT
 func (v *Visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) interface{} {
-	return &Condition{key: ImplicitKey, comparator: "=", value: ctx.TEXT().GetText()}
+	value := ctx.TEXT().GetText()
+
+	if v.redaction == envs.RedactionPolicyURNs {
+		_, err := strconv.Atoi(value)
+		if err == nil {
+			return &Condition{key: "id", comparator: "=", value: value}
+		}
+	} else if telRegex.MatchString(value) {
+		value = cleanSpecialCharsRegex.ReplaceAllString(value, "")
+
+		return &Condition{key: "tel", comparator: "~", value: value}
+	}
+
+	return &Condition{key: "name", comparator: "~", value: value}
 }
 
 // expression : TEXT COMPARATOR literal

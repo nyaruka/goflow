@@ -15,10 +15,13 @@ func TestParseQuery(t *testing.T) {
 		text   string
 		parsed string
 	}{
-		{`will`, "*=will"},
-		{`will felix`, "AND(*=will, *=felix)"},     // implicit AND
-		{`will and felix`, "AND(*=will, *=felix)"}, // explicit AND
-		{`will or felix or matt`, "OR(OR(*=will, *=felix), *=matt)"},
+		{`will`, "name~will"},
+		{`0123456566`, "tel~0123456566"},
+		{`+0123456566`, "tel~0123456566"},
+		{`0123456-566`, "tel~0123456566"},
+		{`will felix`, "AND(name~will, name~felix)"},     // implicit AND
+		{`will and felix`, "AND(name~will, name~felix)"}, // explicit AND
+		{`will or felix or matt`, "OR(OR(name~will, name~felix), name~matt)"},
 		{`Name=will`, "name=will"},
 		{`Name ~ "felix"`, "name~felix"},
 		{`name is ""`, `name=""`},          // is not set
@@ -26,18 +29,18 @@ func TestParseQuery(t *testing.T) {
 		{`name != "felix"`, `name!=felix`}, // is set
 		{`name=will or Name ~ "felix"`, "OR(name=will, name~felix)"},
 		{`Name is will or Name has felix`, "OR(name=will, name~felix)"}, // comparator aliases
-		{`will or Name ~ "felix"`, "OR(*=will, name~felix)"},
+		{`will or Name ~ "felix"`, "OR(name~will, name~felix)"},
 		{`email ~ user@example.com`, "email~user@example.com"},
 
 		// boolean operator precedence is AND before OR, even when AND is implicit
-		{`will and felix or matt amber`, "OR(AND(*=will, *=felix), AND(*=matt, *=amber))"},
+		{`will and felix or matt amber`, "OR(AND(name~will, name~felix), AND(name~matt, name~amber))"},
 
 		// boolean combinations can themselves be combined
 		{`(Age < 18 and Gender = "male") or (Age > 18 and Gender = "female")`, "OR(AND(age<18, gender=male), AND(age>18, gender=female))"},
 	}
 
 	for _, test := range tests {
-		parsed, err := ParseQuery(test.text)
+		parsed, err := ParseQuery(test.text, envs.RedactionPolicyNone)
 		assert.NoError(t, err)
 		assert.Equal(t, test.parsed, parsed.String(), "error parsing query '%s'", test.text)
 	}
@@ -154,7 +157,7 @@ func TestEvaluateQuery(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		parsed, err := ParseQuery(test.query)
+		parsed, err := ParseQuery(test.query, envs.RedactionPolicyNone)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := EvaluateQuery(env, parsed, testObj)
@@ -164,7 +167,7 @@ func TestEvaluateQuery(t *testing.T) {
 }
 
 func TestParsingErrors(t *testing.T) {
-	_, err := ParseQuery("name = ")
+	_, err := ParseQuery("name = ", envs.RedactionPolicyNone)
 	assert.EqualError(t, err, "mismatched input '<EOF>' expecting {TEXT, STRING}")
 }
 
@@ -176,7 +179,6 @@ func TestEvaluationErrors(t *testing.T) {
 		query  string
 		errMsg string
 	}{
-		{`Bob`, "dynamic group queries can't contain implicit conditions"},
 		{`gender > Male`, "can't query text fields with >"},
 		{`age = 3X`, "can't convert '3X' to a number"},
 		{`age ~ 32`, "can't query number fields with ~"},
@@ -188,7 +190,7 @@ func TestEvaluationErrors(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		parsed, err := ParseQuery(test.query)
+		parsed, err := ParseQuery(test.query, envs.RedactionPolicyNone)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := EvaluateQuery(env, parsed, testObj)
