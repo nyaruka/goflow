@@ -8,6 +8,8 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 const serializeDefaultAs = "__default__"
@@ -98,6 +100,19 @@ func (x *XObject) MarshalJSON() ([]byte, error) {
 		}
 	}
 	return json.Marshal(marshaled)
+}
+
+// ReadXObject reads an instance of this type from JSON
+func ReadXObject(data []byte) (*XObject, error) {
+	v := JSONToXValue(data)
+	switch typed := v.(type) {
+	case *XObject:
+		return typed, nil
+	case XError:
+		return nil, typed
+	default:
+		return nil, errors.New("JSON doesn't contain an object")
+	}
 }
 
 // String returns the native string representation of this type for debugging
