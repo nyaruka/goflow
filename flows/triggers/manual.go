@@ -36,14 +36,14 @@ type ManualTrigger struct {
 }
 
 // NewManualTrigger creates a new manual trigger
-func NewManualTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, params types.XValue) flows.Trigger {
+func NewManualTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, params *types.XObject) flows.Trigger {
 	return &ManualTrigger{
 		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, nil, params),
 	}
 }
 
 // NewManualVoiceTrigger creates a new manual trigger with a channel connection for voice
-func NewManualVoiceTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue) flows.Trigger {
+func NewManualVoiceTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params *types.XObject) flows.Trigger {
 	return &ManualTrigger{
 		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, connection, params),
 	}
