@@ -1,3 +1,7 @@
+v0.44.3
+----------
+ * Fix parsing of implicit conditions in contactql
+
 v0.44.2
 ----------
  * Add UUID() to Session interface
