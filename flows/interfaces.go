@@ -337,6 +337,7 @@ type Sprint interface {
 type Session interface {
 	Assets() SessionAssets
 
+	UUID() SessionUUID
 	Type() FlowType
 	SetType(FlowType)
 
