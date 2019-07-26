@@ -89,15 +89,9 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 //
 // @context trigger
 func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
-	// for convenience, params is always non-null in expressions
-	params := t.params
-	if params == nil {
-		params = types.XObjectEmpty
-	}
-
 	return map[string]types.XValue{
 		"type":   types.NewXText(t.type_),
-		"params": params,
+		"params": t.params,
 	}
 }
 

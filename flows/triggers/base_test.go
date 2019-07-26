@@ -118,7 +118,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				flow,
 				contact,
 				triggers.NewChannelEvent(triggers.ChannelEventTypeNewConversation, channel),
-				types.XObjectEmpty,
+				nil,
 			),
 			`{
 				"contact": {
@@ -237,6 +237,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"name": "Registration",
 					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
 				},
+				"params": {},
 				"triggered_on": "2018-10-20T09:49:31.23456789Z",
 				"type": "channel"
 			}`,
