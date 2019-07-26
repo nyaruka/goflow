@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"sort"
 	"testing"
 	"time"
 
@@ -48,7 +49,14 @@ func TestActionTypes(t *testing.T) {
 
 	server := test.NewTestHTTPServer(49996)
 
+	typeNames := make([]string, 0)
 	for typeName := range actions.RegisteredTypes() {
+		typeNames = append(typeNames, typeName)
+	}
+
+	sort.Strings(typeNames)
+
+	for _, typeName := range typeNames {
 		testActionType(t, assetsJSON, typeName, server.URL)
 	}
 }

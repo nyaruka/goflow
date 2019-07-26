@@ -62,7 +62,7 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "scheme or path cannot be empty",
                 "type": "error"
             },
@@ -81,7 +81,7 @@
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     }
                 ],
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "translations": {
                     "eng": {
                         "text": "Hi there!"
@@ -148,7 +148,7 @@
             {
                 "base_language": "eng",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "translations": {
                     "eng": {
                         "attachments": [

@@ -255,7 +255,7 @@ func TestEventMarshaling(t *testing.T) {
 					},
 					"text": "Hi there",
 					"urn": "tel:+12345678900",
-					"uuid": "08d3c3e2-f1ea-4b52-97e4-99d56e963fc9"
+					"uuid": "20cc4181-48cf-4344-9751-99419796decd"
 				},
 				"type": "ivr_created"
 			}`,

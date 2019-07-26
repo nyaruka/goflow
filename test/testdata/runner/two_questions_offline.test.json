@@ -6,14 +6,14 @@
                     "created_on": "2018-07-06T12:30:04.123456789Z",
                     "msg": {
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "msg_created"
                 },
                 {
                     "created_on": "2018-07-06T12:30:06.123456789Z",
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "msg_wait"
                 }
             ],
@@ -59,14 +59,14 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
-                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             }
                         ],
@@ -81,11 +81,11 @@
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "waiting",
@@ -131,6 +131,7 @@
                     "type": "manual"
                 },
                 "type": "messaging_offline",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                 "wait": {
                     "type": "msg"
                 }
@@ -145,7 +146,7 @@
                         "urn": "tel:+12065551212",
                         "uuid": "3aac0a0f-8ead-4e77-a921-ad48e2171d6a"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "msg_received"
                 },
                 {
@@ -153,7 +154,7 @@
                     "created_on": "2018-07-06T12:30:16.123456789Z",
                     "input": "red",
                     "name": "Favorite Color",
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
                     "value": "red"
                 },
@@ -161,14 +162,14 @@
                     "created_on": "2018-07-06T12:30:19.123456789Z",
                     "msg": {
                         "text": "Red it is! What is your favorite soda? (pepsi/coke)",
-                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                        "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                     },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created"
                 },
                 {
                     "created_on": "2018-07-06T12:30:21.123456789Z",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_wait"
                 }
             ],
@@ -221,14 +222,14 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
-                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             },
                             {
@@ -238,7 +239,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "3aac0a0f-8ead-4e77-a921-ad48e2171d6a"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_received"
                             },
                             {
@@ -246,7 +247,7 @@
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "red",
                                 "name": "Favorite Color",
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
                                 "value": "red"
                             },
@@ -254,14 +255,14 @@
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
-                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                    "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                                 },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             }
                         ],
@@ -277,12 +278,12 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "2f42b942-bf32-4e81-8ff3-f946b5e68dd8",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:18.123456789Z",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
                         ],
                         "results": {
@@ -296,7 +297,7 @@
                             }
                         },
                         "status": "waiting",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "waiting",
@@ -342,6 +343,7 @@
                     "type": "manual"
                 },
                 "type": "messaging_offline",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                 "wait": {
                     "type": "msg"
                 }
@@ -356,7 +358,7 @@
                         "urn": "tel:+12065551212",
                         "uuid": "e7250c35-6dba-4d1d-b8de-67cdc521f841"
                     },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_received"
                 },
                 {
@@ -364,7 +366,7 @@
                     "created_on": "2018-07-06T12:30:31.123456789Z",
                     "input": "pepsi",
                     "name": "Soda",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
                     "value": "pepsi"
                 },
@@ -372,9 +374,9 @@
                     "created_on": "2018-07-06T12:30:34.123456789Z",
                     "msg": {
                         "text": "Great, you like pepsi. Finish by sending us a selfie!",
-                        "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                        "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_created"
                 },
                 {
@@ -382,7 +384,7 @@
                     "hint": {
                         "type": "image"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_wait"
                 }
             ],
@@ -435,14 +437,14 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
-                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             },
                             {
@@ -452,7 +454,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "3aac0a0f-8ead-4e77-a921-ad48e2171d6a"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_received"
                             },
                             {
@@ -460,7 +462,7 @@
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "red",
                                 "name": "Favorite Color",
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
                                 "value": "red"
                             },
@@ -468,14 +470,14 @@
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
-                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                    "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                                 },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
@@ -485,7 +487,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "e7250c35-6dba-4d1d-b8de-67cdc521f841"
                                 },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_received"
                             },
                             {
@@ -493,7 +495,7 @@
                                 "created_on": "2018-07-06T12:30:31.123456789Z",
                                 "input": "pepsi",
                                 "name": "Soda",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
                                 "value": "pepsi"
                             },
@@ -501,9 +503,9 @@
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "msg": {
                                     "text": "Great, you like pepsi. Finish by sending us a selfie!",
-                                    "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                                 },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_created"
                             },
                             {
@@ -511,7 +513,7 @@
                                 "hint": {
                                     "type": "image"
                                 },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             }
                         ],
@@ -527,18 +529,18 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "2f42b942-bf32-4e81-8ff3-f946b5e68dd8",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:18.123456789Z",
                                 "exit_uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:33.123456789Z",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
-                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             }
                         ],
                         "results": {
@@ -560,7 +562,7 @@
                             }
                         },
                         "status": "waiting",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "waiting",
@@ -606,6 +608,7 @@
                     "type": "manual"
                 },
                 "type": "messaging_offline",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                 "wait": {
                     "hint": {
                         "type": "image"
@@ -626,7 +629,7 @@
                         "urn": "tel:+12065551212",
                         "uuid": "e7250c35-6dba-4d1d-b8de-67cdc521f841"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_received"
                 }
             ],
@@ -682,14 +685,14 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
-                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             },
                             {
@@ -699,7 +702,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "3aac0a0f-8ead-4e77-a921-ad48e2171d6a"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_received"
                             },
                             {
@@ -707,7 +710,7 @@
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "red",
                                 "name": "Favorite Color",
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
                                 "value": "red"
                             },
@@ -715,14 +718,14 @@
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
-                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                    "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                                 },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
@@ -732,7 +735,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "e7250c35-6dba-4d1d-b8de-67cdc521f841"
                                 },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_received"
                             },
                             {
@@ -740,7 +743,7 @@
                                 "created_on": "2018-07-06T12:30:31.123456789Z",
                                 "input": "pepsi",
                                 "name": "Soda",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
                                 "value": "pepsi"
                             },
@@ -748,9 +751,9 @@
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "msg": {
                                     "text": "Great, you like pepsi. Finish by sending us a selfie!",
-                                    "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                                 },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_created"
                             },
                             {
@@ -758,7 +761,7 @@
                                 "hint": {
                                     "type": "image"
                                 },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             },
                             {
@@ -771,7 +774,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "e7250c35-6dba-4d1d-b8de-67cdc521f841"
                                 },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_received"
                             }
                         ],
@@ -787,19 +790,19 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "2f42b942-bf32-4e81-8ff3-f946b5e68dd8",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:18.123456789Z",
                                 "exit_uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:33.123456789Z",
                                 "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
-                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             }
                         ],
                         "results": {
@@ -821,7 +824,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "completed",
@@ -866,7 +869,8 @@
                     "triggered_on": "2018-10-18T11:30:24.574076-05:00",
                     "type": "manual"
                 },
-                "type": "messaging_offline"
+                "type": "messaging_offline",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         }
     ],

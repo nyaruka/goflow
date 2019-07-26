@@ -116,7 +116,7 @@ func TestRunContext(t *testing.T) {
 	}{
 		{`@run`, `Ryan Lewis@Registration`},
 		{`@child`, `Ryan Lewis@Collect Age`},
-		{`@child.uuid`, `59d74b86-3e2f-4a93-aece-b05d2fdcde0c`},
+		{`@child.uuid`, `9688d21d-95aa-4bed-afc7-f31b35731a3d`},
 		{`@child.run`, `Ryan Lewis@Collect Age`}, // to be removed in 13.1
 		{`@child.contact.name`, `Ryan Lewis`},
 		{`@child.run.contact.name`, `Ryan Lewis`},
