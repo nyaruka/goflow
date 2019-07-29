@@ -27,7 +27,7 @@ type Visitor struct {
 
 // NewVisitor creates a new ContactQL visitor
 func NewVisitor(redaction envs.RedactionPolicy) *Visitor {
-	return &Visitor{}
+	return &Visitor{redaction: redaction}
 }
 
 // Visit the top level parse tree
