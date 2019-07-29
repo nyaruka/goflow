@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
@@ -34,7 +35,7 @@ func TestWebhookParsing(t *testing.T) {
 	server := test.NewTestHTTPServer(49994)
 	defer server.Close()
 
-	session, _, err := test.CreateTestSession(server.URL, nil)
+	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	testCases := []struct {
@@ -151,7 +152,7 @@ func TestLegacyWebhookPayload(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	session, _, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
 	run := session.Runs()[0]
 
 	payload, err := run.EvaluateTemplate(flows.LegacyWebhookPayload)

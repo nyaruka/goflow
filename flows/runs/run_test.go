@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -105,7 +106,7 @@ func TestRunContext(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	// create a run with no parent or child
-	session, _, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

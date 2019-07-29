@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/cmd/docgen/completion"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -420,7 +421,7 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 	if voiceAction {
 		session, newEvents, err = test.CreateTestVoiceSession("http://localhost:49998", action)
 	} else {
-		session, newEvents, err = test.CreateTestSession("http://localhost:49998", action)
+		session, newEvents, err = test.CreateTestSession("http://localhost:49998", action, envs.RedactionPolicyNone)
 	}
 	if err != nil {
 		return nil, err

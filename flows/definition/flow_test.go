@@ -203,7 +203,7 @@ func TestNewFlow(t *testing.T) {
     ]
 }`
 
-	session, _, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	flow, err := definition.NewFlow(

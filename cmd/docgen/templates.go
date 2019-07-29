@@ -11,6 +11,7 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
@@ -213,7 +214,7 @@ func buildTemplateContext(items map[string][]*TaggedItem) (map[string]string, er
 	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 18, 24, 30, 123456000, time.UTC)))
 
-	session, _, err := test.CreateTestSession(server.URL, nil)
+	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
 	if err != nil {
 		return nil, errors.Wrap(err, "error creating example session")
 	}

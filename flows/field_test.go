@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestFieldValues(t *testing.T) {
-	session, _, err := test.CreateTestSession("http://localhost", nil)
+	session, _, err := test.CreateTestSession("http://localhost", nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	env := session.Environment()

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/test"
 )
 
@@ -24,7 +25,7 @@ func main() {
 }
 
 func expTester(template string) (string, error) {
-	session, _, err := test.CreateTestSession("http://localhost:49995", nil)
+	session, _, err := test.CreateTestSession("http://localhost:49995", nil, envs.RedactionPolicyNone)
 	if err != nil {
 		return "", err
 	}

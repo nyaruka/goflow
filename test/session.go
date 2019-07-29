@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
@@ -435,7 +436,7 @@ var voiceSessionTrigger = `{
 }`
 
 // CreateTestSession creates a standard example session for testing
-func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
+func CreateTestSession(testServerURL string, actionToAdd flows.Action, redact envs.RedactionPolicy) (flows.Session, []flows.Event, error) {
 	assetsJSON := json.RawMessage(sessionAssets)
 
 	// optional modify the main flow by adding the provided action to the last node
@@ -451,7 +452,10 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(sa, json.RawMessage(sessionTrigger), assets.PanicOnMissing)
+	triggerJSON := json.RawMessage(sessionTrigger)
+	triggerJSON = JSONReplace(triggerJSON, []string{"environment", "redaction_policy"}, []byte(fmt.Sprintf(`"%s"`, redact)))
+
+	trigger, err := triggers.ReadTrigger(sa, triggerJSON, assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
