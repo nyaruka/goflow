@@ -1,3 +1,7 @@
+v0.44.4
+----------
+ * Set redaction policy in visitor constructor for contactql
+
 v0.44.3
 ----------
  * Fix parsing of implicit conditions in contactql
