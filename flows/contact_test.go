@@ -196,7 +196,9 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
 
-	assert.Equal(t, []*flows.Group{english}, evaluateGroups(t, env, contact, groups))
+	memberships, errors := evaluateGroups(t, env, contact, groups)
+	assert.Equal(t, []*flows.Group{english}, memberships)
+	assert.Equal(t, []*flows.Group{}, errors)
 
 	contact.SetLanguage(envs.Language("spa"))
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:crazy_joe"), nil))
@@ -210,19 +212,58 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
 
-	assert.Equal(t, []*flows.Group{males, old, spanish, lastYear, tel1800, twitterCrazies}, evaluateGroups(t, env, contact, groups))
+	memberships, errors = evaluateGroups(t, env, contact, groups)
+	assert.Equal(t, []*flows.Group{males, old, spanish, lastYear, tel1800, twitterCrazies}, memberships)
+	assert.Equal(t, []*flows.Group{}, errors)
 }
 
-func evaluateGroups(t *testing.T, env envs.Environment, contact *flows.Contact, groups []*flows.Group) []*flows.Group {
-	matching := make([]*flows.Group, 0)
+func TestReevaluateDynamicGroupsWithURNRedaction(t *testing.T) {
+	session, _, err := test.CreateTestSession("http://localhost", nil, envs.RedactionPolicyURNs)
+	require.NoError(t, err)
+
+	env := session.Runs()[0].Environment()
+
+	gender := test.NewField("gender", "Gender", assets.FieldTypeText)
+	age := test.NewField("age", "Age", assets.FieldTypeNumber)
+
+	fieldSet := flows.NewFieldAssets([]assets.Field{gender.Asset(), age.Asset()})
+
+	males := test.NewGroup("Males", `gender="M"`)
+	tel1800 := test.NewGroup("Tel with 1800", `tel ~ 1800`)
+	twitterCrazies := test.NewGroup("Twitter Crazies", `twitter ~ crazy`)
+	groups := []*flows.Group{males, tel1800, twitterCrazies}
+
+	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
+
+	memberships, errors := evaluateGroups(t, env, contact, groups)
+	assert.Equal(t, []*flows.Group{}, memberships)
+	assert.Equal(t, []*flows.Group{tel1800, twitterCrazies}, errors) // both groups with URN references error
+
+	contact.AddURN(flows.NewContactURN(urns.URN("twitter:crazy_joe"), nil))
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
+
+	genderValue := contact.Fields().Parse(env, fieldSet, gender, "M")
+	contact.Fields().Set(gender, genderValue)
+
+	memberships, errors = evaluateGroups(t, env, contact, groups)
+	assert.Equal(t, []*flows.Group{males}, memberships)
+	assert.Equal(t, []*flows.Group{tel1800, twitterCrazies}, errors)
+}
+
+func evaluateGroups(t *testing.T, env envs.Environment, contact *flows.Contact, groups []*flows.Group) ([]*flows.Group, []*flows.Group) {
+	memberships := make([]*flows.Group, 0)
+	errors := make([]*flows.Group, 0)
+
 	for _, group := range groups {
 		isMember, err := group.CheckDynamicMembership(env, contact)
-		assert.NoError(t, err)
-		if isMember {
-			matching = append(matching, group)
+		if err != nil {
+			errors = append(errors, group)
+		} else if isMember {
+			memberships = append(memberships, group)
 		}
 	}
-	return matching
+	return memberships, errors
 }
 
 func TestContactEqual(t *testing.T) {

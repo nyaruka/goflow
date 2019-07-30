@@ -366,33 +366,31 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *Group
 }
 
 // ResolveQueryKey resolves a contact query search key for this contact
-func (c *Contact) ResolveQueryKey(env envs.Environment, key string) []interface{} {
-	switch key {
-	case "name":
-		if c.name != "" {
-			return []interface{}{c.name}
-		}
-		return nil
-	case "language":
-		if c.language != envs.NilLanguage {
-			return []interface{}{string(c.language)}
-		}
-		return nil
-	case "created_on":
-		return []interface{}{c.createdOn}
-	}
-
-	// try as a URN scheme
-	if urns.IsValidScheme(key) {
-		if env.RedactionPolicy() != envs.RedactionPolicyURNs {
-			urnsWithScheme := c.urns.WithScheme(key)
-			vals := make([]interface{}, len(urnsWithScheme))
-			for i := range urnsWithScheme {
-				vals[i] = string(urnsWithScheme[i].URN())
+func (c *Contact) ResolveQueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []interface{} {
+	if propType == contactql.PropertyTypeAttribute {
+		switch key {
+		case "name":
+			if c.name != "" {
+				return []interface{}{c.name}
 			}
-			return vals
+			return nil
+		case "language":
+			if c.language != envs.NilLanguage {
+				return []interface{}{string(c.language)}
+			}
+			return nil
+		case "created_on":
+			return []interface{}{c.createdOn}
+		default:
+			return nil
 		}
-		return nil
+	} else if propType == contactql.PropertyTypeScheme {
+		urnsWithScheme := c.urns.WithScheme(key)
+		vals := make([]interface{}, len(urnsWithScheme))
+		for i := range urnsWithScheme {
+			vals[i] = string(urnsWithScheme[i].URN())
+		}
+		return vals
 	}
 
 	// try as a contact field
@@ -400,6 +398,7 @@ func (c *Contact) ResolveQueryKey(env envs.Environment, key string) []interface{
 	if nativeValue == nil {
 		return nil
 	}
+
 	return []interface{}{nativeValue}
 }
 

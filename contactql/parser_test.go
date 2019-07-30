@@ -73,7 +73,7 @@ func TestParseQuery(t *testing.T) {
 
 type TestQueryable struct{}
 
-func (t *TestQueryable) ResolveQueryKey(env envs.Environment, key string) []interface{} {
+func (t *TestQueryable) ResolveQueryProperty(env envs.Environment, key string, propType PropertyType) []interface{} {
 	switch key {
 	case "tel":
 		return []interface{}{"+59313145145"}
