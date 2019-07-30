@@ -5,10 +5,12 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/contactql/gen"
 	"github.com/nyaruka/goflow/envs"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/pkg/errors"
 )
 
 var telRegex = regexp.MustCompile(`^[+ \d\-\(\)]+$`)
@@ -19,10 +21,19 @@ var comparatorAliases = map[string]string{
 	"is":  "=",
 }
 
+var attributeKeys = map[string]bool{
+	"id":         true,
+	"name":       true,
+	"language":   true,
+	"created_on": true,
+}
+
 type Visitor struct {
 	gen.BaseContactQLVisitor
 
 	redaction envs.RedactionPolicy
+
+	errors []error
 }
 
 // NewVisitor creates a new ContactQL visitor
@@ -45,22 +56,22 @@ func (v *Visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 	value := ctx.TEXT().GetText()
 
 	if v.redaction == envs.RedactionPolicyURNs {
-		_, err := strconv.Atoi(value)
+		num, err := strconv.Atoi(value)
 		if err == nil {
-			return &Condition{key: "id", comparator: "=", value: value}
+			return newCondition(PropertyTypeAttribute, "id", "=", strconv.Itoa(num))
 		}
 	} else if telRegex.MatchString(value) {
 		value = cleanSpecialCharsRegex.ReplaceAllString(value, "")
 
-		return &Condition{key: "tel", comparator: "~", value: value}
+		return newCondition(PropertyTypeScheme, urns.TelScheme, "~", value)
 	}
 
-	return &Condition{key: "name", comparator: "~", value: value}
+	return newCondition(PropertyTypeAttribute, "name", "~", value)
 }
 
 // expression : TEXT COMPARATOR literal
 func (v *Visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
-	key := strings.ToLower(ctx.TEXT().GetText())
+	propKey := strings.ToLower(ctx.TEXT().GetText())
 	comparator := strings.ToLower(ctx.COMPARATOR().GetText())
 	value := v.Visit(ctx.Literal()).(string)
 
@@ -69,7 +80,21 @@ func (v *Visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		comparator = resolvedAlias
 	}
 
-	return &Condition{key: key, comparator: comparator, value: value}
+	var propType PropertyType
+
+	if attributeKeys[propKey] {
+		propType = PropertyTypeAttribute
+	} else if urns.IsValidScheme(propKey) {
+		propType = PropertyTypeScheme
+
+		if v.redaction == envs.RedactionPolicyURNs {
+			v.errors = append(v.errors, errors.New("URN scheme not allowed"))
+		}
+	} else {
+		propType = PropertyTypeField
+	}
+
+	return newCondition(propType, propKey, comparator, value)
 }
 
 // expression : expression AND expression

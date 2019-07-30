@@ -25,6 +25,20 @@ const (
 	BoolOperatorOr BoolOperator = "or"
 )
 
+// PropertyType is the type of the lefthand side of a condition
+type PropertyType string
+
+const (
+	// PropertyTypeAttribute is builtin property
+	PropertyTypeAttribute PropertyType = "attribute"
+
+	// PropertyTypeScheme is a URN scheme
+	PropertyTypeScheme PropertyType = "scheme"
+
+	// PropertyTypeField is a custom contact field
+	PropertyTypeField PropertyType = "field"
+)
+
 // QueryNode is the base for nodes in our query parse tree
 type QueryNode interface {
 	fmt.Stringer
@@ -33,13 +47,21 @@ type QueryNode interface {
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
 type Condition struct {
-	key        string
+	propType   PropertyType
+	propKey    string
 	comparator string
 	value      string
 }
 
-// Key returns the key for the field being queried
-func (c *Condition) Key() string { return c.key }
+func newCondition(propType PropertyType, propKey string, comparator string, value string) *Condition {
+	return &Condition{propType: propType, propKey: propKey, comparator: comparator, value: value}
+}
+
+// PropertyKey returns the key for the property being queried
+func (c *Condition) PropertyKey() string { return c.propKey }
+
+// PropertyType returns the type (attribute, scheme, field)
+func (c *Condition) PropertyType() PropertyType { return c.propType }
 
 // Comparator returns the type of comparison being made
 func (c *Condition) Comparator() string { return c.comparator }
@@ -50,7 +72,7 @@ func (c *Condition) Value() string { return c.value }
 // Evaluate evaluates this condition against the queryable contact
 func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
 	// contacts can return multiple values per key, e.g. multiple phone numbers in a "tel = x" condition
-	vals := queryable.ResolveQueryKey(env, c.key)
+	vals := queryable.ResolveQueryKey(env, c.propKey)
 
 	// is this an existence check?
 	if c.value == "" {
@@ -111,7 +133,7 @@ func (c *Condition) String() string {
 	} else {
 		value = c.value
 	}
-	return fmt.Sprintf("%s%s%s", c.key, c.comparator, value)
+	return fmt.Sprintf("%s%s%s", c.propKey, c.comparator, value)
 }
 
 // BoolCombination is a AND or OR combination of multiple conditions
@@ -200,6 +222,10 @@ func ParseQuery(text string, redaction envs.RedactionPolicy) (*ContactQuery, err
 
 	visitor := NewVisitor(redaction)
 	rootNode := visitor.Visit(tree).(QueryNode)
+
+	if len(visitor.errors) > 0 {
+		return nil, visitor.errors[0]
+	}
 
 	return &ContactQuery{root: rootNode}, nil
 }

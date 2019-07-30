@@ -14,35 +14,60 @@ func TestParseQuery(t *testing.T) {
 	tests := []struct {
 		text   string
 		parsed string
+		err    string
+		redact envs.RedactionPolicy
 	}{
-		{`will`, "name~will"},
-		{`0123456566`, "tel~0123456566"},
-		{`+0123456566`, "tel~0123456566"},
-		{`0123456-566`, "tel~0123456566"},
-		{`will felix`, "AND(name~will, name~felix)"},     // implicit AND
-		{`will and felix`, "AND(name~will, name~felix)"}, // explicit AND
-		{`will or felix or matt`, "OR(OR(name~will, name~felix), name~matt)"},
-		{`Name=will`, "name=will"},
-		{`Name ~ "felix"`, "name~felix"},
-		{`name is ""`, `name=""`},          // is not set
-		{`name != ""`, `name!=""`},         // is set
-		{`name != "felix"`, `name!=felix`}, // is set
-		{`name=will or Name ~ "felix"`, "OR(name=will, name~felix)"},
-		{`Name is will or Name has felix`, "OR(name=will, name~felix)"}, // comparator aliases
-		{`will or Name ~ "felix"`, "OR(name~will, name~felix)"},
-		{`email ~ user@example.com`, "email~user@example.com"},
+		// implicit conditions
+		{`will`, "name~will", "", envs.RedactionPolicyNone},
+		{`0123456566`, "tel~0123456566", "", envs.RedactionPolicyNone},
+		{`+0123456566`, "tel~0123456566", "", envs.RedactionPolicyNone},
+		{`0123-456-566`, "tel~0123456566", "", envs.RedactionPolicyNone},
+
+		// implicit conditions with URN redaction
+		{`will`, "name~will", "", envs.RedactionPolicyURNs},
+		{`0123456566`, "id=123456566", "", envs.RedactionPolicyURNs},
+		{`+0123456566`, "id=123456566", "", envs.RedactionPolicyURNs},
+		{`0123-456-566`, "name~0123-456-566", "", envs.RedactionPolicyURNs},
+
+		{`will felix`, "AND(name~will, name~felix)", "", envs.RedactionPolicyNone},     // implicit AND
+		{`will and felix`, "AND(name~will, name~felix)", "", envs.RedactionPolicyNone}, // explicit AND
+		{`will or felix or matt`, "OR(OR(name~will, name~felix), name~matt)", "", envs.RedactionPolicyNone},
+		{`Name=will`, "name=will", "", envs.RedactionPolicyNone},
+		{`Name ~ "felix"`, "name~felix", "", envs.RedactionPolicyNone},
+		{`name is ""`, `name=""`, "", envs.RedactionPolicyNone},          // is not set
+		{`name != ""`, `name!=""`, "", envs.RedactionPolicyNone},         // is set
+		{`name != "felix"`, `name!=felix`, "", envs.RedactionPolicyNone}, // is set
+		{`name=will or Name ~ "felix"`, "OR(name=will, name~felix)", "", envs.RedactionPolicyNone},
+		{`Name is will or Name has felix`, "OR(name=will, name~felix)", "", envs.RedactionPolicyNone}, // comparator aliases
+		{`will or Name ~ "felix"`, "OR(name~will, name~felix)", "", envs.RedactionPolicyNone},
+
+		{`mailto = user@example.com`, "mailto=user@example.com", "", envs.RedactionPolicyNone},
+		{`MAILTO ~ user@example.com`, "mailto~user@example.com", "", envs.RedactionPolicyNone},
+
+		{`mailto = user@example.com`, "", "URN scheme not allowed", envs.RedactionPolicyURNs},
+		{`MAILTO ~ user@example.com`, "", "URN scheme not allowed", envs.RedactionPolicyURNs},
 
 		// boolean operator precedence is AND before OR, even when AND is implicit
-		{`will and felix or matt amber`, "OR(AND(name~will, name~felix), AND(name~matt, name~amber))"},
+		{`will and felix or matt amber`, "OR(AND(name~will, name~felix), AND(name~matt, name~amber))", "", envs.RedactionPolicyNone},
 
 		// boolean combinations can themselves be combined
-		{`(Age < 18 and Gender = "male") or (Age > 18 and Gender = "female")`, "OR(AND(age<18, gender=male), AND(age>18, gender=female))"},
+		{
+			`(Age < 18 and Gender = "male") or (Age > 18 and Gender = "female")`,
+			"OR(AND(age<18, gender=male), AND(age>18, gender=female))",
+			"",
+			envs.RedactionPolicyNone,
+		},
 	}
 
-	for _, test := range tests {
-		parsed, err := ParseQuery(test.text, envs.RedactionPolicyNone)
-		assert.NoError(t, err)
-		assert.Equal(t, test.parsed, parsed.String(), "error parsing query '%s'", test.text)
+	for _, tc := range tests {
+		parsed, err := ParseQuery(tc.text, tc.redact)
+		if tc.err != "" {
+			assert.EqualError(t, err, tc.err, "error mismatch for '%s'", tc.text)
+			assert.Nil(t, parsed)
+		} else {
+			assert.NoError(t, err, "unexpected error for '%s'", tc.text)
+			assert.Equal(t, tc.parsed, parsed.String(), "parse mismatch for '%s'", tc.text)
+		}
 	}
 }
 
