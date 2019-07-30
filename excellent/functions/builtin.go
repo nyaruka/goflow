@@ -1484,10 +1484,15 @@ func TimeFromParts(env envs.Environment, hour, minute, second int) types.XValue 
 //
 //   @(urn_parts("tel:+593979012345")) -> {display: , path: +593979012345, scheme: tel}
 //   @(urn_parts("twitterid:3263621177#bobby")) -> {display: bobby, path: 3263621177, scheme: twitterid}
+//   @(urn_parts("not a urn")) -> ERROR
 //
 // @function urn_parts(urn)
 func URNParts(env envs.Environment, urn types.XText) types.XValue {
-	u := urns.URN(urn.Native())
+	u, err := urns.Parse(urn.Native())
+	if err != nil {
+		return types.NewXErrorf("%s is not a valid URN: %s", urn.Native(), err)
+	}
+
 	scheme, path, _, display := u.ToParts()
 
 	return types.NewXObject(map[string]types.XValue{

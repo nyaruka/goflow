@@ -26,6 +26,7 @@ urns -> the URN values of the contact
 urns.ext -> Ext URN for the contact
 urns.facebook -> Facebook URN for the contact
 urns.fcm -> Fcm URN for the contact
+urns.freshchat -> Freshchat URN for the contact
 urns.jiochat -> Jiochat URN for the contact
 urns.line -> Line URN for the contact
 urns.mailto -> Mailto URN for the contact
@@ -132,6 +133,7 @@ child.urns -> the URN values of the run
 child.urns.ext -> Ext URN for the contact
 child.urns.facebook -> Facebook URN for the contact
 child.urns.fcm -> Fcm URN for the contact
+child.urns.freshchat -> Freshchat URN for the contact
 child.urns.jiochat -> Jiochat URN for the contact
 child.urns.line -> Line URN for the contact
 child.urns.mailto -> Mailto URN for the contact
@@ -187,6 +189,7 @@ parent.urns -> the URN values of the run
 parent.urns.ext -> Ext URN for the contact
 parent.urns.facebook -> Facebook URN for the contact
 parent.urns.fcm -> Fcm URN for the contact
+parent.urns.freshchat -> Freshchat URN for the contact
 parent.urns.jiochat -> Jiochat URN for the contact
 parent.urns.line -> Line URN for the contact
 parent.urns.mailto -> Mailto URN for the contact
