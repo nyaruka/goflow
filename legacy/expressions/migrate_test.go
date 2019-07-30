@@ -50,9 +50,9 @@ var tests = []testTemplate{
 	{old: `@contact.tel.scheme`, new: `@(urn_parts(urns.tel).scheme)`},
 	{old: `@contact.tel.path`, new: `@(urn_parts(urns.tel).path)`},
 	{old: `@contact.tel.urn`, new: `@urns.tel`},
-	{old: `@contact.tel_e164`, new: `@(urn_parts(urns.tel).path)`},
-	{old: `@contact.twitterid`, new: `@(urn_parts(urns.twitterid).path)`},
-	{old: `@contact.mailto`, new: `@(urn_parts(urns.mailto).path)`},
+	{old: `@contact.tel_e164`, new: `@(default(urn_parts(urns.tel).path, ""))`},
+	{old: `@contact.twitterid`, new: `@(default(urn_parts(urns.twitterid).path, ""))`},
+	{old: `@contact.mailto`, new: `@(default(urn_parts(urns.mailto).path, ""))`},
 
 	// run variables
 	{old: `@flow`, new: `@results`},
@@ -96,7 +96,8 @@ var tests = []testTemplate{
 	{old: `@parent.contact.tel.scheme`, new: `@(urn_parts(parent.urns.tel).scheme)`},
 	{old: `@parent.contact.tel.path`, new: `@(urn_parts(parent.urns.tel).path)`},
 	{old: `@parent.contact.tel.urn`, new: `@parent.urns.tel`},
-	{old: `@parent.contact.tel_e164`, new: `@(urn_parts(parent.urns.tel).path)`},
+	{old: `@parent.contact.tel_e164`, new: `@(default(urn_parts(parent.urns.tel).path, ""))`},
+	{old: `@parent.contact.twitterid`, new: `@(default(urn_parts(parent.urns.twitterid).path, ""))`},
 
 	// input
 	{old: `@step`, new: `@input`},
