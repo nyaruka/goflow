@@ -1793,8 +1793,7 @@ func FormatLocation(env envs.Environment, path types.XText) types.XValue {
 //
 // @function format_urn(urn)
 func FormatURN(env envs.Environment, arg types.XText) types.XValue {
-	urn := urns.URN(arg.Native())
-	err := urn.Validate()
+	urn, err := urns.Parse(arg.Native())
 	if err != nil {
 		return types.NewXErrorf("%s is not a valid URN: %s", arg.Native(), err)
 	}
