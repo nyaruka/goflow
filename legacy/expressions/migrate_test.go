@@ -51,8 +51,8 @@ var tests = []testTemplate{
 	{old: `@contact.tel.path`, new: `@(urn_parts(urns.tel).path)`},
 	{old: `@contact.tel.urn`, new: `@urns.tel`},
 	{old: `@contact.tel_e164`, new: `@(urn_parts(urns.tel).path)`},
-	{old: `@contact.twitterid`, new: `@(format_urn(urns.twitterid))`},
-	{old: `@contact.mailto`, new: `@(format_urn(urns.mailto))`},
+	{old: `@contact.twitterid`, new: `@(urn_parts(urns.twitterid).path)`},
+	{old: `@contact.mailto`, new: `@(urn_parts(urns.mailto).path)`},
 
 	// run variables
 	{old: `@flow`, new: `@results`},
