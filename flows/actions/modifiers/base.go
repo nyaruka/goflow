@@ -39,7 +39,7 @@ func (m *baseModifier) Type() string { return m.Type_ }
 
 // helper to re-evaluate dynamic groups and log any changes to membership
 func (m *baseModifier) reevaluateDynamicGroups(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
-	added, removed, errors := contact.ReevaluateDynamicGroups(env, assets.Groups())
+	added, removed, errors := contact.ReevaluateDynamicGroups(env, assets.Groups(), assets.Fields())
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {
