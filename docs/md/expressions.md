@@ -1459,6 +1459,7 @@ Parses a URN into its different parts
 ```objectivec
 @(urn_parts("tel:+593979012345")) → {display: , path: +593979012345, scheme: tel}
 @(urn_parts("twitterid:3263621177#bobby")) → {display: bobby, path: 3263621177, scheme: twitterid}
+@(urn_parts("not a urn")) → ERROR
 ```
 
 <a name="function:week_number"></a>

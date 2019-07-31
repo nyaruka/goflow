@@ -1,3 +1,9 @@
+v0.45.0
+----------
+ * urn_parts should error for non-URNs and so Wrap migrated urn_parts expressions with default to catch errors
+ * Migrate non-tel URN types using urn_parts(..).path
+ * Redacted URNs should still have scheme, and format_urn should work for redacted URNs
+
 v0.44.4
 ----------
  * Set redaction policy in visitor constructor for contactql

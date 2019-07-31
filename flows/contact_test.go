@@ -68,6 +68,7 @@ func TestContact(t *testing.T) {
 		"ext":       nil,
 		"facebook":  nil,
 		"fcm":       nil,
+		"freshchat": nil,
 		"jiochat":   nil,
 		"line":      nil,
 		"mailto":    nil,

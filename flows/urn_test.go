@@ -60,7 +60,7 @@ func TestContactURN(t *testing.T) {
 
 	// check when URNs have to be redacted
 	env = envs.NewEnvironmentBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
-	assert.Equal(t, types.NewXText("********"), urn.ToXValue(env))
+	assert.Equal(t, types.NewXText("tel:********"), urn.ToXValue(env))
 
 	// we can clear the channel affinity
 	urn.SetChannel(nil)
