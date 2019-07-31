@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"fmt"
 	"net/url"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -12,7 +13,7 @@ import (
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
-var redactedURN = types.NewXText("********")
+var redacted = "********"
 
 func init() {
 	utils.Validator.RegisterValidation("urn", ValidateURN)
@@ -101,18 +102,23 @@ func (u *ContactURN) Equal(other *ContactURN) bool {
 }
 
 // returns this URN as a raw URN without the query portion (i.e. only scheme, path, display)
-func (u *ContactURN) withoutQuery() urns.URN {
+func (u *ContactURN) withoutQuery(redact bool) urns.URN {
 	scheme, path, _, display := u.urn.ToParts()
+
+	if redact {
+		return urns.URN(fmt.Sprintf("%s:%s", scheme, redacted))
+	}
+
 	urn, _ := urns.NewURNFromParts(scheme, path, "", display)
+
 	return urn
 }
 
 // ToXValue returns a representation of this object for use in expressions
 func (u *ContactURN) ToXValue(env envs.Environment) types.XValue {
-	if env.RedactionPolicy() == envs.RedactionPolicyURNs {
-		return redactedURN
-	}
-	return types.NewXText(string(u.withoutQuery()))
+	redact := env.RedactionPolicy() == envs.RedactionPolicyURNs
+
+	return types.NewXText(string(u.withoutQuery(redact)))
 }
 
 // URNList is the list of a contact's URNs

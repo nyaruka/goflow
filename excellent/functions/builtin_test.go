@@ -619,21 +619,9 @@ func TestFunctions(t *testing.T) {
 			"path":    xs("23454556"),
 			"display": xs("bobby"),
 		})},
-		{"urn_parts", dmy, []types.XValue{xs("not_a_urn")}, types.NewXObject(map[string]types.XValue{
-			"scheme":  types.XTextEmpty,
-			"path":    xs("not_a_urn"),
-			"display": types.XTextEmpty,
-		})},
-		{"urn_parts", dmy, []types.XValue{xs("")}, types.NewXObject(map[string]types.XValue{
-			"scheme":  types.XTextEmpty,
-			"path":    types.XTextEmpty,
-			"display": types.XTextEmpty,
-		})},
-		{"urn_parts", dmy, []types.XValue{nil}, types.NewXObject(map[string]types.XValue{
-			"scheme":  types.XTextEmpty,
-			"path":    types.XTextEmpty,
-			"display": types.XTextEmpty,
-		})},
+		{"urn_parts", dmy, []types.XValue{xs("not_a_urn")}, ERROR},
+		{"urn_parts", dmy, []types.XValue{xs("")}, ERROR},
+		{"urn_parts", dmy, []types.XValue{nil}, ERROR},
 		{"urn_parts", dmy, []types.XValue{ERROR}, ERROR},
 		{"urn_parts", dmy, []types.XValue{}, ERROR},
 

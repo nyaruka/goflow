@@ -1445,6 +1445,10 @@
             {
                 "template": "@(urn_parts(\"twitterid:3263621177#bobby\"))",
                 "output": "{display: bobby, path: 3263621177, scheme: twitterid}"
+            },
+            {
+                "template": "@(urn_parts(\"not a urn\"))",
+                "output": "ERROR"
             }
         ]
     },

@@ -37,6 +37,11 @@
                     "type": "text"
                 },
                 {
+                    "key": "freshchat",
+                    "help": "Freshchat URN for the contact",
+                    "type": "text"
+                },
+                {
                     "key": "jiochat",
                     "help": "Jiochat URN for the contact",
                     "type": "text"

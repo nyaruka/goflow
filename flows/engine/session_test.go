@@ -45,10 +45,10 @@ var templateTests = []struct {
 	{"@(format_urn(contact.urn))", `(206) 555-1212`, "", false},
 
 	// with URN redaction
-	{"@contact.urn", `********`, "", true},
-	{"@(urn_parts(contact.urn).scheme)", ``, "", true},
+	{"@contact.urn", `tel:********`, "", true},
+	{"@(urn_parts(contact.urn).scheme)", `tel`, "", true},
 	{"@(urn_parts(contact.urn).path)", `********`, "", true},
-	{"@(format_urn(contact.urn))", ``, "error evaluating @(format_urn(contact.urn)): error calling FORMAT_URN: ******** is not a valid URN: scheme or path cannot be empty", true},
+	{"@(format_urn(contact.urn))", `********`, "", true},
 
 	// contact URN list access
 	{"@contact.urns", `[tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]`, "", false},
@@ -61,18 +61,18 @@ var templateTests = []struct {
 	{"@(format_urn(contact.urns[0]))", "(206) 555-1212", "", false},
 
 	// with URN redaction
-	{"@contact.urns", `[********, ********, ********]`, "", true},
-	{"@(contact.urns[0])", `********`, "", true},
+	{"@contact.urns", `[tel:********, twitterid:********, mailto:********]`, "", true},
+	{"@(contact.urns[0])", `tel:********`, "", true},
 
 	// simplified URN access
-	{"@urns", `{ext: , facebook: , fcm: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , wechat: , whatsapp: }`, "", false},
+	{"@urns", `{ext: , facebook: , fcm: , freshchat: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , wechat: , whatsapp: }`, "", false},
 	{"@urns.tel", `tel:+12065551212`, "", false},
 	{"@urns.mailto", `mailto:foo@bar.com`, "", false},
 	{"@urns.viber", ``, "", false},
 	{"@(format_urn(urns.tel))", "(206) 555-1212", "", false},
 
 	// with URN redaction
-	{"@urns.tel", `********`, "", true},
+	{"@urns.tel", `tel:********`, "", true},
 	{"@urns.viber", ``, "", true},
 
 	// contact groups
@@ -452,6 +452,7 @@ func TestContextToJSON(t *testing.T) {
 					"ext": null,
 					"facebook": null,
 					"fcm": null,
+					"freshchat": null,
 					"jiochat": null,
 					"line": null,
 					"mailto": "mailto:foo@bar.com",
@@ -577,6 +578,7 @@ func TestContextToJSON(t *testing.T) {
 					"ext": null,
 					"facebook": null,
 					"fcm": null,
+					"freshchat": null,
 					"jiochat": null,
 					"line": null,
 					"mailto": null,
