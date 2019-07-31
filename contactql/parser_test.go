@@ -4,6 +4,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static/types"
 	"github.com/nyaruka/goflow/envs"
 
 	"github.com/shopspring/decimal"
@@ -57,10 +59,18 @@ func TestParseQuery(t *testing.T) {
 			"",
 			envs.RedactionPolicyNone,
 		},
+
+		{`xyz != ""`, "", "can't resolve 'xyz' to attribute, scheme or field", envs.RedactionPolicyNone},
 	}
 
+	fields := map[string]assets.Field{
+		"age":    types.NewField("age", "Age", assets.FieldTypeNumber),
+		"gender": types.NewField("gender", "Gender", assets.FieldTypeText),
+	}
+	fieldResolver := func(key string) assets.Field { return fields[key] }
+
 	for _, tc := range tests {
-		parsed, err := ParseQuery(tc.text, tc.redact)
+		parsed, err := ParseQuery(tc.text, tc.redact, fieldResolver)
 		if tc.err != "" {
 			assert.EqualError(t, err, tc.err, "error mismatch for '%s'", tc.text)
 			assert.Nil(t, parsed)
@@ -181,8 +191,20 @@ func TestEvaluateQuery(t *testing.T) {
 		{`(age = 36 OR gender = female) AND age > 35`, true},
 	}
 
+	fields := map[string]assets.Field{
+		"age":      types.NewField("age", "Age", assets.FieldTypeNumber),
+		"dob":      types.NewField("dob", "DOB", assets.FieldTypeDatetime),
+		"gender":   types.NewField("gender", "Gender", assets.FieldTypeText),
+		"state":    types.NewField("state", "State", assets.FieldTypeState),
+		"district": types.NewField("district", "District", assets.FieldTypeDistrict),
+		"ward":     types.NewField("ward", "Ward", assets.FieldTypeWard),
+		"empty":    types.NewField("empty", "Empty", assets.FieldTypeText),
+		"xyz":      types.NewField("xyz", "XYZ", assets.FieldTypeText),
+	}
+	fieldResolver := func(key string) assets.Field { return fields[key] }
+
 	for _, test := range tests {
-		parsed, err := ParseQuery(test.query, envs.RedactionPolicyNone)
+		parsed, err := ParseQuery(test.query, envs.RedactionPolicyNone, fieldResolver)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := EvaluateQuery(env, parsed, testObj)
@@ -192,7 +214,7 @@ func TestEvaluateQuery(t *testing.T) {
 }
 
 func TestParsingErrors(t *testing.T) {
-	_, err := ParseQuery("name = ", envs.RedactionPolicyNone)
+	_, err := ParseQuery("name = ", envs.RedactionPolicyNone, nil)
 	assert.EqualError(t, err, "mismatched input '<EOF>' expecting {TEXT, STRING}")
 }
 
@@ -211,11 +233,17 @@ func TestEvaluationErrors(t *testing.T) {
 		{`dob = 32 AND name = Bob`, "string '32' couldn't be parsed as a date"},
 		{`name = Bob OR dob = 32`, "string '32' couldn't be parsed as a date"},
 		{`dob ~ 2018-12-31`, "can't query datetime fields with ~"},
-		{`nope = 1`, "unsupported query data type: *contactql.TestQueryable"},
 	}
 
+	fields := map[string]assets.Field{
+		"age":    types.NewField("age", "Age", assets.FieldTypeNumber),
+		"dob":    types.NewField("dob", "DOB", assets.FieldTypeDatetime),
+		"gender": types.NewField("gender", "Gender", assets.FieldTypeText),
+	}
+	fieldResolver := func(key string) assets.Field { return fields[key] }
+
 	for _, test := range tests {
-		parsed, err := ParseQuery(test.query, envs.RedactionPolicyNone)
+		parsed, err := ParseQuery(test.query, envs.RedactionPolicyNone, fieldResolver)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := EvaluateQuery(env, parsed, testObj)

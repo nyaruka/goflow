@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql/gen"
 	"github.com/nyaruka/goflow/envs"
 
@@ -51,10 +52,17 @@ type Condition struct {
 	propKey    string
 	comparator string
 	value      string
+	valueType  assets.FieldType
 }
 
-func newCondition(propType PropertyType, propKey string, comparator string, value string) *Condition {
-	return &Condition{propType: propType, propKey: propKey, comparator: comparator, value: value}
+func newCondition(propType PropertyType, propKey string, comparator string, value string, valueType assets.FieldType) *Condition {
+	return &Condition{
+		propType:   propType,
+		propKey:    propKey,
+		comparator: comparator,
+		value:      value,
+		valueType:  valueType,
+	}
 }
 
 // PropertyKey returns the key for the property being queried
@@ -204,7 +212,7 @@ func (q *ContactQuery) String() string {
 }
 
 // ParseQuery parses a ContactQL query from the given input
-func ParseQuery(text string, redaction envs.RedactionPolicy) (*ContactQuery, error) {
+func ParseQuery(text string, redaction envs.RedactionPolicy, fieldResolver func(string) assets.Field) (*ContactQuery, error) {
 	errListener := NewErrorListener()
 
 	input := antlr.NewInputStream(text)
@@ -220,7 +228,7 @@ func ParseQuery(text string, redaction envs.RedactionPolicy) (*ContactQuery, err
 		return nil, errListener.Error()
 	}
 
-	visitor := newVisitor(redaction)
+	visitor := newVisitor(redaction, fieldResolver)
 	rootNode := visitor.Visit(tree).(QueryNode)
 
 	if len(visitor.errors) > 0 {

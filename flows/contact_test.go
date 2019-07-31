@@ -196,7 +196,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
 
-	memberships, errors := evaluateGroups(t, env, contact, groups)
+	memberships, errors := evaluateGroups(t, env, contact, groups, fieldSet)
 	assert.Equal(t, []*flows.Group{english}, memberships)
 	assert.Equal(t, []*flows.Group{}, errors)
 
@@ -212,7 +212,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
 
-	memberships, errors = evaluateGroups(t, env, contact, groups)
+	memberships, errors = evaluateGroups(t, env, contact, groups, fieldSet)
 	assert.Equal(t, []*flows.Group{males, old, spanish, lastYear, tel1800, twitterCrazies}, memberships)
 	assert.Equal(t, []*flows.Group{}, errors)
 }
@@ -236,7 +236,7 @@ func TestReevaluateDynamicGroupsWithURNRedaction(t *testing.T) {
 	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
 
-	memberships, errors := evaluateGroups(t, env, contact, groups)
+	memberships, errors := evaluateGroups(t, env, contact, groups, fieldSet)
 	assert.Equal(t, []*flows.Group{}, memberships)
 	assert.Equal(t, []*flows.Group{tel1800, twitterCrazies}, errors) // both groups with URN references error
 
@@ -246,17 +246,17 @@ func TestReevaluateDynamicGroupsWithURNRedaction(t *testing.T) {
 	genderValue := contact.Fields().Parse(env, fieldSet, gender, "M")
 	contact.Fields().Set(gender, genderValue)
 
-	memberships, errors = evaluateGroups(t, env, contact, groups)
+	memberships, errors = evaluateGroups(t, env, contact, groups, fieldSet)
 	assert.Equal(t, []*flows.Group{males}, memberships)
 	assert.Equal(t, []*flows.Group{tel1800, twitterCrazies}, errors)
 }
 
-func evaluateGroups(t *testing.T, env envs.Environment, contact *flows.Contact, groups []*flows.Group) ([]*flows.Group, []*flows.Group) {
+func evaluateGroups(t *testing.T, env envs.Environment, contact *flows.Contact, groups []*flows.Group, fields *flows.FieldAssets) ([]*flows.Group, []*flows.Group) {
 	memberships := make([]*flows.Group, 0)
 	errors := make([]*flows.Group, 0)
 
 	for _, group := range groups {
-		isMember, err := group.CheckDynamicMembership(env, contact)
+		isMember, err := group.CheckDynamicMembership(env, contact, fields)
 		if err != nil {
 			errors = append(errors, group)
 		} else if isMember {

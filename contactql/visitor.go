@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql/gen"
 	"github.com/nyaruka/goflow/envs"
 
@@ -29,24 +30,25 @@ const (
 	AttributeCreatedOn = "created_on"
 )
 
-var attributeKeys = map[string]bool{
-	AttributeID:        true,
-	AttributeName:      true,
-	AttributeLanguage:  true,
-	AttributeCreatedOn: true,
+var attributes = map[string]assets.FieldType{
+	AttributeID:        assets.FieldTypeNumber,
+	AttributeName:      assets.FieldTypeText,
+	AttributeLanguage:  assets.FieldTypeText,
+	AttributeCreatedOn: assets.FieldTypeDatetime,
 }
 
 type visitor struct {
 	gen.BaseContactQLVisitor
 
-	redaction envs.RedactionPolicy
+	redaction     envs.RedactionPolicy
+	fieldResolver func(string) assets.Field
 
 	errors []error
 }
 
 // creates a new ContactQL visitor
-func newVisitor(redaction envs.RedactionPolicy) *visitor {
-	return &visitor{redaction: redaction}
+func newVisitor(redaction envs.RedactionPolicy, fieldResolver func(string) assets.Field) *visitor {
+	return &visitor{redaction: redaction, fieldResolver: fieldResolver}
 }
 
 // Visit the top level parse tree
@@ -66,15 +68,15 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 	if v.redaction == envs.RedactionPolicyURNs {
 		num, err := strconv.Atoi(value)
 		if err == nil {
-			return newCondition(PropertyTypeAttribute, "id", "=", strconv.Itoa(num))
+			return newCondition(PropertyTypeAttribute, AttributeID, "=", strconv.Itoa(num), attributes[AttributeID])
 		}
 	} else if telRegex.MatchString(value) {
 		value = cleanSpecialCharsRegex.ReplaceAllString(value, "")
 
-		return newCondition(PropertyTypeScheme, urns.TelScheme, "~", value)
+		return newCondition(PropertyTypeScheme, urns.TelScheme, "~", value, assets.FieldTypeText)
 	}
 
-	return newCondition(PropertyTypeAttribute, "name", "~", value)
+	return newCondition(PropertyTypeAttribute, AttributeName, "~", value, attributes[AttributeName])
 }
 
 // expression : TEXT COMPARATOR literal
@@ -90,19 +92,30 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 
 	var propType PropertyType
 
-	if attributeKeys[propKey] {
+	// first try to match a fixed attribute
+	valueType, isAttribute := attributes[propKey]
+	if isAttribute {
 		propType = PropertyTypeAttribute
+
 	} else if urns.IsValidScheme(propKey) {
+		// second try to match a URN scheme
 		propType = PropertyTypeScheme
+		valueType = assets.FieldTypeText
 
 		if v.redaction == envs.RedactionPolicyURNs {
 			v.errors = append(v.errors, errors.New("cannot query on redacted URNs"))
 		}
 	} else {
-		propType = PropertyTypeField
+		field := v.fieldResolver(propKey)
+		if field != nil {
+			propType = PropertyTypeField
+			valueType = field.Type()
+		} else {
+			v.errors = append(v.errors, errors.Errorf("can't resolve '%s' to attribute, scheme or field", propKey))
+		}
 	}
 
-	return newCondition(propType, propKey, comparator, value)
+	return newCondition(propType, propKey, comparator, value, valueType)
 }
 
 // expression : expression AND expression

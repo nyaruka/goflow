@@ -338,7 +338,7 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 }
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *GroupAssets) ([]*Group, []*Group, []error) {
+func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *GroupAssets, allFields *FieldAssets) ([]*Group, []*Group, []error) {
 	added := make([]*Group, 0)
 	removed := make([]*Group, 0)
 	errors := make([]error, 0)
@@ -348,7 +348,7 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *Group
 			continue
 		}
 
-		qualifies, err := group.CheckDynamicMembership(env, c)
+		qualifies, err := group.CheckDynamicMembership(env, c, allFields)
 		if err != nil {
 			errors = append(errors, err)
 		} else if qualifies {
