@@ -212,7 +212,7 @@ func (q *ContactQuery) String() string {
 }
 
 // ParseQuery parses a ContactQL query from the given input
-func ParseQuery(text string, redaction envs.RedactionPolicy, fieldResolver func(string) assets.Field) (*ContactQuery, error) {
+func ParseQuery(text string, redaction envs.RedactionPolicy, fieldResolver FieldResolverFunc) (*ContactQuery, error) {
 	errListener := NewErrorListener()
 
 	input := antlr.NewInputStream(text)

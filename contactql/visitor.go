@@ -37,17 +37,20 @@ var attributes = map[string]assets.FieldType{
 	AttributeCreatedOn: assets.FieldTypeDatetime,
 }
 
+// FieldResolverFunc resolves a query property key to a possible contact field
+type FieldResolverFunc func(string) assets.Field
+
 type visitor struct {
 	gen.BaseContactQLVisitor
 
 	redaction     envs.RedactionPolicy
-	fieldResolver func(string) assets.Field
+	fieldResolver FieldResolverFunc
 
 	errors []error
 }
 
 // creates a new ContactQL visitor
-func newVisitor(redaction envs.RedactionPolicy, fieldResolver func(string) assets.Field) *visitor {
+func newVisitor(redaction envs.RedactionPolicy, fieldResolver FieldResolverFunc) *visitor {
 	return &visitor{redaction: redaction, fieldResolver: fieldResolver}
 }
 
