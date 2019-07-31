@@ -21,11 +21,19 @@ var comparatorAliases = map[string]string{
 	"is":  "=",
 }
 
+// Fixed attributes that can be searched
+const (
+	AttributeID        = "id"
+	AttributeName      = "name"
+	AttributeLanguage  = "language"
+	AttributeCreatedOn = "created_on"
+)
+
 var attributeKeys = map[string]bool{
-	"id":         true,
-	"name":       true,
-	"language":   true,
-	"created_on": true,
+	AttributeID:        true,
+	AttributeName:      true,
+	AttributeLanguage:  true,
+	AttributeCreatedOn: true,
 }
 
 type visitor struct {
@@ -88,7 +96,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		propType = PropertyTypeScheme
 
 		if v.redaction == envs.RedactionPolicyURNs {
-			v.errors = append(v.errors, errors.New("URN scheme not allowed"))
+			v.errors = append(v.errors, errors.New("cannot query on redacted URNs"))
 		}
 	} else {
 		propType = PropertyTypeField

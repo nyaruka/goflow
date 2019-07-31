@@ -44,8 +44,8 @@ func TestParseQuery(t *testing.T) {
 		{`mailto = user@example.com`, "mailto=user@example.com", "", envs.RedactionPolicyNone},
 		{`MAILTO ~ user@example.com`, "mailto~user@example.com", "", envs.RedactionPolicyNone},
 
-		{`mailto = user@example.com`, "", "URN scheme not allowed", envs.RedactionPolicyURNs},
-		{`MAILTO ~ user@example.com`, "", "URN scheme not allowed", envs.RedactionPolicyURNs},
+		{`mailto = user@example.com`, "", "cannot query on redacted URNs", envs.RedactionPolicyURNs},
+		{`MAILTO ~ user@example.com`, "", "cannot query on redacted URNs", envs.RedactionPolicyURNs},
 
 		// boolean operator precedence is AND before OR, even when AND is implicit
 		{`will and felix or matt amber`, "OR(AND(name~will, name~felix), AND(name~matt, name~amber))", "", envs.RedactionPolicyNone},
@@ -73,7 +73,7 @@ func TestParseQuery(t *testing.T) {
 
 type TestQueryable struct{}
 
-func (t *TestQueryable) ResolveQueryProperty(env envs.Environment, key string, propType PropertyType) []interface{} {
+func (t *TestQueryable) QueryProperty(env envs.Environment, key string, propType PropertyType) []interface{} {
 	switch key {
 	case "tel":
 		return []interface{}{"+59313145145"}

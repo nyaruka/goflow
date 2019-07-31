@@ -13,7 +13,7 @@ import (
 
 // Queryable is the interface objects must implement queried
 type Queryable interface {
-	ResolveQueryProperty(envs.Environment, string, PropertyType) []interface{}
+	QueryProperty(envs.Environment, string, PropertyType) []interface{}
 }
 
 // EvaluateQuery evaluates the given parsed query against a queryable object

@@ -365,21 +365,21 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *Group
 	return added, removed, errors
 }
 
-// ResolveQueryKey resolves a contact query search key for this contact
-func (c *Contact) ResolveQueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []interface{} {
+// QueryProperty resolves a contact query search key for this contact
+func (c *Contact) QueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []interface{} {
 	if propType == contactql.PropertyTypeAttribute {
 		switch key {
-		case "name":
+		case contactql.AttributeName:
 			if c.name != "" {
 				return []interface{}{c.name}
 			}
 			return nil
-		case "language":
+		case contactql.AttributeLanguage:
 			if c.language != envs.NilLanguage {
 				return []interface{}{string(c.language)}
 			}
 			return nil
-		case "created_on":
+		case contactql.AttributeCreatedOn:
 			return []interface{}{c.createdOn}
 		default:
 			return nil
