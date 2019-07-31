@@ -220,7 +220,7 @@ func ParseQuery(text string, redaction envs.RedactionPolicy) (*ContactQuery, err
 		return nil, errListener.Error()
 	}
 
-	visitor := NewVisitor(redaction)
+	visitor := newVisitor(redaction)
 	rootNode := visitor.Visit(tree).(QueryNode)
 
 	if len(visitor.errors) > 0 {
