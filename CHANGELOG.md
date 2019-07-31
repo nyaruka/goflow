@@ -1,3 +1,7 @@
+v0.45.1
+----------
+ * ContactSQL query parsing should error if URN schenme used when URN redaction is enabled, and validate fields
+
 v0.45.0
 ----------
  * urn_parts should error for non-URNs and so Wrap migrated urn_parts expressions with default to catch errors
