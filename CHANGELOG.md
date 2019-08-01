@@ -1,3 +1,7 @@
+v0.45.2
+----------
+ * Fix parsing context references like foo.0
+
 v0.45.1
 ----------
  * ContactSQL query parsing should error if URN schenme used when URN redaction is enabled, and validate fields
