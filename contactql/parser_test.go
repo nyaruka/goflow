@@ -64,8 +64,8 @@ func TestParseQuery(t *testing.T) {
 	}
 
 	fields := map[string]assets.Field{
-		"age":    types.NewField("age", "Age", assets.FieldTypeNumber),
-		"gender": types.NewField("gender", "Gender", assets.FieldTypeText),
+		"age":    types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
+		"gender": types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
 	}
 	fieldResolver := func(key string) assets.Field { return fields[key] }
 
@@ -192,14 +192,14 @@ func TestEvaluateQuery(t *testing.T) {
 	}
 
 	fields := map[string]assets.Field{
-		"age":      types.NewField("age", "Age", assets.FieldTypeNumber),
-		"dob":      types.NewField("dob", "DOB", assets.FieldTypeDatetime),
-		"gender":   types.NewField("gender", "Gender", assets.FieldTypeText),
-		"state":    types.NewField("state", "State", assets.FieldTypeState),
-		"district": types.NewField("district", "District", assets.FieldTypeDistrict),
-		"ward":     types.NewField("ward", "Ward", assets.FieldTypeWard),
-		"empty":    types.NewField("empty", "Empty", assets.FieldTypeText),
-		"xyz":      types.NewField("xyz", "XYZ", assets.FieldTypeText),
+		"age":      types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
+		"dob":      types.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
+		"gender":   types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
+		"state":    types.NewField(assets.FieldUUID("369be3e2-0186-4e5d-93c4-6264736588f8"), "state", "State", assets.FieldTypeState),
+		"district": types.NewField(assets.FieldUUID("e52f34ad-a5a7-4855-9040-05a910a75f57"), "district", "District", assets.FieldTypeDistrict),
+		"ward":     types.NewField(assets.FieldUUID("e9e738ce-617d-4c61-bfce-3d3b55cfe3dd"), "ward", "Ward", assets.FieldTypeWard),
+		"empty":    types.NewField(assets.FieldUUID("023f733d-ce00-4a61-96e4-b411987028ea"), "empty", "Empty", assets.FieldTypeText),
+		"xyz":      types.NewField(assets.FieldUUID("81e25783-a1d8-42b9-85e4-68c7ab2df39d"), "xyz", "XYZ", assets.FieldTypeText),
 	}
 	fieldResolver := func(key string) assets.Field { return fields[key] }
 
@@ -236,9 +236,9 @@ func TestEvaluationErrors(t *testing.T) {
 	}
 
 	fields := map[string]assets.Field{
-		"age":    types.NewField("age", "Age", assets.FieldTypeNumber),
-		"dob":    types.NewField("dob", "DOB", assets.FieldTypeDatetime),
-		"gender": types.NewField("gender", "Gender", assets.FieldTypeText),
+		"age":    types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
+		"dob":    types.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
+		"gender": types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
 	}
 	fieldResolver := func(key string) assets.Field { return fields[key] }
 

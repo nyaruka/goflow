@@ -191,11 +191,11 @@ var sessionAssets = `{
         }
     ],
     "fields": [
-        {"key": "gender", "name": "Gender", "type": "text"},
-        {"key": "age", "name": "Age", "type": "number"},
-        {"key": "join_date", "name": "Join Date", "type": "datetime"},
-        {"key": "activation_token", "name": "Activation Token", "type": "text"},
-        {"key": "not_set", "name": "Not set", "type": "text"}
+        {"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf", "key": "gender", "name": "Gender", "type": "text"},
+        {"uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565", "key": "age", "name": "Age", "type": "number"},
+        {"uuid": "6c86d5ab-3fd9-4a5c-a5b6-48168b016747", "key": "join_date", "name": "Join Date", "type": "datetime"},
+        {"uuid": "c88d2640-d124-438a-b666-5ec53a353dcd", "key": "activation_token", "name": "Activation Token", "type": "text"},
+        {"uuid": "3bfc3908-a402-48ea-841c-b73b5ef3a254", "key": "not_set", "name": "Not set", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -381,7 +381,7 @@ var voiceSessionAssets = `{
         }
     ],
     "fields": [
-        {"key": "gender", "name": "Gender", "type": "text"}
+        {"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf", "key": "gender", "name": "Gender", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
