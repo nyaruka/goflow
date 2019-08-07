@@ -11,11 +11,13 @@
     ],
     "fields": [
         {
+            "uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf",
             "key": "gender",
             "name": "Gender",
             "type": "text"
         },
         {
+            "uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565",
             "key": "age",
             "name": "Age",
             "type": "number"

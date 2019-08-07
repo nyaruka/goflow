@@ -36,7 +36,7 @@ func LoadFlowFromAssets(path string, uuid assets.FlowUUID) (flows.Flow, error) {
 }
 
 func NewField(key string, name string, valueType assets.FieldType) *flows.Field {
-	return flows.NewField(types.NewField(key, name, valueType))
+	return flows.NewField(types.NewField(assets.FieldUUID(uuids.New()), key, name, valueType))
 }
 
 func NewGroup(name string, query string) *flows.Group {

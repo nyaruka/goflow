@@ -29,7 +29,8 @@ var sessionAssets = `{
     ],
     "fields": [
         {
-            "key": "gender",
+			"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf",
+			"key": "gender",
             "name": "Gender",
             "type": "text"
         }

@@ -172,21 +172,25 @@
     ],
     "fields": [
         {
+            "uuid": "2ddd4c1b-e3cf-472e-b135-440b3453ba37",
             "key": "first_name",
             "name": "First Name",
             "type": "text"
         },
         {
+            "uuid": "c88d2640-d124-438a-b666-5ec53a353dcd",
             "key": "activation_token",
             "name": "Activation Token",
             "type": "text"
         },
         {
+            "uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf",
             "key": "gender",
             "name": "Gender",
             "type": "text"
         },
         {
+            "uuid": "b0078eb8-1d51-4cb5-bf09-119e201e6518",
             "key": "state",
             "name": "State",
             "type": "state"
