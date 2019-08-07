@@ -1,3 +1,7 @@
+v0.46.0
+----------
+ * Add UUID to assets.Field
+
 v0.45.2
 ----------
  * Fix parsing context references like foo.0
