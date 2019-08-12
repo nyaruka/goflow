@@ -31,16 +31,18 @@
 <h1 id="types">Types</h1>
 <p>The following types are found in the context:</p>
 <div class="context">
-<p><a name="context:channel"></a></p>
-<h2 id="channel">Channel</h2>
+<h2 class="item_title">
+<a name="context:channel" href="#context:channel">channel</a>
+</h2>
 <p>Defaults to the name (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the channel (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>name</code> the name of the channel (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>address</code> the address of the channel (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p><a name="context:contact"></a></p>
-<h2 id="contact">Contact</h2>
+<h2 class="item_title">
+<a name="context:contact" href="#context:contact">contact</a>
+</h2>
 <p>Defaults to the name or URN (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the contact (<a href="expressions.html#type:text">text</a>)</li>
@@ -55,22 +57,25 @@
 <li><code>fields</code> the custom field values of the contact (fields)</li>
 <li><code>channel</code> the preferred channel of the contact (<a href="context.html#context:channel">channel</a>)</li>
 </ul>
-<p><a name="context:flow"></a></p>
-<h2 id="flow">Flow</h2>
+<h2 class="item_title">
+<a name="context:flow" href="#context:flow">flow</a>
+</h2>
 <p>Defaults to the name (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the flow (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>name</code> the name of the flow (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>revision</code> the revision number of the flow (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p><a name="context:group"></a></p>
-<h2 id="group">Group</h2>
+<h2 class="item_title">
+<a name="context:group" href="#context:group">group</a>
+</h2>
 <ul>
 <li><code>uuid</code> the UUID of the group (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>name</code> the name of the group (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p><a name="context:input"></a></p>
-<h2 id="input">Input</h2>
+<h2 class="item_title">
+<a name="context:input" href="#context:input">input</a>
+</h2>
 <p>Defaults to the text and attachments (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the input (<a href="expressions.html#type:text">text</a>)</li>
@@ -81,8 +86,9 @@
 <li><code>attachments</code> any attachments on the input (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>external_id</code> the external ID of the input (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p><a name="context:related_run"></a></p>
-<h2 id="related_run">Related_run</h2>
+<h2 class="item_title">
+<a name="context:related_run" href="#context:related_run">related_run</a>
+</h2>
 <p>Defaults to the contact name and flow UUID (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the run (<a href="expressions.html#type:text">text</a>)</li>
@@ -93,8 +99,9 @@
 <li><code>results</code> the results saved by the run (results)</li>
 <li><code>status</code> the current status of the run (<a href="expressions.html#type:text">text</a>)</li>
 </ul>
-<p><a name="context:result"></a></p>
-<h2 id="result">Result</h2>
+<h2 class="item_title">
+<a name="context:result" href="#context:result">result</a>
+</h2>
 <p>Defaults to the value (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>name</code> the name of the result (<a href="expressions.html#type:text">text</a>)</li>
@@ -106,8 +113,9 @@
 <li><code>node_uuid</code> the UUID of the node in the flow that generated the result (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>created_on</code> the creation date of the result (<a href="expressions.html#type:datetime">datetime</a>)</li>
 </ul>
-<p><a name="context:run"></a></p>
-<h2 id="run">Run</h2>
+<h2 class="item_title">
+<a name="context:run" href="#context:run">run</a>
+</h2>
 <p>Defaults to the contact name and flow UUID (<a href="expressions.html#type:text">text</a>)</p>
 <ul>
 <li><code>uuid</code> the UUID of the run (<a href="expressions.html#type:text">text</a>)</li>
@@ -118,8 +126,9 @@
 <li><code>created_on</code> the creation date of the run (<a href="expressions.html#type:datetime">datetime</a>)</li>
 <li><code>exited_on</code> the exit date of the run (<a href="expressions.html#type:datetime">datetime</a>)</li>
 </ul>
-<p><a name="context:trigger"></a></p>
-<h2 id="trigger">Trigger</h2>
+<h2 class="item_title">
+<a name="context:trigger" href="#context:trigger">trigger</a>
+</h2>
 <ul>
 <li><code>type</code> the type of trigger that started this session (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>params</code> the parameters passed to the trigger (any)</li>

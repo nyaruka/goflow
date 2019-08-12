@@ -4,9 +4,7 @@ Triggers start a new session with the flow engine. They describe why the session
 be accessed in expressions.
 
 <div class="triggers">
-<a name="trigger:campaign"></a>
-
-## campaign
+<h2 class="item_title"><a name="trigger:campaign" href="#trigger:campaign">campaign</a></h2>
 
 Is used when a session was triggered by a campaign event
 
@@ -34,9 +32,7 @@ Is used when a session was triggered by a campaign event
 }
 ```
 
-<a name="trigger:channel"></a>
-
-## channel
+<h2 class="item_title"><a name="trigger:channel" href="#trigger:channel">channel</a></h2>
 
 Is used when a session was triggered by a channel event
 
@@ -64,9 +60,7 @@ Is used when a session was triggered by a channel event
 }
 ```
 
-<a name="trigger:flow_action"></a>
-
-## flow_action
+<h2 class="item_title"><a name="trigger:flow_action" href="#trigger:flow_action">flow_action</a></h2>
 
 Is used when another session triggered this run using a trigger_flow action.
 
@@ -108,9 +102,7 @@ Is used when another session triggered this run using a trigger_flow action.
 }
 ```
 
-<a name="trigger:manual"></a>
-
-## manual
+<h2 class="item_title"><a name="trigger:manual" href="#trigger:manual">manual</a></h2>
 
 Is used when a session was triggered manually by a user
 
@@ -131,9 +123,7 @@ Is used when a session was triggered manually by a user
 }
 ```
 
-<a name="trigger:msg"></a>
-
-## msg
+<h2 class="item_title"><a name="trigger:msg" href="#trigger:msg">msg</a></h2>
 
 Is used when a session was triggered by a message being recieved by the caller
 
@@ -178,9 +168,7 @@ Is used when a session was triggered by a message being recieved by the caller
 Resumes resume an existing session with the flow engine and describe why the session is being resumed.
 
 <div class="resumes">
-<a name="resume:msg"></a>
-
-## msg
+<h2 class="item_title"><a name="resume:msg" href="#resume:msg">msg</a></h2>
 
 Is used when a session is resumed with a new message from the contact
 
@@ -215,9 +203,7 @@ Is used when a session is resumed with a new message from the contact
 }
 ```
 
-<a name="resume:run_expiration"></a>
-
-## run_expiration
+<h2 class="item_title"><a name="resume:run_expiration" href="#resume:run_expiration">run_expiration</a></h2>
 
 Is used when a session is resumed because the waiting run has expired
 
@@ -240,9 +226,7 @@ Is used when a session is resumed because the waiting run has expired
 }
 ```
 
-<a name="resume:wait_timeout"></a>
-
-## wait_timeout
+<h2 class="item_title"><a name="resume:wait_timeout" href="#resume:wait_timeout">wait_timeout</a></h2>
 
 Is used when a session is resumed because a wait has timed out
 
@@ -274,13 +258,11 @@ Events are the output of a flow run and represent instructions to the engine con
 All templates in events have been evaluated and can be used to create concrete messages, contact updates, emails etc by the container.
 
 <div class="events">
-<a name="event:broadcast_created"></a>
-
-## broadcast_created
+<h2 class="item_title"><a name="event:broadcast_created" href="#event:broadcast_created">broadcast_created</a></h2>
 
 Events are created when an action wants to send a message to other contacts.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -315,14 +297,12 @@ Events are created when an action wants to send a message to other contacts.
 }
 ```
 </div>
-<a name="event:contact_field_changed"></a>
-
-## contact_field_changed
+<h2 class="item_title"><a name="event:contact_field_changed" href="#event:contact_field_changed">contact_field_changed</a></h2>
 
 Events are created when a custom field value of the contact has been changed.
 A null values indicates that the field value has been cleared.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -338,13 +318,11 @@ A null values indicates that the field value has been cleared.
 }
 ```
 </div>
-<a name="event:contact_groups_changed"></a>
-
-## contact_groups_changed
+<h2 class="item_title"><a name="event:contact_groups_changed" href="#event:contact_groups_changed">contact_groups_changed</a></h2>
 
 Events are created when a contact is added or removed to/from one or more groups.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -365,13 +343,11 @@ Events are created when a contact is added or removed to/from one or more groups
 }
 ```
 </div>
-<a name="event:contact_language_changed"></a>
-
-## contact_language_changed
+<h2 class="item_title"><a name="event:contact_language_changed" href="#event:contact_language_changed">contact_language_changed</a></h2>
 
 Events are created when the language of the contact has been changed.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -381,13 +357,11 @@ Events are created when the language of the contact has been changed.
 }
 ```
 </div>
-<a name="event:contact_name_changed"></a>
-
-## contact_name_changed
+<h2 class="item_title"><a name="event:contact_name_changed" href="#event:contact_name_changed">contact_name_changed</a></h2>
 
 Events are created when the name of the contact has been changed.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -397,13 +371,11 @@ Events are created when the name of the contact has been changed.
 }
 ```
 </div>
-<a name="event:contact_refreshed"></a>
-
-## contact_refreshed
+<h2 class="item_title"><a name="event:contact_refreshed" href="#event:contact_refreshed">contact_refreshed</a></h2>
 
 Events are generated when the resume has a contact with differences to the current session contact.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -419,13 +391,11 @@ Events are generated when the resume has a contact with differences to the curre
 }
 ```
 </div>
-<a name="event:contact_timezone_changed"></a>
-
-## contact_timezone_changed
+<h2 class="item_title"><a name="event:contact_timezone_changed" href="#event:contact_timezone_changed">contact_timezone_changed</a></h2>
 
 Events are created when the timezone of the contact has been changed.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -435,13 +405,11 @@ Events are created when the timezone of the contact has been changed.
 }
 ```
 </div>
-<a name="event:contact_urns_changed"></a>
-
-## contact_urns_changed
+<h2 class="item_title"><a name="event:contact_urns_changed" href="#event:contact_urns_changed">contact_urns_changed</a></h2>
 
 Events are created when a contact's URNs have changed.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -454,13 +422,11 @@ Events are created when a contact's URNs have changed.
 }
 ```
 </div>
-<a name="event:email_created"></a>
-
-## email_created
+<h2 class="item_title"><a name="event:email_created" href="#event:email_created">email_created</a></h2>
 
 Events are created when an action wants to send an email.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -474,13 +440,11 @@ Events are created when an action wants to send an email.
 }
 ```
 </div>
-<a name="event:environment_refreshed"></a>
-
-## environment_refreshed
+<h2 class="item_title"><a name="event:environment_refreshed" href="#event:environment_refreshed">environment_refreshed</a></h2>
 
 Events are sent by the caller to tell the engine to update the session environment.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -499,13 +463,11 @@ Events are sent by the caller to tell the engine to update the session environme
 }
 ```
 </div>
-<a name="event:error"></a>
-
-## error
+<h2 class="item_title"><a name="event:error" href="#event:error">error</a></h2>
 
 Events are created when an error occurs during flow execution.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -516,13 +478,11 @@ Events are created when an error occurs during flow execution.
 }
 ```
 </div>
-<a name="event:flow_entered"></a>
-
-## flow_entered
+<h2 class="item_title"><a name="event:flow_entered" href="#event:flow_entered">flow_entered</a></h2>
 
 Events are created when an action has entered a sub-flow.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -537,13 +497,11 @@ Events are created when an action has entered a sub-flow.
 }
 ```
 </div>
-<a name="event:input_labels_added"></a>
-
-## input_labels_added
+<h2 class="item_title"><a name="event:input_labels_added" href="#event:input_labels_added">input_labels_added</a></h2>
 
 Events are created when an action wants to add labels to the current input.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -559,13 +517,11 @@ Events are created when an action wants to add labels to the current input.
 }
 ```
 </div>
-<a name="event:ivr_created"></a>
-
-## ivr_created
+<h2 class="item_title"><a name="event:ivr_created" href="#event:ivr_created">ivr_created</a></h2>
 
 Events are created when an action wants to send an IVR response to the current contact.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -586,13 +542,11 @@ Events are created when an action wants to send an IVR response to the current c
 }
 ```
 </div>
-<a name="event:msg_created"></a>
-
-## msg_created
+<h2 class="item_title"><a name="event:msg_created" href="#event:msg_created">msg_created</a></h2>
 
 Events are created when an action wants to send a reply to the current contact.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -613,14 +567,12 @@ Events are created when an action wants to send a reply to the current contact.
 }
 ```
 </div>
-<a name="event:msg_received"></a>
-
-## msg_received
+<h2 class="item_title"><a name="event:msg_received" href="#event:msg_received">msg_received</a></h2>
 
 Events are sent by the caller to tell the engine that a message was received from
 the contact and that it should try to resume the session.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -641,15 +593,13 @@ the contact and that it should try to resume the session.
 }
 ```
 </div>
-<a name="event:msg_wait"></a>
-
-## msg_wait
+<h2 class="item_title"><a name="event:msg_wait" href="#event:msg_wait">msg_wait</a></h2>
 
 Events are created when a flow pauses waiting for a response from
 a contact. If a timeout is set, then the caller should resume the flow after
 the number of seconds in the timeout to resume it.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -662,15 +612,13 @@ the number of seconds in the timeout to resume it.
 }
 ```
 </div>
-<a name="event:resthook_called"></a>
-
-## resthook_called
+<h2 class="item_title"><a name="event:resthook_called" href="#event:resthook_called">resthook_called</a></h2>
 
 Events are created when a resthook is called. The event contains
 the payload that will be sent to any subscribers of that resthook. Note that this event is
 created regardless of whether there any subscriberes for that resthook.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -685,13 +633,11 @@ created regardless of whether there any subscriberes for that resthook.
 }
 ```
 </div>
-<a name="event:run_expired"></a>
-
-## run_expired
+<h2 class="item_title"><a name="event:run_expired" href="#event:run_expired">run_expired</a></h2>
 
 Events are sent by the caller to tell the engine that a run has expired.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -701,15 +647,13 @@ Events are sent by the caller to tell the engine that a run has expired.
 }
 ```
 </div>
-<a name="event:run_result_changed"></a>
-
-## run_result_changed
+<h2 class="item_title"><a name="event:run_result_changed" href="#event:run_result_changed">run_result_changed</a></h2>
 
 Events are created when a run result is saved. They contain not only
 the name, value and category of the result, but also the UUID of the node where
 the result was generated.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -723,13 +667,11 @@ the result was generated.
 }
 ```
 </div>
-<a name="event:session_triggered"></a>
-
-## session_triggered
+<h2 class="item_title"><a name="event:session_triggered" href="#event:session_triggered">session_triggered</a></h2>
 
 Events are created when an action wants to start other people in a flow.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -773,14 +715,12 @@ Events are created when an action wants to start other people in a flow.
 }
 ```
 </div>
-<a name="event:wait_timed_out"></a>
-
-## wait_timed_out
+<h2 class="item_title"><a name="event:wait_timed_out" href="#event:wait_timed_out">wait_timed_out</a></h2>
 
 Events are sent by the caller when a wait has timed out - i.e. they are sent instead of
 the item that the wait was waiting for.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
@@ -789,15 +729,13 @@ the item that the wait was waiting for.
 }
 ```
 </div>
-<a name="event:webhook_called"></a>
-
-## webhook_called
+<h2 class="item_title"><a name="event:webhook_called" href="#event:webhook_called">webhook_called</a></h2>
 
 Events are created when a webhook is called. The event contains
 the URL and the status of the response, as well as a full dump of the
 request and response.
 
-<div class="output_event"><h3>Event</h3>
+<div class="output_event">
 
 ```json
 {
