@@ -326,7 +326,7 @@
                                 "value": "name"
                             }
                         },
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     },
                     {
@@ -386,7 +386,7 @@
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                             }
                         ],
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
                     {
@@ -663,7 +663,7 @@
                                 "value": "name"
                             }
                         },
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     },
                     {
@@ -723,7 +723,7 @@
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                             }
                         ],
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
                     {
@@ -811,7 +811,7 @@
                                 "value": "name"
                             }
                         },
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                     },
                     {
@@ -865,7 +865,7 @@
                                 "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
                             }
                         ],
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                     },
                     {
@@ -1097,7 +1097,7 @@
                                 "value": "name"
                             }
                         },
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     },
                     {
@@ -1157,7 +1157,7 @@
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                             }
                         ],
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
                     {
@@ -1245,7 +1245,7 @@
                                 "value": "name"
                             }
                         },
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                     },
                     {
@@ -1299,7 +1299,7 @@
                                 "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
                             }
                         ],
-                        "status": "interrupted",
+                        "status": "completed",
                         "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                     },
                     {

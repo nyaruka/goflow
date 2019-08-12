@@ -251,10 +251,10 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 	for {
 		// if we have a flow trigger handle that first to find our destination in the new flow
 		if s.pushedFlow != nil {
-			// if this is terminal, then we need to interrupt all other runs so we don't try to resume them
+			// if this is terminal, then we need to mark all other runs as completed so we don't try to resume them
 			if s.pushedFlow.terminal {
 				for _, run := range s.runs {
-					run.Exit(flows.RunStatusInterrupted)
+					run.Exit(flows.RunStatusCompleted)
 				}
 			}
 
