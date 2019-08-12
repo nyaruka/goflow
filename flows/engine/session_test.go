@@ -627,30 +627,8 @@ func TestReadWithMissingAssets(t *testing.T) {
 	sessionJSON, err := json.Marshal(session)
 	require.NoError(t, err)
 
-	// try to read it back but with only the flow assets
-	source, err := static.NewSource([]byte(`{
-		"flows": [
-			{
-				"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-				"name": "Registration",
-				"spec_version": "13.0",
-				"language": "eng",
-				"type": "messaging",
-				"revision": 123,
-				"nodes": []
-			},
-			{
-				"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-				"name": "Collect Age",
-				"spec_version": "13.0",
-				"language": "eng",
-				"type": "messaging",
-				"nodes": []
-			}
-		]
-	}`))
-	require.NoError(t, err)
-	sessionAssets, err := engine.NewSessionAssets(source)
+	// try to read it back but with no assets
+	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource())
 
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
@@ -658,17 +636,62 @@ func TestReadWithMissingAssets(t *testing.T) {
 	eng := engine.NewBuilder().WithDefaultUserAgent("test").Build()
 	_, err = eng.ReadSession(sessionAssets, sessionJSON, missing)
 	require.NoError(t, err)
-	assert.Equal(t, 14, len(missingAssets))
+	assert.Equal(t, 16, len(missingAssets))
 	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), ""), missingAssets[0])
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"), missingAssets[1])
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("4f1f98fc-27a7-4a69-bbdb-24744ba739a9"), "Males"), missingAssets[2])
+	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), "Registration"), missingAssets[13])
+	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Collect Age"), missingAssets[14])
+}
 
-	// still get error if we're missing flow assets
-	emptyAssets, err := engine.NewSessionAssets(static.NewEmptySource())
+func TestResumeWithMissingFlowAssets(t *testing.T) {
+	assetsJSON, err := ioutil.ReadFile("../../test/testdata/runner/subflow.json")
 	require.NoError(t, err)
 
-	_, err = eng.ReadSession(emptyAssets, sessionJSON, missing)
-	assert.EqualError(t, err, "unable to read run 0: unable to load flow[uuid=50c3706e-fedb-42c0-8eab-dda3335714b7,name=Registration]: no such flow with UUID '50c3706e-fedb-42c0-8eab-dda3335714b7'")
+	sa, err := test.CreateSessionAssets(assetsJSON, "")
+	require.NoError(t, err)
+
+	env := envs.NewEnvironmentBuilder().Build()
+	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
+	trigger := triggers.NewManualTrigger(env, assets.NewFlowReference(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"), "Parent Flow"), contact, nil)
+
+	// run session to wait in child flow
+	eng := engine.NewBuilder().Build()
+	session, _, err := eng.NewSession(sa, trigger)
+	require.NoError(t, err)
+	assert.Equal(t, flows.SessionStatusWaiting, session.Status())
+
+	// can't directly modify a session's assets but can reload it with different assets
+	sessionJSON, err := json.Marshal(session)
+	require.NoError(t, err)
+
+	// change the UUID of the child flow so it will effectively be missing
+	assetsWithoutChildFlow := test.JSONReplace(assetsJSON, []string{"flows", "[1]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
+	sa, err = test.CreateSessionAssets(assetsWithoutChildFlow, "")
+	require.NoError(t, err)
+
+	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
+	require.NoError(t, err)
+
+	_, err = session.Resume(resumes.NewMsgResume(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
+
+	// should have an errored session
+	assert.NoError(t, err)
+	assert.Equal(t, flows.SessionStatusErrored, session.Status())
+
+	// change the UUID of the parent flow so it will effectively be missing
+	assetsWithoutParentFlow := test.JSONReplace(assetsJSON, []string{"flows", "[0]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
+	sa, err = test.CreateSessionAssets(assetsWithoutParentFlow, "")
+	require.NoError(t, err)
+
+	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
+	require.NoError(t, err)
+
+	_, err = session.Resume(resumes.NewMsgResume(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
+
+	// should have an errored session
+	assert.NoError(t, err)
+	assert.Equal(t, flows.SessionStatusErrored, session.Status())
 }
 
 func TestWaitTimeout(t *testing.T) {

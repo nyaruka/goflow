@@ -23,6 +23,8 @@ type flowRun struct {
 	environment flows.RunEnvironment
 
 	flow    flows.Flow
+	flowRef *assets.FlowReference
+
 	parent  flows.FlowRun
 	results flows.Results
 	path    Path
@@ -44,6 +46,7 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.
 		uuid:       flows.RunUUID(uuids.New()),
 		session:    session,
 		flow:       flow,
+		flowRef:    flow.Reference(),
 		parent:     parent,
 		results:    flows.NewResults(),
 		status:     flows.RunStatusActive,
@@ -167,7 +170,7 @@ func (r *flowRun) CreatedOn() time.Time  { return r.createdOn }
 func (r *flowRun) ModifiedOn() time.Time { return r.modifiedOn }
 func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
-	if r.Flow().ExpireAfterMinutes() >= 0 {
+	if r.Flow() != nil && r.Flow().ExpireAfterMinutes() >= 0 {
 		if from == nil {
 			now := dates.Now()
 			from = &now
@@ -383,7 +386,7 @@ type runEnvelope struct {
 
 // ReadRun decodes a run from the passed in JSON. Parent run UUID is returned separately as the
 // run in question might be loaded yet from the session.
-func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error) {
+func ReadRun(session flows.Session, data json.RawMessage, missing assets.MissingCallback) (flows.FlowRun, error) {
 	e := &runEnvelope{}
 	var err error
 
@@ -394,6 +397,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r := &flowRun{
 		session:    session,
 		uuid:       e.UUID,
+		flowRef:    e.Flow,
 		status:     e.Status,
 		createdOn:  e.CreatedOn,
 		modifiedOn: e.ModifiedOn,
@@ -401,9 +405,9 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 		exitedOn:   e.ExitedOn,
 	}
 
-	// lookup flow
+	// lookup actual flow
 	if r.flow, err = session.Assets().Flows().Get(e.Flow.UUID); err != nil {
-		return nil, errors.Wrapf(err, "unable to load %s", e.Flow)
+		missing(e.Flow, err)
 	}
 
 	// lookup parent run
@@ -446,7 +450,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 
 	e := &runEnvelope{
 		UUID:       r.uuid,
-		Flow:       r.flow.Reference(),
+		Flow:       r.flowRef,
 		Status:     r.status,
 		CreatedOn:  r.createdOn,
 		ModifiedOn: r.modifiedOn,

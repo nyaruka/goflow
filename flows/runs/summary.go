@@ -14,6 +14,7 @@ import (
 type runSummary struct {
 	uuid    flows.RunUUID
 	flow    flows.Flow
+	flowRef *assets.FlowReference
 	contact *flows.Contact
 	status  flows.RunStatus
 	results flows.Results
@@ -24,6 +25,7 @@ func newRunSummaryFromRun(run flows.FlowRun) flows.RunSummary {
 	return &runSummary{
 		uuid:    run.UUID(),
 		flow:    run.Flow(),
+		flowRef: run.Flow().Reference(),
 		contact: run.Contact().Clone(),
 		status:  run.Status(),
 		results: run.Results().Clone(),
@@ -125,13 +127,14 @@ func ReadRunSummary(sessionAssets flows.SessionAssets, data json.RawMessage, mis
 
 	run := &runSummary{
 		uuid:    e.UUID,
+		flowRef: e.Flow,
 		status:  e.Status,
 		results: e.Results,
 	}
 
-	// lookup the flow
+	// lookup the actual flow
 	if run.flow, err = sessionAssets.Flows().Get(e.Flow.UUID); err != nil {
-		return nil, err
+		missing(e.Flow, err)
 	}
 
 	// read the contact
@@ -150,7 +153,7 @@ func (r *runSummary) MarshalJSON() ([]byte, error) {
 	var err error
 
 	envelope.UUID = r.uuid
-	envelope.Flow = r.flow.Reference()
+	envelope.Flow = r.flowRef
 	envelope.Status = r.status
 	envelope.Results = r.results
 
