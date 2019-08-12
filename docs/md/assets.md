@@ -4,9 +4,7 @@ the [set_contact_field](flows.html#action:set_contact_field) action references a
 # Types
 
 <div class="assets">
-<a name="asset:channel"></a>
-
-## Channel
+<h2 class="item_title"><a name="asset:channel" href="#asset:channel">channel</a></h2>
 
 Is something that can send/receive messages.
 
@@ -27,9 +25,7 @@ Is something that can send/receive messages.
 }
 ```
 
-<a name="asset:field"></a>
-
-## Field
+<h2 class="item_title"><a name="asset:field" href="#asset:field">field</a></h2>
 
 Is a custom contact property.
 
@@ -43,9 +39,7 @@ Is a custom contact property.
 }
 ```
 
-<a name="asset:flow"></a>
-
-## Flow
+<h2 class="item_title"><a name="asset:flow" href="#asset:flow">flow</a></h2>
 
 Is graph of nodes with actions and routers.
 
@@ -60,9 +54,7 @@ Is graph of nodes with actions and routers.
 }
 ```
 
-<a name="asset:group"></a>
-
-## Group
+<h2 class="item_title"><a name="asset:group" href="#asset:group">group</a></h2>
 
 Is a set of contacts which can be static or dynamic (i.e. based on a query).
 
@@ -75,9 +67,7 @@ Is a set of contacts which can be static or dynamic (i.e. based on a query).
 }
 ```
 
-<a name="asset:label"></a>
-
-## Label
+<h2 class="item_title"><a name="asset:label" href="#asset:label">label</a></h2>
 
 Is an organizational tag that can be applied to a message.
 
@@ -89,9 +79,7 @@ Is an organizational tag that can be applied to a message.
 }
 ```
 
-<a name="asset:location"></a>
-
-## Location
+<h2 class="item_title"><a name="asset:location" href="#asset:location">location</a></h2>
 
 Is a searchable hierachy of locations.
 
@@ -136,9 +124,7 @@ Is a searchable hierachy of locations.
 }
 ```
 
-<a name="asset:resthook"></a>
-
-## Resthook
+<h2 class="item_title"><a name="asset:resthook" href="#asset:resthook">resthook</a></h2>
 
 Is a set of URLs which are subscribed to the named event.
 
@@ -152,9 +138,7 @@ Is a set of URLs which are subscribed to the named event.
 }
 ```
 
-<a name="asset:template"></a>
-
-## Template
+<h2 class="item_title"><a name="asset:template" href="#asset:template">template</a></h2>
 
 Is a message template, currently only used by WhatsApp channels
 

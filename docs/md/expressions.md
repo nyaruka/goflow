@@ -31,9 +31,7 @@ Excellent has the following types:
  * [Time](#type:time)
 
 <div class="types">
-<a name="type:array"></a>
-
-## Array
+<h2 class="item_title"><a name="type:array" href="#type:array">array</a></h2>
 
 Is an array of items.
 
@@ -45,9 +43,7 @@ Is an array of items.
 @(json(array(1, "x", true))) → [1,"x",true]
 ```
 
-<a name="type:boolean"></a>
-
-## Boolean
+<h2 class="item_title"><a name="type:boolean" href="#type:boolean">boolean</a></h2>
 
 Is a boolean `true` or `false`.
 
@@ -59,9 +55,7 @@ Is a boolean `true` or `false`.
 @(json(true)) → true
 ```
 
-<a name="type:date"></a>
-
-## Date
+<h2 class="item_title"><a name="type:date" href="#type:date">date</a></h2>
 
 Is a Gregorian calendar date value.
 
@@ -72,9 +66,7 @@ Is a Gregorian calendar date value.
 @(json(date_from_parts(2019, 4, 11))) → "2019-04-11"
 ```
 
-<a name="type:datetime"></a>
-
-## Datetime
+<h2 class="item_title"><a name="type:datetime" href="#type:datetime">datetime</a></h2>
 
 Is a datetime value.
 
@@ -85,9 +77,7 @@ Is a datetime value.
 @(json(datetime("1979-07-18T10:30:45.123456Z"))) → "1979-07-18T10:30:45.123456Z"
 ```
 
-<a name="type:function"></a>
-
-## Function
+<h2 class="item_title"><a name="type:function" href="#type:function">function</a></h2>
 
 Is a callable function.
 
@@ -98,9 +88,7 @@ Is a callable function.
 @(json(upper)) → null
 ```
 
-<a name="type:number"></a>
-
-## Number
+<h2 class="item_title"><a name="type:number" href="#type:number">number</a></h2>
 
 Is a whole or fractional number.
 
@@ -112,9 +100,7 @@ Is a whole or fractional number.
 @(json(1234.5678)) → 1234.5678
 ```
 
-<a name="type:object"></a>
-
-## Object
+<h2 class="item_title"><a name="type:object" href="#type:object">object</a></h2>
 
 Is an object with named properties.
 
@@ -127,9 +113,7 @@ Is an object with named properties.
 @(json(object("foo", 1, "bar", "x"))) → {"bar":"x","foo":1}
 ```
 
-<a name="type:text"></a>
-
-## Text
+<h2 class="item_title"><a name="type:text" href="#type:text">text</a></h2>
 
 Is a string of characters.
 
@@ -141,9 +125,7 @@ Is a string of characters.
 @(json("abc")) → "abc"
 ```
 
-<a name="type:time"></a>
-
-## Time
+<h2 class="item_title"><a name="type:time" href="#type:time">time</a></h2>
 
 Is a time of day.
 
@@ -160,9 +142,7 @@ Is a time of day.
 # Operators
 
 <div class="operators">
-<a name="operator:add"></a>
-
-## Add
+<h2 class="item_title"><a name="operator:add" href="#operator:add">add</a></h2>
 
 Adds two numbers.
 
@@ -172,9 +152,7 @@ Adds two numbers.
 @(fields.age + 10) → 33
 ```
 
-<a name="operator:concatenate"></a>
-
-## Concatenate
+<h2 class="item_title"><a name="operator:concatenate" href="#operator:concatenate">concatenate</a></h2>
 
 Joins two text values together.
 
@@ -184,9 +162,7 @@ Joins two text values together.
 @("hello" & null) → hello
 ```
 
-<a name="operator:divide"></a>
-
-## Divide
+<h2 class="item_title"><a name="operator:divide" href="#operator:divide">divide</a></h2>
 
 Divides a number by another.
 
@@ -198,9 +174,7 @@ Divides a number by another.
 @(3 / 0) → ERROR
 ```
 
-<a name="operator:equal"></a>
-
-## Equal
+<h2 class="item_title"><a name="operator:equal" href="#operator:equal">equal</a></h2>
 
 Returns true if two values are textually equal.
 
@@ -211,9 +185,7 @@ Returns true if two values are textually equal.
 @(1 = 1) → true
 ```
 
-<a name="operator:exponent"></a>
-
-## Exponent
+<h2 class="item_title"><a name="operator:exponent" href="#operator:exponent">exponent</a></h2>
 
 Raises a number to the power of a another number.
 
@@ -222,9 +194,7 @@ Raises a number to the power of a another number.
 @(2 ^ 8) → 256
 ```
 
-<a name="operator:greaterthan"></a>
-
-## Greaterthan
+<h2 class="item_title"><a name="operator:greaterthan" href="#operator:greaterthan">greaterthan</a></h2>
 
 Returns true if the first number is greater than the second.
 
@@ -235,9 +205,7 @@ Returns true if the first number is greater than the second.
 @(4 > 3) → true
 ```
 
-<a name="operator:greaterthanorequal"></a>
-
-## Greaterthanorequal
+<h2 class="item_title"><a name="operator:greaterthanorequal" href="#operator:greaterthanorequal">greaterthanorequal</a></h2>
 
 Returns true if the first number is greater than or equal to the second.
 
@@ -248,9 +216,7 @@ Returns true if the first number is greater than or equal to the second.
 @(4 >= 3) → true
 ```
 
-<a name="operator:lessthan"></a>
-
-## Lessthan
+<h2 class="item_title"><a name="operator:lessthan" href="#operator:lessthan">lessthan</a></h2>
 
 Returns true if the first number is less than the second.
 
@@ -261,9 +227,7 @@ Returns true if the first number is less than the second.
 @(4 < 3) → false
 ```
 
-<a name="operator:lessthanorequal"></a>
-
-## Lessthanorequal
+<h2 class="item_title"><a name="operator:lessthanorequal" href="#operator:lessthanorequal">lessthanorequal</a></h2>
 
 Returns true if the first number is less than or equal to the second.
 
@@ -274,9 +238,7 @@ Returns true if the first number is less than or equal to the second.
 @(4 <= 3) → false
 ```
 
-<a name="operator:multiply"></a>
-
-## Multiply
+<h2 class="item_title"><a name="operator:multiply" href="#operator:multiply">multiply</a></h2>
 
 Multiplies two numbers.
 
@@ -286,9 +248,7 @@ Multiplies two numbers.
 @(fields.age * 3) → 69
 ```
 
-<a name="operator:negate"></a>
-
-## Negate
+<h2 class="item_title"><a name="operator:negate" href="#operator:negate">negate</a></h2>
 
 Negates a number
 
@@ -297,9 +257,7 @@ Negates a number
 @(-fields.age) → -23
 ```
 
-<a name="operator:notequal"></a>
-
-## Notequal
+<h2 class="item_title"><a name="operator:notequal" href="#operator:notequal">notequal</a></h2>
 
 Returns true if two values are textually not equal.
 
@@ -310,9 +268,7 @@ Returns true if two values are textually not equal.
 @(1 != 2) → true
 ```
 
-<a name="operator:subtract"></a>
-
-## Subtract
+<h2 class="item_title"><a name="operator:subtract" href="#operator:subtract">subtract</a></h2>
 
 Subtracts two numbers.
 
@@ -332,9 +288,7 @@ using the `@(function_name(args..))` syntax, and can take as arguments either li
 or variables in the context `@(title(contact.name))`.
 
 <div class="functions">
-<a name="function:abs"></a>
-
-## abs(number)
+<h2 class="item_title"><a name="function:abs" href="#function:abs">abs(number)</a></h2>
 
 Returns the absolute value of `number`.
 
@@ -345,9 +299,7 @@ Returns the absolute value of `number`.
 @(abs("foo")) → ERROR
 ```
 
-<a name="function:and"></a>
-
-## and(values...)
+<h2 class="item_title"><a name="function:and" href="#function:and">and(values...)</a></h2>
 
 Returns whether all the given `values` are truthy.
 
@@ -357,9 +309,7 @@ Returns whether all the given `values` are truthy.
 @(and(true, false, true)) → false
 ```
 
-<a name="function:array"></a>
-
-## array(values...)
+<h2 class="item_title"><a name="function:array" href="#function:array">array(values...)</a></h2>
 
 Takes multiple `values` and returns them as an array.
 
@@ -371,9 +321,7 @@ Takes multiple `values` and returns them as an array.
 @(count(array("a", "b"))) → 2
 ```
 
-<a name="function:attachment_parts"></a>
-
-## attachment_parts(attachment)
+<h2 class="item_title"><a name="function:attachment_parts" href="#function:attachment_parts">attachment_parts(attachment)</a></h2>
 
 Parses an attachment into its different parts
 
@@ -382,9 +330,7 @@ Parses an attachment into its different parts
 @(attachment_parts("image/jpeg:https://example.com/test.jpg")) → {content_type: image/jpeg, url: https://example.com/test.jpg}
 ```
 
-<a name="function:boolean"></a>
-
-## boolean(value)
+<h2 class="item_title"><a name="function:boolean" href="#function:boolean">boolean(value)</a></h2>
 
 Tries to convert `value` to a boolean.
 
@@ -397,9 +343,7 @@ An error is returned if the value can't be converted.
 @(boolean(1 / 0)) → ERROR
 ```
 
-<a name="function:char"></a>
-
-## char(code)
+<h2 class="item_title"><a name="function:char" href="#function:char">char(code)</a></h2>
 
 Returns the character for the given UNICODE `code`.
 
@@ -412,9 +356,7 @@ It is the inverse of [code](expressions.html#function:code).
 @(char("foo")) → ERROR
 ```
 
-<a name="function:clean"></a>
-
-## clean(text)
+<h2 class="item_title"><a name="function:clean" href="#function:clean">clean(text)</a></h2>
 
 Removes any non-printable characters from `text`.
 
@@ -424,9 +366,7 @@ Removes any non-printable characters from `text`.
 @(clean(123)) → 123
 ```
 
-<a name="function:code"></a>
-
-## code(text)
+<h2 class="item_title"><a name="function:code" href="#function:code">code(text)</a></h2>
 
 Returns the UNICODE code for the first character of `text`.
 
@@ -442,9 +382,7 @@ It is the inverse of [char](expressions.html#function:char).
 @(code("")) → ERROR
 ```
 
-<a name="function:count"></a>
-
-## count(value)
+<h2 class="item_title"><a name="function:count" href="#function:count">count(value)</a></h2>
 
 Returns the number of items in the given array or properties on an object.
 
@@ -458,9 +396,7 @@ It will return an error if it is passed an item which isn't countable.
 @(count(1234)) → ERROR
 ```
 
-<a name="function:date"></a>
-
-## date(value)
+<h2 class="item_title"><a name="function:date" href="#function:date">date(value)</a></h2>
 
 Tries to convert `value` to a date.
 
@@ -475,9 +411,7 @@ An error is returned if the value can't be converted.
 @(date("NOT DATE")) → ERROR
 ```
 
-<a name="function:date_from_parts"></a>
-
-## date_from_parts(year, month, day)
+<h2 class="item_title"><a name="function:date_from_parts" href="#function:date_from_parts">date_from_parts(year, month, day)</a></h2>
 
 Creates a date from `year`, `month` and `day`.
 
@@ -488,9 +422,7 @@ Creates a date from `year`, `month` and `day`.
 @(date_from_parts(2017, 13, 15)) → ERROR
 ```
 
-<a name="function:datetime"></a>
-
-## datetime(value)
+<h2 class="item_title"><a name="function:datetime" href="#function:datetime">datetime(value)</a></h2>
 
 Tries to convert `value` to a datetime.
 
@@ -505,9 +437,7 @@ and time formats. An error is returned if the value can't be converted.
 @(datetime("NOT DATE")) → ERROR
 ```
 
-<a name="function:datetime_add"></a>
-
-## datetime_add(datetime, offset, unit)
+<h2 class="item_title"><a name="function:datetime_add" href="#function:datetime_add">datetime_add(datetime, offset, unit)</a></h2>
 
 Calculates the date value arrived at by adding `offset` number of `unit` to the `datetime`
 
@@ -520,9 +450,7 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 @(datetime_add("2017-01-15 10:45", 30, "m")) → 2017-01-15T11:15:00.000000-05:00
 ```
 
-<a name="function:datetime_diff"></a>
-
-## datetime_diff(date1, date2, unit)
+<h2 class="item_title"><a name="function:datetime_diff" href="#function:datetime_diff">datetime_diff(date1, date2, unit)</a></h2>
 
 Returns the duration between `date1` and `date2` in the `unit` specified.
 
@@ -538,9 +466,7 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 @(datetime_diff("2017-01-17", "2015-12-17", "Y")) → -2
 ```
 
-<a name="function:datetime_from_epoch"></a>
-
-## datetime_from_epoch(seconds)
+<h2 class="item_title"><a name="function:datetime_from_epoch" href="#function:datetime_from_epoch">datetime_from_epoch(seconds)</a></h2>
 
 Converts the UNIX epoch time `seconds` into a new date.
 
@@ -550,9 +476,7 @@ Converts the UNIX epoch time `seconds` into a new date.
 @(datetime_from_epoch(1497286619.123456)) → 2017-06-12T11:56:59.123456-05:00
 ```
 
-<a name="function:default"></a>
-
-## default(value, default)
+<h2 class="item_title"><a name="function:default" href="#function:default">default(value, default)</a></h2>
 
 Returns `value` if is not empty or an error, otherwise it returns `default`.
 
@@ -567,9 +491,7 @@ Returns `value` if is not empty or an error, otherwise it returns `default`.
 @(default(format_urn("invalid-urn"), "ok")) → ok
 ```
 
-<a name="function:epoch"></a>
-
-## epoch(date)
+<h2 class="item_title"><a name="function:epoch" href="#function:epoch">epoch(date)</a></h2>
 
 Converts `date` to a UNIX epoch time.
 
@@ -583,9 +505,7 @@ The returned number can contain fractional seconds.
 @(round_down(epoch("2017-06-12T16:56:59.123456Z"))) → 1497286619
 ```
 
-<a name="function:extract"></a>
-
-## extract(object, properties)
+<h2 class="item_title"><a name="function:extract" href="#function:extract">extract(object, properties)</a></h2>
 
 Takes an object and extracts the named property.
 
@@ -595,9 +515,7 @@ Takes an object and extracts the named property.
 @(extract(contact.groups[0], "name")) → Testers
 ```
 
-<a name="function:extract_object"></a>
-
-## extract_object(object, properties...)
+<h2 class="item_title"><a name="function:extract_object" href="#function:extract_object">extract_object(object, properties...)</a></h2>
 
 Takes an object and returns a new object by extracting only the named properties.
 
@@ -606,9 +524,7 @@ Takes an object and returns a new object by extracting only the named properties
 @(extract_object(contact.groups[0], "name")) → {name: Testers}
 ```
 
-<a name="function:field"></a>
-
-## field(text, index, delimiter)
+<h2 class="item_title"><a name="function:field" href="#function:field">field(text, index, delimiter)</a></h2>
 
 Splits `text` using the given `delimiter` and returns the field at `index`.
 
@@ -624,9 +540,7 @@ The index starts at zero. When splitting with a space, the delimiter is consider
 @(field("a,b,c", "foo", ",")) → ERROR
 ```
 
-<a name="function:foreach"></a>
-
-## foreach(values, func, [args...])
+<h2 class="item_title"><a name="function:foreach" href="#function:foreach">foreach(values, func, [args...])</a></h2>
 
 Creates a new array by applying `func` to each value in `values`.
 
@@ -638,9 +552,7 @@ If the given function takes more than one argument, you can pass additional argu
 @(foreach(array("the man", "fox", "jumped up"), word, 0)) → [the, fox, jumped]
 ```
 
-<a name="function:foreach_value"></a>
-
-## foreach_value(object, func, [args...])
+<h2 class="item_title"><a name="function:foreach_value" href="#function:foreach_value">foreach_value(object, func, [args...])</a></h2>
 
 Creates a new object by applying `func` to each property value of `object`.
 
@@ -652,9 +564,7 @@ If the given function takes more than one argument, you can pass additional argu
 @(foreach_value(object("a", "hi there", "b", "good bye"), word, 1)) → {a: there, b: bye}
 ```
 
-<a name="function:format"></a>
-
-## format(value)
+<h2 class="item_title"><a name="function:format" href="#function:format">format(value)</a></h2>
 
 Formats `value` according to its type.
 
@@ -665,9 +575,7 @@ Formats `value` according to its type.
 @(format(today())) → 11-04-2018
 ```
 
-<a name="function:format_date"></a>
-
-## format_date(date, [,format])
+<h2 class="item_title"><a name="function:format_date" href="#function:format_date">format_date(date, [,format])</a></h2>
 
 Formats `date` as text according to the given `format`.
 
@@ -692,9 +600,7 @@ and '_' are ignored. Any other character is an error.
 @(format_date("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
-<a name="function:format_datetime"></a>
-
-## format_datetime(datetime [,format [,timezone]])
+<h2 class="item_title"><a name="function:format_datetime" href="#function:format_datetime">format_datetime(datetime [,format [,timezone]])</a></h2>
 
 Formats `datetime` as text according to the given `format`.
 
@@ -738,9 +644,7 @@ will be used. An error will be returned if the timezone is not recognized.
 @(format_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
-<a name="function:format_location"></a>
-
-## format_location(location)
+<h2 class="item_title"><a name="function:format_location" href="#function:format_location">format_location(location)</a></h2>
 
 Formats the given `location` as its name.
 
@@ -750,9 +654,7 @@ Formats the given `location` as its name.
 @(format_location("Rwanda > Kigali")) → Kigali
 ```
 
-<a name="function:format_number"></a>
-
-## format_number(number, places [, humanize])
+<h2 class="item_title"><a name="function:format_number" href="#function:format_number">format_number(number, places [, humanize])</a></h2>
 
 Formats `number` to the given number of decimal `places`.
 
@@ -767,9 +669,7 @@ An optional third argument `humanize` can be false to disable the use of thousan
 @(format_number("foo", 2, false)) → ERROR
 ```
 
-<a name="function:format_time"></a>
-
-## format_time(time [,format])
+<h2 class="item_title"><a name="function:format_time" href="#function:format_time">format_time(time [,format])</a></h2>
 
 Formats `time` as text according to the given `format`.
 
@@ -798,9 +698,7 @@ and '_' are ignored. Any other character is an error.
 @(format_time("NOT TIME", "hh:mm")) → ERROR
 ```
 
-<a name="function:format_urn"></a>
-
-## format_urn(urn)
+<h2 class="item_title"><a name="function:format_urn" href="#function:format_urn">format_urn(urn)</a></h2>
 
 Formats `urn` into human friendly text.
 
@@ -814,9 +712,7 @@ Formats `urn` into human friendly text.
 @(format_urn("NOT URN")) → ERROR
 ```
 
-<a name="function:if"></a>
-
-## if(test, value1, value2)
+<h2 class="item_title"><a name="function:if" href="#function:if">if(test, value1, value2)</a></h2>
 
 Returns `value1` if `test` is truthy or `value2` if not.
 
@@ -828,9 +724,7 @@ If the first argument is an error that error is returned.
 @(if("foo" > "bar", "foo", "bar")) → ERROR
 ```
 
-<a name="function:is_error"></a>
-
-## is_error(value)
+<h2 class="item_title"><a name="function:is_error" href="#function:is_error">is_error(value)</a></h2>
 
 Returns whether `value` is an error
 
@@ -841,9 +735,7 @@ Returns whether `value` is an error
 @(is_error("hello")) → false
 ```
 
-<a name="function:join"></a>
-
-## join(array, separator)
+<h2 class="item_title"><a name="function:join" href="#function:join">join(array, separator)</a></h2>
 
 Joins the given `array` of strings with `separator` to make text.
 
@@ -853,9 +745,7 @@ Joins the given `array` of strings with `separator` to make text.
 @(join(split("a.b.c", "."), " ")) → a b c
 ```
 
-<a name="function:json"></a>
-
-## json(value)
+<h2 class="item_title"><a name="function:json" href="#function:json">json(value)</a></h2>
 
 Returns the JSON representation of `value`.
 
@@ -867,9 +757,7 @@ Returns the JSON representation of `value`.
 @(json(contact.uuid)) → "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 ```
 
-<a name="function:lower"></a>
-
-## lower(text)
+<h2 class="item_title"><a name="function:lower" href="#function:lower">lower(text)</a></h2>
 
 Converts `text` to lowercase.
 
@@ -881,9 +769,7 @@ Converts `text` to lowercase.
 @(lower("😀")) → 😀
 ```
 
-<a name="function:max"></a>
-
-## max(numbers...)
+<h2 class="item_title"><a name="function:max" href="#function:max">max(numbers...)</a></h2>
 
 Returns the maximum value in `numbers`.
 
@@ -894,9 +780,7 @@ Returns the maximum value in `numbers`.
 @(max(1, 10, "foo")) → ERROR
 ```
 
-<a name="function:mean"></a>
-
-## mean(numbers...)
+<h2 class="item_title"><a name="function:mean" href="#function:mean">mean(numbers...)</a></h2>
 
 Returns the arithmetic mean of `numbers`.
 
@@ -907,9 +791,7 @@ Returns the arithmetic mean of `numbers`.
 @(mean(1, "foo")) → ERROR
 ```
 
-<a name="function:min"></a>
-
-## min(numbers...)
+<h2 class="item_title"><a name="function:min" href="#function:min">min(numbers...)</a></h2>
 
 Returns the minimum value in `numbers`.
 
@@ -920,9 +802,7 @@ Returns the minimum value in `numbers`.
 @(min(1, 2, "foo")) → ERROR
 ```
 
-<a name="function:mod"></a>
-
-## mod(dividend, divisor)
+<h2 class="item_title"><a name="function:mod" href="#function:mod">mod(dividend, divisor)</a></h2>
 
 Returns the remainder of the division of `dividend` by `divisor`.
 
@@ -933,9 +813,7 @@ Returns the remainder of the division of `dividend` by `divisor`.
 @(mod(5, "foo")) → ERROR
 ```
 
-<a name="function:now"></a>
-
-## now()
+<h2 class="item_title"><a name="function:now" href="#function:now">now()</a></h2>
 
 Returns the current date and time in the current timezone.
 
@@ -944,9 +822,7 @@ Returns the current date and time in the current timezone.
 @(now()) → 2018-04-11T13:24:30.123456-05:00
 ```
 
-<a name="function:number"></a>
-
-## number(value)
+<h2 class="item_title"><a name="function:number" href="#function:number">number(value)</a></h2>
 
 Tries to convert `value` to a number.
 
@@ -959,9 +835,7 @@ An error is returned if the value can't be converted.
 @(number("what?")) → ERROR
 ```
 
-<a name="function:object"></a>
-
-## object(pairs...)
+<h2 class="item_title"><a name="function:object" href="#function:object">object(pairs...)</a></h2>
 
 Takes property name value pairs and returns them as a new object.
 
@@ -972,9 +846,7 @@ Takes property name value pairs and returns them as a new object.
 @(object("a")) → ERROR
 ```
 
-<a name="function:or"></a>
-
-## or(values...)
+<h2 class="item_title"><a name="function:or" href="#function:or">or(values...)</a></h2>
 
 Returns whether if any of the given `values` are truthy.
 
@@ -984,9 +856,7 @@ Returns whether if any of the given `values` are truthy.
 @(or(true, false, true)) → true
 ```
 
-<a name="function:parse_datetime"></a>
-
-## parse_datetime(text, format [,timezone])
+<h2 class="item_title"><a name="function:parse_datetime" href="#function:parse_datetime">parse_datetime(text, format [,timezone])</a></h2>
 
 Parses `text` into a date using the given `format`.
 
@@ -1032,9 +902,7 @@ parse_datetime will return an error if it is unable to convert the text to a dat
 @(parse_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
-<a name="function:parse_json"></a>
-
-## parse_json(text)
+<h2 class="item_title"><a name="function:parse_json" href="#function:parse_json">parse_json(text)</a></h2>
 
 Tries to parse `text` as JSON.
 
@@ -1047,9 +915,7 @@ If the given `text` is not valid JSON, then an error is returned
 @(parse_json("invalid json")) → ERROR
 ```
 
-<a name="function:parse_time"></a>
-
-## parse_time(text, format)
+<h2 class="item_title"><a name="function:parse_time" href="#function:parse_time">parse_time(text, format)</a></h2>
 
 Parses `text` into a time using the given `format`.
 
@@ -1082,9 +948,7 @@ parse_time will return an error if it is unable to convert the text to a time.
 @(parse_time("NOT TIME", "tt:mm")) → ERROR
 ```
 
-<a name="function:percent"></a>
-
-## percent(number)
+<h2 class="item_title"><a name="function:percent" href="#function:percent">percent(number)</a></h2>
 
 Formats `number` as a percentage.
 
@@ -1095,9 +959,7 @@ Formats `number` as a percentage.
 @(percent("foo")) → ERROR
 ```
 
-<a name="function:rand"></a>
-
-## rand()
+<h2 class="item_title"><a name="function:rand" href="#function:rand">rand()</a></h2>
 
 Returns a single random number between [0.0-1.0).
 
@@ -1107,9 +969,7 @@ Returns a single random number between [0.0-1.0).
 @(rand()) → 0.607552015674623913099594574305228888988494873046875
 ```
 
-<a name="function:rand_between"></a>
-
-## rand_between()
+<h2 class="item_title"><a name="function:rand_between" href="#function:rand_between">rand_between()</a></h2>
 
 A single random integer in the given inclusive range.
 
@@ -1119,9 +979,7 @@ A single random integer in the given inclusive range.
 @(rand_between(1, 10)) → 10
 ```
 
-<a name="function:read_chars"></a>
-
-## read_chars(text)
+<h2 class="item_title"><a name="function:read_chars" href="#function:read_chars">read_chars(text)</a></h2>
 
 Converts `text` into something that can be read by IVR systems.
 
@@ -1135,9 +993,7 @@ splitting in 3s or 4s if appropriate.
 @(read_chars("abcdef")) → a b c , d e f
 ```
 
-<a name="function:regex_match"></a>
-
-## regex_match(text, pattern [,group])
+<h2 class="item_title"><a name="function:regex_match" href="#function:regex_match">regex_match(text, pattern [,group])</a></h2>
 
 Returns the first match of the regular expression `pattern` in `text`.
 
@@ -1152,9 +1008,7 @@ An optional third parameter `group` determines which matching group will be retu
 @(regex_match("abc", "[\.")) → ERROR
 ```
 
-<a name="function:remove_first_word"></a>
-
-## remove_first_word(text)
+<h2 class="item_title"><a name="function:remove_first_word" href="#function:remove_first_word">remove_first_word(text)</a></h2>
 
 Removes the first word of `text`.
 
@@ -1164,9 +1018,7 @@ Removes the first word of `text`.
 @(remove_first_word("Hi there. I'm a flow!")) → there. I'm a flow!
 ```
 
-<a name="function:repeat"></a>
-
-## repeat(text, count)
+<h2 class="item_title"><a name="function:repeat" href="#function:repeat">repeat(text, count)</a></h2>
 
 Returns `text` repeated `count` number of times.
 
@@ -1176,9 +1028,7 @@ Returns `text` repeated `count` number of times.
 @(repeat("*", "foo")) → ERROR
 ```
 
-<a name="function:replace"></a>
-
-## replace(text, needle, replacement [, count])
+<h2 class="item_title"><a name="function:replace" href="#function:replace">replace(text, needle, replacement [, count])</a></h2>
 
 Replaces up to `count` occurrences of `needle` with `replacement` in `text`.
 
@@ -1191,9 +1041,7 @@ If `count` is omitted or is less than 0 then all occurrences are replaced.
 @(replace("foo bar", "baz", "zap")) → foo bar
 ```
 
-<a name="function:replace_time"></a>
-
-## replace_time(datetime)
+<h2 class="item_title"><a name="function:replace_time" href="#function:replace_time">replace_time(datetime)</a></h2>
 
 Returns a new datetime with the time part replaced by the `time`.
 
@@ -1204,9 +1052,7 @@ Returns a new datetime with the time part replaced by the `time`.
 @(replace_time("foo", "10:30")) → ERROR
 ```
 
-<a name="function:round"></a>
-
-## round(number [,places])
+<h2 class="item_title"><a name="function:round" href="#function:round">round(number [,places])</a></h2>
 
 Rounds `number` to the nearest value.
 
@@ -1224,9 +1070,7 @@ it will round the integer part to the nearest 10^(-places).
 @(round("notnum", 2)) → ERROR
 ```
 
-<a name="function:round_down"></a>
-
-## round_down(number [,places])
+<h2 class="item_title"><a name="function:round_down" href="#function:round_down">round_down(number [,places])</a></h2>
 
 Rounds `number` down to the nearest integer value.
 
@@ -1242,9 +1086,7 @@ You can optionally pass in the number of decimal places to round to as `places`.
 @(round_down("foo")) → ERROR
 ```
 
-<a name="function:round_up"></a>
-
-## round_up(number [,places])
+<h2 class="item_title"><a name="function:round_up" href="#function:round_up">round_up(number [,places])</a></h2>
 
 Rounds `number` up to the nearest integer value.
 
@@ -1260,9 +1102,7 @@ You can optionally pass in the number of decimal places to round to as `places`.
 @(round_up("foo")) → ERROR
 ```
 
-<a name="function:split"></a>
-
-## split(text, delimiters)
+<h2 class="item_title"><a name="function:split" href="#function:split">split(text, delimiters)</a></h2>
 
 Splits `text` based on the given characters in `delimiters`.
 
@@ -1277,9 +1117,7 @@ Empty values are removed from the returned list.
 @(split("a|b,c  d", " .|,")) → [a, b, c, d]
 ```
 
-<a name="function:text"></a>
-
-## text(value)
+<h2 class="item_title"><a name="function:text" href="#function:text">text(value)</a></h2>
 
 Tries to convert `value` to text.
 
@@ -1292,9 +1130,7 @@ An error is returned if the value can't be converted.
 @(text(1 / 0)) → ERROR
 ```
 
-<a name="function:text_compare"></a>
-
-## text_compare(text1, text2)
+<h2 class="item_title"><a name="function:text_compare" href="#function:text_compare">text_compare(text1, text2)</a></h2>
 
 Returns the dictionary order of `text1` and `text2`.
 
@@ -1308,9 +1144,7 @@ and 1 if `text1` comes after `text2`.
 @(text_compare("zzz", "aaa")) → 1
 ```
 
-<a name="function:text_length"></a>
-
-## text_length(value)
+<h2 class="item_title"><a name="function:text_length" href="#function:text_length">text_length(value)</a></h2>
 
 Returns the length (number of characters) of `value` when converted to text.
 
@@ -1320,9 +1154,7 @@ Returns the length (number of characters) of `value` when converted to text.
 @(text_length(array(2, 3))) → 6
 ```
 
-<a name="function:text_slice"></a>
-
-## text_slice(text, start [, end])
+<h2 class="item_title"><a name="function:text_slice" href="#function:text_slice">text_slice(text, start [, end])</a></h2>
 
 Returns the portion of `text` between `start` (inclusive) and `end` (exclusive).
 
@@ -1337,9 +1169,7 @@ for `start` or `end` start at the end of `text`.
 @(text_slice("hello", 7)) →
 ```
 
-<a name="function:time"></a>
-
-## time(value)
+<h2 class="item_title"><a name="function:time" href="#function:time">time(value)</a></h2>
 
 Tries to convert `value` to a time.
 
@@ -1354,9 +1184,7 @@ An error is returned if the value can't be converted.
 @(time("what?")) → ERROR
 ```
 
-<a name="function:time_from_parts"></a>
-
-## time_from_parts(hour, minute, second)
+<h2 class="item_title"><a name="function:time_from_parts" href="#function:time_from_parts">time_from_parts(hour, minute, second)</a></h2>
 
 Creates a time from `hour`, `minute` and `second`
 
@@ -1367,9 +1195,7 @@ Creates a time from `hour`, `minute` and `second`
 @(time_from_parts(25, 0, 0)) → ERROR
 ```
 
-<a name="function:title"></a>
-
-## title(text)
+<h2 class="item_title"><a name="function:title" href="#function:title">title(text)</a></h2>
 
 Capitalizes each word in `text`.
 
@@ -1381,9 +1207,7 @@ Capitalizes each word in `text`.
 @(title(123)) → 123
 ```
 
-<a name="function:today"></a>
-
-## today()
+<h2 class="item_title"><a name="function:today" href="#function:today">today()</a></h2>
 
 Returns the current date in the environment timezone.
 
@@ -1392,9 +1216,7 @@ Returns the current date in the environment timezone.
 @(today()) → 2018-04-11
 ```
 
-<a name="function:tz"></a>
-
-## tz(date)
+<h2 class="item_title"><a name="function:tz" href="#function:tz">tz(date)</a></h2>
 
 Returns the name of the timezone of `date`.
 
@@ -1408,9 +1230,7 @@ If no timezone information is present in the date, then the current timezone wil
 @(tz("foo")) → ERROR
 ```
 
-<a name="function:tz_offset"></a>
-
-## tz_offset(date)
+<h2 class="item_title"><a name="function:tz_offset" href="#function:tz_offset">tz_offset(date)</a></h2>
 
 Returns the offset of the timezone of `date`.
 
@@ -1425,9 +1245,7 @@ then the current timezone offset will be returned.
 @(tz_offset("foo")) → ERROR
 ```
 
-<a name="function:upper"></a>
-
-## upper(text)
+<h2 class="item_title"><a name="function:upper" href="#function:upper">upper(text)</a></h2>
 
 Converts `text` to lowercase.
 
@@ -1437,9 +1255,7 @@ Converts `text` to lowercase.
 @(upper(123)) → 123
 ```
 
-<a name="function:url_encode"></a>
-
-## url_encode(text)
+<h2 class="item_title"><a name="function:url_encode" href="#function:url_encode">url_encode(text)</a></h2>
 
 Encodes `text` for use as a URL parameter.
 
@@ -1449,9 +1265,7 @@ Encodes `text` for use as a URL parameter.
 @(url_encode(10)) → 10
 ```
 
-<a name="function:urn_parts"></a>
-
-## urn_parts(urn)
+<h2 class="item_title"><a name="function:urn_parts" href="#function:urn_parts">urn_parts(urn)</a></h2>
 
 Parses a URN into its different parts
 
@@ -1462,9 +1276,7 @@ Parses a URN into its different parts
 @(urn_parts("not a urn")) → ERROR
 ```
 
-<a name="function:week_number"></a>
-
-## week_number(date)
+<h2 class="item_title"><a name="function:week_number" href="#function:week_number">week_number(date)</a></h2>
 
 Returns the week number (1-54) of `date`.
 
@@ -1477,9 +1289,7 @@ The week is considered to start on Sunday and week containing Jan 1st is week nu
 @(week_number("xx")) → ERROR
 ```
 
-<a name="function:weekday"></a>
-
-## weekday(date)
+<h2 class="item_title"><a name="function:weekday" href="#function:weekday">weekday(date)</a></h2>
 
 Returns the day of the week for `date`.
 
@@ -1491,9 +1301,7 @@ The week is considered to start on Sunday so a Sunday returns 0, a Monday return
 @(weekday("foo")) → ERROR
 ```
 
-<a name="function:word"></a>
-
-## word(text, index [,delimiters])
+<h2 class="item_title"><a name="function:word" href="#function:word">word(text, index [,delimiters])</a></h2>
 
 Returns the word at `index` in `text`.
 
@@ -1512,9 +1320,7 @@ is string of characters used to split the text into words.
 @(word("O'Grady O'Flaggerty", 1, " ")) → O'Flaggerty
 ```
 
-<a name="function:word_count"></a>
-
-## word_count(text [,delimiters])
+<h2 class="item_title"><a name="function:word_count" href="#function:word_count">word_count(text [,delimiters])</a></h2>
 
 Returns the number of words in `text`.
 
@@ -1531,9 +1337,7 @@ to split the text into words.
 @(word_count("O'Grady O'Flaggerty", " ")) → 2
 ```
 
-<a name="function:word_slice"></a>
-
-## word_slice(text, start, end [,delimiters])
+<h2 class="item_title"><a name="function:word_slice" href="#function:word_slice">word_slice(text, start, end [,delimiters])</a></h2>
 
 Extracts a sub-sequence of words from `text`.
 

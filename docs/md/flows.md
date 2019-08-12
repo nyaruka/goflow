@@ -75,9 +75,7 @@ flow execution is consistent. For example, while the engine itself does not have
 representation of a contact's state based on action performed on a flow so that later references in the flow are correct.
 
 <div class="actions">
-<a name="action:add_contact_groups"></a>
-
-## add_contact_groups
+<h2 class="item_title"><a name="action:add_contact_groups" href="#action:add_contact_groups">add_contact_groups</a></h2>
 
 Can be used to add a contact to one or more groups. A [contact_groups_changed](sessions.html#event:contact_groups_changed) event will be created
 for the groups which the contact has been added to.
@@ -112,9 +110,7 @@ for the groups which the contact has been added to.
 }
 ```
 </div>
-<a name="action:add_contact_urn"></a>
-
-## add_contact_urn
+<h2 class="item_title"><a name="action:add_contact_urn" href="#action:add_contact_urn">add_contact_urn</a></h2>
 
 Can be used to add a URN to the current contact. A [contact_urns_changed](sessions.html#event:contact_urns_changed) event
 will be created when this action is encountered.
@@ -145,9 +141,7 @@ will be created when this action is encountered.
 }
 ```
 </div>
-<a name="action:add_input_labels"></a>
-
-## add_input_labels
+<h2 class="item_title"><a name="action:add_input_labels" href="#action:add_input_labels">add_input_labels</a></h2>
 
 Can be used to add labels to the last user input on a flow. An [input_labels_added](sessions.html#event:input_labels_added) event
 will be created with the labels added when this action is encountered. If there is
@@ -184,9 +178,7 @@ no user input at that point then this action will be ignored.
 }
 ```
 </div>
-<a name="action:call_resthook"></a>
-
-## call_resthook
+<h2 class="item_title"><a name="action:call_resthook" href="#action:call_resthook">call_resthook</a></h2>
 
 Can be used to call a resthook.
 
@@ -340,9 +332,7 @@ through `extra` on the result.
 ]
 ```
 </div>
-<a name="action:call_webhook"></a>
-
-## call_webhook
+<h2 class="item_title"><a name="action:call_webhook" href="#action:call_webhook">call_webhook</a></h2>
 
 Can be used to call an external service. The body, header and url fields may be
 templates and will be evaluated at runtime. A [webhook_called](sessions.html#event:webhook_called) event will be created based on
@@ -394,9 +384,7 @@ through `extra` on the result.
 ]
 ```
 </div>
-<a name="action:enter_flow"></a>
-
-## enter_flow
+<h2 class="item_title"><a name="action:enter_flow" href="#action:enter_flow">enter_flow</a></h2>
 
 Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 
@@ -430,9 +418,7 @@ A [flow_entered](sessions.html#event:flow_entered) event will be created to reco
 }
 ```
 </div>
-<a name="action:play_audio"></a>
-
-## play_audio
+<h2 class="item_title"><a name="action:play_audio" href="#action:play_audio">play_audio</a></h2>
 
 Can be used to play an audio recording in a voice flow. It will generate an
 [ivr_created](sessions.html#event:ivr_created) event if there is a valid audio URL. This will contain a message which
@@ -469,9 +455,7 @@ the caller should handle as an IVR play command using the audio attachment.
 }
 ```
 </div>
-<a name="action:remove_contact_groups"></a>
-
-## remove_contact_groups
+<h2 class="item_title"><a name="action:remove_contact_groups" href="#action:remove_contact_groups">remove_contact_groups</a></h2>
 
 Can be used to remove a contact from one or more groups. A [contact_groups_changed](sessions.html#event:contact_groups_changed) event will be created
 for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
@@ -507,9 +491,7 @@ the contact from all non-dynamic groups.
 }
 ```
 </div>
-<a name="action:say_msg"></a>
-
-## say_msg
+<h2 class="item_title"><a name="action:say_msg" href="#action:say_msg">say_msg</a></h2>
 
 Can be used to communicate with the contact in a voice flow by either reading
 a message with TTS or playing a pre-recorded audio file. It will generate an [ivr_created](sessions.html#event:ivr_created)
@@ -549,9 +531,7 @@ an IVR say command using the message text.
 }
 ```
 </div>
-<a name="action:send_broadcast"></a>
-
-## send_broadcast
+<h2 class="item_title"><a name="action:send_broadcast" href="#action:send_broadcast">send_broadcast</a></h2>
 
 Can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
 and a list of contacts.
@@ -590,9 +570,7 @@ with the evaluated text.
 }
 ```
 </div>
-<a name="action:send_email"></a>
-
-## send_email
+<h2 class="item_title"><a name="action:send_email" href="#action:send_email">send_email</a></h2>
 
 Can be used to send an email to one or more recipients. The subject, body and addresses
 can all contain expressions.
@@ -627,9 +605,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 }
 ```
 </div>
-<a name="action:send_msg"></a>
-
-## send_msg
+<h2 class="item_title"><a name="action:send_msg" href="#action:send_msg">send_msg</a></h2>
 
 Can be used to reply to the current contact in a flow. The text field may contain templates. The action
 will attempt to find pairs of URNs and channels which can be used for sending. If it can't find such a pair, it will
@@ -674,9 +650,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 }
 ```
 </div>
-<a name="action:set_contact_channel"></a>
-
-## set_contact_channel
+<h2 class="item_title"><a name="action:set_contact_channel" href="#action:set_contact_channel">set_contact_channel</a></h2>
 
 Can be used to change or clear the preferred channel of the current contact.
 
@@ -701,9 +675,7 @@ changes are made to the contact's URNs.
 []
 ```
 </div>
-<a name="action:set_contact_field"></a>
-
-## set_contact_field
+<h2 class="item_title"><a name="action:set_contact_field" href="#action:set_contact_field">set_contact_field</a></h2>
 
 Can be used to update a field value on the contact. The value is a localizable
 template and white space is trimmed from the final value. An empty string clears the value.
@@ -739,9 +711,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 }
 ```
 </div>
-<a name="action:set_contact_language"></a>
-
-## set_contact_language
+<h2 class="item_title"><a name="action:set_contact_language" href="#action:set_contact_language">set_contact_language</a></h2>
 
 Can be used to update the name of the contact. The language is a localizable
 template and white space is trimmed from the final value. An empty string clears the language.
@@ -762,9 +732,7 @@ A [contact_language_changed](sessions.html#event:contact_language_changed) event
 []
 ```
 </div>
-<a name="action:set_contact_name"></a>
-
-## set_contact_name
+<h2 class="item_title"><a name="action:set_contact_name" href="#action:set_contact_name">set_contact_name</a></h2>
 
 Can be used to update the name of the contact. The name is a localizable
 template and white space is trimmed from the final value. An empty string clears the name.
@@ -790,9 +758,7 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 }
 ```
 </div>
-<a name="action:set_contact_timezone"></a>
-
-## set_contact_timezone
+<h2 class="item_title"><a name="action:set_contact_timezone" href="#action:set_contact_timezone">set_contact_timezone</a></h2>
 
 Can be used to update the timezone of the contact. The timezone is a localizable
 template and white space is trimmed from the final value. An empty string clears the timezone.
@@ -818,9 +784,7 @@ A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event
 }
 ```
 </div>
-<a name="action:set_run_result"></a>
-
-## set_run_result
+<h2 class="item_title"><a name="action:set_run_result" href="#action:set_run_result">set_run_result</a></h2>
 
 Can be used to save a result for a flow. The result will be available in the context
 for the run as @results.[name]. The optional category can be used as a way of categorizing results,
@@ -853,9 +817,7 @@ final values.
 }
 ```
 </div>
-<a name="action:start_session"></a>
-
-## start_session
+<h2 class="item_title"><a name="action:start_session" href="#action:start_session">start_session</a></h2>
 
 Can be used to trigger sessions for other contacts and groups. A [session_triggered](sessions.html#event:session_triggered) event
 will be created and it's the responsibility of the caller to act on that by initiating a new session with the flow engine.
