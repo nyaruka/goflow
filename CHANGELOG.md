@@ -1,3 +1,9 @@
+v0.47.0
+----------
+ * Allow loading of runs with missing flows
+ * A terminal enter_flow action should leave existing runs as completed instead of interrupted
+ * Make documented item titles into actual links so it's easier to get the link of a particular item in the docs
+
 v0.46.0
 ----------
  * Add UUID to assets.Field
