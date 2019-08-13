@@ -30,14 +30,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:08.123456789Z",
-                    "fatal": false,
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "text": "can't execute action in session without a contact",
                     "type": "error"
                 },
                 {
                     "created_on": "2018-07-06T12:30:10.123456789Z",
-                    "fatal": false,
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "text": "can't execute action in session without a contact",
                     "type": "error"
@@ -98,14 +96,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
-                                "fatal": false,
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "text": "can't execute action in session without a contact",
                                 "type": "error"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "fatal": false,
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "text": "can't execute action in session without a contact",
                                 "type": "error"

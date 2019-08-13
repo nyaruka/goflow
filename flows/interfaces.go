@@ -77,8 +77,8 @@ const (
 	// SessionStatusWaiting represents a session which is waiting for something from the caller
 	SessionStatusWaiting SessionStatus = "waiting"
 
-	// SessionStatusErrored represents a session that encountered an error
-	SessionStatusErrored SessionStatus = "errored"
+	// SessionStatusFailed represents a session that encountered an unrecoverable error
+	SessionStatusFailed SessionStatus = "failed"
 )
 
 // RunStatus represents the current status of the flow run
@@ -94,14 +94,11 @@ const (
 	// RunStatusWaiting represents a run which is waiting for something from the caller
 	RunStatusWaiting RunStatus = "waiting"
 
-	// RunStatusErrored represents a run that encountered an error
-	RunStatusErrored RunStatus = "errored"
+	// RunStatusFailed represents a run that encountered an unrecoverable error
+	RunStatusFailed RunStatus = "failed"
 
 	// RunStatusExpired represents a run that expired due to inactivity
 	RunStatusExpired RunStatus = "expired"
-
-	// RunStatusInterrupted represents a run that was interrupted by another flow
-	RunStatusInterrupted RunStatus = "interrupted"
 )
 
 type FlowAssets interface {

@@ -154,9 +154,9 @@ func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
 
 	if err := s.tryToResume(sprint, waitingRun, resume); err != nil {
 		// if we got an error, add it to the log and shut everything down
-		fatalError(sprint, waitingRun, nil, err)
+		failure(sprint, waitingRun, nil, err)
 
-		s.status = flows.SessionStatusErrored
+		s.status = flows.SessionStatusFailed
 	}
 
 	return sprint, nil
@@ -293,25 +293,25 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 				currentRun = parentRun
 
 				// as long as we didn't error, we can try to resume it
-				if childRun.Status() != flows.RunStatusErrored {
+				if childRun.Status() != flows.RunStatusFailed {
 					// if flow for this run is a missing asset, we have a problem
 					if currentRun.Flow() == nil {
 						return errors.New("can't resume parent run with missing flow asset")
 					}
 
 					if destination, err = s.findResumeDestination(sprint, currentRun, false); err != nil {
-						fatalError(sprint, currentRun, step, errors.Wrapf(err, "can't resume run as node no longer exists"))
+						failure(sprint, currentRun, step, errors.Wrapf(err, "can't resume run as node no longer exists"))
 					}
 				} else {
 					// if we did error then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					fatalError(sprint, currentRun, step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
+					failure(sprint, currentRun, step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
 				}
 
 			} else {
 				// If we have no destination and no parent, then the whole session is done. A run error bubbles up the session status.
-				if currentRun.Status() == flows.RunStatusErrored {
-					s.status = flows.SessionStatusErrored
+				if currentRun.Status() == flows.RunStatusFailed {
+					s.status = flows.SessionStatusFailed
 				} else {
 					s.status = flows.SessionStatusCompleted
 				}
@@ -327,7 +327,7 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 
 			if numNewSteps > s.Engine().MaxStepsPerSprint() {
 				// we've hit the step limit - usually a sign of a loop
-				fatalError(sprint, currentRun, step, errors.Errorf("step limit exceeded, stopping execution before entering '%s'", destination))
+				failure(sprint, currentRun, step, errors.Errorf("step limit exceeded, stopping execution before entering '%s'", destination))
 				destination = noDestination
 			} else {
 				node := currentRun.Flow().GetNode(destination)
@@ -375,7 +375,7 @@ func (s *session) visitNode(sprint flows.Sprint, run flows.FlowRun, node flows.N
 			}
 
 			// check if this action has errored the run
-			if run.Status() == flows.RunStatusErrored {
+			if run.Status() == flows.RunStatusFailed {
 				return step, noDestination, nil
 			}
 		}
@@ -429,7 +429,7 @@ func (s *session) pickNodeExit(sprint flows.Sprint, run flows.FlowRun, node flow
 		}
 		// router didn't error.. but it failed to pick a category
 		if exitUUID == "" {
-			fatalError(sprint, run, step, errors.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
+			failure(sprint, run, step, errors.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
 			return noDestination, nil
 		}
 	} else if len(node.Exits()) > 0 {
@@ -452,11 +452,11 @@ func (s *session) pickNodeExit(sprint flows.Sprint, run flows.FlowRun, node flow
 
 const noDestination = flows.NodeUUID("")
 
-// utility to log a fatal error event
-func fatalError(sprint flows.Sprint, run flows.FlowRun, step flows.Step, err error) {
-	event := events.NewFatalErrorEvent(err)
+// utility to fail the session and log a failure event
+func failure(sprint flows.Sprint, run flows.FlowRun, step flows.Step, err error) {
+	event := events.NewFailureEvent(err)
 	if run != nil {
-		run.Exit(flows.RunStatusErrored)
+		run.Exit(flows.RunStatusFailed)
 		run.LogEvent(step, event)
 	}
 	sprint.LogEvent(event)

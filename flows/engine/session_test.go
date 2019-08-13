@@ -677,7 +677,7 @@ func TestResumeWithMissingFlowAssets(t *testing.T) {
 
 	// should have an errored session
 	assert.NoError(t, err)
-	assert.Equal(t, flows.SessionStatusErrored, session.Status())
+	assert.Equal(t, flows.SessionStatusFailed, session.Status())
 
 	// change the UUID of the parent flow so it will effectively be missing
 	assetsWithoutParentFlow := test.JSONReplace(assetsJSON, []string{"flows", "[0]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
@@ -691,7 +691,7 @@ func TestResumeWithMissingFlowAssets(t *testing.T) {
 
 	// should have an errored session
 	assert.NoError(t, err)
-	assert.Equal(t, flows.SessionStatusErrored, session.Status())
+	assert.Equal(t, flows.SessionStatusFailed, session.Status())
 }
 
 func TestWaitTimeout(t *testing.T) {
