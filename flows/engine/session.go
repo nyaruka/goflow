@@ -180,6 +180,11 @@ func (s *session) prepareForSprint() error {
 
 // Resume resumes a waiting session
 func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, resume flows.Resume) error {
+	// if flow for this run is a missing asset, we have a problem
+	if waitingRun.Flow() == nil {
+		return errors.New("can't resume run with missing flow asset")
+	}
+
 	// figure out where in the flow we began waiting on
 	step, node, err := waitingRun.PathLocation()
 	if err != nil {
@@ -289,6 +294,11 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
+					// if flow for this run is a missing asset, we have a problem
+					if currentRun.Flow() == nil {
+						return errors.New("can't resume parent run with missing flow asset")
+					}
+
 					if destination, err = s.findResumeDestination(sprint, currentRun, false); err != nil {
 						fatalError(sprint, currentRun, step, errors.Wrapf(err, "can't resume run as node no longer exists"))
 					}
@@ -508,7 +518,7 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 
 	// read each of our runs
 	for i := range e.Runs {
-		run, err := runs.ReadRun(s, e.Runs[i])
+		run, err := runs.ReadRun(s, e.Runs[i], missing)
 		if err != nil {
 			return nil, errors.Wrapf(err, "unable to read run %d", i)
 		}
