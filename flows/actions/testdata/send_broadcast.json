@@ -61,7 +61,6 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "scheme or path cannot be empty",
                 "type": "error"

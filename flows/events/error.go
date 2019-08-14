@@ -2,6 +2,7 @@ package events
 
 import (
 	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -24,8 +25,7 @@ const TypeError string = "error"
 type ErrorEvent struct {
 	BaseEvent
 
-	Text  string `json:"text" validate:"required"`
-	Fatal bool   `json:"fatal"`
+	Text string `json:"text" validate:"required"`
 }
 
 // NewErrorEvent returns a new error event for the passed in error
@@ -41,14 +41,5 @@ func NewErrorEventf(format string, a ...interface{}) *ErrorEvent {
 	return &ErrorEvent{
 		BaseEvent: NewBaseEvent(TypeError),
 		Text:      fmt.Sprintf(format, a...),
-	}
-}
-
-// NewFatalErrorEvent returns a new fatal error event for the passed in error
-func NewFatalErrorEvent(err error) *ErrorEvent {
-	return &ErrorEvent{
-		BaseEvent: NewBaseEvent(TypeError),
-		Text:      err.Error(),
-		Fatal:     true,
 	}
 }

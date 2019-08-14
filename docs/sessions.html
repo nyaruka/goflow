@@ -413,72 +413,60 @@
 <div class="sourceCode" id="cb19"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">{</span></span>
 <span id="cb19-2"><a href="#cb19-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;error&quot;</span><span class="fu">,</span></span>
 <span id="cb19-3"><a href="#cb19-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb19-4"><a href="#cb19-4"></a>    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;invalid date format: &#39;12th of October&#39;&quot;</span><span class="fu">,</span></span>
-<span id="cb19-5"><a href="#cb19-5"></a>    <span class="dt">&quot;fatal&quot;</span><span class="fu">:</span> <span class="kw">false</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a><span class="fu">}</span></span></code></pre></div>
+<span id="cb19-4"><a href="#cb19-4"></a>    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;invalid date format: &#39;12th of October&#39;&quot;</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="event:failure" href="#event:failure">failure</a>
+</h2>
+<p>Events are created when an error occurs during flow execution which prevents continuation of the session.</p>
+<div class="output_event">
+<div class="sourceCode" id="cb20"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">{</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;failure&quot;</span><span class="fu">,</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;unable to read flow&quot;</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:flow_entered" href="#event:flow_entered">flow_entered</a>
 </h2>
 <p>Events are created when an action has entered a sub-flow.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb20"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">{</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;flow_entered&quot;</span><span class="fu">,</span></span>
-<span id="cb20-3"><a href="#cb20-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a>    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb20-5"><a href="#cb20-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a&quot;</span><span class="fu">,</span></span>
-<span id="cb20-6"><a href="#cb20-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></span>
-<span id="cb20-7"><a href="#cb20-7"></a>    <span class="fu">},</span></span>
-<span id="cb20-8"><a href="#cb20-8"></a>    <span class="dt">&quot;parent_run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;95eb96df-461b-4668-b168-727f8ceb13dd&quot;</span><span class="fu">,</span></span>
-<span id="cb20-9"><a href="#cb20-9"></a>    <span class="dt">&quot;terminal&quot;</span><span class="fu">:</span> <span class="kw">false</span></span>
-<span id="cb20-10"><a href="#cb20-10"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">{</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;flow_entered&quot;</span><span class="fu">,</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a&quot;</span><span class="fu">,</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a>    <span class="fu">},</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a>    <span class="dt">&quot;parent_run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;95eb96df-461b-4668-b168-727f8ceb13dd&quot;</span><span class="fu">,</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a>    <span class="dt">&quot;terminal&quot;</span><span class="fu">:</span> <span class="kw">false</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:input_labels_added" href="#event:input_labels_added">input_labels_added</a>
 </h2>
 <p>Events are created when an action wants to add labels to the current input.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb21"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">{</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;input_labels_added&quot;</span><span class="fu">,</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb21-4"><a href="#cb21-4"></a>    <span class="dt">&quot;input_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4aef4050-1895-4c80-999a-70368317a4f5&quot;</span><span class="fu">,</span></span>
-<span id="cb21-5"><a href="#cb21-5"></a>    <span class="dt">&quot;labels&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb21-6"><a href="#cb21-6"></a>        <span class="fu">{</span></span>
-<span id="cb21-7"><a href="#cb21-7"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
-<span id="cb21-8"><a href="#cb21-8"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Spam&quot;</span></span>
-<span id="cb21-9"><a href="#cb21-9"></a>        <span class="fu">}</span></span>
-<span id="cb21-10"><a href="#cb21-10"></a>    <span class="ot">]</span></span>
-<span id="cb21-11"><a href="#cb21-11"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">{</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;input_labels_added&quot;</span><span class="fu">,</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>    <span class="dt">&quot;input_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4aef4050-1895-4c80-999a-70368317a4f5&quot;</span><span class="fu">,</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>    <span class="dt">&quot;labels&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a>        <span class="fu">{</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Spam&quot;</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a>        <span class="fu">}</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a>    <span class="ot">]</span></span>
+<span id="cb22-11"><a href="#cb22-11"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:ivr_created" href="#event:ivr_created">ivr_created</a>
 </h2>
 <p>Events are created when an action wants to send an IVR response to the current contact.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb22"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">{</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;ivr_created&quot;</span><span class="fu">,</span></span>
-<span id="cb22-3"><a href="#cb22-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a>    <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb22-5"><a href="#cb22-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;2d611e17-fb22-457f-b802-b8f7ec5cda5b&quot;</span><span class="fu">,</span></span>
-<span id="cb22-6"><a href="#cb22-6"></a>        <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12065551212&quot;</span><span class="fu">,</span></span>
-<span id="cb22-7"><a href="#cb22-7"></a>        <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb22-8"><a href="#cb22-8"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;61602f3e-f603-4c70-8a8f-c477505bf4bf&quot;</span><span class="fu">,</span></span>
-<span id="cb22-9"><a href="#cb22-9"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Twilio&quot;</span></span>
-<span id="cb22-10"><a href="#cb22-10"></a>        <span class="fu">},</span></span>
-<span id="cb22-11"><a href="#cb22-11"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;hi there&quot;</span><span class="fu">,</span></span>
-<span id="cb22-12"><a href="#cb22-12"></a>        <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb22-13"><a href="#cb22-13"></a>            <span class="st">&quot;audio:https://s3.amazon.com/mybucket/attachment.m4a&quot;</span></span>
-<span id="cb22-14"><a href="#cb22-14"></a>        <span class="ot">]</span></span>
-<span id="cb22-15"><a href="#cb22-15"></a>    <span class="fu">}</span></span>
-<span id="cb22-16"><a href="#cb22-16"></a><span class="fu">}</span></span></code></pre></div>
-</div>
-<h2 class="item_title">
-<a name="event:msg_created" href="#event:msg_created">msg_created</a>
-</h2>
-<p>Events are created when an action wants to send a reply to the current contact.</p>
-<div class="output_event">
 <div class="sourceCode" id="cb23"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">{</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_created&quot;</span><span class="fu">,</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;ivr_created&quot;</span><span class="fu">,</span></span>
 <span id="cb23-3"><a href="#cb23-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
 <span id="cb23-4"><a href="#cb23-4"></a>    <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb23-5"><a href="#cb23-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;2d611e17-fb22-457f-b802-b8f7ec5cda5b&quot;</span><span class="fu">,</span></span>
@@ -489,18 +477,18 @@
 <span id="cb23-10"><a href="#cb23-10"></a>        <span class="fu">},</span></span>
 <span id="cb23-11"><a href="#cb23-11"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;hi there&quot;</span><span class="fu">,</span></span>
 <span id="cb23-12"><a href="#cb23-12"></a>        <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb23-13"><a href="#cb23-13"></a>            <span class="st">&quot;image/jpeg:https://s3.amazon.com/mybucket/attachment.jpg&quot;</span></span>
+<span id="cb23-13"><a href="#cb23-13"></a>            <span class="st">&quot;audio:https://s3.amazon.com/mybucket/attachment.m4a&quot;</span></span>
 <span id="cb23-14"><a href="#cb23-14"></a>        <span class="ot">]</span></span>
 <span id="cb23-15"><a href="#cb23-15"></a>    <span class="fu">}</span></span>
 <span id="cb23-16"><a href="#cb23-16"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
-<a name="event:msg_received" href="#event:msg_received">msg_received</a>
+<a name="event:msg_created" href="#event:msg_created">msg_created</a>
 </h2>
-<p>Events are sent by the caller to tell the engine that a message was received from the contact and that it should try to resume the session.</p>
+<p>Events are created when an action wants to send a reply to the current contact.</p>
 <div class="output_event">
 <div class="sourceCode" id="cb24"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">{</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_received&quot;</span><span class="fu">,</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_created&quot;</span><span class="fu">,</span></span>
 <span id="cb24-3"><a href="#cb24-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
 <span id="cb24-4"><a href="#cb24-4"></a>    <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb24-5"><a href="#cb24-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;2d611e17-fb22-457f-b802-b8f7ec5cda5b&quot;</span><span class="fu">,</span></span>
@@ -511,137 +499,159 @@
 <span id="cb24-10"><a href="#cb24-10"></a>        <span class="fu">},</span></span>
 <span id="cb24-11"><a href="#cb24-11"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;hi there&quot;</span><span class="fu">,</span></span>
 <span id="cb24-12"><a href="#cb24-12"></a>        <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb24-13"><a href="#cb24-13"></a>            <span class="st">&quot;https://s3.amazon.com/mybucket/attachment.jpg&quot;</span></span>
+<span id="cb24-13"><a href="#cb24-13"></a>            <span class="st">&quot;image/jpeg:https://s3.amazon.com/mybucket/attachment.jpg&quot;</span></span>
 <span id="cb24-14"><a href="#cb24-14"></a>        <span class="ot">]</span></span>
 <span id="cb24-15"><a href="#cb24-15"></a>    <span class="fu">}</span></span>
 <span id="cb24-16"><a href="#cb24-16"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="event:msg_received" href="#event:msg_received">msg_received</a>
+</h2>
+<p>Events are sent by the caller to tell the engine that a message was received from the contact and that it should try to resume the session.</p>
+<div class="output_event">
+<div class="sourceCode" id="cb25"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">{</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_received&quot;</span><span class="fu">,</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>    <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;2d611e17-fb22-457f-b802-b8f7ec5cda5b&quot;</span><span class="fu">,</span></span>
+<span id="cb25-6"><a href="#cb25-6"></a>        <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12065551212&quot;</span><span class="fu">,</span></span>
+<span id="cb25-7"><a href="#cb25-7"></a>        <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb25-8"><a href="#cb25-8"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;61602f3e-f603-4c70-8a8f-c477505bf4bf&quot;</span><span class="fu">,</span></span>
+<span id="cb25-9"><a href="#cb25-9"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Twilio&quot;</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a>        <span class="fu">},</span></span>
+<span id="cb25-11"><a href="#cb25-11"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;hi there&quot;</span><span class="fu">,</span></span>
+<span id="cb25-12"><a href="#cb25-12"></a>        <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb25-13"><a href="#cb25-13"></a>            <span class="st">&quot;https://s3.amazon.com/mybucket/attachment.jpg&quot;</span></span>
+<span id="cb25-14"><a href="#cb25-14"></a>        <span class="ot">]</span></span>
+<span id="cb25-15"><a href="#cb25-15"></a>    <span class="fu">}</span></span>
+<span id="cb25-16"><a href="#cb25-16"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:msg_wait" href="#event:msg_wait">msg_wait</a>
 </h2>
 <p>Events are created when a flow pauses waiting for a response from a contact. If a timeout is set, then the caller should resume the flow after the number of seconds in the timeout to resume it.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb25"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">{</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_wait&quot;</span><span class="fu">,</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2019-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a>    <span class="dt">&quot;timeout_seconds&quot;</span><span class="fu">:</span> <span class="dv">300</span><span class="fu">,</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a>    <span class="dt">&quot;hint&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb25-6"><a href="#cb25-6"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;image&quot;</span></span>
-<span id="cb25-7"><a href="#cb25-7"></a>    <span class="fu">}</span></span>
-<span id="cb25-8"><a href="#cb25-8"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">{</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_wait&quot;</span><span class="fu">,</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2019-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a>    <span class="dt">&quot;timeout_seconds&quot;</span><span class="fu">:</span> <span class="dv">300</span><span class="fu">,</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a>    <span class="dt">&quot;hint&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;image&quot;</span></span>
+<span id="cb26-7"><a href="#cb26-7"></a>    <span class="fu">}</span></span>
+<span id="cb26-8"><a href="#cb26-8"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:resthook_called" href="#event:resthook_called">resthook_called</a>
 </h2>
 <p>Events are created when a resthook is called. The event contains the payload that will be sent to any subscribers of that resthook. Note that this event is created regardless of whether there any subscriberes for that resthook.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb26"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">{</span></span>
-<span id="cb26-2"><a href="#cb26-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_called&quot;</span><span class="fu">,</span></span>
-<span id="cb26-3"><a href="#cb26-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb26-4"><a href="#cb26-4"></a>    <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
-<span id="cb26-5"><a href="#cb26-5"></a>    <span class="dt">&quot;payload&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb26-6"><a href="#cb26-6"></a>        <span class="dt">&quot;contact:&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb26-7"><a href="#cb26-7"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob&quot;</span></span>
-<span id="cb26-8"><a href="#cb26-8"></a>        <span class="fu">}</span></span>
-<span id="cb26-9"><a href="#cb26-9"></a>    <span class="fu">}</span></span>
-<span id="cb26-10"><a href="#cb26-10"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">{</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_called&quot;</span><span class="fu">,</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a>    <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a>    <span class="dt">&quot;payload&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>        <span class="dt">&quot;contact:&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob&quot;</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a>        <span class="fu">}</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a>    <span class="fu">}</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:run_expired" href="#event:run_expired">run_expired</a>
 </h2>
 <p>Events are sent by the caller to tell the engine that a run has expired.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb27"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">{</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_expired&quot;</span><span class="fu">,</span></span>
-<span id="cb27-3"><a href="#cb27-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb27-4"><a href="#cb27-4"></a>    <span class="dt">&quot;run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a&quot;</span></span>
-<span id="cb27-5"><a href="#cb27-5"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">{</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_expired&quot;</span><span class="fu">,</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a>    <span class="dt">&quot;run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a&quot;</span></span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:run_result_changed" href="#event:run_result_changed">run_result_changed</a>
 </h2>
 <p>Events are created when a run result is saved. They contain not only the name, value and category of the result, but also the UUID of the node where the result was generated.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb28"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">{</span></span>
-<span id="cb28-2"><a href="#cb28-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
-<span id="cb28-3"><a href="#cb28-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb28-4"><a href="#cb28-4"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span><span class="fu">,</span></span>
-<span id="cb28-5"><a href="#cb28-5"></a>    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></span>
-<span id="cb28-6"><a href="#cb28-6"></a>    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span><span class="fu">,</span></span>
-<span id="cb28-7"><a href="#cb28-7"></a>    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;Homme&quot;</span><span class="fu">,</span></span>
-<span id="cb28-8"><a href="#cb28-8"></a>    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;M&quot;</span></span>
-<span id="cb28-9"><a href="#cb28-9"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">{</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span><span class="fu">,</span></span>
+<span id="cb29-5"><a href="#cb29-5"></a>    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a>    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span><span class="fu">,</span></span>
+<span id="cb29-7"><a href="#cb29-7"></a>    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;Homme&quot;</span><span class="fu">,</span></span>
+<span id="cb29-8"><a href="#cb29-8"></a>    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;M&quot;</span></span>
+<span id="cb29-9"><a href="#cb29-9"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:session_triggered" href="#event:session_triggered">session_triggered</a>
 </h2>
 <p>Events are created when an action wants to start other people in a flow.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb29"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">{</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;session_triggered&quot;</span><span class="fu">,</span></span>
-<span id="cb29-3"><a href="#cb29-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb29-4"><a href="#cb29-4"></a>    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb29-5"><a href="#cb29-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a&quot;</span><span class="fu">,</span></span>
-<span id="cb29-6"><a href="#cb29-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></span>
-<span id="cb29-7"><a href="#cb29-7"></a>    <span class="fu">},</span></span>
-<span id="cb29-8"><a href="#cb29-8"></a>    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb29-9"><a href="#cb29-9"></a>        <span class="fu">{</span></span>
-<span id="cb29-10"><a href="#cb29-10"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8f8e2cae-3c8d-4dce-9c4b-19514437e427&quot;</span><span class="fu">,</span></span>
-<span id="cb29-11"><a href="#cb29-11"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;New contacts&quot;</span></span>
-<span id="cb29-12"><a href="#cb29-12"></a>        <span class="fu">}</span></span>
-<span id="cb29-13"><a href="#cb29-13"></a>    <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb29-14"><a href="#cb29-14"></a>    <span class="dt">&quot;run_summary&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb29-15"><a href="#cb29-15"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
-<span id="cb29-16"><a href="#cb29-16"></a>        <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb29-17"><a href="#cb29-17"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;93c554a1-b90d-4892-b029-a2a87dec9b87&quot;</span><span class="fu">,</span></span>
-<span id="cb29-18"><a href="#cb29-18"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Other Flow&quot;</span></span>
-<span id="cb29-19"><a href="#cb29-19"></a>        <span class="fu">},</span></span>
-<span id="cb29-20"><a href="#cb29-20"></a>        <span class="dt">&quot;contact&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb29-21"><a href="#cb29-21"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c59b0033-e748-4240-9d4c-e85eb6800151&quot;</span><span class="fu">,</span></span>
-<span id="cb29-22"><a href="#cb29-22"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob&quot;</span><span class="fu">,</span></span>
-<span id="cb29-23"><a href="#cb29-23"></a>            <span class="dt">&quot;fields&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb29-24"><a href="#cb29-24"></a>                <span class="dt">&quot;state&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb29-25"><a href="#cb29-25"></a>                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Azuay&quot;</span><span class="fu">,</span></span>
-<span id="cb29-26"><a href="#cb29-26"></a>                    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2000-01-01T00:00:00.000000000-00:00&quot;</span></span>
-<span id="cb29-27"><a href="#cb29-27"></a>                <span class="fu">}</span></span>
-<span id="cb29-28"><a href="#cb29-28"></a>            <span class="fu">}</span></span>
-<span id="cb29-29"><a href="#cb29-29"></a>        <span class="fu">},</span></span>
-<span id="cb29-30"><a href="#cb29-30"></a>        <span class="dt">&quot;results&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb29-31"><a href="#cb29-31"></a>            <span class="dt">&quot;age&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb29-32"><a href="#cb29-32"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Age&quot;</span><span class="fu">,</span></span>
-<span id="cb29-33"><a href="#cb29-33"></a>                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;33&quot;</span><span class="fu">,</span></span>
-<span id="cb29-34"><a href="#cb29-34"></a>                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;cd2be8c4-59bc-453c-8777-dec9a80043b8&quot;</span><span class="fu">,</span></span>
-<span id="cb29-35"><a href="#cb29-35"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2000-01-01T00:00:00.000000000-00:00&quot;</span></span>
-<span id="cb29-36"><a href="#cb29-36"></a>            <span class="fu">}</span></span>
-<span id="cb29-37"><a href="#cb29-37"></a>        <span class="fu">}</span></span>
-<span id="cb29-38"><a href="#cb29-38"></a>    <span class="fu">}</span></span>
-<span id="cb29-39"><a href="#cb29-39"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">{</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;session_triggered&quot;</span><span class="fu">,</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a>    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a&quot;</span><span class="fu">,</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a>    <span class="fu">},</span></span>
+<span id="cb30-8"><a href="#cb30-8"></a>    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a>        <span class="fu">{</span></span>
+<span id="cb30-10"><a href="#cb30-10"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8f8e2cae-3c8d-4dce-9c4b-19514437e427&quot;</span><span class="fu">,</span></span>
+<span id="cb30-11"><a href="#cb30-11"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;New contacts&quot;</span></span>
+<span id="cb30-12"><a href="#cb30-12"></a>        <span class="fu">}</span></span>
+<span id="cb30-13"><a href="#cb30-13"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb30-14"><a href="#cb30-14"></a>    <span class="dt">&quot;run_summary&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-15"><a href="#cb30-15"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
+<span id="cb30-16"><a href="#cb30-16"></a>        <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-17"><a href="#cb30-17"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;93c554a1-b90d-4892-b029-a2a87dec9b87&quot;</span><span class="fu">,</span></span>
+<span id="cb30-18"><a href="#cb30-18"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Other Flow&quot;</span></span>
+<span id="cb30-19"><a href="#cb30-19"></a>        <span class="fu">},</span></span>
+<span id="cb30-20"><a href="#cb30-20"></a>        <span class="dt">&quot;contact&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-21"><a href="#cb30-21"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c59b0033-e748-4240-9d4c-e85eb6800151&quot;</span><span class="fu">,</span></span>
+<span id="cb30-22"><a href="#cb30-22"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob&quot;</span><span class="fu">,</span></span>
+<span id="cb30-23"><a href="#cb30-23"></a>            <span class="dt">&quot;fields&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-24"><a href="#cb30-24"></a>                <span class="dt">&quot;state&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-25"><a href="#cb30-25"></a>                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Azuay&quot;</span><span class="fu">,</span></span>
+<span id="cb30-26"><a href="#cb30-26"></a>                    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2000-01-01T00:00:00.000000000-00:00&quot;</span></span>
+<span id="cb30-27"><a href="#cb30-27"></a>                <span class="fu">}</span></span>
+<span id="cb30-28"><a href="#cb30-28"></a>            <span class="fu">}</span></span>
+<span id="cb30-29"><a href="#cb30-29"></a>        <span class="fu">},</span></span>
+<span id="cb30-30"><a href="#cb30-30"></a>        <span class="dt">&quot;results&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-31"><a href="#cb30-31"></a>            <span class="dt">&quot;age&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-32"><a href="#cb30-32"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Age&quot;</span><span class="fu">,</span></span>
+<span id="cb30-33"><a href="#cb30-33"></a>                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;33&quot;</span><span class="fu">,</span></span>
+<span id="cb30-34"><a href="#cb30-34"></a>                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;cd2be8c4-59bc-453c-8777-dec9a80043b8&quot;</span><span class="fu">,</span></span>
+<span id="cb30-35"><a href="#cb30-35"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2000-01-01T00:00:00.000000000-00:00&quot;</span></span>
+<span id="cb30-36"><a href="#cb30-36"></a>            <span class="fu">}</span></span>
+<span id="cb30-37"><a href="#cb30-37"></a>        <span class="fu">}</span></span>
+<span id="cb30-38"><a href="#cb30-38"></a>    <span class="fu">}</span></span>
+<span id="cb30-39"><a href="#cb30-39"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:wait_timed_out" href="#event:wait_timed_out">wait_timed_out</a>
 </h2>
 <p>Events are sent by the caller when a wait has timed out - i.e. they are sent instead of the item that the wait was waiting for.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb30"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">{</span></span>
-<span id="cb30-2"><a href="#cb30-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;wait_timed_out&quot;</span><span class="fu">,</span></span>
-<span id="cb30-3"><a href="#cb30-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span></span>
-<span id="cb30-4"><a href="#cb30-4"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">{</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;wait_timed_out&quot;</span><span class="fu">,</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="event:webhook_called" href="#event:webhook_called">webhook_called</a>
 </h2>
 <p>Events are created when a webhook is called. The event contains the URL and the status of the response, as well as a full dump of the request and response.</p>
 <div class="output_event">
-<div class="sourceCode" id="cb31"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">{</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></span>
-<span id="cb31-3"><a href="#cb31-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb31-4"><a href="#cb31-4"></a>    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></span>
-<span id="cb31-5"><a href="#cb31-5"></a>    <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
-<span id="cb31-6"><a href="#cb31-6"></a>    <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></span>
-<span id="cb31-7"><a href="#cb31-7"></a>    <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">123</span><span class="fu">,</span></span>
-<span id="cb31-8"><a href="#cb31-8"></a>    <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET /?format=json HTTP/1.1&quot;</span><span class="fu">,</span></span>
-<span id="cb31-9"><a href="#cb31-9"></a>    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">ip</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">190.154.48.130</span><span class="ch">\&quot;</span><span class="st">}&quot;</span></span>
-<span id="cb31-10"><a href="#cb31-10"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">{</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
+<span id="cb32-4"><a href="#cb32-4"></a>    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></span>
+<span id="cb32-5"><a href="#cb32-5"></a>    <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb32-6"><a href="#cb32-6"></a>    <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></span>
+<span id="cb32-7"><a href="#cb32-7"></a>    <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">123</span><span class="fu">,</span></span>
+<span id="cb32-8"><a href="#cb32-8"></a>    <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET /?format=json HTTP/1.1&quot;</span><span class="fu">,</span></span>
+<span id="cb32-9"><a href="#cb32-9"></a>    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">ip</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">190.154.48.130</span><span class="ch">\&quot;</span><span class="st">}&quot;</span></span>
+<span id="cb32-10"><a href="#cb32-10"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 </div>
 

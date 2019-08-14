@@ -473,8 +473,21 @@ Events are created when an error occurs during flow execution.
 {
     "type": "error",
     "created_on": "2006-01-02T15:04:05Z",
-    "text": "invalid date format: '12th of October'",
-    "fatal": false
+    "text": "invalid date format: '12th of October'"
+}
+```
+</div>
+<h2 class="item_title"><a name="event:failure" href="#event:failure">failure</a></h2>
+
+Events are created when an error occurs during flow execution which prevents continuation of the session.
+
+<div class="output_event">
+
+```json
+{
+    "type": "failure",
+    "created_on": "2006-01-02T15:04:05Z",
+    "text": "unable to read flow"
 }
 ```
 </div>

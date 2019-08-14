@@ -30,7 +30,6 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "can't execute action in session without a contact",
                 "type": "error"
@@ -66,49 +65,42 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(xxxxx): context has no property 'xxxxx'",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "attachment text evaluated to empty string, skipping",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(xxxxx): context has no property 'xxxxx'",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "quick reply text evaluated to empty string, skipping",
                 "type": "error"
@@ -152,14 +144,12 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "attachment text evaluated to empty string, skipping",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "quick reply text evaluated to empty string, skipping",
                 "type": "error"
