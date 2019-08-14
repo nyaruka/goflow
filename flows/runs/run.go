@@ -67,9 +67,10 @@ func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
 func (r *flowRun) Session() flows.Session            { return r.session }
 func (r *flowRun) Environment() flows.RunEnvironment { return r.environment }
 
-func (r *flowRun) Flow() flows.Flow        { return r.flow }
-func (r *flowRun) Contact() *flows.Contact { return r.session.Contact() }
-func (r *flowRun) Events() []flows.Event   { return r.events }
+func (r *flowRun) Flow() flows.Flow                     { return r.flow }
+func (r *flowRun) FlowReference() *assets.FlowReference { return r.flowRef }
+func (r *flowRun) Contact() *flows.Contact              { return r.session.Contact() }
+func (r *flowRun) Events() []flows.Event                { return r.events }
 
 func (r *flowRun) Results() flows.Results { return r.results }
 func (r *flowRun) SaveResult(result *flows.Result) {

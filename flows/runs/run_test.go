@@ -1,13 +1,16 @@
 package runs_test
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
@@ -98,6 +101,40 @@ var sessionTrigger = `{
         "timezone": "America/Guayaquil"
     }
 }`
+
+func TestRun(t *testing.T) {
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+
+	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	flow, err := session.Assets().Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
+	require.NoError(t, err)
+
+	run := session.Runs()[0]
+
+	checkRun := func(r flows.FlowRun) {
+		assert.Equal(t, string(flows.RunUUID("e7187099-7d38-4f60-955c-325957214c42")), string(r.UUID()))
+		assert.Equal(t, string(flows.RunStatusCompleted), string(r.Status()))
+		assert.Equal(t, flow, r.Flow())
+		assert.Equal(t, flow.Reference(), r.FlowReference())
+		assert.Equal(t, 7, len(r.Events()))
+		assert.Equal(t, "Parent", r.Parent().Flow().Name())
+		assert.Equal(t, 0, len(r.Ancestors())) // no parent runs within this session
+	}
+
+	checkRun(run)
+
+	// check we can marshal and marshal the run and get the same values
+	runJSON, err := json.Marshal(run)
+	require.NoError(t, err)
+
+	run2, err := runs.ReadRun(session, runJSON, assets.IgnoreMissing)
+	require.NoError(t, err)
+
+	checkRun(run2)
+}
 
 func TestRunContext(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))

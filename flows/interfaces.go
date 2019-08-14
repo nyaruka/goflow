@@ -385,6 +385,7 @@ type RunEnvironment interface {
 type FlowRun interface {
 	Contextable
 	RunSummary
+	FlowReference() *assets.FlowReference
 
 	Environment() RunEnvironment
 	Session() Session
