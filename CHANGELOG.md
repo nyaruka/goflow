@@ -1,3 +1,7 @@
+v0.47.1
+----------
+ * Renamed errored statuses to failed, replace fatal error events with failure events
+
 v0.47.0
 ----------
  * Allow loading of runs with missing flows
