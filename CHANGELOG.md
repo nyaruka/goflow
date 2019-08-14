@@ -1,3 +1,7 @@
+v0.47.2
+----------
+ * Add FlowReference to FlowRun interface and add some more tests
+
 v0.47.1
 ----------
  * Renamed errored statuses to failed, replace fatal error events with failure events
