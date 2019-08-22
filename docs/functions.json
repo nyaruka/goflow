@@ -509,7 +509,7 @@
                 "output": "2010 5 10 14:50"
             },
             {
-                "template": "@(format_datetime(\"2010-05-10T19:50:00.000000Z\", \"YYYY-MM-DD tt:mm AA\", \"America/Los_Angeles\"))",
+                "template": "@(format_datetime(\"2010-05-10T19:50:00.000000Z\", \"YYYY-MM-DD hh:mm AA\", \"America/Los_Angeles\"))",
                 "output": "2010-05-10 12:50 PM"
             },
             {
