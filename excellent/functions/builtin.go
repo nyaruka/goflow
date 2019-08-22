@@ -1646,7 +1646,7 @@ func FormatDate(env envs.Environment, args ...types.XValue) types.XValue {
 //   @(format_datetime("1979-07-18T15:00:00.000000Z")) -> 18-07-1979 10:00
 //   @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
 //   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 14:50
-//   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
+//   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD hh:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
 //   @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
 //   @(format_datetime("1979-07-18T15:00:00.000000Z", "M")) -> 7
 //   @(format_datetime("NOT DATE", "YYYY-MM-DD")) -> ERROR
