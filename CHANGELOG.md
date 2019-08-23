@@ -1,3 +1,7 @@
+v0.47.3
+----------
+ * completions.json should include section for session-less contexts
+
 v0.47.2
 ----------
  * Add FlowReference to FlowRun interface and add some more tests
