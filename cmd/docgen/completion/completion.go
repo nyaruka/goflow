@@ -6,15 +6,31 @@ import (
 	"github.com/pkg/errors"
 )
 
+// types available in root of context even without a session
+var rootNoSessionTypes = map[string]bool{
+	"contact": true,
+	"fields":  true,
+	"urns":    true,
+}
+
 // Completion generates auto-complete paths
 type Completion struct {
-	Types []Type      `json:"types"`
-	Root  []*Property `json:"root"`
+	Types         []Type      `json:"types"`
+	Root          []*Property `json:"root"`
+	RootNoSession []*Property `json:"root_no_session"`
 }
 
 // NewCompletion creates a new empty completion
 func NewCompletion(types []Type, root []*Property) *Completion {
-	return &Completion{Types: types, Root: root}
+	// extract types which are available in a context without a session
+	rootNoSession := make([]*Property, 0, len(rootNoSessionTypes))
+	for _, p := range root {
+		if rootNoSessionTypes[p.Type] {
+			rootNoSession = append(rootNoSession, p)
+		}
+	}
+
+	return &Completion{Types: types, Root: root, RootNoSession: rootNoSession}
 }
 
 // Validate checks that all type references are valid
