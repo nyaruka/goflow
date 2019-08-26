@@ -1,3 +1,7 @@
+v0.48.1
+----------
+ * Add .Source() to SessionAssets interface
+
 v0.48.0
 ----------
  * Unexport things that no longer need to be exported now that we've ditched extensions, clean up names of typed things
