@@ -1,3 +1,8 @@
+v0.48.0
+----------
+ * Unexport things that no longer need to be exported now that we've ditched extensions, clean up names of typed things
+ * Remove transferto extension functionality and instead have standard transfer_airtime action which defers to an airtime service
+
 v0.47.3
 ----------
  * completions.json should include section for session-less contexts
