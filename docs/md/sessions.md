@@ -258,6 +258,22 @@ Events are the output of a flow run and represent instructions to the engine con
 All templates in events have been evaluated and can be used to create concrete messages, contact updates, emails etc by the container.
 
 <div class="events">
+<h2 class="item_title"><a name="event:airtime_transferred" href="#event:airtime_transferred">airtime_transferred</a></h2>
+
+Events are created when airtime has been transferred to the contact.
+
+<div class="output_event">
+
+```json
+{
+    "type": "airtime_transferred",
+    "created_on": "2006-01-02T15:04:05Z",
+    "currency": "RWF",
+    "amount": 100,
+    "status": "success"
+}
+```
+</div>
 <h2 class="item_title"><a name="event:broadcast_created" href="#event:broadcast_created">broadcast_created</a></h2>
 
 Events are created when an action wants to send a message to other contacts.

@@ -15,6 +15,7 @@ type engine struct {
 	disableWebhooks         bool
 	maxWebhookResponseBytes int
 	maxStepsPerSprint       int
+	services                *services
 }
 
 // NewSession creates a new session
@@ -42,6 +43,7 @@ func (e *engine) HTTPClient() *utils.HTTPClient { return e.httpClient }
 func (e *engine) DisableWebhooks() bool         { return e.disableWebhooks }
 func (e *engine) MaxWebhookResponseBytes() int  { return e.maxWebhookResponseBytes }
 func (e *engine) MaxStepsPerSprint() int        { return e.maxStepsPerSprint }
+func (e *engine) Services() flows.Services      { return e.services }
 
 var _ flows.Engine = (*engine)(nil)
 
@@ -62,6 +64,9 @@ func NewBuilder() *Builder {
 			disableWebhooks:         false,
 			maxWebhookResponseBytes: 10000,
 			maxStepsPerSprint:       100,
+			services: &services{
+				airtime: &nilAirtimeService{},
+			},
 		},
 	}
 }
@@ -87,6 +92,12 @@ func (b *Builder) WithMaxWebhookResponseBytes(max int) *Builder {
 // WithMaxStepsPerSprint sets the maximum number of steps allowed in a single sprint
 func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
 	b.eng.maxStepsPerSprint = max
+	return b
+}
+
+// WithAirtimeSerivce sets the airtime transfer service
+func (b *Builder) WithAirtimeSerivce(svc flows.AirtimeService) *Builder {
+	b.eng.services.airtime = svc
 	return b
 }
 

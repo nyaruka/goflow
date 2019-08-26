@@ -1,0 +1,77 @@
+[
+    {
+        "description": "error and failed transfer if currency not configured",
+        "action": {
+            "type": "transfer_airtime",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "amounts": {
+                "USD": 0.5
+            },
+            "result_name": "Reward Transfer"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "no amount configured for transfers in RWF",
+                "type": "error"
+            },
+            {
+                "amount": 0,
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "currency": "RWF",
+                "status": "failed",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "airtime_transferred"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Reward Transfer",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "inspection": {
+            "templates": [],
+            "dependencies": [],
+            "results": []
+        }
+    },
+    {
+        "description": "transfer and set result events if transfer made",
+        "action": {
+            "type": "transfer_airtime",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "amounts": {
+                "RWF": 500,
+                "USD": 0.5
+            },
+            "result_name": "Reward Transfer"
+        },
+        "events": [
+            {
+                "amount": 500,
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "currency": "RWF",
+                "status": "success",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "airtime_transferred"
+            },
+            {
+                "category": "Success",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Reward Transfer",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "500"
+            }
+        ],
+        "inspection": {
+            "templates": [],
+            "dependencies": [],
+            "results": []
+        }
+    }
+]

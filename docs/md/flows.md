@@ -946,5 +946,47 @@ will be created and it's the responsibility of the caller to act on that by init
 }
 ```
 </div>
+<h2 class="item_title"><a name="action:transfer_airtime" href="#action:transfer_airtime">transfer_airtime</a></h2>
+
+Attempts to make an airtime transfer to the contact.
+
+An [email_created](sessions.html#event:email_created) event will be created for each email address.
+
+<div class="input_action"><h3>Action</h3>
+
+```json
+{
+    "type": "transfer_airtime",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "amounts": {
+        "RWF": 500,
+        "USD": 0.5
+    },
+    "result_name": "reward_transfer"
+}
+```
+</div><div class="output_event"><h3>Event</h3>
+
+```json
+[
+    {
+        "type": "airtime_transferred",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "1348fd9e-c478-42de-b8bf-413ebe9265fa",
+        "currency": "RWF",
+        "amount": 500,
+        "status": "success"
+    },
+    {
+        "type": "run_result_changed",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "1348fd9e-c478-42de-b8bf-413ebe9265fa",
+        "name": "reward_transfer",
+        "value": "500",
+        "category": "Success"
+    }
+]
+```
+</div>
 
 </div>

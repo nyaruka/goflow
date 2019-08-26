@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
@@ -223,7 +222,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := test.NewEngine()
 	session, _, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
 
