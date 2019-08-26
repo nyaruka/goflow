@@ -12,11 +12,11 @@ type flowAssets struct {
 	byUUID map[assets.FlowUUID]flows.Flow
 
 	mutex  sync.Mutex
-	source assets.AssetSource
+	source assets.Source
 }
 
 // NewFlowAssets creates a new flow assets
-func NewFlowAssets(source assets.AssetSource) flows.FlowAssets {
+func NewFlowAssets(source assets.Source) flows.FlowAssets {
 	return &flowAssets{
 		byUUID: make(map[assets.FlowUUID]flows.Flow),
 		source: source,

@@ -107,6 +107,8 @@ type FlowAssets interface {
 
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
+	Source() assets.Source
+
 	Channels() *ChannelAssets
 	Fields() *FieldAssets
 	Flows() FlowAssets

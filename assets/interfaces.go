@@ -231,8 +231,8 @@ type TemplateTranslation interface {
 	Channel() ChannelReference
 }
 
-// AssetSource is a source of assets
-type AssetSource interface {
+// Source is a source of assets
+type Source interface {
 	Channels() ([]Channel, error)
 	Fields() ([]Field, error)
 	Flow(FlowUUID) (Flow, error)
