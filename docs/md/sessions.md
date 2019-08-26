@@ -268,6 +268,8 @@ Events are created when airtime has been transferred to the contact.
 {
     "type": "airtime_transferred",
     "created_on": "2006-01-02T15:04:05Z",
+    "sender": "tel:4748",
+    "recipient": "tel:+1242563637",
     "currency": "RWF",
     "amount": 100,
     "status": "success"

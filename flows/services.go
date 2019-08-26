@@ -22,6 +22,8 @@ const (
 
 // AirtimeTransfer is the result of an attempted airtime transfer
 type AirtimeTransfer struct {
+	Sender        urns.URN
+	Recipient     urns.URN
 	Currency      string
 	DesiredAmount decimal.Decimal
 	ActualAmount  decimal.Decimal
@@ -31,5 +33,5 @@ type AirtimeTransfer struct {
 // AirtimeService is the interface for an airtime transfer service
 type AirtimeService interface {
 	// Transfer transfers airtime to the given URN
-	Transfer(session Session, from urns.URN, to urns.URN, amounts map[string]decimal.Decimal) (*AirtimeTransfer, error)
+	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*AirtimeTransfer, error)
 }

@@ -66,7 +66,14 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 	}
 	recipient := telURNs[0].URN()
 
-	transfer, err := run.Session().Engine().Services().Airtime().Transfer(run.Session(), urns.NilURN, recipient, a.Amounts)
+	// if contact's preferred channel is tel, use that as the sender
+	var sender urns.URN
+	channel := contact.PreferredChannel()
+	if channel != nil && channel.SupportsScheme(urns.TelScheme) {
+		sender, _ = urns.Parse("tel:" + channel.Address())
+	}
+
+	transfer, err := run.Session().Engine().Services().Airtime().Transfer(run.Session(), sender, recipient, a.Amounts)
 	if err != nil {
 		// an error without a transfer is considered a failure because we have nothing to route on
 		if transfer == nil {

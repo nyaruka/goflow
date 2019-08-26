@@ -12,6 +12,8 @@
                     "amount": 0,
                     "created_on": "2018-07-06T12:30:06.123456789Z",
                     "currency": "RWF",
+                    "recipient": "tel:+12065551212",
+                    "sender": "",
                     "status": "failed",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "airtime_transferred"
@@ -67,6 +69,8 @@
                                 "amount": 0,
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "currency": "RWF",
+                                "recipient": "tel:+12065551212",
+                                "sender": "",
                                 "status": "failed",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "airtime_transferred"

@@ -26,10 +26,12 @@ func newAirtimeService(currency string) *airtimeService {
 	return &airtimeService{fixedCurrency: currency}
 }
 
-func (s *airtimeService) Transfer(session flows.Session, from urns.URN, to urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
+func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
 	t := &flows.AirtimeTransfer{
-		Currency: s.fixedCurrency,
-		Status:   flows.AirtimeTransferStatusFailed,
+		Sender:    sender,
+		Recipient: recipient,
+		Currency:  s.fixedCurrency,
+		Status:    flows.AirtimeTransferStatusFailed,
 	}
 
 	amount, hasAmount := amounts[s.fixedCurrency]

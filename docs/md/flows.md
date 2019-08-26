@@ -973,6 +973,8 @@ An [email_created](sessions.html#event:email_created) event will be created for 
         "type": "airtime_transferred",
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "1348fd9e-c478-42de-b8bf-413ebe9265fa",
+        "sender": "tel:+12345671111",
+        "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "currency": "RWF",
         "amount": 500,
         "status": "success"

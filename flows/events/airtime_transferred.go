@@ -1,6 +1,7 @@
 package events
 
 import (
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 
 	"github.com/shopspring/decimal"
@@ -18,6 +19,8 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //   {
 //     "type": "airtime_transferred",
 //     "created_on": "2006-01-02T15:04:05Z",
+//     "sender": "tel:4748",
+//     "recipient": "tel:+1242563637",
 //     "currency": "RWF",
 //     "amount": 100,
 //     "status": "success"
@@ -27,15 +30,19 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 type AirtimeTransferredEvent struct {
 	baseEvent
 
-	Currency string          `json:"currency"`
-	Amount   decimal.Decimal `json:"amount"`
-	Status   string          `json:"status"`
+	Sender    urns.URN        `json:"sender"`
+	Recipient urns.URN        `json:"recipient"`
+	Currency  string          `json:"currency"`
+	Amount    decimal.Decimal `json:"amount"`
+	Status    string          `json:"status"`
 }
 
 // NewAirtimeTransferred creates a new airtime transferred event
 func NewAirtimeTransferred(t *flows.AirtimeTransfer) *AirtimeTransferredEvent {
 	return &AirtimeTransferredEvent{
 		baseEvent: newBaseEvent(TypeAirtimeTransferred),
+		Sender:    t.Sender,
+		Recipient: t.Recipient,
 		Currency:  t.Currency,
 		Amount:    t.ActualAmount,
 		Status:    string(t.Status),
