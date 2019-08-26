@@ -1,3 +1,7 @@
+v0.48.2
+----------
+ * Include sender and recipient in airtime events
+
 v0.48.1
 ----------
  * Add .Source() to SessionAssets interface
