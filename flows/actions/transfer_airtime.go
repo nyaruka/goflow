@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeTransferAirtime, func() flows.Action { return &TransferAirtimeAction{} })
+	registerType(TypeTransferAirtime, func() flows.Action { return &TransferAirtimeAction{} })
 }
 
 var statusCategories = map[flows.AirtimeTransferStatus]string{
@@ -34,17 +34,17 @@ const TypeTransferAirtime string = "transfer_airtime"
 //
 // @action transfer_airtime
 type TransferAirtimeAction struct {
-	BaseAction
+	baseAction
 	onlineAction
 
 	Amounts    map[string]decimal.Decimal `json:"amounts"`
 	ResultName string                     `json:"result_name,omitempty"`
 }
 
-// NewTransferAirtimeAction creates a new airtime transfer action
-func NewTransferAirtimeAction(uuid flows.ActionUUID, amounts map[string]decimal.Decimal, resultName string) *TransferAirtimeAction {
+// NewTransferAirtime creates a new airtime transfer action
+func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decimal, resultName string) *TransferAirtimeAction {
 	return &TransferAirtimeAction{
-		BaseAction: NewBaseAction(TypeTransferAirtime, uuid),
+		baseAction: newBaseAction(TypeTransferAirtime, uuid),
 		Amounts:    amounts,
 		ResultName: resultName,
 	}
@@ -54,14 +54,14 @@ func NewTransferAirtimeAction(uuid flows.ActionUUID, amounts map[string]decimal.
 func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	contact := run.Contact()
 	if contact == nil {
-		logEvent(events.NewErrorEvent(errors.Errorf("can't execute action in session without a contact")))
+		logEvent(events.NewError(errors.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 
 	// check that our contact has a tel URN
 	telURNs := contact.URNs().WithScheme(urns.TelScheme)
 	if len(telURNs) == 0 {
-		logEvent(events.NewErrorEvent(errors.Errorf("can't transfer airtime to contact without a tel URN")))
+		logEvent(events.NewError(errors.Errorf("can't transfer airtime to contact without a tel URN")))
 		return nil
 	}
 	recipient := telURNs[0].URN()
@@ -73,10 +73,10 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 			a.fail(run, err, logEvent)
 			return nil
 		}
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 	}
 
-	logEvent(events.NewAirtimeTransferredEvent(transfer))
+	logEvent(events.NewAirtimeTransferred(transfer))
 
 	if a.ResultName != "" {
 		value := transfer.ActualAmount.String()

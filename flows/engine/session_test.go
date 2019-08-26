@@ -653,7 +653,7 @@ func TestResumeWithMissingFlowAssets(t *testing.T) {
 
 	env := envs.NewEnvironmentBuilder().Build()
 	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
-	trigger := triggers.NewManualTrigger(env, assets.NewFlowReference(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"), "Parent Flow"), contact, nil)
+	trigger := triggers.NewManual(env, assets.NewFlowReference(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"), "Parent Flow"), contact, nil)
 
 	// run session to wait in child flow
 	eng := engine.NewBuilder().Build()
@@ -673,7 +673,7 @@ func TestResumeWithMissingFlowAssets(t *testing.T) {
 	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	_, err = session.Resume(resumes.NewMsgResume(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
+	_, err = session.Resume(resumes.NewMsg(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
 
 	// should have an errored session
 	assert.NoError(t, err)
@@ -687,7 +687,7 @@ func TestResumeWithMissingFlowAssets(t *testing.T) {
 	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	_, err = session.Resume(resumes.NewMsgResume(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
+	_, err = session.Resume(resumes.NewMsg(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
 
 	// should have an errored session
 	assert.NoError(t, err)
@@ -712,7 +712,7 @@ func TestWaitTimeout(t *testing.T) {
 
 	contact := flows.NewEmptyContact(sa, "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
-	trigger := triggers.NewManualTrigger(nil, flow.Reference(), contact, nil)
+	trigger := triggers.NewManual(nil, flow.Reference(), contact, nil)
 
 	// create session
 	eng := test.NewEngine()
@@ -730,7 +730,7 @@ func TestWaitTimeout(t *testing.T) {
 	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
 	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
-	_, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil))
+	_, err = session.Resume(resumes.NewWaitTimeout(nil, nil))
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())

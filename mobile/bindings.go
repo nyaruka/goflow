@@ -167,11 +167,11 @@ type Trigger struct {
 	target flows.Trigger
 }
 
-// NewManualTrigger creates a new manual trigger
-func NewManualTrigger(environment *Environment, contact *Contact, flow *FlowReference) *Trigger {
+// NewManual creates a new manual trigger
+func NewManual(environment *Environment, contact *Contact, flow *FlowReference) *Trigger {
 	flowRef := assets.NewFlowReference(assets.FlowUUID(flow.uuid), flow.name)
 	return &Trigger{
-		target: triggers.NewManualTrigger(environment.target, flowRef, contact.target, nil),
+		target: triggers.NewManual(environment.target, flowRef, contact.target, nil),
 	}
 }
 
@@ -180,8 +180,8 @@ type Resume struct {
 	target flows.Resume
 }
 
-// NewMsgResume creates a new message resume
-func NewMsgResume(environment *Environment, contact *Contact, msg *MsgIn) *Resume {
+// NewMsg creates a new message resume
+func NewMsg(environment *Environment, contact *Contact, msg *MsgIn) *Resume {
 	var e envs.Environment
 	if environment != nil {
 		e = environment.target
@@ -192,7 +192,7 @@ func NewMsgResume(environment *Environment, contact *Contact, msg *MsgIn) *Resum
 	}
 
 	return &Resume{
-		target: resumes.NewMsgResume(e, c, msg.target),
+		target: resumes.NewMsg(e, c, msg.target),
 	}
 }
 

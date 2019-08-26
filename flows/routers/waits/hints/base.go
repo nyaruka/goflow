@@ -12,7 +12,7 @@ import (
 var registeredTypes = map[string](func() flows.Hint){}
 
 // RegisterType registers a new type of wait
-func RegisterType(name string, initFunc func() flows.Hint) {
+func registerType(name string, initFunc func() flows.Hint) {
 	registeredTypes[name] = initFunc
 }
 

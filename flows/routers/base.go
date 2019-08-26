@@ -20,8 +20,8 @@ type readFunc func(json.RawMessage) (flows.Router, error)
 
 var registeredTypes = map[string]readFunc{}
 
-// RegisterType registers a new type of router
-func RegisterType(name string, f readFunc) {
+// registers a new type of router
+func registerType(name string, f readFunc) {
 	registeredTypes[name] = f
 }
 
@@ -34,42 +34,43 @@ func RegisteredTypes() []string {
 	return typeNames
 }
 
-// BaseRouter is the base class for all our router classes
-type BaseRouter struct {
+// baseRouter is the base class for all router types
+type baseRouter struct {
 	type_      string
 	wait       flows.Wait
 	resultName string
 	categories []*Category
 }
 
-func newBaseRouter(typeName string, wait flows.Wait, resultName string, categories []*Category) BaseRouter {
-	return BaseRouter{type_: typeName, wait: wait, resultName: resultName, categories: categories}
+// creates a new base router
+func newBaseRouter(typeName string, wait flows.Wait, resultName string, categories []*Category) baseRouter {
+	return baseRouter{type_: typeName, wait: wait, resultName: resultName, categories: categories}
 }
 
 // Type returns the type of this router
-func (r *BaseRouter) Type() string { return r.type_ }
+func (r *baseRouter) Type() string { return r.type_ }
 
 // Wait returns the optional wait on this router
-func (r *BaseRouter) Wait() flows.Wait { return r.wait }
+func (r *baseRouter) Wait() flows.Wait { return r.wait }
 
 // AllowTimeout returns whether this router can be resumed at with a timeout
-func (r *BaseRouter) AllowTimeout() bool {
+func (r *baseRouter) AllowTimeout() bool {
 	return r.wait != nil && !utils.IsNil(r.wait.Timeout())
 }
 
 // ResultName returns the name which the result of this router should be saved as (if any)
-func (r *BaseRouter) ResultName() string { return r.resultName }
+func (r *baseRouter) ResultName() string { return r.resultName }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *BaseRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
+func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (r *BaseRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (r *BaseRouter) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {
+func (r *baseRouter) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {
 	if r.resultName != "" {
 		categoryNames := make([]string, len(r.categories))
 		for i := range r.categories {
@@ -80,7 +81,7 @@ func (r *BaseRouter) EnumerateResults(node flows.Node, include func(*flows.Resul
 	}
 }
 
-func (r *BaseRouter) validate(exits []flows.Exit) error {
+func (r *baseRouter) validate(exits []flows.Exit) error {
 	// check wait timeout category is valid
 	if r.AllowTimeout() && !r.isValidCategory(r.wait.Timeout().CategoryUUID()) {
 		return errors.Errorf("timeout category %s is not a valid category", r.wait.Timeout().CategoryUUID())
@@ -96,7 +97,7 @@ func (r *BaseRouter) validate(exits []flows.Exit) error {
 	return nil
 }
 
-func (r *BaseRouter) isValidCategory(uuid flows.CategoryUUID) bool {
+func (r *baseRouter) isValidCategory(uuid flows.CategoryUUID) bool {
 	for _, c := range r.categories {
 		if c.UUID() == uuid {
 			return true
@@ -105,7 +106,7 @@ func (r *BaseRouter) isValidCategory(uuid flows.CategoryUUID) bool {
 	return false
 }
 
-func (r *BaseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
+func (r *baseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 	for _, e := range exits {
 		if e.UUID() == uuid {
 			return true
@@ -117,7 +118,7 @@ func (r *BaseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 type routerFunc func(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error)
 
 // RouteTimeout routes in the case that this router's wait timed out
-func (r *BaseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+func (r *baseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
 	if !r.AllowTimeout() {
 		return "", errors.New("can't call route timeout on router with no timeout")
 	}
@@ -137,7 +138,7 @@ func (r *BaseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent f
 	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), dates.FormatISO(timedOutOn), "", nil, logEvent)
 }
 
-func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input string, extra *types.XObject, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+func (r *baseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categoryUUID flows.CategoryUUID, match string, input string, extra *types.XObject, logEvent flows.EventCallback) (flows.ExitUUID, error) {
 	// router failed to pick a category
 	if categoryUUID == "" {
 		return "", nil
@@ -167,7 +168,7 @@ func (r *BaseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categor
 		}
 		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, dates.Now())
 		run.SaveResult(result)
-		logEvent(events.NewRunResultChangedEvent(result))
+		logEvent(events.NewRunResultChanged(result))
 	}
 
 	return category.ExitUUID(), nil
@@ -199,7 +200,7 @@ func ReadRouter(data json.RawMessage) (flows.Router, error) {
 	return f(data)
 }
 
-func (r *BaseRouter) unmarshal(e *baseRouterEnvelope) error {
+func (r *baseRouter) unmarshal(e *baseRouterEnvelope) error {
 	r.type_ = e.Type
 	r.resultName = e.ResultName
 	r.categories = e.Categories
@@ -216,7 +217,7 @@ func (r *BaseRouter) unmarshal(e *baseRouterEnvelope) error {
 	return nil
 }
 
-func (r *BaseRouter) marshal(e *baseRouterEnvelope) error {
+func (r *baseRouter) marshal(e *baseRouterEnvelope) error {
 	e.Type = r.type_
 	e.ResultName = r.resultName
 	e.Categories = r.categories

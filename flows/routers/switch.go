@@ -17,7 +17,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSwitch, readSwitchRouter)
+	registerType(TypeSwitch, readSwitchRouter)
 }
 
 // TypeSwitch is the constant for our switch router
@@ -71,17 +71,17 @@ func (c *Case) Dependencies(localization flows.Localization, include func(assets
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default category
 type SwitchRouter struct {
-	BaseRouter
+	baseRouter
 
 	operand  string
 	cases    []*Case
 	default_ flows.CategoryUUID
 }
 
-// NewSwitchRouter creates a new switch router
-func NewSwitchRouter(wait flows.Wait, resultName string, categories []*Category, operand string, cases []*Case, defaultCategory flows.CategoryUUID) *SwitchRouter {
+// NewSwitch creates a new switch router
+func NewSwitch(wait flows.Wait, resultName string, categories []*Category, operand string, cases []*Case, defaultCategory flows.CategoryUUID) *SwitchRouter {
 	return &SwitchRouter{
-		BaseRouter: newBaseRouter(TypeSwitch, wait, resultName, categories),
+		baseRouter: newBaseRouter(TypeSwitch, wait, resultName, categories),
 		default_:   defaultCategory,
 		operand:    operand,
 		cases:      cases,

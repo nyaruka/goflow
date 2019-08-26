@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeInputLabelsAdded, func() flows.Event { return &InputLabelsAddedEvent{} })
+	registerType(TypeInputLabelsAdded, func() flows.Event { return &InputLabelsAddedEvent{} })
 }
 
 // TypeInputLabelsAdded is the type of our add label action
@@ -23,16 +23,16 @@ const TypeInputLabelsAdded string = "input_labels_added"
 //
 // @event input_labels_added
 type InputLabelsAddedEvent struct {
-	BaseEvent
+	baseEvent
 
 	InputUUID flows.InputUUID          `json:"input_uuid" validate:"required,uuid4"`
 	Labels    []*assets.LabelReference `json:"labels" validate:"required,min=1,dive"`
 }
 
-// NewInputLabelsAddedEvent returns a new labels added event
-func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*flows.Label) *InputLabelsAddedEvent {
+// NewInputLabelsAdded returns a new labels added event
+func NewInputLabelsAdded(inputUUID flows.InputUUID, labels []*flows.Label) *InputLabelsAddedEvent {
 	return &InputLabelsAddedEvent{
-		BaseEvent: NewBaseEvent(TypeInputLabelsAdded),
+		baseEvent: newBaseEvent(TypeInputLabelsAdded),
 		InputUUID: inputUUID,
 		Labels:    labelsToReferences(labels),
 	}

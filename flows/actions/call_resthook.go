@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeCallResthook, func() flows.Action { return &CallResthookAction{} })
+	registerType(TypeCallResthook, func() flows.Action { return &CallResthookAction{} })
 }
 
 // TypeCallResthook is the type for the call resthook action
@@ -33,17 +33,17 @@ const TypeCallResthook string = "call_resthook"
 //
 // @action call_resthook
 type CallResthookAction struct {
-	BaseAction
+	baseAction
 	onlineAction
 
 	Resthook   string `json:"resthook" validate:"required"`
 	ResultName string `json:"result_name,omitempty"`
 }
 
-// NewCallResthookAction creates a new call resthook action
-func NewCallResthookAction(uuid flows.ActionUUID, resthook string, resultName string) *CallResthookAction {
+// NewCallResthook creates a new call resthook action
+func NewCallResthook(uuid flows.ActionUUID, resthook string, resultName string) *CallResthookAction {
 	return &CallResthookAction{
-		BaseAction: NewBaseAction(TypeCallResthook, uuid),
+		baseAction: newBaseAction(TypeCallResthook, uuid),
 		Resthook:   resthook,
 		ResultName: resultName,
 	}
@@ -70,7 +70,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	}
 
 	// regardless of what subscriber calls we make, we need to record the payload that would be sent
-	logEvent(events.NewResthookCalledEvent(a.Resthook, json.RawMessage(payload)))
+	logEvent(events.NewResthookCalled(a.Resthook, json.RawMessage(payload)))
 
 	// make a call to each subscriber URL
 	webhooks := make([]*flows.WebhookCall, 0, len(resthook.Subscribers()))
@@ -78,7 +78,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	for _, url := range resthook.Subscribers() {
 		req, err := http.NewRequest("POST", url, strings.NewReader(payload))
 		if err != nil {
-			logEvent(events.NewErrorEvent(err))
+			logEvent(events.NewError(err))
 			return nil
 		}
 
@@ -86,10 +86,10 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 		webhook, err := flows.MakeWebhookCall(run.Session(), req, a.Resthook)
 		if err != nil {
-			logEvent(events.NewErrorEvent(err))
+			logEvent(events.NewError(err))
 		} else {
 			webhooks = append(webhooks, webhook)
-			logEvent(events.NewWebhookCalledEvent(webhook))
+			logEvent(events.NewWebhookCalled(webhook))
 		}
 	}
 

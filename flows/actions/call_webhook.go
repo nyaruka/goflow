@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeCallWebhook, func() flows.Action { return &CallWebhookAction{} })
+	registerType(TypeCallWebhook, func() flows.Action { return &CallWebhookAction{} })
 }
 
 // TypeCallWebhook is the type for the call webhook action
@@ -37,7 +37,7 @@ const TypeCallWebhook string = "call_webhook"
 //
 // @action call_webhook
 type CallWebhookAction struct {
-	BaseAction
+	baseAction
 	onlineAction
 
 	Method     string            `json:"method" validate:"required,http_method"`
@@ -47,10 +47,10 @@ type CallWebhookAction struct {
 	ResultName string            `json:"result_name,omitempty"`
 }
 
-// NewCallWebhookAction creates a new call webhook action
-func NewCallWebhookAction(uuid flows.ActionUUID, method string, url string, headers map[string]string, body string, resultName string) *CallWebhookAction {
+// NewCallWebhook creates a new call webhook action
+func NewCallWebhook(uuid flows.ActionUUID, method string, url string, headers map[string]string, body string, resultName string) *CallWebhookAction {
 	return &CallWebhookAction{
-		BaseAction: NewBaseAction(TypeCallWebhook, uuid),
+		baseAction: newBaseAction(TypeCallWebhook, uuid),
 		Method:     method,
 		URL:        url,
 		Headers:    headers,
@@ -80,10 +80,10 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 	// substitute any variables in our url
 	url, err := run.EvaluateTemplate(a.URL)
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 	}
 	if url == "" {
-		logEvent(events.NewErrorEventf("call_webhook URL evaluated to empty string, skipping"))
+		logEvent(events.NewErrorf("call_webhook URL evaluated to empty string, skipping"))
 		return nil
 	}
 
@@ -94,7 +94,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 	if body != "" {
 		body, err = run.EvaluateTemplate(body)
 		if err != nil {
-			logEvent(events.NewErrorEvent(err))
+			logEvent(events.NewError(err))
 		}
 	}
 
@@ -108,7 +108,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 	for key, value := range a.Headers {
 		headerValue, err := run.EvaluateTemplate(value)
 		if err != nil {
-			logEvent(events.NewErrorEvent(err))
+			logEvent(events.NewError(err))
 		}
 
 		req.Header.Add(key, headerValue)
@@ -117,9 +117,9 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 	webhook, err := flows.MakeWebhookCall(run.Session(), req, "")
 
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 	} else {
-		logEvent(events.NewWebhookCalledEvent(webhook))
+		logEvent(events.NewWebhookCalled(webhook))
 		if a.ResultName != "" {
 			a.saveWebhookResult(run, step, a.ResultName, webhook, logEvent)
 		}

@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeChannel, readChannelTrigger)
+	registerType(TypeChannel, readChannelTrigger)
 }
 
 // TypeChannel is the type for sessions triggered by channel events
@@ -61,8 +61,8 @@ type ChannelTrigger struct {
 	event *ChannelEvent
 }
 
-// NewChannelTrigger creates a new channel trigger with the passed in values
-func NewChannelTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, event *ChannelEvent, params *types.XObject) *ChannelTrigger {
+// NewChannel creates a new channel trigger with the passed in values
+func NewChannel(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, event *ChannelEvent, params *types.XObject) *ChannelTrigger {
 	if params == nil {
 		params = types.XObjectEmpty
 	}
@@ -73,8 +73,8 @@ func NewChannelTrigger(env envs.Environment, flow *assets.FlowReference, contact
 	}
 }
 
-// NewIncomingCallTrigger creates a new channel trigger with the passed in values
-func NewIncomingCallTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, urn urns.URN, channel *assets.ChannelReference) *ChannelTrigger {
+// NewIncomingCall creates a new channel trigger with the passed in values
+func NewIncomingCall(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, urn urns.URN, channel *assets.ChannelReference) *ChannelTrigger {
 	event := NewChannelEvent(ChannelEventTypeIncomingCall, channel)
 	connection := flows.NewConnection(channel, urn)
 

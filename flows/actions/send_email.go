@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSendEmail, func() flows.Action { return &SendEmailAction{} })
+	registerType(TypeSendEmail, func() flows.Action { return &SendEmailAction{} })
 }
 
 // TypeSendEmail is the type for the send email action
@@ -31,7 +31,7 @@ const TypeSendEmail string = "send_email"
 //
 // @action send_email
 type SendEmailAction struct {
-	BaseAction
+	baseAction
 	onlineAction
 
 	Addresses []string `json:"addresses" validate:"required,min=1" engine:"evaluated"`
@@ -39,10 +39,10 @@ type SendEmailAction struct {
 	Body      string   `json:"body" validate:"required" engine:"localized,evaluated"`
 }
 
-// NewSendEmailAction creates a new send email action
-func NewSendEmailAction(uuid flows.ActionUUID, addresses []string, subject string, body string) *SendEmailAction {
+// NewSendEmail creates a new send email action
+func NewSendEmail(uuid flows.ActionUUID, addresses []string, subject string, body string) *SendEmailAction {
 	return &SendEmailAction{
-		BaseAction: NewBaseAction(TypeSendEmail, uuid),
+		baseAction: newBaseAction(TypeSendEmail, uuid),
 		Addresses:  addresses,
 		Subject:    subject,
 		Body:       body,
@@ -54,7 +54,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	localizedSubject := run.GetText(uuids.UUID(a.UUID()), "subject", a.Subject)
 	evaluatedSubject, err := run.EvaluateTemplate(localizedSubject)
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 	}
 
 	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
@@ -62,17 +62,17 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	evaluatedSubject = strings.TrimSpace(evaluatedSubject)
 
 	if evaluatedSubject == "" {
-		logEvent(events.NewErrorEventf("email subject evaluated to empty string, skipping"))
+		logEvent(events.NewErrorf("email subject evaluated to empty string, skipping"))
 		return nil
 	}
 
 	localizedBody := run.GetText(uuids.UUID(a.UUID()), "body", a.Body)
 	evaluatedBody, err := run.EvaluateTemplate(localizedBody)
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 	}
 	if evaluatedBody == "" {
-		logEvent(events.NewErrorEventf("email body evaluated to empty string, skipping"))
+		logEvent(events.NewErrorf("email body evaluated to empty string, skipping"))
 		return nil
 	}
 
@@ -81,10 +81,10 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	for _, address := range a.Addresses {
 		evaluatedAddress, err := run.EvaluateTemplate(address)
 		if err != nil {
-			logEvent(events.NewErrorEvent(err))
+			logEvent(events.NewError(err))
 		}
 		if evaluatedAddress == "" {
-			logEvent(events.NewErrorEventf("email address evaluated to empty string, skipping"))
+			logEvent(events.NewErrorf("email address evaluated to empty string, skipping"))
 			continue
 		}
 
@@ -97,7 +97,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	}
 
 	if len(evaluatedAddresses) > 0 {
-		logEvent(events.NewEmailCreatedEvent(evaluatedAddresses, evaluatedSubject, evaluatedBody))
+		logEvent(events.NewEmailCreated(evaluatedAddresses, evaluatedSubject, evaluatedBody))
 	}
 
 	return nil

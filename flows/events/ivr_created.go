@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeIVRCreated, func() flows.Event { return &IVRCreatedEvent{} })
+	registerType(TypeIVRCreated, func() flows.Event { return &IVRCreatedEvent{} })
 }
 
 // TypeIVRCreated is a constant for IVR created events
@@ -27,15 +27,15 @@ const TypeIVRCreated string = "ivr_created"
 //
 // @event ivr_created
 type IVRCreatedEvent struct {
-	BaseEvent
+	baseEvent
 
 	Msg *flows.MsgOut `json:"msg" validate:"required,dive"`
 }
 
-// NewIVRCreatedEvent creates a new IVR created event
-func NewIVRCreatedEvent(msg *flows.MsgOut) *IVRCreatedEvent {
+// NewIVRCreated creates a new IVR created event
+func NewIVRCreated(msg *flows.MsgOut) *IVRCreatedEvent {
 	return &IVRCreatedEvent{
-		BaseEvent: NewBaseEvent(TypeIVRCreated),
+		baseEvent: newBaseEvent(TypeIVRCreated),
 		Msg:       msg,
 	}
 }

@@ -38,7 +38,7 @@ func TestMsgInput(t *testing.T) {
 	)
 	msg.SetExternalID("ext12345")
 
-	input, err := inputs.NewMsgInput(session.Assets(), msg, time.Date(2018, 10, 22, 16, 12, 30, 123456, time.UTC))
+	input, err := inputs.NewMsg(session.Assets(), msg, time.Date(2018, 10, 22, 16, 12, 30, 123456, time.UTC))
 	require.NoError(t, err)
 
 	assert.Equal(t, "msg", input.Type())

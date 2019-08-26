@@ -19,11 +19,12 @@ type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback)
 
 var registeredTypes = map[string]readFunc{}
 
-// RegisterType registers a new type of trigger
-func RegisterType(name string, f readFunc) {
+// registers a new type of resume
+func registerType(name string, f readFunc) {
 	registeredTypes[name] = f
 }
 
+// base of all resume types
 type baseResume struct {
 	type_       string
 	environment envs.Environment
@@ -31,6 +32,7 @@ type baseResume struct {
 	resumedOn   time.Time
 }
 
+// creates a new base resume
 func newBaseResume(typeName string, env envs.Environment, contact *flows.Contact) baseResume {
 	return baseResume{type_: typeName, environment: env, contact: contact, resumedOn: dates.Now()}
 }
@@ -46,14 +48,14 @@ func (r *baseResume) ResumedOn() time.Time          { return r.resumedOn }
 func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) error {
 	if r.environment != nil {
 		if !run.Session().Environment().Equal(r.environment) {
-			logEvent(events.NewEnvironmentRefreshedEvent(r.environment))
+			logEvent(events.NewEnvironmentRefreshed(r.environment))
 		}
 
 		run.Session().SetEnvironment(r.environment)
 	}
 	if r.contact != nil {
 		if !run.Session().Contact().Equal(r.contact) {
-			logEvent(events.NewContactRefreshedEvent(r.contact))
+			logEvent(events.NewContactRefreshed(r.contact))
 		}
 
 		run.Session().SetContact(r.contact)

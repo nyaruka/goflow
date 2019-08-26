@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeContactLanguageChanged, func() flows.Event { return &ContactLanguageChangedEvent{} })
+	registerType(TypeContactLanguageChanged, func() flows.Event { return &ContactLanguageChangedEvent{} })
 }
 
 // TypeContactLanguageChanged is the type of our contact language changed event
@@ -22,15 +22,15 @@ const TypeContactLanguageChanged string = "contact_language_changed"
 //
 // @event contact_language_changed
 type ContactLanguageChangedEvent struct {
-	BaseEvent
+	baseEvent
 
 	Language string `json:"language"`
 }
 
-// NewContactLanguageChangedEvent returns a new contact language changed event
-func NewContactLanguageChangedEvent(language envs.Language) *ContactLanguageChangedEvent {
+// NewContactLanguageChanged returns a new contact language changed event
+func NewContactLanguageChanged(language envs.Language) *ContactLanguageChangedEvent {
 	return &ContactLanguageChangedEvent{
-		BaseEvent: NewBaseEvent(TypeContactLanguageChanged),
+		baseEvent: newBaseEvent(TypeContactLanguageChanged),
 		Language:  string(language),
 	}
 }

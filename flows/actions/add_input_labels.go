@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeAddInputLabels, func() flows.Action { return &AddInputLabelsAction{} })
+	registerType(TypeAddInputLabels, func() flows.Action { return &AddInputLabelsAction{} })
 }
 
 // TypeAddInputLabels is the type for the add label action
@@ -28,16 +28,16 @@ const TypeAddInputLabels string = "add_input_labels"
 //
 // @action add_input_labels
 type AddInputLabelsAction struct {
-	BaseAction
+	baseAction
 	universalAction
 
 	Labels []*assets.LabelReference `json:"labels" validate:"required,dive"`
 }
 
-// NewAddInputLabelsAction creates a new add labels action
-func NewAddInputLabelsAction(uuid flows.ActionUUID, labels []*assets.LabelReference) *AddInputLabelsAction {
+// NewAddInputLabels creates a new add labels action
+func NewAddInputLabels(uuid flows.ActionUUID, labels []*assets.LabelReference) *AddInputLabelsAction {
 	return &AddInputLabelsAction{
-		BaseAction: NewBaseAction(TypeAddInputLabels, uuid),
+		baseAction: newBaseAction(TypeAddInputLabels, uuid),
 		Labels:     labels,
 	}
 }
@@ -47,7 +47,7 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logMo
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {
-		logEvent(events.NewErrorEventf("can't execute action in session without input"))
+		logEvent(events.NewErrorf("can't execute action in session without input"))
 		return nil
 	}
 
@@ -57,7 +57,7 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logMo
 	}
 
 	if len(labels) > 0 {
-		logEvent(events.NewInputLabelsAddedEvent(input.UUID(), labels))
+		logEvent(events.NewInputLabelsAdded(input.UUID(), labels))
 	}
 
 	return nil

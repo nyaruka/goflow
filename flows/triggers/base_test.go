@@ -72,7 +72,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		marshaled string
 	}{
 		{
-			triggers.NewCampaignTrigger(
+			triggers.NewCampaign(
 				env,
 				flow,
 				contact,
@@ -113,7 +113,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewChannelTrigger(
+			triggers.NewChannel(
 				env,
 				flow,
 				contact,
@@ -156,7 +156,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewFlowActionTrigger(
+			triggers.NewFlowAction(
 				env,
 				flow,
 				contact,
@@ -193,7 +193,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewIncomingCallTrigger(
+			triggers.NewIncomingCall(
 				env,
 				flow,
 				contact,
@@ -243,7 +243,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewManualTrigger(
+			triggers.NewManual(
 				env,
 				flow,
 				contact,
@@ -280,7 +280,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewManualVoiceTrigger(
+			triggers.NewManualVoice(
 				env,
 				flow,
 				contact,
@@ -325,7 +325,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewMsgTrigger(
+			triggers.NewMsg(
 				env,
 				flow,
 				contact,

@@ -15,11 +15,12 @@ type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback)
 
 var registeredTypes = map[string]readFunc{}
 
-// RegisterType registers a new type of input
-func RegisterType(name string, f readFunc) {
+// registers a new type of input
+func registerType(name string, f readFunc) {
 	registeredTypes[name] = f
 }
 
+// base of all input types
 type baseInput struct {
 	type_     string
 	uuid      flows.InputUUID
@@ -27,6 +28,7 @@ type baseInput struct {
 	createdOn time.Time
 }
 
+// creates a new base input
 func newBaseInput(typeName string, uuid flows.InputUUID, channel *flows.Channel, createdOn time.Time) baseInput {
 	return baseInput{
 		type_:     typeName,

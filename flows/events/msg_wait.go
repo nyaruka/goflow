@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsgWait, func() flows.Event { return &MsgWaitEvent{} })
+	registerType(TypeMsgWait, func() flows.Event { return &MsgWaitEvent{} })
 }
 
 // TypeMsgWait is the type of our msg wait event
@@ -32,7 +32,7 @@ const TypeMsgWait string = "msg_wait"
 //
 // @event msg_wait
 type MsgWaitEvent struct {
-	BaseEvent
+	baseEvent
 
 	TimeoutSeconds *int       `json:"timeout_seconds,omitempty"`
 	Hint           flows.Hint `json:"hint,omitempty"`
@@ -41,7 +41,7 @@ type MsgWaitEvent struct {
 // NewMsgWait returns a new msg wait with the passed in timeout
 func NewMsgWait(timeoutSeconds *int, hint flows.Hint) *MsgWaitEvent {
 	return &MsgWaitEvent{
-		BaseEvent:      NewBaseEvent(TypeMsgWait),
+		baseEvent:      newBaseEvent(TypeMsgWait),
 		TimeoutSeconds: timeoutSeconds,
 		Hint:           hint,
 	}
@@ -52,7 +52,7 @@ func NewMsgWait(timeoutSeconds *int, hint flows.Hint) *MsgWaitEvent {
 //------------------------------------------------------------------------------------------
 
 type msgWaitEnvelope struct {
-	BaseEvent
+	baseEvent
 
 	TimeoutSeconds *int            `json:"timeout_seconds,omitempty"`
 	Hint           json.RawMessage `json:"hint,omitempty"`
@@ -65,7 +65,7 @@ func (e *MsgWaitEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	e.BaseEvent = v.BaseEvent
+	e.baseEvent = v.baseEvent
 	e.TimeoutSeconds = v.TimeoutSeconds
 
 	var err error

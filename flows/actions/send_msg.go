@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSendMsg, func() flows.Action { return &SendMsgAction{} })
+	registerType(TypeSendMsg, func() flows.Action { return &SendMsgAction{} })
 }
 
 // TypeSendMsg is the type for the send message action
@@ -38,7 +38,7 @@ const TypeSendMsg string = "send_msg"
 //
 // @action send_msg
 type SendMsgAction struct {
-	BaseAction
+	baseAction
 	universalAction
 	createMsgAction
 
@@ -52,10 +52,10 @@ type Templating struct {
 	Variables []string                  `json:"variables" engine:"evaluated"`
 }
 
-// NewSendMsgAction creates a new send msg action
-func NewSendMsgAction(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, allURNs bool) *SendMsgAction {
+// NewSendMsg creates a new send msg action
+func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, allURNs bool) *SendMsgAction {
 	return &SendMsgAction{
-		BaseAction: NewBaseAction(TypeSendMsg, uuid),
+		baseAction: newBaseAction(TypeSendMsg, uuid),
 		createMsgAction: createMsgAction{
 			Text:         text,
 			Attachments:  attachments,
@@ -68,7 +68,7 @@ func NewSendMsgAction(uuid flows.ActionUUID, text string, attachments []string, 
 // Execute runs this action
 func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {
-		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -96,7 +96,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 				for i, t := range a.Templating.Variables {
 					sub, err := run.EvaluateTemplate(t)
 					if err != nil {
-						logEvent(events.NewErrorEvent(err))
+						logEvent(events.NewError(err))
 					}
 					templateVariables[i] = sub
 				}
@@ -107,14 +107,14 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 		}
 
 		msg := flows.NewMsgOut(dest.URN.URN(), channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating)
-		logEvent(events.NewMsgCreatedEvent(msg))
+		logEvent(events.NewMsgCreated(msg))
 	}
 
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
 		msg := flows.NewMsgOut(urns.NilURN, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, nil)
-		logEvent(events.NewMsgCreatedEvent(msg))
+		logEvent(events.NewMsgCreated(msg))
 	}
 
 	return nil

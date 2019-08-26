@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeEmailCreated, func() flows.Event { return &EmailCreatedEvent{} })
+	registerType(TypeEmailCreated, func() flows.Event { return &EmailCreatedEvent{} })
 }
 
 // TypeEmailCreated is our type for the email event
@@ -23,17 +23,17 @@ const TypeEmailCreated string = "email_created"
 //
 // @event email_created
 type EmailCreatedEvent struct {
-	BaseEvent
+	baseEvent
 
 	Addresses []string `json:"addresses" validate:"required,min=1"`
 	Subject   string   `json:"subject" validate:"required"`
 	Body      string   `json:"body"`
 }
 
-// NewEmailCreatedEvent returns a new email event with the passed in subject, body and emails
-func NewEmailCreatedEvent(addresses []string, subject string, body string) *EmailCreatedEvent {
+// NewEmailCreated returns a new email event with the passed in subject, body and emails
+func NewEmailCreated(addresses []string, subject string, body string) *EmailCreatedEvent {
 	return &EmailCreatedEvent{
-		BaseEvent: NewBaseEvent(TypeEmailCreated),
+		baseEvent: newBaseEvent(TypeEmailCreated),
 		Addresses: addresses,
 		Subject:   subject,
 		Body:      body,

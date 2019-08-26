@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeStartSession, func() flows.Action { return &StartSessionAction{} })
+	registerType(TypeStartSession, func() flows.Action { return &StartSessionAction{} })
 }
 
 // TypeStartSession is the type for the start session action
@@ -30,7 +30,7 @@ const TypeStartSession string = "start_session"
 //
 // @action start_session
 type StartSessionAction struct {
-	BaseAction
+	baseAction
 	onlineAction
 	otherContactsAction
 
@@ -38,10 +38,10 @@ type StartSessionAction struct {
 	CreateContact bool                  `json:"create_contact,omitempty"`
 }
 
-// NewStartSessionAction creates a new start session action
-func NewStartSessionAction(uuid flows.ActionUUID, flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string, createContact bool) *StartSessionAction {
+// NewStartSession creates a new start session action
+func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string, createContact bool) *StartSessionAction {
 	return &StartSessionAction{
-		BaseAction: NewBaseAction(TypeStartSession, uuid),
+		baseAction: newBaseAction(TypeStartSession, uuid),
 		otherContactsAction: otherContactsAction{
 			URNs:       urns,
 			Contacts:   contacts,
@@ -67,7 +67,7 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 	// if we have any recipients, log an event
 	if len(urnList) > 0 || len(contactRefs) > 0 || len(groupRefs) > 0 || a.CreateContact {
-		logEvent(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
+		logEvent(events.NewSessioned(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
 	}
 	return nil
 }

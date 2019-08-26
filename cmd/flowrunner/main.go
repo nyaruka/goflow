@@ -110,9 +110,9 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 
 	if initialMsg != "" {
 		msg := createMessage(contact, initialMsg)
-		repro.Trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil)
+		repro.Trigger = triggers.NewMsg(env, flow.Reference(), contact, msg, nil)
 	} else {
-		repro.Trigger = triggers.NewManualTrigger(env, flow.Reference(), contact, nil)
+		repro.Trigger = triggers.NewManual(env, flow.Reference(), contact, nil)
 	}
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
@@ -138,10 +138,10 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 
 		// create our resume
 		if text == "/timeout" {
-			resume = resumes.NewWaitTimeoutResume(nil, nil)
+			resume = resumes.NewWaitTimeout(nil, nil)
 		} else {
 			msg := createMessage(contact, scanner.Text())
-			resume = resumes.NewMsgResume(nil, nil, msg)
+			resume = resumes.NewMsg(nil, nil, msg)
 		}
 
 		repro.Resumes = append(repro.Resumes, resume)

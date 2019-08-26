@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeDigits, func() flows.Hint { return &DigitsHint{} })
+	registerType(TypeDigits, func() flows.Hint { return &DigitsHint{} })
 }
 
 // TypeDigits is the type of our digits hint

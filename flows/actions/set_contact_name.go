@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSetContactName, func() flows.Action { return &SetContactNameAction{} })
+	registerType(TypeSetContactName, func() flows.Action { return &SetContactNameAction{} })
 }
 
 // TypeSetContactName is the type for the set contact name action
@@ -27,16 +27,16 @@ const TypeSetContactName string = "set_contact_name"
 //
 // @action set_contact_name
 type SetContactNameAction struct {
-	BaseAction
+	baseAction
 	universalAction
 
 	Name string `json:"name" engine:"evaluated"`
 }
 
-// NewSetContactNameAction creates a new set name action
-func NewSetContactNameAction(uuid flows.ActionUUID, name string) *SetContactNameAction {
+// NewSetContactName creates a new set name action
+func NewSetContactName(uuid flows.ActionUUID, name string) *SetContactNameAction {
 	return &SetContactNameAction{
-		BaseAction: NewBaseAction(TypeSetContactName, uuid),
+		baseAction: newBaseAction(TypeSetContactName, uuid),
 		Name:       name,
 	}
 }
@@ -44,7 +44,7 @@ func NewSetContactNameAction(uuid flows.ActionUUID, name string) *SetContactName
 // Execute runs this action
 func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {
-		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -53,10 +53,10 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, logMo
 
 	// if we received an error, log it
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 		return nil
 	}
 
-	a.applyModifier(run, modifiers.NewNameModifier(name), logModifier, logEvent)
+	a.applyModifier(run, modifiers.NewName(name), logModifier, logEvent)
 	return nil
 }

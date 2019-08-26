@@ -179,9 +179,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
-				trigger = triggers.NewManualVoiceTrigger(env, flow.Reference(), contact, connection, nil)
+				trigger = triggers.NewManualVoice(env, flow.Reference(), contact, connection, nil)
 			} else {
-				trigger = triggers.NewManualTrigger(env, flow.Reference(), contact, nil)
+				trigger = triggers.NewManual(env, flow.Reference(), contact, nil)
 			}
 		} else {
 			msg := flows.NewMsgIn(
@@ -194,7 +194,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 					"audio/mp3:http://s3.amazon.com/bucket/test.mp3",
 				},
 			)
-			trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil)
+			trigger = triggers.NewMsg(env, flow.Reference(), contact, msg, nil)
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
@@ -249,7 +249,7 @@ func TestConstructors(t *testing.T) {
 		json   string
 	}{
 		{
-			actions.NewAddContactGroupsAction(
+			actions.NewAddContactGroups(
 				actionUUID,
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"),
@@ -271,7 +271,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewAddContactURNAction(
+			actions.NewAddContactURN(
 				actionUUID,
 				"tel",
 				"+234532626677",
@@ -284,7 +284,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewAddInputLabelsAction(
+			actions.NewAddInputLabels(
 				actionUUID,
 				[]*assets.LabelReference{
 					assets.NewLabelReference(assets.LabelUUID("3f65d88a-95dc-4140-9451-943e94e06fea"), "Spam"),
@@ -306,7 +306,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewCallResthookAction(
+			actions.NewCallResthook(
 				actionUUID,
 				"new-registration",
 				"My Result",
@@ -319,7 +319,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewCallWebhookAction(
+			actions.NewCallWebhook(
 				actionUUID,
 				"POST",
 				"http://example.com/ping",
@@ -342,7 +342,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewPlayAudioAction(
+			actions.NewPlayAudio(
 				actionUUID,
 				"http://uploads.temba.io/2353262.m4a",
 			),
@@ -353,7 +353,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSayMsgAction(
+			actions.NewSayMsg(
 				actionUUID,
 				"Hi @contact.name, are you ready to complete today's survey?",
 				"http://uploads.temba.io/2353262.m4a",
@@ -366,7 +366,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewRemoveContactGroupsAction(
+			actions.NewRemoveContactGroups(
 				actionUUID,
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"),
@@ -389,7 +389,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSendBroadcastAction(
+			actions.NewSendBroadcast(
 				actionUUID,
 				"Hi there",
 				[]string{"http://example.com/red.jpg"},
@@ -425,7 +425,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSendEmailAction(
+			actions.NewSendEmail(
 				actionUUID,
 				[]string{"bob@example.com"},
 				"Hi there",
@@ -440,7 +440,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSendMsgAction(
+			actions.NewSendMsg(
 				actionUUID,
 				"Hi there",
 				[]string{"http://example.com/red.jpg"},
@@ -457,7 +457,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSetContactChannelAction(
+			actions.NewSetContactChannel(
 				actionUUID,
 				assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
 			),
@@ -471,7 +471,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSetContactFieldAction(
+			actions.NewSetContactField(
 				actionUUID,
 				assets.NewFieldReference("gender", "Gender"),
 				"Male",
@@ -487,7 +487,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSetContactLanguageAction(
+			actions.NewSetContactLanguage(
 				actionUUID,
 				"eng",
 			),
@@ -498,7 +498,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSetContactNameAction(
+			actions.NewSetContactName(
 				actionUUID,
 				"Bob",
 			),
@@ -509,7 +509,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSetContactTimezoneAction(
+			actions.NewSetContactTimezone(
 				actionUUID,
 				"Africa/Kigali",
 			),
@@ -520,7 +520,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSetRunResultAction(
+			actions.NewSetRunResult(
 				actionUUID,
 				"Response 1",
 				"yes",
@@ -535,7 +535,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewEnterFlowAction(
+			actions.NewEnterFlow(
 				actionUUID,
 				assets.NewFlowReference(assets.FlowUUID("fece6eac-9127-4343-9269-56e88f391562"), "Parent"),
 				true, // terminal
@@ -551,7 +551,7 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewStartSessionAction(
+			actions.NewStartSession(
 				actionUUID,
 				assets.NewFlowReference(assets.FlowUUID("fece6eac-9127-4343-9269-56e88f391562"), "Parent"),
 				[]urns.URN{"twitter:nyaruka"},

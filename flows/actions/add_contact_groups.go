@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeAddContactGroups, func() flows.Action { return &AddContactGroupsAction{} })
+	registerType(TypeAddContactGroups, func() flows.Action { return &AddContactGroupsAction{} })
 }
 
 // TypeAddContactGroups is our type for the add to groups action
@@ -28,16 +28,16 @@ const TypeAddContactGroups string = "add_contact_groups"
 //
 // @action add_contact_groups
 type AddContactGroupsAction struct {
-	BaseAction
+	baseAction
 	universalAction
 
 	Groups []*assets.GroupReference `json:"groups" validate:"required,dive"`
 }
 
-// NewAddContactGroupsAction creates a new add to groups action
-func NewAddContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupReference) *AddContactGroupsAction {
+// NewAddContactGroups creates a new add to groups action
+func NewAddContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference) *AddContactGroupsAction {
 	return &AddContactGroupsAction{
-		BaseAction: NewBaseAction(TypeAddContactGroups, uuid),
+		baseAction: newBaseAction(TypeAddContactGroups, uuid),
 		Groups:     groups,
 	}
 }
@@ -46,7 +46,7 @@ func NewAddContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupRefe
 func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	contact := run.Contact()
 	if contact == nil {
-		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -55,6 +55,6 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 		return err
 	}
 
-	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsAdd), logModifier, logEvent)
+	a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsAdd), logModifier, logEvent)
 	return nil
 }

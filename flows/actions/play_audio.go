@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypePlayAudio, func() flows.Action { return &PlayAudioAction{} })
+	registerType(TypePlayAudio, func() flows.Action { return &PlayAudioAction{} })
 }
 
 // TypePlayAudio is the type for the play audio action
@@ -29,16 +29,16 @@ const TypePlayAudio string = "play_audio"
 //
 // @action play_audio
 type PlayAudioAction struct {
-	BaseAction
+	baseAction
 	voiceAction
 
 	AudioURL string `json:"audio_url" validate:"required" engine:"localized,evaluated"`
 }
 
-// NewPlayAudioAction creates a new play message action
-func NewPlayAudioAction(uuid flows.ActionUUID, audioURL string) *PlayAudioAction {
+// NewPlayAudio creates a new play message action
+func NewPlayAudio(uuid flows.ActionUUID, audioURL string) *PlayAudioAction {
 	return &PlayAudioAction{
-		BaseAction: NewBaseAction(TypePlayAudio, uuid),
+		baseAction: newBaseAction(TypePlayAudio, uuid),
 		AudioURL:   audioURL,
 	}
 }
@@ -49,13 +49,13 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	localizedAudioURL := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
 	evaluatedAudioURL, err := run.EvaluateTemplate(localizedAudioURL)
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 		return nil
 	}
 
 	evaluatedAudioURL = strings.TrimSpace(evaluatedAudioURL)
 	if evaluatedAudioURL == "" {
-		logEvent(events.NewErrorEventf("audio URL evaluated to empty, skipping"))
+		logEvent(events.NewErrorf("audio URL evaluated to empty, skipping"))
 		return nil
 	}
 
@@ -65,7 +65,7 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	// if we have an audio URL, turn it into a message
 	attachments := []utils.Attachment{utils.Attachment(fmt.Sprintf("audio:%s", evaluatedAudioURL))}
 	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), "", attachments, nil, nil)
-	logEvent(events.NewIVRCreatedEvent(msg))
+	logEvent(events.NewIVRCreated(msg))
 
 	return nil
 }

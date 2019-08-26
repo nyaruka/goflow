@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsgReceived, func() flows.Event { return &MsgReceivedEvent{} })
+	registerType(TypeMsgReceived, func() flows.Event { return &MsgReceivedEvent{} })
 }
 
 // TypeMsgReceived is a constant for incoming messages
@@ -28,15 +28,15 @@ const TypeMsgReceived string = "msg_received"
 //
 // @event msg_received
 type MsgReceivedEvent struct {
-	BaseEvent
+	baseEvent
 
 	Msg flows.MsgIn `json:"msg" validate:"required,dive"`
 }
 
-// NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, URN and text
-func NewMsgReceivedEvent(msg *flows.MsgIn) *MsgReceivedEvent {
+// NewMsgReceived creates a new incoming msg event for the passed in channel, URN and text
+func NewMsgReceived(msg *flows.MsgIn) *MsgReceivedEvent {
 	return &MsgReceivedEvent{
-		BaseEvent: NewBaseEvent(TypeMsgReceived),
+		baseEvent: newBaseEvent(TypeMsgReceived),
 		Msg:       *msg,
 	}
 }

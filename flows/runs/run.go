@@ -139,7 +139,7 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 }
 
 func (r *flowRun) LogError(step flows.Step, err error) {
-	r.LogEvent(step, events.NewErrorEvent(err))
+	r.LogEvent(step, events.NewError(err))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }

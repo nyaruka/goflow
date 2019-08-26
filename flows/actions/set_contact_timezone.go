@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSetContactTimezone, func() flows.Action { return &SetContactTimezoneAction{} })
+	registerType(TypeSetContactTimezone, func() flows.Action { return &SetContactTimezoneAction{} })
 }
 
 // TypeSetContactTimezone is the type for the set contact timezone action
@@ -28,16 +28,16 @@ const TypeSetContactTimezone string = "set_contact_timezone"
 //
 // @action set_contact_timezone
 type SetContactTimezoneAction struct {
-	BaseAction
+	baseAction
 	universalAction
 
 	Timezone string `json:"timezone" engine:"evaluated"`
 }
 
-// NewSetContactTimezoneAction creates a new set timezone action
-func NewSetContactTimezoneAction(uuid flows.ActionUUID, timezone string) *SetContactTimezoneAction {
+// NewSetContactTimezone creates a new set timezone action
+func NewSetContactTimezone(uuid flows.ActionUUID, timezone string) *SetContactTimezoneAction {
 	return &SetContactTimezoneAction{
-		BaseAction: NewBaseAction(TypeSetContactTimezone, uuid),
+		baseAction: newBaseAction(TypeSetContactTimezone, uuid),
 		Timezone:   timezone,
 	}
 }
@@ -45,7 +45,7 @@ func NewSetContactTimezoneAction(uuid flows.ActionUUID, timezone string) *SetCon
 // Execute runs this action
 func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {
-		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -54,7 +54,7 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	// if we received an error, log it
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 		return nil
 	}
 
@@ -63,11 +63,11 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 	if timezone != "" {
 		tz, err = time.LoadLocation(timezone)
 		if err != nil {
-			logEvent(events.NewErrorEventf("unrecognized timezone: '%s'", timezone))
+			logEvent(events.NewErrorf("unrecognized timezone: '%s'", timezone))
 			return nil
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewTimezoneModifier(tz), logModifier, logEvent)
+	a.applyModifier(run, modifiers.NewTimezone(tz), logModifier, logEvent)
 	return nil
 }

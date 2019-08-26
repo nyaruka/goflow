@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeAirtimeTransferred, func() flows.Event { return &AirtimeTransferredEvent{} })
+	registerType(TypeAirtimeTransferred, func() flows.Event { return &AirtimeTransferredEvent{} })
 }
 
 // TypeAirtimeTransferred is the type of our airtime transferred event
@@ -25,17 +25,17 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //
 // @event airtime_transferred
 type AirtimeTransferredEvent struct {
-	BaseEvent
+	baseEvent
 
 	Currency string          `json:"currency"`
 	Amount   decimal.Decimal `json:"amount"`
 	Status   string          `json:"status"`
 }
 
-// NewAirtimeTransferredEvent creates a new airtime transferred event
-func NewAirtimeTransferredEvent(t *flows.AirtimeTransfer) *AirtimeTransferredEvent {
+// NewAirtimeTransferred creates a new airtime transferred event
+func NewAirtimeTransferred(t *flows.AirtimeTransfer) *AirtimeTransferredEvent {
 	return &AirtimeTransferredEvent{
-		BaseEvent: NewBaseEvent(TypeAirtimeTransferred),
+		baseEvent: newBaseEvent(TypeAirtimeTransferred),
 		Currency:  t.Currency,
 		Amount:    t.ActualAmount,
 		Status:    string(t.Status),

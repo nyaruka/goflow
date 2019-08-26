@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSendBroadcast, func() flows.Action { return &SendBroadcastAction{} })
+	registerType(TypeSendBroadcast, func() flows.Action { return &SendBroadcastAction{} })
 }
 
 // TypeSendBroadcast is the type for the send broadcast action
@@ -30,16 +30,16 @@ const TypeSendBroadcast string = "send_broadcast"
 //
 // @action send_broadcast
 type SendBroadcastAction struct {
-	BaseAction
+	baseAction
 	onlineAction
 	otherContactsAction
 	createMsgAction
 }
 
-// NewSendBroadcastAction creates a new send broadcast action
-func NewSendBroadcastAction(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string) *SendBroadcastAction {
+// NewSendBroadcast creates a new send broadcast action
+func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string) *SendBroadcastAction {
 	return &SendBroadcastAction{
-		BaseAction: NewBaseAction(TypeSendBroadcast, uuid),
+		baseAction: newBaseAction(TypeSendBroadcast, uuid),
 		otherContactsAction: otherContactsAction{
 			URNs:       urns,
 			Contacts:   contacts,
@@ -78,7 +78,7 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 
 	// if we have any recipients, log an event
 	if len(urnList) > 0 || len(contactRefs) > 0 || len(groupRefs) > 0 {
-		logEvent(events.NewBroadcastCreatedEvent(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
+		logEvent(events.NewBroadcastCreated(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
 	}
 
 	return nil

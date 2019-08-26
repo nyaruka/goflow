@@ -39,7 +39,7 @@ func TestEventMarshaling(t *testing.T) {
 		marshaled string
 	}{
 		{
-			events.NewBroadcastCreatedEvent(
+			events.NewBroadcastCreated(
 				map[envs.Language]*events.BroadcastTranslation{
 					"eng": {Text: "Hello", Attachments: nil, QuickReplies: nil},
 					"spa": {Text: "Hola", Attachments: nil, QuickReplies: nil},
@@ -83,7 +83,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactFieldChangedEvent(
+			events.NewContactFieldChanged(
 				gender,
 				flows.NewValue(types.NewXText("male"), nil, nil, "", "", ""),
 			),
@@ -100,7 +100,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactFieldChangedEvent(
+			events.NewContactFieldChanged(
 				gender,
 				nil, // value being cleared
 			),
@@ -115,7 +115,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactGroupsChangedEvent(
+			events.NewContactGroupsChanged(
 				[]*flows.Group{session.Assets().Groups().FindByName("Customers")},
 				nil,
 			),
@@ -131,7 +131,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactLanguageChangedEvent(envs.Language("fra")),
+			events.NewContactLanguageChanged(envs.Language("fra")),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"language": "fra",
@@ -139,7 +139,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactRefreshedEvent(session.Contact()),
+			events.NewContactRefreshed(session.Contact()),
 			`{
 				"contact": {
 					"created_on": "2018-06-20T11:40:30.123456789Z",
@@ -185,7 +185,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactNameChangedEvent("Bryan"),
+			events.NewContactNameChanged("Bryan"),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"name": "Bryan",
@@ -193,7 +193,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactTimezoneChangedEvent(tz),
+			events.NewContactTimezoneChanged(tz),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"timezone": "Africa/Kigali",
@@ -201,7 +201,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactURNsChangedEvent([]urns.URN{
+			events.NewContactURNsChanged([]urns.URN{
 				urns.URN("tel:+12345678900"),
 				urns.URN("twitterid:8764843252522#bob"),
 			}),
@@ -215,7 +215,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewEnvironmentRefreshedEvent(session.Environment()),
+			events.NewEnvironmentRefreshed(session.Environment()),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"environment": {
@@ -238,7 +238,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewIVRCreatedEvent(
+			events.NewIVRCreated(
 				flows.NewMsgOut(
 					urns.URN("tel:+12345678900"),
 					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
@@ -270,7 +270,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewSessionTriggeredEvent(
+			events.NewSessioned(
 				assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
 				[]urns.URN{urns.URN("tel:+12345678900")},
 				[]*flows.ContactReference{

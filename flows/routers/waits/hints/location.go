@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeLocation, func() flows.Hint { return &LocationHint{} })
+	registerType(TypeLocation, func() flows.Hint { return &LocationHint{} })
 }
 
 // TypeLocation is the type of our location hint

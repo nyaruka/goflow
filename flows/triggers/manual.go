@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeManual, readManualTrigger)
+	registerType(TypeManual, readManualTrigger)
 }
 
 // TypeManual is the type for manually triggered sessions
@@ -35,8 +35,8 @@ type ManualTrigger struct {
 	baseTrigger
 }
 
-// NewManualTrigger creates a new manual trigger
-func NewManualTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, params *types.XObject) flows.Trigger {
+// NewManual creates a new manual trigger
+func NewManual(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, params *types.XObject) flows.Trigger {
 	if params == nil {
 		params = types.XObjectEmpty
 	}
@@ -46,8 +46,8 @@ func NewManualTrigger(env envs.Environment, flow *assets.FlowReference, contact 
 	}
 }
 
-// NewManualVoiceTrigger creates a new manual trigger with a channel connection for voice
-func NewManualVoiceTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params *types.XObject) flows.Trigger {
+// NewManualVoice creates a new manual trigger with a channel connection for voice
+func NewManualVoice(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params *types.XObject) flows.Trigger {
 	if params == nil {
 		params = types.XObjectEmpty
 	}

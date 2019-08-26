@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSetContactLanguage, func() flows.Action { return &SetContactLanguageAction{} })
+	registerType(TypeSetContactLanguage, func() flows.Action { return &SetContactLanguageAction{} })
 }
 
 // TypeSetContactLanguage is the type for the set contact Language action
@@ -28,16 +28,16 @@ const TypeSetContactLanguage string = "set_contact_language"
 //
 // @action set_contact_language
 type SetContactLanguageAction struct {
-	BaseAction
+	baseAction
 	universalAction
 
 	Language string `json:"language" engine:"evaluated"`
 }
 
-// NewSetContactLanguageAction creates a new set language action
-func NewSetContactLanguageAction(uuid flows.ActionUUID, language string) *SetContactLanguageAction {
+// NewSetContactLanguage creates a new set language action
+func NewSetContactLanguage(uuid flows.ActionUUID, language string) *SetContactLanguageAction {
 	return &SetContactLanguageAction{
-		BaseAction: NewBaseAction(TypeSetContactLanguage, uuid),
+		baseAction: newBaseAction(TypeSetContactLanguage, uuid),
 		Language:   language,
 	}
 }
@@ -45,7 +45,7 @@ func NewSetContactLanguageAction(uuid flows.ActionUUID, language string) *SetCon
 // Execute runs this action
 func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {
-		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -54,7 +54,7 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	// if we received an error, log it
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 		return nil
 	}
 
@@ -63,11 +63,11 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 	if language != "" {
 		lang, err = envs.ParseLanguage(language)
 		if err != nil {
-			logEvent(events.NewErrorEvent(err))
+			logEvent(events.NewError(err))
 			return nil
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewLanguageModifier(lang), logModifier, logEvent)
+	a.applyModifier(run, modifiers.NewLanguage(lang), logModifier, logEvent)
 	return nil
 }

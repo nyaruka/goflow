@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeField, readFieldModifier)
+	registerType(TypeField, readFieldModifier)
 }
 
 // TypeField is the type of our field modifier
@@ -25,8 +25,8 @@ type FieldModifier struct {
 	value *flows.Value
 }
 
-// NewFieldModifier creates a new field modifier
-func NewFieldModifier(field *flows.Field, value *flows.Value) *FieldModifier {
+// NewField creates a new field modifier
+func NewField(field *flows.Field, value *flows.Value) *FieldModifier {
 	return &FieldModifier{
 		baseModifier: newBaseModifier(TypeField),
 		field:        field,
@@ -45,7 +45,7 @@ func (m *FieldModifier) Apply(env envs.Environment, assets flows.SessionAssets, 
 		}
 
 		contact.Fields().Set(m.field, m.value)
-		log(events.NewContactFieldChangedEvent(m.field, m.value))
+		log(events.NewContactFieldChanged(m.field, m.value))
 		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
 }
@@ -76,7 +76,7 @@ func readFieldModifier(assets flows.SessionAssets, data json.RawMessage, missing
 			return nil, ErrNoModifier // nothing left to modify without the field
 		}
 	}
-	return NewFieldModifier(field, e.Value), nil
+	return NewField(field, e.Value), nil
 }
 
 func (m *FieldModifier) MarshalJSON() ([]byte, error) {

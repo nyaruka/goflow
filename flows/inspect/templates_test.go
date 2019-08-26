@@ -50,8 +50,8 @@ func TestTemplates(t *testing.T) {
 
 	// or a slice of actions
 	actions := []flows.Action{
-		actions.NewSetContactNameAction(flows.ActionUUID("d5ecd045-a15f-467c-925a-54bcdc726b9f"), "Bob"),
-		actions.NewSetContactLanguageAction(flows.ActionUUID("d5ecd045-a15f-467c-925a-54bcdc726b9f"), "Gibberish"),
+		actions.NewSetContactName(flows.ActionUUID("d5ecd045-a15f-467c-925a-54bcdc726b9f"), "Bob"),
+		actions.NewSetContactLanguage(flows.ActionUUID("d5ecd045-a15f-467c-925a-54bcdc726b9f"), "Gibberish"),
 	}
 
 	templates = make([]string, 0)

@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeChannel, readChannelModifier)
+	registerType(TypeChannel, readChannelModifier)
 }
 
 // TypeChannel is the type of our channel modifier
@@ -24,8 +24,8 @@ type ChannelModifier struct {
 	channel *flows.Channel
 }
 
-// NewChannelModifier creates a new channel modifier
-func NewChannelModifier(channel *flows.Channel) *ChannelModifier {
+// NewChannel creates a new channel modifier
+func NewChannel(channel *flows.Channel) *ChannelModifier {
 	return &ChannelModifier{
 		baseModifier: newBaseModifier(TypeChannel),
 		channel:      channel,
@@ -36,7 +36,7 @@ func NewChannelModifier(channel *flows.Channel) *ChannelModifier {
 func (m *ChannelModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	// if URNs change in anyway, generate a URNs changed event
 	if contact.UpdatePreferredChannel(m.channel) {
-		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
+		log(events.NewContactURNsChanged(contact.URNs().RawURNs()))
 	}
 }
 
@@ -65,7 +65,7 @@ func readChannelModifier(assets flows.SessionAssets, data json.RawMessage, missi
 			return nil, ErrNoModifier // nothing left to modify without the channel
 		}
 	}
-	return NewChannelModifier(channel), nil
+	return NewChannel(channel), nil
 }
 
 func (m *ChannelModifier) MarshalJSON() ([]byte, error) {

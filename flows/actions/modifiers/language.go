@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeLanguage, readLanguageModifier)
+	registerType(TypeLanguage, readLanguageModifier)
 }
 
 // TypeLanguage is the type of our language modifier
@@ -24,8 +24,8 @@ type LanguageModifier struct {
 	Language envs.Language `json:"language"`
 }
 
-// NewLanguageModifier creates a new language modifier
-func NewLanguageModifier(language envs.Language) *LanguageModifier {
+// NewLanguage creates a new language modifier
+func NewLanguage(language envs.Language) *LanguageModifier {
 	return &LanguageModifier{
 		baseModifier: newBaseModifier(TypeLanguage),
 		Language:     language,
@@ -36,7 +36,7 @@ func NewLanguageModifier(language envs.Language) *LanguageModifier {
 func (m *LanguageModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	if contact.Language() != m.Language {
 		contact.SetLanguage(m.Language)
-		log(events.NewContactLanguageChangedEvent(m.Language))
+		log(events.NewContactLanguageChanged(m.Language))
 		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
 }

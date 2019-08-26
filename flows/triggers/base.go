@@ -19,11 +19,12 @@ type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback)
 
 var registeredTypes = map[string]readFunc{}
 
-// RegisterType registers a new type of trigger
-func RegisterType(name string, f readFunc) {
+// registers a new type of trigger
+func registerType(name string, f readFunc) {
 	registeredTypes[name] = f
 }
 
+// base of all trigger types
 type baseTrigger struct {
 	type_       string
 	environment envs.Environment
@@ -34,6 +35,7 @@ type baseTrigger struct {
 	triggeredOn time.Time
 }
 
+// create a new base trigger
 func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params *types.XObject) baseTrigger {
 	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, connection: connection, params: params, triggeredOn: dates.Now()}
 }
@@ -104,12 +106,12 @@ func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 	}
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
-		logEvent(events.NewContactGroupsChangedEvent(added, removed))
+		logEvent(events.NewContactGroupsChanged(added, removed))
 	}
 }
 

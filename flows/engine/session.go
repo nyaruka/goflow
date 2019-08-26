@@ -197,7 +197,7 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 
 	// try to end our wait which will return and log an error if it can't be ended with this resume
 	if err := node.Router().Wait().End(resume); err != nil {
-		sprint.LogEvent(events.NewErrorEvent(err))
+		sprint.LogEvent(events.NewError(err))
 		return nil
 	}
 	s.wait = nil
@@ -454,7 +454,7 @@ const noDestination = flows.NodeUUID("")
 
 // utility to fail the session and log a failure event
 func failure(sprint flows.Sprint, run flows.FlowRun, step flows.Step, err error) {
-	event := events.NewFailureEvent(err)
+	event := events.NewFailure(err)
 	if run != nil {
 		run.Exit(flows.RunStatusFailed)
 		run.LogEvent(step, event)

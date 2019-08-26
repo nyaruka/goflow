@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeAudio, func() flows.Hint { return &AudioHint{} })
+	registerType(TypeAudio, func() flows.Hint { return &AudioHint{} })
 }
 
 // TypeAudio is the type of our audio hint
