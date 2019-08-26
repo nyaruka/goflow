@@ -95,8 +95,8 @@ func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
 	return b
 }
 
-// WithAirtimeSerivce sets the airtime transfer service
-func (b *Builder) WithAirtimeSerivce(svc flows.AirtimeService) *Builder {
+// WithAirtimeService sets the airtime transfer service
+func (b *Builder) WithAirtimeService(svc flows.AirtimeService) *Builder {
 	b.eng.services.airtime = svc
 	return b
 }

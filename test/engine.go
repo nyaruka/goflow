@@ -9,10 +9,11 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
 		WithDefaultUserAgent("goflow-testing").
-		WithAirtimeSerivce(newAirtimeService("RWF")).
+		WithAirtimeService(newAirtimeService("RWF")).
 		Build()
 }
 
