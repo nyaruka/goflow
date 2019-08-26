@@ -50,14 +50,12 @@ func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 
 	// we ignore other missing asset types but a missing flow means we don't know how to route so we can't continue
 	if err != nil {
-		run.Exit(flows.RunStatusFailed)
-		logEvent(events.NewFailureEvent(err))
+		a.fail(run, err, logEvent)
 		return nil
 	}
 
 	if run.Session().Type() != "" && run.Session().Type() != flow.Type() {
-		run.Exit(flows.RunStatusFailed)
-		logEvent(events.NewFailureEvent(errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(), flow.Type(), run.Session().Type())))
+		a.fail(run, errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(), flow.Type(), run.Session().Type()), logEvent)
 		return nil
 	}
 

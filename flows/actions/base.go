@@ -258,6 +258,12 @@ func (a *BaseAction) applyModifier(run flows.FlowRun, mod flows.Modifier, logMod
 	logModifier(mod)
 }
 
+// helper to log a failure
+func (a *BaseAction) fail(run flows.FlowRun, err error, logEvent flows.EventCallback) {
+	run.Exit(flows.RunStatusFailed)
+	logEvent(events.NewFailureEvent(err))
+}
+
 // utility struct which sets the allowed flow types to any
 type universalAction struct{}
 

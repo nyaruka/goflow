@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -765,7 +764,7 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 		}
 
 		newActions = []flows.Action{
-			transferto.NewTransferAirtimeAction(flows.ActionUUID(uuids.New()), currencyAmounts, resultName),
+			actions.NewTransferAirtimeAction(flows.ActionUUID(uuids.New()), currencyAmounts, resultName),
 		}
 
 		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))

@@ -715,7 +715,7 @@ func TestWaitTimeout(t *testing.T) {
 	trigger := triggers.NewManualTrigger(nil, flow.Reference(), contact, nil)
 
 	// create session
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := test.NewEngine()
 	session, sprint, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
 

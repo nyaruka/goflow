@@ -320,6 +320,8 @@ type Engine interface {
 	DisableWebhooks() bool
 	MaxWebhookResponseBytes() int
 	MaxStepsPerSprint() int
+
+	Services() Services
 }
 
 // Sprint is an interaction with the engine - i.e. a start or resume of a session

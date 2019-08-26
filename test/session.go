@@ -460,7 +460,8 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action, redact en
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := NewEngine()
+
 	session, sprint, err := eng.NewSession(sa, trigger)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test session")
@@ -498,7 +499,7 @@ func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flo
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := NewEngine()
 	session, sprint, err := eng.NewSession(sa, trigger)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test voice session")
