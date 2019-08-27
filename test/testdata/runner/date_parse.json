@@ -84,16 +84,19 @@
     ],
     "fields": [
         {
+            "uuid": "2ddd4c1b-e3cf-472e-b135-440b3453ba37",
             "key": "first_name",
             "name": "First Name",
             "type": "text"
         },
         {
+            "uuid": "b0078eb8-1d51-4cb5-bf09-119e201e6518",
             "key": "state",
             "name": "State",
             "type": "state"
         },
         {
+            "uuid": "7e489762-5349-4a6a-96a0-48d97989681b",
             "key": "birth_date",
             "name": "Birth Date",
             "type": "text"

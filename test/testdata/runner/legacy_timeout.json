@@ -203,6 +203,7 @@
     "other_assets": {
         "fields": [
             {
+                "uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565",
                 "key": "age",
                 "name": "Age",
                 "type": "number"

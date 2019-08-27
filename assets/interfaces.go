@@ -46,6 +46,9 @@ type Channel interface {
 	MatchPrefixes() []string
 }
 
+// FieldUUID is the UUID of a field
+type FieldUUID uuids.UUID
+
 // FieldType is the data type of values for each field
 type FieldType string
 
@@ -62,6 +65,7 @@ const (
 // Field is a custom contact property.
 //
 //   {
+//     "uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf",
 //     "key": "gender",
 //     "name": "Gender",
 //     "type": "text"
@@ -69,6 +73,7 @@ const (
 //
 // @asset field
 type Field interface {
+	UUID() FieldUUID
 	Key() string
 	Name() string
 	Type() FieldType
@@ -226,8 +231,8 @@ type TemplateTranslation interface {
 	Channel() ChannelReference
 }
 
-// AssetSource is a source of assets
-type AssetSource interface {
+// Source is a source of assets
+type Source interface {
 	Channels() ([]Channel, error)
 	Fields() ([]Field, error)
 	Flow(FlowUUID) (Flow, error)

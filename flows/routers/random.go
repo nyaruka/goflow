@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeRandom, readRandomRouter)
+	registerType(TypeRandom, readRandomRouter)
 }
 
 // TypeRandom is the type for a random router
@@ -19,11 +19,11 @@ const TypeRandom string = "random"
 
 // RandomRouter is a router which will exit out a random exit
 type RandomRouter struct {
-	BaseRouter
+	baseRouter
 }
 
-// NewRandomRouter creates a new random router
-func NewRandomRouter(wait flows.Wait, resultName string, categories []*Category) *RandomRouter {
+// NewRandom creates a new random router
+func NewRandom(wait flows.Wait, resultName string, categories []*Category) *RandomRouter {
 	return &RandomRouter{newBaseRouter(TypeRandom, wait, resultName, categories)}
 }
 

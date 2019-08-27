@@ -11,8 +11,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "can't execute action in session without a contact",
                 "type": "error"
             }
@@ -36,8 +35,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "can't add URN with empty path",
                 "type": "error"
             }
@@ -54,14 +52,13 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_urns_changed",
                 "urns": [
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
@@ -92,7 +89,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_urns_changed",
                 "urns": [
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
@@ -140,7 +137,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_urns_changed",
                 "urns": [
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",

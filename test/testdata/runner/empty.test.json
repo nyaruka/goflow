@@ -48,7 +48,7 @@
                         "modified_on": "2018-07-06T12:30:03.123456789Z",
                         "path": [],
                         "status": "completed",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "completed",
@@ -82,7 +82,8 @@
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "manual"
                 },
-                "type": "messaging"
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         }
     ],

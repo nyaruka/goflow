@@ -17,7 +17,7 @@ var registeredTypes = map[string]readFunc{}
 var registeredActivatedTypes = map[string]readActivatedFunc{}
 
 // RegisterType registers a new type of wait
-func RegisterType(name string, f1 readFunc, f2 readActivatedFunc) {
+func registerType(name string, f1 readFunc, f2 readActivatedFunc) {
 	registeredTypes[name] = f1
 	registeredActivatedTypes[name] = f2
 }

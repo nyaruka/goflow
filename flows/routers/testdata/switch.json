@@ -225,7 +225,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "input": "YES!!",
                 "name": "Favorite Color",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
                 "value": "YES"
             }
@@ -305,7 +305,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "input": "[]",
                 "name": "Is Member",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
                 "value": "[]"
             }
@@ -394,7 +394,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "input": "YES!!",
                 "name": "Favorite Color",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
                 "value": "YES"
             }
@@ -423,7 +423,7 @@
         }
     },
     {
-        "description": "Fatal error if router fails to route",
+        "description": "Failure event if router fails to route",
         "router": {
             "type": "switch",
             "result_name": "Favorite Color",
@@ -464,10 +464,9 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": true,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "router on node[uuid=64373978-e8f6-4973-b6ff-a2993f3376fc] failed to pick a category",
-                "type": "error"
+                "type": "failure"
             }
         ],
         "inspection": {

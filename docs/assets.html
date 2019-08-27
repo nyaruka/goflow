@@ -16,8 +16,9 @@
 <p>Assets are objects which can be referenced in a flow definition or flow definitions themselves. For example the <a href="flows.html#action:set_contact_field">set_contact_field</a> action references a field asset.</p>
 <h1 id="types">Types</h1>
 <div class="assets">
-<p><a name="asset:channel"></a></p>
-<h2 id="channel">Channel</h2>
+<h2 class="item_title">
+<a name="asset:channel" href="#asset:channel">channel</a>
+</h2>
 <p>Is something that can send/receive messages.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb1-1"><a href="#cb1-1"></a>{</span>
 <span id="cb1-2"><a href="#cb1-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;14782905-81a6-4910-bc9f-93ad287b23c3&quot;</span>,</span>
@@ -32,16 +33,19 @@
 <span id="cb1-11"><a href="#cb1-11"></a>    ],</span>
 <span id="cb1-12"><a href="#cb1-12"></a>    <span class="st">&quot;country&quot;</span>: <span class="st">&quot;EC&quot;</span></span>
 <span id="cb1-13"><a href="#cb1-13"></a>}</span></code></pre></div>
-<p><a name="asset:field"></a></p>
-<h2 id="field">Field</h2>
+<h2 class="item_title">
+<a name="asset:field" href="#asset:field">field</a>
+</h2>
 <p>Is a custom contact property.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb2-1"><a href="#cb2-1"></a>{</span>
-<span id="cb2-2"><a href="#cb2-2"></a>    <span class="st">&quot;key&quot;</span>: <span class="st">&quot;gender&quot;</span>,</span>
-<span id="cb2-3"><a href="#cb2-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Gender&quot;</span>,</span>
-<span id="cb2-4"><a href="#cb2-4"></a>    <span class="st">&quot;type&quot;</span>: <span class="st">&quot;text&quot;</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>}</span></code></pre></div>
-<p><a name="asset:flow"></a></p>
-<h2 id="flow">Flow</h2>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;d66a7823-eada-40e5-9a3a-57239d4690bf&quot;</span>,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="st">&quot;key&quot;</span>: <span class="st">&quot;gender&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Gender&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="st">&quot;type&quot;</span>: <span class="st">&quot;text&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:flow" href="#asset:flow">flow</a>
+</h2>
 <p>Is graph of nodes with actions and routers.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb3-1"><a href="#cb3-1"></a>{</span>
 <span id="cb3-2"><a href="#cb3-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;14782905-81a6-4910-bc9f-93ad287b23c3&quot;</span>,</span>
@@ -50,23 +54,26 @@
 <span id="cb3-5"><a href="#cb3-5"></a>        <span class="st">&quot;nodes&quot;</span>: []</span>
 <span id="cb3-6"><a href="#cb3-6"></a>    }</span>
 <span id="cb3-7"><a href="#cb3-7"></a>}</span></code></pre></div>
-<p><a name="asset:group"></a></p>
-<h2 id="group">Group</h2>
+<h2 class="item_title">
+<a name="asset:group" href="#asset:group">group</a>
+</h2>
 <p>Is a set of contacts which can be static or dynamic (i.e. based on a query).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb4-1"><a href="#cb4-1"></a>{</span>
 <span id="cb4-2"><a href="#cb4-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;14782905-81a6-4910-bc9f-93ad287b23c3&quot;</span>,</span>
 <span id="cb4-3"><a href="#cb4-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Youth&quot;</span>,</span>
 <span id="cb4-4"><a href="#cb4-4"></a>    <span class="st">&quot;query&quot;</span>: <span class="st">&quot;age &lt;= 18&quot;</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a>}</span></code></pre></div>
-<p><a name="asset:label"></a></p>
-<h2 id="label">Label</h2>
+<h2 class="item_title">
+<a name="asset:label" href="#asset:label">label</a>
+</h2>
 <p>Is an organizational tag that can be applied to a message.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb5-1"><a href="#cb5-1"></a>{</span>
 <span id="cb5-2"><a href="#cb5-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;14782905-81a6-4910-bc9f-93ad287b23c3&quot;</span>,</span>
 <span id="cb5-3"><a href="#cb5-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Spam&quot;</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a>}</span></code></pre></div>
-<p><a name="asset:location"></a></p>
-<h2 id="location">Location</h2>
+<h2 class="item_title">
+<a name="asset:location" href="#asset:location">location</a>
+</h2>
 <p>Is a searchable hierachy of locations.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb6-1"><a href="#cb6-1"></a>{</span>
 <span id="cb6-2"><a href="#cb6-2"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Rwanda&quot;</span>,</span>
@@ -105,8 +112,9 @@
 <span id="cb6-35"><a href="#cb6-35"></a>        }</span>
 <span id="cb6-36"><a href="#cb6-36"></a>    ]</span>
 <span id="cb6-37"><a href="#cb6-37"></a>}</span></code></pre></div>
-<p><a name="asset:resthook"></a></p>
-<h2 id="resthook">Resthook</h2>
+<h2 class="item_title">
+<a name="asset:resthook" href="#asset:resthook">resthook</a>
+</h2>
 <p>Is a set of URLs which are subscribed to the named event.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb7-1"><a href="#cb7-1"></a>{</span>
 <span id="cb7-2"><a href="#cb7-2"></a>    <span class="st">&quot;slug&quot;</span>: <span class="st">&quot;new-registration&quot;</span>,</span>
@@ -114,8 +122,9 @@
 <span id="cb7-4"><a href="#cb7-4"></a>        <span class="st">&quot;http://example.com/record.php?@contact.uuid&quot;</span></span>
 <span id="cb7-5"><a href="#cb7-5"></a>    ]</span>
 <span id="cb7-6"><a href="#cb7-6"></a>}</span></code></pre></div>
-<p><a name="asset:template"></a></p>
-<h2 id="template">Template</h2>
+<h2 class="item_title">
+<a name="asset:template" href="#asset:template">template</a>
+</h2>
 <p>Is a message template, currently only used by WhatsApp channels</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb8-1"><a href="#cb8-1"></a>{</span>
 <span id="cb8-2"><a href="#cb8-2"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;revive-issue&quot;</span>,</span>

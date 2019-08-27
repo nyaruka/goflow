@@ -509,7 +509,7 @@
                 "output": "2010 5 10 14:50"
             },
             {
-                "template": "@(format_datetime(\"2010-05-10T19:50:00.000000Z\", \"YYYY-MM-DD tt:mm AA\", \"America/Los_Angeles\"))",
+                "template": "@(format_datetime(\"2010-05-10T19:50:00.000000Z\", \"YYYY-MM-DD hh:mm AA\", \"America/Los_Angeles\"))",
                 "output": "2010-05-10 12:50 PM"
             },
             {
@@ -1445,6 +1445,29 @@
             {
                 "template": "@(urn_parts(\"twitterid:3263621177#bobby\"))",
                 "output": "{display: bobby, path: 3263621177, scheme: twitterid}"
+            },
+            {
+                "template": "@(urn_parts(\"not a urn\"))",
+                "output": "ERROR"
+            }
+        ]
+    },
+    {
+        "signature": "week_number(date)",
+        "summary": "Returns the week number (1-54) of `date`.",
+        "detail": "The week is considered to start on Sunday and week containing Jan 1st is week number 1.",
+        "examples": [
+            {
+                "template": "@(week_number(\"2019-01-01\"))",
+                "output": "1"
+            },
+            {
+                "template": "@(week_number(\"2019-07-23T16:56:59.000000Z\"))",
+                "output": "30"
+            },
+            {
+                "template": "@(week_number(\"xx\"))",
+                "output": "ERROR"
             }
         ]
     },

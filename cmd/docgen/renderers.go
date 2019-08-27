@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/cmd/docgen/completion"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -77,8 +78,7 @@ func renderAssetDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 		return errors.Wrap(err, "unable to load example into asset source")
 	}
 
-	output.WriteString(fmt.Sprintf("<a name=\"asset:%s\"></a>\n\n", item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
+	output.WriteString(renderItemTitle(item))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
@@ -101,8 +101,7 @@ func renderTypeDoc(output *strings.Builder, item *TaggedItem, session flows.Sess
 		}
 	}
 
-	output.WriteString(fmt.Sprintf("<a name=\"type:%s\"></a>\n\n", item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
+	output.WriteString(renderItemTitle(item))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
@@ -125,8 +124,7 @@ func renderOperatorDoc(output *strings.Builder, item *TaggedItem, session flows.
 		}
 	}
 
-	output.WriteString(fmt.Sprintf("<a name=\"operator:%s\"></a>\n\n", item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
+	output.WriteString(renderItemTitle(item))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
@@ -158,8 +156,7 @@ func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.S
 		}
 	}
 
-	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
+	output.WriteString(renderItemTitle(item))
 
 	if defaultProp != nil {
 		output.WriteString(fmt.Sprintf("Defaults to %s (%s)\n\n", defaultProp.Help, renderPropertyType(defaultProp)))
@@ -227,8 +224,7 @@ func renderFunctionDoc(output *strings.Builder, item *TaggedItem, session flows.
 		}
 	}
 
-	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s%s\n\n", item.tagValue, item.tagExtra))
+	output.WriteString(renderItemTitle(item))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
@@ -258,11 +254,10 @@ func renderEventDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 		return errors.Wrap(err, "unable to marshal example")
 	}
 
-	output.WriteString(fmt.Sprintf("<a name=\"event:%s\"></a>\n\n", item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(renderItemTitle(item))
 	output.WriteString(strings.Join(item.description, "\n"))
 
-	output.WriteString(`<div class="output_event"><h3>Event</h3>`)
+	output.WriteString(`<div class="output_event">`)
 	output.WriteString("\n\n")
 	output.WriteString("```json\n")
 	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
@@ -299,8 +294,7 @@ func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 		return errors.Wrap(err, "error running action")
 	}
 
-	output.WriteString(fmt.Sprintf("<a name=\"action:%s\"></a>\n\n", item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(renderItemTitle(item))
 	output.WriteString(strings.Join(item.description, "\n"))
 
 	output.WriteString(`<div class="input_action"><h3>Action</h3>`)
@@ -340,8 +334,7 @@ func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.S
 		return errors.Wrap(err, "unable to marshal example")
 	}
 
-	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(renderItemTitle(item))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```json\n")
@@ -370,8 +363,7 @@ func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 		return errors.Wrap(err, "unable to marshal example")
 	}
 
-	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(renderItemTitle(item))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```json\n")
@@ -380,6 +372,10 @@ func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 	output.WriteString("\n")
 
 	return nil
+}
+
+func renderItemTitle(item *TaggedItem) string {
+	return fmt.Sprintf("<h2 class=\"item_title\"><a name=\"%[1]s:%[2]s\" href=\"#%[1]s:%[2]s\">%[2]s%[3]s</a></h2>\n\n", item.tagName, item.tagValue, item.tagExtra)
 }
 
 func checkExample(session flows.Session, line string) error {
@@ -420,7 +416,7 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 	if voiceAction {
 		session, newEvents, err = test.CreateTestVoiceSession("http://localhost:49998", action)
 	} else {
-		session, newEvents, err = test.CreateTestSession("http://localhost:49998", action)
+		session, newEvents, err = test.CreateTestSession("http://localhost:49998", action, envs.RedactionPolicyNone)
 	}
 	if err != nil {
 		return nil, err

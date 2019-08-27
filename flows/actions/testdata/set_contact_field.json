@@ -27,8 +27,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "can't execute action in session without a contact",
                 "type": "error"
             }
@@ -57,8 +56,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @( 1/ 0): division by zero",
                 "type": "error"
             }
@@ -104,7 +102,7 @@
                     "key": "gender",
                     "name": "Gender"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_field_changed",
                 "value": {
                     "text": "Female"
@@ -124,7 +122,7 @@
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
                     }
                 ],
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_groups_changed"
             }
         ],
@@ -173,7 +171,7 @@
                     "key": "gender",
                     "name": "Gender"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_field_changed",
                 "value": null
             },
@@ -185,7 +183,7 @@
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
                     }
                 ],
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_groups_changed"
             }
         ],
@@ -225,7 +223,7 @@
                     "key": "gender",
                     "name": "Gender"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_field_changed",
                 "value": {
                     "text": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus"
@@ -239,7 +237,7 @@
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
                     }
                 ],
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "contact_groups_changed"
             }
         ],

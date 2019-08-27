@@ -11,19 +11,19 @@
                         },
                         "text": "Hi 1234567! Your number is ********",
                         "urn": "tel:+12065551212",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "msg_created"
                 },
                 {
                     "created_on": "2018-07-06T12:30:08.123456789Z",
                     "elapsed_ms": 1000,
-                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 24\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"********\") }",
+                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 28\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:********\") }",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
                     "status_code": 200,
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 }
@@ -79,19 +79,19 @@
                                     },
                                     "text": "Hi 1234567! Your number is ********",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "elapsed_ms": 1000,
-                                "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 24\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"********\") }",
+                                "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 28\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:********\") }",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
                                 "status_code": 200,
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             }
@@ -108,11 +108,11 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "completed",
@@ -161,7 +161,8 @@
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "manual"
                 },
-                "type": "messaging"
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         }
     ],

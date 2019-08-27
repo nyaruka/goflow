@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeVideo, func() flows.Hint { return &VideoHint{} })
+	registerType(TypeVideo, func() flows.Hint { return &VideoHint{} })
 }
 
 // TypeVideo is the type of our video hint

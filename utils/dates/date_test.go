@@ -16,6 +16,8 @@ func TestDate(t *testing.T) {
 	assert.Equal(t, d1.Month, time.Month(2))
 	assert.Equal(t, d1.Day, 20)
 	assert.Equal(t, d1.Weekday(), time.Weekday(3))
+	assert.Equal(t, d1.WeekNum(), 8)
+	assert.Equal(t, d1.YearDay(), 51)
 	assert.Equal(t, "2019-02-20", d1.String())
 
 	d2 := dates.NewDate(2020, 1, 1)
@@ -58,4 +60,28 @@ func TestDate(t *testing.T) {
 	parsed, err := dates.ParseDate("2006-01-02", "2018-12-30")
 	assert.NoError(t, err)
 	assert.Equal(t, dates.NewDate(2018, 12, 30), parsed)
+}
+
+func TestDateCalendarMethods(t *testing.T) {
+	tests := []struct {
+		date    dates.Date
+		weekday time.Weekday
+		weekNum int
+		yearDay int
+	}{
+		// checked against Excel...
+		{dates.NewDate(1981, 5, 28), time.Thursday, 22, 148},
+		{dates.NewDate(2018, 12, 31), time.Monday, 53, 365},
+		{dates.NewDate(2019, 1, 1), time.Tuesday, 1, 1},
+		{dates.NewDate(2019, 7, 24), time.Wednesday, 30, 205},
+		{dates.NewDate(2019, 12, 31), time.Tuesday, 53, 365},
+		{dates.NewDate(2028, 1, 1), time.Saturday, 1, 1}, // leap year that starts on last day of week
+		{dates.NewDate(2028, 12, 31), time.Sunday, 54, 366},
+	}
+
+	for _, tc := range tests {
+		assert.Equal(t, tc.weekday, tc.date.Weekday(), "incorrect week day for %s", tc.date)
+		assert.Equal(t, tc.weekNum, tc.date.WeekNum(), "incorrect week num for %s", tc.date)
+		assert.Equal(t, tc.yearDay, tc.date.YearDay(), "incorrect year day for %s", tc.date)
+	}
 }

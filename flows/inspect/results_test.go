@@ -13,8 +13,8 @@ import (
 
 func TestResults(t *testing.T) {
 	n := definition.NewNode(flows.NodeUUID("866b06e2-ff54-443e-9d79-2f60074514b5"), []flows.Action{
-		actions.NewSetContactNameAction(flows.ActionUUID("52a91ae8-1115-4c17-99a2-58b15ed7de7f"), "Bob"),
-		actions.NewSetRunResultAction(flows.ActionUUID("94790ebc-4f24-4664-a15d-ac758781c720"), "Age", "32", "HasAge"),
+		actions.NewSetContactName(flows.ActionUUID("52a91ae8-1115-4c17-99a2-58b15ed7de7f"), "Bob"),
+		actions.NewSetRunResult(flows.ActionUUID("94790ebc-4f24-4664-a15d-ac758781c720"), "Age", "32", "HasAge"),
 	}, nil, []flows.Exit{})
 
 	infos := make([]*flows.ResultInfo, 0)

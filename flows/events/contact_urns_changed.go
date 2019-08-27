@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeContactURNsChanged, func() flows.Event { return &ContactURNsChangedEvent{} })
+	registerType(TypeContactURNsChanged, func() flows.Event { return &ContactURNsChangedEvent{} })
 }
 
 // TypeContactURNsChanged is the type of our URNs changed event
@@ -25,15 +25,15 @@ const TypeContactURNsChanged string = "contact_urns_changed"
 //
 // @event contact_urns_changed
 type ContactURNsChangedEvent struct {
-	BaseEvent
+	baseEvent
 
 	URNs []urns.URN `json:"urns" validate:"dive,urn"`
 }
 
-// NewContactURNsChangedEvent returns a new add URN event
-func NewContactURNsChangedEvent(urns []urns.URN) *ContactURNsChangedEvent {
+// NewContactURNsChanged returns a new add URN event
+func NewContactURNsChanged(urns []urns.URN) *ContactURNsChangedEvent {
 	return &ContactURNsChangedEvent{
-		BaseEvent: NewBaseEvent(TypeContactURNsChanged),
+		baseEvent: newBaseEvent(TypeContactURNsChanged),
 		URNs:      urns,
 	}
 }

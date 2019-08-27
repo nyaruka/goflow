@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeResthookCalled, func() flows.Event { return &ResthookCalledEvent{} })
+	registerType(TypeResthookCalled, func() flows.Event { return &ResthookCalledEvent{} })
 }
 
 // TypeResthookCalled is the type for our resthook events
@@ -30,16 +30,16 @@ const TypeResthookCalled string = "resthook_called"
 //
 // @event resthook_called
 type ResthookCalledEvent struct {
-	BaseEvent
+	baseEvent
 
 	Resthook string          `json:"resthook"`
 	Payload  json.RawMessage `json:"payload"`
 }
 
-// NewResthookCalledEvent returns a new webhook called event
-func NewResthookCalledEvent(resthook string, payload json.RawMessage) *ResthookCalledEvent {
+// NewResthookCalled returns a new webhook called event
+func NewResthookCalled(resthook string, payload json.RawMessage) *ResthookCalledEvent {
 	return &ResthookCalledEvent{
-		BaseEvent: NewBaseEvent(TypeResthookCalled),
+		baseEvent: newBaseEvent(TypeResthookCalled),
 		Resthook:  resthook,
 		Payload:   payload,
 	}

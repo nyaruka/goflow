@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsg, readMsgInput)
+	registerType(TypeMsg, readMsgInput)
 }
 
 // TypeMsg is a constant for incoming messages
@@ -30,8 +30,8 @@ type MsgInput struct {
 	externalID  string
 }
 
-// NewMsgInput creates a new user input based on a message
-func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) (*MsgInput, error) {
+// NewMsg creates a new user input based on a message
+func NewMsg(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) (*MsgInput, error) {
 	// load the channel
 	var channel *flows.Channel
 	if msg.Channel() != nil {

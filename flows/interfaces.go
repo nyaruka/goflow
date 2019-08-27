@@ -38,6 +38,9 @@ type StepUUID uuids.UUID
 // InputUUID is the UUID of an input
 type InputUUID uuids.UUID
 
+// SessionUUID is the UUID of a session
+type SessionUUID uuids.UUID
+
 // MsgID is the ID of a message
 type MsgID int64
 
@@ -74,8 +77,8 @@ const (
 	// SessionStatusWaiting represents a session which is waiting for something from the caller
 	SessionStatusWaiting SessionStatus = "waiting"
 
-	// SessionStatusErrored represents a session that encountered an error
-	SessionStatusErrored SessionStatus = "errored"
+	// SessionStatusFailed represents a session that encountered an unrecoverable error
+	SessionStatusFailed SessionStatus = "failed"
 )
 
 // RunStatus represents the current status of the flow run
@@ -91,14 +94,11 @@ const (
 	// RunStatusWaiting represents a run which is waiting for something from the caller
 	RunStatusWaiting RunStatus = "waiting"
 
-	// RunStatusErrored represents a run that encountered an error
-	RunStatusErrored RunStatus = "errored"
+	// RunStatusFailed represents a run that encountered an unrecoverable error
+	RunStatusFailed RunStatus = "failed"
 
 	// RunStatusExpired represents a run that expired due to inactivity
 	RunStatusExpired RunStatus = "expired"
-
-	// RunStatusInterrupted represents a run that was interrupted by another flow
-	RunStatusInterrupted RunStatus = "interrupted"
 )
 
 type FlowAssets interface {
@@ -107,6 +107,8 @@ type FlowAssets interface {
 
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
+	Source() assets.Source
+
 	Channels() *ChannelAssets
 	Fields() *FieldAssets
 	Flows() FlowAssets
@@ -247,7 +249,7 @@ type Trigger interface {
 	Flow() *assets.FlowReference
 	Contact() *Contact
 	Connection() *Connection
-	Params() types.XValue
+	Params() *types.XObject
 	TriggeredOn() time.Time
 }
 
@@ -316,10 +318,8 @@ type Engine interface {
 	NewSession(SessionAssets, Trigger) (Session, Sprint, error)
 	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
 
-	HTTPClient() *utils.HTTPClient
-	DisableWebhooks() bool
-	MaxWebhookResponseBytes() int
 	MaxStepsPerSprint() int
+	Services() Services
 }
 
 // Sprint is an interaction with the engine - i.e. a start or resume of a session
@@ -334,6 +334,7 @@ type Sprint interface {
 type Session interface {
 	Assets() SessionAssets
 
+	UUID() SessionUUID
 	Type() FlowType
 	SetType(FlowType)
 
@@ -384,6 +385,7 @@ type RunEnvironment interface {
 type FlowRun interface {
 	Contextable
 	RunSummary
+	FlowReference() *assets.FlowReference
 
 	Environment() RunEnvironment
 	Session() Session

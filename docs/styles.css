@@ -20,7 +20,7 @@ h1 {
     color: #333;
 }
 
-h2 {
+h2.item_title {
     font-size: 18px;
     color: white;
     background-color: #555;
@@ -30,19 +30,24 @@ h2 {
     font-weight: normal;
 }
 
-.context h2, .operators h2 {
+h2.item_title a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.context h2.item_title, .operators h2.item_title {
     background-color: rgb(142, 94, 167);
 }
 
-.functions h2, .tests h2 {
+.functions h2.item_title, .tests h2.item_title {
     background-color: #00B9A7;
 }
 
-.actions h2 {
+.actions h2.item_title {
     background-color: #246068;
 }
 
-.events h2 {
+.events h2.item_title {
     background-color: #AA4139;
 }
 

@@ -9,7 +9,7 @@
                         "urn": "tel:+12065551212",
                         "uuid": "0932960c-2b34-4b1e-a739-725ac77c7210"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "msg_received"
                 },
                 {
@@ -17,7 +17,7 @@
                     "created_on": "2018-07-06T12:30:08.123456789Z",
                     "input": "PING",
                     "name": "Command",
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
                     "value": "PING"
                 },
@@ -30,9 +30,9 @@
                         },
                         "text": "You said PING",
                         "urn": "tel:+12065551212",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "msg_created"
                 }
             ],
@@ -84,7 +84,7 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "0932960c-2b34-4b1e-a739-725ac77c7210"
                                 },
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_received"
                             },
                             {
@@ -92,7 +92,7 @@
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "input": "PING",
                                 "name": "Command",
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
                                 "value": "PING"
                             },
@@ -105,9 +105,9 @@
                                     },
                                     "text": "You said PING",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             }
                         ],
@@ -123,13 +123,13 @@
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "exit_uuid": "1ca74fca-1803-4ae7-8ae9-336e75276cd6",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:10.123456789Z",
                                 "exit_uuid": "b6da70e0-fe8e-46fc-8b4c-fcc5173706c1",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
                         ],
                         "results": {
@@ -143,7 +143,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
                 "status": "completed",
@@ -189,7 +189,8 @@
                     "triggered_on": "2018-10-11T14:27:09.05642-05:00",
                     "type": "msg"
                 },
-                "type": "messaging"
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         }
     ],

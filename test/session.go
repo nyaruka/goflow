@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
@@ -190,11 +191,11 @@ var sessionAssets = `{
         }
     ],
     "fields": [
-        {"key": "gender", "name": "Gender", "type": "text"},
-        {"key": "age", "name": "Age", "type": "number"},
-        {"key": "join_date", "name": "Join Date", "type": "datetime"},
-        {"key": "activation_token", "name": "Activation Token", "type": "text"},
-        {"key": "not_set", "name": "Not set", "type": "text"}
+        {"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf", "key": "gender", "name": "Gender", "type": "text"},
+        {"uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565", "key": "age", "name": "Age", "type": "number"},
+        {"uuid": "6c86d5ab-3fd9-4a5c-a5b6-48168b016747", "key": "join_date", "name": "Join Date", "type": "datetime"},
+        {"uuid": "c88d2640-d124-438a-b666-5ec53a353dcd", "key": "activation_token", "name": "Activation Token", "type": "text"},
+        {"uuid": "3bfc3908-a402-48ea-841c-b73b5ef3a254", "key": "not_set", "name": "Not set", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -380,7 +381,7 @@ var voiceSessionAssets = `{
         }
     ],
     "fields": [
-        {"key": "gender", "name": "Gender", "type": "text"}
+        {"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf", "key": "gender", "name": "Gender", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -435,7 +436,7 @@ var voiceSessionTrigger = `{
 }`
 
 // CreateTestSession creates a standard example session for testing
-func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
+func CreateTestSession(testServerURL string, actionToAdd flows.Action, redact envs.RedactionPolicy) (flows.Session, []flows.Event, error) {
 	assetsJSON := json.RawMessage(sessionAssets)
 
 	// optional modify the main flow by adding the provided action to the last node
@@ -451,12 +452,16 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(sa, json.RawMessage(sessionTrigger), assets.PanicOnMissing)
+	triggerJSON := json.RawMessage(sessionTrigger)
+	triggerJSON = JSONReplace(triggerJSON, []string{"environment", "redaction_policy"}, []byte(fmt.Sprintf(`"%s"`, redact)))
+
+	trigger, err := triggers.ReadTrigger(sa, triggerJSON, assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := NewEngine()
+
 	session, sprint, err := eng.NewSession(sa, trigger)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test session")
@@ -494,7 +499,7 @@ func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flo
 		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := NewEngine()
 	session, sprint, err := eng.NewSession(sa, trigger)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test voice session")

@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeImage, func() flows.Hint { return &ImageHint{} })
+	registerType(TypeImage, func() flows.Hint { return &ImageHint{} })
 }
 
 // TypeImage is the type of our image hint

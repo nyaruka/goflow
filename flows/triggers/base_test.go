@@ -72,7 +72,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		marshaled string
 	}{
 		{
-			triggers.NewCampaignTrigger(
+			triggers.NewCampaign(
 				env,
 				flow,
 				contact,
@@ -113,12 +113,12 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewChannelTrigger(
+			triggers.NewChannel(
 				env,
 				flow,
 				contact,
 				triggers.NewChannelEvent(triggers.ChannelEventTypeNewConversation, channel),
-				types.XObjectEmpty,
+				nil,
 			),
 			`{
 				"contact": {
@@ -156,7 +156,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewFlowActionTrigger(
+			triggers.NewFlowAction(
 				env,
 				flow,
 				contact,
@@ -193,7 +193,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewIncomingCallTrigger(
+			triggers.NewIncomingCall(
 				env,
 				flow,
 				contact,
@@ -237,16 +237,17 @@ func TestTriggerMarshaling(t *testing.T) {
 					"name": "Registration",
 					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
 				},
+				"params": {},
 				"triggered_on": "2018-10-20T09:49:31.23456789Z",
 				"type": "channel"
 			}`,
 		},
 		{
-			triggers.NewManualTrigger(
+			triggers.NewManual(
 				env,
 				flow,
 				contact,
-				types.NewXArray(types.NewXText("foo")),
+				types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")}),
 			),
 			`{
 				"contact": {
@@ -271,20 +272,20 @@ func TestTriggerMarshaling(t *testing.T) {
 					"name": "Registration",
 					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
 				},
-				"params": [
-					"foo"
-				],
+				"params": {
+					"foo": "bar"
+				},
 				"triggered_on": "2018-10-20T09:49:31.23456789Z",
 				"type": "manual"
 			}`,
 		},
 		{
-			triggers.NewManualVoiceTrigger(
+			triggers.NewManualVoice(
 				env,
 				flow,
 				contact,
 				flows.NewConnection(channel, "tel:+12065551212"),
-				types.NewXArray(types.NewXText("foo")),
+				types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")}),
 			),
 			`{
 				"connection": {
@@ -316,15 +317,15 @@ func TestTriggerMarshaling(t *testing.T) {
 					"name": "Registration",
 					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
 				},
-				"params": [
-					"foo"
-				],
+				"params": {
+					"foo": "bar"
+				},
 				"triggered_on": "2018-10-20T09:49:31.23456789Z",
 				"type": "manual"
 			}`,
 		},
 		{
-			triggers.NewMsgTrigger(
+			triggers.NewMsg(
 				env,
 				flow,
 				contact,

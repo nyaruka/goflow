@@ -40,9 +40,6 @@ type Environment interface {
 	// Convenience method to get the current time in the env timezone
 	Now() time.Time
 
-	// extensions to the engine can expect their own env values
-	Extension(string) json.RawMessage
-
 	Equal(Environment) bool
 }
 
@@ -56,7 +53,6 @@ type environment struct {
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
 	maxValueLength   int
-	extensions       map[string]json.RawMessage
 }
 
 func (e *environment) DateFormat() DateFormat           { return e.dateFormat }
@@ -71,10 +67,6 @@ func (e *environment) MaxValueLength() int              { return e.maxValueLengt
 
 func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }
 
-func (e *environment) Extension(name string) json.RawMessage {
-	return e.extensions[name]
-}
-
 // Equal returns true if this instance is equal to the given instance
 func (e *environment) Equal(other Environment) bool {
 	asJSON1, _ := json.Marshal(e)
@@ -87,16 +79,15 @@ func (e *environment) Equal(other Environment) bool {
 //------------------------------------------------------------------------------------------
 
 type envEnvelope struct {
-	DateFormat       DateFormat                 `json:"date_format" validate:"date_format"`
-	TimeFormat       TimeFormat                 `json:"time_format" validate:"time_format"`
-	Timezone         string                     `json:"timezone"`
-	DefaultLanguage  Language                   `json:"default_language,omitempty" validate:"omitempty,language"`
-	AllowedLanguages []Language                 `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
-	NumberFormat     *NumberFormat              `json:"number_format,omitempty"`
-	DefaultCountry   Country                    `json:"default_country,omitempty" validate:"omitempty,country"`
-	RedactionPolicy  RedactionPolicy            `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
-	MaxValuelength   int                        `json:"max_value_length"`
-	Extensions       map[string]json.RawMessage `json:"extensions,omitempty"`
+	DateFormat       DateFormat      `json:"date_format" validate:"date_format"`
+	TimeFormat       TimeFormat      `json:"time_format" validate:"time_format"`
+	Timezone         string          `json:"timezone"`
+	DefaultLanguage  Language        `json:"default_language,omitempty" validate:"omitempty,language"`
+	AllowedLanguages []Language      `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
+	NumberFormat     *NumberFormat   `json:"number_format,omitempty"`
+	DefaultCountry   Country         `json:"default_country,omitempty" validate:"omitempty,country"`
+	RedactionPolicy  RedactionPolicy `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
+	MaxValuelength   int             `json:"max_value_length"`
 }
 
 // ReadEnvironment reads an environment from the given JSON
@@ -117,7 +108,6 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env.numberFormat = envelope.NumberFormat
 	env.redactionPolicy = envelope.RedactionPolicy
 	env.maxValueLength = envelope.MaxValuelength
-	env.extensions = envelope.Extensions
 
 	tz, err := time.LoadLocation(envelope.Timezone)
 	if err != nil {
@@ -139,7 +129,6 @@ func (e *environment) toEnvelope() *envEnvelope {
 		NumberFormat:     e.numberFormat,
 		RedactionPolicy:  e.redactionPolicy,
 		MaxValuelength:   e.maxValueLength,
-		Extensions:       e.extensions,
 	}
 }
 

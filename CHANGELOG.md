@@ -1,3 +1,87 @@
+v0.48.2
+----------
+ * Include sender and recipient in airtime events
+
+v0.48.1
+----------
+ * Add .Source() to SessionAssets interface
+
+v0.48.0
+----------
+ * Unexport things that no longer need to be exported now that we've ditched extensions, clean up names of typed things
+ * Remove transferto extension functionality and instead have standard transfer_airtime action which defers to an airtime service
+
+v0.47.3
+----------
+ * completions.json should include section for session-less contexts
+
+v0.47.2
+----------
+ * Add FlowReference to FlowRun interface and add some more tests
+
+v0.47.1
+----------
+ * Renamed errored statuses to failed, replace fatal error events with failure events
+
+v0.47.0
+----------
+ * Allow loading of runs with missing flows
+ * A terminal enter_flow action should leave existing runs as completed instead of interrupted
+ * Make documented item titles into actual links so it's easier to get the link of a particular item in the docs
+
+v0.46.0
+----------
+ * Add UUID to assets.Field
+
+v0.45.2
+----------
+ * Fix parsing context references like foo.0
+
+v0.45.1
+----------
+ * ContactSQL query parsing should error if URN schenme used when URN redaction is enabled, and validate fields
+
+v0.45.0
+----------
+ * urn_parts should error for non-URNs and so Wrap migrated urn_parts expressions with default to catch errors
+ * Migrate non-tel URN types using urn_parts(..).path
+ * Redacted URNs should still have scheme, and format_urn should work for redacted URNs
+
+v0.44.4
+----------
+ * Set redaction policy in visitor constructor for contactql
+
+v0.44.3
+----------
+ * Fix parsing of implicit conditions in contactql
+
+v0.44.2
+----------
+ * Add UUID() to Session interface
+
+v0.44.1
+----------
+ * Make trigger.params null for trigger types that don't use it, non-null for those that do
+
+v0.44.0
+----------
+ * Add UUID field to sessions
+ * Rework trigger.params to be an XObject and always non-null in expressions
+ * Implement a week_number function which matches Excel's WEEKNUM
+
+v0.43.2
+----------
+ * rename voice trigger to be more consistent
+
+v0.43.1
+----------
+ * add ivr flow trigger constructor
+
+v0.43.0
+----------
+ * Allow array lookups like foo.0
+ * More re-organization of utils code into smaller packages
+
 v0.42.0
 ----------
  * Move Environment type and environment based date parsing to new envs package

@@ -75,9 +75,7 @@ flow execution is consistent. For example, while the engine itself does not have
 representation of a contact's state based on action performed on a flow so that later references in the flow are correct.
 
 <div class="actions">
-<a name="action:add_contact_groups"></a>
-
-## add_contact_groups
+<h2 class="item_title"><a name="action:add_contact_groups" href="#action:add_contact_groups">add_contact_groups</a></h2>
 
 Can be used to add a contact to one or more groups. A [contact_groups_changed](sessions.html#event:contact_groups_changed) event will be created
 for the groups which the contact has been added to.
@@ -102,7 +100,7 @@ for the groups which the contact has been added to.
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
     "groups_added": [
         {
             "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -112,9 +110,7 @@ for the groups which the contact has been added to.
 }
 ```
 </div>
-<a name="action:add_contact_urn"></a>
-
-## add_contact_urn
+<h2 class="item_title"><a name="action:add_contact_urn" href="#action:add_contact_urn">add_contact_urn</a></h2>
 
 Can be used to add a URN to the current contact. A [contact_urns_changed](sessions.html#event:contact_urns_changed) event
 will be created when this action is encountered.
@@ -135,7 +131,7 @@ will be created when this action is encountered.
 {
     "type": "contact_urns_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
+    "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
     "urns": [
         "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "twitterid:54784326227#nyaruka",
@@ -145,9 +141,7 @@ will be created when this action is encountered.
 }
 ```
 </div>
-<a name="action:add_input_labels"></a>
-
-## add_input_labels
+<h2 class="item_title"><a name="action:add_input_labels" href="#action:add_input_labels">add_input_labels</a></h2>
 
 Can be used to add labels to the last user input on a flow. An [input_labels_added](sessions.html#event:input_labels_added) event
 will be created with the labels added when this action is encountered. If there is
@@ -173,7 +167,7 @@ no user input at that point then this action will be ignored.
 {
     "type": "input_labels_added",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "2a6725ab-4f62-4c5a-9014-2c868db4022e",
+    "step_uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8",
     "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
     "labels": [
         {
@@ -184,9 +178,7 @@ no user input at that point then this action will be ignored.
 }
 ```
 </div>
-<a name="action:call_resthook"></a>
-
-## call_resthook
+<h2 class="item_title"><a name="action:call_resthook" href="#action:call_resthook">call_resthook</a></h2>
 
 Can be used to call a resthook.
 
@@ -211,7 +203,7 @@ through `extra` on the result.
     {
         "type": "resthook_called",
         "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6",
+        "step_uuid": "8707af30-d50f-440b-9803-f4a851d20f2b",
         "resthook": "new-registration",
         "payload": {
             "channel": {
@@ -260,25 +252,25 @@ through `extra` on the result.
                     "arrived_on": "2018-04-11T18:24:30.123456Z",
                     "exit_uuid": "d7a36118-0a38-4b35-a7e4-ae89042f0d3c",
                     "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
-                    "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6"
                 },
                 {
                     "arrived_on": "2018-04-11T18:24:30.123456Z",
                     "exit_uuid": "100f2d68-2481-4137-a0a3-177620ba3c5f",
                     "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                    "uuid": "5254b218-3673-41f2-b63d-c8dcc2fa9de0"
+                    "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
                 },
                 {
                     "arrived_on": "2018-04-11T18:24:30.123456Z",
                     "exit_uuid": "d898f9a4-f0fc-4ac4-a639-c98c602bb511",
                     "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                    "uuid": "951242a1-5333-4221-8f9d-465efd6fbb5e"
+                    "uuid": "dc47e96a-392b-429b-92ca-6e1d7f550554"
                 },
                 {
                     "arrived_on": "2018-04-11T18:24:30.123456Z",
                     "exit_uuid": "",
                     "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-                    "uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6"
+                    "uuid": "8707af30-d50f-440b-9803-f4a851d20f2b"
                 }
             ],
             "results": {
@@ -321,28 +313,26 @@ through `extra` on the result.
             },
             "run": {
                 "created_on": "2018-04-11T18:24:30.123456Z",
-                "uuid": "da339edd-083b-48cb-bef6-3979f99a96f9"
+                "uuid": "951242a1-5333-4221-8f9d-465efd6fbb5e"
             }
         }
     },
     {
         "type": "webhook_called",
         "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6",
+        "step_uuid": "8707af30-d50f-440b-9803-f4a851d20f2b",
         "url": "http://localhost:49998/?cmd=success",
         "resthook": "new-registration",
         "status": "success",
         "status_code": 200,
         "elapsed_ms": 0,
-        "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49998\r\nUser-Agent: goflow-testing\r\nContent-Length: 2571\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12065551212\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2017-12-31T11:35:10.035757-02:00\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\"path\":[{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d7a36118-0a38-4b35-a7e4-ae89042f0d3c\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"229bd432-dac7-4a3f-ba91-c48ad8c50e6b\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"100f2d68-2481-4137-a0a3-177620ba3c5f\",\"node_uuid\":\"3dcccbb4-d29c-41dd-a01f-16d814c9ab82\",\"uuid\":\"5254b218-3673-41f2-b63d-c8dcc2fa9de0\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"951242a1-5333-4221-8f9d-465efd6fbb5e\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"644592ee-11ad-4bc4-9566-6fb2598c32d6\"}],\"results\":{\"2factor\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"2Factor\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"34634624463525\"},\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"},\"webhook\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"GET http://localhost:49998/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D\",\"name\":\"webhook\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"200\"}},\"run\":{\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"uuid\":\"da339edd-083b-48cb-bef6-3979f99a96f9\"}}",
+        "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49998\r\nUser-Agent: goflow-testing\r\nContent-Length: 2571\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12065551212\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2017-12-31T11:35:10.035757-02:00\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\"path\":[{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d7a36118-0a38-4b35-a7e4-ae89042f0d3c\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"644592ee-11ad-4bc4-9566-6fb2598c32d6\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"100f2d68-2481-4137-a0a3-177620ba3c5f\",\"node_uuid\":\"3dcccbb4-d29c-41dd-a01f-16d814c9ab82\",\"uuid\":\"fd22f579-1e53-4988-92e8-a5e406ecb2a7\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"dc47e96a-392b-429b-92ca-6e1d7f550554\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"8707af30-d50f-440b-9803-f4a851d20f2b\"}],\"results\":{\"2factor\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"2Factor\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"34634624463525\"},\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"},\"webhook\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"GET http://localhost:49998/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D\",\"name\":\"webhook\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"200\"}},\"run\":{\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"uuid\":\"951242a1-5333-4221-8f9d-465efd6fbb5e\"}}",
         "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
     }
 ]
 ```
 </div>
-<a name="action:call_webhook"></a>
-
-## call_webhook
+<h2 class="item_title"><a name="action:call_webhook" href="#action:call_webhook">call_webhook</a></h2>
 
 Can be used to call an external service. The body, header and url fields may be
 templates and will be evaluated at runtime. A [webhook_called](sessions.html#event:webhook_called) event will be created based on
@@ -371,7 +361,7 @@ through `extra` on the result.
     {
         "type": "webhook_called",
         "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
+        "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
         "url": "http://localhost:49998/?cmd=success",
         "status": "success",
         "status_code": 200,
@@ -382,7 +372,7 @@ through `extra` on the result.
     {
         "type": "run_result_changed",
         "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
+        "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
         "name": "webhook",
         "value": "200",
         "category": "Success",
@@ -394,9 +384,7 @@ through `extra` on the result.
 ]
 ```
 </div>
-<a name="action:enter_flow"></a>
-
-## enter_flow
+<h2 class="item_title"><a name="action:enter_flow" href="#action:enter_flow">enter_flow</a></h2>
 
 Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 
@@ -420,19 +408,17 @@ A [flow_entered](sessions.html#event:flow_entered) event will be created to reco
 {
     "type": "flow_entered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "530379ca-3fa7-4959-8ceb-17799a976525",
+    "step_uuid": "5861c68a-8201-4d77-9e14-020037f6ddea",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
     },
-    "parent_run_uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07",
+    "parent_run_uuid": "4a910999-828a-4886-9504-776e7d151101",
     "terminal": false
 }
 ```
 </div>
-<a name="action:play_audio"></a>
-
-## play_audio
+<h2 class="item_title"><a name="action:play_audio" href="#action:play_audio">play_audio</a></h2>
 
 Can be used to play an audio recording in a voice flow. It will generate an
 [ivr_created](sessions.html#event:ivr_created) event if there is a valid audio URL. This will contain a message which
@@ -453,9 +439,9 @@ the caller should handle as an IVR play command using the audio attachment.
 {
     "type": "ivr_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772",
+    "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
     "msg": {
-        "uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
+        "uuid": "8aed5d25-d9ba-4799-8c2c-eb689cc91cf8",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
@@ -469,9 +455,7 @@ the caller should handle as an IVR play command using the audio attachment.
 }
 ```
 </div>
-<a name="action:remove_contact_groups"></a>
-
-## remove_contact_groups
+<h2 class="item_title"><a name="action:remove_contact_groups" href="#action:remove_contact_groups">remove_contact_groups</a></h2>
 
 Can be used to remove a contact from one or more groups. A [contact_groups_changed](sessions.html#event:contact_groups_changed) event will be created
 for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
@@ -497,7 +481,7 @@ the contact from all non-dynamic groups.
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
+    "step_uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa",
     "groups_removed": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -507,9 +491,7 @@ the contact from all non-dynamic groups.
 }
 ```
 </div>
-<a name="action:say_msg"></a>
-
-## say_msg
+<h2 class="item_title"><a name="action:say_msg" href="#action:say_msg">say_msg</a></h2>
 
 Can be used to communicate with the contact in a voice flow by either reading
 a message with TTS or playing a pre-recorded audio file. It will generate an [ivr_created](sessions.html#event:ivr_created)
@@ -533,9 +515,9 @@ an IVR say command using the message text.
 {
     "type": "ivr_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "06b98e9d-825f-4be0-92f0-b4a6fcc7080c",
+    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
     "msg": {
-        "uuid": "dde64b44-09cf-4e6f-a52e-e58736ac73ba",
+        "uuid": "75a7bcfc-86f1-43aa-b4c4-260cfebfde0b",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
@@ -549,9 +531,7 @@ an IVR say command using the message text.
 }
 ```
 </div>
-<a name="action:send_broadcast"></a>
-
-## send_broadcast
+<h2 class="item_title"><a name="action:send_broadcast" href="#action:send_broadcast">send_broadcast</a></h2>
 
 Can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
 and a list of contacts.
@@ -577,7 +557,7 @@ with the evaluated text.
 {
     "type": "broadcast_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6",
+    "step_uuid": "54e86e97-a008-4b6c-9ea1-dbfb3ec798f1",
     "translations": {
         "eng": {
             "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
@@ -590,9 +570,7 @@ with the evaluated text.
 }
 ```
 </div>
-<a name="action:send_email"></a>
-
-## send_email
+<h2 class="item_title"><a name="action:send_email" href="#action:send_email">send_email</a></h2>
 
 Can be used to send an email to one or more recipients. The subject, body and addresses
 can all contain expressions.
@@ -618,7 +596,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 {
     "type": "email_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "7dcc445a-83cf-432b-8188-76dd971a6205",
+    "step_uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608",
     "addresses": [
         "foo@bar.com"
     ],
@@ -627,9 +605,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 }
 ```
 </div>
-<a name="action:send_msg"></a>
-
-## send_msg
+<h2 class="item_title"><a name="action:send_msg" href="#action:send_msg">send_msg</a></h2>
 
 Can be used to reply to the current contact in a flow. The text field may contain templates. The action
 will attempt to find pairs of URNs and channels which can be used for sending. If it can't find such a pair, it will
@@ -661,9 +637,9 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 {
     "type": "msg_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
+    "step_uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8",
     "msg": {
-        "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df",
+        "uuid": "e0e8ce1b-5368-4e92-ba1b-6cc3bea197e4",
         "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -674,9 +650,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 }
 ```
 </div>
-<a name="action:set_contact_channel"></a>
-
-## set_contact_channel
+<h2 class="item_title"><a name="action:set_contact_channel" href="#action:set_contact_channel">set_contact_channel</a></h2>
 
 Can be used to change or clear the preferred channel of the current contact.
 
@@ -701,9 +675,7 @@ changes are made to the contact's URNs.
 []
 ```
 </div>
-<a name="action:set_contact_field"></a>
-
-## set_contact_field
+<h2 class="item_title"><a name="action:set_contact_field" href="#action:set_contact_field">set_contact_field</a></h2>
 
 Can be used to update a field value on the contact. The value is a localizable
 template and white space is trimmed from the final value. An empty string clears the value.
@@ -728,7 +700,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 {
     "type": "contact_field_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "1265aa33-e472-440a-b4b7-2e34e644276e",
+    "step_uuid": "6d743761-7e6e-41ab-8989-213a09ccb9c4",
     "field": {
         "key": "gender",
         "name": "Gender"
@@ -739,9 +711,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 }
 ```
 </div>
-<a name="action:set_contact_language"></a>
-
-## set_contact_language
+<h2 class="item_title"><a name="action:set_contact_language" href="#action:set_contact_language">set_contact_language</a></h2>
 
 Can be used to update the name of the contact. The language is a localizable
 template and white space is trimmed from the final value. An empty string clears the language.
@@ -762,9 +732,7 @@ A [contact_language_changed](sessions.html#event:contact_language_changed) event
 []
 ```
 </div>
-<a name="action:set_contact_name"></a>
-
-## set_contact_name
+<h2 class="item_title"><a name="action:set_contact_name" href="#action:set_contact_name">set_contact_name</a></h2>
 
 Can be used to update the name of the contact. The name is a localizable
 template and white space is trimmed from the final value. An empty string clears the name.
@@ -785,14 +753,12 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 {
     "type": "contact_name_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "936fea74-7589-4322-aac5-484f64970a84",
+    "step_uuid": "a1599b62-36cb-496a-bacd-395cb76a94ff",
     "name": "Bob Smith"
 }
 ```
 </div>
-<a name="action:set_contact_timezone"></a>
-
-## set_contact_timezone
+<h2 class="item_title"><a name="action:set_contact_timezone" href="#action:set_contact_timezone">set_contact_timezone</a></h2>
 
 Can be used to update the timezone of the contact. The timezone is a localizable
 template and white space is trimmed from the final value. An empty string clears the timezone.
@@ -813,14 +779,12 @@ A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event
 {
     "type": "contact_timezone_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "1fbe497b-2fec-4ec6-9c41-cf3f881022fb",
+    "step_uuid": "962f49fb-f56d-40fd-98dc-b94fc84d107e",
     "timezone": "Africa/Kigali"
 }
 ```
 </div>
-<a name="action:set_run_result"></a>
-
-## set_run_result
+<h2 class="item_title"><a name="action:set_run_result" href="#action:set_run_result">set_run_result</a></h2>
 
 Can be used to save a result for a flow. The result will be available in the context
 for the run as @results.[name]. The optional category can be used as a way of categorizing results,
@@ -846,16 +810,14 @@ final values.
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "f57752aa-b326-49dc-a261-a8a7a2e749fe",
+    "step_uuid": "72f5d1cd-fa2b-4313-b79f-52e1499b6db5",
     "name": "Gender",
     "value": "m",
     "category": "Male"
 }
 ```
 </div>
-<a name="action:start_session"></a>
-
-## start_session
+<h2 class="item_title"><a name="action:start_session" href="#action:start_session">start_session</a></h2>
 
 Can be used to trigger sessions for other contacts and groups. A [session_triggered](sessions.html#event:session_triggered) event
 will be created and it's the responsibility of the caller to act on that by initiating a new session with the flow engine.
@@ -884,7 +846,7 @@ will be created and it's the responsibility of the caller to act on that by init
 {
     "type": "session_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "a452b30e-f118-4701-aba9-6b3f291e2750",
+    "step_uuid": "7dbc8996-c0f0-460b-a23f-a7c1e36a9103",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Registration"
@@ -896,7 +858,7 @@ will be created and it's the responsibility of the caller to act on that by init
         }
     ],
     "run_summary": {
-        "uuid": "77405d28-851d-4051-a8e1-fc82b887c3ff",
+        "uuid": "dd9f85f1-44f1-46cc-ad78-6ed5a8aad1c2",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration"
@@ -982,6 +944,50 @@ will be created and it's the responsibility of the caller to act on that by init
         }
     }
 }
+```
+</div>
+<h2 class="item_title"><a name="action:transfer_airtime" href="#action:transfer_airtime">transfer_airtime</a></h2>
+
+Attempts to make an airtime transfer to the contact.
+
+An [email_created](sessions.html#event:email_created) event will be created for each email address.
+
+<div class="input_action"><h3>Action</h3>
+
+```json
+{
+    "type": "transfer_airtime",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "amounts": {
+        "RWF": 500,
+        "USD": 0.5
+    },
+    "result_name": "reward_transfer"
+}
+```
+</div><div class="output_event"><h3>Event</h3>
+
+```json
+[
+    {
+        "type": "airtime_transferred",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "1348fd9e-c478-42de-b8bf-413ebe9265fa",
+        "sender": "tel:+12345671111",
+        "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+        "currency": "RWF",
+        "amount": 500,
+        "status": "success"
+    },
+    {
+        "type": "run_result_changed",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "1348fd9e-c478-42de-b8bf-413ebe9265fa",
+        "name": "reward_transfer",
+        "value": "500",
+        "category": "Success"
+    }
+]
 ```
 </div>
 

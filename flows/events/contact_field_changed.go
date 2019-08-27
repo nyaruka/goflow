@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeContactFieldChanged, func() flows.Event { return &ContactFieldChangedEvent{} })
+	registerType(TypeContactFieldChanged, func() flows.Event { return &ContactFieldChangedEvent{} })
 }
 
 // TypeContactFieldChanged is the type of our save to contact event
@@ -24,16 +24,16 @@ const TypeContactFieldChanged string = "contact_field_changed"
 //
 // @event contact_field_changed
 type ContactFieldChangedEvent struct {
-	BaseEvent
+	baseEvent
 
 	Field *assets.FieldReference `json:"field" validate:"required"`
 	Value *flows.Value           `json:"value"`
 }
 
-// NewContactFieldChangedEvent returns a new save to contact event
-func NewContactFieldChangedEvent(field *flows.Field, value *flows.Value) *ContactFieldChangedEvent {
+// NewContactFieldChanged returns a new save to contact event
+func NewContactFieldChanged(field *flows.Field, value *flows.Value) *ContactFieldChangedEvent {
 	return &ContactFieldChangedEvent{
-		BaseEvent: NewBaseEvent(TypeContactFieldChanged),
+		baseEvent: newBaseEvent(TypeContactFieldChanged),
 		Field:     field.Reference(),
 		Value:     value,
 	}

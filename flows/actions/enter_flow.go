@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeEnterFlow, func() flows.Action { return &EnterFlowAction{} })
+	registerType(TypeEnterFlow, func() flows.Action { return &EnterFlowAction{} })
 }
 
 // TypeEnterFlow is the type for the enter flow action
@@ -28,17 +28,17 @@ const TypeEnterFlow string = "enter_flow"
 //
 // @action enter_flow
 type EnterFlowAction struct {
-	BaseAction
+	baseAction
 	universalAction
 
 	Flow     *assets.FlowReference `json:"flow" validate:"required"`
 	Terminal bool                  `json:"terminal,omitempty"`
 }
 
-// NewEnterFlowAction creates a new start flow action
-func NewEnterFlowAction(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bool) *EnterFlowAction {
+// NewEnterFlow creates a new start flow action
+func NewEnterFlow(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bool) *EnterFlowAction {
 	return &EnterFlowAction{
-		BaseAction: NewBaseAction(TypeEnterFlow, uuid),
+		baseAction: newBaseAction(TypeEnterFlow, uuid),
 		Flow:       flow,
 		Terminal:   terminal,
 	}
@@ -50,18 +50,16 @@ func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 
 	// we ignore other missing asset types but a missing flow means we don't know how to route so we can't continue
 	if err != nil {
-		run.Exit(flows.RunStatusErrored)
-		logEvent(events.NewFatalErrorEvent(err))
+		a.fail(run, err, logEvent)
 		return nil
 	}
 
 	if run.Session().Type() != "" && run.Session().Type() != flow.Type() {
-		run.Exit(flows.RunStatusErrored)
-		logEvent(events.NewFatalErrorEvent(errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(), flow.Type(), run.Session().Type())))
+		a.fail(run, errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(), flow.Type(), run.Session().Type()), logEvent)
 		return nil
 	}
 
 	run.Session().PushFlow(flow, run, a.Terminal)
-	logEvent(events.NewFlowEnteredEvent(a.Flow, run.UUID(), a.Terminal))
+	logEvent(events.NewFlowEntered(a.Flow, run.UUID(), a.Terminal))
 	return nil
 }

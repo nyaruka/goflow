@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSayMsg, func() flows.Action { return &SayMsgAction{} })
+	registerType(TypeSayMsg, func() flows.Action { return &SayMsgAction{} })
 }
 
 // TypeSayMsg is the type for the say message action
@@ -32,17 +32,17 @@ const TypeSayMsg string = "say_msg"
 //
 // @action say_msg
 type SayMsgAction struct {
-	BaseAction
+	baseAction
 	voiceAction
 
 	Text     string `json:"text" validate:"required" engine:"localized,evaluated"`
 	AudioURL string `json:"audio_url,omitempty"`
 }
 
-// NewSayMsgAction creates a new say message action
-func NewSayMsgAction(uuid flows.ActionUUID, text string, audioURL string) *SayMsgAction {
+// NewSayMsg creates a new say message action
+func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsgAction {
 	return &SayMsgAction{
-		BaseAction: NewBaseAction(TypeSayMsg, uuid),
+		baseAction: newBaseAction(TypeSayMsg, uuid),
 		Text:       text,
 		AudioURL:   audioURL,
 	}
@@ -54,7 +54,7 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 	localizedText := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, err := run.EvaluateTemplate(localizedText)
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 	}
 	evaluatedText = strings.TrimSpace(evaluatedText)
 
@@ -63,7 +63,7 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 
 	// if we have neither an audio URL or backdown text, skip
 	if evaluatedText == "" && localizedAudioURL == "" {
-		logEvent(events.NewErrorEventf("need either audio URL or backdown text, skipping"))
+		logEvent(events.NewErrorf("need either audio URL or backdown text, skipping"))
 		return nil
 	}
 
@@ -76,7 +76,7 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 	connection := run.Session().Trigger().Connection()
 
 	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), evaluatedText, attachments, nil, nil)
-	logEvent(events.NewIVRCreatedEvent(msg))
+	logEvent(events.NewIVRCreated(msg))
 
 	return nil
 }

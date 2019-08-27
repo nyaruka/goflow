@@ -89,6 +89,7 @@ func init() {
 		// date functions
 		"date_from_parts": ThreeIntegerFunction(DateFromParts),
 		"weekday":         OneDateFunction(Weekday),
+		"week_number":     OneDateFunction(WeekNumber),
 		"today":           NoArgFunction(Today),
 
 		// time functions
@@ -1377,6 +1378,19 @@ func Weekday(env envs.Environment, date types.XDate) types.XValue {
 	return types.NewXNumberFromInt(int(date.Native().Weekday()))
 }
 
+// WeekNumber returns the week number (1-54) of `date`.
+//
+// The week is considered to start on Sunday and week containing Jan 1st is week number 1.
+//
+//   @(week_number("2019-01-01")) -> 1
+//   @(week_number("2019-07-23T16:56:59.000000Z")) -> 30
+//   @(week_number("xx")) -> ERROR
+//
+// @function week_number(date)
+func WeekNumber(env envs.Environment, date types.XDate) types.XValue {
+	return types.NewXNumberFromInt(date.Native().WeekNum())
+}
+
 // Today returns the current date in the environment timezone.
 //
 //   @(today()) -> 2018-04-11
@@ -1470,10 +1484,15 @@ func TimeFromParts(env envs.Environment, hour, minute, second int) types.XValue 
 //
 //   @(urn_parts("tel:+593979012345")) -> {display: , path: +593979012345, scheme: tel}
 //   @(urn_parts("twitterid:3263621177#bobby")) -> {display: bobby, path: 3263621177, scheme: twitterid}
+//   @(urn_parts("not a urn")) -> ERROR
 //
 // @function urn_parts(urn)
 func URNParts(env envs.Environment, urn types.XText) types.XValue {
-	u := urns.URN(urn.Native())
+	u, err := urns.Parse(urn.Native())
+	if err != nil {
+		return types.NewXErrorf("%s is not a valid URN: %s", urn.Native(), err)
+	}
+
 	scheme, path, _, display := u.ToParts()
 
 	return types.NewXObject(map[string]types.XValue{
@@ -1627,7 +1646,7 @@ func FormatDate(env envs.Environment, args ...types.XValue) types.XValue {
 //   @(format_datetime("1979-07-18T15:00:00.000000Z")) -> 18-07-1979 10:00
 //   @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
 //   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 14:50
-//   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
+//   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD hh:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
 //   @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
 //   @(format_datetime("1979-07-18T15:00:00.000000Z", "M")) -> 7
 //   @(format_datetime("NOT DATE", "YYYY-MM-DD")) -> ERROR
@@ -1779,8 +1798,7 @@ func FormatLocation(env envs.Environment, path types.XText) types.XValue {
 //
 // @function format_urn(urn)
 func FormatURN(env envs.Environment, arg types.XText) types.XValue {
-	urn := urns.URN(arg.Native())
-	err := urn.Validate()
+	urn, err := urns.Parse(arg.Native())
 	if err != nil {
 		return types.NewXErrorf("%s is not a valid URN: %s", arg.Native(), err)
 	}

@@ -1,12 +1,15 @@
 package runs_test
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
@@ -28,7 +31,8 @@ var sessionAssets = `{
     ],
     "fields": [
         {
-            "key": "gender",
+			"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf",
+			"key": "gender",
             "name": "Gender",
             "type": "text"
         }
@@ -97,6 +101,43 @@ var sessionTrigger = `{
     }
 }`
 
+func TestRun(t *testing.T) {
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+
+	server := test.NewTestHTTPServer(49999)
+	defer server.Close()
+
+	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	flow, err := session.Assets().Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
+	require.NoError(t, err)
+
+	run := session.Runs()[0]
+
+	checkRun := func(r flows.FlowRun) {
+		assert.Equal(t, string(flows.RunUUID("e7187099-7d38-4f60-955c-325957214c42")), string(r.UUID()))
+		assert.Equal(t, string(flows.RunStatusCompleted), string(r.Status()))
+		assert.Equal(t, flow, r.Flow())
+		assert.Equal(t, flow.Reference(), r.FlowReference())
+		assert.Equal(t, 8, len(r.Events()))
+		assert.Equal(t, "Parent", r.Parent().Flow().Name())
+		assert.Equal(t, 0, len(r.Ancestors())) // no parent runs within this session
+	}
+
+	checkRun(run)
+
+	// check we can marshal and marshal the run and get the same values
+	runJSON, err := json.Marshal(run)
+	require.NoError(t, err)
+
+	run2, err := runs.ReadRun(session, runJSON, assets.IgnoreMissing)
+	require.NoError(t, err)
+
+	checkRun(run2)
+}
+
 func TestRunContext(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
@@ -105,7 +146,7 @@ func TestRunContext(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	// create a run with no parent or child
-	session, _, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -116,7 +157,7 @@ func TestRunContext(t *testing.T) {
 	}{
 		{`@run`, `Ryan Lewis@Registration`},
 		{`@child`, `Ryan Lewis@Collect Age`},
-		{`@child.uuid`, `59d74b86-3e2f-4a93-aece-b05d2fdcde0c`},
+		{`@child.uuid`, `9688d21d-95aa-4bed-afc7-f31b35731a3d`},
 		{`@child.run`, `Ryan Lewis@Collect Age`}, // to be removed in 13.1
 		{`@child.contact.name`, `Ryan Lewis`},
 		{`@child.run.contact.name`, `Ryan Lewis`},
@@ -145,7 +186,7 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(urns))`,
-			`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"wechat":null,"whatsapp":null}`,
+			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(results.favorite_color))`,
@@ -161,7 +202,7 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(parent.urns))`,
-			`{"ext":null,"facebook":null,"fcm":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+593979111222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"wechat":null,"whatsapp":null}`,
+			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+593979111222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(parent.fields))`,
@@ -184,7 +225,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := test.NewEngine()
 	session, _, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
 
@@ -198,7 +239,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	// check that trying to resolve a property of parent is an error
 	val, err = run.EvaluateTemplateValue(`@parent.contact`)
 	assert.NoError(t, err)
-	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)
+	assert.Equal(t, types.NewXErrorf("null doesn't support lookups"), val)
 
 	// we also have no child, check that it resolves to nil
 	val, err = run.EvaluateTemplateValue(`@child`)
@@ -208,5 +249,5 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	// check that trying to resolve a property of child is an error
 	val, err = run.EvaluateTemplateValue(`@child.contact`)
 	assert.NoError(t, err)
-	assert.Equal(t, types.NewXErrorf("null has no property 'contact'"), val)
+	assert.Equal(t, types.NewXErrorf("null doesn't support lookups"), val)
 }

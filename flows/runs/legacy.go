@@ -28,11 +28,10 @@ type legacyExtra struct {
 func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 	e := &legacyExtra{values: make(map[string]types.XValue)}
 
-	// if trigger params is a JSON object, we include it in @extra
+	// if trigger params is set, we include it in @extra
 	triggerParams := run.Session().Trigger().Params()
-	object, isObject := triggerParams.(*types.XObject)
-	if isObject && object != nil {
-		e.addValues(object)
+	if triggerParams != nil {
+		e.addValues(triggerParams)
 	}
 
 	// if trigger has results (i.e. a flow_action type trigger with a parent run) use them too

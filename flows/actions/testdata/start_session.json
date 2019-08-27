@@ -134,9 +134,9 @@
                     },
                     "results": {},
                     "status": "active",
-                    "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d"
+                    "uuid": "e7187099-7d38-4f60-955c-325957214c42"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "session_triggered",
                 "urns": [
                     "tel:+1234567890",
@@ -208,9 +208,9 @@
                     },
                     "results": {},
                     "status": "active",
-                    "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d"
+                    "uuid": "e7187099-7d38-4f60-955c-325957214c42"
                 },
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "session_triggered"
             }
         ],

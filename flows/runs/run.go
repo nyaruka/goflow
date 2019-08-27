@@ -23,6 +23,8 @@ type flowRun struct {
 	environment flows.RunEnvironment
 
 	flow    flows.Flow
+	flowRef *assets.FlowReference
+
 	parent  flows.FlowRun
 	results flows.Results
 	path    Path
@@ -44,6 +46,7 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.
 		uuid:       flows.RunUUID(uuids.New()),
 		session:    session,
 		flow:       flow,
+		flowRef:    flow.Reference(),
 		parent:     parent,
 		results:    flows.NewResults(),
 		status:     flows.RunStatusActive,
@@ -64,9 +67,10 @@ func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
 func (r *flowRun) Session() flows.Session            { return r.session }
 func (r *flowRun) Environment() flows.RunEnvironment { return r.environment }
 
-func (r *flowRun) Flow() flows.Flow        { return r.flow }
-func (r *flowRun) Contact() *flows.Contact { return r.session.Contact() }
-func (r *flowRun) Events() []flows.Event   { return r.events }
+func (r *flowRun) Flow() flows.Flow                     { return r.flow }
+func (r *flowRun) FlowReference() *assets.FlowReference { return r.flowRef }
+func (r *flowRun) Contact() *flows.Contact              { return r.session.Contact() }
+func (r *flowRun) Events() []flows.Event                { return r.events }
 
 func (r *flowRun) Results() flows.Results { return r.results }
 func (r *flowRun) SaveResult(result *flows.Result) {
@@ -135,7 +139,7 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 }
 
 func (r *flowRun) LogError(step flows.Step, err error) {
-	r.LogEvent(step, events.NewErrorEvent(err))
+	r.LogEvent(step, events.NewError(err))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }
@@ -167,7 +171,7 @@ func (r *flowRun) CreatedOn() time.Time  { return r.createdOn }
 func (r *flowRun) ModifiedOn() time.Time { return r.modifiedOn }
 func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
-	if r.Flow().ExpireAfterMinutes() >= 0 {
+	if r.Flow() != nil && r.Flow().ExpireAfterMinutes() >= 0 {
 		if from == nil {
 			now := dates.Now()
 			from = &now
@@ -235,7 +239,7 @@ func (r *flowRun) lastWebhookResponse() types.XValue {
 	for i := len(r.events) - 1; i >= 0; i-- {
 		switch typed := r.events[i].(type) {
 		case *events.WebhookCalledEvent:
-			return types.JSONToXValue(flows.ExtractResponseBody(typed.Response))
+			return types.JSONToXValue(utils.ExtractResponseJSON([]byte(typed.Response)))
 		default:
 			continue
 		}
@@ -383,7 +387,7 @@ type runEnvelope struct {
 
 // ReadRun decodes a run from the passed in JSON. Parent run UUID is returned separately as the
 // run in question might be loaded yet from the session.
-func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error) {
+func ReadRun(session flows.Session, data json.RawMessage, missing assets.MissingCallback) (flows.FlowRun, error) {
 	e := &runEnvelope{}
 	var err error
 
@@ -394,6 +398,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r := &flowRun{
 		session:    session,
 		uuid:       e.UUID,
+		flowRef:    e.Flow,
 		status:     e.Status,
 		createdOn:  e.CreatedOn,
 		modifiedOn: e.ModifiedOn,
@@ -401,9 +406,9 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 		exitedOn:   e.ExitedOn,
 	}
 
-	// lookup flow
+	// lookup actual flow
 	if r.flow, err = session.Assets().Flows().Get(e.Flow.UUID); err != nil {
-		return nil, errors.Wrapf(err, "unable to load %s", e.Flow)
+		missing(e.Flow, err)
 	}
 
 	// lookup parent run
@@ -446,7 +451,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 
 	e := &runEnvelope{
 		UUID:       r.uuid,
-		Flow:       r.flow.Reference(),
+		Flow:       r.flowRef,
 		Status:     r.status,
 		CreatedOn:  r.createdOn,
 		ModifiedOn: r.modifiedOn,

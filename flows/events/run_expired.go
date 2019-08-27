@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeRunExpired, func() flows.Event { return &RunExpiredEvent{} })
+	registerType(TypeRunExpired, func() flows.Event { return &RunExpiredEvent{} })
 }
 
 // TypeRunExpired is the type of our flow expired event
@@ -21,15 +21,15 @@ const TypeRunExpired string = "run_expired"
 //
 // @event run_expired
 type RunExpiredEvent struct {
-	BaseEvent
+	baseEvent
 
 	RunUUID flows.RunUUID `json:"run_uuid"    validate:"required,uuid4"`
 }
 
-// NewRunExpiredEvent creates a new run expired event
-func NewRunExpiredEvent(run flows.FlowRun) *RunExpiredEvent {
+// NewRunExpired creates a new run expired event
+func NewRunExpired(run flows.FlowRun) *RunExpiredEvent {
 	return &RunExpiredEvent{
-		BaseEvent: NewBaseEvent(TypeRunExpired),
+		baseEvent: newBaseEvent(TypeRunExpired),
 		RunUUID:   run.UUID(),
 	}
 }

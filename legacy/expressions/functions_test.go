@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
@@ -142,7 +143,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 	server := test.NewTestHTTPServer(49991)
 	defer server.Close()
 
-	session, _, err := test.CreateTestSession(server.URL, nil)
+	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)

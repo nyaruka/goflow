@@ -54,7 +54,8 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{"@(array1d[1])", xs("b")},
 		{"@(array2d[0])", array1d},
 		{"@(array2d[0][2])", xs("c")},
-		{"@array1d.1", ERROR}, // need to use square brackets
+		{"@array1d.0", xs("a")},
+		{"@array1d.1", xs("b")},
 		{"@array2d.0.2", ERROR},
 
 		{"@string1 world", xs("foo world")},
@@ -263,6 +264,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(array1[0])", "one", false},
 		{"@(array1[3 - 3])", "one", false},
 		{"@(array1[-1])", "three", false}, // negative index
+		{"@(array1.0)", "one", false},
+		{"@array1.0", "one", false},
 
 		{"@(split(words, \" \")[0])", "one", false},
 		{"@(split(words, \" \")[1])", "two", false},
@@ -315,10 +318,14 @@ var errorTests = []struct {
 
 	// lookup errors
 	{`@(hello)`, `error evaluating @(hello): context has no property 'hello'`},
-	{`@((1).x)`, `error evaluating @((1).x): 1 has no property 'x'`},
-	{`@((TRUE).x)`, `error evaluating @((TRUE).x): true has no property 'x'`},
-	{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
-	{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},
+	{`@((1).x)`, `error evaluating @((1).x): 1 doesn't support lookups`},
+	{`@((1)[0])`, `error evaluating @((1)[0]): 1 doesn't support lookups`},
+	{`@((1)["x"])`, `error evaluating @((1)["x"]): 1 doesn't support lookups`},
+	{`@((TRUE).x)`, `error evaluating @((TRUE).x): true doesn't support lookups`},
+	{`@((TRUE)["x"])`, `error evaluating @((TRUE)["x"]): true doesn't support lookups`},
+	{`@(foo.x)`, `error evaluating @(foo.x): "bar" doesn't support lookups`},
+	{`@(foo["x"])`, `error evaluating @(foo["x"]): "bar" doesn't support lookups`},
+	{`@foo.x`, `error evaluating @foo.x: "bar" doesn't support lookups`},
 	{`@(array(1, 2)[5])`, `error evaluating @(array(1, 2)[5]): index 5 out of range for 2 items`},
 
 	// conversion errors

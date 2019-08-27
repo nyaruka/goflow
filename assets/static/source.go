@@ -1,4 +1,4 @@
-// Package static is an implementation of AssetSource which loads assets from a static JSON file.
+// Package static is an implementation of Source which loads assets from a static JSON file.
 package static
 
 import (
@@ -49,7 +49,7 @@ func LoadSource(path string) (*StaticSource, error) {
 	return NewSource(data)
 }
 
-var _ assets.AssetSource = (*StaticSource)(nil)
+var _ assets.Source = (*StaticSource)(nil)
 
 // Channels returns all channel assets
 func (s *StaticSource) Channels() ([]assets.Channel, error) {

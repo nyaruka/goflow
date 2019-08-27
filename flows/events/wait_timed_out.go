@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeWaitTimedOut, func() flows.Event { return &WaitTimedOutEvent{} })
+	registerType(TypeWaitTimedOut, func() flows.Event { return &WaitTimedOutEvent{} })
 }
 
 // TypeWaitTimedOut is the type of our wait timed out events
@@ -21,12 +21,12 @@ const TypeWaitTimedOut string = "wait_timed_out"
 //
 // @event wait_timed_out
 type WaitTimedOutEvent struct {
-	BaseEvent
+	baseEvent
 }
 
-// NewWaitTimedOutEvent creates a new wait timed out event
-func NewWaitTimedOutEvent() *WaitTimedOutEvent {
-	return &WaitTimedOutEvent{BaseEvent: NewBaseEvent(TypeWaitTimedOut)}
+// NewWaitTimedOut creates a new wait timed out event
+func NewWaitTimedOut() *WaitTimedOutEvent {
+	return &WaitTimedOutEvent{baseEvent: newBaseEvent(TypeWaitTimedOut)}
 }
 
 var _ flows.Event = (*WaitTimedOutEvent)(nil)

@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsg, readMsgWait, readActivatedMsgWait)
+	registerType(TypeMsg, readMsgWait, readActivatedMsgWait)
 }
 
 // TypeMsg is the type of our message wait

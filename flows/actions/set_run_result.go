@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSetRunResult, func() flows.Action { return &SetRunResultAction{} })
+	registerType(TypeSetRunResult, func() flows.Action { return &SetRunResultAction{} })
 }
 
 // TypeSetRunResult is the type for the set run result action
@@ -30,7 +30,7 @@ const TypeSetRunResult string = "set_run_result"
 //
 // @action set_run_result
 type SetRunResultAction struct {
-	BaseAction
+	baseAction
 	universalAction
 
 	Name     string `json:"name" validate:"required"`
@@ -38,10 +38,10 @@ type SetRunResultAction struct {
 	Category string `json:"category,omitempty" engine:"localized"`
 }
 
-// NewSetRunResultAction creates a new set run result action
-func NewSetRunResultAction(uuid flows.ActionUUID, name string, value string, category string) *SetRunResultAction {
+// NewSetRunResult creates a new set run result action
+func NewSetRunResult(uuid flows.ActionUUID, name string, value string, category string) *SetRunResultAction {
 	return &SetRunResultAction{
-		BaseAction: NewBaseAction(TypeSetRunResult, uuid),
+		baseAction: newBaseAction(TypeSetRunResult, uuid),
 		Name:       name,
 		Value:      value,
 		Category:   category,
@@ -55,7 +55,7 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 	// log any error received
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 		return nil
 	}
 

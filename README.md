@@ -18,8 +18,8 @@ source, _ := static.LoadSource("myassets.json")
 assets, _ := engine.NewSessionAssets(source)
 contact := flows.NewContact(assets, ...)
 env := envs.NewEnvironmentBuilder().Build()
-trigger := triggers.NewManualTrigger(env, contact, flow.Reference(), nil, nil, time.Now())
-eng := engine.NewBuilder().WithDefaultUserAgent("goflow-flowrunner").Build()
+trigger := triggers.NewManual(env, contact, flow.Reference(), nil, nil, time.Now())
+eng := engine.NewBuilder().Build()
 session, sprint, err := eng.NewSession(assets, trigger)
 ```
 

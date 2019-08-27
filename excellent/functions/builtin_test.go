@@ -325,6 +325,7 @@ func TestFunctions(t *testing.T) {
 		{"format_urn", dmy, []types.XValue{xs("tel:+250781234567")}, xs("0781 234 567")},
 		{"format_urn", dmy, []types.XValue{xs("twitter:134252511151#billy_bob")}, xs("billy_bob")},
 		{"format_urn", dmy, []types.XValue{xs("NOT URN")}, ERROR},
+		{"format_urn", dmy, []types.XValue{xs("")}, ERROR},
 		{"format_urn", dmy, []types.XValue{ERROR}, ERROR},
 		{"format_urn", dmy, []types.XValue{}, ERROR},
 
@@ -618,11 +619,9 @@ func TestFunctions(t *testing.T) {
 			"path":    xs("23454556"),
 			"display": xs("bobby"),
 		})},
-		{"urn_parts", dmy, []types.XValue{xs("not_a_urn")}, types.NewXObject(map[string]types.XValue{
-			"scheme":  types.XTextEmpty,
-			"path":    xs("not_a_urn"),
-			"display": types.XTextEmpty,
-		})},
+		{"urn_parts", dmy, []types.XValue{xs("not_a_urn")}, ERROR},
+		{"urn_parts", dmy, []types.XValue{xs("")}, ERROR},
+		{"urn_parts", dmy, []types.XValue{nil}, ERROR},
 		{"urn_parts", dmy, []types.XValue{ERROR}, ERROR},
 		{"urn_parts", dmy, []types.XValue{}, ERROR},
 
@@ -664,6 +663,12 @@ func TestFunctions(t *testing.T) {
 		{"weekday", dmy, []types.XValue{xs("01-12-2017 10:15pm")}, xi(5)},
 		{"weekday", dmy, []types.XValue{xs("xxx")}, ERROR},
 		{"weekday", dmy, []types.XValue{}, ERROR},
+
+		{"week_number", dmy, []types.XValue{xs("01-01-2019")}, xi(1)},
+		{"week_number", dmy, []types.XValue{xs("23/07/2019")}, xi(30)},
+		{"week_number", dmy, []types.XValue{xs("2019-07-23T16:56:59.000000Z")}, xi(30)},
+		{"week_number", dmy, []types.XValue{xs("xxx")}, ERROR},
+		{"week_number", dmy, []types.XValue{}, ERROR},
 
 		{"url_encode", dmy, []types.XValue{xs(`hi-% ?/`)}, xs(`hi-%25%20%3F%2F`)},
 		{"url_encode", dmy, []types.XValue{ERROR}, ERROR},

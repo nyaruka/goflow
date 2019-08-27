@@ -11,13 +11,9 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-const (
-	ImplicitKey string = "*"
-)
-
 // Queryable is the interface objects must implement queried
 type Queryable interface {
-	ResolveQueryKey(envs.Environment, string) []interface{}
+	QueryProperty(envs.Environment, string, PropertyType) []interface{}
 }
 
 // EvaluateQuery evaluates the given parsed query against a queryable object

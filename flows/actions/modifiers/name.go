@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeName, readNameModifier)
+	registerType(TypeName, readNameModifier)
 }
 
 // TypeName is the type of our name modifier
@@ -24,8 +24,8 @@ type NameModifier struct {
 	Name string `json:"name"`
 }
 
-// NewNameModifier creates a new name modifier
-func NewNameModifier(name string) *NameModifier {
+// NewName creates a new name modifier
+func NewName(name string) *NameModifier {
 	return &NameModifier{
 		baseModifier: newBaseModifier(TypeName),
 		Name:         name,
@@ -41,7 +41,7 @@ func (m *NameModifier) Apply(env envs.Environment, assets flows.SessionAssets, c
 		}
 
 		contact.SetName(m.Name)
-		log(events.NewContactNameChangedEvent(m.Name))
+		log(events.NewContactNameChanged(m.Name))
 		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
 }

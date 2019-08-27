@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -72,13 +71,13 @@ func TestMsgWait(t *testing.T) {
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := test.NewEngine()
 	env := envs.NewEnvironmentBuilder().Build()
 	sa, flow := initializeSessionAssets(t)
 	contact := flows.NewEmptyContact(sa, "Ben Haggerty", envs.Language("eng"), nil)
 
 	// a manual trigger will wait at the initial wait
-	trigger := triggers.NewManualTrigger(env, flow.Reference(), contact, nil)
+	trigger := triggers.NewManual(env, flow.Reference(), contact, nil)
 
 	session, sprint, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
@@ -91,7 +90,7 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 
 	// whereas a msg trigger will skip over it
 	msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hi there", nil)
-	trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil)
+	trigger = triggers.NewMsg(env, flow.Reference(), contact, msg, nil)
 
 	session, sprint, err = eng.NewSession(sa, trigger)
 	require.NoError(t, err)

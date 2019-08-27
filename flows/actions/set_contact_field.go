@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeSetContactField, func() flows.Action { return &SetContactFieldAction{} })
+	registerType(TypeSetContactField, func() flows.Action { return &SetContactFieldAction{} })
 }
 
 // TypeSetContactField is the type for the set contact field action
@@ -29,17 +29,17 @@ const TypeSetContactField string = "set_contact_field"
 //
 // @action set_contact_field
 type SetContactFieldAction struct {
-	BaseAction
+	baseAction
 	universalAction
 
 	Field *assets.FieldReference `json:"field" validate:"required"`
 	Value string                 `json:"value" engine:"evaluated"`
 }
 
-// NewSetContactFieldAction creates a new set channel action
-func NewSetContactFieldAction(uuid flows.ActionUUID, field *assets.FieldReference, value string) *SetContactFieldAction {
+// NewSetContactField creates a new set channel action
+func NewSetContactField(uuid flows.ActionUUID, field *assets.FieldReference, value string) *SetContactFieldAction {
 	return &SetContactFieldAction{
-		BaseAction: NewBaseAction(TypeSetContactField, uuid),
+		baseAction: newBaseAction(TypeSetContactField, uuid),
 		Field:      field,
 		Value:      value,
 	}
@@ -48,7 +48,7 @@ func NewSetContactFieldAction(uuid flows.ActionUUID, field *assets.FieldReferenc
 // Execute runs this action
 func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {
-		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -57,7 +57,7 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 
 	// if we received an error, log it
 	if err != nil {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 		return nil
 	}
 
@@ -67,7 +67,7 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 	if field != nil {
 		newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
 
-		a.applyModifier(run, modifiers.NewFieldModifier(field, newValue), logModifier, logEvent)
+		a.applyModifier(run, modifiers.NewField(field, newValue), logModifier, logEvent)
 	}
 	return nil
 }

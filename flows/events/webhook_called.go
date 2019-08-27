@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeWebhookCalled, func() flows.Event { return &WebhookCalledEvent{} })
+	registerType(TypeWebhookCalled, func() flows.Event { return &WebhookCalledEvent{} })
 }
 
 // TypeWebhookCalled is the type for our webhook events
@@ -30,7 +30,7 @@ const TypeWebhookCalled string = "webhook_called"
 //
 // @event webhook_called
 type WebhookCalledEvent struct {
-	BaseEvent
+	baseEvent
 
 	URL         string              `json:"url" validate:"required"`
 	Resthook    string              `json:"resthook,omitempty"`
@@ -42,17 +42,17 @@ type WebhookCalledEvent struct {
 	BodyIgnored bool                `json:"body_ignored,omitempty"`
 }
 
-// NewWebhookCalledEvent returns a new webhook called event
-func NewWebhookCalledEvent(webhook *flows.WebhookCall) *WebhookCalledEvent {
+// NewWebhookCalled returns a new webhook called event
+func NewWebhookCalled(webhook *flows.WebhookCall) *WebhookCalledEvent {
 	return &WebhookCalledEvent{
-		BaseEvent:   NewBaseEvent(TypeWebhookCalled),
-		URL:         webhook.URL(),
-		Resthook:    webhook.Resthook(),
-		Status:      webhook.Status(),
-		StatusCode:  webhook.StatusCode(),
-		ElapsedMS:   int(webhook.TimeTaken() / time.Millisecond),
-		Request:     webhook.Request(),
-		Response:    webhook.Response(),
-		BodyIgnored: webhook.BodyIgnored(),
+		baseEvent:   newBaseEvent(TypeWebhookCalled),
+		URL:         webhook.URL,
+		Resthook:    webhook.Resthook,
+		Status:      webhook.Status,
+		StatusCode:  webhook.StatusCode,
+		ElapsedMS:   int(webhook.TimeTaken / time.Millisecond),
+		Request:     string(webhook.Request),
+		Response:    string(webhook.Response),
+		BodyIgnored: webhook.BodyIgnored,
 	}
 }

@@ -100,7 +100,7 @@ func TestConstructors(t *testing.T) {
 		json     string
 	}{
 		{
-			modifiers.NewChannelModifier(nexmo),
+			modifiers.NewChannel(nexmo),
 			`{
 				"type": "channel",
 				"channel": {
@@ -110,7 +110,7 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewFieldModifier(age, flows.NewValue(types.NewXText("37 years"), nil, &ageValue, "", "", "")),
+			modifiers.NewField(age, flows.NewValue(types.NewXText("37 years"), nil, &ageValue, "", "", "")),
 			`{
 				"type": "field",
 				"field": {
@@ -124,7 +124,7 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewGroupsModifier([]*flows.Group{testers}, modifiers.GroupsAdd),
+			modifiers.NewGroups([]*flows.Group{testers}, modifiers.GroupsAdd),
 			`{
 				"type": "groups",
 				"groups": [
@@ -137,28 +137,28 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewLanguageModifier(envs.Language("fra")),
+			modifiers.NewLanguage(envs.Language("fra")),
 			`{
 				"type": "language",
 				"language": "fra"
 			}`,
 		},
 		{
-			modifiers.NewNameModifier("Bob"),
+			modifiers.NewName("Bob"),
 			`{
 				"type": "name",
 				"name": "Bob"
 			}`,
 		},
 		{
-			modifiers.NewTimezoneModifier(la),
+			modifiers.NewTimezone(la),
 			`{
 				"type": "timezone",
 				"timezone": "America/Los_Angeles"
 			}`,
 		},
 		{
-			modifiers.NewURNModifier(urns.URN("tel:+1234567890"), modifiers.URNAppend),
+			modifiers.NewURN(urns.URN("tel:+1234567890"), modifiers.URNAppend),
 			`{
 				"type": "urn",
 				"urn": "tel:+1234567890",

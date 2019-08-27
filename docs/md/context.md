@@ -20,9 +20,7 @@ These are the top-level variables that can be accessed in the context:
 The following types are found in the context:
 
 <div class="context">
-<a name="context:channel"></a>
-
-## Channel
+<h2 class="item_title"><a name="context:channel" href="#context:channel">channel</a></h2>
 
 Defaults to the name ([text](expressions.html#type:text))
 
@@ -30,9 +28,7 @@ Defaults to the name ([text](expressions.html#type:text))
  * `name` the name of the channel ([text](expressions.html#type:text))
  * `address` the address of the channel ([text](expressions.html#type:text))
 
-<a name="context:contact"></a>
-
-## Contact
+<h2 class="item_title"><a name="context:contact" href="#context:contact">contact</a></h2>
 
 Defaults to the name or URN ([text](expressions.html#type:text))
 
@@ -48,9 +44,7 @@ Defaults to the name or URN ([text](expressions.html#type:text))
  * `fields` the custom field values of the contact (fields)
  * `channel` the preferred channel of the contact ([channel](context.html#context:channel))
 
-<a name="context:flow"></a>
-
-## Flow
+<h2 class="item_title"><a name="context:flow" href="#context:flow">flow</a></h2>
 
 Defaults to the name ([text](expressions.html#type:text))
 
@@ -58,16 +52,12 @@ Defaults to the name ([text](expressions.html#type:text))
  * `name` the name of the flow ([text](expressions.html#type:text))
  * `revision` the revision number of the flow ([text](expressions.html#type:text))
 
-<a name="context:group"></a>
-
-## Group
+<h2 class="item_title"><a name="context:group" href="#context:group">group</a></h2>
 
  * `uuid` the UUID of the group ([text](expressions.html#type:text))
  * `name` the name of the group ([text](expressions.html#type:text))
 
-<a name="context:input"></a>
-
-## Input
+<h2 class="item_title"><a name="context:input" href="#context:input">input</a></h2>
 
 Defaults to the text and attachments ([text](expressions.html#type:text))
 
@@ -79,9 +69,7 @@ Defaults to the text and attachments ([text](expressions.html#type:text))
  * `attachments` any attachments on the input ([text](expressions.html#type:text))
  * `external_id` the external ID of the input ([text](expressions.html#type:text))
 
-<a name="context:related_run"></a>
-
-## Related_run
+<h2 class="item_title"><a name="context:related_run" href="#context:related_run">related_run</a></h2>
 
 Defaults to the contact name and flow UUID ([text](expressions.html#type:text))
 
@@ -93,9 +81,7 @@ Defaults to the contact name and flow UUID ([text](expressions.html#type:text))
  * `results` the results saved by the run (results)
  * `status` the current status of the run ([text](expressions.html#type:text))
 
-<a name="context:result"></a>
-
-## Result
+<h2 class="item_title"><a name="context:result" href="#context:result">result</a></h2>
 
 Defaults to the value ([text](expressions.html#type:text))
 
@@ -108,9 +94,7 @@ Defaults to the value ([text](expressions.html#type:text))
  * `node_uuid` the UUID of the node in the flow that generated the result ([text](expressions.html#type:text))
  * `created_on` the creation date of the result ([datetime](expressions.html#type:datetime))
 
-<a name="context:run"></a>
-
-## Run
+<h2 class="item_title"><a name="context:run" href="#context:run">run</a></h2>
 
 Defaults to the contact name and flow UUID ([text](expressions.html#type:text))
 
@@ -122,9 +106,7 @@ Defaults to the contact name and flow UUID ([text](expressions.html#type:text))
  * `created_on` the creation date of the run ([datetime](expressions.html#type:datetime))
  * `exited_on` the exit date of the run ([datetime](expressions.html#type:datetime))
 
-<a name="context:trigger"></a>
-
-## Trigger
+<h2 class="item_title"><a name="context:trigger" href="#context:trigger">trigger</a></h2>
 
  * `type` the type of trigger that started this session ([text](expressions.html#type:text))
  * `params` the parameters passed to the trigger (any)

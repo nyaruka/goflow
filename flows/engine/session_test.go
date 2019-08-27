@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -24,113 +25,128 @@ import (
 )
 
 var templateTests = []struct {
-	template string
-	expected string
-	errorMsg string
+	template   string
+	expected   string
+	errorMsg   string
+	redactURNs bool
 }{
 	// contact basic properties
-	{"@contact.uuid", "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f", ""},
-	{"@contact.id", "1234567", ""},
-	{"@CONTACT.NAME", "Ryan Lewis", ""},
-	{"@contact.name", "Ryan Lewis", ""},
-	{"@contact.language", "eng", ""},
-	{"@contact.timezone", "America/Guayaquil", ""},
+	{"@contact.uuid", "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f", "", false},
+	{"@contact.id", "1234567", "", false},
+	{"@CONTACT.NAME", "Ryan Lewis", "", false},
+	{"@contact.name", "Ryan Lewis", "", false},
+	{"@contact.language", "eng", "", false},
+	{"@contact.timezone", "America/Guayaquil", "", false},
 
 	// contact single URN access
-	{"@contact.urn", `tel:+12065551212`, ""},
-	{"@(urn_parts(contact.urn).scheme)", `tel`, ""},
-	{"@(urn_parts(contact.urn).path)", `+12065551212`, ""},
-	{"@(format_urn(contact.urn))", `(206) 555-1212`, ""},
+	{"@contact.urn", `tel:+12065551212`, "", false},
+	{"@(urn_parts(contact.urn).scheme)", `tel`, "", false},
+	{"@(urn_parts(contact.urn).path)", `+12065551212`, "", false},
+	{"@(format_urn(contact.urn))", `(206) 555-1212`, "", false},
+
+	// with URN redaction
+	{"@contact.urn", `tel:********`, "", true},
+	{"@(urn_parts(contact.urn).scheme)", `tel`, "", true},
+	{"@(urn_parts(contact.urn).path)", `********`, "", true},
+	{"@(format_urn(contact.urn))", `********`, "", true},
 
 	// contact URN list access
-	{"@contact.urns", `[tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]`, ""},
-	{"@(contact.urns[0])", "tel:+12065551212", ""},
-	{"@(contact.urns[110])", "", "error evaluating @(contact.urns[110]): index 110 out of range for 3 items"},
-	{"@(urn_parts(contact.urns[0]).scheme)", "tel", ""},
-	{"@(urn_parts(contact.urns[0]).path)", "+12065551212", ""},
-	{"@(urn_parts(contact.urns[0]).display)", "", ""},
-	{"@(contact.urns[1])", "twitterid:54784326227#nyaruka", ""},
-	{"@(format_urn(contact.urns[0]))", "(206) 555-1212", ""},
+	{"@contact.urns", `[tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]`, "", false},
+	{"@(contact.urns[0])", "tel:+12065551212", "", false},
+	{"@(contact.urns[110])", "", "error evaluating @(contact.urns[110]): index 110 out of range for 3 items", false},
+	{"@(urn_parts(contact.urns[0]).scheme)", "tel", "", false},
+	{"@(urn_parts(contact.urns[0]).path)", "+12065551212", "", false},
+	{"@(urn_parts(contact.urns[0]).display)", "", "", false},
+	{"@(contact.urns[1])", "twitterid:54784326227#nyaruka", "", false},
+	{"@(format_urn(contact.urns[0]))", "(206) 555-1212", "", false},
+
+	// with URN redaction
+	{"@contact.urns", `[tel:********, twitterid:********, mailto:********]`, "", true},
+	{"@(contact.urns[0])", `tel:********`, "", true},
 
 	// simplified URN access
-	{"@urns", `{ext: , facebook: , fcm: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , wechat: , whatsapp: }`, ""},
-	{"@urns.tel", `tel:+12065551212`, ""},
-	{"@urns.mailto", `mailto:foo@bar.com`, ""},
-	{"@urns.viber", ``, ""},
-	{"@(format_urn(urns.tel))", "(206) 555-1212", ""},
+	{"@urns", `{ext: , facebook: , fcm: , freshchat: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , wechat: , whatsapp: }`, "", false},
+	{"@urns.tel", `tel:+12065551212`, "", false},
+	{"@urns.mailto", `mailto:foo@bar.com`, "", false},
+	{"@urns.viber", ``, "", false},
+	{"@(format_urn(urns.tel))", "(206) 555-1212", "", false},
+
+	// with URN redaction
+	{"@urns.tel", `tel:********`, "", true},
+	{"@urns.viber", ``, "", true},
 
 	// contact groups
-	{`@(foreach(contact.groups, extract, "name"))`, `[Testers, Males]`, ""},
-	{`@(join(foreach(contact.groups, extract, "name"), "|"))`, `Testers|Males`, ""},
-	{`@(count(contact.groups))`, "2", ""},
+	{`@(foreach(contact.groups, extract, "name"))`, `[Testers, Males]`, "", false},
+	{`@(join(foreach(contact.groups, extract, "name"), "|"))`, `Testers|Males`, "", false},
+	{`@(count(contact.groups))`, "2", "", false},
 
 	// contact fields
-	{"@contact.fields", "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00", ""},
-	{"@contact.fields.activation_token", "AACC55", ""},
-	{"@contact.fields.age", "23", ""},
-	{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-	{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: object has no property 'favorite_icecream'"},
-	{"@(is_error(contact.fields.favorite_icecream))", "true", ""},
-	{"@(has_error(contact.fields.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
-	{"@(count(contact.fields))", "5", ""},
+	{"@contact.fields", "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00", "", false},
+	{"@contact.fields.activation_token", "AACC55", "", false},
+	{"@contact.fields.age", "23", "", false},
+	{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", "", false},
+	{"@contact.fields.favorite_icecream", "", "error evaluating @contact.fields.favorite_icecream: object has no property 'favorite_icecream'", false},
+	{"@(is_error(contact.fields.favorite_icecream))", "true", "", false},
+	{"@(has_error(contact.fields.favorite_icecream).match)", "object has no property 'favorite_icecream'", "", false},
+	{"@(count(contact.fields))", "5", "", false},
 
 	// simplifed field access
-	{"@fields", "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00", ""},
-	{"@fields.activation_token", "AACC55", ""},
-	{"@fields.age", "23", ""},
-	{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},
-	{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: object has no property 'favorite_icecream'"},
-	{"@(is_error(fields.favorite_icecream))", "true", ""},
-	{"@(has_error(fields.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
-	{"@(count(fields))", "5", ""},
+	{"@fields", "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00", "", false},
+	{"@fields.activation_token", "AACC55", "", false},
+	{"@fields.age", "23", "", false},
+	{"@fields.join_date", "2017-12-02T00:00:00.000000-02:00", "", false},
+	{"@fields.favorite_icecream", "", "error evaluating @fields.favorite_icecream: object has no property 'favorite_icecream'", false},
+	{"@(is_error(fields.favorite_icecream))", "true", "", false},
+	{"@(has_error(fields.favorite_icecream).match)", "object has no property 'favorite_icecream'", "", false},
+	{"@(count(fields))", "5", "", false},
 
-	{"@input", "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3", ""},
-	{"@input.text", "Hi there", ""},
-	{"@input.attachments", `[image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]`, ""},
-	{"@(input.attachments[0])", "image/jpeg:http://s3.amazon.com/bucket/test.jpg", ""},
-	{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
-	{"@input.channel.name", "My Android Phone", ""},
+	{"@input", "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3", "", false},
+	{"@input.text", "Hi there", "", false},
+	{"@input.attachments", `[image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]`, "", false},
+	{"@(input.attachments[0])", "image/jpeg:http://s3.amazon.com/bucket/test.jpg", "", false},
+	{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", "", false},
+	{"@input.channel.name", "My Android Phone", "", false},
 
-	{"@results.favorite_color", `red`, ""},
-	{"@results.favorite_color.value", "red", ""},
-	{"@results.favorite_color.category", "Red", ""},
-	{"@results.favorite_color.category_localized", "Red", ""},
-	{"@(is_error(results.favorite_icecream))", "true", ""},
-	{"@(has_error(results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
-	{"@(count(results))", "4", ""},
+	{"@results.favorite_color", `red`, "", false},
+	{"@results.favorite_color.value", "red", "", false},
+	{"@results.favorite_color.category", "Red", "", false},
+	{"@results.favorite_color.category_localized", "Red", "", false},
+	{"@(is_error(results.favorite_icecream))", "true", "", false},
+	{"@(has_error(results.favorite_icecream).match)", "object has no property 'favorite_icecream'", "", false},
+	{"@(count(results))", "4", "", false},
 
-	{"@run.results.favorite_color", `red`, ""},
-	{"@run.results.favorite_color.value", "red", ""},
-	{"@run.results.favorite_color.values", "[red]", ""},
-	{`@(run.results.favorite_color.values[0])`, `red`, ""},
-	{"@run.results.favorite_color.category", "Red", ""},
-	{"@run.results.favorite_color.categories", "[Red]", ""},
-	{`@(run.results.favorite_color.categories[0])`, `Red`, ""},
-	{"@run.results.favorite_color.category_localized", "Red", ""},
-	{"@run.results.favorite_color.categories_localized", "[Red]", ""},
-	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'"},
-	{"@(is_error(run.results.favorite_icecream))", "true", ""},
-	{"@(has_error(run.results.favorite_icecream).match)", "object has no property 'favorite_icecream'", ""},
-	{"@(count(run.results))", "4", ""},
+	{"@run.results.favorite_color", `red`, "", false},
+	{"@run.results.favorite_color.value", "red", "", false},
+	{"@run.results.favorite_color.values", "[red]", "", false},
+	{`@(run.results.favorite_color.values[0])`, `red`, "", false},
+	{"@run.results.favorite_color.category", "Red", "", false},
+	{"@run.results.favorite_color.categories", "[Red]", "", false},
+	{`@(run.results.favorite_color.categories[0])`, `Red`, "", false},
+	{"@run.results.favorite_color.category_localized", "Red", "", false},
+	{"@run.results.favorite_color.categories_localized", "[Red]", "", false},
+	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'", false},
+	{"@(is_error(run.results.favorite_icecream))", "true", "", false},
+	{"@(has_error(run.results.favorite_icecream).match)", "object has no property 'favorite_icecream'", "", false},
+	{"@(count(run.results))", "4", "", false},
 
-	{"@run.status", "completed", ""},
+	{"@run.status", "completed", "", false},
 
-	{"@webhook", "{results: [{state: WA}, {state: IN}]}", ""},
-	{"@webhook.results", "[{state: WA}, {state: IN}]", ""},
-	{"@(webhook.results[1])", "{state: IN}", ""},
-	{"@(webhook.results[1].state)", "IN", ""},
+	{"@webhook", "{results: [{state: WA}, {state: IN}]}", "", false},
+	{"@webhook.results", "[{state: WA}, {state: IN}]", "", false},
+	{"@(webhook.results[1])", "{state: IN}", "", false},
+	{"@(webhook.results[1].state)", "IN", "", false},
 
-	{"@trigger.params", `{address: {state: WA}, source: website}`, ""},
-	{"@trigger.params.source", "website", ""},
-	{"@(count(trigger.params.address))", "1", ""},
+	{"@trigger.params", `{address: {state: WA}, source: website}`, "", false},
+	{"@trigger.params.source", "website", "", false},
+	{"@(count(trigger.params.address))", "1", "", false},
 
 	// migrated split by expressions
-	{`@(if(is_error(results.favorite_color.value), "@flow.favorite_color", results.favorite_color.value))`, `red`, ""},
-	{`@(if(is_error(legacy_extra["0"].default_city), "@extra.0.default_city", legacy_extra["0"].default_city))`, `@extra.0.default_city`, ""},
+	{`@(if(is_error(results.favorite_color.value), "@flow.favorite_color", results.favorite_color.value))`, `red`, "", false},
+	{`@(if(is_error(legacy_extra["0"].default_city), "@extra.0.default_city", legacy_extra["0"].default_city))`, `@extra.0.default_city`, "", false},
 
 	// non-expressions
-	{"bob@nyaruka.com", "bob@nyaruka.com", ""},
-	{"@twitter_handle", "@twitter_handle", ""},
+	{"bob@nyaruka.com", "bob@nyaruka.com", "", false},
+	{"@twitter_handle", "@twitter_handle", "", false},
 }
 
 func TestEvaluateTemplate(t *testing.T) {
@@ -140,12 +156,19 @@ func TestEvaluateTemplate(t *testing.T) {
 	server := test.NewTestHTTPServer(0)
 	defer server.Close()
 
-	session, _, err := test.CreateTestSession(server.URL, nil)
+	sessionWithURNs, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	require.NoError(t, err)
+	sessionWithoutURNs, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyURNs)
 	require.NoError(t, err)
 
-	run := session.Runs()[0]
-
 	for _, tc := range templateTests {
+		var run flows.FlowRun
+		if tc.redactURNs {
+			run = sessionWithoutURNs.Runs()[0]
+		} else {
+			run = sessionWithURNs.Runs()[0]
+		}
+
 		eval, err := run.EvaluateTemplate(tc.template)
 
 		var actualErrorMsg string
@@ -159,7 +182,7 @@ func TestEvaluateTemplate(t *testing.T) {
 }
 
 func BenchmarkEvaluateTemplate(b *testing.B) {
-	session, _, err := test.CreateTestSession("http://localhost", nil)
+	session, _, err := test.CreateTestSession("http://localhost", nil, envs.RedactionPolicyNone)
 	require.NoError(b, err)
 
 	run := session.Runs()[0]
@@ -233,10 +256,10 @@ func TestContextToJSON(t *testing.T) {
 				"exited_on":"2018-04-11T13:24:30.123456Z",
 				"flow":{"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"},
 				"path":[
-					{"arrived_on":"2018-04-11T13:24:30.123456Z","exit_uuid":"d7a36118-0a38-4b35-a7e4-ae89042f0d3c","node_uuid":"72a1f5df-49f9-45df-94c9-d86f7ea064e5","uuid":"692926ea-09d6-4942-bd38-d266ec8d3716"},
-					{"arrived_on":"2018-04-11T13:24:30.123456Z","exit_uuid":"100f2d68-2481-4137-a0a3-177620ba3c5f","node_uuid":"3dcccbb4-d29c-41dd-a01f-16d814c9ab82","uuid":"5802813d-6c58-4292-8228-9728778b6c98"},
-					{"arrived_on":"2018-04-11T13:24:30.123456Z","exit_uuid":"d898f9a4-f0fc-4ac4-a639-c98c602bb511","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","uuid":"970b8069-50f5-4f6f-8f41-6b2d9f33d623"},
-					{"arrived_on":"2018-04-11T13:24:30.123456Z","exit_uuid":"9fc5f8b4-2247-43db-b899-ab1ac50ba06c","node_uuid":"c0781400-737f-4940-9a6c-1ec1c3df0325","uuid":"5ecda5fc-951c-437b-a17e-f85e49829fb9"}
+					{"arrived_on":"2018-04-11T13:24:30.123456Z","exit_uuid":"d7a36118-0a38-4b35-a7e4-ae89042f0d3c","node_uuid":"72a1f5df-49f9-45df-94c9-d86f7ea064e5","uuid":"8720f157-ca1c-432f-9c0b-2014ddc77094"},
+					{"arrived_on":"2018-04-11T13:24:30.123456Z","exit_uuid":"100f2d68-2481-4137-a0a3-177620ba3c5f","node_uuid":"3dcccbb4-d29c-41dd-a01f-16d814c9ab82","uuid":"970b8069-50f5-4f6f-8f41-6b2d9f33d623"},
+					{"arrived_on":"2018-04-11T13:24:30.123456Z","exit_uuid":"d898f9a4-f0fc-4ac4-a639-c98c602bb511","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","uuid":"5ecda5fc-951c-437b-a17e-f85e49829fb9"},
+					{"arrived_on":"2018-04-11T13:24:30.123456Z","exit_uuid":"9fc5f8b4-2247-43db-b899-ab1ac50ba06c","node_uuid":"c0781400-737f-4940-9a6c-1ec1c3df0325","uuid":"312d3af0-a565-4c96-ba00-bd7f0d08e671"}
 				],
 				"results":{
 					"2factor":{
@@ -293,7 +316,7 @@ func TestContextToJSON(t *testing.T) {
 					}
 				},
 				"status":"completed",
-				"uuid":"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+				"uuid":"692926ea-09d6-4942-bd38-d266ec8d3716"
 			}`,
 		},
 		{
@@ -422,13 +445,14 @@ func TestContextToJSON(t *testing.T) {
 						}
 					},
 					"status": "completed",
-					"uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+					"uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
 				},
 				"status": "completed",
 				"urns": {
 					"ext": null,
 					"facebook": null,
 					"fcm": null,
+					"freshchat": null,
 					"jiochat": null,
 					"line": null,
 					"mailto": "mailto:foo@bar.com",
@@ -440,7 +464,7 @@ func TestContextToJSON(t *testing.T) {
 					"wechat": null,
 					"whatsapp": null
 				},
-				"uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+				"uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
 			}`,
 		},
 		{
@@ -554,6 +578,7 @@ func TestContextToJSON(t *testing.T) {
 					"ext": null,
 					"facebook": null,
 					"fcm": null,
+					"freshchat": null,
 					"jiochat": null,
 					"line": null,
 					"mailto": null,
@@ -579,7 +604,7 @@ func TestContextToJSON(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
-	session, _, err := test.CreateTestSession(server.URL, nil)
+	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -596,54 +621,77 @@ func TestContextToJSON(t *testing.T) {
 
 func TestReadWithMissingAssets(t *testing.T) {
 	// create standard test session and marshal to JSON
-	session, _, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	sessionJSON, err := json.Marshal(session)
 	require.NoError(t, err)
 
-	// try to read it back but with only the flow assets
-	source, err := static.NewSource([]byte(`{
-		"flows": [
-			{
-				"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-				"name": "Registration",
-				"spec_version": "13.0",
-				"language": "eng",
-				"type": "messaging",
-				"revision": 123,
-				"nodes": []
-			},
-			{
-				"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-				"name": "Collect Age",
-				"spec_version": "13.0",
-				"language": "eng",
-				"type": "messaging",
-				"nodes": []
-			}
-		]
-	}`))
-	require.NoError(t, err)
-	sessionAssets, err := engine.NewSessionAssets(source)
+	// try to read it back but with no assets
+	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource())
 
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
-	eng := engine.NewBuilder().WithDefaultUserAgent("test").Build()
+	eng := engine.NewBuilder().Build()
 	_, err = eng.ReadSession(sessionAssets, sessionJSON, missing)
 	require.NoError(t, err)
-	assert.Equal(t, 14, len(missingAssets))
+	assert.Equal(t, 16, len(missingAssets))
 	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), ""), missingAssets[0])
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"), missingAssets[1])
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("4f1f98fc-27a7-4a69-bbdb-24744ba739a9"), "Males"), missingAssets[2])
+	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), "Registration"), missingAssets[13])
+	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Collect Age"), missingAssets[14])
+}
 
-	// still get error if we're missing flow assets
-	emptyAssets, err := engine.NewSessionAssets(static.NewEmptySource())
+func TestResumeWithMissingFlowAssets(t *testing.T) {
+	assetsJSON, err := ioutil.ReadFile("../../test/testdata/runner/subflow.json")
 	require.NoError(t, err)
 
-	_, err = eng.ReadSession(emptyAssets, sessionJSON, missing)
-	assert.EqualError(t, err, "unable to read run 0: unable to load flow[uuid=50c3706e-fedb-42c0-8eab-dda3335714b7,name=Registration]: no such flow with UUID '50c3706e-fedb-42c0-8eab-dda3335714b7'")
+	sa, err := test.CreateSessionAssets(assetsJSON, "")
+	require.NoError(t, err)
+
+	env := envs.NewEnvironmentBuilder().Build()
+	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
+	trigger := triggers.NewManual(env, assets.NewFlowReference(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"), "Parent Flow"), contact, nil)
+
+	// run session to wait in child flow
+	eng := engine.NewBuilder().Build()
+	session, _, err := eng.NewSession(sa, trigger)
+	require.NoError(t, err)
+	assert.Equal(t, flows.SessionStatusWaiting, session.Status())
+
+	// can't directly modify a session's assets but can reload it with different assets
+	sessionJSON, err := json.Marshal(session)
+	require.NoError(t, err)
+
+	// change the UUID of the child flow so it will effectively be missing
+	assetsWithoutChildFlow := test.JSONReplace(assetsJSON, []string{"flows", "[1]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
+	sa, err = test.CreateSessionAssets(assetsWithoutChildFlow, "")
+	require.NoError(t, err)
+
+	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
+	require.NoError(t, err)
+
+	_, err = session.Resume(resumes.NewMsg(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
+
+	// should have an errored session
+	assert.NoError(t, err)
+	assert.Equal(t, flows.SessionStatusFailed, session.Status())
+
+	// change the UUID of the parent flow so it will effectively be missing
+	assetsWithoutParentFlow := test.JSONReplace(assetsJSON, []string{"flows", "[0]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
+	sa, err = test.CreateSessionAssets(assetsWithoutParentFlow, "")
+	require.NoError(t, err)
+
+	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
+	require.NoError(t, err)
+
+	_, err = session.Resume(resumes.NewMsg(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
+
+	// should have an errored session
+	assert.NoError(t, err)
+	assert.Equal(t, flows.SessionStatusFailed, session.Status())
 }
 
 func TestWaitTimeout(t *testing.T) {
@@ -664,10 +712,10 @@ func TestWaitTimeout(t *testing.T) {
 
 	contact := flows.NewEmptyContact(sa, "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
-	trigger := triggers.NewManualTrigger(nil, flow.Reference(), contact, nil)
+	trigger := triggers.NewManual(nil, flow.Reference(), contact, nil)
 
 	// create session
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := test.NewEngine()
 	session, sprint, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
 
@@ -682,7 +730,7 @@ func TestWaitTimeout(t *testing.T) {
 	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
 	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
-	_, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil))
+	_, err = session.Resume(resumes.NewWaitTimeout(nil, nil))
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())

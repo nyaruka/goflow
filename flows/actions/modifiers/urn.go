@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeURN, readURNModifier)
+	registerType(TypeURN, readURNModifier)
 }
 
 // TypeURN is the type of our URN modifier
@@ -34,8 +34,8 @@ type URNModifier struct {
 	Modification URNModification `json:"modification" validate:"required,eq=append"`
 }
 
-// NewURNModifier creates a new name modifier
-func NewURNModifier(urn urns.URN, modification URNModification) *URNModifier {
+// NewURN creates a new name modifier
+func NewURN(urn urns.URN, modification URNModification) *URNModifier {
 	return &URNModifier{
 		baseModifier: newBaseModifier(TypeURN),
 		URN:          urn,
@@ -47,7 +47,7 @@ func NewURNModifier(urn urns.URN, modification URNModification) *URNModifier {
 func (m *URNModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	contactURN := flows.NewContactURN(m.URN.Normalize(string(env.DefaultCountry())), nil)
 	if contact.AddURN(contactURN) {
-		log(events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
+		log(events.NewContactURNsChanged(contact.URNs().RawURNs()))
 		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
 }

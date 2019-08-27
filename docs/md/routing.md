@@ -135,9 +135,7 @@ the `match` component of the result. The flow editor builds these expressions us
 function is used.
 
 <div class="tests">
-<a name="test:has_all_words"></a>
-
-## has_all_words(text, words)
+<h2 class="item_title"><a name="test:has_all_words" href="#test:has_all_words">has_all_words(text, words)</a></h2>
 
 Tests whether all the `words` are contained in `text`
 
@@ -150,9 +148,7 @@ The words can be in any order and may appear more than once.
 @(has_all_words("the quick brown fox", "red fox")) → false
 ```
 
-<a name="test:has_any_word"></a>
-
-## has_any_word(text, words)
+<h2 class="item_title"><a name="test:has_any_word" href="#test:has_any_word">has_any_word(text, words)</a></h2>
 
 Tests whether any of the `words` are contained in the `text`
 
@@ -165,9 +161,7 @@ Only one of the words needs to match and it may appear more than once.
 @(has_any_word("The Quick Brown Fox", "red fox").match) → Fox
 ```
 
-<a name="test:has_beginning"></a>
-
-## has_beginning(text, beginning)
+<h2 class="item_title"><a name="test:has_beginning" href="#test:has_beginning">has_beginning(text, beginning)</a></h2>
 
 Tests whether `text` starts with `beginning`
 
@@ -182,9 +176,7 @@ without any tokenization.
 @(has_beginning("The Quick Brown", "quick brown")) → false
 ```
 
-<a name="test:has_date"></a>
-
-## has_date(text)
+<h2 class="item_title"><a name="test:has_date" href="#test:has_date">has_date(text)</a></h2>
 
 Tests whether `text` contains a date formatted according to our environment
 
@@ -195,9 +187,7 @@ Tests whether `text` contains a date formatted according to our environment
 @(has_date("there is no date here, just a year 2017")) → false
 ```
 
-<a name="test:has_date_eq"></a>
-
-## has_date_eq(text, date)
+<h2 class="item_title"><a name="test:has_date_eq" href="#test:has_date_eq">has_date_eq(text, date)</a></h2>
 
 Tests whether `text` a date equal to `date`
 
@@ -210,9 +200,7 @@ Tests whether `text` a date equal to `date`
 @(has_date_eq("there is no date here, just a year 2017", "not date")) → ERROR
 ```
 
-<a name="test:has_date_gt"></a>
-
-## has_date_gt(text, min)
+<h2 class="item_title"><a name="test:has_date_gt" href="#test:has_date_gt">has_date_gt(text, min)</a></h2>
 
 Tests whether `text` a date after the date `min`
 
@@ -225,9 +213,7 @@ Tests whether `text` a date after the date `min`
 @(has_date_gt("there is no date here, just a year 2017", "not date")) → ERROR
 ```
 
-<a name="test:has_date_lt"></a>
-
-## has_date_lt(text, max)
+<h2 class="item_title"><a name="test:has_date_lt" href="#test:has_date_lt">has_date_lt(text, max)</a></h2>
 
 Tests whether `text` contains a date before the date `max`
 
@@ -239,9 +225,7 @@ Tests whether `text` contains a date before the date `max`
 @(has_date_lt("there is no date here, just a year 2017", "not date")) → ERROR
 ```
 
-<a name="test:has_district"></a>
-
-## has_district(text, state)
+<h2 class="item_title"><a name="test:has_district" href="#test:has_district">has_district(text, state)</a></h2>
 
 Tests whether a district name is contained in the `text`. If `state` is also provided
 then the returned district must be within that state.
@@ -254,9 +238,7 @@ then the returned district must be within that state.
 @(has_district("Gasabo").match) → Rwanda > Kigali City > Gasabo
 ```
 
-<a name="test:has_email"></a>
-
-## has_email(text)
+<h2 class="item_title"><a name="test:has_email" href="#test:has_email">has_email(text)</a></h2>
 
 Tests whether an email is contained in `text`
 
@@ -268,9 +250,7 @@ Tests whether an email is contained in `text`
 @(has_email("i'm not sharing my email")) → false
 ```
 
-<a name="test:has_error"></a>
-
-## has_error(value)
+<h2 class="item_title"><a name="test:has_error" href="#test:has_error">has_error(value)</a></h2>
 
 Returns whether `value` is an error
 
@@ -283,9 +263,7 @@ Returns whether `value` is an error
 @(has_error("hello")) → false
 ```
 
-<a name="test:has_group"></a>
-
-## has_group(contact, group_uuid)
+<h2 class="item_title"><a name="test:has_group" href="#test:has_group">has_group(contact, group_uuid)</a></h2>
 
 Returns whether the `contact` is part of group with the passed in UUID
 
@@ -295,9 +273,7 @@ Returns whether the `contact` is part of group with the passed in UUID
 @(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) → false
 ```
 
-<a name="test:has_number"></a>
-
-## has_number(text)
+<h2 class="item_title"><a name="test:has_number" href="#test:has_number">has_number(text)</a></h2>
 
 Tests whether `text` contains a number
 
@@ -308,9 +284,7 @@ Tests whether `text` contains a number
 @(has_number("the number is forty two")) → false
 ```
 
-<a name="test:has_number_between"></a>
-
-## has_number_between(text, min, max)
+<h2 class="item_title"><a name="test:has_number_between" href="#test:has_number_between">has_number_between(text, min, max)</a></h2>
 
 Tests whether `text` contains a number between `min` and `max` inclusive
 
@@ -323,9 +297,7 @@ Tests whether `text` contains a number between `min` and `max` inclusive
 @(has_number_between("the number is not there", "foo", 60)) → ERROR
 ```
 
-<a name="test:has_number_eq"></a>
-
-## has_number_eq(text, value)
+<h2 class="item_title"><a name="test:has_number_eq" href="#test:has_number_eq">has_number_eq(text, value)</a></h2>
 
 Tests whether `text` contains a number equal to the `value`
 
@@ -338,9 +310,7 @@ Tests whether `text` contains a number equal to the `value`
 @(has_number_eq("the number is not there", "foo")) → ERROR
 ```
 
-<a name="test:has_number_gt"></a>
-
-## has_number_gt(text, min)
+<h2 class="item_title"><a name="test:has_number_gt" href="#test:has_number_gt">has_number_gt(text, min)</a></h2>
 
 Tests whether `text` contains a number greater than `min`
 
@@ -353,9 +323,7 @@ Tests whether `text` contains a number greater than `min`
 @(has_number_gt("the number is not there", "foo")) → ERROR
 ```
 
-<a name="test:has_number_gte"></a>
-
-## has_number_gte(text, min)
+<h2 class="item_title"><a name="test:has_number_gte" href="#test:has_number_gte">has_number_gte(text, min)</a></h2>
 
 Tests whether `text` contains a number greater than or equal to `min`
 
@@ -368,9 +336,7 @@ Tests whether `text` contains a number greater than or equal to `min`
 @(has_number_gte("the number is not there", "foo")) → ERROR
 ```
 
-<a name="test:has_number_lt"></a>
-
-## has_number_lt(text, max)
+<h2 class="item_title"><a name="test:has_number_lt" href="#test:has_number_lt">has_number_lt(text, max)</a></h2>
 
 Tests whether `text` contains a number less than `max`
 
@@ -383,9 +349,7 @@ Tests whether `text` contains a number less than `max`
 @(has_number_lt("the number is not there", "foo")) → ERROR
 ```
 
-<a name="test:has_number_lte"></a>
-
-## has_number_lte(text, max)
+<h2 class="item_title"><a name="test:has_number_lte" href="#test:has_number_lte">has_number_lte(text, max)</a></h2>
 
 Tests whether `text` contains a number less than or equal to `max`
 
@@ -398,9 +362,7 @@ Tests whether `text` contains a number less than or equal to `max`
 @(has_number_lte("the number is not there", "foo")) → ERROR
 ```
 
-<a name="test:has_only_phrase"></a>
-
-## has_only_phrase(text, phrase)
+<h2 class="item_title"><a name="test:has_only_phrase" href="#test:has_only_phrase">has_only_phrase(text, phrase)</a></h2>
 
 Tests whether the `text` contains only `phrase`
 
@@ -416,9 +378,7 @@ The phrase must be the only text in the text to match
 @(has_only_phrase("The Quick Brown Fox", "red fox")) → false
 ```
 
-<a name="test:has_only_text"></a>
-
-## has_only_text(text1, text2)
+<h2 class="item_title"><a name="test:has_only_text" href="#test:has_only_text">has_only_text(text1, text2)</a></h2>
 
 Returns whether two text values are equal (case sensitive). In the case that they
 are, it will return the text as the match.
@@ -435,9 +395,7 @@ are, it will return the text as the match.
 @(has_only_text(results.webhook.category, "Failure")) → false
 ```
 
-<a name="test:has_pattern"></a>
-
-## has_pattern(text, pattern)
+<h2 class="item_title"><a name="test:has_pattern" href="#test:has_pattern">has_pattern(text, pattern)</a></h2>
 
 Tests whether `text` matches the regex `pattern`
 
@@ -451,9 +409,7 @@ Both text values are trimmed of surrounding whitespace and matching is case-inse
 @(has_pattern("Sell cheese please", "buy (\w+)")) → false
 ```
 
-<a name="test:has_phone"></a>
-
-## has_phone(text, country_code)
+<h2 class="item_title"><a name="test:has_phone" href="#test:has_phone">has_phone(text, country_code)</a></h2>
 
 Tests whether `text` contains a phone number. The optional `country_code` argument specifies
 the country to use for parsing.
@@ -467,9 +423,7 @@ the country to use for parsing.
 @(has_phone("my number is none of your business", "US")) → false
 ```
 
-<a name="test:has_phrase"></a>
-
-## has_phrase(text, phrase)
+<h2 class="item_title"><a name="test:has_phrase" href="#test:has_phrase">has_phrase(text, phrase)</a></h2>
 
 Tests whether `phrase` is contained in `text`
 
@@ -484,9 +438,7 @@ in between.
 @(has_phrase("the Quick Brown fox", "").match) →
 ```
 
-<a name="test:has_state"></a>
-
-## has_state(text)
+<h2 class="item_title"><a name="test:has_state" href="#test:has_state">has_state(text)</a></h2>
 
 Tests whether a state name is contained in the `text`
 
@@ -498,9 +450,7 @@ Tests whether a state name is contained in the `text`
 @(has_state("Boston")) → false
 ```
 
-<a name="test:has_text"></a>
-
-## has_text(text)
+<h2 class="item_title"><a name="test:has_text" href="#test:has_text">has_text(text)</a></h2>
 
 Tests whether there the text has any characters in it
 
@@ -514,9 +464,7 @@ Tests whether there the text has any characters in it
 @(has_text(contact.fields.not_set)) → false
 ```
 
-<a name="test:has_time"></a>
-
-## has_time(text)
+<h2 class="item_title"><a name="test:has_time" href="#test:has_time">has_time(text)</a></h2>
 
 Tests whether `text` contains a time.
 
@@ -529,9 +477,7 @@ Tests whether `text` contains a time.
 @(has_time("there is no time here, just the number 25")) → false
 ```
 
-<a name="test:has_value"></a>
-
-## has_value(value)
+<h2 class="item_title"><a name="test:has_value" href="#test:has_value">has_value(value)</a></h2>
 
 Returns whether `value` is non-nil and not an error
 
@@ -549,9 +495,7 @@ value.
 @(has_value("")) → false
 ```
 
-<a name="test:has_ward"></a>
-
-## has_ward(text, district, state)
+<h2 class="item_title"><a name="test:has_ward" href="#test:has_ward">has_ward(text, district, state)</a></h2>
 
 Tests whether a ward name is contained in the `text`
 

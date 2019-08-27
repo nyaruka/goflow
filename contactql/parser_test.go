@@ -4,6 +4,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static/types"
 	"github.com/nyaruka/goflow/envs"
 
 	"github.com/shopspring/decimal"
@@ -14,38 +16,74 @@ func TestParseQuery(t *testing.T) {
 	tests := []struct {
 		text   string
 		parsed string
+		err    string
+		redact envs.RedactionPolicy
 	}{
-		{`will`, "*=will"},
-		{`will felix`, "AND(*=will, *=felix)"},     // implicit AND
-		{`will and felix`, "AND(*=will, *=felix)"}, // explicit AND
-		{`will or felix or matt`, "OR(OR(*=will, *=felix), *=matt)"},
-		{`Name=will`, "name=will"},
-		{`Name ~ "felix"`, "name~felix"},
-		{`name is ""`, `name=""`},          // is not set
-		{`name != ""`, `name!=""`},         // is set
-		{`name != "felix"`, `name!=felix`}, // is set
-		{`name=will or Name ~ "felix"`, "OR(name=will, name~felix)"},
-		{`Name is will or Name has felix`, "OR(name=will, name~felix)"}, // comparator aliases
-		{`will or Name ~ "felix"`, "OR(*=will, name~felix)"},
-		{`email ~ user@example.com`, "email~user@example.com"},
+		// implicit conditions
+		{`will`, "name~will", "", envs.RedactionPolicyNone},
+		{`0123456566`, "tel~0123456566", "", envs.RedactionPolicyNone},
+		{`+0123456566`, "tel~0123456566", "", envs.RedactionPolicyNone},
+		{`0123-456-566`, "tel~0123456566", "", envs.RedactionPolicyNone},
+
+		// implicit conditions with URN redaction
+		{`will`, "name~will", "", envs.RedactionPolicyURNs},
+		{`0123456566`, "id=123456566", "", envs.RedactionPolicyURNs},
+		{`+0123456566`, "id=123456566", "", envs.RedactionPolicyURNs},
+		{`0123-456-566`, "name~0123-456-566", "", envs.RedactionPolicyURNs},
+
+		{`will felix`, "AND(name~will, name~felix)", "", envs.RedactionPolicyNone},     // implicit AND
+		{`will and felix`, "AND(name~will, name~felix)", "", envs.RedactionPolicyNone}, // explicit AND
+		{`will or felix or matt`, "OR(OR(name~will, name~felix), name~matt)", "", envs.RedactionPolicyNone},
+		{`Name=will`, "name=will", "", envs.RedactionPolicyNone},
+		{`Name ~ "felix"`, "name~felix", "", envs.RedactionPolicyNone},
+		{`name is ""`, `name=""`, "", envs.RedactionPolicyNone},          // is not set
+		{`name != ""`, `name!=""`, "", envs.RedactionPolicyNone},         // is set
+		{`name != "felix"`, `name!=felix`, "", envs.RedactionPolicyNone}, // is set
+		{`name=will or Name ~ "felix"`, "OR(name=will, name~felix)", "", envs.RedactionPolicyNone},
+		{`Name is will or Name has felix`, "OR(name=will, name~felix)", "", envs.RedactionPolicyNone}, // comparator aliases
+		{`will or Name ~ "felix"`, "OR(name~will, name~felix)", "", envs.RedactionPolicyNone},
+
+		{`mailto = user@example.com`, "mailto=user@example.com", "", envs.RedactionPolicyNone},
+		{`MAILTO ~ user@example.com`, "mailto~user@example.com", "", envs.RedactionPolicyNone},
+
+		{`mailto = user@example.com`, "", "cannot query on redacted URNs", envs.RedactionPolicyURNs},
+		{`MAILTO ~ user@example.com`, "", "cannot query on redacted URNs", envs.RedactionPolicyURNs},
 
 		// boolean operator precedence is AND before OR, even when AND is implicit
-		{`will and felix or matt amber`, "OR(AND(*=will, *=felix), AND(*=matt, *=amber))"},
+		{`will and felix or matt amber`, "OR(AND(name~will, name~felix), AND(name~matt, name~amber))", "", envs.RedactionPolicyNone},
 
 		// boolean combinations can themselves be combined
-		{`(Age < 18 and Gender = "male") or (Age > 18 and Gender = "female")`, "OR(AND(age<18, gender=male), AND(age>18, gender=female))"},
+		{
+			`(Age < 18 and Gender = "male") or (Age > 18 and Gender = "female")`,
+			"OR(AND(age<18, gender=male), AND(age>18, gender=female))",
+			"",
+			envs.RedactionPolicyNone,
+		},
+
+		{`xyz != ""`, "", "can't resolve 'xyz' to attribute, scheme or field", envs.RedactionPolicyNone},
 	}
 
-	for _, test := range tests {
-		parsed, err := ParseQuery(test.text)
-		assert.NoError(t, err)
-		assert.Equal(t, test.parsed, parsed.String(), "error parsing query '%s'", test.text)
+	fields := map[string]assets.Field{
+		"age":    types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
+		"gender": types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
+	}
+	fieldResolver := func(key string) assets.Field { return fields[key] }
+
+	for _, tc := range tests {
+		parsed, err := ParseQuery(tc.text, tc.redact, fieldResolver)
+		if tc.err != "" {
+			assert.EqualError(t, err, tc.err, "error mismatch for '%s'", tc.text)
+			assert.Nil(t, parsed)
+		} else {
+			assert.NoError(t, err, "unexpected error for '%s'", tc.text)
+			assert.Equal(t, tc.parsed, parsed.String(), "parse mismatch for '%s'", tc.text)
+		}
 	}
 }
 
 type TestQueryable struct{}
 
-func (t *TestQueryable) ResolveQueryKey(env envs.Environment, key string) []interface{} {
+func (t *TestQueryable) QueryProperty(env envs.Environment, key string, propType PropertyType) []interface{} {
 	switch key {
 	case "tel":
 		return []interface{}{"+59313145145"}
@@ -153,8 +191,20 @@ func TestEvaluateQuery(t *testing.T) {
 		{`(age = 36 OR gender = female) AND age > 35`, true},
 	}
 
+	fields := map[string]assets.Field{
+		"age":      types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
+		"dob":      types.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
+		"gender":   types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
+		"state":    types.NewField(assets.FieldUUID("369be3e2-0186-4e5d-93c4-6264736588f8"), "state", "State", assets.FieldTypeState),
+		"district": types.NewField(assets.FieldUUID("e52f34ad-a5a7-4855-9040-05a910a75f57"), "district", "District", assets.FieldTypeDistrict),
+		"ward":     types.NewField(assets.FieldUUID("e9e738ce-617d-4c61-bfce-3d3b55cfe3dd"), "ward", "Ward", assets.FieldTypeWard),
+		"empty":    types.NewField(assets.FieldUUID("023f733d-ce00-4a61-96e4-b411987028ea"), "empty", "Empty", assets.FieldTypeText),
+		"xyz":      types.NewField(assets.FieldUUID("81e25783-a1d8-42b9-85e4-68c7ab2df39d"), "xyz", "XYZ", assets.FieldTypeText),
+	}
+	fieldResolver := func(key string) assets.Field { return fields[key] }
+
 	for _, test := range tests {
-		parsed, err := ParseQuery(test.query)
+		parsed, err := ParseQuery(test.query, envs.RedactionPolicyNone, fieldResolver)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := EvaluateQuery(env, parsed, testObj)
@@ -164,7 +214,7 @@ func TestEvaluateQuery(t *testing.T) {
 }
 
 func TestParsingErrors(t *testing.T) {
-	_, err := ParseQuery("name = ")
+	_, err := ParseQuery("name = ", envs.RedactionPolicyNone, nil)
 	assert.EqualError(t, err, "mismatched input '<EOF>' expecting {TEXT, STRING}")
 }
 
@@ -176,7 +226,6 @@ func TestEvaluationErrors(t *testing.T) {
 		query  string
 		errMsg string
 	}{
-		{`Bob`, "dynamic group queries can't contain implicit conditions"},
 		{`gender > Male`, "can't query text fields with >"},
 		{`age = 3X`, "can't convert '3X' to a number"},
 		{`age ~ 32`, "can't query number fields with ~"},
@@ -184,11 +233,17 @@ func TestEvaluationErrors(t *testing.T) {
 		{`dob = 32 AND name = Bob`, "string '32' couldn't be parsed as a date"},
 		{`name = Bob OR dob = 32`, "string '32' couldn't be parsed as a date"},
 		{`dob ~ 2018-12-31`, "can't query datetime fields with ~"},
-		{`nope = 1`, "unsupported query data type: *contactql.TestQueryable"},
 	}
 
+	fields := map[string]assets.Field{
+		"age":    types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
+		"dob":    types.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
+		"gender": types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
+	}
+	fieldResolver := func(key string) assets.Field { return fields[key] }
+
 	for _, test := range tests {
-		parsed, err := ParseQuery(test.query)
+		parsed, err := ParseQuery(test.query, envs.RedactionPolicyNone, fieldResolver)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := EvaluateQuery(env, parsed, testObj)

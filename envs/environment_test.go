@@ -35,10 +35,6 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	env, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Cuenca"}`))
 	assert.Error(t, err)
 
-	// can't create with non-map extensions field
-	env, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Cuenca", "extensions": []}`))
-	assert.Error(t, err)
-
 	// empty environment uses all defaults
 	env, err = envs.ReadEnvironment(json.RawMessage(`{}`))
 	assert.NoError(t, err)
@@ -48,7 +44,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, 640, env.MaxValueLength())
 
 	// can create with valid values
-	env, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "default_language": "eng", "allowed_languages": ["eng", "fra"], "default_country": "RW", "timezone": "Africa/Kigali", "extensions": {"foo":{"bar":1234}}}`))
+	env, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "default_language": "eng", "allowed_languages": ["eng", "fra"], "default_country": "RW", "timezone": "Africa/Kigali"}`))
 	assert.NoError(t, err)
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())
 	assert.Equal(t, envs.TimeFormatHourMinuteSecond, env.TimeFormat())
@@ -56,21 +52,20 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, envs.Language("eng"), env.DefaultLanguage())
 	assert.Equal(t, []envs.Language{envs.Language("eng"), envs.Language("fra")}, env.AllowedLanguages())
 	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
-	assert.Equal(t, json.RawMessage(`{"bar":1234}`), env.Extension("foo"))
 
 	data, err := json.Marshal(env)
 	require.NoError(t, err)
-	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","default_language":"eng","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","redaction_policy":"none","max_value_length":640,"extensions":{"foo":{"bar":1234}}}`)
+	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","default_language":"eng","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","redaction_policy":"none","max_value_length":640}`)
 }
 
 func TestEnvironmentEqual(t *testing.T) {
-	env1, err := envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali", "extensions": {"foo":{"bar":1234}}}`))
+	env1, err := envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
 	require.NoError(t, err)
 
-	env2, err := envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali", "extensions": {"foo":{"bar":1234}}}`))
+	env2, err := envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
 	require.NoError(t, err)
 
-	env3, err := envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali", "extensions": {"foo":{"bar":2345}}}`))
+	env3, err := envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kampala"}`))
 	require.NoError(t, err)
 
 	assert.True(t, env1.Equal(env2))

@@ -19,22 +19,24 @@ type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback)
 
 var registeredTypes = map[string]readFunc{}
 
-// RegisterType registers a new type of trigger
-func RegisterType(name string, f readFunc) {
+// registers a new type of trigger
+func registerType(name string, f readFunc) {
 	registeredTypes[name] = f
 }
 
+// base of all trigger types
 type baseTrigger struct {
 	type_       string
 	environment envs.Environment
 	flow        *assets.FlowReference
 	contact     *flows.Contact
 	connection  *flows.Connection
-	params      types.XValue
+	params      *types.XObject
 	triggeredOn time.Time
 }
 
-func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params types.XValue) baseTrigger {
+// create a new base trigger
+func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params *types.XObject) baseTrigger {
 	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, connection: connection, params: params, triggeredOn: dates.Now()}
 }
 
@@ -45,7 +47,7 @@ func (t *baseTrigger) Environment() envs.Environment { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference   { return t.flow }
 func (t *baseTrigger) Contact() *flows.Contact       { return t.contact }
 func (t *baseTrigger) Connection() *flows.Connection { return t.connection }
-func (t *baseTrigger) Params() types.XValue          { return t.params }
+func (t *baseTrigger) Params() *types.XObject        { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time        { return t.triggeredOn }
 
 // Initialize initializes the session
@@ -99,16 +101,17 @@ func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
 // as far as the engine is concerned
 func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
 	allGroups := session.Assets().Groups()
-	added, removed, errors := session.Contact().ReevaluateDynamicGroups(session.Environment(), allGroups)
+	allFields := session.Assets().Fields()
+	added, removed, errors := session.Contact().ReevaluateDynamicGroups(session.Environment(), allGroups, allFields)
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {
-		logEvent(events.NewErrorEvent(err))
+		logEvent(events.NewError(err))
 	}
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
-		logEvent(events.NewContactGroupsChangedEvent(added, removed))
+		logEvent(events.NewContactGroupsChanged(added, removed))
 	}
 }
 
@@ -159,7 +162,9 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 		}
 	}
 	if e.Params != nil {
-		t.params = types.JSONToXValue(e.Params)
+		if t.params, err = types.ReadXObject(e.Params); err != nil {
+			return errors.Wrap(err, "unable to read params")
+		}
 	}
 
 	return nil

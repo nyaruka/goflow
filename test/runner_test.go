@@ -12,7 +12,6 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
-	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
@@ -167,7 +166,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		return runResult{}, errors.Wrapf(err, "error unmarshalling trigger")
 	}
 
-	eng := engine.NewBuilder().WithDefaultUserAgent("goflow-testing").Build()
+	eng := NewEngine()
 	session, sprint, err := eng.NewSession(sa, trigger)
 	if err != nil {
 		return runResult{}, err

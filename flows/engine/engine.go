@@ -5,20 +5,19 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // an instance of the engine
 type engine struct {
-	httpClient              *utils.HTTPClient
-	disableWebhooks         bool
-	maxWebhookResponseBytes int
-	maxStepsPerSprint       int
+	maxStepsPerSprint int
+	services          *services
 }
 
 // NewSession creates a new session
 func (e *engine) NewSession(sa flows.SessionAssets, trigger flows.Trigger) (flows.Session, flows.Sprint, error) {
 	s := &session{
+		uuid:       flows.SessionUUID(uuids.New()),
 		engine:     e,
 		assets:     sa,
 		trigger:    trigger,
@@ -36,10 +35,8 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missi
 	return readSession(e, sa, data, missing)
 }
 
-func (e *engine) HTTPClient() *utils.HTTPClient { return e.httpClient }
-func (e *engine) DisableWebhooks() bool         { return e.disableWebhooks }
-func (e *engine) MaxWebhookResponseBytes() int  { return e.maxWebhookResponseBytes }
-func (e *engine) MaxStepsPerSprint() int        { return e.maxStepsPerSprint }
+func (e *engine) MaxStepsPerSprint() int   { return e.maxStepsPerSprint }
+func (e *engine) Services() flows.Services { return e.services }
 
 var _ flows.Engine = (*engine)(nil)
 
@@ -56,35 +53,27 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		eng: &engine{
-			httpClient:              utils.NewHTTPClient("goflow"),
-			disableWebhooks:         false,
-			maxWebhookResponseBytes: 10000,
-			maxStepsPerSprint:       100,
+			maxStepsPerSprint: 100,
+			services:          newEmptyServices(),
 		},
 	}
-}
-
-// WithDefaultUserAgent sets the default user-agent string used for webhook calls
-func (b *Builder) WithDefaultUserAgent(userAgent string) *Builder {
-	b.eng.httpClient = utils.NewHTTPClient(userAgent)
-	return b
-}
-
-// WithDisableWebhooks sets whether webhooks are enabled
-func (b *Builder) WithDisableWebhooks(disable bool) *Builder {
-	b.eng.disableWebhooks = disable
-	return b
-}
-
-// WithMaxWebhookResponseBytes sets the maximum webhook request bytes
-func (b *Builder) WithMaxWebhookResponseBytes(max int) *Builder {
-	b.eng.maxWebhookResponseBytes = max
-	return b
 }
 
 // WithMaxStepsPerSprint sets the maximum number of steps allowed in a single sprint
 func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
 	b.eng.maxStepsPerSprint = max
+	return b
+}
+
+// WithWebhookService sets the webhook service
+func (b *Builder) WithWebhookService(svc flows.WebhookService) *Builder {
+	b.eng.services.webhook = svc
+	return b
+}
+
+// WithAirtimeService sets the airtime transfer service
+func (b *Builder) WithAirtimeService(svc flows.AirtimeService) *Builder {
+	b.eng.services.airtime = svc
 	return b
 }
 

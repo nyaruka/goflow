@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeMsg, readMsgTrigger)
+	registerType(TypeMsg, readMsgTrigger)
 }
 
 // TypeMsg is the type for message triggered sessions
@@ -69,8 +69,8 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 	return &KeywordMatch{Type: typeName, Keyword: keyword}
 }
 
-// NewMsgTrigger creates a new message trigger
-func NewMsgTrigger(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, msg *flows.MsgIn, match *KeywordMatch) flows.Trigger {
+// NewMsg creates a new message trigger
+func NewMsg(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, msg *flows.MsgIn, match *KeywordMatch) flows.Trigger {
 	return &MsgTrigger{
 		baseTrigger: newBaseTrigger(TypeMsg, env, flow, contact, nil, nil),
 		msg:         msg,
@@ -81,13 +81,13 @@ func NewMsgTrigger(env envs.Environment, flow *assets.FlowReference, contact *fl
 // InitializeRun performs additional initialization when we visit our first node
 func (t *MsgTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallback) error {
 	// update our input
-	input, err := inputs.NewMsgInput(run.Session().Assets(), t.msg, t.triggeredOn)
+	input, err := inputs.NewMsg(run.Session().Assets(), t.msg, t.triggeredOn)
 	if err != nil {
 		return err
 	}
 
 	run.Session().SetInput(input)
-	logEvent(events.NewMsgReceivedEvent(t.msg))
+	logEvent(events.NewMsgReceived(t.msg))
 
 	return t.baseTrigger.InitializeRun(run, logEvent)
 }

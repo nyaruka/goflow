@@ -13,34 +13,34 @@ import (
 
 var registeredTypes = map[string](func() flows.Event){}
 
-// RegisterType registers a new type of router
-func RegisterType(name string, initFunc func() flows.Event) {
+// registers a new type of event
+func registerType(name string, initFunc func() flows.Event) {
 	registeredTypes[name] = initFunc
 }
 
-// BaseEvent is the base of all event types
-type BaseEvent struct {
+// base of all event types
+type baseEvent struct {
 	Type_      string         `json:"type" validate:"required"`
 	CreatedOn_ time.Time      `json:"created_on" validate:"required"`
 	StepUUID_  flows.StepUUID `json:"step_uuid,omitempty" validate:"omitempty,uuid4"`
 }
 
-// NewBaseEvent creates a new base event
-func NewBaseEvent(typeName string) BaseEvent {
-	return BaseEvent{Type_: typeName, CreatedOn_: dates.Now()}
+// creates a new base event
+func newBaseEvent(typeName string) baseEvent {
+	return baseEvent{Type_: typeName, CreatedOn_: dates.Now()}
 }
 
 // Type returns the type of this event
-func (e *BaseEvent) Type() string { return e.Type_ }
+func (e *baseEvent) Type() string { return e.Type_ }
 
 // CreatedOn returns the created on time of this event
-func (e *BaseEvent) CreatedOn() time.Time { return e.CreatedOn_ }
+func (e *baseEvent) CreatedOn() time.Time { return e.CreatedOn_ }
 
 // StepUUID returns the UUID of the step in the path where this event occured
-func (e *BaseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
+func (e *baseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
 
 // SetStepUUID sets the UUID of the step in the path where this event occured
-func (e *BaseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
+func (e *baseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

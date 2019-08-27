@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -380,7 +379,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization flows.Loca
 			labels[i] = label.Migrate()
 		}
 
-		return actions.NewAddInputLabelsAction(a.UUID, labels), nil
+		return actions.NewAddInputLabels(a.UUID, labels), nil
 
 	case "email":
 		var msg string
@@ -396,14 +395,14 @@ func migrateAction(baseLanguage envs.Language, a Action, localization flows.Loca
 			migratedEmails[i], _ = expressions.MigrateTemplate(email, nil)
 		}
 
-		return actions.NewSendEmailAction(a.UUID, migratedEmails, migratedSubject, migratedBody), nil
+		return actions.NewSendEmail(a.UUID, migratedEmails, migratedSubject, migratedBody), nil
 
 	case "lang":
-		return actions.NewSetContactLanguageAction(a.UUID, string(a.Language)), nil
+		return actions.NewSetContactLanguage(a.UUID, string(a.Language)), nil
 	case "channel":
-		return actions.NewSetContactChannelAction(a.UUID, assets.NewChannelReference(a.Channel, a.Name)), nil
+		return actions.NewSetContactChannel(a.UUID, assets.NewChannelReference(a.Channel, a.Name)), nil
 	case "flow":
-		return actions.NewEnterFlowAction(a.UUID, a.Flow.Migrate(), true), nil
+		return actions.NewEnterFlow(a.UUID, a.Flow.Migrate(), true), nil
 	case "trigger-flow":
 		contacts := make([]*flows.ContactReference, len(a.Contacts))
 		for i, contact := range a.Contacts {
@@ -424,7 +423,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization flows.Loca
 			}
 		}
 
-		return actions.NewStartSessionAction(a.UUID, a.Flow.Migrate(), []urns.URN{}, contacts, groups, variables, createContact), nil
+		return actions.NewStartSession(a.UUID, a.Flow.Migrate(), []urns.URN{}, contacts, groups, variables, createContact), nil
 	case "reply", "send":
 		media := make(Translations)
 		var quickReplies map[envs.Language][]string
@@ -479,7 +478,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization flows.Loca
 		}
 
 		if a.Type == "reply" {
-			return actions.NewSendMsgAction(a.UUID, migratedText, attachments, migratedQuickReplies, a.SendAll), nil
+			return actions.NewSendMsg(a.UUID, migratedText, attachments, migratedQuickReplies, a.SendAll), nil
 		}
 
 		contacts := make([]*flows.ContactReference, len(a.Contacts))
@@ -496,7 +495,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization flows.Loca
 			variables = append(variables, migratedVar)
 		}
 
-		return actions.NewSendBroadcastAction(a.UUID, migratedText, attachments, migratedQuickReplies, []urns.URN{}, contacts, groups, variables), nil
+		return actions.NewSendBroadcast(a.UUID, migratedText, attachments, migratedQuickReplies, []urns.URN{}, contacts, groups, variables), nil
 
 	case "add_group":
 		groups := make([]*assets.GroupReference, len(a.Groups))
@@ -504,7 +503,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization flows.Loca
 			groups[i] = group.Migrate()
 		}
 
-		return actions.NewAddContactGroupsAction(a.UUID, groups), nil
+		return actions.NewAddContactGroups(a.UUID, groups), nil
 	case "del_group":
 		groups := make([]*assets.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
@@ -512,7 +511,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization flows.Loca
 		}
 
 		allGroups := len(groups) == 0
-		return actions.NewRemoveContactGroupsAction(a.UUID, groups, allGroups), nil
+		return actions.NewRemoveContactGroups(a.UUID, groups, allGroups), nil
 	case "save":
 		migratedValue, _ := expressions.MigrateTemplate(a.Value, nil)
 
@@ -524,17 +523,17 @@ func migrateAction(baseLanguage envs.Language, a Action, localization flows.Loca
 				migratedValue = fmt.Sprintf("%s @(word_slice(contact.name, 1, -1))", migratedValue)
 			}
 
-			return actions.NewSetContactNameAction(a.UUID, migratedValue), nil
+			return actions.NewSetContactName(a.UUID, migratedValue), nil
 		}
 
 		// and another new action for adding a URN
 		if urns.IsValidScheme(a.Field) {
-			return actions.NewAddContactURNAction(a.UUID, a.Field, migratedValue), nil
+			return actions.NewAddContactURN(a.UUID, a.Field, migratedValue), nil
 		} else if a.Field == "tel_e164" {
-			return actions.NewAddContactURNAction(a.UUID, "tel", migratedValue), nil
+			return actions.NewAddContactURN(a.UUID, "tel", migratedValue), nil
 		}
 
-		return actions.NewSetContactFieldAction(a.UUID, assets.NewFieldReference(a.Field, a.Label), migratedValue), nil
+		return actions.NewSetContactField(a.UUID, assets.NewFieldReference(a.Field, a.Label), migratedValue), nil
 	case "say":
 		msg, err := ReadTranslations(a.Msg)
 		if err != nil {
@@ -555,12 +554,12 @@ func migrateAction(baseLanguage envs.Language, a Action, localization flows.Loca
 		migratedText := addTranslationMap(baseLanguage, localization, msg, uuids.UUID(a.UUID), "text")
 		migratedAudioURL := addTranslationMap(baseLanguage, localization, recording, uuids.UUID(a.UUID), "audio_url")
 
-		return actions.NewSayMsgAction(a.UUID, migratedText, migratedAudioURL), nil
+		return actions.NewSayMsg(a.UUID, migratedText, migratedAudioURL), nil
 	case "play":
 		// note this URL is already assumed to be absolute
 		migratedAudioURL, _ := expressions.MigrateTemplate(a.URL, nil)
 
-		return actions.NewPlayAudioAction(a.UUID, migratedAudioURL), nil
+		return actions.NewPlayAudio(a.UUID, migratedAudioURL), nil
 	default:
 		return nil, errors.Errorf("unable to migrate legacy action type: %s", a.Type)
 	}
@@ -598,11 +597,11 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 	switch r.Type {
 	case "subflow":
 		newActions = []flows.Action{
-			actions.NewEnterFlowAction(flows.ActionUUID(uuids.New()), config.Flow, false),
+			actions.NewEnterFlow(flows.ActionUUID(uuids.New()), config.Flow, false),
 		}
 
 		// subflow rulesets operate on the child flow status
-		router = routers.NewSwitchRouter(nil, resultName, categories, "@child.status", cases, defaultCategory)
+		router = routers.NewSwitch(nil, resultName, categories, "@child.status", cases, defaultCategory)
 		uiType = UINodeTypeSplitBySubflow
 
 	case "webhook":
@@ -616,7 +615,7 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 
 		if method == "POST" {
 			headers["Content-Type"] = "application/json"
-			body = flows.LegacyWebhookPayload
+			body = actions.LegacyWebhookPayload
 		}
 
 		for _, header := range config.WebhookHeaders {
@@ -627,28 +626,28 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 		}
 
 		newActions = []flows.Action{
-			actions.NewCallWebhookAction(flows.ActionUUID(uuids.New()), method, migratedURL, headers, body, resultName),
+			actions.NewCallWebhook(flows.ActionUUID(uuids.New()), method, migratedURL, headers, body, resultName),
 		}
 
 		// webhook rulesets operate on the webhook status, saved as category
 		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
-		router = routers.NewSwitchRouter(nil, "", categories, operand, cases, defaultCategory)
+		router = routers.NewSwitch(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByWebhook
 
 	case "resthook":
 		newActions = []flows.Action{
-			actions.NewCallResthookAction(flows.ActionUUID(uuids.New()), config.Resthook, resultName),
+			actions.NewCallResthook(flows.ActionUUID(uuids.New()), config.Resthook, resultName),
 		}
 
 		// resthook rulesets operate on the webhook status, saved as category
 		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
-		router = routers.NewSwitchRouter(nil, "", categories, operand, cases, defaultCategory)
+		router = routers.NewSwitch(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByResthook
 
 	case "form_field":
 		operand, _ := expressions.MigrateTemplate(r.Operand, nil)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
-		router = routers.NewSwitchRouter(nil, resultName, categories, operand, cases, defaultCategory)
+		router = routers.NewSwitch(nil, resultName, categories, operand, cases, defaultCategory)
 
 		lastDot := strings.LastIndex(r.Operand, ".")
 		if lastDot > -1 {
@@ -663,7 +662,7 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 
 	case "group":
 		// in legacy flows these rulesets have their operand as @step.value but it's not used
-		router = routers.NewSwitchRouter(nil, resultName, categories, "@contact.groups", cases, defaultCategory)
+		router = routers.NewSwitch(nil, resultName, categories, "@contact.groups", cases, defaultCategory)
 		uiType = UINodeTypeSplitByGroups
 
 	case "wait_message", "wait_audio", "wait_video", "wait_photo", "wait_gps", "wait_recording", "wait_digit", "wait_digits":
@@ -740,9 +739,9 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 			operand = "@input"
 		}
 
-		router = routers.NewSwitchRouter(wait, resultName, categories, operand, cases, defaultCategory)
+		router = routers.NewSwitch(wait, resultName, categories, operand, cases, defaultCategory)
 	case "random":
-		router = routers.NewRandomRouter(nil, resultName, categories)
+		router = routers.NewRandom(nil, resultName, categories)
 		uiType = UINodeTypeSplitByRandom
 
 	case "airtime":
@@ -765,11 +764,11 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 		}
 
 		newActions = []flows.Action{
-			transferto.NewTransferAirtimeAction(flows.ActionUUID(uuids.New()), currencyAmounts, resultName),
+			actions.NewTransferAirtime(flows.ActionUUID(uuids.New()), currencyAmounts, resultName),
 		}
 
 		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
-		router = routers.NewSwitchRouter(nil, "", categories, operand, cases, defaultCategory)
+		router = routers.NewSwitch(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByAirtime
 
 	default:

@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeRemoveContactGroups, func() flows.Action { return &RemoveContactGroupsAction{} })
+	registerType(TypeRemoveContactGroups, func() flows.Action { return &RemoveContactGroupsAction{} })
 }
 
 // TypeRemoveContactGroups is the type for the remove from groups action
@@ -31,17 +31,17 @@ const TypeRemoveContactGroups string = "remove_contact_groups"
 //
 // @action remove_contact_groups
 type RemoveContactGroupsAction struct {
-	BaseAction
+	baseAction
 	universalAction
 
 	Groups    []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
 	AllGroups bool                     `json:"all_groups,omitempty"`
 }
 
-// NewRemoveContactGroupsAction creates a new remove from groups action
-func NewRemoveContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupReference, allGroups bool) *RemoveContactGroupsAction {
+// NewRemoveContactGroups creates a new remove from groups action
+func NewRemoveContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference, allGroups bool) *RemoveContactGroupsAction {
 	return &RemoveContactGroupsAction{
-		BaseAction: NewBaseAction(TypeRemoveContactGroups, uuid),
+		baseAction: newBaseAction(TypeRemoveContactGroups, uuid),
 		Groups:     groups,
 		AllGroups:  allGroups,
 	}
@@ -59,7 +59,7 @@ func (a *RemoveContactGroupsAction) Validate() error {
 func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	contact := run.Contact()
 	if contact == nil {
-		logEvent(events.NewErrorEventf("can't execute action in session without a contact"))
+		logEvent(events.NewErrorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -78,6 +78,6 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove), logModifier, logEvent)
+	a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsRemove), logModifier, logEvent)
 	return nil
 }

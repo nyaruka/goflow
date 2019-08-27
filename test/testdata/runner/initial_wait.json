@@ -89,6 +89,7 @@
     ],
     "fields": [
         {
+            "uuid": "2ddd4c1b-e3cf-472e-b135-440b3453ba37",
             "key": "first_name",
             "name": "First Name",
             "type": "text"

@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeContactRefreshed, func() flows.Event { return &ContactRefreshedEvent{} })
+	registerType(TypeContactRefreshed, func() flows.Event { return &ContactRefreshedEvent{} })
 }
 
 // TypeContactRefreshed is the type of our contact refreshed event
@@ -27,16 +27,16 @@ const TypeContactRefreshed string = "contact_refreshed"
 //
 // @event contact_refreshed
 type ContactRefreshedEvent struct {
-	BaseEvent
+	baseEvent
 
 	Contact json.RawMessage `json:"contact"`
 }
 
-// NewContactRefreshedEvent creates a new contact changed event
-func NewContactRefreshedEvent(contact *flows.Contact) *ContactRefreshedEvent {
+// NewContactRefreshed creates a new contact changed event
+func NewContactRefreshed(contact *flows.Contact) *ContactRefreshedEvent {
 	marshalled, _ := json.Marshal(contact)
 	return &ContactRefreshedEvent{
-		BaseEvent: NewBaseEvent(TypeContactRefreshed),
+		baseEvent: newBaseEvent(TypeContactRefreshed),
 		Contact:   marshalled,
 	}
 }

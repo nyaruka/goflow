@@ -203,7 +203,7 @@ func TestNewFlow(t *testing.T) {
     ]
 }`
 
-	session, _, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	flow, err := definition.NewFlow(
@@ -218,7 +218,7 @@ func TestNewFlow(t *testing.T) {
 			definition.NewNode(
 				flows.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"),
 				[]flows.Action{
-					actions.NewSendMsgAction(
+					actions.NewSendMsg(
 						flows.ActionUUID("76112ef2-790e-4b5b-84cb-e910f191a335"),
 						"Do you like beer?",
 						nil,
@@ -226,7 +226,7 @@ func TestNewFlow(t *testing.T) {
 						false,
 					),
 				},
-				routers.NewSwitchRouter(
+				routers.NewSwitch(
 					waits.NewMsgWait(nil, hints.NewImageHint()),
 					"Response 1",
 					[]*routers.Category{
@@ -261,7 +261,7 @@ func TestNewFlow(t *testing.T) {
 			definition.NewNode(
 				flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
 				[]flows.Action{
-					actions.NewAddInputLabelsAction(
+					actions.NewAddInputLabels(
 						flows.ActionUUID("ad154980-7bf7-4ab8-8728-545fd6378912"),
 						[]*assets.LabelReference{
 							assets.NewLabelReference(assets.LabelUUID("3f65d88a-95dc-4140-9451-943e94e06fea"), "Spam"),

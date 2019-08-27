@@ -6,12 +6,16 @@ import (
 
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/mobile"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMobileBindings(t *testing.T) {
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+
 	assert.Equal(t, definition.CurrentSpecVersion.String(), mobile.CurrentSpecVersion())
 
 	// can handle anything that is this major version
@@ -49,9 +53,9 @@ func TestMobileBindings(t *testing.T) {
 
 	contact := mobile.NewEmptyContact(sa)
 
-	trigger := mobile.NewManualTrigger(environment, contact, mobile.NewFlowReference("7c3db26f-e12a-48af-9673-e2feefdf8516", "Two Questions"))
+	trigger := mobile.NewManual(environment, contact, mobile.NewFlowReference("7c3db26f-e12a-48af-9673-e2feefdf8516", "Two Questions"))
 
-	eng := mobile.NewEngine("mobile-test")
+	eng := mobile.NewEngine()
 	ss, err := eng.NewSession(sa, trigger)
 	session := ss.Session()
 	sprint := ss.Sprint()
@@ -78,7 +82,7 @@ func TestMobileBindings(t *testing.T) {
 	assert.Equal(t, "Hi there", msg.Text())
 	assert.Equal(t, 1, msg.Attachments().Length())
 
-	resume := mobile.NewMsgResume(nil, nil, msg)
+	resume := mobile.NewMsg(nil, nil, msg)
 
 	sprint, err = session.Resume(resume)
 	require.NoError(t, err)
@@ -95,7 +99,7 @@ func TestMobileBindings(t *testing.T) {
 	marshaled, err := session.ToJSON()
 	require.NoError(t, err)
 
-	assert.Equal(t, `{"type":"messaging_offline","environment":{"date_f`, marshaled[:50])
+	assert.Equal(t, `{"uuid":"cdf7ed27-5ad5-4028-b664-880fc7581c77","ty`, marshaled[:50])
 
 	// and try to read it back
 	session2, err := eng.ReadSession(sa, marshaled)

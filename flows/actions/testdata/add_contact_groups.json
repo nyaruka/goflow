@@ -29,8 +29,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "can't execute action in session without a contact",
                 "type": "error"
             }
@@ -51,8 +50,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "can't add or remove contacts from a dynamic group 'Females'",
                 "type": "error"
             }
@@ -72,8 +70,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             }
@@ -100,8 +97,7 @@
         "events": [
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "fatal": false,
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "no such group with name 'Climbers'",
                 "type": "error"
             }
@@ -144,7 +140,7 @@
             {
                 "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "groups_added": [
                     {
                         "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",

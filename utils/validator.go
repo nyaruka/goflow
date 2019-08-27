@@ -21,6 +21,8 @@ func init() {
 		}
 		return name
 	})
+
+	Validator.RegisterAlias("http_method", "eq=GET|eq=HEAD|eq=POST|eq=PUT|eq=PATCH|eq=DELETE")
 }
 
 // ValidationErrors combines multiple validation errors as a single error
