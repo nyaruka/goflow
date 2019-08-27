@@ -1,3 +1,7 @@
+v0.49.0
+----------
+ * Rework webhook calling code as a service and fix not saving result when connection errors
+
 v0.48.2
 ----------
  * Include sender and recipient in airtime events
