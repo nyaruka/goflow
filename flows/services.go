@@ -1,6 +1,9 @@
 package flows
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/nyaruka/gocommon/urns"
 
 	"github.com/shopspring/decimal"
@@ -8,7 +11,43 @@ import (
 
 // Services groups together interfaces for several services whose implementation existsi outside of the flow engine.
 type Services interface {
+	Webhook() WebhookService
 	Airtime() AirtimeService
+}
+
+// WebhookStatus represents the status of a webhook call
+type WebhookStatus string
+
+const (
+	// WebhookStatusSuccess represents that the webhook was successful
+	WebhookStatusSuccess WebhookStatus = "success"
+
+	// WebhookStatusConnectionError represents that the webhook had a connection error
+	WebhookStatusConnectionError WebhookStatus = "connection_error"
+
+	// WebhookStatusResponseError represents that the webhook response had a non 2xx status code
+	WebhookStatusResponseError WebhookStatus = "response_error"
+
+	// WebhookStatusSubscriberGone represents a special state of resthook responses which indicate the caller must remove that subscriber
+	WebhookStatusSubscriberGone WebhookStatus = "subscriber_gone"
+)
+
+// WebhookCall is the result of a webhook call
+type WebhookCall struct {
+	URL         string
+	Method      string
+	StatusCode  int
+	Status      WebhookStatus
+	TimeTaken   time.Duration
+	Request     []byte
+	Response    []byte
+	BodyIgnored bool
+	Resthook    string
+}
+
+// WebhookService provides webhook calling functionality to the engine
+type WebhookService interface {
+	Call(*http.Request, string) (*WebhookCall, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer

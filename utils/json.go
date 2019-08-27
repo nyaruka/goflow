@@ -93,3 +93,24 @@ func ReadTypeFromJSON(data []byte) (string, error) {
 	}
 	return t.Type, nil
 }
+
+// ExtractResponseJSON extracts a JSON body from an HTTP response trace
+func ExtractResponseJSON(response []byte) json.RawMessage {
+	parts := bytes.SplitN(response, []byte("\r\n\r\n"), 2)
+
+	// this response doesn't have a body
+	if len(parts) != 2 || len(parts[1]) == 0 {
+		return nil
+	}
+
+	body := parts[1]
+
+	// check if body is valid JSON and can be returned as is
+	if json.Valid(body) {
+		return body
+	}
+
+	// if not, treat body as text and encode as a JSON string
+	asString, _ := json.Marshal(string(body))
+	return asString
+}

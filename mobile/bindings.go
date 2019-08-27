@@ -316,9 +316,9 @@ type Engine struct {
 	target flows.Engine
 }
 
-func NewEngine(httpUserAgent string) *Engine {
+func NewEngine() *Engine {
 	return &Engine{
-		target: engine.NewBuilder().WithDefaultUserAgent(httpUserAgent).Build(),
+		target: engine.NewBuilder().Build(),
 	}
 }
 

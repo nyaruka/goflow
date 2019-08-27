@@ -46,13 +46,13 @@ type WebhookCalledEvent struct {
 func NewWebhookCalled(webhook *flows.WebhookCall) *WebhookCalledEvent {
 	return &WebhookCalledEvent{
 		baseEvent:   newBaseEvent(TypeWebhookCalled),
-		URL:         webhook.URL(),
-		Resthook:    webhook.Resthook(),
-		Status:      webhook.Status(),
-		StatusCode:  webhook.StatusCode(),
-		ElapsedMS:   int(webhook.TimeTaken() / time.Millisecond),
-		Request:     webhook.Request(),
-		Response:    webhook.Response(),
-		BodyIgnored: webhook.BodyIgnored(),
+		URL:         webhook.URL,
+		Resthook:    webhook.Resthook,
+		Status:      webhook.Status,
+		StatusCode:  webhook.StatusCode,
+		ElapsedMS:   int(webhook.TimeTaken / time.Millisecond),
+		Request:     string(webhook.Request),
+		Response:    string(webhook.Response),
+		BodyIgnored: webhook.BodyIgnored,
 	}
 }

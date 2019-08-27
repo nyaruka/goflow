@@ -105,7 +105,10 @@ func TestRun(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	server := test.NewTestHTTPServer(49999)
+	defer server.Close()
+
+	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	flow, err := session.Assets().Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
@@ -118,7 +121,7 @@ func TestRun(t *testing.T) {
 		assert.Equal(t, string(flows.RunStatusCompleted), string(r.Status()))
 		assert.Equal(t, flow, r.Flow())
 		assert.Equal(t, flow.Reference(), r.FlowReference())
-		assert.Equal(t, 7, len(r.Events()))
+		assert.Equal(t, 8, len(r.Events()))
 		assert.Equal(t, "Parent", r.Parent().Flow().Name())
 		assert.Equal(t, 0, len(r.Ancestors())) // no parent runs within this session
 	}

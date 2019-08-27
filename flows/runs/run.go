@@ -239,7 +239,7 @@ func (r *flowRun) lastWebhookResponse() types.XValue {
 	for i := len(r.events) - 1; i >= 0; i-- {
 		switch typed := r.events[i].(type) {
 		case *events.WebhookCalledEvent:
-			return types.JSONToXValue(flows.ExtractResponseBody(typed.Response))
+			return types.JSONToXValue(utils.ExtractResponseJSON([]byte(typed.Response)))
 		default:
 			continue
 		}
