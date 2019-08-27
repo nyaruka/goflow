@@ -615,7 +615,7 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 
 		if method == "POST" {
 			headers["Content-Type"] = "application/json"
-			body = flows.LegacyWebhookPayload
+			body = actions.LegacyWebhookPayload
 		}
 
 		for _, header := range config.WebhookHeaders {

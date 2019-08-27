@@ -1,6 +1,8 @@
 package engine
 
 import (
+	"net/http"
+
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 
@@ -10,10 +12,29 @@ import (
 
 type services struct {
 	airtime flows.AirtimeService
+	webhook flows.WebhookService
+}
+
+func newEmptyServices() *services {
+	return &services{
+		webhook: &nilWebhookService{},
+		airtime: &nilAirtimeService{},
+	}
+}
+
+func (s *services) Webhook() flows.WebhookService {
+	return s.webhook
 }
 
 func (s *services) Airtime() flows.AirtimeService {
 	return s.airtime
+}
+
+type nilWebhookService struct{}
+
+// Transfer in this case is a failure
+func (s *nilWebhookService) Call(request *http.Request, resthook string) (*flows.WebhookCall, error) {
+	return nil, errors.New("no webhook service available")
 }
 
 type nilAirtimeService struct{}

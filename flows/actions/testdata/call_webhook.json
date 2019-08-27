@@ -174,5 +174,115 @@
                 }
             ]
         }
+    },
+    {
+        "description": "Result with failure category for bad request responses",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "http://localhost:49996/?cmd=badrequest",
+            "body": "Hi there!",
+            "result_name": "My Webhook"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 0,
+                "request": "POST /?cmd=badrequest HTTP/1.1\r\nHost: localhost:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
+                "response": "HTTP/1.1 400 Bad Request\r\nContent-Length: 29\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"errors\": [\"bad_request\"] }",
+                "status": "response_error",
+                "status_code": 400,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "webhook_called",
+                "url": "http://localhost:49996/?cmd=badrequest"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "extra": {
+                    "errors": [
+                        "bad_request"
+                    ]
+                },
+                "input": "POST http://localhost:49996/?cmd=badrequest",
+                "name": "My Webhook",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "400"
+            }
+        ],
+        "inspection": {
+            "dependencies": [],
+            "templates": [
+                "http://localhost:49996/?cmd=badrequest",
+                "Hi there!"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ],
+                    "key": "my_webhook",
+                    "name": "My Webhook",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "Status code zero for connection errors",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "http://localhost:24568",
+            "body": "Hi there!",
+            "result_name": "My Webhook"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 0,
+                "request": "POST / HTTP/1.1\r\nHost: localhost:24568\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
+                "response": "Post http://localhost:24568: dial tcp 127.0.0.1:24568: connect: connection refused",
+                "status": "connection_error",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "webhook_called",
+                "url": "http://localhost:24568"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "POST http://localhost:24568",
+                "name": "My Webhook",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "inspection": {
+            "dependencies": [],
+            "templates": [
+                "http://localhost:24568",
+                "Hi there!"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ],
+                    "key": "my_webhook",
+                    "name": "My Webhook",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
     }
 ]

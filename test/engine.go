@@ -1,9 +1,12 @@
 package test
 
 import (
+	"net/http"
+
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/engine/webhooks"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -12,7 +15,7 @@ import (
 // NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
-		WithDefaultUserAgent("goflow-testing").
+		WithWebhookService(webhooks.NewService(http.DefaultClient, "goflow-testing", 10000)).
 		WithAirtimeService(newAirtimeService("RWF")).
 		Build()
 }

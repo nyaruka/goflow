@@ -55,7 +55,7 @@ func TestMobileBindings(t *testing.T) {
 
 	trigger := mobile.NewManual(environment, contact, mobile.NewFlowReference("7c3db26f-e12a-48af-9673-e2feefdf8516", "Two Questions"))
 
-	eng := mobile.NewEngine("mobile-test")
+	eng := mobile.NewEngine()
 	ss, err := eng.NewSession(sa, trigger)
 	session := ss.Session()
 	sprint := ss.Sprint()
