@@ -17,8 +17,14 @@ type provider struct {
 	currency   string
 }
 
-func newProvider(httpClient *http.Client) flows.AirtimeProvider {
-	return &provider{httpClient: httpClient}
+// NewProvider creates a new DTOne airtime transfer provider
+func NewProvider(httpClient *http.Client, login, apiToken, currency string) flows.AirtimeProvider {
+	return &provider{
+		httpClient: httpClient,
+		login:      login,
+		apiToken:   apiToken,
+		currency:   currency,
+	}
 }
 
 func (p *provider) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
