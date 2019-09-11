@@ -116,11 +116,17 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		req.Header.Add("Content-Type", "application/json")
 
 		webhookSvc := run.Session().Engine().Services().Webhook(run.Session())
+		if webhookSvc == nil {
+			logEvent(events.NewError(errors.Errorf("no webhook provider available")))
+			return nil
+		}
 
 		call, err := webhookSvc.Call(req, a.Resthook)
+
 		if err != nil {
 			logEvent(events.NewError(err))
-		} else {
+		}
+		if call != nil {
 			calls = append(calls, call)
 			logEvent(events.NewWebhookCalled(call))
 		}

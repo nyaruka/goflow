@@ -1,16 +1,13 @@
 package engine
 
 import (
-	"net/http"
-
-	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
-
-	"github.com/pkg/errors"
-	"github.com/shopspring/decimal"
 )
 
+// WebhookService resolves a session to a webhook provider
 type WebhookService func(flows.Session) flows.WebhookProvider
+
+// AirtimeService resolves a session to an airtime provider
 type AirtimeService func(flows.Session) flows.AirtimeProvider
 
 type services struct {
@@ -20,8 +17,8 @@ type services struct {
 
 func newEmptyServices() *services {
 	return &services{
-		webhook: func(flows.Session) flows.WebhookProvider { return &nilWebhookProvider{} },
-		airtime: func(flows.Session) flows.AirtimeProvider { return &nilAirtimeProvider{} },
+		webhook: func(flows.Session) flows.WebhookProvider { return nil },
+		airtime: func(flows.Session) flows.AirtimeProvider { return nil },
 	}
 }
 
@@ -31,18 +28,4 @@ func (s *services) Webhook(session flows.Session) flows.WebhookProvider {
 
 func (s *services) Airtime(session flows.Session) flows.AirtimeProvider {
 	return s.airtime(session)
-}
-
-type nilWebhookProvider struct{}
-
-// Call in this case is a failure
-func (s *nilWebhookProvider) Call(request *http.Request, resthook string) (*flows.WebhookCall, error) {
-	return nil, errors.New("no webhook service available")
-}
-
-type nilAirtimeProvider struct{}
-
-// Transfer in this case is a failure
-func (s *nilAirtimeProvider) Transfer(session flows.Session, from urns.URN, to urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
-	return nil, errors.New("no airtime service available")
 }
