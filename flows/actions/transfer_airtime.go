@@ -73,7 +73,9 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 		sender, _ = urns.Parse("tel:" + channel.Address())
 	}
 
-	transfer, err := run.Session().Engine().Services().Airtime().Transfer(run.Session(), sender, recipient, a.Amounts)
+	airtimeSvc := run.Session().Engine().Services().Airtime(run.Session())
+
+	transfer, err := airtimeSvc.Transfer(run.Session(), sender, recipient, a.Amounts)
 	if err != nil {
 		// an error without a transfer is considered a failure because we have nothing to route on
 		if transfer == nil {

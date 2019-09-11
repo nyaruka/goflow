@@ -6,7 +6,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/engine/webhooks"
+	"github.com/nyaruka/goflow/providers/webhooks"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -16,20 +16,20 @@ import (
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
 		WithWebhookService(webhooks.NewService(http.DefaultClient, "goflow-testing", 10000)).
-		WithAirtimeService(newAirtimeService("RWF")).
+		WithAirtimeService(func(flows.Session) flows.AirtimeProvider { return newAirtimeProvider("RWF") }).
 		Build()
 }
 
-// implementation of AirtimeService for testing which uses a fixed currency
-type airtimeService struct {
+// implementation of AirtimeProvider for testing which uses a fixed currency
+type airtimeProvider struct {
 	fixedCurrency string
 }
 
-func newAirtimeService(currency string) *airtimeService {
-	return &airtimeService{fixedCurrency: currency}
+func newAirtimeProvider(currency string) *airtimeProvider {
+	return &airtimeProvider{fixedCurrency: currency}
 }
 
-func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
+func (s *airtimeProvider) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
 	t := &flows.AirtimeTransfer{
 		Sender:    sender,
 		Recipient: recipient,
@@ -47,3 +47,5 @@ func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipi
 	t.Status = flows.AirtimeTransferStatusSuccess
 	return t, nil
 }
+
+var _ flows.AirtimeProvider = (*airtimeProvider)(nil)

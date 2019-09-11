@@ -66,13 +66,13 @@ func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
 }
 
 // WithWebhookService sets the webhook service
-func (b *Builder) WithWebhookService(svc flows.WebhookService) *Builder {
+func (b *Builder) WithWebhookService(svc WebhookService) *Builder {
 	b.eng.services.webhook = svc
 	return b
 }
 
 // WithAirtimeService sets the airtime transfer service
-func (b *Builder) WithAirtimeService(svc flows.AirtimeService) *Builder {
+func (b *Builder) WithAirtimeService(svc AirtimeService) *Builder {
 	b.eng.services.airtime = svc
 	return b
 }

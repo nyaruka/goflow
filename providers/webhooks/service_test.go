@@ -125,7 +125,7 @@ func TestWebhookParsing(t *testing.T) {
 		request, err := http.NewRequest(tc.call.method, tc.call.url, strings.NewReader(tc.call.body))
 		require.NoError(t, err)
 
-		c, err := session.Engine().Services().Webhook().Call(request, "")
+		c, err := session.Engine().Services().Webhook(session).Call(request, "")
 
 		if tc.isError {
 			assert.Error(t, err)
