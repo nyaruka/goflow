@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/providers/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -118,6 +119,14 @@ func TestWebhookParsing(t *testing.T) {
 				response: "HTTP/1.1 200 OK\r\nContent-Length: 19\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{\"msg\": \"I'm JSON\"}",
 				json:     []byte(`{"msg": "I'm JSON"}`),
 			},
+		}, {
+			// connection error
+			call: call{"POST", "http://127.0.0.1:55555/", ""},
+			webhook: webhook{
+				request:  "POST / HTTP/1.1\r\nHost: 127.0.0.1:55555\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
+				response: "Post http://127.0.0.1:55555/: dial tcp 127.0.0.1:55555: connect: connection refused",
+				json:     nil,
+			},
 		},
 	}
 
@@ -125,7 +134,7 @@ func TestWebhookParsing(t *testing.T) {
 		request, err := http.NewRequest(tc.call.method, tc.call.url, strings.NewReader(tc.call.body))
 		require.NoError(t, err)
 
-		c, err := session.Engine().Services().Webhook().Call(request, "")
+		c, err := session.Engine().Services().Webhook(session).Call(request, "")
 
 		if tc.isError {
 			assert.Error(t, err)
@@ -142,4 +151,20 @@ func TestWebhookParsing(t *testing.T) {
 			test.AssertEqualJSON(t, tc.webhook.json, utils.ExtractResponseJSON(c.Response), "body mismatch for call %s", tc.call)
 		}
 	}
+}
+
+func TestMockProvider(t *testing.T) {
+	provider := webhooks.NewMockProvider(201, `application/json`, `{"result":"disabled"}`)
+
+	request, err := http.NewRequest("GET", "http://example.com", strings.NewReader("{}"))
+	require.NoError(t, err)
+
+	c, err := provider.Call(request, "myresthook")
+
+	assert.Equal(t, "GET", c.Method)
+	assert.Equal(t, 201, c.StatusCode)
+	assert.Equal(t, "GET / HTTP/1.1\r\nHost: example.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 2\r\nAccept-Encoding: gzip\r\n\r\n{}", string(c.Request))
+	assert.Equal(t, "HTTP/1.1 201 Created\r\nConnection: close\r\nContent-Type: application/json\r\n\r\n{\"result\":\"disabled\"}", string(c.Response))
+	assert.False(t, c.BodyIgnored)
+	assert.Equal(t, "myresthook", c.Resthook)
 }

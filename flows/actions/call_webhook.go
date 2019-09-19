@@ -114,11 +114,18 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 		req.Header.Add(key, headerValue)
 	}
 
-	call, err := run.Session().Engine().Services().Webhook().Call(req, "")
+	webhookSvc := run.Session().Engine().Services().Webhook(run.Session())
+	if webhookSvc == nil {
+		logEvent(events.NewError(errors.Errorf("no webhook provider available")))
+		return nil
+	}
+
+	call, err := webhookSvc.Call(req, "")
 
 	if err != nil {
 		logEvent(events.NewError(err))
-	} else {
+	}
+	if call != nil {
 		logEvent(events.NewWebhookCalled(call))
 		if a.ResultName != "" {
 			a.saveWebhookResult(run, step, a.ResultName, call, logEvent)

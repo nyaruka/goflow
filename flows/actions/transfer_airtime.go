@@ -73,23 +73,26 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 		sender, _ = urns.Parse("tel:" + channel.Address())
 	}
 
-	transfer, err := run.Session().Engine().Services().Airtime().Transfer(run.Session(), sender, recipient, a.Amounts)
-	if err != nil {
-		// an error without a transfer is considered a failure because we have nothing to route on
-		if transfer == nil {
-			a.fail(run, err, logEvent)
-			return nil
-		}
-		logEvent(events.NewError(err))
+	airtimeSvc := run.Session().Engine().Services().Airtime(run.Session())
+	if airtimeSvc == nil {
+		logEvent(events.NewError(errors.Errorf("no airtime provider available")))
+		return nil
 	}
 
-	logEvent(events.NewAirtimeTransferred(transfer))
+	transfer, err := airtimeSvc.Transfer(run.Session(), sender, recipient, a.Amounts)
 
-	if a.ResultName != "" {
-		value := transfer.ActualAmount.String()
-		category := statusCategories[transfer.Status]
+	if err != nil {
+		logEvent(events.NewError(err))
+	}
+	if transfer != nil {
+		logEvent(events.NewAirtimeTransferred(transfer))
 
-		a.saveResult(run, step, a.ResultName, value, category, "", "", nil, logEvent)
+		if a.ResultName != "" {
+			value := transfer.ActualAmount.String()
+			category := statusCategories[transfer.Status]
+
+			a.saveResult(run, step, a.ResultName, value, category, "", "", nil, logEvent)
+		}
 	}
 	return nil
 }
