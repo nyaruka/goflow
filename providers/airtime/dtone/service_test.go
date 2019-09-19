@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/nyaruka/goflow/providers/dtone"
+	"github.com/nyaruka/goflow/providers/airtime/dtone"
 
 	"github.com/stretchr/testify/assert"
 )
