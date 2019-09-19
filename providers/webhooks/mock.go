@@ -9,15 +9,17 @@ import (
 )
 
 type mockProvider struct {
-	statusCode int
-	body       string
+	statusCode  int
+	contentType string
+	body        string
 }
 
 // NewMockProvider creates a new mock webhook provider for testing
-func NewMockProvider(statusCode int, body string) flows.WebhookProvider {
+func NewMockProvider(statusCode int, contentType, body string) flows.WebhookProvider {
 	return &mockProvider{
-		statusCode: statusCode,
-		body:       body,
+		statusCode:  statusCode,
+		contentType: contentType,
+		body:        body,
 	}
 }
 
@@ -28,13 +30,14 @@ func (s *mockProvider) Call(request *http.Request, resthook string) (*flows.Webh
 	}
 
 	recorder := httptest.NewRecorder()
+	recorder.Header().Set("Content-Type", s.contentType)
 	recorder.WriteString(s.body)
 	recorder.Code = s.statusCode
 
 	response := recorder.Result()
 	response.Request = request
 
-	responseTrace, err := httputil.DumpResponse(response, false)
+	responseTrace, err := httputil.DumpResponse(response, true)
 	if err != nil {
 		return nil, err
 	}
