@@ -303,14 +303,14 @@ Events are created when an action wants to send a message to other contacts.
         }
     },
     "base_language": "eng",
-    "urns": [
-        "tel:+12065551212"
-    ],
     "contacts": [
         {
             "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
             "name": "Bob"
         }
+    ],
+    "urns": [
+        "tel:+12065551212"
     ]
 }
 ```
