@@ -266,7 +266,7 @@ func (r *flowRun) Context(env envs.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
-		"__default__": types.NewXText(formatRunSummary(env, r)),
+		"__default__": types.NewXText(FormatRunSummary(env, r)),
 		"uuid":        types.NewXText(string(r.UUID())),
 		"contact":     flows.Context(env, r.Contact()),
 		"flow":        flows.Context(env, r.Flow()),

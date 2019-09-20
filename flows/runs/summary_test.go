@@ -1,0 +1,51 @@
+package runs_test
+
+import (
+	"encoding/json"
+	"testing"
+	"time"
+
+	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/flows/runs"
+	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/uuids"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+)
+
+func TestRunSummary(t *testing.T) {
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
+	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	defer dates.SetNowSource(dates.DefaultNowSource)
+
+	server := test.NewTestHTTPServer(49999)
+	defer server.Close()
+
+	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	run := session.Runs()[0]
+	summary := run.Snapshot()
+
+	assert.Equal(t, run.Flow(), summary.Flow())
+	assert.Equal(t, run.Contact(), summary.Contact())
+	assert.Equal(t, run.Results(), summary.Results())
+	assert.Equal(t, run.Status(), summary.Status())
+	assert.Equal(t, run.Results(), summary.Results())
+
+	assert.Equal(t, "Ryan Lewis@Registration", runs.FormatRunSummary(session.Environment(), summary))
+
+	// test marshaling and unmarshaling
+	marshaled, err := json.Marshal(summary)
+	require.NoError(t, err)
+
+	summary, err = runs.ReadRunSummary(session.Assets(), marshaled, assets.PanicOnMissing)
+	require.NoError(t, err)
+
+	assert.Equal(t, run.Flow().Name(), summary.Flow().Name())
+	assert.Equal(t, run.Status(), summary.Status())
+}

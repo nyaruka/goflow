@@ -2,6 +2,7 @@ package runs
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -72,7 +73,7 @@ func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValu
 	}
 
 	return map[string]types.XValue{
-		"__default__": types.NewXText(formatRunSummary(env, c.run)),
+		"__default__": types.NewXText(FormatRunSummary(env, c.run)),
 		"uuid":        types.NewXText(string(c.run.UUID())),
 		"run":         flows.ContextFunc(env, c.RunContext), // deprecated to be removed in 13.1
 		"contact":     flows.Context(env, c.run.Contact()),
@@ -88,7 +89,7 @@ func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValu
 // subset of the properties exposed by a real run.
 func (c *relatedRunContext) RunContext(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"__default__": types.NewXText(formatRunSummary(env, c.run)),
+		"__default__": types.NewXText(FormatRunSummary(env, c.run)),
 		"uuid":        types.NewXText(string(c.run.UUID())),
 		"contact":     flows.Context(env, c.run.Contact()),
 		"flow":        flows.Context(env, c.run.Flow()),
@@ -97,12 +98,22 @@ func (c *relatedRunContext) RunContext(env envs.Environment) map[string]types.XV
 	}
 }
 
-func formatRunSummary(env envs.Environment, run flows.RunSummary) string {
-	s := "@" + run.Flow().Name()
-	if run.Contact() != nil {
-		s = run.Contact().Format(env) + s
+func FormatRunSummary(env envs.Environment, run flows.RunSummary) string {
+	var flow, contact string
+
+	if run.Flow() != nil {
+		flow = run.Flow().Name()
+	} else {
+		flow = "Missing"
 	}
-	return s
+
+	if run.Contact() != nil {
+		contact = run.Contact().Format(env)
+	} else {
+		contact = ""
+	}
+
+	return fmt.Sprintf("%s@%s", contact, flow)
 }
 
 //------------------------------------------------------------------------------------------
@@ -112,7 +123,7 @@ func formatRunSummary(env envs.Environment, run flows.RunSummary) string {
 type runSummaryEnvelope struct {
 	UUID    flows.RunUUID         `json:"uuid" validate:"uuid4"`
 	Flow    *assets.FlowReference `json:"flow" validate:"required,dive"`
-	Contact json.RawMessage       `json:"contact" validate:"required"`
+	Contact json.RawMessage       `json:"contact"`
 	Status  flows.RunStatus       `json:"status" validate:"required"`
 	Results flows.Results         `json:"results"`
 }
