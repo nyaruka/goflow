@@ -98,19 +98,20 @@ func (c *relatedRunContext) RunContext(env envs.Environment) map[string]types.XV
 	}
 }
 
+// FormatRunSummary formats an instance of the RunSummary interface
 func FormatRunSummary(env envs.Environment, run flows.RunSummary) string {
 	var flow, contact string
 
 	if run.Flow() != nil {
 		flow = run.Flow().Name()
 	} else {
-		flow = "Missing"
+		flow = "<missing>"
 	}
 
 	if run.Contact() != nil {
 		contact = run.Contact().Format(env)
 	} else {
-		contact = ""
+		contact = "<nocontact>"
 	}
 
 	return fmt.Sprintf("%s@%s", contact, flow)
