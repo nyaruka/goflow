@@ -47,7 +47,7 @@ type WebhookCall struct {
 
 // WebhookProvider provides webhook calling functionality to the engine
 type WebhookProvider interface {
-	Call(*http.Request, string) (*WebhookCall, error)
+	Call(session Session, request *http.Request, resthook string) (*WebhookCall, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer
