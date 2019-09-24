@@ -1,3 +1,7 @@
+v0.50.1
+----------
+ * Have a single HTTPClient on the engine instead of every service having its own
+
 v0.50.0
 ----------
  * Fix formatting runsummary with missing flow
