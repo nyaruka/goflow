@@ -85,6 +85,7 @@ func TestTemplatePaths(t *testing.T) {
 		"$.nodes[*].actions[@.type=\"remove_contact_groups\"].groups[*].name_match",
 		"$.nodes[*].actions[@.type=\"say_msg\"].text",
 		"$.nodes[*].actions[@.type=\"send_broadcast\"].attachments[*]",
+		"$.nodes[*].actions[@.type=\"send_broadcast\"].contact_query",
 		"$.nodes[*].actions[@.type=\"send_broadcast\"].groups[*].name_match",
 		"$.nodes[*].actions[@.type=\"send_broadcast\"].legacy_vars[*]",
 		"$.nodes[*].actions[@.type=\"send_broadcast\"].quick_replies[*]",
@@ -101,6 +102,7 @@ func TestTemplatePaths(t *testing.T) {
 		"$.nodes[*].actions[@.type=\"set_contact_name\"].name",
 		"$.nodes[*].actions[@.type=\"set_contact_timezone\"].timezone",
 		"$.nodes[*].actions[@.type=\"set_run_result\"].value",
+		"$.nodes[*].actions[@.type=\"start_session\"].contact_query",
 		"$.nodes[*].actions[@.type=\"start_session\"].groups[*].name_match",
 		"$.nodes[*].actions[@.type=\"start_session\"].legacy_vars[*]",
 	}, paths)

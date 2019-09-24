@@ -63,76 +63,6 @@ func (a *baseAction) Validate() error { return nil }
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
-// helper function for actions that have a set of group references that must be resolved to actual groups
-func (a *baseAction) resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {
-	groupSet := run.Session().Assets().Groups()
-	groups := make([]*flows.Group, 0, len(references))
-
-	for _, ref := range references {
-		var group *flows.Group
-
-		if ref.UUID != "" {
-			// group is a fixed group with a UUID
-			group = groupSet.Get(ref.UUID)
-		} else {
-			// group is an expression that evaluates to an existing group's name
-			evaluatedGroupName, err := run.EvaluateTemplate(ref.NameMatch)
-			if err != nil {
-				logEvent(events.NewError(err))
-			} else {
-				// look up the set of all groups to see if such a group exists
-				group = groupSet.FindByName(evaluatedGroupName)
-				if group == nil {
-					logEvent(events.NewErrorf("no such group with name '%s'", evaluatedGroupName))
-				}
-			}
-		}
-
-		if group != nil {
-			if staticOnly && group.IsDynamic() {
-				logEvent(events.NewErrorf("can't add or remove contacts from a dynamic group '%s'", group.Name()))
-			} else {
-				groups = append(groups, group)
-			}
-		}
-	}
-
-	return groups, nil
-}
-
-// helper function for actions that have a set of label references that must be resolved to actual labels
-func (a *baseAction) resolveLabels(run flows.FlowRun, references []*assets.LabelReference, logEvent flows.EventCallback) ([]*flows.Label, error) {
-	labelSet := run.Session().Assets().Labels()
-	labels := make([]*flows.Label, 0, len(references))
-
-	for _, ref := range references {
-		var label *flows.Label
-
-		if ref.UUID != "" {
-			// label is a fixed label with a UUID
-			label = labelSet.Get(ref.UUID)
-		} else {
-			// label is an expression that evaluates to an existing label's name
-			evaluatedLabelName, err := run.EvaluateTemplate(ref.NameMatch)
-			if err != nil {
-				logEvent(events.NewError(err))
-			} else {
-				// look up the set of all labels to see if such a label exists
-				label = labelSet.FindByName(evaluatedLabelName)
-				if label == nil {
-					logEvent(events.NewErrorf("no such label with name '%s'", evaluatedLabelName))
-				}
-			}
-		}
-
-		if label != nil {
-			labels = append(labels, label)
-		}
-	}
-
-	return labels, nil
-}
-
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
 func (a *baseAction) evaluateMessage(run flows.FlowRun, languages []envs.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string) {
 	// localize and evaluate the message text
@@ -173,67 +103,6 @@ func (a *baseAction) evaluateMessage(run flows.FlowRun, languages []envs.Languag
 	}
 
 	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies
-}
-
-func (a *baseAction) resolveRecipients(run flows.FlowRun, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*assets.GroupReference, actionLegacyVars []string, logEvent flows.EventCallback) ([]urns.URN, []*flows.ContactReference, []*assets.GroupReference, error) {
-	groupSet := run.Session().Assets().Groups()
-
-	// copy URNs
-	urnList := make([]urns.URN, 0, len(actionURNs))
-	for _, urn := range actionURNs {
-		urnList = append(urnList, urn)
-	}
-
-	// copy contact references
-	contactRefs := make([]*flows.ContactReference, 0, len(actionContacts))
-	for _, contactRef := range actionContacts {
-		contactRefs = append(contactRefs, contactRef)
-	}
-
-	// resolve group references
-	groups, err := a.resolveGroups(run, actionGroups, false, logEvent)
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	groupRefs := make([]*assets.GroupReference, 0, len(groups))
-	for _, group := range groups {
-		groupRefs = append(groupRefs, group.Reference())
-	}
-
-	// evaluate the legacy variables
-	for _, legacyVar := range actionLegacyVars {
-		evaluatedLegacyVar, err := run.EvaluateTemplate(legacyVar)
-		if err != nil {
-			logEvent(events.NewError(err))
-		}
-
-		if uuidRegex.MatchString(evaluatedLegacyVar) {
-			// if variable evaluates to a UUID, we assume it's a contact UUID
-			contactRefs = append(contactRefs, flows.NewContactReference(flows.ContactUUID(evaluatedLegacyVar), ""))
-
-		} else if groupByName := groupSet.FindByName(evaluatedLegacyVar); groupByName != nil {
-			// next up we look for a group with a matching name
-			groupRefs = append(groupRefs, groupByName.Reference())
-		} else {
-			// next up try it as a URN
-			urn := urns.URN(evaluatedLegacyVar)
-			if urn.Validate() == nil {
-				urn = urn.Normalize(string(run.Environment().DefaultCountry()))
-				urnList = append(urnList, urn)
-			} else {
-				// if that fails, assume this is a phone number, and let the caller worry about validation
-				urn, err := urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, "", "")
-				if err != nil {
-					logEvent(events.NewError(err))
-				} else {
-					urn = urn.Normalize(string(run.Environment().DefaultCountry()))
-					urnList = append(urnList, urn)
-				}
-			}
-		}
-	}
-
-	return urnList, contactRefs, groupRefs, nil
 }
 
 // helper to save a run result and log it as an event
@@ -291,10 +160,75 @@ func (a *voiceAction) AllowedFlowTypes() []flows.FlowType {
 
 // utility struct for actions which operate on other contacts
 type otherContactsAction struct {
-	URNs       []urns.URN                `json:"urns,omitempty"`
-	Contacts   []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups     []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	LegacyVars []string                  `json:"legacy_vars,omitempty" engine:"evaluated"`
+	URNs         []urns.URN                `json:"urns,omitempty"`
+	Groups       []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
+	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	ContactQuery string                    `json:"contact_query,omitempty" engine:"evaluated"`
+	LegacyVars   []string                  `json:"legacy_vars,omitempty" engine:"evaluated"`
+}
+
+func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flows.EventCallback) ([]*assets.GroupReference, []*flows.ContactReference, string, []urns.URN, error) {
+	groupSet := run.Session().Assets().Groups()
+
+	// copy URNs
+	urnList := make([]urns.URN, 0, len(a.URNs))
+	for _, urn := range a.URNs {
+		urnList = append(urnList, urn)
+	}
+
+	// copy contact references
+	contactRefs := make([]*flows.ContactReference, 0, len(a.Contacts))
+	for _, contactRef := range a.Contacts {
+		contactRefs = append(contactRefs, contactRef)
+	}
+
+	// resolve group references
+	groups, err := resolveGroups(run, a.Groups, false, logEvent)
+	if err != nil {
+		return nil, nil, "", nil, err
+	}
+	groupRefs := make([]*assets.GroupReference, 0, len(groups))
+	for _, group := range groups {
+		groupRefs = append(groupRefs, group.Reference())
+	}
+
+	// evaluate the legacy variables
+	for _, legacyVar := range a.LegacyVars {
+		evaluatedLegacyVar, err := run.EvaluateTemplate(legacyVar)
+		if err != nil {
+			logEvent(events.NewError(err))
+		}
+
+		if uuidRegex.MatchString(evaluatedLegacyVar) {
+			// if variable evaluates to a UUID, we assume it's a contact UUID
+			contactRefs = append(contactRefs, flows.NewContactReference(flows.ContactUUID(evaluatedLegacyVar), ""))
+
+		} else if groupByName := groupSet.FindByName(evaluatedLegacyVar); groupByName != nil {
+			// next up we look for a group with a matching name
+			groupRefs = append(groupRefs, groupByName.Reference())
+		} else {
+			// next up try it as a URN
+			urn := urns.URN(evaluatedLegacyVar)
+			if urn.Validate() == nil {
+				urn = urn.Normalize(string(run.Environment().DefaultCountry()))
+				urnList = append(urnList, urn)
+			} else {
+				// if that fails, assume this is a phone number, and let the caller worry about validation
+				urn, err := urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, "", "")
+				if err != nil {
+					logEvent(events.NewError(err))
+				} else {
+					urn = urn.Normalize(string(run.Environment().DefaultCountry()))
+					urnList = append(urnList, urn)
+				}
+			}
+		}
+	}
+
+	// evalaute contact query
+	contactQuery, err := run.EvaluateTemplate(a.ContactQuery)
+
+	return groupRefs, contactRefs, contactQuery, urnList, nil
 }
 
 // utility struct for actions which create a message
@@ -302,6 +236,76 @@ type createMsgAction struct {
 	Text         string   `json:"text" validate:"required" engine:"localized,evaluated"`
 	Attachments  []string `json:"attachments,omitempty" engine:"localized,evaluated"`
 	QuickReplies []string `json:"quick_replies,omitempty" engine:"localized,evaluated"`
+}
+
+// helper function for actions that have a set of group references that must be resolved to actual groups
+func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {
+	groupSet := run.Session().Assets().Groups()
+	groups := make([]*flows.Group, 0, len(references))
+
+	for _, ref := range references {
+		var group *flows.Group
+
+		if ref.UUID != "" {
+			// group is a fixed group with a UUID
+			group = groupSet.Get(ref.UUID)
+		} else {
+			// group is an expression that evaluates to an existing group's name
+			evaluatedGroupName, err := run.EvaluateTemplate(ref.NameMatch)
+			if err != nil {
+				logEvent(events.NewError(err))
+			} else {
+				// look up the set of all groups to see if such a group exists
+				group = groupSet.FindByName(evaluatedGroupName)
+				if group == nil {
+					logEvent(events.NewErrorf("no such group with name '%s'", evaluatedGroupName))
+				}
+			}
+		}
+
+		if group != nil {
+			if staticOnly && group.IsDynamic() {
+				logEvent(events.NewErrorf("can't add or remove contacts from a dynamic group '%s'", group.Name()))
+			} else {
+				groups = append(groups, group)
+			}
+		}
+	}
+
+	return groups, nil
+}
+
+// helper function for actions that have a set of label references that must be resolved to actual labels
+func resolveLabels(run flows.FlowRun, references []*assets.LabelReference, logEvent flows.EventCallback) ([]*flows.Label, error) {
+	labelSet := run.Session().Assets().Labels()
+	labels := make([]*flows.Label, 0, len(references))
+
+	for _, ref := range references {
+		var label *flows.Label
+
+		if ref.UUID != "" {
+			// label is a fixed label with a UUID
+			label = labelSet.Get(ref.UUID)
+		} else {
+			// label is an expression that evaluates to an existing label's name
+			evaluatedLabelName, err := run.EvaluateTemplate(ref.NameMatch)
+			if err != nil {
+				logEvent(events.NewError(err))
+			} else {
+				// look up the set of all labels to see if such a label exists
+				label = labelSet.FindByName(evaluatedLabelName)
+				if label == nil {
+					logEvent(events.NewErrorf("no such label with name '%s'", evaluatedLabelName))
+				}
+			}
+		}
+
+		if label != nil {
+			labels = append(labels, label)
+		}
+	}
+
+	return labels, nil
 }
 
 //------------------------------------------------------------------------------------------

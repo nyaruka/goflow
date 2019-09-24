@@ -66,18 +66,19 @@
             "urns": [
                 "tel:+1234567890"
             ],
-            "contacts": [
-                {
-                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
-                    "name": "Stavros"
-                }
-            ],
             "groups": [
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers"
                 }
             ],
+            "contacts": [
+                {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros"
+                }
+            ],
+            "contact_query": "age > 20",
             "legacy_vars": [
                 "@(\"0788123123\")"
             ]
@@ -90,6 +91,7 @@
                         "uuid": "945493e3-933f-4668-9761-ce990fae5e5c"
                     }
                 ],
+                "contact_query": "age > 20",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "flow": {
                     "name": "Collect Age",
@@ -146,11 +148,12 @@
         ],
         "inspection": {
             "templates": [
+                "age > 20",
                 "@(\"0788123123\")"
             ],
             "dependencies": [
-                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]",
                 "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
+                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]",
                 "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]"
             ],
             "results": []

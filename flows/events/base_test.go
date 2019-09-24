@@ -45,13 +45,13 @@ func TestEventMarshaling(t *testing.T) {
 					"spa": {Text: "Hola", Attachments: nil, QuickReplies: nil},
 				},
 				envs.Language("eng"),
-				[]urns.URN{urns.URN("tel:+12345678900")},
-				[]*flows.ContactReference{
-					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
-				},
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
 				},
+				[]*flows.ContactReference{
+					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
+				},
+				[]urns.URN{urns.URN("tel:+12345678900")},
 			),
 			`{
 				"base_language": "eng",
@@ -270,16 +270,17 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewSessioned(
+			events.NewSessionTriggered(
 				assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
-				[]urns.URN{urns.URN("tel:+12345678900")},
-				[]*flows.ContactReference{
-					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
-				},
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
 				},
+				[]*flows.ContactReference{
+					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
+				},
+				"age > 20",
 				false,
+				[]urns.URN{urns.URN("tel:+12345678900")},
 				json.RawMessage(`{"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"}`),
 			),
 			`{
@@ -289,6 +290,7 @@ func TestEventMarshaling(t *testing.T) {
 						"uuid": "b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"
 					}
 				],
+				"contact_query": "age > 20",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"flow": {
 					"name": "Collect Age",

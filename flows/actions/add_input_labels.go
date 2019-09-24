@@ -51,7 +51,7 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logMo
 		return nil
 	}
 
-	labels, err := a.resolveLabels(run, a.Labels, logEvent)
+	labels, err := resolveLabels(run, a.Labels, logEvent)
 	if err != nil {
 		return err
 	}
