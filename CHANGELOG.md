@@ -1,3 +1,9 @@
+v0.50.0
+----------
+ * Fix formatting runsummary with missing flow
+ * Add contact_query field to start_session actions
+ * Rework services so they take a session and resolve to a provider that does the work
+
 v0.49.0
 ----------
  * Rework webhook calling code as a service and fix not saving result when connection errors
