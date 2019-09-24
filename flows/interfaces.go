@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"net/http"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -318,8 +319,9 @@ type Engine interface {
 	NewSession(SessionAssets, Trigger) (Session, Sprint, error)
 	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
 
-	MaxStepsPerSprint() int
+	HTTPClient() *http.Client
 	Services() Services
+	MaxStepsPerSprint() int
 }
 
 // Sprint is an interaction with the engine - i.e. a start or resume of a session

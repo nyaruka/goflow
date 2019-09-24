@@ -2,6 +2,7 @@ package engine
 
 import (
 	"encoding/json"
+	"net/http"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
@@ -10,8 +11,9 @@ import (
 
 // an instance of the engine
 type engine struct {
-	maxStepsPerSprint int
+	httpClient        *http.Client
 	services          *services
+	maxStepsPerSprint int
 }
 
 // NewSession creates a new session
@@ -35,8 +37,9 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missi
 	return readSession(e, sa, data, missing)
 }
 
-func (e *engine) MaxStepsPerSprint() int   { return e.maxStepsPerSprint }
+func (e *engine) HTTPClient() *http.Client { return e.httpClient }
 func (e *engine) Services() flows.Services { return e.services }
+func (e *engine) MaxStepsPerSprint() int   { return e.maxStepsPerSprint }
 
 var _ flows.Engine = (*engine)(nil)
 
@@ -53,15 +56,16 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		eng: &engine{
-			maxStepsPerSprint: 100,
+			httpClient:        http.DefaultClient,
 			services:          newEmptyServices(),
+			maxStepsPerSprint: 100,
 		},
 	}
 }
 
-// WithMaxStepsPerSprint sets the maximum number of steps allowed in a single sprint
-func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
-	b.eng.maxStepsPerSprint = max
+// WithHTTPClient sets the HTTP client
+func (b *Builder) WithHTTPClient(client *http.Client) *Builder {
+	b.eng.httpClient = client
 	return b
 }
 
@@ -74,6 +78,12 @@ func (b *Builder) WithWebhookService(svc WebhookService) *Builder {
 // WithAirtimeService sets the airtime transfer service
 func (b *Builder) WithAirtimeService(svc AirtimeService) *Builder {
 	b.eng.services.airtime = svc
+	return b
+}
+
+// WithMaxStepsPerSprint sets the maximum number of steps allowed in a single sprint
+func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
+	b.eng.maxStepsPerSprint = max
 	return b
 }
 

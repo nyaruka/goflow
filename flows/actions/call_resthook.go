@@ -121,7 +121,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 			return nil
 		}
 
-		call, err := webhookSvc.Call(req, a.Resthook)
+		call, err := webhookSvc.Call(run.Session(), req, a.Resthook)
 
 		if err != nil {
 			logEvent(events.NewError(err))

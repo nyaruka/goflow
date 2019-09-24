@@ -134,7 +134,7 @@ func TestWebhookParsing(t *testing.T) {
 		request, err := http.NewRequest(tc.call.method, tc.call.url, strings.NewReader(tc.call.body))
 		require.NoError(t, err)
 
-		c, err := session.Engine().Services().Webhook(session).Call(request, "")
+		c, err := session.Engine().Services().Webhook(session).Call(session, request, "")
 
 		if tc.isError {
 			assert.Error(t, err)
@@ -159,7 +159,7 @@ func TestMockProvider(t *testing.T) {
 	request, err := http.NewRequest("GET", "http://example.com", strings.NewReader("{}"))
 	require.NoError(t, err)
 
-	c, err := provider.Call(request, "myresthook")
+	c, err := provider.Call(nil, request, "myresthook")
 
 	assert.Equal(t, "GET", c.Method)
 	assert.Equal(t, 201, c.StatusCode)

@@ -23,7 +23,7 @@ func NewMockProvider(statusCode int, contentType, body string) flows.WebhookProv
 	}
 }
 
-func (s *mockProvider) Call(request *http.Request, resthook string) (*flows.WebhookCall, error) {
+func (s *mockProvider) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
 	dump, err := httputil.DumpRequestOut(request, true)
 	if err != nil {
 		return nil, err

@@ -1,8 +1,6 @@
 package dtone
 
 import (
-	"net/http"
-
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 
@@ -11,19 +9,17 @@ import (
 )
 
 type provider struct {
-	httpClient *http.Client
-	login      string
-	apiToken   string
-	currency   string
+	login    string
+	apiToken string
+	currency string
 }
 
 // NewProvider creates a new DTOne airtime transfer provider
-func NewProvider(httpClient *http.Client, login, apiToken, currency string) flows.AirtimeProvider {
+func NewProvider(login, apiToken, currency string) flows.AirtimeProvider {
 	return &provider{
-		httpClient: httpClient,
-		login:      login,
-		apiToken:   apiToken,
-		currency:   currency,
+		login:    login,
+		apiToken: apiToken,
+		currency: currency,
 	}
 }
 
@@ -34,7 +30,7 @@ func (p *provider) Transfer(session flows.Session, sender urns.URN, recipient ur
 		Status:    flows.AirtimeTransferStatusFailed,
 	}
 
-	client := NewClient(p.login, p.apiToken, p.httpClient)
+	client := NewClient(p.login, p.apiToken, session.Engine().HTTPClient())
 
 	info, err := client.MSISDNInfo(recipient.Path(), p.currency, "1")
 	if err != nil {

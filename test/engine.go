@@ -1,8 +1,6 @@
 package test
 
 import (
-	"net/http"
-
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -15,7 +13,7 @@ import (
 // NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
-		WithWebhookService(webhooks.NewService(http.DefaultClient, "goflow-testing", 10000)).
+		WithWebhookService(webhooks.NewService("goflow-testing", 10000)).
 		WithAirtimeService(func(flows.Session) flows.AirtimeProvider { return newAirtimeProvider("RWF") }).
 		Build()
 }

@@ -29,22 +29,21 @@ var fetchResponseContentTypes = map[string]bool{
 }
 
 type provider struct {
-	client           *http.Client
 	defaultUserAgent string
 	maxBodyBytes     int
 }
 
 // NewService creates a new webhook service
-func NewService(client *http.Client, defaultUserAgent string, maxBodyBytes int) engine.WebhookService {
-	return func(flows.Session) flows.WebhookProvider { return NewProvider(client, defaultUserAgent, maxBodyBytes) }
+func NewService(defaultUserAgent string, maxBodyBytes int) engine.WebhookService {
+	return func(flows.Session) flows.WebhookProvider { return NewProvider(defaultUserAgent, maxBodyBytes) }
 }
 
 // NewProvider creates a new webhook provider
-func NewProvider(client *http.Client, defaultUserAgent string, maxBodyBytes int) flows.WebhookProvider {
-	return &provider{client: client, defaultUserAgent: defaultUserAgent, maxBodyBytes: maxBodyBytes}
+func NewProvider(defaultUserAgent string, maxBodyBytes int) flows.WebhookProvider {
+	return &provider{defaultUserAgent: defaultUserAgent, maxBodyBytes: maxBodyBytes}
 }
 
-func (p *provider) Call(request *http.Request, resthook string) (*flows.WebhookCall, error) {
+func (p *provider) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
 	// if user-agent isn't set, use our default
 	if request.Header.Get(httpHeaderUserAgent) == "" {
 		request.Header.Set(httpHeaderUserAgent, p.defaultUserAgent)
@@ -56,7 +55,7 @@ func (p *provider) Call(request *http.Request, resthook string) (*flows.WebhookC
 	}
 
 	start := dates.Now()
-	response, err := p.client.Do(request)
+	response, err := session.Engine().HTTPClient().Do(request)
 	timeTaken := dates.Now().Sub(start)
 
 	if err != nil {

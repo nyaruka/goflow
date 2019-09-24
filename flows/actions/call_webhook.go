@@ -120,7 +120,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 		return nil
 	}
 
-	call, err := webhookSvc.Call(req, "")
+	call, err := webhookSvc.Call(run.Session(), req, "")
 
 	if err != nil {
 		logEvent(events.NewError(err))
