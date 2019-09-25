@@ -55,7 +55,7 @@ func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, urns []u
 
 // Execute runs our action
 func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	urnList, contactRefs, groupRefs, err := a.resolveRecipients(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, logEvent)
+	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, logEvent)
 	if err != nil {
 		return err
 	}
@@ -66,8 +66,8 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	}
 
 	// if we have any recipients, log an event
-	if len(urnList) > 0 || len(contactRefs) > 0 || len(groupRefs) > 0 || a.CreateContact {
-		logEvent(events.NewSessioned(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
+	if len(urnList) > 0 || len(groupRefs) > 0 || len(contactRefs) > 0 || a.ContactQuery != "" || a.CreateContact {
+		logEvent(events.NewSessionTriggered(a.Flow, groupRefs, contactRefs, contactQuery, a.CreateContact, urnList, runSnapshot))
 	}
 	return nil
 }

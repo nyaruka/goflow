@@ -1,0 +1,34 @@
+on: [push, pull_request]
+name: Test
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.12.x, 1.13.x]
+        platform: [ubuntu-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - name: Install Linux packages
+      run: sudo apt install -y --no-install-recommends pandoc
+
+    - name: Install Go
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go-version }}
+
+    - name: Checkout code
+      uses: actions/checkout@v1
+
+    - name: Get Go dependencies
+      run: go get -v -t -d ./...
+
+    - name: Run tests
+      run: go test -p=1 -coverprofile=coverage.text -covermode=atomic ./...
+
+    # see https://github.com/codecov/codecov-action/issues/23
+    - name: Upload coverage
+      if: success()
+      run: bash <(curl -s https://codecov.io/bash) -t $TOKEN -B $REF
+      env:
+        TOKEN: "${{ secrets.CODECOV_TOKEN }}"
+        REF: "${{ github.ref }}"

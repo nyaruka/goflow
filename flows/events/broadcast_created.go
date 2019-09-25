@@ -50,22 +50,21 @@ type BroadcastCreatedEvent struct {
 
 	Translations map[envs.Language]*BroadcastTranslation `json:"translations,min=1" validate:"dive"`
 	BaseLanguage envs.Language                           `json:"base_language" validate:"required"`
-	URNs         []urns.URN                              `json:"urns,omitempty" validate:"dive,urn"`
-	Contacts     []*flows.ContactReference               `json:"contacts,omitempty" validate:"dive"`
 	Groups       []*assets.GroupReference                `json:"groups,omitempty" validate:"dive"`
+	Contacts     []*flows.ContactReference               `json:"contacts,omitempty" validate:"dive"`
+	URNs         []urns.URN                              `json:"urns,omitempty" validate:"dive,urn"`
 }
 
 // NewBroadcastCreated creates a new outgoing msg event for the given recipients
-func NewBroadcastCreated(translations map[envs.Language]*BroadcastTranslation, baseLanguage envs.Language, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference) *BroadcastCreatedEvent {
-	event := BroadcastCreatedEvent{
+func NewBroadcastCreated(translations map[envs.Language]*BroadcastTranslation, baseLanguage envs.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, urns []urns.URN) *BroadcastCreatedEvent {
+	return &BroadcastCreatedEvent{
 		baseEvent:    newBaseEvent(TypeBroadcastCreated),
 		Translations: translations,
 		BaseLanguage: baseLanguage,
-		URNs:         urns,
-		Contacts:     contacts,
 		Groups:       groups,
+		Contacts:     contacts,
+		URNs:         urns,
 	}
-	return &event
 }
 
 var _ flows.Event = (*BroadcastCreatedEvent)(nil)

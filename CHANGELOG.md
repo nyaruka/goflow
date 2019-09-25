@@ -1,3 +1,21 @@
+v0.50.2
+----------
+ * Fix migration of localization when flow has unused base translations
+
+v0.50.1
+----------
+ * Have a single HTTPClient on the engine instead of every service having its own
+
+v0.50.0
+----------
+ * Fix formatting runsummary with missing flow
+ * Add contact_query field to start_session actions
+ * Rework services so they take a session and resolve to a provider that does the work
+
+v0.49.0
+----------
+ * Rework webhook calling code as a service and fix not saving result when connection errors
+
 v0.48.2
 ----------
  * Include sender and recipient in airtime events

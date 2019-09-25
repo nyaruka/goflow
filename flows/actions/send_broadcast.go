@@ -56,7 +56,7 @@ func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, 
 
 // Execute runs this action
 func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	urnList, contactRefs, groupRefs, err := a.resolveRecipients(run, a.URNs, a.Contacts, a.Groups, a.LegacyVars, logEvent)
+	groupRefs, contactRefs, _, urnList, err := a.resolveRecipients(run, logEvent)
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 
 	// if we have any recipients, log an event
 	if len(urnList) > 0 || len(contactRefs) > 0 || len(groupRefs) > 0 {
-		logEvent(events.NewBroadcastCreated(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
+		logEvent(events.NewBroadcastCreated(translations, run.Flow().Language(), groupRefs, contactRefs, urnList))
 	}
 
 	return nil

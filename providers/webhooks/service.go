@@ -9,7 +9,9 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/utils/dates"
+
 	"github.com/pkg/errors"
 )
 
@@ -26,21 +28,25 @@ var fetchResponseContentTypes = map[string]bool{
 	"text/javascript":        true,
 }
 
-type service struct {
-	client           *http.Client
+type provider struct {
 	defaultUserAgent string
 	maxBodyBytes     int
 }
 
 // NewService creates a new webhook service
-func NewService(client *http.Client, defaultUserAgent string, maxBodyBytes int) flows.WebhookService {
-	return &service{client: client, defaultUserAgent: defaultUserAgent, maxBodyBytes: maxBodyBytes}
+func NewService(defaultUserAgent string, maxBodyBytes int) engine.WebhookService {
+	return func(flows.Session) flows.WebhookProvider { return NewProvider(defaultUserAgent, maxBodyBytes) }
 }
 
-func (s *service) Call(request *http.Request, resthook string) (*flows.WebhookCall, error) {
+// NewProvider creates a new webhook provider
+func NewProvider(defaultUserAgent string, maxBodyBytes int) flows.WebhookProvider {
+	return &provider{defaultUserAgent: defaultUserAgent, maxBodyBytes: maxBodyBytes}
+}
+
+func (p *provider) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
 	// if user-agent isn't set, use our default
 	if request.Header.Get(httpHeaderUserAgent) == "" {
-		request.Header.Set(httpHeaderUserAgent, s.defaultUserAgent)
+		request.Header.Set(httpHeaderUserAgent, p.defaultUserAgent)
 	}
 
 	dump, err := httputil.DumpRequestOut(request, true)
@@ -49,7 +55,7 @@ func (s *service) Call(request *http.Request, resthook string) (*flows.WebhookCa
 	}
 
 	start := dates.Now()
-	response, err := s.client.Do(request)
+	response, err := session.Engine().HTTPClient().Do(request)
 	timeTaken := dates.Now().Sub(start)
 
 	if err != nil {
@@ -63,22 +69,18 @@ func (s *service) Call(request *http.Request, resthook string) (*flows.WebhookCa
 		}, nil
 	}
 
-	return s.newCallFromResponse(dump, response, s.maxBodyBytes, timeTaken, resthook)
+	return p.newCallFromResponse(dump, response, p.maxBodyBytes, timeTaken, resthook)
 }
 
 // creates a new call based on the passed in http response
-func (s *service) newCallFromResponse(requestTrace []byte, response *http.Response, maxBodyBytes int, timeTaken time.Duration, resthook string) (*flows.WebhookCall, error) {
+func (p *provider) newCallFromResponse(requestTrace []byte, response *http.Response, maxBodyBytes int, timeTaken time.Duration, resthook string) (*flows.WebhookCall, error) {
 	defer response.Body.Close()
-
-	//fmt.Printf("=================================\n%s\n==========================================\n", requestTrace)
 
 	// save response trace without body which will be parsed separately
 	responseTrace, err := httputil.DumpResponse(response, false)
 	if err != nil {
 		return nil, err
 	}
-
-	//fmt.Printf("%s\n===================================\n", responseTrace)
 
 	w := &flows.WebhookCall{
 		URL:        response.Request.URL.String(),
@@ -149,4 +151,4 @@ func statusFromCode(code int, isResthook bool) flows.WebhookStatus {
 	return flows.WebhookStatusResponseError
 }
 
-var _ flows.WebhookService = (*service)(nil)
+var _ flows.WebhookProvider = (*provider)(nil)

@@ -64,3 +64,8 @@ func JSONReplace(data json.RawMessage, path []string, value json.RawMessage) jso
 	}
 	return newData
 }
+
+// JSONDelete deletes a node in JSON
+func JSONDelete(data json.RawMessage, path []string) json.RawMessage {
+	return jsonparser.Delete(data, path...)
+}

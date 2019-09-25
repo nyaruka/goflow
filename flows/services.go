@@ -9,10 +9,10 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// Services groups together interfaces for several services whose implementation existsi outside of the flow engine.
+// Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
-	Webhook() WebhookService
-	Airtime() AirtimeService
+	Webhook(Session) WebhookProvider
+	Airtime(Session) AirtimeProvider
 }
 
 // WebhookStatus represents the status of a webhook call
@@ -45,9 +45,9 @@ type WebhookCall struct {
 	Resthook    string
 }
 
-// WebhookService provides webhook calling functionality to the engine
-type WebhookService interface {
-	Call(*http.Request, string) (*WebhookCall, error)
+// WebhookProvider provides webhook calling functionality to the engine
+type WebhookProvider interface {
+	Call(session Session, request *http.Request, resthook string) (*WebhookCall, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer
@@ -69,8 +69,8 @@ type AirtimeTransfer struct {
 	Status        AirtimeTransferStatus
 }
 
-// AirtimeService is the interface for an airtime transfer service
-type AirtimeService interface {
+// AirtimeProvider is the interface for an airtime transfer provider
+type AirtimeProvider interface {
 	// Transfer transfers airtime to the given URN
 	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*AirtimeTransfer, error)
 }
