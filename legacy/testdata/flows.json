@@ -816,5 +816,198 @@
             "type": "messaging",
             "uuid": "2ff042be-2563-431d-9c6c-567bf071b8c7"
         }
+    },
+    {
+        "description": "multiple languages with base as default",
+        "legacy": {
+            "version": "11.12",
+            "entry": "7ec73b66-cfc8-4a6d-8e62-102eb1cd0a39",
+            "base_language": "base",
+            "rule_sets": [],
+            "action_sets": [
+                {
+                    "x": 100,
+                    "y": 0,
+                    "uuid": "7ec73b66-cfc8-4a6d-8e62-102eb1cd0a39",
+                    "exit_uuid": "2ddd0916-06bc-4d59-983d-c17754d3f32a",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "cf86e381-438a-434b-98d6-b77e23c7a094",
+                            "msg": {
+                                "fra": "Bonjour",
+                                "eng": "Hello",
+                                "spa": "Hola",
+                                "base": "G'day"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ]
+                }
+            ],
+            "metadata": {
+                "revision": 1
+            },
+            "name": "Languages Test",
+            "uuid": "15dcd6a8-ed5c-4282-a857-53c4a52de20e",
+            "revision": 1,
+            "expire_after_minutes": 720
+        },
+        "expected": {
+            "uuid": "15dcd6a8-ed5c-4282-a857-53c4a52de20e",
+            "name": "Languages Test",
+            "revision": 1,
+            "spec_version": "13.0.0",
+            "type": "messaging",
+            "expire_after_minutes": 0,
+            "language": "base",
+            "localization": {
+                "eng": {
+                    "cf86e381-438a-434b-98d6-b77e23c7a094": {
+                        "text": [
+                            "Hello"
+                        ]
+                    }
+                },
+                "fra": {
+                    "cf86e381-438a-434b-98d6-b77e23c7a094": {
+                        "text": [
+                            "Bonjour"
+                        ]
+                    }
+                },
+                "spa": {
+                    "cf86e381-438a-434b-98d6-b77e23c7a094": {
+                        "text": [
+                            "Hola"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "actions": [
+                        {
+                            "text": "G'day",
+                            "type": "send_msg",
+                            "uuid": "cf86e381-438a-434b-98d6-b77e23c7a094"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2ddd0916-06bc-4d59-983d-c17754d3f32a"
+                        }
+                    ],
+                    "uuid": "7ec73b66-cfc8-4a6d-8e62-102eb1cd0a39"
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "7ec73b66-cfc8-4a6d-8e62-102eb1cd0a39": {
+                        "position": {
+                            "left": 100,
+                            "top": 0
+                        },
+                        "type": "execute_actions"
+                    }
+                },
+                "stickies": {}
+            }
+        }
+    },
+    {
+        "description": "multiple languages with base translations which can be ignored",
+        "legacy": {
+            "version": "11.12",
+            "entry": "7ec73b66-cfc8-4a6d-8e62-102eb1cd0a39",
+            "base_language": "spa",
+            "rule_sets": [],
+            "action_sets": [
+                {
+                    "x": 100,
+                    "y": 0,
+                    "uuid": "7ec73b66-cfc8-4a6d-8e62-102eb1cd0a39",
+                    "exit_uuid": "2ddd0916-06bc-4d59-983d-c17754d3f32a",
+                    "actions": [
+                        {
+                            "type": "reply",
+                            "uuid": "cf86e381-438a-434b-98d6-b77e23c7a094",
+                            "msg": {
+                                "fra": "Bonjour",
+                                "eng": "Hello",
+                                "spa": "Hola",
+                                "base": "G'day"
+                            },
+                            "media": {},
+                            "quick_replies": [],
+                            "send_all": false
+                        }
+                    ]
+                }
+            ],
+            "metadata": {
+                "revision": 1
+            },
+            "name": "Languages Test",
+            "uuid": "15dcd6a8-ed5c-4282-a857-53c4a52de20e",
+            "revision": 1,
+            "expire_after_minutes": 720
+        },
+        "expected": {
+            "uuid": "15dcd6a8-ed5c-4282-a857-53c4a52de20e",
+            "name": "Languages Test",
+            "revision": 1,
+            "spec_version": "13.0.0",
+            "type": "messaging",
+            "expire_after_minutes": 0,
+            "language": "spa",
+            "localization": {
+                "eng": {
+                    "cf86e381-438a-434b-98d6-b77e23c7a094": {
+                        "text": [
+                            "Hello"
+                        ]
+                    }
+                },
+                "fra": {
+                    "cf86e381-438a-434b-98d6-b77e23c7a094": {
+                        "text": [
+                            "Bonjour"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "actions": [
+                        {
+                            "text": "Hola",
+                            "type": "send_msg",
+                            "uuid": "cf86e381-438a-434b-98d6-b77e23c7a094"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2ddd0916-06bc-4d59-983d-c17754d3f32a"
+                        }
+                    ],
+                    "uuid": "7ec73b66-cfc8-4a6d-8e62-102eb1cd0a39"
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "7ec73b66-cfc8-4a6d-8e62-102eb1cd0a39": {
+                        "position": {
+                            "left": 100,
+                            "top": 0
+                        },
+                        "type": "execute_actions"
+                    }
+                },
+                "stickies": {}
+            }
+        }
     }
 ]

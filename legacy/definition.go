@@ -295,10 +295,10 @@ func addTranslationMap(baseLanguage envs.Language, localization flows.Localizati
 	var inBaseLanguage string
 	for language, item := range mapped {
 		expression, _ := expressions.MigrateTemplate(item, nil)
-		if language != baseLanguage && language != "base" {
-			localization.AddItemTranslation(language, uuid, property, []string{expression})
-		} else {
+		if language == baseLanguage {
 			inBaseLanguage = expression
+		} else if language != "base" {
+			localization.AddItemTranslation(language, uuid, property, []string{expression})
 		}
 	}
 
@@ -320,27 +320,6 @@ func addTranslationMultiMap(baseLanguage envs.Language, localization flows.Local
 		}
 	}
 	return inBaseLanguage
-}
-
-// TransformTranslations transforms a list of single item translations into a map of multi-item translations, e.g.
-//
-// [{"eng": "yes", "fra": "oui"}, {"eng": "no", "fra": "non"}] becomes {"eng": ["yes", "no"], "fra": ["oui", "non"]}
-//
-func TransformTranslations(items []Translations) map[envs.Language][]string {
-	// re-organize into a map of arrays
-	transformed := make(map[envs.Language][]string)
-
-	for i := range items {
-		for language, translation := range items[i] {
-			perLanguage, found := transformed[language]
-			if !found {
-				perLanguage = make([]string, len(items))
-				transformed[language] = perLanguage
-			}
-			perLanguage[i] = translation
-		}
-	}
-	return transformed
 }
 
 var testTypeMappings = map[string]string{
