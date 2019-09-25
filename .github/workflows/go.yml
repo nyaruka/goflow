@@ -14,8 +14,9 @@ jobs:
         go-version: ${{ matrix.go-version }}
     - name: Checkout code
       uses: actions/checkout@v1
-    - name: Install packages
-      if: matrix.platform == 'ubuntu-latest'
+    - name: Get Go dependencies
+      run: go get -v -t -d ./...
+    - name: Install Linux packages
       run: sudo apt install -y --no-install-recommends pandoc
     - name: Run tests
       run: go test ./...
