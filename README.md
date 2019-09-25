@@ -1,4 +1,4 @@
-# Goflow ![Build Status](https://github.com/nyaruka/goflow/workflows/test/badge.svg) [![codecov](https://codecov.io/gh/nyaruka/goflow/branch/master/graph/badge.svg)](https://codecov.io/gh/nyaruka/goflow) [![Go Report Card](https://goreportcard.com/badge/github.com/nyaruka/goflow)](https://goreportcard.com/report/github.com/nyaruka/goflow)
+# Goflow ![Build Status](https://github.com/nyaruka/goflow/workflows/Test/badge.svg) [![codecov](https://codecov.io/gh/nyaruka/goflow/branch/master/graph/badge.svg)](https://codecov.io/gh/nyaruka/goflow) [![Go Report Card](https://goreportcard.com/badge/github.com/nyaruka/goflow)](https://goreportcard.com/report/github.com/nyaruka/goflow)
 
 ## Specification
 
