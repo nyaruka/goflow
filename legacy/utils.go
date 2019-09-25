@@ -53,6 +53,27 @@ func (t *Translations) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// TransformTranslations transforms a list of single item translations into a map of multi-item translations, e.g.
+//
+// [{"eng": "yes", "fra": "oui"}, {"eng": "no", "fra": "non"}] becomes {"eng": ["yes", "no"], "fra": ["oui", "non"]}
+//
+func TransformTranslations(items []Translations) map[envs.Language][]string {
+	// re-organize into a map of arrays
+	transformed := make(map[envs.Language][]string)
+
+	for i := range items {
+		for language, translation := range items[i] {
+			perLanguage, found := transformed[language]
+			if !found {
+				perLanguage = make([]string, len(items))
+				transformed[language] = perLanguage
+			}
+			perLanguage[i] = translation
+		}
+	}
+	return transformed
+}
+
 // StringOrNumber represents something we need to read as a string, but might actually be number value in the JSON source
 type StringOrNumber string
 
