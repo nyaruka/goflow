@@ -1,3 +1,7 @@
+v0.50.2
+----------
+ * Fix migration of localization when flow has unused base translations
+
 v0.50.1
 ----------
  * Have a single HTTPClient on the engine instead of every service having its own
