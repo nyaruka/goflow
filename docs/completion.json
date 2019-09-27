@@ -307,7 +307,7 @@
                 {
                     "key": "results",
                     "help": "the results saved by the run",
-                    "type": "results"
+                    "type": "any"
                 },
                 {
                     "key": "status",

@@ -61,7 +61,7 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 //   flow:flow -> the flow of the run
 //   fields:fields -> the custom field values of the run's contact
 //   urns:urns -> the URN values of the run's contact
-//   results:results -> the results saved by the run
+//   results:any -> the results saved by the run
 //   status:text -> the current status of the run
 //
 // @context related_run

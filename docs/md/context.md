@@ -78,7 +78,7 @@ Defaults to the contact name and flow UUID ([text](expressions.html#type:text))
  * `flow` the flow of the run ([flow](context.html#context:flow))
  * `fields` the custom field values of the run (fields)
  * `urns` the URN values of the run (urns)
- * `results` the results saved by the run (results)
+ * `results` the results saved by the run (any)
  * `status` the current status of the run ([text](expressions.html#type:text))
 
 <h2 class="item_title"><a name="context:result" href="#context:result">result</a></h2>

@@ -145,15 +145,6 @@ child.urns.viber -> Viber URN for the contact
 child.urns.wechat -> Wechat URN for the contact
 child.urns.whatsapp -> Whatsapp URN for the contact
 child.results -> the results saved by the run
-child.results.response_1 -> result for response_1 (defaults to the value)
-child.results.response_1.name -> the name of the result
-child.results.response_1.value -> the value of the result
-child.results.response_1.category -> the category of the result
-child.results.response_1.category_localized -> the localized category of the result
-child.results.response_1.input -> the input of the result
-child.results.response_1.extra -> the extra data of the result such as a webhook response
-child.results.response_1.node_uuid -> the UUID of the node in the flow that generated the result
-child.results.response_1.created_on -> the creation date of the result
 child.status -> the current status of the run
 parent -> the parent of the run (defaults to the contact name and flow UUID)
 parent.uuid -> the UUID of the run
@@ -201,15 +192,6 @@ parent.urns.viber -> Viber URN for the contact
 parent.urns.wechat -> Wechat URN for the contact
 parent.urns.whatsapp -> Whatsapp URN for the contact
 parent.results -> the results saved by the run
-parent.results.response_1 -> result for response_1 (defaults to the value)
-parent.results.response_1.name -> the name of the result
-parent.results.response_1.value -> the value of the result
-parent.results.response_1.category -> the category of the result
-parent.results.response_1.category_localized -> the localized category of the result
-parent.results.response_1.input -> the input of the result
-parent.results.response_1.extra -> the extra data of the result such as a webhook response
-parent.results.response_1.node_uuid -> the UUID of the node in the flow that generated the result
-parent.results.response_1.created_on -> the creation date of the result
 parent.status -> the current status of the run
 webhook -> the parsed JSON response of the last webhook call
 trigger -> the trigger that started this session
