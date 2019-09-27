@@ -1,3 +1,8 @@
+v0.50.3
+----------
+ * Fix migrating operands on rulesets waiting for media
+ * Change autocompletion type of related_run.results to any since we can't autocomplete it
+
 v0.50.2
 ----------
  * Fix migration of localization when flow has unused base translations
