@@ -1,3 +1,7 @@
+v0.50.4
+----------
+ * Revert change to operands for media waits
+
 v0.50.3
 ----------
  * Fix migrating operands on rulesets waiting for media
