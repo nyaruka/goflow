@@ -663,10 +663,11 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 			timeout = waits.NewTimeout(timeoutSeconds, timeoutCategory)
 		}
 
-		wait = waits.NewMsgWait(timeout, migrateRuleSetToHint(r))
+		hint, operand := migrateWaitingRuleset(r)
+		wait = waits.NewMsgWait(timeout, hint)
 		uiType = UINodeTypeWaitForResponse
 
-		fallthrough
+		router = routers.NewSwitch(wait, resultName, categories, operand, cases, defaultCategory)
 	case "flow_field", "contact_field", "expression":
 		// unlike other templates, operands for expression rulesets need to be wrapped in such a way that if
 		// they error, they evaluate to the original expression
@@ -757,24 +758,24 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 	return definition.NewNode(r.UUID, newActions, router, exits), uiType, uiConfig, nil
 }
 
-func migrateRuleSetToHint(r RuleSet) flows.Hint {
+func migrateWaitingRuleset(r RuleSet) (flows.Hint, string) {
 	switch r.Type {
 	case "wait_audio":
-		return hints.NewAudioHint()
+		return hints.NewAudioHint(), "@input.attachments"
 	case "wait_video":
-		return hints.NewVideoHint()
+		return hints.NewVideoHint(), "@input.attachments"
 	case "wait_photo":
-		return hints.NewImageHint()
+		return hints.NewImageHint(), "@input.attachments"
 	case "wait_gps":
-		return hints.NewLocationHint()
+		return hints.NewLocationHint(), "@input.attachments"
 	case "wait_recording":
-		return hints.NewAudioHint()
+		return hints.NewAudioHint(), "@input.attachments"
 	case "wait_digit":
-		return hints.NewFixedDigitsHint(1)
+		return hints.NewFixedDigitsHint(1), "@input.text"
 	case "wait_digits":
-		return hints.NewTerminatedDigitsHint(r.FinishedKey)
+		return hints.NewTerminatedDigitsHint(r.FinishedKey), "@input.text"
 	}
-	return nil
+	return nil, "@input"
 }
 
 type categoryAndExit struct {
