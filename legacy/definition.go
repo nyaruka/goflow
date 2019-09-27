@@ -761,15 +761,15 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 func migrateWaitingRuleset(r RuleSet) (flows.Hint, string) {
 	switch r.Type {
 	case "wait_audio":
-		return hints.NewAudioHint(), "@input.attachments"
+		return hints.NewAudioHint(), "@input"
 	case "wait_video":
-		return hints.NewVideoHint(), "@input.attachments"
+		return hints.NewVideoHint(), "@input"
 	case "wait_photo":
-		return hints.NewImageHint(), "@input.attachments"
+		return hints.NewImageHint(), "@input"
 	case "wait_gps":
-		return hints.NewLocationHint(), "@input.attachments"
+		return hints.NewLocationHint(), "@input"
 	case "wait_recording":
-		return hints.NewAudioHint(), "@input.attachments"
+		return hints.NewAudioHint(), "@input"
 	case "wait_digit":
 		return hints.NewFixedDigitsHint(1), "@input.text"
 	case "wait_digits":
