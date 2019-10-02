@@ -46,6 +46,24 @@ type Channel interface {
 	MatchPrefixes() []string
 }
 
+// ClassifierUUID is the UUID of an NLU classifier
+type ClassifierUUID uuids.UUID
+
+// Classifier is an NLU classifier.
+//
+//   {
+//     "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
+//     "name": "Booking",
+//     "provider": "wit"
+//   }
+//
+// @asset classifier
+type Classifier interface {
+	UUID() ClassifierUUID
+	Name() string
+	Provider() string
+}
+
 // FieldUUID is the UUID of a field
 type FieldUUID uuids.UUID
 
