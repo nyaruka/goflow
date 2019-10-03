@@ -4,28 +4,28 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-// WebhookService resolves a session to a webhook provider
-type WebhookService func(flows.Session) flows.WebhookProvider
+// WebhookServiceFactory resolves a session to a webhook service
+type WebhookServiceFactory func(flows.Session) flows.WebhookService
 
-// AirtimeService resolves a session to an airtime provider
-type AirtimeService func(flows.Session) flows.AirtimeProvider
+// AirtimeServiceFactory resolves a session to an airtime service
+type AirtimeServiceFactory func(flows.Session) flows.AirtimeService
 
 type services struct {
-	webhook WebhookService
-	airtime AirtimeService
+	webhook WebhookServiceFactory
+	airtime AirtimeServiceFactory
 }
 
 func newEmptyServices() *services {
 	return &services{
-		webhook: func(flows.Session) flows.WebhookProvider { return nil },
-		airtime: func(flows.Session) flows.AirtimeProvider { return nil },
+		webhook: func(flows.Session) flows.WebhookService { return nil },
+		airtime: func(flows.Session) flows.AirtimeService { return nil },
 	}
 }
 
-func (s *services) Webhook(session flows.Session) flows.WebhookProvider {
+func (s *services) Webhook(session flows.Session) flows.WebhookService {
 	return s.webhook(session)
 }
 
-func (s *services) Airtime(session flows.Session) flows.AirtimeProvider {
+func (s *services) Airtime(session flows.Session) flows.AirtimeService {
 	return s.airtime(session)
 }

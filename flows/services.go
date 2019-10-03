@@ -11,8 +11,8 @@ import (
 
 // Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
-	Webhook(Session) WebhookProvider
-	Airtime(Session) AirtimeProvider
+	Webhook(Session) WebhookService
+	Airtime(Session) AirtimeService
 }
 
 // WebhookStatus represents the status of a webhook call
@@ -45,8 +45,8 @@ type WebhookCall struct {
 	Resthook    string
 }
 
-// WebhookProvider provides webhook calling functionality to the engine
-type WebhookProvider interface {
+// WebhookService provides webhook functionality to the engine
+type WebhookService interface {
 	Call(session Session, request *http.Request, resthook string) (*WebhookCall, error)
 }
 
@@ -69,8 +69,8 @@ type AirtimeTransfer struct {
 	Status        AirtimeTransferStatus
 }
 
-// AirtimeProvider is the interface for an airtime transfer provider
-type AirtimeProvider interface {
+// AirtimeService provides airtime functionality to the engine
+type AirtimeService interface {
 	// Transfer transfers airtime to the given URN
 	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*AirtimeTransfer, error)
 }

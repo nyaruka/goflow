@@ -13,21 +13,21 @@ import (
 // NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
-		WithWebhookService(webhooks.NewService("goflow-testing", 10000)).
-		WithAirtimeService(func(flows.Session) flows.AirtimeProvider { return newAirtimeProvider("RWF") }).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
+		WithAirtimeServiceFactory(func(flows.Session) flows.AirtimeService { return newAirtimeService("RWF") }).
 		Build()
 }
 
-// implementation of AirtimeProvider for testing which uses a fixed currency
-type airtimeProvider struct {
+// implementation of an airtime service for testing which uses a fixed currency
+type airtimeService struct {
 	fixedCurrency string
 }
 
-func newAirtimeProvider(currency string) *airtimeProvider {
-	return &airtimeProvider{fixedCurrency: currency}
+func newAirtimeService(currency string) *airtimeService {
+	return &airtimeService{fixedCurrency: currency}
 }
 
-func (s *airtimeProvider) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
+func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
 	t := &flows.AirtimeTransfer{
 		Sender:    sender,
 		Recipient: recipient,
@@ -46,4 +46,4 @@ func (s *airtimeProvider) Transfer(session flows.Session, sender urns.URN, recip
 	return t, nil
 }
 
-var _ flows.AirtimeProvider = (*airtimeProvider)(nil)
+var _ flows.AirtimeService = (*airtimeService)(nil)

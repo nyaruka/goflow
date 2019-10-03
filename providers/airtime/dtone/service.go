@@ -8,31 +8,31 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type provider struct {
+type service struct {
 	login    string
 	apiToken string
 	currency string
 }
 
 // NewProvider creates a new DTOne airtime transfer provider
-func NewProvider(login, apiToken, currency string) flows.AirtimeProvider {
-	return &provider{
+func NewService(login, apiToken, currency string) flows.AirtimeService {
+	return &service{
 		login:    login,
 		apiToken: apiToken,
 		currency: currency,
 	}
 }
 
-func (p *provider) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
+func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
 	t := &flows.AirtimeTransfer{
 		Sender:    sender,
 		Recipient: recipient,
 		Status:    flows.AirtimeTransferStatusFailed,
 	}
 
-	client := NewClient(p.login, p.apiToken, session.Engine().HTTPClient())
+	client := NewClient(s.login, s.apiToken, session.Engine().HTTPClient())
 
-	info, err := client.MSISDNInfo(recipient.Path(), p.currency, "1")
+	info, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
 	if err != nil {
 		return t, err
 	}

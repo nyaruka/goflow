@@ -28,25 +28,25 @@ var fetchResponseContentTypes = map[string]bool{
 	"text/javascript":        true,
 }
 
-type provider struct {
+type service struct {
 	defaultUserAgent string
 	maxBodyBytes     int
 }
 
-// NewService creates a new webhook service
-func NewService(defaultUserAgent string, maxBodyBytes int) engine.WebhookService {
-	return func(flows.Session) flows.WebhookProvider { return NewProvider(defaultUserAgent, maxBodyBytes) }
+// NewServiceFactory creates a new webhook service factory
+func NewServiceFactory(defaultUserAgent string, maxBodyBytes int) engine.WebhookServiceFactory {
+	return func(flows.Session) flows.WebhookService { return NewService(defaultUserAgent, maxBodyBytes) }
 }
 
-// NewProvider creates a new webhook provider
-func NewProvider(defaultUserAgent string, maxBodyBytes int) flows.WebhookProvider {
-	return &provider{defaultUserAgent: defaultUserAgent, maxBodyBytes: maxBodyBytes}
+// NewService creates a new default webhook service
+func NewService(defaultUserAgent string, maxBodyBytes int) flows.WebhookService {
+	return &service{defaultUserAgent: defaultUserAgent, maxBodyBytes: maxBodyBytes}
 }
 
-func (p *provider) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
+func (s *service) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
 	// if user-agent isn't set, use our default
 	if request.Header.Get(httpHeaderUserAgent) == "" {
-		request.Header.Set(httpHeaderUserAgent, p.defaultUserAgent)
+		request.Header.Set(httpHeaderUserAgent, s.defaultUserAgent)
 	}
 
 	dump, err := httputil.DumpRequestOut(request, true)
@@ -69,11 +69,11 @@ func (p *provider) Call(session flows.Session, request *http.Request, resthook s
 		}, nil
 	}
 
-	return p.newCallFromResponse(dump, response, p.maxBodyBytes, timeTaken, resthook)
+	return s.newCallFromResponse(dump, response, s.maxBodyBytes, timeTaken, resthook)
 }
 
 // creates a new call based on the passed in http response
-func (p *provider) newCallFromResponse(requestTrace []byte, response *http.Response, maxBodyBytes int, timeTaken time.Duration, resthook string) (*flows.WebhookCall, error) {
+func (s *service) newCallFromResponse(requestTrace []byte, response *http.Response, maxBodyBytes int, timeTaken time.Duration, resthook string) (*flows.WebhookCall, error) {
 	defer response.Body.Close()
 
 	// save response trace without body which will be parsed separately
@@ -151,4 +151,4 @@ func statusFromCode(code int, isResthook bool) flows.WebhookStatus {
 	return flows.WebhookStatusResponseError
 }
 
-var _ flows.WebhookProvider = (*provider)(nil)
+var _ flows.WebhookService = (*service)(nil)

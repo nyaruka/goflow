@@ -153,13 +153,13 @@ func TestWebhookParsing(t *testing.T) {
 	}
 }
 
-func TestMockProvider(t *testing.T) {
-	provider := webhooks.NewMockProvider(201, `application/json`, `{"result":"disabled"}`)
+func TestMockService(t *testing.T) {
+	svc := webhooks.NewMockService(201, `application/json`, `{"result":"disabled"}`)
 
 	request, err := http.NewRequest("GET", "http://example.com", strings.NewReader("{}"))
 	require.NoError(t, err)
 
-	c, err := provider.Call(nil, request, "myresthook")
+	c, err := svc.Call(nil, request, "myresthook")
 
 	assert.Equal(t, "GET", c.Method)
 	assert.Equal(t, 201, c.StatusCode)
