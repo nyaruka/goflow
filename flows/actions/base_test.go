@@ -342,6 +342,24 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
+			actions.NewClassifyText(
+				actionUUID,
+				assets.NewClassifierReference(assets.ClassifierUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Booking"),
+				"@input.text",
+				"Intent",
+			),
+			`{
+			"type": "classify_text",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"classifier": {
+				"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
+				"name": "Booking"
+			},
+			"input": "@input.text",
+			"result_name": "Intent"
+		}`,
+		},
+		{
 			actions.NewPlayAudio(
 				actionUUID,
 				"http://uploads.temba.io/2353262.m4a",

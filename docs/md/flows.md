@@ -384,7 +384,7 @@ through `extra` on the result.
 ]
 ```
 </div>
-<h2 class="item_title"><a name="action:classify_nlu" href="#action:classify_nlu">classify_nlu</a></h2>
+<h2 class="item_title"><a name="action:classify_text" href="#action:classify_text">classify_text</a></h2>
 
 Can be used to classify the intent and entities from a given input using an NLU classifier. It always
 saves a result indicating whether the classification was successful, skipped or failed, and what the extracted intents
@@ -394,7 +394,7 @@ and entities were.
 
 ```json
 {
-    "type": "classify_nlu",
+    "type": "classify_text",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "classifier": {
         "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
