@@ -257,7 +257,7 @@ func ObjectTextAndNumberFunction(f func(envs.Environment, *types.XObject, types.
 		if xerr != nil {
 			return xerr
 		}
-		num, xerr := types.ToXNumber(env, args[1])
+		num, xerr := types.ToXNumber(env, args[2])
 		if xerr != nil {
 			return xerr
 		}
