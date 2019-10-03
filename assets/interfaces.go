@@ -54,7 +54,8 @@ type ClassifierUUID uuids.UUID
 //   {
 //     "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
 //     "name": "Booking",
-//     "type": "wit"
+//     "type": "wit",
+//     "intents": ["book_flight", "book_hotel"]
 //   }
 //
 // @asset classifier
@@ -62,6 +63,7 @@ type Classifier interface {
 	UUID() ClassifierUUID
 	Name() string
 	Type() string
+	Intents() []string
 }
 
 // FieldUUID is the UUID of a field

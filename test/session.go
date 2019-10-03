@@ -44,7 +44,8 @@ var sessionAssets = `{
         {
             "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
             "name": "Booking",
-            "type": "wit"
+            "type": "wit",
+            "intents": ["book_flight", "book_hotel"]
         }
     ],
     "flows": [

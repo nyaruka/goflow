@@ -20,7 +20,7 @@ func NewEngine() flows.Engine {
 		Build()
 }
 
-// implementation of NLUProvider for testing
+// implementation of NLUProvider for testing which always returns the first intent
 type nluProvider struct {
 	classifier assets.Classifier
 }
@@ -30,10 +30,16 @@ func newNLUProvider(classifier assets.Classifier) *nluProvider {
 }
 
 func (p *nluProvider) Classify(session flows.Session, input string) (*flows.NLUClassification, error) {
+	classifierIntents := p.classifier.Intents()
+	extractedIntents := make([]flows.ExtractedIntent, len(p.classifier.Intents()))
+	confidence := decimal.RequireFromString("0.5")
+	for i := range classifierIntents {
+		extractedIntents[i] = flows.ExtractedIntent{classifierIntents[i], confidence}
+		confidence = confidence.Div(decimal.RequireFromString("2"))
+	}
+
 	return &flows.NLUClassification{
-		Intents: []flows.ExtractedIntent{
-			flows.ExtractedIntent{"book_flight", decimal.RequireFromString("0.9")},
-		},
+		Intents: extractedIntents,
 		Entities: map[string][]flows.ExtractedEntity{
 			"location": []flows.ExtractedEntity{
 				flows.ExtractedEntity{"Quito", decimal.RequireFromString("1.0")},

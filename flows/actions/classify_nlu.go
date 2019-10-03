@@ -15,15 +15,18 @@ func init() {
 
 const (
 	classificationCategorySuccess = "success"
+	classificationCategorySkipped = "skipped"
 	classificationCategoryFailure = "failure"
 )
 
-var classificationCategories = []string{classificationCategorySuccess, classificationCategoryFailure}
+var classificationCategories = []string{classificationCategorySuccess, classificationCategorySkipped, classificationCategoryFailure}
 
 // TypeClassifyNLU is the type for the classify NLU action
 const TypeClassifyNLU string = "classify_nlu"
 
-// ClassifyNLUAction can be used to classify the intent and entities from a given input using an NLU classifier.
+// ClassifyNLUAction can be used to classify the intent and entities from a given input using an NLU classifier. It always
+// saves a result indicating whether the classification was successful, skipped or failed, and what the extracted intents
+// and entities were.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -67,34 +70,40 @@ func (a *ClassifyNLUAction) Execute(run flows.FlowRun, step flows.Step, logModif
 		logEvent(events.NewError(err))
 	}
 
-	classification, err := a.classify(run, step, input, classifier, logEvent)
+	classification, skipped, err := a.classify(run, step, input, classifier, logEvent)
 	if err != nil {
 		logEvent(events.NewError(err))
-		a.saveFailureResult(run, step, input, logEvent)
+
+		if skipped {
+			a.saveSkipped(run, step, input, logEvent)
+		} else {
+			a.saveFailure(run, step, input, logEvent)
+		}
 	} else {
-		a.saveSuccessResult(run, step, input, classification, logEvent)
+		a.saveSuccess(run, step, input, classification, logEvent)
 	}
 
 	return nil
 }
 
-func (a *ClassifyNLUAction) classify(run flows.FlowRun, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.NLUClassification, error) {
+func (a *ClassifyNLUAction) classify(run flows.FlowRun, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.NLUClassification, bool, error) {
 	if input == "" {
-		return nil, errors.New("can't classify empty input")
+		return nil, true, errors.New("can't classify empty input, skipping classification")
 	}
 	if classifier == nil {
-		return nil, errors.Errorf("missing %s", a.Classifier.String())
+		return nil, false, errors.Errorf("missing %s", a.Classifier.String())
 	}
 
 	nluSvc := run.Session().Engine().Services().NLU(run.Session(), classifier)
 	if nluSvc == nil {
-		return nil, errors.Errorf("no NLU provider available")
+		return nil, false, errors.Errorf("no NLU provider available")
 	}
 
-	return nluSvc.Classify(run.Session(), input)
+	classification, err := nluSvc.Classify(run.Session(), input)
+	return classification, false, err
 }
 
-func (a *ClassifyNLUAction) saveSuccessResult(run flows.FlowRun, step flows.Step, input string, classification *flows.NLUClassification, logEvent flows.EventCallback) {
+func (a *ClassifyNLUAction) saveSuccess(run flows.FlowRun, step flows.Step, input string, classification *flows.NLUClassification, logEvent flows.EventCallback) {
 	// value is name of top ranked intent if there is one
 	value := ""
 	if len(classification.Intents) > 0 {
@@ -105,7 +114,11 @@ func (a *ClassifyNLUAction) saveSuccessResult(run flows.FlowRun, step flows.Step
 	a.saveResult(run, step, a.ResultName, value, classificationCategorySuccess, "", input, extra, logEvent)
 }
 
-func (a *ClassifyNLUAction) saveFailureResult(run flows.FlowRun, step flows.Step, input string, logEvent flows.EventCallback) {
+func (a *ClassifyNLUAction) saveSkipped(run flows.FlowRun, step flows.Step, input string, logEvent flows.EventCallback) {
+	a.saveResult(run, step, a.ResultName, "0", classificationCategorySkipped, "", input, nil, logEvent)
+}
+
+func (a *ClassifyNLUAction) saveFailure(run flows.FlowRun, step flows.Step, input string, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, "0", classificationCategoryFailure, "", input, nil, logEvent)
 }
 
