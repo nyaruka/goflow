@@ -40,6 +40,13 @@ var sessionAssets = `{
             "roles": ["send", "receive"]
         }
     ],
+    "classifiers": [
+        {
+            "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+            "name": "Booking",
+            "type": "wit"
+        }
+    ],
     "flows": [
         {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",

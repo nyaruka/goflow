@@ -111,6 +111,7 @@ type SessionAssets interface {
 	Source() assets.Source
 
 	Channels() *ChannelAssets
+	Classifiers() *ClassifierAssets
 	Fields() *FieldAssets
 	Flows() FlowAssets
 	Groups() *GroupAssets

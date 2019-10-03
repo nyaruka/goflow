@@ -54,14 +54,14 @@ type ClassifierUUID uuids.UUID
 //   {
 //     "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
 //     "name": "Booking",
-//     "provider": "wit"
+//     "type": "wit"
 //   }
 //
 // @asset classifier
 type Classifier interface {
 	UUID() ClassifierUUID
 	Name() string
-	Provider() string
+	Type() string
 }
 
 // FieldUUID is the UUID of a field
@@ -252,6 +252,7 @@ type TemplateTranslation interface {
 // Source is a source of assets
 type Source interface {
 	Channels() ([]Channel, error)
+	Classifiers() ([]Classifier, error)
 	Fields() ([]Field, error)
 	Flow(FlowUUID) (Flow, error)
 	Groups() ([]Group, error)

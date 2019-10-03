@@ -34,7 +34,7 @@ Is an NLU classifier.
 {
     "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
     "name": "Booking",
-    "provider": "wit"
+    "type": "wit"
 }
 ```
 

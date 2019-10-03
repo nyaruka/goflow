@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 
 	"github.com/shopspring/decimal"
 )
@@ -12,6 +13,7 @@ import (
 // Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
 	Webhook(Session) WebhookProvider
+	NLU(Session, assets.Classifier) NLUProvider
 	Airtime(Session) AirtimeProvider
 }
 
@@ -48,6 +50,29 @@ type WebhookCall struct {
 // WebhookProvider provides webhook calling functionality to the engine
 type WebhookProvider interface {
 	Call(session Session, request *http.Request, resthook string) (*WebhookCall, error)
+}
+
+// ExtractedIntent models an intent match
+type ExtractedIntent struct {
+	Name       string          `json:"name"`
+	Confidence decimal.Decimal `json:"confidence"`
+}
+
+// ExtractedEntity models an entity match
+type ExtractedEntity struct {
+	Value      string          `json:"value"`
+	Confidence decimal.Decimal `json:"confidence"`
+}
+
+// NLUClassification is the result of an NLU classification
+type NLUClassification struct {
+	Intents  []ExtractedIntent            `json:"intents,omitempty"`
+	Entities map[string][]ExtractedEntity `json:"entities,omitempty"`
+}
+
+// NLUProvider provides NLU functionality to the engine
+type NLUProvider interface {
+	Classify(session Session, input string) (*NLUClassification, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer

@@ -2,6 +2,7 @@ package test
 
 import (
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/providers/webhooks"
@@ -14,9 +15,34 @@ import (
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
 		WithWebhookService(webhooks.NewService("goflow-testing", 10000)).
+		WithNLUService(func(s flows.Session, c assets.Classifier) flows.NLUProvider { return newNLUProvider(c) }).
 		WithAirtimeService(func(flows.Session) flows.AirtimeProvider { return newAirtimeProvider("RWF") }).
 		Build()
 }
+
+// implementation of NLUProvider for testing
+type nluProvider struct {
+	classifier assets.Classifier
+}
+
+func newNLUProvider(classifier assets.Classifier) *nluProvider {
+	return &nluProvider{classifier: classifier}
+}
+
+func (p *nluProvider) Classify(session flows.Session, input string) (*flows.NLUClassification, error) {
+	return &flows.NLUClassification{
+		Intents: []flows.ExtractedIntent{
+			flows.ExtractedIntent{"book_flight", decimal.RequireFromString("0.9")},
+		},
+		Entities: map[string][]flows.ExtractedEntity{
+			"location": []flows.ExtractedEntity{
+				flows.ExtractedEntity{"Quito", decimal.RequireFromString("1.0")},
+			},
+		},
+	}, nil
+}
+
+var _ flows.NLUProvider = (*nluProvider)(nil)
 
 // implementation of AirtimeProvider for testing which uses a fixed currency
 type airtimeProvider struct {
@@ -27,17 +53,17 @@ func newAirtimeProvider(currency string) *airtimeProvider {
 	return &airtimeProvider{fixedCurrency: currency}
 }
 
-func (s *airtimeProvider) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
+func (p *airtimeProvider) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
 	t := &flows.AirtimeTransfer{
 		Sender:    sender,
 		Recipient: recipient,
-		Currency:  s.fixedCurrency,
+		Currency:  p.fixedCurrency,
 		Status:    flows.AirtimeTransferStatusFailed,
 	}
 
-	amount, hasAmount := amounts[s.fixedCurrency]
+	amount, hasAmount := amounts[p.fixedCurrency]
 	if !hasAmount {
-		return t, errors.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
+		return t, errors.Errorf("no amount configured for transfers in %s", p.fixedCurrency)
 	}
 
 	t.DesiredAmount = amount

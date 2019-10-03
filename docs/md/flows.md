@@ -384,6 +384,54 @@ through `extra` on the result.
 ]
 ```
 </div>
+<h2 class="item_title"><a name="action:classify_nlu" href="#action:classify_nlu">classify_nlu</a></h2>
+
+Can be used to classify the intent and entities from a given input using an NLU classifier.
+
+<div class="input_action"><h3>Action</h3>
+
+```json
+{
+    "type": "classify_nlu",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "classifier": {
+        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+        "name": "Booking"
+    },
+    "input": "@input.text",
+    "result_name": "Intent"
+}
+```
+</div><div class="output_event"><h3>Event</h3>
+
+```json
+{
+    "type": "run_result_changed",
+    "created_on": "2018-04-11T18:24:30.123456Z",
+    "step_uuid": "5861c68a-8201-4d77-9e14-020037f6ddea",
+    "name": "Intent",
+    "value": "book_flight",
+    "category": "success",
+    "input": "Hi there",
+    "extra": {
+        "intents": [
+            {
+                "name": "book_flight",
+                "confidence": 0.9
+            }
+        ],
+        "entities": {
+            "location": [
+                {
+                    "value": "Quito",
+                    "confidence": 1
+                }
+            ]
+        }
+    }
+}
+```
+</div>
 <h2 class="item_title"><a name="action:enter_flow" href="#action:enter_flow">enter_flow</a></h2>
 
 Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
@@ -408,12 +456,12 @@ A [flow_entered](sessions.html#event:flow_entered) event will be created to reco
 {
     "type": "flow_entered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "5861c68a-8201-4d77-9e14-020037f6ddea",
+    "step_uuid": "dde64b44-09cf-4e6f-a52e-e58736ac73ba",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
     },
-    "parent_run_uuid": "4a910999-828a-4886-9504-776e7d151101",
+    "parent_run_uuid": "e3895066-303a-4b1f-be22-6e6983962829",
     "terminal": false
 }
 ```
@@ -439,9 +487,9 @@ the caller should handle as an IVR play command using the audio attachment.
 {
     "type": "ivr_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
+    "step_uuid": "9972fa41-f437-4bbd-881a-ef06948e0f99",
     "msg": {
-        "uuid": "8aed5d25-d9ba-4799-8c2c-eb689cc91cf8",
+        "uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
@@ -481,7 +529,7 @@ the contact from all non-dynamic groups.
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa",
+    "step_uuid": "7dcc445a-83cf-432b-8188-76dd971a6205",
     "groups_removed": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -515,9 +563,9 @@ an IVR say command using the message text.
 {
     "type": "ivr_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
+    "step_uuid": "08b826b4-03e0-4528-b379-f167ef86d03e",
     "msg": {
-        "uuid": "75a7bcfc-86f1-43aa-b4c4-260cfebfde0b",
+        "uuid": "54e86e97-a008-4b6c-9ea1-dbfb3ec798f1",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
@@ -557,7 +605,7 @@ with the evaluated text.
 {
     "type": "broadcast_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "54e86e97-a008-4b6c-9ea1-dbfb3ec798f1",
+    "step_uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608",
     "translations": {
         "eng": {
             "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
@@ -596,7 +644,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 {
     "type": "email_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608",
+    "step_uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8",
     "addresses": [
         "foo@bar.com"
     ],
@@ -637,9 +685,9 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 {
     "type": "msg_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8",
+    "step_uuid": "e6e30b78-f9c1-462b-9418-6d3e4ae5a100",
     "msg": {
-        "uuid": "e0e8ce1b-5368-4e92-ba1b-6cc3bea197e4",
+        "uuid": "0df5d5bc-99aa-466a-b715-6b60849cfb2b",
         "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -700,7 +748,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 {
     "type": "contact_field_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "6d743761-7e6e-41ab-8989-213a09ccb9c4",
+    "step_uuid": "77edcde6-5d7c-4ae9-b660-52c755c4d15c",
     "field": {
         "key": "gender",
         "name": "Gender"
@@ -753,7 +801,7 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 {
     "type": "contact_name_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "a1599b62-36cb-496a-bacd-395cb76a94ff",
+    "step_uuid": "962f49fb-f56d-40fd-98dc-b94fc84d107e",
     "name": "Bob Smith"
 }
 ```
@@ -779,7 +827,7 @@ A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event
 {
     "type": "contact_timezone_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "962f49fb-f56d-40fd-98dc-b94fc84d107e",
+    "step_uuid": "72f5d1cd-fa2b-4313-b79f-52e1499b6db5",
     "timezone": "Africa/Kigali"
 }
 ```
@@ -810,7 +858,7 @@ final values.
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "72f5d1cd-fa2b-4313-b79f-52e1499b6db5",
+    "step_uuid": "7dbc8996-c0f0-460b-a23f-a7c1e36a9103",
     "name": "Gender",
     "value": "m",
     "category": "Male"
@@ -846,7 +894,7 @@ will be created and it's the responsibility of the caller to act on that by init
 {
     "type": "session_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "7dbc8996-c0f0-460b-a23f-a7c1e36a9103",
+    "step_uuid": "1348fd9e-c478-42de-b8bf-413ebe9265fa",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Registration"
@@ -858,7 +906,7 @@ will be created and it's the responsibility of the caller to act on that by init
         }
     ],
     "run_summary": {
-        "uuid": "dd9f85f1-44f1-46cc-ad78-6ed5a8aad1c2",
+        "uuid": "66595216-3739-4a5e-a225-4e488c77a340",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration"
@@ -972,7 +1020,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
     {
         "type": "airtime_transferred",
         "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "1348fd9e-c478-42de-b8bf-413ebe9265fa",
+        "step_uuid": "8fe599f1-bf4f-43be-83dd-3099689741ac",
         "sender": "tel:+12345671111",
         "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "currency": "RWF",
@@ -982,7 +1030,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
     {
         "type": "run_result_changed",
         "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "1348fd9e-c478-42de-b8bf-413ebe9265fa",
+        "step_uuid": "8fe599f1-bf4f-43be-83dd-3099689741ac",
         "name": "reward_transfer",
         "value": "500",
         "category": "Success"

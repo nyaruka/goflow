@@ -17,5 +17,5 @@ func TestClassifier(t *testing.T) {
 	)
 	assert.Equal(t, assets.ClassifierUUID("37657cf7-5eab-4286-9cb0-bbf270587bad"), classifier.UUID())
 	assert.Equal(t, "Booking", classifier.Name())
-	assert.Equal(t, "wit", classifier.Provider())
+	assert.Equal(t, "wit", classifier.Type())
 }

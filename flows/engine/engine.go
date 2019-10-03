@@ -75,7 +75,13 @@ func (b *Builder) WithWebhookService(svc WebhookService) *Builder {
 	return b
 }
 
-// WithAirtimeService sets the airtime transfer service
+// WithNLUService sets the NLU service
+func (b *Builder) WithNLUService(svc NLUService) *Builder {
+	b.eng.services.nlu = svc
+	return b
+}
+
+// WithAirtimeService sets the airtime service
 func (b *Builder) WithAirtimeService(svc AirtimeService) *Builder {
 	b.eng.services.airtime = svc
 	return b
