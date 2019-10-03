@@ -14,24 +14,24 @@ import (
 // NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
-		WithWebhookService(webhooks.NewService("goflow-testing", 10000)).
-		WithNLUService(func(s flows.Session, c assets.Classifier) flows.NLUProvider { return newNLUProvider(c) }).
-		WithAirtimeService(func(flows.Session) flows.AirtimeProvider { return newAirtimeProvider("RWF") }).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
+		WithNLUServiceFactory(func(s flows.Session, c assets.Classifier) flows.NLUService { return newNLUService(c) }).
+		WithAirtimeServiceFactory(func(flows.Session) flows.AirtimeService { return newAirtimeService("RWF") }).
 		Build()
 }
 
-// implementation of NLUProvider for testing which always returns the first intent
-type nluProvider struct {
+// implementation of an NLU service for testing which always returns the first intent
+type nluService struct {
 	classifier assets.Classifier
 }
 
-func newNLUProvider(classifier assets.Classifier) *nluProvider {
-	return &nluProvider{classifier: classifier}
+func newNLUService(classifier assets.Classifier) *nluService {
+	return &nluService{classifier: classifier}
 }
 
-func (p *nluProvider) Classify(session flows.Session, input string) (*flows.NLUClassification, error) {
-	classifierIntents := p.classifier.Intents()
-	extractedIntents := make([]flows.ExtractedIntent, len(p.classifier.Intents()))
+func (s *nluService) Classify(session flows.Session, input string) (*flows.NLUClassification, error) {
+	classifierIntents := s.classifier.Intents()
+	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")
 	for i := range classifierIntents {
 		extractedIntents[i] = flows.ExtractedIntent{classifierIntents[i], confidence}
@@ -48,28 +48,28 @@ func (p *nluProvider) Classify(session flows.Session, input string) (*flows.NLUC
 	}, nil
 }
 
-var _ flows.NLUProvider = (*nluProvider)(nil)
+var _ flows.NLUService = (*nluService)(nil)
 
-// implementation of AirtimeProvider for testing which uses a fixed currency
-type airtimeProvider struct {
+// implementation of an airtime service for testing which uses a fixed currency
+type airtimeService struct {
 	fixedCurrency string
 }
 
-func newAirtimeProvider(currency string) *airtimeProvider {
-	return &airtimeProvider{fixedCurrency: currency}
+func newAirtimeService(currency string) *airtimeService {
+	return &airtimeService{fixedCurrency: currency}
 }
 
-func (p *airtimeProvider) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
+func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
 	t := &flows.AirtimeTransfer{
 		Sender:    sender,
 		Recipient: recipient,
-		Currency:  p.fixedCurrency,
+		Currency:  s.fixedCurrency,
 		Status:    flows.AirtimeTransferStatusFailed,
 	}
 
-	amount, hasAmount := amounts[p.fixedCurrency]
+	amount, hasAmount := amounts[s.fixedCurrency]
 	if !hasAmount {
-		return t, errors.Errorf("no amount configured for transfers in %s", p.fixedCurrency)
+		return t, errors.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
 	}
 
 	t.DesiredAmount = amount
@@ -78,4 +78,4 @@ func (p *airtimeProvider) Transfer(session flows.Session, sender urns.URN, recip
 	return t, nil
 }
 
-var _ flows.AirtimeProvider = (*airtimeProvider)(nil)
+var _ flows.AirtimeService = (*airtimeService)(nil)

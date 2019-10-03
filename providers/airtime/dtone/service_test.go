@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestProvider(t *testing.T) {
-	provider := dtone.NewProvider("login", "token", "RWF")
+func TestService(t *testing.T) {
+	svc := dtone.NewService("login", "token", "RWF")
 
-	assert.NotNil(t, provider)
+	assert.NotNil(t, svc)
 }
