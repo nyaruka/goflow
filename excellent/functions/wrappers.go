@@ -245,3 +245,23 @@ func OneObjectFunction(f func(envs.Environment, *types.XObject) types.XValue) ty
 		return f(env, object)
 	})
 }
+
+// ObjectTextAndNumberFunction creates an XFunction from a function that takes an object, text and a number
+func ObjectTextAndNumberFunction(f func(envs.Environment, *types.XObject, types.XText, types.XNumber) types.XValue) types.XFunction {
+	return ArgCountCheck(3, 3, func(env envs.Environment, args ...types.XValue) types.XValue {
+		object, xerr := types.ToXObject(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+		text, xerr := types.ToXText(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+		num, xerr := types.ToXNumber(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+
+		return f(env, object, text, num)
+	})
+}

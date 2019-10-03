@@ -66,6 +66,9 @@ var XTESTS = map[string]types.XFunction{
 	"has_email": functions.OneTextFunction(HasEmail),
 	"has_group": functions.ArgCountCheck(2, 3, HasGroup),
 
+	"has_intent":     functions.ObjectTextAndNumberFunction(HasIntent),
+	"has_top_intent": functions.ObjectTextAndNumberFunction(HasTopIntent),
+
 	"has_state":    functions.OneTextFunction(HasState),
 	"has_district": HasDistrict,
 	"has_ward":     HasWard,
@@ -566,6 +569,26 @@ func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) type
 	// format as E164 number
 	formatted := phonenumbers.Format(phone, phonenumbers.E164)
 	return NewTrueResult(types.NewXText(formatted))
+}
+
+// HasIntent tests whether any intent in a classification result has `name` and minimum `confidence`
+//
+//   @(has_intent(results.foo, "book_flight", 0.5)) -> ERROR
+//
+// @test has_intent(text)
+func HasIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
+	// TODO
+	return FalseResult
+}
+
+// HasTopIntent tests whether the top intent in a classification result has `name` and minimum `confidence`
+//
+//   @(has_top_intent(results.foo, "book_flight", 0.5)) -> ERROR
+//
+// @test has_top_intent(text)
+func HasTopIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
+	// TODO
+	return FalseResult
 }
 
 // HasState tests whether a state name is contained in the `text`

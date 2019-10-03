@@ -273,6 +273,15 @@ Returns whether the `contact` is part of group with the passed in UUID
 @(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) → false
 ```
 
+<h2 class="item_title"><a name="test:has_intent" href="#test:has_intent">has_intent(text)</a></h2>
+
+Tests whether any intent in a classification result has `name` and minimum `confidence`
+
+
+```objectivec
+@(has_intent(results.foo, "book_flight", 0.5)) → ERROR
+```
+
 <h2 class="item_title"><a name="test:has_number" href="#test:has_number">has_number(text)</a></h2>
 
 Tests whether `text` contains a number
@@ -475,6 +484,15 @@ Tests whether `text` contains a time.
 @(has_time("the time is 10 PM").match) → 22:00:00.000000
 @(has_time("the time is 10:30:45").match) → 10:30:45.000000
 @(has_time("there is no time here, just the number 25")) → false
+```
+
+<h2 class="item_title"><a name="test:has_top_intent" href="#test:has_top_intent">has_top_intent(text)</a></h2>
+
+Tests whether the top intent in a classification result has `name` and minimum `confidence`
+
+
+```objectivec
+@(has_top_intent(results.foo, "book_flight", 0.5)) → ERROR
 ```
 
 <h2 class="item_title"><a name="test:has_value" href="#test:has_value">has_value(value)</a></h2>
