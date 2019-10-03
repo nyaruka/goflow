@@ -376,7 +376,7 @@ Event
 <h2 class="item_title">
 <a name="action:classify_nlu" href="#action:classify_nlu">classify_nlu</a>
 </h2>
-<p>Can be used to classify the intent and entities from a given input using an NLU classifier.</p>
+<p>Can be used to classify the intent and entities from a given input using an NLU classifier. It always saves a result indicating whether the classification was successful, skipped or failed, and what the extracted intents and entities were.</p>
 <div class="input_action">
 <h3>
 Action
@@ -408,19 +408,23 @@ Event
 <span id="cb15-10"><a href="#cb15-10"></a>        <span class="dt">&quot;intents&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb15-11"><a href="#cb15-11"></a>            <span class="fu">{</span></span>
 <span id="cb15-12"><a href="#cb15-12"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span><span class="fu">,</span></span>
-<span id="cb15-13"><a href="#cb15-13"></a>                <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.9</span></span>
-<span id="cb15-14"><a href="#cb15-14"></a>            <span class="fu">}</span></span>
-<span id="cb15-15"><a href="#cb15-15"></a>        <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb15-16"><a href="#cb15-16"></a>        <span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb15-17"><a href="#cb15-17"></a>            <span class="dt">&quot;location&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb15-18"><a href="#cb15-18"></a>                <span class="fu">{</span></span>
-<span id="cb15-19"><a href="#cb15-19"></a>                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Quito&quot;</span><span class="fu">,</span></span>
-<span id="cb15-20"><a href="#cb15-20"></a>                    <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
-<span id="cb15-21"><a href="#cb15-21"></a>                <span class="fu">}</span></span>
-<span id="cb15-22"><a href="#cb15-22"></a>            <span class="ot">]</span></span>
-<span id="cb15-23"><a href="#cb15-23"></a>        <span class="fu">}</span></span>
-<span id="cb15-24"><a href="#cb15-24"></a>    <span class="fu">}</span></span>
-<span id="cb15-25"><a href="#cb15-25"></a><span class="fu">}</span></span></code></pre></div>
+<span id="cb15-13"><a href="#cb15-13"></a>                <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.5</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a>            <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a>            <span class="fu">{</span></span>
+<span id="cb15-16"><a href="#cb15-16"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_hotel&quot;</span><span class="fu">,</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a>                <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.25</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a>            <span class="fu">}</span></span>
+<span id="cb15-19"><a href="#cb15-19"></a>        <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb15-20"><a href="#cb15-20"></a>        <span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb15-21"><a href="#cb15-21"></a>            <span class="dt">&quot;location&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb15-22"><a href="#cb15-22"></a>                <span class="fu">{</span></span>
+<span id="cb15-23"><a href="#cb15-23"></a>                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Quito&quot;</span><span class="fu">,</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a>                    <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
+<span id="cb15-25"><a href="#cb15-25"></a>                <span class="fu">}</span></span>
+<span id="cb15-26"><a href="#cb15-26"></a>            <span class="ot">]</span></span>
+<span id="cb15-27"><a href="#cb15-27"></a>        <span class="fu">}</span></span>
+<span id="cb15-28"><a href="#cb15-28"></a>    <span class="fu">}</span></span>
+<span id="cb15-29"><a href="#cb15-29"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="action:enter_flow" href="#action:enter_flow">enter_flow</a>

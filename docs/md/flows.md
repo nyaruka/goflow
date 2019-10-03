@@ -386,7 +386,9 @@ through `extra` on the result.
 </div>
 <h2 class="item_title"><a name="action:classify_nlu" href="#action:classify_nlu">classify_nlu</a></h2>
 
-Can be used to classify the intent and entities from a given input using an NLU classifier.
+Can be used to classify the intent and entities from a given input using an NLU classifier. It always
+saves a result indicating whether the classification was successful, skipped or failed, and what the extracted intents
+and entities were.
 
 <div class="input_action"><h3>Action</h3>
 
@@ -417,7 +419,11 @@ Can be used to classify the intent and entities from a given input using an NLU 
         "intents": [
             {
                 "name": "book_flight",
-                "confidence": 0.9
+                "confidence": 0.5
+            },
+            {
+                "name": "book_hotel",
+                "confidence": 0.25
             }
         ],
         "entities": {
