@@ -2,9 +2,9 @@ package test
 
 import (
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/providers/webhooks"
 
 	"github.com/pkg/errors"
@@ -15,21 +15,21 @@ import (
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
 		WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
-		WithNLUServiceFactory(func(s flows.Session, c assets.Classifier) flows.NLUService { return newNLUService(c) }).
+		WithNLUServiceFactory(func(s flows.Session, c *flows.Classifier) flows.NLUService { return newNLUService(c) }).
 		WithAirtimeServiceFactory(func(flows.Session) flows.AirtimeService { return newAirtimeService("RWF") }).
 		Build()
 }
 
 // implementation of an NLU service for testing which always returns the first intent
 type nluService struct {
-	classifier assets.Classifier
+	classifier *flows.Classifier
 }
 
-func newNLUService(classifier assets.Classifier) *nluService {
+func newNLUService(classifier *flows.Classifier) *nluService {
 	return &nluService{classifier: classifier}
 }
 
-func (s *nluService) Classify(session flows.Session, input string) (*flows.NLUClassification, error) {
+func (s *nluService) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.NLUClassification, error) {
 	classifierIntents := s.classifier.Intents()
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")
@@ -38,14 +38,24 @@ func (s *nluService) Classify(session flows.Session, input string) (*flows.NLUCl
 		confidence = confidence.Div(decimal.RequireFromString("2"))
 	}
 
-	return &flows.NLUClassification{
+	logEvent(events.NewClassifierCalled(
+		s.classifier.Reference(),
+		"http://test.acme.ai?classifiy",
+		"GET /message?v=20170307&q=hello HTTP/1.1",
+		"HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+		1,
+	))
+
+	classification := &flows.NLUClassification{
 		Intents: extractedIntents,
 		Entities: map[string][]flows.ExtractedEntity{
 			"location": []flows.ExtractedEntity{
 				flows.ExtractedEntity{"Quito", decimal.RequireFromString("1.0")},
 			},
 		},
-	}, nil
+	}
+
+	return classification, nil
 }
 
 var _ flows.NLUService = (*nluService)(nil)

@@ -31,28 +31,27 @@ const TypeWebhookCalled string = "webhook_called"
 // @event webhook_called
 type WebhookCalledEvent struct {
 	baseEvent
+	externalCallEvent
 
-	URL         string              `json:"url" validate:"required"`
 	Resthook    string              `json:"resthook,omitempty"`
 	Status      flows.WebhookStatus `json:"status" validate:"required"`
 	StatusCode  int                 `json:"status_code,omitempty"`
-	ElapsedMS   int                 `json:"elapsed_ms"`
-	Request     string              `json:"request" validate:"required"`
-	Response    string              `json:"response,omitempty"`
 	BodyIgnored bool                `json:"body_ignored,omitempty"`
 }
 
 // NewWebhookCalled returns a new webhook called event
 func NewWebhookCalled(webhook *flows.WebhookCall) *WebhookCalledEvent {
 	return &WebhookCalledEvent{
-		baseEvent:   newBaseEvent(TypeWebhookCalled),
-		URL:         webhook.URL,
+		baseEvent: newBaseEvent(TypeWebhookCalled),
+		externalCallEvent: externalCallEvent{
+			URL:       webhook.URL,
+			ElapsedMS: int(webhook.TimeTaken / time.Millisecond),
+			Request:   string(webhook.Request),
+			Response:  string(webhook.Response),
+		},
 		Resthook:    webhook.Resthook,
 		Status:      webhook.Status,
 		StatusCode:  webhook.StatusCode,
-		ElapsedMS:   int(webhook.TimeTaken / time.Millisecond),
-		Request:     string(webhook.Request),
-		Response:    string(webhook.Response),
 		BodyIgnored: webhook.BodyIgnored,
 	}
 }

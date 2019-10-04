@@ -315,6 +315,27 @@ Events are created when an action wants to send a message to other contacts.
 }
 ```
 </div>
+<h2 class="item_title"><a name="event:classifier_called" href="#event:classifier_called">classifier_called</a></h2>
+
+Events are created when a NLU classifier is called.
+
+<div class="output_event">
+
+```json
+{
+    "type": "classifier_called",
+    "created_on": "2006-01-02T15:04:05Z",
+    "url": "https://api.wit.ai/message?v=20170307&q=hello",
+    "request": "GET /message?v=20170307&q=hello HTTP/1.1",
+    "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+    "elapsed_ms": 123,
+    "classifier": {
+        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+        "name": "Booking"
+    }
+}
+```
+</div>
 <h2 class="item_title"><a name="event:contact_field_changed" href="#event:contact_field_changed">contact_field_changed</a></h2>
 
 Events are created when a custom field value of the contact has been changed.
@@ -773,11 +794,11 @@ request and response.
     "type": "webhook_called",
     "created_on": "2006-01-02T15:04:05Z",
     "url": "http://localhost:49998/?cmd=success",
-    "status": "success",
-    "status_code": 200,
-    "elapsed_ms": 123,
     "request": "GET /?format=json HTTP/1.1",
-    "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}"
+    "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
+    "elapsed_ms": 123,
+    "status": "success",
+    "status_code": 200
 }
 ```
 </div>

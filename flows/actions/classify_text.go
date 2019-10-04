@@ -99,12 +99,12 @@ func (a *ClassifyTextAction) classify(run flows.FlowRun, step flows.Step, input 
 		return nil, false, errors.Errorf("no NLU provider available")
 	}
 
-	classification, err := nluSvc.Classify(run.Session(), input)
+	classification, err := nluSvc.Classify(run.Session(), input, logEvent)
 	return classification, false, err
 }
 
 func (a *ClassifyTextAction) saveSuccess(run flows.FlowRun, step flows.Step, input string, classification *flows.NLUClassification, logEvent flows.EventCallback) {
-	// value is name of top ranked intent if there is one
+	// result value is name of top ranked intent if there is one
 	value := ""
 	if len(classification.Intents) > 0 {
 		value = classification.Intents[0].Name

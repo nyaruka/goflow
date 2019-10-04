@@ -15,6 +15,11 @@ func NewClassifier(asset assets.Classifier) *Classifier {
 // Asset returns the underlying asset
 func (c *Classifier) Asset() assets.Classifier { return c.Classifier }
 
+// Reference returns a reference to this classifier
+func (c *Classifier) Reference() *assets.ClassifierReference {
+	return assets.NewClassifierReference(c.UUID(), c.Name())
+}
+
 // ClassifierAssets provides access to all classifier assets
 type ClassifierAssets struct {
 	byUUID map[assets.ClassifierUUID]*Classifier

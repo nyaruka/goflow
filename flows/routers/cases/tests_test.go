@@ -229,13 +229,10 @@ var testTests = []struct {
 	{
 		"has_group",
 		[]types.XValue{
-			xa(
-				types.NewXObject(map[string]types.XValue{"uuid": xs("group-uuid-1"), "name": xs("Testers")}),
-				types.NewXObject(map[string]types.XValue{"uuid": xs("group-uuid-2"), "name": xs("Customers")}),
-			),
+			xj(`[{"uuid": "group-uuid-1", "name": "Testers"}, {"uuid": "group-uuid-2", "name": "Customers"}]`),
 			xs("group-uuid-2"),
 		},
-		result(types.NewXObject(map[string]types.XValue{"uuid": xs("group-uuid-2"), "name": xs("Customers")})),
+		result(xj(`{"uuid": "group-uuid-2", "name": "Customers"}`)),
 	},
 	{"has_group", []types.XValue{xa(ERROR), xs("group-uuid-2")}, ERROR},
 	{"has_group", []types.XValue{xa(), xs("group-uuid-1")}, falseResult},

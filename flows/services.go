@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/assets"
 
 	"github.com/shopspring/decimal"
 )
@@ -13,7 +12,7 @@ import (
 // Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
 	Webhook(Session) WebhookService
-	NLU(Session, assets.Classifier) NLUService
+	NLU(Session, *Classifier) NLUService
 	Airtime(Session) AirtimeService
 }
 
@@ -72,7 +71,7 @@ type NLUClassification struct {
 
 // NLUService provides NLU functionality to the engine
 type NLUService interface {
-	Classify(session Session, input string) (*NLUClassification, error)
+	Classify(session Session, input string, logEvent EventCallback) (*NLUClassification, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer
