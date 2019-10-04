@@ -5,7 +5,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/providers/webhooks"
+	"github.com/nyaruka/goflow/services/webhooks"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
