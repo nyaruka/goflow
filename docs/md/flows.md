@@ -222,7 +222,7 @@ and entities were.
         "step_uuid": "8707af30-d50f-440b-9803-f4a851d20f2b",
         "name": "Intent",
         "value": "book_flight",
-        "category": "success",
+        "category": "Success",
         "input": "Hi there",
         "extra": {
             "intents": [

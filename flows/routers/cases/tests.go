@@ -67,6 +67,7 @@ var XTESTS = map[string]types.XFunction{
 	"has_email": functions.OneTextFunction(HasEmail),
 	"has_group": functions.ArgCountCheck(2, 3, HasGroup),
 
+	"has_category":   functions.ObjectAndTextsFunction(HasCategory),
 	"has_intent":     functions.ObjectTextAndNumberFunction(HasIntent),
 	"has_top_intent": functions.ObjectTextAndNumberFunction(HasTopIntent),
 
@@ -572,11 +573,33 @@ func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) type
 	return NewTrueResult(types.NewXText(formatted))
 }
 
+// HasCategory tests whether the category of a result on of the passed in `categories`
+//
+//   @(has_intent(results.foo, "book_flight", 0.5)) -> ERROR
+//
+// @test has_category(result, categories)
+func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...types.XText) types.XValue {
+	result, err := resultFromXObject(resultObj)
+	if err != nil {
+		return types.NewXErrorf("first argument must be a result")
+	}
+
+	category := types.NewXText(result.Category)
+
+	for _, textCategory := range categories {
+		if category.Equals(textCategory) {
+			return NewTrueResult(category)
+		}
+	}
+
+	return FalseResult
+}
+
 // HasIntent tests whether any intent in a classification result has `name` and minimum `confidence`
 //
 //   @(has_intent(results.foo, "book_flight", 0.5)) -> ERROR
 //
-// @test has_intent(text)
+// @test has_intent(result)
 func HasIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
 	return hasIntent(result, name, confidence, false)
 }
@@ -585,51 +608,9 @@ func HasIntent(env envs.Environment, result *types.XObject, name types.XText, co
 //
 //   @(has_top_intent(results.foo, "book_flight", 0.5)) -> ERROR
 //
-// @test has_top_intent(text)
+// @test has_top_intent(result)
 func HasTopIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
 	return hasIntent(result, name, confidence, true)
-}
-
-// loads a result from an object
-func resultFromXObject(object *types.XObject) (*flows.Result, error) {
-	marshaled, _ := json.Marshal(object)
-	result := &flows.Result{}
-	err := utils.UnmarshalAndValidate(marshaled, result)
-	return result, err
-}
-
-func hasIntent(resultObj *types.XObject, name types.XText, confidence types.XNumber, topOnly bool) types.XValue {
-	result, err := resultFromXObject(resultObj)
-	if err != nil {
-		return types.NewXErrorf("first argument must be a result")
-	}
-
-	// extra should contain the NLU classification
-	classification := &flows.NLUClassification{}
-	json.Unmarshal(result.Extra, classification)
-
-	// which intents will be considered
-	intents := classification.Intents
-	if topOnly && len(intents) > 0 {
-		intents = []flows.ExtractedIntent{classification.Intents[0]}
-	}
-
-	for _, intent := range intents {
-		intentName := types.NewXText(intent.Name)
-		if intentName.Equals(name) && intent.Confidence.GreaterThanOrEqual(confidence.Native()) {
-			// build extra as a mapping of entity names to most likely values
-			extra := make(map[string]types.XValue, len(classification.Entities))
-			for entitiyName, possibilities := range classification.Entities {
-				if len(possibilities) > 0 {
-					extra[entitiyName] = types.NewXText(possibilities[0].Value)
-				}
-			}
-
-			return NewTrueResultWithExtra(intentName, types.NewXObject(extra))
-		}
-	}
-
-	return FalseResult
 }
 
 // HasState tests whether a state name is contained in the `text`
@@ -999,4 +980,50 @@ func isDateEQTest(value dates.Date, test dates.Date) bool {
 
 func isDateGTTest(value dates.Date, test dates.Date) bool {
 	return value.Compare(test) > 0
+}
+
+//------------------------------------------------------------------------------------------
+// Result Test helpers
+//------------------------------------------------------------------------------------------
+
+// loads a result from an object
+func resultFromXObject(object *types.XObject) (*flows.Result, error) {
+	marshaled, _ := json.Marshal(object)
+	result := &flows.Result{}
+	err := utils.UnmarshalAndValidate(marshaled, result)
+	return result, err
+}
+
+func hasIntent(resultObj *types.XObject, name types.XText, confidence types.XNumber, topOnly bool) types.XValue {
+	result, err := resultFromXObject(resultObj)
+	if err != nil {
+		return types.NewXErrorf("first argument must be a result")
+	}
+
+	// extra should contain the NLU classification
+	classification := &flows.NLUClassification{}
+	json.Unmarshal(result.Extra, classification)
+
+	// which intents will be considered
+	intents := classification.Intents
+	if topOnly && len(intents) > 0 {
+		intents = []flows.ExtractedIntent{classification.Intents[0]}
+	}
+
+	for _, intent := range intents {
+		intentName := types.NewXText(intent.Name)
+		if intentName.Equals(name) && intent.Confidence.GreaterThanOrEqual(confidence.Native()) {
+			// build extra as a mapping of entity names to most likely values
+			extra := make(map[string]types.XValue, len(classification.Entities))
+			for entitiyName, possibilities := range classification.Entities {
+				if len(possibilities) > 0 {
+					extra[entitiyName] = types.NewXText(possibilities[0].Value)
+				}
+			}
+
+			return NewTrueResultWithExtra(intentName, types.NewXObject(extra))
+		}
+	}
+
+	return FalseResult
 }

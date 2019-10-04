@@ -14,9 +14,9 @@ func init() {
 }
 
 const (
-	classificationCategorySuccess = "success"
-	classificationCategorySkipped = "skipped"
-	classificationCategoryFailure = "failure"
+	classificationCategorySuccess = "Success"
+	classificationCategorySkipped = "Skipped"
+	classificationCategoryFailure = "Failure"
 )
 
 var classificationCategories = []string{classificationCategorySuccess, classificationCategorySkipped, classificationCategoryFailure}
@@ -96,7 +96,7 @@ func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, inpu
 
 	nluSvc := run.Session().Engine().Services().NLU(run.Session(), classifier)
 	if nluSvc == nil {
-		return nil, false, errors.Errorf("no NLU provider available")
+		return nil, false, errors.Errorf("no NLU service available for %s", a.Classifier)
 	}
 
 	classification, err := nluSvc.Classify(run.Session(), input, logEvent)

@@ -19,7 +19,7 @@
                 "type": "error"
             },
             {
-                "category": "skipped",
+                "category": "Skipped",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "name": "Intent",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -37,9 +37,9 @@
             "results": [
                 {
                     "categories": [
-                        "success",
-                        "skipped",
-                        "failure"
+                        "Success",
+                        "Skipped",
+                        "Failure"
                     ],
                     "key": "intent",
                     "name": "Intent",
@@ -70,7 +70,7 @@
                 "type": "error"
             },
             {
-                "category": "failure",
+                "category": "Failure",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "input": "Hi everybody",
                 "name": "Intent",
@@ -89,9 +89,9 @@
             "results": [
                 {
                     "categories": [
-                        "success",
-                        "skipped",
-                        "failure"
+                        "Success",
+                        "Skipped",
+                        "Failure"
                     ],
                     "key": "intent",
                     "name": "Intent",
@@ -130,7 +130,7 @@
                 "type": "classifier_called"
             },
             {
-                "category": "success",
+                "category": "Success",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "extra": {
                     "entities": {
@@ -169,9 +169,9 @@
             "results": [
                 {
                     "categories": [
-                        "success",
-                        "skipped",
-                        "failure"
+                        "Success",
+                        "Skipped",
+                        "Failure"
                     ],
                     "key": "intent",
                     "name": "Intent",

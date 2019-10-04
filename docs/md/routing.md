@@ -176,6 +176,15 @@ without any tokenization.
 @(has_beginning("The Quick Brown", "quick brown")) → false
 ```
 
+<h2 class="item_title"><a name="test:has_category" href="#test:has_category">has_category(result, categories)</a></h2>
+
+Tests whether the category of a result on of the passed in `categories`
+
+
+```objectivec
+@(has_intent(results.foo, "book_flight", 0.5)) → ERROR
+```
+
 <h2 class="item_title"><a name="test:has_date" href="#test:has_date">has_date(text)</a></h2>
 
 Tests whether `text` contains a date formatted according to our environment
@@ -273,7 +282,7 @@ Returns whether the `contact` is part of group with the passed in UUID
 @(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) → false
 ```
 
-<h2 class="item_title"><a name="test:has_intent" href="#test:has_intent">has_intent(text)</a></h2>
+<h2 class="item_title"><a name="test:has_intent" href="#test:has_intent">has_intent(result)</a></h2>
 
 Tests whether any intent in a classification result has `name` and minimum `confidence`
 
@@ -486,7 +495,7 @@ Tests whether `text` contains a time.
 @(has_time("there is no time here, just the number 25")) → false
 ```
 
-<h2 class="item_title"><a name="test:has_top_intent" href="#test:has_top_intent">has_top_intent(text)</a></h2>
+<h2 class="item_title"><a name="test:has_top_intent" href="#test:has_top_intent">has_top_intent(result)</a></h2>
 
 Tests whether the top intent in a classification result has `name` and minimum `confidence`
 

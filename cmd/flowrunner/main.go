@@ -18,6 +18,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 
@@ -116,7 +117,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 	}
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
-	eng := engine.NewBuilder().Build()
+	eng := test.NewEngine()
 
 	// start our session
 	session, sprint, err := eng.NewSession(sa, repro.Trigger)
@@ -207,6 +208,8 @@ func printEvents(log []flows.Event, out io.Writer) {
 			msg = "⚙️ environment refreshed on resume"
 		case *events.ErrorEvent:
 			msg = fmt.Sprintf("⚠️ %s", typed.Text)
+		case *events.FailureEvent:
+			msg = fmt.Sprintf("🛑 %s", typed.Text)
 		case *events.FlowEnteredEvent:
 			msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
 		case *events.InputLabelsAddedEvent:
@@ -230,7 +233,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 		case *events.RunExpiredEvent:
 			msg = "📆 exiting due to expiration"
 		case *events.RunResultChangedEvent:
-			msg = fmt.Sprintf("📈 run result '%s' changed to '%s'", typed.Name, typed.Value)
+			msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
 		case *events.SessionTriggeredEvent:
 			msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
 		case *events.WaitTimedOutEvent:

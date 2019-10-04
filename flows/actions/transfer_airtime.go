@@ -75,7 +75,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 
 	airtimeSvc := run.Session().Engine().Services().Airtime(run.Session())
 	if airtimeSvc == nil {
-		logEvent(events.NewError(errors.Errorf("no airtime provider available")))
+		logEvent(events.NewError(errors.Errorf("no airtime service available")))
 		return nil
 	}
 

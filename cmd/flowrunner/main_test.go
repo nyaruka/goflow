@@ -1,9 +1,10 @@
 package main_test
 
 import (
-	"github.com/nyaruka/goflow/assets"
 	"strings"
 	"testing"
+
+	"github.com/nyaruka/goflow/assets"
 
 	main "github.com/nyaruka/goflow/cmd/flowrunner"
 
@@ -28,12 +29,12 @@ func TestRunFlow(t *testing.T) {
 		"💬 message created \"Hi Ben Haggerty! What is your favorite color? (red/blue)\"",
 		"⏳ waiting for message (600 sec timeout, type /timeout to simulate)....",
 		"📥 message received \"I like red\"",
-		"📈 run result 'Favorite Color' changed to 'red'",
+		"📈 run result 'Favorite Color' changed to 'red' with category 'Red'",
 		"🌐 language changed to 'fra'",
 		"💬 message created \"Red it is! What is your favorite soda? (pepsi/coke)\"",
 		"⏳ waiting for message....",
 		"📥 message received \"pepsi\"",
-		"📈 run result 'Soda' changed to 'pepsi'",
+		"📈 run result 'Soda' changed to 'pepsi' with category 'Pepsi'",
 		"💬 message created \"Great, you are done!\"",
 		"",
 	}, lines)

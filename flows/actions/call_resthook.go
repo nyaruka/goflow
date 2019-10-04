@@ -117,7 +117,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 		webhookSvc := run.Session().Engine().Services().Webhook(run.Session())
 		if webhookSvc == nil {
-			logEvent(events.NewError(errors.Errorf("no webhook provider available")))
+			logEvent(events.NewError(errors.Errorf("no webhook service available")))
 			return nil
 		}
 
