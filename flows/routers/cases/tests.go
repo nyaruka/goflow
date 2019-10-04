@@ -65,14 +65,14 @@ var XTESTS = map[string]types.XFunction{
 	"has_time":  functions.OneTextFunction(HasTime),
 	"has_phone": functions.InitialTextFunction(0, 1, HasPhone),
 	"has_email": functions.OneTextFunction(HasEmail),
-	"has_group": functions.ArgCountCheck(2, 3, HasGroup),
+	"has_group": functions.MinAndMaxArgsCheck(2, 3, HasGroup),
 
 	"has_category":   functions.ObjectAndTextsFunction(HasCategory),
 	"has_intent":     functions.ObjectTextAndNumberFunction(HasIntent),
 	"has_top_intent": functions.ObjectTextAndNumberFunction(HasTopIntent),
 
 	"has_state":    functions.OneTextFunction(HasState),
-	"has_district": HasDistrict,
+	"has_district": functions.MinAndMaxArgsCheck(1, 2, HasDistrict),
 	"has_ward":     HasWard,
 }
 
@@ -644,10 +644,6 @@ func HasState(env envs.Environment, text types.XText) types.XValue {
 //
 // @test has_district(text, state)
 func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 && len(args) != 2 {
-		return types.NewXErrorf("takes one or two arguments, got %d", len(args))
-	}
-
 	runEnv, _ := env.(flows.RunEnvironment)
 
 	var text, stateText types.XText

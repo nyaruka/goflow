@@ -53,30 +53,30 @@ func init() {
 		"text_length":       OneTextFunction(TextLength),
 		"text_compare":      TwoTextFunction(TextCompare),
 		"repeat":            TextAndIntegerFunction(Repeat),
-		"replace":           ArgCountCheck(3, 4, Replace),
+		"replace":           MinAndMaxArgsCheck(3, 4, Replace),
 		"upper":             OneTextFunction(Upper),
 		"percent":           OneNumberFunction(Percent),
 		"url_encode":        OneTextFunction(URLEncode),
 
 		// bool functions
-		"and": ArgCountCheck(1, -1, And),
+		"and": MinArgsCheck(1, And),
 		"if":  ThreeArgFunction(If),
-		"or":  ArgCountCheck(1, -1, Or),
+		"or":  MinArgsCheck(1, Or),
 
 		// number functions
 		"round":        OneNumberAndOptionalIntegerFunction(Round, 0),
 		"round_up":     OneNumberAndOptionalIntegerFunction(RoundUp, 0),
 		"round_down":   OneNumberAndOptionalIntegerFunction(RoundDown, 0),
-		"max":          ArgCountCheck(1, -1, Max),
-		"min":          ArgCountCheck(1, -1, Min),
-		"mean":         ArgCountCheck(1, -1, Mean),
+		"max":          MinArgsCheck(1, Max),
+		"min":          MinArgsCheck(1, Min),
+		"mean":         MinArgsCheck(1, Mean),
 		"mod":          TwoNumberFunction(Mod),
 		"rand":         NoArgFunction(Rand),
 		"rand_between": TwoNumberFunction(RandBetween),
 		"abs":          OneNumberFunction(Abs),
 
 		// datetime functions
-		"parse_datetime":      ArgCountCheck(2, 3, ParseDateTime),
+		"parse_datetime":      MinAndMaxArgsCheck(2, 3, ParseDateTime),
 		"datetime_from_epoch": OneNumberFunction(DateTimeFromEpoch),
 		"datetime_diff":       ThreeArgFunction(DateTimeDiff),
 		"datetime_add":        DateTimeAdd,
@@ -106,11 +106,11 @@ func init() {
 
 		// formatting functions
 		"format":          OneArgFunction(Format),
-		"format_date":     ArgCountCheck(1, 2, FormatDate),
-		"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
-		"format_time":     ArgCountCheck(1, 2, FormatTime),
+		"format_date":     MinAndMaxArgsCheck(1, 2, FormatDate),
+		"format_datetime": MinAndMaxArgsCheck(1, 3, FormatDateTime),
+		"format_time":     MinAndMaxArgsCheck(1, 2, FormatTime),
 		"format_location": OneTextFunction(FormatLocation),
-		"format_number":   ArgCountCheck(1, 3, FormatNumber),
+		"format_number":   MinAndMaxArgsCheck(1, 3, FormatNumber),
 		"format_urn":      OneTextFunction(FormatURN),
 
 		// utility functions
@@ -120,9 +120,9 @@ func init() {
 		"legacy_add":     TwoArgFunction(LegacyAdd),
 		"read_chars":     OneTextFunction(ReadChars),
 		"extract":        TwoArgFunction(Extract),
-		"extract_object": ArgCountCheck(2, -1, ExtractObject),
-		"foreach":        ArgCountCheck(2, -1, ForEach),
-		"foreach_value":  ArgCountCheck(2, -1, ForEachValue),
+		"extract_object": MinArgsCheck(2, ExtractObject),
+		"foreach":        MinArgsCheck(2, ForEach),
+		"foreach_value":  MinArgsCheck(2, ForEachValue),
 	}
 
 	for name, fn := range builtin {
