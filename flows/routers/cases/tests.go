@@ -64,7 +64,7 @@ var XTESTS = map[string]types.XFunction{
 	"has_time":  functions.OneTextFunction(HasTime),
 	"has_phone": functions.InitialTextFunction(0, 1, HasPhone),
 	"has_email": functions.OneTextFunction(HasEmail),
-	"has_group": functions.ArgCountCheck(2, 3, HasGroup),
+	"has_group": functions.MinAndMaxArgsCheck(2, 3, HasGroup),
 
 	"has_state":    functions.OneTextFunction(HasState),
 	"has_district": HasDistrict,
