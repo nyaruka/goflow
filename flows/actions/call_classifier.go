@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	registerType(TypeClassifyText, func() flows.Action { return &ClassifyTextAction{} })
+	registerType(TypeCallClassifier, func() flows.Action { return &CallClassifierAction{} })
 }
 
 const (
@@ -21,16 +21,16 @@ const (
 
 var classificationCategories = []string{classificationCategorySuccess, classificationCategorySkipped, classificationCategoryFailure}
 
-// TypeClassifyText is the type for the classify text action
-const TypeClassifyText string = "classify_text"
+// TypeCallClassifier is the type for the call classifier action
+const TypeCallClassifier string = "call_classifier"
 
-// ClassifyTextAction can be used to classify the intent and entities from a given input using an NLU classifier. It always
+// CallClassifierAction can be used to classify the intent and entities from a given input using an NLU classifier. It always
 // saves a result indicating whether the classification was successful, skipped or failed, and what the extracted intents
 // and entities were.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "classify_text",
+//     "type": "call_classifier",
 //     "classifier": {
 //       "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
 //       "name": "Booking"
@@ -39,8 +39,8 @@ const TypeClassifyText string = "classify_text"
 //     "result_name": "Intent"
 //   }
 //
-// @action classify_text
-type ClassifyTextAction struct {
+// @action call_classifier
+type CallClassifierAction struct {
 	baseAction
 	onlineAction
 
@@ -49,10 +49,10 @@ type ClassifyTextAction struct {
 	ResultName string                      `json:"result_name" validate:"required"`
 }
 
-// NewClassifyText creates a new classify text action
-func NewClassifyText(uuid flows.ActionUUID, classifier *assets.ClassifierReference, input string, resultName string) *ClassifyTextAction {
-	return &ClassifyTextAction{
-		baseAction: newBaseAction(TypeClassifyText, uuid),
+// NewCallClassifier creates a new call classifier action
+func NewCallClassifier(uuid flows.ActionUUID, classifier *assets.ClassifierReference, input string, resultName string) *CallClassifierAction {
+	return &CallClassifierAction{
+		baseAction: newBaseAction(TypeCallClassifier, uuid),
 		Classifier: classifier,
 		Input:      input,
 		ResultName: resultName,
@@ -60,7 +60,7 @@ func NewClassifyText(uuid flows.ActionUUID, classifier *assets.ClassifierReferen
 }
 
 // Execute runs this action
-func (a *ClassifyTextAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallClassifierAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	classifiers := run.Session().Assets().Classifiers()
 	classifier := classifiers.Get(a.Classifier.UUID)
 
@@ -86,7 +86,7 @@ func (a *ClassifyTextAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	return nil
 }
 
-func (a *ClassifyTextAction) classify(run flows.FlowRun, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.NLUClassification, bool, error) {
+func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.NLUClassification, bool, error) {
 	if input == "" {
 		return nil, true, errors.New("can't classify empty input, skipping classification")
 	}
@@ -103,7 +103,7 @@ func (a *ClassifyTextAction) classify(run flows.FlowRun, step flows.Step, input 
 	return classification, false, err
 }
 
-func (a *ClassifyTextAction) saveSuccess(run flows.FlowRun, step flows.Step, input string, classification *flows.NLUClassification, logEvent flows.EventCallback) {
+func (a *CallClassifierAction) saveSuccess(run flows.FlowRun, step flows.Step, input string, classification *flows.NLUClassification, logEvent flows.EventCallback) {
 	// result value is name of top ranked intent if there is one
 	value := ""
 	if len(classification.Intents) > 0 {
@@ -114,16 +114,16 @@ func (a *ClassifyTextAction) saveSuccess(run flows.FlowRun, step flows.Step, inp
 	a.saveResult(run, step, a.ResultName, value, classificationCategorySuccess, "", input, extra, logEvent)
 }
 
-func (a *ClassifyTextAction) saveSkipped(run flows.FlowRun, step flows.Step, input string, logEvent flows.EventCallback) {
+func (a *CallClassifierAction) saveSkipped(run flows.FlowRun, step flows.Step, input string, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, "0", classificationCategorySkipped, "", input, nil, logEvent)
 }
 
-func (a *ClassifyTextAction) saveFailure(run flows.FlowRun, step flows.Step, input string, logEvent flows.EventCallback) {
+func (a *CallClassifierAction) saveFailure(run flows.FlowRun, step flows.Step, input string, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, "0", classificationCategoryFailure, "", input, nil, logEvent)
 }
 
 // Results enumerates any results generated by this flow object
-func (a *ClassifyTextAction) Results(node flows.Node, include func(*flows.ResultInfo)) {
+func (a *CallClassifierAction) Results(node flows.Node, include func(*flows.ResultInfo)) {
 	if a.ResultName != "" {
 		include(flows.NewResultInfo(a.ResultName, classificationCategories, node))
 	}

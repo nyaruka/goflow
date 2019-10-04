@@ -326,6 +326,7 @@ Events are created when a NLU classifier is called.
     "type": "classifier_called",
     "created_on": "2006-01-02T15:04:05Z",
     "url": "https://api.wit.ai/message?v=20170307&q=hello",
+    "status": "success",
     "request": "GET /message?v=20170307&q=hello HTTP/1.1",
     "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
     "elapsed_ms": 123,
@@ -794,10 +795,10 @@ request and response.
     "type": "webhook_called",
     "created_on": "2006-01-02T15:04:05Z",
     "url": "http://localhost:49998/?cmd=success",
+    "status": "success",
     "request": "GET /?format=json HTTP/1.1",
     "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
     "elapsed_ms": 123,
-    "status": "success",
     "status_code": 200
 }
 ```

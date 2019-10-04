@@ -306,6 +306,24 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
+			actions.NewCallClassifier(
+				actionUUID,
+				assets.NewClassifierReference(assets.ClassifierUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Booking"),
+				"@input.text",
+				"Intent",
+			),
+			`{
+			"type": "call_classifier",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"classifier": {
+				"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
+				"name": "Booking"
+			},
+			"input": "@input.text",
+			"result_name": "Intent"
+		}`,
+		},
+		{
 			actions.NewCallResthook(
 				actionUUID,
 				"new-registration",
@@ -339,24 +357,6 @@ func TestConstructors(t *testing.T) {
 			},
 			"body": "{\"contact_id\": 234}",
 			"result_name": "Webhook Response"
-		}`,
-		},
-		{
-			actions.NewClassifyText(
-				actionUUID,
-				assets.NewClassifierReference(assets.ClassifierUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Booking"),
-				"@input.text",
-				"Intent",
-			),
-			`{
-			"type": "classify_text",
-			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-			"classifier": {
-				"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
-				"name": "Booking"
-			},
-			"input": "@input.text",
-			"result_name": "Intent"
 		}`,
 		},
 		{

@@ -16,21 +16,21 @@ type Services interface {
 	Airtime(Session) AirtimeService
 }
 
-// WebhookStatus represents the status of a webhook call
-type WebhookStatus string
+// CallStatus represents the status of a call to an external service
+type CallStatus string
 
 const (
-	// WebhookStatusSuccess represents that the webhook was successful
-	WebhookStatusSuccess WebhookStatus = "success"
+	// CallStatusSuccess represents that the webhook was successful
+	CallStatusSuccess CallStatus = "success"
 
-	// WebhookStatusConnectionError represents that the webhook had a connection error
-	WebhookStatusConnectionError WebhookStatus = "connection_error"
+	// CallStatusConnectionError represents that the webhook had a connection error
+	CallStatusConnectionError CallStatus = "connection_error"
 
-	// WebhookStatusResponseError represents that the webhook response had a non 2xx status code
-	WebhookStatusResponseError WebhookStatus = "response_error"
+	// CallStatusResponseError represents that the webhook response had a non 2xx status code
+	CallStatusResponseError CallStatus = "response_error"
 
-	// WebhookStatusSubscriberGone represents a special state of resthook responses which indicate the caller must remove that subscriber
-	WebhookStatusSubscriberGone WebhookStatus = "subscriber_gone"
+	// CallStatusSubscriberGone represents a special state of resthook responses which indicate the caller must remove that subscriber
+	CallStatusSubscriberGone CallStatus = "subscriber_gone"
 )
 
 // WebhookCall is the result of a webhook call
@@ -38,7 +38,7 @@ type WebhookCall struct {
 	URL         string
 	Method      string
 	StatusCode  int
-	Status      WebhookStatus
+	Status      CallStatus
 	TimeTaken   time.Duration
 	Request     []byte
 	Response    []byte

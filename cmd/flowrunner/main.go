@@ -169,7 +169,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 			text := typed.Translations[typed.BaseLanguage].Text
 			msg = fmt.Sprintf("🔉 broadcasted '%s' to ...", text)
 		case *events.ClassifierCalledEvent:
-			msg = fmt.Sprintf("👁️‍🗨️ NLU classifier '%' called", typed.Classifier.Name)
+			msg = fmt.Sprintf("👁️‍🗨️ NLU classifier '%s' called", typed.Classifier.Name)
 		case *events.ContactFieldChangedEvent:
 			var action string
 			if typed.Value != nil {

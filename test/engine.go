@@ -41,6 +41,7 @@ func (s *nluService) Classify(session flows.Session, input string, logEvent flow
 	logEvent(events.NewClassifierCalled(
 		s.classifier.Reference(),
 		"http://test.acme.ai?classifiy",
+		flows.CallStatusSuccess,
 		"GET /message?v=20170307&q=hello HTTP/1.1",
 		"HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
 		1,

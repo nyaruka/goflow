@@ -150,9 +150,9 @@ func (a *CallResthookAction) pickResultCall(calls []*flows.WebhookCall) *flows.W
 
 	for _, call := range calls {
 		switch call.Status {
-		case flows.WebhookStatusSuccess:
+		case flows.CallStatusSuccess:
 			lastSuccess = call
-		case flows.WebhookStatusSubscriberGone:
+		case flows.CallStatusSubscriberGone:
 			last410 = call
 		default:
 			lastFailure = call

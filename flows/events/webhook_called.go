@@ -33,10 +33,9 @@ type WebhookCalledEvent struct {
 	baseEvent
 	externalCallEvent
 
-	Resthook    string              `json:"resthook,omitempty"`
-	Status      flows.WebhookStatus `json:"status" validate:"required"`
-	StatusCode  int                 `json:"status_code,omitempty"`
-	BodyIgnored bool                `json:"body_ignored,omitempty"`
+	Resthook    string `json:"resthook,omitempty"`
+	StatusCode  int    `json:"status_code,omitempty"`
+	BodyIgnored bool   `json:"body_ignored,omitempty"`
 }
 
 // NewWebhookCalled returns a new webhook called event
@@ -45,12 +44,12 @@ func NewWebhookCalled(webhook *flows.WebhookCall) *WebhookCalledEvent {
 		baseEvent: newBaseEvent(TypeWebhookCalled),
 		externalCallEvent: externalCallEvent{
 			URL:       webhook.URL,
-			ElapsedMS: int(webhook.TimeTaken / time.Millisecond),
+			Status:    webhook.Status,
 			Request:   string(webhook.Request),
 			Response:  string(webhook.Response),
+			ElapsedMS: int(webhook.TimeTaken / time.Millisecond),
 		},
 		Resthook:    webhook.Resthook,
-		Status:      webhook.Status,
 		StatusCode:  webhook.StatusCode,
 		BodyIgnored: webhook.BodyIgnored,
 	}

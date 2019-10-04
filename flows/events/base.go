@@ -44,10 +44,11 @@ func (e *baseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUI
 
 // utility for events which describe calls to external services
 type externalCallEvent struct {
-	URL       string `json:"url" validate:"required"`
-	Request   string `json:"request" validate:"required"`
-	Response  string `json:"response,omitempty"`
-	ElapsedMS int    `json:"elapsed_ms"`
+	URL       string           `json:"url" validate:"required"`
+	Status    flows.CallStatus `json:"status" validate:"required"`
+	Request   string           `json:"request" validate:"required"`
+	Response  string           `json:"response,omitempty"`
+	ElapsedMS int              `json:"elapsed_ms"`
 }
 
 //------------------------------------------------------------------------------------------
