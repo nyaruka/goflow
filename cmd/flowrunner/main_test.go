@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/test"
 
 	main "github.com/nyaruka/goflow/cmd/flowrunner"
 
@@ -17,7 +18,7 @@ func TestRunFlow(t *testing.T) {
 	in := strings.NewReader("I like red\npepsi\n")
 	out := &strings.Builder{}
 
-	_, err := main.RunFlow("testdata/two_questions.json", assets.FlowUUID("615b8a0f-588c-4d20-a05f-363b0b4ce6f4"), "", "eng", in, out)
+	_, err := main.RunFlow(test.NewEngine(), "testdata/two_questions.json", assets.FlowUUID("615b8a0f-588c-4d20-a05f-363b0b4ce6f4"), "", "eng", in, out)
 	require.NoError(t, err)
 
 	// remove input prompts and split output by line to get each event
