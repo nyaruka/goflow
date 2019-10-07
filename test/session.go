@@ -537,3 +537,17 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 
 	return sa, nil
 }
+
+// EventLog is a utility for testing things which take an event logger function
+type EventLog struct {
+	Events []flows.Event
+}
+
+// NewEventLog creates a new event log
+func NewEventLog() *EventLog {
+	return &EventLog{make([]flows.Event, 0)}
+}
+
+func (l *EventLog) Log(e flows.Event) {
+	l.Events = append(l.Events, e)
+}
