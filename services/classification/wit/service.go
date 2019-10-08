@@ -7,13 +7,13 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// an NLU service implmentation for a wit.ai app
+// a classification service implmentation for a wit.ai app
 type service struct {
 	classifier  *flows.Classifier
 	accessToken string
 }
 
-// NewService creates a new NLU service
+// NewService creates a new classification service
 func NewService(classifier *flows.Classifier, accessToken string) flows.ClassificationService {
 	return &service{
 		classifier:  classifier,
@@ -24,7 +24,7 @@ func NewService(classifier *flows.Classifier, accessToken string) flows.Classifi
 func (s *service) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.Classification, error) {
 	client := NewClient(session.Engine().HTTPClient(), s.accessToken)
 
-	message, trace, err := client.Message(input)
+	response, trace, err := client.Message(input)
 	if trace != nil {
 		status := flows.CallStatusSuccess
 		if err != nil {
@@ -49,7 +49,7 @@ func (s *service) Classify(session flows.Session, input string, logEvent flows.E
 	}
 
 	// wit returns intent as just another entity so we need to extract it by name
-	for name, entity := range message.Entities {
+	for name, entity := range response.Entities {
 		if name == "intent" {
 			for _, candidate := range entity {
 				result.Intents = append(result.Intents, flows.ExtractedIntent{
