@@ -1,3 +1,7 @@
+v0.51.0
+----------
+ * Add NLU support: a classify action, a classification service and various router tests
+
 v0.50.4
 ----------
  * Revert change to operands for media waits
