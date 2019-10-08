@@ -24,19 +24,19 @@ func NewService(classifier *flows.Classifier, accessToken string) flows.NLUServi
 func (s *service) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.NLUClassification, error) {
 	client := NewClient(session.Engine().HTTPClient(), s.accessToken)
 
-	message, call, err := client.Message(input)
-	if call != nil {
+	message, trace, err := client.Message(input)
+	if trace != nil {
 		status := flows.CallStatusSuccess
 		if err != nil {
 			status = flows.CallStatusResponseError
 		}
 		logEvent(events.NewClassifierCalled(
 			s.classifier.Reference(),
-			call.Request.URL.String(),
+			trace.Request.URL.String(),
 			status,
-			string(call.RequestTrace),
-			string(call.ResponseTrace),
-			int(call.TimeTaken/time.Millisecond),
+			string(trace.RequestTrace),
+			string(trace.ResponseTrace),
+			int(trace.TimeTaken/time.Millisecond),
 		))
 	}
 	if err != nil {

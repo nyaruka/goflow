@@ -45,10 +45,10 @@ func NewClient(httpClient *http.Client, accessToken string) *Client {
 }
 
 // Message gets the meaning of a message
-func (c *Client) Message(q string) (*MessageResponse, *httpx.Call, error) {
+func (c *Client) Message(q string) (*MessageResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/message?v=%s&q=%s", apiBaseURL, version, url.QueryEscape(q))
 
-	call, err := httpx.Request(c.httpClient, "GET", endpoint, nil, c.headers)
+	call, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, c.headers)
 	if err != nil {
 		return nil, nil, err
 	}

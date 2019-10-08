@@ -10,7 +10,13 @@ import (
 	"github.com/nyaruka/goflow/utils/dates"
 )
 
-type Call struct {
+// Do makes the given HTTP request using the current requestor
+func Do(client *http.Client, request *http.Request) (*http.Response, error) {
+	return currentRequestor.Do(client, request)
+}
+
+// Trace holds the complete trace of an HTTP request/response
+type Trace struct {
 	Request       *http.Request
 	Response      *http.Response
 	Body          []byte
@@ -19,7 +25,8 @@ type Call struct {
 	TimeTaken     time.Duration
 }
 
-func Request(client *http.Client, method string, url string, body io.Reader, headers map[string]string) (*Call, error) {
+// DoTrace makes the given request saving traces of the complete request and response
+func DoTrace(client *http.Client, method string, url string, body io.Reader, headers map[string]string) (*Trace, error) {
 	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
@@ -35,7 +42,7 @@ func Request(client *http.Client, method string, url string, body io.Reader, hea
 	}
 
 	start := dates.Now()
-	response, err := currentRequestor.Do(client, request)
+	response, err := Do(client, request)
 	timeTaken := dates.Now().Sub(start)
 
 	if err != nil {
@@ -56,7 +63,7 @@ func Request(client *http.Client, method string, url string, body io.Reader, hea
 	// add read body to response trace
 	responseTrace = append(responseTrace, responseBody...)
 
-	return &Call{
+	return &Trace{
 		Request:       request,
 		Response:      response,
 		RequestTrace:  requestTrace,
