@@ -575,9 +575,11 @@ func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) type
 
 // HasCategory tests whether the category of a result on of the passed in `categories`
 //
-//   @(has_intent(results.foo, "book_flight", 0.5)) -> ERROR
+//   @(has_category(results.webhook, "Success", "Failure")) -> true
+//   @(has_category(results.webhook, "Success", "Failure").match) -> Success
+//   @(has_category(results.webhook, "Failure")) -> false
 //
-// @test has_category(result, categories)
+// @test has_category(result, categories...)
 func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...types.XText) types.XValue {
 	result, err := resultFromXObject(resultObj)
 	if err != nil {
@@ -597,18 +599,20 @@ func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...t
 
 // HasIntent tests whether any intent in a classification result has `name` and minimum `confidence`
 //
-//   @(has_intent(results.foo, "book_flight", 0.5)) -> ERROR
+//   @(has_intent(results.intent, "book_flight", 0.5)) -> true
+//   @(has_intent(results.intent, "book_hotel", 0.2)) -> true
 //
-// @test has_intent(result)
+// @test has_intent(result, name, confidence)
 func HasIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
 	return hasIntent(result, name, confidence, false)
 }
 
 // HasTopIntent tests whether the top intent in a classification result has `name` and minimum `confidence`
 //
-//   @(has_top_intent(results.foo, "book_flight", 0.5)) -> ERROR
+//   @(has_top_intent(results.intent, "book_flight", 0.5)) -> true
+//   @(has_top_intent(results.intent, "book_hotel", 0.5)) -> false
 //
-// @test has_top_intent(result)
+// @test has_top_intent(result, name, confidence)
 func HasTopIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
 	return hasIntent(result, name, confidence, true)
 }

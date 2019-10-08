@@ -145,10 +145,12 @@
 <span id="cb6-3"><a href="#cb6-3"></a>@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the   quick&quot;</span>)) → false</span>
 <span id="cb6-4"><a href="#cb6-4"></a>@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → false</span></code></pre></div>
 <h2 class="item_title">
-<a name="test:has_category" href="#test:has_category">has_category(result, categories)</a>
+<a name="test:has_category" href="#test:has_category">has_category(result, categories…)</a>
 </h2>
 <p>Tests whether the category of a result on of the passed in <code>categories</code></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb7-1"><a href="#cb7-1"></a>@(has_intent(results.foo, <span class="st">&quot;book_flight&quot;</span>, <span class="fl">0.5</span>)) → ERROR</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb7-1"><a href="#cb7-1"></a>@(has_category(results.webhook, <span class="st">&quot;Success&quot;</span>, <span class="st">&quot;Failure&quot;</span>)) → true</span>
+<span id="cb7-2"><a href="#cb7-2"></a>@(has_category(results.webhook, <span class="st">&quot;Success&quot;</span>, <span class="st">&quot;Failure&quot;</span>).match) → Success</span>
+<span id="cb7-3"><a href="#cb7-3"></a>@(has_category(results.webhook, <span class="st">&quot;Failure&quot;</span>)) → false</span></code></pre></div>
 <h2 class="item_title">
 <a name="test:has_date" href="#test:has_date">has_date(text)</a>
 </h2>
@@ -214,10 +216,11 @@
 <div class="sourceCode" id="cb15"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb15-1"><a href="#cb15-1"></a>@(has_group(contact.groups, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>).match) → {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}</span>
 <span id="cb15-2"><a href="#cb15-2"></a>@(has_group(array(), <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) → false</span></code></pre></div>
 <h2 class="item_title">
-<a name="test:has_intent" href="#test:has_intent">has_intent(result)</a>
+<a name="test:has_intent" href="#test:has_intent">has_intent(result, name, confidence)</a>
 </h2>
 <p>Tests whether any intent in a classification result has <code>name</code> and minimum <code>confidence</code></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb16-1"><a href="#cb16-1"></a>@(has_intent(results.foo, <span class="st">&quot;book_flight&quot;</span>, <span class="fl">0.5</span>)) → ERROR</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb16-1"><a href="#cb16-1"></a>@(has_intent(results.intent, <span class="st">&quot;book_flight&quot;</span>, <span class="fl">0.5</span>)) → true</span>
+<span id="cb16-2"><a href="#cb16-2"></a>@(has_intent(results.intent, <span class="st">&quot;book_hotel&quot;</span>, <span class="fl">0.2</span>)) → true</span></code></pre></div>
 <h2 class="item_title">
 <a name="test:has_number" href="#test:has_number">has_number(text)</a>
 </h2>
@@ -357,10 +360,11 @@
 <span id="cb31-4"><a href="#cb31-4"></a>@(has_time(<span class="st">&quot;the time is 10:30:45&quot;</span>).match) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">45.000000</span></span>
 <span id="cb31-5"><a href="#cb31-5"></a>@(has_time(<span class="st">&quot;there is no time here, just the number 25&quot;</span>)) → false</span></code></pre></div>
 <h2 class="item_title">
-<a name="test:has_top_intent" href="#test:has_top_intent">has_top_intent(result)</a>
+<a name="test:has_top_intent" href="#test:has_top_intent">has_top_intent(result, name, confidence)</a>
 </h2>
 <p>Tests whether the top intent in a classification result has <code>name</code> and minimum <code>confidence</code></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb32-1"><a href="#cb32-1"></a>@(has_top_intent(results.foo, <span class="st">&quot;book_flight&quot;</span>, <span class="fl">0.5</span>)) → ERROR</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb32-1"><a href="#cb32-1"></a>@(has_top_intent(results.intent, <span class="st">&quot;book_flight&quot;</span>, <span class="fl">0.5</span>)) → true</span>
+<span id="cb32-2"><a href="#cb32-2"></a>@(has_top_intent(results.intent, <span class="st">&quot;book_hotel&quot;</span>, <span class="fl">0.5</span>)) → false</span></code></pre></div>
 <h2 class="item_title">
 <a name="test:has_value" href="#test:has_value">has_value(value)</a>
 </h2>

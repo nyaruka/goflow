@@ -241,6 +241,46 @@ var testTests = []struct {
 	{"has_group", []types.XValue{}, ERROR},
 
 	{
+		"has_category",
+		[]types.XValue{
+			xj(`{
+				"name": "Response 1",
+				"value": "hi",
+				"category": "Other",
+				"input": "hello",
+				"node_uuid": "0faca870-aca4-469d-89e2-a70df468ac68",
+				"created_on": "2018-07-06T12:30:06.123456789Z"
+			}`),
+			xs("Chicken"),
+			xs("Other"),
+		},
+		result(xs("Other")),
+	},
+	{
+		"has_category",
+		[]types.XValue{
+			xj(`{
+				"name": "Response 1",
+				"value": "hi",
+				"category": "All Responses",
+				"input": "hello",
+				"node_uuid": "0faca870-aca4-469d-89e2-a70df468ac68",
+				"created_on": "2018-07-06T12:30:06.123456789Z"
+			}`),
+			xs("Chicken"),
+		},
+		falseResult,
+	},
+	{
+		"has_category",
+		[]types.XValue{
+			xj(`{}`), // not a result
+			xs("Chicken"),
+		},
+		ERROR,
+	},
+
+	{
 		"has_intent",
 		[]types.XValue{
 			xj(`{

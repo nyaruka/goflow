@@ -176,13 +176,15 @@ without any tokenization.
 @(has_beginning("The Quick Brown", "quick brown")) → false
 ```
 
-<h2 class="item_title"><a name="test:has_category" href="#test:has_category">has_category(result, categories)</a></h2>
+<h2 class="item_title"><a name="test:has_category" href="#test:has_category">has_category(result, categories...)</a></h2>
 
 Tests whether the category of a result on of the passed in `categories`
 
 
 ```objectivec
-@(has_intent(results.foo, "book_flight", 0.5)) → ERROR
+@(has_category(results.webhook, "Success", "Failure")) → true
+@(has_category(results.webhook, "Success", "Failure").match) → Success
+@(has_category(results.webhook, "Failure")) → false
 ```
 
 <h2 class="item_title"><a name="test:has_date" href="#test:has_date">has_date(text)</a></h2>
@@ -282,13 +284,14 @@ Returns whether the `contact` is part of group with the passed in UUID
 @(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) → false
 ```
 
-<h2 class="item_title"><a name="test:has_intent" href="#test:has_intent">has_intent(result)</a></h2>
+<h2 class="item_title"><a name="test:has_intent" href="#test:has_intent">has_intent(result, name, confidence)</a></h2>
 
 Tests whether any intent in a classification result has `name` and minimum `confidence`
 
 
 ```objectivec
-@(has_intent(results.foo, "book_flight", 0.5)) → ERROR
+@(has_intent(results.intent, "book_flight", 0.5)) → true
+@(has_intent(results.intent, "book_hotel", 0.2)) → true
 ```
 
 <h2 class="item_title"><a name="test:has_number" href="#test:has_number">has_number(text)</a></h2>
@@ -495,13 +498,14 @@ Tests whether `text` contains a time.
 @(has_time("there is no time here, just the number 25")) → false
 ```
 
-<h2 class="item_title"><a name="test:has_top_intent" href="#test:has_top_intent">has_top_intent(result)</a></h2>
+<h2 class="item_title"><a name="test:has_top_intent" href="#test:has_top_intent">has_top_intent(result, name, confidence)</a></h2>
 
 Tests whether the top intent in a classification result has `name` and minimum `confidence`
 
 
 ```objectivec
-@(has_top_intent(results.foo, "book_flight", 0.5)) → ERROR
+@(has_top_intent(results.intent, "book_flight", 0.5)) → true
+@(has_top_intent(results.intent, "book_hotel", 0.5)) → false
 ```
 
 <h2 class="item_title"><a name="test:has_value" href="#test:has_value">has_value(value)</a></h2>

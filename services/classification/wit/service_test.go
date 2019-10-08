@@ -53,7 +53,7 @@ func TestService(t *testing.T) {
 				"name": "Booking",
 				"uuid": "20cc4181-48cf-4344-9751-99419796decd"
 			},
-			"created_on": "2019-10-07T15:22:23.123456789Z",
+			"created_on": "2019-10-07T15:22:29.123456789Z",
 			"elapsed_ms": 1000,
 			"request": "GET /message?v=20170307&q=book+flight+to+Quito HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer 23532624376\r\nAccept-Encoding: gzip\r\n\r\n",
 			"response": "HTTP/1.0 200 OK\r\nContent-Length: 139\r\n\r\n{\"_text\":\"book flight to Quito\",\"entities\":{\"intent\":[{\"confidence\":0.84709152161066,\"value\":\"book_flight\"}]},\"msg_id\":\"1M7fAcDWag76OmgDI\"}",
