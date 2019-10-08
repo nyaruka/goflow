@@ -18,6 +18,8 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/services/classification/wit"
+	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 
@@ -42,11 +44,12 @@ var contactJSON = `{
 var usage = `usage: flowrunner [flags] <assets.json> <flow_uuid>`
 
 func main() {
-	var initialMsg, contactLang string
+	var initialMsg, contactLang, witToken string
 	var printRepro bool
 	flags := flag.NewFlagSet("", flag.ExitOnError)
 	flags.StringVar(&initialMsg, "msg", "", "initial message to trigger session with")
 	flags.StringVar(&contactLang, "lang", "eng", "initial language of the contact")
+	flags.StringVar(&witToken, "wit.token", "", "access token for wit.ai")
 	flags.BoolVar(&printRepro, "repro", false, "print repro afterwards")
 	flags.Parse(os.Args[1:])
 	args := flags.Args()
@@ -60,7 +63,9 @@ func main() {
 	assetsPath := args[0]
 	flowUUID := assets.FlowUUID(args[1])
 
-	repro, err := RunFlow(assetsPath, flowUUID, initialMsg, envs.Language(contactLang), os.Stdin, os.Stdout)
+	engine := createEngine(witToken)
+
+	repro, err := RunFlow(engine, assetsPath, flowUUID, initialMsg, envs.Language(contactLang), os.Stdin, os.Stdout)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -74,8 +79,24 @@ func main() {
 	}
 }
 
+func createEngine(witToken string) flows.Engine {
+	builder := engine.NewBuilder().
+		WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-runner", 10000))
+
+	if witToken != "" {
+		builder.WithClassificationServiceFactory(func(session flows.Session, classifier *flows.Classifier) flows.ClassificationService {
+			if classifier.Type() == "wit" {
+				return wit.NewService(classifier, witToken)
+			}
+			return nil
+		})
+	}
+
+	return builder.Build()
+}
+
 // RunFlow steps through a flow
-func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang envs.Language, in io.Reader, out io.Writer) (*Repro, error) {
+func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang envs.Language, in io.Reader, out io.Writer) (*Repro, error) {
 	source, err := static.LoadSource(assetsPath)
 	if err != nil {
 		return nil, err
@@ -115,8 +136,6 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		repro.Trigger = triggers.NewManual(env, flow.Reference(), contact, nil)
 	}
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
-
-	eng := engine.NewBuilder().Build()
 
 	// start our session
 	session, sprint, err := eng.NewSession(sa, repro.Trigger)
@@ -168,6 +187,8 @@ func printEvents(log []flows.Event, out io.Writer) {
 		case *events.BroadcastCreatedEvent:
 			text := typed.Translations[typed.BaseLanguage].Text
 			msg = fmt.Sprintf("🔉 broadcasted '%s' to ...", text)
+		case *events.ClassifierCalledEvent:
+			msg = fmt.Sprintf("👁️‍🗨️ NLU classifier '%s' called and returned %s", typed.Classifier.Name, typed.Status)
 		case *events.ContactFieldChangedEvent:
 			var action string
 			if typed.Value != nil {
@@ -205,6 +226,8 @@ func printEvents(log []flows.Event, out io.Writer) {
 			msg = "⚙️ environment refreshed on resume"
 		case *events.ErrorEvent:
 			msg = fmt.Sprintf("⚠️ %s", typed.Text)
+		case *events.FailureEvent:
+			msg = fmt.Sprintf("🛑 %s", typed.Text)
 		case *events.FlowEnteredEvent:
 			msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
 		case *events.InputLabelsAddedEvent:
@@ -228,7 +251,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 		case *events.RunExpiredEvent:
 			msg = "📆 exiting due to expiration"
 		case *events.RunResultChangedEvent:
-			msg = fmt.Sprintf("📈 run result '%s' changed to '%s'", typed.Name, typed.Value)
+			msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
 		case *events.SessionTriggeredEvent:
 			msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
 		case *events.WaitTimedOutEvent:

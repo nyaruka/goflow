@@ -83,6 +83,29 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewClassifierCalled(
+				assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
+				"https://api.wit.ai/message?v=20170307&q=hello",
+				flows.CallStatusSuccess,
+				"GET /message?v=20170307&q=hello HTTP/1.1",
+				"HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+				123,
+			),
+			`{
+				"classifier": {
+					"uuid": "4b937f49-7fb7-43a5-8e57-14e2f028a471",
+					"name": "Booking"
+				},
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"elapsed_ms": 123,
+				"request": "GET /message?v=20170307&q=hello HTTP/1.1",
+				"response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+				"status": "success",
+				"type": "classifier_called",
+				"url": "https://api.wit.ai/message?v=20170307&q=hello"
+			}`,
+		},
+		{
 			events.NewContactFieldChanged(
 				gender,
 				flows.NewValue(types.NewXText("male"), nil, nil, "", "", ""),

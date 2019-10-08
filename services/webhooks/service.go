@@ -63,7 +63,7 @@ func (s *service) Call(session flows.Session, request *http.Request, resthook st
 			URL:        request.URL.String(),
 			Method:     request.Method,
 			StatusCode: 0,
-			Status:     flows.WebhookStatusConnectionError,
+			Status:     flows.CallStatusConnectionError,
 			Request:    dump,
 			Response:   []byte(err.Error()),
 		}, nil
@@ -140,15 +140,15 @@ func (s *service) newCallFromResponse(requestTrace []byte, response *http.Respon
 }
 
 // determines the webhook status from the HTTP status code
-func statusFromCode(code int, isResthook bool) flows.WebhookStatus {
+func statusFromCode(code int, isResthook bool) flows.CallStatus {
 	// https://zapier.com/developer/documentation/v2/rest-hooks/
 	if isResthook && code == 410 {
-		return flows.WebhookStatusSubscriberGone
+		return flows.CallStatusSubscriberGone
 	}
 	if code/100 == 2 {
-		return flows.WebhookStatusSuccess
+		return flows.CallStatusSuccess
 	}
-	return flows.WebhookStatusResponseError
+	return flows.CallStatusResponseError
 }
 
 var _ flows.WebhookService = (*service)(nil)

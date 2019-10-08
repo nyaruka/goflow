@@ -306,6 +306,24 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
+			actions.NewCallClassifier(
+				actionUUID,
+				assets.NewClassifierReference(assets.ClassifierUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Booking"),
+				"@input.text",
+				"Intent",
+			),
+			`{
+			"type": "call_classifier",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"classifier": {
+				"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
+				"name": "Booking"
+			},
+			"input": "@input.text",
+			"result_name": "Intent"
+		}`,
+		},
+		{
 			actions.NewCallResthook(
 				actionUUID,
 				"new-registration",
@@ -685,7 +703,7 @@ func TestLegacyWebhookPayload(t *testing.T) {
 				"uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
 			},
 			{
-				"arrived_on": "2018-07-06T12:30:49.123456Z",
+				"arrived_on": "2018-07-06T12:30:55.123456Z",
 				"exit_uuid": "9fc5f8b4-2247-43db-b899-ab1ac50ba06c",
 				"node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
 				"uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -709,6 +727,15 @@ func TestLegacyWebhookPayload(t *testing.T) {
 				"name": "Favorite Color",
 				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
 				"value": "red"
+			},
+			"intent": {
+				"category": "Success",
+				"category_localized": "Success",
+				"created_on": "2018-07-06T12:30:51.123456Z",
+				"input": "Hi there",
+				"name": "intent",
+				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+				"value": "book_flight"
 			},
 			"phone_number": {
 				"category": "",

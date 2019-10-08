@@ -243,3 +243,44 @@ func OneDateTimeFunction(f func(envs.Environment, types.XDateTime) types.XValue)
 		return f(env, date)
 	})
 }
+
+// ObjectTextAndNumberFunction creates an XFunction from a function that takes an object, text and a number
+func ObjectTextAndNumberFunction(f func(envs.Environment, *types.XObject, types.XText, types.XNumber) types.XValue) types.XFunction {
+	return NumArgsCheck(3, func(env envs.Environment, args ...types.XValue) types.XValue {
+		object, xerr := types.ToXObject(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+		text, xerr := types.ToXText(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+		num, xerr := types.ToXNumber(env, args[2])
+		if xerr != nil {
+			return xerr
+		}
+
+		return f(env, object, text, num)
+	})
+}
+
+// ObjectAndTextsFunction creates an XFunction from a function that takes an object and any number of text values
+func ObjectAndTextsFunction(f func(envs.Environment, *types.XObject, ...types.XText) types.XValue) types.XFunction {
+	return MinArgsCheck(2, func(env envs.Environment, args ...types.XValue) types.XValue {
+		object, xerr := types.ToXObject(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+
+		texts := make([]types.XText, len(args)-1)
+		for i, arg := range args[1:len(args)] {
+			text, xerr := types.ToXText(env, arg)
+			if xerr != nil {
+				return xerr
+			}
+			texts[i] = text
+		}
+
+		return f(env, object, texts...)
+	})
+}

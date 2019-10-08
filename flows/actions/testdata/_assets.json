@@ -122,6 +122,17 @@
             ]
         }
     ],
+    "classifiers": [
+        {
+            "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+            "name": "Booking",
+            "type": "wit",
+            "intents": [
+                "book_flight",
+                "book_hotel"
+            ]
+        }
+    ],
     "fields": [
         {
             "uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf",

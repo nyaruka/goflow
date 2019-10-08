@@ -19,11 +19,11 @@ import (
 )
 
 var webhookCategories = []string{"Success", "Failure"}
-var webhookStatusCategories = map[flows.WebhookStatus]string{
-	flows.WebhookStatusSuccess:         "Success",
-	flows.WebhookStatusResponseError:   "Failure",
-	flows.WebhookStatusConnectionError: "Failure",
-	flows.WebhookStatusSubscriberGone:  "Failure",
+var webhookStatusCategories = map[flows.CallStatus]string{
+	flows.CallStatusSuccess:         "Success",
+	flows.CallStatusResponseError:   "Failure",
+	flows.CallStatusConnectionError: "Failure",
+	flows.CallStatusSubscriberGone:  "Failure",
 }
 
 var registeredTypes = map[string](func() flows.Action){}

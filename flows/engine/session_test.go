@@ -113,7 +113,7 @@ var templateTests = []struct {
 	{"@results.favorite_color.category_localized", "Red", "", false},
 	{"@(is_error(results.favorite_icecream))", "true", "", false},
 	{"@(has_error(results.favorite_icecream).match)", "object has no property 'favorite_icecream'", "", false},
-	{"@(count(results))", "4", "", false},
+	{"@(count(results))", "5", "", false},
 
 	{"@run.results.favorite_color", `red`, "", false},
 	{"@run.results.favorite_color.value", "red", "", false},
@@ -127,7 +127,7 @@ var templateTests = []struct {
 	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'", false},
 	{"@(is_error(run.results.favorite_icecream))", "true", "", false},
 	{"@(has_error(run.results.favorite_icecream).match)", "object has no property 'favorite_icecream'", "", false},
-	{"@(count(run.results))", "4", "", false},
+	{"@(count(run.results))", "5", "", false},
 
 	{"@run.status", "completed", "", false},
 
@@ -287,6 +287,44 @@ func TestContextToJSON(t *testing.T) {
 						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
 						"value":"red",
 						"values":["red"]
+					},
+					"intent": {
+						"categories": [
+							"Success"
+						],
+						"categories_localized": [
+							"Success"
+						],
+						"category": "Success",
+						"category_localized": "Success",
+						"created_on": "2018-04-11T13:24:30.123456Z",
+						"extra": {
+							"entities": {
+								"location": [
+									{
+										"confidence": 1,
+										"value": "Quito"
+									}
+								]
+							},
+							"intents": [
+								{
+									"confidence": 0.5,
+									"name": "book_flight"
+								},
+								{
+									"confidence": 0.25,
+									"name": "book_hotel"
+								}
+							]
+						},
+						"input": "Hi there",
+						"name": "intent",
+						"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"value": "book_flight",
+						"values": [
+							"book_flight"
+						]
 					},
 					"phone_number":{
 						"category":"",

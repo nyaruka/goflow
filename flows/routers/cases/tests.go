@@ -1,6 +1,7 @@
 package cases
 
 import (
+	"encoding/json"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -66,8 +67,12 @@ var XTESTS = map[string]types.XFunction{
 	"has_email": functions.OneTextFunction(HasEmail),
 	"has_group": functions.MinAndMaxArgsCheck(2, 3, HasGroup),
 
+	"has_category":   functions.ObjectAndTextsFunction(HasCategory),
+	"has_intent":     functions.ObjectTextAndNumberFunction(HasIntent),
+	"has_top_intent": functions.ObjectTextAndNumberFunction(HasTopIntent),
+
 	"has_state":    functions.OneTextFunction(HasState),
-	"has_district": HasDistrict,
+	"has_district": functions.MinAndMaxArgsCheck(1, 2, HasDistrict),
 	"has_ward":     HasWard,
 }
 
@@ -568,6 +573,50 @@ func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) type
 	return NewTrueResult(types.NewXText(formatted))
 }
 
+// HasCategory tests whether the category of a result on of the passed in `categories`
+//
+//   @(has_category(results.webhook, "Success", "Failure")) -> true
+//   @(has_category(results.webhook, "Success", "Failure").match) -> Success
+//   @(has_category(results.webhook, "Failure")) -> false
+//
+// @test has_category(result, categories...)
+func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...types.XText) types.XValue {
+	result, err := resultFromXObject(resultObj)
+	if err != nil {
+		return types.NewXErrorf("first argument must be a result")
+	}
+
+	category := types.NewXText(result.Category)
+
+	for _, textCategory := range categories {
+		if category.Equals(textCategory) {
+			return NewTrueResult(category)
+		}
+	}
+
+	return FalseResult
+}
+
+// HasIntent tests whether any intent in a classification result has `name` and minimum `confidence`
+//
+//   @(has_intent(results.intent, "book_flight", 0.5)) -> true
+//   @(has_intent(results.intent, "book_hotel", 0.2)) -> true
+//
+// @test has_intent(result, name, confidence)
+func HasIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
+	return hasIntent(result, name, confidence, false)
+}
+
+// HasTopIntent tests whether the top intent in a classification result has `name` and minimum `confidence`
+//
+//   @(has_top_intent(results.intent, "book_flight", 0.5)) -> true
+//   @(has_top_intent(results.intent, "book_hotel", 0.5)) -> false
+//
+// @test has_top_intent(result, name, confidence)
+func HasTopIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
+	return hasIntent(result, name, confidence, true)
+}
+
 // HasState tests whether a state name is contained in the `text`
 //
 //   @(has_state("Kigali").match) -> Rwanda > Kigali City
@@ -599,10 +648,6 @@ func HasState(env envs.Environment, text types.XText) types.XValue {
 //
 // @test has_district(text, state)
 func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 && len(args) != 2 {
-		return types.NewXErrorf("takes one or two arguments, got %d", len(args))
-	}
-
 	runEnv, _ := env.(flows.RunEnvironment)
 
 	var text, stateText types.XText
@@ -935,4 +980,50 @@ func isDateEQTest(value dates.Date, test dates.Date) bool {
 
 func isDateGTTest(value dates.Date, test dates.Date) bool {
 	return value.Compare(test) > 0
+}
+
+//------------------------------------------------------------------------------------------
+// Result Test helpers
+//------------------------------------------------------------------------------------------
+
+// loads a result from an object
+func resultFromXObject(object *types.XObject) (*flows.Result, error) {
+	marshaled, _ := json.Marshal(object)
+	result := &flows.Result{}
+	err := utils.UnmarshalAndValidate(marshaled, result)
+	return result, err
+}
+
+func hasIntent(resultObj *types.XObject, name types.XText, confidence types.XNumber, topOnly bool) types.XValue {
+	result, err := resultFromXObject(resultObj)
+	if err != nil {
+		return types.NewXErrorf("first argument must be a result")
+	}
+
+	// extra should contain the NLU classification
+	classification := &flows.Classification{}
+	json.Unmarshal(result.Extra, classification)
+
+	// which intents will be considered
+	intents := classification.Intents
+	if topOnly && len(intents) > 0 {
+		intents = []flows.ExtractedIntent{classification.Intents[0]}
+	}
+
+	for _, intent := range intents {
+		intentName := types.NewXText(intent.Name)
+		if intentName.Equals(name) && intent.Confidence.GreaterThanOrEqual(confidence.Native()) {
+			// build extra as a mapping of entity names to most likely values
+			extra := make(map[string]types.XValue, len(classification.Entities))
+			for entitiyName, possibilities := range classification.Entities {
+				if len(possibilities) > 0 {
+					extra[entitiyName] = types.NewXText(possibilities[0].Value)
+				}
+			}
+
+			return NewTrueResultWithExtra(intentName, types.NewXObject(extra))
+		}
+	}
+
+	return FalseResult
 }

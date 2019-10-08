@@ -42,7 +42,7 @@ func TestLegacyExtra(t *testing.T) {
 		{"@(legacy_extra.array[1])", `x`},
 		{"@legacy_extra.object.FOO", `bar`},
 		{`@(legacy_extra.object["1"])`, `xx`},
-		{"@legacy_extra", `{address: {state: WA}, array: [1, x], bool: true, number: 123.34, object: {1: xx, foo: bar}, source: website, text: hello, webhook: {"bool": true, "number": 123.34, "text": "hello", "object": {"foo": "bar", "1": "xx"}, "array": [1, "x"]}}`},
+		{"@legacy_extra", `{address: {state: WA}, array: [1, x], bool: true, entities: {location: [{confidence: 1, value: Quito}]}, intent: {"intents":[{"name":"book_flight","confidence":0.5},{"name":"book_hotel","confidence":0.25}],"entities":{"location":[{"value":"Quito","confidence":1}]}}, intents: [{confidence: 0.5, name: book_flight}, {confidence: 0.25, name: book_hotel}], number: 123.34, object: {1: xx, foo: bar}, source: website, text: hello, webhook: {"bool": true, "number": 123.34, "text": "hello", "object": {"foo": "bar", "1": "xx"}, "array": [1, "x"]}}`},
 	}
 	for _, tc := range tests {
 		output, err := run.EvaluateTemplate(tc.template)

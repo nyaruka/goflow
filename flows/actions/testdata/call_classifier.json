@@ -1,0 +1,185 @@
+[
+    {
+        "description": "Error event created and result with category skipped created if input evaluates to empty",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "classifier": {
+                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                "name": "Booking"
+            },
+            "input": "@(\"\")",
+            "result_name": "Intent"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't classify empty input, skipping classification",
+                "type": "error"
+            },
+            {
+                "category": "Skipped",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Intent",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "@(\"\")"
+            ],
+            "dependencies": [
+                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "intent",
+                    "name": "Intent",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "Error event and result with category failure created if classifier not found",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "classifier": {
+                "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                "name": "Deleted"
+            },
+            "input": "@input.text",
+            "result_name": "Intent"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "missing classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]",
+                "type": "error"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "Hi everybody",
+                "name": "Intent",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "@input.text"
+            ],
+            "dependencies": [
+                "classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "intent",
+                    "name": "Intent",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "Result with category success created if classification happens",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "classifier": {
+                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                "name": "Booking"
+            },
+            "input": "@input.text",
+            "result_name": "Intent"
+        },
+        "events": [
+            {
+                "classifier": {
+                    "name": "Booking",
+                    "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
+                },
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 1,
+                "request": "GET /message?v=20170307&q=hello HTTP/1.1",
+                "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+                "status": "success",
+                "url": "http://test.acme.ai?classifiy",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "classifier_called"
+            },
+            {
+                "category": "Success",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "extra": {
+                    "entities": {
+                        "location": [
+                            {
+                                "confidence": 1,
+                                "value": "Quito"
+                            }
+                        ]
+                    },
+                    "intents": [
+                        {
+                            "confidence": 0.5,
+                            "name": "book_flight"
+                        },
+                        {
+                            "confidence": 0.25,
+                            "name": "book_hotel"
+                        }
+                    ]
+                },
+                "input": "Hi everybody",
+                "name": "Intent",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "book_flight"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "@input.text"
+            ],
+            "dependencies": [
+                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "intent",
+                    "name": "Intent",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    }
+]

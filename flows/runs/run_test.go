@@ -121,7 +121,7 @@ func TestRun(t *testing.T) {
 		assert.Equal(t, string(flows.RunStatusCompleted), string(r.Status()))
 		assert.Equal(t, flow, r.Flow())
 		assert.Equal(t, flow.Reference(), r.FlowReference())
-		assert.Equal(t, 8, len(r.Events()))
+		assert.Equal(t, 10, len(r.Events()))
 		assert.Equal(t, "Parent", r.Parent().Flow().Name())
 		assert.Equal(t, 0, len(r.Ancestors())) // no parent runs within this session
 	}

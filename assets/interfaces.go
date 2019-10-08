@@ -46,6 +46,26 @@ type Channel interface {
 	MatchPrefixes() []string
 }
 
+// ClassifierUUID is the UUID of an NLU classifier
+type ClassifierUUID uuids.UUID
+
+// Classifier is an NLU classifier.
+//
+//   {
+//     "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
+//     "name": "Booking",
+//     "type": "wit",
+//     "intents": ["book_flight", "book_hotel"]
+//   }
+//
+// @asset classifier
+type Classifier interface {
+	UUID() ClassifierUUID
+	Name() string
+	Type() string
+	Intents() []string
+}
+
 // FieldUUID is the UUID of a field
 type FieldUUID uuids.UUID
 
@@ -234,6 +254,7 @@ type TemplateTranslation interface {
 // Source is a source of assets
 type Source interface {
 	Channels() ([]Channel, error)
+	Classifiers() ([]Classifier, error)
 	Fields() ([]Field, error)
 	Flow(FlowUUID) (Flow, error)
 	Groups() ([]Group, error)

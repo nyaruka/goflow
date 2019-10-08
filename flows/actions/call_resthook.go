@@ -117,7 +117,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 		webhookSvc := run.Session().Engine().Services().Webhook(run.Session())
 		if webhookSvc == nil {
-			logEvent(events.NewError(errors.Errorf("no webhook provider available")))
+			logEvent(events.NewError(errors.Errorf("no webhook service available")))
 			return nil
 		}
 
@@ -150,9 +150,9 @@ func (a *CallResthookAction) pickResultCall(calls []*flows.WebhookCall) *flows.W
 
 	for _, call := range calls {
 		switch call.Status {
-		case flows.WebhookStatusSuccess:
+		case flows.CallStatusSuccess:
 			lastSuccess = call
-		case flows.WebhookStatusSubscriberGone:
+		case flows.CallStatusSubscriberGone:
 			last410 = call
 		default:
 			lastFailure = call

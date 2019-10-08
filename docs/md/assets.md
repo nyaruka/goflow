@@ -25,6 +25,23 @@ Is something that can send/receive messages.
 }
 ```
 
+<h2 class="item_title"><a name="asset:classifier" href="#asset:classifier">classifier</a></h2>
+
+Is an NLU classifier.
+
+
+```objectivec
+{
+    "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
+    "name": "Booking",
+    "type": "wit",
+    "intents": [
+        "book_flight",
+        "book_hotel"
+    ]
+}
+```
+
 <h2 class="item_title"><a name="asset:field" href="#asset:field">field</a></h2>
 
 Is a custom contact property.

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/providers/webhooks"
+	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
