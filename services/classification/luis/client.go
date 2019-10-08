@@ -11,10 +11,6 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-const (
-	apiBaseURL = "https://westus.api.cognitive.microsoft.com/luis/v2.0"
-)
-
 type ExtractedIntent struct {
 	Intent string          `json:"intent"`
 	Score  decimal.Decimal `json:"score"`
@@ -45,22 +41,22 @@ type PredictResponse struct {
 // Client is a basic LUIS client
 type Client struct {
 	httpClient *http.Client
-	appID      string
+	appURL     string
 	key        string
 }
 
 // NewClient creates a new client
-func NewClient(httpClient *http.Client, appID, key string) *Client {
+func NewClient(httpClient *http.Client, appURL, key string) *Client {
 	return &Client{
 		httpClient: httpClient,
-		appID:      appID,
+		appURL:     appURL,
 		key:        key,
 	}
 }
 
 // Predict gets the published endpoint predictions for the given query
 func (c *Client) Predict(q string) (*PredictResponse, *httpx.Trace, error) {
-	endpoint := fmt.Sprintf("%s/apps/%s/?verbose=true&subscription-key=%s&q=%s", apiBaseURL, c.appID, c.key, url.QueryEscape(q))
+	endpoint := fmt.Sprintf("%s/?verbose=true&subscription-key=%s&q=%s", c.appURL, c.key, url.QueryEscape(q))
 
 	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, nil)
 	if err != nil {

@@ -68,7 +68,11 @@ func TestService(t *testing.T) {
 	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
-	svc := luis.NewService(test.NewClassifier("Booking", "luis", []string{"book_flight", "book_hotel"}), "f96abf2f-3b53-4766-8ea6-09a655222a02", "3246231")
+	svc := luis.NewService(
+		test.NewClassifier("Booking", "luis", []string{"book_flight", "book_hotel"}),
+		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02",
+		"3246231",
+	)
 
 	eventLog := test.NewEventLog()
 

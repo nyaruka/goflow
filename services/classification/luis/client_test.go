@@ -54,7 +54,11 @@ func TestPredict(t *testing.T) {
 	}))
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	client := luis.NewClient(http.DefaultClient, "f96abf2f-3b53-4766-8ea6-09a655222a02", "3246231")
+	client := luis.NewClient(
+		http.DefaultClient,
+		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02",
+		"3246231",
+	)
 
 	response, trace, err := client.Predict("Hello")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
