@@ -14,14 +14,14 @@ type service struct {
 }
 
 // NewService creates a new NLU service
-func NewService(classifier *flows.Classifier, accessToken string) flows.NLUService {
+func NewService(classifier *flows.Classifier, accessToken string) flows.ClassificationService {
 	return &service{
 		classifier:  classifier,
 		accessToken: accessToken,
 	}
 }
 
-func (s *service) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.NLUClassification, error) {
+func (s *service) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.Classification, error) {
 	client := NewClient(session.Engine().HTTPClient(), s.accessToken)
 
 	message, trace, err := client.Message(input)
@@ -43,7 +43,7 @@ func (s *service) Classify(session flows.Session, input string, logEvent flows.E
 		return nil, err
 	}
 
-	result := &flows.NLUClassification{
+	result := &flows.Classification{
 		Intents:  make([]flows.ExtractedIntent, 0, 1),
 		Entities: make(map[string][]flows.ExtractedEntity),
 	}
@@ -72,4 +72,4 @@ func (s *service) Classify(session flows.Session, input string, logEvent flows.E
 	return result, nil
 }
 
-var _ flows.NLUService = (*service)(nil)
+var _ flows.ClassificationService = (*service)(nil)

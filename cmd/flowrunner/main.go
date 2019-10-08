@@ -18,7 +18,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/services/nlu/wit"
+	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
@@ -84,7 +84,7 @@ func createEngine(witToken string) flows.Engine {
 		WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-runner", 10000))
 
 	if witToken != "" {
-		builder.WithNLUServiceFactory(func(session flows.Session, classifier *flows.Classifier) flows.NLUService {
+		builder.WithClassificationServiceFactory(func(session flows.Session, classifier *flows.Classifier) flows.ClassificationService {
 			if classifier.Type() == "wit" {
 				return wit.NewService(classifier, witToken)
 			}

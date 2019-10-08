@@ -75,8 +75,8 @@ func (b *Builder) WithWebhookServiceFactory(f WebhookServiceFactory) *Builder {
 	return b
 }
 
-// WithNLUServiceFactory sets the NLU service factory
-func (b *Builder) WithNLUServiceFactory(f NLUServiceFactory) *Builder {
+// WithClassificationServiceFactory sets the NLU service factory
+func (b *Builder) WithClassificationServiceFactory(f ClassificationServiceFactory) *Builder {
 	b.eng.services.nlu = f
 	return b
 }

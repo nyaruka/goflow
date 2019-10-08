@@ -997,7 +997,7 @@ func hasIntent(resultObj *types.XObject, name types.XText, confidence types.XNum
 	}
 
 	// extra should contain the NLU classification
-	classification := &flows.NLUClassification{}
+	classification := &flows.Classification{}
 	json.Unmarshal(result.Extra, classification)
 
 	// which intents will be considered

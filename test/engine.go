@@ -15,7 +15,7 @@ import (
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
 		WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
-		WithNLUServiceFactory(func(s flows.Session, c *flows.Classifier) flows.NLUService { return newNLUService(c) }).
+		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) flows.ClassificationService { return newClassificationService(c) }).
 		WithAirtimeServiceFactory(func(flows.Session) flows.AirtimeService { return newAirtimeService("RWF") }).
 		Build()
 }
@@ -25,11 +25,11 @@ type nluService struct {
 	classifier *flows.Classifier
 }
 
-func newNLUService(classifier *flows.Classifier) *nluService {
+func newClassificationService(classifier *flows.Classifier) *nluService {
 	return &nluService{classifier: classifier}
 }
 
-func (s *nluService) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.NLUClassification, error) {
+func (s *nluService) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.Classification, error) {
 	classifierIntents := s.classifier.Intents()
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")
@@ -47,7 +47,7 @@ func (s *nluService) Classify(session flows.Session, input string, logEvent flow
 		1,
 	))
 
-	classification := &flows.NLUClassification{
+	classification := &flows.Classification{
 		Intents: extractedIntents,
 		Entities: map[string][]flows.ExtractedEntity{
 			"location": []flows.ExtractedEntity{
@@ -59,7 +59,7 @@ func (s *nluService) Classify(session flows.Session, input string, logEvent flow
 	return classification, nil
 }
 
-var _ flows.NLUService = (*nluService)(nil)
+var _ flows.ClassificationService = (*nluService)(nil)
 
 // implementation of an airtime service for testing which uses a fixed currency
 type airtimeService struct {

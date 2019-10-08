@@ -86,7 +86,7 @@ func (a *CallClassifierAction) Execute(run flows.FlowRun, step flows.Step, logMo
 	return nil
 }
 
-func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.NLUClassification, bool, error) {
+func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool, error) {
 	if input == "" {
 		return nil, true, errors.New("can't classify empty input, skipping classification")
 	}
@@ -103,7 +103,7 @@ func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, inpu
 	return classification, false, err
 }
 
-func (a *CallClassifierAction) saveSuccess(run flows.FlowRun, step flows.Step, input string, classification *flows.NLUClassification, logEvent flows.EventCallback) {
+func (a *CallClassifierAction) saveSuccess(run flows.FlowRun, step flows.Step, input string, classification *flows.Classification, logEvent flows.EventCallback) {
 	// result value is name of top ranked intent if there is one
 	value := ""
 	if len(classification.Intents) > 0 {

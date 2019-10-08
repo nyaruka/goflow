@@ -12,7 +12,7 @@ import (
 // Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
 	Webhook(Session) WebhookService
-	NLU(Session, *Classifier) NLUService
+	NLU(Session, *Classifier) ClassificationService
 	Airtime(Session) AirtimeService
 }
 
@@ -63,15 +63,15 @@ type ExtractedEntity struct {
 	Confidence decimal.Decimal `json:"confidence"`
 }
 
-// NLUClassification is the result of an NLU classification
-type NLUClassification struct {
+// Classification is the result of an NLU classification
+type Classification struct {
 	Intents  []ExtractedIntent            `json:"intents,omitempty"`
 	Entities map[string][]ExtractedEntity `json:"entities,omitempty"`
 }
 
-// NLUService provides NLU functionality to the engine
-type NLUService interface {
-	Classify(session Session, input string, logEvent EventCallback) (*NLUClassification, error)
+// ClassificationService provides NLU functionality to the engine
+type ClassificationService interface {
+	Classify(session Session, input string, logEvent EventCallback) (*Classification, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer

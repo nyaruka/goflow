@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/nyaruka/goflow/services/nlu/wit"
+	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/shopspring/decimal"
