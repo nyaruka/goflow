@@ -48,15 +48,15 @@ func NewClient(httpClient *http.Client, accessToken string) *Client {
 func (c *Client) Message(q string) (*MessageResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/message?v=%s&q=%s", apiBaseURL, version, url.QueryEscape(q))
 
-	call, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, c.headers)
+	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, c.headers)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	response := &MessageResponse{}
-	if err := utils.UnmarshalAndValidate(call.Body, response); err != nil {
-		return nil, call, err
+	if err := utils.UnmarshalAndValidate(trace.Body, response); err != nil {
+		return nil, trace, err
 	}
 
-	return response, call, nil
+	return response, trace, nil
 }
