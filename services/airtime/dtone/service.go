@@ -14,7 +14,7 @@ type service struct {
 	currency string
 }
 
-// NewProvider creates a new DTOne airtime transfer provider
+// NewService creates a new DTOne airtime service
 func NewService(login, apiToken, currency string) flows.AirtimeService {
 	return &service{
 		login:    login,
@@ -30,9 +30,9 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		Status:    flows.AirtimeTransferStatusFailed,
 	}
 
-	client := NewClient(s.login, s.apiToken, session.Engine().HTTPClient())
+	client := NewClient(session.Engine().HTTPClient(), s.login, s.apiToken)
 
-	info, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
+	info, _, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
 	if err != nil {
 		return t, err
 	}
@@ -70,7 +70,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		return t, err
 	}
 
-	topup, err := client.Topup(reservedID, sender.Path(), recipient.Path(), useProduct, "")
+	topup, _, err := client.Topup(reservedID, sender.Path(), recipient.Path(), useProduct, "")
 	if err != nil {
 		return t, err
 	}

@@ -50,7 +50,7 @@ func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decima
 	}
 }
 
-// Execute creates the email events
+// Execute executes the transfer action
 func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	contact := run.Contact()
 	if contact == nil {

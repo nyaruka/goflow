@@ -26,7 +26,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-var contactJSON = `{
+const contactJSON = `{
 	"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
 	"id": 1234567,
 	"name": "Ben Haggerty",
@@ -41,7 +41,7 @@ var contactJSON = `{
 }
 `
 
-var usage = `usage: flowrunner [flags] <assets.json> <flow_uuid>`
+const usage = `usage: flowrunner [flags] <assets.json> <flow_uuid>`
 
 func main() {
 	var initialMsg, contactLang, witToken string
