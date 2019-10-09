@@ -85,5 +85,5 @@ func TestPredict(t *testing.T) {
 	assert.Equal(t, []luis.ExtractedEntity{
 		luis.ExtractedEntity{Entity: "quito", Type: "City", StartIndex: 17, EndIndex: 21, Score: decimal.RequireFromString(`0.9644149`)},
 	}, response.Entities)
-	assert.Equal(t, luis.SentimentAnalysis{"positive", decimal.RequireFromString(`0.731448531`)}, response.SentimentAnalysis)
+	assert.Equal(t, &luis.SentimentAnalysis{"positive", decimal.RequireFromString(`0.731448531`)}, response.SentimentAnalysis)
 }

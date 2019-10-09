@@ -62,6 +62,13 @@ func (s *service) Classify(session flows.Session, input string, logEvent flows.E
 		}
 	}
 
+	// if sentiment analysis was included, convert to an entity
+	if response.SentimentAnalysis != nil {
+		result.Entities["sentiment"] = []flows.ExtractedEntity{
+			flows.ExtractedEntity{Value: response.SentimentAnalysis.Label, Confidence: response.SentimentAnalysis.Score},
+		}
+	}
+
 	return result, nil
 }
 

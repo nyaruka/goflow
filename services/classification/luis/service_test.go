@@ -88,6 +88,9 @@ func TestService(t *testing.T) {
 		"City": []flows.ExtractedEntity{
 			flows.ExtractedEntity{Value: "quito", Confidence: decimal.RequireFromString(`0.9644149`)},
 		},
+		"sentiment": []flows.ExtractedEntity{
+			flows.ExtractedEntity{Value: "positive", Confidence: decimal.RequireFromString(`0.731448531`)},
+		},
 	}, classification.Entities)
 
 	eventsJSON, _ := json.Marshal(eventLog.Events)

@@ -31,11 +31,11 @@ type SentimentAnalysis struct {
 
 // PredictResponse is the response from a predict request
 type PredictResponse struct {
-	Query             string            `json:"query"`
-	TopScoringIntent  *ExtractedIntent  `json:"topScoringIntent"`
-	Intents           []ExtractedIntent `json:"intents" validate:"required"`
-	Entities          []ExtractedEntity `json:"entities"`
-	SentimentAnalysis SentimentAnalysis `json:"sentimentAnalysis"`
+	Query             string             `json:"query"`
+	TopScoringIntent  *ExtractedIntent   `json:"topScoringIntent"`
+	Intents           []ExtractedIntent  `json:"intents" validate:"required"`
+	Entities          []ExtractedEntity  `json:"entities"`
+	SentimentAnalysis *SentimentAnalysis `json:"sentimentAnalysis"`
 }
 
 // Client is a basic LUIS client
