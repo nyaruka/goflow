@@ -10,21 +10,23 @@ import (
 // a classification service implmentation for a LUIS app
 type service struct {
 	classifier *flows.Classifier
-	appURL     string
+	endpoint   string
+	appID      string
 	key        string
 }
 
 // NewService creates a new classification service
-func NewService(classifier *flows.Classifier, appURL, key string) flows.ClassificationService {
+func NewService(classifier *flows.Classifier, endpoint, appID, key string) flows.ClassificationService {
 	return &service{
 		classifier: classifier,
-		appURL:     appURL,
+		endpoint:   endpoint,
+		appID:      appID,
 		key:        key,
 	}
 }
 
 func (s *service) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.Classification, error) {
-	client := NewClient(session.Engine().HTTPClient(), s.appURL, s.key)
+	client := NewClient(session.Engine().HTTPClient(), s.endpoint, s.appID, s.key)
 
 	response, trace, err := client.Predict(input)
 	if trace != nil {
