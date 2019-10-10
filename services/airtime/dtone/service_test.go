@@ -68,25 +68,27 @@ error_code=0
 error_txt=Transaction successful
 `
 
-var withCRLF = func(s string) string { return strings.Replace(msisdnResponse, "\n", "\r\n", -1) }
+var withCRLF = func(s string) string { return strings.Replace(s, "\n", "\r\n", -1) }
 
-func TestService(t *testing.T) {
+func TestServiceWithSuccessfulTopup(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
-	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []*httpx.MockResponse{
 			httpx.NewMockResponse(200, withCRLF(msisdnResponse)),
 			httpx.NewMockResponse(200, withCRLF(reserveResponse)),
 			httpx.NewMockResponse(200, withCRLF(topupResponse)),
 		},
-	}))
+	})
+
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
+	httpx.SetRequestor(mocks)
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC)))
 
-	svc := dtone.NewService("login", "token", "RWF")
+	svc := dtone.NewService("login", "token", "USD")
 
 	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)
@@ -105,6 +107,57 @@ func TestService(t *testing.T) {
 		Sender:    urns.URN("tel:+593979099111"),
 		Recipient: urns.URN("tel:+593979099111"),
 		Currency:  "USD",
-		Amount:    decimal.RequireFromString("1.5"),
+		Amount:    decimal.RequireFromString("1"), // closest product
 	}, transfer)
+
+	assert.False(t, mocks.HasUnused())
+}
+
+func TestServiceFailedTransfers(t *testing.T) {
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
+
+	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
+		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []*httpx.MockResponse{
+			httpx.NewMockResponse(200, withCRLF(msisdnResponse)),
+			httpx.NewMockResponse(200, withCRLF(msisdnResponse)),
+		},
+	})
+
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
+	httpx.SetRequestor(mocks)
+	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC)))
+
+	svc := dtone.NewService("login", "token", "USD")
+
+	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	// try when currency not configured
+	eventLog := test.NewEventLog()
+	transfer, err := svc.Transfer(
+		session,
+		urns.URN("tel:+593979099111"),
+		urns.URN("tel:+593979099111"),
+		map[string]decimal.Decimal{"RWF": decimal.RequireFromString("1000")},
+		eventLog.Log,
+	)
+	assert.EqualError(t, err, "no amount configured for transfers in USD")
+	assert.Nil(t, transfer)
+
+	// try when amount is smaller than mimimum in currency
+	eventLog = test.NewEventLog()
+	transfer, err = svc.Transfer(
+		session,
+		urns.URN("tel:+593979099111"),
+		urns.URN("tel:+593979099111"),
+		map[string]decimal.Decimal{"USD": decimal.RequireFromString("0.10")},
+		eventLog.Log,
+	)
+	assert.EqualError(t, err, "amount requested is smaller than the mimimum topup of 1 USD")
+	assert.Nil(t, transfer)
+
+	assert.False(t, mocks.HasUnused())
 }

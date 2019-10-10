@@ -37,12 +37,6 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		return nil, errors.Errorf("no amount configured for transfers in %s", info.DestinationCurrency)
 	}
 
-	if info.OpenRange {
-		// TODO add support for open-range topups once we can find numbers to test this with
-		// see https://shop.transferto.com/shop/v3/doc/TransferTo_API_OR.pdf
-		return nil, errors.Errorf("transferto account is configured for open-range which is not yet supported")
-	}
-
 	// find the product closest to our desired amount
 	var useProduct string
 	useAmount := decimal.Zero
@@ -52,6 +46,10 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 			useProduct = product
 			useAmount = price
 		}
+	}
+
+	if useAmount == decimal.Zero {
+		return nil, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
 	}
 
 	reservedID, err := client.ReserveID()
