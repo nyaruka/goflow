@@ -17,16 +17,6 @@
                 "type": "error"
             },
             {
-                "amount": 0,
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "currency": "RWF",
-                "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "sender": "tel:+12345671111",
-                "status": "failed",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "airtime_transferred"
-            },
-            {
                 "category": "Failure",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "name": "Reward Transfer",
@@ -38,7 +28,20 @@
         "inspection": {
             "templates": [],
             "dependencies": [],
-            "results": []
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "reward_transfer",
+                    "name": "Reward Transfer",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
         }
     },
     {
@@ -59,7 +62,6 @@
                 "currency": "RWF",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "sender": "tel:+12345671111",
-                "status": "success",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "airtime_transferred"
             },
@@ -75,7 +77,20 @@
         "inspection": {
             "templates": [],
             "dependencies": [],
-            "results": []
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "reward_transfer",
+                    "name": "Reward Transfer",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
         }
     }
 ]

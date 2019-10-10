@@ -23,29 +23,19 @@ func NewService(login, apiToken, currency string) flows.AirtimeService {
 	}
 }
 
-func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
-	t := &flows.AirtimeTransfer{
-		Sender:    sender,
-		Recipient: recipient,
-		Status:    flows.AirtimeTransferStatusFailed,
-	}
-
+func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
 	client := NewClient(session.Engine().HTTPClient(), s.login, s.apiToken)
 
 	info, _, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
 	if err != nil {
-		return t, err
+		return nil, err
 	}
-
-	t.Currency = info.DestinationCurrency
 
 	// look up the amount to send in this currency
-	amount, hasAmount := amounts[t.Currency]
+	amount, hasAmount := amounts[info.DestinationCurrency]
 	if !hasAmount {
-		return t, errors.Errorf("no amount configured for transfers in %s", t.Currency)
+		return nil, errors.Errorf("no amount configured for transfers in %s", info.DestinationCurrency)
 	}
-
-	t.DesiredAmount = amount
 
 	if info.OpenRange {
 		// TODO add support for open-range topups once we can find numbers to test this with
@@ -63,19 +53,21 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 			useAmount = price
 		}
 	}
-	t.ActualAmount = useAmount
 
 	reservedID, err := client.ReserveID()
 	if err != nil {
-		return t, err
+		return nil, err
 	}
 
 	topup, _, err := client.Topup(reservedID, sender.Path(), recipient.Path(), useProduct, "")
 	if err != nil {
-		return t, err
+		return nil, err
 	}
 
-	t.ActualAmount = topup.ActualProductSent
-	t.Status = flows.AirtimeTransferStatusSuccess
-	return t, nil
+	return &flows.AirtimeTransfer{
+		Sender:    sender,
+		Recipient: recipient,
+		Currency:  info.DestinationCurrency,
+		Amount:    topup.ActualProductSent,
+	}, nil
 }

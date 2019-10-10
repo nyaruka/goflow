@@ -1771,26 +1771,19 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     }
                 ],
-                "operand": "@results.transfer.category",
+                "operand": "@results.transfer",
                 "cases": [
                     {
                         "arguments": [
-                            "Success"
+                            "Success",
+                            "Skipped"
                         ],
                         "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_only_text",
+                        "type": "has_category",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
-                    },
-                    {
-                        "arguments": [
-                            "Failure"
-                        ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_only_text",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     }
                 ],
-                "default_category_uuid": ""
+                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
             },
             "exits": [
                 {
