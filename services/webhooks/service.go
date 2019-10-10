@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/pkg/errors"
 )
@@ -55,7 +56,7 @@ func (s *service) Call(session flows.Session, request *http.Request, resthook st
 	}
 
 	start := dates.Now()
-	response, err := session.Engine().HTTPClient().Do(request)
+	response, err := httpx.Do(session.Engine().HTTPClient(), request)
 	timeTaken := dates.Now().Sub(start)
 
 	if err != nil {

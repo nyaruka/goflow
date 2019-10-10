@@ -187,15 +187,15 @@
         {
             "slug": "new-registration",
             "subscribers": [
-                "http://localhost:49996/?cmd=success",
-                "http://localhost:49996/?cmd=unavailable"
+                "http://temba.io/",
+                "http://unavailable.com/"
             ]
         },
         {
             "slug": "registration-complete",
             "subscribers": [
-                "http://localhost:49996/?cmd=success",
-                "http://localhost:49996/?cmd=gone"
+                "http://temba.io/",
+                "http://subscribergone.com/"
             ]
         },
         {
