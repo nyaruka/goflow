@@ -145,7 +145,7 @@ func configureDTOne(login, token string) (engine.AirtimeServiceFactory, error) {
 		return nil, errors.Wrap(err, "ping failed for provided DTOne credentials")
 	}
 
-	return func(flows.Session) flows.AirtimeService {
-		return dtone.NewService(login, token, "")
+	return func(flows.Session) (flows.AirtimeService, error) {
+		return dtone.NewService(login, token, ""), nil
 	}, nil
 }

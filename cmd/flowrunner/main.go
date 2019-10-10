@@ -84,11 +84,11 @@ func createEngine(witToken string) flows.Engine {
 		WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-runner", 10000))
 
 	if witToken != "" {
-		builder.WithClassificationServiceFactory(func(session flows.Session, classifier *flows.Classifier) flows.ClassificationService {
+		builder.WithClassificationServiceFactory(func(session flows.Session, classifier *flows.Classifier) (flows.ClassificationService, error) {
 			if classifier.Type() == "wit" {
-				return wit.NewService(classifier, witToken)
+				return wit.NewService(classifier, witToken), nil
 			}
-			return nil
+			return nil, errors.New("only classifiers of type wit supported")
 		})
 	}
 
