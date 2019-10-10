@@ -38,7 +38,7 @@ func (s *services) Webhook(session flows.Session) (flows.WebhookService, error) 
 	return s.webhook(session)
 }
 
-func (s *services) NLU(session flows.Session, classifier *flows.Classifier) (flows.ClassificationService, error) {
+func (s *services) Classification(session flows.Session, classifier *flows.Classifier) (flows.ClassificationService, error) {
 	return s.classification(session, classifier)
 }
 
