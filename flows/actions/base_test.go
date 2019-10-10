@@ -17,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -46,8 +47,6 @@ func TestActionTypes(t *testing.T) {
 	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
-	server := test.NewTestHTTPServer(49996)
-
 	typeNames := make([]string, 0)
 	for typeName := range actions.RegisteredTypes() {
 		typeNames = append(typeNames, typeName)
@@ -56,7 +55,7 @@ func TestActionTypes(t *testing.T) {
 	sort.Strings(typeNames)
 
 	for _, typeName := range typeNames {
-		testActionType(t, assetsJSON, typeName, server.URL)
+		testActionType(t, assetsJSON, typeName)
 	}
 }
 
@@ -66,25 +65,26 @@ type inspectionResults struct {
 	Results      []*flows.ResultInfo `json:"results"`
 }
 
-func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
+func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description     string            `json:"description"`
-		NoContact       bool              `json:"no_contact"`
-		NoURNs          bool              `json:"no_urns"`
-		NoInput         bool              `json:"no_input"`
-		RedactURNs      bool              `json:"redact_urns"`
-		Action          json.RawMessage   `json:"action"`
-		Localization    json.RawMessage   `json:"localization"`
-		InFlowType      flows.FlowType    `json:"in_flow_type"`
-		ReadError       string            `json:"read_error"`
-		ValidationError string            `json:"validation_error"`
-		SkipValidation  bool              `json:"skip_validation"`
-		Events          []json.RawMessage `json:"events"`
-		ContactAfter    json.RawMessage   `json:"contact_after"`
-		Inspection      json.RawMessage   `json:"inspection"`
+		Description     string               `json:"description"`
+		HTTPMocks       *httpx.MockRequestor `json:"http_mocks"`
+		NoContact       bool                 `json:"no_contact"`
+		NoURNs          bool                 `json:"no_urns"`
+		NoInput         bool                 `json:"no_input"`
+		RedactURNs      bool                 `json:"redact_urns"`
+		Action          json.RawMessage      `json:"action"`
+		Localization    json.RawMessage      `json:"localization"`
+		InFlowType      flows.FlowType       `json:"in_flow_type"`
+		ReadError       string               `json:"read_error"`
+		ValidationError string               `json:"validation_error"`
+		SkipValidation  bool                 `json:"skip_validation"`
+		Events          []json.RawMessage    `json:"events"`
+		ContactAfter    json.RawMessage      `json:"contact_after"`
+		Inspection      json.RawMessage      `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -92,10 +92,16 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	for _, tc := range tests {
 		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+		if tc.HTTPMocks != nil {
+			httpx.SetRequestor(tc.HTTPMocks)
+		} else {
+			httpx.SetRequestor(httpx.DefaultRequestor)
+		}
 
 		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
 
