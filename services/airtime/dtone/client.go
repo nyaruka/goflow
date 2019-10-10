@@ -4,29 +4,30 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
-	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/httpx"
+
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
 const (
-	apiURL = "https://airtime.transferto.com/cgi-bin/shop/topup"
+	apiURL = "https://airtime-api.dtone.com/cgi-bin/shop/topup"
 )
 
 // Client is a TransferTo client
-// see https://shop.transferto.com/shop/v3/doc/TransferTo_API.pdf for API docs
+// see https://tshop-app.dtone.com/shop/v3/doc/Airtime_API.pdf for API docs
 type Client struct {
+	httpClient *http.Client
 	login      string
 	token      string
-	httpClient *http.Client
-	apiURL     string
 }
 
 // Response is a base interface for all responses
@@ -44,17 +45,12 @@ func (r *baseResponse) ErrorCode() int   { return r.ErrorCode_ }
 func (r *baseResponse) ErrorTxt() string { return r.ErrorTxt_ }
 
 // NewClient creates a new TransferTo client
-func NewClient(login string, token string, httpClient *http.Client) *Client {
-	return &Client{login: login, token: token, httpClient: httpClient, apiURL: apiURL}
-}
-
-// SetAPIURL sets the API URL used by this client
-func (c *Client) SetAPIURL(url string) {
-	c.apiURL = url
+func NewClient(httpClient *http.Client, login string, token string) *Client {
+	return &Client{httpClient: httpClient, login: login, token: token}
 }
 
 // Ping just verifies the credentials
-func (c *Client) Ping() error {
+func (c *Client) Ping() (*httpx.Trace, error) {
 	request := url.Values{}
 	request.Add("action", "ping")
 
@@ -73,22 +69,22 @@ type MSISDNInfo struct {
 	Operator            string      `json:"operator"`
 	OperatorID          int         `json:"operator_id,string"`
 	ConnectionStatus    int         `json:"connection_status,string"`
-	DestinationCurrency string      `json:"destination_currency"`
-	ProductList         CSVStrings  `json:"product_list"`
+	DestinationCurrency string      `json:"destination_currency" validate:"required"`
+	ProductList         CSVStrings  `json:"product_list" validate:"required"`
 	ServiceFeeList      CSVDecimals `json:"service_fee_list"`
 	SKUIDList           CSVStrings  `json:"skuid_list"`
-	LocalInfoValueList  CSVDecimals `json:"local_info_value_list"`
+	LocalInfoValueList  CSVDecimals `json:"local_info_value_list" validate:"required"`
 
 	// if operator supports open-range transfers...
-	OpenRange                           bool            `json:"open_range"`
+	/*OpenRange                           bool            `json:"open_range"`
 	SKUID                               string          `json:"skuid"`
 	OpenRangeMinimumAmountLocalCurrency decimal.Decimal `json:"open_range_minimum_amount_local_currency"`
 	OpenRangeMaximumAmountLocalCurrency decimal.Decimal `json:"open_range_maximum_amount_local_currency"`
-	OpenRangeIncrementLocalCurrency     decimal.Decimal `json:"open_range_increment_local_currency"`
+	OpenRangeIncrementLocalCurrency     decimal.Decimal `json:"open_range_increment_local_currency"`*/
 }
 
 // MSISDNInfo fetches information about the given MSISDN
-func (c *Client) MSISDNInfo(destinationMSISDN string, currency string, deliveredAmountInfo string) (*MSISDNInfo, error) {
+func (c *Client) MSISDNInfo(destinationMSISDN string, currency string, deliveredAmountInfo string) (*MSISDNInfo, *httpx.Trace, error) {
 	request := url.Values{}
 	request.Add("action", "msisdn_info")
 	request.Add("destination_msisdn", destinationMSISDN)
@@ -96,10 +92,17 @@ func (c *Client) MSISDNInfo(destinationMSISDN string, currency string, delivered
 	request.Add("delivered_amount_info", deliveredAmountInfo)
 
 	response := &MSISDNInfo{}
-	if err := c.request(request, response); err != nil {
-		return nil, err
+	trace, err := c.request(request, response)
+	if err != nil {
+		return nil, nil, err
 	}
-	return response, nil
+	return response, trace, nil
+}
+
+// ReserveID is a response to a reserve_id request
+type ReserveID struct {
+	baseResponse
+	ReservedID int `json:"reserved_id,string" validate:"required"`
 }
 
 // ReserveID reserves a transaction ID for a future topup
@@ -107,11 +110,9 @@ func (c *Client) ReserveID() (int, error) {
 	request := url.Values{}
 	request.Add("action", "reserve_id")
 
-	response := &struct {
-		baseResponse
-		ReservedID int `json:"reserved_id,string"`
-	}{}
-	if err := c.request(request, response); err != nil {
+	response := &ReserveID{}
+	_, err := c.request(request, response)
+	if err != nil {
 		return 0, err
 	}
 	return response.ReservedID, nil
@@ -120,10 +121,10 @@ func (c *Client) ReserveID() (int, error) {
 // Topup is a response to a topup request
 type Topup struct {
 	baseResponse
-	DestinationCurrency string          `json:"destination_currency"`
+	DestinationCurrency string          `json:"destination_currency" validate:"required"`
 	OriginatingCurrency string          `json:"originating_currency"`
 	ProductRequested    decimal.Decimal `json:"product_requested"`
-	ActualProductSent   decimal.Decimal `json:"actual_product_sent"`
+	ActualProductSent   decimal.Decimal `json:"actual_product_sent" validate:"required"`
 	SMSSent             string          `json:"sms_sent"`
 	SMS                 string          `json:"sms"`
 	WholesalePrice      decimal.Decimal `json:"wholesale_price"`
@@ -135,7 +136,7 @@ type Topup struct {
 }
 
 // Topup makes an actual airtime transfer
-func (c *Client) Topup(reservedID int, msisdn string, destinationMSISDN string, product string, skuid string) (*Topup, error) {
+func (c *Client) Topup(reservedID int, msisdn string, destinationMSISDN string, product string, skuid string) (*Topup, *httpx.Trace, error) {
 	request := url.Values{}
 	request.Add("action", "topup")
 	request.Add("reserved_id", strconv.Itoa(reservedID))
@@ -147,15 +148,17 @@ func (c *Client) Topup(reservedID int, msisdn string, destinationMSISDN string, 
 	}
 
 	response := &Topup{}
-	if err := c.request(request, response); err != nil {
-		return nil, err
+	trace, err := c.request(request, response)
+	if err != nil {
+		return nil, nil, err
 	}
-	return response, nil
+
+	return response, trace, nil
 }
 
 // makes a request with the given data and parses the response into the destination struct
-func (c *Client) request(data url.Values, dest interface{}) error {
-	key := strconv.Itoa(int(time.Now().UnixNano() / int64(time.Millisecond)))
+func (c *Client) request(data url.Values, dest interface{}) (*httpx.Trace, error) {
+	key := strconv.Itoa(int(dates.Now().UnixNano() / int64(time.Millisecond)))
 
 	hasher := md5.New()
 	hasher.Write([]byte(c.login + c.token + key))
@@ -165,27 +168,22 @@ func (c *Client) request(data url.Values, dest interface{}) error {
 	data.Add("key", key)
 	data.Add("md5", hash)
 
-	req, err := http.NewRequest("POST", c.apiURL, strings.NewReader(data.Encode()))
+	trace, err := httpx.DoTrace(c.httpClient, "POST", apiURL, strings.NewReader(data.Encode()), map[string]string{
+		"Content-Type": "application/x-www-form-urlencoded",
+	})
 	if err != nil {
-		return err
-	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-	response, err := c.httpClient.Do(req)
-	if err != nil {
-		return err
+		return nil, err
 	}
 
-	defer response.Body.Close()
-	if err := c.parseResponse(response.Body, dest); err != nil {
-		return errors.Wrap(err, "transferto API call returned an unparseable response")
+	if err := c.parseResponse(trace.Body, dest); err != nil {
+		return trace, errors.Wrap(err, "API returned an unparseable response")
 	}
 
 	baseResp := dest.(Response)
 	if baseResp.ErrorCode() != 0 {
-		return errors.Errorf("transferto API call returned an error: %s (%d)", baseResp.ErrorTxt(), baseResp.ErrorCode())
+		return trace, errors.Errorf("API returned an error: %s (%d)", baseResp.ErrorTxt(), baseResp.ErrorCode())
 	}
-	return nil
+	return trace, nil
 }
 
 // reads and parses a response body, which is in the format
@@ -195,12 +193,7 @@ func (c *Client) request(data url.Values, dest interface{}) error {
 // ...
 //
 // with each line separated by \r\n
-func (c *Client) parseResponse(body io.Reader, dest interface{}) error {
-	asBytes, err := ioutil.ReadAll(body)
-	if err != nil {
-		return err
-	}
-
+func (c *Client) parseResponse(asBytes []byte, dest interface{}) error {
 	// parse into a map
 	data := make(map[string]string)
 	for _, line := range strings.Split(string(asBytes), "\r\n") {
@@ -213,5 +206,5 @@ func (c *Client) parseResponse(body io.Reader, dest interface{}) error {
 
 	// marshal to JSON and then into the destination struct
 	respJSON, _ := json.Marshal(data)
-	return json.Unmarshal(respJSON, dest)
+	return utils.UnmarshalAndValidate(respJSON, dest)
 }

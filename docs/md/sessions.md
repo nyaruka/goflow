@@ -271,8 +271,7 @@ Events are created when airtime has been transferred to the contact.
     "sender": "tel:4748",
     "recipient": "tel:+1242563637",
     "currency": "RWF",
-    "amount": 100,
-    "status": "success"
+    "amount": 100
 }
 ```
 </div>

@@ -747,7 +747,7 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 			actions.NewTransferAirtime(flows.ActionUUID(uuids.New()), currencyAmounts, resultName),
 		}
 
-		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
+		operand := fmt.Sprintf("@results.%s", utils.Snakify(resultName))
 		router = routers.NewSwitch(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByAirtime
 
@@ -840,8 +840,8 @@ func migrateRules(baseLanguage envs.Language, r RuleSet, validDests map[flows.No
 			timeoutCategoryUUID = converted.category.UUID()
 			continue
 
-		} else if rule.Test.Type == "webhook_status" {
-			// default case for a webhook ruleset is the last migrated rule (failure)
+		} else if rule.Test.Type == "webhook_status" || rule.Test.Type == "airtime_status" {
+			// default case for airtime or webhook rulesetss is the last migrated rule (failure)
 			defaultCategoryUUID = converted.category.UUID()
 		}
 
@@ -850,11 +850,13 @@ func migrateRules(baseLanguage envs.Language, r RuleSet, validDests map[flows.No
 			return nil, nil, "", "", nil, err
 		}
 
-		if caseUI != nil {
-			uiConfig.AddCaseConfig(kase.UUID, caseUI)
-		}
+		if kase != nil {
+			cases = append(cases, kase)
 
-		cases = append(cases, kase)
+			if caseUI != nil {
+				uiConfig.AddCaseConfig(kase.UUID, caseUI)
+			}
+		}
 	}
 
 	return cases, categories, defaultCategoryUUID, timeoutCategoryUUID, exits, nil
@@ -957,19 +959,19 @@ func migrateRule(baseLanguage envs.Language, r Rule, category *routers.Category,
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
-			arguments = []string{"Success"}
+			arguments = []string{actions.CategorySuccess}
 		} else {
-			arguments = []string{"Failure"}
+			arguments = []string{actions.CategoryFailure}
 		}
 
 	case "airtime_status":
-		newType = "has_only_text"
+		newType = "has_category"
 		test := airtimeTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.ExitStatus == "success" {
-			arguments = []string{"Success"}
+			arguments = []string{actions.CategorySuccess}
 		} else {
-			arguments = []string{"Failure"}
+			return nil, nil, nil // failure just becomes default category
 		}
 
 	case "district":

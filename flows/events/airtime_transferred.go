@@ -22,8 +22,7 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //     "sender": "tel:4748",
 //     "recipient": "tel:+1242563637",
 //     "currency": "RWF",
-//     "amount": 100,
-//     "status": "success"
+//     "amount": 100
 //   }
 //
 // @event airtime_transferred
@@ -34,7 +33,6 @@ type AirtimeTransferredEvent struct {
 	Recipient urns.URN        `json:"recipient"`
 	Currency  string          `json:"currency"`
 	Amount    decimal.Decimal `json:"amount"`
-	Status    string          `json:"status"`
 }
 
 // NewAirtimeTransferred creates a new airtime transferred event
@@ -44,7 +42,6 @@ func NewAirtimeTransferred(t *flows.AirtimeTransfer) *AirtimeTransferredEvent {
 		Sender:    t.Sender,
 		Recipient: t.Recipient,
 		Currency:  t.Currency,
-		Amount:    t.ActualAmount,
-		Status:    string(t.Status),
+		Amount:    t.Amount,
 	}
 }

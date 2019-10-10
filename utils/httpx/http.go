@@ -1,14 +1,18 @@
 package httpx
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/utils/dates"
 )
+
+var debug = false
 
 // Do makes the given HTTP request using the current requestor
 func Do(client *http.Client, request *http.Request) (*http.Response, error) {
@@ -23,6 +27,15 @@ type Trace struct {
 	RequestTrace  []byte
 	ResponseTrace []byte
 	TimeTaken     time.Duration
+}
+
+func (t *Trace) String() string {
+	b := &strings.Builder{}
+	b.WriteString(fmt.Sprintf(">>>>>>>> %s %s\n", t.Request.Method, t.Request.URL))
+	b.WriteString(string(t.RequestTrace))
+	b.WriteString("\n<<<<<<<<\n")
+	b.WriteString(string(t.ResponseTrace))
+	return b.String()
 }
 
 // DoTrace makes the given request saving traces of the complete request and response
@@ -62,15 +75,20 @@ func DoTrace(client *http.Client, method string, url string, body io.Reader, hea
 
 	// add read body to response trace
 	responseTrace = append(responseTrace, responseBody...)
-
-	return &Trace{
+	trace := &Trace{
 		Request:       request,
 		Response:      response,
 		RequestTrace:  requestTrace,
 		ResponseTrace: responseTrace,
 		Body:          responseBody,
 		TimeTaken:     timeTaken,
-	}, nil
+	}
+
+	if debug {
+		fmt.Println(trace.String())
+	}
+
+	return trace, nil
 }
 
 // Requestor is anything that can make an HTTP request with a client
@@ -91,4 +109,8 @@ var currentRequestor = DefaultRequestor
 // SetRequestor sets the requestor used by Request
 func SetRequestor(requestor Requestor) {
 	currentRequestor = requestor
+}
+
+func SetDebug(enabled bool) {
+	debug = enabled
 }

@@ -1069,7 +1069,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
         "RWF": 500,
         "USD": 0.5
     },
-    "result_name": "reward_transfer"
+    "result_name": "Reward Transfer"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
@@ -1083,14 +1083,13 @@ An [email_created](sessions.html#event:email_created) event will be created for 
         "sender": "tel:+12345671111",
         "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "currency": "RWF",
-        "amount": 500,
-        "status": "success"
+        "amount": 500
     },
     {
         "type": "run_result_changed",
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "8fe599f1-bf4f-43be-83dd-3099689741ac",
-        "name": "reward_transfer",
+        "name": "Reward Transfer",
         "value": "500",
         "category": "Success"
     }

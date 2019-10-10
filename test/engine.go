@@ -15,7 +15,9 @@ import (
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
 		WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
-		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) flows.ClassificationService { return newClassificationService(c) }).
+		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) flows.ClassificationService {
+			return newClassificationService(c)
+		}).
 		WithAirtimeServiceFactory(func(flows.Session) flows.AirtimeService { return newAirtimeService("RWF") }).
 		Build()
 }
@@ -70,23 +72,22 @@ func newAirtimeService(currency string) *airtimeService {
 	return &airtimeService{fixedCurrency: currency}
 }
 
-func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
-	t := &flows.AirtimeTransfer{
+func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
+	amount, hasAmount := amounts[s.fixedCurrency]
+	if !hasAmount {
+		return nil, errors.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
+	}
+
+	transfer := &flows.AirtimeTransfer{
 		Sender:    sender,
 		Recipient: recipient,
 		Currency:  s.fixedCurrency,
-		Status:    flows.AirtimeTransferStatusFailed,
+		Amount:    amount,
 	}
 
-	amount, hasAmount := amounts[s.fixedCurrency]
-	if !hasAmount {
-		return t, errors.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
-	}
+	logEvent(events.NewAirtimeTransferred(transfer))
 
-	t.DesiredAmount = amount
-	t.ActualAmount = amount
-	t.Status = flows.AirtimeTransferStatusSuccess
-	return t, nil
+	return transfer, nil
 }
 
 var _ flows.AirtimeService = (*airtimeService)(nil)

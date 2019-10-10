@@ -19,6 +19,10 @@ import (
 )
 
 func TestService(t *testing.T) {
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
+
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
@@ -59,10 +63,6 @@ func TestService(t *testing.T) {
 			}`),
 		},
 	}))
-
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer dates.SetNowSource(dates.DefaultNowSource)
-	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
 	require.NoError(t, err)

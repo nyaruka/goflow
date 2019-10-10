@@ -14,7 +14,7 @@ type service struct {
 	currency string
 }
 
-// NewProvider creates a new DTOne airtime transfer provider
+// NewService creates a new DTOne airtime service
 func NewService(login, apiToken, currency string) flows.AirtimeService {
 	return &service{
 		login:    login,
@@ -23,34 +23,18 @@ func NewService(login, apiToken, currency string) flows.AirtimeService {
 	}
 }
 
-func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, error) {
-	t := &flows.AirtimeTransfer{
-		Sender:    sender,
-		Recipient: recipient,
-		Status:    flows.AirtimeTransferStatusFailed,
-	}
+func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
+	client := NewClient(session.Engine().HTTPClient(), s.login, s.apiToken)
 
-	client := NewClient(s.login, s.apiToken, session.Engine().HTTPClient())
-
-	info, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
+	info, _, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
 	if err != nil {
-		return t, err
+		return nil, err
 	}
-
-	t.Currency = info.DestinationCurrency
 
 	// look up the amount to send in this currency
-	amount, hasAmount := amounts[t.Currency]
+	amount, hasAmount := amounts[info.DestinationCurrency]
 	if !hasAmount {
-		return t, errors.Errorf("no amount configured for transfers in %s", t.Currency)
-	}
-
-	t.DesiredAmount = amount
-
-	if info.OpenRange {
-		// TODO add support for open-range topups once we can find numbers to test this with
-		// see https://shop.transferto.com/shop/v3/doc/TransferTo_API_OR.pdf
-		return nil, errors.Errorf("transferto account is configured for open-range which is not yet supported")
+		return nil, errors.Errorf("no amount configured for transfers in %s", info.DestinationCurrency)
 	}
 
 	// find the product closest to our desired amount
@@ -63,19 +47,25 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 			useAmount = price
 		}
 	}
-	t.ActualAmount = useAmount
+
+	if useAmount == decimal.Zero {
+		return nil, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
+	}
 
 	reservedID, err := client.ReserveID()
 	if err != nil {
-		return t, err
+		return nil, err
 	}
 
-	topup, err := client.Topup(reservedID, sender.Path(), recipient.Path(), useProduct, "")
+	topup, _, err := client.Topup(reservedID, sender.Path(), recipient.Path(), useProduct, "")
 	if err != nil {
-		return t, err
+		return nil, err
 	}
 
-	t.ActualAmount = topup.ActualProductSent
-	t.Status = flows.AirtimeTransferStatusSuccess
-	return t, nil
+	return &flows.AirtimeTransfer{
+		Sender:    sender,
+		Recipient: recipient,
+		Currency:  info.DestinationCurrency,
+		Amount:    topup.ActualProductSent,
+	}, nil
 }
