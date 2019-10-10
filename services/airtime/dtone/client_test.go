@@ -16,8 +16,8 @@ func TestClient(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*http.Response{
-		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []*http.Response{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
+		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []*httpx.MockResponse{
 			httpx.NewMockResponse(200, "info_txt=pong\r\n"),
 			httpx.NewMockResponse(400, "error_code=1\r\nerror_txt=Oops\r\n"),
 			httpx.NewMockResponse(200, "country=Rwanda\r\n"),

@@ -13,7 +13,7 @@ func init() {
 	registerType(TypeTransferAirtime, func() flows.Action { return &TransferAirtimeAction{} })
 }
 
-var transferCategories = []string{CategorySuccess, CategorySkipped, CategoryFailure}
+var transferCategories = []string{CategorySuccess, CategoryFailure}
 
 // TypeTransferAirtime is the type for the transfer airtime action
 const TypeTransferAirtime string = "transfer_airtime"
@@ -49,15 +49,11 @@ func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decima
 
 // Execute executes the transfer action
 func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	transfer, skipped, err := a.transfer(run, step, logEvent)
+	transfer, err := a.transfer(run, step, logEvent)
 	if err != nil {
 		logEvent(events.NewError(err))
 
-		if skipped {
-			a.saveSkipped(run, step, logEvent)
-		} else {
-			a.saveFailure(run, step, logEvent)
-		}
+		a.saveFailure(run, step, logEvent)
 	} else {
 		a.saveSuccess(run, step, transfer, logEvent)
 	}
@@ -65,17 +61,17 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 	return nil
 }
 
-func (a *TransferAirtimeAction) transfer(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (*flows.AirtimeTransfer, bool, error) {
-	// skip if we don't have a contact
+func (a *TransferAirtimeAction) transfer(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
+	// fail if we don't have a contact
 	contact := run.Contact()
 	if contact == nil {
-		return nil, true, errors.New("can't execute action in session without a contact")
+		return nil, errors.New("can't execute action in session without a contact")
 	}
 
-	// skip if the contact doesn't have a tel URN
+	// fail if the contact doesn't have a tel URN
 	telURNs := contact.URNs().WithScheme(urns.TelScheme)
 	if len(telURNs) == 0 {
-		return nil, true, errors.New("can't transfer airtime to contact without a tel URN")
+		return nil, errors.New("can't transfer airtime to contact without a tel URN")
 	}
 
 	// if contact's preferred channel is tel, use that as the sender
@@ -87,11 +83,11 @@ func (a *TransferAirtimeAction) transfer(run flows.FlowRun, step flows.Step, log
 
 	svc := run.Session().Engine().Services().Airtime(run.Session())
 	if svc == nil {
-		return nil, false, errors.New("no airtime service available")
+		return nil, errors.New("no airtime service available")
 	}
 
 	transfer, err := svc.Transfer(run.Session(), sender, telURNs[0].URN(), a.Amounts, logEvent)
-	return transfer, false, err
+	return transfer, err
 }
 
 func (a *TransferAirtimeAction) saveSuccess(run flows.FlowRun, step flows.Step, transfer *flows.AirtimeTransfer, logEvent flows.EventCallback) {

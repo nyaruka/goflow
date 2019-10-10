@@ -969,7 +969,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category *routers.Category,
 		test := airtimeTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.ExitStatus == "success" {
-			arguments = []string{actions.CategorySuccess, actions.CategorySkipped}
+			arguments = []string{actions.CategorySuccess}
 		} else {
 			return nil, nil, nil // failure just becomes default category
 		}

@@ -1,6 +1,96 @@
 [
     {
-        "description": "error and failed transfer if currency not configured",
+        "description": "Error and failed transfer if no contact",
+        "no_contact": true,
+        "action": {
+            "type": "transfer_airtime",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "amounts": {
+                "USD": 0.5
+            },
+            "result_name": "Reward Transfer"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't execute action in session without a contact",
+                "type": "error"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Reward Transfer",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "inspection": {
+            "templates": [],
+            "dependencies": [],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ],
+                    "key": "reward_transfer",
+                    "name": "Reward Transfer",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "Error and failed transfer if contact has no tel urn",
+        "no_urns": true,
+        "action": {
+            "type": "transfer_airtime",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "amounts": {
+                "USD": 0.5
+            },
+            "result_name": "Reward Transfer"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't transfer airtime to contact without a tel URN",
+                "type": "error"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Reward Transfer",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "inspection": {
+            "templates": [],
+            "dependencies": [],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ],
+                    "key": "reward_transfer",
+                    "name": "Reward Transfer",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "Error and failed transfer if currency not configured",
         "action": {
             "type": "transfer_airtime",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -32,7 +122,6 @@
                 {
                     "categories": [
                         "Success",
-                        "Skipped",
                         "Failure"
                     ],
                     "key": "reward_transfer",
@@ -45,7 +134,7 @@
         }
     },
     {
-        "description": "transfer and set result events if transfer made",
+        "description": "Transfer and set result events if transfer made",
         "action": {
             "type": "transfer_airtime",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -81,7 +170,6 @@
                 {
                     "categories": [
                         "Success",
-                        "Skipped",
                         "Failure"
                     ],
                     "key": "reward_transfer",
