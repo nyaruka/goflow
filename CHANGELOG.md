@@ -1,3 +1,9 @@
+v0.52.0
+----------
+ * All service factory methods should return an error if service can't be returned
+ * Rework airtime transfer nodes to function more like NLU nodes
+ * Add classification service implementation for LUIS
+
 v0.51.0
 ----------
  * Add NLU support: a classify action, a classification service and various router tests
