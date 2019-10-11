@@ -40,10 +40,8 @@ func TestRouterTypes(t *testing.T) {
 	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
-	server := test.NewTestHTTPServer(49993)
-
 	for _, typeName := range routers.RegisteredTypes() {
-		testRouterType(t, assetsJSON, typeName, server.URL)
+		testRouterType(t, assetsJSON, typeName)
 	}
 }
 
@@ -53,7 +51,7 @@ type inspectionResults struct {
 	Results      []*flows.ResultInfo `json:"results"`
 }
 
-func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
+func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
@@ -86,7 +84,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		assetsJSON = test.JSONReplace(assetsJSON, routerPath, tc.Router)
 
 		// create session assets
-		sa, err := test.CreateSessionAssets(assetsJSON, testServerURL)
+		sa, err := test.CreateSessionAssets(assetsJSON, "")
 		require.NoError(t, err)
 
 		// now try to read the flow, and if we expect a read error, check that
