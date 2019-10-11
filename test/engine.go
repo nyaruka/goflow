@@ -15,10 +15,10 @@ import (
 func NewEngine() flows.Engine {
 	return engine.NewBuilder().
 		WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
-		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) flows.ClassificationService {
-			return newClassificationService(c)
+		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
+			return newClassificationService(c), nil
 		}).
-		WithAirtimeServiceFactory(func(flows.Session) flows.AirtimeService { return newAirtimeService("RWF") }).
+		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
 		Build()
 }
 

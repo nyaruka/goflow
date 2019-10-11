@@ -88,9 +88,9 @@ func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, inpu
 		return nil, false, errors.Errorf("missing %s", a.Classifier.String())
 	}
 
-	svc := run.Session().Engine().Services().NLU(run.Session(), classifier)
-	if svc == nil {
-		return nil, false, errors.Errorf("no classifier service available for %s", a.Classifier)
+	svc, err := run.Session().Engine().Services().Classification(run.Session(), classifier)
+	if err != nil {
+		return nil, false, err
 	}
 
 	classification, err := svc.Classify(run.Session(), input, logEvent)

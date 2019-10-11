@@ -36,7 +36,9 @@ type service struct {
 
 // NewServiceFactory creates a new webhook service factory
 func NewServiceFactory(defaultUserAgent string, maxBodyBytes int) engine.WebhookServiceFactory {
-	return func(flows.Session) flows.WebhookService { return NewService(defaultUserAgent, maxBodyBytes) }
+	return func(flows.Session) (flows.WebhookService, error) {
+		return NewService(defaultUserAgent, maxBodyBytes), nil
+	}
 }
 
 // NewService creates a new default webhook service

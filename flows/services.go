@@ -11,9 +11,9 @@ import (
 
 // Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
-	Webhook(Session) WebhookService
-	NLU(Session, *Classifier) ClassificationService
-	Airtime(Session) AirtimeService
+	Webhook(Session) (WebhookService, error)
+	Classification(Session, *Classifier) (ClassificationService, error)
+	Airtime(Session) (AirtimeService, error)
 }
 
 // CallStatus represents the status of a call to an external service
