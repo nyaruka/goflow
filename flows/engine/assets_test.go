@@ -19,6 +19,20 @@ var assetsJSON = `{
 			"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
 			"name": "Survey Audience"
 		}
+	],
+	"labels": [
+		{
+			"uuid": "18644b27-fb7f-40e1-b8f4-4ea8999129ef",
+			"name": "Spam"
+		}
+	],
+	"resthooks": [
+		{
+			"slug": "new-registration",
+			"subscribers": [
+				"http://temba.io/"
+			]
+		}
 	]
 }`
 
@@ -26,13 +40,28 @@ func TestSessionAssets(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sessionAssets, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source)
 	require.NoError(t, err)
 
-	group := sessionAssets.Groups().Get(assets.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"))
-	assert.NotNil(t, group)
+	assert.Equal(t, source, sa.Source())
+
+	label := sa.Labels().Get(assets.LabelUUID("18644b27-fb7f-40e1-b8f4-4ea8999129ef"))
+	assert.Equal(t, assets.LabelUUID("18644b27-fb7f-40e1-b8f4-4ea8999129ef"), label.UUID())
+	assert.Equal(t, "Spam", label.Name())
+
+	assert.Nil(t, sa.Labels().Get(assets.LabelUUID("xyz")))
+
+	group := sa.Groups().Get(assets.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"))
 	assert.Equal(t, assets.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"), group.UUID())
 	assert.Equal(t, "Survey Audience", group.Name())
+
+	assert.Nil(t, sa.Groups().Get(assets.GroupUUID("xyz")))
+
+	resthook := sa.Resthooks().FindBySlug("new-registration")
+	assert.Equal(t, "new-registration", resthook.Slug())
+	assert.Equal(t, []string{"http://temba.io/"}, resthook.Subscribers())
+
+	assert.Nil(t, sa.Resthooks().FindBySlug("xyz"))
 }
 
 func TestSessionAssetsWithSourceErrors(t *testing.T) {

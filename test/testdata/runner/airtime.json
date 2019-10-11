@@ -35,24 +35,16 @@
                                 "exit_uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
                             }
                         ],
-                        "default_category_uuid": "",
-                        "operand": "@results.transfer.category",
+                        "default_category_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                        "operand": "@results.transfer",
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                                "type": "has_only_text",
+                                "type": "has_category",
                                 "arguments": [
                                     "Success"
                                 ],
                                 "category_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
-                            },
-                            {
-                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "type": "has_only_text",
-                                "arguments": [
-                                    "Failure"
-                                ],
-                                "category_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
                             }
                         ]
                     },
