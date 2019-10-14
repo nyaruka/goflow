@@ -1,3 +1,7 @@
+v0.52.1
+----------
+ * Modify grammar to allow result names that start with underscores
+
 v0.52.0
 ----------
  * All service factory methods should return an error if service can't be returned
