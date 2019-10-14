@@ -36,7 +36,7 @@ TRUE: [Tt][Rr][Uu][Ee];
 FALSE: [Ff][Aa][Ll][Ss][Ee];
 NULL: [Nn][Uu][Ll][Ll];
 
-NAME: UnicodeLetter+ (UnicodeLetter | UnicodeDigit | '_')*;
+NAME: (UnicodeLetter | '_')+ (UnicodeLetter | UnicodeDigit | '_')*;
 
 WS: [ \t\n\r]+ -> skip; // ignore whitespace
 

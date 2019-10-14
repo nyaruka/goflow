@@ -61,7 +61,7 @@
                                 "name": "Booking"
                             },
                             "input": "@results.response_1",
-                            "result_name": "Intent Classify"
+                            "result_name": "_Intent Classification"
                         }
                     ],
                     "router": {
@@ -89,7 +89,7 @@
                             }
                         ],
                         "default_category_uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9",
-                        "operand": "@results.intent_classify",
+                        "operand": "@results._intent_classification",
                         "result_name": "Intent",
                         "cases": [
                             {
