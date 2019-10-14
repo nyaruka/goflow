@@ -16,6 +16,8 @@ func TestSnakify(t *testing.T) {
 		{"Hello World", "hello_world"},
 		{"hello_world", "hello_world"},
 		{"hello-world", "hello_world"},
+		{"_Hello World", "_hello_world"},
+		{"   Hello World    ", "hello_world"},
 		{"hi😀😃😄😁there", "hi_there"},
 		{"昨夜のコ", "昨夜のコ"},
 		{"this@isn't@email", "this_isn_t_email"},

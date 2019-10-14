@@ -26,6 +26,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	context := types.NewXObject(map[string]types.XValue{
 		"string1": types.NewXText("foo"),
 		"string2": types.NewXText("bar"),
+		"string3": types.NewXText("🐒"),
 		"key":     types.NewXText("four"),
 		"int1":    types.NewXNumberFromInt(1),
 		"int2":    types.NewXNumberFromInt(2),
@@ -59,6 +60,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{"@array2d.0.2", ERROR},
 
 		{"@string1 world", xs("foo world")},
+		{"@string3", xs("🐒")},
 
 		{"@(-10)", xi(-10)},
 		{"@(-asdf)", ERROR},
@@ -182,15 +184,16 @@ func TestEvaluateTemplateValue(t *testing.T) {
 func TestEvaluateTemplate(t *testing.T) {
 
 	vars := types.NewXObject(map[string]types.XValue{
-		"string1": types.NewXText("foo"),
-		"string2": types.NewXText("bar"),
-		"汉字":      types.NewXText("simplified chinese"),
-		"int1":    types.NewXNumberFromInt(1),
-		"int2":    types.NewXNumberFromInt(2),
-		"dec1":    types.RequireXNumberFromString("1.5"),
-		"dec2":    types.RequireXNumberFromString("2.5"),
-		"words":   types.NewXText("one two three"),
-		"array1":  types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
+		"string1":  types.NewXText("foo"),
+		"string2":  types.NewXText("bar"),
+		"_special": types.NewXText("🐒"),
+		"汉字":       types.NewXText("simplified chinese"),
+		"int1":     types.NewXNumberFromInt(1),
+		"int2":     types.NewXNumberFromInt(2),
+		"dec1":     types.RequireXNumberFromString("1.5"),
+		"dec2":     types.RequireXNumberFromString("2.5"),
+		"words":    types.NewXText("one two three"),
+		"array1":   types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
 		"thing": types.NewXObject(map[string]types.XValue{
 			"foo":     types.NewXText("bar"),
 			"zed":     types.NewXNumberFromInt(123),
@@ -214,6 +217,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@(title(hello))`, "", true},
 		{`Hello @(title(string1))`, "Hello Foo", false},
 		{`Hello @@string1`, "Hello @string1", false},
+		{`Hello @(_special)`, "Hello 🐒", false},
+		{`Hello @_special`, "Hello 🐒", false},
 
 		// functions are values too
 		{`@(title)`, "function", false},

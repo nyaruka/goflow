@@ -13,7 +13,7 @@ var wordTokenRegex = regexp.MustCompile(`[\pM\pL\pN_']+|\pS`)
 // Snakify turns the passed in string into a context reference. We replace all whitespace
 // characters with _ and replace any duplicate underscores
 func Snakify(text string) string {
-	return strings.Trim(strings.ToLower(snakedChars.ReplaceAllString(text, "_")), "_")
+	return strings.ToLower(snakedChars.ReplaceAllString(strings.TrimSpace(text), "_"))
 }
 
 // TokenizeString returns the words in the passed in string, split by non word characters including emojis
