@@ -9,7 +9,7 @@
                 "name": "Booking"
             },
             "input": "@(\"\")",
-            "result_name": "Intent"
+            "result_name": "_Intent Classification"
         },
         "events": [
             {
@@ -21,7 +21,7 @@
             {
                 "category": "Skipped",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Intent",
+                "name": "_Intent Classification",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
                 "value": "0"
@@ -41,8 +41,8 @@
                         "Skipped",
                         "Failure"
                     ],
-                    "key": "intent",
-                    "name": "Intent",
+                    "key": "_intent_classification",
+                    "name": "_Intent Classification",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
