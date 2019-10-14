@@ -454,15 +454,8 @@ var voiceSessionTrigger = `{
 }`
 
 // CreateTestSession creates a standard example session for testing
-func CreateTestSession(testServerURL string, actionToAdd flows.Action, redact envs.RedactionPolicy) (flows.Session, []flows.Event, error) {
+func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows.Session, []flows.Event, error) {
 	assetsJSON := json.RawMessage(sessionAssets)
-
-	// optional modify the main flow by adding the provided action to the last node
-	if actionToAdd != nil {
-		actionJSON, _ := json.Marshal(actionToAdd)
-		actionsJSON := []byte(fmt.Sprintf("[%s]", string(actionJSON)))
-		assetsJSON = JSONReplace(json.RawMessage(assetsJSON), []string{"flows", "[0]", "nodes", "[3]", "actions"}, actionsJSON)
-	}
 
 	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
 	if err != nil {
@@ -496,15 +489,8 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action, redact en
 }
 
 // CreateTestVoiceSession creates a standard example session for testing voice flows and actions
-func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
+func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event, error) {
 	assetsJSON := json.RawMessage(voiceSessionAssets)
-
-	// optional modify the main flow by adding the provided action to the last node
-	if actionToAdd != nil {
-		actionJSON, _ := json.Marshal(actionToAdd)
-		actionsJSON := []byte(fmt.Sprintf("[%s]", string(actionJSON)))
-		assetsJSON = JSONReplace(json.RawMessage(assetsJSON), []string{"flows", "[0]", "nodes", "[0]", "actions"}, actionsJSON)
-	}
 
 	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
 	if err != nil {

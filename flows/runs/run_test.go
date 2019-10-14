@@ -108,7 +108,7 @@ func TestRun(t *testing.T) {
 	server := test.NewTestHTTPServer(49999)
 	defer server.Close()
 
-	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	flow, err := session.Assets().Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
@@ -146,7 +146,7 @@ func TestRunContext(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	// create a run with no parent or child
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

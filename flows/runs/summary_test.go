@@ -27,7 +27,7 @@ func TestRunSummary(t *testing.T) {
 	server := test.NewTestHTTPServer(49999)
 	defer server.Close()
 
-	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

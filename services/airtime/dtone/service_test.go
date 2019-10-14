@@ -90,7 +90,7 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 
 	svc := dtone.NewService("login", "token", "USD")
 
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	eventLog := test.NewEventLog()
@@ -132,7 +132,7 @@ func TestServiceFailedTransfers(t *testing.T) {
 
 	svc := dtone.NewService("login", "token", "USD")
 
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	// try when currency not configured

@@ -9,21 +9,19 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/cmd/docgen/completion"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 )
 
 // function that can render a single tagged item
-type renderFunc func(*strings.Builder, *TaggedItem, flows.Session) error
+type renderFunc func(*strings.Builder, *TaggedItem, flows.Session, flows.Session) error
 
 func init() {
 	registerContextFunc(createItemListContextFunc("type", renderTypeDoc))
@@ -41,12 +39,12 @@ func init() {
 
 // creates a context function that renders all tagged items of a given type as a list
 func createItemListContextFunc(tag string, renderer renderFunc) ContextFunc {
-	return func(items map[string][]*TaggedItem, session flows.Session) (map[string]string, error) {
+	return func(items map[string][]*TaggedItem, session flows.Session, voiceSession flows.Session) (map[string]string, error) {
 		contextKey := fmt.Sprintf("%sDocs", tag)
 		buffer := &strings.Builder{}
 
 		for _, item := range items[tag] {
-			if err := renderer(buffer, item, session); err != nil {
+			if err := renderer(buffer, item, session, voiceSession); err != nil {
 				return nil, errors.Wrapf(err, "error rendering %s:%s", item.tagName, item.tagValue)
 			}
 		}
@@ -55,7 +53,7 @@ func createItemListContextFunc(tag string, renderer renderFunc) ContextFunc {
 	}
 }
 
-func renderAssetDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
+func renderAssetDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	if len(item.examples) == 0 {
 		return errors.Errorf("no examples found for asset item %s/%s", item.tagValue, item.typeName)
 	}
@@ -89,7 +87,7 @@ func renderAssetDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 	return nil
 }
 
-func renderTypeDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
+func renderTypeDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	if len(item.examples) == 0 {
 		return errors.Errorf("no examples found for type %s/%s", item.tagValue, item.typeName)
 	}
@@ -112,7 +110,7 @@ func renderTypeDoc(output *strings.Builder, item *TaggedItem, session flows.Sess
 	return nil
 }
 
-func renderOperatorDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
+func renderOperatorDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	if len(item.examples) == 0 {
 		return errors.Errorf("no examples found for operator %s/%s", item.tagValue, item.typeName)
 	}
@@ -135,7 +133,7 @@ func renderOperatorDoc(output *strings.Builder, item *TaggedItem, session flows.
 	return nil
 }
 
-func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
+func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// root of context is rendered separately by renderRootContext
 	if item.tagValue == "root" {
 		return nil
@@ -169,7 +167,7 @@ func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.S
 	return nil
 }
 
-func renderRootContext(items map[string][]*TaggedItem, session flows.Session) (map[string]string, error) {
+func renderRootContext(items map[string][]*TaggedItem, session flows.Session, voiceSession flows.Session) (map[string]string, error) {
 	var root *TaggedItem
 	for _, item := range items["context"] {
 		if item.tagValue == "root" {
@@ -206,7 +204,7 @@ func renderPropertyType(p *completion.Property) string {
 	return fmt.Sprintf("[context:%s]", p.Type)
 }
 
-func renderFunctionDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
+func renderFunctionDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	if len(item.examples) == 0 {
 		return errors.Errorf("no examples found for function %s", item.tagValue)
 	}
@@ -235,7 +233,7 @@ func renderFunctionDoc(output *strings.Builder, item *TaggedItem, session flows.
 	return nil
 }
 
-func renderEventDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
+func renderEventDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	event, err := events.ReadEvent(exampleJSON)
@@ -269,7 +267,7 @@ func renderEventDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 	return nil
 }
 
-func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
+func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	action, err := actions.ReadAction(exampleJSON)
@@ -289,7 +287,7 @@ func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 	}
 
 	// get the events created by this action
-	events, err := eventsForAction(action)
+	events, err := eventsForAction(action, session, voiceSession)
 	if err != nil {
 		return errors.Wrap(err, "error running action")
 	}
@@ -315,7 +313,7 @@ func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 	return nil
 }
 
-func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
+func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
 	trigger, err := triggers.ReadTrigger(session.Assets(), exampleJSON, assets.PanicOnMissing)
@@ -345,7 +343,7 @@ func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.S
 	return nil
 }
 
-func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Session) error {
+func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
 	resume, err := resumes.ReadResume(session.Assets(), exampleJSON, assets.PanicOnMissing)
@@ -407,34 +405,30 @@ func checkExample(session flows.Session, line string) error {
 	return nil
 }
 
-func eventsForAction(action flows.Action) (json.RawMessage, error) {
+func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession flows.Session) (json.RawMessage, error) {
 	voiceAction := len(action.AllowedFlowTypes()) == 1 && action.AllowedFlowTypes()[0] == flows.FlowTypeVoice
-	var session flows.Session
-	var newEvents []flows.Event
-	var err error
-
+	session := msgSession
 	if voiceAction {
-		session, newEvents, err = test.CreateTestVoiceSession("http://localhost:49998", action)
-	} else {
-		session, newEvents, err = test.CreateTestSession("http://localhost:49998", action, envs.RedactionPolicyNone)
+		session = voiceSession
 	}
+
+	run := session.Runs()[0]
+	step := run.Path()[len(run.Path())-1]
+	modifierLog := func(flows.Modifier) {}
+
+	eventList := make([]flows.Event, 0)
+	eventLog := func(e flows.Event) {
+		e.SetStepUUID(step.UUID())
+		eventList = append(eventList, e)
+	}
+
+	err := action.Execute(run, step, modifierLog, eventLog)
 	if err != nil {
 		return nil, err
 	}
 
-	path := session.Runs()[0].Path()
-	lastStep := path[len(path)-1]
-
-	// only interested in events created on the last step
-	eventLog := make([]flows.Event, 0)
-	for _, event := range newEvents {
-		if event.StepUUID() == lastStep.UUID() {
-			eventLog = append(eventLog, event)
-		}
-	}
-
-	eventJSON := make([]json.RawMessage, len(eventLog))
-	for i, event := range eventLog {
+	eventJSON := make([]json.RawMessage, len(eventList))
+	for i, event := range eventList {
 		// action examples aren't supposed to generate error events - if they have, something went wrong
 		if event.Type() == events.TypeError {
 			errEvent := event.(*events.ErrorEvent)
@@ -446,7 +440,7 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 			return nil, err
 		}
 	}
-	if len(eventLog) == 1 {
+	if len(eventList) == 1 {
 		return eventJSON[0], err
 	}
 	js, err := utils.JSONMarshalPretty(eventJSON)

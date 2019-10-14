@@ -64,7 +64,7 @@ func TestService(t *testing.T) {
 		},
 	}))
 
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	svc := luis.NewService(

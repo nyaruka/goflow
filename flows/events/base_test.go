@@ -27,7 +27,7 @@ func TestEventMarshaling(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	tz, _ := time.LoadLocation("Africa/Kigali")
