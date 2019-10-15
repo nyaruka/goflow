@@ -24,7 +24,7 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //     "recipient": "tel:+1242563637",
 //     "currency": "RWF",
 //     "amount": 100,
-//     "https_logs": [
+//     "http_logs": [
 //       {
 //         "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
 //         "status": "success",

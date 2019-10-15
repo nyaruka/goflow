@@ -272,7 +272,16 @@ Events are created when airtime has been transferred to the contact.
     "recipient": "tel:+1242563637",
     "currency": "RWF",
     "amount": 100,
-    "http_logs": null
+    "http_logs": [
+        {
+            "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
+            "status": "success",
+            "request": "POST /topup HTTP/1.1\r\n\r\naction=ping",
+            "response": "HTTP/1.1 200 OK\r\n\r\ninfo_txt=pong\r\n",
+            "created_on": "2006-01-02T15:04:05Z",
+            "elapsed_ms": 123
+        }
+    ]
 }
 ```
 </div>
