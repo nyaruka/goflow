@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/services/webhooks"
+	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -42,11 +43,9 @@ func (s *nluService) Classify(session flows.Session, input string, logEvent flow
 
 	logEvent(events.NewClassifierCalled(
 		s.classifier.Reference(),
-		"http://test.acme.ai?classifiy",
-		flows.CallStatusSuccess,
-		"GET /message?v=20170307&q=hello HTTP/1.1",
-		"HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-		1,
+		[]*httpx.Trace{
+			httpx.NewMockTrace("GET", "http://test.acme.ai?classifiy", 200, `{"intents":[]}`),
+		},
 	))
 
 	classification := &flows.Classification{
@@ -85,7 +84,12 @@ func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipi
 		Amount:    amount,
 	}
 
-	logEvent(events.NewAirtimeTransferred(transfer))
+	logEvent(events.NewAirtimeTransferred(
+		transfer,
+		[]*httpx.Trace{
+			httpx.NewMockTrace("GET", "http://send.airtime.com", 200, `{"status":"ok"}`),
+		},
+	))
 
 	return transfer, nil
 }

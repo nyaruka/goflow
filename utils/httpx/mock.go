@@ -5,16 +5,18 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/http/httputil"
 	"strings"
 
+	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/pkg/errors"
 )
 
 type MockRequestor struct {
-	mocks map[string][]*MockResponse
+	mocks map[string][]MockResponse
 }
 
-func NewMockRequestor(mocks map[string][]*MockResponse) *MockRequestor {
+func NewMockRequestor(mocks map[string][]MockResponse) *MockRequestor {
 	return &MockRequestor{mocks: mocks}
 }
 
@@ -52,7 +54,7 @@ type MockResponse struct {
 	Body   string `json:"body" validate:"required"`
 }
 
-func (m *MockResponse) Make(request *http.Request) *http.Response {
+func (m MockResponse) Make(request *http.Request) *http.Response {
 	return &http.Response{
 		Request:       request,
 		Status:        fmt.Sprintf("%d OK", m.Status),
@@ -67,6 +69,25 @@ func (m *MockResponse) Make(request *http.Request) *http.Response {
 }
 
 // NewMockResponse creates a new mock response
-func NewMockResponse(status int, body string) *MockResponse {
-	return &MockResponse{status, body}
+func NewMockResponse(status int, body string) MockResponse {
+	return MockResponse{status, body}
+}
+
+// NewMockTrace creates a new trace for testing without making an actual request
+func NewMockTrace(method, url string, status int, body string) *Trace {
+	request, _ := http.NewRequest(method, url, nil)
+	requestTrace, _ := httputil.DumpRequestOut(request, true)
+
+	response := NewMockResponse(status, body).Make(request)
+	responseTrace, _ := httputil.DumpResponse(response, true)
+
+	return &Trace{
+		Request:       request,
+		Response:      response,
+		RequestTrace:  requestTrace,
+		ResponseTrace: responseTrace,
+		Body:          []byte(body),
+		StartTime:     dates.Now(),
+		EndTime:       dates.Now(),
+	}
 }

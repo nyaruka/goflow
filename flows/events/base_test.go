@@ -14,6 +14,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -21,11 +22,11 @@ import (
 )
 
 func TestEventMarshaling(t *testing.T) {
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 	defer dates.SetNowSource(dates.DefaultNowSource)
-
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
+
+	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 
 	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
@@ -85,11 +86,7 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			events.NewClassifierCalled(
 				assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
-				"https://api.wit.ai/message?v=20170307&q=hello",
-				flows.CallStatusSuccess,
-				"GET /message?v=20170307&q=hello HTTP/1.1",
-				"HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-				123,
+				[]*httpx.Trace{httpx.NewMockTrace("GET", "https://api.wit.ai/message?v=20170307&q=hello", 200, `{"intents":[]}`)},
 			),
 			`{
 				"classifier": {
@@ -97,12 +94,17 @@ func TestEventMarshaling(t *testing.T) {
 					"name": "Booking"
 				},
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"elapsed_ms": 123,
-				"request": "GET /message?v=20170307&q=hello HTTP/1.1",
-				"response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-				"status": "success",
-				"type": "classifier_called",
-				"url": "https://api.wit.ai/message?v=20170307&q=hello"
+				"http_logs": [
+					{
+						"created_on": "2018-10-18T14:20:30.000123456Z",
+						"elapsed_ms": 0,
+						"request": "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						"response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+						"status": "success",
+						"url": "https://api.wit.ai/message?v=20170307&q=hello"
+					}
+				],
+				"type": "classifier_called"
 			}`,
 		},
 		{

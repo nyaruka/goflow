@@ -26,7 +26,8 @@ type Trace struct {
 	Body          []byte
 	RequestTrace  []byte
 	ResponseTrace []byte
-	TimeTaken     time.Duration
+	StartTime     time.Time
+	EndTime       time.Time
 }
 
 func (t *Trace) String() string {
@@ -54,9 +55,9 @@ func DoTrace(client *http.Client, method string, url string, body io.Reader, hea
 		return nil, err
 	}
 
-	start := dates.Now()
+	startTime := dates.Now()
 	response, err := Do(client, request)
-	timeTaken := dates.Now().Sub(start)
+	endTime := dates.Now()
 
 	if err != nil {
 		return nil, err
@@ -81,7 +82,8 @@ func DoTrace(client *http.Client, method string, url string, body io.Reader, hea
 		RequestTrace:  requestTrace,
 		ResponseTrace: responseTrace,
 		Body:          responseBody,
-		TimeTaken:     timeTaken,
+		StartTime:     startTime,
+		EndTime:       endTime,
 	}
 
 	if debug {

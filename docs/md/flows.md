@@ -206,15 +206,20 @@ and entities were.
         "type": "classifier_called",
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
-        "url": "http://test.acme.ai?classifiy",
-        "status": "success",
-        "request": "GET /message?v=20170307&q=hello HTTP/1.1",
-        "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-        "elapsed_ms": 1,
         "classifier": {
             "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
             "name": "Booking"
-        }
+        },
+        "http_logs": [
+            {
+                "url": "http://test.acme.ai?classifiy",
+                "status": "success",
+                "request": "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+                "created_on": "2018-04-11T18:24:30.123456Z",
+                "elapsed_ms": 0
+            }
+        ]
     },
     {
         "type": "run_result_changed",
@@ -1077,7 +1082,17 @@ An [email_created](sessions.html#event:email_created) event will be created for 
         "sender": "tel:+12345671111",
         "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "currency": "RWF",
-        "amount": 500
+        "amount": 500,
+        "http_logs": [
+            {
+                "url": "http://send.airtime.com",
+                "status": "success",
+                "request": "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                "created_on": "2018-04-11T18:24:30.123456Z",
+                "elapsed_ms": 0
+            }
+        ]
     },
     {
         "type": "run_result_changed",

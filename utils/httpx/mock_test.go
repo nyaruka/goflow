@@ -15,12 +15,12 @@ func TestMockRequestor(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	// can create requestor with constructor
-	requestor1 := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"http://google.com": []*httpx.MockResponse{
+	requestor1 := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"http://google.com": []httpx.MockResponse{
 			httpx.NewMockResponse(200, "this is google"),
 			httpx.NewMockResponse(201, "this is google again"),
 		},
-		"http://yahoo.com": []*httpx.MockResponse{
+		"http://yahoo.com": []httpx.MockResponse{
 			httpx.NewMockResponse(202, "this is yahoo"),
 		},
 	})
