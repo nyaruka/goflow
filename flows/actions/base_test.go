@@ -13,7 +13,10 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/services/classification/wit"
+	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
@@ -204,8 +207,19 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
+		// create an engine instance
+		eng := engine.NewBuilder().
+			WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
+			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
+				if c.Type() == "wit" {
+					return wit.NewService(c, "123456789"), nil
+				}
+				return nil, errors.Errorf("no classification service available for %s", c)
+			}).
+			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return test.NewAirtimeService("RWF"), nil }).
+			Build()
+
 		// create session
-		eng := test.NewEngine()
 		session, _, err := eng.NewSession(sa, trigger)
 		require.NoError(t, err)
 

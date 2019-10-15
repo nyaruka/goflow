@@ -175,7 +175,7 @@ func (c *Client) request(data url.Values, dest interface{}) (*httpx.Trace, error
 		return nil, err
 	}
 
-	if err := c.parseResponse(trace.Body, dest); err != nil {
+	if err := c.parseResponse(trace.ResponseBody, dest); err != nil {
 		return trace, errors.Wrap(err, "API returned an unparseable response")
 	}
 

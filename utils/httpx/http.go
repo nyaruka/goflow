@@ -22,10 +22,10 @@ func Do(client *http.Client, request *http.Request) (*http.Response, error) {
 // Trace holds the complete trace of an HTTP request/response
 type Trace struct {
 	Request       *http.Request
-	Response      *http.Response
-	Body          []byte
 	RequestTrace  []byte
+	Response      *http.Response
 	ResponseTrace []byte
+	ResponseBody  []byte
 	StartTime     time.Time
 	EndTime       time.Time
 }
@@ -55,12 +55,17 @@ func DoTrace(client *http.Client, method string, url string, body io.Reader, hea
 		return nil, err
 	}
 
-	startTime := dates.Now()
+	trace := &Trace{
+		Request:      request,
+		RequestTrace: requestTrace,
+		StartTime:    dates.Now(),
+	}
+
 	response, err := Do(client, request)
-	endTime := dates.Now()
+	trace.EndTime = dates.Now()
 
 	if err != nil {
-		return nil, err
+		return trace, err
 	}
 
 	// save response trace without body which will be parsed separately
@@ -76,15 +81,10 @@ func DoTrace(client *http.Client, method string, url string, body io.Reader, hea
 
 	// add read body to response trace
 	responseTrace = append(responseTrace, responseBody...)
-	trace := &Trace{
-		Request:       request,
-		Response:      response,
-		RequestTrace:  requestTrace,
-		ResponseTrace: responseTrace,
-		Body:          responseBody,
-		StartTime:     startTime,
-		EndTime:       endTime,
-	}
+
+	trace.Response = response
+	trace.ResponseTrace = responseTrace
+	trace.ResponseBody = responseBody
 
 	if debug {
 		fmt.Println(trace.String())

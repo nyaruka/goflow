@@ -71,6 +71,9 @@ error_txt=Transaction successful
 var withCRLF = func(s string) string { return strings.Replace(s, "\n", "\r\n", -1) }
 
 func TestServiceWithSuccessfulTopup(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
@@ -89,9 +92,6 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC)))
 
 	svc := dtone.NewService("login", "token", "USD")
-
-	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
-	require.NoError(t, err)
 
 	eventLog := test.NewEventLog()
 
@@ -114,6 +114,9 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 }
 
 func TestServiceFailedTransfers(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
@@ -131,9 +134,6 @@ func TestServiceFailedTransfers(t *testing.T) {
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC)))
 
 	svc := dtone.NewService("login", "token", "USD")
-
-	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
-	require.NoError(t, err)
 
 	// try when currency not configured
 	eventLog := test.NewEventLog()

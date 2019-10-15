@@ -214,7 +214,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "elapsed_ms": 0,
                 "request": "POST / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
-                "response": "HTTP/1.0 400 OK\r\nContent-Length: 29\r\n\r\n{ \"errors\": [\"bad_request\"] }",
+                "response": "HTTP/1.0 400 Bad Request\r\nContent-Length: 29\r\n\r\n{ \"errors\": [\"bad_request\"] }",
                 "status": "response_error",
                 "status_code": 400,
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
