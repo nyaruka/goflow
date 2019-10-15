@@ -431,7 +431,7 @@ through `extra` on the result.
     "type": "call_webhook",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "method": "GET",
-    "url": "http://localhost/?cmd=success",
+    "url": "http://localhost:49998/?cmd=success",
     "headers": {
         "Authorization": "Token AAFFZZHH"
     },
@@ -446,20 +446,24 @@ through `extra` on the result.
         "type": "webhook_called",
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
-        "url": "http://localhost/?cmd=success",
-        "status": "connection_error",
-        "request": "GET /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nAuthorization: Token AAFFZZHH\r\nAccept-Encoding: gzip\r\n\r\n",
-        "response": "Get http://localhost/?cmd=success: dial tcp [::1]:80: connect: connection refused",
-        "elapsed_ms": 0
+        "url": "http://localhost:49998/?cmd=success",
+        "status": "success",
+        "request": "GET /?cmd=success HTTP/1.1\r\nHost: localhost:49998\r\nUser-Agent: goflow-testing\r\nAuthorization: Token AAFFZZHH\r\nAccept-Encoding: gzip\r\n\r\n",
+        "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
+        "elapsed_ms": 0,
+        "status_code": 200
     },
     {
         "type": "run_result_changed",
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
         "name": "webhook",
-        "value": "0",
-        "category": "Failure",
-        "input": "GET http://localhost/?cmd=success"
+        "value": "200",
+        "category": "Success",
+        "input": "GET http://localhost:49998/?cmd=success",
+        "extra": {
+            "ok": "true"
+        }
     }
 ]
 ```
@@ -1041,10 +1045,13 @@ will be created and it's the responsibility of the caller to act on that by init
             },
             "webhook": {
                 "name": "webhook",
-                "value": "0",
-                "category": "Failure",
+                "value": "200",
+                "category": "Success",
                 "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-                "input": "GET http://localhost/?cmd=success",
+                "input": "GET http://localhost:49998/?cmd=success",
+                "extra": {
+                    "ok": "true"
+                },
                 "created_on": "2018-04-11T18:24:30.123456Z"
             }
         }
