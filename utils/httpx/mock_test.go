@@ -15,13 +15,14 @@ func TestMockRequestor(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	// can create requestor with constructor
-	requestor1 := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"http://google.com": []*httpx.MockResponse{
+	requestor1 := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"http://google.com": []httpx.MockResponse{
 			httpx.NewMockResponse(200, "this is google"),
 			httpx.NewMockResponse(201, "this is google again"),
 		},
-		"http://yahoo.com": []*httpx.MockResponse{
+		"http://yahoo.com": []httpx.MockResponse{
 			httpx.NewMockResponse(202, "this is yahoo"),
+			httpx.MockConnectionError,
 		},
 	})
 
@@ -32,7 +33,8 @@ func TestMockRequestor(t *testing.T) {
 			{"status": 201, "body": "this is google again"}
 		],
 		"http://yahoo.com": [
-			{"status": 202, "body": "this is yahoo"}
+			{"status": 202, "body": "this is yahoo"},
+			{"status": 0, "body": ""}
 		]
 	}`)
 
@@ -66,11 +68,15 @@ func TestMockRequestor(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, 201, response3.StatusCode)
 
+	// request mocked connection error
+	req4, _ := http.NewRequest("GET", "http://yahoo.com", nil)
+	response4, err := httpx.Do(http.DefaultClient, req4)
+	assert.EqualError(t, err, "unable to connect to server")
+	assert.Nil(t, response4)
+
 	assert.False(t, requestor1.HasUnused())
 
-	// error if we've run out of mocks for a URL
-	req4, _ := http.NewRequest("GET", "http://google.com", nil)
-	response4, err := httpx.Do(http.DefaultClient, req4)
-	assert.EqualError(t, err, "missing mock for URL http://google.com")
-	assert.Nil(t, response4)
+	// panic if we've run out of mocks for a URL
+	req5, _ := http.NewRequest("GET", "http://google.com", nil)
+	assert.Panics(t, func() { httpx.Do(http.DefaultClient, req5) })
 }

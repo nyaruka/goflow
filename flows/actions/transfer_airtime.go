@@ -86,12 +86,18 @@ func (a *TransferAirtimeAction) transfer(run flows.FlowRun, step flows.Step, log
 		return nil, err
 	}
 
-	transfer, err := svc.Transfer(run.Session(), sender, telURNs[0].URN(), a.Amounts, logEvent)
+	httpLogger := &flows.HTTPLogger{}
+
+	transfer, err := svc.Transfer(run.Session(), sender, telURNs[0].URN(), a.Amounts, httpLogger.Log)
+	if transfer != nil {
+		logEvent(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
+	}
+
 	return transfer, err
 }
 
 func (a *TransferAirtimeAction) saveSuccess(run flows.FlowRun, step flows.Step, transfer *flows.AirtimeTransfer, logEvent flows.EventCallback) {
-	a.saveResult(run, step, a.ResultName, transfer.Amount.String(), CategorySuccess, "", "", nil, logEvent)
+	a.saveResult(run, step, a.ResultName, transfer.ActualAmount.String(), CategorySuccess, "", "", nil, logEvent)
 }
 
 func (a *TransferAirtimeAction) saveSkipped(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) {

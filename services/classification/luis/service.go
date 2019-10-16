@@ -1,10 +1,7 @@
 package luis
 
 import (
-	"time"
-
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 // a classification service implmentation for a LUIS app
@@ -25,23 +22,12 @@ func NewService(classifier *flows.Classifier, endpoint, appID, key string) flows
 	}
 }
 
-func (s *service) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.Classification, error) {
+func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	client := NewClient(session.Engine().HTTPClient(), s.endpoint, s.appID, s.key)
 
 	response, trace, err := client.Predict(input)
 	if trace != nil {
-		status := flows.CallStatusSuccess
-		if err != nil {
-			status = flows.CallStatusResponseError
-		}
-		logEvent(events.NewClassifierCalled(
-			s.classifier.Reference(),
-			trace.Request.URL.String(),
-			status,
-			string(trace.RequestTrace),
-			string(trace.ResponseTrace),
-			int(trace.TimeTaken/time.Millisecond),
-		))
+		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode))
 	}
 	if err != nil {
 		return nil, err

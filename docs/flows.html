@@ -201,46 +201,51 @@ Event
 <span id="cb11-3"><a href="#cb11-3"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;classifier_called&quot;</span><span class="fu">,</span></span>
 <span id="cb11-4"><a href="#cb11-4"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
 <span id="cb11-5"><a href="#cb11-5"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a>        <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://test.acme.ai?classifiy&quot;</span><span class="fu">,</span></span>
-<span id="cb11-7"><a href="#cb11-7"></a>        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
-<span id="cb11-8"><a href="#cb11-8"></a>        <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET /message?v=20170307&amp;q=hello HTTP/1.1&quot;</span><span class="fu">,</span></span>
-<span id="cb11-9"><a href="#cb11-9"></a>        <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">intents</span><span class="ch">\&quot;</span><span class="st">:[]}&quot;</span><span class="fu">,</span></span>
-<span id="cb11-10"><a href="#cb11-10"></a>        <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
-<span id="cb11-11"><a href="#cb11-11"></a>        <span class="dt">&quot;classifier&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb11-12"><a href="#cb11-12"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1c06c884-39dd-4ce4-ad9f-9a01cbe6c000&quot;</span><span class="fu">,</span></span>
-<span id="cb11-13"><a href="#cb11-13"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Booking&quot;</span></span>
-<span id="cb11-14"><a href="#cb11-14"></a>        <span class="fu">}</span></span>
-<span id="cb11-15"><a href="#cb11-15"></a>    <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb11-16"><a href="#cb11-16"></a>    <span class="fu">{</span></span>
-<span id="cb11-17"><a href="#cb11-17"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
-<span id="cb11-18"><a href="#cb11-18"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
-<span id="cb11-19"><a href="#cb11-19"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
-<span id="cb11-20"><a href="#cb11-20"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Intent&quot;</span><span class="fu">,</span></span>
-<span id="cb11-21"><a href="#cb11-21"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span><span class="fu">,</span></span>
-<span id="cb11-22"><a href="#cb11-22"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
-<span id="cb11-23"><a href="#cb11-23"></a>        <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi there&quot;</span><span class="fu">,</span></span>
-<span id="cb11-24"><a href="#cb11-24"></a>        <span class="dt">&quot;extra&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb11-25"><a href="#cb11-25"></a>            <span class="dt">&quot;intents&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb11-26"><a href="#cb11-26"></a>                <span class="fu">{</span></span>
-<span id="cb11-27"><a href="#cb11-27"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span><span class="fu">,</span></span>
-<span id="cb11-28"><a href="#cb11-28"></a>                    <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.5</span></span>
-<span id="cb11-29"><a href="#cb11-29"></a>                <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb11-30"><a href="#cb11-30"></a>                <span class="fu">{</span></span>
-<span id="cb11-31"><a href="#cb11-31"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_hotel&quot;</span><span class="fu">,</span></span>
-<span id="cb11-32"><a href="#cb11-32"></a>                    <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.25</span></span>
-<span id="cb11-33"><a href="#cb11-33"></a>                <span class="fu">}</span></span>
-<span id="cb11-34"><a href="#cb11-34"></a>            <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb11-35"><a href="#cb11-35"></a>            <span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb11-36"><a href="#cb11-36"></a>                <span class="dt">&quot;location&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb11-37"><a href="#cb11-37"></a>                    <span class="fu">{</span></span>
-<span id="cb11-38"><a href="#cb11-38"></a>                        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Quito&quot;</span><span class="fu">,</span></span>
-<span id="cb11-39"><a href="#cb11-39"></a>                        <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
-<span id="cb11-40"><a href="#cb11-40"></a>                    <span class="fu">}</span></span>
-<span id="cb11-41"><a href="#cb11-41"></a>                <span class="ot">]</span></span>
-<span id="cb11-42"><a href="#cb11-42"></a>            <span class="fu">}</span></span>
-<span id="cb11-43"><a href="#cb11-43"></a>        <span class="fu">}</span></span>
-<span id="cb11-44"><a href="#cb11-44"></a>    <span class="fu">}</span></span>
-<span id="cb11-45"><a href="#cb11-45"></a><span class="ot">]</span></span></code></pre></div>
+<span id="cb11-6"><a href="#cb11-6"></a>        <span class="dt">&quot;classifier&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1c06c884-39dd-4ce4-ad9f-9a01cbe6c000&quot;</span><span class="fu">,</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Booking&quot;</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>        <span class="fu">},</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>        <span class="dt">&quot;http_logs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a>            <span class="fu">{</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a>                <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://test.acme.ai?classifiy&quot;</span><span class="fu">,</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a>                <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a>                <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET /?classifiy HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: test.acme.ai</span><span class="ch">\r\n</span><span class="st">User-Agent: Go-http-client/1.1</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">&quot;</span><span class="fu">,</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a>                <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.0 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 14</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">intents</span><span class="ch">\&quot;</span><span class="st">:[]}&quot;</span><span class="fu">,</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2019-10-16T13:59:30.123456789Z&quot;</span><span class="fu">,</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a>                <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">1000</span></span>
+<span id="cb11-18"><a href="#cb11-18"></a>            <span class="fu">}</span></span>
+<span id="cb11-19"><a href="#cb11-19"></a>        <span class="ot">]</span></span>
+<span id="cb11-20"><a href="#cb11-20"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb11-21"><a href="#cb11-21"></a>    <span class="fu">{</span></span>
+<span id="cb11-22"><a href="#cb11-22"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb11-23"><a href="#cb11-23"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb11-24"><a href="#cb11-24"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb11-25"><a href="#cb11-25"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Intent&quot;</span><span class="fu">,</span></span>
+<span id="cb11-26"><a href="#cb11-26"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span><span class="fu">,</span></span>
+<span id="cb11-27"><a href="#cb11-27"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb11-28"><a href="#cb11-28"></a>        <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi there&quot;</span><span class="fu">,</span></span>
+<span id="cb11-29"><a href="#cb11-29"></a>        <span class="dt">&quot;extra&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-30"><a href="#cb11-30"></a>            <span class="dt">&quot;intents&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb11-31"><a href="#cb11-31"></a>                <span class="fu">{</span></span>
+<span id="cb11-32"><a href="#cb11-32"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span><span class="fu">,</span></span>
+<span id="cb11-33"><a href="#cb11-33"></a>                    <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.5</span></span>
+<span id="cb11-34"><a href="#cb11-34"></a>                <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb11-35"><a href="#cb11-35"></a>                <span class="fu">{</span></span>
+<span id="cb11-36"><a href="#cb11-36"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_hotel&quot;</span><span class="fu">,</span></span>
+<span id="cb11-37"><a href="#cb11-37"></a>                    <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.25</span></span>
+<span id="cb11-38"><a href="#cb11-38"></a>                <span class="fu">}</span></span>
+<span id="cb11-39"><a href="#cb11-39"></a>            <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb11-40"><a href="#cb11-40"></a>            <span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-41"><a href="#cb11-41"></a>                <span class="dt">&quot;location&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb11-42"><a href="#cb11-42"></a>                    <span class="fu">{</span></span>
+<span id="cb11-43"><a href="#cb11-43"></a>                        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Quito&quot;</span><span class="fu">,</span></span>
+<span id="cb11-44"><a href="#cb11-44"></a>                        <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
+<span id="cb11-45"><a href="#cb11-45"></a>                    <span class="fu">}</span></span>
+<span id="cb11-46"><a href="#cb11-46"></a>                <span class="ot">]</span></span>
+<span id="cb11-47"><a href="#cb11-47"></a>            <span class="fu">}</span></span>
+<span id="cb11-48"><a href="#cb11-48"></a>        <span class="fu">}</span></span>
+<span id="cb11-49"><a href="#cb11-49"></a>    <span class="fu">}</span></span>
+<span id="cb11-50"><a href="#cb11-50"></a><span class="ot">]</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="action:call_resthook" href="#action:call_resthook">call_resthook</a>
@@ -721,7 +726,7 @@ Action
 <span id="cb30-3"><a href="#cb30-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
 <span id="cb30-4"><a href="#cb30-4"></a>    <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb30-5"><a href="#cb30-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4bb288a0-7fca-4da1-abe8-59a593aff648&quot;</span><span class="fu">,</span></span>
-<span id="cb30-6"><a href="#cb30-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;FAcebook Channel&quot;</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Facebook Channel&quot;</span></span>
 <span id="cb30-7"><a href="#cb30-7"></a>    <span class="fu">}</span></span>
 <span id="cb30-8"><a href="#cb30-8"></a><span class="fu">}</span></span></code></pre></div>
 </div>
@@ -1055,17 +1060,28 @@ Event
 <span id="cb45-6"><a href="#cb45-6"></a>        <span class="dt">&quot;sender&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12345671111&quot;</span><span class="fu">,</span></span>
 <span id="cb45-7"><a href="#cb45-7"></a>        <span class="dt">&quot;recipient&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="fu">,</span></span>
 <span id="cb45-8"><a href="#cb45-8"></a>        <span class="dt">&quot;currency&quot;</span><span class="fu">:</span> <span class="st">&quot;RWF&quot;</span><span class="fu">,</span></span>
-<span id="cb45-9"><a href="#cb45-9"></a>        <span class="dt">&quot;amount&quot;</span><span class="fu">:</span> <span class="dv">500</span></span>
-<span id="cb45-10"><a href="#cb45-10"></a>    <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb45-11"><a href="#cb45-11"></a>    <span class="fu">{</span></span>
-<span id="cb45-12"><a href="#cb45-12"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
-<span id="cb45-13"><a href="#cb45-13"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
-<span id="cb45-14"><a href="#cb45-14"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
-<span id="cb45-15"><a href="#cb45-15"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Reward Transfer&quot;</span><span class="fu">,</span></span>
-<span id="cb45-16"><a href="#cb45-16"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;500&quot;</span><span class="fu">,</span></span>
-<span id="cb45-17"><a href="#cb45-17"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span></span>
-<span id="cb45-18"><a href="#cb45-18"></a>    <span class="fu">}</span></span>
-<span id="cb45-19"><a href="#cb45-19"></a><span class="ot">]</span></span></code></pre></div>
+<span id="cb45-9"><a href="#cb45-9"></a>        <span class="dt">&quot;desired_amount&quot;</span><span class="fu">:</span> <span class="dv">500</span><span class="fu">,</span></span>
+<span id="cb45-10"><a href="#cb45-10"></a>        <span class="dt">&quot;actual_amount&quot;</span><span class="fu">:</span> <span class="dv">500</span><span class="fu">,</span></span>
+<span id="cb45-11"><a href="#cb45-11"></a>        <span class="dt">&quot;http_logs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb45-12"><a href="#cb45-12"></a>            <span class="fu">{</span></span>
+<span id="cb45-13"><a href="#cb45-13"></a>                <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://send.airtime.com&quot;</span><span class="fu">,</span></span>
+<span id="cb45-14"><a href="#cb45-14"></a>                <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb45-15"><a href="#cb45-15"></a>                <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET / HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: send.airtime.com</span><span class="ch">\r\n</span><span class="st">User-Agent: Go-http-client/1.1</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">&quot;</span><span class="fu">,</span></span>
+<span id="cb45-16"><a href="#cb45-16"></a>                <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.0 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 15</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">status</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">ok</span><span class="ch">\&quot;</span><span class="st">}&quot;</span><span class="fu">,</span></span>
+<span id="cb45-17"><a href="#cb45-17"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2019-10-16T13:59:30.123456789Z&quot;</span><span class="fu">,</span></span>
+<span id="cb45-18"><a href="#cb45-18"></a>                <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">0</span></span>
+<span id="cb45-19"><a href="#cb45-19"></a>            <span class="fu">}</span></span>
+<span id="cb45-20"><a href="#cb45-20"></a>        <span class="ot">]</span></span>
+<span id="cb45-21"><a href="#cb45-21"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb45-22"><a href="#cb45-22"></a>    <span class="fu">{</span></span>
+<span id="cb45-23"><a href="#cb45-23"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb45-24"><a href="#cb45-24"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb45-25"><a href="#cb45-25"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb45-26"><a href="#cb45-26"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Reward Transfer&quot;</span><span class="fu">,</span></span>
+<span id="cb45-27"><a href="#cb45-27"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;500&quot;</span><span class="fu">,</span></span>
+<span id="cb45-28"><a href="#cb45-28"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span></span>
+<span id="cb45-29"><a href="#cb45-29"></a>    <span class="fu">}</span></span>
+<span id="cb45-30"><a href="#cb45-30"></a><span class="ot">]</span></span></code></pre></div>
 </div>
 </div>
 

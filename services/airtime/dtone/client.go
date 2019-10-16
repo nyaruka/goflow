@@ -22,7 +22,7 @@ const (
 	apiURL = "https://airtime-api.dtone.com/cgi-bin/shop/topup"
 )
 
-// Client is a TransferTo client
+// Client is a DTOne client
 // see https://tshop-app.dtone.com/shop/v3/doc/Airtime_API.pdf for API docs
 type Client struct {
 	httpClient *http.Client
@@ -30,19 +30,21 @@ type Client struct {
 	token      string
 }
 
-// Response is a base interface for all responses
 type Response interface {
-	ErrorCode() int
-	ErrorTxt() string
+	Error() error
 }
 
 type baseResponse struct {
-	ErrorCode_ int    `json:"error_code,string"`
-	ErrorTxt_  string `json:"error_txt"`
+	ErrorCode int    `json:"error_code,string"`
+	ErrorTxt  string `json:"error_txt"`
 }
 
-func (r *baseResponse) ErrorCode() int   { return r.ErrorCode_ }
-func (r *baseResponse) ErrorTxt() string { return r.ErrorTxt_ }
+func (r *baseResponse) Error() error {
+	if r.ErrorCode != 0 {
+		return errors.Errorf("%s (%d)", r.ErrorTxt, r.ErrorCode)
+	}
+	return nil
+}
 
 // NewClient creates a new TransferTo client
 func NewClient(httpClient *http.Client, login string, token string) *Client {
@@ -94,7 +96,7 @@ func (c *Client) MSISDNInfo(destinationMSISDN string, currency string, delivered
 	response := &MSISDNInfo{}
 	trace, err := c.request(request, response)
 	if err != nil {
-		return nil, nil, err
+		return nil, trace, err
 	}
 	return response, trace, nil
 }
@@ -106,16 +108,16 @@ type ReserveID struct {
 }
 
 // ReserveID reserves a transaction ID for a future topup
-func (c *Client) ReserveID() (int, error) {
+func (c *Client) ReserveID() (*ReserveID, *httpx.Trace, error) {
 	request := url.Values{}
 	request.Add("action", "reserve_id")
 
 	response := &ReserveID{}
-	_, err := c.request(request, response)
+	trace, err := c.request(request, response)
 	if err != nil {
-		return 0, err
+		return nil, trace, err
 	}
-	return response.ReservedID, nil
+	return response, trace, nil
 }
 
 // Topup is a response to a topup request
@@ -150,14 +152,14 @@ func (c *Client) Topup(reservedID int, msisdn string, destinationMSISDN string, 
 	response := &Topup{}
 	trace, err := c.request(request, response)
 	if err != nil {
-		return nil, nil, err
+		return nil, trace, err
 	}
 
 	return response, trace, nil
 }
 
 // makes a request with the given data and parses the response into the destination struct
-func (c *Client) request(data url.Values, dest interface{}) (*httpx.Trace, error) {
+func (c *Client) request(data url.Values, dest Response) (*httpx.Trace, error) {
 	key := strconv.Itoa(int(dates.Now().UnixNano() / int64(time.Millisecond)))
 
 	hasher := md5.New()
@@ -175,14 +177,10 @@ func (c *Client) request(data url.Values, dest interface{}) (*httpx.Trace, error
 		return nil, err
 	}
 
-	if err := c.parseResponse(trace.Body, dest); err != nil {
-		return trace, errors.Wrap(err, "API returned an unparseable response")
+	if err := c.parseResponse(trace.ResponseBody, dest); err != nil {
+		return trace, errors.Wrap(err, "DTOne API request failed")
 	}
 
-	baseResp := dest.(Response)
-	if baseResp.ErrorCode() != 0 {
-		return trace, errors.Errorf("API returned an error: %s (%d)", baseResp.ErrorTxt(), baseResp.ErrorCode())
-	}
 	return trace, nil
 }
 
@@ -193,7 +191,19 @@ func (c *Client) request(data url.Values, dest interface{}) (*httpx.Trace, error
 // ...
 //
 // with each line separated by \r\n
-func (c *Client) parseResponse(asBytes []byte, dest interface{}) error {
+func (c *Client) parseResponse(asBytes []byte, dest Response) error {
+	if err := unmarshalResponse(asBytes, dest); err != nil {
+		return err
+	}
+
+	if err := dest.Error(); err != nil {
+		return err
+	}
+
+	return utils.Validate(dest)
+}
+
+func unmarshalResponse(asBytes []byte, dest interface{}) error {
 	// parse into a map
 	data := make(map[string]string)
 	for _, line := range strings.Split(string(asBytes), "\r\n") {
@@ -204,7 +214,8 @@ func (c *Client) parseResponse(asBytes []byte, dest interface{}) error {
 		}
 	}
 
-	// marshal to JSON and then into the destination struct
+	// marshal to JSON so we can use nice golang JSON unmarshalling into our response structs
 	respJSON, _ := json.Marshal(data)
-	return utils.UnmarshalAndValidate(respJSON, dest)
+
+	return json.Unmarshal(respJSON, dest)
 }
