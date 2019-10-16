@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
-	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/pkg/errors"
 )
@@ -42,47 +41,6 @@ func (e *baseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
 
 // SetStepUUID sets the UUID of the step in the path where this event occured
 func (e *baseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
-
-//------------------------------------------------------------------------------------------
-// HTTP logging
-//------------------------------------------------------------------------------------------
-
-// HTTPLog describes an HTTP request/response
-type HTTPLog struct {
-	URL       string           `json:"url" validate:"required"`
-	Status    flows.CallStatus `json:"status" validate:"required"`
-	Request   string           `json:"request" validate:"required"`
-	Response  string           `json:"response,omitempty"`
-	CreatedOn time.Time        `json:"created_on" validate:"required"`
-	ElapsedMS int              `json:"elapsed_ms"`
-}
-
-// creates a new HTTP log from a trace
-func httpLogFromTrace(trace *httpx.Trace) *HTTPLog {
-	status := flows.CallStatusSuccess
-	if trace.Response == nil {
-		status = flows.CallStatusConnectionError
-	} else if trace.Response.StatusCode >= 400 {
-		status = flows.CallStatusResponseError
-	}
-
-	return &HTTPLog{
-		URL:       trace.Request.URL.String(),
-		Status:    status,
-		Request:   string(trace.RequestTrace),
-		Response:  string(trace.ResponseTrace),
-		CreatedOn: trace.StartTime,
-		ElapsedMS: int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
-	}
-}
-
-func httpLogsFromTraces(traces []*httpx.Trace) []*HTTPLog {
-	logs := make([]*HTTPLog, len(traces))
-	for i := range traces {
-		logs[i] = httpLogFromTrace(traces[i])
-	}
-	return logs
-}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
