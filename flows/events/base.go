@@ -43,15 +43,6 @@ func (e *baseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
 // SetStepUUID sets the UUID of the step in the path where this event occured
 func (e *baseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
 
-// utility for events which describe calls to external services
-type externalCallEvent struct {
-	URL       string           `json:"url" validate:"required"`
-	Status    flows.CallStatus `json:"status" validate:"required"`
-	Request   string           `json:"request" validate:"required"`
-	Response  string           `json:"response,omitempty"`
-	ElapsedMS int              `json:"elapsed_ms"`
-}
-
 //------------------------------------------------------------------------------------------
 // HTTP logging
 //------------------------------------------------------------------------------------------
