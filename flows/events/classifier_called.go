@@ -18,32 +18,31 @@ const TypeClassifierCalled string = "classifier_called"
 //     "type": "classifier_called",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "classifier": {"uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000", "name": "Booking"},
-//     "url": "https://api.wit.ai/message?v=20170307&q=hello",
-//     "status": "success",
-//     "request": "GET /message?v=20170307&q=hello HTTP/1.1",
-//     "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-//     "elapsed_ms": 123
+//     "http_logs": [
+//       {
+//         "url": "https://api.wit.ai/message?v=20170307&q=hello",
+//         "status": "success",
+//         "request": "GET /message?v=20170307&q=hello HTTP/1.1",
+//         "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+//         "created_on": "2006-01-02T15:04:05Z",
+//         "elapsed_ms": 123
+//       }
+//     ]
 //   }
 //
 // @event classifier_called
 type ClassifierCalledEvent struct {
 	baseEvent
-	externalCallEvent
 
 	Classifier *assets.ClassifierReference `json:"classifier" validate:"required"`
+	HTTPLogs   []*flows.HTTPLog            `json:"http_logs"`
 }
 
 // NewClassifierCalled returns a classifier called event
-func NewClassifierCalled(classifier *assets.ClassifierReference, url string, status flows.CallStatus, request, response string, elapsedMS int) *ClassifierCalledEvent {
+func NewClassifierCalled(classifier *assets.ClassifierReference, httpLogs []*flows.HTTPLog) *ClassifierCalledEvent {
 	return &ClassifierCalledEvent{
-		baseEvent: newBaseEvent(TypeClassifierCalled),
-		externalCallEvent: externalCallEvent{
-			URL:       url,
-			Status:    status,
-			Request:   request,
-			Response:  response,
-			ElapsedMS: elapsedMS,
-		},
+		baseEvent:  newBaseEvent(TypeClassifierCalled),
 		Classifier: classifier,
+		HTTPLogs:   httpLogs,
 	}
 }

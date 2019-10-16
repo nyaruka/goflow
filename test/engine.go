@@ -1,10 +1,11 @@
 package test
 
 import (
+	"time"
+
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/services/webhooks"
 
 	"github.com/pkg/errors"
@@ -31,7 +32,7 @@ func newClassificationService(classifier *flows.Classifier) *nluService {
 	return &nluService{classifier: classifier}
 }
 
-func (s *nluService) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.Classification, error) {
+func (s *nluService) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	classifierIntents := s.classifier.Intents()
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")
@@ -40,14 +41,14 @@ func (s *nluService) Classify(session flows.Session, input string, logEvent flow
 		confidence = confidence.Div(decimal.RequireFromString("2"))
 	}
 
-	logEvent(events.NewClassifierCalled(
-		s.classifier.Reference(),
-		"http://test.acme.ai?classifiy",
-		flows.CallStatusSuccess,
-		"GET /message?v=20170307&q=hello HTTP/1.1",
-		"HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-		1,
-	))
+	logHTTP(&flows.HTTPLog{
+		URL:       "http://test.acme.ai?classifiy",
+		Request:   "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+		Status:    "success",
+		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
+		ElapsedMS: 1000,
+	})
 
 	classification := &flows.Classification{
 		Intents: extractedIntents,
@@ -72,20 +73,28 @@ func newAirtimeService(currency string) *airtimeService {
 	return &airtimeService{fixedCurrency: currency}
 }
 
-func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
+func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
+	logHTTP(&flows.HTTPLog{
+		URL:       "http://send.airtime.com",
+		Request:   "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+		Status:    "success",
+		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
+		ElapsedMS: 0,
+	})
+
 	amount, hasAmount := amounts[s.fixedCurrency]
 	if !hasAmount {
 		return nil, errors.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
 	}
 
 	transfer := &flows.AirtimeTransfer{
-		Sender:    sender,
-		Recipient: recipient,
-		Currency:  s.fixedCurrency,
-		Amount:    amount,
+		Sender:        sender,
+		Recipient:     recipient,
+		Currency:      s.fixedCurrency,
+		DesiredAmount: amount,
+		ActualAmount:  amount,
 	}
-
-	logEvent(events.NewAirtimeTransferred(transfer))
 
 	return transfer, nil
 }

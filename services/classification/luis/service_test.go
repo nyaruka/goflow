@@ -1,7 +1,6 @@
 package luis_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
@@ -19,14 +18,17 @@ import (
 )
 
 func TestService(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito": []*httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito": []httpx.MockResponse{
 			httpx.NewMockResponse(200, `{
 				"query": "book a flight to Quito",
 				"topScoringIntent": {
@@ -64,9 +66,6 @@ func TestService(t *testing.T) {
 		},
 	}))
 
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
-	require.NoError(t, err)
-
 	svc := luis.NewService(
 		test.NewClassifier("Booking", "luis", []string{"book_flight", "book_hotel"}),
 		"https://westus.api.cognitive.microsoft.com/luis/v2.0",
@@ -74,9 +73,9 @@ func TestService(t *testing.T) {
 		"3246231",
 	)
 
-	eventLog := test.NewEventLog()
+	httpLogger := &flows.HTTPLogger{}
 
-	classification, err := svc.Classify(session, "book flight to Quito", eventLog.Log)
+	classification, err := svc.Classify(session, "book flight to Quito", httpLogger.Log)
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
 		flows.ExtractedIntent{Name: "Book Flight", Confidence: decimal.RequireFromString(`0.9106805`)},
@@ -92,20 +91,6 @@ func TestService(t *testing.T) {
 		},
 	}, classification.Entities)
 
-	eventsJSON, _ := json.Marshal(eventLog.Events)
-	test.AssertEqualJSON(t, []byte(`[
-		{
-			"classifier": {
-				"name": "Booking",
-				"uuid": "20cc4181-48cf-4344-9751-99419796decd"
-			},
-			"created_on": "2019-10-07T15:22:29.123456789Z",
-			"elapsed_ms": 1000,
-			"request": "GET /luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito HTTP/1.1\r\nHost: westus.api.cognitive.microsoft.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-			"response": "HTTP/1.0 200 OK\r\nContent-Length: 605\r\n\r\n{\n\t\t\t\t\"query\": \"book a flight to Quito\",\n\t\t\t\t\"topScoringIntent\": {\n\t\t\t\t  \"intent\": \"Book Flight\",\n\t\t\t\t  \"score\": 0.9106805\n\t\t\t\t},\n\t\t\t\t\"intents\": [\n\t\t\t\t  {\n\t\t\t\t\t\"intent\": \"Book Flight\",\n\t\t\t\t\t\"score\": 0.9106805\n\t\t\t\t  },\n\t\t\t\t  {\n\t\t\t\t\t\"intent\": \"None\",\n\t\t\t\t\t\"score\": 0.08910245\n\t\t\t\t  },\n\t\t\t\t  {\n\t\t\t\t\t\"intent\": \"Book Hotel\",\n\t\t\t\t\t\"score\": 0.07790734\n\t\t\t\t  }\n\t\t\t\t],\n\t\t\t\t\"entities\": [\n\t\t\t\t  {\n\t\t\t\t\t\"entity\": \"quito\",\n\t\t\t\t\t\"type\": \"City\",\n\t\t\t\t\t\"startIndex\": 17,\n\t\t\t\t\t\"endIndex\": 21,\n\t\t\t\t\t\"score\": 0.9644149\n\t\t\t\t  }\n\t\t\t\t],\n\t\t\t\t\"sentimentAnalysis\": {\n\t\t\t\t  \"label\": \"positive\",\n\t\t\t\t  \"score\": 0.731448531\n\t\t\t\t}\n\t\t\t}",
-			"status": "success",
-			"type": "classifier_called",
-			"url": "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito"
-		}
-	]`), eventsJSON, "events JSON mismatch")
+	assert.Equal(t, 1, len(httpLogger.Logs))
+	assert.Equal(t, "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito", httpLogger.Logs[0].URL)
 }

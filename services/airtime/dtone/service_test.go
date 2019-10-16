@@ -71,12 +71,15 @@ error_txt=Transaction successful
 var withCRLF = func(s string) string { return strings.Replace(s, "\n", "\r\n", -1) }
 
 func TestServiceWithSuccessfulTopup(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []*httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []httpx.MockResponse{
 			httpx.NewMockResponse(200, withCRLF(msisdnResponse)),
 			httpx.NewMockResponse(200, withCRLF(reserveResponse)),
 			httpx.NewMockResponse(200, withCRLF(topupResponse)),
@@ -90,36 +93,39 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 
 	svc := dtone.NewService("login", "token", "USD")
 
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
-	require.NoError(t, err)
-
-	eventLog := test.NewEventLog()
+	httpLogger := &flows.HTTPLogger{}
 
 	transfer, err := svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
 		urns.URN("tel:+593979099111"),
 		map[string]decimal.Decimal{"USD": decimal.RequireFromString("1.5")},
-		eventLog.Log,
+		httpLogger.Log,
 	)
 	assert.NoError(t, err)
 	assert.Equal(t, &flows.AirtimeTransfer{
-		Sender:    urns.URN("tel:+593979099111"),
-		Recipient: urns.URN("tel:+593979099111"),
-		Currency:  "USD",
-		Amount:    decimal.RequireFromString("1"), // closest product
+		Sender:        urns.URN("tel:+593979099111"),
+		Recipient:     urns.URN("tel:+593979099111"),
+		Currency:      "USD",
+		DesiredAmount: decimal.RequireFromString("1.5"),
+		ActualAmount:  decimal.RequireFromString("1"), // closest product
 	}, transfer)
+
+	assert.Equal(t, 3, len(httpLogger.Logs))
 
 	assert.False(t, mocks.HasUnused())
 }
 
 func TestServiceFailedTransfers(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []*httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []httpx.MockResponse{
 			httpx.NewMockResponse(200, withCRLF(msisdnResponse)),
 			httpx.NewMockResponse(200, withCRLF(msisdnResponse)),
 		},
@@ -132,32 +138,41 @@ func TestServiceFailedTransfers(t *testing.T) {
 
 	svc := dtone.NewService("login", "token", "USD")
 
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
-	require.NoError(t, err)
+	httpLogger := &flows.HTTPLogger{}
 
 	// try when currency not configured
-	eventLog := test.NewEventLog()
 	transfer, err := svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
-		urns.URN("tel:+593979099111"),
+		urns.URN("tel:+593979099222"),
 		map[string]decimal.Decimal{"RWF": decimal.RequireFromString("1000")},
-		eventLog.Log,
+		httpLogger.Log,
 	)
 	assert.EqualError(t, err, "no amount configured for transfers in USD")
-	assert.Nil(t, transfer)
+	assert.NotNil(t, transfer)
+	assert.Equal(t, urns.URN("tel:+593979099111"), transfer.Sender)
+	assert.Equal(t, urns.URN("tel:+593979099222"), transfer.Recipient)
+	assert.Equal(t, "USD", transfer.Currency)
+	assert.Equal(t, decimal.Zero, transfer.DesiredAmount)
+	assert.Equal(t, decimal.Zero, transfer.ActualAmount)
+	assert.Equal(t, 1, len(httpLogger.Logs))
 
 	// try when amount is smaller than mimimum in currency
-	eventLog = test.NewEventLog()
 	transfer, err = svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
-		urns.URN("tel:+593979099111"),
+		urns.URN("tel:+593979099222"),
 		map[string]decimal.Decimal{"USD": decimal.RequireFromString("0.10")},
-		eventLog.Log,
+		httpLogger.Log,
 	)
 	assert.EqualError(t, err, "amount requested is smaller than the mimimum topup of 1 USD")
-	assert.Nil(t, transfer)
+	assert.NotNil(t, transfer)
+	assert.Equal(t, urns.URN("tel:+593979099111"), transfer.Sender)
+	assert.Equal(t, urns.URN("tel:+593979099222"), transfer.Recipient)
+	assert.Equal(t, "USD", transfer.Currency)
+	assert.Equal(t, decimal.RequireFromString("0.10"), transfer.DesiredAmount)
+	assert.Equal(t, decimal.Zero, transfer.ActualAmount)
+	assert.Equal(t, 2, len(httpLogger.Logs))
 
 	assert.False(t, mocks.HasUnused())
 }

@@ -47,7 +47,7 @@ var templates = []struct {
 }
 
 // ContextFunc is a function which produces values to put the template context
-type ContextFunc func(map[string][]*TaggedItem, flows.Session) (map[string]string, error)
+type ContextFunc func(map[string][]*TaggedItem, flows.Session, flows.Session) (map[string]string, error)
 
 var contextFuncs []ContextFunc
 
@@ -214,7 +214,12 @@ func buildTemplateContext(items map[string][]*TaggedItem) (map[string]string, er
 	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 18, 24, 30, 123456000, time.UTC)))
 
-	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
+	if err != nil {
+		return nil, errors.Wrap(err, "error creating example session")
+	}
+
+	voiceSession, _, err := test.CreateTestVoiceSession(server.URL)
 	if err != nil {
 		return nil, errors.Wrap(err, "error creating example session")
 	}
@@ -222,7 +227,7 @@ func buildTemplateContext(items map[string][]*TaggedItem) (map[string]string, er
 	context := make(map[string]string)
 
 	for _, f := range contextFuncs {
-		newContext, err := f(items, session)
+		newContext, err := f(items, session, voiceSession)
 		if err != nil {
 			return nil, err
 		}

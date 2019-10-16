@@ -1,6 +1,7 @@
 package wit
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -50,13 +51,16 @@ func (c *Client) Message(q string) (*MessageResponse, *httpx.Trace, error) {
 
 	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, c.headers)
 	if err != nil {
-		return nil, nil, err
-	}
-
-	response := &MessageResponse{}
-	if err := utils.UnmarshalAndValidate(trace.Body, response); err != nil {
 		return nil, trace, err
 	}
 
-	return response, trace, nil
+	if trace.Response != nil && trace.Response.StatusCode == 200 {
+		response := &MessageResponse{}
+		if err := utils.UnmarshalAndValidate(trace.ResponseBody, response); err != nil {
+			return nil, trace, err
+		}
+		return response, trace, nil
+	}
+
+	return nil, trace, errors.New("Wit API request failed")
 }

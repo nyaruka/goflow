@@ -156,9 +156,9 @@ func TestEvaluateTemplate(t *testing.T) {
 	server := test.NewTestHTTPServer(0)
 	defer server.Close()
 
-	sessionWithURNs, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	sessionWithURNs, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
-	sessionWithoutURNs, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyURNs)
+	sessionWithoutURNs, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyURNs)
 	require.NoError(t, err)
 
 	for _, tc := range templateTests {
@@ -182,7 +182,7 @@ func TestEvaluateTemplate(t *testing.T) {
 }
 
 func BenchmarkEvaluateTemplate(b *testing.B) {
-	session, _, err := test.CreateTestSession("http://localhost", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyNone)
 	require.NoError(b, err)
 
 	run := session.Runs()[0]
@@ -642,7 +642,7 @@ func TestContextToJSON(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
-	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -659,7 +659,7 @@ func TestContextToJSON(t *testing.T) {
 
 func TestReadWithMissingAssets(t *testing.T) {
 	// create standard test session and marshal to JSON
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	sessionJSON, err := json.Marshal(session)

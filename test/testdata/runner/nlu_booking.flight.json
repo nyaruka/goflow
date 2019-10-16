@@ -161,13 +161,18 @@
                         "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
                     },
                     "created_on": "2018-07-06T12:30:20.123456789Z",
-                    "elapsed_ms": 1,
-                    "request": "GET /message?v=20170307&q=hello HTTP/1.1",
-                    "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-                    "status": "success",
+                    "http_logs": [
+                        {
+                            "created_on": "2019-10-16T13:59:30.123456789Z",
+                            "elapsed_ms": 1000,
+                            "request": "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                            "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+                            "status": "success",
+                            "url": "http://test.acme.ai?classifiy"
+                        }
+                    ],
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                    "type": "classifier_called",
-                    "url": "http://test.acme.ai?classifiy"
+                    "type": "classifier_called"
                 },
                 {
                     "category": "Success",
@@ -299,13 +304,18 @@
                                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
                                 },
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
-                                "elapsed_ms": 1,
-                                "request": "GET /message?v=20170307&q=hello HTTP/1.1",
-                                "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-                                "status": "success",
+                                "http_logs": [
+                                    {
+                                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                                        "elapsed_ms": 1000,
+                                        "request": "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+                                        "status": "success",
+                                        "url": "http://test.acme.ai?classifiy"
+                                    }
+                                ],
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "classifier_called",
-                                "url": "http://test.acme.ai?classifiy"
+                                "type": "classifier_called"
                             },
                             {
                                 "category": "Success",

@@ -17,8 +17,8 @@ func TestClient(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []*httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []httpx.MockResponse{
 			httpx.NewMockResponse(200, "info_txt=pong\r\n"),                  // successful ping
 			httpx.NewMockResponse(400, "error_code=1\r\nerror_txt=Oops\r\n"), // unsuccessful ping
 			httpx.NewMockResponse(200, withCRLF(msisdnResponse)),             // successful msdninfo query
@@ -42,7 +42,7 @@ func TestClient(t *testing.T) {
 
 	// test when ping returns error
 	_, err = cl.Ping()
-	assert.EqualError(t, err, "API returned an error: Oops (1)")
+	assert.EqualError(t, err, "DTOne API request failed: Oops (1)")
 
 	// test MSISDN info query
 	info, trace, err := cl.MSISDNInfo("+593970000001", "USD", "1")
@@ -52,18 +52,19 @@ func TestClient(t *testing.T) {
 
 	// test MSISDN info query when response is wrong format
 	info, trace, err = cl.MSISDNInfo("+593970000001", "USD", "1")
-	assert.EqualError(t, err, "API returned an unparseable response: field 'destination_currency' is required, field 'product_list' is required, field 'local_info_value_list' is required")
+	assert.EqualError(t, err, "DTOne API request failed: field 'destination_currency' is required, field 'product_list' is required, field 'local_info_value_list' is required")
 	assert.Nil(t, info)
 
 	// test reserve ID action
-	reservedID, err := cl.ReserveID()
+	reservedID, trace, err := cl.ReserveID()
 	assert.NoError(t, err)
-	assert.Equal(t, 123456789, reservedID)
+	assert.Equal(t, "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 82\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=reserve_id&key=1570634742123&login=joe&md5=093a9dbc314373451af92618f4a716c6", string(trace.RequestTrace))
+	assert.Equal(t, 123456789, reservedID.ReservedID)
 
 	// test reserve ID action when response is wrong format
-	reservedID, err = cl.ReserveID()
-	assert.EqualError(t, err, "API returned an unparseable response: field 'reserved_id' is required")
-	assert.Equal(t, 0, reservedID)
+	reservedID, _, err = cl.ReserveID()
+	assert.EqualError(t, err, "DTOne API request failed: field 'reserved_id' is required")
+	assert.Nil(t, reservedID)
 
 	// test topup action
 	topup, _, err := cl.Topup(123455, "593999000001", "593999000002", "1", "2")
@@ -72,7 +73,7 @@ func TestClient(t *testing.T) {
 
 	// test topup action when response is wrong format
 	topup, _, err = cl.Topup(123455, "593999000001", "593999000002", "1", "2")
-	assert.EqualError(t, err, "API returned an unparseable response: field 'destination_currency' is required")
+	assert.EqualError(t, err, "DTOne API request failed: field 'destination_currency' is required")
 	assert.Nil(t, topup)
 
 	assert.False(t, mocks.HasUnused())

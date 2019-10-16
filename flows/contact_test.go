@@ -175,7 +175,7 @@ func TestContactSetPreferredChannel(t *testing.T) {
 }
 
 func TestReevaluateDynamicGroups(t *testing.T) {
-	session, _, err := test.CreateTestSession("http://localhost", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	env := session.Runs()[0].Environment()
@@ -219,7 +219,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 }
 
 func TestReevaluateDynamicGroupsWithURNRedaction(t *testing.T) {
-	session, _, err := test.CreateTestSession("http://localhost", nil, envs.RedactionPolicyURNs)
+	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyURNs)
 	require.NoError(t, err)
 
 	env := session.Runs()[0].Environment()
@@ -268,7 +268,7 @@ func evaluateGroups(t *testing.T, env envs.Environment, contact *flows.Contact, 
 }
 
 func TestContactEqual(t *testing.T) {
-	session, _, err := test.CreateTestSession("http://localhost", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	contact1JSON := []byte(`{
