@@ -59,12 +59,12 @@ func TestClient(t *testing.T) {
 	reservedID, trace, err := cl.ReserveID()
 	assert.NoError(t, err)
 	assert.Equal(t, "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 82\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=reserve_id&key=1570634742123&login=joe&md5=093a9dbc314373451af92618f4a716c6", string(trace.RequestTrace))
-	assert.Equal(t, 123456789, reservedID)
+	assert.Equal(t, 123456789, reservedID.ReservedID)
 
 	// test reserve ID action when response is wrong format
 	reservedID, _, err = cl.ReserveID()
 	assert.EqualError(t, err, "DTOne API request failed: field 'reserved_id' is required")
-	assert.Equal(t, 0, reservedID)
+	assert.Nil(t, reservedID)
 
 	// test topup action
 	topup, _, err := cl.Topup(123455, "593999000001", "593999000002", "1", "2")

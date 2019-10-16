@@ -216,8 +216,8 @@ and entities were.
                 "status": "success",
                 "request": "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-                "created_on": "2018-04-11T18:24:30.123456Z",
-                "elapsed_ms": 0
+                "created_on": "2019-10-16T13:59:30.123456789Z",
+                "elapsed_ms": 1000
             }
         ]
     },
@@ -1097,7 +1097,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
                 "status": "success",
                 "request": "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                "created_on": "2018-04-11T18:24:30.123456Z",
+                "created_on": "2019-10-16T13:59:30.123456789Z",
                 "elapsed_ms": 0
             }
         ]

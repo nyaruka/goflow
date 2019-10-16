@@ -160,10 +160,10 @@
                         "name": "Booking",
                         "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
                     },
-                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
                     "http_logs": [
                         {
-                            "created_on": "2018-07-06T12:30:20.123456789Z",
+                            "created_on": "2019-10-16T13:59:30.123456789Z",
                             "elapsed_ms": 1000,
                             "request": "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
                             "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
@@ -176,7 +176,7 @@
                 },
                 {
                     "category": "Success",
-                    "created_on": "2018-07-06T12:30:26.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "extra": {
                         "entities": {
                             "location": [
@@ -205,7 +205,7 @@
                 },
                 {
                     "category": "Book Flight",
-                    "created_on": "2018-07-06T12:30:30.123456789Z",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
                     "extra": {
                         "location": "Quito"
                     },
@@ -216,7 +216,7 @@
                     "value": "book_flight"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:33.123456789Z",
+                    "created_on": "2018-07-06T12:30:31.123456789Z",
                     "msg": {
                         "text": "So you'd like to book a flight in Quito?",
                         "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -303,10 +303,10 @@
                                     "name": "Booking",
                                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
                                 },
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "http_logs": [
                                     {
-                                        "created_on": "2018-07-06T12:30:20.123456789Z",
+                                        "created_on": "2019-10-16T13:59:30.123456789Z",
                                         "elapsed_ms": 1000,
                                         "request": "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
                                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
@@ -319,7 +319,7 @@
                             },
                             {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "extra": {
                                     "entities": {
                                         "location": [
@@ -348,7 +348,7 @@
                             },
                             {
                                 "category": "Book Flight",
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "extra": {
                                     "location": "Quito"
                                 },
@@ -359,7 +359,7 @@
                                 "value": "book_flight"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:33.123456789Z",
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
                                 "msg": {
                                     "text": "So you'd like to book a flight in Quito?",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -368,13 +368,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:35.123456789Z",
+                        "exited_on": "2018-07-06T12:30:33.123456789Z",
                         "expires_on": "2018-07-06T12:30:10.123456789Z",
                         "flow": {
                             "name": "NLU Test",
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
                         },
-                        "modified_on": "2018-07-06T12:30:35.123456789Z",
+                        "modified_on": "2018-07-06T12:30:33.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -395,7 +395,7 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:32.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:30.123456789Z",
                                 "exit_uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab",
                                 "node_uuid": "8f4aba68-3250-43b6-8409-93ba44092962",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -404,7 +404,7 @@
                         "results": {
                             "_intent_classification": {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "extra": {
                                     "entities": {
                                         "location": [
@@ -432,7 +432,7 @@
                             },
                             "intent": {
                                 "category": "Book Flight",
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "extra": {
                                     "location": "Quito"
                                 },

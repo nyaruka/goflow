@@ -3,7 +3,6 @@ package events
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils/httpx"
 )
 
 func init() {
@@ -36,14 +35,14 @@ type ClassifierCalledEvent struct {
 	baseEvent
 
 	Classifier *assets.ClassifierReference `json:"classifier" validate:"required"`
-	HTTPLogs   []*HTTPLog                  `json:"http_logs"`
+	HTTPLogs   []*flows.HTTPLog            `json:"http_logs"`
 }
 
 // NewClassifierCalled returns a classifier called event
-func NewClassifierCalled(classifier *assets.ClassifierReference, traces []*httpx.Trace) *ClassifierCalledEvent {
+func NewClassifierCalled(classifier *assets.ClassifierReference, httpLogs []*flows.HTTPLog) *ClassifierCalledEvent {
 	return &ClassifierCalledEvent{
 		baseEvent:  newBaseEvent(TypeClassifierCalled),
 		Classifier: classifier,
-		HTTPLogs:   httpLogsFromTraces(traces),
+		HTTPLogs:   httpLogs,
 	}
 }

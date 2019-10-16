@@ -86,9 +86,11 @@ func (a *TransferAirtimeAction) transfer(run flows.FlowRun, step flows.Step, log
 		return nil, err
 	}
 
-	transfer, traces, err := svc.Transfer(run.Session(), sender, telURNs[0].URN(), a.Amounts)
+	httpLogger := &flows.HTTPLogger{}
+
+	transfer, err := svc.Transfer(run.Session(), sender, telURNs[0].URN(), a.Amounts, httpLogger.Log)
 	if transfer != nil {
-		logEvent(events.NewAirtimeTransferred(transfer, traces))
+		logEvent(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
 	}
 
 	return transfer, err

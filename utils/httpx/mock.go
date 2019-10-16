@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/http/httputil"
 	"strings"
 
-	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/pkg/errors"
 )
 
@@ -78,23 +76,4 @@ var MockConnectionError = MockResponse{0, ""}
 // NewMockResponse creates a new mock response
 func NewMockResponse(status int, body string) MockResponse {
 	return MockResponse{status, body}
-}
-
-// NewMockTrace creates a new trace for testing without making an actual request
-func NewMockTrace(method, url string, status int, body string) *Trace {
-	request, _ := http.NewRequest(method, url, nil)
-	requestTrace, _ := httputil.DumpRequestOut(request, true)
-
-	response := NewMockResponse(status, body).Make(request)
-	responseTrace, _ := httputil.DumpResponse(response, true)
-
-	return &Trace{
-		Request:       request,
-		RequestTrace:  requestTrace,
-		Response:      response,
-		ResponseTrace: responseTrace,
-		ResponseBody:  []byte(body),
-		StartTime:     dates.Now(),
-		EndTime:       dates.Now(),
-	}
 }

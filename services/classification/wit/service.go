@@ -2,7 +2,6 @@ package wit
 
 import (
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils/httpx"
 )
 
 // a classification service implmentation for a wit.ai app
@@ -19,16 +18,15 @@ func NewService(classifier *flows.Classifier, accessToken string) flows.Classifi
 	}
 }
 
-func (s *service) Classify(session flows.Session, input string) (*flows.Classification, []*httpx.Trace, error) {
-	traces := make([]*httpx.Trace, 0, 1)
+func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	client := NewClient(session.Engine().HTTPClient(), s.accessToken)
 
 	response, trace, err := client.Message(input)
 	if trace != nil {
-		traces = append(traces, trace)
+		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode))
 	}
 	if err != nil {
-		return nil, traces, err
+		return nil, err
 	}
 
 	result := &flows.Classification{
@@ -57,7 +55,7 @@ func (s *service) Classify(session flows.Session, input string) (*flows.Classifi
 		}
 	}
 
-	return result, traces, nil
+	return result, nil
 }
 
 var _ flows.ClassificationService = (*service)(nil)

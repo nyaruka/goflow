@@ -73,7 +73,9 @@ func TestService(t *testing.T) {
 		"3246231",
 	)
 
-	classification, traces, err := svc.Classify(session, "book flight to Quito")
+	httpLogger := &flows.HTTPLogger{}
+
+	classification, err := svc.Classify(session, "book flight to Quito", httpLogger.Log)
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
 		flows.ExtractedIntent{Name: "Book Flight", Confidence: decimal.RequireFromString(`0.9106805`)},
@@ -89,6 +91,6 @@ func TestService(t *testing.T) {
 		},
 	}, classification.Entities)
 
-	assert.Equal(t, 1, len(traces))
-	assert.Equal(t, "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito", traces[0].Request.URL.String())
+	assert.Equal(t, 1, len(httpLogger.Logs))
+	assert.Equal(t, "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito", httpLogger.Logs[0].URL)
 }

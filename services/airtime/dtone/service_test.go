@@ -93,11 +93,14 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 
 	svc := dtone.NewService("login", "token", "USD")
 
-	transfer, traces, err := svc.Transfer(
+	httpLogger := &flows.HTTPLogger{}
+
+	transfer, err := svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
 		urns.URN("tel:+593979099111"),
 		map[string]decimal.Decimal{"USD": decimal.RequireFromString("1.5")},
+		httpLogger.Log,
 	)
 	assert.NoError(t, err)
 	assert.Equal(t, &flows.AirtimeTransfer{
@@ -108,7 +111,7 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 		ActualAmount:  decimal.RequireFromString("1"), // closest product
 	}, transfer)
 
-	assert.Equal(t, 3, len(traces))
+	assert.Equal(t, 3, len(httpLogger.Logs))
 
 	assert.False(t, mocks.HasUnused())
 }
@@ -135,12 +138,15 @@ func TestServiceFailedTransfers(t *testing.T) {
 
 	svc := dtone.NewService("login", "token", "USD")
 
+	httpLogger := &flows.HTTPLogger{}
+
 	// try when currency not configured
-	transfer, traces, err := svc.Transfer(
+	transfer, err := svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
 		urns.URN("tel:+593979099222"),
 		map[string]decimal.Decimal{"RWF": decimal.RequireFromString("1000")},
+		httpLogger.Log,
 	)
 	assert.EqualError(t, err, "no amount configured for transfers in USD")
 	assert.NotNil(t, transfer)
@@ -149,14 +155,15 @@ func TestServiceFailedTransfers(t *testing.T) {
 	assert.Equal(t, "USD", transfer.Currency)
 	assert.Equal(t, decimal.Zero, transfer.DesiredAmount)
 	assert.Equal(t, decimal.Zero, transfer.ActualAmount)
-	assert.Equal(t, 1, len(traces))
+	assert.Equal(t, 1, len(httpLogger.Logs))
 
 	// try when amount is smaller than mimimum in currency
-	transfer, traces, err = svc.Transfer(
+	transfer, err = svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
 		urns.URN("tel:+593979099222"),
 		map[string]decimal.Decimal{"USD": decimal.RequireFromString("0.10")},
+		httpLogger.Log,
 	)
 	assert.EqualError(t, err, "amount requested is smaller than the mimimum topup of 1 USD")
 	assert.NotNil(t, transfer)
@@ -165,7 +172,7 @@ func TestServiceFailedTransfers(t *testing.T) {
 	assert.Equal(t, "USD", transfer.Currency)
 	assert.Equal(t, decimal.RequireFromString("0.10"), transfer.DesiredAmount)
 	assert.Equal(t, decimal.Zero, transfer.ActualAmount)
-	assert.Equal(t, 1, len(traces))
+	assert.Equal(t, 2, len(httpLogger.Logs))
 
 	assert.False(t, mocks.HasUnused())
 }

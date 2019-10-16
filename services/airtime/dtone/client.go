@@ -22,7 +22,7 @@ const (
 	apiURL = "https://airtime-api.dtone.com/cgi-bin/shop/topup"
 )
 
-// Client is a TransferTo client
+// Client is a DTOne client
 // see https://tshop-app.dtone.com/shop/v3/doc/Airtime_API.pdf for API docs
 type Client struct {
 	httpClient *http.Client
@@ -30,9 +30,20 @@ type Client struct {
 	token      string
 }
 
-type BaseResponse struct {
+type Response interface {
+	Error() error
+}
+
+type baseResponse struct {
 	ErrorCode int    `json:"error_code,string"`
 	ErrorTxt  string `json:"error_txt"`
+}
+
+func (r *baseResponse) Error() error {
+	if r.ErrorCode != 0 {
+		return errors.Errorf("%s (%d)", r.ErrorTxt, r.ErrorCode)
+	}
+	return nil
 }
 
 // NewClient creates a new TransferTo client
@@ -46,7 +57,7 @@ func (c *Client) Ping() (*httpx.Trace, error) {
 	request.Add("action", "ping")
 
 	response := &struct {
-		BaseResponse
+		baseResponse
 		InfoTxt string `json:"info_txt"`
 	}{}
 	return c.request(request, response)
@@ -54,7 +65,7 @@ func (c *Client) Ping() (*httpx.Trace, error) {
 
 // MSISDNInfo is a response to a msisdn_info request
 type MSISDNInfo struct {
-	BaseResponse
+	baseResponse
 	Country             string      `json:"country"`
 	CountryID           int         `json:"country_id,string"`
 	Operator            string      `json:"operator"`
@@ -92,26 +103,26 @@ func (c *Client) MSISDNInfo(destinationMSISDN string, currency string, delivered
 
 // ReserveID is a response to a reserve_id request
 type ReserveID struct {
-	BaseResponse
+	baseResponse
 	ReservedID int `json:"reserved_id,string" validate:"required"`
 }
 
 // ReserveID reserves a transaction ID for a future topup
-func (c *Client) ReserveID() (int, *httpx.Trace, error) {
+func (c *Client) ReserveID() (*ReserveID, *httpx.Trace, error) {
 	request := url.Values{}
 	request.Add("action", "reserve_id")
 
 	response := &ReserveID{}
 	trace, err := c.request(request, response)
 	if err != nil {
-		return 0, trace, err
+		return nil, trace, err
 	}
-	return response.ReservedID, trace, nil
+	return response, trace, nil
 }
 
 // Topup is a response to a topup request
 type Topup struct {
-	BaseResponse
+	baseResponse
 	DestinationCurrency string          `json:"destination_currency" validate:"required"`
 	OriginatingCurrency string          `json:"originating_currency"`
 	ProductRequested    decimal.Decimal `json:"product_requested"`
@@ -148,7 +159,7 @@ func (c *Client) Topup(reservedID int, msisdn string, destinationMSISDN string, 
 }
 
 // makes a request with the given data and parses the response into the destination struct
-func (c *Client) request(data url.Values, dest interface{}) (*httpx.Trace, error) {
+func (c *Client) request(data url.Values, dest Response) (*httpx.Trace, error) {
 	key := strconv.Itoa(int(dates.Now().UnixNano() / int64(time.Millisecond)))
 
 	hasher := md5.New()
@@ -180,7 +191,19 @@ func (c *Client) request(data url.Values, dest interface{}) (*httpx.Trace, error
 // ...
 //
 // with each line separated by \r\n
-func (c *Client) parseResponse(asBytes []byte, dest interface{}) error {
+func (c *Client) parseResponse(asBytes []byte, dest Response) error {
+	if err := unmarshalResponse(asBytes, dest); err != nil {
+		return err
+	}
+
+	if err := dest.Error(); err != nil {
+		return err
+	}
+
+	return utils.Validate(dest)
+}
+
+func unmarshalResponse(asBytes []byte, dest interface{}) error {
 	// parse into a map
 	data := make(map[string]string)
 	for _, line := range strings.Split(string(asBytes), "\r\n") {
@@ -194,14 +217,5 @@ func (c *Client) parseResponse(asBytes []byte, dest interface{}) error {
 	// marshal to JSON so we can use nice golang JSON unmarshalling into our response structs
 	respJSON, _ := json.Marshal(data)
 
-	// first try to unmarshal as base response which contains error messages
-	baseResp := &BaseResponse{}
-	utils.UnmarshalAndValidate(respJSON, baseResp)
-
-	if baseResp.ErrorCode != 0 {
-		return errors.Errorf("%s (%d)", baseResp.ErrorTxt, baseResp.ErrorCode)
-	}
-
-	// now unmarshal into action specific struct
-	return utils.UnmarshalAndValidate(respJSON, dest)
+	return json.Unmarshal(respJSON, dest)
 }

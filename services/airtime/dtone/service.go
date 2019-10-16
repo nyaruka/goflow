@@ -24,7 +24,7 @@ func NewService(login, apiToken, currency string) flows.AirtimeService {
 	}
 }
 
-func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, []*httpx.Trace, error) {
+func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	transfer := &flows.AirtimeTransfer{
 		Sender:        sender,
 		Recipient:     recipient,
@@ -32,15 +32,14 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		ActualAmount:  decimal.Zero,
 	}
 
-	traces := make([]*httpx.Trace, 0, 1)
 	client := NewClient(session.Engine().HTTPClient(), s.login, s.apiToken)
 
 	info, trace, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
 	if trace != nil {
-		traces = append(traces, trace)
+		logHTTP(flows.NewHTTPLog(trace, httpLogStatus))
 	}
 	if err != nil {
-		return transfer, traces, err
+		return transfer, err
 	}
 
 	transfer.Currency = info.DestinationCurrency
@@ -48,7 +47,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 	// look up the amount to send in this currency
 	amount, hasAmount := amounts[transfer.Currency]
 	if !hasAmount {
-		return transfer, traces, errors.Errorf("no amount configured for transfers in %s", transfer.Currency)
+		return transfer, errors.Errorf("no amount configured for transfers in %s", transfer.Currency)
 	}
 
 	transfer.DesiredAmount = amount
@@ -65,26 +64,39 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 	}
 
 	if useAmount == decimal.Zero {
-		return transfer, traces, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
+		return transfer, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
 	}
 
 	reservedID, trace, err := client.ReserveID()
 	if trace != nil {
-		traces = append(traces, trace)
+		logHTTP(flows.NewHTTPLog(trace, httpLogStatus))
 	}
 	if err != nil {
-		return transfer, traces, err
+		return transfer, err
 	}
 
-	topup, trace, err := client.Topup(reservedID, sender.Path(), recipient.Path(), useProduct, "")
+	topup, trace, err := client.Topup(reservedID.ReservedID, sender.Path(), recipient.Path(), useProduct, "")
 	if trace != nil {
-		traces = append(traces, trace)
+		logHTTP(flows.NewHTTPLog(trace, httpLogStatus))
 	}
 	if err != nil {
-		return transfer, traces, err
+		return transfer, err
 	}
 
 	transfer.ActualAmount = topup.ActualProductSent
 
-	return transfer, traces, nil
+	return transfer, nil
+}
+
+func httpLogStatus(t *httpx.Trace) flows.CallStatus {
+	// DTOne error responses use HTTP 200 OK but we consider them errors
+	if t.ResponseBody != nil {
+		base := &baseResponse{}
+		unmarshalResponse(t.ResponseBody, base)
+		if base.Error() != nil {
+			return flows.CallStatusResponseError
+		}
+	}
+
+	return flows.HTTPStatusFromCode(t)
 }

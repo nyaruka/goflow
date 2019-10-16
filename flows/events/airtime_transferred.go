@@ -3,7 +3,6 @@ package events
 import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/shopspring/decimal"
 )
@@ -41,16 +40,16 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 type AirtimeTransferredEvent struct {
 	baseEvent
 
-	Sender        urns.URN        `json:"sender"`
-	Recipient     urns.URN        `json:"recipient"`
-	Currency      string          `json:"currency"`
-	DesiredAmount decimal.Decimal `json:"desired_amount"`
-	ActualAmount  decimal.Decimal `json:"actual_amount"`
-	HTTPLogs      []*HTTPLog      `json:"http_logs"`
+	Sender        urns.URN         `json:"sender"`
+	Recipient     urns.URN         `json:"recipient"`
+	Currency      string           `json:"currency"`
+	DesiredAmount decimal.Decimal  `json:"desired_amount"`
+	ActualAmount  decimal.Decimal  `json:"actual_amount"`
+	HTTPLogs      []*flows.HTTPLog `json:"http_logs"`
 }
 
 // NewAirtimeTransferred creates a new airtime transferred event
-func NewAirtimeTransferred(t *flows.AirtimeTransfer, traces []*httpx.Trace) *AirtimeTransferredEvent {
+func NewAirtimeTransferred(t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *AirtimeTransferredEvent {
 	return &AirtimeTransferredEvent{
 		baseEvent:     newBaseEvent(TypeAirtimeTransferred),
 		Sender:        t.Sender,
@@ -58,6 +57,6 @@ func NewAirtimeTransferred(t *flows.AirtimeTransfer, traces []*httpx.Trace) *Air
 		Currency:      t.Currency,
 		DesiredAmount: t.DesiredAmount,
 		ActualAmount:  t.ActualAmount,
-		HTTPLogs:      httpLogsFromTraces(traces),
+		HTTPLogs:      httpLogs,
 	}
 }

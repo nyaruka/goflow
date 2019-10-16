@@ -726,7 +726,7 @@ func TestLegacyWebhookPayload(t *testing.T) {
 				"uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
 			},
 			{
-				"arrived_on": "2018-07-06T12:30:57.123456Z",
+				"arrived_on": "2018-07-06T12:30:55.123456Z",
 				"exit_uuid": "9fc5f8b4-2247-43db-b899-ab1ac50ba06c",
 				"node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
 				"uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -754,7 +754,7 @@ func TestLegacyWebhookPayload(t *testing.T) {
 			"intent": {
 				"category": "Success",
 				"category_localized": "Success",
-				"created_on": "2018-07-06T12:30:53.123456Z",
+				"created_on": "2018-07-06T12:30:51.123456Z",
 				"input": "Hi there",
 				"name": "intent",
 				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",

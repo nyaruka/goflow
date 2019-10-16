@@ -72,7 +72,7 @@ type Classification struct {
 
 // ClassificationService provides NLU functionality to the engine
 type ClassificationService interface {
-	Classify(session Session, input string) (*Classification, []*httpx.Trace, error)
+	Classify(session Session, input string, logHTTP HTTPLogCallback) (*Classification, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer
@@ -96,5 +96,55 @@ type AirtimeTransfer struct {
 // AirtimeService provides airtime functionality to the engine
 type AirtimeService interface {
 	// Transfer transfers airtime to the given URN
-	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*AirtimeTransfer, []*httpx.Trace, error)
+	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+}
+
+// HTTPLog describes an HTTP request/response
+type HTTPLog struct {
+	URL       string     `json:"url" validate:"required"`
+	Status    CallStatus `json:"status" validate:"required"`
+	Request   string     `json:"request" validate:"required"`
+	Response  string     `json:"response,omitempty"`
+	CreatedOn time.Time  `json:"created_on" validate:"required"`
+	ElapsedMS int        `json:"elapsed_ms"`
+}
+
+type HTTPLogCallback func(*HTTPLog)
+
+type HTTPLogger struct {
+	Logs []*HTTPLog
+}
+
+func (l *HTTPLogger) Log(h *HTTPLog) {
+	l.Logs = append(l.Logs, h)
+}
+
+// HTTPStatusResolver is a function that determines the status of an HTTP log from the response
+type HTTPStatusResolver func(t *httpx.Trace) CallStatus
+
+// HTTPStatusFromCode uses the status code to determine status of an HTTP log
+func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
+	if t.Response == nil {
+		return CallStatusConnectionError
+	} else if t.Response.StatusCode >= 400 {
+		return CallStatusResponseError
+	}
+	return CallStatusSuccess
+}
+
+// NewHTTPLog creates a new HTTP log from a trace
+func NewHTTPLog(trace *httpx.Trace, statusFn HTTPStatusResolver) *HTTPLog {
+	return newHTTPLogWithStatus(trace, statusFn(trace))
+}
+
+// creates a new HTTP log from a trace with an explicit status
+func newHTTPLogWithStatus(trace *httpx.Trace, status CallStatus) *HTTPLog {
+	return &HTTPLog{
+		URL:       trace.Request.URL.String(),
+		Status:    status,
+		Request:   string(trace.RequestTrace),
+		Response:  string(trace.ResponseTrace),
+		CreatedOn: trace.StartTime,
+		ElapsedMS: int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
+	}
 }

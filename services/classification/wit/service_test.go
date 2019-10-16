@@ -35,13 +35,15 @@ func TestService(t *testing.T) {
 
 	svc := wit.NewService(test.NewClassifier("Booking", "wit", []string{"book_flight", "book_hotel"}), "23532624376")
 
-	classification, traces, err := svc.Classify(session, "book flight to Quito")
+	httpLogger := &flows.HTTPLogger{}
+
+	classification, err := svc.Classify(session, "book flight to Quito", httpLogger.Log)
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
 		flows.ExtractedIntent{Name: "book_flight", Confidence: decimal.RequireFromString(`0.84709152161066`)},
 	}, classification.Intents)
 	assert.Equal(t, map[string][]flows.ExtractedEntity{}, classification.Entities)
 
-	assert.Equal(t, 1, len(traces))
-	assert.Equal(t, "https://api.wit.ai/message?v=20170307&q=book+flight+to+Quito", traces[0].Request.URL.String())
+	assert.Equal(t, 1, len(httpLogger.Logs))
+	assert.Equal(t, "https://api.wit.ai/message?v=20170307&q=book+flight+to+Quito", httpLogger.Logs[0].URL)
 }

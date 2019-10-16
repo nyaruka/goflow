@@ -14,8 +14,8 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
-	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/nyaruka/goflow/utils/uuids"
+	"github.com/shopspring/decimal"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -39,6 +39,46 @@ func TestEventMarshaling(t *testing.T) {
 		event     flows.Event
 		marshaled string
 	}{
+		{
+			events.NewAirtimeTransferred(
+				&flows.AirtimeTransfer{
+					Sender:        urns.URN("tel:+593979099111"),
+					Recipient:     urns.URN("tel:+593979099222"),
+					Currency:      "USD",
+					DesiredAmount: decimal.RequireFromString("1.20"),
+					ActualAmount:  decimal.RequireFromString("1.00"),
+				},
+				[]*flows.HTTPLog{
+					&flows.HTTPLog{
+						CreatedOn: dates.Now(),
+						ElapsedMS: 12,
+						Request:   "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
+						Status:    flows.CallStatusSuccess,
+						URL:       "https://send.money.com/topup",
+					},
+				},
+			),
+			`{
+				"actual_amount": 1,
+        	    "created_on": "2018-10-18T14:20:30.000123456Z",
+        	    "currency": "USD",
+        	    "desired_amount": 1.2,
+				"http_logs": [
+					{
+						"created_on": "2018-10-18T14:20:30.000123456Z",
+						"elapsed_ms": 12,
+						"request": "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						"response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
+						"status": "success",
+						"url": "https://send.money.com/topup"
+					}
+				],
+				"recipient": "tel:+593979099222",
+        	    "sender": "tel:+593979099111",
+				"type": "airtime_transferred"
+			}`,
+		},
 		{
 			events.NewBroadcastCreated(
 				map[envs.Language]*events.BroadcastTranslation{
@@ -86,7 +126,16 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			events.NewClassifierCalled(
 				assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
-				[]*httpx.Trace{httpx.NewMockTrace("GET", "https://api.wit.ai/message?v=20170307&q=hello", 200, `{"intents":[]}`)},
+				[]*flows.HTTPLog{
+					&flows.HTTPLog{
+						CreatedOn: dates.Now(),
+						ElapsedMS: 12,
+						Request:   "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+						Status:    flows.CallStatusSuccess,
+						URL:       "https://api.wit.ai/message?v=20170307&q=hello",
+					},
+				},
 			),
 			`{
 				"classifier": {
@@ -97,7 +146,7 @@ func TestEventMarshaling(t *testing.T) {
 				"http_logs": [
 					{
 						"created_on": "2018-10-18T14:20:30.000123456Z",
-						"elapsed_ms": 0,
+						"elapsed_ms": 12,
 						"request": "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 						"response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
 						"status": "success",
