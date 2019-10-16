@@ -14,8 +14,8 @@ import (
 func TestPredict(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"https://nlp.bothub.it/parse": []*httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"https://nlp.bothub.it/parse": []httpx.MockResponse{
 			httpx.NewMockResponse(200, `xx`), // non-JSON response
 			httpx.NewMockResponse(200, `{}`), // invalid JSON response
 			httpx.NewMockResponse(200, `{

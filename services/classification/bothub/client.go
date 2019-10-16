@@ -67,11 +67,11 @@ func (c *Client) Parse(text string) (*ParseResponse, *httpx.Trace, error) {
 
 	trace, err := httpx.DoTrace(c.httpClient, "POST", endpoint, strings.NewReader(form.Encode()), headers)
 	if err != nil {
-		return nil, nil, err
+		return nil, trace, err
 	}
 
 	response := &ParseResponse{}
-	if err := utils.UnmarshalAndValidate(trace.Body, response); err != nil {
+	if err := utils.UnmarshalAndValidate(trace.ResponseBody, response); err != nil {
 		return nil, trace, err
 	}
 
