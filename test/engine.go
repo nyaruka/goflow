@@ -18,7 +18,7 @@ func NewEngine() flows.Engine {
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
-		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return NewAirtimeService("RWF"), nil }).
+		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
 		Build()
 }
 
@@ -63,7 +63,7 @@ type airtimeService struct {
 	fixedCurrency string
 }
 
-func NewAirtimeService(currency string) flows.AirtimeService {
+func newAirtimeService(currency string) *airtimeService {
 	return &airtimeService{fixedCurrency: currency}
 }
 
@@ -78,10 +78,11 @@ func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipi
 	}
 
 	transfer := &flows.AirtimeTransfer{
-		Sender:    sender,
-		Recipient: recipient,
-		Currency:  s.fixedCurrency,
-		Amount:    amount,
+		Sender:        sender,
+		Recipient:     recipient,
+		Currency:      s.fixedCurrency,
+		DesiredAmount: amount,
+		ActualAmount:  amount,
 	}
 
 	return transfer, traces, nil

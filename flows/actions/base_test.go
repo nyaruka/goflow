@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
@@ -214,9 +215,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				if c.Type() == "wit" {
 					return wit.NewService(c, "123456789"), nil
 				}
-				return nil, errors.Errorf("no classification service available for %s", c)
+				return nil, errors.Errorf("no classification service available for %s", c.Reference())
 			}).
-			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return test.NewAirtimeService("RWF"), nil }).
+			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
+				return dtone.NewService("nyaruka", "123456789", "RWF"), nil
+			}).
 			Build()
 
 		// create session

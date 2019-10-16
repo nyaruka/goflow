@@ -30,19 +30,10 @@ type Client struct {
 	token      string
 }
 
-// Response is a base interface for all responses
-type Response interface {
-	ErrorCode() int
-	ErrorTxt() string
+type BaseResponse struct {
+	ErrorCode int    `json:"error_code,string"`
+	ErrorTxt  string `json:"error_txt"`
 }
-
-type baseResponse struct {
-	ErrorCode_ int    `json:"error_code,string"`
-	ErrorTxt_  string `json:"error_txt"`
-}
-
-func (r *baseResponse) ErrorCode() int   { return r.ErrorCode_ }
-func (r *baseResponse) ErrorTxt() string { return r.ErrorTxt_ }
 
 // NewClient creates a new TransferTo client
 func NewClient(httpClient *http.Client, login string, token string) *Client {
@@ -55,7 +46,7 @@ func (c *Client) Ping() (*httpx.Trace, error) {
 	request.Add("action", "ping")
 
 	response := &struct {
-		baseResponse
+		BaseResponse
 		InfoTxt string `json:"info_txt"`
 	}{}
 	return c.request(request, response)
@@ -63,7 +54,7 @@ func (c *Client) Ping() (*httpx.Trace, error) {
 
 // MSISDNInfo is a response to a msisdn_info request
 type MSISDNInfo struct {
-	baseResponse
+	BaseResponse
 	Country             string      `json:"country"`
 	CountryID           int         `json:"country_id,string"`
 	Operator            string      `json:"operator"`
@@ -94,33 +85,33 @@ func (c *Client) MSISDNInfo(destinationMSISDN string, currency string, delivered
 	response := &MSISDNInfo{}
 	trace, err := c.request(request, response)
 	if err != nil {
-		return nil, nil, err
+		return nil, trace, err
 	}
 	return response, trace, nil
 }
 
 // ReserveID is a response to a reserve_id request
 type ReserveID struct {
-	baseResponse
+	BaseResponse
 	ReservedID int `json:"reserved_id,string" validate:"required"`
 }
 
 // ReserveID reserves a transaction ID for a future topup
-func (c *Client) ReserveID() (int, error) {
+func (c *Client) ReserveID() (int, *httpx.Trace, error) {
 	request := url.Values{}
 	request.Add("action", "reserve_id")
 
 	response := &ReserveID{}
-	_, err := c.request(request, response)
+	trace, err := c.request(request, response)
 	if err != nil {
-		return 0, err
+		return 0, trace, err
 	}
-	return response.ReservedID, nil
+	return response.ReservedID, trace, nil
 }
 
 // Topup is a response to a topup request
 type Topup struct {
-	baseResponse
+	BaseResponse
 	DestinationCurrency string          `json:"destination_currency" validate:"required"`
 	OriginatingCurrency string          `json:"originating_currency"`
 	ProductRequested    decimal.Decimal `json:"product_requested"`
@@ -150,7 +141,7 @@ func (c *Client) Topup(reservedID int, msisdn string, destinationMSISDN string, 
 	response := &Topup{}
 	trace, err := c.request(request, response)
 	if err != nil {
-		return nil, nil, err
+		return nil, trace, err
 	}
 
 	return response, trace, nil
@@ -176,13 +167,9 @@ func (c *Client) request(data url.Values, dest interface{}) (*httpx.Trace, error
 	}
 
 	if err := c.parseResponse(trace.ResponseBody, dest); err != nil {
-		return trace, errors.Wrap(err, "API returned an unparseable response")
+		return trace, errors.Wrap(err, "DTOne API request failed")
 	}
 
-	baseResp := dest.(Response)
-	if baseResp.ErrorCode() != 0 {
-		return trace, errors.Errorf("API returned an error: %s (%d)", baseResp.ErrorTxt(), baseResp.ErrorCode())
-	}
 	return trace, nil
 }
 
@@ -204,7 +191,17 @@ func (c *Client) parseResponse(asBytes []byte, dest interface{}) error {
 		}
 	}
 
-	// marshal to JSON and then into the destination struct
+	// marshal to JSON so we can use nice golang JSON unmarshalling into our response structs
 	respJSON, _ := json.Marshal(data)
+
+	// first try to unmarshal as base response which contains error messages
+	baseResp := &BaseResponse{}
+	utils.UnmarshalAndValidate(respJSON, baseResp)
+
+	if baseResp.ErrorCode != 0 {
+		return errors.Errorf("%s (%d)", baseResp.ErrorTxt, baseResp.ErrorCode)
+	}
+
+	// now unmarshal into action specific struct
 	return utils.UnmarshalAndValidate(respJSON, dest)
 }

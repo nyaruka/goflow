@@ -25,6 +25,13 @@ func NewService(login, apiToken, currency string) flows.AirtimeService {
 }
 
 func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, []*httpx.Trace, error) {
+	transfer := &flows.AirtimeTransfer{
+		Sender:        sender,
+		Recipient:     recipient,
+		DesiredAmount: decimal.Zero,
+		ActualAmount:  decimal.Zero,
+	}
+
 	traces := make([]*httpx.Trace, 0, 1)
 	client := NewClient(session.Engine().HTTPClient(), s.login, s.apiToken)
 
@@ -33,14 +40,18 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		traces = append(traces, trace)
 	}
 	if err != nil {
-		return nil, traces, err
+		return transfer, traces, err
 	}
 
+	transfer.Currency = info.DestinationCurrency
+
 	// look up the amount to send in this currency
-	amount, hasAmount := amounts[info.DestinationCurrency]
+	amount, hasAmount := amounts[transfer.Currency]
 	if !hasAmount {
-		return nil, traces, errors.Errorf("no amount configured for transfers in %s", info.DestinationCurrency)
+		return transfer, traces, errors.Errorf("no amount configured for transfers in %s", transfer.Currency)
 	}
+
+	transfer.DesiredAmount = amount
 
 	// find the product closest to our desired amount
 	var useProduct string
@@ -54,26 +65,26 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 	}
 
 	if useAmount == decimal.Zero {
-		return nil, traces, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
+		return transfer, traces, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
 	}
 
-	reservedID, err := client.ReserveID()
-	if err != nil {
-		return nil, traces, err
-	}
-
-	topup, _, err := client.Topup(reservedID, sender.Path(), recipient.Path(), useProduct, "")
+	reservedID, trace, err := client.ReserveID()
 	if trace != nil {
 		traces = append(traces, trace)
 	}
 	if err != nil {
-		return nil, traces, err
+		return transfer, traces, err
 	}
 
-	return &flows.AirtimeTransfer{
-		Sender:    sender,
-		Recipient: recipient,
-		Currency:  info.DestinationCurrency,
-		Amount:    topup.ActualProductSent,
-	}, traces, nil
+	topup, trace, err := client.Topup(reservedID, sender.Path(), recipient.Path(), useProduct, "")
+	if trace != nil {
+		traces = append(traces, trace)
+	}
+	if err != nil {
+		return transfer, traces, err
+	}
+
+	transfer.ActualAmount = topup.ActualProductSent
+
+	return transfer, traces, nil
 }

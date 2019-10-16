@@ -101,13 +101,14 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 	)
 	assert.NoError(t, err)
 	assert.Equal(t, &flows.AirtimeTransfer{
-		Sender:    urns.URN("tel:+593979099111"),
-		Recipient: urns.URN("tel:+593979099111"),
-		Currency:  "USD",
-		Amount:    decimal.RequireFromString("1"), // closest product
+		Sender:        urns.URN("tel:+593979099111"),
+		Recipient:     urns.URN("tel:+593979099111"),
+		Currency:      "USD",
+		DesiredAmount: decimal.RequireFromString("1.5"),
+		ActualAmount:  decimal.RequireFromString("1"), // closest product
 	}, transfer)
 
-	assert.Equal(t, 2, len(traces))
+	assert.Equal(t, 3, len(traces))
 
 	assert.False(t, mocks.HasUnused())
 }
@@ -138,22 +139,32 @@ func TestServiceFailedTransfers(t *testing.T) {
 	transfer, traces, err := svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
-		urns.URN("tel:+593979099111"),
+		urns.URN("tel:+593979099222"),
 		map[string]decimal.Decimal{"RWF": decimal.RequireFromString("1000")},
 	)
 	assert.EqualError(t, err, "no amount configured for transfers in USD")
-	assert.Nil(t, transfer)
+	assert.NotNil(t, transfer)
+	assert.Equal(t, urns.URN("tel:+593979099111"), transfer.Sender)
+	assert.Equal(t, urns.URN("tel:+593979099222"), transfer.Recipient)
+	assert.Equal(t, "USD", transfer.Currency)
+	assert.Equal(t, decimal.Zero, transfer.DesiredAmount)
+	assert.Equal(t, decimal.Zero, transfer.ActualAmount)
 	assert.Equal(t, 1, len(traces))
 
 	// try when amount is smaller than mimimum in currency
 	transfer, traces, err = svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
-		urns.URN("tel:+593979099111"),
+		urns.URN("tel:+593979099222"),
 		map[string]decimal.Decimal{"USD": decimal.RequireFromString("0.10")},
 	)
 	assert.EqualError(t, err, "amount requested is smaller than the mimimum topup of 1 USD")
-	assert.Nil(t, transfer)
+	assert.NotNil(t, transfer)
+	assert.Equal(t, urns.URN("tel:+593979099111"), transfer.Sender)
+	assert.Equal(t, urns.URN("tel:+593979099222"), transfer.Recipient)
+	assert.Equal(t, "USD", transfer.Currency)
+	assert.Equal(t, decimal.RequireFromString("0.10"), transfer.DesiredAmount)
+	assert.Equal(t, decimal.Zero, transfer.ActualAmount)
 	assert.Equal(t, 1, len(traces))
 
 	assert.False(t, mocks.HasUnused())

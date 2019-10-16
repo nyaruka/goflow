@@ -1089,7 +1089,8 @@ An [email_created](sessions.html#event:email_created) event will be created for 
         "sender": "tel:+12345671111",
         "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "currency": "RWF",
-        "amount": 500,
+        "desired_amount": 500,
+        "actual_amount": 500,
         "http_logs": [
             {
                 "url": "http://send.airtime.com",

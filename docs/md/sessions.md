@@ -271,7 +271,8 @@ Events are created when airtime has been transferred to the contact.
     "sender": "tel:4748",
     "recipient": "tel:+1242563637",
     "currency": "RWF",
-    "amount": 100,
+    "desired_amount": 120,
+    "actual_amount": 100,
     "http_logs": [
         {
             "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",

@@ -23,7 +23,8 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //     "sender": "tel:4748",
 //     "recipient": "tel:+1242563637",
 //     "currency": "RWF",
-//     "amount": 100,
+//     "desired_amount": 120,
+//     "actual_amount": 100,
 //     "http_logs": [
 //       {
 //         "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
@@ -40,21 +41,23 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 type AirtimeTransferredEvent struct {
 	baseEvent
 
-	Sender    urns.URN        `json:"sender"`
-	Recipient urns.URN        `json:"recipient"`
-	Currency  string          `json:"currency"`
-	Amount    decimal.Decimal `json:"amount"`
-	HTTPLogs  []*HTTPLog      `json:"http_logs"`
+	Sender        urns.URN        `json:"sender"`
+	Recipient     urns.URN        `json:"recipient"`
+	Currency      string          `json:"currency"`
+	DesiredAmount decimal.Decimal `json:"desired_amount"`
+	ActualAmount  decimal.Decimal `json:"actual_amount"`
+	HTTPLogs      []*HTTPLog      `json:"http_logs"`
 }
 
 // NewAirtimeTransferred creates a new airtime transferred event
 func NewAirtimeTransferred(t *flows.AirtimeTransfer, traces []*httpx.Trace) *AirtimeTransferredEvent {
 	return &AirtimeTransferredEvent{
-		baseEvent: newBaseEvent(TypeAirtimeTransferred),
-		Sender:    t.Sender,
-		Recipient: t.Recipient,
-		Currency:  t.Currency,
-		Amount:    t.Amount,
-		HTTPLogs:  httpLogsFromTraces(traces),
+		baseEvent:     newBaseEvent(TypeAirtimeTransferred),
+		Sender:        t.Sender,
+		Recipient:     t.Recipient,
+		Currency:      t.Currency,
+		DesiredAmount: t.DesiredAmount,
+		ActualAmount:  t.ActualAmount,
+		HTTPLogs:      httpLogsFromTraces(traces),
 	}
 }
