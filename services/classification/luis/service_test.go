@@ -1,7 +1,6 @@
 package luis_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
@@ -74,9 +73,7 @@ func TestService(t *testing.T) {
 		"3246231",
 	)
 
-	eventLog := test.NewEventLog()
-
-	classification, err := svc.Classify(session, "book flight to Quito", eventLog.Log)
+	classification, traces, err := svc.Classify(session, "book flight to Quito")
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
 		flows.ExtractedIntent{Name: "Book Flight", Confidence: decimal.RequireFromString(`0.9106805`)},
@@ -92,25 +89,6 @@ func TestService(t *testing.T) {
 		},
 	}, classification.Entities)
 
-	eventsJSON, _ := json.Marshal(eventLog.Events)
-	test.AssertEqualJSON(t, []byte(`[
-		{
-			"classifier": {
-				"name": "Booking",
-				"uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d"
-			},
-			"created_on": "2019-10-07T15:21:32.123456789Z",
-			"http_logs": [
-				{
-					"created_on": "2019-10-07T15:21:30.123456789Z",
-					"elapsed_ms": 1000,
-					"request": "GET /luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito HTTP/1.1\r\nHost: westus.api.cognitive.microsoft.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-					"response": "HTTP/1.0 200 OK\r\nContent-Length: 605\r\n\r\n{\n\t\t\t\t\"query\": \"book a flight to Quito\",\n\t\t\t\t\"topScoringIntent\": {\n\t\t\t\t  \"intent\": \"Book Flight\",\n\t\t\t\t  \"score\": 0.9106805\n\t\t\t\t},\n\t\t\t\t\"intents\": [\n\t\t\t\t  {\n\t\t\t\t\t\"intent\": \"Book Flight\",\n\t\t\t\t\t\"score\": 0.9106805\n\t\t\t\t  },\n\t\t\t\t  {\n\t\t\t\t\t\"intent\": \"None\",\n\t\t\t\t\t\"score\": 0.08910245\n\t\t\t\t  },\n\t\t\t\t  {\n\t\t\t\t\t\"intent\": \"Book Hotel\",\n\t\t\t\t\t\"score\": 0.07790734\n\t\t\t\t  }\n\t\t\t\t],\n\t\t\t\t\"entities\": [\n\t\t\t\t  {\n\t\t\t\t\t\"entity\": \"quito\",\n\t\t\t\t\t\"type\": \"City\",\n\t\t\t\t\t\"startIndex\": 17,\n\t\t\t\t\t\"endIndex\": 21,\n\t\t\t\t\t\"score\": 0.9644149\n\t\t\t\t  }\n\t\t\t\t],\n\t\t\t\t\"sentimentAnalysis\": {\n\t\t\t\t  \"label\": \"positive\",\n\t\t\t\t  \"score\": 0.731448531\n\t\t\t\t}\n\t\t\t}",
-					"status": "success",
-					"url": "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito"
-				}
-			],
-			"type": "classifier_called"
-		}
-	]`), eventsJSON, "events JSON mismatch")
+	assert.Equal(t, 1, len(traces))
+	assert.Equal(t, "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito", traces[0].Request.URL.String())
 }

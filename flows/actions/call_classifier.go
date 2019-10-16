@@ -93,7 +93,12 @@ func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, inpu
 		return nil, false, err
 	}
 
-	classification, err := svc.Classify(run.Session(), input, logEvent)
+	classification, traces, err := svc.Classify(run.Session(), input)
+
+	if len(traces) > 0 {
+		logEvent(events.NewClassifierCalled(classifier.Reference(), traces))
+	}
+
 	return classification, false, err
 }
 

@@ -1,7 +1,6 @@
 package wit_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
@@ -36,34 +35,13 @@ func TestService(t *testing.T) {
 
 	svc := wit.NewService(test.NewClassifier("Booking", "wit", []string{"book_flight", "book_hotel"}), "23532624376")
 
-	eventLog := test.NewEventLog()
-
-	classification, err := svc.Classify(session, "book flight to Quito", eventLog.Log)
+	classification, traces, err := svc.Classify(session, "book flight to Quito")
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
 		flows.ExtractedIntent{Name: "book_flight", Confidence: decimal.RequireFromString(`0.84709152161066`)},
 	}, classification.Intents)
 	assert.Equal(t, map[string][]flows.ExtractedEntity{}, classification.Entities)
 
-	eventsJSON, _ := json.Marshal(eventLog.Events)
-	test.AssertEqualJSON(t, []byte(`[
-		{
-			"classifier": {
-				"name": "Booking",
-				"uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d"
-			},
-			"created_on": "2019-10-07T15:21:32.123456789Z",
-			"http_logs": [
-				{
-					"created_on": "2019-10-07T15:21:30.123456789Z",
-					"elapsed_ms": 1000,
-					"request": "GET /message?v=20170307&q=book+flight+to+Quito HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer 23532624376\r\nAccept-Encoding: gzip\r\n\r\n",
-					"response": "HTTP/1.0 200 OK\r\nContent-Length: 139\r\n\r\n{\"_text\":\"book flight to Quito\",\"entities\":{\"intent\":[{\"confidence\":0.84709152161066,\"value\":\"book_flight\"}]},\"msg_id\":\"1M7fAcDWag76OmgDI\"}",
-					"status": "success",
-					"url": "https://api.wit.ai/message?v=20170307&q=book+flight+to+Quito"
-				}
-			],
-			"type": "classifier_called"
-		}
-	]`), eventsJSON, "events JSON mismatch")
+	assert.Equal(t, 1, len(traces))
+	assert.Equal(t, "https://api.wit.ai/message?v=20170307&q=book+flight+to+Quito", traces[0].Request.URL.String())
 }

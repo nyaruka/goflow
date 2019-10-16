@@ -749,7 +749,7 @@ changes are made to the contact's URNs.
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "channel": {
         "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-        "name": "FAcebook Channel"
+        "name": "Facebook Channel"
     }
 }
 ```

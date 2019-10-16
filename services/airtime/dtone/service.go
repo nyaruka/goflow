@@ -3,6 +3,7 @@ package dtone
 import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -23,18 +24,22 @@ func NewService(login, apiToken, currency string) flows.AirtimeService {
 	}
 }
 
-func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
+func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, []*httpx.Trace, error) {
+	traces := make([]*httpx.Trace, 0, 1)
 	client := NewClient(session.Engine().HTTPClient(), s.login, s.apiToken)
 
-	info, _, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
+	info, trace, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
+	if trace != nil {
+		traces = append(traces, trace)
+	}
 	if err != nil {
-		return nil, err
+		return nil, traces, err
 	}
 
 	// look up the amount to send in this currency
 	amount, hasAmount := amounts[info.DestinationCurrency]
 	if !hasAmount {
-		return nil, errors.Errorf("no amount configured for transfers in %s", info.DestinationCurrency)
+		return nil, traces, errors.Errorf("no amount configured for transfers in %s", info.DestinationCurrency)
 	}
 
 	// find the product closest to our desired amount
@@ -49,17 +54,20 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 	}
 
 	if useAmount == decimal.Zero {
-		return nil, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
+		return nil, traces, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
 	}
 
 	reservedID, err := client.ReserveID()
 	if err != nil {
-		return nil, err
+		return nil, traces, err
 	}
 
 	topup, _, err := client.Topup(reservedID, sender.Path(), recipient.Path(), useProduct, "")
+	if trace != nil {
+		traces = append(traces, trace)
+	}
 	if err != nil {
-		return nil, err
+		return nil, traces, err
 	}
 
 	return &flows.AirtimeTransfer{
@@ -67,5 +75,5 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		Recipient: recipient,
 		Currency:  info.DestinationCurrency,
 		Amount:    topup.ActualProductSent,
-	}, nil
+	}, traces, nil
 }

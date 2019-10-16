@@ -2,7 +2,6 @@ package luis
 
 import (
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils/httpx"
 )
 
@@ -24,15 +23,16 @@ func NewService(classifier *flows.Classifier, endpoint, appID, key string) flows
 	}
 }
 
-func (s *service) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.Classification, error) {
+func (s *service) Classify(session flows.Session, input string) (*flows.Classification, []*httpx.Trace, error) {
+	traces := make([]*httpx.Trace, 0, 1)
 	client := NewClient(session.Engine().HTTPClient(), s.endpoint, s.appID, s.key)
 
 	response, trace, err := client.Predict(input)
 	if trace != nil {
-		logEvent(events.NewClassifierCalled(s.classifier.Reference(), []*httpx.Trace{trace}))
+		traces = append(traces, trace)
 	}
 	if err != nil {
-		return nil, err
+		return nil, traces, err
 	}
 
 	result := &flows.Classification{
@@ -57,7 +57,7 @@ func (s *service) Classify(session flows.Session, input string, logEvent flows.E
 		}
 	}
 
-	return result, nil
+	return result, traces, nil
 }
 
 var _ flows.ClassificationService = (*service)(nil)

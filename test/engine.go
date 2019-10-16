@@ -4,7 +4,6 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils/httpx"
 
@@ -32,7 +31,7 @@ func newClassificationService(classifier *flows.Classifier) *nluService {
 	return &nluService{classifier: classifier}
 }
 
-func (s *nluService) Classify(session flows.Session, input string, logEvent flows.EventCallback) (*flows.Classification, error) {
+func (s *nluService) Classify(session flows.Session, input string) (*flows.Classification, []*httpx.Trace, error) {
 	classifierIntents := s.classifier.Intents()
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")
@@ -41,12 +40,9 @@ func (s *nluService) Classify(session flows.Session, input string, logEvent flow
 		confidence = confidence.Div(decimal.RequireFromString("2"))
 	}
 
-	logEvent(events.NewClassifierCalled(
-		s.classifier.Reference(),
-		[]*httpx.Trace{
-			httpx.NewMockTrace("GET", "http://test.acme.ai?classifiy", 200, `{"intents":[]}`),
-		},
-	))
+	traces := []*httpx.Trace{
+		httpx.NewMockTrace("GET", "http://test.acme.ai?classifiy", 200, `{"intents":[]}`),
+	}
 
 	classification := &flows.Classification{
 		Intents: extractedIntents,
@@ -57,7 +53,7 @@ func (s *nluService) Classify(session flows.Session, input string, logEvent flow
 		},
 	}
 
-	return classification, nil
+	return classification, traces, nil
 }
 
 var _ flows.ClassificationService = (*nluService)(nil)
@@ -71,10 +67,14 @@ func NewAirtimeService(currency string) flows.AirtimeService {
 	return &airtimeService{fixedCurrency: currency}
 }
 
-func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
+func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*flows.AirtimeTransfer, []*httpx.Trace, error) {
+	traces := []*httpx.Trace{
+		httpx.NewMockTrace("GET", "http://send.airtime.com", 200, `{"status":"ok"}`),
+	}
+
 	amount, hasAmount := amounts[s.fixedCurrency]
 	if !hasAmount {
-		return nil, errors.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
+		return nil, traces, errors.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
 	}
 
 	transfer := &flows.AirtimeTransfer{
@@ -84,14 +84,7 @@ func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipi
 		Amount:    amount,
 	}
 
-	logEvent(events.NewAirtimeTransferred(
-		transfer,
-		[]*httpx.Trace{
-			httpx.NewMockTrace("GET", "http://send.airtime.com", 200, `{"status":"ok"}`),
-		},
-	))
-
-	return transfer, nil
+	return transfer, traces, nil
 }
 
 var _ flows.AirtimeService = (*airtimeService)(nil)

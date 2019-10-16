@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/shopspring/decimal"
 )
@@ -71,7 +72,7 @@ type Classification struct {
 
 // ClassificationService provides NLU functionality to the engine
 type ClassificationService interface {
-	Classify(session Session, input string, logEvent EventCallback) (*Classification, error)
+	Classify(session Session, input string) (*Classification, []*httpx.Trace, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer
@@ -94,5 +95,5 @@ type AirtimeTransfer struct {
 // AirtimeService provides airtime functionality to the engine
 type AirtimeService interface {
 	// Transfer transfers airtime to the given URN
-	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logEvent EventCallback) (*AirtimeTransfer, error)
+	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*AirtimeTransfer, []*httpx.Trace, error)
 }

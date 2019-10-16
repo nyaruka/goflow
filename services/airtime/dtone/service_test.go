@@ -93,14 +93,11 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 
 	svc := dtone.NewService("login", "token", "USD")
 
-	eventLog := test.NewEventLog()
-
-	transfer, err := svc.Transfer(
+	transfer, traces, err := svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
 		urns.URN("tel:+593979099111"),
 		map[string]decimal.Decimal{"USD": decimal.RequireFromString("1.5")},
-		eventLog.Log,
 	)
 	assert.NoError(t, err)
 	assert.Equal(t, &flows.AirtimeTransfer{
@@ -109,6 +106,8 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 		Currency:  "USD",
 		Amount:    decimal.RequireFromString("1"), // closest product
 	}, transfer)
+
+	assert.Equal(t, 2, len(traces))
 
 	assert.False(t, mocks.HasUnused())
 }
@@ -136,28 +135,26 @@ func TestServiceFailedTransfers(t *testing.T) {
 	svc := dtone.NewService("login", "token", "USD")
 
 	// try when currency not configured
-	eventLog := test.NewEventLog()
-	transfer, err := svc.Transfer(
+	transfer, traces, err := svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
 		urns.URN("tel:+593979099111"),
 		map[string]decimal.Decimal{"RWF": decimal.RequireFromString("1000")},
-		eventLog.Log,
 	)
 	assert.EqualError(t, err, "no amount configured for transfers in USD")
 	assert.Nil(t, transfer)
+	assert.Equal(t, 1, len(traces))
 
 	// try when amount is smaller than mimimum in currency
-	eventLog = test.NewEventLog()
-	transfer, err = svc.Transfer(
+	transfer, traces, err = svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
 		urns.URN("tel:+593979099111"),
 		map[string]decimal.Decimal{"USD": decimal.RequireFromString("0.10")},
-		eventLog.Log,
 	)
 	assert.EqualError(t, err, "amount requested is smaller than the mimimum topup of 1 USD")
 	assert.Nil(t, transfer)
+	assert.Equal(t, 1, len(traces))
 
 	assert.False(t, mocks.HasUnused())
 }
