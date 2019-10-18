@@ -29,14 +29,14 @@ type EntityMatch struct {
 
 // ParseResponse is the response from a /parse request
 type ParseResponse struct {
-	Intent        IntentMatch                         `json:"intent" validate:"required"`
-	IntentRanking []IntentMatch                       `json:"intent_ranking" validate:"required"`
-	LabelsList    []string                            `json:"labels_list"`
-	EntitiesList  []string                            `json:"entities_list"`
-	Entities      map[string]map[string][]EntityMatch `json:"entities"`
-	Text          string                              `json:"text"`
-	UpdateID      int                                 `json:"update_id"`
-	Language      string                              `json:"language"`
+	Intent        IntentMatch              `json:"intent" validate:"required"`
+	IntentRanking []IntentMatch            `json:"intent_ranking" validate:"required"`
+	LabelsList    []string                 `json:"labels_list"`
+	EntitiesList  []string                 `json:"entities_list"`
+	Entities      map[string][]EntityMatch `json:"entities"`
+	Text          string                   `json:"text"`
+	UpdateID      int                      `json:"update_id"`
+	Language      string                   `json:"language"`
 }
 
 // Client is a basic Wit.ai client

@@ -20,35 +20,33 @@ func TestPredict(t *testing.T) {
 			httpx.NewMockResponse(200, `{}`), // invalid JSON response
 			httpx.NewMockResponse(200, `{
 				"intent": {
-					"name": "greet",
+					"name": "book_flight",
 					"confidence": 0.8341536248216568
 				},
 				"intent_ranking": [
 					{
-						"name": "greet",
+						"name": "book_flight",
 						"confidence": 0.8341536248216568
 					},
 					{
-						"name": "bye",
+						"name": "book_hotel",
 						"confidence": 0.16584637517834322
 					}
 				],
 				"labels_list": [
-					"hi"
+					"destination"
 				],
 				"entities_list": [
-					"hello"
+					"quito"
 				],
 				"entities": {
-					"hi": {
-						"hello": [
-							{
-								"value": "hello",
-								"entity": "hello",
-								"confidence": 0.7979280788804916
-							}
-						]
-					}
+					"destination": [
+						{
+							"value": "quito",
+							"entity": "quito",
+							"confidence": 0.7979280788804916
+						}
+					]
 				},
 				"text": "book a flight to Quito",
 				"update_id": 4786,
@@ -73,18 +71,16 @@ func TestPredict(t *testing.T) {
 	response, trace, err = client.Parse("book a flight to Quito")
 	assert.NoError(t, err)
 	assert.NotNil(t, trace)
-	assert.Equal(t, bothub.IntentMatch{"greet", decimal.RequireFromString(`0.8341536248216568`)}, response.Intent)
+	assert.Equal(t, bothub.IntentMatch{"book_flight", decimal.RequireFromString(`0.8341536248216568`)}, response.Intent)
 	assert.Equal(t, []bothub.IntentMatch{
-		bothub.IntentMatch{"greet", decimal.RequireFromString(`0.8341536248216568`)},
-		bothub.IntentMatch{"bye", decimal.RequireFromString(`0.16584637517834322`)},
+		bothub.IntentMatch{"book_flight", decimal.RequireFromString(`0.8341536248216568`)},
+		bothub.IntentMatch{"book_hotel", decimal.RequireFromString(`0.16584637517834322`)},
 	}, response.IntentRanking)
-	assert.Equal(t, []string{"hi"}, response.LabelsList)
-	assert.Equal(t, []string{"hello"}, response.EntitiesList)
-	assert.Equal(t, map[string]map[string][]bothub.EntityMatch{
-		"hi": map[string][]bothub.EntityMatch{
-			"hello": []bothub.EntityMatch{
-				bothub.EntityMatch{Value: "hello", Entity: "hello", Confidence: decimal.RequireFromString(`0.7979280788804916`)},
-			},
+	assert.Equal(t, []string{"destination"}, response.LabelsList)
+	assert.Equal(t, []string{"quito"}, response.EntitiesList)
+	assert.Equal(t, map[string][]bothub.EntityMatch{
+		"destination": []bothub.EntityMatch{
+			bothub.EntityMatch{Value: "quito", Entity: "quito", Confidence: decimal.RequireFromString(`0.7979280788804916`)},
 		},
 	}, response.Entities)
 	assert.Equal(t, "book a flight to Quito", response.Text)

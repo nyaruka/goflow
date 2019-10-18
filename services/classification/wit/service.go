@@ -4,7 +4,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-// a classification service implmentation for a wit.ai app
+// a classification service implementation for a wit.ai app
 type service struct {
 	classifier  *flows.Classifier
 	accessToken string
