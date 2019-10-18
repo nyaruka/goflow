@@ -1,3 +1,7 @@
+v0.53.1
+----------
+ * Add classification service for Bothub
+
 v0.53.0
 ----------
  * Record arrays of http logs on classifier_called and airtime_transferred events
