@@ -1,3 +1,7 @@
+v0.53.0
+----------
+ * Record arrays of http logs on classifier_called and airtime_transferred events
+
 v0.52.1
 ----------
  * Modify grammar to allow result names that start with underscores
