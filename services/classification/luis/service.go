@@ -4,7 +4,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-// a classification service implmentation for a LUIS app
+// a classification service implementation for a LUIS app
 type service struct {
 	classifier *flows.Classifier
 	endpoint   string
