@@ -1,5 +1,19 @@
 [
     {
+        "description": "Validation fails for invalid classifier reference",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "classifier": {
+                "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                "name": "Deleted"
+            },
+            "input": "@input.text",
+            "result_name": "Intent"
+        },
+        "validation_error": "missing dependencies: classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
+    },
+    {
         "description": "Error event created and result with category skipped created if input evaluates to empty",
         "action": {
             "type": "call_classifier",
@@ -43,58 +57,6 @@
                     ],
                     "key": "_intent_classification",
                     "name": "_Intent Classification",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
-                }
-            ]
-        }
-    },
-    {
-        "description": "Error event and result with category failure created if classifier not found",
-        "action": {
-            "type": "call_classifier",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "classifier": {
-                "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
-                "name": "Deleted"
-            },
-            "input": "@input.text",
-            "result_name": "Intent"
-        },
-        "events": [
-            {
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "missing classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]",
-                "type": "error"
-            },
-            {
-                "category": "Failure",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "input": "Hi everybody",
-                "name": "Intent",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "run_result_changed",
-                "value": "0"
-            }
-        ],
-        "inspection": {
-            "templates": [
-                "@input.text"
-            ],
-            "dependencies": [
-                "classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
-            ],
-            "results": [
-                {
-                    "categories": [
-                        "Success",
-                        "Skipped",
-                        "Failure"
-                    ],
-                    "key": "intent",
-                    "name": "Intent",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
