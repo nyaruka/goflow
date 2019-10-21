@@ -10,7 +10,7 @@ import (
 )
 
 func TestXArray(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	arr1 := types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123), types.XBooleanFalse)
 	assert.Equal(t, 3, arr1.Count())
@@ -49,7 +49,7 @@ func TestXArray(t *testing.T) {
 }
 
 func TestXLazyArray(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	initialized := false
 
 	arr1 := types.NewXLazyArray(func() []types.XValue {
@@ -91,7 +91,7 @@ func TestToXArray(t *testing.T) {
 		{types.NewXArray(types.NewXText("foo"), types.NewXText("bar")), types.NewXArray(types.NewXText("foo"), types.NewXText("bar")), false},
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	for _, test := range tests {
 		array, err := types.ToXArray(env, test.value)

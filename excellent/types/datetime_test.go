@@ -14,7 +14,7 @@ import (
 )
 
 func TestXDateTime(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
+	env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
 
 	assert.True(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).Truthy())
 
@@ -88,7 +88,7 @@ func TestToXDateTime(t *testing.T) {
 		}), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	for _, test := range tests {
 		result, err := types.ToXDateTime(env, test.value)
@@ -106,7 +106,7 @@ func TestToXDateTimeWithTimeFill(t *testing.T) {
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	result, err := types.ToXDateTimeWithTimeFill(env, types.NewXText("2018/12/20"))
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXDateTime(time.Date(2018, 12, 20, 13, 36, 30, 123456789, time.UTC)), result)

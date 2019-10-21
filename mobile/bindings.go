@@ -67,7 +67,7 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 	}
 
 	return &Environment{
-		target: envs.NewEnvironmentBuilder().
+		target: envs.NewBuilder().
 			WithDateFormat(envs.DateFormat(dateFormat)).
 			WithTimeFormat(envs.TimeFormat(timeFormat)).
 			WithTimezone(tz).

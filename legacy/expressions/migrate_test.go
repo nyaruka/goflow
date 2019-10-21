@@ -371,7 +371,7 @@ func TestLegacyTests(t *testing.T) {
 			tz, err := time.LoadLocation(tc.Context.Timezone)
 			require.NoError(t, err)
 
-			env := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithTimezone(tz).Build()
+			env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithTimezone(tz).Build()
 			if tc.Context.Now != nil {
 				dates.SetNowSource(dates.NewFixedNowSource(*tc.Context.Now))
 				defer dates.SetNowSource(dates.DefaultNowSource)

@@ -120,7 +120,7 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 	}
 
 	eng := engine.NewBuilder().WithAirtimeServiceFactory(svcFactory).Build()
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	contact := flows.NewEmptyContact(sa, "", "", nil)
 	contact.AddURN(flows.NewContactURN(destination, nil))
 

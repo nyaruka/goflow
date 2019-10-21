@@ -10,7 +10,7 @@ import (
 )
 
 func TestWrappers(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	result := types.NewXText("Success")
 	text := types.NewXText("X")
 	num := types.RequireXNumberFromString("1")

@@ -94,7 +94,7 @@ func TestDateTimeFromString(t *testing.T) {
 		timezone, err := time.LoadLocation(tc.Timezone)
 		require.NoError(t, err)
 
-		env := envs.NewEnvironmentBuilder().WithDateFormat(tc.DateFormat).WithTimeFormat(tc.TimeFormat).WithTimezone(timezone).Build()
+		env := envs.NewBuilder().WithDateFormat(tc.DateFormat).WithTimeFormat(tc.TimeFormat).WithTimezone(timezone).Build()
 
 		value, err := envs.DateTimeFromString(env, tc.Value, tc.FillTime)
 
@@ -137,7 +137,7 @@ func TestDateFromString(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		env := envs.NewEnvironmentBuilder().WithDateFormat(tc.dateFormat).Build()
+		env := envs.NewBuilder().WithDateFormat(tc.dateFormat).Build()
 		parsed, err := envs.DateFromString(env, tc.value)
 
 		if tc.hasError {

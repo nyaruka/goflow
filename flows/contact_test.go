@@ -38,7 +38,7 @@ func TestContact(t *testing.T) {
 
 	android := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
@@ -110,7 +110,7 @@ func TestContact(t *testing.T) {
 }
 
 func TestContactFormat(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	sa, _ := engine.NewSessionAssets(static.NewEmptySource())
 
 	// name takes precedence if set
@@ -126,7 +126,7 @@ func TestContactFormat(t *testing.T) {
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	assert.Equal(t, "joey", contact.Format(env))
 
-	anonEnv := envs.NewEnvironmentBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
+	anonEnv := envs.NewBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
 
 	// unless URNs are redacted
 	assert.Equal(t, "1234", contact.Format(anonEnv))

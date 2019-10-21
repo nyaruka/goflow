@@ -21,7 +21,7 @@ func TestGroupList(t *testing.T) {
 
 	groups := flows.NewGroupList([]*flows.Group{customers, testers, males})
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	// check use in expressions
 	test.AssertXEqual(t, types.NewXArray(

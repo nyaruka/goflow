@@ -37,7 +37,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		"array2d": array2d,
 	})
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	evaluateTests := []struct {
 		template string
@@ -289,7 +289,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@(thing.xxx)`, "", true},
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	for _, tc := range evaluateAsStringTests {
 		defer func() {
 			if r := recover(); r != nil {
@@ -351,7 +351,7 @@ func TestEvaluationErrors(t *testing.T) {
 	vars := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("bar"),
 	})
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	for _, tc := range errorTests {
 		result, err := excellent.EvaluateTemplate(env, vars, tc.template)
@@ -369,7 +369,7 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 		vars := types.NewXObject(map[string]types.XValue{
 			"foo": types.NewXText("bar"),
 		})
-		env := envs.NewEnvironmentBuilder().Build()
+		env := envs.NewBuilder().Build()
 
 		for _, tc := range errorTests {
 			excellent.EvaluateTemplate(env, vars, tc.template)

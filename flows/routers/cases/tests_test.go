@@ -393,7 +393,7 @@ func TestTests(t *testing.T) {
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
-	env := envs.NewEnvironmentBuilder().
+	env := envs.NewBuilder().
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithTimeFormat(envs.TimeFormatHourMinuteSecond).
 		WithTimezone(kgl).
@@ -443,7 +443,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(has_error(1 / 0).match)", "division by zero", false},
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	for _, test := range evalTests {
 		eval, err := excellent.EvaluateTemplate(env, vars, test.template)
 
@@ -481,7 +481,7 @@ func TestHasPhone(t *testing.T) {
 		{"12067799294", "BW", ""},
 	}
 
-	env := envs.NewEnvironmentBuilder().WithDefaultCountry(envs.Country("RW")).Build()
+	env := envs.NewBuilder().WithDefaultCountry(envs.Country("RW")).Build()
 
 	for _, tc := range tests {
 		var actual, expected types.XValue

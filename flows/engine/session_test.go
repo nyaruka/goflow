@@ -689,7 +689,7 @@ func TestResumeWithMissingFlowAssets(t *testing.T) {
 	sa, err := test.CreateSessionAssets(assetsJSON, "")
 	require.NoError(t, err)
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
 	trigger := triggers.NewManual(env, assets.NewFlowReference(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"), "Parent Flow"), contact, nil)
 

@@ -19,7 +19,7 @@ var xa = types.NewXArray
 var ERROR = types.NewXErrorf("any error")
 
 func TestBinaryOperators(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	testCases := []struct {
 		operator operators.BinaryOperator
@@ -115,7 +115,7 @@ func TestBinaryOperators(t *testing.T) {
 }
 
 func TestUnaryOperators(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	testCases := []struct {
 		operator operators.UnaryOperator
