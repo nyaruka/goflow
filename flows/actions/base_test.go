@@ -171,7 +171,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			}
 		}
 
-		envBuilder := envs.NewEnvironmentBuilder().
+		envBuilder := envs.NewBuilder().
 			WithDefaultLanguage("eng").
 			WithAllowedLanguages([]envs.Language{"eng", "spa"}).
 			WithDefaultCountry("RW")

@@ -31,8 +31,8 @@ var xf = functions.Lookup
 var ERROR = types.NewXErrorf("any error")
 
 func TestFunctions(t *testing.T) {
-	dmy := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
-	mdy := envs.NewEnvironmentBuilder().
+	dmy := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
+	mdy := envs.NewBuilder().
 		WithDateFormat(envs.DateFormatMonthDayYear).
 		WithTimeFormat(envs.TimeFormatHourMinuteAmPm).
 		WithTimezone(la).

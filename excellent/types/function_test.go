@@ -11,7 +11,7 @@ import (
 )
 
 func TestXFunction(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	func1 := types.XFunction(func(env envs.Environment, args ...types.XValue) types.XValue { return nil })
 	func2 := types.XFunction(func(env envs.Environment, args ...types.XValue) types.XValue { return nil })

@@ -29,7 +29,7 @@ func TestXValue(t *testing.T) {
 		"bar": types.NewXNumberFromInt(456),
 	})
 
-	env := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
+	env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
 
 	tests := []struct {
 		value     types.XValue

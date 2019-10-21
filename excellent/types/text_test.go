@@ -11,7 +11,7 @@ import (
 )
 
 func TestXText(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	// test equality
 	assert.True(t, types.NewXText("abc").Equals(types.NewXText("abc")))

@@ -111,7 +111,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		contact, err := flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
 		require.NoError(t, err)
 
-		trigger := triggers.NewManual(envs.NewEnvironmentBuilder().Build(), flow.Reference(), contact, nil)
+		trigger := triggers.NewManual(envs.NewBuilder().Build(), flow.Reference(), contact, nil)
 
 		eng := test.NewEngine()
 		session, _, err := eng.NewSession(sa, trigger)

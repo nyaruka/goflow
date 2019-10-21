@@ -67,7 +67,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 
 		// apply the modifier
 		eventLog := test.NewEventLog()
-		modifier.Apply(envs.NewEnvironmentBuilder().Build(), sessionAssets, contact, eventLog.Log)
+		modifier.Apply(envs.NewBuilder().Build(), sessionAssets, contact, eventLog.Log)
 
 		// check contact is in the expected state
 		contactJSON, _ := json.Marshal(contact)

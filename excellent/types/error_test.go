@@ -12,7 +12,7 @@ import (
 )
 
 func TestXError(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	err1 := types.NewXError(errors.Errorf("I failed"))
 	assert.Equal(t, "error", err1.Describe())

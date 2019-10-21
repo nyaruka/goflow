@@ -74,7 +74,7 @@ func TestXJSONResolve(t *testing.T) {
 		{[]byte(`["foo", null]`), "j[3]", nil, true},
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	for _, tc := range jsonTests {
 		fragment := types.JSONToXValue(tc.JSON)
 		context := types.NewXObject(map[string]types.XValue{"j": fragment})

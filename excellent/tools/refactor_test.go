@@ -33,7 +33,7 @@ func TestRefactorTemplate(t *testing.T) {
 		{`@(1 / ) @(1+2)`, `@(1 / ) @(1 + 2)`, true},
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	context := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXObject(map[string]types.XValue{
 			"bar": types.NewXNumberFromInt(123),
