@@ -258,12 +258,20 @@
         }
     },
     {
-        "description": "Status code zero for connection errors",
+        "description": "Status code zero and empty response for connection errors",
+        "http_mocks": {
+            "http://temba.io/": [
+                {
+                    "status": 0,
+                    "body": ""
+                }
+            ]
+        },
         "action": {
             "type": "call_webhook",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "method": "POST",
-            "url": "http://localhost:24568",
+            "url": "http://temba.io/",
             "body": "Hi there!",
             "result_name": "My Webhook"
         },
@@ -271,17 +279,17 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "elapsed_ms": 0,
-                "request": "POST / HTTP/1.1\r\nHost: localhost:24568\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
-                "response": "Post http://localhost:24568: dial tcp 127.0.0.1:24568: connect: connection refused",
+                "request": "POST / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
+                "response": "",
                 "status": "connection_error",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "webhook_called",
-                "url": "http://localhost:24568"
+                "url": "http://temba.io/"
             },
             {
                 "category": "Failure",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "input": "POST http://localhost:24568",
+                "input": "POST http://temba.io/",
                 "name": "My Webhook",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
@@ -291,7 +299,7 @@
         "inspection": {
             "dependencies": [],
             "templates": [
-                "http://localhost:24568",
+                "http://temba.io/",
                 "Hi there!"
             ],
             "results": [

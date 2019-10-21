@@ -35,7 +35,7 @@ type WebhookCalledEvent struct {
 	URL         string           `json:"url" validate:"required"`
 	Status      flows.CallStatus `json:"status" validate:"required"`
 	Request     string           `json:"request" validate:"required"`
-	Response    string           `json:"response,omitempty"`
+	Response    string           `json:"response"`
 	ElapsedMS   int              `json:"elapsed_ms"`
 	Resthook    string           `json:"resthook,omitempty"`
 	StatusCode  int              `json:"status_code,omitempty"`

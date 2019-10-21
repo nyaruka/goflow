@@ -58,7 +58,7 @@
                             "type": "call_webhook",
                             "uuid": "9aa018e7-4934-457a-b582-63b164c562f7",
                             "method": "GET",
-                            "url": "http://localhost/?cmd=echo&content=%7B%22exists%22%3A%22valid%22%7D",
+                            "url": "http://localhost/?cmd=country",
                             "result_name": "Country Webhook"
                         }
                     ],

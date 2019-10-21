@@ -36,6 +36,7 @@ func (r *MockRequestor) Do(client *http.Client, request *http.Request) (*http.Re
 	return mocked.Make(request), nil
 }
 
+// HasUnused returns true if there are unused mocks leftover
 func (r *MockRequestor) HasUnused() bool {
 	for _, mocks := range r.mocks {
 		if len(mocks) > 0 {
@@ -43,6 +44,19 @@ func (r *MockRequestor) HasUnused() bool {
 		}
 	}
 	return false
+}
+
+// Clone returns a clone of this requestor
+func (r *MockRequestor) Clone() *MockRequestor {
+	cloned := make(map[string][]MockResponse)
+	for url, ms := range r.mocks {
+		cloned[url] = ms
+	}
+	return NewMockRequestor(cloned)
+}
+
+func (r *MockRequestor) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&r.mocks)
 }
 
 func (r *MockRequestor) UnmarshalJSON(data []byte) error {

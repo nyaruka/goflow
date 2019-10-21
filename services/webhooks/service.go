@@ -68,7 +68,7 @@ func (s *service) Call(session flows.Session, request *http.Request, resthook st
 			StatusCode: 0,
 			Status:     flows.CallStatusConnectionError,
 			Request:    dump,
-			Response:   []byte(err.Error()),
+			Response:   nil,
 		}, nil
 	}
 

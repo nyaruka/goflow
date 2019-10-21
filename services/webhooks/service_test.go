@@ -124,7 +124,7 @@ func TestWebhookParsing(t *testing.T) {
 			call: call{"POST", "http://127.0.0.1:55555/", ""},
 			webhook: webhook{
 				request:  "POST / HTTP/1.1\r\nHost: 127.0.0.1:55555\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "Post http://127.0.0.1:55555/: dial tcp 127.0.0.1:55555: connect: connection refused",
+				response: "",
 				json:     nil,
 			},
 		},
