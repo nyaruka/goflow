@@ -1,3 +1,8 @@
+v0.54.0
+----------
+ * NewEnvironmentBuilder() -> envs.NewBuilder() to match engine.NewBuilder()
+ * Include classifiers in flow dependency inspection
+
 v0.53.1
 ----------
  * Add classification service for Bothub
