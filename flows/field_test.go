@@ -15,7 +15,7 @@ import (
 )
 
 func TestFieldValues(t *testing.T) {
-	session, _, err := test.CreateTestSession("http://localhost", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	env := session.Environment()

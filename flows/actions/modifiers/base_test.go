@@ -66,15 +66,15 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 		require.NoError(t, err, "error loading contact_before in %s", testName)
 
 		// apply the modifier
-		logEvent := make([]flows.Event, 0)
-		modifier.Apply(envs.NewEnvironmentBuilder().Build(), sessionAssets, contact, func(e flows.Event) { logEvent = append(logEvent, e) })
+		eventLog := test.NewEventLog()
+		modifier.Apply(envs.NewBuilder().Build(), sessionAssets, contact, eventLog.Log)
 
 		// check contact is in the expected state
 		contactJSON, _ := json.Marshal(contact)
 		test.AssertEqualJSON(t, tc.ContactAfter, contactJSON, "contact mismatch in %s", testName)
 
 		// check events are what we expected
-		actualEventsJSON, _ := json.Marshal(logEvent)
+		actualEventsJSON, _ := json.Marshal(eventLog.Events)
 		expectedEventsJSON, _ := json.Marshal(tc.Events)
 		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
 

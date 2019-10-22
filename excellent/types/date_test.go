@@ -13,7 +13,7 @@ import (
 )
 
 func TestXDate(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
+	env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
 
 	d1 := types.NewXDate(dates.NewDate(2019, 2, 20))
 	assert.Equal(t, `date`, d1.Describe())
@@ -61,7 +61,7 @@ func TestToXDate(t *testing.T) {
 		}), types.NewXDate(dates.NewDate(2018, 1, 20)), false},
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	for _, test := range tests {
 		result, err := types.ToXDate(env, test.value)

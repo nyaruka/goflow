@@ -112,7 +112,7 @@ func (t *TestQueryable) QueryProperty(env envs.Environment, key string, propType
 }
 
 func TestEvaluateQuery(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	testObj := &TestQueryable{}
 
 	tests := []struct {
@@ -219,7 +219,7 @@ func TestParsingErrors(t *testing.T) {
 }
 
 func TestEvaluationErrors(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	testObj := &TestQueryable{}
 
 	tests := []struct {

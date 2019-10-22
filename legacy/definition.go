@@ -663,10 +663,11 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 			timeout = waits.NewTimeout(timeoutSeconds, timeoutCategory)
 		}
 
-		wait = waits.NewMsgWait(timeout, migrateRuleSetToHint(r))
+		hint, operand := migrateWaitingRuleset(r)
+		wait = waits.NewMsgWait(timeout, hint)
 		uiType = UINodeTypeWaitForResponse
 
-		fallthrough
+		router = routers.NewSwitch(wait, resultName, categories, operand, cases, defaultCategory)
 	case "flow_field", "contact_field", "expression":
 		// unlike other templates, operands for expression rulesets need to be wrapped in such a way that if
 		// they error, they evaluate to the original expression
@@ -746,7 +747,7 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 			actions.NewTransferAirtime(flows.ActionUUID(uuids.New()), currencyAmounts, resultName),
 		}
 
-		operand := fmt.Sprintf("@results.%s.category", utils.Snakify(resultName))
+		operand := fmt.Sprintf("@results.%s", utils.Snakify(resultName))
 		router = routers.NewSwitch(nil, "", categories, operand, cases, defaultCategory)
 		uiType = UINodeTypeSplitByAirtime
 
@@ -757,24 +758,24 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[flows.NodeUUID
 	return definition.NewNode(r.UUID, newActions, router, exits), uiType, uiConfig, nil
 }
 
-func migrateRuleSetToHint(r RuleSet) flows.Hint {
+func migrateWaitingRuleset(r RuleSet) (flows.Hint, string) {
 	switch r.Type {
 	case "wait_audio":
-		return hints.NewAudioHint()
+		return hints.NewAudioHint(), "@input"
 	case "wait_video":
-		return hints.NewVideoHint()
+		return hints.NewVideoHint(), "@input"
 	case "wait_photo":
-		return hints.NewImageHint()
+		return hints.NewImageHint(), "@input"
 	case "wait_gps":
-		return hints.NewLocationHint()
+		return hints.NewLocationHint(), "@input"
 	case "wait_recording":
-		return hints.NewAudioHint()
+		return hints.NewAudioHint(), "@input"
 	case "wait_digit":
-		return hints.NewFixedDigitsHint(1)
+		return hints.NewFixedDigitsHint(1), "@input.text"
 	case "wait_digits":
-		return hints.NewTerminatedDigitsHint(r.FinishedKey)
+		return hints.NewTerminatedDigitsHint(r.FinishedKey), "@input.text"
 	}
-	return nil
+	return nil, "@input"
 }
 
 type categoryAndExit struct {
@@ -839,8 +840,8 @@ func migrateRules(baseLanguage envs.Language, r RuleSet, validDests map[flows.No
 			timeoutCategoryUUID = converted.category.UUID()
 			continue
 
-		} else if rule.Test.Type == "webhook_status" {
-			// default case for a webhook ruleset is the last migrated rule (failure)
+		} else if rule.Test.Type == "webhook_status" || rule.Test.Type == "airtime_status" {
+			// default case for airtime or webhook rulesetss is the last migrated rule (failure)
 			defaultCategoryUUID = converted.category.UUID()
 		}
 
@@ -849,11 +850,13 @@ func migrateRules(baseLanguage envs.Language, r RuleSet, validDests map[flows.No
 			return nil, nil, "", "", nil, err
 		}
 
-		if caseUI != nil {
-			uiConfig.AddCaseConfig(kase.UUID, caseUI)
-		}
+		if kase != nil {
+			cases = append(cases, kase)
 
-		cases = append(cases, kase)
+			if caseUI != nil {
+				uiConfig.AddCaseConfig(kase.UUID, caseUI)
+			}
+		}
 	}
 
 	return cases, categories, defaultCategoryUUID, timeoutCategoryUUID, exits, nil
@@ -956,19 +959,19 @@ func migrateRule(baseLanguage envs.Language, r Rule, category *routers.Category,
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
-			arguments = []string{"Success"}
+			arguments = []string{actions.CategorySuccess}
 		} else {
-			arguments = []string{"Failure"}
+			arguments = []string{actions.CategoryFailure}
 		}
 
 	case "airtime_status":
-		newType = "has_only_text"
+		newType = "has_category"
 		test := airtimeTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.ExitStatus == "success" {
-			arguments = []string{"Success"}
+			arguments = []string{actions.CategorySuccess}
 		} else {
-			arguments = []string{"Failure"}
+			return nil, nil, nil // failure just becomes default category
 		}
 
 	case "district":

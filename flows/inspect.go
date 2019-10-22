@@ -15,21 +15,25 @@ type FlowInfo struct {
 }
 
 type Dependencies struct {
-	Channels  []*assets.ChannelReference  `json:"channels,omitempty"`
-	Contacts  []*ContactReference         `json:"contacts,omitempty"`
-	Fields    []*assets.FieldReference    `json:"fields,omitempty"`
-	Flows     []*assets.FlowReference     `json:"flows,omitempty"`
-	Groups    []*assets.GroupReference    `json:"groups,omitempty"`
-	Labels    []*assets.LabelReference    `json:"labels,omitempty"`
-	Templates []*assets.TemplateReference `json:"templates,omitempty"`
+	Classifiers []*assets.ClassifierReference `json:"classifiers,omitempty"`
+	Channels    []*assets.ChannelReference    `json:"channels,omitempty"`
+	Contacts    []*ContactReference           `json:"contacts,omitempty"`
+	Fields      []*assets.FieldReference      `json:"fields,omitempty"`
+	Flows       []*assets.FlowReference       `json:"flows,omitempty"`
+	Groups      []*assets.GroupReference      `json:"groups,omitempty"`
+	Labels      []*assets.LabelReference      `json:"labels,omitempty"`
+	Templates   []*assets.TemplateReference   `json:"templates,omitempty"`
 }
 
+// NewDependencies creates a new dependency listing from the slice of references
 func NewDependencies(refs []assets.Reference) *Dependencies {
 	d := &Dependencies{}
 	for _, r := range refs {
 		switch typed := r.(type) {
 		case *assets.ChannelReference:
 			d.Channels = append(d.Channels, typed)
+		case *assets.ClassifierReference:
+			d.Classifiers = append(d.Classifiers, typed)
 		case *ContactReference:
 			d.Contacts = append(d.Contacts, typed)
 		case *assets.FieldReference:
@@ -42,6 +46,8 @@ func NewDependencies(refs []assets.Reference) *Dependencies {
 			d.Labels = append(d.Labels, typed)
 		case *assets.TemplateReference:
 			d.Templates = append(d.Templates, typed)
+		default:
+			panic(fmt.Sprintf("unknown dependency type reference: %v", r))
 		}
 	}
 	return d
@@ -51,6 +57,11 @@ func NewDependencies(refs []assets.Reference) *Dependencies {
 func (d *Dependencies) Check(sa SessionAssets, missing assets.MissingCallback) error {
 	for _, ref := range d.Channels {
 		if sa.Channels().Get(ref.UUID) == nil {
+			missing(ref, nil)
+		}
+	}
+	for _, ref := range d.Classifiers {
+		if sa.Classifiers().Get(ref.UUID) == nil {
 			missing(ref, nil)
 		}
 	}

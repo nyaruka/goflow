@@ -1,0 +1,305 @@
+[
+    {
+        "description": "Validation fails for invalid classifier reference",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "classifier": {
+                "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                "name": "Deleted"
+            },
+            "input": "@input.text",
+            "result_name": "Intent"
+        },
+        "validation_error": "missing dependencies: classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
+    },
+    {
+        "description": "Error event created and result with category skipped created if input evaluates to empty",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "classifier": {
+                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                "name": "Booking"
+            },
+            "input": "@(\"\")",
+            "result_name": "_Intent Classification"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't classify empty input, skipping classification",
+                "type": "error"
+            },
+            {
+                "category": "Skipped",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "_Intent Classification",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "@(\"\")"
+            ],
+            "dependencies": [
+                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "_intent_classification",
+                    "name": "_Intent Classification",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "Result with category success created if classification happens",
+        "http_mocks": {
+            "https://api.wit.ai/message?v=20170307&q=Hi+everybody": [
+                {
+                    "status": 200,
+                    "body": "{\"_text\":\"Hi everyone\",\"entities\":{\"intent\":[{\"confidence\":0.84709152161066,\"value\":\"greeting\"}]},\"msg_id\":\"1M7fAcDWag76OmgDI\"}"
+                }
+            ]
+        },
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "classifier": {
+                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                "name": "Booking"
+            },
+            "input": "@input.text",
+            "result_name": "Intent"
+        },
+        "events": [
+            {
+                "classifier": {
+                    "name": "Booking",
+                    "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
+                },
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "http_logs": [
+                    {
+                        "created_on": "2018-10-18T14:20:30.000123456Z",
+                        "elapsed_ms": 0,
+                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer 123456789\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 127\r\n\r\n{\"_text\":\"Hi everyone\",\"entities\":{\"intent\":[{\"confidence\":0.84709152161066,\"value\":\"greeting\"}]},\"msg_id\":\"1M7fAcDWag76OmgDI\"}",
+                        "status": "success",
+                        "url": "https://api.wit.ai/message?v=20170307&q=Hi+everybody"
+                    }
+                ],
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "classifier_called"
+            },
+            {
+                "category": "Success",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "extra": {
+                    "intents": [
+                        {
+                            "confidence": 0.84709152161066,
+                            "name": "greeting"
+                        }
+                    ]
+                },
+                "input": "Hi everybody",
+                "name": "Intent",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "greeting"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "@input.text"
+            ],
+            "dependencies": [
+                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "intent",
+                    "name": "Intent",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "Result with category failure created if classifier request fails",
+        "http_mocks": {
+            "https://api.wit.ai/message?v=20170307&q=Hi+everybody": [
+                {
+                    "status": 400,
+                    "body": "not working"
+                }
+            ]
+        },
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "classifier": {
+                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                "name": "Booking"
+            },
+            "input": "@input.text",
+            "result_name": "Intent"
+        },
+        "events": [
+            {
+                "classifier": {
+                    "name": "Booking",
+                    "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
+                },
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "http_logs": [
+                    {
+                        "created_on": "2018-10-18T14:20:30.000123456Z",
+                        "elapsed_ms": 0,
+                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer 123456789\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "response": "HTTP/1.0 400 Bad Request\r\nContent-Length: 11\r\n\r\nnot working",
+                        "status": "response_error",
+                        "url": "https://api.wit.ai/message?v=20170307&q=Hi+everybody"
+                    }
+                ],
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "classifier_called"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "Wit API request failed",
+                "type": "error"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "Hi everybody",
+                "name": "Intent",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "@input.text"
+            ],
+            "dependencies": [
+                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "intent",
+                    "name": "Intent",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "Result with category failure created if classifier request fails with connection error",
+        "http_mocks": {
+            "https://api.wit.ai/message?v=20170307&q=Hi+everybody": [
+                {
+                    "status": 0,
+                    "body": ""
+                }
+            ]
+        },
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "classifier": {
+                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                "name": "Booking"
+            },
+            "input": "@input.text",
+            "result_name": "Intent"
+        },
+        "events": [
+            {
+                "classifier": {
+                    "name": "Booking",
+                    "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
+                },
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "http_logs": [
+                    {
+                        "created_on": "2018-10-18T14:20:30.000123456Z",
+                        "elapsed_ms": 0,
+                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer 123456789\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "status": "connection_error",
+                        "url": "https://api.wit.ai/message?v=20170307&q=Hi+everybody"
+                    }
+                ],
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "classifier_called"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "unable to connect to server",
+                "type": "error"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "Hi everybody",
+                "name": "Intent",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "@input.text"
+            ],
+            "dependencies": [
+                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "intent",
+                    "name": "Intent",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    }
+]

@@ -69,15 +69,21 @@ func (b *Builder) WithHTTPClient(client *http.Client) *Builder {
 	return b
 }
 
-// WithWebhookService sets the webhook service
-func (b *Builder) WithWebhookService(svc WebhookService) *Builder {
-	b.eng.services.webhook = svc
+// WithWebhookServiceFactory sets the webhook service factory
+func (b *Builder) WithWebhookServiceFactory(f WebhookServiceFactory) *Builder {
+	b.eng.services.webhook = f
 	return b
 }
 
-// WithAirtimeService sets the airtime transfer service
-func (b *Builder) WithAirtimeService(svc AirtimeService) *Builder {
-	b.eng.services.airtime = svc
+// WithClassificationServiceFactory sets the NLU service factory
+func (b *Builder) WithClassificationServiceFactory(f ClassificationServiceFactory) *Builder {
+	b.eng.services.classification = f
+	return b
+}
+
+// WithAirtimeServiceFactory sets the airtime service factory
+func (b *Builder) WithAirtimeServiceFactory(f AirtimeServiceFactory) *Builder {
+	b.eng.services.airtime = f
 	return b
 }
 

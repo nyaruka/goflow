@@ -13,10 +13,15 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/services/airtime/dtone"
+	"github.com/nyaruka/goflow/services/classification/wit"
+	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -46,8 +51,6 @@ func TestActionTypes(t *testing.T) {
 	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
-	server := test.NewTestHTTPServer(49996)
-
 	typeNames := make([]string, 0)
 	for typeName := range actions.RegisteredTypes() {
 		typeNames = append(typeNames, typeName)
@@ -56,7 +59,7 @@ func TestActionTypes(t *testing.T) {
 	sort.Strings(typeNames)
 
 	for _, typeName := range typeNames {
-		testActionType(t, assetsJSON, typeName, server.URL)
+		testActionType(t, assetsJSON, typeName)
 	}
 }
 
@@ -66,25 +69,26 @@ type inspectionResults struct {
 	Results      []*flows.ResultInfo `json:"results"`
 }
 
-func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
+func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description     string            `json:"description"`
-		NoContact       bool              `json:"no_contact"`
-		NoURNs          bool              `json:"no_urns"`
-		NoInput         bool              `json:"no_input"`
-		RedactURNs      bool              `json:"redact_urns"`
-		Action          json.RawMessage   `json:"action"`
-		Localization    json.RawMessage   `json:"localization"`
-		InFlowType      flows.FlowType    `json:"in_flow_type"`
-		ReadError       string            `json:"read_error"`
-		ValidationError string            `json:"validation_error"`
-		SkipValidation  bool              `json:"skip_validation"`
-		Events          []json.RawMessage `json:"events"`
-		ContactAfter    json.RawMessage   `json:"contact_after"`
-		Inspection      json.RawMessage   `json:"inspection"`
+		Description     string               `json:"description"`
+		HTTPMocks       *httpx.MockRequestor `json:"http_mocks"`
+		NoContact       bool                 `json:"no_contact"`
+		NoURNs          bool                 `json:"no_urns"`
+		NoInput         bool                 `json:"no_input"`
+		RedactURNs      bool                 `json:"redact_urns"`
+		Action          json.RawMessage      `json:"action"`
+		Localization    json.RawMessage      `json:"localization"`
+		InFlowType      flows.FlowType       `json:"in_flow_type"`
+		ReadError       string               `json:"read_error"`
+		ValidationError string               `json:"validation_error"`
+		SkipValidation  bool                 `json:"skip_validation"`
+		Events          []json.RawMessage    `json:"events"`
+		ContactAfter    json.RawMessage      `json:"contact_after"`
+		Inspection      json.RawMessage      `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -92,10 +96,16 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	for _, tc := range tests {
 		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+		if tc.HTTPMocks != nil {
+			httpx.SetRequestor(tc.HTTPMocks)
+		} else {
+			httpx.SetRequestor(httpx.DefaultRequestor)
+		}
 
 		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
 
@@ -161,7 +171,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			}
 		}
 
-		envBuilder := envs.NewEnvironmentBuilder().
+		envBuilder := envs.NewBuilder().
 			WithDefaultLanguage("eng").
 			WithAllowedLanguages([]envs.Language{"eng", "spa"}).
 			WithDefaultCountry("RW")
@@ -198,8 +208,21 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
+		// create an engine instance
+		eng := engine.NewBuilder().
+			WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
+			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
+				if c.Type() == "wit" {
+					return wit.NewService(c, "123456789"), nil
+				}
+				return nil, errors.Errorf("no classification service available for %s", c.Reference())
+			}).
+			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
+				return dtone.NewService("nyaruka", "123456789", "RWF"), nil
+			}).
+			Build()
+
 		// create session
-		eng := test.NewEngine()
 		session, _, err := eng.NewSession(sa, trigger)
 		require.NoError(t, err)
 
@@ -303,6 +326,24 @@ func TestConstructors(t *testing.T) {
 					"name_match": "@(format_location(contact.fields.state)) Messages"
 				}
 			]
+		}`,
+		},
+		{
+			actions.NewCallClassifier(
+				actionUUID,
+				assets.NewClassifierReference(assets.ClassifierUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Booking"),
+				"@input.text",
+				"Intent",
+			),
+			`{
+			"type": "call_classifier",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"classifier": {
+				"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
+				"name": "Booking"
+			},
+			"input": "@input.text",
+			"result_name": "Intent"
 		}`,
 		},
 		{
@@ -617,7 +658,7 @@ func TestLegacyWebhookPayload(t *testing.T) {
 	server := test.NewTestHTTPServer(49999)
 	defer server.Close()
 
-	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	run := session.Runs()[0]
 
 	payload, err := run.EvaluateTemplate(actions.LegacyWebhookPayload)
@@ -685,7 +726,7 @@ func TestLegacyWebhookPayload(t *testing.T) {
 				"uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
 			},
 			{
-				"arrived_on": "2018-07-06T12:30:49.123456Z",
+				"arrived_on": "2018-07-06T12:30:55.123456Z",
 				"exit_uuid": "9fc5f8b4-2247-43db-b899-ab1ac50ba06c",
 				"node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
 				"uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -709,6 +750,15 @@ func TestLegacyWebhookPayload(t *testing.T) {
 				"name": "Favorite Color",
 				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
 				"value": "red"
+			},
+			"intent": {
+				"category": "Success",
+				"category_localized": "Success",
+				"created_on": "2018-07-06T12:30:51.123456Z",
+				"input": "Hi there",
+				"name": "intent",
+				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+				"value": "book_flight"
 			},
 			"phone_number": {
 				"category": "",

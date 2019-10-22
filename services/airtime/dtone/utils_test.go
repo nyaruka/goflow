@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/nyaruka/goflow/providers/airtime/dtone"
+	"github.com/nyaruka/goflow/services/airtime/dtone"
 
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"

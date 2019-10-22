@@ -55,11 +55,11 @@ func TestContactURN(t *testing.T) {
 	assert.False(t, urn.Equal(urn3))
 
 	// check using URN in expressions
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	assert.Equal(t, types.NewXText("tel:+250781234567"), urn.ToXValue(env))
 
 	// check when URNs have to be redacted
-	env = envs.NewEnvironmentBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
+	env = envs.NewBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
 	assert.Equal(t, types.NewXText("tel:********"), urn.ToXValue(env))
 
 	// we can clear the channel affinity
@@ -79,7 +79,7 @@ func TestURNList(t *testing.T) {
 	urn3 := flows.NewContactURN("tel:+250781111222", nil)
 	urnList := flows.URNList{urn1, urn2, urn3}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	// check equality
 	assert.True(t, urnList.Equal(flows.URNList{urn1, urn2, urn3}))

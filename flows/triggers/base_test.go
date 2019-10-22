@@ -26,8 +26,11 @@ var assetsJSON = `{
 		{
 			"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
 			"name": "Registration",
-			"nodes": []
-		}
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": []
+        }
 	],
 	"channels": [
 		{
@@ -60,7 +63,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	sa, err := engine.NewSessionAssets(source)
 	require.NoError(t, err)
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 
@@ -400,4 +403,64 @@ func TestReadTrigger(t *testing.T) {
 	// error if we don't recognize action type
 	_, err = triggers.ReadTrigger(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+}
+
+func TestTriggerSessionInitialization(t *testing.T) {
+	source, err := static.NewSource([]byte(assetsJSON))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(source)
+	require.NoError(t, err)
+
+	defaultEnv := envs.NewBuilder().Build()
+	env := envs.NewBuilder().WithDateFormat(envs.DateFormatMonthDayYear).Build()
+
+	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
+
+	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil))
+
+	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
+
+	trigger := triggers.NewManual(
+		env,
+		flow,
+		contact,
+		params,
+	)
+
+	assert.Equal(t, triggers.TypeManual, trigger.Type())
+	assert.Equal(t, env, trigger.Environment())
+	assert.Equal(t, contact, trigger.Contact())
+	assert.Nil(t, trigger.Connection())
+	assert.Equal(t, params, trigger.Params())
+
+	eng := engine.NewBuilder().Build()
+	session, _, err := eng.NewSession(sa, trigger)
+	require.NoError(t, err)
+
+	assert.Equal(t, flows.FlowTypeMessaging, session.Type())
+	assert.Equal(t, contact, session.Contact())
+	assert.Equal(t, env, session.Environment())
+	assert.Equal(t, flow, session.Runs()[0].FlowReference())
+
+	// contact, environment and params are optional
+	trigger = triggers.NewManual(
+		nil,
+		flow,
+		nil,
+		nil,
+	)
+
+	assert.Equal(t, triggers.TypeManual, trigger.Type())
+	assert.Nil(t, trigger.Environment())
+	assert.Nil(t, trigger.Contact())
+	assert.Equal(t, types.XObjectEmpty, trigger.Params())
+
+	session, _, err = eng.NewSession(sa, trigger)
+	require.NoError(t, err)
+
+	assert.Equal(t, flows.FlowTypeMessaging, session.Type())
+	assert.Nil(t, session.Contact())
+	assert.Equal(t, defaultEnv, session.Environment()) // uses defaults
 }

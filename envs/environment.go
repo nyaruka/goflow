@@ -93,7 +93,7 @@ type envEnvelope struct {
 // ReadEnvironment reads an environment from the given JSON
 func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	// create new env with defaults
-	env := NewEnvironmentBuilder().Build().(*environment)
+	env := NewBuilder().Build().(*environment)
 	envelope := env.toEnvelope()
 
 	if err := utils.UnmarshalAndValidate(data, envelope); err != nil {
@@ -147,7 +147,7 @@ type EnvironmentBuilder struct {
 }
 
 // NewEnvironmentBuilder creates a new environment builder
-func NewEnvironmentBuilder() *EnvironmentBuilder {
+func NewBuilder() *EnvironmentBuilder {
 	return &EnvironmentBuilder{
 		env: &environment{
 			dateFormat:       DateFormatYearMonthDay,

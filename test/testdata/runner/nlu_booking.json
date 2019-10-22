@@ -1,0 +1,201 @@
+{
+    "flows": [
+        {
+            "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
+            "name": "NLU Test",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "type": "send_msg",
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "text": "Hi! What can I help you with?"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                            "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "name": "All Responses",
+                                "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                            }
+                        ],
+                        "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                        "result_name": "Response 1",
+                        "operand": "@input.text",
+                        "cases": []
+                    },
+                    "exits": [
+                        {
+                            "uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
+                            "destination_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                    "actions": [
+                        {
+                            "type": "call_classifier",
+                            "uuid": "3cd8f2db-8429-462e-ab93-8041dd23abf1",
+                            "classifier": {
+                                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                                "name": "Booking"
+                            },
+                            "input": "@results.response_1",
+                            "result_name": "_Intent Classification"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                                "name": "Book Flight",
+                                "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                            },
+                            {
+                                "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                                "name": "Book Hotel",
+                                "exit_uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                            },
+                            {
+                                "uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
+                                "name": "Other",
+                                "exit_uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876"
+                            },
+                            {
+                                "uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9",
+                                "name": "Failure",
+                                "exit_uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                            }
+                        ],
+                        "default_category_uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9",
+                        "operand": "@results._intent_classification",
+                        "result_name": "Intent",
+                        "cases": [
+                            {
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_top_intent",
+                                "arguments": [
+                                    "book_flight",
+                                    "0.5"
+                                ],
+                                "category_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                            },
+                            {
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "has_top_intent",
+                                "arguments": [
+                                    "book_hotel",
+                                    "0.5"
+                                ],
+                                "category_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
+                            },
+                            {
+                                "uuid": "73bfb9dc-9bbb-4928-92fd-d8957edf4a92",
+                                "type": "has_category",
+                                "arguments": [
+                                    "Success",
+                                    "Skipped"
+                                ],
+                                "category_uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
+                            "destination_uuid": "8f4aba68-3250-43b6-8409-93ba44092962"
+                        },
+                        {
+                            "uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e",
+                            "destination_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b"
+                        },
+                        {
+                            "uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876",
+                            "destination_uuid": "72b177c0-f66f-48fe-bdb5-f5c4383502c0"
+                        },
+                        {
+                            "uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "8f4aba68-3250-43b6-8409-93ba44092962",
+                    "actions": [
+                        {
+                            "type": "send_msg",
+                            "uuid": "d543b659-8c68-421e-bf0e-3e364ec5754b",
+                            "text": "So you'd like to book a flight in @results.intent.extra.location?"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
+                    "actions": [
+                        {
+                            "type": "send_msg",
+                            "uuid": "9ad9e051-9064-45fe-a08f-5a4c8a69e404",
+                            "text": "So you'd like to book a hotel in @results.intent.extra.location?"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "9b907a0d-8aee-4ade-a9a8-fd5df3aaf386"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "72b177c0-f66f-48fe-bdb5-f5c4383502c0",
+                    "actions": [
+                        {
+                            "type": "send_msg",
+                            "uuid": "94201cf6-2892-4d33-8d34-fc1a272f845b",
+                            "text": "Hmm I didn't understand that"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "18ed25db-d103-4349-9fbd-c58597eb4b10"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "classifiers": [
+        {
+            "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+            "name": "Booking",
+            "type": "wit",
+            "intents": [
+                "book_flight",
+                "book_hotel"
+            ]
+        }
+    ]
+}

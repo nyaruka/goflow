@@ -230,7 +230,7 @@ func TestMigrateTemplate(t *testing.T) {
 	server := test.NewTestHTTPServer(49997)
 	defer server.Close()
 
-	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	for _, tc := range tests {
@@ -371,7 +371,7 @@ func TestLegacyTests(t *testing.T) {
 			tz, err := time.LoadLocation(tc.Context.Timezone)
 			require.NoError(t, err)
 
-			env := envs.NewEnvironmentBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithTimezone(tz).Build()
+			env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithTimezone(tz).Build()
 			if tc.Context.Now != nil {
 				dates.SetNowSource(dates.NewFixedNowSource(*tc.Context.Now))
 				defer dates.SetNowSource(dates.DefaultNowSource)

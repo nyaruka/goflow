@@ -108,7 +108,7 @@ func TestRun(t *testing.T) {
 	server := test.NewTestHTTPServer(49999)
 	defer server.Close()
 
-	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	flow, err := session.Assets().Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
@@ -121,7 +121,7 @@ func TestRun(t *testing.T) {
 		assert.Equal(t, string(flows.RunStatusCompleted), string(r.Status()))
 		assert.Equal(t, flow, r.Flow())
 		assert.Equal(t, flow.Reference(), r.FlowReference())
-		assert.Equal(t, 8, len(r.Events()))
+		assert.Equal(t, 10, len(r.Events()))
 		assert.Equal(t, "Parent", r.Parent().Flow().Name())
 		assert.Equal(t, 0, len(r.Ancestors())) // no parent runs within this session
 	}
@@ -146,7 +146,7 @@ func TestRunContext(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	// create a run with no parent or child
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

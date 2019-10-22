@@ -15,14 +15,14 @@ import (
 // Result describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly
 // created by a [set_run_result](#action:set_run_result) action.
 type Result struct {
-	Name              string          `json:"name"`
+	Name              string          `json:"name" validate:"required"`
 	Value             string          `json:"value"`
 	Category          string          `json:"category,omitempty"`
 	CategoryLocalized string          `json:"category_localized,omitempty"`
 	NodeUUID          NodeUUID        `json:"node_uuid"`
 	Input             string          `json:"input,omitempty"`
 	Extra             json.RawMessage `json:"extra,omitempty"`
-	CreatedOn         time.Time       `json:"created_on"`
+	CreatedOn         time.Time       `json:"created_on" validate:"required"`
 }
 
 // NewResult creates a new result

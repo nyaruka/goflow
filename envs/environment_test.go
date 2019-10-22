@@ -85,7 +85,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 	kgl, err := time.LoadLocation("Africa/Kigali")
 	require.NoError(t, err)
 
-	env := envs.NewEnvironmentBuilder().
+	env := envs.NewBuilder().
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithTimeFormat(envs.TimeFormatHourMinuteSecond).
 		WithTimezone(kgl).

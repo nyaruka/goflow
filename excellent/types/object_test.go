@@ -11,7 +11,7 @@ import (
 )
 
 func TestXObject(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	object := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("abc"),
@@ -68,7 +68,7 @@ func TestReadXObject(t *testing.T) {
 }
 
 func TestXObjectWithDefault(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	object := types.NewXObject(map[string]types.XValue{
 		"__default__": types.NewXText("abc-123"),
@@ -105,7 +105,7 @@ func TestXObjectWithDefault(t *testing.T) {
 }
 
 func TestXLazyObject(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	initialized := false
 
 	object := types.NewXLazyObject(func() map[string]types.XValue {
@@ -145,7 +145,7 @@ func TestToXObject(t *testing.T) {
 		{types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")}), types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")}), false},
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	for _, tc := range tests {
 		object, err := types.ToXObject(env, tc.value)

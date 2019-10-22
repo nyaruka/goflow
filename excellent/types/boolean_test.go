@@ -11,7 +11,7 @@ import (
 )
 
 func TestXBoolean(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	// test equality
 	assert.True(t, types.XBooleanFalse.Equals(types.XBooleanFalse))

@@ -1,3 +1,39 @@
+v0.54.0
+----------
+ * NewEnvironmentBuilder() -> envs.NewBuilder() to match engine.NewBuilder()
+ * Include classifiers in flow dependency inspection
+
+v0.53.1
+----------
+ * Add classification service for Bothub
+
+v0.53.0
+----------
+ * Record arrays of http logs on classifier_called and airtime_transferred events
+
+v0.52.1
+----------
+ * Modify grammar to allow result names that start with underscores
+
+v0.52.0
+----------
+ * All service factory methods should return an error if service can't be returned
+ * Rework airtime transfer nodes to function more like NLU nodes
+ * Add classification service implementation for LUIS
+
+v0.51.0
+----------
+ * Add NLU support: a classify action, a classification service and various router tests
+
+v0.50.4
+----------
+ * Revert change to operands for media waits
+
+v0.50.3
+----------
+ * Fix migrating operands on rulesets waiting for media
+ * Change autocompletion type of related_run.results to any since we can't autocomplete it
+
 v0.50.2
 ----------
  * Fix migration of localization when flow has unused base translations

@@ -81,7 +81,7 @@
                     "response_type": "",
                     "operand": "@step.value",
                     "config": {
-                        "webhook": "http://localhost/?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D",
+                        "webhook": "http://localhost/?cmd=foo",
                         "webhook_action": "POST",
                         "webhook_headers": []
                     }

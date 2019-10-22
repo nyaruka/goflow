@@ -8,22 +8,22 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-type mockProvider struct {
+type mockService struct {
 	statusCode  int
 	contentType string
 	body        string
 }
 
-// NewMockProvider creates a new mock webhook provider for testing
-func NewMockProvider(statusCode int, contentType, body string) flows.WebhookProvider {
-	return &mockProvider{
+// NewMockService creates a new mock webhook service for testing
+func NewMockService(statusCode int, contentType, body string) flows.WebhookService {
+	return &mockService{
 		statusCode:  statusCode,
 		contentType: contentType,
 		body:        body,
 	}
 }
 
-func (s *mockProvider) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
+func (s *mockService) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
 	dump, err := httputil.DumpRequestOut(request, true)
 	if err != nil {
 		return nil, err
@@ -54,4 +54,4 @@ func (s *mockProvider) Call(session flows.Session, request *http.Request, restho
 	}, nil
 }
 
-var _ flows.WebhookProvider = (*mockProvider)(nil)
+var _ flows.WebhookService = (*mockService)(nil)

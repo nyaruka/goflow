@@ -113,7 +113,7 @@ var templateTests = []struct {
 	{"@results.favorite_color.category_localized", "Red", "", false},
 	{"@(is_error(results.favorite_icecream))", "true", "", false},
 	{"@(has_error(results.favorite_icecream).match)", "object has no property 'favorite_icecream'", "", false},
-	{"@(count(results))", "4", "", false},
+	{"@(count(results))", "5", "", false},
 
 	{"@run.results.favorite_color", `red`, "", false},
 	{"@run.results.favorite_color.value", "red", "", false},
@@ -127,7 +127,7 @@ var templateTests = []struct {
 	{"@run.results.favorite_icecream", "", "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'", false},
 	{"@(is_error(run.results.favorite_icecream))", "true", "", false},
 	{"@(has_error(run.results.favorite_icecream).match)", "object has no property 'favorite_icecream'", "", false},
-	{"@(count(run.results))", "4", "", false},
+	{"@(count(run.results))", "5", "", false},
 
 	{"@run.status", "completed", "", false},
 
@@ -156,9 +156,9 @@ func TestEvaluateTemplate(t *testing.T) {
 	server := test.NewTestHTTPServer(0)
 	defer server.Close()
 
-	sessionWithURNs, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	sessionWithURNs, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
-	sessionWithoutURNs, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyURNs)
+	sessionWithoutURNs, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyURNs)
 	require.NoError(t, err)
 
 	for _, tc := range templateTests {
@@ -182,7 +182,7 @@ func TestEvaluateTemplate(t *testing.T) {
 }
 
 func BenchmarkEvaluateTemplate(b *testing.B) {
-	session, _, err := test.CreateTestSession("http://localhost", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyNone)
 	require.NoError(b, err)
 
 	run := session.Runs()[0]
@@ -287,6 +287,44 @@ func TestContextToJSON(t *testing.T) {
 						"node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
 						"value":"red",
 						"values":["red"]
+					},
+					"intent": {
+						"categories": [
+							"Success"
+						],
+						"categories_localized": [
+							"Success"
+						],
+						"category": "Success",
+						"category_localized": "Success",
+						"created_on": "2018-04-11T13:24:30.123456Z",
+						"extra": {
+							"entities": {
+								"location": [
+									{
+										"confidence": 1,
+										"value": "Quito"
+									}
+								]
+							},
+							"intents": [
+								{
+									"confidence": 0.5,
+									"name": "book_flight"
+								},
+								{
+									"confidence": 0.25,
+									"name": "book_hotel"
+								}
+							]
+						},
+						"input": "Hi there",
+						"name": "intent",
+						"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+						"value": "book_flight",
+						"values": [
+							"book_flight"
+						]
 					},
 					"phone_number":{
 						"category":"",
@@ -604,7 +642,7 @@ func TestContextToJSON(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
-	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -621,7 +659,7 @@ func TestContextToJSON(t *testing.T) {
 
 func TestReadWithMissingAssets(t *testing.T) {
 	// create standard test session and marshal to JSON
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	sessionJSON, err := json.Marshal(session)
@@ -651,7 +689,7 @@ func TestResumeWithMissingFlowAssets(t *testing.T) {
 	sa, err := test.CreateSessionAssets(assetsJSON, "")
 	require.NoError(t, err)
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
 	trigger := triggers.NewManual(env, assets.NewFlowReference(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"), "Parent Flow"), contact, nil)
 

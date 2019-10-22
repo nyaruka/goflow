@@ -19,7 +19,7 @@ import (
 )
 
 func TestMsgInput(t *testing.T) {
-	session, _, err := test.CreateTestSession("", nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	env := session.Environment()

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/providers/webhooks"
+	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -33,7 +33,7 @@ func TestWebhookParsing(t *testing.T) {
 	server := test.NewTestHTTPServer(49994)
 	defer server.Close()
 
-	session, _, err := test.CreateTestSession(server.URL, nil, envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	testCases := []struct {
@@ -124,7 +124,7 @@ func TestWebhookParsing(t *testing.T) {
 			call: call{"POST", "http://127.0.0.1:55555/", ""},
 			webhook: webhook{
 				request:  "POST / HTTP/1.1\r\nHost: 127.0.0.1:55555\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "Post http://127.0.0.1:55555/: dial tcp 127.0.0.1:55555: connect: connection refused",
+				response: "",
 				json:     nil,
 			},
 		},
@@ -134,7 +134,8 @@ func TestWebhookParsing(t *testing.T) {
 		request, err := http.NewRequest(tc.call.method, tc.call.url, strings.NewReader(tc.call.body))
 		require.NoError(t, err)
 
-		c, err := session.Engine().Services().Webhook(session).Call(session, request, "")
+		svc, _ := session.Engine().Services().Webhook(session)
+		c, err := svc.Call(session, request, "")
 
 		if tc.isError {
 			assert.Error(t, err)
@@ -153,13 +154,13 @@ func TestWebhookParsing(t *testing.T) {
 	}
 }
 
-func TestMockProvider(t *testing.T) {
-	provider := webhooks.NewMockProvider(201, `application/json`, `{"result":"disabled"}`)
+func TestMockService(t *testing.T) {
+	svc := webhooks.NewMockService(201, `application/json`, `{"result":"disabled"}`)
 
 	request, err := http.NewRequest("GET", "http://example.com", strings.NewReader("{}"))
 	require.NoError(t, err)
 
-	c, err := provider.Call(nil, request, "myresthook")
+	c, err := svc.Call(nil, request, "myresthook")
 
 	assert.Equal(t, "GET", c.Method)
 	assert.Equal(t, 201, c.StatusCode)

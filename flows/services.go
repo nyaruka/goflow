@@ -5,31 +5,33 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/shopspring/decimal"
 )
 
 // Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
-	Webhook(Session) WebhookProvider
-	Airtime(Session) AirtimeProvider
+	Webhook(Session) (WebhookService, error)
+	Classification(Session, *Classifier) (ClassificationService, error)
+	Airtime(Session) (AirtimeService, error)
 }
 
-// WebhookStatus represents the status of a webhook call
-type WebhookStatus string
+// CallStatus represents the status of a call to an external service
+type CallStatus string
 
 const (
-	// WebhookStatusSuccess represents that the webhook was successful
-	WebhookStatusSuccess WebhookStatus = "success"
+	// CallStatusSuccess represents that the webhook was successful
+	CallStatusSuccess CallStatus = "success"
 
-	// WebhookStatusConnectionError represents that the webhook had a connection error
-	WebhookStatusConnectionError WebhookStatus = "connection_error"
+	// CallStatusConnectionError represents that the webhook had a connection error
+	CallStatusConnectionError CallStatus = "connection_error"
 
-	// WebhookStatusResponseError represents that the webhook response had a non 2xx status code
-	WebhookStatusResponseError WebhookStatus = "response_error"
+	// CallStatusResponseError represents that the webhook response had a non 2xx status code
+	CallStatusResponseError CallStatus = "response_error"
 
-	// WebhookStatusSubscriberGone represents a special state of resthook responses which indicate the caller must remove that subscriber
-	WebhookStatusSubscriberGone WebhookStatus = "subscriber_gone"
+	// CallStatusSubscriberGone represents a special state of resthook responses which indicate the caller must remove that subscriber
+	CallStatusSubscriberGone CallStatus = "subscriber_gone"
 )
 
 // WebhookCall is the result of a webhook call
@@ -37,7 +39,7 @@ type WebhookCall struct {
 	URL         string
 	Method      string
 	StatusCode  int
-	Status      WebhookStatus
+	Status      CallStatus
 	TimeTaken   time.Duration
 	Request     []byte
 	Response    []byte
@@ -45,9 +47,32 @@ type WebhookCall struct {
 	Resthook    string
 }
 
-// WebhookProvider provides webhook calling functionality to the engine
-type WebhookProvider interface {
+// WebhookService provides webhook functionality to the engine
+type WebhookService interface {
 	Call(session Session, request *http.Request, resthook string) (*WebhookCall, error)
+}
+
+// ExtractedIntent models an intent match
+type ExtractedIntent struct {
+	Name       string          `json:"name"`
+	Confidence decimal.Decimal `json:"confidence"`
+}
+
+// ExtractedEntity models an entity match
+type ExtractedEntity struct {
+	Value      string          `json:"value"`
+	Confidence decimal.Decimal `json:"confidence"`
+}
+
+// Classification is the result of an NLU classification
+type Classification struct {
+	Intents  []ExtractedIntent            `json:"intents,omitempty"`
+	Entities map[string][]ExtractedEntity `json:"entities,omitempty"`
+}
+
+// ClassificationService provides NLU functionality to the engine
+type ClassificationService interface {
+	Classify(session Session, input string, logHTTP HTTPLogCallback) (*Classification, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer
@@ -66,11 +91,60 @@ type AirtimeTransfer struct {
 	Currency      string
 	DesiredAmount decimal.Decimal
 	ActualAmount  decimal.Decimal
-	Status        AirtimeTransferStatus
 }
 
-// AirtimeProvider is the interface for an airtime transfer provider
-type AirtimeProvider interface {
+// AirtimeService provides airtime functionality to the engine
+type AirtimeService interface {
 	// Transfer transfers airtime to the given URN
-	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal) (*AirtimeTransfer, error)
+	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+}
+
+// HTTPLog describes an HTTP request/response
+type HTTPLog struct {
+	URL       string     `json:"url" validate:"required"`
+	Status    CallStatus `json:"status" validate:"required"`
+	Request   string     `json:"request" validate:"required"`
+	Response  string     `json:"response,omitempty"`
+	CreatedOn time.Time  `json:"created_on" validate:"required"`
+	ElapsedMS int        `json:"elapsed_ms"`
+}
+
+type HTTPLogCallback func(*HTTPLog)
+
+type HTTPLogger struct {
+	Logs []*HTTPLog
+}
+
+func (l *HTTPLogger) Log(h *HTTPLog) {
+	l.Logs = append(l.Logs, h)
+}
+
+// HTTPStatusResolver is a function that determines the status of an HTTP log from the response
+type HTTPStatusResolver func(t *httpx.Trace) CallStatus
+
+// HTTPStatusFromCode uses the status code to determine status of an HTTP log
+func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
+	if t.Response == nil {
+		return CallStatusConnectionError
+	} else if t.Response.StatusCode >= 400 {
+		return CallStatusResponseError
+	}
+	return CallStatusSuccess
+}
+
+// NewHTTPLog creates a new HTTP log from a trace
+func NewHTTPLog(trace *httpx.Trace, statusFn HTTPStatusResolver) *HTTPLog {
+	return newHTTPLogWithStatus(trace, statusFn(trace))
+}
+
+// creates a new HTTP log from a trace with an explicit status
+func newHTTPLogWithStatus(trace *httpx.Trace, status CallStatus) *HTTPLog {
+	return &HTTPLog{
+		URL:       trace.Request.URL.String(),
+		Status:    status,
+		Request:   string(trace.RequestTrace),
+		Response:  string(trace.ResponseTrace),
+		CreatedOn: trace.StartTime,
+		ElapsedMS: int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
+	}
 }

@@ -14,7 +14,7 @@ import (
 )
 
 func TestXTime(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	t1 := types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0))
 	assert.Equal(t, `time`, t1.Describe())
@@ -68,7 +68,7 @@ func TestToXTime(t *testing.T) {
 		}), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 0)), false},
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	for _, test := range tests {
 		result, err := types.ToXTime(env, test.value)

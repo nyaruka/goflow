@@ -18,12 +18,19 @@ import (
 	"github.com/pkg/errors"
 )
 
-var webhookCategories = []string{"Success", "Failure"}
-var webhookStatusCategories = map[flows.WebhookStatus]string{
-	flows.WebhookStatusSuccess:         "Success",
-	flows.WebhookStatusResponseError:   "Failure",
-	flows.WebhookStatusConnectionError: "Failure",
-	flows.WebhookStatusSubscriberGone:  "Failure",
+const (
+	// common category names
+	CategorySuccess = "Success"
+	CategorySkipped = "Skipped"
+	CategoryFailure = "Failure"
+)
+
+var webhookCategories = []string{CategorySuccess, CategoryFailure}
+var webhookStatusCategories = map[flows.CallStatus]string{
+	flows.CallStatusSuccess:         CategorySuccess,
+	flows.CallStatusResponseError:   CategoryFailure,
+	flows.CallStatusConnectionError: CategoryFailure,
+	flows.CallStatusSubscriberGone:  CategoryFailure,
 }
 
 var registeredTypes = map[string](func() flows.Action){}

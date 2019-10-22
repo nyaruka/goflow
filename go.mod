@@ -16,6 +16,8 @@ require (
 	golang.org/x/net v0.0.0-20180921000356-2f5d2388922f
 	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
 	golang.org/x/text v0.3.0
-	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/go-playground/validator.v9 v9.12.0
 )
+
+go 1.13

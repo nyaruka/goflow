@@ -40,6 +40,14 @@ var sessionAssets = `{
             "roles": ["send", "receive"]
         }
     ],
+    "classifiers": [
+        {
+            "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+            "name": "Booking",
+            "type": "wit",
+            "intents": ["book_flight", "book_hotel"]
+        }
+    ],
     "flows": [
         {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
@@ -120,6 +128,16 @@ var sessionAssets = `{
                             "method": "GET",
                             "url": "http://localhost/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
                             "result_name": "webhook"
+                        },
+                        {
+                            "uuid": "bd821625-5254-40ca-be17-e9a4dc5bde99",
+                            "type": "call_classifier",
+                            "classifier": {
+                                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                                "name": "Booking"
+                            },
+                            "input": "@input.text",
+                            "result_name": "intent"
                         }
                     ],
                     "exits": [
@@ -436,15 +454,8 @@ var voiceSessionTrigger = `{
 }`
 
 // CreateTestSession creates a standard example session for testing
-func CreateTestSession(testServerURL string, actionToAdd flows.Action, redact envs.RedactionPolicy) (flows.Session, []flows.Event, error) {
+func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows.Session, []flows.Event, error) {
 	assetsJSON := json.RawMessage(sessionAssets)
-
-	// optional modify the main flow by adding the provided action to the last node
-	if actionToAdd != nil {
-		actionJSON, _ := json.Marshal(actionToAdd)
-		actionsJSON := []byte(fmt.Sprintf("[%s]", string(actionJSON)))
-		assetsJSON = JSONReplace(json.RawMessage(assetsJSON), []string{"flows", "[0]", "nodes", "[3]", "actions"}, actionsJSON)
-	}
 
 	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
 	if err != nil {
@@ -478,15 +489,8 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action, redact en
 }
 
 // CreateTestVoiceSession creates a standard example session for testing voice flows and actions
-func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
+func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event, error) {
 	assetsJSON := json.RawMessage(voiceSessionAssets)
-
-	// optional modify the main flow by adding the provided action to the last node
-	if actionToAdd != nil {
-		actionJSON, _ := json.Marshal(actionToAdd)
-		actionsJSON := []byte(fmt.Sprintf("[%s]", string(actionJSON)))
-		assetsJSON = JSONReplace(json.RawMessage(assetsJSON), []string{"flows", "[0]", "nodes", "[0]", "actions"}, actionsJSON)
-	}
 
 	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
 	if err != nil {
@@ -528,4 +532,18 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 	}
 
 	return sa, nil
+}
+
+// EventLog is a utility for testing things which take an event logger function
+type EventLog struct {
+	Events []flows.Event
+}
+
+// NewEventLog creates a new event log
+func NewEventLog() *EventLog {
+	return &EventLog{make([]flows.Event, 0)}
+}
+
+func (l *EventLog) Log(e flows.Event) {
+	l.Events = append(l.Events, e)
 }

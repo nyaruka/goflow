@@ -11,7 +11,7 @@ import (
 )
 
 func TestXNumber(t *testing.T) {
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	// test creation
 	assert.Equal(t, types.RequireXNumberFromString("123"), types.NewXNumberFromInt(123))
@@ -66,7 +66,7 @@ func TestToXNumberAndInteger(t *testing.T) {
 		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true}, // out of int range
 	}
 
-	env := envs.NewEnvironmentBuilder().Build()
+	env := envs.NewBuilder().Build()
 
 	for _, test := range tests {
 		number, err := types.ToXNumber(env, test.value)

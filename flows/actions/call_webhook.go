@@ -28,7 +28,7 @@ const TypeCallWebhook string = "call_webhook"
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "call_webhook",
 //     "method": "GET",
-//     "url": "http://localhost/?cmd=success",
+//     "url": "http://localhost:49998/?cmd=success",
 //     "headers": {
 //       "Authorization": "Token AAFFZZHH"
 //     },
@@ -114,13 +114,13 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 		req.Header.Add(key, headerValue)
 	}
 
-	webhookSvc := run.Session().Engine().Services().Webhook(run.Session())
-	if webhookSvc == nil {
-		logEvent(events.NewError(errors.Errorf("no webhook provider available")))
+	svc, err := run.Session().Engine().Services().Webhook(run.Session())
+	if err != nil {
+		logEvent(events.NewError(err))
 		return nil
 	}
 
-	call, err := webhookSvc.Call(run.Session(), req, "")
+	call, err := svc.Call(run.Session(), req, "")
 
 	if err != nil {
 		logEvent(events.NewError(err))

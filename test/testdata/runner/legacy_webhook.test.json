@@ -1,17 +1,25 @@
 {
+    "http_mocks": {
+        "http://localhost/?cmd=foo": [
+            {
+                "body": "{\"foo\":\"bar\"}",
+                "status": 200
+            }
+        ]
+    },
     "outputs": [
         {
             "events": [
                 {
                     "created_on": "2018-07-06T12:30:06.123456789Z",
                     "elapsed_ms": 1000,
-                    "request": "POST /?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2018-07-06T12:30:03.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"312d3af0-a565-4c96-ba00-bd7f0d08e671\"}],\"results\":{},\"run\":{\"created_on\":\"2018-07-06T12:30:00.123456Z\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}}",
-                    "response": "HTTP/1.1 200 OK\r\nContent-Length: 13\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{\"foo\":\"bar\"}",
+                    "request": "POST /?cmd=foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2018-07-06T12:30:03.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"312d3af0-a565-4c96-ba00-bd7f0d08e671\"}],\"results\":{},\"run\":{\"created_on\":\"2018-07-06T12:30:00.123456Z\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}}",
+                    "response": "HTTP/1.0 200 OK\r\nContent-Length: 13\r\n\r\n{\"foo\":\"bar\"}",
                     "status": "success",
                     "status_code": 200,
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "webhook_called",
-                    "url": "http://127.0.0.1:49999/?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D"
+                    "url": "http://localhost/?cmd=foo"
                 },
                 {
                     "category": "Success",
@@ -19,7 +27,7 @@
                     "extra": {
                         "foo": "bar"
                     },
-                    "input": "POST http://127.0.0.1:49999/?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D",
+                    "input": "POST http://localhost/?cmd=foo",
                     "name": "Webhook Result",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
@@ -28,7 +36,7 @@
                 {
                     "created_on": "2018-07-06T12:30:13.123456789Z",
                     "msg": {
-                        "text": "Webhook was successful\n\nResult value: 200 \nResult category: Success \nResult text: POST http://127.0.0.1:49999/?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D \nExtra: bar",
+                        "text": "Webhook was successful\n\nResult value: 200 \nResult category: Success \nResult text: POST http://localhost/?cmd=foo \nExtra: bar",
                         "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                     },
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
@@ -70,13 +78,13 @@
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "elapsed_ms": 1000,
-                                "request": "POST /?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2018-07-06T12:30:03.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"312d3af0-a565-4c96-ba00-bd7f0d08e671\"}],\"results\":{},\"run\":{\"created_on\":\"2018-07-06T12:30:00.123456Z\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}}",
-                                "response": "HTTP/1.1 200 OK\r\nContent-Length: 13\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{\"foo\":\"bar\"}",
+                                "request": "POST /?cmd=foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2018-07-06T12:30:03.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"312d3af0-a565-4c96-ba00-bd7f0d08e671\"}],\"results\":{},\"run\":{\"created_on\":\"2018-07-06T12:30:00.123456Z\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}}",
+                                "response": "HTTP/1.0 200 OK\r\nContent-Length: 13\r\n\r\n{\"foo\":\"bar\"}",
                                 "status": "success",
                                 "status_code": 200,
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "webhook_called",
-                                "url": "http://127.0.0.1:49999/?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D"
+                                "url": "http://localhost/?cmd=foo"
                             },
                             {
                                 "category": "Success",
@@ -84,7 +92,7 @@
                                 "extra": {
                                     "foo": "bar"
                                 },
-                                "input": "POST http://127.0.0.1:49999/?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D",
+                                "input": "POST http://localhost/?cmd=foo",
                                 "name": "Webhook Result",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
@@ -93,7 +101,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
-                                    "text": "Webhook was successful\n\nResult value: 200 \nResult category: Success \nResult text: POST http://127.0.0.1:49999/?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D \nExtra: bar",
+                                    "text": "Webhook was successful\n\nResult value: 200 \nResult category: Success \nResult text: POST http://localhost/?cmd=foo \nExtra: bar",
                                     "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                                 },
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
@@ -128,7 +136,7 @@
                                 "extra": {
                                     "foo": "bar"
                                 },
-                                "input": "POST http://127.0.0.1:49999/?cmd=echo&content=%7B%22foo%22%3A%22bar%22%7D",
+                                "input": "POST http://localhost/?cmd=foo",
                                 "name": "Webhook Result",
                                 "node_uuid": "30c97f0e-e537-4940-ad1f-85599d3634b3",
                                 "value": "200"
