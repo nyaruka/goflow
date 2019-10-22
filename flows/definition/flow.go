@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
@@ -18,7 +19,7 @@ import (
 )
 
 // CurrentSpecVersion is the flow spec version supported by this library
-var CurrentSpecVersion = semver.MustParse("13.0")
+var CurrentSpecVersion = semver.MustParse("13.1")
 
 type flow struct {
 	// spec properties
@@ -335,9 +336,9 @@ type flowEnvelope struct {
 
 // IsSpecVersionSupported determines if we can read the given flow version
 func IsSpecVersionSupported(ver *semver.Version) bool {
-	// major versions change flow schema
-	// we currently have no support for migrations but that will change in future
-	return ver.Major() == CurrentSpecVersion.Major()
+	// * we can migrate anything >= 13.0.0
+	// * we can run anything which is same major version as engine
+	return ver.Major() >= 13 && ver.Major() <= CurrentSpecVersion.Major()
 }
 
 // ReadFlow reads a single flow definition from the passed in byte array
@@ -355,7 +356,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	// run migrations if necessary
 	if header.SpecVersion.LessThan(CurrentSpecVersion) {
 		var err error
-		data, err = migrateDefinition(data, header.SpecVersion)
+		data, err = migrations.MigrateDefinition(data, header.SpecVersion)
 		if err != nil {
 			panic(err)
 		}

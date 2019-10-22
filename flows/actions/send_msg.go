@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 func init() {
@@ -28,6 +29,7 @@ const TypeSendMsg string = "send_msg"
 //     "attachments": [],
 //     "all_urns": false,
 //     "templating": {
+//       "uuid": "32c2ead6-3fa3-4402-8e27-9cc718175c5a",
 //       "template": {
 //         "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
 //         "name": "revive_issue"
@@ -48,6 +50,7 @@ type SendMsgAction struct {
 
 // Templating represents the templating that should be used if possible
 type Templating struct {
+	UUID      uuids.UUID                `json:"uuid" validate:"required,uuid4"`
 	Template  *assets.TemplateReference `json:"template" validate:"required"`
 	Variables []string                  `json:"variables" engine:"evaluated"`
 }

@@ -65,7 +65,7 @@ func TestMigrateLegacyDefinition(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(`{
 		"uuid": "061be894-4507-470c-a20b-34273bf915be",
 		"name": "Survey",
-		"spec_version": "13.0.0",
+		"spec_version": "13.1.0",
 		"type": "messaging_offline",
 		"expire_after_minutes": 0,
 		"language": "eng",
