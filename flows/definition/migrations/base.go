@@ -5,11 +5,13 @@ import (
 	"errors"
 	"sort"
 
-	"github.com/Masterminds/semver"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/Masterminds/semver"
 )
 
-type MigrationFunc func(data []byte) ([]byte, error)
+// MigrationFunc is a function that can migrate a flow definition from one version to another
+type MigrationFunc func(Flow) (Flow, error)
 
 var registered = map[*semver.Version]MigrationFunc{}
 
@@ -18,12 +20,22 @@ func registerMigration(version *semver.Version, fn MigrationFunc) {
 	registered[version] = fn
 }
 
-// gets all migration functions after the given version
-func fromVersion(from *semver.Version) []MigrationFunc {
+// Registered gets all registered migrations
+func Registered() map[*semver.Version]MigrationFunc {
+	return registered
+}
+
+// MigrateToLatest migrates the given flow definition to the latest version
+func MigrateToLatest(data []byte, from *semver.Version) ([]byte, error) {
+	return MigrateToVersion(data, from, nil)
+}
+
+// MigrateToVersion migrates the given flow definition to the given version
+func MigrateToVersion(data []byte, from *semver.Version, to *semver.Version) ([]byte, error) {
 	// get all newer versions
 	versions := make([]*semver.Version, 0)
 	for v := range registered {
-		if v.GreaterThan(from) {
+		if v.GreaterThan(from) && (to == nil || v.Compare(to) <= 0) {
 			versions = append(versions, v)
 		}
 	}
@@ -31,30 +43,34 @@ func fromVersion(from *semver.Version) []MigrationFunc {
 	// sorted by earliest first
 	sort.SliceStable(versions, func(i, j int) bool { return versions[i].LessThan(versions[j]) })
 
-	// get the migrations
-	migrations := make([]MigrationFunc, len(versions))
-	for i, version := range versions {
-		migrations[i] = registered[version]
+	g, err := utils.JSONDecodeGeneric(data)
+	if err != nil {
+		return nil, err
 	}
-	return migrations
-}
 
-// MigrateDefinition migrates the given flow definition to the latest version
-func MigrateDefinition(data []byte, from *semver.Version) ([]byte, error) {
-	migrations := fromVersion(from)
+	d, _ := g.(map[string]interface{})
+	if d == nil {
+		return nil, errors.New("can't migrate definition which isn't a flow")
+	}
 
-	migrated := data
-	var err error
+	migrated := Flow{d}
 
-	for _, migration := range migrations {
-		migrated, err = migration(migrated)
+	for _, version := range versions {
+		migrated, err = registered[version](migrated)
 		if err != nil {
 			return nil, err
 		}
+
+		migrated.Def["spec_version"] = version.String()
 	}
 
-	return migrated, nil
+	// finally marshal back to JSON
+	return json.Marshal(migrated.Def)
 }
+
+//------------------------------------------------------------------------------------------
+// Generic definition primitives
+//------------------------------------------------------------------------------------------
 
 type Flow struct {
 	Def map[string]interface{}
@@ -106,23 +122,4 @@ type Router struct {
 func (r Router) Type() string {
 	d, _ := r.Def["type"].(string)
 	return d
-}
-
-// AsParsed is a wrapper for a migration func which migrates a flow as a generic map
-func AsParsed(fn func(Flow) Flow) MigrationFunc {
-	return func(data []byte) ([]byte, error) {
-		g, err := utils.JSONDecodeGeneric(data)
-		if err != nil {
-			return nil, err
-		}
-
-		definition, isMap := g.(map[string]interface{})
-		if !isMap {
-			return nil, errors.New("can't migrate definition which isn't a flow")
-		}
-
-		migrated := fn(Flow{definition})
-
-		return json.Marshal(migrated.Def)
-	}
 }

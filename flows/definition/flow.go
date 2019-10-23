@@ -356,7 +356,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	// run migrations if necessary
 	if header.SpecVersion.LessThan(CurrentSpecVersion) {
 		var err error
-		data, err = migrations.MigrateDefinition(data, header.SpecVersion)
+		data, err = migrations.MigrateToLatest(data, header.SpecVersion)
 		if err != nil {
 			panic(err)
 		}

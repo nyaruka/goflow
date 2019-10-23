@@ -1,14 +1,65 @@
 package migrations_test
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"sort"
 	"testing"
 
+	"github.com/Masterminds/semver"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+func TestMigrations(t *testing.T) {
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+
+	// get all versions in order
+	versions := make([]*semver.Version, 0, len(migrations.Registered()))
+	for v := range migrations.Registered() {
+		versions = append(versions, v)
+	}
+	sort.SliceStable(versions, func(i, j int) bool { return versions[i].LessThan(versions[j]) })
+
+	prevVersion := semver.MustParse(`13.0.0`)
+
+	for _, version := range versions {
+		testsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", version.String()))
+		require.NoError(t, err)
+
+		tests := []struct {
+			Description string          `json:"description"`
+			Original    json.RawMessage `json:"original"`
+			Migrated    json.RawMessage `json:"migrated"`
+		}{}
+
+		err = json.Unmarshal(testsJSON, &tests)
+		require.NoError(t, err, "unable to read tests for version %s", version)
+
+		for _, tc := range tests {
+			testName := fmt.Sprintf("version %s with '%s'", version, tc.Description)
+
+			uuids.SetGenerator(uuids.NewSeededGenerator(123456))
+
+			actual, err := migrations.MigrateToVersion(tc.Original, prevVersion, version)
+			assert.NoError(t, err, "unexpected error in %s", testName)
+
+			test.AssertEqualJSON(t, tc.Migrated, actual, "migration mismatch in %s", testName)
+
+			// check final flow is valid
+			_, err = definition.ReadFlow(actual)
+			assert.NoError(t, err, "migrated flow validation error in %s", testName)
+		}
+
+		prevVersion = version
+	}
+}
 
 func TestMigrationPrimitives(t *testing.T) {
 	f := migrations.Flow{map[string]interface{}{}} // nodes not set
@@ -45,15 +96,4 @@ func TestMigrationPrimitives(t *testing.T) {
 
 	a = migrations.Action{map[string]interface{}{"type": "foo"}} // type set
 	assert.Equal(t, "foo", a.Type())
-}
-
-func testMigration(t *testing.T, fn migrations.MigrationFunc, original, expected string) {
-	actual, err := fn([]byte(original))
-	assert.NoError(t, err)
-
-	test.AssertEqualJSON(t, []byte(expected), actual, "migrated flow mismatch")
-
-	// check final flow is valid
-	_, err = definition.ReadFlow(actual)
-	assert.NoError(t, err)
 }
