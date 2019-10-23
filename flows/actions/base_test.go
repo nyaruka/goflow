@@ -124,7 +124,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// if we have a localization section, inject that too
 		if tc.Localization != nil {
-			localizationPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "localization", "spa", "ad154980-7bf7-4ab8-8728-545fd6378912"}
+			localizationPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "localization"}
 			assetsJSON = test.JSONReplace(assetsJSON, localizationPath, tc.Localization)
 		}
 

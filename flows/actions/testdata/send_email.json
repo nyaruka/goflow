@@ -170,12 +170,16 @@
             "body": "So I was thinking..."
         },
         "localization": {
-            "subject": [
-                "Hola"
-            ],
-            "body": [
-                "Pues estuve pensando..."
-            ]
+            "spa": {
+                "ad154980-7bf7-4ab8-8728-545fd6378912": {
+                    "subject": [
+                        "Hola"
+                    ],
+                    "body": [
+                        "Pues estuve pensando..."
+                    ]
+                }
+            }
         },
         "events": [
             {
