@@ -1,5 +1,5 @@
 {
-    "legacy_flows": [
+    "flows": [
         {
             "entry": "e48228ed-085d-4c54-81f8-da2a5f4a6c24",
             "action_sets": [
@@ -222,12 +222,10 @@
             }
         }
     ],
-    "other_assets": {
-        "groups": [
-            {
-                "uuid": "5ddddd32-9d5e-4102-8aa0-bf54d91a768c",
-                "name": "Youth"
-            }
-        ]
-    }
+    "groups": [
+        {
+            "uuid": "5ddddd32-9d5e-4102-8aa0-bf54d91a768c",
+            "name": "Youth"
+        }
+    ]
 }

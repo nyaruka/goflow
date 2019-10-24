@@ -15,7 +15,7 @@ import (
 )
 
 source, _ := static.LoadSource("myassets.json")
-assets, _ := engine.NewSessionAssets(source)
+assets, _ := engine.NewSessionAssets(source, nil)
 contact := flows.NewContact(assets, ...)
 env := envs.NewBuilder().Build()
 trigger := triggers.NewManual(env, contact, flow.Reference(), nil, nil, time.Now())

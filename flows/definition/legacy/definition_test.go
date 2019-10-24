@@ -6,11 +6,12 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/buger/jsonparser"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/uuids"
 
+	"github.com/buger/jsonparser"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -138,7 +139,7 @@ func TestFlowMigration(t *testing.T) {
 	for _, tc := range tests {
 		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 
-		migratedFlowJSON, err := legacy.MigrateLegacyDefinition(tc.Legacy, "https://myfiles.com")
+		migratedFlowJSON, err := legacy.MigrateDefinition(tc.Legacy, "https://myfiles.com")
 		require.NoError(t, err)
 
 		test.AssertEqualJSON(t, tc.Expected, migratedFlowJSON, "migrated flow produced unexpected JSON")
@@ -159,7 +160,7 @@ func TestActionMigration(t *testing.T) {
 		}
 
 		legacyFlowJSON := fmt.Sprintf(legacyActionHolderDef, tc.LegacyFlowType, string(tc.LegacyAction))
-		migratedFlowJSON, err := legacy.MigrateLegacyDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
+		migratedFlowJSON, err := legacy.MigrateDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedActionJSON, _, _, err := jsonparser.Get(migratedFlowJSON, "nodes", "[0]", "actions", "[0]")
@@ -188,7 +189,7 @@ func TestTestMigration(t *testing.T) {
 		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 
 		legacyFlowJSON := fmt.Sprintf(legacyTestHolderDef, string(tc.LegacyTest))
-		migratedFlowJSON, err := legacy.MigrateLegacyDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
+		migratedFlowJSON, err := legacy.MigrateDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedRouterJSON, _, _, err := jsonparser.Get(migratedFlowJSON, "nodes", "[0]", "router")
@@ -220,7 +221,7 @@ func TestRuleSetMigration(t *testing.T) {
 		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 
 		legacyFlowJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(tc.LegacyRuleSet))
-		migratedFlowJSON, err := legacy.MigrateLegacyDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
+		migratedFlowJSON, err := legacy.MigrateDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedNodeJSON, _, _, err := jsonparser.Get(migratedFlowJSON, "nodes", "[0]")
@@ -241,4 +242,74 @@ func TestRuleSetMigration(t *testing.T) {
 
 		test.AssertEqualJSON(t, tc.ExpectedLocalization, migratedLocalizationJSON, "migrated localization produced unexpected JSON")
 	}
+}
+
+func TestIsLegacyDefinition(t *testing.T) {
+	// try reading empty JSON
+	assert.False(t, legacy.IsLegacyDefinition([]byte(`{}`)))
+	assert.True(t, legacy.IsLegacyDefinition([]byte(`{"flow_type":"M"}`)))
+
+	// try with new flow
+	assert.False(t, legacy.IsLegacyDefinition([]byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Simple",
+		"spec_version": "13.0",
+		"language": "eng",
+		"type": "messaging",
+		"nodes": []
+	}`)))
+
+	// try with legacy flow
+	assert.True(t, legacy.IsLegacyDefinition([]byte(`{
+		"metadata": {
+			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+			"name": "Simple",
+			"revision": 1
+		},
+		"base_language": "eng",
+		"flow_type": "F",
+		"entry"
+		"version": 11,
+		"action_sets": [],
+		"rule_sets": []
+	}`)))
+
+	// try with legacy flow without metadata or flow_type
+	assert.True(t, legacy.IsLegacyDefinition([]byte(`{
+		"base_language": "eng",
+		"entry"
+		"version": 11,
+		"action_sets": [],
+		"rule_sets": []
+	}`)))
+}
+
+func TestMigrateDefinition(t *testing.T) {
+	migrated, err := legacy.MigrateDefinition([]byte(`{
+		"flow_type": "S", 
+		"action_sets": [],
+		"rule_sets": [],
+		"base_language": "eng",
+		"metadata": {
+			"uuid": "061be894-4507-470c-a20b-34273bf915be",
+			"name": "Survey"
+		}
+	}`), "")
+
+	assert.NoError(t, err)
+	test.AssertEqualJSON(t, []byte(`{
+		"uuid": "061be894-4507-470c-a20b-34273bf915be",
+		"name": "Survey",
+		"spec_version": "13.0.0",
+		"type": "messaging_offline",
+		"expire_after_minutes": 0,
+		"language": "eng",
+		"localization": {},
+		"nodes": [],
+		"revision": 0,
+		"_ui": {
+			"nodes": {},
+			"stickies": {}
+		}
+	}`), migrated, "migrated flow mismatch")
 }

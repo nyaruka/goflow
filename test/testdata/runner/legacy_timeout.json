@@ -1,5 +1,5 @@
 {
-    "legacy_flows": [
+    "flows": [
         {
             "entry": "b98d7730-ca23-4973-a6b8-9369ccbe85dc",
             "action_sets": [
@@ -200,14 +200,12 @@
             }
         }
     ],
-    "other_assets": {
-        "fields": [
-            {
-                "uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565",
-                "key": "age",
-                "name": "Age",
-                "type": "number"
-            }
-        ]
-    }
+    "fields": [
+        {
+            "uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565",
+            "key": "age",
+            "name": "Age",
+            "type": "number"
+        }
+    ]
 }

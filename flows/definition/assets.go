@@ -13,13 +13,16 @@ type flowAssets struct {
 
 	mutex  sync.Mutex
 	source assets.Source
+
+	migrationConfig *MigrationConfig
 }
 
 // NewFlowAssets creates a new flow assets
-func NewFlowAssets(source assets.Source) flows.FlowAssets {
+func NewFlowAssets(source assets.Source, migrationConfig *MigrationConfig) flows.FlowAssets {
 	return &flowAssets{
-		byUUID: make(map[assets.FlowUUID]flows.Flow),
-		source: source,
+		byUUID:          make(map[assets.FlowUUID]flows.Flow),
+		source:          source,
+		migrationConfig: migrationConfig,
 	}
 }
 
@@ -38,7 +41,7 @@ func (a *flowAssets) Get(uuid assets.FlowUUID) (flows.Flow, error) {
 		return nil, err
 	}
 
-	flow, err = ReadFlow(asset.Definition())
+	flow, err = ReadFlow(asset.Definition(), a.migrationConfig)
 	if err != nil {
 		return nil, err
 	}

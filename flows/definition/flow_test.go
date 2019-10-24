@@ -399,7 +399,7 @@ func TestInspectFlow(t *testing.T) {
 
 func TestReadFlow(t *testing.T) {
 	// try reading something without a flow header
-	_, err := definition.ReadFlow([]byte(`{"nodes":[]}`))
+	_, err := definition.ReadFlow([]byte(`{"nodes":[]}`), nil)
 	assert.EqualError(t, err, "unable to read flow header: field 'uuid' is required, field 'spec_version' is required")
 
 	// try reading a definition with a newer major version
@@ -412,7 +412,7 @@ func TestReadFlow(t *testing.T) {
 		"revision": 123,
 		"expire_after_minutes": 30,
 		"nodes": []
-	}`))
+	}`), nil)
 	assert.EqualError(t, err, "spec version 2000.0.0 is newer than this library (13.0.0)")
 
 	// try reading a definition with a newer minor version
@@ -425,7 +425,7 @@ func TestReadFlow(t *testing.T) {
 		"revision": 123,
 		"expire_after_minutes": 30,
 		"nodes": []
-	}`))
+	}`), nil)
 	assert.NoError(t, err)
 
 	// try reading a definition without a type (a required field in this major version)
@@ -437,7 +437,7 @@ func TestReadFlow(t *testing.T) {
     "revision": 123,
     "expire_after_minutes": 30,
     "nodes": []
-  }`))
+  }`), nil)
 	assert.EqualError(t, err, "field 'type' is required")
 
 	// try reading a definition with UI
@@ -467,7 +467,7 @@ func TestReadFlow(t *testing.T) {
 			},
             "stickies": {}
 		}
-	  }`))
+	  }`), nil)
 	assert.NoError(t, err)
 	test.AssertEqualJSON(t, []byte(`{
 		"nodes": {
@@ -477,6 +477,30 @@ func TestReadFlow(t *testing.T) {
 		},
 		"stickies": {}
 	}`), flow.UI(), "ui mismatch for read flow")
+
+	// try reading a legacy definition
+	flow, err = definition.ReadFlow([]byte(`{
+		"base_language": "eng",
+		"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+		"flow_type": "M",
+		"action_sets": [{
+			"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+			"y": 100, 
+			"x": 100, 
+			"destination": null, 
+			"exit_uuid": "cfcf5cef-49f9-41a6-886b-f466575a3045",
+			"actions": []
+		}],
+		"metadata": {
+			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+			"name": "TestFlow"
+		}
+	}`), &definition.MigrationConfig{})
+	assert.NoError(t, err)
+	assert.Equal(t, assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), flow.UUID())
+	assert.Equal(t, "TestFlow", flow.Name())
+	assert.Equal(t, flows.FlowTypeMessaging, flow.Type())
+	assert.Equal(t, 1, len(flow.Nodes()))
 }
 
 func TestExtractTemplates(t *testing.T) {

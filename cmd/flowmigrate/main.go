@@ -42,12 +42,7 @@ func Migrate(reader io.Reader, includeUI bool, baseMediaURL string) ([]byte, err
 		return nil, err
 	}
 
-	flow, err := legacy.ReadLegacyFlow(data)
-	if err != nil {
-		return nil, err
-	}
-
-	migrated, err := flow.Migrate(baseMediaURL)
+	migrated, err := legacy.MigrateDefinition(data, baseMediaURL)
 	if err != nil {
 		return nil, err
 	}

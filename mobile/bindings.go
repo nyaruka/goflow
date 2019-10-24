@@ -100,7 +100,7 @@ type SessionAssets struct {
 
 // NewSessionAssets creates a new session assets
 func NewSessionAssets(source *AssetsSource) (*SessionAssets, error) {
-	s, err := engine.NewSessionAssets(source.target)
+	s, err := engine.NewSessionAssets(source.target, nil)
 	if err != nil {
 		return nil, err
 	}

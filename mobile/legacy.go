@@ -11,7 +11,7 @@ func IsLegacyDefinition(definition string) bool {
 
 // MigrateLegacyDefinition migrates a legacy definition
 func MigrateLegacyDefinition(definition string) (string, error) {
-	migrated, err := legacy.MigrateLegacyDefinition([]byte(definition), "")
+	migrated, err := legacy.MigrateDefinition([]byte(definition), "")
 	if err != nil {
 		return "", err
 	}

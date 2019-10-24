@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -1067,8 +1068,7 @@ func migrateActionSet(lang envs.Language, a ActionSet, validDests map[uuids.UUID
 	return newMigratedNode(a.UUID, actions, nil, []migratedExit{exit}), nil
 }
 
-// ReadLegacyFlow reads a single legacy formatted flow
-func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
+func readLegacyFlow(data json.RawMessage) (*Flow, error) {
 	f := &Flow{}
 	if err := utils.UnmarshalAndValidate(data, f); err != nil {
 		return nil, err
@@ -1188,4 +1188,23 @@ func (f *Flow) Migrate(baseMediaURL string) ([]byte, error) {
 	}
 
 	return json.Marshal(migrated)
+}
+
+// IsLegacyDefinition peeks at the given flow definition to determine if it is in legacy format
+func IsLegacyDefinition(data json.RawMessage) bool {
+	// any flow with root-level action_sets or rule_sets or flow_type property is considered to be in the new format
+	frag1, _, _, _ := jsonparser.Get(data, "action_sets")
+	frag2, _, _, _ := jsonparser.Get(data, "rule_sets")
+	frag3, _, _, _ := jsonparser.Get(data, "flow_type")
+	return frag1 != nil || frag2 != nil || frag3 != nil
+}
+
+// MigrateDefinition migrates a legacy definition to 13.0.0
+func MigrateDefinition(data json.RawMessage, baseMediaURL string) (json.RawMessage, error) {
+	legacyFlow, err := readLegacyFlow(data)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to read legacy flow")
+	}
+
+	return legacyFlow.Migrate(baseMediaURL)
 }

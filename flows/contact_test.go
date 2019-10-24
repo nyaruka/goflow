@@ -33,7 +33,7 @@ func TestContact(t *testing.T) {
 	}`))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source, nil)
 	require.NoError(t, err)
 
 	android := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
@@ -111,7 +111,7 @@ func TestContact(t *testing.T) {
 
 func TestContactFormat(t *testing.T) {
 	env := envs.NewBuilder().Build()
-	sa, _ := engine.NewSessionAssets(static.NewEmptySource())
+	sa, _ := engine.NewSessionAssets(static.NewEmptySource(), nil)
 
 	// name takes precedence if set
 	contact := flows.NewEmptyContact(sa, "Joe", envs.NilLanguage, nil)
@@ -137,7 +137,7 @@ func TestContactFormat(t *testing.T) {
 }
 
 func TestContactSetPreferredChannel(t *testing.T) {
-	sa, _ := engine.NewSessionAssets(static.NewEmptySource())
+	sa, _ := engine.NewSessionAssets(static.NewEmptySource(), nil)
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil)
