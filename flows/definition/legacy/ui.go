@@ -1,7 +1,6 @@
 package legacy
 
 import (
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/shopspring/decimal"
@@ -32,20 +31,20 @@ const (
 
 // UI is the _ui section of the flow definition used by the editor
 type UI struct {
-	Nodes    map[flows.NodeUUID]*NodeUI `json:"nodes"`
-	Stickies map[uuids.UUID]Sticky      `json:"stickies"`
+	Nodes    map[uuids.UUID]*NodeUI `json:"nodes"`
+	Stickies map[uuids.UUID]Sticky  `json:"stickies"`
 }
 
 // NewUI creates a new UI section
 func NewUI() *UI {
 	return &UI{
-		Nodes:    make(map[flows.NodeUUID]*NodeUI),
+		Nodes:    make(map[uuids.UUID]*NodeUI),
 		Stickies: make(map[uuids.UUID]Sticky),
 	}
 }
 
 // AddNode adds information about a node
-func (u *UI) AddNode(uuid flows.NodeUUID, nodeDetails *NodeUI) {
+func (u *UI) AddNode(uuid uuids.UUID, nodeDetails *NodeUI) {
 	u.Nodes[uuid] = nodeDetails
 }
 
