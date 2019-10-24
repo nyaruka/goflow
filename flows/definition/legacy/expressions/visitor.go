@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/legacy/gen"
+	"github.com/nyaruka/goflow/flows/definition/legacy/gen"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )

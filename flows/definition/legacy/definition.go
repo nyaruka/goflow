@@ -14,10 +14,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
-	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 

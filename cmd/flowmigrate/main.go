@@ -12,7 +12,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/nyaruka/goflow/legacy"
+	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/utils"
 )
 

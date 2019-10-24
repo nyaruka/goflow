@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/flows/routers"
-	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
