@@ -6,6 +6,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -51,5 +52,5 @@ func Migrate(reader io.Reader, includeUI bool, baseMediaURL string) ([]byte, err
 		return nil, err
 	}
 
-	return utils.JSONMarshalPretty(migrated)
+	return utils.JSONMarshalPretty(json.RawMessage(migrated))
 }

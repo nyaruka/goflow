@@ -3,8 +3,6 @@ package legacy
 import (
 	"encoding/json"
 
-	"github.com/nyaruka/goflow/utils"
-
 	"github.com/buger/jsonparser"
 	"github.com/pkg/errors"
 )
@@ -25,15 +23,5 @@ func MigrateLegacyDefinition(data json.RawMessage, baseMediaURL string) (json.Ra
 		return nil, errors.Wrap(err, "unable to read legacy flow")
 	}
 
-	flow, err := legacyFlow.Migrate(baseMediaURL)
-	if err != nil {
-		return nil, errors.Wrap(err, "unable to migrate legacy flow")
-	}
-
-	marshaled, err := utils.JSONMarshal(flow)
-	if err != nil {
-		return nil, errors.Wrap(err, "unable to marshal migrated flow")
-	}
-
-	return marshaled, nil
+	return legacyFlow.Migrate(baseMediaURL)
 }

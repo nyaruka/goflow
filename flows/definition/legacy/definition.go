@@ -1102,7 +1102,7 @@ func migrateNodes(f *Flow, baseMediaURL string) ([]flows.Node, map[flows.NodeUUI
 }
 
 // Migrate migrates this legacy flow to the new format
-func (f *Flow) Migrate(baseMediaURL string) (flows.Flow, error) {
+func (f *Flow) Migrate(baseMediaURL string) ([]byte, error) {
 	nodes, nodeUIs, localization, err := migrateNodes(f, baseMediaURL)
 	if err != nil {
 		return nil, err
@@ -1139,7 +1139,7 @@ func (f *Flow) Migrate(baseMediaURL string) (flows.Flow, error) {
 		name = f.Name
 	}
 
-	return definition.NewFlow(
+	migrated, err := definition.NewFlow(
 		uuid,
 		name,
 		f.BaseLanguage,
@@ -1150,4 +1150,9 @@ func (f *Flow) Migrate(baseMediaURL string) (flows.Flow, error) {
 		nodes,
 		uiJSON,
 	)
+	if err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(migrated)
 }
