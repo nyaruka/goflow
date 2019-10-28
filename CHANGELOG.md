@@ -1,3 +1,7 @@
+v0.54.3
+----------
+ * Relax requirement for field assets to have UUID set since engine doesn't use this
+
 v0.54.2
 ----------
  * Fix naming in mobile bindings
