@@ -1,3 +1,7 @@
+v0.54.1
+----------
+ * Fix docstring for UPPER()
+
 v0.54.0
 ----------
  * NewEnvironmentBuilder() -> envs.NewBuilder() to match engine.NewBuilder()
