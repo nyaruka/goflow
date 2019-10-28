@@ -1247,7 +1247,7 @@ then the current timezone offset will be returned.
 
 <h2 class="item_title"><a name="function:upper" href="#function:upper">upper(text)</a></h2>
 
-Converts `text` to lowercase.
+Converts `text` to uppercase.
 
 
 ```objectivec

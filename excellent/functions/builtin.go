@@ -849,7 +849,7 @@ func Replace(env envs.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(strings.Replace(text.Native(), needle.Native(), replacement.Native(), count))
 }
 
-// Upper converts `text` to lowercase.
+// Upper converts `text` to uppercase.
 //
 //   @(upper("Asdf")) -> ASDF
 //   @(upper(123)) -> 123
