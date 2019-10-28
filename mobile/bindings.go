@@ -12,7 +12,7 @@ package mobile
 // cd $GOPATH/src/github.com/nyaruka/goflow
 // GO111MODULE=on go mod vendor
 // GO111MODULE=off go get golang.org/x/mobile/cmd/gomobile
-// $GOPATH/bin/gomobile init
+// GO111MODULE=off $GOPATH/bin/gomobile init
 // GO111MODULE=off gomobile bind -target android -javapkg=com.nyaruka.goflow -o mobile/goflow.aar github.com/nyaruka/goflow/mobile
 
 import (
@@ -167,8 +167,8 @@ type Trigger struct {
 	target flows.Trigger
 }
 
-// NewManual creates a new manual trigger
-func NewManual(environment *Environment, contact *Contact, flow *FlowReference) *Trigger {
+// NewManualTrigger creates a new manual trigger
+func NewManualTrigger(environment *Environment, contact *Contact, flow *FlowReference) *Trigger {
 	flowRef := assets.NewFlowReference(assets.FlowUUID(flow.uuid), flow.name)
 	return &Trigger{
 		target: triggers.NewManual(environment.target, flowRef, contact.target, nil),
@@ -180,8 +180,8 @@ type Resume struct {
 	target flows.Resume
 }
 
-// NewMsg creates a new message resume
-func NewMsg(environment *Environment, contact *Contact, msg *MsgIn) *Resume {
+// NewMsgResume creates a new message resume
+func NewMsgResume(environment *Environment, contact *Contact, msg *MsgIn) *Resume {
 	var e envs.Environment
 	if environment != nil {
 		e = environment.target
