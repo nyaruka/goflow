@@ -6,7 +6,7 @@ import (
 
 // Field is a JSON serializable implementation of a field asset
 type Field struct {
-	UUID_ assets.FieldUUID `json:"uuid" validate:"required"`
+	UUID_ assets.FieldUUID `json:"uuid"`
 	Key_  string           `json:"key" validate:"required"`
 	Name_ string           `json:"name"`
 	Type_ assets.FieldType `json:"type" validate:"required"`
