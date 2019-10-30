@@ -14,8 +14,11 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
+// Escaping is a function applied to expressions in a template after they've been evaluated
+type Escaping func(string) string
+
 // EvaluateTemplate evaluates the passed in template
-func EvaluateTemplate(env envs.Environment, context *types.XObject, template string) (string, error) {
+func EvaluateTemplate(env envs.Environment, context *types.XObject, template string, escaping Escaping) (string, error) {
 	var buf strings.Builder
 
 	err := VisitTemplate(template, context.Properties(), func(tokenType XTokenType, token string) error {
@@ -31,8 +34,14 @@ func EvaluateTemplate(env envs.Environment, context *types.XObject, template str
 			}
 
 			// if not, stringify value and append to the output
-			strValue, _ := types.ToXText(env, value)
-			buf.WriteString(strValue.Native())
+			asText, _ := types.ToXText(env, value)
+			asString := asText.Native()
+
+			if escaping != nil {
+				asString = escaping(asString)
+			}
+
+			buf.WriteString(asString)
 		}
 		return nil
 	})
@@ -62,7 +71,7 @@ func EvaluateTemplateValue(env envs.Environment, context *types.XObject, templat
 	}
 
 	// otherwise fallback to full template evaluation
-	asStr, err := EvaluateTemplate(env, context, template)
+	asStr, err := EvaluateTemplate(env, context, template, nil)
 	return types.NewXText(asStr), err
 }
 

@@ -1,6 +1,7 @@
 package excellent_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
@@ -297,7 +298,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			}
 		}()
 
-		eval, err := excellent.EvaluateTemplate(env, vars, tc.template)
+		eval, err := excellent.EvaluateTemplate(env, vars, tc.template, nil)
 
 		if tc.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", tc.template)
@@ -306,6 +307,21 @@ func TestEvaluateTemplate(t *testing.T) {
 			assert.Equal(t, tc.expected, eval, " output mismatch for template: '%s'", tc.template)
 		}
 	}
+}
+
+func TestEvaluateTemplateWithEscaping(t *testing.T) {
+	vars := types.NewXObject(map[string]types.XValue{
+		"string1": types.NewXText(`""; DROP`),
+	})
+
+	escaping := func(s string) string {
+		return strings.Replace(s, `"`, `\"`, -1)
+	}
+
+	env := envs.NewBuilder().Build()
+	eval, err := excellent.EvaluateTemplate(env, vars, `Hi @string1`, escaping)
+	assert.NoError(t, err)
+	assert.Equal(t, `Hi \"\"; DROP`, eval)
 }
 
 var errorTests = []struct {
@@ -354,7 +370,7 @@ func TestEvaluationErrors(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
 	for _, tc := range errorTests {
-		result, err := excellent.EvaluateTemplate(env, vars, tc.template)
+		result, err := excellent.EvaluateTemplate(env, vars, tc.template, nil)
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
 
@@ -372,7 +388,7 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 		env := envs.NewBuilder().Build()
 
 		for _, tc := range errorTests {
-			excellent.EvaluateTemplate(env, vars, tc.template)
+			excellent.EvaluateTemplate(env, vars, tc.template, nil)
 		}
 	}
 }

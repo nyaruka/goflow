@@ -155,6 +155,14 @@ func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
 // literal : STRING
 func (v *visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} {
 	value := ctx.GetText()
-	value = value[1 : len(value)-1]
-	return strings.Replace(value, `""`, `"`, -1) // unescape embedded quotes
+
+	// unquote, this takes care of escape sequences as well
+	unquoted, err := strconv.Unquote(value)
+
+	// if we had an error, just strip surrounding quotes
+	if err != nil {
+		unquoted = value[1 : len(value)-1]
+	}
+
+	return unquoted
 }
