@@ -78,7 +78,7 @@
                     "name": "Stavros"
                 }
             ],
-            "contact_query": "age > 20",
+            "contact_query": "age > 20 OR gender = @fields.gender",
             "legacy_vars": [
                 "@(\"0788123123\")"
             ]
@@ -91,7 +91,7 @@
                         "uuid": "945493e3-933f-4668-9761-ce990fae5e5c"
                     }
                 ],
-                "contact_query": "age > 20",
+                "contact_query": "age > 20 OR gender = \"Male\"",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "flow": {
                     "name": "Collect Age",
@@ -148,10 +148,11 @@
         ],
         "inspection": {
             "templates": [
-                "age > 20",
+                "age > 20 OR gender = @fields.gender",
                 "@(\"0788123123\")"
             ],
             "dependencies": [
+                "field[key=gender,name=]",
                 "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
                 "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]",
                 "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]"
