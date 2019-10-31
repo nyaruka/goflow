@@ -1,6 +1,8 @@
 package flows
 
 import (
+	"strconv"
+
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -41,4 +43,9 @@ var RunContextTopLevels = []string{
 	"trigger",
 	"urns",
 	"webhook",
+}
+
+// ContactQueryEscaping
+func ContactQueryEscaping(s string) string {
+	return strconv.Quote(s)
 }
