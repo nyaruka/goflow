@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
@@ -403,8 +404,9 @@ type FlowRun interface {
 	LogError(Step, error)
 	Events() []Event
 
-	EvaluateTemplateValue(template string) (types.XValue, error)
-	EvaluateTemplate(template string) (string, error)
+	EvaluateTemplateValue(string) (types.XValue, error)
+	EvaluateTemplate(string) (string, error)
+	EvaluateTemplateWithEscaping(string, excellent.Escaping) (string, error)
 
 	GetText(uuids.UUID, string, string) string
 	GetTextArray(uuids.UUID, string, []string) []string

@@ -1,3 +1,8 @@
+v0.55.0
+----------
+ * Update start_session action to use escaping when evaluating the contact query
+ * Add support for escaping expressions in templates
+
 v0.54.3
 ----------
  * Relax requirement for field assets to have UUID set since engine doesn't use this

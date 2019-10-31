@@ -61,6 +61,8 @@ func TestParseQuery(t *testing.T) {
 		},
 
 		{`xyz != ""`, "", "can't resolve 'xyz' to attribute, scheme or field", envs.RedactionPolicyNone},
+
+		{`name = "O\"Leary"`, `name=O"Leary`, "", envs.RedactionPolicyNone}, // string unquoting
 	}
 
 	fields := map[string]assets.Field{

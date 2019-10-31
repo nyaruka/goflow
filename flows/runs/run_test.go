@@ -215,6 +215,11 @@ func TestRunContext(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, tc.expected, actual, "template mismatch for %s", tc.template)
 	}
+
+	// test with escaping
+	evaluated, err := run.EvaluateTemplateWithEscaping(`gender = @("M\" OR")`, flows.ContactQueryEscaping)
+	assert.NoError(t, err)
+	assert.Equal(t, `gender = "M\" OR"`, evaluated)
 }
 
 func TestMissingRelatedRunContext(t *testing.T) {
