@@ -1,3 +1,9 @@
+v0.56.0
+----------
+ * Fix docstring for UPPER()
+ * Rework ReadFlow to accept legacy flows too
+ * Move legacy package inside flows/definition
+
 v0.55.0
 ----------
  * Update start_session action to use escaping when evaluating the contact query
