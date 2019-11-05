@@ -526,7 +526,7 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 	}
 
 	// create our engine session
-	sa, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "error creating test session assets")
 	}

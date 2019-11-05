@@ -24,7 +24,7 @@ type sessionAssets struct {
 var _ flows.SessionAssets = (*sessionAssets)(nil)
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
-func NewSessionAssets(source assets.Source) (flows.SessionAssets, error) {
+func NewSessionAssets(source assets.Source, migrationConfig *definition.MigrationConfig) (flows.SessionAssets, error) {
 	channels, err := source.Channels()
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func NewSessionAssets(source assets.Source) (flows.SessionAssets, error) {
 		channels:    flows.NewChannelAssets(channels),
 		classifiers: flows.NewClassifierAssets(classifiers),
 		fields:      flows.NewFieldAssets(fields),
-		flows:       definition.NewFlowAssets(source),
+		flows:       definition.NewFlowAssets(source, migrationConfig),
 		groups:      flows.NewGroupAssets(groups),
 		labels:      flows.NewLabelAssets(labels),
 		locations:   flows.NewLocationAssets(locations),

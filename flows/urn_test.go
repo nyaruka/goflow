@@ -35,7 +35,7 @@ func TestContactURN(t *testing.T) {
     }`))
 	require.NoError(t, err)
 
-	sessionAssets, err := engine.NewSessionAssets(source)
+	sessionAssets, err := engine.NewSessionAssets(source, nil)
 	require.NoError(t, err)
 
 	channels := sessionAssets.Channels()

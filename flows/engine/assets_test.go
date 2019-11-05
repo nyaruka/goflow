@@ -40,7 +40,7 @@ func TestSessionAssets(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, source, sa.Source())
@@ -67,7 +67,7 @@ func TestSessionAssets(t *testing.T) {
 func TestSessionAssetsWithSourceErrors(t *testing.T) {
 	source := &testSource{}
 
-	sa, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source, nil)
 	require.NoError(t, err)
 
 	source.currentErrType = "flow"
@@ -76,7 +76,7 @@ func TestSessionAssetsWithSourceErrors(t *testing.T) {
 
 	for _, errType := range []string{"channels", "classifiers", "fields", "groups", "labels", "locations", "resthooks", "templates"} {
 		source.currentErrType = errType
-		_, err = engine.NewSessionAssets(source)
+		_, err = engine.NewSessionAssets(source, nil)
 		assert.EqualError(t, err, fmt.Sprintf("unable to load %s assets", errType), "error mismatch for type %s", errType)
 	}
 }

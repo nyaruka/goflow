@@ -76,7 +76,7 @@ func TestDependencies(t *testing.T) {
 	}`))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source, nil)
 	require.NoError(t, err)
 
 	missing := make([]assets.Reference, 0)

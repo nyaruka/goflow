@@ -1,5 +1,5 @@
 {
-    "legacy_flows": [
+    "flows": [
         {
             "entry": "20b85218-553f-4fbb-bf65-8b8df6907b82",
             "action_sets": [
@@ -222,6 +222,5 @@
                 "expires": 10080
             }
         }
-    ],
-    "other_assets": {}
+    ]
 }

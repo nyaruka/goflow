@@ -649,7 +649,7 @@ func TestReadAction(t *testing.T) {
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 }
 
-func TestLegacyWebhookPayload(t *testing.T) {
+func TestResthookPayload(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
@@ -661,7 +661,7 @@ func TestLegacyWebhookPayload(t *testing.T) {
 	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	run := session.Runs()[0]
 
-	payload, err := run.EvaluateTemplate(actions.LegacyWebhookPayload)
+	payload, err := run.EvaluateTemplate(actions.ResthookPayload)
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{

@@ -23,7 +23,7 @@ func LoadSessionAssets(path string) (flows.SessionAssets, error) {
 		return nil, err
 	}
 
-	return engine.NewSessionAssets(source)
+	return engine.NewSessionAssets(source, nil)
 }
 
 func LoadFlowFromAssets(path string, uuid assets.FlowUUID) (flows.Flow, error) {

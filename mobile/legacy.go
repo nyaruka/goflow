@@ -1,7 +1,7 @@
 package mobile
 
 import (
-	"github.com/nyaruka/goflow/legacy"
+	"github.com/nyaruka/goflow/flows/definition/legacy"
 )
 
 // IsLegacyDefinition peeks at the given flow definition to determine if it is in legacy format
@@ -11,7 +11,7 @@ func IsLegacyDefinition(definition string) bool {
 
 // MigrateLegacyDefinition migrates a legacy definition
 func MigrateLegacyDefinition(definition string) (string, error) {
-	migrated, err := legacy.MigrateLegacyDefinition([]byte(definition), "")
+	migrated, err := legacy.MigrateDefinition([]byte(definition), "")
 	if err != nil {
 		return "", err
 	}

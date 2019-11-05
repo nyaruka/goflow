@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/legacy/expressions"
+	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 

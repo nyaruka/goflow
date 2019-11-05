@@ -11,8 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// LegacyWebhookPayload is a template that matches the JSON payload sent by legacy webhooks
-var LegacyWebhookPayload = `@(json(object(
+const ResthookPayload = `@(json(object(
   "contact", object("uuid", contact.uuid, "name", contact.name, "urn", contact.urn),
   "flow", run.flow,
   "path", run.path,
@@ -89,7 +88,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	}
 
 	// build our payload
-	payload, err := run.EvaluateTemplate(LegacyWebhookPayload)
+	payload, err := run.EvaluateTemplate(ResthookPayload)
 	if err != nil {
 		// if we got an error then our payload is likely not valid JSON
 		return errors.Wrapf(err, "error evaluating resthook payload")
