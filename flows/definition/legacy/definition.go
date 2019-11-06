@@ -1118,10 +1118,10 @@ func (f *Flow) Migrate(baseMediaURL string) ([]byte, error) {
 	return json.Marshal(migrated)
 }
 
-// IsLegacyDefinition peeks at the given flow definition to determine if it is in legacy format
-func IsLegacyDefinition(data json.RawMessage) bool {
-	// any flow with root-level action_sets or rule_sets or flow_type property is considered to be in the new format
-	frag1, _, _, _ := jsonparser.Get(data, "action_sets")
+// IsPossibleDefinition peeks at the given flow definition to determine if it could be in legacy format
+func IsPossibleDefinition(data json.RawMessage) bool {
+	// any JSON blob with one of the following keys could be a legacy definition
+	frag1, _, _, _ := jsonparser.Get(data, "spec_version")
 	frag2, _, _, _ := jsonparser.Get(data, "rule_sets")
 	frag3, _, _, _ := jsonparser.Get(data, "flow_type")
 	return frag1 != nil || frag2 != nil || frag3 != nil

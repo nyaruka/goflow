@@ -348,22 +348,30 @@ type MigrationConfig struct {
 
 // ReadFlow a flow definition from the passed in byte array, migrating it to the spec version of the engine if necessary
 func ReadFlow(data json.RawMessage, migrationConfig *MigrationConfig) (flows.Flow, error) {
-	// first check if this is a legacy definition
-	if legacy.IsLegacyDefinition(data) {
-		if migrationConfig == nil {
-			return nil, errors.New("unable to migrate what appears to be a legacy definition without a migration config")
+	// try to read header (uuid, name, spec_version)
+	header := &flowHeader{}
+	err := utils.UnmarshalAndValidate(data, header)
+
+	if err != nil {
+		// could this be a legacy definition?
+		if legacy.IsPossibleDefinition(data) {
+			if migrationConfig == nil {
+				return nil, errors.New("unable to migrate what appears to be a legacy definition without a migration config")
+			}
+
+			// try to migrate it forwards to 13.0.0
+			var err error
+			data, err = legacy.MigrateDefinition(data, migrationConfig.BaseMediaURL)
+			if err != nil {
+				return nil, errors.Wrap(err, "error migrating what appears to be a legacy definition")
+			}
 		}
 
-		// try to migrate it forwards to 13.0.0
-		var err error
-		data, err = legacy.MigrateDefinition(data, migrationConfig.BaseMediaURL)
-		if err != nil {
-			return nil, errors.Wrap(err, "error migrating what appears to be a legacy definition")
-		}
+		// try reading header again
+		err = utils.UnmarshalAndValidate(data, header)
 	}
 
-	header := &flowHeader{}
-	if err := utils.UnmarshalAndValidate(data, header); err != nil {
+	if err != nil {
 		return nil, errors.Wrap(err, "unable to read flow header")
 	}
 

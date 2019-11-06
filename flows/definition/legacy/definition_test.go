@@ -246,7 +246,7 @@ func TestRuleSetMigration(t *testing.T) {
 
 func TestIsLegacyDefinition(t *testing.T) {
 	// try reading empty JSON
-	assert.False(t, legacy.IsLegacyDefinition([]byte(`{}`)))
+	assert.True(t, legacy.IsLegacyDefinition([]byte(`{}`)))
 	assert.True(t, legacy.IsLegacyDefinition([]byte(`{"flow_type":"M"}`)))
 
 	// try with new flow
