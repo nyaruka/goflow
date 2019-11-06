@@ -53,7 +53,7 @@ func TestMigrations(t *testing.T) {
 			test.AssertEqualJSON(t, tc.Migrated, actual, "migration mismatch in %s", testName)
 
 			// check final flow is valid
-			_, err = definition.ReadFlow(actual)
+			_, err = definition.ReadFlow(actual, nil)
 			assert.NoError(t, err, "migrated flow validation error in %s", testName)
 		}
 

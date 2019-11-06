@@ -6,14 +6,13 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 
-	"github.com/nyaruka/goflow/flows/definition/legacy"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -42,10 +41,15 @@ func Migrate(reader io.Reader, includeUI bool, baseMediaURL string) ([]byte, err
 		return nil, err
 	}
 
-	migrated, err := legacy.MigrateDefinition(data, baseMediaURL)
+	var migConfig *definition.MigrationConfig
+	if baseMediaURL != "" {
+		migConfig = &definition.MigrationConfig{BaseMediaURL: baseMediaURL}
+	}
+
+	flow, err := definition.ReadFlow(data, migConfig)
 	if err != nil {
 		return nil, err
 	}
 
-	return utils.JSONMarshalPretty(json.RawMessage(migrated))
+	return utils.JSONMarshalPretty(flow)
 }
