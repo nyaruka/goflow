@@ -244,13 +244,13 @@ func TestRuleSetMigration(t *testing.T) {
 	}
 }
 
-func TestIsLegacyDefinition(t *testing.T) {
+func TestIsPossibleDefinition(t *testing.T) {
 	// try reading empty JSON
-	assert.False(t, legacy.IsLegacyDefinition([]byte(`{}`)))
-	assert.True(t, legacy.IsLegacyDefinition([]byte(`{"flow_type":"M"}`)))
+	assert.False(t, legacy.IsPossibleDefinition([]byte(`{}`)))
+	assert.True(t, legacy.IsPossibleDefinition([]byte(`{"flow_type":"M"}`)))
 
 	// try with new flow
-	assert.False(t, legacy.IsLegacyDefinition([]byte(`{
+	assert.False(t, legacy.IsPossibleDefinition([]byte(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Simple",
 		"spec_version": "13.0",
@@ -260,7 +260,7 @@ func TestIsLegacyDefinition(t *testing.T) {
 	}`)))
 
 	// try with legacy flow
-	assert.True(t, legacy.IsLegacyDefinition([]byte(`{
+	assert.True(t, legacy.IsPossibleDefinition([]byte(`{
 		"metadata": {
 			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 			"name": "Simple",
@@ -275,7 +275,7 @@ func TestIsLegacyDefinition(t *testing.T) {
 	}`)))
 
 	// try with legacy flow without metadata or flow_type
-	assert.True(t, legacy.IsLegacyDefinition([]byte(`{
+	assert.True(t, legacy.IsPossibleDefinition([]byte(`{
 		"base_language": "eng",
 		"entry"
 		"version": 11,
