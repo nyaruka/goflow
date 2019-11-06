@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/legacy"
+	"github.com/nyaruka/goflow/flows/definition/legacy"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

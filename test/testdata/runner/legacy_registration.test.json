@@ -127,7 +127,7 @@
                     "type": "manual"
                 },
                 "type": "messaging",
-                "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                 "wait": {
                     "type": "msg"
                 }
@@ -353,7 +353,7 @@
                     "type": "manual"
                 },
                 "type": "messaging",
-                "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                 "wait": {
                     "type": "msg"
                 }
@@ -626,7 +626,7 @@
                     "type": "manual"
                 },
                 "type": "messaging",
-                "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                 "wait": {
                     "type": "msg"
                 }
@@ -995,7 +995,7 @@
                     "type": "manual"
                 },
                 "type": "messaging",
-                "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         }
     ],

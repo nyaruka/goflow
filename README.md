@@ -1,4 +1,4 @@
-# Goflow ![Build Status](https://github.com/nyaruka/goflow/workflows/Test/badge.svg) [![codecov](https://codecov.io/gh/nyaruka/goflow/branch/master/graph/badge.svg)](https://codecov.io/gh/nyaruka/goflow) [![Go Report Card](https://goreportcard.com/badge/github.com/nyaruka/goflow)](https://goreportcard.com/report/github.com/nyaruka/goflow)
+# Goflow [![Build Status](https://github.com/nyaruka/goflow/workflows/CI/badge.svg)](https://github.com/nyaruka/goflow/actions?query=workflow%3ACI) [![codecov](https://codecov.io/gh/nyaruka/goflow/branch/master/graph/badge.svg)](https://codecov.io/gh/nyaruka/goflow) [![Go Report Card](https://goreportcard.com/badge/github.com/nyaruka/goflow)](https://goreportcard.com/report/github.com/nyaruka/goflow)
 
 ## Specification
 
@@ -15,7 +15,7 @@ import (
 )
 
 source, _ := static.LoadSource("myassets.json")
-assets, _ := engine.NewSessionAssets(source)
+assets, _ := engine.NewSessionAssets(source, nil)
 contact := flows.NewContact(assets, ...)
 env := envs.NewBuilder().Build()
 trigger := triggers.NewManual(env, contact, flow.Reference(), nil, nil, time.Now())

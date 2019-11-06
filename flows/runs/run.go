@@ -289,7 +289,14 @@ func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
 func (r *flowRun) EvaluateTemplate(template string) (string, error) {
 	context := types.NewXObject(r.RootContext(r.Environment()))
 
-	return excellent.EvaluateTemplate(r.Environment(), context, template)
+	return excellent.EvaluateTemplate(r.Environment(), context, template, nil)
+}
+
+// EvaluateTemplateAsString evaluates the given template as a string in the context of this run
+func (r *flowRun) EvaluateTemplateWithEscaping(template string, escaping excellent.Escaping) (string, error) {
+	context := types.NewXObject(r.RootContext(r.Environment()))
+
+	return excellent.EvaluateTemplate(r.Environment(), context, template, escaping)
 }
 
 // get the ordered list of languages to be used for localization in this run

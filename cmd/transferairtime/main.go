@@ -114,7 +114,7 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 		return err
 	}
 
-	sa, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source, nil)
 	if err != nil {
 		return errors.Wrap(err, "error parsing assets")
 	}

@@ -1,3 +1,30 @@
+v0.56.1
+----------
+ * Tweak criteria for deciding whether to try reading a flow as legacy
+
+v0.56.0
+----------
+ * Fix docstring for UPPER()
+ * Rework ReadFlow to accept legacy flows too
+ * Move legacy package inside flows/definition
+
+v0.55.0
+----------
+ * Update start_session action to use escaping when evaluating the contact query
+ * Add support for escaping expressions in templates
+
+v0.54.3
+----------
+ * Relax requirement for field assets to have UUID set since engine doesn't use this
+
+v0.54.2
+----------
+ * Fix naming in mobile bindings
+
+v0.54.1
+----------
+ * Fix docstring for UPPER()
+
 v0.54.0
 ----------
  * NewEnvironmentBuilder() -> envs.NewBuilder() to match engine.NewBuilder()

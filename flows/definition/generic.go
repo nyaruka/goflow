@@ -15,7 +15,7 @@ func ReadFlowFromGeneric(data map[string]interface{}) (flows.Flow, error) {
 		return nil, err
 	}
 
-	return ReadFlow(marshaled)
+	return ReadFlow(marshaled, nil)
 }
 
 // MustReadFlowFromGeneric tries to read a flow from the given generic map, panics if it can't

@@ -1405,7 +1405,7 @@
     },
     {
         "signature": "upper(text)",
-        "summary": "Converts `text` to lowercase.",
+        "summary": "Converts `text` to uppercase.",
         "detail": "",
         "examples": [
             {

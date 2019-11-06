@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+
+	"github.com/buger/jsonparser"
 )
 
 // Flow is a JSON serializable implementation of a flow asset
@@ -26,5 +28,12 @@ func (f *Flow) UnmarshalJSON(data []byte) error {
 
 	// alias our type so we don't end up here again
 	type alias Flow
+
+	// if there's a metadata field, this is a legacy definition, so read the UUID/name from there
+	legacyMetadata, _, _, _ := jsonparser.Get(data, "metadata")
+	if legacyMetadata != nil {
+		return json.Unmarshal(legacyMetadata, (*alias)(f))
+	}
+
 	return json.Unmarshal(data, (*alias)(f))
 }

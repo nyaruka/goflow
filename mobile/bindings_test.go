@@ -53,7 +53,7 @@ func TestMobileBindings(t *testing.T) {
 
 	contact := mobile.NewEmptyContact(sa)
 
-	trigger := mobile.NewManual(environment, contact, mobile.NewFlowReference("7c3db26f-e12a-48af-9673-e2feefdf8516", "Two Questions"))
+	trigger := mobile.NewManualTrigger(environment, contact, mobile.NewFlowReference("7c3db26f-e12a-48af-9673-e2feefdf8516", "Two Questions"))
 
 	eng := mobile.NewEngine()
 	ss, err := eng.NewSession(sa, trigger)
@@ -82,7 +82,7 @@ func TestMobileBindings(t *testing.T) {
 	assert.Equal(t, "Hi there", msg.Text())
 	assert.Equal(t, 1, msg.Attachments().Length())
 
-	resume := mobile.NewMsg(nil, nil, msg)
+	resume := mobile.NewMsgResume(nil, nil, msg)
 
 	sprint, err = session.Resume(resume)
 	require.NoError(t, err)

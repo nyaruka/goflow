@@ -60,7 +60,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source, nil)
 	require.NoError(t, err)
 
 	env := envs.NewBuilder().Build()
@@ -393,7 +393,7 @@ func TestReadTrigger(t *testing.T) {
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
-	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource())
+	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource(), nil)
 	require.NoError(t, err)
 
 	// error if no type field
@@ -409,7 +409,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source)
+	sa, err := engine.NewSessionAssets(source, nil)
 	require.NoError(t, err)
 
 	defaultEnv := envs.NewBuilder().Build()

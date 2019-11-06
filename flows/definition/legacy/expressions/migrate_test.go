@@ -13,7 +13,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/legacy/expressions"
+	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
@@ -380,13 +380,10 @@ func TestLegacyTests(t *testing.T) {
 			migratedVars := tc.Context.Variables.Migrate().Context(env)
 			migratedVarsJSON, _ := json.Marshal(migratedVars)
 
-			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate)
+			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate, nil)
 
 			if len(tc.Errors) > 0 {
 				assert.Error(t, err, "expecting error evaluating template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)
-			} else {
-				// TODO enable checking of output
-				//assert.Equal(t, tc.Output, output, "output mismatch for template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)
 			}
 		}
 	}

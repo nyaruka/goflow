@@ -13,10 +13,10 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils"
@@ -105,44 +105,11 @@ type runResult struct {
 	outputs []*Output
 }
 
-type legacyAssets struct {
-	LegacyFlows []json.RawMessage      `json:"legacy_flows"`
-	OtherAssets map[string]interface{} `json:"other_assets"`
-}
-
-// loads assets from a file in one of two formats:
-//   1. a regular static assets file
-//   2. a file with both legacy flow defs and assets, i.e. {"legacy_flows": [], "other_assets": {}}
 func loadAssets(path string) (flows.SessionAssets, error) {
 	// load the test specific assets
 	assetsJSON, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
-	}
-
-	// try reading as legacy assets
-	la := &legacyAssets{}
-	if err := json.Unmarshal(assetsJSON, la); err != nil {
-		return nil, errors.Wrap(err, "unable to read as legacy assets")
-	}
-
-	if len(la.LegacyFlows) > 0 {
-		migratedFlows := make([]json.RawMessage, len(la.LegacyFlows))
-		for i, legacyFlow := range la.LegacyFlows {
-			migrated, err := legacy.MigrateLegacyDefinition(legacyFlow, "")
-			if err != nil {
-				return nil, errors.Wrap(err, "unable to migrate legacy flow")
-			}
-			migratedFlows[i] = migrated
-		}
-
-		la.OtherAssets["flows"] = migratedFlows
-		assetsJSON, err = json.Marshal(la.OtherAssets)
-		if err != nil {
-			return nil, err
-		}
-
-		// ioutil.WriteFile(path+".migrated", assetsJSON, 0666)
 	}
 
 	// create the assets source
@@ -151,7 +118,9 @@ func loadAssets(path string) (flows.SessionAssets, error) {
 		return nil, errors.Wrapf(err, "error reading test assets '%s'", path)
 	}
 
-	return engine.NewSessionAssets(source)
+	mconfig := &definition.MigrationConfig{BaseMediaURL: "http://temba.io/"}
+
+	return engine.NewSessionAssets(source, mconfig)
 }
 
 func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.RawMessage) (runResult, error) {
