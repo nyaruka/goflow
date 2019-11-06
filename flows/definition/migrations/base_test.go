@@ -17,7 +17,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMigrations(t *testing.T) {
+func TestMigrateToVersion(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	// get all versions in order
@@ -59,6 +59,40 @@ func TestMigrations(t *testing.T) {
 
 		prevVersion = version
 	}
+}
+
+func TestMigrateToLatest(t *testing.T) {
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+
+	migrated, err := migrations.MigrateToLatest([]byte(`[]`), semver.MustParse(`13.0.0`))
+	assert.EqualError(t, err, "can't migrate definition which isn't a flow")
+	assert.Nil(t, migrated)
+
+	migrated, err = migrations.MigrateToLatest([]byte(`{}`), semver.MustParse(`13.0.0`))
+	require.NoError(t, err)
+	test.AssertEqualJSON(t, []byte(`{
+		"spec_version": "13.1.0"
+	}`), migrated, "flow migration mismatch")
+
+	// migrate valid definition
+	migrated, err = migrations.MigrateToLatest([]byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Empty Flow",
+		"spec_version": "13.0",
+		"language": "eng",
+		"type": "messaging",
+		"nodes": []
+	}`), semver.MustParse(`13.0.0`))
+
+	require.NoError(t, err)
+	test.AssertEqualJSON(t, []byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Empty Flow",
+		"spec_version": "13.1.0",
+		"language": "eng",
+		"type": "messaging",
+		"nodes": []
+	}`), migrated, "flow migration mismatch")
 }
 
 func TestMigrationPrimitives(t *testing.T) {
