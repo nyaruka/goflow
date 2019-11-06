@@ -386,7 +386,7 @@ func ReadFlow(data json.RawMessage, migrationConfig *MigrationConfig) (flows.Flo
 		var err error
 		data, err = migrations.MigrateToLatest(data, header.SpecVersion)
 		if err != nil {
-			panic(err)
+			return nil, errors.Wrap(err, "unable to migrate flow")
 		}
 	}
 
