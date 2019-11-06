@@ -53,7 +53,7 @@ func MigrateToVersion(data []byte, from *semver.Version, to *semver.Version) ([]
 		return nil, errors.New("can't migrate definition which isn't a flow")
 	}
 
-	migrated := Flow{d}
+	migrated := Flow(d)
 
 	for _, version := range versions {
 		migrated, err = registered[version](migrated)
@@ -61,65 +61,57 @@ func MigrateToVersion(data []byte, from *semver.Version, to *semver.Version) ([]
 			return nil, err
 		}
 
-		migrated.Def["spec_version"] = version.String()
+		migrated["spec_version"] = version.String()
 	}
 
 	// finally marshal back to JSON
-	return json.Marshal(migrated.Def)
+	return json.Marshal(migrated)
 }
 
 //------------------------------------------------------------------------------------------
 // Generic definition primitives
 //------------------------------------------------------------------------------------------
 
-type Flow struct {
-	Def map[string]interface{}
-}
+type Flow map[string]interface{}
 
 func (f Flow) Nodes() []Node {
-	d, _ := f.Def["nodes"].([]interface{})
+	d, _ := f["nodes"].([]interface{})
 	nodes := make([]Node, len(d))
 	for i := range d {
-		nodes[i] = Node{d[i].(map[string]interface{})}
+		nodes[i] = Node(d[i].(map[string]interface{}))
 	}
 	return nodes
 }
 
-type Node struct {
-	Def map[string]interface{}
-}
+type Node map[string]interface{}
 
 func (n Node) Actions() []Action {
-	d, _ := n.Def["actions"].([]interface{})
+	d, _ := n["actions"].([]interface{})
 	actions := make([]Action, len(d))
 	for i := range d {
-		actions[i] = Action{d[i].(map[string]interface{})}
+		actions[i] = Action(d[i].(map[string]interface{}))
 	}
 	return actions
 }
 
-func (n Node) Router() *Router {
-	d, _ := n.Def["router"].(map[string]interface{})
+func (n Node) Router() Router {
+	d, _ := n["router"].(map[string]interface{})
 	if d == nil {
 		return nil
 	}
-	return &Router{d}
+	return Router(d)
 }
 
-type Action struct {
-	Def map[string]interface{}
-}
+type Action map[string]interface{}
 
 func (a Action) Type() string {
-	d, _ := a.Def["type"].(string)
+	d, _ := a["type"].(string)
 	return d
 }
 
-type Router struct {
-	Def map[string]interface{}
-}
+type Router map[string]interface{}
 
 func (r Router) Type() string {
-	d, _ := r.Def["type"].(string)
+	d, _ := r["type"].(string)
 	return d
 }
