@@ -1,3 +1,7 @@
+v0.56.1
+----------
+ * Tweak criteria for deciding whether to try reading a flow as legacy
+
 v0.56.0
 ----------
  * Fix docstring for UPPER()
