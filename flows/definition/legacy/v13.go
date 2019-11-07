@@ -258,7 +258,7 @@ func newAddContactGroupsAction(uuid uuids.UUID, groups []*assets.GroupReference)
 func newAddContactURNAction(uuid uuids.UUID, scheme string, path string) migratedAction {
 	return migratedAction(map[string]interface{}{
 		"uuid":   uuid,
-		"type":   "add_contact_groups",
+		"type":   "add_contact_urn",
 		"scheme": scheme,
 		"path":   path,
 	})
