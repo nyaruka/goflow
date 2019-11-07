@@ -1,0 +1,104 @@
+{
+    "flows": [
+        {
+            "uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
+            "name": "Resume Tester",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "revision": 123,
+            "nodes": [
+                {
+                    "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                    "actions": [
+                        {
+                            "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name! What is your favorite color?"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg",
+                            "timeout": {
+                                "seconds": 600,
+                                "category_uuid": "1024833c-91aa-4873-a3b5-3bac1ef55812"
+                            }
+                        },
+                        "result_name": "Favorite Color",
+                        "categories": [
+                            {
+                                "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                                "name": "Red",
+                                "exit_uuid": "7651ca02-775c-42f0-bfad-72ef1776c332"
+                            },
+                            {
+                                "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                                "name": "Blue",
+                                "exit_uuid": "ca79e1c8-0b58-4935-af6e-989049ac67a4"
+                            },
+                            {
+                                "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                                "name": "Other",
+                                "exit_uuid": "84696f43-07b5-4fde-9991-73d10f8406a5"
+                            },
+                            {
+                                "uuid": "1024833c-91aa-4873-a3b5-3bac1ef55812",
+                                "name": "No Response",
+                                "exit_uuid": "f0649239-6ab2-4903-b5c5-f813beb5539d"
+                            }
+                        ],
+                        "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "red"
+                                ],
+                                "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                            },
+                            {
+                                "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "blue"
+                                ],
+                                "category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "7651ca02-775c-42f0-bfad-72ef1776c332",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                        },
+                        {
+                            "uuid": "ca79e1c8-0b58-4935-af6e-989049ac67a4",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                        },
+                        {
+                            "uuid": "84696f43-07b5-4fde-9991-73d10f8406a5",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                        },
+                        {
+                            "uuid": "f0649239-6ab2-4903-b5c5-f813beb5539d",
+                            "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                    "actions": [],
+                    "exits": [
+                        {
+                            "uuid": "78b3fa3d-5c0a-4db3-8026-3d04ead714b2"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
