@@ -210,7 +210,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// create an engine instance
 		eng := engine.NewBuilder().
-			WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
+			WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, 10000)).
 			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 				if c.Type() == "wit" {
 					return wit.NewService(c, "123456789"), nil
