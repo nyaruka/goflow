@@ -92,10 +92,14 @@ func testTriggerType(t *testing.T, assetsJSON json.RawMessage, typeName string) 
 		expectedEventsJSON, _ := json.Marshal(tc.Events)
 		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
 
+		// check context representation
 		actualContextJSON, err := session.Runs()[0].EvaluateTemplate(`@(json(trigger))`)
 		assert.NoError(t, err)
-
 		test.AssertEqualJSON(t, tc.Context, []byte(actualContextJSON), "context mismatch in %s", testName)
+
+		// try marshaling the trigger back to JSON
+		triggerJSON, err := json.Marshal(trigger)
+		test.AssertEqualJSON(t, tc.Trigger, triggerJSON, "marshal mismatch in %s", testName)
 	}
 }
 
@@ -533,7 +537,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	assert.Equal(t, triggers.TypeManual, trigger.Type())
 	assert.Nil(t, trigger.Environment())
 	assert.Nil(t, trigger.Contact())
-	assert.Equal(t, types.XObjectEmpty, trigger.Params())
+	assert.Nil(t, trigger.Params())
 
 	session, _, err = eng.NewSession(sa, trigger)
 	require.NoError(t, err)
