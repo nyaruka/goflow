@@ -1,0 +1,19 @@
+[
+    {
+        "description": "run_expired event created",
+        "resume": {
+            "type": "run_expiration",
+            "resumed_on": "2000-01-01T00:00:00Z"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "run_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "type": "run_expired"
+            }
+        ],
+        "run_status": "expired",
+        "session_status": "completed"
+    }
+]
