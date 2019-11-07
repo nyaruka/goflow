@@ -1,3 +1,7 @@
+v0.56.2
+----------
+ * Fix migrating save actions with URN fields
+
 v0.56.1
 ----------
  * Tweak criteria for deciding whether to try reading a flow as legacy
