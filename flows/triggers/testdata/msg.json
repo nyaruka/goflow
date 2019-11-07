@@ -1,5 +1,25 @@
 [
     {
+        "description": "flow is required",
+        "trigger": {
+            "type": "msg",
+            "msg": {
+                "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                "channel": {
+                    "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                    "name": "Twilio"
+                },
+                "urn": "tel:+12065551212",
+                "text": "hi there",
+                "attachments": [
+                    "https://s3.amazon.com/mybucket/attachment.jpg"
+                ]
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "field 'flow' is required"
+    },
+    {
         "description": "msg is required",
         "trigger": {
             "type": "msg",

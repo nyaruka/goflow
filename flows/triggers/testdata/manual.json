@@ -1,5 +1,13 @@
 [
     {
+        "description": "flow is required",
+        "trigger": {
+            "type": "manual",
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "field 'flow' is required"
+    },
+    {
         "description": "params are accessible in context",
         "trigger": {
             "type": "manual",

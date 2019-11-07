@@ -77,7 +77,7 @@ var _ flows.TriggerWithRun = (*FlowActionTrigger)(nil)
 
 type flowActionTriggerEnvelope struct {
 	baseTriggerEnvelope
-	RunSummary json.RawMessage `json:"run_summary"`
+	RunSummary json.RawMessage `json:"run_summary" validate:"required"`
 }
 
 func readFlowActionTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
