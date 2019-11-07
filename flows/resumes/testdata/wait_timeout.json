@@ -1,0 +1,26 @@
+[
+    {
+        "description": "wait timed out event created and timeout category used",
+        "resume": {
+            "type": "wait_timeout",
+            "resumed_on": "2000-01-01T00:00:00Z"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "type": "wait_timed_out"
+            },
+            {
+                "category": "No Response",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Favorite Color",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "type": "run_result_changed",
+                "value": "2018-10-18T14:20:30.000123Z"
+            }
+        ],
+        "run_status": "completed",
+        "session_status": "completed"
+    }
+]

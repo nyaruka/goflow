@@ -15,13 +15,19 @@ import (
 	"github.com/pkg/errors"
 )
 
-type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Resume, error)
+// ReadFunc is a function that can read a resume from JSON
+type ReadFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Resume, error)
 
-var registeredTypes = map[string]readFunc{}
+var registeredTypes = map[string]ReadFunc{}
 
 // registers a new type of resume
-func registerType(name string, f readFunc) {
+func registerType(name string, f ReadFunc) {
 	registeredTypes[name] = f
+}
+
+// RegisteredTypes gets the registered types of resumes
+func RegisteredTypes() map[string]ReadFunc {
+	return registeredTypes
 }
 
 // base of all resume types
