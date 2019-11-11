@@ -194,7 +194,10 @@
             }
         ],
         "inspection": {
-            "dependencies": [],
+            "dependencies": [
+                "global[key=org_name,name=]",
+                "global[key=password,name=]"
+            ],
             "results": [],
             "templates": [
                 "Hi there @contact welcome to @globals.org_name, the secret password is @globals.password"

@@ -20,6 +20,7 @@ type Dependencies struct {
 	Contacts    []*ContactReference           `json:"contacts,omitempty"`
 	Fields      []*assets.FieldReference      `json:"fields,omitempty"`
 	Flows       []*assets.FlowReference       `json:"flows,omitempty"`
+	Globals     []*assets.GlobalReference     `json:"globals,omitempty"`
 	Groups      []*assets.GroupReference      `json:"groups,omitempty"`
 	Labels      []*assets.LabelReference      `json:"labels,omitempty"`
 	Templates   []*assets.TemplateReference   `json:"templates,omitempty"`
@@ -40,6 +41,8 @@ func NewDependencies(refs []assets.Reference) *Dependencies {
 			d.Fields = append(d.Fields, typed)
 		case *assets.FlowReference:
 			d.Flows = append(d.Flows, typed)
+		case *assets.GlobalReference:
+			d.Globals = append(d.Globals, typed)
 		case *assets.GroupReference:
 			d.Groups = append(d.Groups, typed)
 		case *assets.LabelReference:
@@ -74,6 +77,11 @@ func (d *Dependencies) Check(sa SessionAssets, missing assets.MissingCallback) e
 		_, err := sa.Flows().Get(ref.UUID)
 		if err != nil {
 			missing(ref, err)
+		}
+	}
+	for _, ref := range d.Globals {
+		if sa.Globals().Get(ref.Key) == nil {
+			missing(ref, nil)
 		}
 	}
 	for _, ref := range d.Groups {

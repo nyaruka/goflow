@@ -29,18 +29,27 @@ func (g *Global) Reference() *assets.GlobalReference {
 
 // GlobalAssets provides access to all global assets
 type GlobalAssets struct {
-	all []*Global
+	all   []*Global
+	byKey map[string]*Global
 }
 
 // NewGlobalAssets creates a new set of global assets
 func NewGlobalAssets(globals []assets.Global) *GlobalAssets {
 	s := &GlobalAssets{
-		all: make([]*Global, len(globals)),
+		all:   make([]*Global, len(globals)),
+		byKey: make(map[string]*Global, len(globals)),
 	}
 	for i, asset := range globals {
-		s.all[i] = NewGlobal(asset)
+		global := NewGlobal(asset)
+		s.all[i] = global
+		s.byKey[global.Key()] = global
 	}
 	return s
+}
+
+// Get returns the contact field with the given key
+func (s *GlobalAssets) Get(key string) *Global {
+	return s.byKey[key]
 }
 
 // Context returns the properties available in expressions
