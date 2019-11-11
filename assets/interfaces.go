@@ -124,7 +124,7 @@ type Flow interface {
 //   {
 //     "key": "organization_name",
 //     "name": "Organization Name",
-//     "value": "UReport"
+//     "value": "U-Report"
 //   }
 //
 // @asset global
@@ -272,6 +272,7 @@ type Source interface {
 	Classifiers() ([]Classifier, error)
 	Fields() ([]Field, error)
 	Flow(FlowUUID) (Flow, error)
+	Globals() ([]Global, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
 	Locations() ([]LocationHierarchy, error)

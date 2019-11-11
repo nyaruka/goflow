@@ -6,7 +6,7 @@ import (
 
 // Global is a JSON serializable implementation of a global asset
 type Global struct {
-	Key_   string `json:"key" validate:"required,uuid"`
+	Key_   string `json:"key" validate:"required"`
 	Name_  string `json:"name"`
 	Value_ string `json:"value" validate:"required"`
 }
