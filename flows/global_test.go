@@ -28,7 +28,7 @@ func TestGlobals(t *testing.T) {
 
 	// check use in expressions
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
-		"__default__":  types.NewXText("org_name: U-Report\naccess_token: 674372272"),
+		"__default__":  types.NewXText("Org Name: U-Report\nAccess Token: 674372272"),
 		"access_token": types.NewXText("674372272"),
 		"org_name":     types.NewXText("U-Report"),
 	}), flows.Context(env, ga))

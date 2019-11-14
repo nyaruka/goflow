@@ -66,7 +66,7 @@ func (s *GlobalAssets) Context(env envs.Environment) map[string]types.XValue {
 func (s *GlobalAssets) format() string {
 	lines := make([]string, 0, len(s.all))
 	for _, g := range s.all {
-		lines = append(lines, fmt.Sprintf("%s: %s", g.Key(), g.Value()))
+		lines = append(lines, fmt.Sprintf("%s: %s", g.Name(), g.Value()))
 	}
 	return strings.Join(lines, "\n")
 }
