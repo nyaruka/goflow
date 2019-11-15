@@ -27,6 +27,7 @@ func TestClient(t *testing.T) {
 			httpx.NewMockResponse(200, "xxx=yyy\r\n"),                        // unexpected response to reserve ID request
 			httpx.NewMockResponse(200, withCRLF(topupResponse)),              // successful topup request
 			httpx.NewMockResponse(200, "xxx=yyy\r\n"),                        // unexpected response to topup request
+			httpx.NewMockResponse(0, ""),                                     // timeout
 		},
 	})
 
@@ -75,6 +76,12 @@ func TestClient(t *testing.T) {
 	topup, _, err = cl.Topup(123455, "593999000001", "593999000002", "1", "2")
 	assert.EqualError(t, err, "DTOne API request failed: field 'destination_currency' is required")
 	assert.Nil(t, topup)
+
+	// test timeout still gives us a trace
+	trace, err = cl.Ping()
+	assert.EqualError(t, err, "unable to connect to server")
+	assert.Equal(t, "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 76\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=ping&key=1570634754123&login=joe&md5=9b97b9694adede6840de4e8056245f6d", string(trace.RequestTrace))
+	assert.Equal(t, "", string(trace.ResponseTrace))
 
 	assert.False(t, mocks.HasUnused())
 }

@@ -174,7 +174,7 @@ func (c *Client) request(data url.Values, dest Response) (*httpx.Trace, error) {
 		"Content-Type": "application/x-www-form-urlencoded",
 	})
 	if err != nil {
-		return nil, err
+		return trace, err
 	}
 
 	if err := c.parseResponse(trace.ResponseBody, dest); err != nil {
