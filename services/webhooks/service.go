@@ -30,20 +30,25 @@ var fetchResponseContentTypes = map[string]bool{
 }
 
 type service struct {
+	httpClient       *http.Client
 	defaultUserAgent string
 	maxBodyBytes     int
 }
 
 // NewServiceFactory creates a new webhook service factory
-func NewServiceFactory(defaultUserAgent string, maxBodyBytes int) engine.WebhookServiceFactory {
+func NewServiceFactory(httpClient *http.Client, defaultUserAgent string, maxBodyBytes int) engine.WebhookServiceFactory {
 	return func(flows.Session) (flows.WebhookService, error) {
-		return NewService(defaultUserAgent, maxBodyBytes), nil
+		return NewService(httpClient, defaultUserAgent, maxBodyBytes), nil
 	}
 }
 
 // NewService creates a new default webhook service
-func NewService(defaultUserAgent string, maxBodyBytes int) flows.WebhookService {
-	return &service{defaultUserAgent: defaultUserAgent, maxBodyBytes: maxBodyBytes}
+func NewService(httpClient *http.Client, defaultUserAgent string, maxBodyBytes int) flows.WebhookService {
+	return &service{
+		httpClient:       httpClient,
+		defaultUserAgent: defaultUserAgent,
+		maxBodyBytes:     maxBodyBytes,
+	}
 }
 
 func (s *service) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
@@ -58,7 +63,7 @@ func (s *service) Call(session flows.Session, request *http.Request, resthook st
 	}
 
 	start := dates.Now()
-	response, err := httpx.Do(session.Engine().HTTPClient(), request)
+	response, err := httpx.Do(s.httpClient, request)
 	timeTaken := dates.Now().Sub(start)
 
 	if err != nil {

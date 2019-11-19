@@ -146,6 +146,6 @@ func configureDTOne(login, token string) (engine.AirtimeServiceFactory, error) {
 	}
 
 	return func(flows.Session) (flows.AirtimeService, error) {
-		return dtone.NewService(login, token, ""), nil
+		return dtone.NewService(http.DefaultClient, login, token, ""), nil
 	}, nil
 }

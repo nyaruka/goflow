@@ -12,16 +12,13 @@ import (
 )
 
 func TestBuilder(t *testing.T) {
-	webhookSvc := webhooks.NewService("goflow", 1000)
-	httpClient := &http.Client{}
+	webhookSvc := webhooks.NewService(&http.Client{}, "goflow", 1000)
 
 	eng := engine.NewBuilder().
 		WithWebhookServiceFactory(func(flows.Session) (flows.WebhookService, error) { return webhookSvc, nil }).
-		WithHTTPClient(httpClient).
 		WithMaxStepsPerSprint(123).
 		Build()
 
-	assert.Equal(t, httpClient, eng.HTTPClient())
 	assert.Equal(t, 123, eng.MaxStepsPerSprint())
 
 	svc, err := eng.Services().Webhook(nil)

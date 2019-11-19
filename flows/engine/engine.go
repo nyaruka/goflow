@@ -2,7 +2,6 @@ package engine
 
 import (
 	"encoding/json"
-	"net/http"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
@@ -11,7 +10,6 @@ import (
 
 // an instance of the engine
 type engine struct {
-	httpClient        *http.Client
 	services          *services
 	maxStepsPerSprint int
 }
@@ -37,7 +35,6 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missi
 	return readSession(e, sa, data, missing)
 }
 
-func (e *engine) HTTPClient() *http.Client { return e.httpClient }
 func (e *engine) Services() flows.Services { return e.services }
 func (e *engine) MaxStepsPerSprint() int   { return e.maxStepsPerSprint }
 
@@ -56,17 +53,10 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		eng: &engine{
-			httpClient:        http.DefaultClient,
 			services:          newEmptyServices(),
 			maxStepsPerSprint: 100,
 		},
 	}
-}
-
-// WithHTTPClient sets the HTTP client
-func (b *Builder) WithHTTPClient(client *http.Client) *Builder {
-	b.eng.httpClient = client
-	return b
 }
 
 // WithWebhookServiceFactory sets the webhook service factory
