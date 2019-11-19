@@ -147,6 +147,18 @@
             "type": "number"
         }
     ],
+    "globals": [
+        {
+            "key": "org_name",
+            "name": "Org Name",
+            "value": "U-Report"
+        },
+        {
+            "key": "password",
+            "name": "Password",
+            "value": "Chef"
+        }
+    ],
     "groups": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",

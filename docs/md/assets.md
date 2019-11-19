@@ -71,6 +71,19 @@ Is graph of nodes with actions and routers.
 }
 ```
 
+<h2 class="item_title"><a name="asset:global" href="#asset:global">global</a></h2>
+
+Is a named constant.
+
+
+```objectivec
+{
+    "key": "organization_name",
+    "name": "Organization Name",
+    "value": "U-Report"
+}
+```
+
 <h2 class="item_title"><a name="asset:group" href="#asset:group">group</a></h2>
 
 Is a set of contacts which can be static or dynamic (i.e. based on a query).

@@ -115,6 +115,7 @@ type SessionAssets interface {
 	Classifiers() *ClassifierAssets
 	Fields() *FieldAssets
 	Flows() FlowAssets
+	Globals() *GlobalAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
 	Locations() *LocationAssets
