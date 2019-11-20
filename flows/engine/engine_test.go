@@ -12,7 +12,7 @@ import (
 )
 
 func TestBuilder(t *testing.T) {
-	webhookSvc := webhooks.NewService("goflow", 1000)
+	webhookSvc := webhooks.NewService(map[string]string{"User-Agent": "goflow"}, 1000)
 	httpClient := &http.Client{}
 
 	eng := engine.NewBuilder().
