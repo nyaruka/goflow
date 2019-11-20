@@ -1,6 +1,8 @@
 package dtone
 
 import (
+	"net/http"
+
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils/httpx"
@@ -10,17 +12,19 @@ import (
 )
 
 type service struct {
-	login    string
-	apiToken string
-	currency string
+	httpClient *http.Client
+	login      string
+	apiToken   string
+	currency   string
 }
 
 // NewService creates a new DTOne airtime service
-func NewService(login, apiToken, currency string) flows.AirtimeService {
+func NewService(httpClient *http.Client, login, apiToken, currency string) flows.AirtimeService {
 	return &service{
-		login:    login,
-		apiToken: apiToken,
-		currency: currency,
+		httpClient: httpClient,
+		login:      login,
+		apiToken:   apiToken,
+		currency:   currency,
 	}
 }
 
@@ -32,7 +36,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		ActualAmount:  decimal.Zero,
 	}
 
-	client := NewClient(session.Engine().HTTPClient(), s.login, s.apiToken)
+	client := NewClient(s.httpClient, s.login, s.apiToken)
 
 	info, trace, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
 	if trace != nil {

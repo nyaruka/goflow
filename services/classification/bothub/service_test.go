@@ -1,6 +1,7 @@
 package bothub_test
 
 import (
+	"net/http"
 	"testing"
 	"time"
 
@@ -67,6 +68,7 @@ func TestService(t *testing.T) {
 	}))
 
 	svc := bothub.NewService(
+		http.DefaultClient,
 		test.NewClassifier("Booking", "bothub", []string{"book_flight", "book_hotel"}),
 		"f96abf2f-3b53-4766-8ea6-09a655222a02",
 	)

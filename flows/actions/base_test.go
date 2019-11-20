@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"sort"
 	"testing"
 	"time"
@@ -210,15 +211,15 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// create an engine instance
 		eng := engine.NewBuilder().
-			WithWebhookServiceFactory(webhooks.NewServiceFactory("goflow-testing", 10000)).
+			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
 			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 				if c.Type() == "wit" {
-					return wit.NewService(c, "123456789"), nil
+					return wit.NewService(http.DefaultClient, c, "123456789"), nil
 				}
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
 			}).
 			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
-				return dtone.NewService("nyaruka", "123456789", "RWF"), nil
+				return dtone.NewService(http.DefaultClient, "nyaruka", "123456789", "RWF"), nil
 			}).
 			Build()
 

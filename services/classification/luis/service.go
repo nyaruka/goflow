@@ -1,11 +1,14 @@
 package luis
 
 import (
+	"net/http"
+
 	"github.com/nyaruka/goflow/flows"
 )
 
 // a classification service implementation for a LUIS app
 type service struct {
+	httpClient *http.Client
 	classifier *flows.Classifier
 	endpoint   string
 	appID      string
@@ -13,8 +16,9 @@ type service struct {
 }
 
 // NewService creates a new classification service
-func NewService(classifier *flows.Classifier, endpoint, appID, key string) flows.ClassificationService {
+func NewService(httpClient *http.Client, classifier *flows.Classifier, endpoint, appID, key string) flows.ClassificationService {
 	return &service{
+		httpClient: httpClient,
 		classifier: classifier,
 		endpoint:   endpoint,
 		appID:      appID,
@@ -23,7 +27,7 @@ func NewService(classifier *flows.Classifier, endpoint, appID, key string) flows
 }
 
 func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	client := NewClient(session.Engine().HTTPClient(), s.endpoint, s.appID, s.key)
+	client := NewClient(s.httpClient, s.endpoint, s.appID, s.key)
 
 	response, trace, err := client.Predict(input)
 	if trace != nil {
