@@ -12,7 +12,7 @@ import (
 )
 
 func TestBuilder(t *testing.T) {
-	webhookSvc := webhooks.NewService(&http.Client{}, "goflow", 1000)
+	webhookSvc := webhooks.NewService(&http.Client{}, map[string]string{"User-Agent": "goflow"}, 1000)
 
 	eng := engine.NewBuilder().
 		WithWebhookServiceFactory(func(flows.Session) (flows.WebhookService, error) { return webhookSvc, nil }).

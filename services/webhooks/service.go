@@ -16,8 +16,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-const httpHeaderUserAgent = "User-Agent"
-
 // response content-types that we'll fetch
 var fetchResponseContentTypes = map[string]bool{
 	"application/json":       true,
@@ -30,31 +28,33 @@ var fetchResponseContentTypes = map[string]bool{
 }
 
 type service struct {
-	httpClient       *http.Client
-	defaultUserAgent string
-	maxBodyBytes     int
+	httpClient     *http.Client
+	defaultHeaders map[string]string
+	maxBodyBytes   int
 }
 
 // NewServiceFactory creates a new webhook service factory
-func NewServiceFactory(httpClient *http.Client, defaultUserAgent string, maxBodyBytes int) engine.WebhookServiceFactory {
+func NewServiceFactory(httpClient *http.Client, defaultHeaders map[string]string, maxBodyBytes int) engine.WebhookServiceFactory {
 	return func(flows.Session) (flows.WebhookService, error) {
-		return NewService(httpClient, defaultUserAgent, maxBodyBytes), nil
+		return NewService(httpClient, defaultHeaders, maxBodyBytes), nil
 	}
 }
 
 // NewService creates a new default webhook service
-func NewService(httpClient *http.Client, defaultUserAgent string, maxBodyBytes int) flows.WebhookService {
+func NewService(httpClient *http.Client, defaultHeaders map[string]string, maxBodyBytes int) flows.WebhookService {
 	return &service{
-		httpClient:       httpClient,
-		defaultUserAgent: defaultUserAgent,
-		maxBodyBytes:     maxBodyBytes,
+		httpClient:     httpClient,
+		defaultHeaders: defaultHeaders,
+		maxBodyBytes:   maxBodyBytes,
 	}
 }
 
 func (s *service) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
-	// if user-agent isn't set, use our default
-	if request.Header.Get(httpHeaderUserAgent) == "" {
-		request.Header.Set(httpHeaderUserAgent, s.defaultUserAgent)
+	// set any headers with defaults
+	for k, v := range s.defaultHeaders {
+		if request.Header.Get(k) == "" {
+			request.Header.Set(k, v)
+		}
 	}
 
 	dump, err := httputil.DumpRequestOut(request, true)

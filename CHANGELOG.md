@@ -1,3 +1,8 @@
+v0.57.0
+----------
+ * Add globals to evaluation context as @globals
+ * Add global as new asset type
+
 v0.56.3
 ----------
  * DTOne client should record http log for timeouts

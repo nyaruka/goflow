@@ -82,7 +82,7 @@ func main() {
 
 func createEngine(witToken string) flows.Engine {
 	builder := engine.NewBuilder().
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, "goflow-runner", 10000))
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-runner"}, 10000))
 
 	if witToken != "" {
 		builder.WithClassificationServiceFactory(func(session flows.Session, classifier *flows.Classifier) (flows.ClassificationService, error) {

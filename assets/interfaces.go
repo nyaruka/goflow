@@ -119,6 +119,21 @@ type Flow interface {
 	Definition() json.RawMessage
 }
 
+// Global is a named constant.
+//
+//   {
+//     "key": "organization_name",
+//     "name": "Organization Name",
+//     "value": "U-Report"
+//   }
+//
+// @asset global
+type Global interface {
+	Key() string
+	Name() string
+	Value() string
+}
+
 // GroupUUID is the UUID of a group
 type GroupUUID uuids.UUID
 
@@ -257,6 +272,7 @@ type Source interface {
 	Classifiers() ([]Classifier, error)
 	Fields() ([]Field, error)
 	Flow(FlowUUID) (Flow, error)
+	Globals() ([]Global, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
 	Locations() ([]LocationHierarchy, error)
