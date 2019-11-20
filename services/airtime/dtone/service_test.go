@@ -1,6 +1,7 @@
 package dtone_test
 
 import (
+	"net/http"
 	"strings"
 	"testing"
 	"time"
@@ -91,7 +92,7 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 	httpx.SetRequestor(mocks)
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC)))
 
-	svc := dtone.NewService("login", "token", "USD")
+	svc := dtone.NewService(http.DefaultClient, "login", "token", "USD")
 
 	httpLogger := &flows.HTTPLogger{}
 
@@ -136,7 +137,7 @@ func TestServiceFailedTransfers(t *testing.T) {
 	httpx.SetRequestor(mocks)
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC)))
 
-	svc := dtone.NewService("login", "token", "USD")
+	svc := dtone.NewService(http.DefaultClient, "login", "token", "USD")
 
 	httpLogger := &flows.HTTPLogger{}
 

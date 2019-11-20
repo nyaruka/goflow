@@ -28,20 +28,25 @@ var fetchResponseContentTypes = map[string]bool{
 }
 
 type service struct {
+	httpClient     *http.Client
 	defaultHeaders map[string]string
 	maxBodyBytes   int
 }
 
 // NewServiceFactory creates a new webhook service factory
-func NewServiceFactory(defaultHeaders map[string]string, maxBodyBytes int) engine.WebhookServiceFactory {
+func NewServiceFactory(httpClient *http.Client, defaultHeaders map[string]string, maxBodyBytes int) engine.WebhookServiceFactory {
 	return func(flows.Session) (flows.WebhookService, error) {
-		return NewService(defaultHeaders, maxBodyBytes), nil
+		return NewService(httpClient, defaultHeaders, maxBodyBytes), nil
 	}
 }
 
 // NewService creates a new default webhook service
-func NewService(defaultHeaders map[string]string, maxBodyBytes int) flows.WebhookService {
-	return &service{defaultHeaders: defaultHeaders, maxBodyBytes: maxBodyBytes}
+func NewService(httpClient *http.Client, defaultHeaders map[string]string, maxBodyBytes int) flows.WebhookService {
+	return &service{
+		httpClient:     httpClient,
+		defaultHeaders: defaultHeaders,
+		maxBodyBytes:   maxBodyBytes,
+	}
 }
 
 func (s *service) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
@@ -58,7 +63,7 @@ func (s *service) Call(session flows.Session, request *http.Request, resthook st
 	}
 
 	start := dates.Now()
-	response, err := httpx.Do(session.Engine().HTTPClient(), request)
+	response, err := httpx.Do(s.httpClient, request)
 	timeTaken := dates.Now().Sub(start)
 
 	if err != nil {
