@@ -35,6 +35,7 @@ var RunContextTopLevels = []string{
 	"child",
 	"contact",
 	"fields",
+	"globals",
 	"input",
 	"legacy_extra",
 	"parent",

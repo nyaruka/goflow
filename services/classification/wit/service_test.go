@@ -1,6 +1,7 @@
 package wit_test
 
 import (
+	"net/http"
 	"testing"
 	"time"
 
@@ -33,7 +34,11 @@ func TestService(t *testing.T) {
 		},
 	}))
 
-	svc := wit.NewService(test.NewClassifier("Booking", "wit", []string{"book_flight", "book_hotel"}), "23532624376")
+	svc := wit.NewService(
+		http.DefaultClient,
+		test.NewClassifier("Booking", "wit", []string{"book_flight", "book_hotel"}),
+		"23532624376",
+	)
 
 	httpLogger := &flows.HTTPLogger{}
 

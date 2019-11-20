@@ -72,16 +72,20 @@ var fieldRefPaths = [][]string{
 	{"child", "contact", "fields"},
 }
 
-// ExtractFieldReferences extracts fields references from the given template
-func ExtractFieldReferences(template string) []*assets.FieldReference {
-	fieldRefs := make([]*assets.FieldReference, 0)
+// ExtractFromTemplate extracts asset references from the given template
+func ExtractFromTemplate(template string) []assets.Reference {
+	refs := make([]assets.Reference, 0)
 	tools.FindContextRefsInTemplate(template, flows.RunContextTopLevels, func(path []string) {
-		isField, fieldKey := isFieldRefPath(path)
-		if isField {
-			fieldRefs = append(fieldRefs, assets.NewFieldReference(fieldKey, ""))
+		if len(path) == 2 && path[0] == "globals" {
+			refs = append(refs, assets.NewGlobalReference(strings.ToLower(path[1]), ""))
+		} else {
+			isField, fieldKey := isFieldRefPath(path)
+			if isField {
+				refs = append(refs, assets.NewFieldReference(fieldKey, ""))
+			}
 		}
 	})
-	return fieldRefs
+	return refs
 }
 
 // checks whether the given context path is a reference to a contact field

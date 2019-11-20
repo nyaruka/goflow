@@ -237,8 +237,8 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 	}
 
 	include := func(template string) {
-		fieldRefs := inspect.ExtractFieldReferences(template)
-		for _, f := range fieldRefs {
+		refs := inspect.ExtractFromTemplate(template)
+		for _, f := range refs {
 			addDependency(f)
 		}
 	}

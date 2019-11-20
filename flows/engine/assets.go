@@ -14,6 +14,7 @@ type sessionAssets struct {
 	classifiers *flows.ClassifierAssets
 	fields      *flows.FieldAssets
 	flows       flows.FlowAssets
+	globals     *flows.GlobalAssets
 	groups      *flows.GroupAssets
 	labels      *flows.LabelAssets
 	locations   *flows.LocationAssets
@@ -34,6 +35,10 @@ func NewSessionAssets(source assets.Source, migrationConfig *definition.Migratio
 		return nil, err
 	}
 	fields, err := source.Fields()
+	if err != nil {
+		return nil, err
+	}
+	globals, err := source.Globals()
 	if err != nil {
 		return nil, err
 	}
@@ -64,6 +69,7 @@ func NewSessionAssets(source assets.Source, migrationConfig *definition.Migratio
 		classifiers: flows.NewClassifierAssets(classifiers),
 		fields:      flows.NewFieldAssets(fields),
 		flows:       definition.NewFlowAssets(source, migrationConfig),
+		globals:     flows.NewGlobalAssets(globals),
 		groups:      flows.NewGroupAssets(groups),
 		labels:      flows.NewLabelAssets(labels),
 		locations:   flows.NewLocationAssets(locations),
@@ -77,6 +83,7 @@ func (s *sessionAssets) Channels() *flows.ChannelAssets       { return s.channel
 func (s *sessionAssets) Classifiers() *flows.ClassifierAssets { return s.classifiers }
 func (s *sessionAssets) Fields() *flows.FieldAssets           { return s.fields }
 func (s *sessionAssets) Flows() flows.FlowAssets              { return s.flows }
+func (s *sessionAssets) Globals() *flows.GlobalAssets         { return s.globals }
 func (s *sessionAssets) Groups() *flows.GroupAssets           { return s.groups }
 func (s *sessionAssets) Labels() *flows.LabelAssets           { return s.labels }
 func (s *sessionAssets) Locations() *flows.LocationAssets     { return s.locations }

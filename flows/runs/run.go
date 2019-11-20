@@ -231,6 +231,7 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 		// other
 		"trigger":      flows.Context(env, r.Session().Trigger()),
 		"input":        flows.Context(env, r.Session().Input()),
+		"globals":      flows.Context(env, r.Session().Assets().Globals()),
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
 }

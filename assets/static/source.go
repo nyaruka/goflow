@@ -19,6 +19,7 @@ type StaticSource struct {
 		Classifiers []*types.Classifier        `json:"classifiers" validate:"omitempty,dive"`
 		Fields      []*types.Field             `json:"fields" validate:"omitempty,dive"`
 		Flows       []*types.Flow              `json:"flows" validate:"omitempty,dive"`
+		Globals     []*types.Global            `json:"globals" validate:"omitempty,dive"`
 		Groups      []*types.Group             `json:"groups" validate:"omitempty,dive"`
 		Labels      []*types.Label             `json:"labels" validate:"omitempty,dive"`
 		Locations   []*utils.LocationHierarchy `json:"locations"`
@@ -87,6 +88,15 @@ func (s *StaticSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
 		}
 	}
 	return nil, errors.Errorf("no such flow with UUID '%s'", uuid)
+}
+
+// Globals returns all global assets
+func (s *StaticSource) Globals() ([]assets.Global, error) {
+	set := make([]assets.Global, len(s.s.Globals))
+	for i := range s.s.Globals {
+		set[i] = s.s.Globals[i]
+	}
+	return set, nil
 }
 
 // Groups returns all group assets
