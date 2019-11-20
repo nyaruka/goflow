@@ -12,6 +12,16 @@
         "read_error": "field 'text' is required"
     },
     {
+        "description": "Read fails when topic is invalid",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "hi there",
+            "topic": "spam"
+        },
+        "read_error": "field 'topic' is not a valid message topic"
+    },
+    {
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
@@ -283,7 +293,7 @@
         "validation_error": "missing dependencies: template[uuid=b620b463-8d15-427f-b2e3-4f44f9f071ec,name=missing]"
     },
     {
-        "description": "Msg with a matching template",
+        "description": "Msg with a topic and a matching template",
         "action": {
             "type": "send_msg",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -297,7 +307,8 @@
                     "@contact.name",
                     "boy"
                 ]
-            }
+            },
+            "topic": "account"
         },
         "events": [
             {
@@ -320,7 +331,8 @@
                             "Ryan Lewis",
                             "boy"
                         ]
-                    }
+                    },
+                    "topic": "account"
                 },
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "msg_created"

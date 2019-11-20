@@ -64,7 +64,7 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 
 	// if we have an audio URL, turn it into a message
 	attachments := []utils.Attachment{utils.Attachment(fmt.Sprintf("audio:%s", evaluatedAudioURL))}
-	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), "", attachments, nil, nil)
+	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), "", attachments, nil, nil, flows.NilMsgTopic)
 	logEvent(events.NewIVRCreated(msg))
 
 	return nil
