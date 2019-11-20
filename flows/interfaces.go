@@ -2,7 +2,6 @@ package flows
 
 import (
 	"encoding/json"
-	"net/http"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -115,6 +114,7 @@ type SessionAssets interface {
 	Classifiers() *ClassifierAssets
 	Fields() *FieldAssets
 	Flows() FlowAssets
+	Globals() *GlobalAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
 	Locations() *LocationAssets
@@ -321,7 +321,6 @@ type Engine interface {
 	NewSession(SessionAssets, Trigger) (Session, Sprint, error)
 	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
 
-	HTTPClient() *http.Client
 	Services() Services
 	MaxStepsPerSprint() int
 }

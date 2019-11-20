@@ -299,6 +299,22 @@
         "expected_localization": {}
     },
     {
+        "legacy_action": {
+            "type": "save",
+            "uuid": "5dbb462b-ed55-4cf3-b14c-6ed52f217b06",
+            "label": "Phone Number",
+            "field": "tel",
+            "value": "@flow.phone.text"
+        },
+        "expected_action": {
+            "type": "add_contact_urn",
+            "uuid": "5dbb462b-ed55-4cf3-b14c-6ed52f217b06",
+            "scheme": "tel",
+            "path": "@results.phone.input"
+        },
+        "expected_localization": {}
+    },
+    {
         "description": "say action with only msg",
         "legacy_action": {
             "type": "say",

@@ -1,3 +1,16 @@
+v0.57.0
+----------
+ * Add globals to evaluation context as @globals
+ * Add global as new asset type
+
+v0.56.3
+----------
+ * DTOne client should record http log for timeouts
+
+v0.56.2
+----------
+ * Fix migrating save actions with URN fields
+
 v0.56.1
 ----------
  * Tweak criteria for deciding whether to try reading a flow as legacy
