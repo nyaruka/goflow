@@ -1,3 +1,8 @@
+v0.58.0
+----------
+ * Give services their own HTTP clients
+ * Allow webhook service to take a map of deafult header values
+
 v0.57.0
 ----------
  * Add globals to evaluation context as @globals
