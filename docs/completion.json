@@ -423,6 +423,11 @@
                     "key": "params",
                     "help": "the parameters passed to the trigger",
                     "type": "any"
+                },
+                {
+                    "key": "keyword",
+                    "help": "the keyword match if this is a keyword trigger",
+                    "type": "any"
                 }
             ]
         }

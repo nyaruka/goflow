@@ -15,13 +15,19 @@ import (
 	"github.com/pkg/errors"
 )
 
-type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Trigger, error)
+// ReadFunc is a function that can read a trigger from JSON
+type ReadFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Trigger, error)
 
-var registeredTypes = map[string]readFunc{}
+var registeredTypes = map[string]ReadFunc{}
 
 // registers a new type of trigger
-func registerType(name string, f readFunc) {
+func registerType(name string, f ReadFunc) {
 	registeredTypes[name] = f
+}
+
+// RegisteredTypes gets the registered types of trigger
+func RegisteredTypes() map[string]ReadFunc {
+	return registeredTypes
 }
 
 // base of all trigger types
@@ -88,12 +94,14 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 //
 //   type:text -> the type of trigger that started this session
 //   params:any -> the parameters passed to the trigger
+//   keyword:any -> the keyword match if this is a keyword trigger
 //
 // @context trigger
 func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"type":   types.NewXText(t.type_),
-		"params": t.params,
+		"type":    types.NewXText(t.type_),
+		"params":  t.params,
+		"keyword": nil,
 	}
 }
 

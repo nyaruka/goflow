@@ -1,0 +1,183 @@
+[
+    {
+        "description": "flow is required",
+        "trigger": {
+            "type": "msg",
+            "msg": {
+                "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                "channel": {
+                    "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                    "name": "Twilio"
+                },
+                "urn": "tel:+12065551212",
+                "text": "hi there",
+                "attachments": [
+                    "https://s3.amazon.com/mybucket/attachment.jpg"
+                ]
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "field 'flow' is required"
+    },
+    {
+        "description": "msg is required",
+        "trigger": {
+            "type": "msg",
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Trigger Tester"
+            },
+            "contact": {
+                "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+                "name": "Bob",
+                "created_on": "2018-01-01T12:00:00Z"
+            },
+            "keyword_match": {
+                "type": "first_word",
+                "keyword": "start"
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "field 'msg' is required"
+    },
+    {
+        "description": "with missing type in keyword match",
+        "trigger": {
+            "type": "msg",
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Trigger Tester"
+            },
+            "contact": {
+                "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+                "name": "Bob",
+                "created_on": "2018-01-01T12:00:00Z"
+            },
+            "msg": {
+                "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                "channel": {
+                    "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                    "name": "Twilio"
+                },
+                "urn": "tel:+12065551212",
+                "text": "hi there",
+                "attachments": [
+                    "https://s3.amazon.com/mybucket/attachment.jpg"
+                ]
+            },
+            "keyword_match": {
+                "keyword": "start"
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "field 'keyword_match.type' is required"
+    },
+    {
+        "description": "msg received event logged",
+        "trigger": {
+            "type": "msg",
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Trigger Tester"
+            },
+            "contact": {
+                "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+                "name": "Bob",
+                "created_on": "2018-01-01T12:00:00Z"
+            },
+            "msg": {
+                "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                "channel": {
+                    "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                    "name": "Twilio"
+                },
+                "urn": "tel:+12065551212",
+                "text": "hi there",
+                "attachments": [
+                    "https://s3.amazon.com/mybucket/attachment.jpg"
+                ]
+            },
+            "keyword_match": {
+                "type": "first_word",
+                "keyword": "start"
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "msg": {
+                    "attachments": [
+                        "https://s3.amazon.com/mybucket/attachment.jpg"
+                    ],
+                    "channel": {
+                        "name": "Twilio",
+                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf"
+                    },
+                    "text": "hi there",
+                    "urn": "tel:+12065551212",
+                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b"
+                },
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "msg_received"
+            }
+        ],
+        "context": {
+            "type": "msg",
+            "params": null,
+            "keyword": "start"
+        }
+    },
+    {
+        "description": "keyword match is optional",
+        "trigger": {
+            "type": "msg",
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Trigger Tester"
+            },
+            "contact": {
+                "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+                "name": "Bob",
+                "created_on": "2018-01-01T12:00:00Z"
+            },
+            "msg": {
+                "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                "channel": {
+                    "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                    "name": "Twilio"
+                },
+                "urn": "tel:+12065551212",
+                "text": "hi there",
+                "attachments": [
+                    "https://s3.amazon.com/mybucket/attachment.jpg"
+                ]
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "msg": {
+                    "attachments": [
+                        "https://s3.amazon.com/mybucket/attachment.jpg"
+                    ],
+                    "channel": {
+                        "name": "Twilio",
+                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf"
+                    },
+                    "text": "hi there",
+                    "urn": "tel:+12065551212",
+                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b"
+                },
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "msg_received"
+            }
+        ],
+        "context": {
+            "type": "msg",
+            "params": null,
+            "keyword": null
+        }
+    }
+]

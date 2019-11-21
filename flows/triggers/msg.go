@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -90,6 +91,20 @@ func (t *MsgTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallba
 	logEvent(events.NewMsgReceived(t.msg))
 
 	return t.baseTrigger.InitializeRun(run, logEvent)
+}
+
+// Context for msg triggers additionally exposes the keyword match
+func (t *MsgTrigger) Context(env envs.Environment) map[string]types.XValue {
+	var keyword types.XValue
+	if t.match != nil {
+		keyword = types.NewXText(t.match.Keyword)
+	}
+
+	return map[string]types.XValue{
+		"type":    types.NewXText(t.type_),
+		"params":  t.params,
+		"keyword": keyword,
+	}
 }
 
 var _ flows.Trigger = (*MsgTrigger)(nil)
