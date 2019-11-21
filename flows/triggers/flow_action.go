@@ -7,6 +7,8 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -51,19 +53,24 @@ type FlowActionTrigger struct {
 }
 
 // NewFlowAction creates a new flow action trigger with the passed in values
-func NewFlowAction(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, runSummary json.RawMessage) *FlowActionTrigger {
-	return &FlowActionTrigger{
-		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, nil, nil),
-		runSummary:  runSummary,
-	}
+func NewFlowAction(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, runSummary json.RawMessage) (*FlowActionTrigger, error) {
+	return newFlowAction(env, flow, contact, nil, runSummary)
 }
 
 // NewFlowActionVoice creates a new flow action trigger with the passed in values
-func NewFlowActionVoice(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage) *FlowActionTrigger {
+func NewFlowActionVoice(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage) (*FlowActionTrigger, error) {
+	return newFlowAction(env, flow, contact, connection, runSummary)
+}
+
+func newFlowAction(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage) (*FlowActionTrigger, error) {
+	if !json.Valid(runSummary) {
+		return nil, errors.Errorf("invalid run summary JSON: %s", string(runSummary))
+	}
+
 	return &FlowActionTrigger{
 		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, connection, nil),
 		runSummary:  runSummary,
-	}
+	}, nil
 }
 
 // RunSummary returns the summary of the run that triggered this session

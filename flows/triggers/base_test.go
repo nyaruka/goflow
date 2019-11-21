@@ -152,6 +152,30 @@ func TestTriggerMarshaling(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil))
 
+	// can't create a trigger with invalid JSON
+	_, err = triggers.NewFlowAction(
+		env,
+		flow,
+		contact,
+		json.RawMessage(`{"uuid"}`),
+	)
+	assert.EqualError(t, err, `invalid run summary JSON: {"uuid"}`)
+
+	_, err = triggers.NewFlowAction(
+		env,
+		flow,
+		contact,
+		nil,
+	)
+	assert.EqualError(t, err, `invalid run summary JSON: `)
+
+	flowAction, _ := triggers.NewFlowAction(
+		env,
+		flow,
+		contact,
+		json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`),
+	)
+
 	triggerTests := []struct {
 		trigger   flows.Trigger
 		marshaled string
@@ -241,12 +265,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			triggers.NewFlowAction(
-				env,
-				flow,
-				contact,
-				json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`),
-			),
+			flowAction,
 			`{
 				"contact": {
 					"created_on": "2018-10-20T09:49:31.23456789Z",
