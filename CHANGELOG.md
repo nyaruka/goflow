@@ -1,3 +1,8 @@
+v0.59.0
+----------
+ * Validate run summary JSON passed to flow action triggers
+ * Expose keyword match on trigger in context
+
 v0.58.0
 ----------
  * Give services their own HTTP clients
