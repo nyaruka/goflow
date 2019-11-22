@@ -14,7 +14,7 @@
             "key_source": "results",
             "property_template": {
                 "key": "{key}",
-                "help": "result for {key}",
+                "help": "the result for {key}",
                 "type": "result"
             }
         },
@@ -23,7 +23,7 @@
             "key_source": "globals",
             "property_template": {
                 "key": "{key}",
-                "help": "global value {key}",
+                "help": "the global value {key}",
                 "type": "text"
             }
         },
