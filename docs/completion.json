@@ -19,6 +19,15 @@
             }
         },
         {
+            "name": "globals",
+            "key_source": "globals",
+            "property_template": {
+                "key": "{key}",
+                "help": "global value {key}",
+                "type": "text"
+            }
+        },
+        {
             "name": "urns",
             "properties": [
                 {
@@ -481,7 +490,7 @@
         {
             "key": "globals",
             "help": "the global values",
-            "type": "any"
+            "type": "globals"
         },
         {
             "key": "trigger",
@@ -504,6 +513,11 @@
             "key": "urns",
             "help": "the URN values of the contact",
             "type": "urns"
+        },
+        {
+            "key": "globals",
+            "help": "the global values",
+            "type": "globals"
         }
     ]
 }

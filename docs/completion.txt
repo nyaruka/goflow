@@ -195,6 +195,7 @@ parent.results -> the results saved by the run
 parent.status -> the current status of the run
 webhook -> the parsed JSON response of the last webhook call
 globals -> the global values
+globals.org_name -> global value org_name
 trigger -> the trigger that started this session
 trigger.type -> the type of trigger that started this session
 trigger.params -> the parameters passed to the trigger
