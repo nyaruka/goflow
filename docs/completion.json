@@ -479,6 +479,11 @@
             "type": "any"
         },
         {
+            "key": "globals",
+            "help": "the global values",
+            "type": "any"
+        },
+        {
             "key": "trigger",
             "help": "the trigger that started this session",
             "type": "trigger"
