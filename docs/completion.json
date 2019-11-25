@@ -14,8 +14,17 @@
             "key_source": "results",
             "property_template": {
                 "key": "{key}",
-                "help": "result for {key}",
+                "help": "the result for {key}",
                 "type": "result"
+            }
+        },
+        {
+            "name": "globals",
+            "key_source": "globals",
+            "property_template": {
+                "key": "{key}",
+                "help": "the global value {key}",
+                "type": "text"
             }
         },
         {
@@ -479,6 +488,11 @@
             "type": "any"
         },
         {
+            "key": "globals",
+            "help": "the global values",
+            "type": "globals"
+        },
+        {
             "key": "trigger",
             "help": "the trigger that started this session",
             "type": "trigger"
@@ -499,6 +513,11 @@
             "key": "urns",
             "help": "the URN values of the contact",
             "type": "urns"
+        },
+        {
+            "key": "globals",
+            "help": "the global values",
+            "type": "globals"
         }
     ]
 }

@@ -10,6 +10,7 @@ import (
 var rootNoSessionTypes = map[string]bool{
 	"contact": true,
 	"fields":  true,
+	"globals": true,
 	"urns":    true,
 }
 

@@ -11,6 +11,7 @@ These are the top-level variables that can be accessed in the context:
  * `child` the last child run ([related_run](context.html#context:related_run))
  * `parent` the parent of the run ([related_run](context.html#context:related_run))
  * `webhook` the parsed JSON response of the last webhook call (any)
+ * `globals` the global values (globals)
  * `trigger` the trigger that started this session ([trigger](context.html#context:trigger))
 
 
