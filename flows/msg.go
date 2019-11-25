@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	utils.Validator.RegisterAlias("msg_topic", "eq=event|eq=account|eq=purchase")
+	utils.Validator.RegisterAlias("msg_topic", "eq=event|eq=account|eq=purchase|eq=agent")
 }
 
 // MsgTopic is the topic, as required by some channel types
@@ -21,6 +21,7 @@ const (
 	MsgTopicEvent    MsgTopic = "event"
 	MsgTopicAccount  MsgTopic = "account"
 	MsgTopicPurchase MsgTopic = "purchase"
+	MsgTopicAgent    MsgTopic = "agent"
 )
 
 // BaseMsg represents a incoming or outgoing message with the session contact
