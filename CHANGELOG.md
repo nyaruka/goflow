@@ -1,3 +1,8 @@
+v0.60.0
+----------
+ * Add @globals to completion
+ * Add topic to send_msg actions
+
 v0.59.0
 ----------
  * Validate run summary JSON passed to flow action triggers
