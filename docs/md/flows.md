@@ -712,7 +712,8 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
         "variables": [
             "@contact.name"
         ]
-    }
+    },
+    "topic": "event"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>
@@ -729,7 +730,8 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "My Android Phone"
         },
-        "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
+        "text": "Hi Ryan Lewis, are you ready to complete today's survey?",
+        "topic": "event"
     }
 }
 ```

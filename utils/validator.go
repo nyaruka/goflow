@@ -100,6 +100,8 @@ func Validate(obj interface{}) error {
 			problem = fmt.Sprintf("is mutually exclusive with '%s'", fieldErr.Param())
 		case "http_method":
 			problem = "is not a valid HTTP method"
+		case "msg_topic":
+			problem = "is not a valid message topic"
 		case "date_format":
 			problem = "is not a valid date format"
 		case "time_format":
