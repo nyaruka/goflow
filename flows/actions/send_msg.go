@@ -35,7 +35,8 @@ const TypeSendMsg string = "send_msg"
 //         "name": "revive_issue"
 //       },
 //       "variables": ["@contact.name"]
-//     }
+//     },
+//     "topic": "event"
 //   }
 //
 // @action send_msg
@@ -44,8 +45,9 @@ type SendMsgAction struct {
 	universalAction
 	createMsgAction
 
-	AllURNs    bool        `json:"all_urns,omitempty"`
-	Templating *Templating `json:"templating,omitempty" validate:"omitempty,dive"`
+	AllURNs    bool           `json:"all_urns,omitempty"`
+	Templating *Templating    `json:"templating,omitempty" validate:"omitempty,dive"`
+	Topic      flows.MsgTopic `json:"topic,omitempty" validate:"omitempty,msg_topic"`
 }
 
 // Templating represents the templating that should be used if possible
@@ -114,14 +116,14 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 			}
 		}
 
-		msg := flows.NewMsgOut(dest.URN.URN(), channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating)
+		msg := flows.NewMsgOut(dest.URN.URN(), channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating, a.Topic)
 		logEvent(events.NewMsgCreated(msg))
 	}
 
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
-		msg := flows.NewMsgOut(urns.NilURN, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, nil)
+		msg := flows.NewMsgOut(urns.NilURN, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, nil, flows.NilMsgTopic)
 		logEvent(events.NewMsgCreated(msg))
 	}
 

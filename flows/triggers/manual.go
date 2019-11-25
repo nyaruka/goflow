@@ -37,10 +37,6 @@ type ManualTrigger struct {
 
 // NewManual creates a new manual trigger
 func NewManual(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, params *types.XObject) flows.Trigger {
-	if params == nil {
-		params = types.XObjectEmpty
-	}
-
 	return &ManualTrigger{
 		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, nil, params),
 	}
@@ -48,12 +44,22 @@ func NewManual(env envs.Environment, flow *assets.FlowReference, contact *flows.
 
 // NewManualVoice creates a new manual trigger with a channel connection for voice
 func NewManualVoice(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params *types.XObject) flows.Trigger {
+	return &ManualTrigger{
+		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, connection, params),
+	}
+}
+
+// Context for manual triggers always has non-nil params
+func (t *ManualTrigger) Context(env envs.Environment) map[string]types.XValue {
+	params := t.params
 	if params == nil {
 		params = types.XObjectEmpty
 	}
 
-	return &ManualTrigger{
-		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, connection, params),
+	return map[string]types.XValue{
+		"type":    types.NewXText(t.type_),
+		"params":  params,
+		"keyword": nil,
 	}
 }
 

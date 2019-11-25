@@ -631,7 +631,7 @@ func TestContextToJSON(t *testing.T) {
 				"uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
 			}`,
 		},
-		{"trigger", `{"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}`},
+		{"trigger", `{"type":"flow_action","params":{"source":"website","address":{"state":"WA"}},"keyword": null}`},
 	}
 
 	server := test.NewTestHTTPServer(49992)

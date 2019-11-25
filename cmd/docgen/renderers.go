@@ -20,6 +20,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+var dynamicContextTypes = []string{"fields", "globals", "results", "urns"}
+
 // function that can render a single tagged item
 type renderFunc func(*strings.Builder, *TaggedItem, flows.Session, flows.Session) error
 
@@ -196,7 +198,7 @@ func renderRootContext(items map[string][]*TaggedItem, session flows.Session, vo
 }
 
 func renderPropertyType(p *completion.Property) string {
-	if p.Type == "any" || p.Type == "fields" || p.Type == "results" || p.Type == "urns" {
+	if p.Type == "any" || utils.StringSliceContains(dynamicContextTypes, p.Type, true) {
 		return p.Type
 	} else if p.Type == "text" || p.Type == "number" || p.Type == "datetime" {
 		return fmt.Sprintf("[type:%s]", p.Type)
