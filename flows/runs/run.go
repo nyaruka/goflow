@@ -202,6 +202,7 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 //   child:related_run -> the last child run
 //   parent:related_run -> the parent of the run
 //   webhook:any -> the parsed JSON response of the last webhook call
+//   globals:globals -> the global values
 //   trigger:trigger -> the trigger that started this session
 //
 // @context root

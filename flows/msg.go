@@ -8,6 +8,22 @@ import (
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
+func init() {
+	utils.Validator.RegisterAlias("msg_topic", "eq=event|eq=account|eq=purchase|eq=agent")
+}
+
+// MsgTopic is the topic, as required by some channel types
+type MsgTopic string
+
+// possible msg topic values
+const (
+	NilMsgTopic      MsgTopic = ""
+	MsgTopicEvent    MsgTopic = "event"
+	MsgTopicAccount  MsgTopic = "account"
+	MsgTopicPurchase MsgTopic = "purchase"
+	MsgTopicAgent    MsgTopic = "agent"
+)
+
 // BaseMsg represents a incoming or outgoing message with the session contact
 type BaseMsg struct {
 	UUID_        MsgUUID                  `json:"uuid"`
@@ -31,6 +47,7 @@ type MsgOut struct {
 
 	QuickReplies_ []string       `json:"quick_replies,omitempty"`
 	Templating_   *MsgTemplating `json:"templating,omitempty"`
+	Topic_        MsgTopic       `json:"topic,omitempty"`
 }
 
 // NewMsgIn creates a new incoming message
@@ -47,7 +64,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating, topic MsgTopic) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(uuids.New()),
@@ -58,6 +75,7 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, atta
 		},
 		QuickReplies_: quickReplies,
 		Templating_:   templating,
+		Topic_:        topic,
 	}
 }
 
@@ -96,6 +114,9 @@ func (m *MsgOut) QuickReplies() []string { return m.QuickReplies_ }
 
 // Templating returns the templating to use to send this message (if any)
 func (m *MsgOut) Templating() *MsgTemplating { return m.Templating_ }
+
+// Topic returns the topic to use to send this message (if any)
+func (m *MsgOut) Topic() MsgTopic { return m.Topic_ }
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {

@@ -1,0 +1,22 @@
+{
+    "flows": [
+        {
+            "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+            "name": "Trigger Tester",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "revision": 123,
+            "nodes": [
+                {
+                    "uuid": "70e453ef-c21f-4596-9d48-967a6236ccdf",
+                    "exits": [
+                        {
+                            "uuid": "c1956e15-3b2a-4232-b9e3-9fead76ff496"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
