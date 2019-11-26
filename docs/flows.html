@@ -639,7 +639,7 @@ Event
 <a name="action:send_email" href="#action:send_email">send_email</a>
 </h2>
 <p>Can be used to send an email to one or more recipients. The subject, body and addresses can all contain expressions.</p>
-<p>An <a href="sessions.html#event:email_created">email_created</a> event will be created for each email address.</p>
+<p>An <a href="sessions.html#event:email_sent">email_sent</a> event will be created if the email could be sent.</p>
 <div class="input_action">
 <h3>
 Action
@@ -659,7 +659,7 @@ Action
 Event
 </h3>
 <div class="sourceCode" id="cb27"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">{</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;email_created&quot;</span><span class="fu">,</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;email_sent&quot;</span><span class="fu">,</span></span>
 <span id="cb27-3"><a href="#cb27-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
 <span id="cb27-4"><a href="#cb27-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
 <span id="cb27-5"><a href="#cb27-5"></a>    <span class="dt">&quot;addresses&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
@@ -1035,7 +1035,7 @@ Event
 <a name="action:transfer_airtime" href="#action:transfer_airtime">transfer_airtime</a>
 </h2>
 <p>Attempts to make an airtime transfer to the contact.</p>
-<p>An <a href="sessions.html#event:email_created">email_created</a> event will be created for each email address.</p>
+<p>An <a href="sessions.html#event:airtime_transferred">airtime_transferred</a> event will be created if the airtime could be sent.</p>
 <div class="input_action">
 <h3>
 Action

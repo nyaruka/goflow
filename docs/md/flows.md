@@ -659,7 +659,7 @@ with the evaluated text.
 Can be used to send an email to one or more recipients. The subject, body and addresses
 can all contain expressions.
 
-An [email_created](sessions.html#event:email_created) event will be created for each email address.
+An [email_sent](sessions.html#event:email_sent) event will be created if the email could be sent.
 
 <div class="input_action"><h3>Action</h3>
 
@@ -678,7 +678,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 
 ```json
 {
-    "type": "email_created",
+    "type": "email_sent",
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
     "addresses": [
@@ -1065,7 +1065,7 @@ will be created and it's the responsibility of the caller to act on that by init
 
 Attempts to make an airtime transfer to the contact.
 
-An [email_created](sessions.html#event:email_created) event will be created for each email address.
+An [airtime_transferred](sessions.html#event:airtime_transferred) event will be created if the airtime could be sent.
 
 <div class="input_action"><h3>Action</h3>
 

@@ -477,15 +477,15 @@ Events are created when a contact's URNs have changed.
 }
 ```
 </div>
-<h2 class="item_title"><a name="event:email_created" href="#event:email_created">email_created</a></h2>
+<h2 class="item_title"><a name="event:email_sent" href="#event:email_sent">email_sent</a></h2>
 
-Events are created when an action wants to send an email.
+Events are created when an action has sent an email.
 
 <div class="output_event">
 
 ```json
 {
-    "type": "email_created",
+    "type": "email_sent",
     "created_on": "2006-01-02T15:04:05Z",
     "addresses": [
         "foo@bar.com"

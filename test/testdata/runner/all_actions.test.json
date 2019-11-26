@@ -87,7 +87,7 @@
                     "created_on": "2018-07-06T12:30:15.123456789Z",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "subject": "Here is your activation token",
-                    "type": "email_created"
+                    "type": "email_sent"
                 },
                 {
                     "created_on": "2018-07-06T12:30:17.123456789Z",
@@ -550,7 +550,7 @@
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "subject": "Here is your activation token",
-                                "type": "email_created"
+                                "type": "email_sent"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:17.123456789Z",
