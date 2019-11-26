@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
@@ -496,7 +497,7 @@ func TestReadFlow(t *testing.T) {
 			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 			"name": "TestFlow"
 		}
-	}`), &definition.MigrationConfig{})
+	}`), &migrations.Config{})
 	assert.NoError(t, err)
 	assert.Equal(t, assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), flow.UUID())
 	assert.Equal(t, "TestFlow", flow.Name())

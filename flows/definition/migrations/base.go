@@ -2,12 +2,14 @@ package migrations
 
 import (
 	"encoding/json"
-	"errors"
 	"sort"
 
+	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/Masterminds/semver"
+	"github.com/pkg/errors"
 )
 
 // MigrationFunc is a function that can migrate a flow definition from one version to another
@@ -25,19 +27,67 @@ func Registered() map[*semver.Version]MigrationFunc {
 	return registered
 }
 
+// Header13 is the set of fields common to all 13+ flow spec versions
+type Header13 struct {
+	UUID        assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	Name        string          `json:"name"`
+	SpecVersion *semver.Version `json:"spec_version" validate:"required"`
+}
+
+// Config configures how flow migrations are handled
+type Config struct {
+	BaseMediaURL string
+}
+
 // MigrateToLatest migrates the given flow definition to the latest version
-func MigrateToLatest(data []byte, from *semver.Version) ([]byte, error) {
-	return MigrateToVersion(data, from, nil)
+func MigrateToLatest(data []byte, config *Config) ([]byte, error) {
+	return MigrateToVersion(data, nil, config)
 }
 
 // MigrateToVersion migrates the given flow definition to the given version
-func MigrateToVersion(data []byte, from *semver.Version, to *semver.Version) ([]byte, error) {
-	// get all newer versions
+func MigrateToVersion(data []byte, to *semver.Version, config *Config) ([]byte, error) {
+	// try to read new style header (uuid, name, spec_version)
+	header := &Header13{}
+	err := utils.UnmarshalAndValidate(data, header)
+
+	if err != nil {
+		// could this be a legacy definition?
+		if legacy.IsPossibleDefinition(data) {
+			if config == nil {
+				return nil, errors.New("unable to migrate what appears to be a legacy definition without a migration config")
+			}
+
+			// try to migrate it forwards to 13.0.0
+			var err error
+			data, err = legacy.MigrateDefinition(data, config.BaseMediaURL)
+			if err != nil {
+				return nil, errors.Wrap(err, "error migrating what appears to be a legacy definition")
+			}
+		}
+
+		// try reading header again
+		err = utils.UnmarshalAndValidate(data, header)
+	}
+
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to read flow header")
+	}
+
+	return migrate(data, header.SpecVersion, to)
+}
+
+func migrate(data []byte, from *semver.Version, to *semver.Version) ([]byte, error) {
+	// get all newer versions than this version
 	versions := make([]*semver.Version, 0)
 	for v := range registered {
 		if v.GreaterThan(from) && (to == nil || v.Compare(to) <= 0) {
 			versions = append(versions, v)
 		}
+	}
+
+	// we're already at least as new as this version of the engine
+	if len(versions) == 0 {
+		return data, nil
 	}
 
 	// sorted by earliest first
@@ -58,7 +108,7 @@ func MigrateToVersion(data []byte, from *semver.Version, to *semver.Version) ([]
 	for _, version := range versions {
 		migrated, err = registered[version](migrated)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrapf(err, "unable to migrate to version %s", version.String())
 		}
 
 		migrated["spec_version"] = version.String()
@@ -66,52 +116,4 @@ func MigrateToVersion(data []byte, from *semver.Version, to *semver.Version) ([]
 
 	// finally marshal back to JSON
 	return json.Marshal(migrated)
-}
-
-//------------------------------------------------------------------------------------------
-// Generic definition primitives
-//------------------------------------------------------------------------------------------
-
-type Flow map[string]interface{}
-
-func (f Flow) Nodes() []Node {
-	d, _ := f["nodes"].([]interface{})
-	nodes := make([]Node, len(d))
-	for i := range d {
-		nodes[i] = Node(d[i].(map[string]interface{}))
-	}
-	return nodes
-}
-
-type Node map[string]interface{}
-
-func (n Node) Actions() []Action {
-	d, _ := n["actions"].([]interface{})
-	actions := make([]Action, len(d))
-	for i := range d {
-		actions[i] = Action(d[i].(map[string]interface{}))
-	}
-	return actions
-}
-
-func (n Node) Router() Router {
-	d, _ := n["router"].(map[string]interface{})
-	if d == nil {
-		return nil
-	}
-	return Router(d)
-}
-
-type Action map[string]interface{}
-
-func (a Action) Type() string {
-	d, _ := a["type"].(string)
-	return d
-}
-
-type Router map[string]interface{}
-
-func (r Router) Type() string {
-	d, _ := r["type"].(string)
-	return d
 }

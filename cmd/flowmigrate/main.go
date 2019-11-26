@@ -6,27 +6,31 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 
-	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/Masterminds/semver"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/utils"
 )
 
 func main() {
-	var includeUI bool
-	var baseMediaURL string
+	var toVersion, baseMediaURL string
+	var pretty bool
+
 	flags := flag.NewFlagSet("", flag.ExitOnError)
-	flags.BoolVar(&includeUI, "include-ui", false, "Include UI configuration")
+	flags.StringVar(&toVersion, "to", "", "Target flow spec version")
 	flags.StringVar(&baseMediaURL, "base-media-url", "", "Base URL for media files")
+	flags.BoolVar(&pretty, "pretty", false, "Pretty format output")
 	flags.Parse(os.Args[1:])
 
 	reader := bufio.NewReader(os.Stdin)
 
-	output, err := Migrate(reader, includeUI, baseMediaURL)
+	output, err := Migrate(reader, semver.MustParse(toVersion), baseMediaURL, pretty)
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -34,22 +38,23 @@ func main() {
 	}
 }
 
-// Migrate reads a legacy flow definition as JSON and migrates it
-func Migrate(reader io.Reader, includeUI bool, baseMediaURL string) ([]byte, error) {
+// Migrate reads a flow definition as JSON and migrates it
+func Migrate(reader io.Reader, toVersion *semver.Version, baseMediaURL string, pretty bool) ([]byte, error) {
 	data, err := ioutil.ReadAll(reader)
 	if err != nil {
 		return nil, err
 	}
 
-	var migConfig *definition.MigrationConfig
+	var migConfig *migrations.Config
 	if baseMediaURL != "" {
-		migConfig = &definition.MigrationConfig{BaseMediaURL: baseMediaURL}
+		migConfig = &migrations.Config{BaseMediaURL: baseMediaURL}
 	}
 
-	flow, err := definition.ReadFlow(data, migConfig)
-	if err != nil {
-		return nil, err
+	migrated, err := migrations.MigrateToVersion(data, toVersion, migConfig)
+
+	if pretty {
+		return utils.JSONMarshalPretty(json.RawMessage(migrated))
 	}
 
-	return utils.JSONMarshalPretty(flow)
+	return migrated, nil
 }
