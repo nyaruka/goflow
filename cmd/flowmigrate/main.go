@@ -13,9 +13,11 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/Masterminds/semver"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/Masterminds/semver"
 )
 
 func main() {
@@ -51,6 +53,14 @@ func Migrate(reader io.Reader, toVersion *semver.Version, baseMediaURL string, p
 	}
 
 	migrated, err := migrations.MigrateToVersion(data, toVersion, migConfig)
+
+	// if we've migrated to the engine version, validate the flow can be read by the engine
+	if toVersion == nil || toVersion.Equal(definition.CurrentSpecVersion) {
+		_, err = definition.ReadFlow(migrated, nil)
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	if pretty {
 		return utils.JSONMarshalPretty(json.RawMessage(migrated))

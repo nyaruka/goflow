@@ -327,13 +327,6 @@ type flowEnvelope struct {
 	UI                 json.RawMessage `json:"_ui,omitempty"`
 }
 
-// IsSpecVersionSupported determines if we can read the given flow version
-func IsSpecVersionSupported(ver *semver.Version) bool {
-	// * we can migrate anything >= 13.0.0
-	// * we can run anything which is same major version as engine
-	return ver.Major() >= 13 && ver.Major() <= CurrentSpecVersion.Major()
-}
-
 // ReadFlow a flow definition from the passed in byte array, migrating it to the spec version of the engine if necessary
 func ReadFlow(data json.RawMessage, migrationConfig *migrations.Config) (flows.Flow, error) {
 	var err error
@@ -346,7 +339,7 @@ func ReadFlow(data json.RawMessage, migrationConfig *migrations.Config) (flows.F
 	json.Unmarshal(data, header)
 
 	// can't do anything with a newer major version than this library supports
-	if !IsSpecVersionSupported(header.SpecVersion) {
+	if header.SpecVersion.Major() > CurrentSpecVersion.Major() {
 		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
 	}
 
