@@ -293,7 +293,7 @@ func TestEventMarshaling(t *testing.T) {
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"type": "email_sent",
-				"addresses": ["bob@nyaruka.com", "jim@nyaruka.com"],
+				"to": ["bob@nyaruka.com", "jim@nyaruka.com"],
 				"subject": "Update",
 				"body": "Flows are great!"
 			}`,

@@ -30,7 +30,7 @@
                 "type": "error"
             },
             {
-                "addresses": [
+                "to": [
                     "bob@example.com"
                 ],
                 "body": "So I was thinking...",
@@ -83,7 +83,7 @@
         },
         "events": [
             {
-                "addresses": [
+                "to": [
                     "bob@example.com"
                 ],
                 "body": "So I was thinking...",
@@ -150,7 +150,7 @@
                 "type": "email_sent",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "addresses": [
+                "to": [
                     "bob@example.com"
                 ],
                 "subject": "Hi there",
@@ -182,7 +182,7 @@
                 "type": "email_sent",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "addresses": [
+                "to": [
                     "bob@example.com"
                 ],
                 "subject": "Hola",

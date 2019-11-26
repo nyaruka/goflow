@@ -487,7 +487,7 @@ Events are created when an action has sent an email.
 {
     "type": "email_sent",
     "created_on": "2006-01-02T15:04:05Z",
-    "addresses": [
+    "to": [
         "foo@bar.com"
     ],
     "subject": "Your activation token",

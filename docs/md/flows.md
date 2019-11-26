@@ -681,7 +681,7 @@ An [email_sent](sessions.html#event:email_sent) event will be created if the ema
     "type": "email_sent",
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
-    "addresses": [
+    "to": [
         "foo@bar.com"
     ],
     "subject": "Here is your activation token",

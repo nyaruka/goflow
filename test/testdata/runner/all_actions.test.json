@@ -79,7 +79,7 @@
                     }
                 },
                 {
-                    "addresses": [
+                    "to": [
                         "ben@macklemore",
                         "test@example.com"
                     ],
@@ -542,7 +542,7 @@
                                 }
                             },
                             {
-                                "addresses": [
+                                "to": [
                                     "ben@macklemore",
                                     "test@example.com"
                                 ],
