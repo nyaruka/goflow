@@ -1,3 +1,7 @@
+v0.60.1
+----------
+ * Fix re-evaluating dynamic groups when query references non-existent field
+
 v0.60.0
 ----------
  * Add @globals to completion
