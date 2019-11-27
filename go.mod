@@ -7,6 +7,7 @@ require (
 	github.com/go-playground/locales v0.11.2 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible
+	github.com/mattn/kinako v0.0.0-20170717041458-332c0a7e205a // indirect
 	github.com/nyaruka/gocommon v1.1.1
 	github.com/nyaruka/phonenumbers v1.0.41
 	github.com/pkg/errors v0.8.0
@@ -18,6 +19,7 @@ require (
 	golang.org/x/text v0.3.0
 	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/go-playground/validator.v9 v9.12.0
+	gopkg.in/leonelquinteros/gotext.v1 v1.3.1
 )
 
 go 1.13

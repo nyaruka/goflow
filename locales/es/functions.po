@@ -1,0 +1,2 @@
+msgid "Returns the absolute value of `number`."
+msgstr "Devuelve el valor absoluto de `number`."

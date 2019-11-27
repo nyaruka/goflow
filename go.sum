@@ -15,6 +15,8 @@ github.com/gofrs/uuid v3.2.0+incompatible h1:y12jRkkFxsd7GpqdSZ+/KCs/fJbqpEXSGd4
 github.com/gofrs/uuid v3.2.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
 github.com/golang/protobuf v1.2.0 h1:P3YflyNX/ehuJFLhxviNdFxQPkGK5cDcApsge1SqnvM=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
+github.com/mattn/kinako v0.0.0-20170717041458-332c0a7e205a h1:0Q3H0YXzMHiciXtRcM+j0jiCe8WKPQHoRgQiRTnfcLY=
+github.com/mattn/kinako v0.0.0-20170717041458-332c0a7e205a/go.mod h1:CdTTBOYzS5E4mWS1N8NWP6AHI19MP0A2B18n3hLzRMk=
 github.com/nyaruka/gocommon v1.1.1 h1:RnQ+kMzN1lA+W0NpkBDd0mGU3UqadJygR3SMpITMYTQ=
 github.com/nyaruka/gocommon v1.1.1/go.mod h1:QbdU2J9WBsqBmeZRuwndf2f6O7rD7mkC0bGn5UNnwjI=
 github.com/nyaruka/phonenumbers v1.0.34/go.mod h1:GQ0cTHlrxPrhoLwyQ1blyN1hO794ygt6FTHWrFB5SSc=
@@ -41,3 +43,5 @@ gopkg.in/go-playground/assert.v1 v1.2.1 h1:xoYuJVE7KT85PYWrN730RguIQO0ePzVRfFMXa
 gopkg.in/go-playground/assert.v1 v1.2.1/go.mod h1:9RXL0bg/zibRAgZUYszZSwO/z8Y/a8bDuhia5mkpMnE=
 gopkg.in/go-playground/validator.v9 v9.12.0 h1:wt9gRu5ik7v8rzK/tNAWjJQeyFo3o0Ro+f2keB/ZiGM=
 gopkg.in/go-playground/validator.v9 v9.12.0/go.mod h1:+c9/zcJMFNgbLvly1L1V+PpxWdVbfP1avr/N00E2vyQ=
+gopkg.in/leonelquinteros/gotext.v1 v1.3.1 h1:8d9/fdTG0kn/B7NNGV1BsEyvektXFAbkMsTZS2sFSCc=
+gopkg.in/leonelquinteros/gotext.v1 v1.3.1/go.mod h1:X1WlGDeAFIYsW6GjgMm4VwUwZ2XjI7Zan2InxSUQWrU=
