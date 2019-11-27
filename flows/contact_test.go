@@ -192,14 +192,15 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	lastYear := test.NewGroup("Old", `created_on <= 2017-12-31`)
 	tel1800 := test.NewGroup("Tel with 1800", `tel ~ 1800`)
 	twitterCrazies := test.NewGroup("Twitter Crazies", `twitter ~ crazy`)
-	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies}
+	broken := test.NewGroup("Broken", `xyz="X"`) // no such field
+	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies, broken}
 
 	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
 
 	memberships, errors := evaluateGroups(t, env, contact, groups, fieldSet)
 	assert.Equal(t, []*flows.Group{english}, memberships)
-	assert.Equal(t, []*flows.Group{}, errors)
+	assert.Equal(t, []*flows.Group{broken}, errors)
 
 	contact.SetLanguage(envs.Language("spa"))
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:crazy_joe"), nil))
@@ -215,7 +216,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 
 	memberships, errors = evaluateGroups(t, env, contact, groups, fieldSet)
 	assert.Equal(t, []*flows.Group{males, old, spanish, lastYear, tel1800, twitterCrazies}, memberships)
-	assert.Equal(t, []*flows.Group{}, errors)
+	assert.Equal(t, []*flows.Group{broken}, errors)
 }
 
 func TestReevaluateDynamicGroupsWithURNRedaction(t *testing.T) {
