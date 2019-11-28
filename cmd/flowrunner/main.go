@@ -223,6 +223,8 @@ func printEvents(log []flows.Event, out io.Writer) {
 			msg = "👤 contact refreshed on resume"
 		case *events.ContactTimezoneChangedEvent:
 			msg = fmt.Sprintf("🕑 timezone changed to '%s'", typed.Timezone)
+		case *events.EmailSentEvent:
+			msg = fmt.Sprintf("✉️ email sent with subject '%s'", typed.Subject)
 		case *events.EnvironmentRefreshedEvent:
 			msg = "⚙️ environment refreshed on resume"
 		case *events.ErrorEvent:
