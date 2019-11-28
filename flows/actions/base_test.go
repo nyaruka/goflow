@@ -79,6 +79,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	tests := []struct {
 		Description     string               `json:"description"`
 		HTTPMocks       *httpx.MockRequestor `json:"http_mocks"`
+		SMTPError       string               `json:"smtp_error"`
 		NoContact       bool                 `json:"no_contact"`
 		NoURNs          bool                 `json:"no_urns"`
 		NoInput         bool                 `json:"no_input"`
@@ -110,7 +111,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		} else {
 			httpx.SetRequestor(httpx.DefaultRequestor)
 		}
-		smtpx.SetSender(smtpx.NewMockSender())
+		smtpx.SetSender(smtpx.NewMockSender(tc.SMTPError))
 
 		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
 

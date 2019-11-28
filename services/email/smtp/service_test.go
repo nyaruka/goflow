@@ -11,7 +11,7 @@ import (
 func TestService(t *testing.T) {
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
-	sender := smtpx.NewMockSender()
+	sender := smtpx.NewMockSender("")
 	smtpx.SetSender(sender)
 
 	svc := NewService("mail.temba.io", 255, "leah", "pass123", "updates@temba.io")
@@ -24,7 +24,7 @@ func TestService(t *testing.T) {
 func TestNewServiceFromURL(t *testing.T) {
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
-	sender := smtpx.NewMockSender()
+	sender := smtpx.NewMockSender("")
 	smtpx.SetSender(sender)
 
 	_, err := NewServiceFromURL(":")

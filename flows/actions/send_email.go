@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils/uuids"
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -109,7 +110,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 
 	err = svc.Send(run.Session(), evaluatedAddresses, evaluatedSubject, evaluatedBody)
 	if err != nil {
-		logEvent(events.NewError(err))
+		logEvent(events.NewError(errors.Wrap(err, "unable to send email")))
 	} else {
 		logEvent(events.NewEmailSent(evaluatedAddresses, evaluatedSubject, evaluatedBody))
 	}

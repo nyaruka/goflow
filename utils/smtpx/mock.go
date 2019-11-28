@@ -1,17 +1,19 @@
 package smtpx
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
 
 // MockSender is a mocked sender for testing that just logs would-be commands
 type MockSender struct {
+	err  string
 	logs []string
 }
 
-func NewMockSender() *MockSender {
-	return &MockSender{}
+func NewMockSender(err string) *MockSender {
+	return &MockSender{err: err}
 }
 
 func (s *MockSender) Logs() []string {
@@ -19,8 +21,11 @@ func (s *MockSender) Logs() []string {
 }
 
 func (s *MockSender) Send(host string, port int, username, password, from string, recipients []string, subject, body string) error {
-	b := &strings.Builder{}
+	if s.err != "" {
+		return errors.New(s.err)
+	}
 
+	b := &strings.Builder{}
 	b.WriteString("HELO localhost\n")
 	b.WriteString(fmt.Sprintf("MAIL FROM:<%s>\n", from))
 	for _, r := range recipients {
