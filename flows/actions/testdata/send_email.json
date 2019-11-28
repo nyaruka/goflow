@@ -30,14 +30,14 @@
                 "type": "error"
             },
             {
-                "addresses": [
+                "to": [
                     "bob@example.com"
                 ],
                 "body": "So I was thinking...",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "subject": "Hi there",
-                "type": "email_created"
+                "type": "email_sent"
             }
         ],
         "inspection": {
@@ -83,14 +83,14 @@
         },
         "events": [
             {
-                "addresses": [
+                "to": [
                     "bob@example.com"
                 ],
                 "body": "So I was thinking...",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "subject": "Hi there Bob",
-                "type": "email_created"
+                "type": "email_sent"
             }
         ]
     },
@@ -147,10 +147,10 @@
         },
         "events": [
             {
-                "type": "email_created",
+                "type": "email_sent",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "addresses": [
+                "to": [
                     "bob@example.com"
                 ],
                 "subject": "Hi there",
@@ -179,10 +179,10 @@
         },
         "events": [
             {
-                "type": "email_created",
+                "type": "email_sent",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "addresses": [
+                "to": [
                     "bob@example.com"
                 ],
                 "subject": "Hola",
@@ -200,5 +200,26 @@
             "dependencies": [],
             "results": []
         }
+    },
+    {
+        "description": "Error event if sending fails",
+        "smtp_error": "oops can't send",
+        "action": {
+            "type": "send_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "addresses": [
+                "bob@example.com"
+            ],
+            "subject": "Hi there",
+            "body": "So I was thinking..."
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "unable to send email: oops can't send",
+                "type": "error"
+            }
+        ]
     }
 ]

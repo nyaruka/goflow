@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils/uuids"
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -19,7 +20,7 @@ const TypeSendEmail string = "send_email"
 // SendEmailAction can be used to send an email to one or more recipients. The subject, body and addresses
 // can all contain expressions.
 //
-// An [event:email_created] event will be created for each email address.
+// An [event:email_sent] event will be created if the email could be sent.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -96,8 +97,22 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 		evaluatedAddresses = append(evaluatedAddresses, evaluatedAddress)
 	}
 
-	if len(evaluatedAddresses) > 0 {
-		logEvent(events.NewEmailCreated(evaluatedAddresses, evaluatedSubject, evaluatedBody))
+	// nothing to do if there are no addresses
+	if len(evaluatedAddresses) == 0 {
+		return nil
+	}
+
+	svc, err := run.Session().Engine().Services().Email(run.Session())
+	if err != nil {
+		logEvent(events.NewError(err))
+		return nil
+	}
+
+	err = svc.Send(run.Session(), evaluatedAddresses, evaluatedSubject, evaluatedBody)
+	if err != nil {
+		logEvent(events.NewError(errors.Wrap(err, "unable to send email")))
+	} else {
+		logEvent(events.NewEmailSent(evaluatedAddresses, evaluatedSubject, evaluatedBody))
 	}
 
 	return nil
