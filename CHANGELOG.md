@@ -1,3 +1,7 @@
+v0.61.0
+----------
+ * Implement email as a service
+
 v0.60.1
 ----------
  * Fix re-evaluating dynamic groups when query references non-existent field
