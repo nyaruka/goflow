@@ -105,6 +105,7 @@ var testTests = []struct {
 	{"has_pattern", []types.XValue{xs("12345"), xs(`\A\d{5}\z`)}, resultWithExtra(xs("12345"), types.NewXObject(map[string]types.XValue{"0": xs("12345")}))},
 	{"has_pattern", []types.XValue{xs("12345 "), xs(`\A\d{5}\z`)}, falseResult},
 	{"has_pattern", []types.XValue{xs(" 12345"), xs(`\A\d{5}\z`)}, falseResult},
+	{"has_pattern", []types.XValue{xs(`hi there 😀`), xs("[\U0001F600-\U0001F64F]")}, resultWithExtra(xs("😀"), types.NewXObject(map[string]types.XValue{"0": xs("😀")}))},
 	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`[`)}, ERROR},
 	{"has_pattern", []types.XValue{}, ERROR},
 
