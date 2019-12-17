@@ -1,3 +1,8 @@
+v0.63.0
+----------
+ * Loosen email regex used by has_email test
+ * Allow cloning of JSON flow definitions not tied to any spec version
+
 v0.62.0
 ----------
  * Render email_sent events in flowrunner
