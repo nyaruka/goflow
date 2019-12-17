@@ -1,3 +1,9 @@
+v0.62.0
+----------
+ * Render email_sent events in flowrunner
+ * Allow flowmigrate to take a target version argument
+ * Implement 13.1 migration as adding UUID to semd_msg.templating
+
 v0.61.0
 ----------
  * Implement email as a service
