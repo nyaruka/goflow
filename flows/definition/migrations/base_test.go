@@ -209,3 +209,32 @@ func TestClone(t *testing.T) {
 		}
 	}
 }
+
+func TestCloneOlderVersion(t *testing.T) {
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+
+	cloneJSON, err := migrations.Clone([]byte(`{
+		"uuid": "ee765ff2-96b0-440a-b108-393f613466bb",
+		"name": "Older Flow",
+		"spec_version": "13.0.0",
+		"language": "base",
+		"revision": 11,
+		"expire_after_minutes": 10080,
+		"type": "messaging",
+		"nodes": []
+	}`), nil)
+	require.NoError(t, err)
+
+	// cloned flow should have same spec version but different UUID
+	test.AssertEqualJSON(t, []byte(`{
+		"uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+		"name": "Older Flow",
+		"spec_version": "13.0.0",
+		"language": "base",
+		"revision": 11,
+		"expire_after_minutes": 10080,
+		"type": "messaging",
+		"nodes": []
+	}`), cloneJSON, "cloned flow mismatch")
+}
