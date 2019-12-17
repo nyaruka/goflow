@@ -214,6 +214,7 @@ var testTests = []struct {
 	{"has_email", []types.XValue{xs("my email is <foo1@bar-2.com>")}, result(xs("foo1@bar-2.com"))},
 	{"has_email", []types.XValue{xs("FOO@bar.whatzit")}, result(xs("FOO@bar.whatzit"))},
 	{"has_email", []types.XValue{xs("FOO@βήτα.whatzit")}, result(xs("FOO@βήτα.whatzit"))},
+	{"has_email", []types.XValue{xs("my email is foo+label@bar.com>")}, result(xs("foo+label@bar.com"))},
 	{"has_email", []types.XValue{xs("email is foo @ bar . com")}, falseResult},
 	{"has_email", []types.XValue{xs("email is foo@bar")}, falseResult},
 	{"has_email", []types.XValue{nil}, falseResult},

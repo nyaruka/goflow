@@ -516,7 +516,7 @@ func HasTime(env envs.Environment, text types.XText) types.XValue {
 	return FalseResult
 }
 
-var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\pN]*)(\.[\pL\pN][-_\pL\pN]*)+`)
+var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_+.\pL\pN]*)@([\pL\pN][-_\pL\pN]*)(\.[\pL\pN][-_\pL\pN]*)+`)
 
 // HasEmail tests whether an email is contained in `text`
 //
