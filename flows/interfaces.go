@@ -143,8 +143,6 @@ type Flow interface {
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
-	Generic() map[string]interface{}
-	Clone(map[uuids.UUID]uuids.UUID) Flow
 
 	Inspect() *FlowInfo
 	Validate(SessionAssets, func(assets.Reference)) error

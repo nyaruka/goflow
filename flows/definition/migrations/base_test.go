@@ -7,9 +7,12 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
@@ -138,4 +141,71 @@ func TestMigrateToLatest(t *testing.T) {
 		}
 	}`), nil)
 	assert.EqualError(t, err, "unable to migrate what appears to be a legacy definition without a migration config")
+}
+
+func TestClone(t *testing.T) {
+	testCases := []struct {
+		path string
+		uuid string
+	}{
+		{"testdata/clone_with_ui.json", "ee765ff2-96b0-440a-b108-393f613466bb"},
+		{"../../../test/testdata/runner/two_questions.json", "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"},
+		{"../../../test/testdata/runner/all_actions.json", "8ca44c09-791d-453a-9799-a70dd3303306"},
+		{"../../../test/testdata/runner/router_tests.json", "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"},
+	}
+
+	for _, tc := range testCases {
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+		defer uuids.SetGenerator(uuids.DefaultGenerator)
+
+		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		require.NoError(t, err)
+
+		depMappings := map[uuids.UUID]uuids.UUID{
+			uuids.UUID(tc.uuid):                    "e0af9907-e0d3-4363-99c6-324ece7f628e", // the flow itself
+			"2aad21f6-30b7-42c5-bd7f-1b720c154817": "cd8a68c0-6673-4a02-98a0-7fb3ac788860", // group used in has_group test
+		}
+
+		flowJSON, err := json.Marshal(flow)
+		require.NoError(t, err)
+
+		cloneJSON, err := migrations.Clone(flowJSON, depMappings)
+		require.NoError(t, err)
+
+		clone, err := definition.ReadFlow(cloneJSON, nil)
+		require.NoError(t, err)
+
+		assert.Equal(t, assets.FlowUUID("e0af9907-e0d3-4363-99c6-324ece7f628e"), clone.UUID())
+		assert.Equal(t, flow.Name(), clone.Name())
+		assert.Equal(t, flow.Type(), clone.Type())
+		assert.Equal(t, flow.Revision(), clone.Revision())
+		assert.Equal(t, len(flow.Nodes()), len(clone.Nodes()))
+
+		// extract all UUIDs from originaland cloned definitions
+		originalUUIDs := uuids.V4Regex.FindAllString(string(flowJSON), -1)
+		cloneUUIDs := uuids.V4Regex.FindAllString(string(cloneJSON), -1)
+
+		assert.Equal(t, len(originalUUIDs), len(cloneUUIDs))
+		assert.NotContains(t, cloneUUIDs, []string{"2aad21f6-30b7-42c5-bd7f-1b720c154817"}) // group used in has_group test
+
+		for _, u1 := range originalUUIDs {
+			for _, u2 := range cloneUUIDs {
+				if u1 == u2 && depMappings[uuids.UUID(u1)] != "" {
+					assert.Fail(t, "uuid", "cloned flow contains non-dependency UUID from original flow: %s", u1)
+				}
+			}
+		}
+
+		// if flow has a UI section, check UI node UUIDs correspond to real nodes
+		if len(clone.UI()) > 0 {
+			clonedUI, err := utils.JSONDecodeGeneric(clone.UI())
+			require.NoError(t, err)
+
+			nodeMap := clonedUI.(map[string]interface{})["nodes"].(map[string]interface{})
+
+			for nodeUUID := range nodeMap {
+				assert.NotNil(t, clone.GetNode(flows.NodeUUID(nodeUUID)), "UI has node with UUID %s that doesn't exist in flow", nodeUUID)
+			}
+		}
+	}
 }

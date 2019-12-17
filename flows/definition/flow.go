@@ -280,31 +280,6 @@ func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
 	return exitUUIDs
 }
 
-// Generic returns this flow's data modelled as a hierarchy of generic maps and slices
-func (f *flow) Generic() map[string]interface{} {
-	marshaled, err := json.Marshal(f)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	g, err := utils.JSONDecodeGeneric(marshaled)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	return g.(map[string]interface{})
-}
-
-// Clone clones this flow replacing all UUIDs using the provided mapping and generating new
-// random UUIDs if they aren't in the mapping
-func (f *flow) Clone(depMapping map[uuids.UUID]uuids.UUID) flows.Flow {
-	generic := f.Generic()
-	remapUUIDs(generic, depMapping)
-
-	// read back as a real flow in the current spec.. since we control this it can't error in theory
-	return MustReadFlowFromGeneric(generic)
-}
-
 var _ flows.Flow = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------
