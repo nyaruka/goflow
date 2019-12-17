@@ -62,6 +62,8 @@ func TestEvaluateTemplateValue(t *testing.T) {
 
 		{"@string1 world", xs("foo world")},
 		{"@string3", xs("🐒")},
+		{`@("\u00a9 \u00ae \u2764")`, xs("© ® ❤")},
+		{`@("\U0001F697 \U0001F680")`, xs("🚗 🚀")},
 
 		{"@(-10)", xi(-10)},
 		{"@(-asdf)", ERROR},

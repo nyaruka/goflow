@@ -20,7 +20,7 @@ const TypeTransferAirtime string = "transfer_airtime"
 
 // TransferAirtimeAction attempts to make an airtime transfer to the contact.
 //
-// An [event:email_created] event will be created for each email address.
+// An [event:airtime_transferred] event will be created if the airtime could be sent.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
