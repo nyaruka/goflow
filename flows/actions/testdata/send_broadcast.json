@@ -84,9 +84,6 @@
                 "translations": {
                     "eng": {
                         "text": "Hi there!"
-                    },
-                    "spa": {
-                        "text": "Hi there!"
                     }
                 },
                 "type": "broadcast_created",
@@ -132,16 +129,20 @@
             ]
         },
         "localization": {
-            "text": [
-                "Hola!"
-            ],
-            "attachments": [
-                "http://example.com/rojo.jpg"
-            ],
-            "quick_replies": [
-                "Si",
-                "No"
-            ]
+            "spa": {
+                "ad154980-7bf7-4ab8-8728-545fd6378912": {
+                    "text": [
+                        "Hola!"
+                    ],
+                    "attachments": [
+                        "http://example.com/rojo.jpg"
+                    ],
+                    "quick_replies": [
+                        "Si",
+                        "No"
+                    ]
+                }
+            }
         },
         "events": [
             {

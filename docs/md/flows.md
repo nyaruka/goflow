@@ -705,6 +705,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "text": "Hi @contact.name, are you ready to complete today's survey?",
     "templating": {
+        "uuid": "32c2ead6-3fa3-4402-8e27-9cc718175c5a",
         "template": {
             "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
             "name": "revive_issue"

@@ -91,12 +91,16 @@
             "text": "Hi there @contact.name"
         },
         "localization": {
-            "audio_url": [
-                "http://uploads.temba.io/bienvenido.m4a"
-            ],
-            "text": [
-                "Hola @contact.name"
-            ]
+            "spa": {
+                "ad154980-7bf7-4ab8-8728-545fd6378912": {
+                    "audio_url": [
+                        "http://uploads.temba.io/bienvenido.m4a"
+                    ],
+                    "text": [
+                        "Hola @contact.name"
+                    ]
+                }
+            }
         },
         "events": [
             {

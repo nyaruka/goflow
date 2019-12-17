@@ -14,7 +14,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -121,7 +121,7 @@ func loadAssets(path string) (flows.SessionAssets, error) {
 		return nil, errors.Wrapf(err, "error reading test assets '%s'", path)
 	}
 
-	mconfig := &definition.MigrationConfig{BaseMediaURL: "http://temba.io/"}
+	mconfig := &migrations.Config{BaseMediaURL: "http://temba.io/"}
 
 	return engine.NewSessionAssets(source, mconfig)
 }

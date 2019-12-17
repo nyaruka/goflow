@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 )
 
 // implemention of FlowAssets which provides lazy loading and validation of flows
@@ -14,11 +15,11 @@ type flowAssets struct {
 	mutex  sync.Mutex
 	source assets.Source
 
-	migrationConfig *MigrationConfig
+	migrationConfig *migrations.Config
 }
 
 // NewFlowAssets creates a new flow assets
-func NewFlowAssets(source assets.Source, migrationConfig *MigrationConfig) flows.FlowAssets {
+func NewFlowAssets(source assets.Source, migrationConfig *migrations.Config) flows.FlowAssets {
 	return &flowAssets{
 		byUUID:          make(map[assets.FlowUUID]flows.Flow),
 		source:          source,

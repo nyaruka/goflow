@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
@@ -115,7 +116,7 @@ func TestNewFlow(t *testing.T) {
 {
     "uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
     "name": "Test Flow",
-    "spec_version": "13.0.0",
+    "spec_version": "13.1.0",
     "language": "eng",
     "type": "messaging",
     "revision": 123,
@@ -334,7 +335,7 @@ func TestEmptyFlow(t *testing.T) {
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Empty Flow",
 		"revision": 0,
-		"spec_version": "13.0.0",
+		"spec_version": "13.1.0",
 		"type": "messaging",
 		"expire_after_minutes": 0,
 		"language": "eng",
@@ -355,7 +356,7 @@ func TestEmptyFlow(t *testing.T) {
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Empty Flow",
 		"revision": 0,
-		"spec_version": "13.0.0",
+		"spec_version": "13.1.0",
 		"type": "messaging",
 		"expire_after_minutes": 0,
 		"language": "eng",
@@ -413,7 +414,7 @@ func TestReadFlow(t *testing.T) {
 		"expire_after_minutes": 30,
 		"nodes": []
 	}`), nil)
-	assert.EqualError(t, err, "spec version 2000.0.0 is newer than this library (13.0.0)")
+	assert.EqualError(t, err, "spec version 2000.0.0 is newer than this library (13.1.0)")
 
 	// try reading a definition with a newer minor version
 	_, err = definition.ReadFlow([]byte(`{
@@ -495,7 +496,7 @@ func TestReadFlow(t *testing.T) {
 			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 			"name": "TestFlow"
 		}
-	}`), &definition.MigrationConfig{})
+	}`), &migrations.Config{})
 	assert.NoError(t, err)
 	assert.Equal(t, assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), flow.UUID())
 	assert.Equal(t, "TestFlow", flow.Name())
