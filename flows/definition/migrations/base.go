@@ -3,10 +3,12 @@ package migrations
 import (
 	"encoding/json"
 	"sort"
+	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
 	"github.com/pkg/errors"
@@ -93,17 +95,10 @@ func migrate(data []byte, from *semver.Version, to *semver.Version) ([]byte, err
 	// sorted by earliest first
 	sort.SliceStable(versions, func(i, j int) bool { return versions[i].LessThan(versions[j]) })
 
-	g, err := utils.JSONDecodeGeneric(data)
+	migrated, err := readFlow(data)
 	if err != nil {
 		return nil, err
 	}
-
-	d, _ := g.(map[string]interface{})
-	if d == nil {
-		return nil, errors.New("can't migrate definition which isn't a flow")
-	}
-
-	migrated := Flow(d)
 
 	for _, version := range versions {
 		migrated, err = registered[version](migrated)
@@ -116,4 +111,111 @@ func migrate(data []byte, from *semver.Version, to *semver.Version) ([]byte, err
 
 	// finally marshal back to JSON
 	return json.Marshal(migrated)
+}
+
+// Clone clones the given flow definition by replacing all UUIDs using the provided mapping and
+// generating new random UUIDs if they aren't in the mapping
+func Clone(data []byte, depMapping map[uuids.UUID]uuids.UUID) ([]byte, error) {
+	clone, err := readFlow(data)
+	if err != nil {
+		return nil, err
+	}
+
+	remapUUIDs(clone, depMapping)
+
+	// finally marshal back to JSON
+	return json.Marshal(clone)
+}
+
+// reads a flow definition as a flow primitive
+func readFlow(data []byte) (Flow, error) {
+	g, err := utils.JSONDecodeGeneric(data)
+	if err != nil {
+		return nil, err
+	}
+
+	d, _ := g.(map[string]interface{})
+	if d == nil {
+		return nil, errors.New("flow definition isn't an object")
+	}
+
+	return d, nil
+}
+
+// remap all UUIDs in the flow
+func remapUUIDs(data map[string]interface{}, depMapping map[uuids.UUID]uuids.UUID) {
+	// copy in the dependency mappings into a master mapping of all UUIDs
+	mapping := make(map[uuids.UUID]uuids.UUID)
+	for k, v := range depMapping {
+		mapping[k] = v
+	}
+
+	replaceUUID := func(u uuids.UUID) uuids.UUID {
+		if u == uuids.UUID("") {
+			return uuids.UUID("")
+		}
+		mapped, exists := mapping[u]
+		if !exists {
+			mapped = uuids.New()
+			mapping[u] = mapped
+		}
+		return mapped
+	}
+
+	objectCallback := func(obj map[string]interface{}) {
+		props := objectProperties(obj)
+
+		for _, p := range props {
+			v := obj[p]
+
+			if p == "uuid" || strings.HasSuffix(p, "_uuid") {
+				asString, isString := v.(string)
+				if isString {
+					obj[p] = replaceUUID(uuids.UUID(asString))
+				}
+			} else if uuids.IsV4(p) {
+				newProperty := string(replaceUUID(uuids.UUID(p)))
+				obj[newProperty] = v
+				delete(obj, p)
+			}
+		}
+	}
+
+	arrayCallback := func(arr []interface{}) {
+		for i, v := range arr {
+			asString, isString := v.(string)
+			if isString && uuids.IsV4(asString) {
+				arr[i] = replaceUUID(uuids.UUID(asString))
+			}
+		}
+	}
+
+	walk(data, objectCallback, arrayCallback)
+}
+
+// extract the property names from a generic JSON object
+func objectProperties(obj map[string]interface{}) []string {
+	props := make([]string, 0, len(obj))
+	for k := range obj {
+		props = append(props, k)
+	}
+	return props
+}
+
+// walks the given generic JSON invoking the given callbacks for each thing found
+func walk(j interface{}, objectCallback func(map[string]interface{}), arrayCallback func([]interface{})) {
+	switch typed := j.(type) {
+	case map[string]interface{}:
+		objectCallback(typed)
+
+		for _, v := range typed {
+			walk(v, objectCallback, arrayCallback)
+		}
+	case []interface{}:
+		arrayCallback(typed)
+
+		for _, v := range typed {
+			walk(v, objectCallback, arrayCallback)
+		}
+	}
 }
