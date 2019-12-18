@@ -16,6 +16,7 @@ type Channel struct {
 	assets.Channel
 }
 
+// NewChannel creates a new channenl
 func NewChannel(asset assets.Channel) *Channel {
 	return &Channel{Channel: asset}
 }
@@ -51,6 +52,7 @@ func (c *Channel) HasRole(role assets.ChannelRole) bool {
 	return false
 }
 
+// HasParent returns whether this channel has a parent
 func (c *Channel) HasParent() bool {
 	return c.Parent() != nil
 }

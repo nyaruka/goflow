@@ -46,7 +46,7 @@ var RunContextTopLevels = []string{
 	"webhook",
 }
 
-// ContactQueryEscaping
+// ContactQueryEscaping is the escaping function used for expressions in contact queries
 func ContactQueryEscaping(s string) string {
 	return strconv.Quote(s)
 }

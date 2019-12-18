@@ -115,12 +115,15 @@ type HTTPLog struct {
 	ElapsedMS int        `json:"elapsed_ms"`
 }
 
+// HTTPLogCallback is a function that handles an HTTP log
 type HTTPLogCallback func(*HTTPLog)
 
+// HTTPLogger logs HTTP logs
 type HTTPLogger struct {
 	Logs []*HTTPLog
 }
 
+// Log logs the given HTTP log
 func (l *HTTPLogger) Log(h *HTTPLog) {
 	l.Logs = append(l.Logs, h)
 }
