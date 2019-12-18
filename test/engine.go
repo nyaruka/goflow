@@ -59,8 +59,8 @@ func (s *classificationService) Classify(session flows.Session, input string, lo
 	}
 
 	logHTTP(&flows.HTTPLog{
-		URL:       "http://test.acme.ai?classifiy",
-		Request:   "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+		URL:       "http://test.acme.ai?classify",
+		Request:   "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
 		Status:    "success",
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),

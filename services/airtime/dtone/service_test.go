@@ -158,7 +158,7 @@ func TestServiceFailedTransfers(t *testing.T) {
 	assert.Equal(t, decimal.Zero, transfer.ActualAmount)
 	assert.Equal(t, 1, len(httpLogger.Logs))
 
-	// try when amount is smaller than mimimum in currency
+	// try when amount is smaller than minimum in currency
 	transfer, err = svc.Transfer(
 		session,
 		urns.URN("tel:+593979099111"),
@@ -166,7 +166,7 @@ func TestServiceFailedTransfers(t *testing.T) {
 		map[string]decimal.Decimal{"USD": decimal.RequireFromString("0.10")},
 		httpLogger.Log,
 	)
-	assert.EqualError(t, err, "amount requested is smaller than the mimimum topup of 1 USD")
+	assert.EqualError(t, err, "amount requested is smaller than the minimum topup of 1 USD")
 	assert.NotNil(t, transfer)
 	assert.Equal(t, urns.URN("tel:+593979099111"), transfer.Sender)
 	assert.Equal(t, urns.URN("tel:+593979099222"), transfer.Recipient)

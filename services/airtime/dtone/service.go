@@ -68,7 +68,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 	}
 
 	if useAmount == decimal.Zero {
-		return transfer, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
+		return transfer, errors.Errorf("amount requested is smaller than the minimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
 	}
 
 	reservedID, trace, err := client.ReserveID()
