@@ -11,6 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ResthookPayload is the POST payload used by resthooks
 const ResthookPayload = `@(json(object(
   "contact", object("uuid", contact.uuid, "name", contact.name, "urn", contact.urn),
   "flow", run.flow,

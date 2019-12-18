@@ -25,14 +25,17 @@ type TemplateErrors struct {
 	errors []*TemplateError
 }
 
+// NewTemplateErrors creates a new empty lsit of template errors
 func NewTemplateErrors() *TemplateErrors {
 	return &TemplateErrors{}
 }
 
+// Add adds an error for the given expression
 func (e *TemplateErrors) Add(expression, message string) {
 	e.errors = append(e.errors, &TemplateError{expression: expression, message: message})
 }
 
+// HasErrors returns whether there are errors
 func (e *TemplateErrors) HasErrors() bool {
 	return len(e.errors) > 0
 }

@@ -18,8 +18,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+// common category names
 const (
-	// common category names
 	CategorySuccess = "Success"
 	CategorySkipped = "Skipped"
 	CategoryFailure = "Failure"
@@ -232,8 +232,8 @@ func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flow
 		}
 	}
 
-	// evalaute contact query
-	contactQuery, err := run.EvaluateTemplateWithEscaping(a.ContactQuery, flows.ContactQueryEscaping)
+	// evaluate contact query
+	contactQuery, _ := run.EvaluateTemplateWithEscaping(a.ContactQuery, flows.ContactQueryEscaping)
 
 	return groupRefs, contactRefs, contactQuery, urnList, nil
 }
