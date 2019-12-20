@@ -1,3 +1,7 @@
+v0.63.1
+----------
+ * Perform URL validation in call_webhook and skip action appropriately
+
 v0.63.0
 ----------
  * Loosen email regex used by has_email test
