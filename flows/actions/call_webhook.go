@@ -2,6 +2,7 @@ package actions
 
 import (
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -10,6 +11,8 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/net/http/httpguts"
 )
+
+func isValidURL(u string) bool { _, err := url.Parse(u); return err == nil }
 
 func init() {
 	registerType(TypeCallWebhook, func() flows.Action { return &CallWebhookAction{} })
@@ -83,7 +86,11 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 		logEvent(events.NewError(err))
 	}
 	if url == "" {
-		logEvent(events.NewErrorf("call_webhook URL evaluated to empty string, skipping"))
+		logEvent(events.NewErrorf("webhook URL evaluated to empty string"))
+		return nil
+	}
+	if !isValidURL(url) {
+		logEvent(events.NewErrorf("webhook URL evaluated to an invalid URL: '%s'", url))
 		return nil
 	}
 
@@ -98,6 +105,11 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 		}
 	}
 
+	return a.call(run, step, url, method, body, logEvent)
+}
+
+// Execute runs this action
+func (a *CallWebhookAction) call(run flows.FlowRun, step flows.Step, url, method, body string, logEvent flows.EventCallback) error {
 	// build our request
 	req, err := http.NewRequest(method, url, strings.NewReader(body))
 	if err != nil {
