@@ -266,7 +266,7 @@ type wardTest struct {
 	District string `json:"district"`
 }
 
-var relativeDateTest = regexp.MustCompile(`@\(date\.today\s+(\+|\-)\s+(\d+)\)`)
+var relativeDateTest = regexp.MustCompile(`@\(date\.today\s+(\+|\-)\s+(\-?\d+)\)`)
 
 //------------------------------------------------------------------------------------------
 // Migrated flow objects
