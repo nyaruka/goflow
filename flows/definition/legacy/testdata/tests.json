@@ -179,6 +179,26 @@
     {
         "legacy_test": {
             "type": "date_after",
+            "test": "@(date.today + 10)"
+        },
+        "expected_case": {
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+            "type": "has_date_gt",
+            "arguments": [
+                "@(datetime_add(today(), 10, \"D\"))"
+            ],
+            "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+        },
+        "expected_localization": {},
+        "expected_ui": {
+            "arguments": [
+                "10"
+            ]
+        }
+    },
+    {
+        "legacy_test": {
+            "type": "date_after",
             "test": "@(date.today + -10)"
         },
         "expected_case": {
