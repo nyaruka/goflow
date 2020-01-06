@@ -893,7 +893,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 		if err != nil {
 			return nil, nil, err
 		}
-		migratedTest, _ := expressions.MigrateTemplate(test.Test, nil)
+		migratedTest, _ := expressions.MigrateTemplate(test.Test, &expressions.MigrateOptions{RawDates: true})
 
 		var delta int
 		match := relativeDateTest.FindStringSubmatch(test.Test)

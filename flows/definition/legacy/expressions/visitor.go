@@ -12,11 +12,12 @@ import (
 
 type legacyVisitor struct {
 	gen.BaseExcellent1Visitor
-	env envs.Environment
+	env     envs.Environment
+	options *MigrateOptions
 }
 
-func newLegacyVisitor(env envs.Environment) *legacyVisitor {
-	return &legacyVisitor{env: env}
+func newLegacyVisitor(env envs.Environment, options *MigrateOptions) *legacyVisitor {
+	return &legacyVisitor{env: env, options: options}
 }
 
 // ---------------------------------------------------------------
@@ -66,7 +67,7 @@ func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
-	return MigrateContextReference(ctx.GetText())
+	return MigrateContextReference(ctx.GetText(), v.options.RawDates)
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)
@@ -126,9 +127,13 @@ func (v *legacyVisitor) VisitAdditionOrSubtractionExpression(ctx *gen.AdditionOr
 
 	} else if arg1Type == "date" && arg2Type == "number" {
 		// we are adding a date and a number (of days)
-		template := `format_date(datetime_add(%s, %s, "D"))`
+		template := `datetime_add(%s, %s, "D")`
 		if op == "-" {
-			template = `format_date(datetime_add(%s, -%s, "D"))`
+			template = `datetime_add(%s, -%s, "D")`
+		}
+
+		if !v.options.RawDates {
+			template = wrap(template, "format_date")
 		}
 
 		return fmt.Sprintf(template, arg1, arg2)
