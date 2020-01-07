@@ -49,7 +49,7 @@ func NewService(httpClient *http.Client, defaultHeaders map[string]string, maxBo
 	}
 }
 
-func (s *service) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
+func (s *service) Call(session flows.Session, request *http.Request) (*flows.WebhookCall, error) {
 	// set any headers with defaults
 	for k, v := range s.defaultHeaders {
 		if request.Header.Get(k) == "" {
@@ -71,17 +71,16 @@ func (s *service) Call(session flows.Session, request *http.Request, resthook st
 			URL:        request.URL.String(),
 			Method:     request.Method,
 			StatusCode: 0,
-			Status:     flows.CallStatusConnectionError,
 			Request:    dump,
 			Response:   nil,
 		}, nil
 	}
 
-	return s.newCallFromResponse(dump, response, s.maxBodyBytes, timeTaken, resthook)
+	return s.newCallFromResponse(dump, response, s.maxBodyBytes, timeTaken)
 }
 
 // creates a new call based on the passed in http response
-func (s *service) newCallFromResponse(requestTrace []byte, response *http.Response, maxBodyBytes int, timeTaken time.Duration, resthook string) (*flows.WebhookCall, error) {
+func (s *service) newCallFromResponse(requestTrace []byte, response *http.Response, maxBodyBytes int, timeTaken time.Duration) (*flows.WebhookCall, error) {
 	defer response.Body.Close()
 
 	// save response trace without body which will be parsed separately
@@ -94,11 +93,9 @@ func (s *service) newCallFromResponse(requestTrace []byte, response *http.Respon
 		URL:        response.Request.URL.String(),
 		Method:     response.Request.Method,
 		StatusCode: response.StatusCode,
-		Status:     statusFromCode(response.StatusCode, resthook != ""),
 		Request:    requestTrace,
 		Response:   responseTrace,
 		TimeTaken:  timeTaken,
-		Resthook:   resthook,
 	}
 
 	body, err := readBody(response, maxBodyBytes)
@@ -157,18 +154,6 @@ func readBody(response *http.Response, maxBodyBytes int) ([]byte, error) {
 	}
 
 	return bodyBytes, nil
-}
-
-// determines the webhook status from the HTTP status code
-func statusFromCode(code int, isResthook bool) flows.CallStatus {
-	// https://zapier.com/developer/documentation/v2/rest-hooks/
-	if isResthook && code == 410 {
-		return flows.CallStatusSubscriberGone
-	}
-	if code/100 == 2 {
-		return flows.CallStatusSuccess
-	}
-	return flows.CallStatusResponseError
 }
 
 var _ flows.WebhookService = (*service)(nil)
