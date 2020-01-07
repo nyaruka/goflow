@@ -63,7 +63,7 @@ func TestService(t *testing.T) {
 				"text": "book my flight to Quito",
 				"update_id": 13158,
 				"language": "en"
-			  }`),
+			  }`, nil),
 		},
 	}))
 

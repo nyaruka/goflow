@@ -61,7 +61,7 @@ func NewClient(httpClient *http.Client, endpoint, appID, key string) *Client {
 func (c *Client) Predict(q string) (*PredictResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/apps/%s?verbose=true&subscription-key=%s&q=%s", c.endpoint, c.appID, c.key, url.QueryEscape(q))
 
-	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, nil)
+	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, nil, nil)
 	if err != nil {
 		return nil, trace, err
 	}

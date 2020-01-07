@@ -14,8 +14,8 @@ import (
 func TestPredict(t *testing.T) {
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=Hello": []httpx.MockResponse{
-			httpx.NewMockResponse(200, `xx`), // non-JSON response
-			httpx.NewMockResponse(200, `{}`), // invalid JSON response
+			httpx.NewMockResponse(200, `xx`, nil), // non-JSON response
+			httpx.NewMockResponse(200, `{}`, nil), // invalid JSON response
 			httpx.NewMockResponse(200, `{
 				"query": "book a flight to Quito",
 				"topScoringIntent": {
@@ -49,7 +49,7 @@ func TestPredict(t *testing.T) {
 				  "label": "positive",
 				  "score": 0.731448531
 				}
-			}`),
+			}`, nil),
 		},
 	}))
 	defer httpx.SetRequestor(httpx.DefaultRequestor)

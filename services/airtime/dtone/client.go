@@ -170,9 +170,11 @@ func (c *Client) request(data url.Values, dest Response) (*httpx.Trace, error) {
 	data.Add("key", key)
 	data.Add("md5", hash)
 
-	trace, err := httpx.DoTrace(c.httpClient, "POST", apiURL, strings.NewReader(data.Encode()), map[string]string{
+	headers := map[string]string{
 		"Content-Type": "application/x-www-form-urlencoded",
-	})
+	}
+
+	trace, err := httpx.DoTrace(c.httpClient, "POST", apiURL, strings.NewReader(data.Encode()), headers, nil)
 	if err != nil {
 		return trace, err
 	}

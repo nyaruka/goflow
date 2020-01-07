@@ -63,7 +63,7 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 	}
 
 	start := dates.Now()
-	response, err := httpx.Do(s.httpClient, request)
+	response, err := httpx.Do(s.httpClient, request, nil)
 	timeTaken := dates.Now().Sub(start)
 
 	if err != nil {

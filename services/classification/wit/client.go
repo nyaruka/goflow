@@ -49,7 +49,7 @@ func NewClient(httpClient *http.Client, accessToken string) *Client {
 func (c *Client) Message(q string) (*MessageResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/message?v=%s&q=%s", apiBaseURL, version, url.QueryEscape(q))
 
-	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, c.headers)
+	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, c.headers, nil)
 	if err != nil {
 		return nil, trace, err
 	}

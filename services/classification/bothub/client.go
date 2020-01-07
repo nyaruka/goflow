@@ -65,7 +65,7 @@ func (c *Client) Parse(text string) (*ParseResponse, *httpx.Trace, error) {
 		"Authorization": fmt.Sprintf("Bearer %s", c.accessToken),
 	}
 
-	trace, err := httpx.DoTrace(c.httpClient, "POST", endpoint, strings.NewReader(form.Encode()), headers)
+	trace, err := httpx.DoTrace(c.httpClient, "POST", endpoint, strings.NewReader(form.Encode()), headers, nil)
 	if err != nil {
 		return nil, trace, err
 	}
