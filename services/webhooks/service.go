@@ -101,6 +101,22 @@ func (s *service) newCallFromResponse(requestTrace []byte, response *http.Respon
 		Resthook:   resthook,
 	}
 
+	body, err := readBody(response, maxBodyBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	if body != nil {
+		w.Response = append(w.Response, body...)
+	} else {
+		w.BodyIgnored = true
+	}
+
+	return w, nil
+}
+
+// attempts to read the body of an HTTP response
+func readBody(response *http.Response, maxBodyBytes int) ([]byte, error) {
 	// we will only read up to our max body bytes limit
 	bodyReader := io.LimitReader(response.Body, int64(maxBodyBytes)+1)
 	var bodySniffed []byte
@@ -122,29 +138,25 @@ func (s *service) newCallFromResponse(requestTrace []byte, response *http.Respon
 	}
 
 	// only save response body's if we have a supported content-type
-	saveBody := fetchResponseContentTypes[contentType]
-
-	if saveBody {
-		bodyBytes, err := ioutil.ReadAll(bodyReader)
-		if err != nil {
-			return nil, err
-		}
-
-		// if we have no remaining bytes, error because the body was too big
-		if bodyReader.(*io.LimitedReader).N <= 0 {
-			return nil, errors.Errorf("webhook response body exceeds %d bytes limit", maxBodyBytes)
-		}
-
-		if len(bodySniffed) > 0 {
-			bodyBytes = append(bodySniffed, bodyBytes...)
-		}
-
-		w.Response = append(w.Response, bodyBytes...)
-	} else {
-		w.BodyIgnored = true
+	if !fetchResponseContentTypes[contentType] {
+		return nil, nil
 	}
 
-	return w, nil
+	bodyBytes, err := ioutil.ReadAll(bodyReader)
+	if err != nil {
+		return nil, err
+	}
+
+	// if we have no remaining bytes, error because the body was too big
+	if bodyReader.(*io.LimitedReader).N <= 0 {
+		return nil, errors.Errorf("webhook response body exceeds %d bytes limit", maxBodyBytes)
+	}
+
+	if len(bodySniffed) > 0 {
+		bodyBytes = append(bodySniffed, bodyBytes...)
+	}
+
+	return bodyBytes, nil
 }
 
 // determines the webhook status from the HTTP status code
