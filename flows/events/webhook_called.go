@@ -43,15 +43,15 @@ type WebhookCalledEvent struct {
 }
 
 // NewWebhookCalled returns a new webhook called event
-func NewWebhookCalled(webhook *flows.WebhookCall) *WebhookCalledEvent {
+func NewWebhookCalled(webhook *flows.WebhookCall, status flows.CallStatus, resthook string) *WebhookCalledEvent {
 	return &WebhookCalledEvent{
 		baseEvent:   newBaseEvent(TypeWebhookCalled),
 		URL:         webhook.URL,
-		Status:      webhook.Status,
+		Status:      status,
 		Request:     string(webhook.Request),
 		Response:    string(webhook.Response),
 		ElapsedMS:   int(webhook.TimeTaken / time.Millisecond),
-		Resthook:    webhook.Resthook,
+		Resthook:    resthook,
 		StatusCode:  webhook.StatusCode,
 		BodyIgnored: webhook.BodyIgnored,
 	}
