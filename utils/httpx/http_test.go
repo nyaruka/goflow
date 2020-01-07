@@ -65,10 +65,7 @@ func TestDoWithRetries(t *testing.T) {
 	assert.Equal(t, 502, trace.Response.StatusCode)
 
 	// a retry config which can make 3 attempts
-	retries := &httpx.RetryConfig{
-		Delays:      []time.Duration{1 * time.Millisecond, 2 * time.Millisecond},
-		ShouldRetry: httpx.DefaultShouldRetry,
-	}
+	retries := httpx.NewRetryDelays(1*time.Millisecond, 2*time.Millisecond)
 
 	// retrying thats ends with failure
 	trace, err = httpx.DoTrace(http.DefaultClient, "GET", "http://temba.io/2/", nil, nil, retries)
@@ -91,10 +88,7 @@ func TestDoWithRetries(t *testing.T) {
 	assert.Equal(t, 200, trace.Response.StatusCode)
 
 	// a retry config which can make 2 attempts (need a longer delay so that the Retry-After header value can be used)
-	retries = &httpx.RetryConfig{
-		Delays:      []time.Duration{1 * time.Second},
-		ShouldRetry: httpx.DefaultShouldRetry,
-	}
+	retries = httpx.NewRetryDelays(1 * time.Second)
 
 	// retrying due to Retry-After header
 	trace, err = httpx.DoTrace(http.DefaultClient, "POST", "http://temba.io/6/", nil, nil, retries)

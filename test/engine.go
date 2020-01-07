@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
+	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -15,11 +16,13 @@ import (
 
 // NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
+	retries := httpx.NewRetryDelays(1*time.Millisecond, 2*time.Millisecond)
+
 	return engine.NewBuilder().
 		WithEmailServiceFactory(func(s flows.Session) (flows.EmailService, error) {
 			return newEmailService(), nil
 		}).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-testing"}, 10000, retries)).
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).

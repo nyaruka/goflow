@@ -14,6 +14,11 @@ type RetryConfig struct {
 	ShouldRetry func(*http.Request, *http.Response, time.Duration) bool
 }
 
+// NewRetryDelays creates a new retry config with the given delays
+func NewRetryDelays(delays ...time.Duration) *RetryConfig {
+	return &RetryConfig{Delays: delays, ShouldRetry: DefaultShouldRetry}
+}
+
 // DefaultShouldRetry is the default function for determining if a response should be retried
 func DefaultShouldRetry(request *http.Request, response *http.Response, withDelay time.Duration) bool {
 	// any response with a Retry-After header is candidate for a retry (usually used with 301, 429, 503 status codes)
@@ -40,11 +45,7 @@ func isIdempotent(r *http.Request) bool {
 		return true
 	}
 
-	if r.Header.Get("Idempotency-Key") != "" || r.Header.Get("X-Idempotency-Key") != "" {
-		return true
-	}
-
-	return false
+	return r.Header.Get("Idempotency-Key") != "" || r.Header.Get("X-Idempotency-Key") != ""
 }
 
 // ParseRetryAfter parses value of Retry-After headers which can be date or delay in seconds
