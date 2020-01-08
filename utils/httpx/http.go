@@ -23,10 +23,11 @@ func Do(client *http.Client, request *http.Request, retries *RetryConfig) (*http
 	for {
 		response, err = currentRequestor.Do(client, request)
 
-		if retries != nil && retry < len(retries.Delays) {
-			delay := retries.Delays[retry]
-			if retries.ShouldRetry(request, response, delay) {
-				time.Sleep(delay)
+		if retries != nil && retry < retries.MaxRetries() {
+			backoff := retries.Backoff(retry)
+
+			if retries.ShouldRetry(request, response, backoff) {
+				time.Sleep(backoff)
 				retry++
 				continue
 			}

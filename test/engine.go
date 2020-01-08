@@ -16,7 +16,7 @@ import (
 
 // NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
-	retries := httpx.NewRetryDelays(1*time.Millisecond, 2*time.Millisecond)
+	retries := httpx.NewFixedRetries(1*time.Millisecond, 2*time.Millisecond)
 
 	return engine.NewBuilder().
 		WithEmailServiceFactory(func(s flows.Session) (flows.EmailService, error) {

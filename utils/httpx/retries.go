@@ -1,22 +1,52 @@
 package httpx
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/random"
 )
 
 // RetryConfig configures if and how retrying of requests happens
 type RetryConfig struct {
-	Delays      []time.Duration
+	Backoffs    []time.Duration
+	Jitter      float64
 	ShouldRetry func(*http.Request, *http.Response, time.Duration) bool
 }
 
-// NewRetryDelays creates a new retry config with the given delays
-func NewRetryDelays(delays ...time.Duration) *RetryConfig {
-	return &RetryConfig{Delays: delays, ShouldRetry: DefaultShouldRetry}
+// NewFixedRetries creates a new retry config with the given backoffs
+func NewFixedRetries(backoffs ...time.Duration) *RetryConfig {
+	return &RetryConfig{Backoffs: backoffs, ShouldRetry: DefaultShouldRetry}
+}
+
+// NewExponentialRetries creates a new retry config with the given delays
+func NewExponentialRetries(initialBackoff time.Duration, count int, jitter float64) *RetryConfig {
+	backoffs := make([]time.Duration, count)
+	backoffs[0] = initialBackoff
+	for i := 1; i < count; i++ {
+		backoffs[i] = backoffs[i-1] * 2
+	}
+
+	return &RetryConfig{Backoffs: backoffs, Jitter: jitter, ShouldRetry: DefaultShouldRetry}
+}
+
+// MaxRetries gets the maximum number of retries allowed
+func (r *RetryConfig) MaxRetries() int {
+	return len(r.Backoffs)
+}
+
+// Backoff gets the backoff time for the nth retry
+func (r *RetryConfig) Backoff(n int) time.Duration {
+	if n >= len(r.Backoffs) {
+		panic(fmt.Sprintf("%d not a valid retry number for this config", n))
+	}
+
+	base := r.Backoffs[n]
+	jitter := time.Duration(r.Jitter * float64(random.IntN(int(base))-(int(base)/2)))
+	return base + jitter
 }
 
 // DefaultShouldRetry is the default function for determining if a response should be retried
