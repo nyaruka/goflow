@@ -29,25 +29,25 @@ var fetchResponseContentTypes = map[string]bool{
 
 type service struct {
 	httpClient     *http.Client
+	httpRetries    *httpx.RetryConfig
 	defaultHeaders map[string]string
 	maxBodyBytes   int
-	retries        *httpx.RetryConfig
 }
 
 // NewServiceFactory creates a new webhook service factory
-func NewServiceFactory(httpClient *http.Client, defaultHeaders map[string]string, maxBodyBytes int, retries *httpx.RetryConfig) engine.WebhookServiceFactory {
+func NewServiceFactory(httpClient *http.Client, httpRetries *httpx.RetryConfig, defaultHeaders map[string]string, maxBodyBytes int) engine.WebhookServiceFactory {
 	return func(flows.Session) (flows.WebhookService, error) {
-		return NewService(httpClient, defaultHeaders, maxBodyBytes, retries), nil
+		return NewService(httpClient, httpRetries, defaultHeaders, maxBodyBytes), nil
 	}
 }
 
 // NewService creates a new default webhook service
-func NewService(httpClient *http.Client, defaultHeaders map[string]string, maxBodyBytes int, retries *httpx.RetryConfig) flows.WebhookService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, defaultHeaders map[string]string, maxBodyBytes int) flows.WebhookService {
 	return &service{
 		httpClient:     httpClient,
+		httpRetries:    httpRetries,
 		defaultHeaders: defaultHeaders,
 		maxBodyBytes:   maxBodyBytes,
-		retries:        retries,
 	}
 }
 
@@ -65,7 +65,7 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 	}
 
 	start := dates.Now()
-	response, err := httpx.Do(s.httpClient, request, s.retries)
+	response, err := httpx.Do(s.httpClient, request, s.httpRetries)
 	timeTaken := dates.Now().Sub(start)
 
 	if err != nil {

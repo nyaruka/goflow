@@ -31,14 +31,16 @@ type MessageResponse struct {
 
 // Client is a basic Wit.ai client
 type Client struct {
-	httpClient *http.Client
-	headers    map[string]string
+	httpClient  *http.Client
+	httpRetries *httpx.RetryConfig
+	headers     map[string]string
 }
 
 // NewClient creates a new client
-func NewClient(httpClient *http.Client, accessToken string) *Client {
+func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, accessToken string) *Client {
 	return &Client{
-		httpClient: httpClient,
+		httpClient:  httpClient,
+		httpRetries: httpRetries,
 		headers: map[string]string{
 			"Authorization": fmt.Sprintf("Bearer %s", accessToken),
 		},
@@ -49,7 +51,7 @@ func NewClient(httpClient *http.Client, accessToken string) *Client {
 func (c *Client) Message(q string) (*MessageResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/message?v=%s&q=%s", apiBaseURL, version, url.QueryEscape(q))
 
-	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, c.headers, nil)
+	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, c.headers, c.httpRetries)
 	if err != nil {
 		return nil, trace, err
 	}

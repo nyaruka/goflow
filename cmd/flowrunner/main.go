@@ -82,12 +82,12 @@ func main() {
 
 func createEngine(witToken string) flows.Engine {
 	builder := engine.NewBuilder().
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-runner"}, 10000, nil))
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, map[string]string{"User-Agent": "goflow-runner"}, 10000))
 
 	if witToken != "" {
 		builder.WithClassificationServiceFactory(func(session flows.Session, classifier *flows.Classifier) (flows.ClassificationService, error) {
 			if classifier.Type() == "wit" {
-				return wit.NewService(http.DefaultClient, classifier, witToken), nil
+				return wit.NewService(http.DefaultClient, nil, classifier, witToken), nil
 			}
 			return nil, errors.New("only classifiers of type wit supported")
 		})

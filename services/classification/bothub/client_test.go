@@ -55,7 +55,7 @@ func TestPredict(t *testing.T) {
 		},
 	}))
 
-	client := bothub.NewClient(http.DefaultClient, "123e4567-e89b-12d3-a456-426655440000")
+	client := bothub.NewClient(http.DefaultClient, nil, "123e4567-e89b-12d3-a456-426655440000")
 
 	response, trace, err := client.Parse("Hello")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)

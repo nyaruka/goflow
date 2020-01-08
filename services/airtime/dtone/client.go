@@ -25,9 +25,10 @@ const (
 // Client is a DTOne client
 // see https://tshop-app.dtone.com/shop/v3/doc/Airtime_API.pdf for API docs
 type Client struct {
-	httpClient *http.Client
-	login      string
-	token      string
+	httpClient  *http.Client
+	httpRetries *httpx.RetryConfig
+	login       string
+	token       string
 }
 
 type Response interface {
@@ -47,8 +48,8 @@ func (r *baseResponse) Error() error {
 }
 
 // NewClient creates a new TransferTo client
-func NewClient(httpClient *http.Client, login string, token string) *Client {
-	return &Client{httpClient: httpClient, login: login, token: token}
+func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, login string, token string) *Client {
+	return &Client{httpClient: httpClient, httpRetries: httpRetries, login: login, token: token}
 }
 
 // Ping just verifies the credentials
@@ -174,7 +175,7 @@ func (c *Client) request(data url.Values, dest Response) (*httpx.Trace, error) {
 		"Content-Type": "application/x-www-form-urlencoded",
 	}
 
-	trace, err := httpx.DoTrace(c.httpClient, "POST", apiURL, strings.NewReader(data.Encode()), headers, nil)
+	trace, err := httpx.DoTrace(c.httpClient, "POST", apiURL, strings.NewReader(data.Encode()), headers, c.httpRetries)
 	if err != nil {
 		return trace, err
 	}

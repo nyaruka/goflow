@@ -34,7 +34,7 @@ func TestClient(t *testing.T) {
 	httpx.SetRequestor(mocks)
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC)))
 
-	cl := dtone.NewClient(http.DefaultClient, "joe", "1234567")
+	cl := dtone.NewClient(http.DefaultClient, nil, "joe", "1234567")
 
 	// test ping action
 	trace, err := cl.Ping()

@@ -36,6 +36,7 @@ func TestService(t *testing.T) {
 
 	svc := wit.NewService(
 		http.DefaultClient,
+		nil,
 		test.NewClassifier("Booking", "wit", []string{"book_flight", "book_hotel"}),
 		"23532624376",
 	)

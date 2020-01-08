@@ -56,6 +56,7 @@ func TestPredict(t *testing.T) {
 
 	client := luis.NewClient(
 		http.DefaultClient,
+		nil,
 		"https://westus.api.cognitive.microsoft.com/luis/v2.0",
 		"f96abf2f-3b53-4766-8ea6-09a655222a02",
 		"3246231",

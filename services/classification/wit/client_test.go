@@ -22,7 +22,7 @@ func TestMessage(t *testing.T) {
 		},
 	}))
 
-	client := wit.NewClient(http.DefaultClient, "3246231")
+	client := wit.NewClient(http.DefaultClient, nil, "3246231")
 
 	response, trace, err := client.Message("Hello")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
