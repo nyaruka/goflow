@@ -4,30 +4,33 @@ import (
 	"net/http"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils/httpx"
 )
 
 // a classification service implementation for a LUIS app
 type service struct {
-	httpClient *http.Client
-	classifier *flows.Classifier
-	endpoint   string
-	appID      string
-	key        string
+	httpClient  *http.Client
+	httpRetries *httpx.RetryConfig
+	classifier  *flows.Classifier
+	endpoint    string
+	appID       string
+	key         string
 }
 
 // NewService creates a new classification service
-func NewService(httpClient *http.Client, classifier *flows.Classifier, endpoint, appID, key string) flows.ClassificationService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classifier *flows.Classifier, endpoint, appID, key string) flows.ClassificationService {
 	return &service{
-		httpClient: httpClient,
-		classifier: classifier,
-		endpoint:   endpoint,
-		appID:      appID,
-		key:        key,
+		httpClient:  httpClient,
+		httpRetries: httpRetries,
+		classifier:  classifier,
+		endpoint:    endpoint,
+		appID:       appID,
+		key:         key,
 	}
 }
 
 func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	client := NewClient(s.httpClient, s.endpoint, s.appID, s.key)
+	client := NewClient(s.httpClient, s.httpRetries, s.endpoint, s.appID, s.key)
 
 	response, trace, err := client.Predict(input)
 	if trace != nil {

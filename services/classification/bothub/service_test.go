@@ -63,12 +63,13 @@ func TestService(t *testing.T) {
 				"text": "book my flight to Quito",
 				"update_id": 13158,
 				"language": "en"
-			  }`),
+			  }`, nil),
 		},
 	}))
 
 	svc := bothub.NewService(
 		http.DefaultClient,
+		nil,
 		test.NewClassifier("Booking", "bothub", []string{"book_flight", "book_hotel"}),
 		"f96abf2f-3b53-4766-8ea6-09a655222a02",
 	)
