@@ -1,3 +1,8 @@
+v0.64.0
+----------
+ * Make http retrying available to all services which use HTTP
+ * Fix parsing out relative date value during migration of date tests
+
 v0.63.1
 ----------
  * Perform URL validation in call_webhook and skip action appropriately
