@@ -1,3 +1,7 @@
+v0.64.1
+----------
+ * Add support for jitter in webhook retries
+
 v0.64.0
 ----------
  * Make http retrying available to all services which use HTTP
