@@ -78,3 +78,30 @@ func Indent(s string, prefix string) string {
 	}
 	return output.String()
 }
+
+// StringSet is set of strings
+type StringSet map[string]bool
+
+// NewStringSet creates a new empty string set with the given capacity
+func NewStringSet(cap int) StringSet {
+	return make(map[string]bool, cap)
+}
+
+// Add adds the given string to the set if it doesn't already exist
+func (s StringSet) Add(v string) {
+	s[v] = true
+}
+
+// Contains returns whether the set contains the given string
+func (s StringSet) Contains(v string) bool {
+	return s[v]
+}
+
+// Slice returns the string values as a slice
+func (s StringSet) Slice() []string {
+	vals := make([]string, 0, len(s))
+	for v := range s {
+		vals = append(vals, v)
+	}
+	return vals
+}

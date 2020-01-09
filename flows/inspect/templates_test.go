@@ -111,31 +111,69 @@ func TestTemplatePaths(t *testing.T) {
 
 func TestExtractFromTemplate(t *testing.T) {
 	testCases := []struct {
-		template string
-		refs     []assets.Reference
+		template   string
+		assetRefs  []assets.Reference
+		parentRefs []string
 	}{
-		{``, []assets.Reference{}},
-		{`Hi @contact`, []assets.Reference{}},
-		{`You are @fields.age`, []assets.Reference{assets.NewFieldReference("age", "")}},
-		{`You are @contact.fields.age`, []assets.Reference{assets.NewFieldReference("age", "")}},
-		{`You are @CONTACT.FIELDS.AGE`, []assets.Reference{assets.NewFieldReference("age", "")}},
-		{`You are @parent.fields.age`, []assets.Reference{assets.NewFieldReference("age", "")}},
-		{`You are @parent.contact.fields.age`, []assets.Reference{assets.NewFieldReference("age", "")}},
-		{`You are @child.contact.fields.age today`, []assets.Reference{assets.NewFieldReference("age", "")}},
-		{`You are @(ABS(contact . fields . age) + 1)`, []assets.Reference{assets.NewFieldReference("age", "")}},
-		{`You are @CONTACT.fields.age on @(contact.fields["Birthday"])`, []assets.Reference{
-			assets.NewFieldReference("age", ""),
-			assets.NewFieldReference("birthday", ""),
-		}},
-		{`You are @fields.age in @globals.org_name`, []assets.Reference{
-			assets.NewFieldReference("age", ""),
-			assets.NewGlobalReference("org_name", ""),
-		}},
+		{``, []assets.Reference{}, []string{}},
+		{`Hi @contact`, []assets.Reference{}, []string{}},
+		{
+			`You are @fields.age`,
+			[]assets.Reference{assets.NewFieldReference("age", "")},
+			[]string{},
+		},
+		{
+			`You are @contact.fields.age`,
+			[]assets.Reference{assets.NewFieldReference("age", "")},
+			[]string{},
+		},
+		{
+			`You are @CONTACT.FIELDS.AGE`,
+			[]assets.Reference{assets.NewFieldReference("age", "")},
+			[]string{},
+		},
+		{
+			`You are @parent.fields.age`,
+			[]assets.Reference{assets.NewFieldReference("age", "")},
+			[]string{},
+		},
+		{
+			`You are @parent.contact.fields.age`,
+			[]assets.Reference{assets.NewFieldReference("age", "")},
+			[]string{},
+		},
+		{
+			`You are @child.contact.fields.age today`,
+			[]assets.Reference{assets.NewFieldReference("age", "")},
+			[]string{},
+		},
+		{
+			`You are @(ABS(contact . fields . age) + 1)`,
+			[]assets.Reference{assets.NewFieldReference("age", "")},
+			[]string{},
+		},
+		{
+			`You are @FIELDS.AGE in @GLOBALS.ORG_NAME from @PARENT.RESULTS.STATE `,
+			[]assets.Reference{
+				assets.NewFieldReference("age", ""),
+				assets.NewGlobalReference("org_name", ""),
+			},
+			[]string{"state"},
+		},
+		{
+			`You are @(fields["age"]) in @(globals["org_name"]) from @(parent.results["state"])`,
+			[]assets.Reference{
+				assets.NewFieldReference("age", ""),
+				assets.NewGlobalReference("org_name", ""),
+			},
+			[]string{"state"},
+		},
 	}
 
 	for _, tc := range testCases {
-		actual := inspect.ExtractFromTemplate(tc.template)
+		assetRefs, parentRefs := inspect.ExtractFromTemplate(tc.template)
 
-		assert.Equal(t, tc.refs, actual, "field refs mismatch for template '%s'", tc.template)
+		assert.Equal(t, tc.assetRefs, assetRefs, "asset refs mismatch for template '%s'", tc.template)
+		assert.Equal(t, tc.parentRefs, parentRefs, "parent result refs mismatch for template '%s'", tc.template)
 	}
 }

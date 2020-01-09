@@ -10,6 +10,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
 
@@ -17,7 +18,7 @@ import (
 )
 
 // response content-types that we'll fetch
-var fetchResponseContentTypes = map[string]bool{
+var fetchResponseContentTypes = utils.StringSet(map[string]bool{
 	"application/json":       true,
 	"application/javascript": true,
 	"application/xml":        true,
@@ -25,7 +26,7 @@ var fetchResponseContentTypes = map[string]bool{
 	"text/plain":             true,
 	"text/xml":               true,
 	"text/javascript":        true,
-}
+})
 
 type service struct {
 	httpClient     *http.Client
@@ -137,7 +138,7 @@ func readBody(response *http.Response, maxBodyBytes int) ([]byte, error) {
 	}
 
 	// only save response body's if we have a supported content-type
-	if !fetchResponseContentTypes[contentType] {
+	if !fetchResponseContentTypes.Contains(contentType) {
 		return nil, nil
 	}
 

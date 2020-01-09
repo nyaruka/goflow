@@ -100,10 +100,13 @@ func (f *flow) validate() error {
 
 // Inspect enumerates dependencies, results etc
 func (f *flow) Inspect() *flows.FlowInfo {
+	assetRefs, parentRefs := f.extractAssetAndParentRefs()
+
 	return &flows.FlowInfo{
-		Dependencies: flows.NewDependencies(f.ExtractDependencies()),
+		Dependencies: flows.NewDependencies(assetRefs),
 		Results:      f.ExtractResults(),
 		WaitingExits: f.ExtractExitsFromWaits(),
+		ParentRefs:   parentRefs,
 	}
 }
 
@@ -221,24 +224,36 @@ func (f *flow) ExtractTemplates() []string {
 
 // ExtractDependencies extracts all asset dependencies
 func (f *flow) ExtractDependencies() []assets.Reference {
+	assetRefs, _ := f.extractAssetAndParentRefs()
+	return assetRefs
+}
+
+// ExtractDependencies extracts all asset dependencies
+func (f *flow) extractAssetAndParentRefs() ([]assets.Reference, []string) {
 	dependencies := make([]assets.Reference, 0)
-	dependenciesSeen := make(map[string]bool)
+	dependenciesSeen := utils.NewStringSet(0)
+
 	addDependency := func(r assets.Reference) {
 		if !utils.IsNil(r) && !r.Variable() {
 			key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
-			if !dependenciesSeen[key] {
+			if !dependenciesSeen.Contains(key) {
 				dependencies = append(dependencies, r)
-				dependenciesSeen[key] = true
+				dependenciesSeen.Add(key)
 			}
 
 			// TODO replace if we saw a field ref without a name but now have same field with a name
 		}
 	}
 
+	parentRefs := utils.NewStringSet(0)
+
 	include := func(template string) {
-		refs := inspect.ExtractFromTemplate(template)
-		for _, f := range refs {
-			addDependency(f)
+		ars, prs := inspect.ExtractFromTemplate(template)
+		for _, r := range ars {
+			addDependency(r)
+		}
+		for _, r := range prs {
+			parentRefs.Add(r)
 		}
 	}
 
@@ -249,7 +264,7 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 		})
 	}
 
-	return dependencies
+	return dependencies, parentRefs.Slice()
 }
 
 // ExtractResults extracts all result specs

@@ -103,3 +103,12 @@ func TestIndent(t *testing.T) {
 	assert.Equal(t, "  x\n\n  y", utils.Indent("x\n\ny", "  "))
 	assert.Equal(t, ">>>x", utils.Indent("x", ">>>"))
 }
+
+func TestStringSet(t *testing.T) {
+	set := utils.NewStringSet(0)
+	set.Add("x")
+	set.Add("x")
+	assert.True(t, set.Contains("x"))
+	assert.False(t, set.Contains("y"))
+	assert.Equal(t, []string{"x"}, set.Slice())
+}

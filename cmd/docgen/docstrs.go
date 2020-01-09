@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/nyaruka/goflow/utils"
 	"go/doc"
 	"go/parser"
 	"go/token"
@@ -45,14 +46,14 @@ func FindAllTaggedItems(baseDir string) (map[string][]*TaggedItem, error) {
 
 	// if tagged method is on a base class, we'll "find" it on each type that embeds that base
 	// so need to ignore repeats
-	seen := make(map[string]bool)
+	seen := utils.NewStringSet(0)
 
 	for _, dir := range searchDirs {
 		err := findTaggedItems(baseDir, dir, func(item *TaggedItem) {
 			fullTag := item.tagName + ":" + item.tagValue
-			if !seen[fullTag] {
+			if !seen.Contains(fullTag) {
 				items[item.tagName] = append(items[item.tagName], item)
-				seen[fullTag] = true
+				seen.Add(fullTag)
 			}
 		})
 		if err != nil {

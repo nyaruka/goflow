@@ -3,16 +3,17 @@ package completion
 import (
 	"fmt"
 
+	"github.com/nyaruka/goflow/utils"
 	"github.com/pkg/errors"
 )
 
 // types available in root of context even without a session
-var rootNoSessionTypes = map[string]bool{
+var rootNoSessionTypes = utils.StringSet(map[string]bool{
 	"contact": true,
 	"fields":  true,
 	"globals": true,
 	"urns":    true,
-}
+})
 
 // Completion generates auto-complete paths
 type Completion struct {
@@ -26,7 +27,7 @@ func NewCompletion(types []Type, root []*Property) *Completion {
 	// extract types which are available in a context without a session
 	rootNoSession := make([]*Property, 0, len(rootNoSessionTypes))
 	for _, p := range root {
-		if rootNoSessionTypes[p.Type] {
+		if rootNoSessionTypes.Contains(p.Type) {
 			rootNoSession = append(rootNoSession, p)
 		}
 	}
@@ -36,23 +37,23 @@ func NewCompletion(types []Type, root []*Property) *Completion {
 
 // Validate checks that all type references are valid
 func (c *Completion) Validate() error {
-	knownTypes := make(map[string]bool, len(c.Types))
+	knownTypes := utils.NewStringSet(len(c.Types))
 	for _, t := range primitiveTypes {
-		knownTypes[t.Name()] = true
+		knownTypes.Add(t.Name())
 	}
 	for _, t := range c.Types {
-		knownTypes[t.Name()] = true
+		knownTypes.Add(t.Name())
 	}
 
 	for _, t := range c.Types {
 		for _, ref := range t.TypeRefs() {
-			if !knownTypes[ref] {
+			if !knownTypes.Contains(ref) {
 				return errors.Errorf("context type %s references unknown type %s", t.Name(), ref)
 			}
 		}
 	}
 	for _, p := range c.Root {
-		if !knownTypes[p.Type] {
+		if !knownTypes.Contains(p.Type) {
 			return errors.Errorf("context root references unknown type %s", p.Type)
 		}
 	}

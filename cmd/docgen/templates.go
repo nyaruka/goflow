@@ -14,6 +14,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/random"
 	"github.com/nyaruka/goflow/utils/uuids"
@@ -113,7 +114,7 @@ func renderTemplateDocs(baseDir string, outputDir string, items map[string][]*Ta
 }
 
 // renders a markdown template
-func renderTemplate(src, dst string, context map[string]string, resolver urlResolver, linkTargets map[string]bool) error {
+func renderTemplate(src, dst string, context map[string]string, resolver urlResolver, linkTargets utils.StringSet) error {
 	// generate our complete docs
 	docTpl, err := template.ParseFiles(src)
 	if err != nil {
@@ -150,13 +151,13 @@ func renderHTML(src, dst, htmlTemplate string, variables map[string]string) erro
 	return exec.Command("pandoc", panDocArgs...).Run()
 }
 
-func createLinkResolver(items map[string][]*TaggedItem) (urlResolver, map[string]bool) {
-	linkTargets := make(map[string]bool)
+func createLinkResolver(items map[string][]*TaggedItem) (urlResolver, utils.StringSet) {
+	linkTargets := utils.NewStringSet(0)
 	typeTemplates := make(map[string]string)
 
 	for tag, itemsWithTag := range items {
 		for _, item := range itemsWithTag {
-			linkTargets[tag+":"+item.tagValue] = true
+			linkTargets.Add(tag + ":" + item.tagValue)
 		}
 	}
 
@@ -175,7 +176,7 @@ func createLinkResolver(items map[string][]*TaggedItem) (urlResolver, map[string
 	}, linkTargets
 }
 
-func resolveLinks(s string, resolver urlResolver, targets map[string]bool) string {
+func resolveLinks(s string, resolver urlResolver, targets utils.StringSet) string {
 	r := regexp.MustCompile(`\[\w+:\w+\]`)
 	return r.ReplaceAllStringFunc(s, func(old string) string {
 		target := old[1 : len(old)-1]
