@@ -1,3 +1,7 @@
+v0.64.2
+----------
+ * Include parent result references in flow inspection
+
 v0.64.1
 ----------
  * Add support for jitter in webhook retries
