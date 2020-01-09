@@ -231,21 +231,21 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 // ExtractDependencies extracts all asset dependencies
 func (f *flow) extractAssetAndParentRefs() ([]assets.Reference, []string) {
 	dependencies := make([]assets.Reference, 0)
-	dependenciesSeen := utils.NewStringSet(0)
+	dependenciesSeen := make(map[string]bool)
 
 	addDependency := func(r assets.Reference) {
 		if !utils.IsNil(r) && !r.Variable() {
 			key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
-			if !dependenciesSeen.Contains(key) {
+			if !dependenciesSeen[key] {
 				dependencies = append(dependencies, r)
-				dependenciesSeen.Add(key)
+				dependenciesSeen[key] = true
 			}
 
 			// TODO replace if we saw a field ref without a name but now have same field with a name
 		}
 	}
 
-	parentRefs := utils.NewStringSet(0)
+	parentRefs := make(map[string]bool)
 
 	include := func(template string) {
 		ars, prs := inspect.ExtractFromTemplate(template)
@@ -253,7 +253,7 @@ func (f *flow) extractAssetAndParentRefs() ([]assets.Reference, []string) {
 			addDependency(r)
 		}
 		for _, r := range prs {
-			parentRefs.Add(r)
+			parentRefs[r] = true
 		}
 	}
 
@@ -264,7 +264,7 @@ func (f *flow) extractAssetAndParentRefs() ([]assets.Reference, []string) {
 		})
 	}
 
-	return dependencies, parentRefs.Slice()
+	return dependencies, utils.StringSetKeys(parentRefs)
 }
 
 // ExtractResults extracts all result specs

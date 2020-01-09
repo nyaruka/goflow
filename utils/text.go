@@ -2,6 +2,7 @@ package utils
 
 import (
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -64,6 +65,16 @@ func StringSliceContains(slice []string, str string, caseSensitive bool) bool {
 	return false
 }
 
+// StringSetKeys returns the keys of string set in lexical order
+func StringSetKeys(m map[string]bool) []string {
+	vals := make([]string, 0, len(m))
+	for v := range m {
+		vals = append(vals, v)
+	}
+	sort.Strings(vals)
+	return vals
+}
+
 // Indent indents each non-empty line in the given string
 func Indent(s string, prefix string) string {
 	output := strings.Builder{}
@@ -77,31 +88,4 @@ func Indent(s string, prefix string) string {
 		bol = c == '\n'
 	}
 	return output.String()
-}
-
-// StringSet is set of strings
-type StringSet map[string]bool
-
-// NewStringSet creates a new empty string set with the given capacity
-func NewStringSet(cap int) StringSet {
-	return make(map[string]bool, cap)
-}
-
-// Add adds the given string to the set if it doesn't already exist
-func (s StringSet) Add(v string) {
-	s[v] = true
-}
-
-// Contains returns whether the set contains the given string
-func (s StringSet) Contains(v string) bool {
-	return s[v]
-}
-
-// Slice returns the string values as a slice
-func (s StringSet) Slice() []string {
-	vals := make([]string, 0, len(s))
-	for v := range s {
-		vals = append(vals, v)
-	}
-	return vals
 }
