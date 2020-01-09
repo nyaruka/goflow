@@ -100,10 +100,13 @@ func (f *flow) validate() error {
 
 // Inspect enumerates dependencies, results etc
 func (f *flow) Inspect() *flows.FlowInfo {
+	assetRefs, parentRefs := f.extractAssetAndParentRefs()
+
 	return &flows.FlowInfo{
-		Dependencies: flows.NewDependencies(f.ExtractDependencies()),
+		Dependencies: flows.NewDependencies(assetRefs),
 		Results:      f.ExtractResults(),
 		WaitingExits: f.ExtractExitsFromWaits(),
+		ParentRefs:   parentRefs,
 	}
 }
 
@@ -221,8 +224,15 @@ func (f *flow) ExtractTemplates() []string {
 
 // ExtractDependencies extracts all asset dependencies
 func (f *flow) ExtractDependencies() []assets.Reference {
+	assetRefs, _ := f.extractAssetAndParentRefs()
+	return assetRefs
+}
+
+// ExtractDependencies extracts all asset dependencies
+func (f *flow) extractAssetAndParentRefs() ([]assets.Reference, []string) {
 	dependencies := make([]assets.Reference, 0)
 	dependenciesSeen := make(map[string]bool)
+
 	addDependency := func(r assets.Reference) {
 		if !utils.IsNil(r) && !r.Variable() {
 			key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
@@ -235,10 +245,15 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 		}
 	}
 
+	parentRefs := make(map[string]bool)
+
 	include := func(template string) {
-		refs := inspect.ExtractFromTemplate(template)
-		for _, f := range refs {
-			addDependency(f)
+		ars, prs := inspect.ExtractFromTemplate(template)
+		for _, r := range ars {
+			addDependency(r)
+		}
+		for _, r := range prs {
+			parentRefs[r] = true
 		}
 	}
 
@@ -249,7 +264,7 @@ func (f *flow) ExtractDependencies() []assets.Reference {
 		})
 	}
 
-	return dependencies
+	return dependencies, utils.StringSetKeys(parentRefs)
 }
 
 // ExtractResults extracts all result specs

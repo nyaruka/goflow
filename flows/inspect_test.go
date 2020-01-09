@@ -166,6 +166,7 @@ func TestFlowInfo(t *testing.T) {
 			"9d098aea-ccc4-4723-8222-9971b64223e4",
 			"8c50f16e-35d0-4e08-a725-33ca1c03ef62",
 		},
+		ParentRefs: []string{"state", "response_2"},
 	}
 
 	// test marshaling
@@ -212,6 +213,10 @@ func TestFlowInfo(t *testing.T) {
 		"waiting_exits": [
 			"9d098aea-ccc4-4723-8222-9971b64223e4",
 			"8c50f16e-35d0-4e08-a725-33ca1c03ef62"
+		],
+		"parent_refs": [
+			"state",
+			"response_2"
 		]
 	}`), marshaled, "marshal mismatch")
 }

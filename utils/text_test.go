@@ -103,3 +103,8 @@ func TestIndent(t *testing.T) {
 	assert.Equal(t, "  x\n\n  y", utils.Indent("x\n\ny", "  "))
 	assert.Equal(t, ">>>x", utils.Indent("x", ">>>"))
 }
+
+func TestStringSetKeys(t *testing.T) {
+	assert.Equal(t, []string{}, utils.StringSetKeys(map[string]bool{}))
+	assert.Equal(t, []string{"a", "x", "y"}, utils.StringSetKeys(map[string]bool{"x": true, "y": true, "a": true}))
+}
