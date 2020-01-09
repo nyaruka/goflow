@@ -9,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition/legacy"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
@@ -19,7 +19,7 @@ import (
 )
 
 // CurrentSpecVersion is the flow spec version supported by this library
-var CurrentSpecVersion = semver.MustParse("13.0")
+var CurrentSpecVersion = semver.MustParse("13.1.0")
 
 type flow struct {
 	// spec properties
@@ -280,31 +280,6 @@ func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
 	return exitUUIDs
 }
 
-// Generic returns this flow's data modelled as a hierarchy of generic maps and slices
-func (f *flow) Generic() map[string]interface{} {
-	marshaled, err := json.Marshal(f)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	g, err := utils.JSONDecodeGeneric(marshaled)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	return g.(map[string]interface{})
-}
-
-// Clone clones this flow replacing all UUIDs using the provided mapping and generating new
-// random UUIDs if they aren't in the mapping
-func (f *flow) Clone(depMapping map[uuids.UUID]uuids.UUID) flows.Flow {
-	generic := f.Generic()
-	remapUUIDs(generic, depMapping)
-
-	// read back as a real flow in the current spec.. since we control this it can't error in theory
-	return MustReadFlowFromGeneric(generic)
-}
-
 var _ flows.Flow = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------
@@ -315,15 +290,8 @@ func init() {
 	utils.Validator.RegisterAlias("flow_type", "eq=messaging|eq=messaging_offline|eq=voice")
 }
 
-// the set of fields common to all new flow spec versions
-type flowHeader struct {
-	UUID        assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
-	Name        string          `json:"name"`
-	SpecVersion *semver.Version `json:"spec_version" validate:"required"`
-}
-
 type flowEnvelope struct {
-	flowHeader
+	migrations.Header13
 
 	Language           envs.Language   `json:"language" validate:"required"`
 	Type               flows.FlowType  `json:"type" validate:"required,flow_type"`
@@ -334,53 +302,21 @@ type flowEnvelope struct {
 	UI                 json.RawMessage `json:"_ui,omitempty"`
 }
 
-// IsSpecVersionSupported determines if we can read the given flow version
-func IsSpecVersionSupported(ver *semver.Version) bool {
-	// major versions change flow schema
-	// we currently have no support for migrations but that will change in future
-	return ver.Major() == CurrentSpecVersion.Major()
-}
-
-// MigrationConfig configures how flow migrations are handled
-type MigrationConfig struct {
-	BaseMediaURL string
-}
-
 // ReadFlow a flow definition from the passed in byte array, migrating it to the spec version of the engine if necessary
-func ReadFlow(data json.RawMessage, migrationConfig *MigrationConfig) (flows.Flow, error) {
-	// try to read header (uuid, name, spec_version)
-	header := &flowHeader{}
-	err := utils.UnmarshalAndValidate(data, header)
-
+func ReadFlow(data json.RawMessage, migrationConfig *migrations.Config) (flows.Flow, error) {
+	var err error
+	data, err = migrations.MigrateToLatest(data, migrationConfig)
 	if err != nil {
-		// could this be a legacy definition?
-		if legacy.IsPossibleDefinition(data) {
-			if migrationConfig == nil {
-				return nil, errors.New("unable to migrate what appears to be a legacy definition without a migration config")
-			}
-
-			// try to migrate it forwards to 13.0.0
-			var err error
-			data, err = legacy.MigrateDefinition(data, migrationConfig.BaseMediaURL)
-			if err != nil {
-				return nil, errors.Wrap(err, "error migrating what appears to be a legacy definition")
-			}
-		}
-
-		// try reading header again
-		err = utils.UnmarshalAndValidate(data, header)
+		return nil, err
 	}
 
-	if err != nil {
-		return nil, errors.Wrap(err, "unable to read flow header")
-	}
+	header := &migrations.Header13{}
+	json.Unmarshal(data, header)
 
 	// can't do anything with a newer major version than this library supports
-	if !IsSpecVersionSupported(header.SpecVersion) {
+	if header.SpecVersion.Major() > CurrentSpecVersion.Major() {
 		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
 	}
-
-	// TODO flow spec migrations
 
 	e := &flowEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
@@ -402,7 +338,7 @@ func ReadFlow(data json.RawMessage, migrationConfig *MigrationConfig) (flows.Flo
 // MarshalJSON marshals this flow into JSON
 func (f *flow) MarshalJSON() ([]byte, error) {
 	e := &flowEnvelope{
-		flowHeader: flowHeader{
+		Header13: migrations.Header13{
 			UUID:        f.uuid,
 			Name:        f.name,
 			SpecVersion: f.specVersion,
@@ -421,43 +357,4 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(e)
-}
-
-type flowWithInfoEnvelope struct {
-	*flowEnvelope
-
-	Dependencies *flows.Dependencies `json:"_dependencies"`
-	Results      []*flows.ResultInfo `json:"_results"`
-	WaitingExits []flows.ExitUUID    `json:"_waiting_exits"`
-}
-
-// MarshalWithInfo is temporary workaround to help us with the response format of the current /flow/validate endpoint
-func (f *flow) MarshalWithInfo() ([]byte, error) {
-	e := &flowEnvelope{
-		flowHeader: flowHeader{
-			UUID:        f.uuid,
-			Name:        f.name,
-			SpecVersion: f.specVersion,
-		},
-		Language:           f.language,
-		Type:               f.flowType,
-		Revision:           f.revision,
-		ExpireAfterMinutes: f.expireAfterMinutes,
-		Localization:       f.localization.(localization),
-		Nodes:              make([]*node, len(f.nodes)),
-		UI:                 f.ui,
-	}
-
-	for i := range f.nodes {
-		e.Nodes[i] = f.nodes[i].(*node)
-	}
-
-	info := f.Inspect()
-
-	return json.Marshal(&flowWithInfoEnvelope{
-		flowEnvelope: e,
-		Dependencies: info.Dependencies,
-		Results:      info.Results,
-		WaitingExits: info.WaitingExits,
-	})
 }

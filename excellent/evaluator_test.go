@@ -62,6 +62,8 @@ func TestEvaluateTemplateValue(t *testing.T) {
 
 		{"@string1 world", xs("foo world")},
 		{"@string3", xs("🐒")},
+		{`@("\u00a9 \u00ae \u2764")`, xs("© ® ❤")},
+		{`@("\U0001F697 \U0001F680")`, xs("🚗 🚀")},
 
 		{"@(-10)", xi(-10)},
 		{"@(-asdf)", ERROR},
@@ -128,7 +130,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{`@(datetime("2018-04-16") != datetime("2017-03-20"))`, types.XBooleanTrue},
 		{`@(datetime("xxx") == datetime("2017-03-20"))`, ERROR},
 
-		// other comparsions must be numerical
+		// other comparisons must be numerical
 		{"@(2 > 1)", types.XBooleanTrue},
 		{"@(1 > 2)", types.XBooleanFalse},
 		{"@(2 >= 1)", types.XBooleanTrue},

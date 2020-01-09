@@ -109,13 +109,37 @@
             {
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "call_webhook URL evaluated to empty string, skipping",
+                "text": "webhook URL evaluated to empty string",
                 "type": "error"
             }
         ],
         "inspection": {
             "templates": [
                 "@(\"\")"
+            ],
+            "dependencies": [],
+            "results": []
+        }
+    },
+    {
+        "description": "Error event created and action skipped if URL evaluates to invalid URL",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "GET",
+            "url": "@(\":xxxxx\")"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "webhook URL evaluated to an invalid URL: ':xxxxx'",
+                "type": "error"
+            }
+        ],
+        "inspection": {
+            "templates": [
+                "@(\":xxxxx\")"
             ],
             "dependencies": [],
             "results": []

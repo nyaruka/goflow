@@ -18,11 +18,13 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/classification/wit"
+	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/smtpx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -77,6 +79,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	tests := []struct {
 		Description     string               `json:"description"`
 		HTTPMocks       *httpx.MockRequestor `json:"http_mocks"`
+		SMTPError       string               `json:"smtp_error"`
 		NoContact       bool                 `json:"no_contact"`
 		NoURNs          bool                 `json:"no_urns"`
 		NoInput         bool                 `json:"no_input"`
@@ -98,6 +101,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
+	defer smtpx.SetSender(smtpx.DefaultSender)
 
 	for _, tc := range tests {
 		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
@@ -107,6 +111,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		} else {
 			httpx.SetRequestor(httpx.DefaultRequestor)
 		}
+		smtpx.SetSender(smtpx.NewMockSender(tc.SMTPError))
 
 		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
 
@@ -125,7 +130,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// if we have a localization section, inject that too
 		if tc.Localization != nil {
-			localizationPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "localization", "spa", "ad154980-7bf7-4ab8-8728-545fd6378912"}
+			localizationPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "localization"}
 			assetsJSON = test.JSONReplace(assetsJSON, localizationPath, tc.Localization)
 		}
 
@@ -211,15 +216,18 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// create an engine instance
 		eng := engine.NewBuilder().
-			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+			WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
+				return smtp.NewService("mail.temba.io", 25, "nyaruka", "pass123", "flows@temba.io"), nil
+			}).
+			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
 			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 				if c.Type() == "wit" {
-					return wit.NewService(http.DefaultClient, c, "123456789"), nil
+					return wit.NewService(http.DefaultClient, nil, c, "123456789"), nil
 				}
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
 			}).
 			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
-				return dtone.NewService(http.DefaultClient, "nyaruka", "123456789", "RWF"), nil
+				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil
 			}).
 			Build()
 

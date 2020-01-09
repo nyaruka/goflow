@@ -212,9 +212,9 @@ and entities were.
         },
         "http_logs": [
             {
-                "url": "http://test.acme.ai?classifiy",
+                "url": "http://test.acme.ai?classify",
                 "status": "success",
-                "request": "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                "request": "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
                 "created_on": "2019-10-16T13:59:30.123456789Z",
                 "elapsed_ms": 1000
@@ -659,7 +659,7 @@ with the evaluated text.
 Can be used to send an email to one or more recipients. The subject, body and addresses
 can all contain expressions.
 
-An [email_created](sessions.html#event:email_created) event will be created for each email address.
+An [email_sent](sessions.html#event:email_sent) event will be created if the email could be sent.
 
 <div class="input_action"><h3>Action</h3>
 
@@ -678,10 +678,10 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 
 ```json
 {
-    "type": "email_created",
+    "type": "email_sent",
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
-    "addresses": [
+    "to": [
         "foo@bar.com"
     ],
     "subject": "Here is your activation token",
@@ -705,6 +705,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "text": "Hi @contact.name, are you ready to complete today's survey?",
     "templating": {
+        "uuid": "32c2ead6-3fa3-4402-8e27-9cc718175c5a",
         "template": {
             "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
             "name": "revive_issue"
@@ -1065,7 +1066,7 @@ will be created and it's the responsibility of the caller to act on that by init
 
 Attempts to make an airtime transfer to the contact.
 
-An [email_created](sessions.html#event:email_created) event will be created for each email address.
+An [airtime_transferred](sessions.html#event:airtime_transferred) event will be created if the airtime could be sent.
 
 <div class="input_action"><h3>Action</h3>
 

@@ -44,9 +44,10 @@ var functionReturnTypes = map[string]string{
 type MigrateOptions struct {
 	DefaultToSelf bool
 	URLEncode     bool
+	RawDates      bool
 }
 
-var defaultOptions = &MigrateOptions{DefaultToSelf: false, URLEncode: false}
+var defaultOptions = &MigrateOptions{DefaultToSelf: false, URLEncode: false, RawDates: false}
 
 // MigrateTemplate will take a legacy expression and translate it to the new syntax
 func MigrateTemplate(template string, options *MigrateOptions) (string, error) {
@@ -68,7 +69,7 @@ func migrateLegacyTemplateAsString(template string, options *MigrateOptions) (st
 		case excellent.BODY:
 			buf.WriteString(token)
 		case excellent.IDENTIFIER:
-			value := MigrateContextReference(token)
+			value := MigrateContextReference(token, options.RawDates)
 
 			var errorAs string
 			if options.DefaultToSelf {
@@ -85,7 +86,7 @@ func migrateLegacyTemplateAsString(template string, options *MigrateOptions) (st
 				continue
 			}
 
-			value, err := migrateExpression(nil, token)
+			value, err := migrateExpression(nil, token, options)
 			if err != nil {
 				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
 				buf.WriteString("@(")
@@ -110,7 +111,7 @@ func migrateLegacyTemplateAsString(template string, options *MigrateOptions) (st
 }
 
 // migrates an old expression into a new format expression
-func migrateExpression(env envs.Environment, expression string) (string, error) {
+func migrateExpression(env envs.Environment, expression string, options *MigrateOptions) (string, error) {
 	errListener := excellent.NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)
@@ -130,7 +131,7 @@ func migrateExpression(env envs.Environment, expression string) (string, error) 
 		return "", errListener.Errors()[0]
 	}
 
-	visitor := newLegacyVisitor(env)
+	visitor := newLegacyVisitor(env, options)
 	value := visitor.Visit(tree)
 	err, isErr := value.(error)
 
@@ -183,7 +184,7 @@ func wrapRawExpression(expression string, errorAs string, urlEncode bool) string
 	}
 
 	if urlEncode {
-		expression = fmt.Sprintf(`url_encode(%s)`, expression)
+		expression = wrap(expression, "url_encode")
 	}
 
 	if !isValidIdentifier(expression) {
@@ -193,6 +194,11 @@ func wrapRawExpression(expression string, errorAs string, urlEncode bool) string
 	return "@" + expression
 }
 
+func wrap(expression, funcName string) string {
+	return fmt.Sprintf("%s(%s)", funcName, expression)
+}
+
+// MigrateStringLiteral migrates a string literal (legacy expressions use Excel "" escaping)
 func MigrateStringLiteral(s string) string {
 	// strip surrounding quotes
 	s = s[1 : len(s)-1]

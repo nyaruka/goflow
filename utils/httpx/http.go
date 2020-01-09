@@ -14,9 +14,29 @@ import (
 
 var debug = false
 
-// Do makes the given HTTP request using the current requestor
-func Do(client *http.Client, request *http.Request) (*http.Response, error) {
-	return currentRequestor.Do(client, request)
+// Do makes the given HTTP request using the current requestor and retry config
+func Do(client *http.Client, request *http.Request, retries *RetryConfig) (*http.Response, error) {
+	var response *http.Response
+	var err error
+	retry := 0
+
+	for {
+		response, err = currentRequestor.Do(client, request)
+
+		if retries != nil && retry < retries.MaxRetries() {
+			backoff := retries.Backoff(retry)
+
+			if retries.ShouldRetry(request, response, backoff) {
+				time.Sleep(backoff)
+				retry++
+				continue
+			}
+		}
+
+		break
+	}
+
+	return response, err
 }
 
 // Trace holds the complete trace of an HTTP request/response
@@ -40,7 +60,7 @@ func (t *Trace) String() string {
 }
 
 // DoTrace makes the given request saving traces of the complete request and response
-func DoTrace(client *http.Client, method string, url string, body io.Reader, headers map[string]string) (*Trace, error) {
+func DoTrace(client *http.Client, method string, url string, body io.Reader, headers map[string]string, retries *RetryConfig) (*Trace, error) {
 	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
@@ -61,7 +81,7 @@ func DoTrace(client *http.Client, method string, url string, body io.Reader, hea
 		StartTime:    dates.Now(),
 	}
 
-	response, err := Do(client, request)
+	response, err := Do(client, request, retries)
 	trace.EndTime = dates.Now()
 
 	if err != nil {
@@ -113,6 +133,7 @@ func SetRequestor(requestor Requestor) {
 	currentRequestor = requestor
 }
 
+// SetDebug enables debugging
 func SetDebug(enabled bool) {
 	debug = enabled
 }

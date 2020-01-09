@@ -59,6 +59,12 @@ func NewBuilder() *Builder {
 	}
 }
 
+// WithEmailServiceFactory sets the email service factory
+func (b *Builder) WithEmailServiceFactory(f EmailServiceFactory) *Builder {
+	b.eng.services.email = f
+	return b
+}
+
 // WithWebhookServiceFactory sets the webhook service factory
 func (b *Builder) WithWebhookServiceFactory(f WebhookServiceFactory) *Builder {
 	b.eng.services.webhook = f

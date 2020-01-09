@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 func init() {
@@ -28,6 +29,7 @@ const TypeSendMsg string = "send_msg"
 //     "attachments": [],
 //     "all_urns": false,
 //     "templating": {
+//       "uuid": "32c2ead6-3fa3-4402-8e27-9cc718175c5a",
 //       "template": {
 //         "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
 //         "name": "revive_issue"
@@ -50,9 +52,13 @@ type SendMsgAction struct {
 
 // Templating represents the templating that should be used if possible
 type Templating struct {
+	UUID      uuids.UUID                `json:"uuid" validate:"required,uuid4"`
 	Template  *assets.TemplateReference `json:"template" validate:"required"`
-	Variables []string                  `json:"variables" engine:"evaluated"`
+	Variables []string                  `json:"variables" engine:"localized,evaluated"`
 }
+
+// LocalizationUUID gets the UUID which identifies this object for localization
+func (t *Templating) LocalizationUUID() uuids.UUID { return t.UUID }
 
 // NewSendMsg creates a new send msg action
 func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, allURNs bool) *SendMsgAction {
@@ -93,18 +99,20 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 		if a.Templating != nil {
 			translation := sa.Templates().FindTranslation(a.Templating.Template.UUID, channelRef, []envs.Language{run.Contact().Language(), run.Environment().DefaultLanguage()})
 			if translation != nil {
+				localizedVariables := run.GetTextArray(uuids.UUID(a.Templating.UUID), "variables", a.Templating.Variables)
+
 				// evaluate our variables
-				templateVariables := make([]string, len(a.Templating.Variables))
-				for i, t := range a.Templating.Variables {
-					sub, err := run.EvaluateTemplate(t)
+				evaluatedVariables := make([]string, len(localizedVariables))
+				for i, variable := range localizedVariables {
+					sub, err := run.EvaluateTemplate(variable)
 					if err != nil {
 						logEvent(events.NewError(err))
 					}
-					templateVariables[i] = sub
+					evaluatedVariables[i] = sub
 				}
 
-				evaluatedText = translation.Substitute(templateVariables)
-				templating = flows.NewMsgTemplating(a.Templating.Template, translation.Language(), templateVariables)
+				evaluatedText = translation.Substitute(evaluatedVariables)
+				templating = flows.NewMsgTemplating(a.Templating.Template, translation.Language(), evaluatedVariables)
 			}
 		}
 

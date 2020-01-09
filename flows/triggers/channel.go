@@ -18,7 +18,7 @@ func init() {
 // TypeChannel is the type for sessions triggered by channel events
 const TypeChannel string = "channel"
 
-// ChannelEventType is the type of event that occured on the channel
+// ChannelEventType is the type of event that occurred on the channel
 type ChannelEventType string
 
 // different channel event types

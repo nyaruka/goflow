@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
+	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -15,8 +16,13 @@ import (
 
 // NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
+	retries := httpx.NewFixedRetries(1*time.Millisecond, 2*time.Millisecond)
+
 	return engine.NewBuilder().
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+		WithEmailServiceFactory(func(s flows.Session) (flows.EmailService, error) {
+			return newEmailService(), nil
+		}).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, retries, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
@@ -24,16 +30,29 @@ func NewEngine() flows.Engine {
 		Build()
 }
 
-// implementation of an NLU service for testing which always returns the first intent
-type nluService struct {
+// implementation of an email service for testing which just fakes sending the email
+type emailService struct {
 	classifier *flows.Classifier
 }
 
-func newClassificationService(classifier *flows.Classifier) *nluService {
-	return &nluService{classifier: classifier}
+func newEmailService() *emailService {
+	return &emailService{}
 }
 
-func (s *nluService) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
+func (s *emailService) Send(session flows.Session, addresses []string, subject, body string) error {
+	return nil
+}
+
+// implementation of a classification service for testing which always returns the first intent
+type classificationService struct {
+	classifier *flows.Classifier
+}
+
+func newClassificationService(classifier *flows.Classifier) *classificationService {
+	return &classificationService{classifier: classifier}
+}
+
+func (s *classificationService) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	classifierIntents := s.classifier.Intents()
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")
@@ -43,8 +62,8 @@ func (s *nluService) Classify(session flows.Session, input string, logHTTP flows
 	}
 
 	logHTTP(&flows.HTTPLog{
-		URL:       "http://test.acme.ai?classifiy",
-		Request:   "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+		URL:       "http://test.acme.ai?classify",
+		Request:   "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
 		Status:    "success",
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
@@ -63,7 +82,7 @@ func (s *nluService) Classify(session flows.Session, input string, logHTTP flows
 	return classification, nil
 }
 
-var _ flows.ClassificationService = (*nluService)(nil)
+var _ flows.ClassificationService = (*classificationService)(nil)
 
 // implementation of an airtime service for testing which uses a fixed currency
 type airtimeService struct {

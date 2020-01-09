@@ -4,6 +4,7 @@ require (
 	github.com/Masterminds/semver v1.4.2
 	github.com/antlr/antlr4 v0.0.0-20190325153624-837aa60e2c47
 	github.com/buger/jsonparser v0.0.0-20180131123142-4be68c93a244
+	github.com/go-mail/mail v2.3.1+incompatible
 	github.com/go-playground/locales v0.11.2 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible

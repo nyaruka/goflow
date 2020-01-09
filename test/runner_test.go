@@ -14,15 +14,17 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
+	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/smtpx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -119,7 +121,7 @@ func loadAssets(path string) (flows.SessionAssets, error) {
 		return nil, errors.Wrapf(err, "error reading test assets '%s'", path)
 	}
 
-	mconfig := &definition.MigrationConfig{BaseMediaURL: "http://temba.io/"}
+	mconfig := &migrations.Config{BaseMediaURL: "http://temba.io/"}
 
 	return engine.NewSessionAssets(source, mconfig)
 }
@@ -137,12 +139,15 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	}
 
 	eng := engine.NewBuilder().
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+		WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
+			return smtp.NewService("mail.temba.io", 25, "nyaruka", "pass123", "flows@temba.io"), nil
+		}).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
 		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
-			return dtone.NewService(http.DefaultClient, "nyaruka", "123456789", "RWF"), nil
+			return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil
 		}).
 		Build()
 
@@ -210,6 +215,7 @@ func TestFlows(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
+	defer smtpx.SetSender(smtpx.DefaultSender)
 
 	for _, tc := range testCases {
 		var httpMocksCopy *httpx.MockRequestor
@@ -217,6 +223,7 @@ func TestFlows(t *testing.T) {
 
 		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 		dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
+		smtpx.SetSender(smtpx.NewMockSender(""))
 
 		testJSON, err := ioutil.ReadFile(tc.outputFile)
 		require.NoError(t, err, "error reading output file %s", tc.outputFile)

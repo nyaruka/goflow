@@ -117,6 +117,7 @@ type TestMigrationTest struct {
 	LegacyTest           json.RawMessage `json:"legacy_test"`
 	ExpectedCase         json.RawMessage `json:"expected_case"`
 	ExpectedLocalization json.RawMessage `json:"expected_localization"`
+	ExpectedUI           json.RawMessage `json:"expected_ui"`
 }
 
 type RuleSetMigrationTest struct {
@@ -204,6 +205,18 @@ func TestTestMigration(t *testing.T) {
 		require.NoError(t, err)
 
 		test.AssertEqualJSON(t, tc.ExpectedLocalization, migratedLocalizationJSON, "migrated localization produced unexpected JSON")
+
+		if tc.ExpectedUI != nil {
+			migratedCaseUUID, _, _, err := jsonparser.Get(migratedCaseJSON, "uuid")
+			require.NoError(t, err)
+
+			fmt.Println(string(migratedFlowJSON))
+
+			migratedCaseUIJSON, _, _, err := jsonparser.Get(migratedFlowJSON, "_ui", "nodes", "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", "config", "cases", string(migratedCaseUUID))
+			require.NoError(t, err)
+
+			test.AssertEqualJSON(t, tc.ExpectedUI, migratedCaseUIJSON, "migrated ruleset produced unexpected UI JSON")
+		}
 	}
 }
 

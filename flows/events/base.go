@@ -36,10 +36,10 @@ func (e *baseEvent) Type() string { return e.Type_ }
 // CreatedOn returns the created on time of this event
 func (e *baseEvent) CreatedOn() time.Time { return e.CreatedOn_ }
 
-// StepUUID returns the UUID of the step in the path where this event occured
+// StepUUID returns the UUID of the step in the path where this event occurred
 func (e *baseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
 
-// SetStepUUID sets the UUID of the step in the path where this event occured
+// SetStepUUID sets the UUID of the step in the path where this event occurred
 func (e *baseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
 
 //------------------------------------------------------------------------------------------

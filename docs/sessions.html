@@ -124,7 +124,7 @@
 <h2 class="item_title">
 <a name="trigger:msg" href="#trigger:msg">msg</a>
 </h2>
-<p>Is used when a session was triggered by a message being recieved by the caller</p>
+<p>Is used when a session was triggered by a message being received by the caller</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">{</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg&quot;</span><span class="fu">,</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a>    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
@@ -420,14 +420,14 @@
 <span id="cb18-8"><a href="#cb18-8"></a><span class="fu">}</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
-<a name="event:email_created" href="#event:email_created">email_created</a>
+<a name="event:email_sent" href="#event:email_sent">email_sent</a>
 </h2>
-<p>Events are created when an action wants to send an email.</p>
+<p>Events are created when an action has sent an email.</p>
 <div class="output_event">
 <div class="sourceCode" id="cb19"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">{</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;email_created&quot;</span><span class="fu">,</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;email_sent&quot;</span><span class="fu">,</span></span>
 <span id="cb19-3"><a href="#cb19-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></span>
-<span id="cb19-4"><a href="#cb19-4"></a>    <span class="dt">&quot;addresses&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>    <span class="dt">&quot;to&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb19-5"><a href="#cb19-5"></a>        <span class="st">&quot;foo@bar.com&quot;</span></span>
 <span id="cb19-6"><a href="#cb19-6"></a>    <span class="ot">]</span><span class="fu">,</span></span>
 <span id="cb19-7"><a href="#cb19-7"></a>    <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="st">&quot;Your activation token&quot;</span><span class="fu">,</span></span>
