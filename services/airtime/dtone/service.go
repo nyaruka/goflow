@@ -12,19 +12,21 @@ import (
 )
 
 type service struct {
-	httpClient *http.Client
-	login      string
-	apiToken   string
-	currency   string
+	httpClient  *http.Client
+	httpRetries *httpx.RetryConfig
+	login       string
+	apiToken    string
+	currency    string
 }
 
 // NewService creates a new DTOne airtime service
-func NewService(httpClient *http.Client, login, apiToken, currency string) flows.AirtimeService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, login, apiToken, currency string) flows.AirtimeService {
 	return &service{
-		httpClient: httpClient,
-		login:      login,
-		apiToken:   apiToken,
-		currency:   currency,
+		httpClient:  httpClient,
+		httpRetries: httpRetries,
+		login:       login,
+		apiToken:    apiToken,
+		currency:    currency,
 	}
 }
 
@@ -36,7 +38,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		ActualAmount:  decimal.Zero,
 	}
 
-	client := NewClient(s.httpClient, s.login, s.apiToken)
+	client := NewClient(s.httpClient, s.httpRetries, s.login, s.apiToken)
 
 	info, trace, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
 	if trace != nil {
@@ -68,7 +70,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 	}
 
 	if useAmount == decimal.Zero {
-		return transfer, errors.Errorf("amount requested is smaller than the mimimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
+		return transfer, errors.Errorf("amount requested is smaller than the minimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
 	}
 
 	reservedID, trace, err := client.ReserveID()

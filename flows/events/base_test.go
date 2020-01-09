@@ -289,6 +289,16 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewEmailSent([]string{"bob@nyaruka.com", "jim@nyaruka.com"}, "Update", "Flows are great!"),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "email_sent",
+				"to": ["bob@nyaruka.com", "jim@nyaruka.com"],
+				"subject": "Update",
+				"body": "Flows are great!"
+			}`,
+		},
+		{
 			events.NewEnvironmentRefreshed(session.Environment()),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",

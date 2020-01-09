@@ -16,13 +16,13 @@ func TestMessage(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://api.wit.ai/message?v=20170307&q=Hello": []httpx.MockResponse{
-			httpx.NewMockResponse(200, `xx`), // non-JSON response
-			httpx.NewMockResponse(200, `{}`), // invalid JSON response
-			httpx.NewMockResponse(200, `{"_text":"book flight","entities":{"intent":[{"confidence":0.84709152161066,"value":"book_flight"}]},"msg_id":"1M7fAcDWag76OmgDI"}`),
+			httpx.NewMockResponse(200, `xx`, nil), // non-JSON response
+			httpx.NewMockResponse(200, `{}`, nil), // invalid JSON response
+			httpx.NewMockResponse(200, `{"_text":"book flight","entities":{"intent":[{"confidence":0.84709152161066,"value":"book_flight"}]},"msg_id":"1M7fAcDWag76OmgDI"}`, nil),
 		},
 	}))
 
-	client := wit.NewClient(http.DefaultClient, "3246231")
+	client := wit.NewClient(http.DefaultClient, nil, "3246231")
 
 	response, trace, err := client.Message("Hello")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)

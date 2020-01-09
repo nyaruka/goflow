@@ -17,11 +17,11 @@ func TestMockRequestor(t *testing.T) {
 	// can create requestor with constructor
 	requestor1 := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://google.com": []httpx.MockResponse{
-			httpx.NewMockResponse(200, "this is google"),
-			httpx.NewMockResponse(201, "this is google again"),
+			httpx.NewMockResponse(200, "this is google", nil),
+			httpx.NewMockResponse(201, "this is google again", nil),
 		},
 		"http://yahoo.com": []httpx.MockResponse{
-			httpx.NewMockResponse(202, "this is yahoo"),
+			httpx.NewMockResponse(202, "this is yahoo", nil),
 			httpx.MockConnectionError,
 		},
 	})
@@ -46,7 +46,7 @@ func TestMockRequestor(t *testing.T) {
 	httpx.SetRequestor(requestor1)
 
 	req1, _ := http.NewRequest("GET", "http://google.com", nil)
-	response1, err := httpx.Do(http.DefaultClient, req1)
+	response1, err := httpx.Do(http.DefaultClient, req1, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, 200, response1.StatusCode)
 
@@ -58,19 +58,19 @@ func TestMockRequestor(t *testing.T) {
 
 	// request another mocked URL
 	req2, _ := http.NewRequest("GET", "http://yahoo.com", nil)
-	response2, err := httpx.Do(http.DefaultClient, req2)
+	response2, err := httpx.Do(http.DefaultClient, req2, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, 202, response2.StatusCode)
 
 	// request second mock for first URL
 	req3, _ := http.NewRequest("GET", "http://google.com", nil)
-	response3, err := httpx.Do(http.DefaultClient, req3)
+	response3, err := httpx.Do(http.DefaultClient, req3, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, 201, response3.StatusCode)
 
 	// request mocked connection error
 	req4, _ := http.NewRequest("GET", "http://yahoo.com", nil)
-	response4, err := httpx.Do(http.DefaultClient, req4)
+	response4, err := httpx.Do(http.DefaultClient, req4, nil)
 	assert.EqualError(t, err, "unable to connect to server")
 	assert.Nil(t, response4)
 
@@ -78,5 +78,5 @@ func TestMockRequestor(t *testing.T) {
 
 	// panic if we've run out of mocks for a URL
 	req5, _ := http.NewRequest("GET", "http://google.com", nil)
-	assert.Panics(t, func() { httpx.Do(http.DefaultClient, req5) })
+	assert.Panics(t, func() { httpx.Do(http.DefaultClient, req5, nil) })
 }

@@ -50,6 +50,7 @@ func (t languageTranslations) SetTextArray(uuid uuids.UUID, property string, tra
 // our top level container for all the translations for all languages
 type localization map[envs.Language]languageTranslations
 
+// NewLocalization creates a new empty localization
 func NewLocalization() flows.Localization {
 	return make(localization)
 }

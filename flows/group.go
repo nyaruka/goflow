@@ -31,7 +31,11 @@ func (g *Group) Asset() assets.Group { return g.Group }
 func (g *Group) parsedQuery(env envs.Environment, fields *FieldAssets) (*contactql.ContactQuery, error) {
 	if g.Query() != "" && g.cachedQuery == nil {
 		fieldResolver := func(key string) assets.Field {
-			return fields.Get(key)
+			f := fields.Get(key)
+			if f == nil {
+				return nil // don't let nil f become non-nil assets.Field interface
+			}
+			return f
 		}
 
 		var err error

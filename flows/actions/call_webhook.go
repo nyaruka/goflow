@@ -2,6 +2,7 @@ package actions
 
 import (
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -10,6 +11,8 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/net/http/httpguts"
 )
+
+func isValidURL(u string) bool { _, err := url.Parse(u); return err == nil }
 
 func init() {
 	registerType(TypeCallWebhook, func() flows.Action { return &CallWebhookAction{} })
@@ -83,7 +86,11 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 		logEvent(events.NewError(err))
 	}
 	if url == "" {
-		logEvent(events.NewErrorf("call_webhook URL evaluated to empty string, skipping"))
+		logEvent(events.NewErrorf("webhook URL evaluated to empty string"))
+		return nil
+	}
+	if !isValidURL(url) {
+		logEvent(events.NewErrorf("webhook URL evaluated to an invalid URL: '%s'", url))
 		return nil
 	}
 
@@ -98,6 +105,11 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 		}
 	}
 
+	return a.call(run, step, url, method, body, logEvent)
+}
+
+// Execute runs this action
+func (a *CallWebhookAction) call(run flows.FlowRun, step flows.Step, url, method, body string, logEvent flows.EventCallback) error {
 	// build our request
 	req, err := http.NewRequest(method, url, strings.NewReader(body))
 	if err != nil {
@@ -120,15 +132,17 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 		return nil
 	}
 
-	call, err := svc.Call(run.Session(), req, "")
+	call, err := svc.Call(run.Session(), req)
 
 	if err != nil {
 		logEvent(events.NewError(err))
 	}
 	if call != nil {
-		logEvent(events.NewWebhookCalled(call))
+		status := callStatus(call, false)
+
+		logEvent(events.NewWebhookCalled(call, status, ""))
 		if a.ResultName != "" {
-			a.saveWebhookResult(run, step, a.ResultName, call, logEvent)
+			a.saveWebhookResult(run, step, a.ResultName, call, status, logEvent)
 		}
 	}
 
@@ -140,4 +154,19 @@ func (a *CallWebhookAction) Results(node flows.Node, include func(*flows.ResultI
 	if a.ResultName != "" {
 		include(flows.NewResultInfo(a.ResultName, webhookCategories, node))
 	}
+}
+
+// determines the webhook status from the HTTP status code
+func callStatus(call *flows.WebhookCall, isResthook bool) flows.CallStatus {
+	if call.StatusCode == 0 {
+		return flows.CallStatusConnectionError
+	}
+	if isResthook && call.StatusCode == 410 {
+		// https://zapier.com/developer/documentation/v2/rest-hooks/
+		return flows.CallStatusSubscriberGone
+	}
+	if call.StatusCode/100 == 2 {
+		return flows.CallStatusSuccess
+	}
+	return flows.CallStatusResponseError
 }

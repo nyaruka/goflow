@@ -11,6 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ResthookPayload is the POST payload used by resthooks
 const ResthookPayload = `@(json(object(
   "contact", object("uuid", contact.uuid, "name", contact.name, "urn", contact.urn),
   "flow", run.flow,
@@ -120,21 +121,21 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 			return nil
 		}
 
-		call, err := svc.Call(run.Session(), req, a.Resthook)
+		call, err := svc.Call(run.Session(), req)
 
 		if err != nil {
 			logEvent(events.NewError(err))
 		}
 		if call != nil {
 			calls = append(calls, call)
-			logEvent(events.NewWebhookCalled(call))
+			logEvent(events.NewWebhookCalled(call, callStatus(call, true), a.Resthook))
 		}
 	}
 
 	asResult := a.pickResultCall(calls)
 	if a.ResultName != "" {
 		if asResult != nil {
-			a.saveWebhookResult(run, step, a.ResultName, asResult, logEvent)
+			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, true), logEvent)
 		} else {
 			a.saveResult(run, step, a.ResultName, "no subscribers", "Failure", "", "", nil, logEvent)
 		}
@@ -148,12 +149,11 @@ func (a *CallResthookAction) pickResultCall(calls []*flows.WebhookCall) *flows.W
 	var lastSuccess, last410, lastFailure *flows.WebhookCall
 
 	for _, call := range calls {
-		switch call.Status {
-		case flows.CallStatusSuccess:
+		if call.StatusCode/100 == 2 {
 			lastSuccess = call
-		case flows.CallStatusSubscriberGone:
+		} else if call.StatusCode == 410 {
 			last410 = call
-		default:
+		} else {
 			lastFailure = call
 		}
 	}

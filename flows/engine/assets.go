@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 )
 
 // our implementation of SessionAssets - the high-level API for asset access from the engine
@@ -25,7 +26,7 @@ type sessionAssets struct {
 var _ flows.SessionAssets = (*sessionAssets)(nil)
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
-func NewSessionAssets(source assets.Source, migrationConfig *definition.MigrationConfig) (flows.SessionAssets, error) {
+func NewSessionAssets(source assets.Source, migrationConfig *migrations.Config) (flows.SessionAssets, error) {
 	channels, err := source.Channels()
 	if err != nil {
 		return nil, err

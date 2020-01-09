@@ -111,7 +111,7 @@ Is an organizational tag that can be applied to a message.
 
 <h2 class="item_title"><a name="asset:location" href="#asset:location">location</a></h2>
 
-Is a searchable hierachy of locations.
+Is a searchable hierarchy of locations.
 
 
 ```objectivec

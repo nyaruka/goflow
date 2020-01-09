@@ -30,23 +30,11 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/Masterminds/semver"
 )
 
 // CurrentSpecVersion returns the current flow spec version
 func CurrentSpecVersion() string {
 	return definition.CurrentSpecVersion.String()
-}
-
-// IsSpecVersionSupported returns whether the given flow spec version is supported
-func IsSpecVersionSupported(ver string) bool {
-	v, err := semver.NewVersion(ver)
-	if err != nil {
-		return false
-	}
-
-	return definition.IsSpecVersionSupported(v)
 }
 
 // Environment defines the environment for expression evaluation etc

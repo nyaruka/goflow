@@ -2,8 +2,12 @@ package engine
 
 import (
 	"github.com/nyaruka/goflow/flows"
+
 	"github.com/pkg/errors"
 )
+
+// EmailServiceFactory resolves a session to a email service
+type EmailServiceFactory func(flows.Session) (flows.EmailService, error)
 
 // WebhookServiceFactory resolves a session to a webhook service
 type WebhookServiceFactory func(flows.Session) (flows.WebhookService, error)
@@ -15,6 +19,7 @@ type ClassificationServiceFactory func(flows.Session, *flows.Classifier) (flows.
 type AirtimeServiceFactory func(flows.Session) (flows.AirtimeService, error)
 
 type services struct {
+	email          EmailServiceFactory
 	webhook        WebhookServiceFactory
 	classification ClassificationServiceFactory
 	airtime        AirtimeServiceFactory
@@ -22,6 +27,9 @@ type services struct {
 
 func newEmptyServices() *services {
 	return &services{
+		email: func(flows.Session) (flows.EmailService, error) {
+			return nil, errors.New("no email service factory configured")
+		},
 		webhook: func(flows.Session) (flows.WebhookService, error) {
 			return nil, errors.New("no webhook service factory configured")
 		},
@@ -32,6 +40,10 @@ func newEmptyServices() *services {
 			return nil, errors.New("no airtime service factory configured")
 		},
 	}
+}
+
+func (s *services) Email(session flows.Session) (flows.EmailService, error) {
+	return s.email(session)
 }
 
 func (s *services) Webhook(session flows.Session) (flows.WebhookService, error) {
