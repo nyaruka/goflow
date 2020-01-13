@@ -50,7 +50,7 @@ func TestBrokenFlows(t *testing.T) {
 		},
 		{
 			"invalid_action_by_method.json",
-			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid action[uuid=e5a03dde-3b2f-4603-b5d0-d927f6bcc361, type=call_webhook]: can't specify body if method is GET",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid action[uuid=e5a03dde-3b2f-4603-b5d0-d927f6bcc361, type=call_webhook]: header '\"$?' is not a valid HTTP header",
 			"",
 		},
 		{
