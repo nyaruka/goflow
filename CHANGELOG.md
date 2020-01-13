@@ -1,3 +1,7 @@
+v0.64.4
+----------
+ * Make it easier to get current expression context of a waiting session
+
 v0.64.3
 ----------
  * Allow webhook calls with GET method to have bodies
