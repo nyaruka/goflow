@@ -1,3 +1,7 @@
+v0.64.5
+----------
+ * Fix creation of no-nil interface to nil structs in context
+
 v0.64.4
 ----------
  * Make it easier to get current expression context of a waiting session
