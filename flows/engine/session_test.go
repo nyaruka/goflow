@@ -780,3 +780,33 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, "2018-04-11T13:24:30.123456Z", result.Value)
 	require.Equal(t, "", result.Input)
 }
+
+func TestCurrentContext(t *testing.T) {
+	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
+	require.NoError(t, err)
+
+	// create our session assets
+	sa, err := test.CreateSessionAssets(json.RawMessage(sessionAssets), "")
+	require.NoError(t, err)
+
+	flow, err := sa.Flows().Get(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
+	require.NoError(t, err)
+
+	contact := flows.NewEmptyContact(sa, "Joe", "eng", nil)
+	trigger := triggers.NewManual(nil, flow.Reference(), contact, nil)
+
+	// create a waiting session
+	eng := test.NewEngine()
+	session, _, err := eng.NewSession(sa, trigger)
+	assert.Equal(t, string(flows.SessionStatusWaiting), string(session.Status()))
+
+	context := session.CurrentContext()
+	assert.NotNil(t, context)
+
+	// end it
+	session.Resume(resumes.NewRunExpiration(nil, nil))
+
+	// can't get context of completed session
+	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
+	assert.Nil(t, session.CurrentContext())
+}
