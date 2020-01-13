@@ -1,3 +1,7 @@
+v0.64.3
+----------
+ * Allow webhook calls with GET method to have bodies
+
 v0.64.2
 ----------
  * Include parent result references in flow inspection
