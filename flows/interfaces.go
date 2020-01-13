@@ -151,7 +151,6 @@ type Flow interface {
 
 	ExtractTemplates() []string
 	ExtractDependencies() []assets.Reference
-	ExtractResults() []*ResultInfo
 }
 
 // Node is a single node in a flow

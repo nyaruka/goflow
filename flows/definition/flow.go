@@ -104,8 +104,8 @@ func (f *flow) Inspect() *flows.FlowInfo {
 
 	return &flows.FlowInfo{
 		Dependencies: flows.NewDependencies(assetRefs),
-		Results:      f.ExtractResults(),
-		WaitingExits: f.ExtractExitsFromWaits(),
+		Results:      f.extractResults(),
+		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,
 	}
 }
@@ -267,8 +267,8 @@ func (f *flow) extractAssetAndParentRefs() ([]assets.Reference, []string) {
 	return dependencies, utils.StringSetKeys(parentRefs)
 }
 
-// ExtractResults extracts all result specs
-func (f *flow) ExtractResults() []*flows.ResultInfo {
+// extracts all result specs
+func (f *flow) extractResults() []*flows.ResultInfo {
 	specs := make([]*flows.ResultInfo, 0)
 
 	for _, n := range f.nodes {
@@ -280,8 +280,8 @@ func (f *flow) ExtractResults() []*flows.ResultInfo {
 	return flows.MergeResultInfos(specs)
 }
 
-// ExtractExitsFromWaits extracts all exits coming from nodes with waits
-func (f *flow) ExtractExitsFromWaits() []flows.ExitUUID {
+// extracts all exits coming from nodes with waits
+func (f *flow) extractExitsFromWaits() []flows.ExitUUID {
 	exitUUIDs := make([]flows.ExitUUID, 0)
 	include := func(e flows.ExitUUID) { exitUUIDs = append(exitUUIDs, e) }
 
