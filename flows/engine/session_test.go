@@ -803,6 +803,10 @@ func TestCurrentContext(t *testing.T) {
 	context := session.CurrentContext()
 	assert.NotNil(t, context)
 
+	// check we can marshal it
+	_, err = json.Marshal(context)
+	assert.NoError(t, err)
+
 	// end it
 	session.Resume(resumes.NewRunExpiration(nil, nil))
 
