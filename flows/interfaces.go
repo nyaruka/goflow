@@ -364,6 +364,7 @@ type Session interface {
 	GetRun(RunUUID) (FlowRun, error)
 	GetCurrentChild(FlowRun) FlowRun
 	ParentRun() RunSummary
+	CurrentContext() map[string]types.XValue
 
 	Engine() Engine
 }
@@ -410,6 +411,7 @@ type FlowRun interface {
 	EvaluateTemplateValue(string) (types.XValue, error)
 	EvaluateTemplate(string) (string, error)
 	EvaluateTemplateWithEscaping(string, excellent.Escaping) (string, error)
+	RootContext(envs.Environment) map[string]types.XValue
 
 	GetText(uuids.UUID, string, string) string
 	GetTextArray(uuids.UUID, string, []string) []string
