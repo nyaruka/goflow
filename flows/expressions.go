@@ -14,7 +14,7 @@ type Contextable interface {
 }
 
 // Context generates a lazy object for use in expressions
-func Context(env envs.Environment, contextable Contextable) *types.XObject {
+func Context(env envs.Environment, contextable Contextable) types.XValue {
 	if !utils.IsNil(contextable) {
 		return types.NewXLazyObject(func() map[string]types.XValue {
 			return contextable.Context(env)
