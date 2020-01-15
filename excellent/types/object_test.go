@@ -35,7 +35,13 @@ func TestXObject(t *testing.T) {
 	assert.Equal(t, `XObject{bar: XNumber(123), foo: XText("abc"), xxx: nil, zed: XBoolean(false)}`, object.String())
 	assert.Equal(t, "object", object.Describe())
 
+	// test marshaling to JSON
 	asJSON, _ := types.ToXJSON(object)
+	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","xxx":null,"zed":false}`), asJSON)
+
+	// if there is no explicit default, it's never included
+	object.SetMarshalDefault(true)
+	asJSON, _ = types.ToXJSON(object)
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","xxx":null,"zed":false}`), asJSON)
 
 	// test equality
@@ -94,6 +100,10 @@ func TestXObjectWithDefault(t *testing.T) {
 
 	asJSON, _ := types.ToXJSON(object)
 	assert.Equal(t, types.NewXText(`{"bar":123,"foo":"abc","zed":false}`), asJSON)
+
+	object.SetMarshalDefault(true)
+	asJSON, _ = types.ToXJSON(object)
+	assert.Equal(t, types.NewXText(`{"__default__":"abc-123","bar":123,"foo":"abc","zed":false}`), asJSON)
 
 	// test equality
 	test.AssertXEqual(t, object, types.NewXObject(map[string]types.XValue{

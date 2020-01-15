@@ -27,9 +27,10 @@ type XObject struct {
 	XValue
 	XCountable
 
-	def    XValue
-	props  map[string]XValue
-	source func() map[string]XValue
+	def            XValue
+	props          map[string]XValue
+	source         func() map[string]XValue
+	marshalDefault bool
 }
 
 // NewXObject returns a new object with the given properties
@@ -99,6 +100,14 @@ func (x *XObject) MarshalJSON() ([]byte, error) {
 			marshaled[p] = json.RawMessage(asJSON.Native())
 		}
 	}
+
+	if x.hasDefault() && x.marshalDefault {
+		asJSON, err := ToXJSON(x.def)
+		if err == nil {
+			marshaled[serializeDefaultAs] = json.RawMessage(asJSON.Native())
+		}
+	}
+
 	return json.Marshal(marshaled)
 }
 
@@ -193,6 +202,10 @@ func (x *XObject) properties() map[string]XValue {
 func (x *XObject) Default() XValue {
 	x.ensureInitialized()
 	return x.def
+}
+
+func (x *XObject) SetMarshalDefault(marshal bool) {
+	x.marshalDefault = marshal
 }
 
 // Default returns the default value for this
