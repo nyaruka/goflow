@@ -100,13 +100,13 @@ func (s *session) ParentRun() flows.RunSummary {
 func (s *session) Status() flows.SessionStatus { return s.status }
 func (s *session) Wait() flows.ActivatedWait   { return s.wait }
 
-func (s *session) CurrentContext() map[string]types.XValue {
+func (s *session) CurrentContext() *types.XObject {
 	run := s.waitingRun()
 	if run == nil {
 		return nil
 	}
 
-	return run.RootContext(s.env)
+	return types.NewXObject(run.RootContext(s.env))
 }
 
 // looks through this session's run for the one that is waiting
