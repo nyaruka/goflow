@@ -1,3 +1,7 @@
+v0.64.6
+----------
+ * Add support for marshaling XObjects with their defaults, and tool for walking the context to find objects
+
 v0.64.5
 ----------
  * Fix creation of no-nil interface to nil structs in context
