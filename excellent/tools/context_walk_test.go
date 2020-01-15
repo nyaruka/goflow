@@ -33,7 +33,7 @@ func TestContextWalk(t *testing.T) {
 
 	// test finding just objects
 	actual := make([]types.XValue, 0)
-	tools.ContextFindObjects(context, func(o *types.XObject) {
+	tools.ContextWalkObjects(context, func(o *types.XObject) {
 		actual = append(actual, o)
 	})
 

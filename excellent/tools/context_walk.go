@@ -9,8 +9,8 @@ func ContextWalk(context *types.XObject, callback func(types.XValue)) {
 	contextWalk(context, callback)
 }
 
-// ContextFindObjects traverses the given context invoking the callback for each object found
-func ContextFindObjects(context *types.XObject, callback func(*types.XObject)) {
+// ContextWalkObjects traverses the given context invoking the callback for each object found
+func ContextWalkObjects(context *types.XObject, callback func(*types.XObject)) {
 	contextWalk(context, func(v types.XValue) {
 		switch typed := v.(type) {
 		case *types.XObject:
