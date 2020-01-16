@@ -1,10 +1,12 @@
 package main_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
 	main "github.com/nyaruka/goflow/cmd/flowmigrate"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/require"
@@ -27,10 +29,10 @@ func TestMigrate(t *testing.T) {
 				"action_sets": [],
 				"rule_sets": []
 			}`,
-			output: `{
+			output: fmt.Sprintf(`{
 				"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 				"name": "Empty",
-				"spec_version": "13.1.0",
+				"spec_version": "%s",
 				"language": "eng",
 				"type": "messaging",
 				"revision": 1,
@@ -41,7 +43,7 @@ func TestMigrate(t *testing.T) {
 					"nodes": {},
 					"stickies": {}
 				}
-			}`,
+			}`, definition.CurrentSpecVersion),
 		},
 		{ // a new flow
 			input: `{
@@ -58,10 +60,10 @@ func TestMigrate(t *testing.T) {
 					"stickies": {}
 				}
 			}`,
-			output: `{
+			output: fmt.Sprintf(`{
 				"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 				"name": "Empty",
-				"spec_version": "13.1.0",
+				"spec_version": "%s",
 				"language": "eng",
 				"type": "messaging",
 				"revision": 1,
@@ -71,7 +73,7 @@ func TestMigrate(t *testing.T) {
 					"nodes": {},
 					"stickies": {}
 				}
-			}`,
+			}`, definition.CurrentSpecVersion),
 		},
 	}
 
