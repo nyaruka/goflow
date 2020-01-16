@@ -1,3 +1,7 @@
+v0.64.7
+----------
+ * Fix panic in context walking
+
 v0.64.6
 ----------
  * Add support for marshaling XObjects with their defaults, and tool for walking the context to find objects
