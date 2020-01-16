@@ -264,7 +264,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			actual := &inspectionResults{
 				Templates:    flow.ExtractTemplates(),
 				Dependencies: depStrings,
-				Results:      flow.ExtractResults(),
+				Results:      flow.Inspect().Results,
 			}
 
 			actualJSON, _ := json.Marshal(actual)

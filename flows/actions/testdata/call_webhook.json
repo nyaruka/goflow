@@ -10,17 +10,6 @@
         "read_error": "field 'method' is required"
     },
     {
-        "description": "Read fails if GET has a body",
-        "action": {
-            "type": "call_webhook",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "method": "GET",
-            "url": "http://temba.io/",
-            "body": "Hi there!"
-        },
-        "read_error": "can't specify body if method is GET"
-    },
-    {
         "description": "Read fails if header name is invalid",
         "action": {
             "type": "call_webhook",

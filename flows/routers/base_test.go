@@ -143,7 +143,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		}
 		assert.Equal(t, tc.Inspection.Dependencies, depStrings, "inspected dependencies mismatch in %s", testName)
 
-		results := flow.ExtractResults()
+		results := flow.Inspect().Results
 		assert.Equal(t, tc.Inspection.Results, results, "inspected results mismatch in %s", testName)
 	}
 }

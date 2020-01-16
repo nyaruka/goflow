@@ -1,3 +1,27 @@
+v0.64.7
+----------
+ * Fix panic in context walking
+
+v0.64.6
+----------
+ * Add support for marshaling XObjects with their defaults, and tool for walking the context to find objects
+
+v0.64.5
+----------
+ * Fix creation of no-nil interface to nil structs in context
+
+v0.64.4
+----------
+ * Make it easier to get current expression context of a waiting session
+
+v0.64.3
+----------
+ * Allow webhook calls with GET method to have bodies
+
+v0.64.2
+----------
+ * Include parent result references in flow inspection
+
 v0.64.1
 ----------
  * Add support for jitter in webhook retries
