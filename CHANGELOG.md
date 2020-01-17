@@ -1,3 +1,7 @@
+v0.64.8
+----------
+ * Fix another panic during context walking
+
 v0.64.7
 ----------
  * Fix panic in context walking
