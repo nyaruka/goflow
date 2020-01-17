@@ -147,6 +147,16 @@ func (r *flowRun) LogError(step flows.Step, err error) {
 	r.LogEvent(step, events.NewError(err))
 }
 
+// find the first event matching the given step UUID and type
+func (r *flowRun) findEvent(stepUUID flows.StepUUID, eType string) flows.Event {
+	for _, e := range r.events {
+		if e.StepUUID() == stepUUID && e.Type() == eType {
+			return e
+		}
+	}
+	return nil
+}
+
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	now := dates.Now()
@@ -240,18 +250,6 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 		"webhook":      r.webhook,
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
-}
-
-func (r *flowRun) lastWebhookResponse() types.XValue {
-	for i := len(r.events) - 1; i >= 0; i-- {
-		switch typed := r.events[i].(type) {
-		case *events.WebhookCalledEvent:
-			return types.JSONToXValue(utils.ExtractResponseJSON([]byte(typed.Response)))
-		default:
-			continue
-		}
-	}
-	return nil
 }
 
 // Context returns the properties available in expressions
@@ -454,6 +452,7 @@ func ReadRun(session flows.Session, data json.RawMessage, missing assets.Missing
 
 	// create a run specific environment and context
 	r.environment = newRunEnvironment(session.Environment(), r)
+	r.webhook = lastWebhookSavedAsExtra(r)
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r, nil
