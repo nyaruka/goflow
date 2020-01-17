@@ -1,0 +1,69 @@
+[
+    {
+        "description": "flow with @parent.run and @child.run references",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @child.run.contact.name that's a nice @parent.run.results.foo",
+                            "quick_replies": ["@parent.run.status"]
+                        },
+                        {
+                            "uuid": "00bebc6d-c816-45a7-8771-6a4c8e41edbf",
+                            "type": "set_run_result",
+                            "name": "Flow",
+                            "value": "@parent.run.flow.uuid",
+                            "category": "Male"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @child.contact.name that's a nice @parent.results.foo",
+                            "quick_replies": ["@parent.status"]
+                        },
+                        {
+                            "uuid": "00bebc6d-c816-45a7-8771-6a4c8e41edbf",
+                            "type": "set_run_result",
+                            "name": "Flow",
+                            "value": "@parent.flow.uuid",
+                            "category": "Male"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

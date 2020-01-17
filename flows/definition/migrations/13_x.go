@@ -8,6 +8,7 @@ import (
 
 func init() {
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
 }
 
 // Migrate13_1 adds UUID to send_msg templating
@@ -22,5 +23,10 @@ func Migrate13_1(f Flow) (Flow, error) {
 			}
 		}
 	}
+	return f, nil
+}
+
+// Migrate13_2 replaces @parent.run.x references with @parent.x and @child.run.x references with @child.x
+func Migrate13_2(f Flow) (Flow, error) {
 	return f, nil
 }
