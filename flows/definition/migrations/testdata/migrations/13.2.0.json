@@ -13,16 +13,18 @@
                     "actions": [
                         {
                             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-                            "type": "send_msg",
-                            "text": "Hi @child.run.contact.name that's a nice @parent.run.results.foo",
-                            "quick_replies": ["@parent.run.status"]
+                            "type": "call_webhook",
+                            "method": "GET",
+                            "url": "http://localhost:49998/?cmd=success",
+                            "headers": {
+                                "Authorization": "Token AAFFZZHH"
+                            },
+                            "result_name": "webhook"
                         },
                         {
-                            "uuid": "00bebc6d-c816-45a7-8771-6a4c8e41edbf",
-                            "type": "set_run_result",
-                            "name": "Flow",
-                            "value": "@parent.run.flow.uuid",
-                            "category": "Male"
+                            "uuid": "b92bb668-87a6-468f-87c5-3a5f346eb16a",
+                            "type": "send_msg",
+                            "text": "I'm not a webhook action"
                         }
                     ],
                     "exits": [
@@ -45,16 +47,19 @@
                     "actions": [
                         {
                             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-                            "type": "send_msg",
-                            "text": "Hi @child.contact.name that's a nice @parent.results.foo",
-                            "quick_replies": ["@parent.status"]
+                            "type": "call_webhook",
+                            "method": "GET",
+                            "url": "http://localhost:49998/?cmd=success",
+                            "headers": {
+                                "Authorization": "Token AAFFZZHH"
+                            },
+                            "result_name": "webhook",
+                            "response_as_extra": true
                         },
                         {
-                            "uuid": "00bebc6d-c816-45a7-8771-6a4c8e41edbf",
-                            "type": "set_run_result",
-                            "name": "Flow",
-                            "value": "@parent.flow.uuid",
-                            "category": "Male"
+                            "uuid": "b92bb668-87a6-468f-87c5-3a5f346eb16a",
+                            "type": "send_msg",
+                            "text": "I'm not a webhook action"
                         }
                     ],
                     "exits": [

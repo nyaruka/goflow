@@ -91,6 +91,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		ValidationError string               `json:"validation_error"`
 		SkipValidation  bool                 `json:"skip_validation"`
 		Events          []json.RawMessage    `json:"events"`
+		Webhook         json.RawMessage      `json:"webhook"`
 		ContactAfter    json.RawMessage      `json:"contact_after"`
 		Inspection      json.RawMessage      `json:"inspection"`
 	}{}
@@ -242,6 +243,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		expectedEventsJSON, _ := json.Marshal(tc.Events)
 		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
 
+		// check webhook is in expected state
+		if tc.Webhook != nil {
+			// TODO
+		}
+
 		// check contact is in the expected state
 		if tc.ContactAfter != nil {
 			contactJSON, _ := json.Marshal(session.Contact())
@@ -378,6 +384,7 @@ func TestConstructors(t *testing.T) {
 				},
 				`{"contact_id": 234}`, // body
 				"Webhook Response",
+				true,
 			),
 			`{
 			"type": "call_webhook",
@@ -388,7 +395,8 @@ func TestConstructors(t *testing.T) {
 				"Authentication": "Token @fields.token"
 			},
 			"body": "{\"contact_id\": 234}",
-			"result_name": "Webhook Response"
+			"result_name": "Webhook Response",
+			"response_as_extra": true
 		}`,
 		},
 		{

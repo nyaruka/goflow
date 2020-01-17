@@ -13,6 +13,9 @@ func init() {
 // TypeWebhookCalled is the type for our webhook events
 const TypeWebhookCalled string = "webhook_called"
 
+// trim responses to 10K chars to avoid bloating serialized sessions
+const trimResponseTo = 10000
+
 // WebhookCalledEvent events are created when a webhook is called. The event contains
 // the URL and the status of the response, as well as a full dump of the
 // request and response.
@@ -44,12 +47,17 @@ type WebhookCalledEvent struct {
 
 // NewWebhookCalled returns a new webhook called event
 func NewWebhookCalled(webhook *flows.WebhookCall, status flows.CallStatus, resthook string) *WebhookCalledEvent {
+	response := string(webhook.Response)
+	if len(webhook.Response) > trimResponseTo {
+		response = response[:trimResponseTo]
+	}
+
 	return &WebhookCalledEvent{
 		baseEvent:   newBaseEvent(TypeWebhookCalled),
 		URL:         webhook.URL,
 		Status:      status,
 		Request:     string(webhook.Request),
-		Response:    string(webhook.Response),
+		Response:    response,
 		ElapsedMS:   int(webhook.TimeTaken / time.Millisecond),
 		Resthook:    resthook,
 		StatusCode:  webhook.StatusCode,

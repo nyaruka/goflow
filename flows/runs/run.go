@@ -36,6 +36,7 @@ type flowRun struct {
 	expiresOn  *time.Time
 	exitedOn   *time.Time
 
+	webhook     types.XValue
 	legacyExtra *legacyExtra
 }
 
@@ -96,6 +97,10 @@ func (r *flowRun) Status() flows.RunStatus { return r.status }
 func (r *flowRun) SetStatus(status flows.RunStatus) {
 	r.status = status
 	r.modifiedOn = dates.Now()
+}
+
+func (r *flowRun) SetWebhook(value types.XValue) {
+	r.webhook = value
 }
 
 // ParentInSession returns the parent of the run within the same session if one exists
@@ -227,12 +232,12 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 		"results": flows.Context(env, r.Results()),
 		"urns":    urns,
 		"fields":  fields,
-		"webhook": r.lastWebhookResponse(),
 
 		// other
 		"trigger":      flows.Context(env, r.Session().Trigger()),
 		"input":        flows.Context(env, r.Session().Input()),
 		"globals":      flows.Context(env, r.Session().Assets().Globals()),
+		"webhook":      r.webhook,
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
 }

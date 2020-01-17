@@ -460,10 +460,7 @@ through `extra` on the result.
         "name": "webhook",
         "value": "200",
         "category": "Success",
-        "input": "GET http://localhost:49998/?cmd=success",
-        "extra": {
-            "ok": "true"
-        }
+        "input": "GET http://localhost:49998/?cmd=success"
     }
 ]
 ```
@@ -1052,9 +1049,6 @@ will be created and it's the responsibility of the caller to act on that by init
                 "category": "Success",
                 "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
                 "input": "GET http://localhost:49998/?cmd=success",
-                "extra": {
-                    "ok": "true"
-                },
                 "created_on": "2018-04-11T18:24:30.123456Z"
             }
         }

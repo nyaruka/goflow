@@ -5,8 +5,10 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 	"golang.org/x/net/http/httpguts"
@@ -43,22 +45,24 @@ type CallWebhookAction struct {
 	baseAction
 	onlineAction
 
-	Method     string            `json:"method" validate:"required,http_method"`
-	URL        string            `json:"url" validate:"required" engine:"evaluated"`
-	Headers    map[string]string `json:"headers,omitempty" engine:"evaluated"`
-	Body       string            `json:"body,omitempty" engine:"evaluated"`
-	ResultName string            `json:"result_name,omitempty"`
+	Method          string            `json:"method" validate:"required,http_method"`
+	URL             string            `json:"url" validate:"required" engine:"evaluated"`
+	Headers         map[string]string `json:"headers,omitempty" engine:"evaluated"`
+	Body            string            `json:"body,omitempty" engine:"evaluated"`
+	ResultName      string            `json:"result_name,omitempty"`
+	ResponseAsExtra bool              `json:"response_as_extra,omitempty"`
 }
 
 // NewCallWebhook creates a new call webhook action
-func NewCallWebhook(uuid flows.ActionUUID, method string, url string, headers map[string]string, body string, resultName string) *CallWebhookAction {
+func NewCallWebhook(uuid flows.ActionUUID, method string, url string, headers map[string]string, body string, resultName string, responseAsExtra bool) *CallWebhookAction {
 	return &CallWebhookAction{
-		baseAction: newBaseAction(TypeCallWebhook, uuid),
-		Method:     method,
-		URL:        url,
-		Headers:    headers,
-		Body:       body,
-		ResultName: resultName,
+		baseAction:      newBaseAction(TypeCallWebhook, uuid),
+		Method:          method,
+		URL:             url,
+		Headers:         headers,
+		Body:            body,
+		ResultName:      resultName,
+		ResponseAsExtra: responseAsExtra,
 	}
 }
 
@@ -137,8 +141,11 @@ func (a *CallWebhookAction) call(run flows.FlowRun, step flows.Step, url, method
 		status := callStatus(call, false)
 
 		logEvent(events.NewWebhookCalled(call, status, ""))
+
+		run.SetWebhook(types.JSONToXValue(utils.ExtractResponseJSON([]byte(call.Response))))
+
 		if a.ResultName != "" {
-			a.saveWebhookResult(run, step, a.ResultName, call, status, logEvent)
+			a.saveWebhookResult(run, step, a.ResultName, call, status, a.ResponseAsExtra, logEvent)
 		}
 	}
 

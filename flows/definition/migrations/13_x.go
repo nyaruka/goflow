@@ -26,7 +26,14 @@ func Migrate13_1(f Flow) (Flow, error) {
 	return f, nil
 }
 
-// Migrate13_2 replaces @parent.run.x references with @parent.x and @child.run.x references with @child.x
+// Migrate13_2 adds response_as_extra to all webhook actions
 func Migrate13_2(f Flow) (Flow, error) {
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "call_webhook" {
+				action["response_as_extra"] = true
+			}
+		}
+	}
 	return f, nil
 }

@@ -224,11 +224,6 @@
             {
                 "category": "Failure",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "extra": {
-                    "errors": [
-                        "service unavailable"
-                    ]
-                },
                 "input": "POST http://unavailable.com/",
                 "name": "My Result",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -236,6 +231,11 @@
                 "value": "503"
             }
         ],
+        "webhook": {
+            "errors": [
+                "service unavailable"
+            ]
+        },
         "inspection": {
             "templates": [],
             "dependencies": [],
@@ -358,9 +358,6 @@
             {
                 "category": "Success",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "extra": {
-                    "ok": "true"
-                },
                 "input": "POST http://temba.io/",
                 "name": "My Result",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -368,6 +365,9 @@
                 "value": "200"
             }
         ],
+        "webhook": {
+            "ok": "true"
+        },
         "inspection": {
             "templates": [],
             "dependencies": [],
@@ -561,11 +561,6 @@
             {
                 "category": "Failure",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "extra": {
-                    "errors": [
-                        "service unavailable"
-                    ]
-                },
                 "input": "POST http://unavailable.com/",
                 "name": "My Result",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -573,6 +568,11 @@
                 "value": "503"
             }
         ],
+        "webhook": {
+            "errors": [
+                "service unavailable"
+            ]
+        },
         "inspection": {
             "templates": [],
             "dependencies": [],

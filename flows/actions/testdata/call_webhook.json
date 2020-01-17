@@ -153,7 +153,8 @@
             "headers": {
                 "X-Something": "@fields.gender"
             },
-            "result_name": "My Webhook"
+            "result_name": "My Webhook",
+            "response_as_extra": true
         },
         "events": [
             {
@@ -220,7 +221,8 @@
             "method": "POST",
             "url": "http://temba.io/",
             "body": "Hi there!",
-            "result_name": "My Webhook"
+            "result_name": "My Webhook",
+            "response_as_extra": true
         },
         "events": [
             {
@@ -286,7 +288,8 @@
             "method": "POST",
             "url": "http://temba.io/",
             "body": "Hi there!",
-            "result_name": "My Webhook"
+            "result_name": "My Webhook",
+            "response_as_extra": true
         },
         "events": [
             {

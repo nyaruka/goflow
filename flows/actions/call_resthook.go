@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 )
@@ -133,9 +135,13 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	}
 
 	asResult := a.pickResultCall(calls)
+	if asResult != nil {
+		run.SetWebhook(types.JSONToXValue(utils.ExtractResponseJSON([]byte(asResult.Response))))
+	}
+
 	if a.ResultName != "" {
 		if asResult != nil {
-			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, true), logEvent)
+			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, true), false, logEvent)
 		} else {
 			a.saveResult(run, step, a.ResultName, "no subscribers", "Failure", "", "", nil, logEvent)
 		}
