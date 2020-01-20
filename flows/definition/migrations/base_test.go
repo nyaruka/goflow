@@ -31,7 +31,7 @@ func TestMigrateToVersion(t *testing.T) {
 	sort.SliceStable(versions, func(i, j int) bool { return versions[i].LessThan(versions[j]) })
 
 	for _, version := range versions {
-		testsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", version.String()))
+		testsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/migrations/%s.json", version.String()))
 		require.NoError(t, err)
 
 		tests := []struct {
@@ -75,10 +75,12 @@ func TestMigrateToLatest(t *testing.T) {
 		"spec_version": "13.0"
 	}`), nil)
 	require.NoError(t, err)
-	test.AssertEqualJSON(t, []byte(`{
+
+	expected := fmt.Sprintf(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-		"spec_version": "13.1.0"
-	}`), migrated, "flow migration mismatch")
+		"spec_version": "%s"
+	}`, definition.CurrentSpecVersion)
+	test.AssertEqualJSON(t, []byte(expected), migrated, "flow migration mismatch")
 
 	// migrate valid definition
 	migrated, err = migrations.MigrateToLatest([]byte(`{
@@ -91,14 +93,16 @@ func TestMigrateToLatest(t *testing.T) {
 	}`), nil)
 
 	require.NoError(t, err)
-	test.AssertEqualJSON(t, []byte(`{
+
+	expected = fmt.Sprintf(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Empty Flow",
-		"spec_version": "13.1.0",
+		"spec_version": "%s",
 		"language": "eng",
 		"type": "messaging",
 		"nodes": []
-	}`), migrated, "flow migration mismatch")
+	}`, definition.CurrentSpecVersion)
+	test.AssertEqualJSON(t, []byte(expected), migrated, "flow migration mismatch")
 
 	// migrate legacy definition
 	migrated, err = migrations.MigrateToLatest([]byte(`{
@@ -113,10 +117,11 @@ func TestMigrateToLatest(t *testing.T) {
 	}`), &migrations.Config{})
 
 	require.NoError(t, err)
-	test.AssertEqualJSON(t, []byte(`{
+
+	expected = fmt.Sprintf(`{
 		"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 		"name": "Test Flow",
-		"spec_version": "13.1.0",
+		"spec_version": "%s",
 		"language": "eng",
 		"type": "messaging",
 		"expire_after_minutes": 0,
@@ -127,7 +132,8 @@ func TestMigrateToLatest(t *testing.T) {
 			"nodes": {},
         	"stickies": {}
 		}
-	}`), migrated, "flow migration mismatch")
+	}`, definition.CurrentSpecVersion)
+	test.AssertEqualJSON(t, []byte(expected), migrated, "flow migration mismatch")
 
 	// try to migrate legacy definition without migration config
 	migrated, err = migrations.MigrateToLatest([]byte(`{

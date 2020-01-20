@@ -21,9 +21,11 @@ func ContextWalkObjects(context *types.XObject, callback func(*types.XObject)) {
 }
 
 func contextWalk(v types.XValue, callback func(types.XValue)) {
-	if !utils.IsNil(v) {
-		callback(v)
+	if utils.IsNil(v) {
+		return
 	}
+
+	callback(v)
 
 	switch typed := v.(type) {
 	case *types.XObject:

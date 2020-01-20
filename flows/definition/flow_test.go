@@ -2,6 +2,7 @@ package definition_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -111,11 +112,11 @@ func TestBrokenFlows(t *testing.T) {
 }
 
 func TestNewFlow(t *testing.T) {
-	var flowDef = `
+	var flowDef = fmt.Sprintf(`
 {
     "uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
     "name": "Test Flow",
-    "spec_version": "13.1.0",
+    "spec_version": "%s",
     "language": "eng",
     "type": "messaging",
     "revision": 123,
@@ -201,7 +202,7 @@ func TestNewFlow(t *testing.T) {
             ]
         }
     ]
-}`
+}`, definition.CurrentSpecVersion)
 
 	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
@@ -330,17 +331,18 @@ func TestEmptyFlow(t *testing.T) {
 	marshaled, err := json.Marshal(flow)
 	require.NoError(t, err)
 
-	test.AssertEqualJSON(t, []byte(`{
+	expected := fmt.Sprintf(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Empty Flow",
 		"revision": 0,
-		"spec_version": "13.1.0",
+		"spec_version": "%s",
 		"type": "messaging",
 		"expire_after_minutes": 0,
 		"language": "eng",
 		"localization": {},
 		"nodes": []
-  	}`), marshaled, "flow definition mismatch")
+  	}`, definition.CurrentSpecVersion)
+	test.AssertEqualJSON(t, []byte(expected), marshaled, "flow definition mismatch")
 
 	info := flow.Inspect()
 
@@ -395,7 +397,7 @@ func TestReadFlow(t *testing.T) {
 		"expire_after_minutes": 30,
 		"nodes": []
 	}`), nil)
-	assert.EqualError(t, err, "spec version 2000.0.0 is newer than this library (13.1.0)")
+	assert.EqualError(t, err, fmt.Sprintf("spec version 2000.0.0 is newer than this library (%s)", definition.CurrentSpecVersion))
 
 	// try reading a definition with a newer minor version
 	_, err = definition.ReadFlow([]byte(`{
