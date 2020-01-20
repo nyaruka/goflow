@@ -5,10 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 )
@@ -136,7 +134,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 	asResult := a.pickResultCall(calls)
 	if asResult != nil {
-		run.SetWebhook(types.JSONToXValue(utils.ExtractResponseJSON([]byte(asResult.Response))))
+		a.updateWebhook(run, asResult)
 	}
 
 	if a.ResultName != "" {

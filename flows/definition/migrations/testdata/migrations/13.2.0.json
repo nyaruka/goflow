@@ -1,6 +1,6 @@
 [
     {
-        "description": "flow with @parent.run and @child.run references",
+        "description": "flow with a webhook action and non-webhook action",
         "original": {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Test Flow",

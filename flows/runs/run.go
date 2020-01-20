@@ -59,6 +59,7 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.
 	r.environment = newRunEnvironment(session.Environment(), r)
 	r.ResetExpiration(nil)
 
+	r.webhook = types.XObjectEmpty
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r
@@ -99,6 +100,9 @@ func (r *flowRun) SetStatus(status flows.RunStatus) {
 	r.modifiedOn = dates.Now()
 }
 
+func (r *flowRun) Webhook() types.XValue {
+	return r.webhook
+}
 func (r *flowRun) SetWebhook(value types.XValue) {
 	r.webhook = value
 }

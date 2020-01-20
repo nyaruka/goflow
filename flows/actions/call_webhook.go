@@ -5,10 +5,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 	"golang.org/x/net/http/httpguts"
@@ -138,11 +136,11 @@ func (a *CallWebhookAction) call(run flows.FlowRun, step flows.Step, url, method
 		logEvent(events.NewError(err))
 	}
 	if call != nil {
+		a.updateWebhook(run, call)
+
 		status := callStatus(call, false)
 
 		logEvent(events.NewWebhookCalled(call, status, ""))
-
-		run.SetWebhook(types.JSONToXValue(utils.ExtractResponseJSON([]byte(call.Response))))
 
 		if a.ResultName != "" {
 			a.saveWebhookResult(run, step, a.ResultName, call, status, a.ResponseAsExtra, logEvent)

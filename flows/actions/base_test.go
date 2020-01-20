@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -220,7 +221,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
 				return smtp.NewService("mail.temba.io", 25, "nyaruka", "pass123", "flows@temba.io"), nil
 			}).
-			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 				if c.Type() == "wit" {
 					return wit.NewService(http.DefaultClient, nil, c, "123456789"), nil
@@ -245,7 +246,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// check webhook is in expected state
 		if tc.Webhook != nil {
-			// TODO
+			test.AssertXEqual(t, types.JSONToXValue(tc.Webhook), run.Webhook(), "webhook mismatch in %s", testName)
 		}
 
 		// check contact is in the expected state
