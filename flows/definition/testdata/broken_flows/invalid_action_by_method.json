@@ -15,7 +15,10 @@
                             "type": "call_webhook",
                             "method": "GET",
                             "url": "http://localhost/",
-                            "body": "but GETs shouldn't have bodies..."
+                            "body": "Hi",
+                            "headers": {
+                                "\"$?": "the header field name is invalid"
+                            }
                         }
                     ],
                     "exits": [

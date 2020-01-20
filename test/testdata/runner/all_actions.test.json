@@ -79,14 +79,14 @@
                     }
                 },
                 {
-                    "to": [
-                        "ben@macklemore",
-                        "test@example.com"
-                    ],
                     "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
                     "created_on": "2018-07-06T12:30:15.123456789Z",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "subject": "Here is your activation token",
+                    "to": [
+                        "ben@macklemore",
+                        "test@example.com"
+                    ],
                     "type": "email_sent"
                 },
                 {
@@ -542,14 +542,14 @@
                                 }
                             },
                             {
-                                "to": [
-                                    "ben@macklemore",
-                                    "test@example.com"
-                                ],
                                 "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "subject": "Here is your activation token",
+                                "to": [
+                                    "ben@macklemore",
+                                    "test@example.com"
+                                ],
                                 "type": "email_sent"
                             },
                             {

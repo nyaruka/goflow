@@ -13,6 +13,7 @@ type FlowInfo struct {
 	Dependencies *Dependencies `json:"dependencies"`
 	Results      []*ResultInfo `json:"results"`
 	WaitingExits []ExitUUID    `json:"waiting_exits"`
+	ParentRefs   []string      `json:"parent_refs"`
 }
 
 // Dependencies contains a flows dependencies grouped by type
