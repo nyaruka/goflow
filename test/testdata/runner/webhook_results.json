@@ -309,7 +309,6 @@
       },
       "revision": 23,
       "expire_after_minutes": 10080,
-      "version": "13.0.0",
       "localization": {}
     }
   ]
