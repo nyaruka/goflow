@@ -276,6 +276,70 @@
         }
     },
     {
+        "description": "Extra not set on result if not valid JSON",
+        "http_mocks": {
+            "http://temba.io/": [
+                {
+                    "status": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": "{"
+                }
+            ]
+        },
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "GET",
+            "url": "http://temba.io/",
+            "result_name": "My Webhook",
+            "response_as_extra": true
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 0,
+                "request": "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+                "response": "HTTP/1.0 200 OK\r\nContent-Length: 1\r\nContent-Type: application/json\r\n\r\n{",
+                "status": "success",
+                "status_code": 200,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "webhook_called",
+                "url": "http://temba.io/"
+            },
+            {
+                "category": "Success",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "GET http://temba.io/",
+                "name": "My Webhook",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "200"
+            }
+        ],
+        "webhook": {},
+        "inspection": {
+            "templates": [
+                "http://temba.io/"
+            ],
+            "dependencies": [],
+            "results": [
+                {
+                    "key": "my_webhook",
+                    "name": "My Webhook",
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
+    },
+    {
         "description": "Webhook event has trimmed response but @webhook has it in full",
         "http_mocks": {
             "http://temba.io/": [

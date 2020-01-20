@@ -19,6 +19,9 @@ import (
 	"github.com/pkg/errors"
 )
 
+// max number of bytes to be saved to extra on a result
+const resultExtraMaxBytes = 10000
+
 // common category names
 const (
 	CategorySuccess = "Success"
@@ -127,15 +130,15 @@ func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 	category := webhookStatusCategories[status]
 
 	var extra json.RawMessage
-	if bodyAsExtra {
-		extra = utils.ExtractResponseJSON(webhook.Response)
+	if bodyAsExtra && len(webhook.ResponseBody) < resultExtraMaxBytes && json.Valid(webhook.ResponseBody) {
+		extra = webhook.ResponseBody
 	}
 
 	a.saveResult(run, step, name, value, category, "", input, extra, logEvent)
 }
 
 func (a *baseAction) updateWebhook(run flows.FlowRun, call *flows.WebhookCall) {
-	parsed := types.JSONToXValue(utils.ExtractResponseJSON([]byte(call.Response)))
+	parsed := types.JSONToXValue(call.ResponseBody)
 
 	switch typed := parsed.(type) {
 	case nil, types.XError:
