@@ -108,7 +108,7 @@ func lastWebhookSavedAsExtra(r *flowRun) types.XValue {
 			if resultEvent != nil {
 				asResultEvent := resultEvent.(*events.RunResultChangedEvent)
 				if asResultEvent.Extra != nil {
-					return types.JSONToXValue(utils.ExtractResponseJSON([]byte(asResultEvent.Extra)))
+					return types.JSONToXValue([]byte(asResultEvent.Extra))
 				}
 			}
 		default:
