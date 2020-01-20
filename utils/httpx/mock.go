@@ -71,7 +71,7 @@ var _ Requestor = (*MockRequestor)(nil)
 type MockResponse struct {
 	Status  int               `json:"status" validate:"required"`
 	Body    string            `json:"body" validate:"required"`
-	Headers map[string]string `json:"headers"`
+	Headers map[string]string `json:"headers,omitempty"`
 }
 
 func (m MockResponse) Make(request *http.Request) *http.Response {
