@@ -23,8 +23,10 @@ func TestContextWalk(t *testing.T) {
 		"zed": types.NewXObject(map[string]types.XValue{
 			"bar": types.NewXNumberFromInt(345),
 		}),
+		"nil": (*types.XObject)(nil), // non-nil interface to a nil struct
 	})
 
+	// test finding all non-nil values
 	count := 0
 	tools.ContextWalk(context, func(v types.XValue) {
 		count++
