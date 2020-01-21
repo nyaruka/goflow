@@ -2,6 +2,8 @@ package events_test
 
 import (
 	"encoding/json"
+	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -420,4 +422,22 @@ func TestReadEvent(t *testing.T) {
 	// error if we don't recognize action type
 	_, err = events.ReadEvent([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+}
+
+func TestWebhookCalledEventTrimming(t *testing.T) {
+	big := strings.Repeat("X", 20000)
+	call := &flows.WebhookCall{
+		URL:          "http://temba.io/",
+		Method:       "GET",
+		StatusCode:   200,
+		TimeTaken:    time.Second * 1,
+		Request:      []byte(fmt.Sprintf("GET /\r\n%s", big)),
+		Response:     []byte(fmt.Sprintf("HTTP/1.0 200 OK\r\n\r\n%s", big)),
+		ResponseBody: []byte(big),
+	}
+	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
+
+	assert.Equal(t, "http://temba.io/", event.URL)
+	assert.Equal(t, 10000, len(event.Request))
+	assert.Equal(t, 10000, len(event.Response))
 }
