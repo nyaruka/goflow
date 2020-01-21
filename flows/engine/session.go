@@ -101,12 +101,22 @@ func (s *session) Status() flows.SessionStatus { return s.status }
 func (s *session) Wait() flows.ActivatedWait   { return s.wait }
 
 func (s *session) CurrentContext() *types.XObject {
-	run := s.waitingRun()
+	run := s.currentRun()
 	if run == nil {
 		return nil
 	}
-
 	return types.NewXObject(run.RootContext(s.env))
+}
+
+// looks through this session's run for the one that was last modified
+func (s *session) currentRun() flows.FlowRun {
+	var lastRun flows.FlowRun
+	for _, run := range s.runs {
+		if lastRun == nil || run.ModifiedOn().After(lastRun.ModifiedOn()) {
+			lastRun = run
+		}
+	}
+	return lastRun
 }
 
 // looks through this session's run for the one that is waiting

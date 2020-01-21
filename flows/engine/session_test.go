@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -782,7 +783,7 @@ func TestWaitTimeout(t *testing.T) {
 }
 
 func TestCurrentContext(t *testing.T) {
-	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
+	sessionAssets, err := ioutil.ReadFile("../../test/testdata/runner/subflow_loop_with_wait.json")
 	require.NoError(t, err)
 
 	// create our session assets
@@ -803,14 +804,25 @@ func TestCurrentContext(t *testing.T) {
 	context := session.CurrentContext()
 	assert.NotNil(t, context)
 
+	runContext, _ := context.Get("run")
+	flowContext, _ := runContext.(*types.XObject).Get("flow")
+	flowName, _ := flowContext.(*types.XObject).Get("name")
+	assert.Equal(t, types.NewXText("Child flow"), flowName)
+
 	// check we can marshal it
 	_, err = json.Marshal(context)
 	assert.NoError(t, err)
 
 	// end it
 	session.Resume(resumes.NewRunExpiration(nil, nil))
-
-	// can't get context of completed session
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
-	assert.Nil(t, session.CurrentContext())
+
+	// can still get context of completed session
+	context = session.CurrentContext()
+	assert.NotNil(t, context)
+
+	runContext, _ = context.Get("run")
+	flowContext, _ = runContext.(*types.XObject).Get("flow")
+	flowName, _ = flowContext.(*types.XObject).Get("name")
+	assert.Equal(t, types.NewXText("Parent Flow"), flowName)
 }
