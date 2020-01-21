@@ -439,5 +439,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 
 	assert.Equal(t, "http://temba.io/", event.URL)
 	assert.Equal(t, 10000, len(event.Request))
+	assert.Equal(t, "XXXXXXX...", event.Request[9990:])
 	assert.Equal(t, 10000, len(event.Response))
+	assert.Equal(t, "XXXXXXX...", event.Response[9990:])
 }

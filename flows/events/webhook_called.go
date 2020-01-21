@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -47,22 +48,12 @@ type WebhookCalledEvent struct {
 
 // NewWebhookCalled returns a new webhook called event
 func NewWebhookCalled(webhook *flows.WebhookCall, status flows.CallStatus, resthook string) *WebhookCalledEvent {
-	request := string(webhook.Request)
-	response := string(webhook.Response)
-
-	if len(request) > trimTracesTo {
-		request = request[:trimTracesTo]
-	}
-	if len(response) > trimTracesTo {
-		response = response[:trimTracesTo]
-	}
-
 	return &WebhookCalledEvent{
 		baseEvent:   newBaseEvent(TypeWebhookCalled),
 		URL:         webhook.URL,
 		Status:      status,
-		Request:     request,
-		Response:    response,
+		Request:     utils.Truncate(string(webhook.Request), trimTracesTo),
+		Response:    utils.Truncate(string(webhook.Response), trimTracesTo),
 		ElapsedMS:   int(webhook.TimeTaken / time.Millisecond),
 		Resthook:    resthook,
 		StatusCode:  webhook.StatusCode,
