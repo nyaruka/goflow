@@ -385,7 +385,6 @@ func TestConstructors(t *testing.T) {
 				},
 				`{"contact_id": 234}`, // body
 				"Webhook Response",
-				true,
 			),
 			`{
 			"type": "call_webhook",
@@ -396,8 +395,7 @@ func TestConstructors(t *testing.T) {
 				"Authentication": "Token @fields.token"
 			},
 			"body": "{\"contact_id\": 234}",
-			"result_name": "Webhook Response",
-			"response_as_extra": true
+			"result_name": "Webhook Response"
 		}`,
 		},
 		{

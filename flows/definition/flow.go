@@ -19,7 +19,7 @@ import (
 )
 
 // CurrentSpecVersion is the flow spec version supported by this library
-var CurrentSpecVersion = semver.MustParse("13.2.0")
+var CurrentSpecVersion = semver.MustParse("13.1.0")
 
 type flow struct {
 	// spec properties

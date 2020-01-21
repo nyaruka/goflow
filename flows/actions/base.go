@@ -124,13 +124,13 @@ func (a *baseAction) saveResult(run flows.FlowRun, step flows.Step, name, value,
 }
 
 // helper to save a run result based on a webhook call and log it as an event
-func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall, status flows.CallStatus, bodyAsExtra bool, logEvent flows.EventCallback) {
+func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall, status flows.CallStatus, logEvent flows.EventCallback) {
 	input := fmt.Sprintf("%s %s", webhook.Method, webhook.URL)
 	value := strconv.Itoa(webhook.StatusCode)
 	category := webhookStatusCategories[status]
 
 	var extra json.RawMessage
-	if bodyAsExtra && len(webhook.ResponseBody) < resultExtraMaxBytes && json.Valid(webhook.ResponseBody) {
+	if len(webhook.ResponseBody) < resultExtraMaxBytes && json.Valid(webhook.ResponseBody) {
 		extra = webhook.ResponseBody
 	}
 

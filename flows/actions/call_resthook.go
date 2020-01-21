@@ -139,7 +139,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 	if a.ResultName != "" {
 		if asResult != nil {
-			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, true), false, logEvent)
+			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, true), logEvent)
 		} else {
 			a.saveResult(run, step, a.ResultName, "no subscribers", "Failure", "", "", nil, logEvent)
 		}

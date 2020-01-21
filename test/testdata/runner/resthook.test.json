@@ -76,6 +76,11 @@
                 {
                     "category": "Failure",
                     "created_on": "2018-07-06T12:30:16.123456789Z",
+                    "extra": {
+                        "errors": [
+                            "bad_request"
+                        ]
+                    },
                     "input": "POST http://localhost/?cmd=badrequest",
                     "name": "Response 1",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -184,6 +189,11 @@
                             {
                                 "category": "Failure",
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "extra": {
+                                    "errors": [
+                                        "bad_request"
+                                    ]
+                                },
                                 "input": "POST http://localhost/?cmd=badrequest",
                                 "name": "Response 1",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -230,6 +240,11 @@
                             "response_1": {
                                 "category": "Failure",
                                 "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "extra": {
+                                    "errors": [
+                                        "bad_request"
+                                    ]
+                                },
                                 "input": "POST http://localhost/?cmd=badrequest",
                                 "name": "Response 1",
                                 "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
