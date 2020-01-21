@@ -1,3 +1,7 @@
+v0.64.9
+----------
+ * Allow getting current context even for ended sessions
+
 v0.64.8
 ----------
  * Fix another panic during context walking
