@@ -138,10 +138,10 @@ func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, 
 func (c *Condition) String() string {
 	value := c.value
 
-	_, err := decimal.NewFromString(c.value)
+	_, err := decimal.NewFromString(value)
 	if err != nil {
 		// if not a decimal then quote
-		value = strconv.Quote(c.value)
+		value = strconv.Quote(value)
 	}
 
 	return fmt.Sprintf(`%s %s %s`, c.propKey, c.comparator, value)
