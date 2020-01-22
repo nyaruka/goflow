@@ -3,6 +3,7 @@ package contactql
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
@@ -135,13 +136,15 @@ func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, 
 }
 
 func (c *Condition) String() string {
-	var value string
-	if c.value == "" {
-		value = `""`
-	} else {
-		value = c.value
+	value := c.value
+
+	_, err := decimal.NewFromString(value)
+	if err != nil {
+		// if not a decimal then quote
+		value = strconv.Quote(value)
 	}
-	return fmt.Sprintf("%s%s%s", c.propKey, c.comparator, value)
+
+	return fmt.Sprintf(`%s %s %s`, c.propKey, c.comparator, value)
 }
 
 // BoolCombination is a AND or OR combination of multiple conditions
@@ -194,7 +197,7 @@ func (b *BoolCombination) String() string {
 	for i := range b.children {
 		children[i] = b.children[i].String()
 	}
-	return fmt.Sprintf("%s(%s)", strings.ToUpper(string(b.op)), strings.Join(children, ", "))
+	return fmt.Sprintf("(%s)", strings.Join(children, fmt.Sprintf(" %s ", strings.ToUpper(string(b.op)))))
 }
 
 type ContactQuery struct {
@@ -208,7 +211,13 @@ func (q *ContactQuery) Evaluate(env envs.Environment, queryable Queryable) (bool
 }
 
 func (q *ContactQuery) String() string {
-	return q.root.String()
+	s := q.root.String()
+
+	// strip extra parentheses if not needed
+	if strings.HasPrefix(s, "(") && strings.HasSuffix(s, ")") {
+		s = s[1 : len(s)-1]
+	}
+	return s
 }
 
 // ParseQuery parses a ContactQL query from the given input
