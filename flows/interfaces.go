@@ -399,6 +399,8 @@ type FlowRun interface {
 	Session() Session
 	SaveResult(*Result)
 	SetStatus(RunStatus)
+	Webhook() types.XValue
+	SetWebhook(types.XValue)
 
 	CreateStep(Node) Step
 	Path() []Step

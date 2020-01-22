@@ -133,6 +133,10 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	}
 
 	asResult := a.pickResultCall(calls)
+	if asResult != nil {
+		a.updateWebhook(run, asResult)
+	}
+
 	if a.ResultName != "" {
 		if asResult != nil {
 			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, true), logEvent)

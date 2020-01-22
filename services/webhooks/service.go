@@ -107,6 +107,7 @@ func (s *service) newCallFromResponse(requestTrace []byte, response *http.Respon
 
 	if body != nil {
 		w.Response = append(w.Response, body...)
+		w.ResponseBody = body
 	} else {
 		w.BodyIgnored = true
 	}

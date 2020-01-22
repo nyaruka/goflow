@@ -91,28 +91,3 @@ func TestReadTypeFromJSON(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "foo", typeName)
 }
-
-func TestExtractResponseJSON(t *testing.T) {
-	// valid HTTP trace and response body
-	trace := "HTTP/1.1 200 OK\r\n" +
-		"Server: nginx\r\n" +
-		"Content-Type: application/json\r\n" +
-		"Transfer-Encoding: chunked\r\n" +
-		"Date: Tue, 27 Aug 2019 16:26:18 GMT\r\n" +
-		"\r\n" +
-		"{\"fact\":\"Cats have nine lives thanks to a flexible spine and powerful leg and back muscles\",\"length\":83}"
-
-	assert.Equal(t, json.RawMessage(`{"fact":"Cats have nine lives thanks to a flexible spine and powerful leg and back muscles","length":83}`), utils.ExtractResponseJSON([]byte(trace)))
-
-	// not a valid trace with body
-	assert.Nil(t, utils.ExtractResponseJSON([]byte("HTTP/1.1 200 OK\r\n{}")))
-
-	// valid trace, but body not JSON
-	trace = "HTTP/1.1 200 OK\r\n" +
-		"Server: nginx\r\n" +
-		"Date: Tue, 27 Aug 2019 16:26:18 GMT\r\n" +
-		"\r\n" +
-		"Cats have nine lives"
-
-	assert.Equal(t, json.RawMessage(`"Cats have nine lives"`), utils.ExtractResponseJSON([]byte(trace)))
-}

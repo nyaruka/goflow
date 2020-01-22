@@ -108,3 +108,13 @@ func TestStringSetKeys(t *testing.T) {
 	assert.Equal(t, []string{}, utils.StringSetKeys(map[string]bool{}))
 	assert.Equal(t, []string{"a", "x", "y"}, utils.StringSetKeys(map[string]bool{"x": true, "y": true, "a": true}))
 }
+
+func TestTruncate(t *testing.T) {
+	assert.Equal(t, "", utils.Truncate("", 100))
+	assert.Equal(t, "1234567890", utils.Truncate("1234567890", 100))
+	assert.Equal(t, "1234567890", utils.Truncate("1234567890", 10))
+	assert.Equal(t, "1234...", utils.Truncate("1234567890", 7))
+	assert.Equal(t, "你喜欢我当然喜欢的电", utils.Truncate("你喜欢我当然喜欢的电", 100))
+	assert.Equal(t, "你喜欢我当然喜欢的电", utils.Truncate("你喜欢我当然喜欢的电", 10))
+	assert.Equal(t, "你喜欢我...", utils.Truncate("你喜欢我当然喜欢的电", 7))
+}

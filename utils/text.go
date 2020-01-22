@@ -89,3 +89,12 @@ func Indent(s string, prefix string) string {
 	}
 	return output.String()
 }
+
+// Truncate truncates the given string to ensure it's less than limit characters
+func Truncate(s string, limit int) string {
+	runes := []rune(s)
+	if len(runes) <= limit {
+		return s
+	}
+	return string(runes[:limit-3]) + "..."
+}
