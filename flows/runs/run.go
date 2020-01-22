@@ -294,18 +294,20 @@ func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
 	return excellent.EvaluateTemplateValue(r.Environment(), context, template)
 }
 
-// EvaluateTemplateAsString evaluates the given template as a string in the context of this run
-func (r *flowRun) EvaluateTemplate(template string) (string, error) {
+// EvaluateTemplateText evaluates the given template as text in the context of this run
+func (r *flowRun) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool) (string, error) {
 	context := types.NewXObject(r.RootContext(r.Environment()))
 
-	return excellent.EvaluateTemplate(r.Environment(), context, template, nil)
+	value, err := excellent.EvaluateTemplate(r.Environment(), context, template, escaping)
+	if truncate {
+		value = utils.Truncate(value, r.Session().Engine().MaxTemplateChars())
+	}
+	return value, err
 }
 
-// EvaluateTemplateAsString evaluates the given template as a string in the context of this run
-func (r *flowRun) EvaluateTemplateWithEscaping(template string, escaping excellent.Escaping) (string, error) {
-	context := types.NewXObject(r.RootContext(r.Environment()))
-
-	return excellent.EvaluateTemplate(r.Environment(), context, template, escaping)
+// EvaluateTemplate is a convenience function for evaluating as text with no escaping
+func (r *flowRun) EvaluateTemplate(template string) (string, error) {
+	return r.EvaluateTemplateText(template, nil, true)
 }
 
 // get the ordered list of languages to be used for localization in this run

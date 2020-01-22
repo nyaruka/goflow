@@ -252,7 +252,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flow
 	}
 
 	// evaluate contact query
-	contactQuery, _ := run.EvaluateTemplateWithEscaping(a.ContactQuery, flows.ContactQueryEscaping)
+	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, flows.ContactQueryEscaping, true)
 
 	return groupRefs, contactRefs, contactQuery, urnList, nil
 }
