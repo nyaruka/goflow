@@ -20,49 +20,49 @@ func TestParseQuery(t *testing.T) {
 		redact envs.RedactionPolicy
 	}{
 		// implicit conditions
-		{`will`, "name~will", "", envs.RedactionPolicyNone},
-		{`0123456566`, "tel~0123456566", "", envs.RedactionPolicyNone},
-		{`+0123456566`, "tel~0123456566", "", envs.RedactionPolicyNone},
-		{`0123-456-566`, "tel~0123456566", "", envs.RedactionPolicyNone},
+		{`will`, `name ~ "will"`, "", envs.RedactionPolicyNone},
+		{`0123456566`, `tel ~ "0123456566"`, "", envs.RedactionPolicyNone},
+		{`+0123456566`, `tel ~ "0123456566"`, "", envs.RedactionPolicyNone},
+		{`0123-456-566`, `tel ~ "0123456566"`, "", envs.RedactionPolicyNone},
 
 		// implicit conditions with URN redaction
-		{`will`, "name~will", "", envs.RedactionPolicyURNs},
-		{`0123456566`, "id=123456566", "", envs.RedactionPolicyURNs},
-		{`+0123456566`, "id=123456566", "", envs.RedactionPolicyURNs},
-		{`0123-456-566`, "name~0123-456-566", "", envs.RedactionPolicyURNs},
+		{`will`, `name ~ "will"`, "", envs.RedactionPolicyURNs},
+		{`0123456566`, `id = "123456566"`, "", envs.RedactionPolicyURNs},
+		{`+0123456566`, `id = "123456566"`, "", envs.RedactionPolicyURNs},
+		{`0123-456-566`, `name ~ "0123-456-566"`, "", envs.RedactionPolicyURNs},
 
-		{`will felix`, "AND(name~will, name~felix)", "", envs.RedactionPolicyNone},     // implicit AND
-		{`will and felix`, "AND(name~will, name~felix)", "", envs.RedactionPolicyNone}, // explicit AND
-		{`will or felix or matt`, "OR(OR(name~will, name~felix), name~matt)", "", envs.RedactionPolicyNone},
-		{`Name=will`, "name=will", "", envs.RedactionPolicyNone},
-		{`Name ~ "felix"`, "name~felix", "", envs.RedactionPolicyNone},
-		{`name is ""`, `name=""`, "", envs.RedactionPolicyNone},          // is not set
-		{`name != ""`, `name!=""`, "", envs.RedactionPolicyNone},         // is set
-		{`name != "felix"`, `name!=felix`, "", envs.RedactionPolicyNone}, // is set
-		{`name=will or Name ~ "felix"`, "OR(name=will, name~felix)", "", envs.RedactionPolicyNone},
-		{`Name is will or Name has felix`, "OR(name=will, name~felix)", "", envs.RedactionPolicyNone}, // comparator aliases
-		{`will or Name ~ "felix"`, "OR(name~will, name~felix)", "", envs.RedactionPolicyNone},
+		{`will felix`, `name ~ "will" AND name ~ "felix"`, "", envs.RedactionPolicyNone},     // implicit AND
+		{`will and felix`, `name ~ "will" AND name ~ "felix"`, "", envs.RedactionPolicyNone}, // explicit AND
+		{`will or felix or matt`, `(name ~ "will" OR name ~ "felix") OR name ~ "matt"`, "", envs.RedactionPolicyNone},
+		{`Name=will`, `name = "will"`, "", envs.RedactionPolicyNone},
+		{`Name ~ "felix"`, `name ~ "felix"`, "", envs.RedactionPolicyNone},
+		{`name is ""`, `name = ""`, "", envs.RedactionPolicyNone},            // is not set
+		{`name != ""`, `name != ""`, "", envs.RedactionPolicyNone},           // is set
+		{`name != "felix"`, `name != "felix"`, "", envs.RedactionPolicyNone}, // is set
+		{`name=will or Name ~ "felix"`, `name = "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone},
+		{`Name is will or Name has felix`, `name = "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone}, // comparator aliases
+		{`will or Name ~ "felix"`, `name ~ "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone},
 
-		{`mailto = user@example.com`, "mailto=user@example.com", "", envs.RedactionPolicyNone},
-		{`MAILTO ~ user@example.com`, "mailto~user@example.com", "", envs.RedactionPolicyNone},
+		{`mailto = user@example.com`, `mailto = "user@example.com"`, "", envs.RedactionPolicyNone},
+		{`MAILTO ~ user@example.com`, `mailto ~ "user@example.com"`, "", envs.RedactionPolicyNone},
 
 		{`mailto = user@example.com`, "", "cannot query on redacted URNs", envs.RedactionPolicyURNs},
 		{`MAILTO ~ user@example.com`, "", "cannot query on redacted URNs", envs.RedactionPolicyURNs},
 
 		// boolean operator precedence is AND before OR, even when AND is implicit
-		{`will and felix or matt amber`, "OR(AND(name~will, name~felix), AND(name~matt, name~amber))", "", envs.RedactionPolicyNone},
+		{`will and felix or matt amber`, `(name ~ "will" AND name ~ "felix") OR (name ~ "matt" AND name ~ "amber")`, "", envs.RedactionPolicyNone},
 
 		// boolean combinations can themselves be combined
 		{
 			`(Age < 18 and Gender = "male") or (Age > 18 and Gender = "female")`,
-			"OR(AND(age<18, gender=male), AND(age>18, gender=female))",
+			`(age < "18" AND gender = "male") OR (age > "18" AND gender = "female")`,
 			"",
 			envs.RedactionPolicyNone,
 		},
 
 		{`xyz != ""`, "", "can't resolve 'xyz' to attribute, scheme or field", envs.RedactionPolicyNone},
 
-		{`name = "O\"Leary"`, `name=O"Leary`, "", envs.RedactionPolicyNone}, // string unquoting
+		{`name = "O\"Leary"`, `name = "O\"Leary"`, "", envs.RedactionPolicyNone}, // string unquoting
 	}
 
 	fields := map[string]assets.Field{
