@@ -217,7 +217,7 @@ func TestRunContext(t *testing.T) {
 	}
 
 	// test with escaping
-	evaluated, err := run.EvaluateTemplateWithEscaping(`gender = @("M\" OR")`, flows.ContactQueryEscaping)
+	evaluated, err := run.EvaluateTemplateText(`gender = @("M\" OR")`, flows.ContactQueryEscaping, true)
 	assert.NoError(t, err)
 	assert.Equal(t, `gender = "M\" OR"`, evaluated)
 }

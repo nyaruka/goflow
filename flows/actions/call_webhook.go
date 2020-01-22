@@ -95,7 +95,8 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 
 	// substitute any body variables
 	if body != "" {
-		body, err = run.EvaluateTemplate(body)
+		// webhook bodies aren't truncated like other templates
+		body, err = run.EvaluateTemplateText(body, nil, false)
 		if err != nil {
 			logEvent(events.NewError(err))
 		}

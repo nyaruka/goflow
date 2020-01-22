@@ -88,8 +88,8 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return nil
 	}
 
-	// build our payload
-	payload, err := run.EvaluateTemplate(ResthookPayload)
+	// build our payload (not truncated)
+	payload, err := run.EvaluateTemplateText(ResthookPayload, nil, false)
 	if err != nil {
 		// if we got an error then our payload is likely not valid JSON
 		return errors.Wrapf(err, "error evaluating resthook payload")
