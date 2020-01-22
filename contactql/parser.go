@@ -136,7 +136,15 @@ func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, 
 }
 
 func (c *Condition) String() string {
-	return fmt.Sprintf(`%s %s %s`, c.propKey, c.comparator, strconv.Quote(c.value))
+	value := c.value
+
+	_, err := decimal.NewFromString(c.value)
+	if err != nil {
+		// if not a decimal then quote
+		value = strconv.Quote(c.value)
+	}
+
+	return fmt.Sprintf(`%s %s %s`, c.propKey, c.comparator, value)
 }
 
 // BoolCombination is a AND or OR combination of multiple conditions

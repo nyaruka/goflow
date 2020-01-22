@@ -21,14 +21,14 @@ func TestParseQuery(t *testing.T) {
 	}{
 		// implicit conditions
 		{`will`, `name ~ "will"`, "", envs.RedactionPolicyNone},
-		{`0123456566`, `tel ~ "0123456566"`, "", envs.RedactionPolicyNone},
-		{`+0123456566`, `tel ~ "0123456566"`, "", envs.RedactionPolicyNone},
-		{`0123-456-566`, `tel ~ "0123456566"`, "", envs.RedactionPolicyNone},
+		{`0123456566`, `tel ~ 0123456566`, "", envs.RedactionPolicyNone},
+		{`+0123456566`, `tel ~ 0123456566`, "", envs.RedactionPolicyNone},
+		{`0123-456-566`, `tel ~ 0123456566`, "", envs.RedactionPolicyNone},
 
 		// implicit conditions with URN redaction
 		{`will`, `name ~ "will"`, "", envs.RedactionPolicyURNs},
-		{`0123456566`, `id = "123456566"`, "", envs.RedactionPolicyURNs},
-		{`+0123456566`, `id = "123456566"`, "", envs.RedactionPolicyURNs},
+		{`0123456566`, `id = 123456566`, "", envs.RedactionPolicyURNs},
+		{`+0123456566`, `id = 123456566`, "", envs.RedactionPolicyURNs},
 		{`0123-456-566`, `name ~ "0123-456-566"`, "", envs.RedactionPolicyURNs},
 
 		{`will felix`, `name ~ "will" AND name ~ "felix"`, "", envs.RedactionPolicyNone},     // implicit AND
@@ -55,7 +55,7 @@ func TestParseQuery(t *testing.T) {
 		// boolean combinations can themselves be combined
 		{
 			`(Age < 18 and Gender = "male") or (Age > 18 and Gender = "female")`,
-			`(age < "18" AND gender = "male") OR (age > "18" AND gender = "female")`,
+			`(age < 18 AND gender = "male") OR (age > 18 AND gender = "female")`,
 			"",
 			envs.RedactionPolicyNone,
 		},
