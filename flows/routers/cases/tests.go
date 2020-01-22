@@ -516,7 +516,7 @@ func HasTime(env envs.Environment, text types.XText) types.XValue {
 	return FalseResult
 }
 
-var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\pN]*)(\.[\pL\pN][-_\pL\pN]*)+`)
+var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_+$~.\pL\pN]*)@([\pL\pN][-_\pL\pN]*)(\.[\pL\pN][-_\pL\pN]*)+`)
 
 // HasEmail tests whether an email is contained in `text`
 //
@@ -951,7 +951,7 @@ func testDate(env envs.Environment, str types.XText, testDate types.XDateTime, t
 	// first parse with time filling which will be the test result
 	value, xerr := types.ToXDateTimeWithTimeFill(env, str)
 
-	// but comparsion should be against only the date portions
+	// but comparison should be against only the date portions
 	valueAsDate := dates.ExtractDate(value.In(env.Timezone()).Native())
 	testAsDate := dates.ExtractDate(testDate.In(env.Timezone()).Native())
 

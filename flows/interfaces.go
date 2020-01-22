@@ -102,6 +102,7 @@ const (
 	RunStatusExpired RunStatus = "expired"
 )
 
+// FlowAssets provides access to flow assets
 type FlowAssets interface {
 	Get(assets.FlowUUID) (Flow, error)
 }
@@ -143,8 +144,6 @@ type Flow interface {
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
-	Generic() map[string]interface{}
-	Clone(map[uuids.UUID]uuids.UUID) Flow
 
 	Inspect() *FlowInfo
 	Validate(SessionAssets, func(assets.Reference)) error
@@ -152,9 +151,6 @@ type Flow interface {
 
 	ExtractTemplates() []string
 	ExtractDependencies() []assets.Reference
-	ExtractResults() []*ResultInfo
-
-	MarshalWithInfo() ([]byte, error)
 }
 
 // Node is a single node in a flow
@@ -182,6 +178,7 @@ type Action interface {
 	AllowedFlowTypes() []FlowType
 }
 
+// Router is a router on a note which can pick an exit
 type Router interface {
 	utils.Typed
 
@@ -198,16 +195,19 @@ type Router interface {
 	EnumerateResults(Node, func(*ResultInfo))
 }
 
+// Exit is a route out of a node and optionally to another node
 type Exit interface {
 	UUID() ExitUUID
 	DestinationUUID() NodeUUID
 }
 
+// Timeout is a way to skip a wait after X amount of time
 type Timeout interface {
 	Seconds() int
 	CategoryUUID() CategoryUUID
 }
 
+// Wait tells the engine that the session requires input from the user
 type Wait interface {
 	utils.Typed
 
@@ -217,12 +217,14 @@ type Wait interface {
 	End(Resume) error
 }
 
+// ActivatedWait is a wait once it has been activated in a session
 type ActivatedWait interface {
 	utils.Typed
 
 	TimeoutSeconds() *int
 }
 
+// Hint tells the caller what type of input the flow is expecting
 type Hint interface {
 	utils.Typed
 }
@@ -306,6 +308,7 @@ type Input interface {
 	Channel() *Channel
 }
 
+// Step is a single step in the path thru a flow
 type Step interface {
 	Contextable
 
@@ -317,6 +320,7 @@ type Step interface {
 	Leave(ExitUUID)
 }
 
+// Engine provides callers with session starting and resuming
 type Engine interface {
 	NewSession(SessionAssets, Trigger) (Session, Sprint, error)
 	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
@@ -360,6 +364,7 @@ type Session interface {
 	GetRun(RunUUID) (FlowRun, error)
 	GetCurrentChild(FlowRun) FlowRun
 	ParentRun() RunSummary
+	CurrentContext() *types.XObject
 
 	Engine() Engine
 }
@@ -394,6 +399,8 @@ type FlowRun interface {
 	Session() Session
 	SaveResult(*Result)
 	SetStatus(RunStatus)
+	Webhook() types.XValue
+	SetWebhook(types.XValue)
 
 	CreateStep(Node) Step
 	Path() []Step
@@ -406,6 +413,7 @@ type FlowRun interface {
 	EvaluateTemplateValue(string) (types.XValue, error)
 	EvaluateTemplate(string) (string, error)
 	EvaluateTemplateWithEscaping(string, excellent.Escaping) (string, error)
+	RootContext(envs.Environment) map[string]types.XValue
 
 	GetText(uuids.UUID, string, string) string
 	GetTextArray(uuids.UUID, string, []string) []string

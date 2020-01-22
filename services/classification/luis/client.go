@@ -41,19 +41,21 @@ type PredictResponse struct {
 
 // Client is a basic LUIS client
 type Client struct {
-	httpClient *http.Client
-	endpoint   string
-	appID      string
-	key        string
+	httpClient  *http.Client
+	httpRetries *httpx.RetryConfig
+	endpoint    string
+	appID       string
+	key         string
 }
 
 // NewClient creates a new client
-func NewClient(httpClient *http.Client, endpoint, appID, key string) *Client {
+func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, endpoint, appID, key string) *Client {
 	return &Client{
-		httpClient: httpClient,
-		endpoint:   endpoint,
-		appID:      appID,
-		key:        key,
+		httpClient:  httpClient,
+		httpRetries: httpRetries,
+		endpoint:    endpoint,
+		appID:       appID,
+		key:         key,
 	}
 }
 
@@ -61,7 +63,7 @@ func NewClient(httpClient *http.Client, endpoint, appID, key string) *Client {
 func (c *Client) Predict(q string) (*PredictResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/apps/%s?verbose=true&subscription-key=%s&q=%s", c.endpoint, c.appID, c.key, url.QueryEscape(q))
 
-	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, nil)
+	trace, err := httpx.DoTrace(c.httpClient, "GET", endpoint, nil, nil, c.httpRetries)
 	if err != nil {
 		return nil, trace, err
 	}

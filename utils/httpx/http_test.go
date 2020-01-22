@@ -18,7 +18,7 @@ func TestDoTrace(t *testing.T) {
 
 	server := test.NewTestHTTPServer(52025)
 
-	trace, err := httpx.DoTrace(http.DefaultClient, "GET", server.URL+"?cmd=success", nil, nil)
+	trace, err := httpx.DoTrace(http.DefaultClient, "GET", server.URL+"?cmd=success", nil, nil, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n", string(trace.RequestTrace))
 	assert.Equal(t, `{ "ok": "true" }`, string(trace.ResponseBody))

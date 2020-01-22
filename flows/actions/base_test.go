@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -91,6 +92,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		ValidationError string               `json:"validation_error"`
 		SkipValidation  bool                 `json:"skip_validation"`
 		Events          []json.RawMessage    `json:"events"`
+		Webhook         json.RawMessage      `json:"webhook"`
 		ContactAfter    json.RawMessage      `json:"contact_after"`
 		Inspection      json.RawMessage      `json:"inspection"`
 	}{}
@@ -130,7 +132,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// if we have a localization section, inject that too
 		if tc.Localization != nil {
-			localizationPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "localization", "spa", "ad154980-7bf7-4ab8-8728-545fd6378912"}
+			localizationPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "localization"}
 			assetsJSON = test.JSONReplace(assetsJSON, localizationPath, tc.Localization)
 		}
 
@@ -219,15 +221,15 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
 				return smtp.NewService("mail.temba.io", 25, "nyaruka", "pass123", "flows@temba.io"), nil
 			}).
-			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 				if c.Type() == "wit" {
-					return wit.NewService(http.DefaultClient, c, "123456789"), nil
+					return wit.NewService(http.DefaultClient, nil, c, "123456789"), nil
 				}
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
 			}).
 			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
-				return dtone.NewService(http.DefaultClient, "nyaruka", "123456789", "RWF"), nil
+				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil
 			}).
 			Build()
 
@@ -241,6 +243,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		actualEventsJSON, _ := json.Marshal(runEvents[ignoreEventCount:])
 		expectedEventsJSON, _ := json.Marshal(tc.Events)
 		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
+
+		// check webhook is in expected state
+		if tc.Webhook != nil {
+			test.AssertXEqual(t, types.JSONToXValue(tc.Webhook), run.Webhook(), "webhook mismatch in %s", testName)
+		}
 
 		// check contact is in the expected state
 		if tc.ContactAfter != nil {
@@ -264,7 +271,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			actual := &inspectionResults{
 				Templates:    flow.ExtractTemplates(),
 				Dependencies: depStrings,
-				Results:      flow.ExtractResults(),
+				Results:      flow.Inspect().Results,
 			}
 
 			actualJSON, _ := json.Marshal(actual)

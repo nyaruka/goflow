@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -98,6 +99,25 @@ func (s *session) ParentRun() flows.RunSummary {
 
 func (s *session) Status() flows.SessionStatus { return s.status }
 func (s *session) Wait() flows.ActivatedWait   { return s.wait }
+
+func (s *session) CurrentContext() *types.XObject {
+	run := s.currentRun()
+	if run == nil {
+		return nil
+	}
+	return types.NewXObject(run.RootContext(s.env))
+}
+
+// looks through this session's run for the one that was last modified
+func (s *session) currentRun() flows.FlowRun {
+	var lastRun flows.FlowRun
+	for _, run := range s.runs {
+		if lastRun == nil || run.ModifiedOn().After(lastRun.ModifiedOn()) {
+			lastRun = run
+		}
+	}
+	return lastRun
+}
 
 // looks through this session's run for the one that is waiting
 func (s *session) waitingRun() flows.FlowRun {

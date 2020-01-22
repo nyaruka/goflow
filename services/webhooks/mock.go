@@ -23,7 +23,7 @@ func NewMockService(statusCode int, contentType, body string) flows.WebhookServi
 	}
 }
 
-func (s *mockService) Call(session flows.Session, request *http.Request, resthook string) (*flows.WebhookCall, error) {
+func (s *mockService) Call(session flows.Session, request *http.Request) (*flows.WebhookCall, error) {
 	dump, err := httputil.DumpRequestOut(request, true)
 	if err != nil {
 		return nil, err
@@ -46,11 +46,9 @@ func (s *mockService) Call(session flows.Session, request *http.Request, resthoo
 		URL:        request.URL.String(),
 		Method:     request.Method,
 		StatusCode: response.StatusCode,
-		Status:     statusFromCode(response.StatusCode, resthook != ""),
 		Request:    dump,
 		Response:   responseTrace,
 		TimeTaken:  1,
-		Resthook:   resthook,
 	}, nil
 }
 

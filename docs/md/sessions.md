@@ -125,7 +125,7 @@ Is used when a session was triggered manually by a user
 
 <h2 class="item_title"><a name="trigger:msg" href="#trigger:msg">msg</a></h2>
 
-Is used when a session was triggered by a message being recieved by the caller
+Is used when a session was triggered by a message being received by the caller
 
 
 ```json

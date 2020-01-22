@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -779,4 +780,49 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, "Timeout", result.Category)
 	require.Equal(t, "2018-04-11T13:24:30.123456Z", result.Value)
 	require.Equal(t, "", result.Input)
+}
+
+func TestCurrentContext(t *testing.T) {
+	sessionAssets, err := ioutil.ReadFile("../../test/testdata/runner/subflow_loop_with_wait.json")
+	require.NoError(t, err)
+
+	// create our session assets
+	sa, err := test.CreateSessionAssets(json.RawMessage(sessionAssets), "")
+	require.NoError(t, err)
+
+	flow, err := sa.Flows().Get(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
+	require.NoError(t, err)
+
+	contact := flows.NewEmptyContact(sa, "Joe", "eng", nil)
+	trigger := triggers.NewManual(nil, flow.Reference(), contact, nil)
+
+	// create a waiting session
+	eng := test.NewEngine()
+	session, _, err := eng.NewSession(sa, trigger)
+	assert.Equal(t, string(flows.SessionStatusWaiting), string(session.Status()))
+
+	context := session.CurrentContext()
+	assert.NotNil(t, context)
+
+	runContext, _ := context.Get("run")
+	flowContext, _ := runContext.(*types.XObject).Get("flow")
+	flowName, _ := flowContext.(*types.XObject).Get("name")
+	assert.Equal(t, types.NewXText("Child flow"), flowName)
+
+	// check we can marshal it
+	_, err = json.Marshal(context)
+	assert.NoError(t, err)
+
+	// end it
+	session.Resume(resumes.NewRunExpiration(nil, nil))
+	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
+
+	// can still get context of completed session
+	context = session.CurrentContext()
+	assert.NotNil(t, context)
+
+	runContext, _ = context.Get("run")
+	flowContext, _ = runContext.(*types.XObject).Get("flow")
+	flowName, _ = flowContext.(*types.XObject).Get("name")
+	assert.Equal(t, types.NewXText("Parent Flow"), flowName)
 }

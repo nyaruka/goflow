@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -12,6 +13,9 @@ func init() {
 
 // TypeWebhookCalled is the type for our webhook events
 const TypeWebhookCalled string = "webhook_called"
+
+// trim request and response traces to 10K chars to avoid bloating serialized sessions
+const trimTracesTo = 10000
 
 // WebhookCalledEvent events are created when a webhook is called. The event contains
 // the URL and the status of the response, as well as a full dump of the
@@ -43,15 +47,15 @@ type WebhookCalledEvent struct {
 }
 
 // NewWebhookCalled returns a new webhook called event
-func NewWebhookCalled(webhook *flows.WebhookCall) *WebhookCalledEvent {
+func NewWebhookCalled(webhook *flows.WebhookCall, status flows.CallStatus, resthook string) *WebhookCalledEvent {
 	return &WebhookCalledEvent{
 		baseEvent:   newBaseEvent(TypeWebhookCalled),
 		URL:         webhook.URL,
-		Status:      webhook.Status,
-		Request:     string(webhook.Request),
-		Response:    string(webhook.Response),
+		Status:      status,
+		Request:     utils.Truncate(string(webhook.Request), trimTracesTo),
+		Response:    utils.Truncate(string(webhook.Response), trimTracesTo),
 		ElapsedMS:   int(webhook.TimeTaken / time.Millisecond),
-		Resthook:    webhook.Resthook,
+		Resthook:    resthook,
 		StatusCode:  webhook.StatusCode,
 		BodyIgnored: webhook.BodyIgnored,
 	}

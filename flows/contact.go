@@ -198,7 +198,7 @@ func (c *Contact) Format(env envs.Environment) string {
 		return c.name
 	}
 
-	// otherwise use either id or the higest priority URN depending on the env
+	// otherwise use either id or the highest priority URN depending on the env
 	if env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		return strconv.Itoa(int(c.id))
 	}

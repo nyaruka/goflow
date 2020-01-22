@@ -42,20 +42,19 @@ const (
 
 // WebhookCall is the result of a webhook call
 type WebhookCall struct {
-	URL         string
-	Method      string
-	StatusCode  int
-	Status      CallStatus
-	TimeTaken   time.Duration
-	Request     []byte
-	Response    []byte
-	BodyIgnored bool
-	Resthook    string
+	URL          string
+	Method       string
+	StatusCode   int
+	TimeTaken    time.Duration
+	Request      []byte
+	Response     []byte
+	ResponseBody []byte
+	BodyIgnored  bool
 }
 
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
-	Call(session Session, request *http.Request, resthook string) (*WebhookCall, error)
+	Call(session Session, request *http.Request) (*WebhookCall, error)
 }
 
 // ExtractedIntent models an intent match
@@ -115,12 +114,15 @@ type HTTPLog struct {
 	ElapsedMS int        `json:"elapsed_ms"`
 }
 
+// HTTPLogCallback is a function that handles an HTTP log
 type HTTPLogCallback func(*HTTPLog)
 
+// HTTPLogger logs HTTP logs
 type HTTPLogger struct {
 	Logs []*HTTPLog
 }
 
+// Log logs the given HTTP log
 func (l *HTTPLogger) Log(h *HTTPLog) {
 	l.Logs = append(l.Logs, h)
 }

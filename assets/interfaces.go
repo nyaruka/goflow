@@ -168,7 +168,7 @@ type Label interface {
 	Name() string
 }
 
-// LocationHierarchy is a searchable hierachy of locations.
+// LocationHierarchy is a searchable hierarchy of locations.
 //
 //   {
 //     "name": "Rwanda",

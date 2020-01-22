@@ -1326,7 +1326,7 @@
                 "cases": [
                     {
                         "arguments": [
-                            "@(format_date(datetime_add(format_date(today()), -1, \"D\")))"
+                            "@(datetime_add(today(), -1, \"D\"))"
                         ],
                         "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "type": "has_date_eq",
@@ -1334,7 +1334,7 @@
                     },
                     {
                         "arguments": [
-                            "@(format_date(datetime_add(format_date(today()), 0, \"D\")))"
+                            "@(datetime_add(today(), 0, \"D\"))"
                         ],
                         "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "type": "has_date_eq",

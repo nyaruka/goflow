@@ -19,22 +19,22 @@ func TestClient(t *testing.T) {
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []httpx.MockResponse{
-			httpx.NewMockResponse(200, "info_txt=pong\r\n"),                  // successful ping
-			httpx.NewMockResponse(400, "error_code=1\r\nerror_txt=Oops\r\n"), // unsuccessful ping
-			httpx.NewMockResponse(200, withCRLF(msisdnResponse)),             // successful msdninfo query
-			httpx.NewMockResponse(200, "xxx=yyy\r\n"),                        // unexpected response to msdninfo query
-			httpx.NewMockResponse(200, withCRLF(reserveResponse)),            // successful reserve ID request
-			httpx.NewMockResponse(200, "xxx=yyy\r\n"),                        // unexpected response to reserve ID request
-			httpx.NewMockResponse(200, withCRLF(topupResponse)),              // successful topup request
-			httpx.NewMockResponse(200, "xxx=yyy\r\n"),                        // unexpected response to topup request
-			httpx.NewMockResponse(0, ""),                                     // timeout
+			httpx.NewMockResponse(200, "info_txt=pong\r\n", nil),                  // successful ping
+			httpx.NewMockResponse(400, "error_code=1\r\nerror_txt=Oops\r\n", nil), // unsuccessful ping
+			httpx.NewMockResponse(200, withCRLF(msisdnResponse), nil),             // successful msdninfo query
+			httpx.NewMockResponse(200, "xxx=yyy\r\n", nil),                        // unexpected response to msdninfo query
+			httpx.NewMockResponse(200, withCRLF(reserveResponse), nil),            // successful reserve ID request
+			httpx.NewMockResponse(200, "xxx=yyy\r\n", nil),                        // unexpected response to reserve ID request
+			httpx.NewMockResponse(200, withCRLF(topupResponse), nil),              // successful topup request
+			httpx.NewMockResponse(200, "xxx=yyy\r\n", nil),                        // unexpected response to topup request
+			httpx.MockConnectionError,                                             // timeout
 		},
 	})
 
 	httpx.SetRequestor(mocks)
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC)))
 
-	cl := dtone.NewClient(http.DefaultClient, "joe", "1234567")
+	cl := dtone.NewClient(http.DefaultClient, nil, "joe", "1234567")
 
 	// test ping action
 	trace, err := cl.Ping()

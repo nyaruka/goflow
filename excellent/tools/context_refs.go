@@ -10,7 +10,8 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// FindContextRefsInTemplate audits context references in the given template
+// FindContextRefsInTemplate audits context references in the given template. Note that the case of
+// the found references is preserved as these may be significant, e.g. ["X"] vs ["x"] in JSON
 func FindContextRefsInTemplate(template string, allowedTopLevels []string, callback func([]string)) error {
 	return excellent.VisitTemplate(template, allowedTopLevels, func(tokenType excellent.XTokenType, token string) error {
 		switch tokenType {

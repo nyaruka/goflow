@@ -1,0 +1,314 @@
+{
+  "flows": [
+    {
+      "name": "Webhook Results",
+      "uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+      "spec_version": "13.1.0",
+      "language": "eng",
+      "type": "messaging",
+      "nodes": [
+        {
+          "uuid": "03eec86c-190c-48a2-bdaa-bbe07b36bd2f",
+          "actions": [
+            {
+              "uuid": "7d340340-ed35-48a0-a70e-189220771668",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "type": "call_webhook",
+              "url": "http://temba.io/1",
+              "method": "GET",
+              "result_name": "Call 1"
+            }
+          ],
+          "router": {
+            "type": "switch",
+            "operand": "@results.call_1.category",
+            "cases": [
+              {
+                "uuid": "625b1f82-e438-466f-b798-8842686e3ce0",
+                "type": "has_only_text",
+                "arguments": [
+                  "Success"
+                ],
+                "category_uuid": "03da9c06-3cd5-4d29-864b-2ce4a75b3b41"
+              }
+            ],
+            "categories": [
+              {
+                "uuid": "03da9c06-3cd5-4d29-864b-2ce4a75b3b41",
+                "name": "Success",
+                "exit_uuid": "b0c4e70e-ecee-4103-a755-3877f11e5801"
+              },
+              {
+                "uuid": "b8ac20bf-1e7e-42f6-a66a-56103dc128a8",
+                "name": "Failure",
+                "exit_uuid": "bdcc24ba-2947-43f6-b868-45a523952209"
+              }
+            ],
+            "default_category_uuid": "b8ac20bf-1e7e-42f6-a66a-56103dc128a8"
+          },
+          "exits": [
+            {
+              "uuid": "b0c4e70e-ecee-4103-a755-3877f11e5801",
+              "destination_uuid": "48541207-c17a-4207-8c3c-0be96a571b83"
+            },
+            {
+              "uuid": "bdcc24ba-2947-43f6-b868-45a523952209",
+              "destination_uuid": "48541207-c17a-4207-8c3c-0be96a571b83"
+            }
+          ]
+        },
+        {
+          "uuid": "48541207-c17a-4207-8c3c-0be96a571b83",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "Would you like to continue?\n\n1. @results.call_1.extra\n2. @webhook",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "b36af7e9-69ad-488e-acf2-2f0481ba1c91"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "007f0b86-4e2d-451f-88cc-4ce1f8395ffe",
+              "destination_uuid": "763f3570-bc76-4e6e-85fb-da62cc112cd4"
+            }
+          ]
+        },
+        {
+          "uuid": "763f3570-bc76-4e6e-85fb-da62cc112cd4",
+          "actions": [],
+          "router": {
+            "type": "switch",
+            "default_category_uuid": "de169ab3-9f8b-4bbb-9eeb-9e5052543141",
+            "cases": [],
+            "categories": [
+              {
+                "uuid": "de169ab3-9f8b-4bbb-9eeb-9e5052543141",
+                "name": "All Responses",
+                "exit_uuid": "21f393db-1b49-4777-a995-3cfb7abfeb96"
+              }
+            ],
+            "operand": "@input.text",
+            "wait": {
+              "type": "msg"
+            },
+            "result_name": "Response"
+          },
+          "exits": [
+            {
+              "uuid": "21f393db-1b49-4777-a995-3cfb7abfeb96",
+              "destination_uuid": "23eb8d34-59b6-46b6-991a-440381c54947"
+            }
+          ]
+        },
+        {
+          "uuid": "23eb8d34-59b6-46b6-991a-440381c54947",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "1. @results.call_1.extra\n2. @webhook",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "73e44bdf-58a0-4eb6-98a2-b70edab4837c"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "bd58fffa-f763-4622-bed6-70f1fcd83159",
+              "destination_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723"
+            }
+          ]
+        },
+        {
+          "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+          "actions": [
+            {
+              "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "type": "call_webhook",
+              "url": "http://temba.io/2",
+              "method": "GET",
+              "result_name": "Call 2"
+            }
+          ],
+          "router": {
+            "type": "switch",
+            "operand": "@results.call_2.category",
+            "cases": [
+              {
+                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                "type": "has_only_text",
+                "arguments": [
+                  "Success"
+                ],
+                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+              }
+            ],
+            "categories": [
+              {
+                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                "name": "Success",
+                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+              },
+              {
+                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                "name": "Failure",
+                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+              }
+            ],
+            "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+          },
+          "exits": [
+            {
+              "uuid": "24493dc0-687e-4d16-98e5-6e422624729b",
+              "destination_uuid": "71e72160-bb45-4abf-ba22-ab646178722a"
+            },
+            {
+              "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e",
+              "destination_uuid": "71e72160-bb45-4abf-ba22-ab646178722a"
+            }
+          ]
+        },
+        {
+          "uuid": "71e72160-bb45-4abf-ba22-ab646178722a",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "Would you like to continue again?\n\n1. @results.call_1.extra\n2. @results.call_2.extra\n3. @webhook",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "7bdea126-c2e1-4932-a1d4-e5a14cfbe1f5"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "20d4d0a1-b1a8-4bc8-a50d-c5f6cf09cc88",
+              "destination_uuid": "a28a6ec4-8e43-4362-9c0f-32be98f0b00c"
+            }
+          ]
+        },
+        {
+          "uuid": "a28a6ec4-8e43-4362-9c0f-32be98f0b00c",
+          "actions": [],
+          "router": {
+            "type": "switch",
+            "default_category_uuid": "e43668e1-5481-40f1-91c7-7ef3623b83ed",
+            "cases": [],
+            "categories": [
+              {
+                "uuid": "e43668e1-5481-40f1-91c7-7ef3623b83ed",
+                "name": "All Responses",
+                "exit_uuid": "066c4b62-72f2-460b-a671-b4fa919c745a"
+              }
+            ],
+            "operand": "@input.text",
+            "wait": {
+              "type": "msg"
+            },
+            "result_name": "Response 2"
+          },
+          "exits": [
+            {
+              "uuid": "066c4b62-72f2-460b-a671-b4fa919c745a",
+              "destination_uuid": "066c0ea6-68f1-4849-a4f5-5ef3465e9e97"
+            }
+          ]
+        },
+        {
+          "uuid": "066c0ea6-68f1-4849-a4f5-5ef3465e9e97",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "Finally..\n\n1. @results.call_1.extra\n2. @results.call_2.extra\n3. @webhook",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "f77c5b65-45d6-427d-a31f-7cd5a8478098"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "28236174-02ce-49b0-bdce-403afd9850fb",
+              "destination_uuid": null
+            }
+          ]
+        }
+      ],
+      "_ui": {
+        "nodes": {
+          "03eec86c-190c-48a2-bdaa-bbe07b36bd2f": {
+            "type": "split_by_webhook",
+            "position": {
+              "left": 280,
+              "top": 0
+            },
+            "config": {}
+          },
+          "48541207-c17a-4207-8c3c-0be96a571b83": {
+            "position": {
+              "left": 280,
+              "top": 180
+            },
+            "type": "execute_actions"
+          },
+          "763f3570-bc76-4e6e-85fb-da62cc112cd4": {
+            "type": "wait_for_response",
+            "position": {
+              "left": 280,
+              "top": 360
+            },
+            "config": {
+              "cases": {}
+            }
+          },
+          "23eb8d34-59b6-46b6-991a-440381c54947": {
+            "position": {
+              "left": 280,
+              "top": 520
+            },
+            "type": "execute_actions"
+          },
+          "4eab7a66-0b55-45f6-803f-129a6f49e723": {
+            "type": "split_by_webhook",
+            "position": {
+              "left": 280,
+              "top": 660
+            },
+            "config": {}
+          },
+          "71e72160-bb45-4abf-ba22-ab646178722a": {
+            "position": {
+              "left": 280,
+              "top": 860
+            },
+            "type": "execute_actions"
+          },
+          "a28a6ec4-8e43-4362-9c0f-32be98f0b00c": {
+            "type": "wait_for_response",
+            "position": {
+              "left": 280,
+              "top": 1060
+            },
+            "config": {
+              "cases": {}
+            }
+          },
+          "066c0ea6-68f1-4849-a4f5-5ef3465e9e97": {
+            "position": {
+              "left": 280,
+              "top": 1200
+            },
+            "type": "execute_actions"
+          }
+        }
+      },
+      "revision": 23,
+      "expire_after_minutes": 10080,
+      "localization": {}
+    }
+  ]
+}

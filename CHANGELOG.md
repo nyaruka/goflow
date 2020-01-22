@@ -1,3 +1,59 @@
+v0.64.9
+----------
+ * Allow getting current context even for ended sessions
+
+v0.64.8
+----------
+ * Fix another panic during context walking
+
+v0.64.7
+----------
+ * Fix panic in context walking
+
+v0.64.6
+----------
+ * Add support for marshaling XObjects with their defaults, and tool for walking the context to find objects
+
+v0.64.5
+----------
+ * Fix creation of no-nil interface to nil structs in context
+
+v0.64.4
+----------
+ * Make it easier to get current expression context of a waiting session
+
+v0.64.3
+----------
+ * Allow webhook calls with GET method to have bodies
+
+v0.64.2
+----------
+ * Include parent result references in flow inspection
+
+v0.64.1
+----------
+ * Add support for jitter in webhook retries
+
+v0.64.0
+----------
+ * Make http retrying available to all services which use HTTP
+ * Fix parsing out relative date value during migration of date tests
+
+v0.63.1
+----------
+ * Perform URL validation in call_webhook and skip action appropriately
+
+v0.63.0
+----------
+ * Loosen email regex used by has_email test
+ * Allow cloning of JSON flow definitions not tied to any spec version
+
+v0.62.0
+----------
+ * Render email_sent events in flowrunner
+ * Allow flowmigrate to take a target version argument
+ * Implement 13.1 migration as adding UUID to semd_msg.templating
+
 v0.61.0
 ----------
  * Implement email as a service

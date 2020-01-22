@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
+	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -15,11 +16,13 @@ import (
 
 // NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
+	retries := httpx.NewFixedRetries(1*time.Millisecond, 2*time.Millisecond)
+
 	return engine.NewBuilder().
 		WithEmailServiceFactory(func(s flows.Session) (flows.EmailService, error) {
 			return newEmailService(), nil
 		}).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, retries, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
@@ -59,8 +62,8 @@ func (s *classificationService) Classify(session flows.Session, input string, lo
 	}
 
 	logHTTP(&flows.HTTPLog{
-		URL:       "http://test.acme.ai?classifiy",
-		Request:   "GET /?classifiy HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+		URL:       "http://test.acme.ai?classify",
+		Request:   "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
 		Status:    "success",
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),

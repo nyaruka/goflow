@@ -10,14 +10,17 @@ import (
 	"github.com/pkg/errors"
 )
 
+// MockRequestor is a requestor which can be mocked with responses for given URLs
 type MockRequestor struct {
 	mocks map[string][]MockResponse
 }
 
+// NewMockRequestor creates a new mock requestor with the given mocks
 func NewMockRequestor(mocks map[string][]MockResponse) *MockRequestor {
 	return &MockRequestor{mocks: mocks}
 }
 
+// Do returns the mocked reponse for the given request
 func (r *MockRequestor) Do(client *http.Client, request *http.Request) (*http.Response, error) {
 	url := request.URL.String()
 	mockedResponses := r.mocks[url]
@@ -66,11 +69,17 @@ func (r *MockRequestor) UnmarshalJSON(data []byte) error {
 var _ Requestor = (*MockRequestor)(nil)
 
 type MockResponse struct {
-	Status int    `json:"status" validate:"required"`
-	Body   string `json:"body" validate:"required"`
+	Status  int               `json:"status" validate:"required"`
+	Body    string            `json:"body" validate:"required"`
+	Headers map[string]string `json:"headers,omitempty"`
 }
 
 func (m MockResponse) Make(request *http.Request) *http.Response {
+	header := make(http.Header, len(m.Headers))
+	for k, v := range m.Headers {
+		header.Set(k, v)
+	}
+
 	return &http.Response{
 		Request:       request,
 		Status:        fmt.Sprintf("%d %s", m.Status, http.StatusText(m.Status)),
@@ -78,16 +87,16 @@ func (m MockResponse) Make(request *http.Request) *http.Response {
 		Proto:         "HTTP/1.0",
 		ProtoMajor:    1,
 		ProtoMinor:    0,
-		Header:        nil,
+		Header:        header,
 		Body:          ioutil.NopCloser(strings.NewReader(m.Body)),
 		ContentLength: int64(len(m.Body)),
 	}
 }
 
 // MockConnectionError mocks a connection error
-var MockConnectionError = MockResponse{0, ""}
+var MockConnectionError = MockResponse{0, "", nil}
 
 // NewMockResponse creates a new mock response
-func NewMockResponse(status int, body string) MockResponse {
-	return MockResponse{status, body}
+func NewMockResponse(status int, body string, headers map[string]string) MockResponse {
+	return MockResponse{status, body, headers}
 }

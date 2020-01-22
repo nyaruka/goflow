@@ -19,7 +19,7 @@ func init() {
 // TypeMsg is the type for message triggered sessions
 const TypeMsg string = "msg"
 
-// MsgTrigger is used when a session was triggered by a message being recieved by the caller
+// MsgTrigger is used when a session was triggered by a message being received by the caller
 //
 //   {
 //     "type": "msg",

@@ -8,12 +8,15 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// FlowInfo contains the results of flow inspection
 type FlowInfo struct {
 	Dependencies *Dependencies `json:"dependencies"`
 	Results      []*ResultInfo `json:"results"`
 	WaitingExits []ExitUUID    `json:"waiting_exits"`
+	ParentRefs   []string      `json:"parent_refs"`
 }
 
+// Dependencies contains a flows dependencies grouped by type
 type Dependencies struct {
 	Classifiers []*assets.ClassifierReference `json:"classifiers,omitempty"`
 	Channels    []*assets.ChannelReference    `json:"channels,omitempty"`

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -64,6 +65,16 @@ func StringSliceContains(slice []string, str string, caseSensitive bool) bool {
 	return false
 }
 
+// StringSetKeys returns the keys of string set in lexical order
+func StringSetKeys(m map[string]bool) []string {
+	vals := make([]string, 0, len(m))
+	for v := range m {
+		vals = append(vals, v)
+	}
+	sort.Strings(vals)
+	return vals
+}
+
 // Indent indents each non-empty line in the given string
 func Indent(s string, prefix string) string {
 	output := strings.Builder{}
@@ -77,4 +88,13 @@ func Indent(s string, prefix string) string {
 		bol = c == '\n'
 	}
 	return output.String()
+}
+
+// Truncate truncates the given string to ensure it's less than limit characters
+func Truncate(s string, limit int) string {
+	runes := []rune(s)
+	if len(runes) <= limit {
+		return s
+	}
+	return string(runes[:limit-3]) + "..."
 }

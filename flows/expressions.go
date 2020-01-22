@@ -14,7 +14,7 @@ type Contextable interface {
 }
 
 // Context generates a lazy object for use in expressions
-func Context(env envs.Environment, contextable Contextable) *types.XObject {
+func Context(env envs.Environment, contextable Contextable) types.XValue {
 	if !utils.IsNil(contextable) {
 		return types.NewXLazyObject(func() map[string]types.XValue {
 			return contextable.Context(env)
@@ -46,7 +46,7 @@ var RunContextTopLevels = []string{
 	"webhook",
 }
 
-// ContactQueryEscaping
+// ContactQueryEscaping is the escaping function used for expressions in contact queries
 func ContactQueryEscaping(s string) string {
 	return strconv.Quote(s)
 }

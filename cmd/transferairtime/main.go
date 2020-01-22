@@ -139,13 +139,13 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 
 func configureDTOne(login, token string) (engine.AirtimeServiceFactory, error) {
 	// test credentials using ping
-	client := dtone.NewClient(http.DefaultClient, login, token)
+	client := dtone.NewClient(http.DefaultClient, nil, login, token)
 	_, err := client.Ping()
 	if err != nil {
 		return nil, errors.Wrap(err, "ping failed for provided DTOne credentials")
 	}
 
 	return func(flows.Session) (flows.AirtimeService, error) {
-		return dtone.NewService(http.DefaultClient, login, token, ""), nil
+		return dtone.NewService(http.DefaultClient, nil, login, token, ""), nil
 	}, nil
 }
