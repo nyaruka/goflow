@@ -1,3 +1,7 @@
+v0.64.11
+----------
+ * Limit the size of evaluated templates and truncate anything bigger
+
 v0.64.10
 ----------
  * Stringify contactql like the queries they came from
