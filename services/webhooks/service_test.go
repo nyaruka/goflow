@@ -25,8 +25,8 @@ func (c *call) String() string { return c.method + " " + c.url }
 type webhook struct {
 	request     string
 	response    string
+	json        string
 	bodyIgnored bool
-	body        string
 }
 
 func TestWebhookParsing(t *testing.T) {
@@ -47,31 +47,31 @@ func TestWebhookParsing(t *testing.T) {
 			webhook: webhook{
 				request:  "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
 				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-				body:     `{ "ok": "true" }`,
+				json:     `{ "ok": "true" }`,
 			},
 		}, {
-			// successful GET, text/javascrpt
+			// successful GET with valid JSON response body
 			call: call{"GET", "http://127.0.0.1:49994/?cmd=textjs", ""},
 			webhook: webhook{
 				request:  "GET /?cmd=textjs HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
 				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/javascript; charset=iso-8859-1\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-				body:     `{ "ok": "true" }`,
+				json:     `{ "ok": "true" }`,
 			},
 		}, {
-			// successful POST without body
+			// successful POST without request body and valid JSON response body
 			call: call{"POST", "http://127.0.0.1:49994/?cmd=success", ""},
 			webhook: webhook{
 				request:  "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
 				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-				body:     `{ "ok": "true" }`,
+				json:     `{ "ok": "true" }`,
 			},
 		}, {
-			// successful POST with body
+			// successful POST with request body and valid JSON response body
 			call: call{"POST", "http://127.0.0.1:49994/?cmd=success", `{"contact": "Bob"}`},
 			webhook: webhook{
 				request:  "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 18\r\nAccept-Encoding: gzip\r\n\r\n{\"contact\": \"Bob\"}",
 				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-				body:     `{ "ok": "true" }`,
+				json:     `{ "ok": "true" }`,
 			},
 		}, {
 			// POST returning 503
@@ -79,37 +79,20 @@ func TestWebhookParsing(t *testing.T) {
 			webhook: webhook{
 				request:  "POST /?cmd=unavailable HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
 				response: "HTTP/1.1 503 Service Unavailable\r\nContent-Length: 37\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
-				body:     `{ "errors": ["service unavailable"] }`,
-			},
-		}, {
-			// GET returning non-text content type
-			call: call{"GET", "http://127.0.0.1:49994/?cmd=binary", ""},
-			webhook: webhook{
-				request:     "GET /?cmd=binary HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-				response:    "HTTP/1.1 200 OK\r\nContent-Length: 10\r\nContent-Type: application/octet-stream\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
-				bodyIgnored: true,
-				body:        "",
-			},
-		}, {
-			// GET returning binary body larger than allowed (we ignore binary body so no biggie)
-			call: call{"GET", "http://127.0.0.1:49994/?cmd=binary&size=11000", ""},
-			webhook: webhook{
-				request:     "GET /?cmd=binary&size=11000 HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-				response:    "HTTP/1.1 200 OK\r\nContent-Length: 11000\r\nContent-Type: application/octet-stream\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
-				bodyIgnored: true,
-				body:        "",
+				json:     `{ "errors": ["service unavailable"] }`,
 			},
 		}, {
 			// GET returning text body larger than allowed
-			call:    call{"GET", "http://127.0.0.1:49994/?cmd=binary&size=11000&type=text%2Fplain", ""},
+			call:    call{"GET", "http://127.0.0.1:49994/?cmd=binary&size=11000", ""},
 			isError: true,
 		}, {
-			// GET returning text body but an empty content-type header
+			// GET returning non-JSON body
 			call: call{"GET", "http://127.0.0.1:49994/?cmd=typeless&content=kthxbai", ""},
 			webhook: webhook{
-				request:  "GET /?cmd=typeless&content=kthxbai HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "HTTP/1.1 200 OK\r\nContent-Length: 7\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nkthxbai",
-				body:     `kthxbai`,
+				request:     "GET /?cmd=typeless&content=kthxbai HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:    "HTTP/1.1 200 OK\r\nContent-Length: 7\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nkthxbai",
+				json:        "",
+				bodyIgnored: true,
 			},
 		}, {
 			// GET returning JSON body but an empty content-type header
@@ -117,7 +100,7 @@ func TestWebhookParsing(t *testing.T) {
 			webhook: webhook{
 				request:  "GET /?cmd=typeless&content=%7B%22msg%22%3A%20%22I%27m%20JSON%22%7D HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
 				response: "HTTP/1.1 200 OK\r\nContent-Length: 19\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{\"msg\": \"I'm JSON\"}",
-				body:     `{"msg": "I'm JSON"}`,
+				json:     `{"msg": "I'm JSON"}`,
 			},
 		}, {
 			// connection error
@@ -125,7 +108,7 @@ func TestWebhookParsing(t *testing.T) {
 			webhook: webhook{
 				request:  "POST / HTTP/1.1\r\nHost: 127.0.0.1:55555\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
 				response: "",
-				body:     "",
+				json:     "",
 			},
 		},
 	}
@@ -147,7 +130,7 @@ func TestWebhookParsing(t *testing.T) {
 			assert.Equal(t, tc.webhook.request, string(c.Request), "request trace mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.response, string(c.Response), "response mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.bodyIgnored, c.BodyIgnored, "body-ignored mismatch for call %s", tc.call)
-			assert.Equal(t, tc.webhook.body, string(c.ResponseBody), "body mismatch for call %s", tc.call)
+			assert.Equal(t, tc.webhook.json, string(c.ResponseJSON), "JSON mismatch for call %s", tc.call)
 		}
 	}
 }

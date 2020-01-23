@@ -234,6 +234,7 @@
         },
         "events": [
             {
+                "body_ignored": true,
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "elapsed_ms": 0,
                 "request": "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
