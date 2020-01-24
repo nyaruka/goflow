@@ -14,6 +14,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/uuids"
+	"github.com/shopspring/decimal"
 
 	"github.com/pkg/errors"
 )
@@ -369,6 +370,11 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *Group
 func (c *Contact) QueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []interface{} {
 	if propType == contactql.PropertyTypeAttribute {
 		switch key {
+		case contactql.AttributeID:
+			if c.id != 0 {
+				return []interface{}{decimal.New(int64(c.id), 0)}
+			}
+			return nil
 		case contactql.AttributeName:
 			if c.name != "" {
 				return []interface{}{c.name}
@@ -379,6 +385,13 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 				return []interface{}{string(c.language)}
 			}
 			return nil
+		case contactql.AttributeURN:
+			vals := make([]interface{}, len(c.URNs()))
+			for i, urn := range c.URNs() {
+				vals[i] = urn.URN().Path()
+			}
+			return vals
+
 		case contactql.AttributeCreatedOn:
 			return []interface{}{c.createdOn}
 		default:
@@ -388,7 +401,7 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 		urnsWithScheme := c.urns.WithScheme(key)
 		vals := make([]interface{}, len(urnsWithScheme))
 		for i := range urnsWithScheme {
-			vals[i] = string(urnsWithScheme[i].URN())
+			vals[i] = urnsWithScheme[i].URN().Path()
 		}
 		return vals
 	}

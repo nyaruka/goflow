@@ -365,3 +365,12 @@ func (s *FieldAssets) FirstOfType(valueType assets.FieldType) *Field {
 	}
 	return nil
 }
+
+// Resolve implements FieldResolver for use in contact queries
+func (s *FieldAssets) Resolve(key string) assets.Field {
+	f := s.Get(key)
+	if f == nil {
+		return nil // don't let nil f become non-nil assets.Field interface
+	}
+	return f
+}

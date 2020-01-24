@@ -27,6 +27,7 @@ const (
 	AttributeID        = "id"
 	AttributeName      = "name"
 	AttributeLanguage  = "language"
+	AttributeURN       = "urn"
 	AttributeCreatedOn = "created_on"
 )
 
@@ -34,6 +35,7 @@ var attributes = map[string]assets.FieldType{
 	AttributeID:        assets.FieldTypeNumber,
 	AttributeName:      assets.FieldTypeText,
 	AttributeLanguage:  assets.FieldTypeText,
+	AttributeURN:       assets.FieldTypeText,
 	AttributeCreatedOn: assets.FieldTypeDatetime,
 }
 
@@ -106,6 +108,10 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 	valueType, isAttribute := attributes[propKey]
 	if isAttribute {
 		propType = PropertyTypeAttribute
+
+		if propKey == AttributeURN && v.redaction == envs.RedactionPolicyURNs {
+			v.errors = append(v.errors, errors.New("cannot query on redacted URNs"))
+		}
 
 	} else if urns.IsValidScheme(propKey) {
 		// second try to match a URN scheme
