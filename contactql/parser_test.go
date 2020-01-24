@@ -53,6 +53,9 @@ func TestParseQuery(t *testing.T) {
 		{`mailto = user@example.com`, "", "cannot query on redacted URNs", envs.RedactionPolicyURNs},
 		{`MAILTO ~ user@example.com`, "", "cannot query on redacted URNs", envs.RedactionPolicyURNs},
 
+		{`URN=ewok`, `urn = "ewok"`, "", envs.RedactionPolicyNone},
+		{`URN=ewok`, ``, "cannot query on redacted URNs", envs.RedactionPolicyURNs},
+
 		// boolean operator precedence is AND before OR, even when AND is implicit
 		{`will and felix or matt amber`, `(name ~ "will" AND name ~ "felix") OR (name ~ "matt" AND name ~ "amber")`, "", envs.RedactionPolicyNone},
 
