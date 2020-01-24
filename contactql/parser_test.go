@@ -21,12 +21,16 @@ func TestParseQuery(t *testing.T) {
 	}{
 		// implicit conditions
 		{`will`, `name ~ "will"`, "", envs.RedactionPolicyNone},
+		{`tel:+0123456566`, `tel = +0123456566`, "", envs.RedactionPolicyNone},
+		{`twitter:bobby`, `twitter = "bobby"`, "", envs.RedactionPolicyNone},
 		{`0123456566`, `tel ~ 0123456566`, "", envs.RedactionPolicyNone},
 		{`+0123456566`, `tel ~ 0123456566`, "", envs.RedactionPolicyNone},
 		{`0123-456-566`, `tel ~ 0123456566`, "", envs.RedactionPolicyNone},
 
 		// implicit conditions with URN redaction
 		{`will`, `name ~ "will"`, "", envs.RedactionPolicyURNs},
+		{`tel:+0123456566`, `name ~ "tel:+0123456566"`, "", envs.RedactionPolicyURNs},
+		{`twitter:bobby`, `name ~ "twitter:bobby"`, "", envs.RedactionPolicyURNs},
 		{`0123456566`, `id = 123456566`, "", envs.RedactionPolicyURNs},
 		{`+0123456566`, `id = 123456566`, "", envs.RedactionPolicyURNs},
 		{`0123-456-566`, `name ~ "0123-456-566"`, "", envs.RedactionPolicyURNs},
@@ -123,10 +127,15 @@ func TestEvaluateQuery(t *testing.T) {
 	}{
 		// URN condition
 		{`tel = +59313145145`, true},
+		{`tel = +59313140000`, false},
+		{`tel:+59313145145`, true},
+		{`tel:+59313140000`, false},
 		{`tel has 45145`, true},
 		{`tel ~ 33333`, false},
 		{`TWITTER IS bob_smith`, true},
+		{`twitter:bob_smith`, true},
 		{`twitter = jim_smith`, false},
+		{`twitter:jim_smith`, false},
 		{`twitter ~ smith`, true},
 		{`whatsapp = 4533343`, false},
 

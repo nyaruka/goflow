@@ -68,11 +68,18 @@ func (v *visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) interface{} {
 	value := ctx.TEXT().GetText()
 
+	asURN, _ := urns.Parse(value)
+
 	if v.redaction == envs.RedactionPolicyURNs {
 		num, err := strconv.Atoi(value)
 		if err == nil {
 			return newCondition(PropertyTypeAttribute, AttributeID, "=", strconv.Itoa(num), attributes[AttributeID])
 		}
+	} else if asURN != urns.NilURN {
+		scheme, path, _, _ := asURN.ToParts()
+
+		return newCondition(PropertyTypeScheme, scheme, "=", path, assets.FieldTypeText)
+
 	} else if telRegex.MatchString(value) {
 		value = cleanSpecialCharsRegex.ReplaceAllString(value, "")
 
