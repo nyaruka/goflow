@@ -48,7 +48,7 @@ type WebhookCall struct {
 	TimeTaken    time.Duration
 	Request      []byte
 	Response     []byte
-	ResponseBody []byte
+	ResponseJSON []byte
 	BodyIgnored  bool
 }
 

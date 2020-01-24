@@ -433,7 +433,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 		TimeTaken:    time.Second * 1,
 		Request:      []byte(fmt.Sprintf("GET /\r\n%s", big)),
 		Response:     []byte(fmt.Sprintf("HTTP/1.0 200 OK\r\n\r\n%s", big)),
-		ResponseBody: []byte(big),
+		ResponseJSON: []byte(big),
 	}
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
 

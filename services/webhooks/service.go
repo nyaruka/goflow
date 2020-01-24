@@ -1,9 +1,9 @@
 package webhooks
 
 import (
+	"encoding/json"
 	"io"
 	"io/ioutil"
-	"mime"
 	"net/http"
 	"net/http/httputil"
 	"time"
@@ -105,9 +105,10 @@ func (s *service) newCallFromResponse(requestTrace []byte, response *http.Respon
 		return nil, err
 	}
 
-	if body != nil {
-		w.Response = append(w.Response, body...)
-		w.ResponseBody = body
+	w.Response = append(w.Response, body...)
+
+	if json.Valid(body) {
+		w.ResponseJSON = body
 	} else {
 		w.BodyIgnored = true
 	}
@@ -119,28 +120,6 @@ func (s *service) newCallFromResponse(requestTrace []byte, response *http.Respon
 func readBody(response *http.Response, maxBodyBytes int) ([]byte, error) {
 	// we will only read up to our max body bytes limit
 	bodyReader := io.LimitReader(response.Body, int64(maxBodyBytes)+1)
-	var bodySniffed []byte
-
-	// hopefully we got a content-type header
-	contentTypeHeader := response.Header.Get("Content-Type")
-	contentType, _, _ := mime.ParseMediaType(contentTypeHeader)
-
-	// but if not, read first 512 bytes to sniff the content-type
-	if contentType == "" {
-		bodySniffed = make([]byte, 512)
-		bodyBytesRead, err := bodyReader.Read(bodySniffed)
-		if err != nil && err != io.EOF {
-			return nil, err
-		}
-		bodySniffed = bodySniffed[0:bodyBytesRead]
-
-		contentType, _, _ = mime.ParseMediaType(http.DetectContentType(bodySniffed))
-	}
-
-	// only save response body's if we have a supported content-type
-	if !fetchResponseContentTypes[contentType] {
-		return nil, nil
-	}
 
 	bodyBytes, err := ioutil.ReadAll(bodyReader)
 	if err != nil {
@@ -150,10 +129,6 @@ func readBody(response *http.Response, maxBodyBytes int) ([]byte, error) {
 	// if we have no remaining bytes, error because the body was too big
 	if bodyReader.(*io.LimitedReader).N <= 0 {
 		return nil, errors.Errorf("webhook response body exceeds %d bytes limit", maxBodyBytes)
-	}
-
-	if len(bodySniffed) > 0 {
-		bodyBytes = append(bodySniffed, bodyBytes...)
 	}
 
 	return bodyBytes, nil

@@ -130,15 +130,15 @@ func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 	category := webhookStatusCategories[status]
 
 	var extra json.RawMessage
-	if len(webhook.ResponseBody) < resultExtraMaxBytes && json.Valid(webhook.ResponseBody) {
-		extra = webhook.ResponseBody
+	if len(webhook.ResponseJSON) < resultExtraMaxBytes {
+		extra = webhook.ResponseJSON
 	}
 
 	a.saveResult(run, step, name, value, category, "", input, extra, logEvent)
 }
 
 func (a *baseAction) updateWebhook(run flows.FlowRun, call *flows.WebhookCall) {
-	parsed := types.JSONToXValue(call.ResponseBody)
+	parsed := types.JSONToXValue(call.ResponseJSON)
 
 	switch typed := parsed.(type) {
 	case nil, types.XError:
