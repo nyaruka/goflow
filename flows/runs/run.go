@@ -36,6 +36,7 @@ type flowRun struct {
 	expiresOn  *time.Time
 	exitedOn   *time.Time
 
+	webhook     types.XValue
 	legacyExtra *legacyExtra
 }
 
@@ -58,6 +59,7 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.
 	r.environment = newRunEnvironment(session.Environment(), r)
 	r.ResetExpiration(nil)
 
+	r.webhook = types.XObjectEmpty
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r
@@ -96,6 +98,13 @@ func (r *flowRun) Status() flows.RunStatus { return r.status }
 func (r *flowRun) SetStatus(status flows.RunStatus) {
 	r.status = status
 	r.modifiedOn = dates.Now()
+}
+
+func (r *flowRun) Webhook() types.XValue {
+	return r.webhook
+}
+func (r *flowRun) SetWebhook(value types.XValue) {
+	r.webhook = value
 }
 
 // ParentInSession returns the parent of the run within the same session if one exists
@@ -140,6 +149,16 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 
 func (r *flowRun) LogError(step flows.Step, err error) {
 	r.LogEvent(step, events.NewError(err))
+}
+
+// find the first event matching the given step UUID and type
+func (r *flowRun) findEvent(stepUUID flows.StepUUID, eType string) flows.Event {
+	for _, e := range r.events {
+		if e.StepUUID() == stepUUID && e.Type() == eType {
+			return e
+		}
+	}
+	return nil
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }
@@ -227,26 +246,14 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 		"results": flows.Context(env, r.Results()),
 		"urns":    urns,
 		"fields":  fields,
-		"webhook": r.lastWebhookResponse(),
 
 		// other
 		"trigger":      flows.Context(env, r.Session().Trigger()),
 		"input":        flows.Context(env, r.Session().Input()),
 		"globals":      flows.Context(env, r.Session().Assets().Globals()),
+		"webhook":      r.webhook,
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
-}
-
-func (r *flowRun) lastWebhookResponse() types.XValue {
-	for i := len(r.events) - 1; i >= 0; i-- {
-		switch typed := r.events[i].(type) {
-		case *events.WebhookCalledEvent:
-			return types.JSONToXValue(utils.ExtractResponseJSON([]byte(typed.Response)))
-		default:
-			continue
-		}
-	}
-	return nil
 }
 
 // Context returns the properties available in expressions
@@ -287,18 +294,20 @@ func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
 	return excellent.EvaluateTemplateValue(r.Environment(), context, template)
 }
 
-// EvaluateTemplateAsString evaluates the given template as a string in the context of this run
-func (r *flowRun) EvaluateTemplate(template string) (string, error) {
+// EvaluateTemplateText evaluates the given template as text in the context of this run
+func (r *flowRun) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool) (string, error) {
 	context := types.NewXObject(r.RootContext(r.Environment()))
 
-	return excellent.EvaluateTemplate(r.Environment(), context, template, nil)
+	value, err := excellent.EvaluateTemplate(r.Environment(), context, template, escaping)
+	if truncate {
+		value = utils.Truncate(value, r.Session().Engine().MaxTemplateChars())
+	}
+	return value, err
 }
 
-// EvaluateTemplateAsString evaluates the given template as a string in the context of this run
-func (r *flowRun) EvaluateTemplateWithEscaping(template string, escaping excellent.Escaping) (string, error) {
-	context := types.NewXObject(r.RootContext(r.Environment()))
-
-	return excellent.EvaluateTemplate(r.Environment(), context, template, escaping)
+// EvaluateTemplate is a convenience function for evaluating as text with no escaping
+func (r *flowRun) EvaluateTemplate(template string) (string, error) {
+	return r.EvaluateTemplateText(template, nil, true)
 }
 
 // get the ordered list of languages to be used for localization in this run
@@ -449,6 +458,7 @@ func ReadRun(session flows.Session, data json.RawMessage, missing assets.Missing
 
 	// create a run specific environment and context
 	r.environment = newRunEnvironment(session.Environment(), r)
+	r.webhook = lastWebhookSavedAsExtra(r)
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r, nil

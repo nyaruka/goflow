@@ -95,7 +95,8 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 
 	// substitute any body variables
 	if body != "" {
-		body, err = run.EvaluateTemplate(body)
+		// webhook bodies aren't truncated like other templates
+		body, err = run.EvaluateTemplateText(body, nil, false)
 		if err != nil {
 			logEvent(events.NewError(err))
 		}
@@ -134,9 +135,12 @@ func (a *CallWebhookAction) call(run flows.FlowRun, step flows.Step, url, method
 		logEvent(events.NewError(err))
 	}
 	if call != nil {
+		a.updateWebhook(run, call)
+
 		status := callStatus(call, false)
 
 		logEvent(events.NewWebhookCalled(call, status, ""))
+
 		if a.ResultName != "" {
 			a.saveWebhookResult(run, step, a.ResultName, call, status, logEvent)
 		}
