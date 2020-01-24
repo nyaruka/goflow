@@ -1,3 +1,8 @@
+v0.65.0
+----------
+ * Ignore content-type headers and try to parse all webhook responses as JSON
+ * Update ContactQL to interpret implicit conditions which are URNs as scheme=path
+
 v0.64.11
 ----------
  * Limit the size of evaluated templates and truncate anything bigger
