@@ -1,3 +1,7 @@
+v0.66.0
+----------
+ * Fix problems with contact searching and add support for URN as attribute
+
 v0.65.0
 ----------
  * Ignore content-type headers and try to parse all webhook responses as JSON
