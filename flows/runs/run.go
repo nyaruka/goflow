@@ -300,7 +300,7 @@ func (r *flowRun) EvaluateTemplateText(template string, escaping excellent.Escap
 
 	value, err := excellent.EvaluateTemplate(r.Environment(), context, template, escaping)
 	if truncate {
-		value = utils.Truncate(value, r.Session().Engine().MaxTemplateChars())
+		value = utils.TruncateEllipsis(value, r.Session().Engine().MaxTemplateChars())
 	}
 	return value, err
 }

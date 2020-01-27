@@ -334,6 +334,9 @@ func TestContactQuery(t *testing.T) {
 	}{
 		{`name = "Ben Haggerty"`, true},
 		{`name = "Joe X"`, false},
+		{`name != "Joe X"`, true},
+		{`name != ""`, true},
+		{`name = ""`, false},
 		{`name ~ Ben`, true},
 		{`name ~ Joe`, false},
 
@@ -342,13 +345,8 @@ func TestContactQuery(t *testing.T) {
 
 		{`language = ENG`, true},
 		{`language = FRA`, false},
-		{`language ~ EN`, true},
-		{`language ~ FR`, false},
-
-		{`language = ENG`, true},
-		{`language = FRA`, false},
-		{`language ~ EN`, true},
-		{`language ~ FR`, false},
+		{`language = ""`, false},
+		{`language != ""`, true},
 
 		{`created_on = 24-01-2020`, true},
 		{`created_on = 25-01-2020`, false},
@@ -362,8 +360,9 @@ func TestContactQuery(t *testing.T) {
 
 		{`twitter = ewok`, true},
 		{`twitter = nicp`, false},
-		{`twitter ~ ok`, true},
-		{`twitter ~ jk`, false},
+		{`twitter ~ wok`, true},
+		{`twitter ~ EWO`, true},
+		{`twitter ~ ijk`, false},
 
 		{`urn = +12065551212`, true},
 		{`urn = ewok`, true},

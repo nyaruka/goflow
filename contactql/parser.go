@@ -10,10 +10,25 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql/gen"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
+)
+
+// Comparator is a way of comparing two values in a condition
+type Comparator string
+
+// supported comparators
+const (
+	ComparatorEqual              Comparator = "="
+	ComparatorNotEqual           Comparator = "!="
+	ComparatorContains           Comparator = "~"
+	ComparatorGreaterThan        Comparator = ">"
+	ComparatorLessThan           Comparator = "<"
+	ComparatorGreaterThanOrEqual Comparator = ">="
+	ComparatorLessThanOrEqual    Comparator = "<="
 )
 
 // BoolOperator is a boolean operator (and or or)
@@ -41,6 +56,12 @@ const (
 	PropertyTypeField PropertyType = "field"
 )
 
+// name based contains conditions are tokenized but only tokens of at least 2 characters are used
+const minNameTokenContainsLength = 2
+
+// URN based contains conditions ust be at least 3 characters long as the ES implementation uses trigrams
+const minURNContainsLength = 3
+
 // QueryNode is the base for nodes in our query parse tree
 type QueryNode interface {
 	fmt.Stringer
@@ -51,12 +72,12 @@ type QueryNode interface {
 type Condition struct {
 	propType   PropertyType
 	propKey    string
-	comparator string
+	comparator Comparator
 	value      string
 	valueType  assets.FieldType
 }
 
-func newCondition(propType PropertyType, propKey string, comparator string, value string, valueType assets.FieldType) *Condition {
+func newCondition(propType PropertyType, propKey string, comparator Comparator, value string, valueType assets.FieldType) *Condition {
 	return &Condition{
 		propType:   propType,
 		propKey:    propKey,
@@ -73,10 +94,36 @@ func (c *Condition) PropertyKey() string { return c.propKey }
 func (c *Condition) PropertyType() PropertyType { return c.propType }
 
 // Comparator returns the type of comparison being made
-func (c *Condition) Comparator() string { return c.comparator }
+func (c *Condition) Comparator() Comparator { return c.comparator }
 
 // Value returns the value being compared against
 func (c *Condition) Value() string { return c.value }
+
+// Validate checks that this condition is valid (and thus can be evaluated)
+func (c *Condition) Validate() error {
+	switch c.comparator {
+	case ComparatorContains:
+		if c.propKey == AttributeName {
+			if len(tokenizeNameValue(c.value)) == 0 {
+				return errors.Errorf("value must contain a word of at least %d characters long for a contains condition on name", minNameTokenContainsLength)
+			}
+		} else if c.propKey == AttributeURN || c.propType == PropertyTypeScheme {
+			if len(c.value) < minURNContainsLength {
+				return errors.Errorf("value must be least %d characters long for a contains condition on a URN", minURNContainsLength)
+			}
+		} else {
+			// ~ can only be used with the name/urn attributes or actual URNs
+			return errors.Errorf("contains conditions can only be used with name or URN values")
+		}
+
+	case ComparatorGreaterThan, ComparatorGreaterThanOrEqual, ComparatorLessThan, ComparatorLessThanOrEqual:
+		if c.valueType != assets.FieldTypeNumber && c.valueType != assets.FieldTypeDatetime {
+			return errors.Errorf("comparisons with %s can only be used with date and number fields", c.comparator)
+		}
+	}
+
+	return nil
+}
 
 // Evaluate evaluates this condition against the queryable contact
 func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
@@ -85,9 +132,9 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 
 	// is this an existence check?
 	if c.value == "" {
-		if c.comparator == "=" {
+		if c.comparator == ComparatorEqual {
 			return len(vals) == 0, nil // x = "" is true if x doesn't exist
-		} else if c.comparator == "!=" {
+		} else if c.comparator == ComparatorNotEqual {
 			return len(vals) > 0, nil // x != "" is false if x doesn't exist (i.e. true if x does exist)
 		}
 	}
@@ -114,7 +161,9 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, error) {
 	switch val.(type) {
 	case string:
-		return textComparison(val.(string), c.comparator, c.value)
+		isName := c.propKey == AttributeName // needs to be handled as special case
+
+		return textComparison(val.(string), c.comparator, c.value, isName)
 
 	case decimal.Decimal:
 		asDecimal, err := decimal.NewFromString(c.value)
@@ -267,4 +316,14 @@ func (l *errorListener) Error() error {
 
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
 	l.messages = append(l.messages, msg)
+}
+
+func tokenizeNameValue(value string) []string {
+	tokens := make([]string, 0)
+	for _, token := range utils.TokenizeStringByUnicodeSeg(value) {
+		if len(token) >= minNameTokenContainsLength {
+			tokens = append(tokens, token)
+		}
+	}
+	return tokens
 }
