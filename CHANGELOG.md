@@ -1,3 +1,7 @@
+v0.66.1
+----------
+ * Match evaluation of contact queries in ES
+
 v0.66.0
 ----------
  * Fix problems with contact searching and add support for URN as attribute
