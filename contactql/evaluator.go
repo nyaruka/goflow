@@ -75,6 +75,7 @@ func dateComparison(objectVal time.Time, comparator Comparator, queryVal time.Ti
 	return false, errors.Errorf("can't query datetime fields with %s", comparator)
 }
 
+// performs a prefix match which should be equivalent to an edge_ngram filter in ES
 func tokenizedPrefixMatch(objectVal string, queryVal string, length int) bool {
 	objectTokens := tokenizeNameValue(objectVal)
 	queryTokens := tokenizeNameValue(queryVal)
