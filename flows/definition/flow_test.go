@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/Masterminds/semver"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -22,6 +23,15 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestIsVersionSupported(t *testing.T) {
+	assert.False(t, definition.IsVersionSupported(semver.MustParse("10.5")))
+	assert.True(t, definition.IsVersionSupported(semver.MustParse("11.0")))
+	assert.True(t, definition.IsVersionSupported(semver.MustParse("11.9")))
+	assert.True(t, definition.IsVersionSupported(semver.MustParse("13.0.0")))
+	assert.True(t, definition.IsVersionSupported(semver.MustParse("13.3.0")))
+	assert.False(t, definition.IsVersionSupported(semver.MustParse("14.0.0")))
+}
 
 func TestBrokenFlows(t *testing.T) {
 	testCases := []struct {
