@@ -1,3 +1,8 @@
+v0.66.2
+----------
+ * Add mobile binding for IsVersionSupported
+ * Re-add version check to ReadFlow
+
 v0.66.1
 ----------
  * Match evaluation of contact queries in ES
