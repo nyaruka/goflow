@@ -301,6 +301,25 @@
     {
         "legacy_action": {
             "type": "save",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "field": "gender",
+            "label": "Gender",
+            "value": "@(\"\")"
+        },
+        "expected_action": {
+            "type": "set_contact_field",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "field": {
+                "key": "gender",
+                "name": "Gender"
+            },
+            "value": ""
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "save",
             "uuid": "5dbb462b-ed55-4cf3-b14c-6ed52f217b06",
             "label": "Phone Number",
             "field": "tel",
