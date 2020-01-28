@@ -1,3 +1,7 @@
+v0.66.3
+----------
+ * Allow globals with empty values
+
 v0.66.2
 ----------
  * Add mobile binding for IsVersionSupported
