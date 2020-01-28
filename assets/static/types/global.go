@@ -8,7 +8,7 @@ import (
 type Global struct {
 	Key_   string `json:"key" validate:"required"`
 	Name_  string `json:"name"`
-	Value_ string `json:"value" validate:"required"`
+	Value_ string `json:"value"`
 }
 
 // NewGlobal creates a new global
