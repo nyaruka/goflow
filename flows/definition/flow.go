@@ -21,6 +21,12 @@ import (
 // CurrentSpecVersion is the flow spec version supported by this library
 var CurrentSpecVersion = semver.MustParse("13.1.0")
 
+// IsVersionSupported checks the given version is supported
+func IsVersionSupported(v *semver.Version) bool {
+	// can't do anything with a pre-11 flow or a newer major version
+	return v.Major() >= 11 && v.Major() <= CurrentSpecVersion.Major()
+}
+
 type flow struct {
 	// spec properties
 	uuid               assets.FlowUUID
@@ -328,8 +334,7 @@ func ReadFlow(data json.RawMessage, migrationConfig *migrations.Config) (flows.F
 	header := &migrations.Header13{}
 	json.Unmarshal(data, header)
 
-	// can't do anything with a newer major version than this library supports
-	if header.SpecVersion.Major() > CurrentSpecVersion.Major() {
+	if !IsVersionSupported(header.SpecVersion) {
 		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
 	}
 

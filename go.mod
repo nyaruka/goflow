@@ -3,6 +3,7 @@ module github.com/nyaruka/goflow
 require (
 	github.com/Masterminds/semver v1.4.2
 	github.com/antlr/antlr4 v0.0.0-20190325153624-837aa60e2c47
+	github.com/blevesearch/segment v0.0.0-20160915185041-762005e7a34f
 	github.com/buger/jsonparser v0.0.0-20180131123142-4be68c93a244
 	github.com/go-mail/mail v2.3.1+incompatible
 	github.com/go-playground/locales v0.11.2 // indirect
@@ -18,9 +19,11 @@ require (
 	golang.org/x/net v0.0.0-20180921000356-2f5d2388922f
 	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
 	golang.org/x/text v0.3.0
-	gopkg.in/go-playground/assert.v1 v1.2.1
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.12.0
 	gopkg.in/leonelquinteros/gotext.v1 v1.3.1
+	gopkg.in/mail.v2 v2.3.1 // indirect
 )
 
 go 1.13

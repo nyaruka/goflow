@@ -16,19 +16,19 @@ func TestHTTPLogs(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": []httpx.MockResponse{
-			httpx.NewMockResponse(200, "hello", nil),
-			httpx.NewMockResponse(400, "is error", nil),
+			httpx.NewMockResponse(200, nil, "hello", 1),
+			httpx.NewMockResponse(400, nil, "is error", 1),
 			httpx.MockConnectionError,
 		},
 	}))
 
-	trace1, err := httpx.DoTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil)
+	trace1, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil)
 	require.NoError(t, err)
 
-	trace2, err := httpx.DoTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil)
+	trace2, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil)
 	require.NoError(t, err)
 
-	trace3, err := httpx.DoTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil)
+	trace3, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil)
 	require.EqualError(t, err, "unable to connect to server")
 
 	log1 := flows.NewHTTPLog(trace1, flows.HTTPStatusFromCode)

@@ -12,6 +12,7 @@ import (
 type engine struct {
 	services          *services
 	maxStepsPerSprint int
+	maxTemplateChars  int
 }
 
 // NewSession creates a new session
@@ -37,6 +38,7 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missi
 
 func (e *engine) Services() flows.Services { return e.services }
 func (e *engine) MaxStepsPerSprint() int   { return e.maxStepsPerSprint }
+func (e *engine) MaxTemplateChars() int    { return e.maxTemplateChars }
 
 var _ flows.Engine = (*engine)(nil)
 
@@ -49,12 +51,13 @@ type Builder struct {
 	eng *engine
 }
 
-// NewBuilder creates a new environment builder
+// NewBuilder creates a new engine builder
 func NewBuilder() *Builder {
 	return &Builder{
 		eng: &engine{
 			services:          newEmptyServices(),
 			maxStepsPerSprint: 100,
+			maxTemplateChars:  10000,
 		},
 	}
 }
@@ -86,6 +89,12 @@ func (b *Builder) WithAirtimeServiceFactory(f AirtimeServiceFactory) *Builder {
 // WithMaxStepsPerSprint sets the maximum number of steps allowed in a single sprint
 func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
 	b.eng.maxStepsPerSprint = max
+	return b
+}
+
+// WithMaxTemplateChars sets the maximum number of characters allowed from an evaluated template
+func (b *Builder) WithMaxTemplateChars(max int) *Builder {
+	b.eng.maxTemplateChars = max
 	return b
 }
 

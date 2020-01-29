@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -12,6 +13,9 @@ func init() {
 
 // TypeWebhookCalled is the type for our webhook events
 const TypeWebhookCalled string = "webhook_called"
+
+// trim request and response traces to 10K chars to avoid bloating serialized sessions
+const trimTracesTo = 10000
 
 // WebhookCalledEvent events are created when a webhook is called. The event contains
 // the URL and the status of the response, as well as a full dump of the
@@ -43,16 +47,21 @@ type WebhookCalledEvent struct {
 }
 
 // NewWebhookCalled returns a new webhook called event
-func NewWebhookCalled(webhook *flows.WebhookCall, status flows.CallStatus, resthook string) *WebhookCalledEvent {
+func NewWebhookCalled(call *flows.WebhookCall, status flows.CallStatus, resthook string) *WebhookCalledEvent {
+	statusCode := 0
+	if call.Response != nil {
+		statusCode = call.Response.StatusCode
+	}
+
 	return &WebhookCalledEvent{
 		baseEvent:   newBaseEvent(TypeWebhookCalled),
-		URL:         webhook.URL,
+		URL:         call.Request.URL.String(),
 		Status:      status,
-		Request:     string(webhook.Request),
-		Response:    string(webhook.Response),
-		ElapsedMS:   int(webhook.TimeTaken / time.Millisecond),
+		Request:     utils.TruncateEllipsis(string(call.RequestTrace), trimTracesTo),
+		Response:    utils.TruncateEllipsis(string(call.ResponseTrace), trimTracesTo),
+		ElapsedMS:   int((call.EndTime.Sub(call.StartTime)) / time.Millisecond),
 		Resthook:    resthook,
-		StatusCode:  webhook.StatusCode,
-		BodyIgnored: webhook.BodyIgnored,
+		StatusCode:  statusCode,
+		BodyIgnored: call.BodyIgnored,
 	}
 }

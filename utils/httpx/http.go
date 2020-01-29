@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/pkg/errors"
 )
 
 var debug = false
@@ -60,16 +61,7 @@ func (t *Trace) String() string {
 }
 
 // DoTrace makes the given request saving traces of the complete request and response
-func DoTrace(client *http.Client, method string, url string, body io.Reader, headers map[string]string, retries *RetryConfig) (*Trace, error) {
-	request, err := http.NewRequest(method, url, body)
-	if err != nil {
-		return nil, err
-	}
-
-	for key, value := range headers {
-		request.Header.Set(key, value)
-	}
-
+func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, maxBodyBytes int) (*Trace, error) {
 	requestTrace, err := httputil.DumpRequestOut(request, true)
 	if err != nil {
 		return nil, err
@@ -88,22 +80,23 @@ func DoTrace(client *http.Client, method string, url string, body io.Reader, hea
 		return trace, err
 	}
 
+	trace.Response = response
+
 	// save response trace without body which will be parsed separately
 	responseTrace, err := httputil.DumpResponse(response, false)
 	if err != nil {
-		return nil, err
+		return trace, err
 	}
 
-	responseBody, err := ioutil.ReadAll(response.Body)
+	trace.ResponseTrace = responseTrace
+
+	responseBody, err := readBody(response, maxBodyBytes)
 	if err != nil {
-		return nil, err
+		return trace, err
 	}
 
 	// add read body to response trace
-	responseTrace = append(responseTrace, responseBody...)
-
-	trace.Response = response
-	trace.ResponseTrace = responseTrace
+	trace.ResponseTrace = append(trace.ResponseTrace, responseBody...)
 	trace.ResponseBody = responseBody
 
 	if debug {
@@ -111,6 +104,45 @@ func DoTrace(client *http.Client, method string, url string, body io.Reader, hea
 	}
 
 	return trace, nil
+}
+
+// NewTrace makes the given request saving traces of the complete request and response
+func NewTrace(client *http.Client, method string, url string, body io.Reader, headers map[string]string, retries *RetryConfig) (*Trace, error) {
+	request, err := http.NewRequest(method, url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	for key, value := range headers {
+		request.Header.Set(key, value)
+	}
+
+	return DoTrace(client, request, retries, -1)
+}
+
+// attempts to read the body of an HTTP response
+func readBody(response *http.Response, maxBodyBytes int) ([]byte, error) {
+	defer response.Body.Close()
+
+	if maxBodyBytes > 0 {
+		// we will only read up to our max body bytes limit
+		bodyReader := io.LimitReader(response.Body, int64(maxBodyBytes)+1)
+
+		bodyBytes, err := ioutil.ReadAll(bodyReader)
+		if err != nil {
+			return nil, err
+		}
+
+		// if we have no remaining bytes, error because the body was too big
+		if bodyReader.(*io.LimitedReader).N <= 0 {
+			return nil, errors.Errorf("webhook response body exceeds %d bytes limit", maxBodyBytes)
+		}
+
+		return bodyBytes, nil
+	}
+
+	// if there is no limit, read the entire body
+	return ioutil.ReadAll(response.Body)
 }
 
 // Requestor is anything that can make an HTTP request with a client

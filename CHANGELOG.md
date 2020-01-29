@@ -1,3 +1,39 @@
+v0.66.3
+----------
+ * Allow globals with empty values
+
+v0.66.2
+----------
+ * Add mobile binding for IsVersionSupported
+ * Re-add version check to ReadFlow
+
+v0.66.1
+----------
+ * Match evaluation of contact queries in ES
+
+v0.66.0
+----------
+ * Fix problems with contact searching and add support for URN as attribute
+
+v0.65.0
+----------
+ * Ignore content-type headers and try to parse all webhook responses as JSON
+ * Update ContactQL to interpret implicit conditions which are URNs as scheme=path
+
+v0.64.11
+----------
+ * Limit the size of evaluated templates and truncate anything bigger
+
+v0.64.10
+----------
+ * Stringify contactql like the queries they came from
+ * Trim webhook_called request traces to 10K same as response traces
+ * Only set extra on webhook result if less than 10000 bytes
+
+v0.64.9
+----------
+ * Allow getting current context even for ended sessions
+
 v0.64.8
 ----------
  * Fix another panic during context walking

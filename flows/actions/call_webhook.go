@@ -95,7 +95,8 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 
 	// substitute any body variables
 	if body != "" {
-		body, err = run.EvaluateTemplate(body)
+		// webhook bodies aren't truncated like other templates
+		body, err = run.EvaluateTemplateText(body, nil, false)
 		if err != nil {
 			logEvent(events.NewError(err))
 		}
@@ -134,9 +135,12 @@ func (a *CallWebhookAction) call(run flows.FlowRun, step flows.Step, url, method
 		logEvent(events.NewError(err))
 	}
 	if call != nil {
-		status := callStatus(call, false)
+		a.updateWebhook(run, call)
+
+		status := callStatus(call, err, false)
 
 		logEvent(events.NewWebhookCalled(call, status, ""))
+
 		if a.ResultName != "" {
 			a.saveWebhookResult(run, step, a.ResultName, call, status, logEvent)
 		}
@@ -153,15 +157,15 @@ func (a *CallWebhookAction) Results(node flows.Node, include func(*flows.ResultI
 }
 
 // determines the webhook status from the HTTP status code
-func callStatus(call *flows.WebhookCall, isResthook bool) flows.CallStatus {
-	if call.StatusCode == 0 {
+func callStatus(call *flows.WebhookCall, err error, isResthook bool) flows.CallStatus {
+	if call.Response == nil || err != nil {
 		return flows.CallStatusConnectionError
 	}
-	if isResthook && call.StatusCode == 410 {
+	if isResthook && call.Response.StatusCode == http.StatusGone {
 		// https://zapier.com/developer/documentation/v2/rest-hooks/
 		return flows.CallStatusSubscriberGone
 	}
-	if call.StatusCode/100 == 2 {
+	if call.Response.StatusCode/100 == 2 {
 		return flows.CallStatusSuccess
 	}
 	return flows.CallStatusResponseError

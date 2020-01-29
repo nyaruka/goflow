@@ -236,6 +236,11 @@
                 "value": "503"
             }
         ],
+        "webhook": {
+            "errors": [
+                "service unavailable"
+            ]
+        },
         "inspection": {
             "templates": [],
             "dependencies": [],
@@ -368,6 +373,9 @@
                 "value": "200"
             }
         ],
+        "webhook": {
+            "ok": "true"
+        },
         "inspection": {
             "templates": [],
             "dependencies": [],
@@ -573,6 +581,11 @@
                 "value": "503"
             }
         ],
+        "webhook": {
+            "errors": [
+                "service unavailable"
+            ]
+        },
         "inspection": {
             "templates": [],
             "dependencies": [],

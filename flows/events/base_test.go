@@ -2,6 +2,8 @@ package events_test
 
 import (
 	"encoding/json"
+	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -12,8 +14,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
+	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/nyaruka/goflow/utils/uuids"
 	"github.com/shopspring/decimal"
 
@@ -420,4 +424,28 @@ func TestReadEvent(t *testing.T) {
 	// error if we don't recognize action type
 	_, err = events.ReadEvent([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+}
+
+func TestWebhookCalledEventTrimming(t *testing.T) {
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
+
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"http://temba.io/": []httpx.MockResponse{
+			httpx.NewMockResponse(200, nil, "Y", 20000),
+		},
+	}))
+
+	request, _ := http.NewRequest("GET", "http://temba.io/", strings.NewReader(strings.Repeat("X", 20000)))
+
+	svc := webhooks.NewService(http.DefaultClient, nil, nil, 1024*1024)
+	call, err := svc.Call(nil, request)
+	require.NoError(t, err)
+
+	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
+
+	assert.Equal(t, "http://temba.io/", event.URL)
+	assert.Equal(t, 10000, len(event.Request))
+	assert.Equal(t, "XXXXXXX...", event.Request[9990:])
+	assert.Equal(t, 10000, len(event.Response))
+	assert.Equal(t, "YYYYYYY...", event.Response[9990:])
 }

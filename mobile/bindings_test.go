@@ -18,6 +18,12 @@ func TestMobileBindings(t *testing.T) {
 
 	assert.Equal(t, definition.CurrentSpecVersion.String(), mobile.CurrentSpecVersion())
 
+	assert.False(t, mobile.IsVersionSupported("x"))
+	assert.True(t, mobile.IsVersionSupported("11.12"))
+	assert.True(t, mobile.IsVersionSupported("13"))
+	assert.True(t, mobile.IsVersionSupported("13.3"))
+	assert.False(t, mobile.IsVersionSupported("14.0"))
+
 	// error if we try to create assets from invalid JSON
 	_, err := mobile.NewAssetsSource("{")
 	assert.Error(t, err)

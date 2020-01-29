@@ -88,8 +88,8 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return nil
 	}
 
-	// build our payload
-	payload, err := run.EvaluateTemplate(ResthookPayload)
+	// build our payload (not truncated)
+	payload, err := run.EvaluateTemplateText(ResthookPayload, nil, false)
 	if err != nil {
 		// if we got an error then our payload is likely not valid JSON
 		return errors.Wrapf(err, "error evaluating resthook payload")
@@ -128,14 +128,18 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		}
 		if call != nil {
 			calls = append(calls, call)
-			logEvent(events.NewWebhookCalled(call, callStatus(call, true), a.Resthook))
+			logEvent(events.NewWebhookCalled(call, callStatus(call, nil, true), a.Resthook))
 		}
 	}
 
 	asResult := a.pickResultCall(calls)
+	if asResult != nil {
+		a.updateWebhook(run, asResult)
+	}
+
 	if a.ResultName != "" {
 		if asResult != nil {
-			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, true), logEvent)
+			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, nil, true), logEvent)
 		} else {
 			a.saveResult(run, step, a.ResultName, "no subscribers", "Failure", "", "", nil, logEvent)
 		}
@@ -149,9 +153,11 @@ func (a *CallResthookAction) pickResultCall(calls []*flows.WebhookCall) *flows.W
 	var lastSuccess, last410, lastFailure *flows.WebhookCall
 
 	for _, call := range calls {
-		if call.StatusCode/100 == 2 {
+		status := callStatus(call, nil, true)
+
+		if status == flows.CallStatusSuccess {
 			lastSuccess = call
-		} else if call.StatusCode == 410 {
+		} else if status == flows.CallStatusSubscriberGone {
 			last410 = call
 		} else {
 			lastFailure = call

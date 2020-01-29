@@ -327,6 +327,7 @@ type Engine interface {
 
 	Services() Services
 	MaxStepsPerSprint() int
+	MaxTemplateChars() int
 }
 
 // Sprint is an interaction with the engine - i.e. a start or resume of a session
@@ -399,6 +400,8 @@ type FlowRun interface {
 	Session() Session
 	SaveResult(*Result)
 	SetStatus(RunStatus)
+	Webhook() types.XValue
+	SetWebhook(types.XValue)
 
 	CreateStep(Node) Step
 	Path() []Step
@@ -409,8 +412,8 @@ type FlowRun interface {
 	Events() []Event
 
 	EvaluateTemplateValue(string) (types.XValue, error)
+	EvaluateTemplateText(string, excellent.Escaping, bool) (string, error)
 	EvaluateTemplate(string) (string, error)
-	EvaluateTemplateWithEscaping(string, excellent.Escaping) (string, error)
 	RootContext(envs.Environment) map[string]types.XValue
 
 	GetText(uuids.UUID, string, string) string

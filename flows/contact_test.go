@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -305,4 +306,78 @@ func TestContactEqual(t *testing.T) {
 
 	contact2.SetLanguage(envs.NilLanguage)
 	assert.False(t, contact1.Equal(contact2))
+}
+
+func TestContactQuery(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	contactJSON := []byte(`{
+		"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+		"id": 1234567,
+		"name": "Ben Haggerty",
+		"fields": {
+			"gender": {"text": "Male"}
+		},
+		"language": "eng",
+		"timezone": "America/Guayaquil",
+		"urns": ["tel:+12065551212", "twitter:ewok"],
+		"created_on": "2020-01-24T13:24:30.000000000-00:00"
+	}`)
+
+	contact, err := flows.ReadContact(session.Assets(), contactJSON, assets.PanicOnMissing)
+	require.NoError(t, err)
+
+	testCases := []struct {
+		query  string
+		result bool
+	}{
+		{`name = "Ben Haggerty"`, true},
+		{`name = "Joe X"`, false},
+		{`name != "Joe X"`, true},
+		{`name != ""`, true},
+		{`name = ""`, false},
+		{`name ~ Ben`, true},
+		{`name ~ Joe`, false},
+
+		{`id = 1234567`, true},
+		{`id = 5678889`, false},
+
+		{`language = ENG`, true},
+		{`language = FRA`, false},
+		{`language = ""`, false},
+		{`language != ""`, true},
+
+		{`created_on = 24-01-2020`, true},
+		{`created_on = 25-01-2020`, false},
+		{`created_on > 22-01-2020`, true},
+		{`created_on > 26-01-2020`, false},
+
+		{`tel = +12065551212`, true},
+		{`tel = +13065551212`, false},
+		{`tel ~ 555`, true},
+		{`tel ~ 666`, false},
+
+		{`twitter = ewok`, true},
+		{`twitter = nicp`, false},
+		{`twitter ~ wok`, true},
+		{`twitter ~ EWO`, true},
+		{`twitter ~ ijk`, false},
+
+		{`urn = +12065551212`, true},
+		{`urn = ewok`, true},
+		{`urn = +13065551212`, false},
+		{`urn ~ 555`, true},
+		{`urn ~ 666`, false},
+	}
+
+	for _, tc := range testCases {
+		query, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, session.Assets().Fields().Resolve)
+		require.NoError(t, err, "unexpected error parsing '%s'", tc.query)
+
+		result, err := contactql.EvaluateQuery(session.Environment(), query, contact)
+		require.NoError(t, err, "unexpected error evaluating '%s'", tc.query)
+
+		assert.Equal(t, tc.result, result, "unexpected result for '%s' ('%s')", tc.query, query.String())
+	}
 }

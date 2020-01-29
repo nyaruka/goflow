@@ -14,12 +14,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-var telRegex = regexp.MustCompile(`^[+ \d\-\(\)]+$`)
+var telRegex = regexp.MustCompile(`^[+ \d\-\(\)]{4,}$`)
 var cleanSpecialCharsRegex = regexp.MustCompile(`[+ \-\(\)]+`)
 
-var comparatorAliases = map[string]string{
-	"has": "~",
-	"is":  "=",
+var comparatorAliases = map[string]Comparator{
+	"has": ComparatorContains,
+	"is":  ComparatorEqual,
 }
 
 // Fixed attributes that can be searched
@@ -27,6 +27,7 @@ const (
 	AttributeID        = "id"
 	AttributeName      = "name"
 	AttributeLanguage  = "language"
+	AttributeURN       = "urn"
 	AttributeCreatedOn = "created_on"
 )
 
@@ -34,6 +35,7 @@ var attributes = map[string]assets.FieldType{
 	AttributeID:        assets.FieldTypeNumber,
 	AttributeName:      assets.FieldTypeText,
 	AttributeLanguage:  assets.FieldTypeText,
+	AttributeURN:       assets.FieldTypeText,
 	AttributeCreatedOn: assets.FieldTypeDatetime,
 }
 
@@ -68,29 +70,48 @@ func (v *visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) interface{} {
 	value := ctx.TEXT().GetText()
 
+	asURN, _ := urns.Parse(value)
+
 	if v.redaction == envs.RedactionPolicyURNs {
 		num, err := strconv.Atoi(value)
 		if err == nil {
-			return newCondition(PropertyTypeAttribute, AttributeID, "=", strconv.Itoa(num), attributes[AttributeID])
+			return newCondition(PropertyTypeAttribute, AttributeID, ComparatorEqual, strconv.Itoa(num), attributes[AttributeID])
 		}
+	} else if asURN != urns.NilURN {
+		scheme, path, _, _ := asURN.ToParts()
+
+		return newCondition(PropertyTypeScheme, scheme, ComparatorEqual, path, assets.FieldTypeText)
+
 	} else if telRegex.MatchString(value) {
 		value = cleanSpecialCharsRegex.ReplaceAllString(value, "")
 
-		return newCondition(PropertyTypeScheme, urns.TelScheme, "~", value, assets.FieldTypeText)
+		return newCondition(PropertyTypeScheme, urns.TelScheme, ComparatorContains, value, assets.FieldTypeText)
 	}
 
-	return newCondition(PropertyTypeAttribute, AttributeName, "~", value, attributes[AttributeName])
+	// convert to contains condition only if we have the right tokens, otherwise make equals check
+	comparator := ComparatorContains
+	if len(tokenizeNameValue(value)) == 0 {
+		comparator = ComparatorEqual
+	}
+
+	condition := newCondition(PropertyTypeAttribute, AttributeName, comparator, value, attributes[AttributeName])
+
+	if err := condition.Validate(); err != nil {
+		v.addError(err)
+	}
+
+	return condition
 }
 
 // expression : TEXT COMPARATOR literal
 func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 	propKey := strings.ToLower(ctx.TEXT().GetText())
-	comparator := strings.ToLower(ctx.COMPARATOR().GetText())
+	comparatorText := strings.ToLower(ctx.COMPARATOR().GetText())
 	value := v.Visit(ctx.Literal()).(string)
 
-	resolvedAlias, isAlias := comparatorAliases[comparator]
-	if isAlias {
-		comparator = resolvedAlias
+	comparator, isAlias := comparatorAliases[comparatorText]
+	if !isAlias {
+		comparator = Comparator(comparatorText)
 	}
 
 	var propType PropertyType
@@ -100,13 +121,17 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 	if isAttribute {
 		propType = PropertyTypeAttribute
 
+		if propKey == AttributeURN && v.redaction == envs.RedactionPolicyURNs {
+			v.addError(errors.New("cannot query on redacted URNs"))
+		}
+
 	} else if urns.IsValidScheme(propKey) {
 		// second try to match a URN scheme
 		propType = PropertyTypeScheme
 		valueType = assets.FieldTypeText
 
 		if v.redaction == envs.RedactionPolicyURNs {
-			v.errors = append(v.errors, errors.New("cannot query on redacted URNs"))
+			v.addError(errors.New("cannot query on redacted URNs"))
 		}
 	} else {
 		field := v.fieldResolver(propKey)
@@ -114,11 +139,17 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 			propType = PropertyTypeField
 			valueType = field.Type()
 		} else {
-			v.errors = append(v.errors, errors.Errorf("can't resolve '%s' to attribute, scheme or field", propKey))
+			v.addError(errors.Errorf("can't resolve '%s' to attribute, scheme or field", propKey))
 		}
 	}
 
-	return newCondition(propType, propKey, comparator, value, valueType)
+	condition := newCondition(propType, propKey, comparator, value, valueType)
+
+	if err := condition.Validate(); err != nil {
+		v.addError(err)
+	}
+
+	return condition
 }
 
 // expression : expression AND expression
@@ -165,4 +196,8 @@ func (v *visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} 
 	}
 
 	return unquoted
+}
+
+func (v *visitor) addError(err error) {
+	v.errors = append(v.errors, err)
 }
