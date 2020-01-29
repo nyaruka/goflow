@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/httpx"
 
@@ -121,16 +120,16 @@ func TestWebhookParsing(t *testing.T) {
 		c, err := svc.Call(session, request)
 
 		if tc.isError {
-			assert.Error(t, err)
+			assert.Error(t, err, "expected error for call %s", tc.call)
 		} else {
 			assert.NoError(t, err, "unexpected error fetching %s", tc.call)
 
-			assert.Equal(t, tc.call.url, c.URL, "URL mismatch for call %s", tc.call)
-			assert.Equal(t, tc.call.method, c.Method, "method mismatch for call %s", tc.call)
-			assert.Equal(t, tc.webhook.request, string(c.Request), "request trace mismatch for call %s", tc.call)
-			assert.Equal(t, tc.webhook.response, string(c.Response), "response mismatch for call %s", tc.call)
+			assert.Equal(t, tc.call.url, c.Request.URL.String(), "URL mismatch for call %s", tc.call)
+			assert.Equal(t, tc.call.method, c.Request.Method, "method mismatch for call %s", tc.call)
+			assert.Equal(t, tc.webhook.request, string(c.RequestTrace), "request trace mismatch for call %s", tc.call)
+			assert.Equal(t, tc.webhook.response, string(c.ResponseTrace), "response mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.bodyIgnored, c.BodyIgnored, "body-ignored mismatch for call %s", tc.call)
-			assert.Equal(t, tc.webhook.json, string(c.ResponseJSON), "JSON mismatch for call %s", tc.call)
+			assert.Equal(t, tc.webhook.json, string(c.ResponseBody), "body mismatch for call %s", tc.call)
 		}
 	}
 }
@@ -143,8 +142,8 @@ func TestRetries(t *testing.T) {
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": []httpx.MockResponse{
-			httpx.NewMockResponse(502, "a", nil),
-			httpx.NewMockResponse(200, "b", nil),
+			httpx.NewMockResponse(502, nil, "a", 1),
+			httpx.NewMockResponse(200, nil, "b", 1),
 		},
 	})
 	httpx.SetRequestor(mocks)
@@ -155,22 +154,7 @@ func TestRetries(t *testing.T) {
 	svc, _ := session.Engine().Services().Webhook(session)
 	c, err := svc.Call(session, request)
 
-	assert.Equal(t, 200, c.StatusCode)
-	assert.Equal(t, "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 4\r\nAccept-Encoding: gzip\r\n\r\nBODY", string(c.Request))
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 1\r\n\r\nb", string(c.Response))
-}
-
-func TestMockService(t *testing.T) {
-	svc := webhooks.NewMockService(201, `application/json`, `{"result":"disabled"}`)
-
-	request, err := http.NewRequest("GET", "http://example.com", strings.NewReader("{}"))
-	require.NoError(t, err)
-
-	c, err := svc.Call(nil, request)
-
-	assert.Equal(t, "GET", c.Method)
-	assert.Equal(t, 201, c.StatusCode)
-	assert.Equal(t, "GET / HTTP/1.1\r\nHost: example.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 2\r\nAccept-Encoding: gzip\r\n\r\n{}", string(c.Request))
-	assert.Equal(t, "HTTP/1.1 201 Created\r\nConnection: close\r\nContent-Type: application/json\r\n\r\n{\"result\":\"disabled\"}", string(c.Response))
-	assert.False(t, c.BodyIgnored)
+	assert.Equal(t, 200, c.Response.StatusCode)
+	assert.Equal(t, "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 4\r\nAccept-Encoding: gzip\r\n\r\nBODY", string(c.RequestTrace))
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 1\r\n\r\nb", string(c.ResponseTrace))
 }

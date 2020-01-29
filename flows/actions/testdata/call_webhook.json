@@ -469,5 +469,72 @@
                 }
             ]
         }
+    },
+    {
+        "description": "Error event when body exceeds download limit",
+        "http_mocks": {
+            "http://temba.io/": [
+                {
+                    "status": 200,
+                    "body": "X",
+                    "body_repeat": 100010
+                }
+            ]
+        },
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "GET",
+            "url": "http://temba.io/",
+            "result_name": "My Webhook"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "webhook response body exceeds 100000 bytes limit",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 0,
+                "request": "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+                "response": "HTTP/1.0 200 OK\r\nContent-Length: 100010\r\n\r\n",
+                "status": "connection_error",
+                "status_code": 200,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "webhook_called",
+                "url": "http://temba.io/"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "GET http://temba.io/",
+                "name": "My Webhook",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "200"
+            }
+        ],
+        "webhook": {},
+        "inspection": {
+            "dependencies": [],
+            "templates": [
+                "http://temba.io/"
+            ],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ],
+                    "key": "my_webhook",
+                    "name": "My Webhook",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ]
+        }
     }
 ]

@@ -69,15 +69,22 @@ func (r *MockRequestor) UnmarshalJSON(data []byte) error {
 var _ Requestor = (*MockRequestor)(nil)
 
 type MockResponse struct {
-	Status  int               `json:"status" validate:"required"`
-	Body    string            `json:"body" validate:"required"`
-	Headers map[string]string `json:"headers,omitempty"`
+	Status     int               `json:"status" validate:"required"`
+	Headers    map[string]string `json:"headers,omitempty"`
+	Body       string            `json:"body" validate:"required"`
+	BodyRepeat int               `json:"body_repeat,omitempty"`
 }
 
+// Make mocks making the given request and returning this as the response
 func (m MockResponse) Make(request *http.Request) *http.Response {
 	header := make(http.Header, len(m.Headers))
 	for k, v := range m.Headers {
 		header.Set(k, v)
+	}
+
+	body := m.Body
+	if m.BodyRepeat > 1 {
+		body = strings.Repeat(body, m.BodyRepeat)
 	}
 
 	return &http.Response{
@@ -88,15 +95,15 @@ func (m MockResponse) Make(request *http.Request) *http.Response {
 		ProtoMajor:    1,
 		ProtoMinor:    0,
 		Header:        header,
-		Body:          ioutil.NopCloser(strings.NewReader(m.Body)),
-		ContentLength: int64(len(m.Body)),
+		Body:          ioutil.NopCloser(strings.NewReader(body)),
+		ContentLength: int64(len(body)),
 	}
 }
 
 // MockConnectionError mocks a connection error
-var MockConnectionError = MockResponse{0, "", nil}
+var MockConnectionError = MockResponse{0, nil, "", 0}
 
 // NewMockResponse creates a new mock response
-func NewMockResponse(status int, body string, headers map[string]string) MockResponse {
-	return MockResponse{status, body, headers}
+func NewMockResponse(status int, headers map[string]string, body string, bodyRepeat int) MockResponse {
+	return MockResponse{status, headers, body, bodyRepeat}
 }

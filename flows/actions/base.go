@@ -124,21 +124,25 @@ func (a *baseAction) saveResult(run flows.FlowRun, step flows.Step, name, value,
 }
 
 // helper to save a run result based on a webhook call and log it as an event
-func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall, status flows.CallStatus, logEvent flows.EventCallback) {
-	input := fmt.Sprintf("%s %s", webhook.Method, webhook.URL)
-	value := strconv.Itoa(webhook.StatusCode)
+func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, call *flows.WebhookCall, status flows.CallStatus, logEvent flows.EventCallback) {
+	input := fmt.Sprintf("%s %s", call.Request.Method, call.Request.URL.String())
+	value := "0"
 	category := webhookStatusCategories[status]
-
 	var extra json.RawMessage
-	if len(webhook.ResponseJSON) < resultExtraMaxBytes {
-		extra = webhook.ResponseJSON
+
+	if call.Response != nil {
+		value = strconv.Itoa(call.Response.StatusCode)
+
+		if len(call.ResponseBody) < resultExtraMaxBytes {
+			extra = call.ResponseBody
+		}
 	}
 
 	a.saveResult(run, step, name, value, category, "", input, extra, logEvent)
 }
 
 func (a *baseAction) updateWebhook(run flows.FlowRun, call *flows.WebhookCall) {
-	parsed := types.JSONToXValue(call.ResponseJSON)
+	parsed := types.JSONToXValue(call.ResponseBody)
 
 	switch typed := parsed.(type) {
 	case nil, types.XError:
