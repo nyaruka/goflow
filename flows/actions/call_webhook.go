@@ -161,7 +161,7 @@ func callStatus(call *flows.WebhookCall, err error, isResthook bool) flows.CallS
 	if call.Response == nil || err != nil {
 		return flows.CallStatusConnectionError
 	}
-	if isResthook && call.Response.StatusCode == 410 {
+	if isResthook && call.Response.StatusCode == http.StatusGone {
 		// https://zapier.com/developer/documentation/v2/rest-hooks/
 		return flows.CallStatusSubscriberGone
 	}
