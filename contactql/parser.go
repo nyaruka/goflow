@@ -249,16 +249,20 @@ func (b *BoolCombination) String() string {
 	return fmt.Sprintf("(%s)", strings.Join(children, fmt.Sprintf(" %s ", strings.ToUpper(string(b.op)))))
 }
 
+// ContactQuery is a parsed contact QL query
 type ContactQuery struct {
 	root QueryNode
 }
 
+// Root returns the root node of this query
 func (q *ContactQuery) Root() QueryNode { return q.root }
 
+// Evaluate returns whether the given queryable matches this query
 func (q *ContactQuery) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
 	return q.root.Evaluate(env, queryable)
 }
 
+// String returns the pretty formatted version of this query
 func (q *ContactQuery) String() string {
 	s := q.root.String()
 
@@ -271,8 +275,15 @@ func (q *ContactQuery) String() string {
 
 // ParseQuery parses a ContactQL query from the given input
 func ParseQuery(text string, redaction envs.RedactionPolicy, fieldResolver FieldResolverFunc) (*ContactQuery, error) {
-	errListener := NewErrorListener()
+	// preprocess text before parsing
+	text = strings.TrimSpace(text)
 
+	// catch things like "(800) 123-5678" where () needs to be stripped out
+	if queryIsPhoneNumberRegex.MatchString(text) {
+		text = cleanPhoneNumber(text)
+	}
+
+	errListener := NewErrorListener()
 	input := antlr.NewInputStream(text)
 	lexer := gen.NewContactQLLexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)

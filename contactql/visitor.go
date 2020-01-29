@@ -14,8 +14,14 @@ import (
 	"github.com/pkg/errors"
 )
 
-var telRegex = regexp.MustCompile(`^[+ \d\-\(\)]{4,}$`)
-var cleanSpecialCharsRegex = regexp.MustCompile(`[+ \-\(\)]+`)
+// a query like (800) 345-3536 or (800)4567890 will be interpreted as a single tel ~ condition
+var queryIsPhoneNumberRegex = regexp.MustCompile(`^\(\d{3}\)\s*\d{3}\-?\d{4}$`)
+
+// an implicit condition like +123-124-6546 or 1234 will be interpreted as a tel ~ condition
+var implicitIsPhoneNumberRegex = regexp.MustCompile(`^\+?[\-\d]{4,}$`)
+
+// used to strip formatting from phone number values
+var cleanPhoneNumberRegex = regexp.MustCompile(`\D+`)
 
 var comparatorAliases = map[string]Comparator{
 	"has": ComparatorContains,
@@ -68,12 +74,12 @@ func (v *visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 
 // expression : TEXT
 func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) interface{} {
-	value := ctx.TEXT().GetText()
+	text := ctx.TEXT().GetText()
 
-	asURN, _ := urns.Parse(value)
+	asURN, _ := urns.Parse(text)
 
 	if v.redaction == envs.RedactionPolicyURNs {
-		num, err := strconv.Atoi(value)
+		num, err := strconv.Atoi(text)
 		if err == nil {
 			return newCondition(PropertyTypeAttribute, AttributeID, ComparatorEqual, strconv.Itoa(num), attributes[AttributeID])
 		}
@@ -82,19 +88,19 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 
 		return newCondition(PropertyTypeScheme, scheme, ComparatorEqual, path, assets.FieldTypeText)
 
-	} else if telRegex.MatchString(value) {
-		value = cleanSpecialCharsRegex.ReplaceAllString(value, "")
+	} else if implicitIsPhoneNumberRegex.MatchString(text) {
+		text = cleanPhoneNumber(text)
 
-		return newCondition(PropertyTypeScheme, urns.TelScheme, ComparatorContains, value, assets.FieldTypeText)
+		return newCondition(PropertyTypeScheme, urns.TelScheme, ComparatorContains, text, assets.FieldTypeText)
 	}
 
 	// convert to contains condition only if we have the right tokens, otherwise make equals check
 	comparator := ComparatorContains
-	if len(tokenizeNameValue(value)) == 0 {
+	if len(tokenizeNameValue(text)) == 0 {
 		comparator = ComparatorEqual
 	}
 
-	condition := newCondition(PropertyTypeAttribute, AttributeName, comparator, value, attributes[AttributeName])
+	condition := newCondition(PropertyTypeAttribute, AttributeName, comparator, text, attributes[AttributeName])
 
 	if err := condition.Validate(); err != nil {
 		v.addError(err)
@@ -200,4 +206,8 @@ func (v *visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} 
 
 func (v *visitor) addError(err error) {
 	v.errors = append(v.errors, err)
+}
+
+func cleanPhoneNumber(v string) string {
+	return cleanPhoneNumberRegex.ReplaceAllLiteralString(v, "")
 }
