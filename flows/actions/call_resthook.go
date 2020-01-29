@@ -128,7 +128,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		}
 		if call != nil {
 			calls = append(calls, call)
-			logEvent(events.NewWebhookCalled(call, callStatus(call, true), a.Resthook))
+			logEvent(events.NewWebhookCalled(call, callStatus(call, nil, true), a.Resthook))
 		}
 	}
 
@@ -139,7 +139,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 	if a.ResultName != "" {
 		if asResult != nil {
-			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, true), logEvent)
+			a.saveWebhookResult(run, step, a.ResultName, asResult, callStatus(asResult, nil, true), logEvent)
 		} else {
 			a.saveResult(run, step, a.ResultName, "no subscribers", "Failure", "", "", nil, logEvent)
 		}
@@ -153,7 +153,7 @@ func (a *CallResthookAction) pickResultCall(calls []*flows.WebhookCall) *flows.W
 	var lastSuccess, last410, lastFailure *flows.WebhookCall
 
 	for _, call := range calls {
-		status := callStatus(call, true)
+		status := callStatus(call, nil, true)
 
 		if status == flows.CallStatusSuccess {
 			lastSuccess = call

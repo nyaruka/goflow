@@ -16,9 +16,9 @@ func TestPredict(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://nlp.bothub.it/parse": []httpx.MockResponse{
-			httpx.NewMockResponse(200, `xx`, nil), // non-JSON response
-			httpx.NewMockResponse(200, `{}`, nil), // invalid JSON response
-			httpx.NewMockResponse(200, `{
+			httpx.NewMockResponse(200, nil, `xx`, 1), // non-JSON response
+			httpx.NewMockResponse(200, nil, `{}`, 1), // invalid JSON response
+			httpx.NewMockResponse(200, nil, `{
 				"intent": {
 					"name": "book_flight",
 					"confidence": 0.8341536248216568
@@ -51,7 +51,7 @@ func TestPredict(t *testing.T) {
 				"text": "book a flight to Quito",
 				"update_id": 4786,
 				"language": "pt_br"
-			}`, nil),
+			}`, 1),
 		},
 	}))
 

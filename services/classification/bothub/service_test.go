@@ -30,7 +30,7 @@ func TestService(t *testing.T) {
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://nlp.bothub.it/parse": []httpx.MockResponse{
-			httpx.NewMockResponse(200, `{
+			httpx.NewMockResponse(200, nil, `{
 				"intent": {
 				  "name": "book_flight",
 				  "confidence": 0.9224673593230207
@@ -63,7 +63,7 @@ func TestService(t *testing.T) {
 				"text": "book my flight to Quito",
 				"update_id": 13158,
 				"language": "en"
-			  }`, nil),
+			  }`, 1),
 		},
 	}))
 

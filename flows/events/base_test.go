@@ -429,16 +429,13 @@ func TestReadEvent(t *testing.T) {
 func TestWebhookCalledEventTrimming(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	bigRequest := strings.Repeat("X", 20000)
-	bigResponse := strings.Repeat("Y", 20000)
-
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": []httpx.MockResponse{
-			httpx.NewMockResponse(200, bigResponse, nil),
+			httpx.NewMockResponse(200, nil, "Y", 20000),
 		},
 	}))
 
-	request, _ := http.NewRequest("GET", "http://temba.io/", strings.NewReader(bigRequest))
+	request, _ := http.NewRequest("GET", "http://temba.io/", strings.NewReader(strings.Repeat("X", 20000)))
 
 	svc := webhooks.NewService(http.DefaultClient, nil, nil, 1024*1024)
 	call, err := svc.Call(nil, request)

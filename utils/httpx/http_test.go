@@ -34,10 +34,10 @@ func TestMaxBodyBytes(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://temba.io": []httpx.MockResponse{
-			httpx.NewMockResponse(200, testBody, nil),
-			httpx.NewMockResponse(200, testBody, nil),
-			httpx.NewMockResponse(200, testBody, nil),
-			httpx.NewMockResponse(200, testBody, nil),
+			httpx.NewMockResponse(200, nil, testBody, 1),
+			httpx.NewMockResponse(200, nil, testBody, 1),
+			httpx.NewMockResponse(200, nil, testBody, 1),
+			httpx.NewMockResponse(200, nil, testBody, 1),
 		},
 	}))
 

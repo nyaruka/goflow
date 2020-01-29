@@ -19,15 +19,15 @@ func TestClient(t *testing.T) {
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []httpx.MockResponse{
-			httpx.NewMockResponse(200, "info_txt=pong\r\n", nil),                  // successful ping
-			httpx.NewMockResponse(400, "error_code=1\r\nerror_txt=Oops\r\n", nil), // unsuccessful ping
-			httpx.NewMockResponse(200, withCRLF(msisdnResponse), nil),             // successful msdninfo query
-			httpx.NewMockResponse(200, "xxx=yyy\r\n", nil),                        // unexpected response to msdninfo query
-			httpx.NewMockResponse(200, withCRLF(reserveResponse), nil),            // successful reserve ID request
-			httpx.NewMockResponse(200, "xxx=yyy\r\n", nil),                        // unexpected response to reserve ID request
-			httpx.NewMockResponse(200, withCRLF(topupResponse), nil),              // successful topup request
-			httpx.NewMockResponse(200, "xxx=yyy\r\n", nil),                        // unexpected response to topup request
-			httpx.MockConnectionError,                                             // timeout
+			httpx.NewMockResponse(200, nil, "info_txt=pong\r\n", 1),                  // successful ping
+			httpx.NewMockResponse(400, nil, "error_code=1\r\nerror_txt=Oops\r\n", 1), // unsuccessful ping
+			httpx.NewMockResponse(200, nil, withCRLF(msisdnResponse), 1),             // successful msdninfo query
+			httpx.NewMockResponse(200, nil, "xxx=yyy\r\n", 1),                        // unexpected response to msdninfo query
+			httpx.NewMockResponse(200, nil, withCRLF(reserveResponse), 1),            // successful reserve ID request
+			httpx.NewMockResponse(200, nil, "xxx=yyy\r\n", 1),                        // unexpected response to reserve ID request
+			httpx.NewMockResponse(200, nil, withCRLF(topupResponse), 1),              // successful topup request
+			httpx.NewMockResponse(200, nil, "xxx=yyy\r\n", 1),                        // unexpected response to topup request
+			httpx.MockConnectionError,                                                // timeout
 		},
 	})
 

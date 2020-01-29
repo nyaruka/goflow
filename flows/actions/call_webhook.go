@@ -137,7 +137,7 @@ func (a *CallWebhookAction) call(run flows.FlowRun, step flows.Step, url, method
 	if call != nil {
 		a.updateWebhook(run, call)
 
-		status := callStatus(call, false)
+		status := callStatus(call, err, false)
 
 		logEvent(events.NewWebhookCalled(call, status, ""))
 
@@ -157,8 +157,8 @@ func (a *CallWebhookAction) Results(node flows.Node, include func(*flows.ResultI
 }
 
 // determines the webhook status from the HTTP status code
-func callStatus(call *flows.WebhookCall, isResthook bool) flows.CallStatus {
-	if call.Response == nil {
+func callStatus(call *flows.WebhookCall, err error, isResthook bool) flows.CallStatus {
+	if call.Response == nil || err != nil {
 		return flows.CallStatusConnectionError
 	}
 	if isResthook && call.Response.StatusCode == 410 {
