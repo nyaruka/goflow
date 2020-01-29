@@ -153,9 +153,11 @@ func (a *CallResthookAction) pickResultCall(calls []*flows.WebhookCall) *flows.W
 	var lastSuccess, last410, lastFailure *flows.WebhookCall
 
 	for _, call := range calls {
-		if call.StatusCode/100 == 2 {
+		status := callStatus(call, true)
+
+		if status == flows.CallStatusSuccess {
 			lastSuccess = call
-		} else if call.StatusCode == 410 {
+		} else if status == flows.CallStatusSubscriberGone {
 			last410 = call
 		} else {
 			lastFailure = call

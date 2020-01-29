@@ -85,7 +85,7 @@ func TestDoWithRetries(t *testing.T) {
 	httpx.SetRequestor(mocks)
 
 	// no retry config
-	trace, err := httpx.DoTrace(http.DefaultClient, "GET", "http://temba.io/1/", nil, nil, nil)
+	trace, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/1/", nil, nil, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, 502, trace.Response.StatusCode)
 
@@ -93,22 +93,22 @@ func TestDoWithRetries(t *testing.T) {
 	retries := httpx.NewFixedRetries(1*time.Millisecond, 2*time.Millisecond)
 
 	// retrying thats ends with failure
-	trace, err = httpx.DoTrace(http.DefaultClient, "GET", "http://temba.io/2/", nil, nil, retries)
+	trace, err = httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/2/", nil, nil, retries)
 	assert.NoError(t, err)
 	assert.Equal(t, 505, trace.Response.StatusCode)
 
 	// retrying not needed
-	trace, err = httpx.DoTrace(http.DefaultClient, "GET", "http://temba.io/3/", nil, nil, retries)
+	trace, err = httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/3/", nil, nil, retries)
 	assert.NoError(t, err)
 	assert.Equal(t, 200, trace.Response.StatusCode)
 
 	// retrying not used for POSTs
-	trace, err = httpx.DoTrace(http.DefaultClient, "POST", "http://temba.io/4/", nil, nil, retries)
+	trace, err = httpx.NewTrace(http.DefaultClient, "POST", "http://temba.io/4/", nil, nil, retries)
 	assert.NoError(t, err)
 	assert.Equal(t, 502, trace.Response.StatusCode)
 
 	// unless idempotency declared via request header
-	trace, err = httpx.DoTrace(http.DefaultClient, "POST", "http://temba.io/5/", nil, map[string]string{"Idempotency-Key": "123"}, retries)
+	trace, err = httpx.NewTrace(http.DefaultClient, "POST", "http://temba.io/5/", nil, map[string]string{"Idempotency-Key": "123"}, retries)
 	assert.NoError(t, err)
 	assert.Equal(t, 200, trace.Response.StatusCode)
 
@@ -116,12 +116,12 @@ func TestDoWithRetries(t *testing.T) {
 	retries = httpx.NewFixedRetries(1 * time.Second)
 
 	// retrying due to Retry-After header
-	trace, err = httpx.DoTrace(http.DefaultClient, "POST", "http://temba.io/6/", nil, nil, retries)
+	trace, err = httpx.NewTrace(http.DefaultClient, "POST", "http://temba.io/6/", nil, nil, retries)
 	assert.NoError(t, err)
 	assert.Equal(t, 201, trace.Response.StatusCode)
 
 	// ignoring Retry-After header when it's too long
-	trace, err = httpx.DoTrace(http.DefaultClient, "GET", "http://temba.io/7/", nil, nil, retries)
+	trace, err = httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/7/", nil, nil, retries)
 	assert.NoError(t, err)
 	assert.Equal(t, 429, trace.Response.StatusCode)
 

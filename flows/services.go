@@ -42,14 +42,8 @@ const (
 
 // WebhookCall is the result of a webhook call
 type WebhookCall struct {
-	URL          string
-	Method       string
-	StatusCode   int
-	TimeTaken    time.Duration
-	Request      []byte
-	Response     []byte
-	ResponseJSON []byte
-	BodyIgnored  bool
+	*httpx.Trace
+	BodyIgnored bool
 }
 
 // WebhookService provides webhook functionality to the engine

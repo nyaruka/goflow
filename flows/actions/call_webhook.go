@@ -158,14 +158,14 @@ func (a *CallWebhookAction) Results(node flows.Node, include func(*flows.ResultI
 
 // determines the webhook status from the HTTP status code
 func callStatus(call *flows.WebhookCall, isResthook bool) flows.CallStatus {
-	if call.StatusCode == 0 {
+	if call.Response == nil {
 		return flows.CallStatusConnectionError
 	}
-	if isResthook && call.StatusCode == 410 {
+	if isResthook && call.Response.StatusCode == 410 {
 		// https://zapier.com/developer/documentation/v2/rest-hooks/
 		return flows.CallStatusSubscriberGone
 	}
-	if call.StatusCode/100 == 2 {
+	if call.Response.StatusCode/100 == 2 {
 		return flows.CallStatusSuccess
 	}
 	return flows.CallStatusResponseError
