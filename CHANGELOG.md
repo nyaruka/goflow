@@ -1,3 +1,9 @@
+v0.67.0
+----------
+ * Rename Flow.Validate to Flow.CheckDependencies for clarity
+ * Create error event when webhook response too big
+ * Rework webhook calls to use same calling code as other HTTP services
+
 v0.66.3
 ----------
  * Allow globals with empty values
