@@ -164,7 +164,7 @@
                 }
             ]
         },
-        "validation_error": "missing dependencies: group[uuid=aa33640b-43b0-4df2-992c-ba357981da71,name=]"
+        "dependencies_error": "missing dependencies: group[uuid=aa33640b-43b0-4df2-992c-ba357981da71,name=]"
     },
     {
         "description": "Result created with matching test result",

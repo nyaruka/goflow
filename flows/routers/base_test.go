@@ -56,13 +56,13 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description     string             `json:"description"`
-		Router          json.RawMessage    `json:"router"`
-		ReadError       string             `json:"read_error"`
-		ValidationError string             `json:"validation_error"`
-		Results         json.RawMessage    `json:"results"`
-		Events          []json.RawMessage  `json:"events"`
-		Inspection      *inspectionResults `json:"inspection"`
+		Description       string             `json:"description"`
+		Router            json.RawMessage    `json:"router"`
+		ReadError         string             `json:"read_error"`
+		DependenciesError string             `json:"dependencies_error"`
+		Results           json.RawMessage    `json:"results"`
+		Events            []json.RawMessage  `json:"events"`
+		Inspection        *inspectionResults `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -97,14 +97,14 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
-		// if this router is expected to return a validation error, check that
-		err = flow.Validate(sa, nil)
-		if tc.ValidationError != "" {
+		// if this router is expected to return a dependencies error, check that
+		err = flow.CheckDependencies(sa, nil)
+		if tc.DependenciesError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.ValidationError, "validation error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.DependenciesError, "dependencies error mismatch in %s", testName)
 			continue
 		} else {
-			assert.NoError(t, err, "unexpected validation error in %s", testName)
+			assert.NoError(t, err, "unexpected dependencies error in %s", testName)
 		}
 
 		// load our contact

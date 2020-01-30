@@ -116,16 +116,16 @@ func (f *flow) Inspect() *flows.FlowInfo {
 	}
 }
 
-// Validate checks that all of this flow's dependencies exist
-func (f *flow) Validate(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	return f.validateAssets(sa, false, nil, missing)
+// CheckDepenencies checks that all of this flow's dependencies exist
+func (f *flow) CheckDependencies(sa flows.SessionAssets, missing func(assets.Reference)) error {
+	return f.checkDependencies(sa, false, nil, missing)
 }
 
-// Validate checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
-func (f *flow) ValidateRecursive(sa flows.SessionAssets, missing func(assets.Reference)) error {
+// CheckDepenencies checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
+func (f *flow) CheckDependenciesRecursive(sa flows.SessionAssets, missing func(assets.Reference)) error {
 	seen := make(map[assets.FlowUUID]bool)
 
-	return f.validateAssets(sa, true, seen, missing)
+	return f.checkDependencies(sa, true, seen, missing)
 }
 
 type brokenDependency struct {
@@ -133,7 +133,7 @@ type brokenDependency struct {
 	reason     error
 }
 
-func (f *flow) validateAssets(sa flows.SessionAssets, recursive bool, seen map[assets.FlowUUID]bool, missing func(assets.Reference)) error {
+func (f *flow) checkDependencies(sa flows.SessionAssets, recursive bool, seen map[assets.FlowUUID]bool, missing func(assets.Reference)) error {
 	// prevent looping if recursive
 	if recursive && seen[f.UUID()] {
 		return nil
@@ -177,7 +177,7 @@ func (f *flow) validateAssets(sa flows.SessionAssets, recursive bool, seen map[a
 		for _, flowRef := range deps.Flows {
 			flowDep, err := sa.Flows().Get(flowRef.UUID)
 			if err == nil {
-				if err := flowDep.(*flow).validateAssets(sa, true, seen, missing); err != nil {
+				if err := flowDep.(*flow).checkDependencies(sa, true, seen, missing); err != nil {
 					return errors.Wrapf(err, "invalid child %s", flowRef)
 				}
 			}

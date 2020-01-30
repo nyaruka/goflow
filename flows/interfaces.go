@@ -146,8 +146,8 @@ type Flow interface {
 	Reference() *assets.FlowReference
 
 	Inspect() *FlowInfo
-	Validate(SessionAssets, func(assets.Reference)) error
-	ValidateRecursive(SessionAssets, func(assets.Reference)) error
+	CheckDependencies(SessionAssets, func(assets.Reference)) error
+	CheckDependenciesRecursive(SessionAssets, func(assets.Reference)) error
 
 	ExtractTemplates() []string
 	ExtractDependencies() []assets.Reference

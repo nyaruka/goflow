@@ -78,23 +78,23 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description     string               `json:"description"`
-		HTTPMocks       *httpx.MockRequestor `json:"http_mocks"`
-		SMTPError       string               `json:"smtp_error"`
-		NoContact       bool                 `json:"no_contact"`
-		NoURNs          bool                 `json:"no_urns"`
-		NoInput         bool                 `json:"no_input"`
-		RedactURNs      bool                 `json:"redact_urns"`
-		Action          json.RawMessage      `json:"action"`
-		Localization    json.RawMessage      `json:"localization"`
-		InFlowType      flows.FlowType       `json:"in_flow_type"`
-		ReadError       string               `json:"read_error"`
-		ValidationError string               `json:"validation_error"`
-		SkipValidation  bool                 `json:"skip_validation"`
-		Events          []json.RawMessage    `json:"events"`
-		Webhook         json.RawMessage      `json:"webhook"`
-		ContactAfter    json.RawMessage      `json:"contact_after"`
-		Inspection      json.RawMessage      `json:"inspection"`
+		Description       string               `json:"description"`
+		HTTPMocks         *httpx.MockRequestor `json:"http_mocks"`
+		SMTPError         string               `json:"smtp_error"`
+		NoContact         bool                 `json:"no_contact"`
+		NoURNs            bool                 `json:"no_urns"`
+		NoInput           bool                 `json:"no_input"`
+		RedactURNs        bool                 `json:"redact_urns"`
+		Action            json.RawMessage      `json:"action"`
+		Localization      json.RawMessage      `json:"localization"`
+		InFlowType        flows.FlowType       `json:"in_flow_type"`
+		ReadError         string               `json:"read_error"`
+		DependenciesError string               `json:"dependencies_error"`
+		SkipValidation    bool                 `json:"skip_validation"`
+		Events            []json.RawMessage    `json:"events"`
+		Webhook           json.RawMessage      `json:"webhook"`
+		ContactAfter      json.RawMessage      `json:"contact_after"`
+		Inspection        json.RawMessage      `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -150,14 +150,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
-		// if this action is expected to cause a validation error, check that
-		err = flow.Validate(sa, nil)
-		if tc.ValidationError != "" {
+		// if this action is expected to cause a dependencies error, check that
+		err = flow.CheckDependencies(sa, nil)
+		if tc.DependenciesError != "" {
 			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.ValidationError, "validation error mismatch in %s", testName)
+			assert.EqualError(t, rootErr, tc.DependenciesError, "dependencies error mismatch in %s", testName)
 			continue
 		} else if !tc.SkipValidation {
-			assert.NoError(t, err, "unexpected validation error in %s", testName)
+			assert.NoError(t, err, "unexpected dependencies error in %s", testName)
 		}
 
 		// optionally load our contact

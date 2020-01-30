@@ -291,7 +291,7 @@
                 ]
             }
         },
-        "validation_error": "missing dependencies: template[uuid=b620b463-8d15-427f-b2e3-4f44f9f071ec,name=missing]"
+        "dependencies_error": "missing dependencies: template[uuid=b620b463-8d15-427f-b2e3-4f44f9f071ec,name=missing]"
     },
     {
         "description": "Msg with a topic and a matching template",
