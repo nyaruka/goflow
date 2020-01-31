@@ -40,7 +40,7 @@ func extractAssetReferences(v reflect.Value, include func(assets.Reference)) {
 		for i := 0; i < v.Len(); i++ {
 			extractAssetReferences(v.Index(i), include)
 		}
-	} else {
+	} else if v.Kind() == reflect.Ptr && !v.IsNil() {
 		// field is a single asset reference
 		asRef, isRef := v.Interface().(assets.Reference)
 		if isRef && asRef != nil && !asRef.Variable() {

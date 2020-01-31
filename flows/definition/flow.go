@@ -240,7 +240,7 @@ func (f *flow) extractAssetAndParentRefs() ([]assets.Reference, []string) {
 	dependenciesSeen := make(map[string]bool)
 
 	addDependency := func(r assets.Reference) {
-		if !utils.IsNil(r) && !r.Variable() {
+		if r != nil && !r.Variable() {
 			key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
 			if !dependenciesSeen[key] {
 				dependencies = append(dependencies, r)
