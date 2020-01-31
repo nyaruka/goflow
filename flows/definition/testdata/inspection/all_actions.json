@@ -1,0 +1,74 @@
+{
+    "dependencies": {
+        "channels": [
+            {
+                "name": "Android Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+            }
+        ],
+        "contacts": [
+            {
+                "name": "Bob",
+                "uuid": "820f5923-3369-41c6-b3cd-af577c0bd4b8"
+            }
+        ],
+        "fields": [
+            {
+                "key": "state",
+                "name": ""
+            },
+            {
+                "key": "first_name",
+                "name": ""
+            },
+            {
+                "key": "activation_token",
+                "name": ""
+            },
+            {
+                "key": "raw_district",
+                "name": ""
+            },
+            {
+                "key": "gender",
+                "name": "Gender"
+            },
+            {
+                "key": "district",
+                "name": "District"
+            }
+        ],
+        "flows": [
+            {
+                "name": "Collect Language",
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+            }
+        ],
+        "groups": [
+            {
+                "name": "Survey Audience",
+                "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+            }
+        ],
+        "labels": [
+            {
+                "name": "Spam",
+                "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
+            }
+        ]
+    },
+    "parent_refs": [],
+    "results": [
+        {
+            "categories": [
+                "Male"
+            ],
+            "key": "gender",
+            "name": "Gender",
+            "node_uuids": [
+                "a58be63b-907d-4a1a-856b-0bb5579d7507"
+            ]
+        }
+    ],
+    "waiting_exits": []
+}

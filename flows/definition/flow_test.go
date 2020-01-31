@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"strings"
 	"testing"
 
 	"github.com/Masterminds/semver"
@@ -361,36 +362,6 @@ func TestEmptyFlow(t *testing.T) {
 	assert.Equal(t, []flows.ExitUUID{}, info.WaitingExits)
 }
 
-func TestInspectFlow(t *testing.T) {
-	sa, err := test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
-	require.NoError(t, err)
-
-	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
-	require.NoError(t, err)
-
-	info := flow.Inspect()
-
-	assert.Equal(t, &flows.Dependencies{
-		Groups: []*assets.GroupReference{
-			assets.NewGroupReference("7be2f40b-38a0-4b06-9e6d-522dca592cc8", "Registered"),
-		},
-	}, info.Dependencies)
-
-	assert.Equal(t, []*flows.ResultInfo{
-		&flows.ResultInfo{
-			Name:       "Name",
-			Key:        "name",
-			Categories: []string{"Not Empty", "Other"},
-			NodeUUIDs:  []flows.NodeUUID{"3dcccbb4-d29c-41dd-a01f-16d814c9ab82"},
-		},
-	}, info.Results)
-
-	assert.Equal(t, []flows.ExitUUID{
-		"fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
-		"43accf99-4940-44f7-926b-a8b35d9403d6",
-	}, info.WaitingExits)
-}
-
 func TestReadFlow(t *testing.T) {
 	// try reading something without a flow header
 	_, err := definition.ReadFlow([]byte(`{"nodes":[]}`), nil)
@@ -573,146 +544,26 @@ func TestInspect(t *testing.T) {
 	testCases := []struct {
 		path string
 		uuid string
-		info *flows.FlowInfo
 	}{
 		{
 			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{
-					Channels: []*assets.ChannelReference{
-						assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Android Channel"),
-					},
-					Contacts: []*flows.ContactReference{
-						flows.NewContactReference("820f5923-3369-41c6-b3cd-af577c0bd4b8", "Bob"),
-					},
-					Fields: []*assets.FieldReference{
-						assets.NewFieldReference("state", ""),
-						assets.NewFieldReference("first_name", ""),
-						assets.NewFieldReference("activation_token", ""),
-						assets.NewFieldReference("raw_district", ""),
-						assets.NewFieldReference("gender", "Gender"),
-						assets.NewFieldReference("district", "District"),
-					},
-					Flows: []*assets.FlowReference{
-						assets.NewFlowReference("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "Collect Language"),
-					},
-					Groups: []*assets.GroupReference{
-						assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", "Survey Audience"),
-					},
-					Labels: []*assets.LabelReference{
-						assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
-					},
-				},
-				Results: []*flows.ResultInfo{
-					{
-						Key:        "gender",
-						Name:       "Gender",
-						Categories: []string{"Male"},
-						NodeUUIDs:  []flows.NodeUUID{"a58be63b-907d-4a1a-856b-0bb5579d7507"},
-					},
-				},
-				WaitingExits: []flows.ExitUUID{},
-				ParentRefs:   []string{},
-			},
 		},
 		{
 			"../../test/testdata/runner/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{
-					Fields: []*assets.FieldReference{
-						assets.NewFieldReference("raw_district", ""),
-						assets.NewFieldReference("district", "District"),
-					},
-					Groups: []*assets.GroupReference{
-						assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", ""),
-						assets.NewGroupReference("bf282a79-aa74-4557-9932-22a9b3bce537", ""),
-					},
-				},
-				Results: []*flows.ResultInfo{
-					{
-						Key:        "urn_check",
-						Name:       "URN Check",
-						Categories: []string{"Telegram", "Other"},
-						NodeUUIDs:  []flows.NodeUUID{"46d51f50-58de-49da-8d13-dadbf322685d"},
-					},
-					{
-						Key:        "group_check",
-						Name:       "Group Check",
-						Categories: []string{"Testers", "Other"},
-						NodeUUIDs:  []flows.NodeUUID{"08d71f03-dc18-450a-a82b-496f64862a56"},
-					},
-					{
-						Key:        "district_check",
-						Name:       "District Check",
-						Categories: []string{"Valid", "Invalid"},
-						NodeUUIDs:  []flows.NodeUUID{"8476e6fe-1c22-436c-be2c-c27afdc940f3"},
-					},
-				},
-				WaitingExits: []flows.ExitUUID{},
-				ParentRefs:   []string{},
-			},
 		},
 		{
 			"../../test/testdata/runner/dynamic_groups.json",
 			"1b462ce8-983a-4393-b133-e15a0efdb70c",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{
-					Fields: []*assets.FieldReference{
-						assets.NewFieldReference("gender", "Gender"),
-						assets.NewFieldReference("age", "Age"),
-					},
-				},
-				Results:      []*flows.ResultInfo{},
-				WaitingExits: []flows.ExitUUID{},
-				ParentRefs:   []string{},
-			},
 		},
 		{
 			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{},
-				Results: []*flows.ResultInfo{
-					{
-						Key:        "favorite_color",
-						Name:       "Favorite Color",
-						Categories: []string{"Red", "Blue", "Other", "No Response"},
-						NodeUUIDs:  []flows.NodeUUID{"46d51f50-58de-49da-8d13-dadbf322685d"},
-					},
-					{
-						Key:        "soda",
-						Name:       "Soda",
-						Categories: []string{"Pepsi", "Coke", "Other"},
-						NodeUUIDs:  []flows.NodeUUID{"11a772f3-3ca2-4429-8b33-20fdcfc2b69e"},
-					},
-				},
-				WaitingExits: []flows.ExitUUID{
-					flows.ExitUUID("2f42b942-bf32-4e81-8ff3-f946b5e68dd8"),
-					flows.ExitUUID("dcdc29b6-4671-4c10-a614-5b1507f3df97"),
-					flows.ExitUUID("17ec8700-cada-4cff-b3b1-351cac4d85c6"),
-					flows.ExitUUID("f0649239-6ab2-4903-b5c5-f813beb5539d"),
-					flows.ExitUUID("3bd19c40-1114-4b83-b12e-f0c38054ba3f"),
-					flows.ExitUUID("9ad71fc4-c2f8-4aab-a193-7bafad172ca0"),
-					flows.ExitUUID("e80bc037-3b57-45b5-9f19-a8346a475578"),
-				},
-				ParentRefs: []string{},
-			},
 		},
 		{
 			"../../test/testdata/runner/triggered.json",
 			"ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{
-					Fields: []*assets.FieldReference{
-						assets.NewFieldReference("state", ""),
-					},
-				},
-				Results:      []*flows.ResultInfo{},
-				WaitingExits: []flows.ExitUUID{},
-				ParentRefs:   []string{"age"},
-			},
 		},
 	}
 
@@ -720,6 +571,13 @@ func TestInspect(t *testing.T) {
 		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
 		require.NoError(t, err)
 
-		assert.Equal(t, tc.info, flow.Inspect(), "inspection mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+		actualInfo := flow.Inspect()
+		actualJSON, _ := json.Marshal(actualInfo)
+
+		fileName := tc.path[strings.LastIndex(tc.path, "/"):]
+		expectedJSON, err := ioutil.ReadFile("testdata/inspection/" + fileName)
+		require.NoError(t, err)
+
+		test.AssertEqualJSON(t, expectedJSON, actualJSON, "inspection mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 	}
 }

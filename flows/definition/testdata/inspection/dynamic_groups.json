@@ -1,0 +1,17 @@
+{
+    "dependencies": {
+        "fields": [
+            {
+                "key": "gender",
+                "name": "Gender"
+            },
+            {
+                "key": "age",
+                "name": "Age"
+            }
+        ]
+    },
+    "parent_refs": [],
+    "results": [],
+    "waiting_exits": []
+}
