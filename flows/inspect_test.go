@@ -38,36 +38,38 @@ func TestDependencies(t *testing.T) {
 		assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome"),
 	})
 
-	assert.Equal(t, &flows.Dependencies{
-		Channels: []*assets.ChannelReference{
-			assets.NewChannelReference("8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "Android"),
-		},
-		Classifiers: []*assets.ClassifierReference{
-			assets.NewClassifierReference("2138cddc-118a-49ae-b290-98e03ad0573b", "Booking"),
-		},
-		Contacts: []*flows.ContactReference{
-			flows.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob"),
-		},
-		Fields: []*assets.FieldReference{
-			assets.NewFieldReference("gender", "Gender"),
-		},
-		Flows: []*assets.FlowReference{
-			assets.NewFlowReference("4f932672-7995-47f0-96e6-faf5abd2d81d", "Registration"),
-		},
-		Globals: []*assets.GlobalReference{
-			assets.NewGlobalReference("org_name", "Org Name"),
-		},
-		Groups: []*assets.GroupReference{
-			assets.NewGroupReference("46057a92-6580-4e93-af36-2bb9c9d61e51", "Testers"),
-			assets.NewGroupReference("377c3101-a7fc-47b1-9136-980348e362c0", "Customers"),
-		},
-		Labels: []*assets.LabelReference{
-			assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam"),
-		},
-		Templates: []*assets.TemplateReference{
-			assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome"),
-		},
-	}, deps)
+	depsJSON, _ := json.Marshal(deps)
+
+	test.AssertEqualJSON(t, []byte(`{
+		"channels": [
+			{"uuid": "8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "name": "Android"}
+		],
+		"classifiers": [
+			{"uuid": "2138cddc-118a-49ae-b290-98e03ad0573b", "name": "Booking"}
+		],
+		"contacts": [
+			{"uuid": "0b099519-0889-4c74-b744-9122272f346a", "name": "Bob"}
+		],
+		"fields": [
+			{"key": "gender", "name": "Gender"}
+		],
+		"flows": [
+			{"uuid": "4f932672-7995-47f0-96e6-faf5abd2d81d", "name": "Registration"}
+		],
+		"globals": [
+			{"key": "org_name", "name": "Org Name"}
+		],
+		"groups": [
+			{"uuid": "46057a92-6580-4e93-af36-2bb9c9d61e51", "name": "Testers"},
+			{"uuid": "377c3101-a7fc-47b1-9136-980348e362c0", "name": "Customers"}
+		],
+		"labels": [
+			{"uuid": "31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "name": "Spam"}
+		],
+		"templates": [
+			{"uuid": "ff958d30-f50e-48ab-a524-37ed1e9620d9", "name": "Welcome"}
+		]
+	}`), depsJSON, "deps JSON mismatch")
 
 	// if our assets only includes a single group, the other assets should be reported as missing
 	source, err := static.NewSource([]byte(`{
@@ -219,4 +221,14 @@ func TestFlowInfo(t *testing.T) {
 			"response_2"
 		]
 	}`), marshaled, "marshal mismatch")
+}
+
+func TestInspectedReferences(t *testing.T) {
+	r := &flows.InspectedChannelReference{
+		ChannelReference:   assets.NewChannelReference("9d098aea-ccc4-4723-8222-9971b64223e4", "Android"),
+		InspectedReference: flows.InspectedReference{Missing: true},
+	}
+
+	j, _ := json.Marshal(r)
+	assert.Equal(t, `{"uuid":"9d098aea-ccc4-4723-8222-9971b64223e4","name":"Android","missing":true}`, string(j))
 }

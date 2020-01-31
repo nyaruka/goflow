@@ -310,29 +310,42 @@ func TestNewFlow(t *testing.T) {
 
 	// check inspection
 	info := flow.Inspect()
+	infoJSON, _ := json.Marshal(info)
 
-	assert.Equal(t, &flows.Dependencies{
-		Fields: []*assets.FieldReference{
-			assets.NewFieldReference("gender", ""),
+	test.AssertEqualJSON(t, []byte(`{
+		"dependencies": {
+			"fields": [
+				{
+					"key": "gender",
+					"name": ""
+				}
+			],
+			"labels": [
+				{
+					"name": "Spam",
+					"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
+				}
+			]
 		},
-		Labels: []*assets.LabelReference{
-			assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
-		},
-	}, info.Dependencies)
-
-	assert.Equal(t, []*flows.ResultInfo{
-		&flows.ResultInfo{
-			Name:       "Response 1",
-			Key:        "response_1",
-			Categories: []string{"Yes", "No"},
-			NodeUUIDs:  []flows.NodeUUID{"a58be63b-907d-4a1a-856b-0bb5579d7507"},
-		},
-	}, info.Results)
-
-	assert.Equal(t, []flows.ExitUUID{
-		"023a5c10-d74a-4fad-9560-990caead8170",
-		"8943c032-2a91-456c-8080-2a249f1b420c",
-	}, info.WaitingExits)
+		"parent_refs": [],
+		"results": [
+			{
+				"categories": [
+					"Yes",
+					"No"
+				],
+				"key": "response_1",
+				"name": "Response 1",
+				"node_uuids": [
+					"a58be63b-907d-4a1a-856b-0bb5579d7507"
+				]
+			}
+		],
+		"waiting_exits": [
+			"023a5c10-d74a-4fad-9560-990caead8170",
+			"8943c032-2a91-456c-8080-2a249f1b420c"
+		]
+	}`), infoJSON, "inspection mismatch")
 }
 
 func TestEmptyFlow(t *testing.T) {

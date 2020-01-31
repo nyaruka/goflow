@@ -16,17 +16,66 @@ type FlowInfo struct {
 	ParentRefs   []string      `json:"parent_refs"`
 }
 
+type InspectedReference struct {
+	Missing bool `json:"missing,omitempty"`
+}
+
+type InspectedClassifierReference struct {
+	*assets.ClassifierReference
+	InspectedReference
+}
+
+type InspectedChannelReference struct {
+	*assets.ChannelReference
+	InspectedReference
+}
+
+type InspectedContactReference struct {
+	*ContactReference
+	InspectedReference
+}
+
+type InspectedFieldReference struct {
+	*assets.FieldReference
+	InspectedReference
+}
+
+type InspectedFlowReference struct {
+	*assets.FlowReference
+	InspectedReference
+}
+
+type InspectedGlobalReference struct {
+	*assets.GlobalReference
+	InspectedReference
+}
+
+type InspectedGroupReference struct {
+	*assets.GroupReference
+	InspectedReference
+}
+
+type InspectedLabelReference struct {
+	*assets.LabelReference
+	InspectedReference
+}
+
+type InspectedTemplateReference struct {
+	*assets.TemplateReference
+	InspectedReference
+}
+
 // Dependencies contains a flows dependencies grouped by type
 type Dependencies struct {
-	Classifiers []*assets.ClassifierReference `json:"classifiers,omitempty"`
-	Channels    []*assets.ChannelReference    `json:"channels,omitempty"`
-	Contacts    []*ContactReference           `json:"contacts,omitempty"`
-	Fields      []*assets.FieldReference      `json:"fields,omitempty"`
-	Flows       []*assets.FlowReference       `json:"flows,omitempty"`
-	Globals     []*assets.GlobalReference     `json:"globals,omitempty"`
-	Groups      []*assets.GroupReference      `json:"groups,omitempty"`
-	Labels      []*assets.LabelReference      `json:"labels,omitempty"`
-	Templates   []*assets.TemplateReference   `json:"templates,omitempty"`
+	Classifiers []InspectedClassifierReference `json:"classifiers,omitempty"`
+	Channels    []InspectedChannelReference    `json:"channels,omitempty"`
+	Contacts    []InspectedContactReference    `json:"contacts,omitempty"`
+	Fields      []InspectedFieldReference      `json:"fields,omitempty"`
+	Flows       []InspectedFlowReference       `json:"flows,omitempty"`
+	Globals     []InspectedGlobalReference     `json:"globals,omitempty"`
+	Groups      []InspectedGroupReference      `json:"groups,omitempty"`
+	Labels      []InspectedLabelReference      `json:"labels,omitempty"`
+	Templates   []InspectedTemplateReference   `json:"templates,omitempty"`
 }
 
 // NewDependencies creates a new dependency listing from the slice of references
@@ -35,23 +84,23 @@ func NewDependencies(refs []assets.Reference) *Dependencies {
 	for _, r := range refs {
 		switch typed := r.(type) {
 		case *assets.ChannelReference:
-			d.Channels = append(d.Channels, typed)
+			d.Channels = append(d.Channels, InspectedChannelReference{ChannelReference: typed})
 		case *assets.ClassifierReference:
-			d.Classifiers = append(d.Classifiers, typed)
+			d.Classifiers = append(d.Classifiers, InspectedClassifierReference{ClassifierReference: typed})
 		case *ContactReference:
-			d.Contacts = append(d.Contacts, typed)
+			d.Contacts = append(d.Contacts, InspectedContactReference{ContactReference: typed})
 		case *assets.FieldReference:
-			d.Fields = append(d.Fields, typed)
+			d.Fields = append(d.Fields, InspectedFieldReference{FieldReference: typed})
 		case *assets.FlowReference:
-			d.Flows = append(d.Flows, typed)
+			d.Flows = append(d.Flows, InspectedFlowReference{FlowReference: typed})
 		case *assets.GlobalReference:
-			d.Globals = append(d.Globals, typed)
+			d.Globals = append(d.Globals, InspectedGlobalReference{GlobalReference: typed})
 		case *assets.GroupReference:
-			d.Groups = append(d.Groups, typed)
+			d.Groups = append(d.Groups, InspectedGroupReference{GroupReference: typed})
 		case *assets.LabelReference:
-			d.Labels = append(d.Labels, typed)
+			d.Labels = append(d.Labels, InspectedLabelReference{LabelReference: typed})
 		case *assets.TemplateReference:
-			d.Templates = append(d.Templates, typed)
+			d.Templates = append(d.Templates, InspectedTemplateReference{TemplateReference: typed})
 		default:
 			panic(fmt.Sprintf("unknown dependency type reference: %v", r))
 		}
@@ -61,45 +110,50 @@ func NewDependencies(refs []assets.Reference) *Dependencies {
 
 // Check checks the asset dependencies and notifies the caller of missing assets via the callback
 func (d *Dependencies) Check(sa SessionAssets, missing assets.MissingCallback) error {
+	callback := func(iref InspectedReference, ref assets.Reference, err error) {
+		iref.Missing = true
+		missing(ref, err)
+	}
+
 	for _, ref := range d.Channels {
 		if sa.Channels().Get(ref.UUID) == nil {
-			missing(ref, nil)
+			callback(ref.InspectedReference, ref.ChannelReference, nil)
 		}
 	}
 	for _, ref := range d.Classifiers {
 		if sa.Classifiers().Get(ref.UUID) == nil {
-			missing(ref, nil)
+			callback(ref.InspectedReference, ref.ClassifierReference, nil)
 		}
 	}
 	for _, ref := range d.Fields {
 		if sa.Fields().Get(ref.Key) == nil {
-			missing(ref, nil)
+			callback(ref.InspectedReference, ref.FieldReference, nil)
 		}
 	}
 	for _, ref := range d.Flows {
 		_, err := sa.Flows().Get(ref.UUID)
 		if err != nil {
-			missing(ref, err)
+			callback(ref.InspectedReference, ref.FlowReference, err)
 		}
 	}
 	for _, ref := range d.Globals {
 		if sa.Globals().Get(ref.Key) == nil {
-			missing(ref, nil)
+			callback(ref.InspectedReference, ref.GlobalReference, nil)
 		}
 	}
 	for _, ref := range d.Groups {
 		if sa.Groups().Get(ref.UUID) == nil {
-			missing(ref, nil)
+			callback(ref.InspectedReference, ref.GroupReference, nil)
 		}
 	}
 	for _, ref := range d.Labels {
 		if sa.Labels().Get(ref.UUID) == nil {
-			missing(ref, nil)
+			callback(ref.InspectedReference, ref.LabelReference, nil)
 		}
 	}
 	for _, ref := range d.Templates {
 		if sa.Templates().Get(ref.UUID) == nil {
-			missing(ref, nil)
+			callback(ref.InspectedReference, ref.TemplateReference, nil)
 		}
 	}
 
