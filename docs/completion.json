@@ -91,6 +91,11 @@
                     "type": "text"
                 },
                 {
+                    "key": "vk",
+                    "help": "Vk URN for the contact",
+                    "type": "text"
+                },
+                {
                     "key": "wechat",
                     "help": "Wechat URN for the contact",
                     "type": "text"

@@ -66,7 +66,7 @@ var templateTests = []struct {
 	{"@(contact.urns[0])", `tel:********`, "", true},
 
 	// simplified URN access
-	{"@urns", `{ext: , facebook: , fcm: , freshchat: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , wechat: , whatsapp: }`, "", false},
+	{"@urns", `{ext: , facebook: , fcm: , freshchat: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , wechat: , whatsapp: }`, "", false},
 	{"@urns.tel", `tel:+12065551212`, "", false},
 	{"@urns.mailto", `mailto:foo@bar.com`, "", false},
 	{"@urns.viber", ``, "", false},
@@ -500,6 +500,7 @@ func TestContextToJSON(t *testing.T) {
 					"twitter": null,
 					"twitterid": "twitterid:54784326227#nyaruka",
 					"viber": null,
+					"vk": null,
 					"wechat": null,
 					"whatsapp": null
 				},
@@ -626,6 +627,7 @@ func TestContextToJSON(t *testing.T) {
 					"twitter": null,
 					"twitterid": null,
 					"viber": null,
+					"vk": null,
 					"wechat": null,
 					"whatsapp": null
 				},
