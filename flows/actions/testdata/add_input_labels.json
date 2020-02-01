@@ -1,6 +1,6 @@
 [
     {
-        "description": "Validation fails for invalid label reference",
+        "description": "NOOP for invalid label reference",
         "action": {
             "type": "add_input_labels",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -11,7 +11,22 @@
                 }
             ]
         },
-        "dependencies_error": "missing dependencies: label[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbing]"
+        "events": [],
+        "templates": [],
+        "inspection": {
+            "dependencies": {
+                "labels": [
+                    {
+                        "missing": true,
+                        "name": "Climbing",
+                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6"
+                    }
+                ]
+            },
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
+        }
     },
     {
         "description": "Error event if session has no input",
@@ -54,12 +69,14 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "Spam@(1 / 0)"
+        ],
         "inspection": {
-            "templates": [
-                "Spam@(1 / 0)"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {

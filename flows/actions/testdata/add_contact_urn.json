@@ -16,12 +16,14 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "+1234567890"
+        ],
         "inspection": {
-            "templates": [
-                "+1234567890"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {

@@ -1,6 +1,6 @@
 [
     {
-        "description": "Validation fails for invalid classifier reference",
+        "description": "Error event for invalid classifier reference",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -11,7 +11,53 @@
             "input": "@input.text",
             "result_name": "Intent"
         },
-        "dependencies_error": "missing dependencies: classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "missing classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]",
+                "type": "error"
+            },
+            {
+                "category": "Failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "Hi everybody",
+                "name": "Intent",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "0"
+            }
+        ],
+        "templates": [
+            "@input.text"
+        ],
+        "inspection": {
+            "dependencies": {
+                "classifiers": [
+                    {
+                        "missing": true,
+                        "name": "Deleted",
+                        "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1"
+                    }
+                ]
+            },
+            "parent_refs": [],
+            "results": [
+                {
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "key": "intent",
+                    "name": "Intent",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ],
+            "waiting_exits": []
+        }
     },
     {
         "description": "Error event created and result with category skipped created if input evaluates to empty",
@@ -41,13 +87,19 @@
                 "value": "0"
             }
         ],
+        "templates": [
+            "@(\"\")"
+        ],
         "inspection": {
-            "templates": [
-                "@(\"\")"
-            ],
-            "dependencies": [
-                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
-            ],
+            "dependencies": {
+                "classifiers": [
+                    {
+                        "name": "Booking",
+                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
+                    }
+                ]
+            },
+            "parent_refs": [],
             "results": [
                 {
                     "categories": [
@@ -61,7 +113,8 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -122,13 +175,19 @@
                 "value": "greeting"
             }
         ],
+        "templates": [
+            "@input.text"
+        ],
         "inspection": {
-            "templates": [
-                "@input.text"
-            ],
-            "dependencies": [
-                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
-            ],
+            "dependencies": {
+                "classifiers": [
+                    {
+                        "name": "Booking",
+                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
+                    }
+                ]
+            },
+            "parent_refs": [],
             "results": [
                 {
                     "categories": [
@@ -142,7 +201,8 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -201,13 +261,19 @@
                 "value": "0"
             }
         ],
+        "templates": [
+            "@input.text"
+        ],
         "inspection": {
-            "templates": [
-                "@input.text"
-            ],
-            "dependencies": [
-                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
-            ],
+            "dependencies": {
+                "classifiers": [
+                    {
+                        "name": "Booking",
+                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
+                    }
+                ]
+            },
+            "parent_refs": [],
             "results": [
                 {
                     "categories": [
@@ -221,7 +287,8 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -279,13 +346,19 @@
                 "value": "0"
             }
         ],
+        "templates": [
+            "@input.text"
+        ],
         "inspection": {
-            "templates": [
-                "@input.text"
-            ],
-            "dependencies": [
-                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
-            ],
+            "dependencies": {
+                "classifiers": [
+                    {
+                        "name": "Booking",
+                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
+                    }
+                ]
+            },
+            "parent_refs": [],
             "results": [
                 {
                     "categories": [
@@ -299,7 +372,8 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     }
 ]

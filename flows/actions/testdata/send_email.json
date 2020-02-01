@@ -40,14 +40,16 @@
                 "type": "email_sent"
             }
         ],
+        "templates": [
+            "bob@example.com@(1 / 0)",
+            "Hi there@(1 / 0)",
+            "So I was thinking...@(1 / 0)"
+        ],
         "inspection": {
-            "templates": [
-                "bob@example.com@(1 / 0)",
-                "Hi there@(1 / 0)",
-                "So I was thinking...@(1 / 0)"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -193,16 +195,18 @@
                 "body": "Pues estuve pensando..."
             }
         ],
+        "templates": [
+            "bob@example.com",
+            "Hi there",
+            "Hola",
+            "So I was thinking...",
+            "Pues estuve pensando..."
+        ],
         "inspection": {
-            "templates": [
-                "bob@example.com",
-                "Hi there",
-                "Hola",
-                "So I was thinking...",
-                "Pues estuve pensando..."
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {

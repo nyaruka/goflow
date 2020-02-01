@@ -85,21 +85,6 @@ func TestBrokenFlows(t *testing.T) {
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
 			"",
 		},
-		{
-			"missing_assets.json",
-			"",
-			"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered],template[uuid=5722e1fd-fe32-4e74-ac78-3cf41a6adb7e,name=affirmation]",
-		},
-		{
-			"invalid_subflow.json",
-			"",
-			"missing dependencies: flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Child Flow] (unable to read action: field 'text' is required)",
-		},
-		{
-			"invalid_subflow_due_to_missing_asset.json",
-			"",
-			"invalid child flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Child Flow]: missing dependencies: group[uuid=f4cdde0a-97b1-469a-adb8-902bdfd19b0c,name=I Don't Exist!]",
-		},
 	}
 
 	for _, tc := range testCases {
@@ -109,15 +94,16 @@ func TestBrokenFlows(t *testing.T) {
 		sa, err := test.CreateSessionAssets(assetsJSON, "")
 		require.NoError(t, err, "unable to load assets: %s", tc.path)
 
-		flow, err := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+		_, err = sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 
 		if tc.readError != "" {
 			assert.EqualError(t, err, tc.readError, "read error mismatch for %s", tc.path)
 		} else {
 			require.NoError(t, err)
 
-			err = flow.CheckDependenciesRecursive(sa, nil)
-			assert.EqualError(t, err, tc.validationError, "validation error mismatch for %s", tc.path)
+			// TODO
+			//err = flow.CheckDependenciesRecursive(sa, nil)
+			//assert.EqualError(t, err, tc.validationError, "validation error mismatch for %s", tc.path)
 		}
 	}
 }
@@ -296,10 +282,6 @@ func TestNewFlow(t *testing.T) {
 
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
 
-	// shouldn't have any missing dependencies
-	err = flow.CheckDependencies(session.Assets(), nil)
-	assert.NoError(t, err)
-
 	// check in expressions
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"__default__": types.NewXText("Test Flow"),
@@ -309,7 +291,7 @@ func TestNewFlow(t *testing.T) {
 	}), flows.Context(session.Environment(), flow))
 
 	// check inspection
-	info := flow.Inspect()
+	info := flow.Inspect(session.Assets())
 	infoJSON, _ := json.Marshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
@@ -368,7 +350,7 @@ func TestEmptyFlow(t *testing.T) {
   	}`, definition.CurrentSpecVersion)
 	test.AssertEqualJSON(t, []byte(expected), marshaled, "flow definition mismatch")
 
-	info := flow.Inspect()
+	info := flow.Inspect(nil)
 
 	assert.Equal(t, &flows.Dependencies{}, info.Dependencies)
 	assert.Equal(t, []*flows.ResultInfo{}, info.Results)
@@ -553,7 +535,7 @@ func TestExtractTemplates(t *testing.T) {
 	}
 }
 
-func TestInspect(t *testing.T) {
+func TestInspection(t *testing.T) {
 	testCases := []struct {
 		path string
 		uuid string
@@ -578,13 +560,20 @@ func TestInspect(t *testing.T) {
 			"../../test/testdata/runner/triggered.json",
 			"ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
 		},
+		{
+			"../../test/testdata/runner/missing_dependencies.json",
+			"447efb41-c1e2-44f9-b906-4ed6b5031e59",
+		},
 	}
 
 	for _, tc := range testCases {
-		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		sa, err := test.LoadSessionAssets(tc.path)
 		require.NoError(t, err)
 
-		actualInfo := flow.Inspect()
+		flow, err := sa.Flows().Get(assets.FlowUUID(tc.uuid))
+		require.NoError(t, err)
+
+		actualInfo := flow.Inspect(sa)
 		actualJSON, _ := json.Marshal(actualInfo)
 
 		fileName := tc.path[strings.LastIndex(tc.path, "/"):]

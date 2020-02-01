@@ -1,6 +1,24 @@
 [
     {
-        "description": "Validation fails for invalid group reference",
+        "description": "NOOP if no recipients",
+        "action": {
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "type": "send_broadcast",
+            "text": "Hi there!"
+        },
+        "events": [],
+        "templates": [
+            "Hi there!"
+        ],
+        "inspection": {
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
+        }
+    },
+    {
+        "description": "NOOP if no recipients because of missing group depndency",
         "action": {
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "send_broadcast",
@@ -12,22 +30,23 @@
             ],
             "text": "Hi there!"
         },
-        "dependencies_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
-    },
-    {
-        "description": "NOOP if no recipients",
-        "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "type": "send_broadcast",
-            "text": "Hi there!"
-        },
         "events": [],
+        "templates": [
+            "Hi there!"
+        ],
         "inspection": {
-            "templates": [
-                "Hi there!"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {
+                "groups": [
+                    {
+                        "missing": true,
+                        "name": "Climbers",
+                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6"
+                    }
+                ]
+            },
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -95,20 +114,37 @@
                 ]
             }
         ],
+        "templates": [
+            "@(\"\")",
+            "@contact.fields.gender",
+            "@(\"0788123123\")",
+            "@contact.urn",
+            "Hi there!"
+        ],
         "inspection": {
-            "templates": [
-                "@(\"\")",
-                "@contact.fields.gender",
-                "@(\"0788123123\")",
-                "@contact.urn",
-                "Hi there!"
-            ],
-            "dependencies": [
-                "field[key=gender,name=]",
-                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]"
-            ],
-            "results": []
+            "dependencies": {
+                "contacts": [
+                    {
+                        "name": "Stavros",
+                        "uuid": "945493e3-933f-4668-9761-ce990fae5e5c"
+                    }
+                ],
+                "fields": [
+                    {
+                        "key": "gender",
+                        "name": ""
+                    }
+                ],
+                "groups": [
+                    {
+                        "name": "Testers",
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                    }
+                ]
+            },
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -177,19 +213,21 @@
                 ]
             }
         ],
+        "templates": [
+            "Hi there!",
+            "Hola!",
+            "http://example.com/red.jpg",
+            "http://example.com/rojo.jpg",
+            "Yes",
+            "No",
+            "Si",
+            "No"
+        ],
         "inspection": {
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [],
-            "templates": [
-                "Hi there!",
-                "Hola!",
-                "http://example.com/red.jpg",
-                "http://example.com/rojo.jpg",
-                "Yes",
-                "No",
-                "Si",
-                "No"
-            ]
+            "waiting_exits": []
         }
     }
 ]

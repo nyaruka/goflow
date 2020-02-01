@@ -45,24 +45,18 @@ func TestRouterTypes(t *testing.T) {
 	}
 }
 
-type inspectionResults struct {
-	Templates    []string            `json:"templates"`
-	Dependencies []string            `json:"dependencies"`
-	Results      []*flows.ResultInfo `json:"results"`
-}
-
 func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description       string             `json:"description"`
-		Router            json.RawMessage    `json:"router"`
-		ReadError         string             `json:"read_error"`
-		DependenciesError string             `json:"dependencies_error"`
-		Results           json.RawMessage    `json:"results"`
-		Events            []json.RawMessage  `json:"events"`
-		Inspection        *inspectionResults `json:"inspection"`
+		Description string            `json:"description"`
+		Router      json.RawMessage   `json:"router"`
+		ReadError   string            `json:"read_error"`
+		Results     json.RawMessage   `json:"results"`
+		Events      []json.RawMessage `json:"events"`
+		Templates   []string          `json:"templates"`
+		Inspection  json.RawMessage   `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -97,16 +91,6 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
-		// if this router is expected to return a dependencies error, check that
-		err = flow.CheckDependencies(sa, nil)
-		if tc.DependenciesError != "" {
-			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.DependenciesError, "dependencies error mismatch in %s", testName)
-			continue
-		} else {
-			assert.NoError(t, err, "unexpected dependencies error in %s", testName)
-		}
-
 		// load our contact
 		contact, err := flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
 		require.NoError(t, err)
@@ -132,19 +116,14 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		routerJSON, err := json.Marshal(flow.Nodes()[0].Router())
 		test.AssertEqualJSON(t, tc.Router, routerJSON, "marshal mismatch in %s", testName)
 
-		// finally try inspecting this router
+		// try extracting templates
 		templates := flow.ExtractTemplates()
-		assert.Equal(t, tc.Inspection.Templates, templates, "inspected templates mismatch in %s", testName)
+		assert.Equal(t, tc.Templates, templates, "extracted templates mismatch in %s", testName)
 
-		dependencies := flow.ExtractDependencies()
-		depStrings := make([]string, len(dependencies))
-		for i := range dependencies {
-			depStrings[i] = dependencies[i].String()
-		}
-		assert.Equal(t, tc.Inspection.Dependencies, depStrings, "inspected dependencies mismatch in %s", testName)
-
-		results := flow.Inspect().Results
-		assert.Equal(t, tc.Inspection.Results, results, "inspected results mismatch in %s", testName)
+		// finally try inspecting
+		actualInspection := flow.Inspect(sa)
+		actualInspectionJSON, _ := json.Marshal(actualInspection)
+		test.AssertEqualJSON(t, tc.Inspection, actualInspectionJSON, "inspection mismatch in %s", testName)
 	}
 }
 

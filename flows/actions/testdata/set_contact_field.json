@@ -1,18 +1,5 @@
 [
     {
-        "description": "Validation fails for invalid field reference",
-        "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "type": "set_contact_field",
-            "field": {
-                "key": "score",
-                "name": "Score"
-            },
-            "value": "123"
-        },
-        "dependencies_error": "missing dependencies: field[key=score,name=Score]"
-    },
-    {
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
@@ -32,14 +19,21 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "30"
+        ],
         "inspection": {
-            "templates": [
-                "30"
-            ],
-            "dependencies": [
-                "field[key=age,name=Age]"
-            ],
-            "results": []
+            "dependencies": {
+                "fields": [
+                    {
+                        "key": "age",
+                        "name": "Age"
+                    }
+                ]
+            },
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -61,14 +55,21 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "@( 1/ 0)"
+        ],
         "inspection": {
-            "templates": [
-                "@( 1/ 0)"
-            ],
-            "dependencies": [
-                "field[key=age,name=Age]"
-            ],
-            "results": []
+            "dependencies": {
+                "fields": [
+                    {
+                        "key": "age",
+                        "name": "Age"
+                    }
+                ]
+            },
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -263,5 +264,18 @@
             ],
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
         }
+    },
+    {
+        "description": "NOOP if field doesn't exist",
+        "action": {
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "type": "set_contact_field",
+            "field": {
+                "key": "score",
+                "name": "Score"
+            },
+            "value": "123"
+        },
+        "events": []
     }
 ]

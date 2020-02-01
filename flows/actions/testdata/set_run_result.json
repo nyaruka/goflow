@@ -16,23 +16,25 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "@(1 / 0)"
+        ],
         "inspection": {
-            "templates": [
-                "@(1 / 0)"
-            ],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "response_1",
-                    "name": "Response 1",
                     "categories": [
                         "Yes"
                     ],
+                    "key": "response_1",
+                    "name": "Response 1",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -54,25 +56,32 @@
                 "value": "Male"
             }
         ],
+        "templates": [
+            "@fields.Gender"
+        ],
         "inspection": {
-            "templates": [
-                "@fields.Gender"
-            ],
-            "dependencies": [
-                "field[key=gender,name=]"
-            ],
+            "dependencies": {
+                "fields": [
+                    {
+                        "key": "gender",
+                        "name": ""
+                    }
+                ]
+            },
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "response_1",
-                    "name": "Response 1",
                     "categories": [
                         "Set"
                     ],
+                    "key": "response_1",
+                    "name": "Response 1",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -94,23 +103,25 @@
                 "value": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus"
             }
         ],
+        "templates": [
+            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+        ],
         "inspection": {
-            "templates": [
-                "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-            ],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "response_1",
-                    "name": "Response 1",
                     "categories": [
                         "Yes"
                     ],
+                    "key": "response_1",
+                    "name": "Response 1",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -131,19 +142,21 @@
                 "category": ""
             }
         ],
+        "templates": [],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
+                    "categories": [],
                     "key": "response_1",
                     "name": "Response 1",
-                    "categories": [],
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -175,23 +188,25 @@
                 "category_localized": "Si"
             }
         ],
+        "templates": [
+            "yeah"
+        ],
         "inspection": {
-            "templates": [
-                "yeah"
-            ],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "preference",
-                    "name": "Preference",
                     "categories": [
                         "Yes"
                     ],
+                    "key": "preference",
+                    "name": "Preference",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     }
 ]

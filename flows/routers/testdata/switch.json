@@ -135,38 +135,6 @@
         "read_error": "case test has_any_icecream is not a registered test function"
     },
     {
-        "description": "Validation fails for has_group test with missing group dependency",
-        "router": {
-            "type": "switch",
-            "result_name": "In Group",
-            "categories": [
-                {
-                    "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
-                    "name": "Yes",
-                    "exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
-                },
-                {
-                    "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-                    "name": "Other",
-                    "exit_uuid": "b787ffe3-c21a-46ad-9475-954614b52477"
-                }
-            ],
-            "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-            "operand": "@contact.groups",
-            "cases": [
-                {
-                    "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
-                    "type": "has_group",
-                    "arguments": [
-                        "aa33640b-43b0-4df2-992c-ba357981da71"
-                    ],
-                    "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
-                }
-            ]
-        },
-        "dependencies_error": "missing dependencies: group[uuid=aa33640b-43b0-4df2-992c-ba357981da71,name=]"
-    },
-    {
         "description": "Result created with matching test result",
         "router": {
             "type": "switch",
@@ -230,27 +198,29 @@
                 "value": "YES"
             }
         ],
+        "templates": [
+            "@(\"YES!!\")",
+            "yes",
+            "no"
+        ],
         "inspection": {
-            "templates": [
-                "@(\"YES!!\")",
-                "yes",
-                "no"
-            ],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "favorite_color",
-                    "name": "Favorite Color",
                     "categories": [
                         "Yes",
                         "No",
                         "Other"
                     ],
+                    "key": "favorite_color",
+                    "name": "Favorite Color",
                     "node_uuids": [
                         "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -310,29 +280,117 @@
                 "value": "[]"
             }
         ],
+        "templates": [
+            "@contact.groups",
+            "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+            "Testers"
+        ],
         "inspection": {
-            "templates": [
-                "@contact.groups",
-                "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                "Testers"
-            ],
-            "dependencies": [
-                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]"
-            ],
+            "dependencies": {
+                "groups": [
+                    {
+                        "name": "Testers",
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                    }
+                ]
+            },
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "is_member",
-                    "name": "Is Member",
                     "categories": [
                         "Yes",
                         "No",
                         "Other"
                     ],
+                    "key": "is_member",
+                    "name": "Is Member",
                     "node_uuids": [
                         "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
+            ],
+            "waiting_exits": []
+        }
+    },
+    {
+        "description": "Result is other if group dependency is missing",
+        "router": {
+            "type": "switch",
+            "result_name": "In Group",
+            "categories": [
+                {
+                    "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                    "name": "Yes",
+                    "exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
+                },
+                {
+                    "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                    "name": "Other",
+                    "exit_uuid": "b787ffe3-c21a-46ad-9475-954614b52477"
+                }
+            ],
+            "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+            "operand": "@contact.groups",
+            "cases": [
+                {
+                    "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                    "type": "has_group",
+                    "arguments": [
+                        "aa33640b-43b0-4df2-992c-ba357981da71"
+                    ],
+                    "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                }
             ]
+        },
+        "results": {
+            "in_group": {
+                "category": "Other",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "[]",
+                "name": "In Group",
+                "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
+                "value": "[]"
+            }
+        },
+        "events": [
+            {
+                "category": "Other",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input": "[]",
+                "name": "In Group",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "run_result_changed",
+                "value": "[]"
+            }
+        ],
+        "templates": [
+            "@contact.groups",
+            "aa33640b-43b0-4df2-992c-ba357981da71"
+        ],
+        "inspection": {
+            "dependencies": {
+                "groups": [
+                    {
+                        "missing": true,
+                        "uuid": "aa33640b-43b0-4df2-992c-ba357981da71"
+                    }
+                ]
+            },
+            "parent_refs": [],
+            "results": [
+                {
+                    "categories": [
+                        "Yes",
+                        "Other"
+                    ],
+                    "key": "in_group",
+                    "name": "In Group",
+                    "node_uuids": [
+                        "64373978-e8f6-4973-b6ff-a2993f3376fc"
+                    ]
+                }
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -399,27 +457,29 @@
                 "value": "YES"
             }
         ],
+        "templates": [
+            "@(\"YES!!\")",
+            "yes",
+            "yes"
+        ],
         "inspection": {
-            "templates": [
-                "@(\"YES!!\")",
-                "yes",
-                "yes"
-            ],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "favorite_color",
-                    "name": "Favorite Color",
                     "categories": [
                         "Yes",
                         "Yes Again",
                         "Other"
                     ],
+                    "key": "favorite_color",
+                    "name": "Favorite Color",
                     "node_uuids": [
                         "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -469,26 +529,28 @@
                 "type": "failure"
             }
         ],
+        "templates": [
+            "@(\"xxxxx\")",
+            "yes",
+            "no"
+        ],
         "inspection": {
-            "templates": [
-                "@(\"xxxxx\")",
-                "yes",
-                "no"
-            ],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "favorite_color",
-                    "name": "Favorite Color",
                     "categories": [
                         "Yes",
                         "No"
                     ],
+                    "key": "favorite_color",
+                    "name": "Favorite Color",
                     "node_uuids": [
                         "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     }
 ]

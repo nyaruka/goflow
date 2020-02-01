@@ -3,7 +3,6 @@ package definition
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -105,86 +104,15 @@ func (f *flow) validate() error {
 }
 
 // Inspect enumerates dependencies, results etc
-func (f *flow) Inspect() *flows.FlowInfo {
+func (f *flow) Inspect(sa flows.SessionAssets) *flows.FlowInfo {
 	assetRefs, parentRefs := f.extractAssetAndParentRefs()
 
 	return &flows.FlowInfo{
-		Dependencies: flows.NewDependencies(assetRefs),
+		Dependencies: flows.NewDependencies(assetRefs, sa),
 		Results:      f.extractResults(),
 		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,
 	}
-}
-
-// CheckDepenencies checks that all of this flow's dependencies exist
-func (f *flow) CheckDependencies(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	return f.checkDependencies(sa, false, nil, missing)
-}
-
-// CheckDepenencies checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
-func (f *flow) CheckDependenciesRecursive(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	seen := make(map[assets.FlowUUID]bool)
-
-	return f.checkDependencies(sa, true, seen, missing)
-}
-
-type brokenDependency struct {
-	dependency assets.Reference
-	reason     error
-}
-
-func (f *flow) checkDependencies(sa flows.SessionAssets, recursive bool, seen map[assets.FlowUUID]bool, missing func(assets.Reference)) error {
-	// prevent looping if recursive
-	if recursive && seen[f.UUID()] {
-		return nil
-	}
-
-	// extract all dependencies (assets, contacts)
-	deps := flows.NewDependencies(f.ExtractDependencies())
-
-	// check dependencies actually exist
-	missingAssets := make([]brokenDependency, 0)
-	err := deps.Check(sa, func(r assets.Reference, err error) {
-		missingAssets = append(missingAssets, brokenDependency{r, err})
-	})
-	if err != nil {
-		return err
-	}
-
-	if len(missingAssets) > 0 {
-		// if we have callback for missing dependencies, call that
-		if missing != nil {
-			for _, ma := range missingAssets {
-				missing(ma.dependency)
-			}
-		} else {
-			// otherwise error
-			depStrings := make([]string, len(missingAssets))
-			for i, ma := range missingAssets {
-				depStrings[i] = ma.dependency.String()
-				if ma.reason != nil {
-					depStrings[i] += fmt.Sprintf(" (%s)", ma.reason)
-				}
-			}
-			return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
-		}
-	}
-
-	if recursive {
-		seen[f.UUID()] = true
-
-		// go check any non-missing flow dependencies
-		for _, flowRef := range deps.Flows {
-			flowDep, err := sa.Flows().Get(flowRef.UUID)
-			if err == nil {
-				if err := flowDep.(*flow).checkDependencies(sa, true, seen, missing); err != nil {
-					return errors.Wrapf(err, "invalid child %s", flowRef)
-				}
-			}
-		}
-	}
-
-	return nil
 }
 
 // Context returns the properties available in expressions
@@ -226,12 +154,6 @@ func (f *flow) ExtractTemplates() []string {
 	}
 
 	return templates
-}
-
-// ExtractDependencies extracts all asset dependencies
-func (f *flow) ExtractDependencies() []assets.Reference {
-	assetRefs, _ := f.extractAssetAndParentRefs()
-	return assetRefs
 }
 
 // ExtractDependencies extracts all asset dependencies

@@ -31,12 +31,14 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "@(1 / 0)"
+        ],
         "inspection": {
-            "templates": [
-                "@(1 / 0)"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -54,12 +56,14 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "xxxxxxxxxx"
+        ],
         "inspection": {
-            "templates": [
-                "xxxxxxxxxx"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {

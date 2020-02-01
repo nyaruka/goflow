@@ -67,34 +67,27 @@ func TestActionTypes(t *testing.T) {
 	}
 }
 
-type inspectionResults struct {
-	Templates    []string            `json:"templates"`
-	Dependencies []string            `json:"dependencies"`
-	Results      []*flows.ResultInfo `json:"results"`
-}
-
 func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description       string               `json:"description"`
-		HTTPMocks         *httpx.MockRequestor `json:"http_mocks"`
-		SMTPError         string               `json:"smtp_error"`
-		NoContact         bool                 `json:"no_contact"`
-		NoURNs            bool                 `json:"no_urns"`
-		NoInput           bool                 `json:"no_input"`
-		RedactURNs        bool                 `json:"redact_urns"`
-		Action            json.RawMessage      `json:"action"`
-		Localization      json.RawMessage      `json:"localization"`
-		InFlowType        flows.FlowType       `json:"in_flow_type"`
-		ReadError         string               `json:"read_error"`
-		DependenciesError string               `json:"dependencies_error"`
-		SkipValidation    bool                 `json:"skip_validation"`
-		Events            []json.RawMessage    `json:"events"`
-		Webhook           json.RawMessage      `json:"webhook"`
-		ContactAfter      json.RawMessage      `json:"contact_after"`
-		Inspection        json.RawMessage      `json:"inspection"`
+		Description  string               `json:"description"`
+		HTTPMocks    *httpx.MockRequestor `json:"http_mocks"`
+		SMTPError    string               `json:"smtp_error"`
+		NoContact    bool                 `json:"no_contact"`
+		NoURNs       bool                 `json:"no_urns"`
+		NoInput      bool                 `json:"no_input"`
+		RedactURNs   bool                 `json:"redact_urns"`
+		Action       json.RawMessage      `json:"action"`
+		Localization json.RawMessage      `json:"localization"`
+		InFlowType   flows.FlowType       `json:"in_flow_type"`
+		ReadError    string               `json:"read_error"`
+		Events       []json.RawMessage    `json:"events"`
+		Webhook      json.RawMessage      `json:"webhook"`
+		ContactAfter json.RawMessage      `json:"contact_after"`
+		Templates    []string             `json:"templates"`
+		Inspection   json.RawMessage      `json:"inspection"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -148,16 +141,6 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			continue
 		} else {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
-		}
-
-		// if this action is expected to cause a dependencies error, check that
-		err = flow.CheckDependencies(sa, nil)
-		if tc.DependenciesError != "" {
-			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.DependenciesError, "dependencies error mismatch in %s", testName)
-			continue
-		} else if !tc.SkipValidation {
-			assert.NoError(t, err, "unexpected dependencies error in %s", testName)
 		}
 
 		// optionally load our contact
@@ -260,22 +243,17 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		actionJSON, err := json.Marshal(flow.Nodes()[0].Actions()[0])
 		test.AssertEqualJSON(t, tc.Action, actionJSON, "marshal mismatch in %s", testName)
 
-		// finally try inspecting this action
+		// try extracting templates
+		if tc.Templates != nil {
+			templates := flow.ExtractTemplates()
+			assert.Equal(t, tc.Templates, templates, "extracted templates mismatch in %s", testName)
+		}
+
+		// finally try inspecting
 		if tc.Inspection != nil {
-			dependencies := flow.ExtractDependencies()
-			depStrings := make([]string, len(dependencies))
-			for i := range dependencies {
-				depStrings[i] = dependencies[i].String()
-			}
-
-			actual := &inspectionResults{
-				Templates:    flow.ExtractTemplates(),
-				Dependencies: depStrings,
-				Results:      flow.Inspect().Results,
-			}
-
-			actualJSON, _ := json.Marshal(actual)
-			test.AssertEqualJSON(t, tc.Inspection, actualJSON, "inspection mismatch in %s", testName)
+			actualInspection := flow.Inspect(sa)
+			actualInspectionJSON, _ := json.Marshal(actualInspection)
+			test.AssertEqualJSON(t, tc.Inspection, actualInspectionJSON, "inspection mismatch in %s", testName)
 		}
 	}
 }

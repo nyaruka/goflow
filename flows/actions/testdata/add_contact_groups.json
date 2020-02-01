@@ -1,6 +1,6 @@
 [
     {
-        "description": "Validation fails for invalid group reference",
+        "description": "NOOP for invalid group reference",
         "action": {
             "type": "add_contact_groups",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -11,7 +11,22 @@
                 }
             ]
         },
-        "dependencies_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
+        "events": [],
+        "templates": [],
+        "inspection": {
+            "dependencies": {
+                "groups": [
+                    {
+                        "missing": true,
+                        "name": "Climbers",
+                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6"
+                    }
+                ]
+            },
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
+        }
     },
     {
         "description": "Error event if session has no contact",
@@ -75,12 +90,14 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "Customers@(1 / 0)"
+        ],
         "inspection": {
-            "templates": [
-                "Customers@(1 / 0)"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -102,12 +119,14 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "Climbers"
+        ],
         "inspection": {
-            "templates": [
-                "Climbers"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {

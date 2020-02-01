@@ -16,12 +16,14 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "@(1 / 0).mp3"
+        ],
         "inspection": {
-            "templates": [
-                "@(1 / 0).mp3"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -41,12 +43,14 @@
                 "type": "error"
             }
         ],
+        "templates": [
+            "@(\"\")"
+        ],
         "inspection": {
-            "templates": [
-                "@(\"\")"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -77,12 +81,14 @@
                 "type": "ivr_created"
             }
         ],
+        "templates": [
+            "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
+        ],
         "inspection": {
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [],
-            "templates": [
-                "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
-            ]
+            "waiting_exits": []
         }
     },
     {
@@ -122,13 +128,15 @@
                 "type": "ivr_created"
             }
         ],
+        "templates": [
+            "http://uploads.temba.io/welcome/@(contact.uuid).m4a",
+            "http://uploads.temba.io/bienvenido/@(contact.uuid).m4a"
+        ],
         "inspection": {
-            "dependencies": [],
-            "templates": [
-                "http://uploads.temba.io/welcome/@(contact.uuid).m4a",
-                "http://uploads.temba.io/bienvenido/@(contact.uuid).m4a"
-            ],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     }
 ]

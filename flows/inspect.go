@@ -78,86 +78,73 @@ type Dependencies struct {
 	Templates   []InspectedTemplateReference   `json:"templates,omitempty"`
 }
 
-// NewDependencies creates a new dependency listing from the slice of references
-func NewDependencies(refs []assets.Reference) *Dependencies {
+// NewDependencies creates a new dependency listing from the slice of references. If a session assets is provided,
+// each dependency is checked to see if it is available or missing.
+func NewDependencies(refs []assets.Reference, sa SessionAssets) *Dependencies {
 	d := &Dependencies{}
 	for _, r := range refs {
 		switch typed := r.(type) {
 		case *assets.ChannelReference:
-			d.Channels = append(d.Channels, InspectedChannelReference{ChannelReference: typed})
+			missing := sa != nil && sa.Channels().Get(typed.UUID) == nil
+			d.Channels = append(d.Channels, InspectedChannelReference{
+				ChannelReference:   typed,
+				InspectedReference: InspectedReference{Missing: missing},
+			})
 		case *assets.ClassifierReference:
-			d.Classifiers = append(d.Classifiers, InspectedClassifierReference{ClassifierReference: typed})
+			missing := sa != nil && sa.Classifiers().Get(typed.UUID) == nil
+			d.Classifiers = append(d.Classifiers, InspectedClassifierReference{
+				ClassifierReference: typed,
+				InspectedReference:  InspectedReference{Missing: missing},
+			})
 		case *ContactReference:
-			d.Contacts = append(d.Contacts, InspectedContactReference{ContactReference: typed})
+			d.Contacts = append(d.Contacts, InspectedContactReference{
+				ContactReference: typed,
+			})
 		case *assets.FieldReference:
-			d.Fields = append(d.Fields, InspectedFieldReference{FieldReference: typed})
+			missing := sa != nil && sa.Fields().Get(typed.Key) == nil
+			d.Fields = append(d.Fields, InspectedFieldReference{
+				FieldReference:     typed,
+				InspectedReference: InspectedReference{Missing: missing},
+			})
 		case *assets.FlowReference:
-			d.Flows = append(d.Flows, InspectedFlowReference{FlowReference: typed})
+			missing := false
+			if sa != nil {
+				_, err := sa.Flows().Get(typed.UUID)
+				missing = err != nil
+			}
+			d.Flows = append(d.Flows, InspectedFlowReference{
+				FlowReference:      typed,
+				InspectedReference: InspectedReference{Missing: missing},
+			})
 		case *assets.GlobalReference:
-			d.Globals = append(d.Globals, InspectedGlobalReference{GlobalReference: typed})
+			missing := sa != nil && sa.Globals().Get(typed.Key) == nil
+			d.Globals = append(d.Globals, InspectedGlobalReference{
+				GlobalReference:    typed,
+				InspectedReference: InspectedReference{Missing: missing},
+			})
 		case *assets.GroupReference:
-			d.Groups = append(d.Groups, InspectedGroupReference{GroupReference: typed})
+			missing := sa != nil && sa.Groups().Get(typed.UUID) == nil
+			d.Groups = append(d.Groups, InspectedGroupReference{
+				GroupReference:     typed,
+				InspectedReference: InspectedReference{Missing: missing},
+			})
 		case *assets.LabelReference:
-			d.Labels = append(d.Labels, InspectedLabelReference{LabelReference: typed})
+			missing := sa != nil && sa.Labels().Get(typed.UUID) == nil
+			d.Labels = append(d.Labels, InspectedLabelReference{
+				LabelReference:     typed,
+				InspectedReference: InspectedReference{Missing: missing},
+			})
 		case *assets.TemplateReference:
-			d.Templates = append(d.Templates, InspectedTemplateReference{TemplateReference: typed})
+			missing := sa != nil && sa.Templates().Get(typed.UUID) == nil
+			d.Templates = append(d.Templates, InspectedTemplateReference{
+				TemplateReference:  typed,
+				InspectedReference: InspectedReference{Missing: missing},
+			})
 		default:
 			panic(fmt.Sprintf("unknown dependency type reference: %v", r))
 		}
 	}
 	return d
-}
-
-// Check checks the asset dependencies and notifies the caller of missing assets via the callback
-func (d *Dependencies) Check(sa SessionAssets, missing assets.MissingCallback) error {
-	callback := func(iref InspectedReference, ref assets.Reference, err error) {
-		iref.Missing = true
-		missing(ref, err)
-	}
-
-	for _, ref := range d.Channels {
-		if sa.Channels().Get(ref.UUID) == nil {
-			callback(ref.InspectedReference, ref.ChannelReference, nil)
-		}
-	}
-	for _, ref := range d.Classifiers {
-		if sa.Classifiers().Get(ref.UUID) == nil {
-			callback(ref.InspectedReference, ref.ClassifierReference, nil)
-		}
-	}
-	for _, ref := range d.Fields {
-		if sa.Fields().Get(ref.Key) == nil {
-			callback(ref.InspectedReference, ref.FieldReference, nil)
-		}
-	}
-	for _, ref := range d.Flows {
-		_, err := sa.Flows().Get(ref.UUID)
-		if err != nil {
-			callback(ref.InspectedReference, ref.FlowReference, err)
-		}
-	}
-	for _, ref := range d.Globals {
-		if sa.Globals().Get(ref.Key) == nil {
-			callback(ref.InspectedReference, ref.GlobalReference, nil)
-		}
-	}
-	for _, ref := range d.Groups {
-		if sa.Groups().Get(ref.UUID) == nil {
-			callback(ref.InspectedReference, ref.GroupReference, nil)
-		}
-	}
-	for _, ref := range d.Labels {
-		if sa.Labels().Get(ref.UUID) == nil {
-			callback(ref.InspectedReference, ref.LabelReference, nil)
-		}
-	}
-	for _, ref := range d.Templates {
-		if sa.Templates().Get(ref.UUID) == nil {
-			callback(ref.InspectedReference, ref.TemplateReference, nil)
-		}
-	}
-
-	return nil
 }
 
 // ResultInfo is possible result that a flow might generate

@@ -15,20 +15,6 @@
         "read_error": "can't specify specific groups when all_groups=true"
     },
     {
-        "description": "Validation fails for invalid group reference",
-        "action": {
-            "type": "remove_contact_groups",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "groups": [
-                {
-                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                    "name": "Climbers"
-                }
-            ]
-        },
-        "dependencies_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
-    },
-    {
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
@@ -152,6 +138,35 @@
                 "twitterid:54784326227#nyaruka"
             ],
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        }
+    },
+    {
+        "description": "NOOP for invalid group reference",
+        "action": {
+            "type": "remove_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbers"
+                }
+            ]
+        },
+        "events": [],
+        "templates": [],
+        "inspection": {
+            "dependencies": {
+                "groups": [
+                    {
+                        "missing": true,
+                        "name": "Climbers",
+                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6"
+                    }
+                ]
+            },
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     }
 ]

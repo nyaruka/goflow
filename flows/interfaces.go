@@ -145,12 +145,8 @@ type Flow interface {
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
 
-	Inspect() *FlowInfo
-	CheckDependencies(SessionAssets, func(assets.Reference)) error
-	CheckDependenciesRecursive(SessionAssets, func(assets.Reference)) error
-
+	Inspect(sa SessionAssets) *FlowInfo
 	ExtractTemplates() []string
-	ExtractDependencies() []assets.Reference
 }
 
 // Node is a single node in a flow

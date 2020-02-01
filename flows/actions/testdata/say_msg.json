@@ -46,12 +46,14 @@
                 "type": "ivr_created"
             }
         ],
+        "templates": [
+            "Hi there @contact.name"
+        ],
         "inspection": {
-            "templates": [
-                "Hi there @contact.name"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -121,13 +123,15 @@
                 "type": "ivr_created"
             }
         ],
+        "templates": [
+            "Hi there @contact.name",
+            "Hola @contact.name"
+        ],
         "inspection": {
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [],
-            "templates": [
-                "Hi there @contact.name",
-                "Hola @contact.name"
-            ]
+            "waiting_exits": []
         }
     }
 ]

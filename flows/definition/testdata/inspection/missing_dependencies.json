@@ -1,0 +1,28 @@
+{
+    "dependencies": {
+        "fields": [
+            {
+                "key": "about_me",
+                "missing": true,
+                "name": ""
+            }
+        ],
+        "groups": [
+            {
+                "missing": true,
+                "name": "Customers",
+                "uuid": "83452c2e-d6e4-4fae-950a-156064e40068"
+            }
+        ],
+        "labels": [
+            {
+                "missing": true,
+                "name": "Interesting",
+                "uuid": "a8a6d847-0785-4f97-a8f8-3af98ed111a0"
+            }
+        ]
+    },
+    "parent_refs": [],
+    "results": [],
+    "waiting_exits": []
+}

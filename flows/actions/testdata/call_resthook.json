@@ -7,10 +7,12 @@
             "resthook": "doesnt-exist"
         },
         "events": [],
+        "templates": [],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -114,10 +116,12 @@
                 "url": "http://unavailable.com/"
             }
         ],
+        "templates": [],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "parent_refs": [],
+            "results": [],
+            "waiting_exits": []
         }
     },
     {
@@ -241,22 +245,24 @@
                 "service unavailable"
             ]
         },
+        "templates": [],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "my_result",
-                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
+                    "key": "my_result",
+                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -376,22 +382,24 @@
         "webhook": {
             "ok": "true"
         },
+        "templates": [],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "my_result",
-                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
+                    "key": "my_result",
+                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -466,22 +474,24 @@
                 "value": "no subscribers"
             }
         ],
+        "templates": [],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "my_result",
-                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
+                    "key": "my_result",
+                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -586,22 +596,24 @@
                 "service unavailable"
             ]
         },
+        "templates": [],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "my_result",
-                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
+                    "key": "my_result",
+                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     },
     {
@@ -677,22 +689,24 @@
                 "value": "no subscribers"
             }
         ],
+        "templates": [],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
+            "parent_refs": [],
             "results": [
                 {
-                    "key": "my_result",
-                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
+                    "key": "my_result",
+                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": []
         }
     }
 ]
