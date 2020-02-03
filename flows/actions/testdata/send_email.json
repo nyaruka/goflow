@@ -12,32 +12,32 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @(1 / 0): division by zero",
-                "type": "error"
+                "text": "error evaluating @(1 / 0): division by zero"
             },
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @(1 / 0): division by zero",
-                "type": "error"
+                "text": "error evaluating @(1 / 0): division by zero"
             },
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @(1 / 0): division by zero",
-                "type": "error"
+                "text": "error evaluating @(1 / 0): division by zero"
             },
             {
+                "type": "email_sent",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "to": [
                     "bob@example.com"
                 ],
-                "body": "So I was thinking...",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "subject": "Hi there",
-                "type": "email_sent"
+                "body": "So I was thinking..."
             }
         ],
         "inspection": {
@@ -63,10 +63,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "email subject evaluated to empty string, skipping",
-                "type": "error"
+                "text": "email subject evaluated to empty string, skipping"
             }
         ]
     },
@@ -83,14 +83,14 @@
         },
         "events": [
             {
+                "type": "email_sent",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "to": [
                     "bob@example.com"
                 ],
-                "body": "So I was thinking...",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "subject": "Hi there Bob",
-                "type": "email_sent"
+                "body": "So I was thinking..."
             }
         ]
     },
@@ -107,10 +107,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "email body evaluated to empty string, skipping",
-                "type": "error"
+                "text": "email body evaluated to empty string, skipping"
             }
         ]
     },
@@ -127,10 +127,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "email address evaluated to empty string, skipping",
-                "type": "error"
+                "text": "email address evaluated to empty string, skipping"
             }
         ]
     },
@@ -219,10 +219,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "unable to send email: oops can't send",
-                "type": "error"
+                "text": "unable to send email: oops can't send"
             }
         ]
     }

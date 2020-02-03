@@ -16,8 +16,8 @@
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "field": {
                 "key": "age",
                 "name": "Age"
@@ -26,10 +26,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without a contact",
-                "type": "error"
+                "text": "can't execute action in session without a contact"
             }
         ],
         "inspection": {
@@ -45,8 +45,8 @@
     {
         "description": "Error event and action skipped if value contains expression error",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "field": {
                 "key": "age",
                 "name": "Age"
@@ -55,10 +55,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @( 1/ 0): division by zero",
-                "type": "error"
+                "text": "error evaluating @( 1/ 0): division by zero"
             }
         ],
         "inspection": {
@@ -74,8 +74,8 @@
     {
         "description": "NOOP if contact field value not changed",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "field": {
                 "key": "gender",
                 "name": "Gender"
@@ -87,8 +87,8 @@
     {
         "description": "Field changed event and dynamic group changed events if field value changes",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "field": {
                 "key": "gender",
                 "name": "Gender"
@@ -97,67 +97,67 @@
         },
         "events": [
             {
+                "type": "contact_field_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "field": {
                     "key": "gender",
                     "name": "Gender"
                 },
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_field_changed",
                 "value": {
                     "text": "Female"
                 }
             },
             {
+                "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "groups_added": [
                     {
-                        "name": "Females",
-                        "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803"
+                        "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
+                        "name": "Females"
                     }
                 ],
                 "groups_removed": [
                     {
-                        "name": "Males",
-                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
+                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                        "name": "Males"
                     }
-                ],
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_groups_changed"
+                ]
             }
         ],
         "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\u0026id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
+                    "name": "Females"
+                }
+            ],
             "fields": {
                 "gender": {
                     "text": "Female"
                 }
-            },
-            "groups": [
-                {
-                    "name": "Testers",
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-                },
-                {
-                    "name": "Females",
-                    "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803"
-                }
-            ],
-            "language": "eng",
-            "name": "Ryan Lewis",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "twitterid:54784326227#nyaruka"
-            ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            }
         }
     },
     {
         "description": "Field changed event and dynamic group changed events if field cleared",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "field": {
                 "key": "gender",
                 "name": "Gender"
@@ -166,50 +166,50 @@
         },
         "events": [
             {
+                "type": "contact_field_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "field": {
                     "key": "gender",
                     "name": "Gender"
                 },
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_field_changed",
                 "value": null
             },
             {
+                "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "groups_removed": [
                     {
-                        "name": "Males",
-                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
+                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                        "name": "Males"
                     }
-                ],
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_groups_changed"
+                ]
             }
         ],
         "contact_after": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
-            "groups": [
-                {
-                    "name": "Testers",
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-                }
-            ],
-            "language": "eng",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Ryan Lewis",
+            "language": "eng",
             "timezone": "America/Guayaquil",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\u0026id=123",
                 "twitterid:54784326227#nyaruka"
             ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ]
         }
     },
     {
         "description": "Field value truncated if too long",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_field",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "field": {
                 "key": "gender",
                 "name": "Gender"
@@ -218,50 +218,50 @@
         },
         "events": [
             {
+                "type": "contact_field_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "field": {
                     "key": "gender",
                     "name": "Gender"
                 },
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_field_changed",
                 "value": {
                     "text": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus"
                 }
             },
             {
+                "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "groups_removed": [
                     {
-                        "name": "Males",
-                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
+                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                        "name": "Males"
                     }
-                ],
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_groups_changed"
+                ]
             }
         ],
         "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\u0026id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ],
             "fields": {
                 "gender": {
                     "text": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus"
                 }
-            },
-            "groups": [
-                {
-                    "name": "Testers",
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-                }
-            ],
-            "language": "eng",
-            "name": "Ryan Lewis",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "twitterid:54784326227#nyaruka"
-            ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            }
         }
     }
 ]

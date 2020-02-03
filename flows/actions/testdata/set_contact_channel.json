@@ -15,8 +15,8 @@
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_channel",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "channel": {
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "name": "My Android Phone"
@@ -24,18 +24,18 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without a contact",
-                "type": "error"
+                "text": "can't execute action in session without a contact"
             }
         ]
     },
     {
         "description": "NOOP if channel doesn't change",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_channel",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "channel": {
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "name": "My Android Phone"
@@ -46,8 +46,8 @@
     {
         "description": "URNs changed event if channel is changed",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_channel",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "channel": {
                 "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
                 "name": "Nexmo"
@@ -55,11 +55,11 @@
         },
         "events": [
             {
+                "type": "contact_urns_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_urns_changed",
                 "urns": [
-                    "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
+                    "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7\u0026id=123",
                     "twitterid:54784326227#nyaruka"
                 ]
             }
@@ -68,8 +68,8 @@
     {
         "description": "URNs changed event if channel is changed on non-tel URN without an existing channel",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_channel",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "channel": {
                 "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
                 "name": "Twitter Channel"
@@ -77,12 +77,12 @@
         },
         "events": [
             {
+                "type": "contact_urns_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_urns_changed",
                 "urns": [
                     "twitterid:54784326227?channel=8e21f093-99aa-413b-b55b-758b54308fcb#nyaruka",
-                    "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123"
+                    "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\u0026id=123"
                 ]
             }
         ]
@@ -90,15 +90,15 @@
     {
         "description": "URNs changed event if channel is cleared",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_channel",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "channel": null
         },
         "events": [
             {
+                "type": "contact_urns_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_urns_changed",
                 "urns": [
                     "tel:+12065551212?id=123",
                     "twitterid:54784326227#nyaruka"

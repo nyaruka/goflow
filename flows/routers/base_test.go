@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/random"
 	"github.com/nyaruka/goflow/utils/uuids"
@@ -52,17 +53,18 @@ type inspectionResults struct {
 }
 
 func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
-	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
+	testPath := fmt.Sprintf("testdata/%s.json", typeName)
+	testFile, err := ioutil.ReadFile(testPath)
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description       string             `json:"description"`
-		Router            json.RawMessage    `json:"router"`
-		ReadError         string             `json:"read_error"`
-		DependenciesError string             `json:"dependencies_error"`
-		Results           json.RawMessage    `json:"results"`
-		Events            []json.RawMessage  `json:"events"`
-		Inspection        *inspectionResults `json:"inspection"`
+		Description       string          `json:"description"`
+		Router            json.RawMessage `json:"router"`
+		ReadError         string          `json:"read_error,omitempty"`
+		DependenciesError string          `json:"dependencies_error,omitempty"`
+		Results           json.RawMessage `json:"results,omitempty"`
+		Events            json.RawMessage `json:"events,omitempty"`
+		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -72,7 +74,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer random.SetGenerator(random.DefaultGenerator)
 
-	for _, tc := range tests {
+	for i, tc := range tests {
 		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 		random.SetGenerator(random.NewSeededGenerator(123456))
@@ -117,34 +119,53 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		session, _, err := eng.NewSession(sa, trigger)
 		require.NoError(t, err)
 
-		// check results are what we expected
+		// clone test case and populate with actual values
+		actual := tc
+
+		// re-marshal the action
+		actual.Router, err = json.Marshal(flow.Nodes()[0].Router())
+		require.NoError(t, err)
+
 		run := session.Runs()[0]
-		actualResultsJSON, _ := json.Marshal(run.Results())
-		expectedResultsJSON, _ := json.Marshal(tc.Results)
-		test.AssertEqualJSON(t, expectedResultsJSON, actualResultsJSON, "results mismatch in %s", testName)
-
-		// check events are what we expected
-		actualEventsJSON, _ := json.Marshal(run.Events())
-		expectedEventsJSON, _ := json.Marshal(tc.Events)
-		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
-
-		// try marshaling the router back to JSON
-		routerJSON, err := json.Marshal(flow.Nodes()[0].Router())
-		test.AssertEqualJSON(t, tc.Router, routerJSON, "marshal mismatch in %s", testName)
-
-		// finally try inspecting this router
-		templates := flow.ExtractTemplates()
-		assert.Equal(t, tc.Inspection.Templates, templates, "inspected templates mismatch in %s", testName)
+		actual.Results, _ = json.Marshal(run.Results())
+		actual.Events, _ = json.Marshal(run.Events())
 
 		dependencies := flow.ExtractDependencies()
 		depStrings := make([]string, len(dependencies))
 		for i := range dependencies {
 			depStrings[i] = dependencies[i].String()
 		}
-		assert.Equal(t, tc.Inspection.Dependencies, depStrings, "inspected dependencies mismatch in %s", testName)
 
-		results := flow.Inspect().Results
-		assert.Equal(t, tc.Inspection.Results, results, "inspected results mismatch in %s", testName)
+		results := &inspectionResults{
+			Templates:    flow.ExtractTemplates(),
+			Dependencies: depStrings,
+			Results:      flow.Inspect().Results,
+		}
+
+		actual.Inspection, _ = json.Marshal(results)
+
+		if !test.WriteOutput {
+			test.AssertEqualJSON(t, tc.Router, actual.Router, "marshal mismatch in %s", testName)
+
+			// check results are what we expected
+			test.AssertEqualJSON(t, tc.Results, actual.Results, "results mismatch in %s", testName)
+
+			// check events are what we expected
+			test.AssertEqualJSON(t, tc.Events, actual.Events, "events mismatch in %s", testName)
+
+			// check inspection results
+			test.AssertEqualJSON(t, tc.Inspection, actual.Inspection, "inspection mismatch in %s", testName)
+		} else {
+			tests[i] = actual
+		}
+	}
+
+	if test.WriteOutput {
+		actualJSON, err := utils.JSONMarshalPretty(tests)
+		require.NoError(t, err)
+
+		err = ioutil.WriteFile(testPath, actualJSON, 0666)
+		require.NoError(t, err)
 	}
 }
 

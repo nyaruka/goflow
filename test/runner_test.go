@@ -32,12 +32,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var writeOutput bool
 var includeTests string
 var testFilePattern = regexp.MustCompile(`(\w+)\.(\w+)\.json`)
 
 func init() {
-	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite test output")
 	flag.StringVar(&includeTests, "include", "", "include only test names containing")
 }
 
@@ -247,7 +245,7 @@ func TestFlows(t *testing.T) {
 			continue
 		}
 
-		if writeOutput {
+		if WriteOutput {
 			// we are writing new outputs, we write new files but don't test anything
 			rawOutputs := make([]json.RawMessage, len(runResult.outputs))
 			for i := range runResult.outputs {
