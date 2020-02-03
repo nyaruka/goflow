@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -74,27 +73,29 @@ type inspectionResults struct {
 }
 
 func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
-	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
+	testPath := fmt.Sprintf("testdata/%s.json", typeName)
+	testFile, err := ioutil.ReadFile(testPath)
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description       string               `json:"description"`
-		HTTPMocks         *httpx.MockRequestor `json:"http_mocks"`
-		SMTPError         string               `json:"smtp_error"`
-		NoContact         bool                 `json:"no_contact"`
-		NoURNs            bool                 `json:"no_urns"`
-		NoInput           bool                 `json:"no_input"`
-		RedactURNs        bool                 `json:"redact_urns"`
-		Action            json.RawMessage      `json:"action"`
-		Localization      json.RawMessage      `json:"localization"`
-		InFlowType        flows.FlowType       `json:"in_flow_type"`
-		ReadError         string               `json:"read_error"`
-		DependenciesError string               `json:"dependencies_error"`
-		SkipValidation    bool                 `json:"skip_validation"`
-		Events            []json.RawMessage    `json:"events"`
-		Webhook           json.RawMessage      `json:"webhook"`
-		ContactAfter      json.RawMessage      `json:"contact_after"`
-		Inspection        json.RawMessage      `json:"inspection"`
+		Description  string               `json:"description"`
+		HTTPMocks    *httpx.MockRequestor `json:"http_mocks,omitempty"`
+		SMTPError    string               `json:"smtp_error,omitempty"`
+		NoContact    bool                 `json:"no_contact,omitempty"`
+		NoURNs       bool                 `json:"no_urns,omitempty"`
+		NoInput      bool                 `json:"no_input,omitempty"`
+		RedactURNs   bool                 `json:"redact_urns,omitempty"`
+		Action       json.RawMessage      `json:"action"`
+		Localization json.RawMessage      `json:"localization,omitempty"`
+		InFlowType   flows.FlowType       `json:"in_flow_type,omitempty"`
+
+		ReadError         string          `json:"read_error,omitempty"`
+		DependenciesError string          `json:"dependencies_error,omitempty"`
+		SkipValidation    bool            `json:"skip_validation,omitempty"`
+		Events            json.RawMessage `json:"events,omitempty"`
+		Webhook           json.RawMessage `json:"webhook,omitempty"`
+		ContactAfter      json.RawMessage `json:"contact_after,omitempty"`
+		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -105,11 +106,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
-	for _, tc := range tests {
+	for i, tc := range tests {
 		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+
+		var clonedMocks *httpx.MockRequestor
 		if tc.HTTPMocks != nil {
 			httpx.SetRequestor(tc.HTTPMocks)
+			clonedMocks = tc.HTTPMocks.Clone()
 		} else {
 			httpx.SetRequestor(httpx.DefaultRequestor)
 		}
@@ -237,30 +241,30 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		session, _, err := eng.NewSession(sa, trigger)
 		require.NoError(t, err)
 
-		// check events are what we expected
+		// check all http mocks were used
+		if tc.HTTPMocks != nil {
+			require.False(t, tc.HTTPMocks.HasUnused(), "unused HTTP mocks in %s", testName)
+		}
+
+		// clone test case and populate with actual values
+		actual := tc
+		actual.HTTPMocks = clonedMocks
+
+		// re-marshal the action
+		actual.Action, err = json.Marshal(flow.Nodes()[0].Actions()[0])
+		require.NoError(t, err)
+
+		// and the events
 		run := session.Runs()[0]
 		runEvents := run.Events()
-		actualEventsJSON, _ := json.Marshal(runEvents[ignoreEventCount:])
-		expectedEventsJSON, _ := json.Marshal(tc.Events)
-		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
+		actual.Events, _ = json.Marshal(runEvents[ignoreEventCount:])
 
-		// check webhook is in expected state
 		if tc.Webhook != nil {
-			test.AssertXEqual(t, types.JSONToXValue(tc.Webhook), run.Webhook(), "webhook mismatch in %s", testName)
+			actual.Webhook, _ = json.Marshal(run.Webhook())
 		}
-
-		// check contact is in the expected state
 		if tc.ContactAfter != nil {
-			contactJSON, _ := json.Marshal(session.Contact())
-
-			test.AssertEqualJSON(t, tc.ContactAfter, contactJSON, "contact mismatch in %s", testName)
+			actual.ContactAfter, _ = json.Marshal(session.Contact())
 		}
-
-		// try marshaling the action back to JSON
-		actionJSON, err := json.Marshal(flow.Nodes()[0].Actions()[0])
-		test.AssertEqualJSON(t, tc.Action, actionJSON, "marshal mismatch in %s", testName)
-
-		// finally try inspecting this action
 		if tc.Inspection != nil {
 			dependencies := flow.ExtractDependencies()
 			depStrings := make([]string, len(dependencies))
@@ -268,15 +272,47 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				depStrings[i] = dependencies[i].String()
 			}
 
-			actual := &inspectionResults{
+			results := &inspectionResults{
 				Templates:    flow.ExtractTemplates(),
 				Dependencies: depStrings,
 				Results:      flow.Inspect().Results,
 			}
 
-			actualJSON, _ := json.Marshal(actual)
-			test.AssertEqualJSON(t, tc.Inspection, actualJSON, "inspection mismatch in %s", testName)
+			actual.Inspection, _ = json.Marshal(results)
 		}
+
+		if !test.WriteOutput {
+			// check the action marshaled correctly
+			test.AssertEqualJSON(t, tc.Action, actual.Action, "marshal mismatch in %s", testName)
+
+			// check events are what we expected
+			test.AssertEqualJSON(t, tc.Events, actual.Events, "events mismatch in %s", testName)
+
+			// check webhook is in expected state
+			if tc.Webhook != nil {
+				test.AssertEqualJSON(t, tc.Webhook, actual.Webhook, "webhook mismatch in %s", testName)
+			}
+
+			// check contact is in the expected state
+			if tc.ContactAfter != nil {
+				test.AssertEqualJSON(t, tc.ContactAfter, actual.ContactAfter, "contact mismatch in %s", testName)
+			}
+
+			// check inspection results
+			if tc.Inspection != nil {
+				test.AssertEqualJSON(t, tc.Inspection, actual.Inspection, "inspection mismatch in %s", testName)
+			}
+		} else {
+			tests[i] = actual
+		}
+	}
+
+	if test.WriteOutput {
+		actualJSON, err := utils.JSONMarshalPretty(tests)
+		require.NoError(t, err)
+
+		err = ioutil.WriteFile(testPath, actualJSON, 0666)
+		require.NoError(t, err)
 	}
 }
 

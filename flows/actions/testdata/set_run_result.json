@@ -10,10 +10,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @(1 / 0): division by zero",
-                "type": "error"
+                "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
         "inspection": {
@@ -46,12 +46,12 @@
         },
         "events": [
             {
-                "category": "Set",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Response 1",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
-                "value": "Male"
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Response 1",
+                "value": "Male",
+                "category": "Set"
             }
         ],
         "inspection": {
@@ -86,12 +86,12 @@
         },
         "events": [
             {
-                "category": "Yes",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Response 1",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
-                "value": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus"
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Response 1",
+                "value": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus",
+                "category": "Yes"
             }
         ],
         "inspection": {
@@ -123,10 +123,10 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Response 1",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Response 1",
                 "value": "",
                 "category": ""
             }
@@ -166,10 +166,10 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Preference",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Preference",
                 "value": "yeah",
                 "category": "Yes",
                 "category_localized": "Si"
