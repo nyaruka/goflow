@@ -10,10 +10,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @(1 / 0): division by zero",
-                "type": "error"
+                "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
         "templates": [
@@ -21,20 +21,20 @@
         ],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [
                 {
+                    "key": "response_1",
+                    "name": "Response 1",
                     "categories": [
                         "Yes"
                     ],
-                    "key": "response_1",
-                    "name": "Response 1",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -48,12 +48,12 @@
         },
         "events": [
             {
-                "category": "Set",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Response 1",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
-                "value": "Male"
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Response 1",
+                "value": "Male",
+                "category": "Set"
             }
         ],
         "templates": [
@@ -68,20 +68,20 @@
                     }
                 ]
             },
-            "parent_refs": [],
             "results": [
                 {
+                    "key": "response_1",
+                    "name": "Response 1",
                     "categories": [
                         "Set"
                     ],
-                    "key": "response_1",
-                    "name": "Response 1",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -95,12 +95,12 @@
         },
         "events": [
             {
-                "category": "Yes",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Response 1",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
-                "value": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus"
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Response 1",
+                "value": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus",
+                "category": "Yes"
             }
         ],
         "templates": [
@@ -108,20 +108,20 @@
         ],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [
                 {
+                    "key": "response_1",
+                    "name": "Response 1",
                     "categories": [
                         "Yes"
                     ],
-                    "key": "response_1",
-                    "name": "Response 1",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -134,29 +134,28 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Response 1",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Response 1",
                 "value": "",
                 "category": ""
             }
         ],
-        "templates": [],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [
                 {
-                    "categories": [],
                     "key": "response_1",
                     "name": "Response 1",
+                    "categories": [],
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -179,10 +178,10 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Preference",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Preference",
                 "value": "yeah",
                 "category": "Yes",
                 "category_localized": "Si"
@@ -193,20 +192,20 @@
         ],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [
                 {
+                    "key": "preference",
+                    "name": "Preference",
                     "categories": [
                         "Yes"
                     ],
-                    "key": "preference",
-                    "name": "Preference",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

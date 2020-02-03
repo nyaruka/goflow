@@ -7,12 +7,11 @@
             "resthook": "doesnt-exist"
         },
         "events": [],
-        "templates": [],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -38,7 +37,10 @@
         },
         "events": [
             {
+                "type": "resthook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "resthook": "new-registration",
                 "payload": {
                     "channel": null,
                     "contact": {
@@ -86,42 +88,38 @@
                         "created_on": "2018-10-18T14:20:30.000123Z",
                         "uuid": "e7187099-7d38-4f60-955c-325957214c42"
                     }
-                },
-                "resthook": "new-registration",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "resthook_called"
+                }
             },
             {
+                "type": "webhook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "elapsed_ms": 0,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "url": "http://temba.io/",
+                "status": "success",
                 "request": "POST / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 881\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12065551212\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":null,\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"text\":\"Hi everybody\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"aa90ce99-3b4d-44ba-b0ca-79e63d9ed842\"},\"path\":[{\"arrived_on\":\"2018-10-18T14:20:30.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"59d74b86-3e2f-4a93-aece-b05d2fdcde0c\"}],\"results\":{},\"run\":{\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}}",
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
+                "elapsed_ms": 0,
                 "resthook": "new-registration",
-                "status": "success",
-                "status_code": 200,
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "webhook_called",
-                "url": "http://temba.io/"
+                "status_code": 200
             },
             {
+                "type": "webhook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "elapsed_ms": 0,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "url": "http://unavailable.com/",
+                "status": "response_error",
                 "request": "POST / HTTP/1.1\r\nHost: unavailable.com\r\nUser-Agent: goflow-testing\r\nContent-Length: 881\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12065551212\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":null,\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"text\":\"Hi everybody\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"aa90ce99-3b4d-44ba-b0ca-79e63d9ed842\"},\"path\":[{\"arrived_on\":\"2018-10-18T14:20:30.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"59d74b86-3e2f-4a93-aece-b05d2fdcde0c\"}],\"results\":{},\"run\":{\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}}",
                 "response": "HTTP/1.0 503 Service Unavailable\r\nContent-Length: 37\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
+                "elapsed_ms": 0,
                 "resthook": "new-registration",
-                "status": "response_error",
-                "status_code": 503,
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "webhook_called",
-                "url": "http://unavailable.com/"
+                "status_code": 503
             }
         ],
-        "templates": [],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -148,7 +146,10 @@
         },
         "events": [
             {
+                "type": "resthook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "resthook": "new-registration",
                 "payload": {
                     "channel": null,
                     "contact": {
@@ -196,48 +197,45 @@
                         "created_on": "2018-10-18T14:20:30.000123Z",
                         "uuid": "e7187099-7d38-4f60-955c-325957214c42"
                     }
-                },
-                "resthook": "new-registration",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "resthook_called"
+                }
             },
             {
+                "type": "webhook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "elapsed_ms": 0,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "url": "http://temba.io/",
+                "status": "success",
                 "request": "POST / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 881\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12065551212\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":null,\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"text\":\"Hi everybody\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"aa90ce99-3b4d-44ba-b0ca-79e63d9ed842\"},\"path\":[{\"arrived_on\":\"2018-10-18T14:20:30.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"59d74b86-3e2f-4a93-aece-b05d2fdcde0c\"}],\"results\":{},\"run\":{\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}}",
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
+                "elapsed_ms": 0,
                 "resthook": "new-registration",
-                "status": "success",
-                "status_code": 200,
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "webhook_called",
-                "url": "http://temba.io/"
+                "status_code": 200
             },
             {
+                "type": "webhook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "elapsed_ms": 0,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "url": "http://unavailable.com/",
+                "status": "response_error",
                 "request": "POST / HTTP/1.1\r\nHost: unavailable.com\r\nUser-Agent: goflow-testing\r\nContent-Length: 881\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12065551212\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":null,\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"text\":\"Hi everybody\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"aa90ce99-3b4d-44ba-b0ca-79e63d9ed842\"},\"path\":[{\"arrived_on\":\"2018-10-18T14:20:30.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"59d74b86-3e2f-4a93-aece-b05d2fdcde0c\"}],\"results\":{},\"run\":{\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}}",
                 "response": "HTTP/1.0 503 Service Unavailable\r\nContent-Length: 37\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
+                "elapsed_ms": 0,
                 "resthook": "new-registration",
-                "status": "response_error",
-                "status_code": 503,
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "webhook_called",
-                "url": "http://unavailable.com/"
+                "status_code": 503
             },
             {
-                "category": "Failure",
+                "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "My Result",
+                "value": "503",
+                "category": "Failure",
+                "input": "POST http://unavailable.com/",
                 "extra": {
                     "errors": [
                         "service unavailable"
                     ]
-                },
-                "input": "POST http://unavailable.com/",
-                "name": "My Result",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "run_result_changed",
-                "value": "503"
+                }
             }
         ],
         "webhook": {
@@ -245,39 +243,38 @@
                 "service unavailable"
             ]
         },
-        "templates": [],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [
                 {
+                    "key": "my_result",
+                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
-                    "key": "my_result",
-                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "Result changed event uses last successful call if no failures",
         "http_mocks": {
-            "http://temba.io/": [
-                {
-                    "status": 200,
-                    "body": "{ \"ok\": \"true\" }"
-                }
-            ],
             "http://subscribergone.com/": [
                 {
                     "status": 410,
                     "body": "{ \"errors\": [\"gone\"] }"
+                }
+            ],
+            "http://temba.io/": [
+                {
+                    "status": 200,
+                    "body": "{ \"ok\": \"true\" }"
                 }
             ]
         },
@@ -289,7 +286,10 @@
         },
         "events": [
             {
+                "type": "resthook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "resthook": "registration-complete",
                 "payload": {
                     "channel": null,
                     "contact": {
@@ -337,69 +337,65 @@
                         "created_on": "2018-10-18T14:20:30.000123Z",
                         "uuid": "e7187099-7d38-4f60-955c-325957214c42"
                     }
-                },
-                "resthook": "registration-complete",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "resthook_called"
+                }
             },
             {
+                "type": "webhook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "elapsed_ms": 0,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "url": "http://temba.io/",
+                "status": "success",
                 "request": "POST / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 881\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12065551212\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":null,\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"text\":\"Hi everybody\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"aa90ce99-3b4d-44ba-b0ca-79e63d9ed842\"},\"path\":[{\"arrived_on\":\"2018-10-18T14:20:30.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"59d74b86-3e2f-4a93-aece-b05d2fdcde0c\"}],\"results\":{},\"run\":{\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}}",
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
+                "elapsed_ms": 0,
                 "resthook": "registration-complete",
-                "status": "success",
-                "status_code": 200,
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "webhook_called",
-                "url": "http://temba.io/"
+                "status_code": 200
             },
             {
+                "type": "webhook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "elapsed_ms": 0,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "url": "http://subscribergone.com/",
+                "status": "subscriber_gone",
                 "request": "POST / HTTP/1.1\r\nHost: subscribergone.com\r\nUser-Agent: goflow-testing\r\nContent-Length: 881\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12065551212\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":null,\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"text\":\"Hi everybody\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"aa90ce99-3b4d-44ba-b0ca-79e63d9ed842\"},\"path\":[{\"arrived_on\":\"2018-10-18T14:20:30.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"59d74b86-3e2f-4a93-aece-b05d2fdcde0c\"}],\"results\":{},\"run\":{\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}}",
                 "response": "HTTP/1.0 410 Gone\r\nContent-Length: 22\r\n\r\n{ \"errors\": [\"gone\"] }",
+                "elapsed_ms": 0,
                 "resthook": "registration-complete",
-                "status": "subscriber_gone",
-                "status_code": 410,
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "webhook_called",
-                "url": "http://subscribergone.com/"
+                "status_code": 410
             },
             {
-                "category": "Success",
+                "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "My Result",
+                "value": "200",
+                "category": "Success",
+                "input": "POST http://temba.io/",
                 "extra": {
                     "ok": "true"
-                },
-                "input": "POST http://temba.io/",
-                "name": "My Result",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "run_result_changed",
-                "value": "200"
+                }
             }
         ],
         "webhook": {
             "ok": "true"
         },
-        "templates": [],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [
                 {
+                    "key": "my_result",
+                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
-                    "key": "my_result",
-                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -412,7 +408,10 @@
         },
         "events": [
             {
+                "type": "resthook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "resthook": "unpopular-resthook",
                 "payload": {
                     "channel": null,
                     "contact": {
@@ -460,38 +459,34 @@
                         "created_on": "2018-10-18T14:20:30.000123Z",
                         "uuid": "e7187099-7d38-4f60-955c-325957214c42"
                     }
-                },
-                "resthook": "unpopular-resthook",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "resthook_called"
+                }
             },
             {
-                "category": "Failure",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "My Result",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
-                "value": "no subscribers"
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "My Result",
+                "value": "no subscribers",
+                "category": "Failure"
             }
         ],
-        "templates": [],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [
                 {
+                    "key": "my_result",
+                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
-                    "key": "my_result",
-                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -520,7 +515,10 @@
         },
         "events": [
             {
+                "type": "resthook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "resthook": "new-registration",
                 "payload": {
                     "channel": null,
                     "contact": {
@@ -547,48 +545,45 @@
                         "created_on": "2018-10-18T14:20:30.000123Z",
                         "uuid": "e7187099-7d38-4f60-955c-325957214c42"
                     }
-                },
-                "resthook": "new-registration",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "resthook_called"
+                }
             },
             {
+                "type": "webhook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "elapsed_ms": 0,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "url": "http://temba.io/",
+                "status": "success",
                 "request": "POST / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 487\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":null,\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\"input\":null,\"path\":[{\"arrived_on\":\"2018-10-18T14:20:30.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"59d74b86-3e2f-4a93-aece-b05d2fdcde0c\"}],\"results\":{},\"run\":{\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}}",
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
+                "elapsed_ms": 0,
                 "resthook": "new-registration",
-                "status": "success",
-                "status_code": 200,
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "webhook_called",
-                "url": "http://temba.io/"
+                "status_code": 200
             },
             {
+                "type": "webhook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "elapsed_ms": 0,
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "url": "http://unavailable.com/",
+                "status": "response_error",
                 "request": "POST / HTTP/1.1\r\nHost: unavailable.com\r\nUser-Agent: goflow-testing\r\nContent-Length: 487\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":null,\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\"input\":null,\"path\":[{\"arrived_on\":\"2018-10-18T14:20:30.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"59d74b86-3e2f-4a93-aece-b05d2fdcde0c\"}],\"results\":{},\"run\":{\"created_on\":\"2018-10-18T14:20:30.000123Z\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}}",
                 "response": "HTTP/1.0 503 Service Unavailable\r\nContent-Length: 37\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
+                "elapsed_ms": 0,
                 "resthook": "new-registration",
-                "status": "response_error",
-                "status_code": 503,
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "webhook_called",
-                "url": "http://unavailable.com/"
+                "status_code": 503
             },
             {
-                "category": "Failure",
+                "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "My Result",
+                "value": "503",
+                "category": "Failure",
+                "input": "POST http://unavailable.com/",
                 "extra": {
                     "errors": [
                         "service unavailable"
                     ]
-                },
-                "input": "POST http://unavailable.com/",
-                "name": "My Result",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "run_result_changed",
-                "value": "503"
+                }
             }
         ],
         "webhook": {
@@ -596,24 +591,23 @@
                 "service unavailable"
             ]
         },
-        "templates": [],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [
                 {
+                    "key": "my_result",
+                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
-                    "key": "my_result",
-                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -627,7 +621,10 @@
         },
         "events": [
             {
+                "type": "resthook_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "resthook": "unpopular-resthook",
                 "payload": {
                     "channel": null,
                     "contact": {
@@ -675,38 +672,34 @@
                         "created_on": "2018-10-18T14:20:30.000123Z",
                         "uuid": "e7187099-7d38-4f60-955c-325957214c42"
                     }
-                },
-                "resthook": "unpopular-resthook",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "resthook_called"
+                }
             },
             {
-                "category": "Failure",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "My Result",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "type": "run_result_changed",
-                "value": "no subscribers"
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "My Result",
+                "value": "no subscribers",
+                "category": "Failure"
             }
         ],
-        "templates": [],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [
                 {
+                    "key": "my_result",
+                    "name": "My Result",
                     "categories": [
                         "Success",
                         "Failure"
                     ],
-                    "key": "my_result",
-                    "name": "My Result",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
             ],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

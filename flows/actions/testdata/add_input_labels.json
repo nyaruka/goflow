@@ -12,20 +12,19 @@
             ]
         },
         "events": [],
-        "templates": [],
         "inspection": {
             "dependencies": {
                 "labels": [
                     {
-                        "missing": true,
+                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
                         "name": "Climbing",
-                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6"
+                        "missing": true
                     }
                 ]
             },
-            "parent_refs": [],
             "results": [],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -43,10 +42,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without input",
-                "type": "error"
+                "text": "can't execute action in session without input"
             }
         ]
     },
@@ -63,10 +62,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @(1 / 0): division by zero",
-                "type": "error"
+                "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
         "templates": [
@@ -74,9 +73,9 @@
         ],
         "inspection": {
             "dependencies": {},
-            "parent_refs": [],
             "results": [],
-            "waiting_exits": []
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -92,10 +91,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "no such label with name 'Crazy Deals'",
-                "type": "error"
+                "text": "no such label with name 'Crazy Deals'"
             }
         ]
     },
@@ -113,16 +112,16 @@
         },
         "events": [
             {
+                "type": "input_labels_added",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "input_uuid": "aa90ce99-3b4d-44ba-b0ca-79e63d9ed842",
                 "labels": [
                     {
-                        "name": "Spam",
-                        "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
+                        "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                        "name": "Spam"
                     }
-                ],
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "input_labels_added"
+                ]
             }
         ]
     }
