@@ -42,7 +42,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "random_result",

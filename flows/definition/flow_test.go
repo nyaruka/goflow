@@ -19,6 +19,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -295,20 +296,18 @@ func TestNewFlow(t *testing.T) {
 	infoJSON, _ := json.Marshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"dependencies": {
-			"fields": [
-				{
-					"key": "gender",
-					"name": ""
-				}
-			],
-			"labels": [
-				{
-					"name": "Spam",
-					"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
-				}
-			]
-		},
+		"dependencies": [
+			{
+				"key": "gender",
+				"name": "",
+				"type": "field"
+			},
+			{
+				"name": "Spam",
+				"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+				"type": "label"
+			}
+		],
 		"parent_refs": [],
 		"results": [
 			{
@@ -351,10 +350,14 @@ func TestEmptyFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(expected), marshaled, "flow definition mismatch")
 
 	info := flow.Inspect(nil)
+	infoJSON, _ := json.Marshal(info)
 
-	assert.Equal(t, &flows.Dependencies{}, info.Dependencies)
-	assert.Equal(t, []*flows.ResultInfo{}, info.Results)
-	assert.Equal(t, []flows.ExitUUID{}, info.WaitingExits)
+	test.AssertEqualJSON(t, []byte(`{
+		"dependencies": [],
+		"parent_refs": [],
+		"results": [],
+		"waiting_exits": []
+	}`), infoJSON, "inspection mismatch")
 }
 
 func TestReadFlow(t *testing.T) {
@@ -574,12 +577,17 @@ func TestInspection(t *testing.T) {
 		require.NoError(t, err)
 
 		actualInfo := flow.Inspect(sa)
-		actualJSON, _ := json.Marshal(actualInfo)
+		actualJSON, _ := utils.JSONMarshalPretty(actualInfo)
 
-		fileName := tc.path[strings.LastIndex(tc.path, "/"):]
-		expectedJSON, err := ioutil.ReadFile("testdata/inspection/" + fileName)
-		require.NoError(t, err)
+		testDataPath := "testdata/inspection/" + tc.path[strings.LastIndex(tc.path, "/"):]
 
-		test.AssertEqualJSON(t, expectedJSON, actualJSON, "inspection mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+		if !test.WriteOutput {
+			expectedJSON, err := ioutil.ReadFile(testDataPath)
+			require.NoError(t, err)
+			test.AssertEqualJSON(t, expectedJSON, actualJSON, "inspection mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+		} else {
+			err := ioutil.WriteFile(testDataPath, actualJSON, 0666)
+			require.NoError(t, err)
+		}
 	}
 }

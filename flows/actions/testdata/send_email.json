@@ -46,7 +46,7 @@
             "So I was thinking...@(1 / 0)"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -203,7 +203,7 @@
             "Pues estuve pensando..."
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

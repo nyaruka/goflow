@@ -50,7 +50,7 @@
             "Hi there @contact.name"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -128,7 +128,7 @@
             "Hola @contact.name"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

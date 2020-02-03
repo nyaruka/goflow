@@ -11,14 +11,13 @@
         },
         "events": [],
         "inspection": {
-            "dependencies": {
-                "flows": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Collect Age"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -42,21 +41,19 @@
         },
         "events": [],
         "inspection": {
-            "dependencies": {
-                "flows": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Collect Age"
-                    }
-                ],
-                "groups": [
-                    {
-                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                        "name": "Climbers",
-                        "missing": true
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbers",
+                    "type": "group",
+                    "missing": true
+                },
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -159,32 +156,28 @@
             "@(\"0788123123\")"
         ],
         "inspection": {
-            "dependencies": {
-                "contacts": [
-                    {
-                        "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
-                        "name": "Stavros"
-                    }
-                ],
-                "fields": [
-                    {
-                        "key": "gender",
-                        "name": ""
-                    }
-                ],
-                "flows": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Collect Age"
-                    }
-                ],
-                "groups": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Testers"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "key": "gender",
+                    "name": "",
+                    "type": "field"
+                },
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers",
+                    "type": "group"
+                },
+                {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros",
+                    "type": "contact"
+                },
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -249,14 +242,13 @@
             }
         ],
         "inspection": {
-            "dependencies": {
-                "flows": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Collect Age"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -331,21 +323,19 @@
             }
         ],
         "inspection": {
-            "dependencies": {
-                "flows": [
-                    {
-                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                        "name": "Long Lost Flow",
-                        "missing": true
-                    }
-                ],
-                "groups": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Testers"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers",
+                    "type": "group"
+                },
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Long Lost Flow",
+                    "type": "flow",
+                    "missing": true
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

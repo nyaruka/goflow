@@ -18,15 +18,14 @@
             }
         ],
         "inspection": {
-            "dependencies": {
-                "flows": [
-                    {
-                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                        "name": "Long Lost Flow",
-                        "missing": true
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Long Lost Flow",
+                    "type": "flow",
+                    "missing": true
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -95,14 +94,13 @@
             }
         ],
         "inspection": {
-            "dependencies": {
-                "flows": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Collect Age"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

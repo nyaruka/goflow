@@ -13,15 +13,14 @@
         },
         "events": [],
         "inspection": {
-            "dependencies": {
-                "labels": [
-                    {
-                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                        "name": "Climbing",
-                        "missing": true
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbing",
+                    "type": "label",
+                    "missing": true
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -72,7 +71,7 @@
             "Spam@(1 / 0)"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

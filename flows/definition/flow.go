@@ -108,7 +108,7 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.FlowInfo {
 	assetRefs, parentRefs := f.extractAssetAndParentRefs()
 
 	return &flows.FlowInfo{
-		Dependencies: flows.NewDependencies(assetRefs, sa),
+		Dependencies: flows.InspectReferences(assetRefs, sa),
 		Results:      f.extractResults(),
 		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,

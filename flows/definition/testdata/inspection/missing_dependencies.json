@@ -1,28 +1,25 @@
 {
-    "dependencies": {
-        "fields": [
-            {
-                "key": "about_me",
-                "missing": true,
-                "name": ""
-            }
-        ],
-        "groups": [
-            {
-                "missing": true,
-                "name": "Customers",
-                "uuid": "83452c2e-d6e4-4fae-950a-156064e40068"
-            }
-        ],
-        "labels": [
-            {
-                "missing": true,
-                "name": "Interesting",
-                "uuid": "a8a6d847-0785-4f97-a8f8-3af98ed111a0"
-            }
-        ]
-    },
-    "parent_refs": [],
+    "dependencies": [
+        {
+            "uuid": "83452c2e-d6e4-4fae-950a-156064e40068",
+            "name": "Customers",
+            "type": "group",
+            "missing": true
+        },
+        {
+            "uuid": "a8a6d847-0785-4f97-a8f8-3af98ed111a0",
+            "name": "Interesting",
+            "type": "label",
+            "missing": true
+        },
+        {
+            "key": "about_me",
+            "name": "",
+            "type": "field",
+            "missing": true
+        }
+    ],
     "results": [],
-    "waiting_exits": []
+    "waiting_exits": [],
+    "parent_refs": []
 }

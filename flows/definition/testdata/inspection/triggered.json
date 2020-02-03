@@ -1,15 +1,14 @@
 {
-    "dependencies": {
-        "fields": [
-            {
-                "key": "state",
-                "name": ""
-            }
-        ]
-    },
-    "parent_refs": [
-        "age"
+    "dependencies": [
+        {
+            "key": "state",
+            "name": "",
+            "type": "field"
+        }
     ],
     "results": [],
-    "waiting_exits": []
+    "waiting_exits": [],
+    "parent_refs": [
+        "age"
+    ]
 }

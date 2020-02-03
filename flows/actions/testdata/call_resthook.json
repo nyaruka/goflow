@@ -8,7 +8,7 @@
         },
         "events": [],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -116,7 +116,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -244,7 +244,7 @@
             ]
         },
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "my_result",
@@ -380,7 +380,7 @@
             "ok": "true"
         },
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "my_result",
@@ -471,7 +471,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "my_result",
@@ -592,7 +592,7 @@
             ]
         },
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "my_result",
@@ -684,7 +684,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "my_result",

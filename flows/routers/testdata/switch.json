@@ -204,7 +204,7 @@
             "no"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "favorite_color",
@@ -286,14 +286,13 @@
             "Testers"
         ],
         "inspection": {
-            "dependencies": {
-                "groups": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Testers"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers",
+                    "type": "group"
+                }
+            ],
             "results": [
                 {
                     "key": "is_member",
@@ -368,14 +367,13 @@
             "aa33640b-43b0-4df2-992c-ba357981da71"
         ],
         "inspection": {
-            "dependencies": {
-                "groups": [
-                    {
-                        "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
-                        "missing": true
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
+                    "type": "group",
+                    "missing": true
+                }
+            ],
             "results": [
                 {
                     "key": "in_group",
@@ -463,7 +461,7 @@
             "yes"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "favorite_color",
@@ -535,7 +533,7 @@
             "no"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "favorite_color",

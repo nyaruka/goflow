@@ -20,7 +20,7 @@
             "@(1 / 0).mp3"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -47,7 +47,7 @@
             "@(\"\")"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -85,7 +85,7 @@
             "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -133,7 +133,7 @@
             "http://uploads.temba.io/bienvenido/@(contact.uuid).m4a"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

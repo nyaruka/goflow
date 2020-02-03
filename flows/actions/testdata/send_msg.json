@@ -52,7 +52,7 @@
             "Blue"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -209,18 +209,18 @@
             "Hi there @contact welcome to @globals.org_name, the secret password is @globals.password"
         ],
         "inspection": {
-            "dependencies": {
-                "globals": [
-                    {
-                        "key": "org_name",
-                        "name": ""
-                    },
-                    {
-                        "key": "password",
-                        "name": ""
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "key": "org_name",
+                    "name": "",
+                    "type": "global"
+                },
+                {
+                    "key": "password",
+                    "name": "",
+                    "type": "global"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -325,15 +325,14 @@
             "boy"
         ],
         "inspection": {
-            "dependencies": {
-                "templates": [
-                    {
-                        "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
-                        "name": "missing",
-                        "missing": true
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
+                    "name": "missing",
+                    "type": "template",
+                    "missing": true
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -392,14 +391,13 @@
             "boy"
         ],
         "inspection": {
-            "dependencies": {
-                "templates": [
-                    {
-                        "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
-                        "name": "affirmation"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
+                    "name": "affirmation",
+                    "type": "template"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -468,14 +466,13 @@
             "niño"
         ],
         "inspection": {
-            "dependencies": {
-                "templates": [
-                    {
-                        "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
-                        "name": "affirmation"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
+                    "name": "affirmation",
+                    "type": "template"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -523,14 +520,13 @@
             "Hi there, it's time to get up!"
         ],
         "inspection": {
-            "dependencies": {
-                "templates": [
-                    {
-                        "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
-                        "name": "wakeup"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
+                    "name": "wakeup",
+                    "type": "template"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -600,7 +596,7 @@
             "No"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

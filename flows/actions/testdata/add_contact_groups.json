@@ -13,15 +13,14 @@
         },
         "events": [],
         "inspection": {
-            "dependencies": {
-                "groups": [
-                    {
-                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                        "name": "Climbers",
-                        "missing": true
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbers",
+                    "type": "group",
+                    "missing": true
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -93,7 +92,7 @@
             "Customers@(1 / 0)"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -122,7 +121,7 @@
             "Climbers"
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

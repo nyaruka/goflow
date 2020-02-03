@@ -106,15 +106,14 @@
         },
         "events": [],
         "inspection": {
-            "dependencies": {
-                "channels": [
-                    {
-                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                        "name": "My Phone",
-                        "missing": true
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "My Phone",
+                    "type": "channel",
+                    "missing": true
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

@@ -23,14 +23,13 @@
             "30"
         ],
         "inspection": {
-            "dependencies": {
-                "fields": [
-                    {
-                        "key": "age",
-                        "name": "Age"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "key": "age",
+                    "name": "Age",
+                    "type": "field"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -59,14 +58,13 @@
             "@( 1/ 0)"
         ],
         "inspection": {
-            "dependencies": {
-                "fields": [
-                    {
-                        "key": "age",
-                        "name": "Age"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "key": "age",
+                    "name": "Age",
+                    "type": "field"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
