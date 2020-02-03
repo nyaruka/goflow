@@ -76,11 +76,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Customers@(1 / 0)"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -103,11 +102,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Climbers"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {

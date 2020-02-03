@@ -32,11 +32,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "@(1 / 0)"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -55,11 +54,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "xxxxxxxxxx"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {

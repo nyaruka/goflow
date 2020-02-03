@@ -42,8 +42,7 @@
             }
         ],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
             "results": [
                 {
                     "key": "random_result",
@@ -57,7 +56,9 @@
                         "64373978-e8f6-4973-b6ff-a2993f3376fc"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

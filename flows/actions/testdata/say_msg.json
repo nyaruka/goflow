@@ -47,11 +47,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Hi there @contact.name"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -122,12 +121,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Hi there @contact.name",
-                "Hola @contact.name"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

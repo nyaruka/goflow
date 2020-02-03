@@ -41,13 +41,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "bob@example.com@(1 / 0)",
-                "Hi there@(1 / 0)",
-                "So I was thinking...@(1 / 0)"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -194,15 +191,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "bob@example.com",
-                "Hi there",
-                "Hola",
-                "So I was thinking...",
-                "Pues estuve pensando..."
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {

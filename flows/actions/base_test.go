@@ -95,6 +95,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		Events            json.RawMessage `json:"events,omitempty"`
 		Webhook           json.RawMessage `json:"webhook,omitempty"`
 		ContactAfter      json.RawMessage `json:"contact_after,omitempty"`
+		Templates         []string        `json:"templates,omitempty"`
 		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
@@ -265,20 +266,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		if tc.ContactAfter != nil {
 			actual.ContactAfter, _ = json.Marshal(session.Contact())
 		}
+		if tc.Templates != nil {
+			actual.Templates = flow.ExtractTemplates()
+		}
 		if tc.Inspection != nil {
-			dependencies := flow.ExtractDependencies()
-			depStrings := make([]string, len(dependencies))
-			for i := range dependencies {
-				depStrings[i] = dependencies[i].String()
-			}
-
-			results := &inspectionResults{
-				Templates:    flow.ExtractTemplates(),
-				Dependencies: depStrings,
-				Results:      flow.Inspect().Results,
-			}
-
-			actual.Inspection, _ = json.Marshal(results)
+			actual.Inspection, _ = json.Marshal(flow.Inspect())
 		}
 
 		if !test.WriteOutput {
@@ -296,6 +288,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			// check contact is in the expected state
 			if tc.ContactAfter != nil {
 				test.AssertEqualJSON(t, tc.ContactAfter, actual.ContactAfter, "contact mismatch in %s", testName)
+			}
+
+			// check extracted templates
+			if tc.Templates != nil {
+				assert.Equal(t, tc.Templates, actual.Templates, "extracted templates mismatch in %s", testName)
 			}
 
 			// check inspection results

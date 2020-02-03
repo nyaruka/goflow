@@ -42,12 +42,14 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "@(\"\")"
-            ],
-            "dependencies": [
-                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
-            ],
+            "dependencies": {
+                "classifiers": [
+                    {
+                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                        "name": "Booking"
+                    }
+                ]
+            },
             "results": [
                 {
                     "key": "_intent_classification",
@@ -61,7 +63,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -123,12 +127,14 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "@input.text"
-            ],
-            "dependencies": [
-                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
-            ],
+            "dependencies": {
+                "classifiers": [
+                    {
+                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                        "name": "Booking"
+                    }
+                ]
+            },
             "results": [
                 {
                     "key": "intent",
@@ -142,7 +148,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -202,12 +210,14 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "@input.text"
-            ],
-            "dependencies": [
-                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
-            ],
+            "dependencies": {
+                "classifiers": [
+                    {
+                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                        "name": "Booking"
+                    }
+                ]
+            },
             "results": [
                 {
                     "key": "intent",
@@ -221,7 +231,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -280,12 +292,14 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "@input.text"
-            ],
-            "dependencies": [
-                "classifier[uuid=1c06c884-39dd-4ce4-ad9f-9a01cbe6c000,name=Booking]"
-            ],
+            "dependencies": {
+                "classifiers": [
+                    {
+                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                        "name": "Booking"
+                    }
+                ]
+            },
             "results": [
                 {
                     "key": "intent",
@@ -299,7 +313,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

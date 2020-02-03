@@ -23,11 +23,10 @@
         },
         "events": [],
         "inspection": {
-            "templates": [
-                "Hi there!"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -96,19 +95,29 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "@(\"\")",
-                "@contact.fields.gender",
-                "@(\"0788123123\")",
-                "@contact.urn",
-                "Hi there!"
-            ],
-            "dependencies": [
-                "field[key=gender,name=]",
-                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]"
-            ],
-            "results": []
+            "dependencies": {
+                "contacts": [
+                    {
+                        "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                        "name": "Stavros"
+                    }
+                ],
+                "fields": [
+                    {
+                        "key": "gender",
+                        "name": ""
+                    }
+                ],
+                "groups": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Testers"
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -178,18 +187,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Hi there!",
-                "Hola!",
-                "http://example.com/red.jpg",
-                "http://example.com/rojo.jpg",
-                "Yes",
-                "No",
-                "Si",
-                "No"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

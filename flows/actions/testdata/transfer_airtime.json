@@ -27,8 +27,7 @@
             }
         ],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
             "results": [
                 {
                     "key": "reward_transfer",
@@ -41,7 +40,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -72,8 +73,7 @@
             }
         ],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
             "results": [
                 {
                     "key": "reward_transfer",
@@ -86,7 +86,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -144,8 +146,7 @@
             }
         ],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
             "results": [
                 {
                     "key": "reward_transfer",
@@ -158,7 +159,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -235,8 +238,7 @@
             }
         ],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
             "results": [
                 {
                     "key": "reward_transfer",
@@ -249,7 +251,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -308,8 +312,7 @@
             }
         ],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
             "results": [
                 {
                     "key": "reward_transfer",
@@ -322,7 +325,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -393,8 +398,7 @@
             }
         ],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
             "results": [
                 {
                     "key": "reward_transfer",
@@ -407,7 +411,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -490,8 +496,7 @@
             }
         ],
         "inspection": {
-            "templates": [],
-            "dependencies": [],
+            "dependencies": {},
             "results": [
                 {
                     "key": "reward_transfer",
@@ -504,7 +509,9 @@
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]
                 }
-            ]
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

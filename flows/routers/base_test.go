@@ -46,24 +46,20 @@ func TestRouterTypes(t *testing.T) {
 	}
 }
 
-type inspectionResults struct {
-	Templates    []string            `json:"templates"`
-	Dependencies []string            `json:"dependencies"`
-	Results      []*flows.ResultInfo `json:"results"`
-}
-
 func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
 	testFile, err := ioutil.ReadFile(testPath)
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description       string          `json:"description"`
-		Router            json.RawMessage `json:"router"`
+		Description string          `json:"description"`
+		Router      json.RawMessage `json:"router"`
+
 		ReadError         string          `json:"read_error,omitempty"`
 		DependenciesError string          `json:"dependencies_error,omitempty"`
 		Results           json.RawMessage `json:"results,omitempty"`
 		Events            json.RawMessage `json:"events,omitempty"`
+		Templates         []string        `json:"templates,omitempty"`
 		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
@@ -130,19 +126,12 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		actual.Results, _ = json.Marshal(run.Results())
 		actual.Events, _ = json.Marshal(run.Events())
 
-		dependencies := flow.ExtractDependencies()
-		depStrings := make([]string, len(dependencies))
-		for i := range dependencies {
-			depStrings[i] = dependencies[i].String()
+		if tc.Templates != nil {
+			actual.Templates = flow.ExtractTemplates()
 		}
-
-		results := &inspectionResults{
-			Templates:    flow.ExtractTemplates(),
-			Dependencies: depStrings,
-			Results:      flow.Inspect().Results,
+		if tc.Inspection != nil {
+			actual.Inspection, _ = json.Marshal(flow.Inspect())
 		}
-
-		actual.Inspection, _ = json.Marshal(results)
 
 		if !test.WriteOutput {
 			test.AssertEqualJSON(t, tc.Router, actual.Router, "marshal mismatch in %s", testName)
@@ -152,6 +141,9 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 			// check events are what we expected
 			test.AssertEqualJSON(t, tc.Events, actual.Events, "events mismatch in %s", testName)
+
+			// check extracted templates
+			assert.Equal(t, tc.Templates, actual.Templates, "extracted templates mismatch in %s", testName)
 
 			// check inspection results
 			test.AssertEqualJSON(t, tc.Inspection, actual.Inspection, "inspection mismatch in %s", testName)

@@ -47,11 +47,17 @@
         },
         "events": [],
         "inspection": {
-            "templates": [],
-            "dependencies": [
-                "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]"
-            ],
-            "results": []
+            "dependencies": {
+                "flows": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Collect Age"
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -147,17 +153,35 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "age \u003e 20 OR gender = @fields.gender",
-                "@(\"0788123123\")"
-            ],
-            "dependencies": [
-                "field[key=gender,name=]",
-                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]",
-                "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]"
-            ],
-            "results": []
+            "dependencies": {
+                "contacts": [
+                    {
+                        "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                        "name": "Stavros"
+                    }
+                ],
+                "fields": [
+                    {
+                        "key": "gender",
+                        "name": ""
+                    }
+                ],
+                "flows": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Collect Age"
+                    }
+                ],
+                "groups": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Testers"
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -219,11 +243,17 @@
             }
         ],
         "inspection": {
-            "templates": [],
-            "dependencies": [
-                "flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]"
-            ],
-            "results": []
+            "dependencies": {
+                "flows": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Collect Age"
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

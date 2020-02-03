@@ -33,13 +33,17 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "30"
-            ],
-            "dependencies": [
-                "field[key=age,name=Age]"
-            ],
-            "results": []
+            "dependencies": {
+                "fields": [
+                    {
+                        "key": "age",
+                        "name": "Age"
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -62,13 +66,17 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "@( 1/ 0)"
-            ],
-            "dependencies": [
-                "field[key=age,name=Age]"
-            ],
-            "results": []
+            "dependencies": {
+                "fields": [
+                    {
+                        "key": "age",
+                        "name": "Age"
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {

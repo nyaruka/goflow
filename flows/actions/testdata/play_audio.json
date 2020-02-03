@@ -17,11 +17,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "@(1 / 0).mp3"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -42,11 +41,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "@(\"\")"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -78,11 +76,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -123,12 +120,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "http://uploads.temba.io/welcome/@(contact.uuid).m4a",
-                "http://uploads.temba.io/bienvenido/@(contact.uuid).m4a"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

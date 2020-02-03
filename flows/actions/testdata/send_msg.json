@@ -46,14 +46,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Hi there",
-                "http://example.com/red.jpg",
-                "Red",
-                "Blue"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -204,14 +200,21 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Hi there @contact welcome to @globals.org_name, the secret password is @globals.password"
-            ],
-            "dependencies": [
-                "global[key=org_name,name=]",
-                "global[key=password,name=]"
-            ],
-            "results": []
+            "dependencies": {
+                "globals": [
+                    {
+                        "key": "org_name",
+                        "name": ""
+                    },
+                    {
+                        "key": "password",
+                        "name": ""
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -341,15 +344,17 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Hi Ryan Lewis, who's a good boy?",
-                "@contact.name",
-                "boy"
-            ],
-            "dependencies": [
-                "template[uuid=5722e1fd-fe32-4e74-ac78-3cf41a6adb7e,name=affirmation]"
-            ],
-            "results": []
+            "dependencies": {
+                "templates": [
+                    {
+                        "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
+                        "name": "affirmation"
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -408,17 +413,17 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Hi Ryan Lewis, who's a good boy?",
-                "@contact.name",
-                "boy",
-                "@contact.name",
-                "niño"
-            ],
-            "dependencies": [
-                "template[uuid=5722e1fd-fe32-4e74-ac78-3cf41a6adb7e,name=affirmation]"
-            ],
-            "results": []
+            "dependencies": {
+                "templates": [
+                    {
+                        "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
+                        "name": "affirmation"
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -460,13 +465,17 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Hi there, it's time to get up!"
-            ],
-            "dependencies": [
-                "template[uuid=2edc8dfd-aef0-41cf-a900-8a71bdb00900,name=wakeup]"
-            ],
-            "results": []
+            "dependencies": {
+                "templates": [
+                    {
+                        "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
+                        "name": "wakeup"
+                    }
+                ]
+            },
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -523,18 +532,10 @@
             }
         ],
         "inspection": {
-            "templates": [
-                "Hi there!",
-                "Hola!",
-                "http://example.com/red.jpg",
-                "http://example.com/rojo.jpg",
-                "Yes",
-                "No",
-                "Si",
-                "No"
-            ],
-            "dependencies": [],
-            "results": []
+            "dependencies": {},
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]
