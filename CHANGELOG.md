@@ -1,3 +1,7 @@
+v0.67.1
+----------
+ * Update to gocommon v1.2.0
+
 v0.67.0
 ----------
  * Rename Flow.Validate to Flow.CheckDependencies for clarity
