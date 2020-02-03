@@ -37,7 +37,7 @@ func TestDependencies(t *testing.T) {
 	}
 
 	// can inspect without assets
-	deps := flows.InspectReferences(refs, nil)
+	deps := flows.NewDependencies(refs, nil)
 	depsJSON, _ := json.Marshal(deps)
 	test.AssertEqualJSON(t, []byte(`[
 		{
@@ -106,7 +106,7 @@ func TestDependencies(t *testing.T) {
 	sa, err := engine.NewSessionAssets(source, nil)
 	require.NoError(t, err)
 
-	deps = flows.InspectReferences(refs, sa)
+	deps = flows.NewDependencies(refs, sa)
 	depsJSON, _ = json.Marshal(deps)
 	test.AssertEqualJSON(t, []byte(`[
 		{
@@ -171,7 +171,7 @@ func TestDependencies(t *testing.T) {
 
 	// panic if we get a dependency type we don't recognize
 	assert.Panics(t, func() {
-		flows.InspectReferences([]assets.Reference{&unknownAssetType{}}, nil)
+		flows.NewDependencies([]assets.Reference{&unknownAssetType{}}, nil)
 	})
 }
 

@@ -11,28 +11,28 @@ import (
 
 // FlowInfo contains the results of flow inspection
 type FlowInfo struct {
-	Dependencies []InspectedReference `json:"dependencies"`
-	Results      []*ResultInfo        `json:"results"`
-	WaitingExits []ExitUUID           `json:"waiting_exits"`
-	ParentRefs   []string             `json:"parent_refs"`
+	Dependencies []Dependency  `json:"dependencies"`
+	Results      []*ResultInfo `json:"results"`
+	WaitingExits []ExitUUID    `json:"waiting_exits"`
+	ParentRefs   []string      `json:"parent_refs"`
 }
 
-type ReferenceInfo struct {
+type DependencyState struct {
 	Type    string `json:"type"`
 	Missing bool   `json:"missing,omitempty"`
 }
 
-type InspectedReference struct {
+type Dependency struct {
 	assets.Reference
-	ReferenceInfo
+	DependencyState
 }
 
-func (r InspectedReference) MarshalJSON() ([]byte, error) {
-	b1, err := json.Marshal(r.Reference)
+func (d Dependency) MarshalJSON() ([]byte, error) {
+	b1, err := json.Marshal(d.Reference)
 	if err != nil {
 		return nil, err
 	}
-	b2, err := json.Marshal(r.ReferenceInfo)
+	b2, err := json.Marshal(d.DependencyState)
 	if err != nil {
 		return nil, err
 	}
@@ -41,10 +41,10 @@ func (r InspectedReference) MarshalJSON() ([]byte, error) {
 	return b, nil
 }
 
-// InspectReferences inspects a list of references. If a session assets is provided,
+// NewDependencies inspects a list of references. If a session assets is provided,
 // each dependency is checked to see if it is available or missing.
-func InspectReferences(refs []assets.Reference, sa SessionAssets) []InspectedReference {
-	inspected := make([]InspectedReference, len(refs))
+func NewDependencies(refs []assets.Reference, sa SessionAssets) []Dependency {
+	deps := make([]Dependency, len(refs))
 
 	for i, ref := range refs {
 		var type_ string
@@ -78,9 +78,9 @@ func InspectReferences(refs []assets.Reference, sa SessionAssets) []InspectedRef
 			missing = !checkDependency(sa, ref)
 		}
 
-		inspected[i] = InspectedReference{Reference: ref, ReferenceInfo: ReferenceInfo{Type: type_, Missing: missing}}
+		deps[i] = Dependency{Reference: ref, DependencyState: DependencyState{Type: type_, Missing: missing}}
 	}
-	return inspected
+	return deps
 }
 
 // determines whether the given dependency exists
