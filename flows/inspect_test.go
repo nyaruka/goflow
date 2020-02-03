@@ -171,7 +171,7 @@ func TestDependencies(t *testing.T) {
 
 	// panic if we get a dependency type we don't recognize
 	assert.Panics(t, func() {
-		flows.NewDependencies([]assets.Reference{&unknownAssetType{}}, nil)
+		flows.NewDependencies([]assets.Reference{&unknownAssetType{}}, sa)
 	})
 }
 

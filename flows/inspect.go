@@ -1,8 +1,8 @@
 package flows
 
 import (
-	"encoding/json"
 	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -17,28 +17,18 @@ type FlowInfo struct {
 	ParentRefs   []string      `json:"parent_refs"`
 }
 
-type DependencyState struct {
+type DependencyInfo struct {
 	Type    string `json:"type"`
 	Missing bool   `json:"missing,omitempty"`
 }
 
 type Dependency struct {
-	assets.Reference
-	DependencyState
+	Reference assets.Reference
+	Info      DependencyInfo
 }
 
 func (d Dependency) MarshalJSON() ([]byte, error) {
-	b1, err := json.Marshal(d.Reference)
-	if err != nil {
-		return nil, err
-	}
-	b2, err := json.Marshal(d.DependencyState)
-	if err != nil {
-		return nil, err
-	}
-	b := append(b1[0:len(b1)-1], byte(','))
-	b = append(b, b2[1:]...)
-	return b, nil
+	return utils.JSONMarshalMerged(d.Reference, d.Info)
 }
 
 // NewDependencies inspects a list of references. If a session assets is provided,
@@ -47,38 +37,15 @@ func NewDependencies(refs []assets.Reference, sa SessionAssets) []Dependency {
 	deps := make([]Dependency, len(refs))
 
 	for i, ref := range refs {
-		var type_ string
-
-		// TODO derive from type name
-		switch ref.(type) {
-		case *assets.ChannelReference:
-			type_ = "channel"
-		case *assets.ClassifierReference:
-			type_ = "classifier"
-		case *ContactReference:
-			type_ = "contact"
-		case *assets.FieldReference:
-			type_ = "field"
-		case *assets.FlowReference:
-			type_ = "flow"
-		case *assets.GlobalReference:
-			type_ = "global"
-		case *assets.GroupReference:
-			type_ = "group"
-		case *assets.LabelReference:
-			type_ = "label"
-		case *assets.TemplateReference:
-			type_ = "template"
-		default:
-			panic(fmt.Sprintf("unknown dependency type reference: %T", ref))
-		}
-
 		missing := false
 		if sa != nil {
 			missing = !checkDependency(sa, ref)
 		}
 
-		deps[i] = Dependency{Reference: ref, DependencyState: DependencyState{Type: type_, Missing: missing}}
+		deps[i] = Dependency{
+			Reference: ref,
+			Info:      DependencyInfo{Type: referenceTypeName(ref), Missing: missing},
+		}
 	}
 	return deps
 }
@@ -108,6 +75,16 @@ func checkDependency(sa SessionAssets, ref assets.Reference) bool {
 	default:
 		panic(fmt.Sprintf("unknown dependency type reference: %T", ref))
 	}
+}
+
+// derives a dependency type name (e.g. group) from a reference
+func referenceTypeName(ref assets.Reference) string {
+	t := reflect.TypeOf(ref).String()
+	t = strings.Split(t, ".")[1]
+	if strings.HasSuffix(t, "Reference") {
+		t = t[0 : len(t)-9]
+	}
+	return strings.ToLower(t)
 }
 
 // ResultInfo is possible result that a flow might generate

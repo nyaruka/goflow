@@ -37,54 +37,44 @@ func TestIsVersionSupported(t *testing.T) {
 
 func TestBrokenFlows(t *testing.T) {
 	testCases := []struct {
-		path            string
-		readError       string
-		validationError string
+		path string
+		err  string
 	}{
 		{
 			"exitless_node.json",
 			"unable to read node: field 'exits' must have a minimum of 1 items",
-			"",
 		},
 		{
 			"exitless_category.json",
 			"unable to read router: unable to read category: field 'exit_uuid' is required",
-			"",
 		},
 		{
 			"duplicate_node_uuid.json",
 			"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
-			"",
 		},
 		{
 			"invalid_action_by_tag.json",
 			"unable to read action: field 'text' is required",
-			"",
 		},
 		{
 			"invalid_action_by_method.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid action[uuid=e5a03dde-3b2f-4603-b5d0-d927f6bcc361, type=call_webhook]: header '\"$?' is not a valid HTTP header",
-			"",
 		},
 		{
 			"invalid_timeout_category.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
-			"",
 		},
 		{
 			"invalid_default_exit.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-			"",
 		},
 		{
 			"invalid_case_category.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-			"",
 		},
 		{
 			"invalid_exit_dest.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
-			"",
 		},
 	}
 
@@ -97,14 +87,10 @@ func TestBrokenFlows(t *testing.T) {
 
 		_, err = sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 
-		if tc.readError != "" {
-			assert.EqualError(t, err, tc.readError, "read error mismatch for %s", tc.path)
+		if tc.err != "" {
+			assert.EqualError(t, err, tc.err, "read error mismatch for %s", tc.path)
 		} else {
 			require.NoError(t, err)
-
-			// TODO
-			//err = flow.CheckDependenciesRecursive(sa, nil)
-			//assert.EqualError(t, err, tc.validationError, "validation error mismatch for %s", tc.path)
 		}
 	}
 }
