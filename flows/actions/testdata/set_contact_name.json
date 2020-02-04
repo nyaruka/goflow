@@ -3,217 +3,227 @@
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_name",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "name": "John"
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without a contact",
-                "type": "error"
+                "text": "can't execute action in session without a contact"
             }
         ],
+        "templates": [
+            "John"
+        ],
         "inspection": {
-            "templates": [
-                "John"
-            ],
             "dependencies": [],
-            "results": []
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "Error event and action skipped if name contains expression error",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_name",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "name": "@(1 / 0)"
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @(1 / 0): division by zero",
-                "type": "error"
+                "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
+        "templates": [
+            "@(1 / 0)"
+        ],
         "inspection": {
-            "templates": [
-                "@(1 / 0)"
-            ],
             "dependencies": [],
-            "results": []
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "NOOP if name doesn't change",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_name",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "name": "Ryan Lewis"
         },
         "events": [],
+        "templates": [
+            "Ryan Lewis"
+        ],
         "inspection": {
-            "templates": [
-                "Ryan Lewis"
-            ],
             "dependencies": [],
-            "results": []
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "Name changed event if name cleared",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_name",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "name": ""
         },
         "events": [
             {
+                "type": "contact_name_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_name_changed"
+                "name": ""
             },
             {
+                "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "groups_added": [
                     {
-                        "name": "Nameless",
-                        "uuid": "5389414a-66b8-408b-afec-07c5d68f6784"
+                        "uuid": "5389414a-66b8-408b-afec-07c5d68f6784",
+                        "name": "Nameless"
                     }
-                ],
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_groups_changed"
+                ]
             }
         ],
         "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\u0026id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                },
+                {
+                    "uuid": "5389414a-66b8-408b-afec-07c5d68f6784",
+                    "name": "Nameless"
+                }
+            ],
             "fields": {
                 "gender": {
                     "text": "Male"
                 }
-            },
-            "groups": [
-                {
-                    "name": "Testers",
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-                },
-                {
-                    "name": "Males",
-                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
-                },
-                {
-                    "name": "Nameless",
-                    "uuid": "5389414a-66b8-408b-afec-07c5d68f6784"
-                }
-            ],
-            "language": "eng",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "twitterid:54784326227#nyaruka"
-            ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            }
         }
     },
     {
         "description": "Name changed event if name changes",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_name",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "name": "Bryan"
         },
         "events": [
             {
+                "type": "contact_name_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Bryan",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_name_changed"
+                "name": "Bryan"
             }
         ],
         "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bryan",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\u0026id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
             "fields": {
                 "gender": {
                     "text": "Male"
                 }
-            },
-            "groups": [
-                {
-                    "name": "Testers",
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-                },
-                {
-                    "name": "Males",
-                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
-                }
-            ],
-            "language": "eng",
-            "name": "Bryan",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "twitterid:54784326227#nyaruka"
-            ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            }
         },
+        "templates": [
+            "Bryan"
+        ],
         "inspection": {
-            "templates": [
-                "Bryan"
-            ],
             "dependencies": [],
-            "results": []
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "Name value truncated if too long",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_name",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "name": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
         },
         "events": [
             {
+                "type": "contact_name_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_name_changed",
                 "name": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus"
             }
         ],
         "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\u0026id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
             "fields": {
                 "gender": {
                     "text": "Male"
                 }
-            },
-            "groups": [
-                {
-                    "name": "Testers",
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-                },
-                {
-                    "name": "Males",
-                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
-                }
-            ],
-            "language": "eng",
-            "name": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "twitterid:54784326227#nyaruka"
-            ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            }
         },
+        "templates": [
+            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+        ],
         "inspection": {
-            "templates": [
-                "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-            ],
             "dependencies": [],
-            "results": []
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

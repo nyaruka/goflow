@@ -113,10 +113,6 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		return nil, err
 	}
 
-	if err := flow.ValidateRecursive(sa, nil); err != nil {
-		return nil, err
-	}
-
 	contact, err := flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
 	if err != nil {
 		return nil, err

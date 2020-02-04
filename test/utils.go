@@ -2,6 +2,7 @@ package test
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"testing"
 
@@ -14,7 +15,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// AssertEqual is equivalent to assert.Equal for two XValue instances
+// WriteOutput indicates whether tests should rewrite test output
+var WriteOutput bool
+
+func init() {
+	flag.BoolVar(&WriteOutput, "write", false, "whether to rewrite test output")
+}
+
+// AssertXEqual is equivalent to assert.Equal for two XValue instances
 func AssertXEqual(t *testing.T, expected types.XValue, actual types.XValue, msgAndArgs ...interface{}) bool {
 	if !types.Equals(expected, actual) {
 		return assert.Fail(t, fmt.Sprintf("Not equal: \n"+

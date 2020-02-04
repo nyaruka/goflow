@@ -2,6 +2,7 @@ package flows
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -10,100 +11,80 @@ import (
 
 // FlowInfo contains the results of flow inspection
 type FlowInfo struct {
-	Dependencies *Dependencies `json:"dependencies"`
+	Dependencies []Dependency  `json:"dependencies"`
 	Results      []*ResultInfo `json:"results"`
 	WaitingExits []ExitUUID    `json:"waiting_exits"`
 	ParentRefs   []string      `json:"parent_refs"`
 }
 
-// Dependencies contains a flows dependencies grouped by type
-type Dependencies struct {
-	Classifiers []*assets.ClassifierReference `json:"classifiers,omitempty"`
-	Channels    []*assets.ChannelReference    `json:"channels,omitempty"`
-	Contacts    []*ContactReference           `json:"contacts,omitempty"`
-	Fields      []*assets.FieldReference      `json:"fields,omitempty"`
-	Flows       []*assets.FlowReference       `json:"flows,omitempty"`
-	Globals     []*assets.GlobalReference     `json:"globals,omitempty"`
-	Groups      []*assets.GroupReference      `json:"groups,omitempty"`
-	Labels      []*assets.LabelReference      `json:"labels,omitempty"`
-	Templates   []*assets.TemplateReference   `json:"templates,omitempty"`
+type DependencyInfo struct {
+	Type    string `json:"type"`
+	Missing bool   `json:"missing,omitempty"`
 }
 
-// NewDependencies creates a new dependency listing from the slice of references
-func NewDependencies(refs []assets.Reference) *Dependencies {
-	d := &Dependencies{}
-	for _, r := range refs {
-		switch typed := r.(type) {
-		case *assets.ChannelReference:
-			d.Channels = append(d.Channels, typed)
-		case *assets.ClassifierReference:
-			d.Classifiers = append(d.Classifiers, typed)
-		case *ContactReference:
-			d.Contacts = append(d.Contacts, typed)
-		case *assets.FieldReference:
-			d.Fields = append(d.Fields, typed)
-		case *assets.FlowReference:
-			d.Flows = append(d.Flows, typed)
-		case *assets.GlobalReference:
-			d.Globals = append(d.Globals, typed)
-		case *assets.GroupReference:
-			d.Groups = append(d.Groups, typed)
-		case *assets.LabelReference:
-			d.Labels = append(d.Labels, typed)
-		case *assets.TemplateReference:
-			d.Templates = append(d.Templates, typed)
-		default:
-			panic(fmt.Sprintf("unknown dependency type reference: %v", r))
-		}
-	}
-	return d
+type Dependency struct {
+	Reference assets.Reference
+	Info      DependencyInfo
 }
 
-// Check checks the asset dependencies and notifies the caller of missing assets via the callback
-func (d *Dependencies) Check(sa SessionAssets, missing assets.MissingCallback) error {
-	for _, ref := range d.Channels {
-		if sa.Channels().Get(ref.UUID) == nil {
-			missing(ref, nil)
-		}
-	}
-	for _, ref := range d.Classifiers {
-		if sa.Classifiers().Get(ref.UUID) == nil {
-			missing(ref, nil)
-		}
-	}
-	for _, ref := range d.Fields {
-		if sa.Fields().Get(ref.Key) == nil {
-			missing(ref, nil)
-		}
-	}
-	for _, ref := range d.Flows {
-		_, err := sa.Flows().Get(ref.UUID)
-		if err != nil {
-			missing(ref, err)
-		}
-	}
-	for _, ref := range d.Globals {
-		if sa.Globals().Get(ref.Key) == nil {
-			missing(ref, nil)
-		}
-	}
-	for _, ref := range d.Groups {
-		if sa.Groups().Get(ref.UUID) == nil {
-			missing(ref, nil)
-		}
-	}
-	for _, ref := range d.Labels {
-		if sa.Labels().Get(ref.UUID) == nil {
-			missing(ref, nil)
-		}
-	}
-	for _, ref := range d.Templates {
-		if sa.Templates().Get(ref.UUID) == nil {
-			missing(ref, nil)
-		}
-	}
+func (d Dependency) MarshalJSON() ([]byte, error) {
+	return utils.JSONMarshalMerged(d.Reference, d.Info)
+}
 
-	return nil
+// NewDependencies inspects a list of references. If a session assets is provided,
+// each dependency is checked to see if it is available or missing.
+func NewDependencies(refs []assets.Reference, sa SessionAssets) []Dependency {
+	deps := make([]Dependency, len(refs))
+
+	for i, ref := range refs {
+		missing := false
+		if sa != nil {
+			missing = !checkDependency(sa, ref)
+		}
+
+		deps[i] = Dependency{
+			Reference: ref,
+			Info:      DependencyInfo{Type: referenceTypeName(ref), Missing: missing},
+		}
+	}
+	return deps
+}
+
+// determines whether the given dependency exists
+func checkDependency(sa SessionAssets, ref assets.Reference) bool {
+	switch typed := ref.(type) {
+	case *assets.ChannelReference:
+		return sa.Channels().Get(typed.UUID) != nil
+	case *assets.ClassifierReference:
+		return sa.Classifiers().Get(typed.UUID) != nil
+	case *ContactReference:
+		return true // have to assume contacts exist
+	case *assets.FieldReference:
+		return sa.Fields().Get(typed.Key) != nil
+	case *assets.FlowReference:
+		_, err := sa.Flows().Get(typed.UUID)
+		return err == nil
+	case *assets.GlobalReference:
+		return sa.Globals().Get(typed.Key) != nil
+	case *assets.GroupReference:
+		return sa.Groups().Get(typed.UUID) != nil
+	case *assets.LabelReference:
+		return sa.Labels().Get(typed.UUID) != nil
+	case *assets.TemplateReference:
+		return sa.Templates().Get(typed.UUID) != nil
+	default:
+		panic(fmt.Sprintf("unknown dependency type reference: %T", ref))
+	}
+}
+
+// derives a dependency type name (e.g. group) from a reference
+func referenceTypeName(ref assets.Reference) string {
+	t := reflect.TypeOf(ref).String()
+	t = strings.Split(t, ".")[1]
+	if strings.HasSuffix(t, "Reference") {
+		t = t[0 : len(t)-9]
+	}
+	return strings.ToLower(t)
 }
 
 // ResultInfo is possible result that a flow might generate

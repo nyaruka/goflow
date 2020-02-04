@@ -1,9 +1,27 @@
 [
     {
-        "description": "Validation fails for invalid group reference",
+        "description": "NOOP if no recipients",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi there!"
+        },
+        "events": [],
+        "templates": [
+            "Hi there!"
+        ],
+        "inspection": {
+            "dependencies": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "NOOP if no recipients because of missing group depndency",
+        "action": {
+            "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "groups": [
                 {
                     "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
@@ -12,42 +30,42 @@
             ],
             "text": "Hi there!"
         },
-        "validation_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
-    },
-    {
-        "description": "NOOP if no recipients",
-        "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "type": "send_broadcast",
-            "text": "Hi there!"
-        },
         "events": [],
+        "templates": [
+            "Hi there!"
+        ],
         "inspection": {
-            "templates": [
-                "Hi there!"
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbers",
+                    "type": "group",
+                    "missing": true
+                }
             ],
-            "dependencies": [],
-            "results": []
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "Broadcast created event for the message",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "urns": [
                 "tel:+1234567890"
-            ],
-            "contacts": [
-                {
-                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
-                    "name": "Stavros"
-                }
             ],
             "groups": [
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers"
+                }
+            ],
+            "contacts": [
+                {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros"
                 }
             ],
             "legacy_vars": [
@@ -60,33 +78,33 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "scheme or path cannot be empty",
-                "type": "error"
+                "text": "scheme or path cannot be empty"
             },
             {
-                "base_language": "eng",
-                "contacts": [
-                    {
-                        "name": "Stavros",
-                        "uuid": "945493e3-933f-4668-9761-ce990fae5e5c"
-                    }
-                ],
+                "type": "broadcast_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "groups": [
-                    {
-                        "name": "Testers",
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-                    }
-                ],
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "translations": {
                     "eng": {
                         "text": "Hi there!"
                     }
                 },
-                "type": "broadcast_created",
+                "base_language": "eng",
+                "groups": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Testers"
+                    }
+                ],
+                "contacts": [
+                    {
+                        "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                        "name": "Stavros"
+                    }
+                ],
                 "urns": [
                     "tel:+1234567890",
                     "tel:male",
@@ -95,27 +113,41 @@
                 ]
             }
         ],
+        "templates": [
+            "@(\"\")",
+            "@contact.fields.gender",
+            "@(\"0788123123\")",
+            "@contact.urn",
+            "Hi there!"
+        ],
         "inspection": {
-            "templates": [
-                "@(\"\")",
-                "@contact.fields.gender",
-                "@(\"0788123123\")",
-                "@contact.urn",
-                "Hi there!"
-            ],
             "dependencies": [
-                "field[key=gender,name=]",
-                "group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-                "contact[uuid=945493e3-933f-4668-9761-ce990fae5e5c,name=Stavros]"
+                {
+                    "key": "gender",
+                    "name": "",
+                    "type": "field"
+                },
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers",
+                    "type": "group"
+                },
+                {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros",
+                    "type": "contact"
+                }
             ],
-            "results": []
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "Text, attachments and quick replies can be localized",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "urns": [
                 "tel:+1234567890"
             ],
@@ -146,50 +178,52 @@
         },
         "events": [
             {
-                "base_language": "eng",
+                "type": "broadcast_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "translations": {
                     "eng": {
+                        "text": "Hi there!",
                         "attachments": [
                             "http://example.com/red.jpg"
                         ],
                         "quick_replies": [
                             "Yes",
                             "No"
-                        ],
-                        "text": "Hi there!"
+                        ]
                     },
                     "spa": {
+                        "text": "Hola!",
                         "attachments": [
                             "http://example.com/rojo.jpg"
                         ],
                         "quick_replies": [
                             "Si",
                             "No"
-                        ],
-                        "text": "Hola!"
+                        ]
                     }
                 },
-                "type": "broadcast_created",
+                "base_language": "eng",
                 "urns": [
                     "tel:+1234567890"
                 ]
             }
         ],
+        "templates": [
+            "Hi there!",
+            "Hola!",
+            "http://example.com/red.jpg",
+            "http://example.com/rojo.jpg",
+            "Yes",
+            "No",
+            "Si",
+            "No"
+        ],
         "inspection": {
             "dependencies": [],
             "results": [],
-            "templates": [
-                "Hi there!",
-                "Hola!",
-                "http://example.com/red.jpg",
-                "http://example.com/rojo.jpg",
-                "Yes",
-                "No",
-                "Si",
-                "No"
-            ]
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

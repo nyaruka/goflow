@@ -9,7 +9,7 @@ require (
 	github.com/go-playground/locales v0.11.2 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible
-	github.com/nyaruka/gocommon v1.1.1
+	github.com/nyaruka/gocommon v1.2.0
 	github.com/nyaruka/phonenumbers v1.0.41
 	github.com/pkg/errors v0.8.0
 	github.com/sergi/go-diff v1.0.0

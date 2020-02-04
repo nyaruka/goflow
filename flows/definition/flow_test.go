@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"strings"
 	"testing"
 
 	"github.com/Masterminds/semver"
@@ -18,6 +19,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -35,69 +37,44 @@ func TestIsVersionSupported(t *testing.T) {
 
 func TestBrokenFlows(t *testing.T) {
 	testCases := []struct {
-		path            string
-		readError       string
-		validationError string
+		path string
+		err  string
 	}{
 		{
 			"exitless_node.json",
 			"unable to read node: field 'exits' must have a minimum of 1 items",
-			"",
 		},
 		{
 			"exitless_category.json",
 			"unable to read router: unable to read category: field 'exit_uuid' is required",
-			"",
 		},
 		{
 			"duplicate_node_uuid.json",
 			"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
-			"",
 		},
 		{
 			"invalid_action_by_tag.json",
 			"unable to read action: field 'text' is required",
-			"",
 		},
 		{
 			"invalid_action_by_method.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid action[uuid=e5a03dde-3b2f-4603-b5d0-d927f6bcc361, type=call_webhook]: header '\"$?' is not a valid HTTP header",
-			"",
 		},
 		{
 			"invalid_timeout_category.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
-			"",
 		},
 		{
 			"invalid_default_exit.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: default category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-			"",
 		},
 		{
 			"invalid_case_category.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: case category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
-			"",
 		},
 		{
 			"invalid_exit_dest.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
-			"",
-		},
-		{
-			"missing_assets.json",
-			"",
-			"missing dependencies: group[uuid=7be2f40b-38a0-4b06-9e6d-522dca592cc8,name=Registered],template[uuid=5722e1fd-fe32-4e74-ac78-3cf41a6adb7e,name=affirmation]",
-		},
-		{
-			"invalid_subflow.json",
-			"",
-			"missing dependencies: flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Child Flow] (unable to read action: field 'text' is required)",
-		},
-		{
-			"invalid_subflow_due_to_missing_asset.json",
-			"",
-			"invalid child flow[uuid=a8d27b94-d3d0-4a96-8074-0f162f342195,name=Child Flow]: missing dependencies: group[uuid=f4cdde0a-97b1-469a-adb8-902bdfd19b0c,name=I Don't Exist!]",
 		},
 	}
 
@@ -108,15 +85,12 @@ func TestBrokenFlows(t *testing.T) {
 		sa, err := test.CreateSessionAssets(assetsJSON, "")
 		require.NoError(t, err, "unable to load assets: %s", tc.path)
 
-		flow, err := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+		_, err = sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 
-		if tc.readError != "" {
-			assert.EqualError(t, err, tc.readError, "read error mismatch for %s", tc.path)
+		if tc.err != "" {
+			assert.EqualError(t, err, tc.err, "read error mismatch for %s", tc.path)
 		} else {
 			require.NoError(t, err)
-
-			err = flow.ValidateRecursive(sa, nil)
-			assert.EqualError(t, err, tc.validationError, "validation error mismatch for %s", tc.path)
 		}
 	}
 }
@@ -295,10 +269,6 @@ func TestNewFlow(t *testing.T) {
 
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
 
-	// should pass validation ok
-	err = flow.Validate(session.Assets(), nil)
-	assert.NoError(t, err)
-
 	// check in expressions
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"__default__": types.NewXText("Test Flow"),
@@ -308,30 +278,41 @@ func TestNewFlow(t *testing.T) {
 	}), flows.Context(session.Environment(), flow))
 
 	// check inspection
-	info := flow.Inspect()
+	info := flow.Inspect(session.Assets())
+	infoJSON, _ := json.Marshal(info)
 
-	assert.Equal(t, &flows.Dependencies{
-		Fields: []*assets.FieldReference{
-			assets.NewFieldReference("gender", ""),
-		},
-		Labels: []*assets.LabelReference{
-			assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
-		},
-	}, info.Dependencies)
-
-	assert.Equal(t, []*flows.ResultInfo{
-		&flows.ResultInfo{
-			Name:       "Response 1",
-			Key:        "response_1",
-			Categories: []string{"Yes", "No"},
-			NodeUUIDs:  []flows.NodeUUID{"a58be63b-907d-4a1a-856b-0bb5579d7507"},
-		},
-	}, info.Results)
-
-	assert.Equal(t, []flows.ExitUUID{
-		"023a5c10-d74a-4fad-9560-990caead8170",
-		"8943c032-2a91-456c-8080-2a249f1b420c",
-	}, info.WaitingExits)
+	test.AssertEqualJSON(t, []byte(`{
+		"dependencies": [
+			{
+				"key": "gender",
+				"name": "",
+				"type": "field"
+			},
+			{
+				"name": "Spam",
+				"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+				"type": "label"
+			}
+		],
+		"parent_refs": [],
+		"results": [
+			{
+				"categories": [
+					"Yes",
+					"No"
+				],
+				"key": "response_1",
+				"name": "Response 1",
+				"node_uuids": [
+					"a58be63b-907d-4a1a-856b-0bb5579d7507"
+				]
+			}
+		],
+		"waiting_exits": [
+			"023a5c10-d74a-4fad-9560-990caead8170",
+			"8943c032-2a91-456c-8080-2a249f1b420c"
+		]
+	}`), infoJSON, "inspection mismatch")
 }
 
 func TestEmptyFlow(t *testing.T) {
@@ -354,41 +335,15 @@ func TestEmptyFlow(t *testing.T) {
   	}`, definition.CurrentSpecVersion)
 	test.AssertEqualJSON(t, []byte(expected), marshaled, "flow definition mismatch")
 
-	info := flow.Inspect()
+	info := flow.Inspect(nil)
+	infoJSON, _ := json.Marshal(info)
 
-	assert.Equal(t, &flows.Dependencies{}, info.Dependencies)
-	assert.Equal(t, []*flows.ResultInfo{}, info.Results)
-	assert.Equal(t, []flows.ExitUUID{}, info.WaitingExits)
-}
-
-func TestInspectFlow(t *testing.T) {
-	sa, err := test.LoadSessionAssets("../../test/testdata/runner/brochure.json")
-	require.NoError(t, err)
-
-	flow, err := sa.Flows().Get(assets.FlowUUID("25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"))
-	require.NoError(t, err)
-
-	info := flow.Inspect()
-
-	assert.Equal(t, &flows.Dependencies{
-		Groups: []*assets.GroupReference{
-			assets.NewGroupReference("7be2f40b-38a0-4b06-9e6d-522dca592cc8", "Registered"),
-		},
-	}, info.Dependencies)
-
-	assert.Equal(t, []*flows.ResultInfo{
-		&flows.ResultInfo{
-			Name:       "Name",
-			Key:        "name",
-			Categories: []string{"Not Empty", "Other"},
-			NodeUUIDs:  []flows.NodeUUID{"3dcccbb4-d29c-41dd-a01f-16d814c9ab82"},
-		},
-	}, info.Results)
-
-	assert.Equal(t, []flows.ExitUUID{
-		"fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
-		"43accf99-4940-44f7-926b-a8b35d9403d6",
-	}, info.WaitingExits)
+	test.AssertEqualJSON(t, []byte(`{
+		"dependencies": [],
+		"parent_refs": [],
+		"results": [],
+		"waiting_exits": []
+	}`), infoJSON, "inspection mismatch")
 }
 
 func TestReadFlow(t *testing.T) {
@@ -569,157 +524,56 @@ func TestExtractTemplates(t *testing.T) {
 	}
 }
 
-func TestInspect(t *testing.T) {
+func TestInspection(t *testing.T) {
 	testCases := []struct {
 		path string
 		uuid string
-		info *flows.FlowInfo
 	}{
 		{
 			"../../test/testdata/runner/all_actions.json",
 			"8ca44c09-791d-453a-9799-a70dd3303306",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{
-					Channels: []*assets.ChannelReference{
-						assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Android Channel"),
-					},
-					Contacts: []*flows.ContactReference{
-						flows.NewContactReference("820f5923-3369-41c6-b3cd-af577c0bd4b8", "Bob"),
-					},
-					Fields: []*assets.FieldReference{
-						assets.NewFieldReference("state", ""),
-						assets.NewFieldReference("first_name", ""),
-						assets.NewFieldReference("activation_token", ""),
-						assets.NewFieldReference("raw_district", ""),
-						assets.NewFieldReference("gender", "Gender"),
-						assets.NewFieldReference("district", "District"),
-					},
-					Flows: []*assets.FlowReference{
-						assets.NewFlowReference("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "Collect Language"),
-					},
-					Groups: []*assets.GroupReference{
-						assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", "Survey Audience"),
-					},
-					Labels: []*assets.LabelReference{
-						assets.NewLabelReference("3f65d88a-95dc-4140-9451-943e94e06fea", "Spam"),
-					},
-				},
-				Results: []*flows.ResultInfo{
-					{
-						Key:        "gender",
-						Name:       "Gender",
-						Categories: []string{"Male"},
-						NodeUUIDs:  []flows.NodeUUID{"a58be63b-907d-4a1a-856b-0bb5579d7507"},
-					},
-				},
-				WaitingExits: []flows.ExitUUID{},
-				ParentRefs:   []string{},
-			},
 		},
 		{
 			"../../test/testdata/runner/router_tests.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{
-					Fields: []*assets.FieldReference{
-						assets.NewFieldReference("raw_district", ""),
-						assets.NewFieldReference("district", "District"),
-					},
-					Groups: []*assets.GroupReference{
-						assets.NewGroupReference("2aad21f6-30b7-42c5-bd7f-1b720c154817", ""),
-						assets.NewGroupReference("bf282a79-aa74-4557-9932-22a9b3bce537", ""),
-					},
-				},
-				Results: []*flows.ResultInfo{
-					{
-						Key:        "urn_check",
-						Name:       "URN Check",
-						Categories: []string{"Telegram", "Other"},
-						NodeUUIDs:  []flows.NodeUUID{"46d51f50-58de-49da-8d13-dadbf322685d"},
-					},
-					{
-						Key:        "group_check",
-						Name:       "Group Check",
-						Categories: []string{"Testers", "Other"},
-						NodeUUIDs:  []flows.NodeUUID{"08d71f03-dc18-450a-a82b-496f64862a56"},
-					},
-					{
-						Key:        "district_check",
-						Name:       "District Check",
-						Categories: []string{"Valid", "Invalid"},
-						NodeUUIDs:  []flows.NodeUUID{"8476e6fe-1c22-436c-be2c-c27afdc940f3"},
-					},
-				},
-				WaitingExits: []flows.ExitUUID{},
-				ParentRefs:   []string{},
-			},
 		},
 		{
 			"../../test/testdata/runner/dynamic_groups.json",
 			"1b462ce8-983a-4393-b133-e15a0efdb70c",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{
-					Fields: []*assets.FieldReference{
-						assets.NewFieldReference("gender", "Gender"),
-						assets.NewFieldReference("age", "Age"),
-					},
-				},
-				Results:      []*flows.ResultInfo{},
-				WaitingExits: []flows.ExitUUID{},
-				ParentRefs:   []string{},
-			},
 		},
 		{
 			"../../test/testdata/runner/two_questions.json",
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{},
-				Results: []*flows.ResultInfo{
-					{
-						Key:        "favorite_color",
-						Name:       "Favorite Color",
-						Categories: []string{"Red", "Blue", "Other", "No Response"},
-						NodeUUIDs:  []flows.NodeUUID{"46d51f50-58de-49da-8d13-dadbf322685d"},
-					},
-					{
-						Key:        "soda",
-						Name:       "Soda",
-						Categories: []string{"Pepsi", "Coke", "Other"},
-						NodeUUIDs:  []flows.NodeUUID{"11a772f3-3ca2-4429-8b33-20fdcfc2b69e"},
-					},
-				},
-				WaitingExits: []flows.ExitUUID{
-					flows.ExitUUID("2f42b942-bf32-4e81-8ff3-f946b5e68dd8"),
-					flows.ExitUUID("dcdc29b6-4671-4c10-a614-5b1507f3df97"),
-					flows.ExitUUID("17ec8700-cada-4cff-b3b1-351cac4d85c6"),
-					flows.ExitUUID("f0649239-6ab2-4903-b5c5-f813beb5539d"),
-					flows.ExitUUID("3bd19c40-1114-4b83-b12e-f0c38054ba3f"),
-					flows.ExitUUID("9ad71fc4-c2f8-4aab-a193-7bafad172ca0"),
-					flows.ExitUUID("e80bc037-3b57-45b5-9f19-a8346a475578"),
-				},
-				ParentRefs: []string{},
-			},
 		},
 		{
 			"../../test/testdata/runner/triggered.json",
 			"ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
-			&flows.FlowInfo{
-				Dependencies: &flows.Dependencies{
-					Fields: []*assets.FieldReference{
-						assets.NewFieldReference("state", ""),
-					},
-				},
-				Results:      []*flows.ResultInfo{},
-				WaitingExits: []flows.ExitUUID{},
-				ParentRefs:   []string{"age"},
-			},
+		},
+		{
+			"../../test/testdata/runner/missing_dependencies.json",
+			"447efb41-c1e2-44f9-b906-4ed6b5031e59",
 		},
 	}
 
 	for _, tc := range testCases {
-		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		sa, err := test.LoadSessionAssets(tc.path)
 		require.NoError(t, err)
 
-		assert.Equal(t, tc.info, flow.Inspect(), "inspection mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+		flow, err := sa.Flows().Get(assets.FlowUUID(tc.uuid))
+		require.NoError(t, err)
+
+		actualInfo := flow.Inspect(sa)
+		actualJSON, _ := utils.JSONMarshalPretty(actualInfo)
+
+		testDataPath := "testdata/inspection/" + tc.path[strings.LastIndex(tc.path, "/"):]
+
+		if !test.WriteOutput {
+			expectedJSON, err := ioutil.ReadFile(testDataPath)
+			require.NoError(t, err)
+			test.AssertEqualJSON(t, expectedJSON, actualJSON, "inspection mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+		} else {
+			err := ioutil.WriteFile(testDataPath, actualJSON, 0666)
+			require.NoError(t, err)
+		}
 	}
 }

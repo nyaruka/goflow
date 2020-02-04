@@ -15,20 +15,6 @@
         "read_error": "can't specify specific groups when all_groups=true"
     },
     {
-        "description": "Validation fails for invalid group reference",
-        "action": {
-            "type": "remove_contact_groups",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "groups": [
-                {
-                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                    "name": "Climbers"
-                }
-            ]
-        },
-        "validation_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
-    },
-    {
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
@@ -43,10 +29,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without a contact",
-                "type": "error"
+                "text": "can't execute action in session without a contact"
             }
         ]
     },
@@ -64,10 +50,10 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't add or remove contacts from a dynamic group 'Males'",
-                "type": "error"
+                "text": "can't add or remove contacts from a dynamic group 'Males'"
             }
         ]
     },
@@ -132,26 +118,53 @@
             }
         ],
         "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\u0026id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
             "fields": {
                 "gender": {
                     "text": "Male"
                 }
-            },
+            }
+        }
+    },
+    {
+        "description": "NOOP for invalid group reference",
+        "action": {
+            "type": "remove_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "groups": [
                 {
-                    "name": "Males",
-                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbers"
+                }
+            ]
+        },
+        "events": [],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbers",
+                    "type": "group",
+                    "missing": true
                 }
             ],
-            "language": "eng",
-            "name": "Ryan Lewis",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "twitterid:54784326227#nyaruka"
-            ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

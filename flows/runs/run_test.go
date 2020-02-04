@@ -186,7 +186,7 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(urns))`,
-			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"wechat":null,"whatsapp":null}`,
+			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"vk":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(results.favorite_color))`,
@@ -202,7 +202,7 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(parent.urns))`,
-			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+593979111222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"wechat":null,"whatsapp":null}`,
+			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+593979111222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"vk":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(parent.fields))`,

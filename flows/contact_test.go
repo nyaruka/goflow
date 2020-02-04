@@ -78,6 +78,7 @@ func TestContact(t *testing.T) {
 		"twitter":   flows.NewContactURN(urns.URN("twitter:joey"), nil).ToXValue(env),
 		"twitterid": nil,
 		"viber":     nil,
+		"vk":        nil,
 		"wechat":    nil,
 		"whatsapp":  nil,
 	}), flows.ContextFunc(env, contact.URNs().MapContext))
