@@ -23,17 +23,22 @@ func (t *unknownAssetType) Identity() string { return "unknown[]" }
 func (t *unknownAssetType) Variable() bool   { return false }
 
 func TestDependencies(t *testing.T) {
-	refs := []assets.Reference{
-		assets.NewChannelReference("8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "Android"),
-		assets.NewClassifierReference("2138cddc-118a-49ae-b290-98e03ad0573b", "Booking"),
-		flows.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob"),
-		assets.NewFieldReference("gender", "Gender"),
-		assets.NewFlowReference("4f932672-7995-47f0-96e6-faf5abd2d81d", "Registration"),
-		assets.NewGlobalReference("org_name", "Org Name"),
-		assets.NewGroupReference("46057a92-6580-4e93-af36-2bb9c9d61e51", "Testers"),
-		assets.NewGroupReference("377c3101-a7fc-47b1-9136-980348e362c0", "Customers"),
-		assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam"),
-		assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome"),
+	refs := map[flows.NodeUUID][]assets.Reference{
+		"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": []assets.Reference{
+			assets.NewChannelReference("8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "Android"),
+			assets.NewClassifierReference("2138cddc-118a-49ae-b290-98e03ad0573b", "Booking"),
+			flows.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob"),
+			assets.NewFieldReference("gender", "Gender"),
+			assets.NewFlowReference("4f932672-7995-47f0-96e6-faf5abd2d81d", "Registration"),
+			assets.NewGlobalReference("org_name", "Org Name"),
+			assets.NewGroupReference("46057a92-6580-4e93-af36-2bb9c9d61e51", "Testers"),
+			assets.NewGroupReference("377c3101-a7fc-47b1-9136-980348e362c0", "Customers"),
+			assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam"),
+			assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome"),
+		},
+		"7c959933-4c30-4277-9810-adc95a459bd0": []assets.Reference{
+			assets.NewGlobalReference("org_name", "Org Name"),
+		},
 	}
 
 	// can inspect without assets
@@ -171,7 +176,9 @@ func TestDependencies(t *testing.T) {
 
 	// panic if we get a dependency type we don't recognize
 	assert.Panics(t, func() {
-		flows.NewDependencies([]assets.Reference{&unknownAssetType{}}, sa)
+		flows.NewDependencies(map[flows.NodeUUID][]assets.Reference{
+			"7c959933-4c30-4277-9810-adc95a459bd0": []assets.Reference{&unknownAssetType{}},
+		}, sa)
 	})
 }
 

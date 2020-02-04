@@ -2,7 +2,6 @@ package definition
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -157,38 +156,28 @@ func (f *flow) ExtractTemplates() []string {
 }
 
 // ExtractDependencies extracts all asset dependencies
-func (f *flow) extractAssetAndParentRefs() ([]assets.Reference, []string) {
-	dependencies := make([]assets.Reference, 0)
-	dependenciesSeen := make(map[string]bool)
-
-	addDependency := func(r assets.Reference) {
+func (f *flow) extractAssetAndParentRefs() (map[flows.NodeUUID][]assets.Reference, []string) {
+	dependencies := make(map[flows.NodeUUID][]assets.Reference, 0)
+	addDependency := func(n flows.Node, r assets.Reference) {
 		if r != nil && !r.Variable() {
-			key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
-			if !dependenciesSeen[key] {
-				dependencies = append(dependencies, r)
-				dependenciesSeen[key] = true
-			}
-
-			// TODO replace if we saw a field ref without a name but now have same field with a name
+			dependencies[n.UUID()] = append(dependencies[n.UUID()], r)
 		}
 	}
 
 	parentRefs := make(map[string]bool)
 
-	include := func(template string) {
-		ars, prs := inspect.ExtractFromTemplate(template)
-		for _, r := range ars {
-			addDependency(r)
-		}
-		for _, r := range prs {
-			parentRefs[r] = true
-		}
-	}
-
 	for _, n := range f.nodes {
-		n.EnumerateTemplates(f.Localization(), include)
+		n.EnumerateTemplates(f.Localization(), func(template string) {
+			ars, prs := inspect.ExtractFromTemplate(template)
+			for _, r := range ars {
+				addDependency(n, r)
+			}
+			for _, r := range prs {
+				parentRefs[r] = true
+			}
+		})
 		n.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
-			addDependency(r)
+			addDependency(n, r)
 		})
 	}
 

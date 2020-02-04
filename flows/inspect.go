@@ -3,6 +3,7 @@ package flows
 import (
 	"fmt"
 	"reflect"
+	"sort"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -18,8 +19,9 @@ type FlowInfo struct {
 }
 
 type DependencyInfo struct {
-	Type    string `json:"type"`
-	Missing bool   `json:"missing,omitempty"`
+	Type      string     `json:"type"`
+	Missing   bool       `json:"missing,omitempty"`
+	NodeUUIDs []NodeUUID `json:"node_uuids"`
 }
 
 type Dependency struct {
@@ -33,21 +35,56 @@ func (d Dependency) MarshalJSON() ([]byte, error) {
 
 // NewDependencies inspects a list of references. If a session assets is provided,
 // each dependency is checked to see if it is available or missing.
-func NewDependencies(refs []assets.Reference, sa SessionAssets) []Dependency {
-	deps := make([]Dependency, len(refs))
+func NewDependencies(refs map[NodeUUID][]assets.Reference, sa SessionAssets) []Dependency {
+	deps := make(map[string]Dependency, 0)
+	keys := make([]string, 0)
 
-	for i, ref := range refs {
-		missing := false
-		if sa != nil {
-			missing = !checkDependency(sa, ref)
+	containsNodeUUID := func(s []NodeUUID, v NodeUUID) bool {
+		for _, u := range s {
+			if u == v {
+				return true
+			}
 		}
+		return false
+	}
 
-		deps[i] = Dependency{
-			Reference: ref,
-			Info:      DependencyInfo{Type: referenceTypeName(ref), Missing: missing},
+	for nodeUUID, nodeRefs := range refs {
+		for _, ref := range nodeRefs {
+			key := fmt.Sprintf("%s:%s", ref.Type(), ref.Identity())
+
+			// if we already created a dependency for this reference, update it
+			if dep, seen := deps[key]; seen {
+				if !containsNodeUUID(dep.Info.NodeUUIDs, nodeUUID) {
+					dep.Info.NodeUUIDs = append(dep.Info.NodeUUIDs, nodeUUID)
+				}
+			} else {
+				// check if this dependency is accessible
+				missing := false
+				if sa != nil {
+					missing = !checkDependency(sa, ref)
+				}
+
+				dep := Dependency{
+					Reference: ref,
+					Info: DependencyInfo{
+						Type:      referenceTypeName(ref),
+						Missing:   missing,
+						NodeUUIDs: []NodeUUID{nodeUUID},
+					},
+				}
+				deps[key] = dep
+				keys = append(keys, key)
+			}
 		}
 	}
-	return deps
+
+	// keep tests stable by sorting final dependecy list
+	sort.Strings(keys)
+	sorted := make([]Dependency, len(deps))
+	for i, key := range keys {
+		sorted[i] = deps[key]
+	}
+	return sorted
 }
 
 // determines whether the given dependency exists
