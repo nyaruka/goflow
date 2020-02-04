@@ -15,7 +15,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/Masterminds/semver"
 )
@@ -63,7 +63,7 @@ func Migrate(reader io.Reader, toVersion *semver.Version, baseMediaURL string, p
 	}
 
 	if pretty {
-		return utils.JSONMarshalPretty(json.RawMessage(migrated))
+		return jsonx.MarshalPretty(json.RawMessage(migrated))
 	}
 
 	return migrated, nil

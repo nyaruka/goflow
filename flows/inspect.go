@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // FlowInfo contains the results of flow inspection
@@ -28,7 +29,7 @@ type Dependency struct {
 }
 
 func (d Dependency) MarshalJSON() ([]byte, error) {
-	return utils.JSONMarshalMerged(d.Reference, d.Info)
+	return jsonx.MarshalMerged(d.Reference, d.Info)
 }
 
 // NewDependencies inspects a list of references. If a session assets is provided,

@@ -6,8 +6,8 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -182,7 +182,7 @@ func TestXValue(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		marshaled, _ := utils.JSONMarshal(test.value)
+		marshaled, _ := jsonx.Marshal(test.value)
 		rendered, _ := types.ToXText(env, test.value)
 		formatted := types.Format(env, test.value)
 		asBool, _ := types.ToXBoolean(test.value)

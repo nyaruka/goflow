@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // XText is a string of characters.
@@ -73,7 +74,7 @@ func (x XText) Empty() bool { return x.Native() == "" }
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XText) MarshalJSON() ([]byte, error) {
-	return utils.JSONMarshal(x.Native())
+	return jsonx.Marshal(x.Native())
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled

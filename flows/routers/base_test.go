@@ -13,8 +13,8 @@ import (
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/random"
 	"github.com/nyaruka/goflow/utils/uuids"
 
@@ -143,7 +143,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	}
 
 	if test.WriteOutput {
-		actualJSON, err := utils.JSONMarshalPretty(tests)
+		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 
 		err = ioutil.WriteFile(testPath, actualJSON, 0666)
