@@ -12,7 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
@@ -204,7 +204,7 @@ func TestClone(t *testing.T) {
 
 		// if flow has a UI section, check UI node UUIDs correspond to real nodes
 		if len(clone.UI()) > 0 {
-			clonedUI, err := utils.JSONDecodeGeneric(clone.UI())
+			clonedUI, err := jsonx.DecodeGeneric(clone.UI())
 			require.NoError(t, err)
 
 			nodeMap := clonedUI.(map[string]interface{})["nodes"].(map[string]interface{})

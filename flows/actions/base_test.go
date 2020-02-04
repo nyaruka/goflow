@@ -24,6 +24,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/smtpx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
@@ -289,7 +290,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	}
 
 	if test.WriteOutput {
-		actualJSON, err := utils.JSONMarshalPretty(tests)
+		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 
 		err = ioutil.WriteFile(testPath, actualJSON, 0666)

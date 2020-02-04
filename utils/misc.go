@@ -47,3 +47,22 @@ func DeriveCountryFromTel(number string) string {
 	}
 	return phonenumbers.GetRegionCodeForNumber(parsed)
 }
+
+// Typed is an interface of objects that are marshalled as typed envelopes
+type Typed interface {
+	Type() string
+}
+
+// TypedEnvelope can be mixed into envelopes that have a type field
+type TypedEnvelope struct {
+	Type string `json:"type" validate:"required"`
+}
+
+// ReadTypeFromJSON reads a field called `type` from the given JSON
+func ReadTypeFromJSON(data []byte) (string, error) {
+	t := &TypedEnvelope{}
+	if err := UnmarshalAndValidate(data, t); err != nil {
+		return "", err
+	}
+	return t.Type, nil
+}

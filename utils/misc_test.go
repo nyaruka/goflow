@@ -31,3 +31,15 @@ func TestDeriveCountryFromTel(t *testing.T) {
 	assert.Equal(t, "EC", utils.DeriveCountryFromTel("+593979000000"))
 	assert.Equal(t, "", utils.DeriveCountryFromTel("1234"))
 }
+
+func TestReadTypeFromJSON(t *testing.T) {
+	_, err := utils.ReadTypeFromJSON([]byte(`{}`))
+	assert.EqualError(t, err, "field 'type' is required")
+
+	_, err = utils.ReadTypeFromJSON([]byte(`{"type": ""}`))
+	assert.EqualError(t, err, "field 'type' is required")
+
+	typeName, err := utils.ReadTypeFromJSON([]byte(`{"thing": 2, "type": "foo"}`))
+	assert.NoError(t, err)
+	assert.Equal(t, "foo", typeName)
+}

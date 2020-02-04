@@ -22,6 +22,7 @@ import (
 	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -75,7 +76,7 @@ func main() {
 
 	if printRepro {
 		fmt.Println("---------------------------------------")
-		marshaledRepro, _ := utils.JSONMarshalPretty(repro)
+		marshaledRepro, _ := jsonx.MarshalPretty(repro)
 		fmt.Println(string(marshaledRepro))
 	}
 }
