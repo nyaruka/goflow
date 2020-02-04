@@ -1,0 +1,103 @@
+{
+    "flows": [
+        {
+            "uuid": "447efb41-c1e2-44f9-b906-4ed6b5031e59",
+            "name": "Missing Dependencies",
+            "spec_version": "13.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "f2350d86-e53d-432a-9038-902fe2325c69",
+                    "actions": [
+                        {
+                            "attachments": [],
+                            "text": "Hi there @contact.name",
+                            "type": "send_msg",
+                            "quick_replies": [],
+                            "uuid": "e5745609-69ef-41e3-b913-851ab9a01caf"
+                        },
+                        {
+                            "type": "add_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "83452c2e-d6e4-4fae-950a-156064e40068",
+                                    "name": "Customers"
+                                }
+                            ],
+                            "uuid": "b1c671d6-ee32-49bd-b3e7-55de449bdda1"
+                        },
+                        {
+                            "type": "add_input_labels",
+                            "labels": [
+                                {
+                                    "uuid": "a8a6d847-0785-4f97-a8f8-3af98ed111a0",
+                                    "name": "Interesting"
+                                }
+                            ],
+                            "uuid": "67587939-cfd5-49df-a97c-1016e3378a97"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "f9865bf3-2dcf-4dba-8a74-bc835e2dd9b1",
+                            "destination_uuid": "5cba1736-911a-4b7c-9b2c-56aee3c0dac5"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "5cba1736-911a-4b7c-9b2c-56aee3c0dac5",
+                    "actions": [],
+                    "router": {
+                        "type": "switch",
+                        "default_category_uuid": "c5a69c50-bf26-4568-9c07-afc472642c43",
+                        "cases": [],
+                        "categories": [
+                            {
+                                "uuid": "c5a69c50-bf26-4568-9c07-afc472642c43",
+                                "name": "All Responses",
+                                "exit_uuid": "1b5c97b9-f4f5-42f5-bd38-fa3b53b8f6c9"
+                            }
+                        ],
+                        "operand": "@contact.fields.about_me"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "1b5c97b9-f4f5-42f5-bd38-fa3b53b8f6c9",
+                            "destination_uuid": null
+                        }
+                    ]
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "f2350d86-e53d-432a-9038-902fe2325c69": {
+                        "position": {
+                            "left": 60,
+                            "top": 13
+                        },
+                        "type": "execute_actions"
+                    },
+                    "5cba1736-911a-4b7c-9b2c-56aee3c0dac5": {
+                        "type": "split_by_contact_field",
+                        "position": {
+                            "left": 200,
+                            "top": 260
+                        },
+                        "config": {
+                            "operand": {
+                                "id": "about_me",
+                                "type": "field",
+                                "name": "About Me"
+                            },
+                            "cases": {}
+                        }
+                    }
+                }
+            },
+            "revision": 11,
+            "expire_after_minutes": 10080,
+            "localization": {}
+        }
+    ]
+}

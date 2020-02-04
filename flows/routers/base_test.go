@@ -95,16 +95,6 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
-		// if this router is expected to return a dependencies error, check that
-		err = flow.CheckDependencies(sa, nil)
-		if tc.DependenciesError != "" {
-			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.DependenciesError, "dependencies error mismatch in %s", testName)
-			continue
-		} else {
-			assert.NoError(t, err, "unexpected dependencies error in %s", testName)
-		}
-
 		// load our contact
 		contact, err := flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
 		require.NoError(t, err)
@@ -130,7 +120,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			actual.Templates = flow.ExtractTemplates()
 		}
 		if tc.Inspection != nil {
-			actual.Inspection, _ = json.Marshal(flow.Inspect())
+			actual.Inspection, _ = json.Marshal(flow.Inspect(sa))
 		}
 
 		if !test.WriteOutput {

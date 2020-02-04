@@ -16,8 +16,11 @@
                 "text": "can't execute action in session without a contact"
             }
         ],
+        "templates": [
+            "+1234567890"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

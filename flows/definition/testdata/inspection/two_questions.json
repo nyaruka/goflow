@@ -1,28 +1,27 @@
 {
-    "dependencies": {},
-    "parent_refs": [],
+    "dependencies": [],
     "results": [
         {
+            "key": "favorite_color",
+            "name": "Favorite Color",
             "categories": [
                 "Red",
                 "Blue",
                 "Other",
                 "No Response"
             ],
-            "key": "favorite_color",
-            "name": "Favorite Color",
             "node_uuids": [
                 "46d51f50-58de-49da-8d13-dadbf322685d"
             ]
         },
         {
+            "key": "soda",
+            "name": "Soda",
             "categories": [
                 "Pepsi",
                 "Coke",
                 "Other"
             ],
-            "key": "soda",
-            "name": "Soda",
             "node_uuids": [
                 "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
             ]
@@ -36,5 +35,6 @@
         "3bd19c40-1114-4b83-b12e-f0c38054ba3f",
         "9ad71fc4-c2f8-4aab-a193-7bafad172ca0",
         "e80bc037-3b57-45b5-9f19-a8346a475578"
-    ]
+    ],
+    "parent_refs": []
 }

@@ -16,8 +16,11 @@
                 "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
+        "templates": [
+            "@(1 / 0).mp3"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -40,8 +43,11 @@
                 "text": "audio URL evaluated to empty, skipping"
             }
         ],
+        "templates": [
+            "@(\"\")"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -75,8 +81,11 @@
                 }
             }
         ],
+        "templates": [
+            "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -119,8 +128,12 @@
                 }
             }
         ],
+        "templates": [
+            "http://uploads.temba.io/welcome/@(contact.uuid).m4a",
+            "http://uploads.temba.io/bienvenido/@(contact.uuid).m4a"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

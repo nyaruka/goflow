@@ -66,12 +66,6 @@ func TestActionTypes(t *testing.T) {
 	}
 }
 
-type inspectionResults struct {
-	Templates    []string            `json:"templates"`
-	Dependencies []string            `json:"dependencies"`
-	Results      []*flows.ResultInfo `json:"results"`
-}
-
 func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
 	testFile, err := ioutil.ReadFile(testPath)
@@ -153,16 +147,6 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			continue
 		} else {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
-		}
-
-		// if this action is expected to cause a dependencies error, check that
-		err = flow.CheckDependencies(sa, nil)
-		if tc.DependenciesError != "" {
-			rootErr := errors.Cause(err)
-			assert.EqualError(t, rootErr, tc.DependenciesError, "dependencies error mismatch in %s", testName)
-			continue
-		} else if !tc.SkipValidation {
-			assert.NoError(t, err, "unexpected dependencies error in %s", testName)
 		}
 
 		// optionally load our contact
@@ -270,7 +254,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			actual.Templates = flow.ExtractTemplates()
 		}
 		if tc.Inspection != nil {
-			actual.Inspection, _ = json.Marshal(flow.Inspect())
+			actual.Inspection, _ = json.Marshal(flow.Inspect(sa))
 		}
 
 		if !test.WriteOutput {

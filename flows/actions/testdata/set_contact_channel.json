@@ -1,17 +1,5 @@
 [
     {
-        "description": "Validation fails for invalid channel reference",
-        "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "type": "set_contact_channel",
-            "channel": {
-                "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                "name": "My Phone"
-            }
-        },
-        "dependencies_error": "missing dependencies: channel[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=My Phone]"
-    },
-    {
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
@@ -105,5 +93,40 @@
                 ]
             }
         ]
+    },
+    {
+        "description": "NOOP for invalid channel reference",
+        "action": {
+            "type": "set_contact_channel",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "channel": {
+                "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                "name": "My Phone"
+            }
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "type": "contact_urns_changed",
+                "urns": [
+                    "tel:+12065551212?id=123",
+                    "twitterid:54784326227#nyaruka"
+                ]
+            }
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "My Phone",
+                    "type": "channel",
+                    "missing": true
+                }
+            ],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
     }
 ]

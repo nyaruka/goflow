@@ -1,9 +1,27 @@
 [
     {
-        "description": "Validation fails for invalid group reference",
+        "description": "NOOP if no recipients",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi there!"
+        },
+        "events": [],
+        "templates": [
+            "Hi there!"
+        ],
+        "inspection": {
+            "dependencies": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "NOOP if no recipients because of missing group depndency",
+        "action": {
+            "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "groups": [
                 {
                     "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
@@ -12,18 +30,19 @@
             ],
             "text": "Hi there!"
         },
-        "dependencies_error": "missing dependencies: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
-    },
-    {
-        "description": "NOOP if no recipients",
-        "action": {
-            "type": "send_broadcast",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "text": "Hi there!"
-        },
         "events": [],
+        "templates": [
+            "Hi there!"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbers",
+                    "type": "group",
+                    "missing": true
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -94,27 +113,31 @@
                 ]
             }
         ],
+        "templates": [
+            "@(\"\")",
+            "@contact.fields.gender",
+            "@(\"0788123123\")",
+            "@contact.urn",
+            "Hi there!"
+        ],
         "inspection": {
-            "dependencies": {
-                "contacts": [
-                    {
-                        "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
-                        "name": "Stavros"
-                    }
-                ],
-                "fields": [
-                    {
-                        "key": "gender",
-                        "name": ""
-                    }
-                ],
-                "groups": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Testers"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "key": "gender",
+                    "name": "",
+                    "type": "field"
+                },
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers",
+                    "type": "group"
+                },
+                {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros",
+                    "type": "contact"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -186,8 +209,18 @@
                 ]
             }
         ],
+        "templates": [
+            "Hi there!",
+            "Hola!",
+            "http://example.com/red.jpg",
+            "http://example.com/rojo.jpg",
+            "Yes",
+            "No",
+            "Si",
+            "No"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

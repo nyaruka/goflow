@@ -46,8 +46,11 @@
                 }
             }
         ],
+        "templates": [
+            "Hi there @contact.name"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -120,8 +123,12 @@
                 }
             }
         ],
+        "templates": [
+            "Hi there @contact.name",
+            "Hola @contact.name"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

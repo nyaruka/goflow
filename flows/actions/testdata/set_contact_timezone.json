@@ -31,8 +31,11 @@
                 "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
+        "templates": [
+            "@(1 / 0)"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -53,8 +56,11 @@
                 "text": "unrecognized timezone: 'xxxxxxxxxx'"
             }
         ],
+        "templates": [
+            "xxxxxxxxxx"
+        ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

@@ -1,6 +1,6 @@
 [
     {
-        "description": "Validation fails for invalid classifier reference",
+        "description": "Error event for invalid classifier reference",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -11,7 +11,52 @@
             "input": "@input.text",
             "result_name": "Intent"
         },
-        "dependencies_error": "missing dependencies: classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "missing classifier[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Intent",
+                "value": "0",
+                "category": "Failure",
+                "input": "Hi everybody"
+            }
+        ],
+        "templates": [
+            "@input.text"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                    "name": "Deleted",
+                    "type": "classifier",
+                    "missing": true
+                }
+            ],
+            "results": [
+                {
+                    "key": "intent",
+                    "name": "Intent",
+                    "categories": [
+                        "Success",
+                        "Skipped",
+                        "Failure"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
     },
     {
         "description": "Error event created and result with category skipped created if input evaluates to empty",
@@ -41,15 +86,17 @@
                 "category": "Skipped"
             }
         ],
+        "templates": [
+            "@(\"\")"
+        ],
         "inspection": {
-            "dependencies": {
-                "classifiers": [
-                    {
-                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
-                        "name": "Booking"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                    "name": "Booking",
+                    "type": "classifier"
+                }
+            ],
             "results": [
                 {
                     "key": "_intent_classification",
@@ -126,15 +173,17 @@
                 }
             }
         ],
+        "templates": [
+            "@input.text"
+        ],
         "inspection": {
-            "dependencies": {
-                "classifiers": [
-                    {
-                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
-                        "name": "Booking"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                    "name": "Booking",
+                    "type": "classifier"
+                }
+            ],
             "results": [
                 {
                     "key": "intent",
@@ -209,15 +258,17 @@
                 "input": "Hi everybody"
             }
         ],
+        "templates": [
+            "@input.text"
+        ],
         "inspection": {
-            "dependencies": {
-                "classifiers": [
-                    {
-                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
-                        "name": "Booking"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                    "name": "Booking",
+                    "type": "classifier"
+                }
+            ],
             "results": [
                 {
                     "key": "intent",
@@ -291,15 +342,17 @@
                 "input": "Hi everybody"
             }
         ],
+        "templates": [
+            "@input.text"
+        ],
         "inspection": {
-            "dependencies": {
-                "classifiers": [
-                    {
-                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
-                        "name": "Booking"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                    "name": "Booking",
+                    "type": "classifier"
+                }
+            ],
             "results": [
                 {
                     "key": "intent",

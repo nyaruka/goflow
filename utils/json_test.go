@@ -27,6 +27,10 @@ func TestJSONMarshaling(t *testing.T) {
 	j, err = utils.JSONMarshalPretty(map[string]string{"foo": "bar"})
 	assert.NoError(t, err)
 	assert.Equal(t, []byte("{\n    \"foo\": \"bar\"\n}"), j)
+
+	j, err = utils.JSONMarshalMerged(map[string]string{"foo": "bar"}, map[string]string{"zed": "xyz"})
+	assert.NoError(t, err)
+	assert.Equal(t, []byte(`{"foo":"bar","zed":"xyz"}`), j)
 }
 
 func TestUnmarshalArray(t *testing.T) {

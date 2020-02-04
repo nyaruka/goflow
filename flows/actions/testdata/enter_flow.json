@@ -1,15 +1,35 @@
 [
     {
-        "description": "Validation fails for invalid flow reference",
+        "description": "Error event for invalid flow reference",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "enter_flow",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "flow": {
                 "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
                 "name": "Long Lost Flow"
             }
         },
-        "dependencies_error": "missing dependencies: flow[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Long Lost Flow] (no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6')"
+        "events": [
+            {
+                "type": "failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+            }
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Long Lost Flow",
+                    "type": "flow",
+                    "missing": true
+                }
+            ],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
     },
     {
         "description": "Failure event if we continue with a missing flow",
@@ -74,14 +94,13 @@
             }
         ],
         "inspection": {
-            "dependencies": {
-                "flows": [
-                    {
-                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "name": "Collect Age"
-                    }
-                ]
-            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

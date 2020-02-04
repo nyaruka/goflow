@@ -17,6 +17,21 @@ func JSONMarshalPretty(v interface{}) ([]byte, error) {
 	return jsonMarshal(v, "    ")
 }
 
+// JSONMarshalMerged marshals the properties of two objects as one object
+func JSONMarshalMerged(v1 interface{}, v2 interface{}) ([]byte, error) {
+	b1, err := jsonMarshal(v1, "")
+	if err != nil {
+		return nil, err
+	}
+	b2, err := jsonMarshal(v2, "")
+	if err != nil {
+		return nil, err
+	}
+	b := append(b1[0:len(b1)-1], byte(','))
+	b = append(b, b2[1:]...)
+	return b, nil
+}
+
 func jsonMarshal(v interface{}, indent string) ([]byte, error) {
 	buffer := &bytes.Buffer{}
 	encoder := json.NewEncoder(buffer)

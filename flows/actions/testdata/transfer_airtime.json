@@ -27,7 +27,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -73,7 +73,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -146,7 +146,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -238,7 +238,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -312,7 +312,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -398,7 +398,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -496,7 +496,7 @@
             }
         ],
         "inspection": {
-            "dependencies": {},
+            "dependencies": [],
             "results": [
                 {
                     "key": "reward_transfer",
