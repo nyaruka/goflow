@@ -1,3 +1,8 @@
+v0.69.0
+----------
+ * Move JSON utils into their own package
+ * Track node UUIDs of dependencies
+
 v0.68.0
 ----------
  * Convert dependency inspection output to list of things with type attribute
