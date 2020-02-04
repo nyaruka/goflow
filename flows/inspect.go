@@ -2,7 +2,6 @@ package flows
 
 import (
 	"fmt"
-	"reflect"
 	"sort"
 	"strings"
 
@@ -18,19 +17,16 @@ type FlowInfo struct {
 	ParentRefs   []string      `json:"parent_refs"`
 }
 
-type DependencyInfo struct {
-	Type      string     `json:"type"`
-	Missing   bool       `json:"missing,omitempty"`
-	NodeUUIDs []NodeUUID `json:"node_uuids"`
-}
-
 type Dependency struct {
-	Reference assets.Reference
-	Info      DependencyInfo
+	Reference assets.Reference `json:"-"`
+	Type      string           `json:"type"`
+	Missing   bool             `json:"missing,omitempty"`
+	NodeUUIDs []NodeUUID       `json:"node_uuids"`
 }
 
 func (d Dependency) MarshalJSON() ([]byte, error) {
-	return utils.JSONMarshalMerged(d.Reference, d.Info)
+	type dependency Dependency // need to alias type to avoid circular calls to this method
+	return utils.JSONMarshalMerged(d.Reference, dependency(d))
 }
 
 // NewDependencies inspects a list of references. If a session assets is provided,
@@ -54,8 +50,8 @@ func NewDependencies(refs map[NodeUUID][]assets.Reference, sa SessionAssets) []D
 
 			// if we already created a dependency for this reference, update it
 			if dep, seen := deps[key]; seen {
-				if !containsNodeUUID(dep.Info.NodeUUIDs, nodeUUID) {
-					dep.Info.NodeUUIDs = append(dep.Info.NodeUUIDs, nodeUUID)
+				if !containsNodeUUID(dep.NodeUUIDs, nodeUUID) {
+					dep.NodeUUIDs = append(dep.NodeUUIDs, nodeUUID)
 				}
 			} else {
 				// check if this dependency is accessible
@@ -66,11 +62,9 @@ func NewDependencies(refs map[NodeUUID][]assets.Reference, sa SessionAssets) []D
 
 				dep := Dependency{
 					Reference: ref,
-					Info: DependencyInfo{
-						Type:      referenceTypeName(ref),
-						Missing:   missing,
-						NodeUUIDs: []NodeUUID{nodeUUID},
-					},
+					Type:      ref.Type(),
+					Missing:   missing,
+					NodeUUIDs: []NodeUUID{nodeUUID},
 				}
 				deps[key] = dep
 				keys = append(keys, key)
@@ -112,16 +106,6 @@ func checkDependency(sa SessionAssets, ref assets.Reference) bool {
 	default:
 		panic(fmt.Sprintf("unknown dependency type reference: %T", ref))
 	}
-}
-
-// derives a dependency type name (e.g. group) from a reference
-func referenceTypeName(ref assets.Reference) string {
-	t := reflect.TypeOf(ref).String()
-	t = strings.Split(t, ".")[1]
-	if strings.HasSuffix(t, "Reference") {
-		t = t[0 : len(t)-9]
-	}
-	return strings.ToLower(t)
 }
 
 // ResultInfo is possible result that a flow might generate

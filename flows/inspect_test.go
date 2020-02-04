@@ -47,51 +47,81 @@ func TestDependencies(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(`[
 		{
 			"name": "Android",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "channel",
 			"uuid": "8286545d-d1a1-4eff-a3ad-a11ddf4bb20a"
 		},
 		{
 			"name": "Booking",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "classifier",
 			"uuid": "2138cddc-118a-49ae-b290-98e03ad0573b"
 		},
 		{
 			"name": "Bob",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "contact",
 			"uuid": "0b099519-0889-4c74-b744-9122272f346a"
 		},
 		{
 			"key": "gender",
 			"name": "Gender",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "field"
 		},
 		{
 			"name": "Registration",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "flow",
 			"uuid": "4f932672-7995-47f0-96e6-faf5abd2d81d"
 		},
 		{
 			"key": "org_name",
 			"name": "Org Name",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "global"
 		},
 		{
-			"name": "Testers",
-			"type": "group",
-			"uuid": "46057a92-6580-4e93-af36-2bb9c9d61e51"
-		},
-		{
 			"name": "Customers",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "group",
 			"uuid": "377c3101-a7fc-47b1-9136-980348e362c0"
 		},
 		{
+			"name": "Testers",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
+			"type": "group",
+			"uuid": "46057a92-6580-4e93-af36-2bb9c9d61e51"
+		},
+		{
 			"name": "Spam",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "label",
 			"uuid": "31c06b7c-010d-4f91-9590-d3fbdc2fb7ac"
 		},
 		{
 			"name": "Welcome",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "template",
 			"uuid": "ff958d30-f50e-48ab-a524-37ed1e9620d9"
 		}
@@ -117,17 +147,26 @@ func TestDependencies(t *testing.T) {
 		{
 			"missing": true,
 			"name": "Android",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "channel",
 			"uuid": "8286545d-d1a1-4eff-a3ad-a11ddf4bb20a"
 		},
 		{
 			"missing": true,
 			"name": "Booking",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "classifier",
 			"uuid": "2138cddc-118a-49ae-b290-98e03ad0573b"
 		},
 		{
 			"name": "Bob",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "contact",
 			"uuid": "0b099519-0889-4c74-b744-9122272f346a"
 		},
@@ -135,11 +174,17 @@ func TestDependencies(t *testing.T) {
 			"key": "gender",
 			"missing": true,
 			"name": "Gender",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "field"
 		},
 		{
 			"missing": true,
 			"name": "Registration",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "flow",
 			"uuid": "4f932672-7995-47f0-96e6-faf5abd2d81d"
 		},
@@ -147,28 +192,43 @@ func TestDependencies(t *testing.T) {
 			"key": "org_name",
 			"missing": true,
 			"name": "Org Name",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "global"
 		},
 		{
-			"missing": true,
-			"name": "Testers",
-			"type": "group",
-			"uuid": "46057a92-6580-4e93-af36-2bb9c9d61e51"
-		},
-		{
 			"name": "Customers",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "group",
 			"uuid": "377c3101-a7fc-47b1-9136-980348e362c0"
 		},
 		{
 			"missing": true,
+			"name": "Testers",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
+			"type": "group",
+			"uuid": "46057a92-6580-4e93-af36-2bb9c9d61e51"
+		},
+		{
+			"missing": true,
 			"name": "Spam",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "label",
 			"uuid": "31c06b7c-010d-4f91-9590-d3fbdc2fb7ac"
 		},
 		{
 			"missing": true,
 			"name": "Welcome",
+			"node_uuids": [
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
+			],
 			"type": "template",
 			"uuid": "ff958d30-f50e-48ab-a524-37ed1e9620d9"
 		}
