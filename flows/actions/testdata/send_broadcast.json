@@ -40,7 +40,10 @@
                     "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
                     "name": "Climbers",
                     "type": "group",
-                    "missing": true
+                    "missing": true,
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
                 }
             ],
             "results": [],
@@ -123,19 +126,28 @@
         "inspection": {
             "dependencies": [
                 {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros",
+                    "type": "contact",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                },
+                {
                     "key": "gender",
                     "name": "",
-                    "type": "field"
+                    "type": "field",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
                 },
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers",
-                    "type": "group"
-                },
-                {
-                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
-                    "name": "Stavros",
-                    "type": "contact"
+                    "type": "group",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
                 }
             ],
             "results": [],

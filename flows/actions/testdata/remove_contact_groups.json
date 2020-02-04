@@ -159,7 +159,10 @@
                     "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
                     "name": "Climbers",
                     "type": "group",
-                    "missing": true
+                    "missing": true,
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
                 }
             ],
             "results": [],
