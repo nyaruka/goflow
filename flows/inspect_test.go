@@ -89,6 +89,7 @@ func TestDependencies(t *testing.T) {
 			"key": "org_name",
 			"name": "Org Name",
 			"node_uuids": [
+				"7c959933-4c30-4277-9810-adc95a459bd0",
 				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
 			],
 			"type": "global"
@@ -193,6 +194,7 @@ func TestDependencies(t *testing.T) {
 			"missing": true,
 			"name": "Org Name",
 			"node_uuids": [
+				"7c959933-4c30-4277-9810-adc95a459bd0",
 				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
 			],
 			"type": "global"

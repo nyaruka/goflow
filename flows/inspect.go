@@ -11,7 +11,7 @@ import (
 
 // FlowInfo contains the results of flow inspection
 type FlowInfo struct {
-	Dependencies []Dependency  `json:"dependencies"`
+	Dependencies []*Dependency `json:"dependencies"`
 	Results      []*ResultInfo `json:"results"`
 	WaitingExits []ExitUUID    `json:"waiting_exits"`
 	ParentRefs   []string      `json:"parent_refs"`
@@ -31,8 +31,8 @@ func (d Dependency) MarshalJSON() ([]byte, error) {
 
 // NewDependencies inspects a list of references. If a session assets is provided,
 // each dependency is checked to see if it is available or missing.
-func NewDependencies(refs map[NodeUUID][]assets.Reference, sa SessionAssets) []Dependency {
-	deps := make(map[string]Dependency, 0)
+func NewDependencies(refs map[NodeUUID][]assets.Reference, sa SessionAssets) []*Dependency {
+	deps := make(map[string]*Dependency, 0)
 	keys := make([]string, 0)
 
 	containsNodeUUID := func(s []NodeUUID, v NodeUUID) bool {
@@ -60,7 +60,7 @@ func NewDependencies(refs map[NodeUUID][]assets.Reference, sa SessionAssets) []D
 					missing = !checkDependency(sa, ref)
 				}
 
-				dep := Dependency{
+				dep := &Dependency{
 					Reference: ref,
 					Type:      ref.Type(),
 					Missing:   missing,
@@ -74,9 +74,13 @@ func NewDependencies(refs map[NodeUUID][]assets.Reference, sa SessionAssets) []D
 
 	// keep tests stable by sorting final dependecy list
 	sort.Strings(keys)
-	sorted := make([]Dependency, len(deps))
+	sorted := make([]*Dependency, len(deps))
 	for i, key := range keys {
-		sorted[i] = deps[key]
+		dep := deps[key]
+		sorted[i] = dep
+
+		// also sort each dependency's node list
+		sort.SliceStable(dep.NodeUUIDs, func(i, j int) bool { return strings.Compare(string(dep.NodeUUIDs[i]), string(dep.NodeUUIDs[j])) < 0 })
 	}
 	return sorted
 }
