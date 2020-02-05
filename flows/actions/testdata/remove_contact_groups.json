@@ -141,7 +141,7 @@
         }
     },
     {
-        "description": "NOOP for invalid group reference",
+        "description": "Error event and NOOP for misisng group",
         "action": {
             "type": "remove_contact_groups",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -152,7 +152,14 @@
                 }
             ]
         },
-        "events": [],
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
+            }
+        ],
         "inspection": {
             "dependencies": [
                 {

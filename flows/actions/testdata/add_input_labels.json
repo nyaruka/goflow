@@ -1,35 +1,5 @@
 [
     {
-        "description": "NOOP for invalid label reference",
-        "action": {
-            "type": "add_input_labels",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "labels": [
-                {
-                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                    "name": "Climbing"
-                }
-            ]
-        },
-        "events": [],
-        "inspection": {
-            "dependencies": [
-                {
-                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                    "name": "Climbing",
-                    "type": "label",
-                    "missing": true,
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
-                }
-            ],
-            "results": [],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
         "description": "Error event if session has no input",
         "no_input": true,
         "action": {
@@ -126,5 +96,42 @@
                 ]
             }
         ]
+    },
+    {
+        "description": "Error event and NOOP for missing label",
+        "action": {
+            "type": "add_input_labels",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "labels": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbing"
+                }
+            ]
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "missing dependency: label[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbing]"
+            }
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbing",
+                    "type": "label",
+                    "missing": true,
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
     }
 ]

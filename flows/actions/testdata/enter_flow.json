@@ -1,40 +1,5 @@
 [
     {
-        "description": "Error event for invalid flow reference",
-        "action": {
-            "type": "enter_flow",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "flow": {
-                "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                "name": "Long Lost Flow"
-            }
-        },
-        "events": [
-            {
-                "type": "failure",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
-            }
-        ],
-        "inspection": {
-            "dependencies": [
-                {
-                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
-                    "name": "Long Lost Flow",
-                    "type": "flow",
-                    "missing": true,
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
-                }
-            ],
-            "results": [],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
         "description": "Failure event if we continue with a missing flow",
         "action": {
             "type": "enter_flow",
@@ -102,6 +67,41 @@
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Collect Age",
                     "type": "flow",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Failure event for missing flow",
+        "action": {
+            "type": "enter_flow",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "flow": {
+                "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                "name": "Long Lost Flow"
+            }
+        },
+        "events": [
+            {
+                "type": "failure",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+            }
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Long Lost Flow",
+                    "type": "flow",
+                    "missing": true,
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]

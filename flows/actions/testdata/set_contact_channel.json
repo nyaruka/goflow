@@ -95,7 +95,7 @@
         ]
     },
     {
-        "description": "NOOP for invalid channel reference",
+        "description": "Error event and NOOP for missing channel",
         "action": {
             "type": "set_contact_channel",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -106,13 +106,10 @@
         },
         "events": [
             {
-                "type": "contact_urns_changed",
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "urns": [
-                    "tel:+12065551212?id=123",
-                    "twitterid:54784326227#nyaruka"
-                ]
+                "text": "missing dependency: channel[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=My Phone]"
             }
         ],
         "inspection": {

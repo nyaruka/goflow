@@ -270,7 +270,7 @@
         }
     },
     {
-        "description": "NOOP if field doesn't exist",
+        "description": "Error event and NOOP for missing field",
         "action": {
             "type": "set_contact_field",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -280,6 +280,29 @@
             },
             "value": "123"
         },
-        "events": []
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "missing dependency: field[key=score,name=Score]"
+            }
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "key": "score",
+                    "name": "Score",
+                    "type": "field",
+                    "missing": true,
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
     }
 ]

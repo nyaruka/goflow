@@ -68,6 +68,8 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 		newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
 
 		a.applyModifier(run, modifiers.NewField(field, newValue), logModifier, logEvent)
+	} else {
+		logEvent(events.NewDependencyError(a.Field))
 	}
 	return nil
 }
