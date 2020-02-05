@@ -1,6 +1,8 @@
 package utils_test
 
 import (
+	"bytes"
+	"io/ioutil"
 	"strings"
 	"testing"
 
@@ -93,4 +95,25 @@ func TestValidate(t *testing.T) {
 		`field 'things[0]' is not a valid HTTP method`,
 		`field 'topic' is not a valid message topic`,
 	}, msgs)
+}
+
+func TestUnmarshalAndValidate(t *testing.T) {
+	o := &BaseObject{}
+	err := utils.UnmarshalAndValidate([]byte(`{}`), o)
+
+	assert.EqualError(t, err, "field 'foo' is required")
+
+	err = utils.UnmarshalAndValidate([]byte(`{"foo": "123"}`), o)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "123", o.Foo)
+
+	err = utils.UnmarshalAndValidateWithLimit(ioutil.NopCloser(bytes.NewReader([]byte(`{"foo": "abc"}`))), o, 100)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "abc", o.Foo)
+
+	err = utils.UnmarshalAndValidateWithLimit(ioutil.NopCloser(bytes.NewReader([]byte(`{"foo": "abc"}`))), o, 5)
+
+	assert.EqualError(t, err, "unexpected end of JSON input")
 }

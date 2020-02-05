@@ -16,6 +16,7 @@ import (
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 )
@@ -60,7 +61,7 @@ func renderAssetDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 		return errors.Errorf("no examples found for asset item %s/%s", item.tagValue, item.typeName)
 	}
 
-	marshaled, err := utils.JSONMarshalPretty(json.RawMessage(strings.Join(item.examples, "\n")))
+	marshaled, err := jsonx.MarshalPretty(json.RawMessage(strings.Join(item.examples, "\n")))
 	if err != nil {
 		return errors.Wrap(err, "unable to marshal example")
 	}
@@ -249,7 +250,7 @@ func renderEventDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 		return errors.Wrap(err, "unable to validate example")
 	}
 
-	exampleJSON, err = utils.JSONMarshalPretty(event)
+	exampleJSON, err = jsonx.MarshalPretty(event)
 	if err != nil {
 		return errors.Wrap(err, "unable to marshal example")
 	}
@@ -283,7 +284,7 @@ func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 		return errors.Wrap(err, "unable to validate example")
 	}
 
-	exampleJSON, err = utils.JSONMarshalPretty(action)
+	exampleJSON, err = jsonx.MarshalPretty(action)
 	if err != nil {
 		return errors.Wrap(err, "unable to marshal example")
 	}
@@ -329,7 +330,7 @@ func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.S
 		return errors.Wrap(err, "unable to validate example")
 	}
 
-	exampleJSON, err = utils.JSONMarshalPretty(trigger)
+	exampleJSON, err = jsonx.MarshalPretty(trigger)
 	if err != nil {
 		return errors.Wrap(err, "unable to marshal example")
 	}
@@ -358,7 +359,7 @@ func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 		return errors.Wrap(err, "unable to validate example")
 	}
 
-	exampleJSON, err = utils.JSONMarshalPretty(resume)
+	exampleJSON, err = jsonx.MarshalPretty(resume)
 	if err != nil {
 		return errors.Wrap(err, "unable to marshal example")
 	}
@@ -437,7 +438,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 			return nil, errors.Errorf("error event generated: %s", errEvent.Text)
 		}
 
-		eventJSON[i], err = utils.JSONMarshalPretty(event)
+		eventJSON[i], err = jsonx.MarshalPretty(event)
 		if err != nil {
 			return nil, err
 		}
@@ -445,7 +446,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 	if len(eventList) == 1 {
 		return eventJSON[0], err
 	}
-	js, err := utils.JSONMarshalPretty(eventJSON)
+	js, err := jsonx.MarshalPretty(eventJSON)
 	if err != nil {
 		return nil, err
 	}

@@ -21,9 +21,9 @@ import (
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/smtpx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
@@ -81,7 +81,7 @@ func marshalEventLog(eventLog []flows.Event) ([]json.RawMessage, error) {
 	var err error
 
 	for i := range eventLog {
-		marshaled[i], err = utils.JSONMarshal(eventLog[i])
+		marshaled[i], err = jsonx.Marshal(eventLog[i])
 		if err != nil {
 			return nil, errors.Wrap(err, "error marshaling event")
 		}
@@ -158,7 +158,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 	// try to resume the session for each of the provided resumes
 	for i, rawResume := range rawResumes {
-		sessionJSON, err := utils.JSONMarshalPretty(session)
+		sessionJSON, err := jsonx.MarshalPretty(session)
 		if err != nil {
 			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}
@@ -190,7 +190,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		}
 	}
 
-	sessionJSON, err := utils.JSONMarshalPretty(session)
+	sessionJSON, err := jsonx.MarshalPretty(session)
 	if err != nil {
 		return runResult{}, errors.Wrap(err, "error marshalling output")
 	}
@@ -249,11 +249,11 @@ func TestFlows(t *testing.T) {
 			// we are writing new outputs, we write new files but don't test anything
 			rawOutputs := make([]json.RawMessage, len(runResult.outputs))
 			for i := range runResult.outputs {
-				rawOutputs[i], err = utils.JSONMarshal(runResult.outputs[i])
+				rawOutputs[i], err = jsonx.Marshal(runResult.outputs[i])
 				require.NoError(t, err)
 			}
 			flowTest := &FlowTest{Trigger: flowTest.Trigger, Resumes: flowTest.Resumes, Outputs: rawOutputs, HTTPMocks: httpMocksCopy}
-			testJSON, err := utils.JSONMarshalPretty(flowTest)
+			testJSON, err := jsonx.MarshalPretty(flowTest)
 			require.NoError(t, err, "Error marshalling test definition: %s", err)
 
 			testJSON, _ = NormalizeJSON(testJSON)

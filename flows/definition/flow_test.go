@@ -19,7 +19,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -286,12 +286,18 @@ func TestNewFlow(t *testing.T) {
 			{
 				"key": "gender",
 				"name": "",
-				"type": "field"
+				"type": "field",
+				"node_uuids": [
+					"baaf9085-1198-4b41-9a1c-cc51c6dbec99"
+				]
 			},
 			{
 				"name": "Spam",
 				"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
-				"type": "label"
+				"type": "label",
+				"node_uuids": [
+					"baaf9085-1198-4b41-9a1c-cc51c6dbec99"
+				]
 			}
 		],
 		"parent_refs": [],
@@ -563,7 +569,7 @@ func TestInspection(t *testing.T) {
 		require.NoError(t, err)
 
 		actualInfo := flow.Inspect(sa)
-		actualJSON, _ := utils.JSONMarshalPretty(actualInfo)
+		actualJSON, _ := jsonx.MarshalPretty(actualInfo)
 
 		testDataPath := "testdata/inspection/" + tc.path[strings.LastIndex(tc.path, "/"):]
 

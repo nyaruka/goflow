@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
@@ -129,7 +130,7 @@ func Clone(data []byte, depMapping map[uuids.UUID]uuids.UUID) ([]byte, error) {
 
 // reads a flow definition as a flow primitive
 func readFlow(data []byte) (Flow, error) {
-	g, err := utils.JSONDecodeGeneric(data)
+	g, err := jsonx.DecodeGeneric(data)
 	if err != nil {
 		return nil, err
 	}

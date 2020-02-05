@@ -1,10 +1,13 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"reflect"
 	"strings"
 
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/pkg/errors"
 	validator "gopkg.in/go-playground/validator.v9"
 )
@@ -117,4 +120,22 @@ func Validate(obj interface{}) error {
 		newErrors[i] = errors.Errorf("field '%s' %s", location, problem)
 	}
 	return ValidationErrors(newErrors)
+}
+
+// UnmarshalAndValidate is a convenience function to unmarshal an object and validate it
+func UnmarshalAndValidate(data []byte, obj interface{}) error {
+	err := json.Unmarshal(data, obj)
+	if err != nil {
+		return err
+	}
+
+	return Validate(obj)
+}
+
+// UnmarshalAndValidateWithLimit unmarshals a struct with a limit on how many bytes can be read from the given reader
+func UnmarshalAndValidateWithLimit(reader io.ReadCloser, s interface{}, limit int64) error {
+	if err := jsonx.UnmarshalWithLimit(reader, s, limit); err != nil {
+		return err
+	}
+	return Validate(s)
 }

@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/buger/jsonparser"
 	diff "github.com/sergi/go-diff/diffmatchpatch"
@@ -38,7 +38,7 @@ func NormalizeJSON(data json.RawMessage) ([]byte, error) {
 	if err := json.Unmarshal(data, &asGeneric); err != nil {
 		return nil, err
 	}
-	return utils.JSONMarshalPretty(asGeneric)
+	return jsonx.MarshalPretty(asGeneric)
 }
 
 // AssertEqualJSON checks two JSON strings for equality

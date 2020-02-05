@@ -1,3 +1,13 @@
+v0.69.0
+----------
+ * Move JSON utils into their own package
+ * Track node UUIDs of dependencies
+
+v0.68.0
+----------
+ * Convert dependency inspection output to list of things with type attribute
+ * Replace Flow.CheckDepedencies and CheckDependenciesRecursive with passing assets to Inspect
+
 v0.67.1
 ----------
  * Update to gocommon v1.2.0

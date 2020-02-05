@@ -6,7 +6,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -47,7 +47,7 @@ func generateFunctionListing(baseDir string, outputDir string, items map[string]
 		}
 	}
 
-	data, err := utils.JSONMarshalPretty(listings)
+	data, err := jsonx.MarshalPretty(listings)
 	if err != nil {
 		return err
 	}

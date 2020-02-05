@@ -27,7 +27,10 @@
                 {
                     "key": "age",
                     "name": "Age",
-                    "type": "field"
+                    "type": "field",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
                 }
             ],
             "results": [],
@@ -62,7 +65,10 @@
                 {
                     "key": "age",
                     "name": "Age",
-                    "type": "field"
+                    "type": "field",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
                 }
             ],
             "results": [],
