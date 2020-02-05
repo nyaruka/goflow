@@ -134,7 +134,7 @@ func TestEvaluateQuery(t *testing.T) {
 	fieldResolver := func(key string) assets.Field { return fields[key] }
 
 	for _, test := range tests {
-		parsed, err := contactql.ParseQuery(test.query, envs.RedactionPolicyNone, fieldResolver)
+		parsed, err := contactql.ParseQuery(test.query, envs.RedactionPolicyNone, "", fieldResolver)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := contactql.EvaluateQuery(env, parsed, testObj)
@@ -170,7 +170,7 @@ func TestEvaluationErrors(t *testing.T) {
 	fieldResolver := func(key string) assets.Field { return fields[key] }
 
 	for _, test := range tests {
-		parsed, err := contactql.ParseQuery(test.query, envs.RedactionPolicyNone, fieldResolver)
+		parsed, err := contactql.ParseQuery(test.query, envs.RedactionPolicyNone, "", fieldResolver)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := contactql.EvaluateQuery(env, parsed, testObj)

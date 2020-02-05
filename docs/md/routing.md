@@ -437,7 +437,7 @@ the country to use for parsing.
 
 
 ```objectivec
-@(has_phone("my number is +12067799294")) → true
+@(has_phone("my number is +12067799294 thanks")) → true
 @(has_phone("my number is +12067799294").match) → +12067799294
 @(has_phone("my number is 2067799294", "US").match) → +12067799294
 @(has_phone("my number is 206 779 9294", "US").match) → +12067799294

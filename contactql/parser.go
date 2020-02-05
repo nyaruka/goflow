@@ -274,13 +274,13 @@ func (q *ContactQuery) String() string {
 }
 
 // ParseQuery parses a ContactQL query from the given input
-func ParseQuery(text string, redaction envs.RedactionPolicy, fieldResolver FieldResolverFunc) (*ContactQuery, error) {
+func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Country, fieldResolver FieldResolverFunc) (*ContactQuery, error) {
 	// preprocess text before parsing
 	text = strings.TrimSpace(text)
 
-	// catch things like "(800) 123-5678" where () needs to be stripped out
-	if queryIsPhoneNumberRegex.MatchString(text) {
-		text = cleanPhoneNumber(text)
+	// if query is a valid number, rewrite as a tel = query
+	if number := utils.ParsePhoneNumber(text, string(country)); number != "" {
+		text = fmt.Sprintf(`tel = %s`, number)
 	}
 
 	errListener := NewErrorListener()

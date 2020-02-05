@@ -14,7 +14,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 
-	"github.com/nyaruka/phonenumbers"
 	"github.com/shopspring/decimal"
 )
 
@@ -539,7 +538,7 @@ func HasEmail(env envs.Environment, text types.XText) types.XValue {
 // HasPhone tests whether `text` contains a phone number. The optional `country_code` argument specifies
 // the country to use for parsing.
 //
-//   @(has_phone("my number is +12067799294")) -> true
+//   @(has_phone("my number is +12067799294 thanks")) -> true
 //   @(has_phone("my number is +12067799294").match) -> +12067799294
 //   @(has_phone("my number is 2067799294", "US").match) -> +12067799294
 //   @(has_phone("my number is 206 779 9294", "US").match) -> +12067799294
@@ -559,18 +558,12 @@ func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) type
 	}
 
 	// try to find a phone number
-	phone, err := phonenumbers.Parse(text.Native(), country.Native())
-	if err != nil {
+	numbers := utils.FindPhoneNumbers(text.Native(), country.Native())
+	if len(numbers) == 0 {
 		return FalseResult
 	}
 
-	if !phonenumbers.IsValidNumber(phone) {
-		return FalseResult
-	}
-
-	// format as E164 number
-	formatted := phonenumbers.Format(phone, phonenumbers.E164)
-	return NewTrueResult(types.NewXText(formatted))
+	return NewTrueResult(types.NewXText(numbers[0]))
 }
 
 // HasCategory tests whether the category of a result on of the passed in `categories`

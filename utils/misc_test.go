@@ -26,12 +26,6 @@ func TestMinInt(t *testing.T) {
 	assert.Equal(t, -1, utils.MinInt(1, -1))
 }
 
-func TestDeriveCountryFromTel(t *testing.T) {
-	assert.Equal(t, "RW", utils.DeriveCountryFromTel("+250788383383"))
-	assert.Equal(t, "EC", utils.DeriveCountryFromTel("+593979000000"))
-	assert.Equal(t, "", utils.DeriveCountryFromTel("1234"))
-}
-
 func TestReadTypeFromJSON(t *testing.T) {
 	_, err := utils.ReadTypeFromJSON([]byte(`{}`))
 	assert.EqualError(t, err, "field 'type' is required")

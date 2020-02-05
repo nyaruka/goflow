@@ -25,13 +25,11 @@ func TestParseQuery(t *testing.T) {
 		{`w`, `name = "w"`, "", envs.RedactionPolicyNone}, // don't have at least 1 token of >= 2 chars
 		{`w me`, `name = "w" AND name ~ "me"`, "", envs.RedactionPolicyNone},
 		{`w m`, `name = "w" AND name = "m"`, "", envs.RedactionPolicyNone},
-		{`tel:+0123456566`, `tel = +0123456566`, "", envs.RedactionPolicyNone},
+		{`tel:+0123456566`, `tel = +0123456566`, "", envs.RedactionPolicyNone}, // whole query is a URN
 		{`twitter:bobby`, `twitter = "bobby"`, "", envs.RedactionPolicyNone},
-		{`0123456566`, `tel ~ 0123456566`, "", envs.RedactionPolicyNone}, // righthand side looks like a phone number
-		{`+0123456566`, `tel ~ 0123456566`, "", envs.RedactionPolicyNone},
-		{`0123-456-566`, `tel ~ 0123456566`, "", envs.RedactionPolicyNone},
-		{`(123) 456-5666`, `tel ~ 1234565666`, "", envs.RedactionPolicyNone},
-		{`(123)4565666`, `tel ~ 1234565666`, "", envs.RedactionPolicyNone},
+		{`(202) 456-1111`, `tel = +12024561111`, "", envs.RedactionPolicyNone}, // whole query looks like a phone number
+		{`+12024561111`, `tel = +12024561111`, "", envs.RedactionPolicyNone},
+		{` 202.456.1111 `, `tel = +12024561111`, "", envs.RedactionPolicyNone},
 		{`566`, `name ~ 566`, "", envs.RedactionPolicyNone}, // too short to be a phone number
 
 		// implicit conditions with URN redaction
@@ -122,7 +120,7 @@ func TestParseQuery(t *testing.T) {
 	fieldResolver := func(key string) assets.Field { return fields[key] }
 
 	for _, tc := range tests {
-		parsed, err := contactql.ParseQuery(tc.text, tc.redact, fieldResolver)
+		parsed, err := contactql.ParseQuery(tc.text, tc.redact, "US", fieldResolver)
 		if tc.err != "" {
 			assert.EqualError(t, err, tc.err, "error mismatch for '%s'", tc.text)
 			assert.Nil(t, parsed)
@@ -134,6 +132,6 @@ func TestParseQuery(t *testing.T) {
 }
 
 func TestParsingErrors(t *testing.T) {
-	_, err := contactql.ParseQuery("name = ", envs.RedactionPolicyNone, nil)
+	_, err := contactql.ParseQuery("name = ", envs.RedactionPolicyNone, "US", nil)
 	assert.EqualError(t, err, "mismatched input '<EOF>' expecting {TEXT, STRING}")
 }

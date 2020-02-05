@@ -14,9 +14,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-// a query like (800) 345-3536 or (800)4567890 will be interpreted as a single tel ~ condition
-var queryIsPhoneNumberRegex = regexp.MustCompile(`^\(\d{3}\)\s*\d{3}\-?\d{4}$`)
-
 // an implicit condition like +123-124-6546 or 1234 will be interpreted as a tel ~ condition
 var implicitIsPhoneNumberRegex = regexp.MustCompile(`^\+?[\-\d]{4,}$`)
 

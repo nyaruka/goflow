@@ -318,7 +318,7 @@
 <a name="test:has_phone" href="#test:has_phone">has_phone(text, country_code)</a>
 </h2>
 <p>Tests whether <code>text</code> contains a phone number. The optional <code>country_code</code> argument specifies the country to use for parsing.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb27-1"><a href="#cb27-1"></a>@(has_phone(<span class="st">&quot;my number is +12067799294&quot;</span>)) → true</span>
+<div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb27-1"><a href="#cb27-1"></a>@(has_phone(<span class="st">&quot;my number is +12067799294 thanks&quot;</span>)) → true</span>
 <span id="cb27-2"><a href="#cb27-2"></a>@(has_phone(<span class="st">&quot;my number is +12067799294&quot;</span>).match) → +<span class="dv">12067799294</span></span>
 <span id="cb27-3"><a href="#cb27-3"></a>@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></span>
 <span id="cb27-4"><a href="#cb27-4"></a>@(has_phone(<span class="st">&quot;my number is 206 779 9294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></span>
