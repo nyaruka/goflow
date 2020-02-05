@@ -26,29 +26,6 @@ func TestMinInt(t *testing.T) {
 	assert.Equal(t, -1, utils.MinInt(1, -1))
 }
 
-func TestFindPhoneNumber(t *testing.T) {
-	assert.Equal(t, "", utils.FindPhoneNumber("", ""))
-	assert.Equal(t, "", utils.FindPhoneNumber("", "RW"))
-
-	assert.Equal(t, "+250788383383", utils.FindPhoneNumber("+250788383383", ""))
-
-	assert.Equal(t, "+250788383383", utils.FindPhoneNumber("Hi my phone is +250788383383", "RW"))
-	assert.Equal(t, "+250788383383", utils.FindPhoneNumber("Hi my phone is +250788383383", ""))
-	assert.Equal(t, "+250788383383", utils.FindPhoneNumber("Hi my phone is 0788383383", "RW"))
-	assert.Equal(t, "", utils.FindPhoneNumber("Hi my phone is 0788383383", ""))
-
-	assert.Equal(t, "+12024561111", utils.FindPhoneNumber("Hi my phone is +12024561111", "US"))
-	assert.Equal(t, "+12024561111", utils.FindPhoneNumber("Hi my phone is +12024561111", ""))
-	assert.Equal(t, "+12024561111", utils.FindPhoneNumber("Hi my phone is (202) 456-1111", "US"))
-	assert.Equal(t, "", utils.FindPhoneNumber("Hi my phone is (202) 456-1111", ""))
-}
-
-func TestDeriveCountryFromTel(t *testing.T) {
-	assert.Equal(t, "RW", utils.DeriveCountryFromTel("+250788383383"))
-	assert.Equal(t, "EC", utils.DeriveCountryFromTel("+593979000000"))
-	assert.Equal(t, "", utils.DeriveCountryFromTel("1234"))
-}
-
 func TestReadTypeFromJSON(t *testing.T) {
 	_, err := utils.ReadTypeFromJSON([]byte(`{}`))
 	assert.EqualError(t, err, "field 'type' is required")

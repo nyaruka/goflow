@@ -2,8 +2,6 @@ package utils
 
 import (
 	"reflect"
-
-	"github.com/nyaruka/phonenumbers"
 )
 
 // IsNil returns whether the given object is nil or an interface to a nil
@@ -37,29 +35,6 @@ func MinInt(x, y int) int {
 		return x
 	}
 	return y
-}
-
-// FindPhoneNumber attempts to parse a phone number from the given text. If it finds one, it returns it formatted as E164.
-func FindPhoneNumber(s, country string) string {
-	phone, err := phonenumbers.Parse(s, country)
-	if err != nil {
-		return ""
-	}
-
-	if !phonenumbers.IsValidNumber(phone) {
-		return ""
-	}
-
-	return phonenumbers.Format(phone, phonenumbers.E164)
-}
-
-// DeriveCountryFromTel attempts to derive a country code (e.g. RW) from a phone number
-func DeriveCountryFromTel(number string) string {
-	parsed, err := phonenumbers.Parse(number, "")
-	if err != nil {
-		return ""
-	}
-	return phonenumbers.GetRegionCodeForNumber(parsed)
 }
 
 // Typed is an interface of objects that are marshalled as typed envelopes

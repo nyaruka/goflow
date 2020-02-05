@@ -373,7 +373,7 @@ func TestContactQuery(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		query, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, session.Assets().Fields().Resolve)
+		query, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, "US", session.Assets().Fields().Resolve)
 		require.NoError(t, err, "unexpected error parsing '%s'", tc.query)
 
 		result, err := contactql.EvaluateQuery(session.Environment(), query, contact)
