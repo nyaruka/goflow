@@ -279,8 +279,10 @@ func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Countr
 	text = strings.TrimSpace(text)
 
 	// if query is a valid number, rewrite as a tel = query
-	if number := utils.ParsePhoneNumber(text, string(country)); number != "" {
-		text = fmt.Sprintf(`tel = %s`, number)
+	if redaction != envs.RedactionPolicyURNs {
+		if number := utils.ParsePhoneNumber(text, string(country)); number != "" {
+			text = fmt.Sprintf(`tel = %s`, number)
+		}
 	}
 
 	errListener := NewErrorListener()

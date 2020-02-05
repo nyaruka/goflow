@@ -86,7 +86,7 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 		return newCondition(PropertyTypeScheme, scheme, ComparatorEqual, path, assets.FieldTypeText)
 
 	} else if implicitIsPhoneNumberRegex.MatchString(text) {
-		text = cleanPhoneNumber(text)
+		text = cleanPhoneNumberRegex.ReplaceAllLiteralString(text, "")
 
 		return newCondition(PropertyTypeScheme, urns.TelScheme, ComparatorContains, text, assets.FieldTypeText)
 	}
@@ -203,8 +203,4 @@ func (v *visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} 
 
 func (v *visitor) addError(err error) {
 	v.errors = append(v.errors, err)
-}
-
-func cleanPhoneNumber(v string) string {
-	return cleanPhoneNumberRegex.ReplaceAllLiteralString(v, "")
 }
