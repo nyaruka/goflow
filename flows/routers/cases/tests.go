@@ -14,7 +14,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 
-	"github.com/nyaruka/phonenumbers"
 	"github.com/shopspring/decimal"
 )
 
@@ -559,17 +558,11 @@ func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) type
 	}
 
 	// try to find a phone number
-	phone, err := phonenumbers.Parse(text.Native(), country.Native())
-	if err != nil {
+	formatted := utils.FindPhoneNumber(text.Native(), country.Native())
+	if formatted == "" {
 		return FalseResult
 	}
 
-	if !phonenumbers.IsValidNumber(phone) {
-		return FalseResult
-	}
-
-	// format as E164 number
-	formatted := phonenumbers.Format(phone, phonenumbers.E164)
 	return NewTrueResult(types.NewXText(formatted))
 }
 

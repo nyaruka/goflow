@@ -39,6 +39,20 @@ func MinInt(x, y int) int {
 	return y
 }
 
+// FindPhoneNumber attempts to parse a phone number from the given text. If it finds one, it returns it formatted as E164.
+func FindPhoneNumber(s, country string) string {
+	phone, err := phonenumbers.Parse(s, country)
+	if err != nil {
+		return ""
+	}
+
+	if !phonenumbers.IsValidNumber(phone) {
+		return ""
+	}
+
+	return phonenumbers.Format(phone, phonenumbers.E164)
+}
+
 // DeriveCountryFromTel attempts to derive a country code (e.g. RW) from a phone number
 func DeriveCountryFromTel(number string) string {
 	parsed, err := phonenumbers.Parse(number, "")
