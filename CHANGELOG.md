@@ -1,3 +1,9 @@
+v0.70.0
+----------
+ * Make cloning a flow definition more deterministic
+ * Update actions to log error events when dependencies are missing
+ * Interpret contact queries which are formatted phone numbers as tel = queries
+
 v0.69.0
 ----------
  * Move JSON utils into their own package
