@@ -2,6 +2,7 @@ package events_test
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
 	"testing"
@@ -323,6 +324,22 @@ func TestEventMarshaling(t *testing.T) {
 					"timezone": "America/Guayaquil"
 				},
 				"type": "environment_refreshed"
+			}`,
+		},
+		{
+			events.NewError(errors.New("I'm an error")),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"text": "I'm an error",
+				"type": "error"
+			}`,
+		},
+		{
+			events.NewDependencyError(assets.NewFieldReference("age", "Age")),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"text": "missing dependency: field[key=age,name=Age]",
+				"type": "error"
 			}`,
 		},
 		{

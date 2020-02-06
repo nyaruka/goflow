@@ -279,6 +279,9 @@ func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, stati
 		if ref.UUID != "" {
 			// group is a fixed group with a UUID
 			group = groupSet.Get(ref.UUID)
+			if group == nil {
+				logEvent(events.NewDependencyError(ref))
+			}
 		} else {
 			// group is an expression that evaluates to an existing group's name
 			evaluatedGroupName, err := run.EvaluateTemplate(ref.NameMatch)
@@ -316,6 +319,9 @@ func resolveLabels(run flows.FlowRun, references []*assets.LabelReference, logEv
 		if ref.UUID != "" {
 			// label is a fixed label with a UUID
 			label = labelSet.Get(ref.UUID)
+			if label == nil {
+				logEvent(events.NewDependencyError(ref))
+			}
 		} else {
 			// label is an expression that evaluates to an existing label's name
 			evaluatedLabelName, err := run.EvaluateTemplate(ref.NameMatch)

@@ -6,7 +6,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -64,33 +63,32 @@ func (a *CallClassifierAction) Execute(run flows.FlowRun, step flows.Step, logMo
 		logEvent(events.NewError(err))
 	}
 
-	classification, skipped, err := a.classify(run, step, input, classifier, logEvent)
-	if err != nil {
-		logEvent(events.NewError(err))
-
-		if skipped {
-			a.saveSkipped(run, step, input, logEvent)
-		} else {
-			a.saveFailure(run, step, input, logEvent)
-		}
-	} else {
+	classification, skipped := a.classify(run, step, input, classifier, logEvent)
+	if classification != nil {
 		a.saveSuccess(run, step, input, classification, logEvent)
+	} else if skipped {
+		a.saveSkipped(run, step, input, logEvent)
+	} else {
+		a.saveFailure(run, step, input, logEvent)
 	}
 
 	return nil
 }
 
-func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool, error) {
+func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
 	if input == "" {
-		return nil, true, errors.New("can't classify empty input, skipping classification")
+		logEvent(events.NewErrorf("can't classify empty input, skipping classification"))
+		return nil, true
 	}
 	if classifier == nil {
-		return nil, false, errors.Errorf("missing %s", a.Classifier.String())
+		logEvent(events.NewDependencyError(a.Classifier))
+		return nil, false
 	}
 
 	svc, err := run.Session().Engine().Services().Classification(run.Session(), classifier)
 	if err != nil {
-		return nil, false, err
+		logEvent(events.NewError(err))
+		return nil, false
 	}
 
 	httpLogger := &flows.HTTPLogger{}
@@ -101,7 +99,12 @@ func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, inpu
 		logEvent(events.NewClassifierCalled(classifier.Reference(), httpLogger.Logs))
 	}
 
-	return classification, false, err
+	if err != nil {
+		logEvent(events.NewError(err))
+		return nil, false
+	}
+
+	return classification, false
 }
 
 func (a *CallClassifierAction) saveSuccess(run flows.FlowRun, step flows.Step, input string, classification *flows.Classification, logEvent flows.EventCallback) {
