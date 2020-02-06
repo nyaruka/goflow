@@ -194,12 +194,13 @@ func remapUUIDs(data map[string]interface{}, depMapping map[uuids.UUID]uuids.UUI
 	walk(data, objectCallback, arrayCallback)
 }
 
-// extract the property names from a generic JSON object
+// extract the property names from a generic JSON object, sorted A-Z
 func objectProperties(obj map[string]interface{}) []string {
 	props := make([]string, 0, len(obj))
 	for k := range obj {
 		props = append(props, k)
 	}
+	sort.Strings(props)
 	return props
 }
 
@@ -209,8 +210,8 @@ func walk(j interface{}, objectCallback func(map[string]interface{}), arrayCallb
 	case map[string]interface{}:
 		objectCallback(typed)
 
-		for _, v := range typed {
-			walk(v, objectCallback, arrayCallback)
+		for _, p := range objectProperties(typed) {
+			walk(typed[p], objectCallback, arrayCallback)
 		}
 	case []interface{}:
 		arrayCallback(typed)
