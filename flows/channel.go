@@ -121,7 +121,7 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 				continue
 			}
 			// skip if international and channel doesn't allow that
-			if countryCode != "" && countryCode != ch.Country() && !ch.AllowInternational() {
+			if ch.Country() != "" && countryCode != "" && countryCode != ch.Country() && !ch.AllowInternational() {
 				continue
 			}
 

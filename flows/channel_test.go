@@ -49,9 +49,11 @@ func TestChannelSetGetForURN(t *testing.T) {
 	claro := test.NewTelChannel("Claro", "+593971111111", rolesDefault, nil, "EC", nil, true)
 	mtn := test.NewTelChannel("MTN", "+250782222222", rolesDefault, nil, "RW", nil, false)
 	tigo := test.NewTelChannel("Tigo", "+250723333333", rolesDefault, nil, "RW", nil, false)
+	twilio := test.NewTelChannel("Twilio", "+17036975131", rolesDefault, nil, "", nil, false)
 	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault, nil)
 	all := flows.NewChannelAssets([]assets.Channel{claro.Asset(), mtn.Asset(), tigo.Asset(), twitter.Asset()})
 	rwOnly := flows.NewChannelAssets([]assets.Channel{mtn.Asset(), tigo.Asset()})
+	twOnly := flows.NewChannelAssets([]assets.Channel{twilio.Asset()})
 
 	// nil if no channel
 	emptySet := flows.NewChannelAssets(nil)
@@ -74,6 +76,9 @@ func TestChannelSetGetForURN(t *testing.T) {
 
 	// but use them if they do
 	assert.Equal(t, claro, all.GetForURN(flows.NewContactURN(urns.URN("tel:+57971234567"), nil), assets.ChannelRoleSend))
+
+	// or if they're implicitly international by having no country
+	assert.Equal(t, twilio, twOnly.GetForURN(flows.NewContactURN(urns.URN("tel:+57971234567"), nil), assets.ChannelRoleSend))
 
 	// if there's multiple channels, one with longest number overlap wins
 	assert.Equal(t, mtn, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250781234567"), nil), assets.ChannelRoleSend))
