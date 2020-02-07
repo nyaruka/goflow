@@ -1,3 +1,7 @@
+v0.71.0
+----------
+ * Add field to channel assets which determines whether they should try to send internationally
+
 v0.70.0
 ----------
  * Make cloning a flow definition more deterministic
