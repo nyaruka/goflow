@@ -116,9 +116,16 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 		candidates := make([]*Channel, 0)
 
 		for _, ch := range s.all {
-			if ch.HasRole(role) && ch.SupportsScheme(urns.TelScheme) && (countryCode == "" || countryCode == ch.Country()) && !ch.HasParent() {
-				candidates = append(candidates, ch)
+			// skip if not tel and not sendable
+			if !ch.SupportsScheme(urns.TelScheme) || !ch.HasRole(role) {
+				continue
 			}
+			// skip if international and channel doesn't allow that
+			if countryCode != "" && countryCode != ch.Country() && !ch.AllowInternational() {
+				continue
+			}
+
+			candidates = append(candidates, ch)
 		}
 
 		var channel *Channel
@@ -149,6 +156,8 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 		if channel != nil {
 			return s.getDelegate(channel, role)
 		}
+
+		return nil
 	}
 
 	return s.getForSchemeAndRole(urn.URN().Scheme(), role)

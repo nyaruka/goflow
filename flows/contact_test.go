@@ -26,9 +26,10 @@ func TestContact(t *testing.T) {
 			{
 				"uuid": "294a14d4-c998-41e5-a314-5941b97b89d7",
 				"name": "My Android Phone",
-				"address": "+12345671111",
+				"address": "+17036975131",
 				"schemes": ["tel"],
-				"roles": ["send", "receive"]
+				"roles": ["send", "receive"],
+				"country": "US"
 			}
 		]
 	}`))
@@ -54,7 +55,7 @@ func TestContact(t *testing.T) {
 
 	contact.SetTimezone(env.Timezone())
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+16364646466?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil))
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil))
 	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 
 	assert.Equal(t, "Joe Bloggs", contact.Name())
@@ -62,7 +63,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, envs.Language("eng"), contact.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
-	assert.True(t, contact.HasURN("tel:+16364646466"))
+	assert.True(t, contact.HasURN("tel:+12024561111"))
 	assert.False(t, contact.HasURN("tel:+16300000000"))
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
@@ -73,7 +74,7 @@ func TestContact(t *testing.T) {
 		"jiochat":   nil,
 		"line":      nil,
 		"mailto":    nil,
-		"tel":       flows.NewContactURN(urns.URN("tel:+16364646466?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
+		"tel":       flows.NewContactURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
 		"telegram":  nil,
 		"twitter":   flows.NewContactURN(urns.URN("twitter:joey"), nil).ToXValue(env),
 		"twitterid": nil,
@@ -142,7 +143,7 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	sa, _ := engine.NewSessionAssets(static.NewEmptySource(), nil)
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
-	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil)
+	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
 	twitter1 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 

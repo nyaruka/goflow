@@ -40,10 +40,10 @@ var templateTests = []struct {
 	{"@contact.timezone", "America/Guayaquil", "", false},
 
 	// contact single URN access
-	{"@contact.urn", `tel:+12065551212`, "", false},
+	{"@contact.urn", `tel:+12024561111`, "", false},
 	{"@(urn_parts(contact.urn).scheme)", `tel`, "", false},
-	{"@(urn_parts(contact.urn).path)", `+12065551212`, "", false},
-	{"@(format_urn(contact.urn))", `(206) 555-1212`, "", false},
+	{"@(urn_parts(contact.urn).path)", `+12024561111`, "", false},
+	{"@(format_urn(contact.urn))", `(202) 456-1111`, "", false},
 
 	// with URN redaction
 	{"@contact.urn", `tel:********`, "", true},
@@ -52,25 +52,25 @@ var templateTests = []struct {
 	{"@(format_urn(contact.urn))", `********`, "", true},
 
 	// contact URN list access
-	{"@contact.urns", `[tel:+12065551212, twitterid:54784326227#nyaruka, mailto:foo@bar.com]`, "", false},
-	{"@(contact.urns[0])", "tel:+12065551212", "", false},
+	{"@contact.urns", `[tel:+12024561111, twitterid:54784326227#nyaruka, mailto:foo@bar.com]`, "", false},
+	{"@(contact.urns[0])", "tel:+12024561111", "", false},
 	{"@(contact.urns[110])", "", "error evaluating @(contact.urns[110]): index 110 out of range for 3 items", false},
 	{"@(urn_parts(contact.urns[0]).scheme)", "tel", "", false},
-	{"@(urn_parts(contact.urns[0]).path)", "+12065551212", "", false},
+	{"@(urn_parts(contact.urns[0]).path)", "+12024561111", "", false},
 	{"@(urn_parts(contact.urns[0]).display)", "", "", false},
 	{"@(contact.urns[1])", "twitterid:54784326227#nyaruka", "", false},
-	{"@(format_urn(contact.urns[0]))", "(206) 555-1212", "", false},
+	{"@(format_urn(contact.urns[0]))", "(202) 456-1111", "", false},
 
 	// with URN redaction
 	{"@contact.urns", `[tel:********, twitterid:********, mailto:********]`, "", true},
 	{"@(contact.urns[0])", `tel:********`, "", true},
 
 	// simplified URN access
-	{"@urns", `{ext: , facebook: , fcm: , freshchat: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12065551212, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , wechat: , whatsapp: }`, "", false},
-	{"@urns.tel", `tel:+12065551212`, "", false},
+	{"@urns", `{ext: , facebook: , fcm: , freshchat: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12024561111, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , wechat: , whatsapp: }`, "", false},
+	{"@urns.tel", `tel:+12024561111`, "", false},
 	{"@urns.mailto", `mailto:foo@bar.com`, "", false},
 	{"@urns.viber", ``, "", false},
-	{"@(format_urn(urns.tel))", "(206) 555-1212", "", false},
+	{"@(format_urn(urns.tel))", "(202) 456-1111", "", false},
 
 	// with URN redaction
 	{"@urns.tel", `tel:********`, "", true},
@@ -202,14 +202,14 @@ func TestContextToJSON(t *testing.T) {
 	}{
 		{"contact.uuid", `"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"`},
 		{"contact.name", `"Ryan Lewis"`},
-		{"contact.urns", `["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`},
-		{"contact.urns[0]", `"tel:+12065551212"`},
+		{"contact.urns", `["tel:+12024561111","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`},
+		{"contact.urns[0]", `"tel:+12024561111"`},
 		{"contact.fields", `{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`},
 		{"contact.fields.age", `23`},
 		{
 			"contact",
 			`{
-				"channel": {"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
+				"channel": {"address":"+17036975131","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
 				"created_on": "2018-06-20T11:40:30.123456Z", 
 				"fields": {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
 				"first_name": "Ryan",
@@ -218,8 +218,8 @@ func TestContextToJSON(t *testing.T) {
 				"language": "eng",
 				"name": "Ryan Lewis",
 				"timezone": "America/Guayaquil",
-				"urn": "tel:+12065551212",
-				"urns": ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"],
+				"urn": "tel:+12024561111",
+				"urns": ["tel:+12024561111","twitterid:54784326227#nyaruka","mailto:foo@bar.com"],
 				"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 			}`,
 		},
@@ -227,7 +227,7 @@ func TestContextToJSON(t *testing.T) {
 			"input",
 			`{
 				"attachments":["image/jpeg:http://s3.amazon.com/bucket/test.jpg","audio/mp3:http://s3.amazon.com/bucket/test.mp3"],
-				"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
+				"channel":{"address":"+17036975131","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
 				"created_on":"2017-12-31T11:35:10.035757-02:00",
 				"external_id":"",
 				"text":"Hi there",
@@ -240,7 +240,7 @@ func TestContextToJSON(t *testing.T) {
 			"run",
 			`{
 				"contact": {
-					"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
+					"channel":{"address":"+17036975131","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},
 					"created_on":"2018-06-20T11:40:30.123456Z",
 					"fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null},
 					"first_name":"Ryan",
@@ -249,8 +249,8 @@ func TestContextToJSON(t *testing.T) {
 					"language":"eng",
 					"name":"Ryan Lewis",
 					"timezone":"America/Guayaquil",
-					"urn":"tel:+12065551212",
-					"urns":["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"],
+					"urn":"tel:+12024561111",
+					"urns":["tel:+12024561111","twitterid:54784326227#nyaruka","mailto:foo@bar.com"],
 					"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 				},
 				"created_on":"2018-04-11T13:24:30.123456Z",
@@ -363,7 +363,7 @@ func TestContextToJSON(t *testing.T) {
 			`{
 				"contact": {
 					"channel": {
-						"address": "+12345671111",
+						"address": "+17036975131",
 						"name": "My Android Phone",
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
@@ -390,9 +390,9 @@ func TestContextToJSON(t *testing.T) {
 					"language": "eng",
 					"name": "Ryan Lewis",
 					"timezone": "America/Guayaquil",
-					"urn": "tel:+12065551212",
+					"urn": "tel:+12024561111",
 					"urns": [
-						"tel:+12065551212",
+						"tel:+12024561111",
 						"twitterid:54784326227#nyaruka",
 						"mailto:foo@bar.com"
 					],
@@ -428,7 +428,7 @@ func TestContextToJSON(t *testing.T) {
 				"run": {
 					"contact": {
 						"channel": {
-							"address": "+12345671111",
+							"address": "+17036975131",
 							"name": "My Android Phone",
 							"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 						},
@@ -455,9 +455,9 @@ func TestContextToJSON(t *testing.T) {
 						"language": "eng",
 						"name": "Ryan Lewis",
 						"timezone": "America/Guayaquil",
-						"urn": "tel:+12065551212",
+						"urn": "tel:+12024561111",
 						"urns": [
-							"tel:+12065551212",
+							"tel:+12024561111",
 							"twitterid:54784326227#nyaruka",
 							"mailto:foo@bar.com"
 						],
@@ -495,7 +495,7 @@ func TestContextToJSON(t *testing.T) {
 					"jiochat": null,
 					"line": null,
 					"mailto": "mailto:foo@bar.com",
-					"tel": "tel:+12065551212",
+					"tel": "tel:+12024561111",
 					"telegram": null,
 					"twitter": null,
 					"twitterid": "twitterid:54784326227#nyaruka",
@@ -512,7 +512,7 @@ func TestContextToJSON(t *testing.T) {
 			`{
 				"contact": {
 					"channel": {
-						"address": "+12345671111",
+						"address": "+17036975131",
 						"name": "My Android Phone",
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
@@ -530,9 +530,9 @@ func TestContextToJSON(t *testing.T) {
 					"language": "spa",
 					"name": "Jasmine",
 					"timezone": null,
-					"urn": "tel:+593979111222",
+					"urn": "tel:+12024562222",
 					"urns": [
-						"tel:+593979111222"
+						"tel:+12024562222"
 					],
 					"uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
 				},
@@ -566,7 +566,7 @@ func TestContextToJSON(t *testing.T) {
 				"run": {
 					"contact": {
 						"channel": {
-							"address": "+12345671111",
+							"address": "+17036975131",
 							"name": "My Android Phone",
 							"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 						},
@@ -584,9 +584,9 @@ func TestContextToJSON(t *testing.T) {
 						"language": "spa",
 						"name": "Jasmine",
 						"timezone": null,
-						"urn": "tel:+593979111222",
+						"urn": "tel:+12024562222",
 						"urns": [
-							"tel:+593979111222"
+							"tel:+12024562222"
 						],
 						"uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
 					},
@@ -622,7 +622,7 @@ func TestContextToJSON(t *testing.T) {
 					"jiochat": null,
 					"line": null,
 					"mailto": null,
-					"tel": "tel:+593979111222",
+					"tel": "tel:+12024562222",
 					"telegram": null,
 					"twitter": null,
 					"twitterid": null,

@@ -606,11 +606,11 @@
             },
             {
                 "template": "@(format_urn(contact.urn))",
-                "output": "(206) 555-1212"
+                "output": "(202) 456-1111"
             },
             {
                 "template": "@(format_urn(urns.tel))",
-                "output": "(206) 555-1212"
+                "output": "(202) 456-1111"
             },
             {
                 "template": "@(format_urn(urns.mailto))",

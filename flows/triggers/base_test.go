@@ -125,7 +125,7 @@ var assetsJSON = `{
 		{
             "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
             "name": "Nexmo",
-            "address": "+12345672222",
+            "address": "+16055742523",
             "schemes": ["tel"],
             "roles": ["send", "receive"]
         }

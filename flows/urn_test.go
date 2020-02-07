@@ -22,14 +22,15 @@ func TestContactURN(t *testing.T) {
             {
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "name": "Android Channel",
-				"address": "+12345671111",
+				"address": "+17036975131",
 				"schemes": [
 					"tel"
 				],
 				"roles": [
 					"send",
 					"receive"
-				]
+				],
+				"country": "US"
             }
         ]
     }`))
