@@ -1,3 +1,7 @@
+v0.71.1
+----------
+ * Channels with no country are implicitly international
+
 v0.71.0
 ----------
  * Add field to channel assets which determines whether they should try to send internationally
