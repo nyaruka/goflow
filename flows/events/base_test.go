@@ -253,7 +253,7 @@ func TestEventMarshaling(t *testing.T) {
 					"name": "Ryan Lewis",
 					"timezone": "America/Guayaquil",
 					"urns": [
-						"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+						"tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
 						"twitterid:54784326227#nyaruka",
 						"mailto:foo@bar.com"
 					],

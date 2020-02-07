@@ -27,6 +27,7 @@ func TestChannel(t *testing.T) {
 	assert.Nil(t, channel.Parent())
 	assert.Equal(t, "", channel.Country())
 	assert.Nil(t, channel.MatchPrefixes())
+	assert.True(t, channel.AllowInternational())
 
 	// check that UUIDs aren't required to be valid UUID4s
 	assert.Nil(t, utils.Validate(channel))
@@ -39,8 +40,10 @@ func TestChannel(t *testing.T) {
 		nil,
 		"RW",
 		[]string{"+25079"},
+		false,
 	)
 
 	assert.Equal(t, "RW", channel.Country())
 	assert.Equal(t, []string{"+25079"}, channel.MatchPrefixes())
+	assert.False(t, channel.AllowInternational())
 }

@@ -21,9 +21,10 @@ var sessionAssets = `{
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "My Android Phone",
-            "address": "+12345671111",
+            "address": "+17036975131",
             "schemes": ["tel"],
-            "roles": ["send", "receive"]
+            "roles": ["send", "receive"],
+            "country": "US"
         },
         {
             "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
@@ -274,7 +275,7 @@ var sessionTrigger = `{
         "timezone": "America/Guayaquil",
         "created_on": "2018-06-20T11:40:30.123456789-00:00",
         "urns": [
-            "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
+            "tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
             "twitterid:54784326227#nyaruka",
             "mailto:foo@bar.com"
         ],
@@ -302,7 +303,7 @@ var sessionTrigger = `{
             "created_on": "2018-01-01T12:00:00.000000000-00:00",
             "language": "spa",
             "urns": [
-                "tel:+593979111222"
+                "tel:+12024562222"
             ],
             "fields": {
                 "age": {
@@ -366,14 +367,15 @@ var voiceSessionAssets = `{
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "My Android Phone",
-            "address": "+12345671111",
+            "address": "+17036975131",
             "schemes": ["tel"],
-            "roles": ["send", "receive"]
+            "roles": ["send", "receive"],
+            "country": "US"
         },
         {
             "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
             "name": "Nexmo",
-            "address": "345642627",
+            "address": "+12024560010",
             "schemes": ["tel"],
             "roles": ["send", "receive", "call", "answer"]
         }
@@ -428,7 +430,7 @@ var voiceSessionTrigger = `{
         "timezone": "America/Guayaquil",
         "created_on": "2018-06-20T11:40:30.123456789-00:00",
         "urns": [
-            "tel:+12065551212"
+            "tel:+12024561111"
         ],
         "groups": [
             {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},

@@ -700,13 +700,13 @@ func TestResthookPayload(t *testing.T) {
 
 	test.AssertEqualJSON(t, []byte(`{
 		"channel": {
-			"address": "+12345671111",
+			"address": "+17036975131",
 			"name": "My Android Phone",
 			"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 		},
 		"contact": {
 			"name": "Ryan Lewis",
-			"urn": "tel:+12065551212",
+			"urn": "tel:+12024561111",
 			"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 		},
 		"flow": {
@@ -726,7 +726,7 @@ func TestResthookPayload(t *testing.T) {
 				}
 			],
 			"channel": {
-				"address": "+12345671111",
+				"address": "+17036975131",
 				"name": "My Android Phone",
 				"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 			},
