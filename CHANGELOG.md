@@ -1,3 +1,7 @@
+v0.71.2
+----------
+ * Rework dependency and template extraction to include actions and routers
+
 v0.71.1
 ----------
  * Channels with no country are implicitly international
