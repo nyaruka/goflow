@@ -2,13 +2,20 @@ package flows
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/jsonx"
 )
+
+// ExtractedReference is a reference and its location in a flow
+type ExtractedReference struct {
+	Node      Node
+	Action    Action
+	Router    Router
+	Reference assets.Reference
+}
 
 // FlowInfo contains the results of flow inspection
 type FlowInfo struct {
@@ -18,11 +25,28 @@ type FlowInfo struct {
 	ParentRefs   []string      `json:"parent_refs"`
 }
 
+type nodeLocations map[NodeUUID][]string
+
+func (l nodeLocations) add(n Node, a Action, r Router) {
+	var loc string
+	if a != nil {
+		loc = string(a.UUID())
+	} else {
+		loc = "router"
+	}
+
+	locs := l[n.UUID()]
+	if !utils.StringSliceContains(locs, loc, true) {
+		locs = append(locs, loc)
+	}
+	l[n.UUID()] = locs
+}
+
 type Dependency struct {
 	Reference assets.Reference `json:"-"`
 	Type      string           `json:"type"`
 	Missing   bool             `json:"missing,omitempty"`
-	NodeUUIDs []NodeUUID       `json:"node_uuids"`
+	Nodes     nodeLocations    `json:"nodes"`
 }
 
 func (d Dependency) MarshalJSON() ([]byte, error) {
@@ -32,58 +56,38 @@ func (d Dependency) MarshalJSON() ([]byte, error) {
 
 // NewDependencies inspects a list of references. If a session assets is provided,
 // each dependency is checked to see if it is available or missing.
-func NewDependencies(refs map[NodeUUID][]assets.Reference, sa SessionAssets) []*Dependency {
-	deps := make(map[string]*Dependency, 0)
-	keys := make([]string, 0)
+func NewDependencies(refs []ExtractedReference, sa SessionAssets) []*Dependency {
+	deps := make([]*Dependency, 0)
+	depsSeen := make(map[string]*Dependency, 0)
 
-	containsNodeUUID := func(s []NodeUUID, v NodeUUID) bool {
-		for _, u := range s {
-			if u == v {
-				return true
+	for _, er := range refs {
+		key := fmt.Sprintf("%s:%s", er.Reference.Type(), er.Reference.Identity())
+
+		// if we already created a dependency for this reference, add this location
+		if dep, seen := depsSeen[key]; seen {
+			dep.Nodes.add(er.Node, er.Action, er.Router)
+		} else {
+			// check if this dependency is accessible
+			missing := false
+			if sa != nil {
+				missing = !checkDependency(sa, er.Reference)
 			}
-		}
-		return false
-	}
 
-	for nodeUUID, nodeRefs := range refs {
-		for _, ref := range nodeRefs {
-			key := fmt.Sprintf("%s:%s", ref.Type(), ref.Identity())
+			nodes := nodeLocations{}
+			nodes.add(er.Node, er.Action, er.Router)
 
-			// if we already created a dependency for this reference, update it
-			if dep, seen := deps[key]; seen {
-				if !containsNodeUUID(dep.NodeUUIDs, nodeUUID) {
-					dep.NodeUUIDs = append(dep.NodeUUIDs, nodeUUID)
-				}
-			} else {
-				// check if this dependency is accessible
-				missing := false
-				if sa != nil {
-					missing = !checkDependency(sa, ref)
-				}
-
-				dep := &Dependency{
-					Reference: ref,
-					Type:      ref.Type(),
-					Missing:   missing,
-					NodeUUIDs: []NodeUUID{nodeUUID},
-				}
-				deps[key] = dep
-				keys = append(keys, key)
+			dep := &Dependency{
+				Reference: er.Reference,
+				Type:      er.Reference.Type(),
+				Missing:   missing,
+				Nodes:     nodes,
 			}
+			deps = append(deps, dep)
+			depsSeen[key] = dep
 		}
 	}
 
-	// keep tests stable by sorting final dependecy list
-	sort.Strings(keys)
-	sorted := make([]*Dependency, len(deps))
-	for i, key := range keys {
-		dep := deps[key]
-		sorted[i] = dep
-
-		// also sort each dependency's node list
-		sort.SliceStable(dep.NodeUUIDs, func(i, j int) bool { return strings.Compare(string(dep.NodeUUIDs[i]), string(dep.NodeUUIDs[j])) < 0 })
-	}
-	return sorted
+	return deps
 }
 
 // determines whether the given dependency exists

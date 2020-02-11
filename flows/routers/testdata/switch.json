@@ -291,9 +291,11 @@
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers",
                     "type": "group",
-                    "node_uuids": [
-                        "64373978-e8f6-4973-b6ff-a2993f3376fc"
-                    ]
+                    "nodes": {
+                        "64373978-e8f6-4973-b6ff-a2993f3376fc": [
+                            "router"
+                        ]
+                    }
                 }
             ],
             "results": [
@@ -375,9 +377,11 @@
                     "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
                     "type": "group",
                     "missing": true,
-                    "node_uuids": [
-                        "64373978-e8f6-4973-b6ff-a2993f3376fc"
-                    ]
+                    "nodes": {
+                        "64373978-e8f6-4973-b6ff-a2993f3376fc": [
+                            "router"
+                        ]
+                    }
                 }
             ],
             "results": [

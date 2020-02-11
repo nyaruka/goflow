@@ -158,8 +158,8 @@ type Node interface {
 
 	Validate(Flow, map[uuids.UUID]bool) error
 
-	EnumerateTemplates(Localization, func(string))
-	EnumerateDependencies(Localization, func(assets.Reference))
+	EnumerateTemplates(Localization, func(Action, Router, string))
+	EnumerateDependencies(Localization, func(Action, Router, assets.Reference))
 	EnumerateResults(Node, func(*ResultInfo))
 }
 

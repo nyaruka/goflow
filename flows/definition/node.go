@@ -87,20 +87,32 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 }
 
 // EnumerateTemplates enumerates all expressions on this object
-func (n *node) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.Templates(n.actions, localization, include)
+func (n *node) EnumerateTemplates(localization flows.Localization, include func(flows.Action, flows.Router, string)) {
+	for _, action := range n.actions {
+		inspect.Templates(action, localization, func(t string) {
+			include(action, nil, t)
+		})
+	}
 
 	if n.router != nil {
-		n.router.EnumerateTemplates(localization, include)
+		n.router.EnumerateTemplates(localization, func(t string) {
+			include(nil, n.router, t)
+		})
 	}
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	inspect.Dependencies(n.actions, localization, include)
+func (n *node) EnumerateDependencies(localization flows.Localization, include func(flows.Action, flows.Router, assets.Reference)) {
+	for _, action := range n.actions {
+		inspect.Dependencies(action, localization, func(r assets.Reference) {
+			include(action, nil, r)
+		})
+	}
 
 	if n.router != nil {
-		n.router.EnumerateDependencies(localization, include)
+		n.router.EnumerateDependencies(localization, func(r assets.Reference) {
+			include(nil, n.router, r)
+		})
 	}
 }
 

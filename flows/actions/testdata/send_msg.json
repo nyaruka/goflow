@@ -214,17 +214,21 @@
                     "key": "org_name",
                     "name": "",
                     "type": "global",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 },
                 {
                     "key": "password",
                     "name": "",
                     "type": "global",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [],
@@ -337,9 +341,11 @@
                     "name": "missing",
                     "type": "template",
                     "missing": true,
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [],
@@ -405,9 +411,11 @@
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation",
                     "type": "template",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [],
@@ -483,9 +491,11 @@
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation",
                     "type": "template",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [],
@@ -540,9 +550,11 @@
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                     "name": "wakeup",
                     "type": "template",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [],
