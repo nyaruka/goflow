@@ -287,17 +287,21 @@ func TestNewFlow(t *testing.T) {
 				"key": "gender",
 				"name": "",
 				"type": "field",
-				"node_uuids": [
-					"baaf9085-1198-4b41-9a1c-cc51c6dbec99"
-				]
+				"nodes": {
+					"baaf9085-1198-4b41-9a1c-cc51c6dbec99": [
+						"ad154980-7bf7-4ab8-8728-545fd6378912"
+					]
+				}
 			},
 			{
 				"name": "Spam",
 				"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
 				"type": "label",
-				"node_uuids": [
-					"baaf9085-1198-4b41-9a1c-cc51c6dbec99"
-				]
+				"nodes": {
+					"baaf9085-1198-4b41-9a1c-cc51c6dbec99": [
+						"ad154980-7bf7-4ab8-8728-545fd6378912"
+					]
+				}
 			}
 		],
 		"parent_refs": [],

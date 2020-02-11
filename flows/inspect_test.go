@@ -7,8 +7,10 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
@@ -23,151 +25,71 @@ func (t *unknownAssetType) Identity() string { return "unknown[]" }
 func (t *unknownAssetType) Variable() bool   { return false }
 
 func TestDependencies(t *testing.T) {
-	refs := map[flows.NodeUUID][]assets.Reference{
-		"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": []assets.Reference{
-			assets.NewChannelReference("8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "Android"),
-			assets.NewClassifierReference("2138cddc-118a-49ae-b290-98e03ad0573b", "Booking"),
-			flows.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob"),
-			assets.NewFieldReference("gender", "Gender"),
-			assets.NewFlowReference("4f932672-7995-47f0-96e6-faf5abd2d81d", "Registration"),
-			assets.NewGlobalReference("org_name", "Org Name"),
-			assets.NewGroupReference("46057a92-6580-4e93-af36-2bb9c9d61e51", "Testers"),
-			assets.NewGroupReference("377c3101-a7fc-47b1-9136-980348e362c0", "Customers"),
-			assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam"),
-			assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome"),
-		},
-		"7c959933-4c30-4277-9810-adc95a459bd0": []assets.Reference{
-			assets.NewGlobalReference("org_name", "Org Name"),
-		},
-	}
+	action1 := actions.NewSendMsg("ed08e6b9-ed22-4294-9871-c7ac7d82cbd5", "Hi there", nil, nil, false)
+	node1 := definition.NewNode("91b20e13-d6e2-42a9-b74f-bce85c9da8c8", []flows.Action{action1}, nil, nil)
+	router2 := routers.NewRandom(nil, "", nil)
+	node2 := definition.NewNode("7c959933-4c30-4277-9810-adc95a459bd0", nil, router2, nil)
 
-	// can inspect without assets
-	deps := flows.NewDependencies(refs, nil)
-	depsJSON, _ := json.Marshal(deps)
-	test.AssertEqualJSON(t, []byte(`[
-		{
-			"name": "Android",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "channel",
-			"uuid": "8286545d-d1a1-4eff-a3ad-a11ddf4bb20a"
-		},
-		{
-			"name": "Booking",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "classifier",
-			"uuid": "2138cddc-118a-49ae-b290-98e03ad0573b"
-		},
-		{
-			"name": "Bob",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "contact",
-			"uuid": "0b099519-0889-4c74-b744-9122272f346a"
-		},
-		{
-			"key": "gender",
-			"name": "Gender",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "field"
-		},
-		{
-			"name": "Registration",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "flow",
-			"uuid": "4f932672-7995-47f0-96e6-faf5abd2d81d"
-		},
-		{
-			"key": "org_name",
-			"name": "Org Name",
-			"node_uuids": [
-				"7c959933-4c30-4277-9810-adc95a459bd0",
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "global"
-		},
-		{
-			"name": "Customers",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "group",
-			"uuid": "377c3101-a7fc-47b1-9136-980348e362c0"
-		},
-		{
-			"name": "Testers",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "group",
-			"uuid": "46057a92-6580-4e93-af36-2bb9c9d61e51"
-		},
-		{
-			"name": "Spam",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "label",
-			"uuid": "31c06b7c-010d-4f91-9590-d3fbdc2fb7ac"
-		},
-		{
-			"name": "Welcome",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "template",
-			"uuid": "ff958d30-f50e-48ab-a524-37ed1e9620d9"
-		}
-	]`), depsJSON, "deps JSON mismatch")
+	refs := []flows.ExtractedReference{
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: assets.NewChannelReference("8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "Android")},
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: assets.NewClassifierReference("2138cddc-118a-49ae-b290-98e03ad0573b", "Booking")},
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: flows.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob")},
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: assets.NewFieldReference("gender", "Gender")},
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: assets.NewFlowReference("4f932672-7995-47f0-96e6-faf5abd2d81d", "Registration")},
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: assets.NewGlobalReference("org_name", "Org Name")},
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: assets.NewGroupReference("46057a92-6580-4e93-af36-2bb9c9d61e51", "Testers")},
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: assets.NewGroupReference("377c3101-a7fc-47b1-9136-980348e362c0", "Customers")},
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam")},
+		flows.ExtractedReference{Node: node1, Action: action1, Reference: assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome")},
+		flows.ExtractedReference{Node: node2, Router: router2, Reference: assets.NewGlobalReference("org_name", "Org Name")},
+	}
 
 	// if our assets only includes a single group, the other assets should be reported as missing
 	source, err := static.NewSource([]byte(`{
-		"groups": [
-			{
-				"uuid": "377c3101-a7fc-47b1-9136-980348e362c0",
-				"name": "Customers"
-			}
-		]
-	}`))
+			"groups": [
+				{
+					"uuid": "377c3101-a7fc-47b1-9136-980348e362c0",
+					"name": "Customers"
+				}
+			]
+		}`))
 	require.NoError(t, err)
 
 	sa, err := engine.NewSessionAssets(source, nil)
 	require.NoError(t, err)
 
-	deps = flows.NewDependencies(refs, sa)
-	depsJSON, _ = json.Marshal(deps)
+	deps := flows.NewDependencies(refs, sa)
+	depsJSON, _ := json.Marshal(deps)
 	test.AssertEqualJSON(t, []byte(`[
 		{
 			"missing": true,
 			"name": "Android",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
+			"nodes": {
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
 			"type": "channel",
 			"uuid": "8286545d-d1a1-4eff-a3ad-a11ddf4bb20a"
 		},
 		{
 			"missing": true,
 			"name": "Booking",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
+			"nodes": {
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
 			"type": "classifier",
 			"uuid": "2138cddc-118a-49ae-b290-98e03ad0573b"
 		},
 		{
 			"name": "Bob",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
+			"nodes": {
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
 			"type": "contact",
 			"uuid": "0b099519-0889-4c74-b744-9122272f346a"
 		},
@@ -175,17 +97,21 @@ func TestDependencies(t *testing.T) {
 			"key": "gender",
 			"missing": true,
 			"name": "Gender",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
+			"nodes": {
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
 			"type": "field"
 		},
 		{
 			"missing": true,
 			"name": "Registration",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
+			"nodes": {
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
 			"type": "flow",
 			"uuid": "4f932672-7995-47f0-96e6-faf5abd2d81d"
 		},
@@ -193,53 +119,71 @@ func TestDependencies(t *testing.T) {
 			"key": "org_name",
 			"missing": true,
 			"name": "Org Name",
-			"node_uuids": [
-				"7c959933-4c30-4277-9810-adc95a459bd0",
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
+			"nodes": {
+				"7c959933-4c30-4277-9810-adc95a459bd0": [
+					"router"
+				],
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
 			"type": "global"
 		},
 		{
+			"missing": true,
+			"name": "Testers",
+			"nodes": {
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
+			"type": "group",
+			"uuid": "46057a92-6580-4e93-af36-2bb9c9d61e51"
+		},
+		{
 			"name": "Customers",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
+			"nodes": {
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
 			"type": "group",
 			"uuid": "377c3101-a7fc-47b1-9136-980348e362c0"
 		},
 		{
 			"missing": true,
-			"name": "Testers",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
-			"type": "group",
-			"uuid": "46057a92-6580-4e93-af36-2bb9c9d61e51"
-		},
-		{
-			"missing": true,
 			"name": "Spam",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
+			"nodes": {
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
 			"type": "label",
 			"uuid": "31c06b7c-010d-4f91-9590-d3fbdc2fb7ac"
 		},
 		{
 			"missing": true,
 			"name": "Welcome",
-			"node_uuids": [
-				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8"
-			],
+			"nodes": {
+				"91b20e13-d6e2-42a9-b74f-bce85c9da8c8": [
+					"ed08e6b9-ed22-4294-9871-c7ac7d82cbd5"
+				]
+			},
 			"type": "template",
 			"uuid": "ff958d30-f50e-48ab-a524-37ed1e9620d9"
 		}
 	]`), depsJSON, "deps JSON mismatch")
 
+	// can also inspect without assets
+	deps = flows.NewDependencies(refs, nil)
+	depsJSON, _ = json.Marshal(deps)
+
+	assert.NotContains(t, string(depsJSON), "missing")
+
 	// panic if we get a dependency type we don't recognize
 	assert.Panics(t, func() {
-		flows.NewDependencies(map[flows.NodeUUID][]assets.Reference{
-			"7c959933-4c30-4277-9810-adc95a459bd0": []assets.Reference{&unknownAssetType{}},
+		flows.NewDependencies([]flows.ExtractedReference{
+			flows.ExtractedReference{Node: node1, Action: action1, Reference: &unknownAssetType{}},
 		}, sa)
 	})
 }

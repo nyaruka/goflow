@@ -25,11 +25,28 @@ type FlowInfo struct {
 	ParentRefs   []string      `json:"parent_refs"`
 }
 
+type nodeLocations map[NodeUUID][]string
+
+func (l nodeLocations) add(n Node, a Action, r Router) {
+	var loc string
+	if a != nil {
+		loc = string(a.UUID())
+	} else {
+		loc = "router"
+	}
+
+	locs := l[n.UUID()]
+	if !utils.StringSliceContains(locs, loc, true) {
+		locs = append(locs, loc)
+	}
+	l[n.UUID()] = locs
+}
+
 type Dependency struct {
 	Reference assets.Reference `json:"-"`
 	Type      string           `json:"type"`
 	Missing   bool             `json:"missing,omitempty"`
-	NodeUUIDs []NodeUUID       `json:"node_uuids"`
+	Nodes     nodeLocations    `json:"nodes"`
 }
 
 func (d Dependency) MarshalJSON() ([]byte, error) {
@@ -43,23 +60,12 @@ func NewDependencies(refs []ExtractedReference, sa SessionAssets) []*Dependency 
 	deps := make([]*Dependency, 0)
 	depsSeen := make(map[string]*Dependency, 0)
 
-	containsNodeUUID := func(s []NodeUUID, v NodeUUID) bool {
-		for _, u := range s {
-			if u == v {
-				return true
-			}
-		}
-		return false
-	}
-
 	for _, er := range refs {
 		key := fmt.Sprintf("%s:%s", er.Reference.Type(), er.Reference.Identity())
 
-		// if we already created a dependency for this reference, update it
+		// if we already created a dependency for this reference, add this location
 		if dep, seen := depsSeen[key]; seen {
-			if !containsNodeUUID(dep.NodeUUIDs, er.Node.UUID()) {
-				dep.NodeUUIDs = append(dep.NodeUUIDs, er.Node.UUID())
-			}
+			dep.Nodes.add(er.Node, er.Action, er.Router)
 		} else {
 			// check if this dependency is accessible
 			missing := false
@@ -67,11 +73,14 @@ func NewDependencies(refs []ExtractedReference, sa SessionAssets) []*Dependency 
 				missing = !checkDependency(sa, er.Reference)
 			}
 
+			nodes := nodeLocations{}
+			nodes.add(er.Node, er.Action, er.Router)
+
 			dep := &Dependency{
 				Reference: er.Reference,
 				Type:      er.Reference.Type(),
 				Missing:   missing,
-				NodeUUIDs: []NodeUUID{er.Node.UUID()},
+				Nodes:     nodes,
 			}
 			deps = append(deps, dep)
 			depsSeen[key] = dep

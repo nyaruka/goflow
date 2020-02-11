@@ -38,9 +38,11 @@
                     "name": "Deleted",
                     "type": "classifier",
                     "missing": true,
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [
@@ -98,9 +100,11 @@
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking",
                     "type": "classifier",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [
@@ -188,9 +192,11 @@
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking",
                     "type": "classifier",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [
@@ -276,9 +282,11 @@
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking",
                     "type": "classifier",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [
@@ -363,9 +371,11 @@
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking",
                     "type": "classifier",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "nodes": {
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
+                            "ad154980-7bf7-4ab8-8728-545fd6378912"
+                        ]
+                    }
                 }
             ],
             "results": [

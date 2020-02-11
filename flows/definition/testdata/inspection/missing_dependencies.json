@@ -1,31 +1,37 @@
 {
     "dependencies": [
         {
-            "key": "about_me",
-            "name": "",
-            "type": "field",
-            "missing": true,
-            "node_uuids": [
-                "5cba1736-911a-4b7c-9b2c-56aee3c0dac5"
-            ]
-        },
-        {
             "uuid": "83452c2e-d6e4-4fae-950a-156064e40068",
             "name": "Customers",
             "type": "group",
             "missing": true,
-            "node_uuids": [
-                "f2350d86-e53d-432a-9038-902fe2325c69"
-            ]
+            "nodes": {
+                "f2350d86-e53d-432a-9038-902fe2325c69": [
+                    "b1c671d6-ee32-49bd-b3e7-55de449bdda1"
+                ]
+            }
         },
         {
             "uuid": "a8a6d847-0785-4f97-a8f8-3af98ed111a0",
             "name": "Interesting",
             "type": "label",
             "missing": true,
-            "node_uuids": [
-                "f2350d86-e53d-432a-9038-902fe2325c69"
-            ]
+            "nodes": {
+                "f2350d86-e53d-432a-9038-902fe2325c69": [
+                    "67587939-cfd5-49df-a97c-1016e3378a97"
+                ]
+            }
+        },
+        {
+            "key": "about_me",
+            "name": "",
+            "type": "field",
+            "missing": true,
+            "nodes": {
+                "5cba1736-911a-4b7c-9b2c-56aee3c0dac5": [
+                    "router"
+                ]
+            }
         }
     ],
     "results": [],

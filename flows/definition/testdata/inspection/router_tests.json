@@ -1,34 +1,42 @@
 {
     "dependencies": [
         {
-            "key": "district",
-            "name": "District",
-            "type": "field",
-            "node_uuids": [
-                "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
-            ]
+            "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+            "type": "group",
+            "nodes": {
+                "08d71f03-dc18-450a-a82b-496f64862a56": [
+                    "router"
+                ]
+            }
+        },
+        {
+            "uuid": "bf282a79-aa74-4557-9932-22a9b3bce537",
+            "type": "group",
+            "nodes": {
+                "08d71f03-dc18-450a-a82b-496f64862a56": [
+                    "router"
+                ]
+            }
         },
         {
             "key": "raw_district",
             "name": "",
             "type": "field",
-            "node_uuids": [
-                "8476e6fe-1c22-436c-be2c-c27afdc940f3"
-            ]
+            "nodes": {
+                "8476e6fe-1c22-436c-be2c-c27afdc940f3": [
+                    "router"
+                ]
+            }
         },
         {
-            "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
-            "type": "group",
-            "node_uuids": [
-                "08d71f03-dc18-450a-a82b-496f64862a56"
-            ]
-        },
-        {
-            "uuid": "bf282a79-aa74-4557-9932-22a9b3bce537",
-            "type": "group",
-            "node_uuids": [
-                "08d71f03-dc18-450a-a82b-496f64862a56"
-            ]
+            "key": "district",
+            "name": "District",
+            "type": "field",
+            "nodes": {
+                "11a772f3-3ca2-4429-8b33-20fdcfc2b69e": [
+                    "e9bf771c-9972-4870-ac0e-8f635dba91e0"
+                ]
+            }
         }
     ],
     "results": [
