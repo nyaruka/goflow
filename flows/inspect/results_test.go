@@ -18,11 +18,11 @@ func TestResults(t *testing.T) {
 	}, nil, []flows.Exit{})
 
 	infos := make([]*flows.ResultInfo, 0)
-	inspect.Results(n, n.Actions(), func(r *flows.ResultInfo) {
+	inspect.Results(n.Actions(), func(r *flows.ResultInfo) {
 		infos = append(infos, r)
 	})
 
 	assert.Equal(t, []*flows.ResultInfo{
-		flows.NewResultInfo("Age", []string{"HasAge"}, n),
+		flows.NewResultInfo("Age", []string{"HasAge"}),
 	}, infos)
 }

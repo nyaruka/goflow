@@ -117,11 +117,17 @@ func (n *node) EnumerateDependencies(localization flows.Localization, include fu
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (n *node) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {
-	inspect.Results(n, n.actions, include)
+func (n *node) EnumerateResults(include func(flows.Action, flows.Router, *flows.ResultInfo)) {
+	for _, action := range n.actions {
+		inspect.Results(action, func(r *flows.ResultInfo) {
+			include(action, nil, r)
+		})
+	}
 
 	if n.router != nil {
-		n.router.EnumerateResults(n, include)
+		n.router.EnumerateResults(func(r *flows.ResultInfo) {
+			include(nil, n.router, r)
+		})
 	}
 }
 

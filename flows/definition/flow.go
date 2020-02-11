@@ -108,7 +108,7 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.FlowInfo {
 
 	return &flows.FlowInfo{
 		Dependencies: flows.NewDependencies(assetRefs, sa),
-		Results:      f.extractResults(),
+		Results:      flows.NewResultSpecs(f.extractResults()),
 		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,
 	}
@@ -185,16 +185,16 @@ func (f *flow) extractAssetAndParentRefs() ([]flows.ExtractedReference, []string
 }
 
 // extracts all result specs
-func (f *flow) extractResults() []*flows.ResultInfo {
-	specs := make([]*flows.ResultInfo, 0)
+func (f *flow) extractResults() []flows.ExtractedResult {
+	results := make([]flows.ExtractedResult, 0)
 
 	for _, n := range f.nodes {
-		n.EnumerateResults(n, func(spec *flows.ResultInfo) {
-			specs = append(specs, spec)
+		n.EnumerateResults(func(a flows.Action, r flows.Router, i *flows.ResultInfo) {
+			results = append(results, flows.ExtractedResult{Node: n, Action: a, Router: r, Info: i})
 		})
 	}
 
-	return flows.MergeResultInfos(specs)
+	return results
 }
 
 // extracts all exits coming from nodes with waits

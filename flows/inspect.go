@@ -20,7 +20,7 @@ type ExtractedReference struct {
 // FlowInfo contains the results of flow inspection
 type FlowInfo struct {
 	Dependencies []*Dependency `json:"dependencies"`
-	Results      []*ResultInfo `json:"results"`
+	Results      []*ResultSpec `json:"results"`
 	WaitingExits []ExitUUID    `json:"waiting_exits"`
 	ParentRefs   []string      `json:"parent_refs"`
 }
@@ -119,19 +119,17 @@ func checkDependency(sa SessionAssets, ref assets.Reference) bool {
 
 // ResultInfo is possible result that a flow might generate
 type ResultInfo struct {
-	Key        string     `json:"key"`
-	Name       string     `json:"name"`
-	Categories []string   `json:"categories"`
-	NodeUUIDs  []NodeUUID `json:"node_uuids"`
+	Key        string   `json:"key"`
+	Name       string   `json:"name"`
+	Categories []string `json:"categories"`
 }
 
 // NewResultInfo creates a new result spec
-func NewResultInfo(name string, categories []string, node Node) *ResultInfo {
+func NewResultInfo(name string, categories []string) *ResultInfo {
 	return &ResultInfo{
 		Key:        utils.Snakify(name),
 		Name:       name,
 		Categories: categories,
-		NodeUUIDs:  []NodeUUID{node.UUID()},
 	}
 }
 
@@ -139,41 +137,53 @@ func (r *ResultInfo) String() string {
 	return fmt.Sprintf("key=%s|name=%s|categories=%s", r.Key, r.Name, strings.Join(r.Categories, ","))
 }
 
-// MergeResultInfos merges result specs based on key
-func MergeResultInfos(specs []*ResultInfo) []*ResultInfo {
-	merged := make([]*ResultInfo, 0, len(specs))
-	byKey := make(map[string]*ResultInfo)
+type ExtractedResult struct {
+	Node   Node
+	Action Action
+	Router Router
+	Info   *ResultInfo
+}
 
-	for _, spec := range specs {
-		existing := byKey[spec.Key]
+type ResultSpec struct {
+	ResultInfo
+	NodeUUIDs []string `json:"node_uuids"`
+}
+
+// NewResultSpecs merges extracted results based on key
+func NewResultSpecs(results []ExtractedResult) []*ResultSpec {
+	specs := make([]*ResultSpec, 0)
+	specsSeen := make(map[string]*ResultSpec)
+
+	for _, result := range results {
+		existing := specsSeen[result.Info.Key]
+		nodeUUID := string(result.Node.UUID())
 
 		// merge if we already have a result info with this key
 		if existing != nil {
 			// merge categories
-			for _, category := range spec.Categories {
+			for _, category := range result.Info.Categories {
 				if !utils.StringSliceContains(existing.Categories, category, false) {
 					existing.Categories = append(existing.Categories, category)
 				}
 			}
 
-			// merge node UUIDs
-			for _, nodeUUID := range spec.NodeUUIDs {
-				uuidSeen := false
-				for _, u := range existing.NodeUUIDs {
-					if u == nodeUUID {
-						uuidSeen = true
-						break
-					}
-				}
-				if !uuidSeen {
-					existing.NodeUUIDs = append(existing.NodeUUIDs, nodeUUID)
-				}
+			// merge this node UUID
+			if !utils.StringSliceContains(existing.NodeUUIDs, nodeUUID, true) {
+				existing.NodeUUIDs = append(existing.NodeUUIDs, nodeUUID)
 			}
 		} else {
 			// if not, add as new unique result spec
-			merged = append(merged, spec)
-			byKey[spec.Key] = spec
+			spec := &ResultSpec{
+				ResultInfo: ResultInfo{
+					Key:        result.Info.Key,
+					Name:       result.Info.Name,
+					Categories: result.Info.Categories,
+				},
+				NodeUUIDs: []string{nodeUUID},
+			}
+			specs = append(specs, spec)
+			specsSeen[result.Info.Key] = spec
 		}
 	}
-	return merged
+	return specs
 }

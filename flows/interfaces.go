@@ -160,7 +160,7 @@ type Node interface {
 
 	EnumerateTemplates(Localization, func(Action, Router, string))
 	EnumerateDependencies(Localization, func(Action, Router, assets.Reference))
-	EnumerateResults(Node, func(*ResultInfo))
+	EnumerateResults(func(Action, Router, *ResultInfo))
 }
 
 // Action is an action within a flow node
@@ -188,7 +188,7 @@ type Router interface {
 
 	EnumerateTemplates(Localization, func(string))
 	EnumerateDependencies(Localization, func(assets.Reference))
-	EnumerateResults(Node, func(*ResultInfo))
+	EnumerateResults(func(*ResultInfo))
 }
 
 // Exit is a route out of a node and optionally to another node
