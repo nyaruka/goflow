@@ -133,14 +133,6 @@
         "inspection": {
             "dependencies": [
                 {
-                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
-                    "name": "Stavros",
-                    "type": "contact",
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
-                },
-                {
                     "key": "gender",
                     "name": "",
                     "type": "field",
@@ -152,6 +144,14 @@
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers",
                     "type": "group",
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                },
+                {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros",
+                    "type": "contact",
                     "node_uuids": [
                         "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
                     ]

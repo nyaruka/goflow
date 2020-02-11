@@ -142,9 +142,9 @@ func (f *flow) Reference() *assets.FlowReference {
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
 	templates := make([]string, 0)
-	include := func(template string) {
-		if template != "" {
-			templates = append(templates, template)
+	include := func(a flows.Action, r flows.Router, t string) {
+		if t != "" {
+			templates = append(templates, t)
 		}
 	}
 
@@ -156,32 +156,32 @@ func (f *flow) ExtractTemplates() []string {
 }
 
 // ExtractDependencies extracts all asset dependencies
-func (f *flow) extractAssetAndParentRefs() (map[flows.NodeUUID][]assets.Reference, []string) {
-	dependencies := make(map[flows.NodeUUID][]assets.Reference, 0)
-	addDependency := func(n flows.Node, r assets.Reference) {
-		if r != nil && !r.Variable() {
-			dependencies[n.UUID()] = append(dependencies[n.UUID()], r)
+func (f *flow) extractAssetAndParentRefs() ([]flows.ExtractedReference, []string) {
+	assetRefs := make([]flows.ExtractedReference, 0)
+	parentRefs := make(map[string]bool)
+
+	recordDependency := func(n flows.Node, a flows.Action, r flows.Router, ref assets.Reference) {
+		if ref != nil && !ref.Variable() {
+			assetRefs = append(assetRefs, flows.ExtractedReference{Node: n, Action: a, Router: r, Reference: ref})
 		}
 	}
 
-	parentRefs := make(map[string]bool)
-
 	for _, n := range f.nodes {
-		n.EnumerateTemplates(f.Localization(), func(template string) {
-			ars, prs := inspect.ExtractFromTemplate(template)
-			for _, r := range ars {
-				addDependency(n, r)
+		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, t string) {
+			ars, prs := inspect.ExtractFromTemplate(t)
+			for _, ref := range ars {
+				recordDependency(n, a, r, ref)
 			}
 			for _, r := range prs {
 				parentRefs[r] = true
 			}
 		})
-		n.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
-			addDependency(n, r)
+		n.EnumerateDependencies(f.Localization(), func(a flows.Action, r flows.Router, ref assets.Reference) {
+			recordDependency(n, a, r, ref)
 		})
 	}
 
-	return dependencies, utils.StringSetKeys(parentRefs)
+	return assetRefs, utils.StringSetKeys(parentRefs)
 }
 
 // extracts all result specs
