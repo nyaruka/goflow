@@ -286,25 +286,16 @@ func TestNewFlow(t *testing.T) {
 			{
 				"key": "gender",
 				"name": "",
-				"type": "field",
-				"nodes": {
-					"baaf9085-1198-4b41-9a1c-cc51c6dbec99": [
-						"ad154980-7bf7-4ab8-8728-545fd6378912"
-					]
-				}
+				"type": "field"
 			},
 			{
-				"name": "Spam",
 				"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
-				"type": "label",
-				"nodes": {
-					"baaf9085-1198-4b41-9a1c-cc51c6dbec99": [
-						"ad154980-7bf7-4ab8-8728-545fd6378912"
-					]
-				}
+				"name": "Spam",
+				"type": "label"
 			}
 		],
 		"parent_refs": [],
+		"problems": [],
 		"results": [
 			{
 				"categories": [
@@ -351,6 +342,7 @@ func TestEmptyFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(`{
 		"dependencies": [],
 		"parent_refs": [],
+		"problems": [],
 		"results": [],
 		"waiting_exits": []
 	}`), infoJSON, "inspection mismatch")

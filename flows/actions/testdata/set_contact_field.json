@@ -27,17 +27,13 @@
                 {
                     "key": "age",
                     "name": "Age",
-                    "type": "field",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "field"
                 }
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -67,17 +63,13 @@
                 {
                     "key": "age",
                     "name": "Age",
-                    "type": "field",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "field"
                 }
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -298,17 +290,25 @@
                     "key": "score",
                     "name": "Score",
                     "type": "field",
-                    "missing": true,
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "missing": true
                 }
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing field dependency 'score'",
+                    "dependency": {
+                        "key": "score",
+                        "name": "Score",
+                        "type": "field"
+                    }
+                }
+            ]
         }
     }
 ]

@@ -220,7 +220,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -290,12 +291,7 @@
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers",
-                    "type": "group",
-                    "nodes": {
-                        "64373978-e8f6-4973-b6ff-a2993f3376fc": [
-                            "router"
-                        ]
-                    }
+                    "type": "group"
                 }
             ],
             "results": [
@@ -313,7 +309,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -376,12 +373,7 @@
                 {
                     "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
                     "type": "group",
-                    "missing": true,
-                    "nodes": {
-                        "64373978-e8f6-4973-b6ff-a2993f3376fc": [
-                            "router"
-                        ]
-                    }
+                    "missing": true
                 }
             ],
             "results": [
@@ -398,7 +390,18 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
+                    "description": "missing group dependency 'aa33640b-43b0-4df2-992c-ba357981da71'",
+                    "dependency": {
+                        "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
+                        "type": "group"
+                    }
+                }
+            ]
         }
     },
     {
@@ -487,7 +490,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -558,7 +562,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     }
 ]

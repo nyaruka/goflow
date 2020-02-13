@@ -87,17 +87,13 @@
                 {
                     "key": "age",
                     "name": "",
-                    "type": "field",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "field"
                 }
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -124,7 +120,8 @@
             "dependencies": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -151,7 +148,8 @@
             "dependencies": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -213,12 +211,7 @@
                 {
                     "key": "gender",
                     "name": "",
-                    "type": "field",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "field"
                 }
             ],
             "results": [
@@ -235,7 +228,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -301,7 +295,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -365,7 +360,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -438,7 +434,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -501,7 +498,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -570,7 +568,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     }
 ]

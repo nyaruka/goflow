@@ -15,17 +15,13 @@
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Collect Age",
-                    "type": "flow",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "flow"
                 }
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -58,27 +54,30 @@
                     "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
                     "name": "Climbers",
                     "type": "group",
-                    "missing": true,
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "missing": true
                 },
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Collect Age",
-                    "type": "flow",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "flow"
                 }
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing group dependency '33382939-babf-4982-9395-8793feb4e7c6'",
+                    "dependency": {
+                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                        "name": "Climbers",
+                        "type": "group"
+                    }
+                }
+            ]
         }
     },
     {
@@ -182,47 +181,28 @@
                 {
                     "key": "gender",
                     "name": "",
-                    "type": "field",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "field"
                 },
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers",
-                    "type": "group",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "group"
                 },
                 {
                     "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
                     "name": "Stavros",
-                    "type": "contact",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "contact"
                 },
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Collect Age",
-                    "type": "flow",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "flow"
                 }
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -288,17 +268,13 @@
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Collect Age",
-                    "type": "flow",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "flow"
                 }
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -374,28 +350,31 @@
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers",
-                    "type": "group",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "group"
                 },
                 {
                     "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
                     "name": "Long Lost Flow",
                     "type": "flow",
-                    "missing": true,
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "missing": true
                 }
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing flow dependency '33382939-babf-4982-9395-8793feb4e7c6'",
+                    "dependency": {
+                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                        "name": "Long Lost Flow",
+                        "type": "flow"
+                    }
+                }
+            ]
         }
     }
 ]

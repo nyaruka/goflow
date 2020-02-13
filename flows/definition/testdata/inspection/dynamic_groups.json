@@ -3,26 +3,16 @@
         {
             "key": "gender",
             "name": "Gender",
-            "type": "field",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4"
-                ]
-            }
+            "type": "field"
         },
         {
             "key": "age",
             "name": "Age",
-            "type": "field",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "ee4cd27e-1296-40fd-ac9c-8cd43e9fb8b5",
-                    "4ecf6abd-e8c8-424b-aef6-e904cf5b4fbe"
-                ]
-            }
+            "type": "field"
         }
     ],
     "results": [],
     "waiting_exits": [],
-    "parent_refs": []
+    "parent_refs": [],
+    "problems": []
 }
