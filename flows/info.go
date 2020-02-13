@@ -17,83 +17,9 @@ type ExtractedReference struct {
 	Reference assets.Reference
 }
 
-// FlowInfo contains the results of flow inspection
-type FlowInfo struct {
-	Dependencies []*Dependency `json:"dependencies"`
-	Results      []*ResultSpec `json:"results"`
-	WaitingExits []ExitUUID    `json:"waiting_exits"`
-	ParentRefs   []string      `json:"parent_refs"`
-	Problems     []Problem     `json:"problems"`
-}
-
-type nodeLocations map[NodeUUID][]string
-
-func (l nodeLocations) add(n Node, a Action, r Router) {
-	var loc string
-	if a != nil {
-		loc = string(a.UUID())
-	} else {
-		loc = "router"
-	}
-
-	locs := l[n.UUID()]
-	if !utils.StringSliceContains(locs, loc, true) {
-		locs = append(locs, loc)
-	}
-	l[n.UUID()] = locs
-}
-
-type Dependency struct {
-	Reference assets.Reference `json:"-"`
-	Type      string           `json:"type"`
-	Missing   bool             `json:"missing,omitempty"`
-	Nodes     nodeLocations    `json:"nodes"`
-}
-
-func (d Dependency) MarshalJSON() ([]byte, error) {
-	type dependency Dependency // need to alias type to avoid circular calls to this method
-	return jsonx.MarshalMerged(d.Reference, dependency(d))
-}
-
-// NewDependencies inspects a list of references. If a session assets is provided,
-// each dependency is checked to see if it is available or missing.
-func NewDependencies(refs []ExtractedReference, sa SessionAssets) []*Dependency {
-	deps := make([]*Dependency, 0)
-	depsSeen := make(map[string]*Dependency, 0)
-
-	for _, er := range refs {
-		key := fmt.Sprintf("%s:%s", er.Reference.Type(), er.Reference.Identity())
-
-		// if we already created a dependency for this reference, add this location
-		if dep, seen := depsSeen[key]; seen {
-			dep.Nodes.add(er.Node, er.Action, er.Router)
-		} else {
-			// check if this dependency is accessible
-			missing := false
-			if sa != nil {
-				missing = !checkDependency(sa, er.Reference)
-			}
-
-			nodes := nodeLocations{}
-			nodes.add(er.Node, er.Action, er.Router)
-
-			dep := &Dependency{
-				Reference: er.Reference,
-				Type:      er.Reference.Type(),
-				Missing:   missing,
-				Nodes:     nodes,
-			}
-			deps = append(deps, dep)
-			depsSeen[key] = dep
-		}
-	}
-
-	return deps
-}
-
-// determines whether the given dependency exists
-func checkDependency(sa SessionAssets, ref assets.Reference) bool {
-	switch typed := ref.(type) {
+// Check determines whether this reference is accessible
+func (r ExtractedReference) Check(sa SessionAssets) bool {
+	switch typed := r.Reference.(type) {
 	case *assets.ChannelReference:
 		return sa.Channels().Get(typed.UUID) != nil
 	case *assets.ClassifierReference:
@@ -114,8 +40,58 @@ func checkDependency(sa SessionAssets, ref assets.Reference) bool {
 	case *assets.TemplateReference:
 		return sa.Templates().Get(typed.UUID) != nil
 	default:
-		panic(fmt.Sprintf("unknown dependency type reference: %T", ref))
+		panic(fmt.Sprintf("unknown dependency type reference: %T", r.Reference))
 	}
+}
+
+// FlowInfo contains the results of flow inspection
+type FlowInfo struct {
+	Dependencies []*Dependency `json:"dependencies"`
+	Results      []*ResultSpec `json:"results"`
+	WaitingExits []ExitUUID    `json:"waiting_exits"`
+	ParentRefs   []string      `json:"parent_refs"`
+	Problems     []Problem     `json:"problems"`
+}
+
+type Dependency struct {
+	Reference assets.Reference `json:"-"`
+	Type      string           `json:"type"`
+	Missing   bool             `json:"missing,omitempty"`
+}
+
+func (d Dependency) MarshalJSON() ([]byte, error) {
+	type dependency Dependency // need to alias type to avoid circular calls to this method
+	return jsonx.MarshalMerged(d.Reference, dependency(d))
+}
+
+// NewDependencies inspects a list of references. If a session assets is provided,
+// each dependency is checked to see if it is available or missing.
+func NewDependencies(refs []ExtractedReference, sa SessionAssets) []*Dependency {
+	deps := make([]*Dependency, 0)
+	depsSeen := make(map[string]*Dependency, 0)
+
+	for _, er := range refs {
+		key := fmt.Sprintf("%s:%s", er.Reference.Type(), er.Reference.Identity())
+
+		// create new dependency record if we haven't seen this reference before
+		if _, seen := depsSeen[key]; !seen {
+			// check if this dependency is accessible
+			missing := false
+			if sa != nil {
+				missing = !er.Check(sa)
+			}
+
+			dep := &Dependency{
+				Reference: er.Reference,
+				Type:      er.Reference.Type(),
+				Missing:   missing,
+			}
+			deps = append(deps, dep)
+			depsSeen[key] = dep
+		}
+	}
+
+	return deps
 }
 
 // ResultInfo is possible result that a flow might generate

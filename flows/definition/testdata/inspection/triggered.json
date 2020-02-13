@@ -3,12 +3,7 @@
         {
             "key": "state",
             "name": "",
-            "type": "field",
-            "nodes": {
-                "46d51f50-58de-49da-8d13-dadbf322685d": [
-                    "e97cd6d5-3354-4dbd-85bc-6c1f87849eec"
-                ]
-            }
+            "type": "field"
         }
     ],
     "results": [],

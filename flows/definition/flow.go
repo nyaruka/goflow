@@ -112,7 +112,7 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.FlowInfo {
 		Results:      flows.NewResultSpecs(f.extractResults()),
 		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,
-		Problems:     problems.Check(f),
+		Problems:     problems.Check(sa, f, assetRefs),
 	}
 }
 

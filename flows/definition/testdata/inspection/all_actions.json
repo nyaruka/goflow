@@ -3,120 +3,57 @@
         {
             "key": "state",
             "name": "",
-            "type": "field",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "ad154980-7bf7-4ab8-8728-545fd6378912",
-                    "c97547fa-5377-43d3-ac5e-6cad9c8e05d2",
-                    "c0057fd9-be0a-43ea-91df-5c18e14f2c59",
-                    "62a30ab4-d73c-447d-a989-39c49115153e"
-                ]
-            }
+            "type": "field"
         },
         {
             "key": "first_name",
             "name": "",
-            "type": "field",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "4f452fb8-f0aa-442d-865b-a2b629c09c21"
-                ]
-            }
+            "type": "field"
         },
         {
             "key": "activation_token",
             "name": "",
-            "type": "field",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "4f452fb8-f0aa-442d-865b-a2b629c09c21",
-                    "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4"
-                ]
-            }
+            "type": "field"
         },
         {
             "key": "raw_district",
             "name": "",
-            "type": "field",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "f5650691-b046-4fc7-8b11-359e9d8d02a1"
-                ]
-            }
+            "type": "field"
         },
         {
             "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
             "name": "Spam",
-            "type": "label",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "ad154980-7bf7-4ab8-8728-545fd6378912"
-                ]
-            }
+            "type": "label"
         },
         {
             "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
             "name": "Survey Audience",
-            "type": "group",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "c97547fa-5377-43d3-ac5e-6cad9c8e05d2",
-                    "c0057fd9-be0a-43ea-91df-5c18e14f2c59",
-                    "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
-                    "72b5c1d9-943e-449a-aee6-92101c85268f"
-                ]
-            }
+            "type": "group"
         },
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Collect Language",
-            "type": "flow",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "9487a60e-a6ef-4a88-b35d-894bfe074144",
-                    "3d8030d6-9ddd-472d-baed-d0393f592524"
-                ]
-            }
+            "type": "flow"
         },
         {
             "uuid": "820f5923-3369-41c6-b3cd-af577c0bd4b8",
             "name": "Bob",
-            "type": "contact",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "3d8030d6-9ddd-472d-baed-d0393f592524"
-                ]
-            }
+            "type": "contact"
         },
         {
             "key": "gender",
             "name": "Gender",
-            "type": "field",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "3b42ceb1-454d-4f2a-a8c9-e6803dc3e3c0"
-                ]
-            }
+            "type": "field"
         },
         {
             "key": "district",
             "name": "District",
-            "type": "field",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "f5650691-b046-4fc7-8b11-359e9d8d02a1"
-                ]
-            }
+            "type": "field"
         },
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "Android Channel",
-            "type": "channel",
-            "nodes": {
-                "a58be63b-907d-4a1a-856b-0bb5579d7507": [
-                    "3eab275a-be4a-43f7-9acc-d8a384b594c5"
-                ]
-            }
+            "type": "channel"
         }
     ],
     "results": [

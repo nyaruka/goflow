@@ -27,12 +27,7 @@
                 {
                     "key": "age",
                     "name": "Age",
-                    "type": "field",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "field"
                 }
             ],
             "results": [],
@@ -68,12 +63,7 @@
                 {
                     "key": "age",
                     "name": "Age",
-                    "type": "field",
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "type": "field"
                 }
             ],
             "results": [],
@@ -300,18 +290,23 @@
                     "key": "score",
                     "name": "Score",
                     "type": "field",
-                    "missing": true,
-                    "nodes": {
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5": [
-                            "ad154980-7bf7-4ab8-8728-545fd6378912"
-                        ]
-                    }
+                    "missing": true
                 }
             ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": [],
-            "problems": []
+            "problems": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "reference": {
+                        "key": "score",
+                        "name": "Score"
+                    }
+                }
+            ]
         }
     }
 ]
