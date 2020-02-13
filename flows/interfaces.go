@@ -433,3 +433,10 @@ type FlowRun interface {
 type LegacyExtraContributor interface {
 	LegacyExtra() Results
 }
+
+type Problem interface {
+	utils.Typed
+
+	NodeUUID() NodeUUID
+	ActionUUID() ActionUUID
+}

@@ -37,7 +37,8 @@
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -77,7 +78,8 @@
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -308,7 +310,8 @@
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     }
 ]

@@ -23,6 +23,7 @@ type FlowInfo struct {
 	Results      []*ResultSpec `json:"results"`
 	WaitingExits []ExitUUID    `json:"waiting_exits"`
 	ParentRefs   []string      `json:"parent_refs"`
+	Problems     []Problem     `json:"problems"`
 }
 
 type nodeLocations map[NodeUUID][]string

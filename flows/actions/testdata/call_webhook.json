@@ -97,7 +97,8 @@
             ],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -124,7 +125,8 @@
             "dependencies": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -151,7 +153,8 @@
             "dependencies": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -235,7 +238,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -301,7 +305,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -365,7 +370,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -438,7 +444,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -501,7 +508,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     },
     {
@@ -570,7 +578,8 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "problems": []
         }
     }
 ]
