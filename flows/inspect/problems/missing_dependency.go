@@ -1,6 +1,8 @@
 package problems
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -19,10 +21,15 @@ type MissingDependency struct {
 	Dependency assets.TypedReference `json:"dependency"`
 }
 
-func newMissingDependency(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, reference assets.Reference) *MissingDependency {
+func newMissingDependency(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, ref assets.Reference) *MissingDependency {
 	return &MissingDependency{
-		baseProblem: newBaseProblem(TypeMissingDependency, nodeUUID, actionUUID),
-		Dependency:  assets.NewTypedReference(reference),
+		baseProblem: newBaseProblem(
+			TypeMissingDependency,
+			nodeUUID,
+			actionUUID,
+			fmt.Sprintf("missing %s dependency '%s'", ref.Type(), ref.Identity()),
+		),
+		Dependency: assets.NewTypedReference(ref),
 	}
 }
 

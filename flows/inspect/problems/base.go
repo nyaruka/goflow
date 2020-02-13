@@ -13,14 +13,20 @@ func registerType(name string, report reportFunc) {
 
 // base of all problem types
 type baseProblem struct {
-	Type_       string           `json:"type"`
-	NodeUUID_   flows.NodeUUID   `json:"node_uuid"`
-	ActionUUID_ flows.ActionUUID `json:"action_uuid,omitempty"`
+	Type_        string           `json:"type"`
+	NodeUUID_    flows.NodeUUID   `json:"node_uuid"`
+	ActionUUID_  flows.ActionUUID `json:"action_uuid,omitempty"`
+	Description_ string           `json:"description"`
 }
 
 // creates a new base problem
-func newBaseProblem(typeName string, nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID) baseProblem {
-	return baseProblem{Type_: typeName, NodeUUID_: nodeUUID, ActionUUID_: actionUUID}
+func newBaseProblem(typeName string, nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, description string) baseProblem {
+	return baseProblem{
+		Type_:        typeName,
+		NodeUUID_:    nodeUUID,
+		ActionUUID_:  actionUUID,
+		Description_: description,
+	}
 }
 
 // Type returns the type of this problem
