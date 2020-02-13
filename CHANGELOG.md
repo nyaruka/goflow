@@ -1,3 +1,8 @@
+v0.71.3
+----------
+ * Implement missing_dependency as a type of problem
+ * Add framework for checking for problems during flow inspection
+
 v0.71.2
 ----------
  * Rework dependency and template extraction to include actions and routers
