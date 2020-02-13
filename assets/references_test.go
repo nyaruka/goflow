@@ -1,6 +1,7 @@
 package assets_test
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
@@ -116,4 +117,15 @@ func TestChannelReferenceUnmarsal(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"), channel.UUID)
 	assert.Equal(t, "Old Channel", channel.Name)
+}
+
+func TestTypedReference(t *testing.T) {
+	ref := assets.NewGroupReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Bobs")
+	typed := assets.NewTypedReference(ref)
+
+	refJSON, _ := json.Marshal(ref)
+	typedJSON, _ := json.Marshal(typed)
+
+	assert.Equal(t, `{"uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf","name":"Bobs"}`, string(refJSON))
+	assert.Equal(t, `{"uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf","name":"Bobs","type":"group"}`, string(typedJSON))
 }

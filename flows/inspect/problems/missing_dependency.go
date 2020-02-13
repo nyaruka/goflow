@@ -16,13 +16,13 @@ const TypeMissingDependency string = "missing_dependency"
 type MissingDependency struct {
 	baseProblem
 
-	Reference assets.Reference `json:"reference"`
+	Dependency assets.TypedReference `json:"dependency"`
 }
 
 func newMissingDependency(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, reference assets.Reference) *MissingDependency {
 	return &MissingDependency{
 		baseProblem: newBaseProblem(TypeMissingDependency, nodeUUID, actionUUID),
-		Reference:   reference,
+		Dependency:  assets.NewTypedReference(reference),
 	}
 }
 

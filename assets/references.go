@@ -6,6 +6,7 @@ import (
 	validator "gopkg.in/go-playground/validator.v9"
 
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
@@ -367,4 +368,20 @@ func LabelReferenceValidation(sl validator.StructLevel) {
 // utility method which returns true if both string values or neither string values is defined
 func neitherOrBoth(s1 string, s2 string) bool {
 	return (len(s1) > 0) == (len(s2) > 0)
+}
+
+// TypedReference is a utility struct for when we need to serialize a reference with a type
+type TypedReference struct {
+	Reference Reference `json:"-"`
+	Type      string    `json:"type"`
+}
+
+// NewTypedReference creates a new typed reference
+func NewTypedReference(r Reference) TypedReference {
+	return TypedReference{Reference: r, Type: r.Type()}
+}
+
+func (r TypedReference) MarshalJSON() ([]byte, error) {
+	type typed TypedReference // need to alias type to avoid circular calls to this method
+	return jsonx.MarshalMerged(r.Reference, typed(r))
 }
