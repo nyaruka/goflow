@@ -18,7 +18,7 @@ import (
 var implicitIsPhoneNumberRegex = regexp.MustCompile(`^\+?[\-\d]{4,}$`)
 
 // used to strip formatting from phone number values
-var cleanPhoneNumberRegex = regexp.MustCompile(`\D+`)
+var cleanPhoneNumberRegex = regexp.MustCompile(`[^+\d]+`)
 
 var comparatorAliases = map[string]Comparator{
 	"has": ComparatorContains,
@@ -71,12 +71,12 @@ func (v *visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 
 // expression : TEXT
 func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) interface{} {
-	text := ctx.TEXT().GetText()
+	value := v.Visit(ctx.Literal()).(string)
 
-	asURN, _ := urns.Parse(text)
+	asURN, _ := urns.Parse(value)
 
 	if v.redaction == envs.RedactionPolicyURNs {
-		num, err := strconv.Atoi(text)
+		num, err := strconv.Atoi(value)
 		if err == nil {
 			return newCondition(PropertyTypeAttribute, AttributeID, ComparatorEqual, strconv.Itoa(num), attributes[AttributeID])
 		}
@@ -85,19 +85,19 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 
 		return newCondition(PropertyTypeScheme, scheme, ComparatorEqual, path, assets.FieldTypeText)
 
-	} else if implicitIsPhoneNumberRegex.MatchString(text) {
-		text = cleanPhoneNumberRegex.ReplaceAllLiteralString(text, "")
+	} else if implicitIsPhoneNumberRegex.MatchString(value) {
+		value = cleanPhoneNumberRegex.ReplaceAllLiteralString(value, "")
 
-		return newCondition(PropertyTypeScheme, urns.TelScheme, ComparatorContains, text, assets.FieldTypeText)
+		return newCondition(PropertyTypeScheme, urns.TelScheme, ComparatorContains, value, assets.FieldTypeText)
 	}
 
 	// convert to contains condition only if we have the right tokens, otherwise make equals check
 	comparator := ComparatorContains
-	if len(tokenizeNameValue(text)) == 0 {
+	if len(tokenizeNameValue(value)) == 0 {
 		comparator = ComparatorEqual
 	}
 
-	condition := newCondition(PropertyTypeAttribute, AttributeName, comparator, text, attributes[AttributeName])
+	condition := newCondition(PropertyTypeAttribute, AttributeName, comparator, value, attributes[AttributeName])
 
 	if err := condition.Validate(); err != nil {
 		v.addError(err)

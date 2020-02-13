@@ -19,6 +19,7 @@ func TestParseQuery(t *testing.T) {
 		redact envs.RedactionPolicy
 	}{
 		// implicit conditions
+		{`"will"`, `name ~ "will"`, "", envs.RedactionPolicyNone},
 		{`Will`, `name ~ "Will"`, "", envs.RedactionPolicyNone},
 		{`wil`, `name ~ "wil"`, "", envs.RedactionPolicyNone},
 		{`wi`, `name ~ "wi"`, "", envs.RedactionPolicyNone},
@@ -30,6 +31,7 @@ func TestParseQuery(t *testing.T) {
 		{`(202) 456-1111`, `tel = +12024561111`, "", envs.RedactionPolicyNone}, // whole query looks like a phone number
 		{`+12024561111`, `tel = +12024561111`, "", envs.RedactionPolicyNone},
 		{` 202.456.1111 `, `tel = +12024561111`, "", envs.RedactionPolicyNone},
+		{`"+12024561111"`, `tel ~ +12024561111`, "", envs.RedactionPolicyNone},
 		{`566`, `name ~ 566`, "", envs.RedactionPolicyNone}, // too short to be a phone number
 
 		// implicit conditions with URN redaction
@@ -86,7 +88,7 @@ func TestParseQuery(t *testing.T) {
 
 		// implicit combinations
 		{`will felix`, `name ~ "will" AND name ~ "felix"`, "", envs.RedactionPolicyNone},
-		{`will +123456566`, `name ~ "will" AND tel ~ 123456566`, "", envs.RedactionPolicyNone},
+		{`will +123456566`, `name ~ "will" AND tel ~ +123456566`, "", envs.RedactionPolicyNone},
 
 		// explicit combinations...
 		{`will and felix`, `name ~ "will" AND name ~ "felix"`, "", envs.RedactionPolicyNone}, // explicit AND
