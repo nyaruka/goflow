@@ -1,3 +1,7 @@
+v0.72.0
+----------
+ * Rename "problems" to "issues"
+
 v0.71.3
 ----------
  * Implement missing_dependency as a type of problem
