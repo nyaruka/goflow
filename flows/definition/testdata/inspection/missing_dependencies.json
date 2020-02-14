@@ -19,10 +19,7 @@
             "missing": true
         }
     ],
-    "results": [],
-    "waiting_exits": [],
-    "parent_refs": [],
-    "problems": [
+    "issues": [
         {
             "type": "missing_dependency",
             "node_uuid": "f2350d86-e53d-432a-9038-902fe2325c69",
@@ -55,5 +52,8 @@
                 "type": "field"
             }
         }
-    ]
+    ],
+    "results": [],
+    "waiting_exits": [],
+    "parent_refs": []
 }

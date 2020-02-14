@@ -19,6 +19,7 @@
             "type": "field"
         }
     ],
+    "issues": [],
     "results": [
         {
             "key": "urn_check",
@@ -55,6 +56,5 @@
         }
     ],
     "waiting_exits": [],
-    "parent_refs": [],
-    "problems": []
+    "parent_refs": []
 }

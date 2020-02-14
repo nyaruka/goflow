@@ -90,10 +90,10 @@
                     "type": "field"
                 }
             ],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -118,10 +118,10 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -146,10 +146,10 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -214,6 +214,7 @@
                     "type": "field"
                 }
             ],
+            "issues": [],
             "results": [
                 {
                     "key": "my_webhook",
@@ -228,8 +229,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -281,6 +281,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "my_webhook",
@@ -295,8 +296,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -346,6 +346,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "my_webhook",
@@ -360,8 +361,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -420,6 +420,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "my_webhook",
@@ -434,8 +435,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -484,6 +484,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "my_webhook",
@@ -498,8 +499,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -554,6 +554,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "my_webhook",
@@ -568,8 +569,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     }
 ]

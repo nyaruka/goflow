@@ -28,6 +28,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -42,8 +43,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -75,6 +75,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -89,8 +90,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -149,6 +149,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -163,8 +164,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -242,6 +242,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -256,8 +257,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -317,6 +317,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -331,8 +332,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -404,6 +404,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -418,8 +419,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -503,6 +503,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -517,8 +518,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     }
 ]

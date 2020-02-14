@@ -294,8 +294,8 @@ func TestNewFlow(t *testing.T) {
 				"type": "label"
 			}
 		],
+		"issues": [],
 		"parent_refs": [],
-		"problems": [],
 		"results": [
 			{
 				"categories": [
@@ -341,8 +341,8 @@ func TestEmptyFlow(t *testing.T) {
 
 	test.AssertEqualJSON(t, []byte(`{
 		"dependencies": [],
+		"issues": [],
 		"parent_refs": [],
-		"problems": [],
 		"results": [],
 		"waiting_exits": []
 	}`), infoJSON, "inspection mismatch")

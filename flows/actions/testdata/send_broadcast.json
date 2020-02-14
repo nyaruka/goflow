@@ -12,10 +12,10 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -51,10 +51,7 @@
                     "missing": true
                 }
             ],
-            "results": [],
-            "waiting_exits": [],
-            "parent_refs": [],
-            "problems": [
+            "issues": [
                 {
                     "type": "missing_dependency",
                     "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
@@ -66,7 +63,10 @@
                         "type": "group"
                     }
                 }
-            ]
+            ],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
@@ -159,10 +159,10 @@
                     "type": "contact"
                 }
             ],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -243,10 +243,10 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     }
 ]

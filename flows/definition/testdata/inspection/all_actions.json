@@ -56,6 +56,7 @@
             "type": "channel"
         }
     ],
+    "issues": [],
     "results": [
         {
             "key": "gender",
@@ -69,6 +70,5 @@
         }
     ],
     "waiting_exits": [],
-    "parent_refs": [],
-    "problems": []
+    "parent_refs": []
 }

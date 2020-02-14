@@ -6,10 +6,10 @@
             "type": "field"
         }
     ],
+    "issues": [],
     "results": [],
     "waiting_exits": [],
     "parent_refs": [
         "age"
-    ],
-    "problems": []
+    ]
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/inspect"
-	"github.com/nyaruka/goflow/flows/inspect/problems"
+	"github.com/nyaruka/goflow/flows/inspect/issues"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 
@@ -112,7 +112,7 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.FlowInfo {
 		Results:      flows.NewResultSpecs(f.extractResults()),
 		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,
-		Problems:     problems.Check(sa, f, assetRefs),
+		Issues:     issues.Check(sa, f, assetRefs),
 	}
 }
 

@@ -434,9 +434,11 @@ type LegacyExtraContributor interface {
 	LegacyExtra() Results
 }
 
-type Problem interface {
+// Issue is a problem found during flow inspection
+type Issue interface {
 	utils.Typed
 
 	NodeUUID() NodeUUID
 	ActionUUID() ActionUUID
+	Description() string
 }

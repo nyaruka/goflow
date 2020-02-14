@@ -20,10 +20,10 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -46,10 +46,10 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -65,10 +65,10 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -173,10 +173,10 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -225,10 +225,10 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     }
 ]

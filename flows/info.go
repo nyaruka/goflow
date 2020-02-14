@@ -47,10 +47,10 @@ func (r ExtractedReference) Check(sa SessionAssets) bool {
 // FlowInfo contains the results of flow inspection
 type FlowInfo struct {
 	Dependencies []*Dependency `json:"dependencies"`
+	Issues       []Issue       `json:"issues"`
 	Results      []*ResultSpec `json:"results"`
 	WaitingExits []ExitUUID    `json:"waiting_exits"`
 	ParentRefs   []string      `json:"parent_refs"`
-	Problems     []Problem     `json:"problems"`
 }
 
 type Dependency struct {

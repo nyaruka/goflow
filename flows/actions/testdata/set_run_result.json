@@ -21,6 +21,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "response_1",
@@ -34,8 +35,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -68,6 +68,7 @@
                     "type": "field"
                 }
             ],
+            "issues": [],
             "results": [
                 {
                     "key": "response_1",
@@ -81,8 +82,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -109,6 +109,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "response_1",
@@ -122,8 +123,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -146,6 +146,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "response_1",
@@ -157,8 +158,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -195,6 +195,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "preference",
@@ -208,8 +209,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     }
 ]

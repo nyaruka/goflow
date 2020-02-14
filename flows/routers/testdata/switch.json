@@ -205,6 +205,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "favorite_color",
@@ -220,8 +221,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -294,6 +294,7 @@
                     "type": "group"
                 }
             ],
+            "issues": [],
             "results": [
                 {
                     "key": "is_member",
@@ -309,8 +310,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -376,6 +376,17 @@
                     "missing": true
                 }
             ],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
+                    "description": "missing group dependency 'aa33640b-43b0-4df2-992c-ba357981da71'",
+                    "dependency": {
+                        "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
+                        "type": "group"
+                    }
+                }
+            ],
             "results": [
                 {
                     "key": "in_group",
@@ -390,18 +401,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": [
-                {
-                    "type": "missing_dependency",
-                    "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
-                    "description": "missing group dependency 'aa33640b-43b0-4df2-992c-ba357981da71'",
-                    "dependency": {
-                        "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
-                        "type": "group"
-                    }
-                }
-            ]
+            "parent_refs": []
         }
     },
     {
@@ -475,6 +475,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "favorite_color",
@@ -490,8 +491,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     },
     {
@@ -548,6 +548,7 @@
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [
                 {
                     "key": "favorite_color",
@@ -562,8 +563,7 @@
                 }
             ],
             "waiting_exits": [],
-            "parent_refs": [],
-            "problems": []
+            "parent_refs": []
         }
     }
 ]
