@@ -4,11 +4,11 @@ import "github.com/nyaruka/goflow/flows"
 
 type reportFunc func(flows.SessionAssets, flows.Flow, []flows.ExtractedReference, func(flows.Issue))
 
-var registeredTypes = map[string]reportFunc{}
+var RegisteredTypes = map[string]reportFunc{}
 
 // registers a new type of issue
 func registerType(name string, report reportFunc) {
-	registeredTypes[name] = report
+	RegisteredTypes[name] = report
 }
 
 // base of all issue types
@@ -48,7 +48,7 @@ func Check(sa flows.SessionAssets, flow flows.Flow, refs []flows.ExtractedRefere
 		issues = append(issues, i)
 	}
 
-	for _, fn := range registeredTypes {
+	for _, fn := range RegisteredTypes {
 		fn(sa, flow, refs, report)
 	}
 
