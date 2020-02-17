@@ -1,0 +1,85 @@
+{
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "My Android Phone",
+            "address": "+17036975131",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ],
+            "country": "US"
+        },
+        {
+            "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+            "name": "Nexmo",
+            "address": "+",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        },
+        {
+            "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+            "name": "Twitter Channel",
+            "address": "nyaruka",
+            "schemes": [
+                "twitterid"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf",
+            "key": "gender",
+            "name": "Gender",
+            "type": "text"
+        },
+        {
+            "uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565",
+            "key": "age",
+            "name": "Age",
+            "type": "number"
+        }
+    ],
+    "groups": [
+        {
+            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+            "name": "Testers"
+        },
+        {
+            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+            "name": "Customers"
+        },
+        {
+            "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+            "name": "Males",
+            "query": "gender = male"
+        },
+        {
+            "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
+            "name": "Females",
+            "query": "gender = female"
+        },
+        {
+            "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+            "name": "Francophones",
+            "query": "language = fra"
+        },
+        {
+            "uuid": "5389414a-66b8-408b-afec-07c5d68f6784",
+            "name": "Nameless",
+            "query": "name = \"\""
+        }
+    ]
+}

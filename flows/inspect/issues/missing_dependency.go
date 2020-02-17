@@ -35,6 +35,11 @@ func newMissingDependency(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, 
 
 // MissingDependencyCheck checks for missing dependencies
 func MissingDependencyCheck(sa flows.SessionAssets, flow flows.Flow, refs []flows.ExtractedReference, report func(flows.Issue)) {
+	// skip check if we don't have assets
+	if sa == nil {
+		return
+	}
+
 	for _, ref := range refs {
 		if !ref.Check(sa) {
 			var actionUUID flows.ActionUUID
