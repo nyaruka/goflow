@@ -67,7 +67,7 @@ func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(envs.Language, assets.Reference)) {
 }
 
 // EnumerateResults enumerates all potential results on this object

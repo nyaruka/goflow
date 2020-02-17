@@ -179,8 +179,8 @@ func (f *flow) extractAssetAndParentRefs() ([]flows.ExtractedReference, []string
 				parentRefs[r] = true
 			}
 		})
-		n.EnumerateDependencies(f.Localization(), func(a flows.Action, r flows.Router, ref assets.Reference) {
-			recordDependency(n, a, r, envs.NilLanguage, ref)
+		n.EnumerateDependencies(f.Localization(), func(a flows.Action, r flows.Router, l envs.Language, ref assets.Reference) {
+			recordDependency(n, a, r, l, ref)
 		})
 	}
 
