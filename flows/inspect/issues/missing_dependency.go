@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -21,12 +22,13 @@ type MissingDependency struct {
 	Dependency assets.TypedReference `json:"dependency"`
 }
 
-func newMissingDependency(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, ref assets.Reference) *MissingDependency {
+func newMissingDependency(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language envs.Language, ref assets.Reference) *MissingDependency {
 	return &MissingDependency{
 		baseIssue: newBaseIssue(
 			TypeMissingDependency,
 			nodeUUID,
 			actionUUID,
+			language,
 			fmt.Sprintf("missing %s dependency '%s'", ref.Type(), ref.Identity()),
 		),
 		Dependency: assets.NewTypedReference(ref),
@@ -46,7 +48,7 @@ func MissingDependencyCheck(sa flows.SessionAssets, flow flows.Flow, refs []flow
 			if ref.Action != nil {
 				actionUUID = ref.Action.UUID()
 			}
-			report(newMissingDependency(ref.Node.UUID(), actionUUID, ref.Reference))
+			report(newMissingDependency(ref.Node.UUID(), actionUUID, ref.Language, ref.Reference))
 		}
 	}
 }

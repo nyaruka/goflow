@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inspect"
@@ -209,8 +210,8 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(r.operand)
+func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(envs.Language, string)) {
+	include(envs.NilLanguage, r.operand)
 
 	inspect.Templates(r.cases, localization, include)
 }

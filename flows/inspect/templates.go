@@ -5,19 +5,20 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/tools"
 	"github.com/nyaruka/goflow/flows"
 )
 
 // Templates extracts template values by reading engine tags on a struct
-func Templates(s interface{}, localization flows.Localization, include func(string)) {
+func Templates(s interface{}, localization flows.Localization, include func(envs.Language, string)) {
 	templateValues(reflect.ValueOf(s), localization, include)
 }
 
-func templateValues(v reflect.Value, localization flows.Localization, include func(string)) {
+func templateValues(v reflect.Value, localization flows.Localization, include func(envs.Language, string)) {
 	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
 		if ef.Evaluated {
-			extractTemplates(fv, include)
+			extractTemplates(fv, envs.NilLanguage, include)
 
 			// if this field is also localized, each translation is a template and needs to be included
 			if ef.Localized && localization != nil {
@@ -26,7 +27,7 @@ func templateValues(v reflect.Value, localization flows.Localization, include fu
 				for _, lang := range localization.Languages() {
 					translations := localization.GetTranslations(lang)
 					for _, v := range translations.GetTextArray(localizable.LocalizationUUID(), ef.JSONName) {
-						include(v)
+						include(lang, v)
 					}
 				}
 			}
@@ -36,18 +37,18 @@ func templateValues(v reflect.Value, localization flows.Localization, include fu
 
 // Evaluated tags can be applied to fields of type string, slices of string or map of strings.
 // This method extracts template values from any such field.
-func extractTemplates(v reflect.Value, include func(string)) {
+func extractTemplates(v reflect.Value, lang envs.Language, include func(envs.Language, string)) {
 	switch typed := v.Interface().(type) {
 	case map[string]string:
 		for _, i := range typed {
-			include(i)
+			include(lang, i)
 		}
 	case []string:
 		for _, i := range typed {
-			include(i)
+			include(lang, i)
 		}
 	case string:
-		include(v.String())
+		include(lang, typed)
 	}
 }
 

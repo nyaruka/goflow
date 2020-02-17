@@ -7,6 +7,15 @@
             "spec_version": "13.0",
             "language": "eng",
             "type": "messaging",
+            "localization": {
+                "spa": {
+                    "f01d693b-2af2-49fb-9e38-146eb00937e9": {
+                        "text": [
+                            "Vives en @fields.county"
+                        ]
+                    }
+                }
+            },
             "nodes": [
                 {
                     "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
@@ -44,6 +53,18 @@
                     "type": "field"
                 },
                 "description": "missing field dependency 'county'",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "type": "missing_dependency"
+            },
+            {
+                "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                "dependency": {
+                    "key": "county",
+                    "name": "",
+                    "type": "field"
+                },
+                "description": "missing field dependency 'county'",
+                "language": "spa",
                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                 "type": "missing_dependency"
             },

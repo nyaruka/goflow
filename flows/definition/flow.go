@@ -112,7 +112,7 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.FlowInfo {
 		Results:      flows.NewResultSpecs(f.extractResults()),
 		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,
-		Issues:     issues.Check(sa, f, assetRefs),
+		Issues:       issues.Check(sa, f, assetRefs),
 	}
 }
 
@@ -144,7 +144,7 @@ func (f *flow) Reference() *assets.FlowReference {
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
 	templates := make([]string, 0)
-	include := func(a flows.Action, r flows.Router, t string) {
+	include := func(a flows.Action, r flows.Router, l envs.Language, t string) {
 		if t != "" {
 			templates = append(templates, t)
 		}
@@ -162,24 +162,25 @@ func (f *flow) extractAssetAndParentRefs() ([]flows.ExtractedReference, []string
 	assetRefs := make([]flows.ExtractedReference, 0)
 	parentRefs := make(map[string]bool)
 
-	recordDependency := func(n flows.Node, a flows.Action, r flows.Router, ref assets.Reference) {
+	recordDependency := func(n flows.Node, a flows.Action, r flows.Router, l envs.Language, ref assets.Reference) {
 		if ref != nil && !ref.Variable() {
-			assetRefs = append(assetRefs, flows.ExtractedReference{Node: n, Action: a, Router: r, Reference: ref})
+			er := flows.ExtractedReference{Node: n, Action: a, Router: r, Language: l, Reference: ref}
+			assetRefs = append(assetRefs, er)
 		}
 	}
 
 	for _, n := range f.nodes {
-		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, t string) {
+		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, l envs.Language, t string) {
 			ars, prs := inspect.ExtractFromTemplate(t)
 			for _, ref := range ars {
-				recordDependency(n, a, r, ref)
+				recordDependency(n, a, r, l, ref)
 			}
 			for _, r := range prs {
 				parentRefs[r] = true
 			}
 		})
 		n.EnumerateDependencies(f.Localization(), func(a flows.Action, r flows.Router, ref assets.Reference) {
-			recordDependency(n, a, r, ref)
+			recordDependency(n, a, r, envs.NilLanguage, ref)
 		})
 	}
 
