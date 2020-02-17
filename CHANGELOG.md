@@ -1,3 +1,7 @@
+v0.72.2
+----------
+ * Allow flow inspection without assets
+
 v0.72.1
 ----------
  * Quote telephone numbers in contact queries
