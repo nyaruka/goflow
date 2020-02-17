@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/inspect"
@@ -87,31 +88,31 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 }
 
 // EnumerateTemplates enumerates all expressions on this object
-func (n *node) EnumerateTemplates(localization flows.Localization, include func(flows.Action, flows.Router, string)) {
+func (n *node) EnumerateTemplates(localization flows.Localization, include func(flows.Action, flows.Router, envs.Language, string)) {
 	for _, action := range n.actions {
-		inspect.Templates(action, localization, func(t string) {
-			include(action, nil, t)
+		inspect.Templates(action, localization, func(l envs.Language, t string) {
+			include(action, nil, l, t)
 		})
 	}
 
 	if n.router != nil {
-		n.router.EnumerateTemplates(localization, func(t string) {
-			include(nil, n.router, t)
+		n.router.EnumerateTemplates(localization, func(l envs.Language, t string) {
+			include(nil, n.router, l, t)
 		})
 	}
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (n *node) EnumerateDependencies(localization flows.Localization, include func(flows.Action, flows.Router, assets.Reference)) {
+func (n *node) EnumerateDependencies(localization flows.Localization, include func(flows.Action, flows.Router, envs.Language, assets.Reference)) {
 	for _, action := range n.actions {
-		inspect.Dependencies(action, localization, func(r assets.Reference) {
-			include(action, nil, r)
+		inspect.Dependencies(action, localization, func(l envs.Language, r assets.Reference) {
+			include(action, nil, l, r)
 		})
 	}
 
 	if n.router != nil {
-		n.router.EnumerateDependencies(localization, func(r assets.Reference) {
-			include(nil, n.router, r)
+		n.router.EnumerateDependencies(localization, func(l envs.Language, r assets.Reference) {
+			include(nil, n.router, l, r)
 		})
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -62,11 +63,11 @@ func (r *baseRouter) AllowTimeout() bool {
 func (r *baseRouter) ResultName() string { return r.resultName }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
+func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(envs.Language, string)) {
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(envs.Language, assets.Reference)) {
 }
 
 // EnumerateResults enumerates all potential results on this object

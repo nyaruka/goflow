@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/jsonx"
 )
@@ -14,6 +15,7 @@ type ExtractedReference struct {
 	Node      Node
 	Action    Action
 	Router    Router
+	Language  envs.Language
 	Reference assets.Reference
 }
 

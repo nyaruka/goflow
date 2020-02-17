@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inspect"
@@ -44,7 +45,7 @@ func NewCase(uuid uuids.UUID, type_ string, arguments []string, categoryUUID flo
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Case) LocalizationUUID() uuids.UUID { return uuids.UUID(c.UUID) }
 
-func (c *Case) Dependencies(localization flows.Localization, include func(assets.Reference)) {
+func (c *Case) Dependencies(localization flows.Localization, include func(envs.Language, assets.Reference)) {
 	groupRef := func(args []string) assets.Reference {
 		// if we have two args, the second is name
 		name := ""
@@ -56,13 +57,13 @@ func (c *Case) Dependencies(localization flows.Localization, include func(assets
 
 	// currently only the HAS_GROUP router test can produce a dependency
 	if c.Type == "has_group" && len(c.Arguments) > 0 {
-		include(groupRef(c.Arguments))
+		include(envs.NilLanguage, groupRef(c.Arguments))
 
 		// the group UUID might be different in different translations
 		for _, lang := range localization.Languages() {
 			arguments := localization.GetTranslations(lang).GetTextArray(c.UUID, "arguments")
 			if len(arguments) > 0 {
-				include(groupRef(arguments))
+				include(lang, groupRef(arguments))
 			}
 		}
 	}
@@ -209,14 +210,14 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	include(r.operand)
+func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(envs.Language, string)) {
+	include(envs.NilLanguage, r.operand)
 
 	inspect.Templates(r.cases, localization, include)
 }
 
 // EnumerateDependencies enumerates all dependencies on this object and its children
-func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(envs.Language, assets.Reference)) {
 	inspect.Dependencies(r.cases, localization, include)
 }
 

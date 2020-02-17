@@ -6,11 +6,13 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/inspect/issues"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/jsonx"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -73,4 +75,44 @@ func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 		err = ioutil.WriteFile(testPath, actualJSON, 0666)
 		require.NoError(t, err)
 	}
+}
+
+func TestIssues(t *testing.T) {
+	sa, err := test.LoadSessionAssets("testdata/_assets.json")
+	require.NoError(t, err)
+
+	flow, err := definition.ReadFlow([]byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Test Flow",
+		"spec_version": "13.0",
+		"language": "eng",
+		"type": "messaging",
+		"nodes": [
+			{
+				"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+				"actions": [
+					{
+						"uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+						"type": "send_msg",
+						"text": "You live in @fields.county and are @fields.age"
+					}
+				],
+				"exits": [
+					{
+						"uuid": "118221f7-e637-4cdb-83ca-7f0a5aae98c6"
+					}
+				]
+			}
+		]
+	}`), nil)
+	require.NoError(t, err)
+
+	info := flow.Inspect(sa)
+
+	assert.Equal(t, 1, len(info.Issues))
+	assert.Equal(t, issues.TypeMissingDependency, info.Issues[0].Type())
+	assert.Equal(t, flows.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"), info.Issues[0].NodeUUID())
+	assert.Equal(t, flows.ActionUUID("f01d693b-2af2-49fb-9e38-146eb00937e9"), info.Issues[0].ActionUUID())
+	assert.Equal(t, envs.NilLanguage, info.Issues[0].Language())
+	assert.Equal(t, "missing field dependency 'county'", info.Issues[0].Description())
 }

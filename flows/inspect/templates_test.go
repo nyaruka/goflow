@@ -29,24 +29,24 @@ func (t *testFlowThing) LocalizationUUID() uuids.UUID {
 
 func TestTemplates(t *testing.T) {
 	l := definition.NewLocalization()
-	l.AddItemTranslation(envs.Language("eng"), uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
+	l.AddItemTranslation(envs.Language("spa"), uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
 
 	thing := &testFlowThing{UUID: uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), Foo: "Hello", Bar: "World"}
 
-	templates := make([]string, 0)
-	inspect.Templates(thing, l, func(t string) {
-		templates = append(templates, t)
+	templates := make(map[envs.Language][]string)
+	inspect.Templates(thing, l, func(l envs.Language, t string) {
+		templates[l] = append(templates[l], t)
 	})
 
-	assert.Equal(t, []string{"Hello", "Hola", "World"}, templates)
+	assert.Equal(t, map[envs.Language][]string{"": []string{"Hello", "World"}, "spa": []string{"Hola"}}, templates)
 
 	// can also extract from slice of things
-	templates = make([]string, 0)
-	inspect.Templates([]*testFlowThing{thing}, l, func(t string) {
-		templates = append(templates, t)
+	templates = make(map[envs.Language][]string)
+	inspect.Templates([]*testFlowThing{thing}, l, func(l envs.Language, t string) {
+		templates[l] = append(templates[l], t)
 	})
 
-	assert.Equal(t, []string{"Hello", "Hola", "World"}, templates)
+	assert.Equal(t, map[envs.Language][]string{"": []string{"Hello", "World"}, "spa": []string{"Hola"}}, templates)
 
 	// or a slice of actions
 	actions := []flows.Action{
@@ -54,12 +54,12 @@ func TestTemplates(t *testing.T) {
 		actions.NewSetContactLanguage(flows.ActionUUID("d5ecd045-a15f-467c-925a-54bcdc726b9f"), "Gibberish"),
 	}
 
-	templates = make([]string, 0)
-	inspect.Templates(actions, nil, func(t string) {
-		templates = append(templates, t)
+	templates = make(map[envs.Language][]string)
+	inspect.Templates(actions, nil, func(l envs.Language, t string) {
+		templates[l] = append(templates[l], t)
 	})
 
-	assert.Equal(t, []string{"Bob", "Gibberish"}, templates)
+	assert.Equal(t, map[envs.Language][]string{"": []string{"Bob", "Gibberish"}}, templates)
 }
 
 func TestTemplatePaths(t *testing.T) {

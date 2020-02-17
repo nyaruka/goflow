@@ -158,8 +158,8 @@ type Node interface {
 
 	Validate(Flow, map[uuids.UUID]bool) error
 
-	EnumerateTemplates(Localization, func(Action, Router, string))
-	EnumerateDependencies(Localization, func(Action, Router, assets.Reference))
+	EnumerateTemplates(Localization, func(Action, Router, envs.Language, string))
+	EnumerateDependencies(Localization, func(Action, Router, envs.Language, assets.Reference))
 	EnumerateResults(func(Action, Router, *ResultInfo))
 }
 
@@ -186,8 +186,8 @@ type Router interface {
 	Route(FlowRun, Step, EventCallback) (ExitUUID, error)
 	RouteTimeout(FlowRun, Step, EventCallback) (ExitUUID, error)
 
-	EnumerateTemplates(Localization, func(string))
-	EnumerateDependencies(Localization, func(assets.Reference))
+	EnumerateTemplates(Localization, func(envs.Language, string))
+	EnumerateDependencies(Localization, func(envs.Language, assets.Reference))
 	EnumerateResults(func(*ResultInfo))
 }
 
@@ -440,5 +440,6 @@ type Issue interface {
 
 	NodeUUID() NodeUUID
 	ActionUUID() ActionUUID
+	Language() envs.Language
 	Description() string
 }
