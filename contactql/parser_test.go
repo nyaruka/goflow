@@ -26,12 +26,12 @@ func TestParseQuery(t *testing.T) {
 		{`w`, `name = "w"`, "", envs.RedactionPolicyNone}, // don't have at least 1 token of >= 2 chars
 		{`w me`, `name = "w" AND name ~ "me"`, "", envs.RedactionPolicyNone},
 		{`w m`, `name = "w" AND name = "m"`, "", envs.RedactionPolicyNone},
-		{`tel:+0123456566`, `tel = +0123456566`, "", envs.RedactionPolicyNone}, // whole query is a URN
+		{`tel:+0123456566`, `tel = "+0123456566"`, "", envs.RedactionPolicyNone}, // whole query is a URN
 		{`twitter:bobby`, `twitter = "bobby"`, "", envs.RedactionPolicyNone},
-		{`(202) 456-1111`, `tel = +12024561111`, "", envs.RedactionPolicyNone}, // whole query looks like a phone number
-		{`+12024561111`, `tel = +12024561111`, "", envs.RedactionPolicyNone},
-		{` 202.456.1111 `, `tel = +12024561111`, "", envs.RedactionPolicyNone},
-		{`"+12024561111"`, `tel ~ +12024561111`, "", envs.RedactionPolicyNone},
+		{`(202) 456-1111`, `tel = "+12024561111"`, "", envs.RedactionPolicyNone}, // whole query looks like a phone number
+		{`+12024561111`, `tel = "+12024561111"`, "", envs.RedactionPolicyNone},
+		{` 202.456.1111 `, `tel = "+12024561111"`, "", envs.RedactionPolicyNone},
+		{`"+12024561111"`, `tel ~ "+12024561111"`, "", envs.RedactionPolicyNone},
 		{`566`, `name ~ 566`, "", envs.RedactionPolicyNone}, // too short to be a phone number
 
 		// implicit conditions with URN redaction
@@ -88,7 +88,7 @@ func TestParseQuery(t *testing.T) {
 
 		// implicit combinations
 		{`will felix`, `name ~ "will" AND name ~ "felix"`, "", envs.RedactionPolicyNone},
-		{`will +123456566`, `name ~ "will" AND tel ~ +123456566`, "", envs.RedactionPolicyNone},
+		{`will +123456566`, `name ~ "will" AND tel ~ "+123456566"`, "", envs.RedactionPolicyNone},
 
 		// explicit combinations...
 		{`will and felix`, `name ~ "will" AND name ~ "felix"`, "", envs.RedactionPolicyNone}, // explicit AND

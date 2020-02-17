@@ -3,6 +3,7 @@ package contactql
 import (
 	"fmt"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -61,6 +62,8 @@ const minNameTokenContainsLength = 2
 
 // URN based contains conditions ust be at least 3 characters long as the ES implementation uses trigrams
 const minURNContainsLength = 3
+
+var isNumberRegex = regexp.MustCompile(`^\d+(\.\d+)?$`)
 
 // QueryNode is the base for nodes in our query parse tree
 type QueryNode interface {
@@ -187,8 +190,7 @@ func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, 
 func (c *Condition) String() string {
 	value := c.value
 
-	_, err := decimal.NewFromString(value)
-	if err != nil {
+	if !isNumberRegex.MatchString(value) {
 		// if not a decimal then quote
 		value = strconv.Quote(value)
 	}
