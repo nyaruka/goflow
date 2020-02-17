@@ -1,3 +1,8 @@
+v0.72.1
+----------
+ * Quote telephone numbers in contact queries
+ * Tweak parsing of phone numbers in contact queries
+
 v0.72.0
 ----------
  * Rename "problems" to "issues"
