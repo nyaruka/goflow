@@ -1,3 +1,7 @@
+v0.73.0
+----------
+ * Include translation language with missing dependency issues
+
 v0.72.2
 ----------
  * Allow flow inspection without assets
