@@ -7,93 +7,52 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
-// ExtractedReference is a reference and its location in a flow
-type ExtractedReference struct {
-	Node      Node
-	Action    Action
-	Router    Router
-	Language  envs.Language
-	Reference assets.Reference
+type baseExtractedItem struct {
+	Node     Node
+	Action   Action
+	Router   Router
+	Language envs.Language
 }
 
-// Check determines whether this reference is accessible
-func (r ExtractedReference) Check(sa SessionAssets) bool {
-	switch typed := r.Reference.(type) {
-	case *assets.ChannelReference:
-		return sa.Channels().Get(typed.UUID) != nil
-	case *assets.ClassifierReference:
-		return sa.Classifiers().Get(typed.UUID) != nil
-	case *ContactReference:
-		return true // have to assume contacts exist
-	case *assets.FieldReference:
-		return sa.Fields().Get(typed.Key) != nil
-	case *assets.FlowReference:
-		_, err := sa.Flows().Get(typed.UUID)
-		return err == nil
-	case *assets.GlobalReference:
-		return sa.Globals().Get(typed.Key) != nil
-	case *assets.GroupReference:
-		return sa.Groups().Get(typed.UUID) != nil
-	case *assets.LabelReference:
-		return sa.Labels().Get(typed.UUID) != nil
-	case *assets.TemplateReference:
-		return sa.Templates().Get(typed.UUID) != nil
-	default:
-		panic(fmt.Sprintf("unknown dependency type reference: %T", r.Reference))
+// ExtractedTemplate is a template and its location in a flow
+type ExtractedTemplate struct {
+	baseExtractedItem
+
+	Template string
+}
+
+// NewExtractedTemplate creates a new extracted template
+func NewExtractedTemplate(n Node, a Action, r Router, l envs.Language, t string) ExtractedTemplate {
+	return ExtractedTemplate{
+		baseExtractedItem: baseExtractedItem{Node: n, Action: a, Router: r, Language: l},
+		Template:          t,
 	}
 }
 
-// FlowInfo contains the results of flow inspection
-type FlowInfo struct {
-	Dependencies []*Dependency `json:"dependencies"`
+// ExtractedReference is a reference and its location in a flow
+type ExtractedReference struct {
+	baseExtractedItem
+
+	Reference assets.Reference
+}
+
+// NewExtractedReference creates a new extracted reference
+func NewExtractedReference(n Node, a Action, r Router, l envs.Language, ref assets.Reference) ExtractedReference {
+	return ExtractedReference{
+		baseExtractedItem: baseExtractedItem{Node: n, Action: a, Router: r, Language: l},
+		Reference:         ref,
+	}
+}
+
+// Inspection contains the results of flow inspection
+type Inspection struct {
+	Dependencies []Dependency  `json:"dependencies"`
 	Issues       []Issue       `json:"issues"`
 	Results      []*ResultSpec `json:"results"`
 	WaitingExits []ExitUUID    `json:"waiting_exits"`
 	ParentRefs   []string      `json:"parent_refs"`
-}
-
-type Dependency struct {
-	Reference assets.Reference `json:"-"`
-	Type      string           `json:"type"`
-	Missing   bool             `json:"missing,omitempty"`
-}
-
-func (d Dependency) MarshalJSON() ([]byte, error) {
-	type dependency Dependency // need to alias type to avoid circular calls to this method
-	return jsonx.MarshalMerged(d.Reference, dependency(d))
-}
-
-// NewDependencies inspects a list of references. If a session assets is provided,
-// each dependency is checked to see if it is available or missing.
-func NewDependencies(refs []ExtractedReference, sa SessionAssets) []*Dependency {
-	deps := make([]*Dependency, 0)
-	depsSeen := make(map[string]*Dependency, 0)
-
-	for _, er := range refs {
-		key := fmt.Sprintf("%s:%s", er.Reference.Type(), er.Reference.Identity())
-
-		// create new dependency record if we haven't seen this reference before
-		if _, seen := depsSeen[key]; !seen {
-			// check if this dependency is accessible
-			missing := false
-			if sa != nil {
-				missing = !er.Check(sa)
-			}
-
-			dep := &Dependency{
-				Reference: er.Reference,
-				Type:      er.Reference.Type(),
-				Missing:   missing,
-			}
-			deps = append(deps, dep)
-			depsSeen[key] = dep
-		}
-	}
-
-	return deps
 }
 
 // ResultInfo is possible result that a flow might generate

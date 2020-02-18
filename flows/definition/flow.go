@@ -104,15 +104,15 @@ func (f *flow) validate() error {
 }
 
 // Inspect enumerates dependencies, results etc
-func (f *flow) Inspect(sa flows.SessionAssets) *flows.FlowInfo {
-	assetRefs, parentRefs := f.extractAssetAndParentRefs()
+func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
+	templates, assetRefs, parentRefs := f.extract()
 
-	return &flows.FlowInfo{
-		Dependencies: flows.NewDependencies(assetRefs, sa),
+	return &flows.Inspection{
+		Dependencies: inspect.NewDependencies(assetRefs, sa),
 		Results:      flows.NewResultSpecs(f.extractResults()),
 		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,
-		Issues:       issues.Check(sa, f, assetRefs),
+		Issues:       issues.Check(sa, f, templates, assetRefs),
 	}
 }
 
@@ -157,34 +157,36 @@ func (f *flow) ExtractTemplates() []string {
 	return templates
 }
 
-// ExtractDependencies extracts all asset dependencies
-func (f *flow) extractAssetAndParentRefs() ([]flows.ExtractedReference, []string) {
+// extracts all templates, asset dependencies and parent result references
+func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference, []string) {
+	templates := make([]flows.ExtractedTemplate, 0)
 	assetRefs := make([]flows.ExtractedReference, 0)
 	parentRefs := make(map[string]bool)
 
-	recordDependency := func(n flows.Node, a flows.Action, r flows.Router, l envs.Language, ref assets.Reference) {
+	recordAssetRef := func(n flows.Node, a flows.Action, r flows.Router, l envs.Language, ref assets.Reference) {
 		if ref != nil && !ref.Variable() {
-			er := flows.ExtractedReference{Node: n, Action: a, Router: r, Language: l, Reference: ref}
+			er := flows.NewExtractedReference(n, a, r, l, ref)
 			assetRefs = append(assetRefs, er)
 		}
 	}
 
 	for _, n := range f.nodes {
 		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, l envs.Language, t string) {
+			templates = append(templates, flows.NewExtractedTemplate(n, a, r, l, t))
 			ars, prs := inspect.ExtractFromTemplate(t)
 			for _, ref := range ars {
-				recordDependency(n, a, r, l, ref)
+				recordAssetRef(n, a, r, l, ref)
 			}
 			for _, r := range prs {
 				parentRefs[r] = true
 			}
 		})
 		n.EnumerateDependencies(f.Localization(), func(a flows.Action, r flows.Router, l envs.Language, ref assets.Reference) {
-			recordDependency(n, a, r, l, ref)
+			recordAssetRef(n, a, r, l, ref)
 		})
 	}
 
-	return assetRefs, utils.StringSetKeys(parentRefs)
+	return templates, assetRefs, utils.StringSetKeys(parentRefs)
 }
 
 // extracts all result specs

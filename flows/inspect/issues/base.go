@@ -5,7 +5,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-type reportFunc func(flows.SessionAssets, flows.Flow, []flows.ExtractedReference, func(flows.Issue))
+type reportFunc func(flows.SessionAssets, flows.Flow, []flows.ExtractedTemplate, []flows.ExtractedReference, func(flows.Issue))
 
 var RegisteredTypes = map[string]reportFunc{}
 
@@ -50,14 +50,14 @@ func (p *baseIssue) Language() envs.Language { return p.Language_ }
 func (p *baseIssue) Description() string { return p.Description_ }
 
 // Check returns all issues in the given flow
-func Check(sa flows.SessionAssets, flow flows.Flow, refs []flows.ExtractedReference) []flows.Issue {
+func Check(sa flows.SessionAssets, flow flows.Flow, tpls []flows.ExtractedTemplate, refs []flows.ExtractedReference) []flows.Issue {
 	issues := make([]flows.Issue, 0)
 	report := func(i flows.Issue) {
 		issues = append(issues, i)
 	}
 
 	for _, fn := range RegisteredTypes {
-		fn(sa, flow, refs, report)
+		fn(sa, flow, tpls, refs, report)
 	}
 
 	return issues

@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/inspect"
 )
 
 func init() {
@@ -36,14 +37,14 @@ func newMissingDependency(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, 
 }
 
 // MissingDependencyCheck checks for missing dependencies
-func MissingDependencyCheck(sa flows.SessionAssets, flow flows.Flow, refs []flows.ExtractedReference, report func(flows.Issue)) {
+func MissingDependencyCheck(sa flows.SessionAssets, flow flows.Flow, tpls []flows.ExtractedTemplate, refs []flows.ExtractedReference, report func(flows.Issue)) {
 	// skip check if we don't have assets
 	if sa == nil {
 		return
 	}
 
 	for _, ref := range refs {
-		if !ref.Check(sa) {
+		if !inspect.CheckReference(sa, ref.Reference) {
 			var actionUUID flows.ActionUUID
 			if ref.Action != nil {
 				actionUUID = ref.Action.UUID()

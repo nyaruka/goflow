@@ -145,7 +145,7 @@ type Flow interface {
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
 
-	Inspect(sa SessionAssets) *FlowInfo
+	Inspect(sa SessionAssets) *Inspection
 	ExtractTemplates() []string
 }
 
@@ -432,6 +432,12 @@ type FlowRun interface {
 // LegacyExtraContributor is something which contributes results for constructing @legacy_extra
 type LegacyExtraContributor interface {
 	LegacyExtra() Results
+}
+
+type Dependency interface {
+	Reference() assets.Reference
+	Type() string
+	Missing() bool
 }
 
 // Issue is a problem found during flow inspection
