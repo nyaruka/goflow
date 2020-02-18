@@ -157,12 +157,29 @@ func (c *Contact) Name() string { return c.name }
 func (c *Contact) URNs() URNList { return c.urns }
 
 // AddURN adds a new URN to this contact
-func (c *Contact) AddURN(urn *ContactURN) bool {
-	if c.HasURN(urn.URN()) {
+func (c *Contact) AddURN(urn urns.URN, channel *Channel) bool {
+	if c.HasURN(urn) {
 		return false
 	}
 
-	c.urns = append(c.urns, urn)
+	c.urns = append(c.urns, NewContactURN(urn, channel))
+	return true
+}
+
+// RemoveURN adds a new URN to this contact
+func (c *Contact) RemoveURN(urn urns.URN) bool {
+	if !c.HasURN(urn) {
+		return false
+	}
+
+	newURNs := make([]*ContactURN, 0, len(c.urns)-1)
+	for _, u := range c.urns {
+		if u.URN().Identity() != urn.Identity() {
+			newURNs = append(newURNs, u)
+		}
+	}
+
+	c.urns = URNList(newURNs)
 	return true
 }
 

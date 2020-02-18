@@ -150,7 +150,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 
 	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil))
+	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
 	// can't create a trigger with invalid JSON
 	_, err = triggers.NewFlowAction(
@@ -519,7 +519,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 
 	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil))
+	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
 
