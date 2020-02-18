@@ -19,9 +19,9 @@
         },
         "events": [
             {
+                "type": "contact_timezone_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "timezone": "Africa/Kigali",
-                "type": "contact_timezone_changed"
+                "timezone": "Africa/Kigali"
             }
         ]
     },
@@ -64,9 +64,9 @@
         },
         "events": [
             {
+                "type": "contact_timezone_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "timezone": "",
-                "type": "contact_timezone_changed"
+                "timezone": ""
             }
         ]
     }

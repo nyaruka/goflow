@@ -20,20 +20,20 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7\u0026id=123",
                 "twitterid:54784326227#nyaruka"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": [
             {
+                "type": "contact_urns_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "urns": [
                     "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
                     "twitterid:54784326227#nyaruka"
-                ],
-                "type": "contact_urns_changed"
+                ]
             }
         ]
     },
@@ -58,11 +58,11 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7\u0026id=123",
                 "twitterid:54784326227#nyaruka"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": []
     },
@@ -84,16 +84,16 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+12065551212?id=123",
                 "twitterid:54784326227#nyaruka"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "type": "contact_urns_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "urns": [
                     "tel:+12065551212?id=123",
                     "twitterid:54784326227#nyaruka"
