@@ -60,7 +60,7 @@ func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 		actual := tc
 		actual.Issues = issuesJSON
 
-		if !test.WriteOutput {
+		if !test.UpdateSnapshots {
 			// check the found issues
 			test.AssertEqualJSON(t, tc.Issues, actual.Issues, "issues mismatch in %s", testName)
 		} else {
@@ -68,7 +68,7 @@ func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 		}
 	}
 
-	if test.WriteOutput {
+	if test.UpdateSnapshots {
 		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 

@@ -123,7 +123,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			actual.Inspection, _ = json.Marshal(flow.Inspect(sa))
 		}
 
-		if !test.WriteOutput {
+		if !test.UpdateSnapshots {
 			test.AssertEqualJSON(t, tc.Router, actual.Router, "marshal mismatch in %s", testName)
 
 			// check results are what we expected
@@ -142,7 +142,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		}
 	}
 
-	if test.WriteOutput {
+	if test.UpdateSnapshots {
 		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 

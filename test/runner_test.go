@@ -245,7 +245,7 @@ func TestFlows(t *testing.T) {
 			continue
 		}
 
-		if WriteOutput {
+		if UpdateSnapshots {
 			// we are writing new outputs, we write new files but don't test anything
 			rawOutputs := make([]json.RawMessage, len(runResult.outputs))
 			for i := range runResult.outputs {

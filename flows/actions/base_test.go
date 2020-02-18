@@ -258,7 +258,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			actual.Inspection, _ = json.Marshal(flow.Inspect(sa))
 		}
 
-		if !test.WriteOutput {
+		if !test.UpdateSnapshots {
 			// check the action marshaled correctly
 			test.AssertEqualJSON(t, tc.Action, actual.Action, "marshal mismatch in %s", testName)
 
@@ -289,7 +289,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		}
 	}
 
-	if test.WriteOutput {
+	if test.UpdateSnapshots {
 		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 

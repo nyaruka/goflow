@@ -569,7 +569,7 @@ func TestInspection(t *testing.T) {
 
 		testDataPath := "testdata/inspection/" + tc.path[strings.LastIndex(tc.path, "/"):]
 
-		if !test.WriteOutput {
+		if !test.UpdateSnapshots {
 			expectedJSON, err := ioutil.ReadFile(testDataPath)
 			require.NoError(t, err)
 			test.AssertEqualJSON(t, expectedJSON, actualJSON, "inspection mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
