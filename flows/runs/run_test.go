@@ -1,7 +1,6 @@
 package runs_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
@@ -13,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -135,7 +135,7 @@ func TestRun(t *testing.T) {
 	checkRun(run)
 
 	// check we can marshal and marshal the run and get the same values
-	runJSON, err := json.Marshal(run)
+	runJSON, err := jsonx.Marshal(run)
 	require.NoError(t, err)
 
 	run2, err := runs.ReadRun(session, runJSON, assets.IgnoreMissing)

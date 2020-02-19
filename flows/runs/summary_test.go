@@ -1,7 +1,6 @@
 package runs_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
@@ -12,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -42,7 +42,7 @@ func TestRunSummary(t *testing.T) {
 	assert.Equal(t, "Ryan Lewis@Registration", runs.FormatRunSummary(session.Environment(), summary))
 
 	// test marshaling and unmarshaling
-	marshaled, err := json.Marshal(summary)
+	marshaled, err := jsonx.Marshal(summary)
 	require.NoError(t, err)
 
 	summary, err = runs.ReadRunSummary(session.Assets(), marshaled, assets.PanicOnMissing)

@@ -1,7 +1,6 @@
 package types
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 	"unicode/utf8"
@@ -79,7 +78,7 @@ func (x XText) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
 func (x *XText) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &x.native)
+	return jsonx.Unmarshal(data, &x.native)
 }
 
 // XTextEmpty is the empty text value

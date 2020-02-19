@@ -94,7 +94,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
-	err = json.Unmarshal(testFile, &tests)
+	err = jsonx.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
@@ -237,25 +237,25 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		actual.HTTPMocks = clonedMocks
 
 		// re-marshal the action
-		actual.Action, err = json.Marshal(flow.Nodes()[0].Actions()[0])
+		actual.Action, err = jsonx.Marshal(flow.Nodes()[0].Actions()[0])
 		require.NoError(t, err)
 
 		// and the events
 		run := session.Runs()[0]
 		runEvents := run.Events()
-		actual.Events, _ = json.Marshal(runEvents[ignoreEventCount:])
+		actual.Events, _ = jsonx.Marshal(runEvents[ignoreEventCount:])
 
 		if tc.Webhook != nil {
-			actual.Webhook, _ = json.Marshal(run.Webhook())
+			actual.Webhook, _ = jsonx.Marshal(run.Webhook())
 		}
 		if tc.ContactAfter != nil {
-			actual.ContactAfter, _ = json.Marshal(session.Contact())
+			actual.ContactAfter, _ = jsonx.Marshal(session.Contact())
 		}
 		if tc.Templates != nil {
 			actual.Templates = flow.ExtractTemplates()
 		}
 		if tc.Inspection != nil {
-			actual.Inspection, _ = json.Marshal(flow.Inspect(sa))
+			actual.Inspection, _ = jsonx.Marshal(flow.Inspect(sa))
 		}
 
 		if !test.UpdateSnapshots {
@@ -666,7 +666,7 @@ func TestConstructors(t *testing.T) {
 
 	for _, tc := range tests {
 		// test marshaling the action
-		actualJSON, err := json.Marshal(tc.action)
+		actualJSON, err := jsonx.Marshal(tc.action)
 		assert.NoError(t, err)
 
 		test.AssertEqualJSON(t, json.RawMessage(tc.json), actualJSON, "new action produced unexpected JSON")

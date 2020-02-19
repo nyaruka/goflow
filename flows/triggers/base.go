@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 )
@@ -186,19 +187,19 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	e.TriggeredOn = t.triggeredOn
 
 	if t.environment != nil {
-		e.Environment, err = json.Marshal(t.environment)
+		e.Environment, err = jsonx.Marshal(t.environment)
 		if err != nil {
 			return err
 		}
 	}
 	if t.contact != nil {
-		e.Contact, err = json.Marshal(t.contact)
+		e.Contact, err = jsonx.Marshal(t.contact)
 		if err != nil {
 			return err
 		}
 	}
 	if t.params != nil {
-		e.Params, err = json.Marshal(t.params)
+		e.Params, err = jsonx.Marshal(t.params)
 		if err != nil {
 			return err
 		}

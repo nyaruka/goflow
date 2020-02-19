@@ -1,11 +1,11 @@
 package types_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -40,7 +40,7 @@ func TestXText(t *testing.T) {
 
 	// unmarshal
 	var val types.XText
-	err := json.Unmarshal([]byte(`"hello"`), &val)
+	err := jsonx.Unmarshal([]byte(`"hello"`), &val)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXText("hello"), val)
 }

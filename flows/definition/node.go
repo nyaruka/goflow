@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -189,14 +190,14 @@ func (n *node) MarshalJSON() ([]byte, error) {
 
 	e.Actions = make([]json.RawMessage, len(n.actions))
 	for i := range n.actions {
-		e.Actions[i], err = json.Marshal(n.actions[i])
+		e.Actions[i], err = jsonx.Marshal(n.actions[i])
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	if n.router != nil {
-		e.Router, err = json.Marshal(n.router)
+		e.Router, err = jsonx.Marshal(n.router)
 		if err != nil {
 			return nil, err
 		}
@@ -207,5 +208,5 @@ func (n *node) MarshalJSON() ([]byte, error) {
 		e.Exits[i] = n.exits[i].(*exit)
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }

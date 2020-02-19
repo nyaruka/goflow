@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -264,5 +265,5 @@ func (r *SwitchRouter) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }

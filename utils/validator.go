@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"reflect"
@@ -124,7 +123,7 @@ func Validate(obj interface{}) error {
 
 // UnmarshalAndValidate is a convenience function to unmarshal an object and validate it
 func UnmarshalAndValidate(data []byte, obj interface{}) error {
-	err := json.Unmarshal(data, obj)
+	err := jsonx.Unmarshal(data, obj)
 	if err != nil {
 		return err
 	}
