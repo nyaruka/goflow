@@ -110,19 +110,19 @@
 <h1 id="operators">Operators</h1>
 <div class="operators">
 <h2 class="item_title">
-<a name="operator:add" href="#operator:add">add</a>
+<a name="operator:add" href="#operator:add">+</a>
 </h2>
 <p>Adds two numbers.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb10-1"><a href="#cb10-1"></a>@(<span class="dv">2</span> + <span class="dv">3</span>) → <span class="dv">5</span></span>
 <span id="cb10-2"><a href="#cb10-2"></a>@(fields.age + <span class="dv">10</span>) → <span class="dv">33</span></span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:concatenate" href="#operator:concatenate">concatenate</a>
+<a name="operator:concatenate" href="#operator:concatenate">&amp;</a>
 </h2>
 <p>Joins two text values together.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb11-1"><a href="#cb11-1"></a>@(<span class="st">&quot;hello&quot;</span> &amp; <span class="st">&quot; &quot;</span> &amp; <span class="st">&quot;bar&quot;</span>) → hello bar</span>
 <span id="cb11-2"><a href="#cb11-2"></a>@(<span class="st">&quot;hello&quot;</span> &amp; null) → hello</span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:divide" href="#operator:divide">divide</a>
+<a name="operator:divide" href="#operator:divide">/</a>
 </h2>
 <p>Divides a number by another.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb12-1"><a href="#cb12-1"></a>@(<span class="dv">4</span> / <span class="dv">2</span>) → <span class="dv">2</span></span>
@@ -130,65 +130,65 @@
 <span id="cb12-3"><a href="#cb12-3"></a>@(<span class="dv">46</span> / fields.age) → <span class="dv">2</span></span>
 <span id="cb12-4"><a href="#cb12-4"></a>@(<span class="dv">3</span> / <span class="dv">0</span>) → ERROR</span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:equal" href="#operator:equal">equal</a>
+<a name="operator:equal" href="#operator:equal">=</a>
 </h2>
 <p>Returns true if two values are textually equal.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb13-1"><a href="#cb13-1"></a>@(<span class="st">&quot;hello&quot;</span> = <span class="st">&quot;hello&quot;</span>) → true</span>
 <span id="cb13-2"><a href="#cb13-2"></a>@(<span class="st">&quot;hello&quot;</span> = <span class="st">&quot;bar&quot;</span>) → false</span>
 <span id="cb13-3"><a href="#cb13-3"></a>@(<span class="dv">1</span> = <span class="dv">1</span>) → true</span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:exponent" href="#operator:exponent">exponent</a>
+<a name="operator:exponent" href="#operator:exponent">^</a>
 </h2>
 <p>Raises a number to the power of a another number.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb14-1"><a href="#cb14-1"></a>@(<span class="dv">2</span> ^ <span class="dv">8</span>) → <span class="dv">256</span></span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:greaterthan" href="#operator:greaterthan">greaterthan</a>
+<a name="operator:greaterthan" href="#operator:greaterthan">&gt;</a>
 </h2>
 <p>Returns true if the first number is greater than the second.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb15-1"><a href="#cb15-1"></a>@(<span class="dv">2</span> &gt; <span class="dv">3</span>) → false</span>
 <span id="cb15-2"><a href="#cb15-2"></a>@(<span class="dv">3</span> &gt; <span class="dv">3</span>) → false</span>
 <span id="cb15-3"><a href="#cb15-3"></a>@(<span class="dv">4</span> &gt; <span class="dv">3</span>) → true</span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:greaterthanorequal" href="#operator:greaterthanorequal">greaterthanorequal</a>
+<a name="operator:greaterthanorequal" href="#operator:greaterthanorequal">&gt;=</a>
 </h2>
 <p>Returns true if the first number is greater than or equal to the second.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb16-1"><a href="#cb16-1"></a>@(<span class="dv">2</span> &gt;= <span class="dv">3</span>) → false</span>
 <span id="cb16-2"><a href="#cb16-2"></a>@(<span class="dv">3</span> &gt;= <span class="dv">3</span>) → true</span>
 <span id="cb16-3"><a href="#cb16-3"></a>@(<span class="dv">4</span> &gt;= <span class="dv">3</span>) → true</span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:lessthan" href="#operator:lessthan">lessthan</a>
+<a name="operator:lessthan" href="#operator:lessthan">&lt;</a>
 </h2>
 <p>Returns true if the first number is less than the second.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb17-1"><a href="#cb17-1"></a>@(<span class="dv">2</span> &lt; <span class="dv">3</span>) → true</span>
 <span id="cb17-2"><a href="#cb17-2"></a>@(<span class="dv">3</span> &lt; <span class="dv">3</span>) → false</span>
 <span id="cb17-3"><a href="#cb17-3"></a>@(<span class="dv">4</span> &lt; <span class="dv">3</span>) → false</span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:lessthanorequal" href="#operator:lessthanorequal">lessthanorequal</a>
+<a name="operator:lessthanorequal" href="#operator:lessthanorequal">&lt;=</a>
 </h2>
 <p>Returns true if the first number is less than or equal to the second.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb18-1"><a href="#cb18-1"></a>@(<span class="dv">2</span> &lt;= <span class="dv">3</span>) → true</span>
 <span id="cb18-2"><a href="#cb18-2"></a>@(<span class="dv">3</span> &lt;= <span class="dv">3</span>) → true</span>
 <span id="cb18-3"><a href="#cb18-3"></a>@(<span class="dv">4</span> &lt;= <span class="dv">3</span>) → false</span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:multiply" href="#operator:multiply">multiply</a>
+<a name="operator:multiply" href="#operator:multiply">*</a>
 </h2>
 <p>Multiplies two numbers.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb19-1"><a href="#cb19-1"></a>@(<span class="dv">3</span> * <span class="dv">2</span>) → <span class="dv">6</span></span>
 <span id="cb19-2"><a href="#cb19-2"></a>@(fields.age * <span class="dv">3</span>) → <span class="dv">69</span></span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:negate" href="#operator:negate">negate</a>
+<a name="operator:negate" href="#operator:negate">- (unary)</a>
 </h2>
 <p>Negates a number</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb20-1"><a href="#cb20-1"></a>@(-fields.age) → <span class="dv">-23</span></span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:notequal" href="#operator:notequal">notequal</a>
+<a name="operator:notequal" href="#operator:notequal">!=</a>
 </h2>
 <p>Returns true if two values are textually not equal.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb21-1"><a href="#cb21-1"></a>@(<span class="st">&quot;hello&quot;</span> != <span class="st">&quot;hello&quot;</span>) → false</span>
 <span id="cb21-2"><a href="#cb21-2"></a>@(<span class="st">&quot;hello&quot;</span> != <span class="st">&quot;bar&quot;</span>) → true</span>
 <span id="cb21-3"><a href="#cb21-3"></a>@(<span class="dv">1</span> != <span class="dv">2</span>) → true</span></code></pre></div>
 <h2 class="item_title">
-<a name="operator:subtract" href="#operator:subtract">subtract</a>
+<a name="operator:subtract" href="#operator:subtract">- (binary)</a>
 </h2>
 <p>Subtracts two numbers.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb22-1"><a href="#cb22-1"></a>@(<span class="dv">3</span> - <span class="dv">2</span>) → <span class="dv">1</span></span>
