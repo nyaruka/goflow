@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -490,10 +491,10 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 
 	e.Events = make([]json.RawMessage, len(r.events))
 	for i := range r.events {
-		if e.Events[i], err = json.Marshal(r.events[i]); err != nil {
+		if e.Events[i], err = jsonx.Marshal(r.events[i]); err != nil {
 			return nil, errors.Wrapf(err, "unable to marshal event[type=%s]", r.events[i].Type())
 		}
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }

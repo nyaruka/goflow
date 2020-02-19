@@ -27,7 +27,7 @@ func AssertXEqual(t *testing.T, expected types.XValue, actual types.XValue, msgA
 // NormalizeJSON re-formats the given JSON
 func NormalizeJSON(data json.RawMessage) ([]byte, error) {
 	var asGeneric interface{}
-	if err := json.Unmarshal(data, &asGeneric); err != nil {
+	if err := jsonx.Unmarshal(data, &asGeneric); err != nil {
 		return nil, err
 	}
 	return jsonx.MarshalPretty(asGeneric)

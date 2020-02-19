@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 	"github.com/shopspring/decimal"
 
@@ -114,8 +115,8 @@ func (c *Contact) Clone() *Contact {
 
 // Equal returns true if this instance is equal to the given instance
 func (c *Contact) Equal(other *Contact) bool {
-	asJSON1, _ := json.Marshal(c)
-	asJSON2, _ := json.Marshal(other)
+	asJSON1, _ := jsonx.Marshal(c)
+	asJSON2, _ := jsonx.Marshal(other)
 	return string(asJSON1) == string(asJSON2)
 }
 
@@ -545,5 +546,5 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		}
 	}
 
-	return json.Marshal(ce)
+	return jsonx.Marshal(ce)
 }

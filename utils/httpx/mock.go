@@ -1,12 +1,12 @@
 package httpx
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
 
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/pkg/errors"
 )
 
@@ -59,11 +59,11 @@ func (r *MockRequestor) Clone() *MockRequestor {
 }
 
 func (r *MockRequestor) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&r.mocks)
+	return jsonx.Marshal(&r.mocks)
 }
 
 func (r *MockRequestor) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.mocks)
+	return jsonx.Unmarshal(data, &r.mocks)
 }
 
 var _ Requestor = (*MockRequestor)(nil)

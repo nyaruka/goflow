@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -69,7 +70,7 @@ func readChannelModifier(assets flows.SessionAssets, data json.RawMessage, missi
 }
 
 func (m *ChannelModifier) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&channelModifierEnvelope{
+	return jsonx.Marshal(&channelModifierEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Channel:       m.channel.Reference(),
 	})

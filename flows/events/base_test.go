@@ -19,6 +19,7 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 	"github.com/shopspring/decimal"
 
@@ -422,7 +423,7 @@ func TestEventMarshaling(t *testing.T) {
 	}
 
 	for _, tc := range eventTests {
-		eventJSON, err := json.Marshal(tc.event)
+		eventJSON, err := jsonx.Marshal(tc.event)
 		assert.NoError(t, err)
 
 		test.AssertEqualJSON(t, []byte(tc.marshaled), eventJSON, "event JSON mismatch")

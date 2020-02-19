@@ -17,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -44,7 +45,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 		Events        []json.RawMessage `json:"events"`
 	}{}
 
-	err = json.Unmarshal(testFile, &tests)
+	err = jsonx.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
@@ -70,16 +71,16 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 		modifier.Apply(envs.NewBuilder().Build(), sessionAssets, contact, eventLog.Log)
 
 		// check contact is in the expected state
-		contactJSON, _ := json.Marshal(contact)
+		contactJSON, _ := jsonx.Marshal(contact)
 		test.AssertEqualJSON(t, tc.ContactAfter, contactJSON, "contact mismatch in %s", testName)
 
 		// check events are what we expected
-		actualEventsJSON, _ := json.Marshal(eventLog.Events)
-		expectedEventsJSON, _ := json.Marshal(tc.Events)
+		actualEventsJSON, _ := jsonx.Marshal(eventLog.Events)
+		expectedEventsJSON, _ := jsonx.Marshal(tc.Events)
 		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
 
 		// try marshaling the modifier back to JSON
-		modifierJSON, err := json.Marshal(modifier)
+		modifierJSON, err := jsonx.Marshal(modifier)
 		require.NoError(t, err)
 		test.AssertEqualJSON(t, tc.Modifier, modifierJSON, "marshal mismatch in %s", testName)
 	}
@@ -168,7 +169,7 @@ func TestConstructors(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		modifierJSON, err := json.Marshal(tc.modifier)
+		modifierJSON, err := jsonx.Marshal(tc.modifier)
 		require.NoError(t, err)
 		test.AssertEqualJSON(t, []byte(tc.json), modifierJSON, "marshal mismatch for modifier %s", string(modifierJSON))
 	}

@@ -1,10 +1,9 @@
 package definition
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -50,5 +49,5 @@ func (e *exit) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON marshals this node exit into JSON
 func (e *exit) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&exitEnvelope{e.uuid, e.destination})
+	return jsonx.Marshal(&exitEnvelope{e.uuid, e.destination})
 }

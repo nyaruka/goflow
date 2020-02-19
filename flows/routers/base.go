@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -165,7 +166,7 @@ func (r *baseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categor
 
 		var extraJSON json.RawMessage
 		if extra != nil {
-			extraJSON, _ = json.Marshal(extra)
+			extraJSON, _ = jsonx.Marshal(extra)
 		}
 		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, dates.Now())
 		run.SaveResult(result)
@@ -226,7 +227,7 @@ func (r *baseRouter) marshal(e *baseRouterEnvelope) error {
 	var err error
 
 	if r.wait != nil {
-		e.Wait, err = json.Marshal(r.wait)
+		e.Wait, err = jsonx.Marshal(r.wait)
 		if err != nil {
 			return err
 		}

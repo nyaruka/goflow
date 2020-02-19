@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/inspect/issues"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
@@ -248,7 +249,7 @@ func ReadFlow(data json.RawMessage, migrationConfig *migrations.Config) (flows.F
 	}
 
 	header := &migrations.Header13{}
-	json.Unmarshal(data, header)
+	jsonx.Unmarshal(data, header)
 
 	if !IsVersionSupported(header.SpecVersion) {
 		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
@@ -292,5 +293,5 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		e.Nodes[i] = f.nodes[i].(*node)
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }

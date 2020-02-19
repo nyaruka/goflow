@@ -1,7 +1,6 @@
 package inspect_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
@@ -14,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -61,7 +61,7 @@ func TestDependencies(t *testing.T) {
 	require.NoError(t, err)
 
 	deps := inspect.NewDependencies(refs, sa)
-	depsJSON, _ := json.Marshal(deps)
+	depsJSON, _ := jsonx.Marshal(deps)
 	test.AssertEqualJSON(t, []byte(`[
 		{
 			"missing": true,

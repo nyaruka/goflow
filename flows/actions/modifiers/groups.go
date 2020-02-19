@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -121,7 +122,7 @@ func (m *GroupsModifier) MarshalJSON() ([]byte, error) {
 		groupRefs[i] = m.groups[i].Reference()
 	}
 
-	return json.Marshal(&groupsModifierEnvelope{
+	return jsonx.Marshal(&groupsModifierEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Groups:        groupRefs,
 		Modification:  m.modification,

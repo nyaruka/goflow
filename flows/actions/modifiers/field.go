@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -80,7 +81,7 @@ func readFieldModifier(assets flows.SessionAssets, data json.RawMessage, missing
 }
 
 func (m *FieldModifier) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&fieldModifierEnvelope{
+	return jsonx.Marshal(&fieldModifierEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Field:         m.field.Reference(),
 		Value:         m.value,

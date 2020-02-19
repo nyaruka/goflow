@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/buger/jsonparser"
 	"github.com/pkg/errors"
@@ -89,7 +90,7 @@ func ToXJSON(x XValue) (XText, XError) {
 		return XTextEmpty, x.(XError)
 	}
 
-	marshaled, err := json.Marshal(x)
+	marshaled, err := jsonx.Marshal(x)
 	if err != nil {
 		return XTextEmpty, NewXError(err)
 	}
