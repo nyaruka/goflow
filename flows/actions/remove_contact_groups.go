@@ -73,7 +73,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 			}
 		}
 	} else {
-		if groups, err = resolveGroups(run, a.Groups, true, logEvent); err != nil {
+		if groups, err = resolveGroups(run, a.Groups, logEvent); err != nil {
 			return err
 		}
 	}

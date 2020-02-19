@@ -47,8 +47,13 @@ func NewGroups(groups []*flows.Group, modification GroupsModification) *GroupsMo
 // Apply applies this modification to the given contact
 func (m *GroupsModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	diff := make([]*flows.Group, 0, len(m.groups))
+
 	if m.modification == GroupsAdd {
 		for _, group := range m.groups {
+			if group.IsDynamic() {
+				log(events.NewErrorf("can't add contacts to the dynamic group '%s'", group.Name()))
+				continue
+			}
 
 			// ignore group if contact is already in it
 			if contact.Groups().FindByUUID(group.UUID()) != nil {
@@ -63,8 +68,14 @@ func (m *GroupsModifier) Apply(env envs.Environment, assets flows.SessionAssets,
 		if len(diff) > 0 {
 			log(events.NewContactGroupsChanged(diff, nil))
 		}
+
 	} else if m.modification == GroupsRemove {
 		for _, group := range m.groups {
+			if group.IsDynamic() {
+				log(events.NewErrorf("can't remove contacts from the dynamic group '%s'", group.Name()))
+				continue
+			}
+
 			// ignore group if contact isn't actually in it
 			if contact.Groups().FindByUUID(group.UUID()) == nil {
 				continue

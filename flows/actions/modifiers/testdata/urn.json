@@ -11,26 +11,26 @@
         },
         "modifier": {
             "type": "urn",
-            "modification": "append",
-            "urn": "tel:+17012222222"
+            "urn": "tel:+17012222222",
+            "modification": "append"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17010000000",
                 "tel:+17012222222"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": [
             {
+                "type": "contact_urns_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "urns": [
                     "tel:+17010000000",
                     "tel:+17012222222"
-                ],
-                "type": "contact_urns_changed"
+                ]
             }
         ]
     },
@@ -46,26 +46,26 @@
         },
         "modifier": {
             "type": "urn",
-            "modification": "append",
-            "urn": "tel:+1 (701) 222 2222"
+            "urn": "tel:+1 (701) 222 2222",
+            "modification": "append"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17010000000",
                 "tel:+17012222222"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": [
             {
+                "type": "contact_urns_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "urns": [
                     "tel:+17010000000",
                     "tel:+17012222222"
-                ],
-                "type": "contact_urns_changed"
+                ]
             }
         ]
     },
@@ -82,17 +82,17 @@
         },
         "modifier": {
             "type": "urn",
-            "modification": "append",
-            "urn": "tel:+17012222222"
+            "urn": "tel:+17012222222",
+            "modification": "append"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17010000000",
                 "tel:+17012222222"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": []
     }

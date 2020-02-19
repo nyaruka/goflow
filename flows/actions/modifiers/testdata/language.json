@@ -15,29 +15,29 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "language": "fra",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
-                    "name": "Francophones",
-                    "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403"
+                    "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+                    "name": "Francophones"
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": [
             {
+                "type": "contact_language_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "language": "fra",
-                "type": "contact_language_changed"
+                "language": "fra"
             },
             {
+                "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "groups_added": [
                     {
-                        "name": "Francophones",
-                        "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403"
+                        "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+                        "name": "Francophones"
                     }
-                ],
-                "type": "contact_groups_changed"
+                ]
             }
         ]
     },
@@ -78,9 +78,9 @@
         },
         "events": [
             {
+                "type": "contact_language_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "language": "",
-                "type": "contact_language_changed"
+                "language": ""
             }
         ]
     }

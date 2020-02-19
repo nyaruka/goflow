@@ -29,6 +29,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -38,19 +39,18 @@
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers"
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": [
             {
+                "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "groups_added": [
                     {
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                         "name": "Testers"
                     }
-                ],
-                "type": "contact_groups_changed"
+                ]
             }
         ]
     },
@@ -88,14 +88,14 @@
         },
         "events": [
             {
+                "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "groups_removed": [
                     {
                         "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
                         "name": "Customers"
                     }
-                ],
-                "type": "contact_groups_changed"
+                ]
             }
         ]
     },
@@ -133,6 +133,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -142,9 +143,109 @@
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers"
                 }
+            ]
+        },
+        "events": []
+    },
+    {
+        "description": "error event if adding to group which is dynamic",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "groups": [],
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "groups",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "modification": "add"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ]
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "text": "can't add contacts to the dynamic group 'Males'"
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_added": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Testers"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "error event if removing from group which is dynamic",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
             ],
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
-        "events": []
+        "modifier": {
+            "type": "groups",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "modification": "remove"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "text": "can't remove contacts from the dynamic group 'Males'"
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_removed": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Testers"
+                    }
+                ]
+            }
+        ]
     }
 ]
