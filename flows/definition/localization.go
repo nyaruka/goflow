@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
@@ -81,7 +82,7 @@ func (l localization) GetTranslations(lang envs.Language) flows.Translations {
 // ReadLocalization reads entire localization flow segment
 func ReadLocalization(data json.RawMessage) (flows.Localization, error) {
 	translations := &localization{}
-	if err := json.Unmarshal(data, translations); err != nil {
+	if err := jsonx.Unmarshal(data, translations); err != nil {
 		return nil, err
 	}
 	return translations, nil

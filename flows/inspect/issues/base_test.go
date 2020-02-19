@@ -38,7 +38,7 @@ func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 		Issues json.RawMessage `json:"issues"`
 	}{}
 
-	err = json.Unmarshal(testFile, &tests)
+	err = jsonx.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
 	for i, tc := range tests {
@@ -54,7 +54,7 @@ func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 		}
 
 		info := flow.Inspect(sessionAssets)
-		issuesJSON, _ := json.Marshal(info.Issues)
+		issuesJSON, _ := jsonx.Marshal(info.Issues)
 
 		// clone test case and populate with actual values
 		actual := tc

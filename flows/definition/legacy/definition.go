@@ -14,6 +14,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/buger/jsonparser"
@@ -87,7 +88,7 @@ func (l *LabelReference) UnmarshalJSON(data []byte) error {
 	// label reference may be a string
 	if data[0] == '"' {
 		var nameExpression string
-		if err := json.Unmarshal(data, &nameExpression); err != nil {
+		if err := jsonx.Unmarshal(data, &nameExpression); err != nil {
 			return err
 		}
 
@@ -102,7 +103,7 @@ func (l *LabelReference) UnmarshalJSON(data []byte) error {
 
 	// or a JSON object with UUID/Name properties
 	var raw map[string]string
-	if err := json.Unmarshal(data, &raw); err != nil {
+	if err := jsonx.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
@@ -133,7 +134,7 @@ func (g *GroupReference) UnmarshalJSON(data []byte) error {
 	// group reference may be a string
 	if data[0] == '"' {
 		var nameExpression string
-		if err := json.Unmarshal(data, &nameExpression); err != nil {
+		if err := jsonx.Unmarshal(data, &nameExpression); err != nil {
 			return err
 		}
 
@@ -148,7 +149,7 @@ func (g *GroupReference) UnmarshalJSON(data []byte) error {
 
 	// or a JSON object with UUID/Name properties
 	var raw map[string]string
-	if err := json.Unmarshal(data, &raw); err != nil {
+	if err := jsonx.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
@@ -324,7 +325,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization migratedLo
 
 	case "email":
 		var msg string
-		err := json.Unmarshal(a.Msg, &msg)
+		err := jsonx.Unmarshal(a.Msg, &msg)
 		if err != nil {
 			return nil, err
 		}
@@ -379,7 +380,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization migratedLo
 		}
 
 		if a.Media != nil {
-			err := json.Unmarshal(a.Media, &media)
+			err := jsonx.Unmarshal(a.Media, &media)
 			if err != nil {
 				return nil, err
 			}
@@ -387,7 +388,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization migratedLo
 		if a.QuickReplies != nil {
 			legacyQuickReplies := make([]Translations, 0)
 
-			err := json.Unmarshal(a.QuickReplies, &legacyQuickReplies)
+			err := jsonx.Unmarshal(a.QuickReplies, &legacyQuickReplies)
 			if err != nil {
 				return nil, err
 			}
@@ -528,7 +529,7 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[uuids.UUID]boo
 	// load the config for this ruleset
 	var config RulesetConfig
 	if r.Config != nil {
-		err := json.Unmarshal(r.Config, &config)
+		err := jsonx.Unmarshal(r.Config, &config)
 		if err != nil {
 			return nil, "", nil, err
 		}
@@ -618,7 +619,7 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[uuids.UUID]boo
 		for _, rule := range r.Rules {
 			if rule.Test.Type == "timeout" {
 				test := timeoutTest{}
-				if err := json.Unmarshal(rule.Test.Data, &test); err != nil {
+				if err := jsonx.Unmarshal(rule.Test.Data, &test); err != nil {
 					return nil, "", nil, err
 				}
 				timeoutSeconds = 60 * test.Minutes
@@ -697,7 +698,7 @@ func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[uuids.UUID]boo
 			CurrencyCode string          `json:"currency_code"`
 			Amount       decimal.Decimal `json:"amount"`
 		}{}
-		if err := json.Unmarshal(r.Config, &countryConfigs); err != nil {
+		if err := jsonx.Unmarshal(r.Config, &countryConfigs); err != nil {
 			return nil, "", nil, err
 		}
 		currencyAmounts := make(map[string]decimal.Decimal, len(countryConfigs))
@@ -848,7 +849,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 	// tests against a single numeric value
 	case "eq", "gt", "gte", "lt", "lte":
 		test := numericTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -857,7 +858,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 
 	case "between":
 		test := betweenTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -870,7 +871,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 	// tests against a single localized string
 	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
 		test := localizedStringTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -889,7 +890,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 	// tests against a single date value
 	case "date_equal", "date_after", "date_before":
 		test := stringTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -913,19 +914,19 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 	// tests against a single group value
 	case "in_group":
 		test := groupTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		arguments = []string{string(test.Test.UUID), string(test.Test.Name)}
 
 	case "subflow":
 		newType = "has_only_text"
 		test := subflowTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.ExitType}
 
 	case "webhook_status":
 		newType = "has_only_text"
 		test := webhookTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
 			arguments = []string{"Success"}
 		} else {
@@ -935,7 +936,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 	case "airtime_status":
 		newType = "has_category"
 		test := airtimeTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		if test.ExitStatus == "success" {
 			arguments = []string{"Success"}
 		} else {
@@ -944,7 +945,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 
 	case "district":
 		test := stringTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -955,7 +956,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 
 	case "ward":
 		test := wardTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
+		err = jsonx.Unmarshal(r.Test.Data, &test)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -1115,7 +1116,7 @@ func (f *Flow) Migrate(baseMediaURL string) ([]byte, error) {
 		"_ui":                  ui,
 	}
 
-	return json.Marshal(migrated)
+	return jsonx.Marshal(migrated)
 }
 
 // IsPossibleDefinition peeks at the given flow definition to determine if it could be in legacy format

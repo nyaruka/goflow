@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -34,7 +35,7 @@ type ContactRefreshedEvent struct {
 
 // NewContactRefreshed creates a new contact changed event
 func NewContactRefreshed(contact *flows.Contact) *ContactRefreshedEvent {
-	marshalled, _ := json.Marshal(contact)
+	marshalled, _ := jsonx.Marshal(contact)
 	return &ContactRefreshedEvent{
 		baseEvent: newBaseEvent(TypeContactRefreshed),
 		Contact:   marshalled,

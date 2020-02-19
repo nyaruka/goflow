@@ -1,11 +1,11 @@
 package assets_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -123,8 +123,8 @@ func TestTypedReference(t *testing.T) {
 	ref := assets.NewGroupReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Bobs")
 	typed := assets.NewTypedReference(ref)
 
-	refJSON, _ := json.Marshal(ref)
-	typedJSON, _ := json.Marshal(typed)
+	refJSON, _ := jsonx.Marshal(ref)
+	typedJSON, _ := jsonx.Marshal(typed)
 
 	assert.Equal(t, `{"uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf","name":"Bobs"}`, string(refJSON))
 	assert.Equal(t, `{"uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf","name":"Bobs","type":"group"}`, string(typedJSON))

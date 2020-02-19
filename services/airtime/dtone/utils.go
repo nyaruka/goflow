@@ -1,9 +1,9 @@
 package dtone
 
 import (
-	"encoding/json"
 	"strings"
 
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/shopspring/decimal"
 )
 
@@ -13,7 +13,7 @@ type CSVStrings []string
 // UnmarshalJSON unmarshals this list from a CSV string
 func (l *CSVStrings) UnmarshalJSON(data []byte) error {
 	var asString string
-	if err := json.Unmarshal(data, &asString); err != nil {
+	if err := jsonx.Unmarshal(data, &asString); err != nil {
 		return err
 	}
 	*l = strings.Split(asString, ",")
@@ -26,7 +26,7 @@ type CSVDecimals []decimal.Decimal
 // UnmarshalJSON unmarshals this list from a CSV string
 func (l *CSVDecimals) UnmarshalJSON(data []byte) error {
 	var asStrings CSVStrings
-	if err := json.Unmarshal(data, &asStrings); err != nil {
+	if err := jsonx.Unmarshal(data, &asStrings); err != nil {
 		return err
 	}
 

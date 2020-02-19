@@ -1,12 +1,12 @@
 package flows_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -35,7 +35,7 @@ func TestNewResultSpecs(t *testing.T) {
 	}
 
 	specs := flows.NewResultSpecs(extracted)
-	specsJSON, _ := json.Marshal(specs)
+	specsJSON, _ := jsonx.Marshal(specs)
 
 	test.AssertEqualJSON(t, []byte(`[
 		{

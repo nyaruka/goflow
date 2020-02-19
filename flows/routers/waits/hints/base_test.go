@@ -1,10 +1,10 @@
 package hints_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -24,7 +24,7 @@ func TestReadHint(t *testing.T) {
 	assert.Equal(t, "image", hint.Type())
 
 	// marshal back to JSON
-	data, err := json.Marshal(hint)
+	data, err := jsonx.Marshal(hint)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"image"}`, string(data))
 
@@ -34,7 +34,7 @@ func TestReadHint(t *testing.T) {
 	assert.Equal(t, "video", hint.Type())
 
 	// marshal back to JSON
-	data, err = json.Marshal(hint)
+	data, err = jsonx.Marshal(hint)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"video"}`, string(data))
 
@@ -44,7 +44,7 @@ func TestReadHint(t *testing.T) {
 	assert.Equal(t, "audio", hint.Type())
 
 	// marshal back to JSON
-	data, err = json.Marshal(hint)
+	data, err = jsonx.Marshal(hint)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"audio"}`, string(data))
 
@@ -54,7 +54,7 @@ func TestReadHint(t *testing.T) {
 	assert.Equal(t, "location", hint.Type())
 
 	// marshal back to JSON
-	data, err = json.Marshal(hint)
+	data, err = jsonx.Marshal(hint)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"location"}`, string(data))
 
@@ -65,7 +65,7 @@ func TestReadHint(t *testing.T) {
 	assert.Equal(t, 1, *hint.(*hints.DigitsHint).Count)
 
 	// marshal back to JSON
-	data, err = json.Marshal(hint)
+	data, err = jsonx.Marshal(hint)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"digits","count":1}`, string(data))
 }

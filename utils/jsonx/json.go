@@ -48,10 +48,15 @@ func marshal(v interface{}, indent string) ([]byte, error) {
 	return data[0 : len(data)-1], nil
 }
 
+// Unmarshal is just a shortcut for json.Unmarshal so all calls can be made via the jsonx package
+func Unmarshal(data json.RawMessage, v interface{}) error {
+	return json.Unmarshal(data, v)
+}
+
 // UnmarshalArray unmarshals an array of objects from the given JSON
 func UnmarshalArray(data json.RawMessage) ([]json.RawMessage, error) {
 	var items []json.RawMessage
-	err := json.Unmarshal(data, &items)
+	err := Unmarshal(data, &items)
 	return items, err
 }
 
@@ -64,7 +69,7 @@ func UnmarshalWithLimit(reader io.ReadCloser, s interface{}, limit int64) error 
 	if err := reader.Close(); err != nil {
 		return err
 	}
-	return json.Unmarshal(body, &s)
+	return Unmarshal(body, &s)
 }
 
 // DecodeGeneric decodes the given JSON as a generic map or slice
