@@ -55,16 +55,24 @@ func TestContact(t *testing.T) {
 
 	contact.SetTimezone(env.Timezone())
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil))
-	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
+	contact.AddURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil)
+	contact.AddURN(urns.URN("twitter:joey"), nil)
+	contact.AddURN(urns.URN("whatsapp:235423721788"), nil)
 
 	assert.Equal(t, "Joe Bloggs", contact.Name())
 	assert.Equal(t, flows.ContactID(12345), contact.ID())
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, envs.Language("eng"), contact.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
-	assert.True(t, contact.HasURN("tel:+12024561111"))
-	assert.False(t, contact.HasURN("tel:+16300000000"))
+
+	assert.True(t, contact.HasURN("tel:+12024561111"))      // has URN
+	assert.True(t, contact.HasURN("tel:+120-2456-1111"))    // URN will be normalized
+	assert.True(t, contact.HasURN("whatsapp:235423721788")) // has URN
+	assert.False(t, contact.HasURN("tel:+16300000000"))     // doesn't have URN
+
+	assert.False(t, contact.RemoveURN("tel:+16300000000"))      // doesn't have URN
+	assert.True(t, contact.RemoveURN("whatsapp:235423721788"))  // did have URN
+	assert.False(t, contact.RemoveURN("whatsapp:235423721788")) // no longer has URN
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"ext":       nil,
@@ -118,7 +126,7 @@ func TestContactFormat(t *testing.T) {
 
 	// name takes precedence if set
 	contact := flows.NewEmptyContact(sa, "Joe", envs.NilLanguage, nil)
-	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
+	contact.AddURN(urns.URN("twitter:joey"), nil)
 	assert.Equal(t, "Joe", contact.Format(env))
 
 	// if not we fallback to URN
@@ -126,7 +134,7 @@ func TestContactFormat(t *testing.T) {
 		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, nil, time.Now(),
 		nil, nil, nil,
 	)
-	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
+	contact.AddURN(urns.URN("twitter:joey"), nil)
 	assert.Equal(t, "joey", contact.Format(env))
 
 	anonEnv := envs.NewBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
@@ -148,9 +156,9 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 
 	contact := flows.NewEmptyContact(sa, "Joe", envs.NilLanguage, nil)
-	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
+	contact.AddURN(urns.URN("twitter:joey"), nil)
+	contact.AddURN(urns.URN("tel:+12345678999"), nil)
+	contact.AddURN(urns.URN("tel:+18005555777"), nil)
 
 	contact.UpdatePreferredChannel(android)
 
@@ -199,15 +207,15 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies, broken}
 
 	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
+	contact.AddURN(urns.URN("tel:+12345678999"), nil)
 
 	memberships, errors := evaluateGroups(t, env, contact, groups, fieldSet)
 	assert.Equal(t, []*flows.Group{english}, memberships)
 	assert.Equal(t, []*flows.Group{broken}, errors)
 
 	contact.SetLanguage(envs.Language("spa"))
-	contact.AddURN(flows.NewContactURN(urns.URN("twitter:crazy_joe"), nil))
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
+	contact.AddURN(urns.URN("twitter:crazy_joe"), nil)
+	contact.AddURN(urns.URN("tel:+18005555777"), nil)
 
 	genderValue := contact.Fields().Parse(env, fieldSet, gender, "M")
 	contact.Fields().Set(gender, genderValue)
@@ -239,14 +247,14 @@ func TestReevaluateDynamicGroupsWithURNRedaction(t *testing.T) {
 	groups := []*flows.Group{males, tel1800, twitterCrazies}
 
 	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
+	contact.AddURN(urns.URN("tel:+12345678999"), nil)
 
 	memberships, errors := evaluateGroups(t, env, contact, groups, fieldSet)
 	assert.Equal(t, []*flows.Group{}, memberships)
 	assert.Equal(t, []*flows.Group{tel1800, twitterCrazies}, errors) // both groups with URN references error
 
-	contact.AddURN(flows.NewContactURN(urns.URN("twitter:crazy_joe"), nil))
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
+	contact.AddURN(urns.URN("twitter:crazy_joe"), nil)
+	contact.AddURN(urns.URN("tel:+18005555777"), nil)
 
 	genderValue := contact.Fields().Parse(env, fieldSet, gender, "M")
 	contact.Fields().Set(gender, genderValue)

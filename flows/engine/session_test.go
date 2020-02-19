@@ -753,7 +753,7 @@ func TestWaitTimeout(t *testing.T) {
 	require.NoError(t, err)
 
 	contact := flows.NewEmptyContact(sa, "Joe", "eng", nil)
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
+	contact.AddURN(urns.URN("tel:+18005555777"), nil)
 	trigger := triggers.NewManual(nil, flow.Reference(), contact, nil)
 
 	// create session
