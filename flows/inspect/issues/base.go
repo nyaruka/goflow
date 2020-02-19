@@ -1,6 +1,8 @@
 package issues
 
 import (
+	"sort"
+
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -59,6 +61,15 @@ func Check(sa flows.SessionAssets, flow flows.Flow, tpls []flows.ExtractedTempla
 	for _, fn := range RegisteredTypes {
 		fn(sa, flow, tpls, refs, report)
 	}
+
+	// sort issues by node order
+	nodeOrder := make(map[flows.NodeUUID]int, len(flow.Nodes()))
+	for i, node := range flow.Nodes() {
+		nodeOrder[node.UUID()] = i
+	}
+	sort.SliceStable(issues, func(i, j int) bool {
+		return nodeOrder[issues[i].NodeUUID()] < nodeOrder[issues[j].NodeUUID()]
+	})
 
 	return issues
 }
