@@ -47,7 +47,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 		Events       json.RawMessage `json:"events"`
 	}{}
 
-	err = json.Unmarshal(testFile, &tests)
+	err = jsonx.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
@@ -191,7 +191,7 @@ func TestConstructors(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		modifierJSON, err := json.Marshal(tc.modifier)
+		modifierJSON, err := jsonx.Marshal(tc.modifier)
 		require.NoError(t, err)
 		test.AssertEqualJSON(t, []byte(tc.json), modifierJSON, "marshal mismatch for modifier %s", string(modifierJSON))
 	}

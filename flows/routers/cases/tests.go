@@ -1,7 +1,6 @@
 package cases
 
 import (
-	"encoding/json"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -13,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/shopspring/decimal"
 )
@@ -981,7 +981,7 @@ func isDateGTTest(value dates.Date, test dates.Date) bool {
 
 // loads a result from an object
 func resultFromXObject(object *types.XObject) (*flows.Result, error) {
-	marshaled, _ := json.Marshal(object)
+	marshaled, _ := jsonx.Marshal(object)
 	result := &flows.Result{}
 	err := utils.UnmarshalAndValidate(marshaled, result)
 	return result, err
@@ -995,7 +995,7 @@ func hasIntent(resultObj *types.XObject, name types.XText, confidence types.XNum
 
 	// extra should contain the NLU classification
 	classification := &flows.Classification{}
-	json.Unmarshal(result.Extra, classification)
+	jsonx.Unmarshal(result.Extra, classification)
 
 	// which intents will be considered
 	intents := classification.Intents

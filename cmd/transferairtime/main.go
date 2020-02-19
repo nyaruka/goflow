@@ -3,7 +3,6 @@ package main
 // go install github.com/nyaruka/goflow/cmd/transferairtime
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"net/http"
@@ -18,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -130,7 +130,7 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 	}
 
 	for _, event := range sprint.Events() {
-		marshaled, _ := json.Marshal(event)
+		marshaled, _ := jsonx.Marshal(event)
 		fmt.Println(string(marshaled))
 	}
 

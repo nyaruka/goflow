@@ -1,10 +1,10 @@
 package types
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // XError is an error
@@ -41,7 +41,7 @@ func (x xerror) Render() string { return x.Native().Error() }
 func (x xerror) Format(env envs.Environment) string { return "" }
 
 // MarshalJSON converts this type to JSON
-func (x xerror) MarshalJSON() ([]byte, error) { return json.Marshal(nil) }
+func (x xerror) MarshalJSON() ([]byte, error) { return jsonx.Marshal(nil) }
 
 // String returns the native string representation of this type for debugging
 func (x xerror) String() string { return `XError("` + x.Native().Error() + `")` }

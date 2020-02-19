@@ -1,12 +1,11 @@
 package actions
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -60,7 +59,7 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return err
 	}
 
-	runSnapshot, err := json.Marshal(run.Snapshot())
+	runSnapshot, err := jsonx.Marshal(run.Snapshot())
 	if err != nil {
 		return err
 	}

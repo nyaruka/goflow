@@ -1,11 +1,11 @@
 package legacy_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -14,16 +14,16 @@ import (
 func TestTranslations(t *testing.T) {
 	// can unmarshall from a single string
 	translations := make(legacy.Translations)
-	json.Unmarshal([]byte(`"hello"`), &translations)
+	jsonx.Unmarshal([]byte(`"hello"`), &translations)
 	assert.Equal(t, legacy.Translations{"base": "hello"}, translations)
 
 	// or a map
 	translations = make(legacy.Translations)
-	json.Unmarshal([]byte(`{"eng": "hello", "fra": "bonjour"}`), &translations)
+	jsonx.Unmarshal([]byte(`{"eng": "hello", "fra": "bonjour"}`), &translations)
 	assert.Equal(t, legacy.Translations{"eng": "hello", "fra": "bonjour"}, translations)
 
 	// and back to JSON
-	data, err := json.Marshal(translations)
+	data, err := jsonx.Marshal(translations)
 	require.NoError(t, err)
 	assert.Equal(t, []byte(`{"eng":"hello","fra":"bonjour"}`), data)
 
@@ -42,20 +42,20 @@ func TestTranslations(t *testing.T) {
 func TestStringOrNumber(t *testing.T) {
 	// can unmarshall from a string
 	var s legacy.StringOrNumber
-	err := json.Unmarshal([]byte(`"123.45"`), &s)
+	err := jsonx.Unmarshal([]byte(`"123.45"`), &s)
 	assert.NoError(t, err)
 	assert.Equal(t, legacy.StringOrNumber("123.45"), s)
 
 	// or a floating point (JSON number type)
-	err = json.Unmarshal([]byte(`567.89`), &s)
+	err = jsonx.Unmarshal([]byte(`567.89`), &s)
 	assert.NoError(t, err)
 	assert.Equal(t, legacy.StringOrNumber("567.89"), s)
 
-	err = json.Unmarshal([]byte(`-567.89`), &s)
+	err = jsonx.Unmarshal([]byte(`-567.89`), &s)
 	assert.NoError(t, err)
 	assert.Equal(t, legacy.StringOrNumber("-567.89"), s)
 
-	err = json.Unmarshal([]byte(`[]`), &s)
+	err = jsonx.Unmarshal([]byte(`[]`), &s)
 	assert.EqualError(t, err, "expected string or number, not [")
 }
 
@@ -68,16 +68,16 @@ func (t *testObject) Type() string { return "second" }
 func TestTypedEnvelope(t *testing.T) {
 	// error if JSON is malformed
 	e := &legacy.TypedEnvelope{}
-	err := json.Unmarshal([]byte(`{`), e)
+	err := jsonx.Unmarshal([]byte(`{`), e)
 	assert.EqualError(t, err, "unexpected end of JSON input")
 
 	// error if we don't have a type field
 	e = &legacy.TypedEnvelope{}
-	err = json.Unmarshal([]byte(`{"foo":"bar","other":1234}`), e)
+	err = jsonx.Unmarshal([]byte(`{"foo":"bar","other":1234}`), e)
 	assert.EqualError(t, err, "field 'type' is required")
 
 	e = &legacy.TypedEnvelope{}
-	err = json.Unmarshal([]byte(`{"type":"first","foo":"bar","other":1234}`), e)
+	err = jsonx.Unmarshal([]byte(`{"type":"first","foo":"bar","other":1234}`), e)
 	assert.NoError(t, err)
 	assert.Equal(t, "first", e.Type)
 	assert.Equal(t, `{"type":"first","foo":"bar","other":1234}`, string(e.Data))

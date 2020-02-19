@@ -1,7 +1,6 @@
 package flows_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
@@ -14,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -299,7 +299,7 @@ func TestContactEqual(t *testing.T) {
 	assert.True(t, contact1.Equal(contact1.Clone()))
 
 	// marshal and unmarshal contact 1 again
-	contact1JSON, err = json.Marshal(contact1)
+	contact1JSON, err = jsonx.Marshal(contact1)
 	require.NoError(t, err)
 	contact1, err = flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
 	require.NoError(t, err)

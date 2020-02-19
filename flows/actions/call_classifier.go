@@ -1,11 +1,10 @@
 package actions
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -113,7 +112,7 @@ func (a *CallClassifierAction) saveSuccess(run flows.FlowRun, step flows.Step, i
 	if len(classification.Intents) > 0 {
 		value = classification.Intents[0].Name
 	}
-	extra, _ := json.Marshal(classification)
+	extra, _ := jsonx.Marshal(classification)
 
 	a.saveResult(run, step, a.ResultName, value, CategorySuccess, "", input, extra, logEvent)
 }

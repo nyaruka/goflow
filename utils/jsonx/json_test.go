@@ -16,9 +16,10 @@ func TestMarshaling(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, []byte(`null`), j)
 
-	j, err = jsonx.Marshal("Rwanda > Kigali")
+	// check that HTML entities aren't encoded
+	j, err = jsonx.Marshal("Rwanda > Kigali & Ecuador")
 	assert.NoError(t, err)
-	assert.Equal(t, []byte(`"Rwanda > Kigali"`), j)
+	assert.Equal(t, []byte(`"Rwanda > Kigali & Ecuador"`), j)
 
 	j, err = jsonx.Marshal(map[string]string{"foo": "bar"})
 	assert.NoError(t, err)

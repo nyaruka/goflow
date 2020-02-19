@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -148,5 +149,5 @@ func (t *MsgTrigger) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }

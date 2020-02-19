@@ -14,6 +14,7 @@ import (
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 )
@@ -576,29 +577,29 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	}
 	var err error
 
-	if e.Environment, err = json.Marshal(s.env); err != nil {
+	if e.Environment, err = jsonx.Marshal(s.env); err != nil {
 		return nil, err
 	}
 	if s.contact != nil {
 		var contactJSON json.RawMessage
-		contactJSON, err = json.Marshal(s.contact)
+		contactJSON, err = jsonx.Marshal(s.contact)
 		if err != nil {
 			return nil, err
 		}
 		e.Contact = &contactJSON
 	}
 	if s.trigger != nil {
-		if e.Trigger, err = json.Marshal(s.trigger); err != nil {
+		if e.Trigger, err = jsonx.Marshal(s.trigger); err != nil {
 			return nil, err
 		}
 	}
 	if s.wait != nil {
-		if e.Wait, err = json.Marshal(s.wait); err != nil {
+		if e.Wait, err = jsonx.Marshal(s.wait); err != nil {
 			return nil, err
 		}
 	}
 	if s.input != nil {
-		e.Input, err = json.Marshal(s.input)
+		e.Input, err = jsonx.Marshal(s.input)
 		if err != nil {
 			return nil, err
 		}
@@ -606,11 +607,11 @@ func (s *session) MarshalJSON() ([]byte, error) {
 
 	e.Runs = make([]json.RawMessage, len(s.runs))
 	for i := range s.runs {
-		e.Runs[i], err = json.Marshal(s.runs[i])
+		e.Runs[i], err = jsonx.Marshal(s.runs[i])
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }

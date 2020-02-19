@@ -187,7 +187,7 @@ func TestXValue(t *testing.T) {
 		formatted := types.Format(env, test.value)
 		asBool, _ := types.ToXBoolean(test.value)
 
-		assert.Equal(t, test.marshaled, string(marshaled), "json.Marshal mismatch for %T{%s}", test.value, test.value)
+		assert.Equal(t, test.marshaled, string(marshaled), "jsonx.Marshal mismatch for %T{%s}", test.value, test.value)
 		assert.Equal(t, types.NewXText(test.rendered), rendered, "ToXText mismatch for %T{%s}", test.value, test.value)
 		assert.Equal(t, test.formatted, formatted, "Format mismatch for %T{%s}", test.value, test.value)
 		assert.Equal(t, types.NewXBoolean(test.asBool), asBool, "ToXBool mismatch for %T{%s}", test.value, test.value)

@@ -1,12 +1,12 @@
 package httpx_test
 
 import (
-	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"testing"
 
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -39,7 +39,7 @@ func TestMockRequestor(t *testing.T) {
 	}`)
 
 	requestor2 := &httpx.MockRequestor{}
-	err := json.Unmarshal(asJSON, requestor2)
+	err := jsonx.Unmarshal(asJSON, requestor2)
 	assert.NoError(t, err)
 	assert.Equal(t, requestor1, requestor2)
 

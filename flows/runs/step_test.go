@@ -1,7 +1,6 @@
 package runs_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
@@ -11,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -41,7 +41,7 @@ func TestStep(t *testing.T) {
 	}), flows.Context(env, step))
 
 	// test marshaling
-	marshaled, err := json.Marshal(step)
+	marshaled, err := jsonx.Marshal(step)
 	require.NoError(t, err)
 	test.AssertEqualJSON(t, []byte(`{"arrived_on":"2018-10-26T14:50:31.23456789Z","node_uuid":"5fb4f555-7662-4c4c-8387-226e359526e4","uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), marshaled, "JSON mismatch")
 }

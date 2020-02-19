@@ -1,10 +1,10 @@
 package waits_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/flows/routers/waits"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -24,7 +24,7 @@ func TestReadWait(t *testing.T) {
 	assert.Equal(t, waits.TypeMsg, wait.Type())
 
 	// marshal back to JSON
-	data, err := json.Marshal(wait)
+	data, err := jsonx.Marshal(wait)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"msg"}`, string(data))
 
@@ -35,7 +35,7 @@ func TestReadWait(t *testing.T) {
 	assert.Equal(t, "image", wait.(*waits.MsgWait).Hint().Type())
 
 	// marshal back to JSON
-	data, err = json.Marshal(wait)
+	data, err = jsonx.Marshal(wait)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"msg","hint":{"type":"image"}}`, string(data))
 }

@@ -1,7 +1,6 @@
 package inputs_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
@@ -13,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -60,7 +60,7 @@ func TestMsgInput(t *testing.T) {
 	}), flows.Context(env, input))
 
 	// check marshaling to JSON
-	marshaled, err := json.Marshal(input)
+	marshaled, err := jsonx.Marshal(input)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"msg","uuid":"f51d7220-10b3-4faa-a91c-1ae70beaae3e","channel":{"uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d","name":"My Android Phone"},"created_on":"2018-10-22T16:12:30.000123456Z","urn":"tel:+1234567890","text":"Hi there!","attachments":["image/jpg:http://example.com/test.jpg","video/mp4:http://example.com/test.mp4"],"external_id":"ext12345"}`, string(marshaled))
 }

@@ -1,12 +1,12 @@
 package runs
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
@@ -75,7 +75,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 	var se stepEnvelope
 	var err error
 
-	err = json.Unmarshal(data, &se)
+	err = jsonx.Unmarshal(data, &se)
 	if err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON marshals this run step into JSON
 func (s *step) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&stepEnvelope{
+	return jsonx.Marshal(&stepEnvelope{
 		UUID:      s.stepUUID,
 		NodeUUID:  s.nodeUUID,
 		ExitUUID:  s.exitUUID,

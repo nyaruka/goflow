@@ -17,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -378,7 +379,7 @@ func TestLegacyTests(t *testing.T) {
 			}
 
 			migratedVars := tc.Context.Variables.Migrate().Context(env)
-			migratedVarsJSON, _ := json.Marshal(migratedVars)
+			migratedVarsJSON, _ := jsonx.Marshal(migratedVars)
 
 			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate, nil)
 

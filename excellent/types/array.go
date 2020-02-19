@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // XArray is an array of items.
@@ -98,7 +99,7 @@ func (x *XArray) MarshalJSON() ([]byte, error) {
 			marshaled[i] = json.RawMessage(asJSON.Native())
 		}
 	}
-	return json.Marshal(marshaled)
+	return jsonx.Marshal(marshaled)
 }
 
 // String returns the native string representation of this type
