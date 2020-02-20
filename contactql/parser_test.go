@@ -51,6 +51,11 @@ func TestParseQuery(t *testing.T) {
 		{`name != "felix"`, `name != "felix"`, "", envs.RedactionPolicyNone}, // is not equal to value
 		{`Name ~ ""`, ``, "value must contain a word of at least 2 characters long for a contains condition on name", envs.RedactionPolicyNone},
 
+		// explicit attribute conditions
+		{`language = spa`, `language = "spa"`, "", envs.RedactionPolicyNone},
+		{`Group IS U-Reporters`, `group = "U-Reporters"`, "", envs.RedactionPolicyNone},
+		{`CREATED_ON>27-01-2020`, `created_on > "27-01-2020"`, "", envs.RedactionPolicyNone},
+
 		// explicit conditions on URN
 		{`tel=""`, `tel = ""`, "", envs.RedactionPolicyNone},
 		{`tel!=""`, `tel != ""`, "", envs.RedactionPolicyNone},
@@ -111,6 +116,58 @@ func TestParseQuery(t *testing.T) {
 		{`xyz != ""`, "", "can't resolve 'xyz' to attribute, scheme or field", envs.RedactionPolicyNone},
 
 		{`name = "O\"Leary"`, `name = "O\"Leary"`, "", envs.RedactionPolicyNone}, // string unquoting
+
+		// = supported for everything
+		{`id = 02352`, `id = 02352`, "", envs.RedactionPolicyNone},
+		{`name = felix`, `name = "felix"`, "", envs.RedactionPolicyNone},
+		{`language = eng`, `language = "eng"`, "", envs.RedactionPolicyNone},
+		{`group = reporters`, `group = "reporters"`, "", envs.RedactionPolicyNone},
+		{`created_on = 20-02-2020`, `created_on = "20-02-2020"`, "", envs.RedactionPolicyNone},
+		{`tel = 02352`, `tel = 02352`, "", envs.RedactionPolicyNone},
+		{`urn = 02352`, `urn = 02352`, "", envs.RedactionPolicyNone},
+		{`age = 18`, `age = 18`, "", envs.RedactionPolicyNone},
+		{`gender = male`, `gender = "male"`, "", envs.RedactionPolicyNone},
+		{`dob = 20-02-2020`, `dob = "20-02-2020"`, "", envs.RedactionPolicyNone},
+		{`state = Pichincha`, `state = "Pichincha"`, "", envs.RedactionPolicyNone},
+
+		// != supported for everything
+		{`id != 02352`, `id != 02352`, "", envs.RedactionPolicyNone},
+		{`name != felix`, `name != "felix"`, "", envs.RedactionPolicyNone},
+		{`language != eng`, `language != "eng"`, "", envs.RedactionPolicyNone},
+		{`group != reporters`, `group != "reporters"`, "", envs.RedactionPolicyNone},
+		{`created_on != 20-02-2020`, `created_on != "20-02-2020"`, "", envs.RedactionPolicyNone},
+		{`tel != 02352`, `tel != 02352`, "", envs.RedactionPolicyNone},
+		{`urn != 02352`, `urn != 02352`, "", envs.RedactionPolicyNone},
+		{`age != 18`, `age != 18`, "", envs.RedactionPolicyNone},
+		{`gender != male`, `gender != "male"`, "", envs.RedactionPolicyNone},
+		{`dob != 20-02-2020`, `dob != "20-02-2020"`, "", envs.RedactionPolicyNone},
+		{`state != Pichincha`, `state != "Pichincha"`, "", envs.RedactionPolicyNone},
+
+		// ~ only supported for name and URNs
+		{`id ~ 02352`, ``, "contains conditions can only be used with name or URN values", envs.RedactionPolicyNone},
+		{`name ~ felix`, `name ~ "felix"`, "", envs.RedactionPolicyNone},
+		{`language ~ eng`, ``, "contains conditions can only be used with name or URN values", envs.RedactionPolicyNone},
+		{`group ~ porters`, ``, "contains conditions can only be used with name or URN values", envs.RedactionPolicyNone},
+		{`created_on ~ 2018`, ``, "contains conditions can only be used with name or URN values", envs.RedactionPolicyNone},
+		{`tel ~ 02352`, `tel ~ 02352`, "", envs.RedactionPolicyNone},
+		{`urn ~ 02352`, `urn ~ 02352`, "", envs.RedactionPolicyNone},
+		{`age ~ 18`, ``, "contains conditions can only be used with name or URN values", envs.RedactionPolicyNone},
+		{`gender ~ mal`, ``, "contains conditions can only be used with name or URN values", envs.RedactionPolicyNone},
+		{`dob ~ 20-02-2020`, ``, "contains conditions can only be used with name or URN values", envs.RedactionPolicyNone},
+		{`state ~ Pichincha`, ``, "contains conditions can only be used with name or URN values", envs.RedactionPolicyNone},
+
+		// > >= < <= only supported for numeric or date fields
+		{`id > 02352`, ``, "comparisons with > can only be used with date and number fields", envs.RedactionPolicyNone},
+		{`name > felix`, ``, "comparisons with > can only be used with date and number fields", envs.RedactionPolicyNone},
+		{`language > eng`, ``, "comparisons with > can only be used with date and number fields", envs.RedactionPolicyNone},
+		{`group > reporters`, ``, "comparisons with > can only be used with date and number fields", envs.RedactionPolicyNone},
+		{`created_on > 20-02-2020`, `created_on > "20-02-2020"`, "", envs.RedactionPolicyNone},
+		{`tel > 02352`, ``, "comparisons with > can only be used with date and number fields", envs.RedactionPolicyNone},
+		{`urn > 02352`, ``, "comparisons with > can only be used with date and number fields", envs.RedactionPolicyNone},
+		{`age > 18`, `age > 18`, "", envs.RedactionPolicyNone},
+		{`gender > male`, ``, "comparisons with > can only be used with date and number fields", envs.RedactionPolicyNone},
+		{`dob > 20-02-2020`, `dob > "20-02-2020"`, "", envs.RedactionPolicyNone},
+		{`state > Pichincha`, ``, "comparisons with > can only be used with date and number fields", envs.RedactionPolicyNone},
 	}
 
 	fields := map[string]assets.Field{

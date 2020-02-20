@@ -329,9 +329,17 @@ func TestContactQuery(t *testing.T) {
 		"fields": {
 			"gender": {"text": "Male"}
 		},
+		"groups": [
+			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+        	{"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
+		],
 		"language": "eng",
 		"timezone": "America/Guayaquil",
-		"urns": ["tel:+12065551212", "twitter:ewok"],
+		"urns": [
+			"tel:+12065551212", 
+			"tel:+12065551313", 
+			"twitter:ewok"
+		],
 		"created_on": "2020-01-24T13:24:30.000000000-00:00"
 	}`)
 
@@ -364,6 +372,7 @@ func TestContactQuery(t *testing.T) {
 		{`created_on > 26-01-2020`, false},
 
 		{`tel = +12065551212`, true},
+		{`tel = +12065551313`, true},
 		{`tel = +13065551212`, false},
 		{`tel ~ 555`, true},
 		{`tel ~ 666`, false},
@@ -377,8 +386,14 @@ func TestContactQuery(t *testing.T) {
 		{`urn = +12065551212`, true},
 		{`urn = ewok`, true},
 		{`urn = +13065551212`, false},
+		{`urn != +13065551212`, true},
 		{`urn ~ 555`, true},
 		{`urn ~ 666`, false},
+
+		{`group = testers`, true},
+		{`group != testers`, false},
+		{`group = spammers`, false},
+		{`group != spammers`, true},
 	}
 
 	for _, tc := range testCases {

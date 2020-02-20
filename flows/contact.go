@@ -409,6 +409,12 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 				vals[i] = urn.URN().Path()
 			}
 			return vals
+		case contactql.AttributeGroup:
+			vals := make([]interface{}, c.Groups().Count())
+			for i, group := range c.Groups().All() {
+				vals[i] = group.Name()
+			}
+			return vals
 		case contactql.AttributeCreatedOn:
 			return []interface{}{c.createdOn}
 		default:

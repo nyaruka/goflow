@@ -31,14 +31,16 @@ const (
 	AttributeName      = "name"
 	AttributeLanguage  = "language"
 	AttributeURN       = "urn"
+	AttributeGroup     = "group"
 	AttributeCreatedOn = "created_on"
 )
 
 var attributes = map[string]assets.FieldType{
-	AttributeID:        assets.FieldTypeNumber,
+	AttributeID:        assets.FieldTypeText,
 	AttributeName:      assets.FieldTypeText,
 	AttributeLanguage:  assets.FieldTypeText,
 	AttributeURN:       assets.FieldTypeText,
+	AttributeGroup:     assets.FieldTypeText,
 	AttributeCreatedOn: assets.FieldTypeDatetime,
 }
 
