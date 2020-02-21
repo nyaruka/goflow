@@ -7,8 +7,6 @@ import (
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-
-	"github.com/pkg/errors"
 )
 
 // Group represents a grouping of contacts. It can be static (contacts are added and removed manually through
@@ -44,7 +42,7 @@ func (g *Group) IsDynamic() bool { return g.Query() != "" }
 // CheckDynamicMembership returns whether the given contact belongs in this dynamic group
 func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact, fields *FieldAssets) (bool, error) {
 	if !g.IsDynamic() {
-		return false, errors.Errorf("can't check membership on a non-dynamic group")
+		panic("can't check membership on a non-dynamic group")
 	}
 	parsedQuery, err := g.parsedQuery(env, fields)
 	if err != nil {

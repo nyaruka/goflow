@@ -35,14 +35,6 @@ func LoadFlowFromAssets(path string, uuid assets.FlowUUID) (flows.Flow, error) {
 	return sa.Flows().Get(uuid)
 }
 
-func NewField(key string, name string, valueType assets.FieldType) *flows.Field {
-	return flows.NewField(types.NewField(assets.FieldUUID(uuids.New()), key, name, valueType))
-}
-
-func NewGroup(name string, query string) *flows.Group {
-	return flows.NewGroup(types.NewGroup(assets.GroupUUID(uuids.New()), name, query))
-}
-
 func NewChannel(name string, address string, schemes []string, roles []assets.ChannelRole, parent *assets.ChannelReference) *flows.Channel {
 	return flows.NewChannel(types.NewChannel(assets.ChannelUUID(uuids.New()), name, address, schemes, roles, parent))
 }

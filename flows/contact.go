@@ -358,7 +358,7 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *GroupAssets, allFields *FieldAssets) ([]*Group, []*Group, []error) {
 	added := make([]*Group, 0)
 	removed := make([]*Group, 0)
-	errors := make([]error, 0)
+	errs := make([]error, 0)
 
 	for _, group := range allGroups.All() {
 		if !group.IsDynamic() {
@@ -367,8 +367,10 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *Group
 
 		qualifies, err := group.CheckDynamicMembership(env, c, allFields)
 		if err != nil {
-			errors = append(errors, err)
-		} else if qualifies {
+			errs = append(errs, errors.Wrapf(err, "unable to re-evaluate membership of group '%s'", group.Name()))
+		}
+
+		if qualifies {
 			if c.groups.Add(group) {
 				added = append(added, group)
 			}
@@ -379,7 +381,7 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment, allGroups *Group
 		}
 	}
 
-	return added, removed, errors
+	return added, removed, errs
 }
 
 // QueryProperty resolves a contact query search key for this contact
