@@ -353,10 +353,10 @@ func TestContactQuery(t *testing.T) {
 		{`name = "Ben Haggerty"`, true},
 		{`name = "Joe X"`, false},
 		{`name != "Joe X"`, true},
-		{`name != ""`, true},
-		{`name = ""`, false},
 		{`name ~ Ben`, true},
 		{`name ~ Joe`, false},
+		{`name = ""`, false},
+		{`name != ""`, true},
 
 		{`id = 1234567`, true},
 		{`id = 5678889`, false},
@@ -376,12 +376,21 @@ func TestContactQuery(t *testing.T) {
 		{`tel = +13065551212`, false},
 		{`tel ~ 555`, true},
 		{`tel ~ 666`, false},
+		{`tel = ""`, false},
+		{`tel != ""`, true},
 
 		{`twitter = ewok`, true},
 		{`twitter = nicp`, false},
 		{`twitter ~ wok`, true},
 		{`twitter ~ EWO`, true},
 		{`twitter ~ ijk`, false},
+		{`twitter = ""`, false},
+		{`twitter != ""`, true},
+
+		{`viber = ewok`, false},
+		{`viber ~ wok`, false},
+		{`viber = ""`, true},
+		{`viber != ""`, false},
 
 		{`urn = +12065551212`, true},
 		{`urn = ewok`, true},
@@ -389,11 +398,15 @@ func TestContactQuery(t *testing.T) {
 		{`urn != +13065551212`, true},
 		{`urn ~ 555`, true},
 		{`urn ~ 666`, false},
+		{`urn = ""`, false},
+		{`urn != ""`, true},
 
 		{`group = testers`, true},
 		{`group != testers`, false},
 		{`group = spammers`, false},
 		{`group != spammers`, true},
+		{`group = ""`, false},
+		{`group != ""`, true},
 	}
 
 	for _, tc := range testCases {
