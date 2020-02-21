@@ -40,7 +40,7 @@ func TestMigrateToVersion(t *testing.T) {
 			Migrated    json.RawMessage `json:"migrated"`
 		}{}
 
-		err = json.Unmarshal(testsJSON, &tests)
+		err = jsonx.Unmarshal(testsJSON, &tests)
 		require.NoError(t, err, "unable to read tests for version %s", version)
 
 		for _, tc := range tests {
@@ -172,7 +172,7 @@ func TestClone(t *testing.T) {
 			"2aad21f6-30b7-42c5-bd7f-1b720c154817": "cd8a68c0-6673-4a02-98a0-7fb3ac788860", // group used in has_group test
 		}
 
-		flowJSON, err := json.Marshal(flow)
+		flowJSON, err := jsonx.Marshal(flow)
 		require.NoError(t, err)
 
 		cloneJSON, err := migrations.Clone(flowJSON, depMappings)

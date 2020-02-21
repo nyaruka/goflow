@@ -213,7 +213,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flow
 	}
 
 	// resolve group references
-	groups, err := resolveGroups(run, a.Groups, false, logEvent)
+	groups, err := resolveGroups(run, a.Groups, logEvent)
 	if err != nil {
 		return nil, nil, "", nil, err
 	}
@@ -269,7 +269,7 @@ type createMsgAction struct {
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {
+func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, logEvent flows.EventCallback) ([]*flows.Group, error) {
 	groupSet := run.Session().Assets().Groups()
 	groups := make([]*flows.Group, 0, len(references))
 
@@ -297,11 +297,7 @@ func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, stati
 		}
 
 		if group != nil {
-			if staticOnly && group.IsDynamic() {
-				logEvent(events.NewErrorf("can't add or remove contacts from a dynamic group '%s'", group.Name()))
-			} else {
-				groups = append(groups, group)
-			}
+			groups = append(groups, group)
 		}
 	}
 

@@ -227,7 +227,7 @@ func TestFlows(t *testing.T) {
 		require.NoError(t, err, "error reading output file %s", tc.outputFile)
 
 		flowTest := &FlowTest{}
-		err = json.Unmarshal(json.RawMessage(testJSON), &flowTest)
+		err = jsonx.Unmarshal(json.RawMessage(testJSON), &flowTest)
 		require.NoError(t, err, "error unmarshalling output file %s", tc.outputFile)
 
 		if flowTest.HTTPMocks != nil {
@@ -271,7 +271,7 @@ func TestFlows(t *testing.T) {
 			for i, actual := range runResult.outputs {
 				// unmarshal our expected outputsinto session+events
 				expected := &Output{}
-				err := json.Unmarshal(flowTest.Outputs[i], expected)
+				err := jsonx.Unmarshal(flowTest.Outputs[i], expected)
 				require.NoError(t, err, "error unmarshalling output")
 
 				// first the session
@@ -299,7 +299,7 @@ func BenchmarkFlows(b *testing.B) {
 			require.NoError(b, err, "error reading output file %s", tc.outputFile)
 
 			flowTest := &FlowTest{}
-			err = json.Unmarshal(json.RawMessage(testJSON), &flowTest)
+			err = jsonx.Unmarshal(json.RawMessage(testJSON), &flowTest)
 			require.NoError(b, err, "error unmarshalling output file %s", tc.outputFile)
 
 			_, err = runFlow(tc.assetsFile, flowTest.Trigger, flowTest.Resumes)

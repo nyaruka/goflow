@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 	"github.com/shopspring/decimal"
 
@@ -45,20 +46,18 @@ func NewContact(
 	timezone *time.Location,
 	createdOn time.Time,
 	urns []urns.URN,
-	groups []assets.Group,
-	fields map[string]*Value) (*Contact, error) {
+	groups []*assets.GroupReference,
+	fields map[string]*Value,
+	missing assets.MissingCallback) (*Contact, error) {
 
-	urnList, err := ReadURNList(sa, urns, assets.IgnoreMissing)
+	urnList, err := ReadURNList(sa, urns, missing)
 	if err != nil {
 		return nil, err
 	}
 
-	groupList, err := NewGroupListFromAssets(sa, groups)
-	if err != nil {
-		return nil, err
-	}
+	groupList := NewGroupList(sa, groups, missing)
 
-	fieldValues, err := NewFieldValues(sa, fields, assets.IgnoreMissing)
+	fieldValues, err := NewFieldValues(sa, fields, missing)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +85,7 @@ func NewEmptyContact(sa SessionAssets, name string, language envs.Language, time
 		timezone:  timezone,
 		createdOn: dates.Now(),
 		urns:      URNList{},
-		groups:    NewGroupList([]*Group{}),
+		groups:    NewGroupList(sa, nil, assets.IgnoreMissing),
 		fields:    make(FieldValues),
 		assets:    sa,
 	}
@@ -114,8 +113,8 @@ func (c *Contact) Clone() *Contact {
 
 // Equal returns true if this instance is equal to the given instance
 func (c *Contact) Equal(other *Contact) bool {
-	asJSON1, _ := json.Marshal(c)
-	asJSON2, _ := json.Marshal(other)
+	asJSON1, _ := jsonx.Marshal(c)
+	asJSON2, _ := jsonx.Marshal(other)
 	return string(asJSON1) == string(asJSON2)
 }
 
@@ -157,12 +156,29 @@ func (c *Contact) Name() string { return c.name }
 func (c *Contact) URNs() URNList { return c.urns }
 
 // AddURN adds a new URN to this contact
-func (c *Contact) AddURN(urn *ContactURN) bool {
-	if c.HasURN(urn.URN()) {
+func (c *Contact) AddURN(urn urns.URN, channel *Channel) bool {
+	if c.HasURN(urn) {
 		return false
 	}
 
-	c.urns = append(c.urns, urn)
+	c.urns = append(c.urns, NewContactURN(urn, channel))
+	return true
+}
+
+// RemoveURN adds a new URN to this contact
+func (c *Contact) RemoveURN(urn urns.URN) bool {
+	if !c.HasURN(urn) {
+		return false
+	}
+
+	newURNs := make([]*ContactURN, 0, len(c.urns)-1)
+	for _, u := range c.urns {
+		if u.URN().Identity() != urn.Identity() {
+			newURNs = append(newURNs, u)
+		}
+	}
+
+	c.urns = URNList(newURNs)
 	return true
 }
 
@@ -391,6 +407,12 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 				vals[i] = urn.URN().Path()
 			}
 			return vals
+		case contactql.AttributeGroup:
+			vals := make([]interface{}, c.Groups().Count())
+			for i, group := range c.Groups().All() {
+				vals[i] = group.Name()
+			}
+			return vals
 		case contactql.AttributeCreatedOn:
 			return []interface{}{c.createdOn}
 		default:
@@ -496,20 +518,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		}
 	}
 
-	if envelope.Groups == nil {
-		c.groups = NewGroupList([]*Group{})
-	} else {
-		groups := make([]*Group, 0, len(envelope.Groups))
-		for _, g := range envelope.Groups {
-			group := sa.Groups().Get(g.UUID)
-			if group == nil {
-				missing(g, nil)
-			} else {
-				groups = append(groups, group)
-			}
-		}
-		c.groups = NewGroupList(groups)
-	}
+	c.groups = NewGroupList(sa, envelope.Groups, missing)
 
 	if c.fields, err = NewFieldValues(sa, envelope.Fields, missing); err != nil {
 		return nil, errors.Wrap(err, "error reading fields")
@@ -545,5 +554,5 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		}
 	}
 
-	return json.Marshal(ce)
+	return jsonx.Marshal(ce)
 }

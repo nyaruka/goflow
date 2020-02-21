@@ -1,13 +1,13 @@
 package types
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // XDateTime is a datetime value.
@@ -110,7 +110,7 @@ func (x XDateTime) Compare(other XDateTime) int {
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XDateTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(dates.FormatISO(x.Native()))
+	return jsonx.Marshal(dates.FormatISO(x.Native()))
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled

@@ -1,13 +1,13 @@
 package types_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -59,12 +59,12 @@ func TestXDateTime(t *testing.T) {
 
 	// test unmarshaling
 	var date types.XDateTime
-	err = json.Unmarshal([]byte(`"2018-04-09T17:01:30Z"`), &date)
+	err = jsonx.Unmarshal([]byte(`"2018-04-09T17:01:30Z"`), &date)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), date)
 
 	// test marshaling
-	data, err := json.Marshal(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)))
+	data, err := jsonx.Marshal(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)))
 	assert.NoError(t, err)
 	assert.Equal(t, `"2018-04-09T17:01:30.000000Z"`, string(data))
 }

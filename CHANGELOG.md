@@ -1,3 +1,10 @@
+v0.74.0
+----------
+ * Use jsonx functions for all JSON marshal/unmarshal
+ * Add support for removing a URN to the urns modifier
+ * Groups modifier should log errors for dynamic groups
+ * Rename snapshot flag to -update
+
 v0.73.0
 ----------
  * Include translation language with missing dependency issues

@@ -142,7 +142,7 @@ Is a time of day.
 # Operators
 
 <div class="operators">
-<h2 class="item_title"><a name="operator:add" href="#operator:add">add</a></h2>
+<h2 class="item_title"><a name="operator:add" href="#operator:add">+</a></h2>
 
 Adds two numbers.
 
@@ -152,7 +152,7 @@ Adds two numbers.
 @(fields.age + 10) → 33
 ```
 
-<h2 class="item_title"><a name="operator:concatenate" href="#operator:concatenate">concatenate</a></h2>
+<h2 class="item_title"><a name="operator:concatenate" href="#operator:concatenate">&</a></h2>
 
 Joins two text values together.
 
@@ -162,7 +162,7 @@ Joins two text values together.
 @("hello" & null) → hello
 ```
 
-<h2 class="item_title"><a name="operator:divide" href="#operator:divide">divide</a></h2>
+<h2 class="item_title"><a name="operator:divide" href="#operator:divide">/</a></h2>
 
 Divides a number by another.
 
@@ -174,7 +174,7 @@ Divides a number by another.
 @(3 / 0) → ERROR
 ```
 
-<h2 class="item_title"><a name="operator:equal" href="#operator:equal">equal</a></h2>
+<h2 class="item_title"><a name="operator:equal" href="#operator:equal">=</a></h2>
 
 Returns true if two values are textually equal.
 
@@ -185,7 +185,7 @@ Returns true if two values are textually equal.
 @(1 = 1) → true
 ```
 
-<h2 class="item_title"><a name="operator:exponent" href="#operator:exponent">exponent</a></h2>
+<h2 class="item_title"><a name="operator:exponent" href="#operator:exponent">^</a></h2>
 
 Raises a number to the power of a another number.
 
@@ -194,7 +194,7 @@ Raises a number to the power of a another number.
 @(2 ^ 8) → 256
 ```
 
-<h2 class="item_title"><a name="operator:greaterthan" href="#operator:greaterthan">greaterthan</a></h2>
+<h2 class="item_title"><a name="operator:greaterthan" href="#operator:greaterthan">></a></h2>
 
 Returns true if the first number is greater than the second.
 
@@ -205,7 +205,7 @@ Returns true if the first number is greater than the second.
 @(4 > 3) → true
 ```
 
-<h2 class="item_title"><a name="operator:greaterthanorequal" href="#operator:greaterthanorequal">greaterthanorequal</a></h2>
+<h2 class="item_title"><a name="operator:greaterthanorequal" href="#operator:greaterthanorequal">>=</a></h2>
 
 Returns true if the first number is greater than or equal to the second.
 
@@ -216,7 +216,7 @@ Returns true if the first number is greater than or equal to the second.
 @(4 >= 3) → true
 ```
 
-<h2 class="item_title"><a name="operator:lessthan" href="#operator:lessthan">lessthan</a></h2>
+<h2 class="item_title"><a name="operator:lessthan" href="#operator:lessthan"><</a></h2>
 
 Returns true if the first number is less than the second.
 
@@ -227,7 +227,7 @@ Returns true if the first number is less than the second.
 @(4 < 3) → false
 ```
 
-<h2 class="item_title"><a name="operator:lessthanorequal" href="#operator:lessthanorequal">lessthanorequal</a></h2>
+<h2 class="item_title"><a name="operator:lessthanorequal" href="#operator:lessthanorequal"><=</a></h2>
 
 Returns true if the first number is less than or equal to the second.
 
@@ -238,7 +238,7 @@ Returns true if the first number is less than or equal to the second.
 @(4 <= 3) → false
 ```
 
-<h2 class="item_title"><a name="operator:multiply" href="#operator:multiply">multiply</a></h2>
+<h2 class="item_title"><a name="operator:multiply" href="#operator:multiply">*</a></h2>
 
 Multiplies two numbers.
 
@@ -248,7 +248,7 @@ Multiplies two numbers.
 @(fields.age * 3) → 69
 ```
 
-<h2 class="item_title"><a name="operator:negate" href="#operator:negate">negate</a></h2>
+<h2 class="item_title"><a name="operator:negate" href="#operator:negate">- (unary)</a></h2>
 
 Negates a number
 
@@ -257,7 +257,7 @@ Negates a number
 @(-fields.age) → -23
 ```
 
-<h2 class="item_title"><a name="operator:notequal" href="#operator:notequal">notequal</a></h2>
+<h2 class="item_title"><a name="operator:notequal" href="#operator:notequal">!=</a></h2>
 
 Returns true if two values are textually not equal.
 
@@ -268,7 +268,7 @@ Returns true if two values are textually not equal.
 @(1 != 2) → true
 ```
 
-<h2 class="item_title"><a name="operator:subtract" href="#operator:subtract">subtract</a></h2>
+<h2 class="item_title"><a name="operator:subtract" href="#operator:subtract">- (binary)</a></h2>
 
 Subtracts two numbers.
 

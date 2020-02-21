@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/buger/jsonparser"
@@ -132,7 +133,7 @@ func TestFlowMigration(t *testing.T) {
 	require.NoError(t, err)
 
 	var tests []FlowMigrationTest
-	err = json.Unmarshal(data, &tests)
+	err = jsonx.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
@@ -152,7 +153,7 @@ func TestActionMigration(t *testing.T) {
 	require.NoError(t, err)
 
 	var tests []ActionMigrationTest
-	err = json.Unmarshal(data, &tests)
+	err = jsonx.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
 	for _, tc := range tests {
@@ -181,7 +182,7 @@ func TestTestMigration(t *testing.T) {
 	require.NoError(t, err)
 
 	var tests []TestMigrationTest
-	err = json.Unmarshal(data, &tests)
+	err = jsonx.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
@@ -225,7 +226,7 @@ func TestRuleSetMigration(t *testing.T) {
 	require.NoError(t, err)
 
 	var tests []RuleSetMigrationTest
-	err = json.Unmarshal(data, &tests)
+	err = jsonx.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
 	defer uuids.SetGenerator(uuids.DefaultGenerator)

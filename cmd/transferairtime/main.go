@@ -3,7 +3,6 @@ package main
 // go install github.com/nyaruka/goflow/cmd/transferairtime
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"net/http"
@@ -18,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -122,7 +122,7 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 	eng := engine.NewBuilder().WithAirtimeServiceFactory(svcFactory).Build()
 	env := envs.NewBuilder().Build()
 	contact := flows.NewEmptyContact(sa, "", "", nil)
-	contact.AddURN(flows.NewContactURN(destination, nil))
+	contact.AddURN(destination, nil)
 
 	_, sprint, err := eng.NewSession(sa, triggers.NewManual(env, assets.NewFlowReference(assets.FlowUUID("2374f60d-7412-442c-9177-585967afa972"), "Airtime"), contact, nil))
 	if err != nil {
@@ -130,7 +130,7 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 	}
 
 	for _, event := range sprint.Events() {
-		marshaled, _ := json.Marshal(event)
+		marshaled, _ := jsonx.Marshal(event)
 		fmt.Println(string(marshaled))
 	}
 

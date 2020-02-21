@@ -1,7 +1,6 @@
 package migrations
 
 import (
-	"encoding/json"
 	"sort"
 	"strings"
 
@@ -111,7 +110,7 @@ func migrate(data []byte, from *semver.Version, to *semver.Version) ([]byte, err
 	}
 
 	// finally marshal back to JSON
-	return json.Marshal(migrated)
+	return jsonx.Marshal(migrated)
 }
 
 // Clone clones the given flow definition by replacing all UUIDs using the provided mapping and
@@ -125,7 +124,7 @@ func Clone(data []byte, depMapping map[uuids.UUID]uuids.UUID) ([]byte, error) {
 	remapUUIDs(clone, depMapping)
 
 	// finally marshal back to JSON
-	return json.Marshal(clone)
+	return jsonx.Marshal(clone)
 }
 
 // reads a flow definition as a flow primitive

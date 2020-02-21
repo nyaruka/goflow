@@ -1,7 +1,6 @@
 package definition_test
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"strings"
@@ -264,7 +263,7 @@ func TestNewFlow(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	marshaled, err := json.Marshal(flow)
+	marshaled, err := jsonx.Marshal(flow)
 	assert.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
@@ -279,7 +278,7 @@ func TestNewFlow(t *testing.T) {
 
 	// check inspection
 	info := flow.Inspect(session.Assets())
-	infoJSON, _ := json.Marshal(info)
+	infoJSON, _ := jsonx.Marshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
 		"dependencies": [
@@ -320,7 +319,7 @@ func TestEmptyFlow(t *testing.T) {
 	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
-	marshaled, err := json.Marshal(flow)
+	marshaled, err := jsonx.Marshal(flow)
 	require.NoError(t, err)
 
 	expected := fmt.Sprintf(`{
@@ -337,7 +336,7 @@ func TestEmptyFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(expected), marshaled, "flow definition mismatch")
 
 	info := flow.Inspect(nil)
-	infoJSON, _ := json.Marshal(info)
+	infoJSON, _ := jsonx.Marshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
 		"dependencies": [],

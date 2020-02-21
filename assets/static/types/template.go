@@ -1,10 +1,9 @@
 package types
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // Template is a JSON serializable implementation of a template asset
@@ -41,10 +40,10 @@ func (t *Template) Translations() []assets.TemplateTranslation {
 }
 
 // UnmarshalJSON is our unmarshaller for json data
-func (t *Template) UnmarshalJSON(data []byte) error { return json.Unmarshal(data, &t.t) }
+func (t *Template) UnmarshalJSON(data []byte) error { return jsonx.Unmarshal(data, &t.t) }
 
 // MarshalJSON is our marshaller for json data
-func (t *Template) MarshalJSON() ([]byte, error) { return json.Marshal(t.t) }
+func (t *Template) MarshalJSON() ([]byte, error) { return jsonx.Marshal(t.t) }
 
 // TemplateTranslation represents a single template translation
 type TemplateTranslation struct {
@@ -79,7 +78,7 @@ func (t *TemplateTranslation) VariableCount() int { return t.t.VariableCount }
 func (t *TemplateTranslation) Channel() assets.ChannelReference { return t.t.Channel }
 
 // UnmarshalJSON is our unmarshaller for json data
-func (t *TemplateTranslation) UnmarshalJSON(data []byte) error { return json.Unmarshal(data, &t.t) }
+func (t *TemplateTranslation) UnmarshalJSON(data []byte) error { return jsonx.Unmarshal(data, &t.t) }
 
 // MarshalJSON is our marshaller for json data
-func (t *TemplateTranslation) MarshalJSON() ([]byte, error) { return json.Marshal(t.t) }
+func (t *TemplateTranslation) MarshalJSON() ([]byte, error) { return jsonx.Marshal(t.t) }

@@ -19,6 +19,7 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -665,7 +666,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
-	sessionJSON, err := json.Marshal(session)
+	sessionJSON, err := jsonx.Marshal(session)
 	require.NoError(t, err)
 
 	// try to read it back but with no assets
@@ -703,7 +704,7 @@ func TestResumeWithMissingFlowAssets(t *testing.T) {
 	assert.Equal(t, flows.SessionStatusWaiting, session.Status())
 
 	// can't directly modify a session's assets but can reload it with different assets
-	sessionJSON, err := json.Marshal(session)
+	sessionJSON, err := jsonx.Marshal(session)
 	require.NoError(t, err)
 
 	// change the UUID of the child flow so it will effectively be missing
@@ -752,7 +753,7 @@ func TestWaitTimeout(t *testing.T) {
 	require.NoError(t, err)
 
 	contact := flows.NewEmptyContact(sa, "Joe", "eng", nil)
-	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
+	contact.AddURN(urns.URN("tel:+18005555777"), nil)
 	trigger := triggers.NewManual(nil, flow.Reference(), contact, nil)
 
 	// create session
@@ -812,7 +813,7 @@ func TestCurrentContext(t *testing.T) {
 	assert.Equal(t, types.NewXText("Child flow"), flowName)
 
 	// check we can marshal it
-	_, err = json.Marshal(context)
+	_, err = jsonx.Marshal(context)
 	assert.NoError(t, err)
 
 	// end it

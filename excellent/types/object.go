@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 )
@@ -108,7 +109,7 @@ func (x *XObject) MarshalJSON() ([]byte, error) {
 		}
 	}
 
-	return json.Marshal(marshaled)
+	return jsonx.Marshal(marshaled)
 }
 
 // ReadXObject reads an instance of this type from JSON

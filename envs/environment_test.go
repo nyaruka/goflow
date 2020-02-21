@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -53,7 +54,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, []envs.Language{envs.Language("eng"), envs.Language("fra")}, env.AllowedLanguages())
 	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
 
-	data, err := json.Marshal(env)
+	data, err := jsonx.Marshal(env)
 	require.NoError(t, err)
 	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","default_language":"eng","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","redaction_policy":"none","max_value_length":640}`)
 }
@@ -73,7 +74,7 @@ func TestEnvironmentEqual(t *testing.T) {
 	assert.False(t, env1.Equal(env3))
 
 	// marshal and unmarshal env 1 again
-	env1JSON, err := json.Marshal(env1)
+	env1JSON, err := jsonx.Marshal(env1)
 	require.NoError(t, err)
 	env1, err = envs.ReadEnvironment(env1JSON)
 	require.NoError(t, err)

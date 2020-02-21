@@ -147,18 +147,28 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 		return false, nil
 	}
 
-	// check each resolved value
+	// evaluate condition against each resolved value
+	anyTrue := false
+	allTrue := true
 	for _, val := range vals {
 		res, err := c.evaluateValue(env, val)
 		if err != nil {
 			return false, err
 		}
 		if res {
-			return true, nil
+			anyTrue = true
+		} else {
+			allTrue = false
 		}
 	}
 
-	return false, nil
+	// foo != x is only true if all values of foo are not x
+	if c.comparator == ComparatorNotEqual {
+		return allTrue, nil
+	}
+
+	// foo = x is true if any value of foo is x
+	return anyTrue, nil
 }
 
 func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, error) {

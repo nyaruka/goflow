@@ -1,9 +1,8 @@
 package types
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // XFunction is a callable function.
@@ -33,7 +32,7 @@ func (x XFunction) Format(env envs.Environment) string {
 
 // MarshalJSON converts this type to JSON
 func (x XFunction) MarshalJSON() ([]byte, error) {
-	return json.Marshal(nil)
+	return jsonx.Marshal(nil)
 }
 
 // String returns the native string representation of this type

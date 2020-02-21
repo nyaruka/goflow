@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 )
@@ -131,12 +132,12 @@ func (w *MsgWait) MarshalJSON() ([]byte, error) {
 
 	var err error
 	if w.hint != nil {
-		if e.Hint, err = json.Marshal(w.hint); err != nil {
+		if e.Hint, err = jsonx.Marshal(w.hint); err != nil {
 			return nil, err
 		}
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }
 
 type activatedMsgWaitEnvelope struct {
@@ -173,10 +174,10 @@ func (w *ActivatedMsgWait) MarshalJSON() ([]byte, error) {
 
 	var err error
 	if w.hint != nil {
-		if e.Hint, err = json.Marshal(w.hint); err != nil {
+		if e.Hint, err = jsonx.Marshal(w.hint); err != nil {
 			return nil, err
 		}
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }

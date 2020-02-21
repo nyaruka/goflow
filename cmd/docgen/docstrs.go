@@ -27,14 +27,15 @@ var searchDirs = []string{
 }
 
 // the format of the tags which indicate a docstring is used by docgen: @name value<extra>
-var tagRegex = regexp.MustCompile(`^@(?P<name>\w+)\s+(?P<value>\w+)(?P<extra>.+)?`)
+var tagRegex = regexp.MustCompile(`^@(?P<name>\w+)\s+(?P<value>\w+)(?P<extra>\(.*\))?(\s("(?P<title>.+)"))?$`)
 
 // TaggedItem is any item that is documented with a @tag to indicate it will be used by docgen
 type TaggedItem struct {
 	typeName    string   // actual go type name
 	tagName     string   // tag used to make this as a documented item
 	tagValue    string   // identifier value after @tag
-	tagExtra    string   // additional text after tag value
+	tagExtra    string   // additional text after tag value in (...)
+	tagTitle    string   // additional text after tag value in "" which becomes item title
 	examples    []string // indented example lines
 	description []string // the other lines
 }
@@ -136,11 +137,17 @@ func parseTaggedItem(doc string, typeName string) *TaggedItem {
 		}
 	}
 
+	title := tagParts[6]
+	if title == "" {
+		title = tagParts[2] + tagParts[3]
+	}
+
 	return &TaggedItem{
 		typeName:    typeName,
 		tagName:     tagParts[1],
 		tagValue:    tagParts[2],
 		tagExtra:    tagParts[3],
+		tagTitle:    title,
 		description: description,
 		examples:    examples,
 	}

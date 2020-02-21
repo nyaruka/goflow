@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/buger/jsonparser"
 )
@@ -32,8 +33,8 @@ func (f *Flow) UnmarshalJSON(data []byte) error {
 	// if there's a metadata field, this is a legacy definition, so read the UUID/name from there
 	legacyMetadata, _, _, _ := jsonparser.Get(data, "metadata")
 	if legacyMetadata != nil {
-		return json.Unmarshal(legacyMetadata, (*alias)(f))
+		return jsonx.Unmarshal(legacyMetadata, (*alias)(f))
 	}
 
-	return json.Unmarshal(data, (*alias)(f))
+	return jsonx.Unmarshal(data, (*alias)(f))
 }

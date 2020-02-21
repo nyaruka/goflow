@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 )
@@ -126,13 +127,13 @@ func (r *baseResume) marshal(e *baseResumeEnvelope) error {
 	e.ResumedOn = r.resumedOn
 
 	if r.environment != nil {
-		e.Environment, err = json.Marshal(r.environment)
+		e.Environment, err = jsonx.Marshal(r.environment)
 		if err != nil {
 			return err
 		}
 	}
 	if r.contact != nil {
-		e.Contact, err = json.Marshal(r.contact)
+		e.Contact, err = jsonx.Marshal(r.contact)
 		if err != nil {
 			return err
 		}
