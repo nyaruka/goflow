@@ -47,7 +47,7 @@ func TestContact(t *testing.T) {
 
 	contact, _ := flows.NewContact(
 		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"),
-		nil, time.Now(), nil, nil, nil,
+		nil, time.Now(), nil, nil, nil, assets.PanicOnMissing,
 	)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
@@ -132,7 +132,7 @@ func TestContactFormat(t *testing.T) {
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
 		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, nil, time.Now(),
-		nil, nil, nil,
+		nil, nil, nil, assets.PanicOnMissing,
 	)
 	contact.AddURN(urns.URN("twitter:joey"), nil)
 	assert.Equal(t, "joey", contact.Format(env))
