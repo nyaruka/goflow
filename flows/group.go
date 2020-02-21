@@ -81,29 +81,25 @@ type GroupList struct {
 }
 
 // NewGroupList creates a new group list
-func NewGroupList(groups []*Group) *GroupList {
-	return &GroupList{groups: groups}
-}
+func NewGroupList(a SessionAssets, refs []*assets.GroupReference, missing assets.MissingCallback) *GroupList {
+	groups := make([]*Group, 0, len(refs))
 
-// NewGroupListFromAssets creates a new group list
-func NewGroupListFromAssets(a SessionAssets, groupAssets []assets.Group) (*GroupList, error) {
-	groups := make([]*Group, len(groupAssets))
-
-	for i, asset := range groupAssets {
-		group := a.Groups().Get(asset.UUID())
+	for _, ref := range refs {
+		group := a.Groups().Get(ref.UUID)
 		if group == nil {
-			return nil, errors.Errorf("no such group: %s", asset.UUID())
+			missing(ref, nil)
+		} else {
+			groups = append(groups, group)
 		}
-		groups[i] = group
 	}
-	return &GroupList{groups: groups}, nil
+	return &GroupList{groups: groups}
 }
 
 // Clone returns a clone of this group list
 func (l *GroupList) clone() *GroupList {
 	groups := make([]*Group, len(l.groups))
 	copy(groups, l.groups)
-	return NewGroupList(groups)
+	return &GroupList{groups: groups}
 }
 
 // FindByUUID returns the group with the passed in UUID or nil if not found

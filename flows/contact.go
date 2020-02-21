@@ -46,20 +46,18 @@ func NewContact(
 	timezone *time.Location,
 	createdOn time.Time,
 	urns []urns.URN,
-	groups []assets.Group,
-	fields map[string]*Value) (*Contact, error) {
+	groups []*assets.GroupReference,
+	fields map[string]*Value,
+	missing assets.MissingCallback) (*Contact, error) {
 
-	urnList, err := ReadURNList(sa, urns, assets.IgnoreMissing)
+	urnList, err := ReadURNList(sa, urns, missing)
 	if err != nil {
 		return nil, err
 	}
 
-	groupList, err := NewGroupListFromAssets(sa, groups)
-	if err != nil {
-		return nil, err
-	}
+	groupList := NewGroupList(sa, groups, missing)
 
-	fieldValues, err := NewFieldValues(sa, fields, assets.IgnoreMissing)
+	fieldValues, err := NewFieldValues(sa, fields, missing)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +85,7 @@ func NewEmptyContact(sa SessionAssets, name string, language envs.Language, time
 		timezone:  timezone,
 		createdOn: dates.Now(),
 		urns:      URNList{},
-		groups:    NewGroupList([]*Group{}),
+		groups:    NewGroupList(sa, nil, assets.IgnoreMissing),
 		fields:    make(FieldValues),
 		assets:    sa,
 	}
@@ -522,20 +520,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		}
 	}
 
-	if envelope.Groups == nil {
-		c.groups = NewGroupList([]*Group{})
-	} else {
-		groups := make([]*Group, 0, len(envelope.Groups))
-		for _, g := range envelope.Groups {
-			group := sa.Groups().Get(g.UUID)
-			if group == nil {
-				missing(g, nil)
-			} else {
-				groups = append(groups, group)
-			}
-		}
-		c.groups = NewGroupList(groups)
-	}
+	c.groups = NewGroupList(sa, envelope.Groups, missing)
 
 	if c.fields, err = NewFieldValues(sa, envelope.Fields, missing); err != nil {
 		return nil, errors.Wrap(err, "error reading fields")
