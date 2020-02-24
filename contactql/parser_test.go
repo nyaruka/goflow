@@ -115,6 +115,7 @@ func TestParseQuery(t *testing.T) {
 
 		{`xyz != ""`, ``, "can't resolve 'xyz' to attribute, scheme or field", envs.RedactionPolicyNone},
 		{`group != "Gamers"`, ``, "'Gamers' is not a valid group name", envs.RedactionPolicyNone},
+		{`language = "xxxx"`, ``, "'xxxx' is not a valid language code", envs.RedactionPolicyNone},
 
 		{`name = "O\"Leary"`, `name = "O\"Leary"`, "", envs.RedactionPolicyNone}, // string unquoting
 

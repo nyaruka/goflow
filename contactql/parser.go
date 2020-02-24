@@ -131,15 +131,23 @@ func (c *Condition) Validate(resolver Resolver) error {
 		case AttributeID, AttributeCreatedOn, AttributeGroup:
 			return errors.Errorf("can't check whether '%s' is set or not set", c.propKey)
 		}
-	}
-
-	// if group condition, check group exists
-	if c.propKey == AttributeGroup {
-		group := resolver.ResolveGroup(c.value)
-		if group == nil {
-			return errors.Errorf("'%s' is not a valid group name", c.value)
+	} else {
+		// check values are valid for the attribute type
+		switch c.propKey {
+		case AttributeGroup:
+			group := resolver.ResolveGroup(c.value)
+			if group == nil {
+				return errors.Errorf("'%s' is not a valid group name", c.value)
+			}
+			c.value = group.Name()
+		case AttributeLanguage:
+			if c.value != "" {
+				_, err := envs.ParseLanguage(c.value)
+				if err != nil {
+					return errors.Errorf("'%s' is not a valid language code", c.value)
+				}
+			}
 		}
-		c.value = group.Name()
 	}
 
 	return nil
