@@ -90,3 +90,18 @@ func (s *sessionAssets) Labels() *flows.LabelAssets           { return s.labels 
 func (s *sessionAssets) Locations() *flows.LocationAssets     { return s.locations }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets     { return s.resthooks }
 func (s *sessionAssets) Templates() *flows.TemplateAssets     { return s.templates }
+
+func (s *sessionAssets) ResolveField(key string) assets.Field {
+	f := s.Fields().Get(key)
+	if f == nil {
+		return nil
+	}
+	return f
+}
+func (s *sessionAssets) ResolveGroup(name string) assets.Group {
+	g := s.Groups().FindByName(name)
+	if g == nil {
+		return nil
+	}
+	return g
+}

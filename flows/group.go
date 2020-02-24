@@ -7,8 +7,6 @@ import (
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-
-	"github.com/pkg/errors"
 )
 
 // Group represents a grouping of contacts. It can be static (contacts are added and removed manually through
@@ -28,10 +26,10 @@ func NewGroup(asset assets.Group) *Group {
 func (g *Group) Asset() assets.Group { return g.Group }
 
 // the parsed query of a dynamic group (cached)
-func (g *Group) parsedQuery(env envs.Environment, fields *FieldAssets) (*contactql.ContactQuery, error) {
+func (g *Group) parsedQuery(env envs.Environment, sa SessionAssets) (*contactql.ContactQuery, error) {
 	if g.Query() != "" && g.cachedQuery == nil {
 		var err error
-		if g.cachedQuery, err = contactql.ParseQuery(g.Query(), env.RedactionPolicy(), env.DefaultCountry(), fields.Resolve); err != nil {
+		if g.cachedQuery, err = contactql.ParseQuery(g.Query(), env.RedactionPolicy(), env.DefaultCountry(), sa); err != nil {
 			return nil, err
 		}
 	}
@@ -42,11 +40,11 @@ func (g *Group) parsedQuery(env envs.Environment, fields *FieldAssets) (*contact
 func (g *Group) IsDynamic() bool { return g.Query() != "" }
 
 // CheckDynamicMembership returns whether the given contact belongs in this dynamic group
-func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact, fields *FieldAssets) (bool, error) {
+func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact, sa SessionAssets) (bool, error) {
 	if !g.IsDynamic() {
-		return false, errors.Errorf("can't check membership on a non-dynamic group")
+		panic("can't check membership on a non-dynamic group")
 	}
-	parsedQuery, err := g.parsedQuery(env, fields)
+	parsedQuery, err := g.parsedQuery(env, sa)
 	if err != nil {
 		return false, err
 	}
@@ -81,29 +79,25 @@ type GroupList struct {
 }
 
 // NewGroupList creates a new group list
-func NewGroupList(groups []*Group) *GroupList {
-	return &GroupList{groups: groups}
-}
+func NewGroupList(a SessionAssets, refs []*assets.GroupReference, missing assets.MissingCallback) *GroupList {
+	groups := make([]*Group, 0, len(refs))
 
-// NewGroupListFromAssets creates a new group list
-func NewGroupListFromAssets(a SessionAssets, groupAssets []assets.Group) (*GroupList, error) {
-	groups := make([]*Group, len(groupAssets))
-
-	for i, asset := range groupAssets {
-		group := a.Groups().Get(asset.UUID())
+	for _, ref := range refs {
+		group := a.Groups().Get(ref.UUID)
 		if group == nil {
-			return nil, errors.Errorf("no such group: %s", asset.UUID())
+			missing(ref, nil)
+		} else {
+			groups = append(groups, group)
 		}
-		groups[i] = group
 	}
-	return &GroupList{groups: groups}, nil
+	return &GroupList{groups: groups}
 }
 
 // Clone returns a clone of this group list
 func (l *GroupList) clone() *GroupList {
 	groups := make([]*Group, len(l.groups))
 	copy(groups, l.groups)
-	return NewGroupList(groups)
+	return &GroupList{groups: groups}
 }
 
 // FindByUUID returns the group with the passed in UUID or nil if not found

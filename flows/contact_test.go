@@ -1,6 +1,8 @@
 package flows_test
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"testing"
 	"time"
 
@@ -12,6 +14,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
@@ -47,7 +50,7 @@ func TestContact(t *testing.T) {
 
 	contact, _ := flows.NewContact(
 		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"),
-		nil, time.Now(), nil, nil, nil,
+		nil, time.Now(), nil, nil, nil, assets.PanicOnMissing,
 	)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
@@ -132,7 +135,7 @@ func TestContactFormat(t *testing.T) {
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
 		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, nil, time.Now(),
-		nil, nil, nil,
+		nil, nil, nil, assets.PanicOnMissing,
 	)
 	contact.AddURN(urns.URN("twitter:joey"), nil)
 	assert.Equal(t, "joey", contact.Format(env))
@@ -186,97 +189,51 @@ func TestContactSetPreferredChannel(t *testing.T) {
 }
 
 func TestReevaluateDynamicGroups(t *testing.T) {
-	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyNone)
+	source, err := static.LoadSource("testdata/dynamic_groups.assets.json")
 	require.NoError(t, err)
 
-	env := session.Runs()[0].Environment()
+	tests := []struct {
+		Description   string          `json:"description"`
+		ContactBefore json.RawMessage `json:"contact_before"`
+		RedactURNs    bool            `json:"redact_urns"`
+		ContactAfter  json.RawMessage `json:"contact_after"`
+	}{}
 
-	gender := test.NewField("gender", "Gender", assets.FieldTypeText)
-	age := test.NewField("age", "Age", assets.FieldTypeNumber)
-
-	fieldSet := flows.NewFieldAssets([]assets.Field{gender.Asset(), age.Asset()})
-
-	males := test.NewGroup("Males", `gender="M"`)
-	old := test.NewGroup("Old", `age>30`)
-	english := test.NewGroup("English", `language=eng`)
-	spanish := test.NewGroup("Español", `language=spa`)
-	lastYear := test.NewGroup("Old", `created_on <= 2017-12-31`)
-	tel1800 := test.NewGroup("Tel with 1800", `tel ~ 1800`)
-	twitterCrazies := test.NewGroup("Twitter Crazies", `twitter ~ crazy`)
-	broken := test.NewGroup("Broken", `xyz="X"`) // no such field
-	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies, broken}
-
-	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
-	contact.AddURN(urns.URN("tel:+12345678999"), nil)
-
-	memberships, errors := evaluateGroups(t, env, contact, groups, fieldSet)
-	assert.Equal(t, []*flows.Group{english}, memberships)
-	assert.Equal(t, []*flows.Group{broken}, errors)
-
-	contact.SetLanguage(envs.Language("spa"))
-	contact.AddURN(urns.URN("twitter:crazy_joe"), nil)
-	contact.AddURN(urns.URN("tel:+18005555777"), nil)
-
-	genderValue := contact.Fields().Parse(env, fieldSet, gender, "M")
-	contact.Fields().Set(gender, genderValue)
-
-	ageValue := contact.Fields().Parse(env, fieldSet, age, "37")
-	contact.Fields().Set(age, ageValue)
-
-	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
-
-	memberships, errors = evaluateGroups(t, env, contact, groups, fieldSet)
-	assert.Equal(t, []*flows.Group{males, old, spanish, lastYear, tel1800, twitterCrazies}, memberships)
-	assert.Equal(t, []*flows.Group{broken}, errors)
-}
-
-func TestReevaluateDynamicGroupsWithURNRedaction(t *testing.T) {
-	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyURNs)
+	testFile, err := ioutil.ReadFile("testdata/dynamic_groups.json")
+	require.NoError(t, err)
+	err = jsonx.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
-	env := session.Runs()[0].Environment()
+	for _, tc := range tests {
+		sa, err := engine.NewSessionAssets(source, nil)
+		require.NoError(t, err)
 
-	gender := test.NewField("gender", "Gender", assets.FieldTypeText)
-	age := test.NewField("age", "Age", assets.FieldTypeNumber)
+		contact, err := flows.ReadContact(sa, tc.ContactBefore, assets.PanicOnMissing)
+		require.NoError(t, err)
 
-	fieldSet := flows.NewFieldAssets([]assets.Field{gender.Asset(), age.Asset()})
+		envBuilder := envs.NewBuilder().
+			WithDefaultLanguage("eng").
+			WithAllowedLanguages([]envs.Language{"eng", "spa"}).
+			WithDefaultCountry("RW")
 
-	males := test.NewGroup("Males", `gender="M"`)
-	tel1800 := test.NewGroup("Tel with 1800", `tel ~ 1800`)
-	twitterCrazies := test.NewGroup("Twitter Crazies", `twitter ~ crazy`)
-	groups := []*flows.Group{males, tel1800, twitterCrazies}
-
-	contact := flows.NewEmptyContact(session.Assets(), "Joe", "eng", nil)
-	contact.AddURN(urns.URN("tel:+12345678999"), nil)
-
-	memberships, errors := evaluateGroups(t, env, contact, groups, fieldSet)
-	assert.Equal(t, []*flows.Group{}, memberships)
-	assert.Equal(t, []*flows.Group{tel1800, twitterCrazies}, errors) // both groups with URN references error
-
-	contact.AddURN(urns.URN("twitter:crazy_joe"), nil)
-	contact.AddURN(urns.URN("tel:+18005555777"), nil)
-
-	genderValue := contact.Fields().Parse(env, fieldSet, gender, "M")
-	contact.Fields().Set(gender, genderValue)
-
-	memberships, errors = evaluateGroups(t, env, contact, groups, fieldSet)
-	assert.Equal(t, []*flows.Group{males}, memberships)
-	assert.Equal(t, []*flows.Group{tel1800, twitterCrazies}, errors)
-}
-
-func evaluateGroups(t *testing.T, env envs.Environment, contact *flows.Contact, groups []*flows.Group, fields *flows.FieldAssets) ([]*flows.Group, []*flows.Group) {
-	memberships := make([]*flows.Group, 0)
-	errors := make([]*flows.Group, 0)
-
-	for _, group := range groups {
-		isMember, err := group.CheckDynamicMembership(env, contact, fields)
-		if err != nil {
-			errors = append(errors, group)
-		} else if isMember {
-			memberships = append(memberships, group)
+		if tc.RedactURNs {
+			envBuilder.WithRedactionPolicy(envs.RedactionPolicyURNs)
 		}
+
+		env := envBuilder.Build()
+		trigger := triggers.NewManual(
+			env,
+			assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Empty Flow"),
+			contact,
+			nil,
+		)
+
+		eng := engine.NewBuilder().Build()
+		session, _, _ := eng.NewSession(sa, trigger)
+		afterJSON, _ := json.Marshal(session.Contact())
+
+		test.AssertEqualJSON(t, tc.ContactAfter, afterJSON, "contact JSON mismatch in '%s'", tc.Description)
 	}
-	return memberships, errors
 }
 
 func TestContactEqual(t *testing.T) {
@@ -329,9 +286,17 @@ func TestContactQuery(t *testing.T) {
 		"fields": {
 			"gender": {"text": "Male"}
 		},
+		"groups": [
+			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+        	{"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
+		],
 		"language": "eng",
 		"timezone": "America/Guayaquil",
-		"urns": ["tel:+12065551212", "twitter:ewok"],
+		"urns": [
+			"tel:+12065551212", 
+			"tel:+12065551313", 
+			"twitter:ewok"
+		],
 		"created_on": "2020-01-24T13:24:30.000000000-00:00"
 	}`)
 
@@ -345,10 +310,10 @@ func TestContactQuery(t *testing.T) {
 		{`name = "Ben Haggerty"`, true},
 		{`name = "Joe X"`, false},
 		{`name != "Joe X"`, true},
-		{`name != ""`, true},
-		{`name = ""`, false},
 		{`name ~ Ben`, true},
 		{`name ~ Joe`, false},
+		{`name = ""`, false},
+		{`name != ""`, true},
 
 		{`id = 1234567`, true},
 		{`id = 5678889`, false},
@@ -364,25 +329,43 @@ func TestContactQuery(t *testing.T) {
 		{`created_on > 26-01-2020`, false},
 
 		{`tel = +12065551212`, true},
+		{`tel = +12065551313`, true},
 		{`tel = +13065551212`, false},
 		{`tel ~ 555`, true},
 		{`tel ~ 666`, false},
+		{`tel = ""`, false},
+		{`tel != ""`, true},
 
 		{`twitter = ewok`, true},
 		{`twitter = nicp`, false},
 		{`twitter ~ wok`, true},
 		{`twitter ~ EWO`, true},
 		{`twitter ~ ijk`, false},
+		{`twitter = ""`, false},
+		{`twitter != ""`, true},
+
+		{`viber = ewok`, false},
+		{`viber ~ wok`, false},
+		{`viber = ""`, true},
+		{`viber != ""`, false},
 
 		{`urn = +12065551212`, true},
 		{`urn = ewok`, true},
 		{`urn = +13065551212`, false},
+		{`urn != +13065551212`, true},
 		{`urn ~ 555`, true},
 		{`urn ~ 666`, false},
+		{`urn = ""`, false},
+		{`urn != ""`, true},
+
+		{`group = testers`, true},
+		{`group != testers`, false},
+		{`group = customers`, false},
+		{`group != customers`, true},
 	}
 
 	for _, tc := range testCases {
-		query, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, "US", session.Assets().Fields().Resolve)
+		query, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, "US", session.Assets())
 		require.NoError(t, err, "unexpected error parsing '%s'", tc.query)
 
 		result, err := contactql.EvaluateQuery(session.Environment(), query, contact)

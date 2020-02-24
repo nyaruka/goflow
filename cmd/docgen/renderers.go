@@ -376,7 +376,7 @@ func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 }
 
 func renderItemTitle(item *TaggedItem) string {
-	return fmt.Sprintf("<h2 class=\"item_title\"><a name=\"%[1]s:%[2]s\" href=\"#%[1]s:%[2]s\">%[2]s%[3]s</a></h2>\n\n", item.tagName, item.tagValue, item.tagExtra)
+	return fmt.Sprintf("<h2 class=\"item_title\"><a name=\"%[1]s:%[2]s\" href=\"#%[1]s:%[2]s\">%[3]s</a></h2>\n\n", item.tagName, item.tagValue, item.tagTitle)
 }
 
 func checkExample(session flows.Session, line string) error {
