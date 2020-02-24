@@ -113,7 +113,9 @@ func TestParseQuery(t *testing.T) {
 			envs.RedactionPolicyNone,
 		},
 
-		{`xyz != ""`, "", "can't resolve 'xyz' to attribute, scheme or field", envs.RedactionPolicyNone},
+		{`xyz != ""`, ``, "can't resolve 'xyz' to attribute, scheme or field", envs.RedactionPolicyNone},
+		{`group != "Gamers"`, ``, "'Gamers' is not a valid group name", envs.RedactionPolicyNone},
+		{`language = "xxxx"`, ``, "'xxxx' is not a valid language code", envs.RedactionPolicyNone},
 
 		{`name = "O\"Leary"`, `name = "O\"Leary"`, "", envs.RedactionPolicyNone}, // string unquoting
 
@@ -121,7 +123,7 @@ func TestParseQuery(t *testing.T) {
 		{`id = 02352`, `id = 02352`, "", envs.RedactionPolicyNone},
 		{`name = felix`, `name = "felix"`, "", envs.RedactionPolicyNone},
 		{`language = eng`, `language = "eng"`, "", envs.RedactionPolicyNone},
-		{`group = reporters`, `group = "reporters"`, "", envs.RedactionPolicyNone},
+		{`group = u-reporters`, `group = "U-Reporters"`, "", envs.RedactionPolicyNone},
 		{`created_on = 20-02-2020`, `created_on = "20-02-2020"`, "", envs.RedactionPolicyNone},
 		{`tel = 02352`, `tel = 02352`, "", envs.RedactionPolicyNone},
 		{`urn = 02352`, `urn = 02352`, "", envs.RedactionPolicyNone},
@@ -134,7 +136,7 @@ func TestParseQuery(t *testing.T) {
 		{`id != 02352`, `id != 02352`, "", envs.RedactionPolicyNone},
 		{`name != felix`, `name != "felix"`, "", envs.RedactionPolicyNone},
 		{`language != eng`, `language != "eng"`, "", envs.RedactionPolicyNone},
-		{`group != reporters`, `group != "reporters"`, "", envs.RedactionPolicyNone},
+		{`group != u-reporters`, `group != "U-Reporters"`, "", envs.RedactionPolicyNone},
 		{`created_on != 20-02-2020`, `created_on != "20-02-2020"`, "", envs.RedactionPolicyNone},
 		{`tel != 02352`, `tel != 02352`, "", envs.RedactionPolicyNone},
 		{`urn != 02352`, `urn != 02352`, "", envs.RedactionPolicyNone},
@@ -142,6 +144,19 @@ func TestParseQuery(t *testing.T) {
 		{`gender != male`, `gender != "male"`, "", envs.RedactionPolicyNone},
 		{`dob != 20-02-2020`, `dob != "20-02-2020"`, "", envs.RedactionPolicyNone},
 		{`state != Pichincha`, `state != "Pichincha"`, "", envs.RedactionPolicyNone},
+
+		// = "" supported for name, language, fields and urns
+		{`id = ""`, ``, "can't check whether 'id' is set or not set", envs.RedactionPolicyNone},
+		{`name = ""`, `name = ""`, "", envs.RedactionPolicyNone},
+		{`language = ""`, `language = ""`, "", envs.RedactionPolicyNone},
+		{`group = ""`, ``, "can't check whether 'group' is set or not set", envs.RedactionPolicyNone},
+		{`created_on = ""`, ``, "can't check whether 'created_on' is set or not set", envs.RedactionPolicyNone},
+		{`tel = ""`, `tel = ""`, "", envs.RedactionPolicyNone},
+		{`urn = ""`, `urn = ""`, "", envs.RedactionPolicyNone},
+		{`age = ""`, `age = ""`, "", envs.RedactionPolicyNone},
+		{`gender = ""`, `gender = ""`, "", envs.RedactionPolicyNone},
+		{`dob = ""`, `dob = ""`, "", envs.RedactionPolicyNone},
+		{`state = ""`, `state = ""`, "", envs.RedactionPolicyNone},
 
 		// ~ only supported for name and URNs
 		{`id ~ 02352`, ``, "contains conditions can only be used with name or URN values", envs.RedactionPolicyNone},
@@ -170,16 +185,17 @@ func TestParseQuery(t *testing.T) {
 		{`state > Pichincha`, ``, "comparisons with > can only be used with date and number fields", envs.RedactionPolicyNone},
 	}
 
-	fields := map[string]assets.Field{
+	resolver := contactql.NewMockResolver(map[string]assets.Field{
 		"age":    types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
 		"gender": types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
 		"state":  types.NewField(assets.FieldUUID("165def68-3216-4ebf-96bc-f6f1ee5bd966"), "state", "State", assets.FieldTypeState),
 		"dob":    types.NewField(assets.FieldUUID("85baf5e1-b57a-46dc-a726-a84e8c4229c7"), "dob", "DOB", assets.FieldTypeDatetime),
-	}
-	fieldResolver := func(key string) assets.Field { return fields[key] }
+	}, map[string]assets.Group{
+		"u-reporters": types.NewGroup(assets.GroupUUID(""), "U-Reporters", ""),
+	})
 
 	for _, tc := range tests {
-		parsed, err := contactql.ParseQuery(tc.text, tc.redact, "US", fieldResolver)
+		parsed, err := contactql.ParseQuery(tc.text, tc.redact, "US", resolver)
 		if tc.err != "" {
 			assert.EqualError(t, err, tc.err, "error mismatch for '%s'", tc.text)
 			assert.Nil(t, parsed)

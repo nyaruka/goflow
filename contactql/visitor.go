@@ -44,21 +44,24 @@ var attributes = map[string]assets.FieldType{
 	AttributeCreatedOn: assets.FieldTypeDatetime,
 }
 
-// FieldResolverFunc resolves a query property key to a possible contact field
-type FieldResolverFunc func(string) assets.Field
+// Resolver provides functions for resolving fields and groups referenced in queries
+type Resolver interface {
+	ResolveField(key string) assets.Field
+	ResolveGroup(name string) assets.Group
+}
 
 type visitor struct {
 	gen.BaseContactQLVisitor
 
-	redaction     envs.RedactionPolicy
-	fieldResolver FieldResolverFunc
+	redaction envs.RedactionPolicy
+	resolver  Resolver
 
 	errors []error
 }
 
 // creates a new ContactQL visitor
-func newVisitor(redaction envs.RedactionPolicy, fieldResolver FieldResolverFunc) *visitor {
-	return &visitor{redaction: redaction, fieldResolver: fieldResolver}
+func newVisitor(redaction envs.RedactionPolicy, resolver Resolver) *visitor {
+	return &visitor{redaction: redaction, resolver: resolver}
 }
 
 // Visit the top level parse tree
@@ -101,7 +104,7 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 
 	condition := newCondition(PropertyTypeAttribute, AttributeName, comparator, value, attributes[AttributeName])
 
-	if err := condition.Validate(); err != nil {
+	if err := condition.Validate(v.resolver); err != nil {
 		v.addError(err)
 	}
 
@@ -139,7 +142,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 			v.addError(errors.New("cannot query on redacted URNs"))
 		}
 	} else {
-		field := v.fieldResolver(propKey)
+		field := v.resolver.ResolveField(propKey)
 		if field != nil {
 			propType = PropertyTypeField
 			valueType = field.Type()
@@ -150,7 +153,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 
 	condition := newCondition(propType, propKey, comparator, value, valueType)
 
-	if err := condition.Validate(); err != nil {
+	if err := condition.Validate(v.resolver); err != nil {
 		v.addError(err)
 	}
 

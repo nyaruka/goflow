@@ -26,10 +26,10 @@ func NewGroup(asset assets.Group) *Group {
 func (g *Group) Asset() assets.Group { return g.Group }
 
 // the parsed query of a dynamic group (cached)
-func (g *Group) parsedQuery(env envs.Environment, fields *FieldAssets) (*contactql.ContactQuery, error) {
+func (g *Group) parsedQuery(env envs.Environment, sa SessionAssets) (*contactql.ContactQuery, error) {
 	if g.Query() != "" && g.cachedQuery == nil {
 		var err error
-		if g.cachedQuery, err = contactql.ParseQuery(g.Query(), env.RedactionPolicy(), env.DefaultCountry(), fields.Resolve); err != nil {
+		if g.cachedQuery, err = contactql.ParseQuery(g.Query(), env.RedactionPolicy(), env.DefaultCountry(), sa); err != nil {
 			return nil, err
 		}
 	}
@@ -40,11 +40,11 @@ func (g *Group) parsedQuery(env envs.Environment, fields *FieldAssets) (*contact
 func (g *Group) IsDynamic() bool { return g.Query() != "" }
 
 // CheckDynamicMembership returns whether the given contact belongs in this dynamic group
-func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact, fields *FieldAssets) (bool, error) {
+func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact, sa SessionAssets) (bool, error) {
 	if !g.IsDynamic() {
 		panic("can't check membership on a non-dynamic group")
 	}
-	parsedQuery, err := g.parsedQuery(env, fields)
+	parsedQuery, err := g.parsedQuery(env, sa)
 	if err != nil {
 		return false, err
 	}
