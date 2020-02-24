@@ -109,9 +109,7 @@ func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
 // EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
 // as far as the engine is concerned
 func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
-	allGroups := session.Assets().Groups()
-	allFields := session.Assets().Fields()
-	added, removed, errors := session.Contact().ReevaluateDynamicGroups(session.Environment(), allGroups, allFields)
+	added, removed, errors := session.Contact().ReevaluateDynamicGroups(session.Environment())
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {

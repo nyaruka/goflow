@@ -103,7 +103,7 @@ func (c *Condition) Comparator() Comparator { return c.comparator }
 func (c *Condition) Value() string { return c.value }
 
 // Validate checks that this condition is valid (and thus can be evaluated)
-func (c *Condition) Validate() error {
+func (c *Condition) Validate(resolver Resolver) error {
 	switch c.comparator {
 	case ComparatorContains:
 		if c.propKey == AttributeName {
@@ -123,6 +123,23 @@ func (c *Condition) Validate() error {
 		if c.valueType != assets.FieldTypeNumber && c.valueType != assets.FieldTypeDatetime {
 			return errors.Errorf("comparisons with %s can only be used with date and number fields", c.comparator)
 		}
+	}
+
+	// if existence check, disallow certain attributes
+	if c.value == "" {
+		switch c.propKey {
+		case AttributeID, AttributeCreatedOn, AttributeGroup:
+			return errors.Errorf("can't check whether '%s' is set or not set", c.propKey)
+		}
+	}
+
+	// if group condition, check group exists
+	if c.propKey == AttributeGroup {
+		group := resolver.ResolveGroup(c.value)
+		if group == nil {
+			return errors.Errorf("'%s' is not a valid group name", c.value)
+		}
+		c.value = group.Name()
 	}
 
 	return nil
@@ -286,7 +303,7 @@ func (q *ContactQuery) String() string {
 }
 
 // ParseQuery parses a ContactQL query from the given input
-func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Country, fieldResolver FieldResolverFunc) (*ContactQuery, error) {
+func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Country, resolver Resolver) (*ContactQuery, error) {
 	// preprocess text before parsing
 	text = strings.TrimSpace(text)
 
@@ -311,7 +328,7 @@ func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Countr
 		return nil, errListener.Error()
 	}
 
-	visitor := newVisitor(redaction, fieldResolver)
+	visitor := newVisitor(redaction, resolver)
 	rootNode := visitor.Visit(tree).(QueryNode)
 
 	if len(visitor.errors) > 0 {

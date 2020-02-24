@@ -360,14 +360,12 @@ func TestContactQuery(t *testing.T) {
 
 		{`group = testers`, true},
 		{`group != testers`, false},
-		{`group = spammers`, false},
-		{`group != spammers`, true},
-		{`group = ""`, false},
-		{`group != ""`, true},
+		{`group = customers`, false},
+		{`group != customers`, true},
 	}
 
 	for _, tc := range testCases {
-		query, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, "US", session.Assets().Fields().Resolve)
+		query, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, "US", session.Assets())
 		require.NoError(t, err, "unexpected error parsing '%s'", tc.query)
 
 		result, err := contactql.EvaluateQuery(session.Environment(), query, contact)
