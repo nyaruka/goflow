@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -109,6 +110,8 @@ type FlowAssets interface {
 
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
+	contactql.Resolver
+
 	Source() assets.Source
 
 	Channels() *ChannelAssets

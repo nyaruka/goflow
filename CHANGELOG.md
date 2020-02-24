@@ -1,3 +1,13 @@
+v0.75.1
+----------
+ * Remove contacts from broken groups
+
+v0.75.0
+----------
+ * Handle missing groups on contact creation
+ * Fix != with multiple values and add support for group attribute in contact queries
+ * Improve docs for operators
+
 v0.74.0
 ----------
  * Use jsonx functions for all JSON marshal/unmarshal
