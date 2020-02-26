@@ -43,6 +43,11 @@
                                 "exit_uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97"
                             },
                             {
+                                "uuid": "fc4ee6b0-af6f-42e3-ae84-153c313e390a",
+                                "name": "Regex in Expression",
+                                "exit_uuid": "b1a08ddc-c7a6-49ee-93c9-e0e9fee7b4e3"
+                            },
+                            {
                                 "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
                                 "name": "Other",
                                 "exit_uuid": "17ec8700-cada-4cff-b3b1-351cac4d85c6"
@@ -66,6 +71,14 @@
                                     "[["
                                 ],
                                 "category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                            },
+                            {
+                                "uuid": "bfad52b0-1bc9-4174-a0d4-524cd47e3186",
+                                "type": "has_pattern",
+                                "arguments": [
+                                    "@(\"[\")"
+                                ],
+                                "category_uuid": "fc4ee6b0-af6f-42e3-ae84-153c313e390a"
                             }
                         ]
                     },
@@ -75,6 +88,9 @@
                         },
                         {
                             "uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97"
+                        },
+                        {
+                            "uuid": "b1a08ddc-c7a6-49ee-93c9-e0e9fee7b4e3"
                         },
                         {
                             "uuid": "17ec8700-cada-4cff-b3b1-351cac4d85c6"
