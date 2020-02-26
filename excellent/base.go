@@ -57,3 +57,17 @@ func VisitTemplate(template string, allowedTopLevels []string, callback func(XTo
 	}
 	return nil
 }
+
+// HasExpressions returns whether the given template contains any expressions or identifiers
+func HasExpressions(template string, allowedTopLevels []string) bool {
+	found := false
+	VisitTemplate(template, allowedTopLevels, func(tokenType XTokenType, token string) error {
+		switch tokenType {
+		case IDENTIFIER, EXPRESSION:
+			found = true
+			return nil
+		}
+		return nil
+	})
+	return found
+}

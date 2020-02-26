@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/tools"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // Templates extracts template values by reading engine tags on a struct
@@ -24,15 +25,19 @@ func templateValues(v reflect.Value, localization flows.Localization, include fu
 			if ef.Localized && localization != nil {
 				localizable := sv.Interface().(flows.Localizable)
 
-				for _, lang := range localization.Languages() {
-					translations := localization.GetTranslations(lang)
-					for _, v := range translations.GetTextArray(localizable.LocalizationUUID(), ef.JSONName) {
-						include(lang, v)
-					}
-				}
+				Translations(localization, localizable.LocalizationUUID(), ef.JSONName, include)
 			}
 		}
 	})
+}
+
+func Translations(localization flows.Localization, itemUUID uuids.UUID, property string, include func(envs.Language, string)) {
+	for _, lang := range localization.Languages() {
+		translations := localization.GetTranslations(lang)
+		for _, v := range translations.GetTextArray(itemUUID, property) {
+			include(lang, v)
+		}
+	}
 }
 
 // Evaluated tags can be applied to fields of type string, slices of string or map of strings.
