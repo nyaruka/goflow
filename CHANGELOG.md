@@ -1,3 +1,8 @@
+v0.76.0
+----------
+ * Validate language codes in contact queries
+ * Disallow group queries against group names that don't exist
+
 v0.75.1
 ----------
  * Remove contacts from broken groups
