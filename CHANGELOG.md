@@ -1,3 +1,8 @@
+v0.76.1
+----------
+ * Sort issues by node order
+ * Add issues to report on invalid regex and usage of @legacy_extra
+
 v0.76.0
 ----------
  * Validate language codes in contact queries
