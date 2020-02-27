@@ -734,11 +734,11 @@
 <span id="cb79-5"><a href="#cb79-5"></a>@(round_up(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></span>
 <span id="cb79-6"><a href="#cb79-6"></a>@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
 <h2 class="item_title">
-<a name="function:split" href="#function:split">split(text, delimiters)</a>
+<a name="function:split" href="#function:split">split(text, [,delimiters])</a>
 </h2>
-<p>Splits <code>text</code> based on the given characters in <code>delimiters</code>.</p>
-<p>Empty values are removed from the returned list.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb80-1"><a href="#cb80-1"></a>@(split(<span class="st">&quot;a b c&quot;</span>, <span class="st">&quot; &quot;</span>)) → [a, b, c]</span>
+<p>Splits <code>text</code> into an array of separated words.</p>
+<p>Empty values are removed from the returned list. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb80-1"><a href="#cb80-1"></a>@(split(<span class="st">&quot;a b c&quot;</span>)) → [a, b, c]</span>
 <span id="cb80-2"><a href="#cb80-2"></a>@(split(<span class="st">&quot;a&quot;</span>, <span class="st">&quot; &quot;</span>)) → [a]</span>
 <span id="cb80-3"><a href="#cb80-3"></a>@(split(<span class="st">&quot;abc..d&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [abc, d]</span>
 <span id="cb80-4"><a href="#cb80-4"></a>@(split(<span class="st">&quot;a.b.c.&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [a, b, c]</span>

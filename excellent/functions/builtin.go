@@ -38,12 +38,12 @@ func init() {
 		// text functions
 		"char":              OneNumberFunction(Char),
 		"code":              OneTextFunction(Code),
-		"split":             TwoTextFunction(Split),
+		"split":             TextAndOptionalTextFunction(Split, types.XTextEmpty),
 		"join":              TwoArgFunction(Join),
 		"title":             OneTextFunction(Title),
 		"word":              InitialTextFunction(1, 2, Word),
 		"remove_first_word": OneTextFunction(RemoveFirstWord),
-		"word_count":        InitialTextFunction(0, 1, WordCount),
+		"word_count":        TextAndOptionalTextFunction(WordCount, types.XTextEmpty),
 		"word_slice":        InitialTextFunction(1, 3, WordSlice),
 		"field":             InitialTextFunction(2, 2, Field),
 		"clean":             OneTextFunction(Clean),
@@ -384,24 +384,32 @@ func Code(env envs.Environment, text types.XText) types.XValue {
 	return types.NewXNumberFromInt(int(r))
 }
 
-// Split splits `text` based on the given characters in `delimiters`.
+// Split splits `text` into an array of separated words.
 //
-// Empty values are removed from the returned list.
+// Empty values are removed from the returned list. There is an optional final parameter `delimiters` which
+// is string of characters used to split the text into words.
 //
-//   @(split("a b c", " ")) -> [a, b, c]
+//   @(split("a b c")) -> [a, b, c]
 //   @(split("a", " ")) -> [a]
 //   @(split("abc..d", ".")) -> [abc, d]
 //   @(split("a.b.c.", ".")) -> [a, b, c]
 //   @(split("a|b,c  d", " .|,")) -> [a, b, c, d]
 //
-// @function split(text, delimiters)
+// @function split(text, [,delimiters])
 func Split(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
-	splits := make([]types.XValue, 0)
-	allSplits := utils.TokenizeStringByChars(text.Native(), delimiters.Native())
-	for i := range allSplits {
-		splits = append(splits, types.NewXText(allSplits[i]))
+	var splits []string
+
+	if delimiters != types.XTextEmpty {
+		splits = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	} else {
+		splits = utils.TokenizeString(text.Native())
 	}
-	return types.NewXArray(splits...)
+
+	nonEmpty := make([]types.XValue, 0)
+	for _, split := range splits {
+		nonEmpty = append(nonEmpty, types.NewXText(split))
+	}
+	return types.NewXArray(nonEmpty...)
 }
 
 // Join joins the given `array` of strings with `separator` to make text.
@@ -605,13 +613,10 @@ func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 //   @(word_count("O'Grady O'Flaggerty", " ")) -> 2
 //
 // @function word_count(text [,delimiters])
-func WordCount(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
+func WordCount(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
 	var words []string
-	if len(args) == 1 && args[0] != nil {
-		delimiters, xerr := types.ToXText(env, args[0])
-		if xerr != nil {
-			return xerr
-		}
+
+	if delimiters != types.XTextEmpty {
 		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
 	} else {
 		words = utils.TokenizeString(text.Native())

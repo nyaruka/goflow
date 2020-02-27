@@ -543,11 +543,12 @@ func TestFunctions(t *testing.T) {
 		{"round_up", dmy, []types.XValue{xs("not_num")}, ERROR},
 		{"round_up", dmy, []types.XValue{}, ERROR},
 
+		{"split", dmy, []types.XValue{xs("1 2   3")}, xa(xs("1"), xs("2"), xs("3"))},
+		{"split", dmy, []types.XValue{xs("1 2,3"), nil}, xa(xs("1"), xs("2"), xs("3"))},
 		{"split", dmy, []types.XValue{xs("1,2,3"), xs(",")}, xa(xs("1"), xs("2"), xs("3"))},
 		{"split", dmy, []types.XValue{xs("1,2,3"), xs(".")}, xa(xs("1,2,3"))},
-		{"split", dmy, []types.XValue{xs("1,2,3"), nil}, xa(xs("1,2,3"))},
-		{"split", dmy, []types.XValue{ERROR, xs(",")}, ERROR},
 		{"split", dmy, []types.XValue{xs("1,2,3"), ERROR}, ERROR},
+		{"split", dmy, []types.XValue{ERROR, xs(",")}, ERROR},
 		{"split", dmy, []types.XValue{}, ERROR},
 
 		{"text", dmy, []types.XValue{xs("abc")}, xs("abc")},

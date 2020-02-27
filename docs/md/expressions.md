@@ -1102,15 +1102,16 @@ You can optionally pass in the number of decimal places to round to as `places`.
 @(round_up("foo")) → ERROR
 ```
 
-<h2 class="item_title"><a name="function:split" href="#function:split">split(text, delimiters)</a></h2>
+<h2 class="item_title"><a name="function:split" href="#function:split">split(text, [,delimiters])</a></h2>
 
-Splits `text` based on the given characters in `delimiters`.
+Splits `text` into an array of separated words.
 
-Empty values are removed from the returned list.
+Empty values are removed from the returned list. There is an optional final parameter `delimiters` which
+is string of characters used to split the text into words.
 
 
 ```objectivec
-@(split("a b c", " ")) → [a, b, c]
+@(split("a b c")) → [a, b, c]
 @(split("a", " ")) → [a]
 @(split("abc..d", ".")) → [abc, d]
 @(split("a.b.c.", ".")) → [a, b, c]

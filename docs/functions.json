@@ -1179,12 +1179,12 @@
         ]
     },
     {
-        "signature": "split(text, delimiters)",
-        "summary": "Splits `text` based on the given characters in `delimiters`.",
-        "detail": "Empty values are removed from the returned list.",
+        "signature": "split(text, [,delimiters])",
+        "summary": "Splits `text` into an array of separated words.",
+        "detail": "Empty values are removed from the returned list. There is an optional final parameter `delimiters` which\nis string of characters used to split the text into words.",
         "examples": [
             {
-                "template": "@(split(\"a b c\", \" \"))",
+                "template": "@(split(\"a b c\"))",
                 "output": "[a, b, c]"
             },
             {
