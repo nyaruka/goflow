@@ -1,3 +1,7 @@
+v0.76.2
+----------
+ * Add trim, trim_left and trim_right excellent functions
+
 v0.76.1
 ----------
  * Sort issues by node order
