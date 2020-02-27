@@ -543,11 +543,12 @@ func TestFunctions(t *testing.T) {
 		{"round_up", dmy, []types.XValue{xs("not_num")}, ERROR},
 		{"round_up", dmy, []types.XValue{}, ERROR},
 
+		{"split", dmy, []types.XValue{xs("1 2   3")}, xa(xs("1"), xs("2"), xs("3"))},
+		{"split", dmy, []types.XValue{xs("1 2,3"), nil}, xa(xs("1"), xs("2"), xs("3"))},
 		{"split", dmy, []types.XValue{xs("1,2,3"), xs(",")}, xa(xs("1"), xs("2"), xs("3"))},
 		{"split", dmy, []types.XValue{xs("1,2,3"), xs(".")}, xa(xs("1,2,3"))},
-		{"split", dmy, []types.XValue{xs("1,2,3"), nil}, xa(xs("1,2,3"))},
-		{"split", dmy, []types.XValue{ERROR, xs(",")}, ERROR},
 		{"split", dmy, []types.XValue{xs("1,2,3"), ERROR}, ERROR},
+		{"split", dmy, []types.XValue{ERROR, xs(",")}, ERROR},
 		{"split", dmy, []types.XValue{}, ERROR},
 
 		{"text", dmy, []types.XValue{xs("abc")}, xs("abc")},
@@ -590,6 +591,24 @@ func TestFunctions(t *testing.T) {
 
 		{"today", dmy, []types.XValue{}, xd(dates.NewDate(2018, 4, 11))},
 		{"today", dmy, []types.XValue{ERROR}, ERROR},
+
+		{"trim", dmy, []types.XValue{xs("   abc      ")}, xs("abc")},
+		{"trim", dmy, []types.XValue{xs("*=*abc=*="), xs("*=")}, xs("abc")},
+		{"trim", dmy, []types.XValue{xs(" abc "), ERROR}, ERROR},
+		{"trim", dmy, []types.XValue{ERROR}, ERROR},
+		{"trim", dmy, []types.XValue{}, ERROR},
+
+		{"trim_left", dmy, []types.XValue{xs("   abc      ")}, xs("abc      ")},
+		{"trim_left", dmy, []types.XValue{xs("*=*abc=*="), xs("*=")}, xs("abc=*=")},
+		{"trim_left", dmy, []types.XValue{xs(" abc "), ERROR}, ERROR},
+		{"trim_left", dmy, []types.XValue{ERROR}, ERROR},
+		{"trim_left", dmy, []types.XValue{}, ERROR},
+
+		{"trim_right", dmy, []types.XValue{xs("   abc      ")}, xs("   abc")},
+		{"trim_right", dmy, []types.XValue{xs("*=*abc=*="), xs("*=")}, xs("*=*abc")},
+		{"trim_right", dmy, []types.XValue{xs(" abc "), ERROR}, ERROR},
+		{"trim_right", dmy, []types.XValue{ERROR}, ERROR},
+		{"trim_right", dmy, []types.XValue{}, ERROR},
 
 		{"tz", dmy, []types.XValue{xs("01-12-2017")}, xs("UTC")},
 		{"tz", mdy, []types.XValue{xs("01-12-2017")}, xs("America/Los_Angeles")},

@@ -1102,15 +1102,16 @@ You can optionally pass in the number of decimal places to round to as `places`.
 @(round_up("foo")) → ERROR
 ```
 
-<h2 class="item_title"><a name="function:split" href="#function:split">split(text, delimiters)</a></h2>
+<h2 class="item_title"><a name="function:split" href="#function:split">split(text, [,delimiters])</a></h2>
 
-Splits `text` based on the given characters in `delimiters`.
+Splits `text` into an array of separated words.
 
-Empty values are removed from the returned list.
+Empty values are removed from the returned list. There is an optional final parameter `delimiters` which
+is string of characters used to split the text into words.
 
 
 ```objectivec
-@(split("a b c", " ")) → [a, b, c]
+@(split("a b c")) → [a, b, c]
 @(split("a", " ")) → [a]
 @(split("abc..d", ".")) → [abc, d]
 @(split("a.b.c.", ".")) → [a, b, c]
@@ -1214,6 +1215,42 @@ Returns the current date in the environment timezone.
 
 ```objectivec
 @(today()) → 2018-04-11
+```
+
+<h2 class="item_title"><a name="function:trim" href="#function:trim">trim(text, [,chars])</a></h2>
+
+Removes whitespace from either end of `text`.
+
+There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
+
+
+```objectivec
+@(trim(" hello world    ")) → hello world
+@(trim("+123157568", "+")) → 123157568
+```
+
+<h2 class="item_title"><a name="function:trim_left" href="#function:trim_left">trim_left(text, [,chars])</a></h2>
+
+Removes whitespace from the start of `text`.
+
+There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
+
+
+```objectivec
+@("*" & trim_left(" hello world   ") & "*") → *hello world   *
+@(trim_left("+12345+", "+")) → 12345+
+```
+
+<h2 class="item_title"><a name="function:trim_right" href="#function:trim_right">trim_right(text, [,chars])</a></h2>
+
+Removes whitespace from the end of `text`.
+
+There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
+
+
+```objectivec
+@("*" & trim_right(" hello world   ") & "*") → * hello world*
+@(trim_right("+12345+", "+")) → +12345
 ```
 
 <h2 class="item_title"><a name="function:tz" href="#function:tz">tz(date)</a></h2>

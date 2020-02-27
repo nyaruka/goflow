@@ -1179,12 +1179,12 @@
         ]
     },
     {
-        "signature": "split(text, delimiters)",
-        "summary": "Splits `text` based on the given characters in `delimiters`.",
-        "detail": "Empty values are removed from the returned list.",
+        "signature": "split(text, [,delimiters])",
+        "summary": "Splits `text` into an array of separated words.",
+        "detail": "Empty values are removed from the returned list. There is an optional final parameter `delimiters` which\nis string of characters used to split the text into words.",
         "examples": [
             {
-                "template": "@(split(\"a b c\", \" \"))",
+                "template": "@(split(\"a b c\"))",
                 "output": "[a, b, c]"
             },
             {
@@ -1354,6 +1354,51 @@
             {
                 "template": "@(today())",
                 "output": "2018-04-11"
+            }
+        ]
+    },
+    {
+        "signature": "trim(text, [,chars])",
+        "summary": "Removes whitespace from either end of `text`.",
+        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "examples": [
+            {
+                "template": "@(trim(\" hello world    \"))",
+                "output": "hello world"
+            },
+            {
+                "template": "@(trim(\"+123157568\", \"+\"))",
+                "output": "123157568"
+            }
+        ]
+    },
+    {
+        "signature": "trim_left(text, [,chars])",
+        "summary": "Removes whitespace from the start of `text`.",
+        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "examples": [
+            {
+                "template": "@(\"*\" & trim_left(\" hello world   \") & \"*\")",
+                "output": "*hello world   *"
+            },
+            {
+                "template": "@(trim_left(\"+12345+\", \"+\"))",
+                "output": "12345+"
+            }
+        ]
+    },
+    {
+        "signature": "trim_right(text, [,chars])",
+        "summary": "Removes whitespace from the end of `text`.",
+        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "examples": [
+            {
+                "template": "@(\"*\" & trim_right(\" hello world   \") & \"*\")",
+                "output": "* hello world*"
+            },
+            {
+                "template": "@(trim_right(\"+12345+\", \"+\"))",
+                "output": "+12345"
             }
         ]
     },
