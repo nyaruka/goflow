@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"unicode"
 	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -39,6 +40,9 @@ func init() {
 		"char":              OneNumberFunction(Char),
 		"code":              OneTextFunction(Code),
 		"split":             TextAndOptionalTextFunction(Split, types.XTextEmpty),
+		"trim":              TextAndOptionalTextFunction(Trim, types.XTextEmpty),
+		"trim_left":         TextAndOptionalTextFunction(TrimLeft, types.XTextEmpty),
+		"trim_right":        TextAndOptionalTextFunction(TrimRight, types.XTextEmpty),
 		"join":              TwoArgFunction(Join),
 		"title":             OneTextFunction(Title),
 		"word":              InitialTextFunction(1, 2, Word),
@@ -410,6 +414,54 @@ func Split(env envs.Environment, text types.XText, delimiters types.XText) types
 		nonEmpty = append(nonEmpty, types.NewXText(split))
 	}
 	return types.NewXArray(nonEmpty...)
+}
+
+// Trim removes whitespace from either end of `text`.
+//
+// There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
+//
+//   @(trim(" hello world    ")) -> hello world
+//   @(trim("+123157568", "+")) -> 123157568
+//
+// @function trim(text, [,chars])
+func Trim(env envs.Environment, text types.XText, chars types.XText) types.XValue {
+	if chars != types.XTextEmpty {
+		return types.NewXText(strings.Trim(text.Native(), chars.Native()))
+	}
+
+	return types.NewXText(strings.TrimSpace(text.Native()))
+}
+
+// TrimLeft removes whitespace from the start of `text`.
+//
+// There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
+//
+//   @("*" & trim_left(" hello world   ") & "*") -> *hello world   *
+//   @(trim_left("+12345+", "+")) -> 12345+
+//
+// @function trim_left(text, [,chars])
+func TrimLeft(env envs.Environment, text types.XText, chars types.XText) types.XValue {
+	if chars != types.XTextEmpty {
+		return types.NewXText(strings.TrimLeft(text.Native(), chars.Native()))
+	}
+
+	return types.NewXText(strings.TrimLeftFunc(text.Native(), unicode.IsSpace))
+}
+
+// TrimRight removes whitespace from the end of `text`.
+//
+// There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
+//
+//   @("*" & trim_right(" hello world   ") & "*") -> * hello world*
+//   @(trim_right("+12345+", "+")) -> +12345
+//
+// @function trim_right(text, [,chars])
+func TrimRight(env envs.Environment, text types.XText, chars types.XText) types.XValue {
+	if chars != types.XTextEmpty {
+		return types.NewXText(strings.TrimRight(text.Native(), chars.Native()))
+	}
+
+	return types.NewXText(strings.TrimRightFunc(text.Native(), unicode.IsSpace))
 }
 
 // Join joins the given `array` of strings with `separator` to make text.

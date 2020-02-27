@@ -804,94 +804,115 @@
 <p>Returns the current date in the environment timezone.</p>
 <div class="sourceCode" id="cb88"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb88-1"><a href="#cb88-1"></a>@(today()) → <span class="dv">2018-04-11</span></span></code></pre></div>
 <h2 class="item_title">
+<a name="function:trim" href="#function:trim">trim(text, [,chars])</a>
+</h2>
+<p>Removes whitespace from either end of <code>text</code>.</p>
+<p>There is an optional final parameter <code>chars</code> which is string of characters to be removed instead of whitespace.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb89-1"><a href="#cb89-1"></a>@(trim(<span class="st">&quot; hello world    &quot;</span>)) → hello world</span>
+<span id="cb89-2"><a href="#cb89-2"></a>@(trim(<span class="st">&quot;+123157568&quot;</span>, <span class="st">&quot;+&quot;</span>)) → <span class="dv">123157568</span></span></code></pre></div>
+<h2 class="item_title">
+<a name="function:trim_left" href="#function:trim_left">trim_left(text, [,chars])</a>
+</h2>
+<p>Removes whitespace from the start of <code>text</code>.</p>
+<p>There is an optional final parameter <code>chars</code> which is string of characters to be removed instead of whitespace.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb90-1"><a href="#cb90-1"></a>@(<span class="st">&quot;*&quot;</span> &amp; trim_left(<span class="st">&quot; hello world   &quot;</span>) &amp; <span class="st">&quot;*&quot;</span>) → *hello world   *</span>
+<span id="cb90-2"><a href="#cb90-2"></a>@(trim_left(<span class="st">&quot;+12345+&quot;</span>, <span class="st">&quot;+&quot;</span>)) → <span class="dv">12345</span>+</span></code></pre></div>
+<h2 class="item_title">
+<a name="function:trim_right" href="#function:trim_right">trim_right(text, [,chars])</a>
+</h2>
+<p>Removes whitespace from the end of <code>text</code>.</p>
+<p>There is an optional final parameter <code>chars</code> which is string of characters to be removed instead of whitespace.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb91-1"><a href="#cb91-1"></a>@(<span class="st">&quot;*&quot;</span> &amp; trim_right(<span class="st">&quot; hello world   &quot;</span>) &amp; <span class="st">&quot;*&quot;</span>) → * hello world*</span>
+<span id="cb91-2"><a href="#cb91-2"></a>@(trim_right(<span class="st">&quot;+12345+&quot;</span>, <span class="st">&quot;+&quot;</span>)) → +<span class="dv">12345</span></span></code></pre></div>
+<h2 class="item_title">
 <a name="function:tz" href="#function:tz">tz(date)</a>
 </h2>
 <p>Returns the name of the timezone of <code>date</code>.</p>
 <p>If no timezone information is present in the date, then the current timezone will be returned.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb89-1"><a href="#cb89-1"></a>@(tz(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → UTC</span>
-<span id="cb89-2"><a href="#cb89-2"></a>@(tz(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → America/Guayaquil</span>
-<span id="cb89-3"><a href="#cb89-3"></a>@(tz(<span class="st">&quot;2017-01-15&quot;</span>)) → America/Guayaquil</span>
-<span id="cb89-4"><a href="#cb89-4"></a>@(tz(<span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb92-1"><a href="#cb92-1"></a>@(tz(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → UTC</span>
+<span id="cb92-2"><a href="#cb92-2"></a>@(tz(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → America/Guayaquil</span>
+<span id="cb92-3"><a href="#cb92-3"></a>@(tz(<span class="st">&quot;2017-01-15&quot;</span>)) → America/Guayaquil</span>
+<span id="cb92-4"><a href="#cb92-4"></a>@(tz(<span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
 <h2 class="item_title">
 <a name="function:tz_offset" href="#function:tz_offset">tz_offset(date)</a>
 </h2>
 <p>Returns the offset of the timezone of <code>date</code>.</p>
 <p>The offset is returned in the format <code>[+/-]HH:MM</code>. If no timezone information is present in the date, then the current timezone offset will be returned.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb90-1"><a href="#cb90-1"></a>@(tz_offset(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → +<span class="dv">0000</span></span>
-<span id="cb90-2"><a href="#cb90-2"></a>@(tz_offset(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → <span class="dv">-0500</span></span>
-<span id="cb90-3"><a href="#cb90-3"></a>@(tz_offset(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">-0500</span></span>
-<span id="cb90-4"><a href="#cb90-4"></a>@(tz_offset(<span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb93-1"><a href="#cb93-1"></a>@(tz_offset(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → +<span class="dv">0000</span></span>
+<span id="cb93-2"><a href="#cb93-2"></a>@(tz_offset(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → <span class="dv">-0500</span></span>
+<span id="cb93-3"><a href="#cb93-3"></a>@(tz_offset(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">-0500</span></span>
+<span id="cb93-4"><a href="#cb93-4"></a>@(tz_offset(<span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
 <h2 class="item_title">
 <a name="function:upper" href="#function:upper">upper(text)</a>
 </h2>
 <p>Converts <code>text</code> to uppercase.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb91-1"><a href="#cb91-1"></a>@(upper(<span class="st">&quot;Asdf&quot;</span>)) → ASDF</span>
-<span id="cb91-2"><a href="#cb91-2"></a>@(upper(<span class="dv">123</span>)) → <span class="dv">123</span></span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb94-1"><a href="#cb94-1"></a>@(upper(<span class="st">&quot;Asdf&quot;</span>)) → ASDF</span>
+<span id="cb94-2"><a href="#cb94-2"></a>@(upper(<span class="dv">123</span>)) → <span class="dv">123</span></span></code></pre></div>
 <h2 class="item_title">
 <a name="function:url_encode" href="#function:url_encode">url_encode(text)</a>
 </h2>
 <p>Encodes <code>text</code> for use as a URL parameter.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb92-1"><a href="#cb92-1"></a>@(url_encode(<span class="st">&quot;two &amp; words&quot;</span>)) → two%<span class="dv">20</span>%<span class="dv">26</span>%20words</span>
-<span id="cb92-2"><a href="#cb92-2"></a>@(url_encode(<span class="dv">10</span>)) → <span class="dv">10</span></span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb95-1"><a href="#cb95-1"></a>@(url_encode(<span class="st">&quot;two &amp; words&quot;</span>)) → two%<span class="dv">20</span>%<span class="dv">26</span>%20words</span>
+<span id="cb95-2"><a href="#cb95-2"></a>@(url_encode(<span class="dv">10</span>)) → <span class="dv">10</span></span></code></pre></div>
 <h2 class="item_title">
 <a name="function:urn_parts" href="#function:urn_parts">urn_parts(urn)</a>
 </h2>
 <p>Parses a URN into its different parts</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb93-1"><a href="#cb93-1"></a>@(urn_parts(<span class="st">&quot;tel:+593979012345&quot;</span>)) → {display: , path: +<span class="dv">593979012345</span>, scheme: tel}</span>
-<span id="cb93-2"><a href="#cb93-2"></a>@(urn_parts(<span class="st">&quot;twitterid:3263621177#bobby&quot;</span>)) → {display: bobby, path: <span class="dv">3263621177</span>, scheme: twitterid}</span>
-<span id="cb93-3"><a href="#cb93-3"></a>@(urn_parts(<span class="st">&quot;not a urn&quot;</span>)) → ERROR</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb96-1"><a href="#cb96-1"></a>@(urn_parts(<span class="st">&quot;tel:+593979012345&quot;</span>)) → {display: , path: +<span class="dv">593979012345</span>, scheme: tel}</span>
+<span id="cb96-2"><a href="#cb96-2"></a>@(urn_parts(<span class="st">&quot;twitterid:3263621177#bobby&quot;</span>)) → {display: bobby, path: <span class="dv">3263621177</span>, scheme: twitterid}</span>
+<span id="cb96-3"><a href="#cb96-3"></a>@(urn_parts(<span class="st">&quot;not a urn&quot;</span>)) → ERROR</span></code></pre></div>
 <h2 class="item_title">
 <a name="function:week_number" href="#function:week_number">week_number(date)</a>
 </h2>
 <p>Returns the week number (1-54) of <code>date</code>.</p>
 <p>The week is considered to start on Sunday and week containing Jan 1st is week number 1.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb94-1"><a href="#cb94-1"></a>@(week_number(<span class="st">&quot;2019-01-01&quot;</span>)) → <span class="dv">1</span></span>
-<span id="cb94-2"><a href="#cb94-2"></a>@(week_number(<span class="st">&quot;2019-07-23T16:56:59.000000Z&quot;</span>)) → <span class="dv">30</span></span>
-<span id="cb94-3"><a href="#cb94-3"></a>@(week_number(<span class="st">&quot;xx&quot;</span>)) → ERROR</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb97-1"><a href="#cb97-1"></a>@(week_number(<span class="st">&quot;2019-01-01&quot;</span>)) → <span class="dv">1</span></span>
+<span id="cb97-2"><a href="#cb97-2"></a>@(week_number(<span class="st">&quot;2019-07-23T16:56:59.000000Z&quot;</span>)) → <span class="dv">30</span></span>
+<span id="cb97-3"><a href="#cb97-3"></a>@(week_number(<span class="st">&quot;xx&quot;</span>)) → ERROR</span></code></pre></div>
 <h2 class="item_title">
 <a name="function:weekday" href="#function:weekday">weekday(date)</a>
 </h2>
 <p>Returns the day of the week for <code>date</code>.</p>
 <p>The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb95-1"><a href="#cb95-1"></a>@(weekday(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">0</span></span>
-<span id="cb95-2"><a href="#cb95-2"></a>@(weekday(<span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb98-1"><a href="#cb98-1"></a>@(weekday(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">0</span></span>
+<span id="cb98-2"><a href="#cb98-2"></a>@(weekday(<span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
 <h2 class="item_title">
 <a name="function:word" href="#function:word">word(text, index [,delimiters])</a>
 </h2>
 <p>Returns the word at <code>index</code> in <code>text</code>.</p>
 <p>Indexes start at zero. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb96-1"><a href="#cb96-1"></a>@(word(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>)) → bee</span>
-<span id="cb96-2"><a href="#cb96-2"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">0</span>)) → bee</span>
-<span id="cb96-3"><a href="#cb96-3"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">1</span>)) → cat</span>
-<span id="cb96-4"><a href="#cb96-4"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">2</span>)) → dog</span>
-<span id="cb96-5"><a href="#cb96-5"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-1</span>)) → dog</span>
-<span id="cb96-6"><a href="#cb96-6"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-2</span>)) → cat</span>
-<span id="cb96-7"><a href="#cb96-7"></a>@(word(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;.*=|&quot;</span>)) → cat,dog</span>
-<span id="cb96-8"><a href="#cb96-8"></a>@(word(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb99-1"><a href="#cb99-1"></a>@(word(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>)) → bee</span>
+<span id="cb99-2"><a href="#cb99-2"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">0</span>)) → bee</span>
+<span id="cb99-3"><a href="#cb99-3"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">1</span>)) → cat</span>
+<span id="cb99-4"><a href="#cb99-4"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">2</span>)) → dog</span>
+<span id="cb99-5"><a href="#cb99-5"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-1</span>)) → dog</span>
+<span id="cb99-6"><a href="#cb99-6"></a>@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-2</span>)) → cat</span>
+<span id="cb99-7"><a href="#cb99-7"></a>@(word(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;.*=|&quot;</span>)) → cat,dog</span>
+<span id="cb99-8"><a href="#cb99-8"></a>@(word(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</span></code></pre></div>
 <h2 class="item_title">
 <a name="function:word_count" href="#function:word_count">word_count(text [,delimiters])</a>
 </h2>
 <p>Returns the number of words in <code>text</code>.</p>
 <p>There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb97-1"><a href="#cb97-1"></a>@(word_count(<span class="st">&quot;foo bar&quot;</span>)) → <span class="dv">2</span></span>
-<span id="cb97-2"><a href="#cb97-2"></a>@(word_count(<span class="dv">10</span>)) → <span class="dv">1</span></span>
-<span id="cb97-3"><a href="#cb97-3"></a>@(word_count(<span class="st">&quot;&quot;</span>)) → <span class="dv">0</span></span>
-<span id="cb97-4"><a href="#cb97-4"></a>@(word_count(<span class="st">&quot;😀😃😄😁&quot;</span>)) → <span class="dv">4</span></span>
-<span id="cb97-5"><a href="#cb97-5"></a>@(word_count(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="st">&quot;.*=|&quot;</span>)) → <span class="dv">2</span></span>
-<span id="cb97-6"><a href="#cb97-6"></a>@(word_count(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="st">&quot; &quot;</span>)) → <span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb100-1"><a href="#cb100-1"></a>@(word_count(<span class="st">&quot;foo bar&quot;</span>)) → <span class="dv">2</span></span>
+<span id="cb100-2"><a href="#cb100-2"></a>@(word_count(<span class="dv">10</span>)) → <span class="dv">1</span></span>
+<span id="cb100-3"><a href="#cb100-3"></a>@(word_count(<span class="st">&quot;&quot;</span>)) → <span class="dv">0</span></span>
+<span id="cb100-4"><a href="#cb100-4"></a>@(word_count(<span class="st">&quot;😀😃😄😁&quot;</span>)) → <span class="dv">4</span></span>
+<span id="cb100-5"><a href="#cb100-5"></a>@(word_count(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="st">&quot;.*=|&quot;</span>)) → <span class="dv">2</span></span>
+<span id="cb100-6"><a href="#cb100-6"></a>@(word_count(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="st">&quot; &quot;</span>)) → <span class="dv">2</span></span></code></pre></div>
 <h2 class="item_title">
 <a name="function:word_slice" href="#function:word_slice">word_slice(text, start, end [,delimiters])</a>
 </h2>
 <p>Extracts a sub-sequence of words from <code>text</code>.</p>
 <p>The returned words are those from <code>start</code> up to but not-including <code>end</code>. Indexes start at zero and a negative end value means that all words after the start should be returned. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb98-1"><a href="#cb98-1"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)) → bee</span>
-<span id="cb98-2"><a href="#cb98-2"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">2</span>)) → bee cat</span>
-<span id="cb98-3"><a href="#cb98-3"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>)) → cat dog</span>
-<span id="cb98-4"><a href="#cb98-4"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>)) → cat dog</span>
-<span id="cb98-5"><a href="#cb98-5"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">2</span>, <span class="dv">3</span>)) → dog</span>
-<span id="cb98-6"><a href="#cb98-6"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</span>
-<span id="cb98-7"><a href="#cb98-7"></a>@(word_slice(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>, <span class="st">&quot;.*=|,&quot;</span>)) → cat dog</span>
-<span id="cb98-8"><a href="#cb98-8"></a>@(word_slice(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb101-1"><a href="#cb101-1"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)) → bee</span>
+<span id="cb101-2"><a href="#cb101-2"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">2</span>)) → bee cat</span>
+<span id="cb101-3"><a href="#cb101-3"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>)) → cat dog</span>
+<span id="cb101-4"><a href="#cb101-4"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>)) → cat dog</span>
+<span id="cb101-5"><a href="#cb101-5"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">2</span>, <span class="dv">3</span>)) → dog</span>
+<span id="cb101-6"><a href="#cb101-6"></a>@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</span>
+<span id="cb101-7"><a href="#cb101-7"></a>@(word_slice(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>, <span class="st">&quot;.*=|,&quot;</span>)) → cat dog</span>
+<span id="cb101-8"><a href="#cb101-8"></a>@(word_slice(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</span></code></pre></div>
 </div>
 
     </body>

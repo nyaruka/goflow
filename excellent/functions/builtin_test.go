@@ -592,6 +592,24 @@ func TestFunctions(t *testing.T) {
 		{"today", dmy, []types.XValue{}, xd(dates.NewDate(2018, 4, 11))},
 		{"today", dmy, []types.XValue{ERROR}, ERROR},
 
+		{"trim", dmy, []types.XValue{xs("   abc      ")}, xs("abc")},
+		{"trim", dmy, []types.XValue{xs("*=*abc=*="), xs("*=")}, xs("abc")},
+		{"trim", dmy, []types.XValue{xs(" abc "), ERROR}, ERROR},
+		{"trim", dmy, []types.XValue{ERROR}, ERROR},
+		{"trim", dmy, []types.XValue{}, ERROR},
+
+		{"trim_left", dmy, []types.XValue{xs("   abc      ")}, xs("abc      ")},
+		{"trim_left", dmy, []types.XValue{xs("*=*abc=*="), xs("*=")}, xs("abc=*=")},
+		{"trim_left", dmy, []types.XValue{xs(" abc "), ERROR}, ERROR},
+		{"trim_left", dmy, []types.XValue{ERROR}, ERROR},
+		{"trim_left", dmy, []types.XValue{}, ERROR},
+
+		{"trim_right", dmy, []types.XValue{xs("   abc      ")}, xs("   abc")},
+		{"trim_right", dmy, []types.XValue{xs("*=*abc=*="), xs("*=")}, xs("*=*abc")},
+		{"trim_right", dmy, []types.XValue{xs(" abc "), ERROR}, ERROR},
+		{"trim_right", dmy, []types.XValue{ERROR}, ERROR},
+		{"trim_right", dmy, []types.XValue{}, ERROR},
+
 		{"tz", dmy, []types.XValue{xs("01-12-2017")}, xs("UTC")},
 		{"tz", mdy, []types.XValue{xs("01-12-2017")}, xs("America/Los_Angeles")},
 		{"tz", dmy, []types.XValue{xs("01-12-2017 10:15:33pm")}, xs("UTC")},

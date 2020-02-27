@@ -1358,6 +1358,51 @@
         ]
     },
     {
+        "signature": "trim(text, [,chars])",
+        "summary": "Removes whitespace from either end of `text`.",
+        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "examples": [
+            {
+                "template": "@(trim(\" hello world    \"))",
+                "output": "hello world"
+            },
+            {
+                "template": "@(trim(\"+123157568\", \"+\"))",
+                "output": "123157568"
+            }
+        ]
+    },
+    {
+        "signature": "trim_left(text, [,chars])",
+        "summary": "Removes whitespace from the start of `text`.",
+        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "examples": [
+            {
+                "template": "@(\"*\" & trim_left(\" hello world   \") & \"*\")",
+                "output": "*hello world   *"
+            },
+            {
+                "template": "@(trim_left(\"+12345+\", \"+\"))",
+                "output": "12345+"
+            }
+        ]
+    },
+    {
+        "signature": "trim_right(text, [,chars])",
+        "summary": "Removes whitespace from the end of `text`.",
+        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "examples": [
+            {
+                "template": "@(\"*\" & trim_right(\" hello world   \") & \"*\")",
+                "output": "* hello world*"
+            },
+            {
+                "template": "@(trim_right(\"+12345+\", \"+\"))",
+                "output": "+12345"
+            }
+        ]
+    },
+    {
         "signature": "tz(date)",
         "summary": "Returns the name of the timezone of `date`.",
         "detail": "If no timezone information is present in the date, then the current timezone will be returned.",
