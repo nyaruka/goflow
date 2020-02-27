@@ -15,11 +15,11 @@ require (
 	github.com/sergi/go-diff v1.0.0
 	github.com/shopspring/decimal v0.0.0-20180319170823-2df3e6ddaf6e
 	github.com/stretchr/testify v1.2.2
-	golang.org/x/net v0.0.0-20180921000356-2f5d2388922f
-	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
+	golang.org/x/net v0.0.0-20190620200207-3b0461eec859
+	golang.org/x/sync v0.0.0-20190423024810-112230192c58 // indirect
 	golang.org/x/text v0.3.0
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/go-playground/assert.v1 v1.2.1
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.12.0
 	gopkg.in/mail.v2 v2.3.1 // indirect
 )

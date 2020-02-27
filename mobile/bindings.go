@@ -2,18 +2,8 @@ package mobile
 
 // To build an Android Archive:
 //
+// go get golang.org/x/mobile/cmd/gomobile
 // gomobile bind -target android -javapkg=com.nyaruka.goflow -o mobile/goflow.aar github.com/nyaruka/goflow/mobile
-//
-// ... except gomobile doesn't yet support gomodules (https://github.com/golang/go/issues/27234). So you need to recreate
-// this as a non-module go project first, i.e.
-//
-// mkdir -p $GOPATH/src/github.com/nyaruka/goflow
-// rsync -a . $GOPATH/src/github.com/nyaruka/goflow
-// cd $GOPATH/src/github.com/nyaruka/goflow
-// GO111MODULE=on go mod vendor
-// GO111MODULE=off go get golang.org/x/mobile/cmd/gomobile
-// GO111MODULE=off $GOPATH/bin/gomobile init
-// GO111MODULE=off gomobile bind -target android -javapkg=com.nyaruka.goflow -o mobile/goflow.aar github.com/nyaruka/goflow/mobile
 
 import (
 	"encoding/json"
