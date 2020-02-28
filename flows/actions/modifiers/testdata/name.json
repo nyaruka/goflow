@@ -17,9 +17,9 @@
         },
         "events": [
             {
+                "type": "contact_name_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Bobby",
-                "type": "contact_name_changed"
+                "name": "Bobby"
             }
         ]
     },
@@ -54,29 +54,29 @@
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
-                    "name": "Nameless",
-                    "uuid": "5389414a-66b8-408b-afec-07c5d68f6784"
+                    "uuid": "5389414a-66b8-408b-afec-07c5d68f6784",
+                    "name": "Nameless"
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": [
             {
+                "type": "contact_name_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "",
-                "type": "contact_name_changed"
+                "name": ""
             },
             {
+                "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "groups_added": [
                     {
-                        "name": "Nameless",
-                        "uuid": "5389414a-66b8-408b-afec-07c5d68f6784"
+                        "uuid": "5389414a-66b8-408b-afec-07c5d68f6784",
+                        "name": "Nameless"
                     }
-                ],
-                "type": "contact_groups_changed"
+                ]
             }
         ]
     }

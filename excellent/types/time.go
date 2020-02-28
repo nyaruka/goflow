@@ -1,12 +1,12 @@
 package types
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // XTime is a time of day.
@@ -53,7 +53,7 @@ func (x XTime) FormatCustom(format envs.TimeFormat) (string, error) {
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(x.Native().String())
+	return jsonx.Marshal(x.Native().String())
 }
 
 // String returns the native string representation of this type

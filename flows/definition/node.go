@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -87,29 +89,47 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 }
 
 // EnumerateTemplates enumerates all expressions on this object
-func (n *node) EnumerateTemplates(localization flows.Localization, include func(string)) {
-	inspect.Templates(n.actions, localization, include)
+func (n *node) EnumerateTemplates(localization flows.Localization, include func(flows.Action, flows.Router, envs.Language, string)) {
+	for _, action := range n.actions {
+		inspect.Templates(action, localization, func(l envs.Language, t string) {
+			include(action, nil, l, t)
+		})
+	}
 
 	if n.router != nil {
-		n.router.EnumerateTemplates(localization, include)
+		n.router.EnumerateTemplates(localization, func(l envs.Language, t string) {
+			include(nil, n.router, l, t)
+		})
 	}
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (n *node) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
-	inspect.Dependencies(n.actions, localization, include)
+func (n *node) EnumerateDependencies(localization flows.Localization, include func(flows.Action, flows.Router, envs.Language, assets.Reference)) {
+	for _, action := range n.actions {
+		inspect.Dependencies(action, localization, func(l envs.Language, r assets.Reference) {
+			include(action, nil, l, r)
+		})
+	}
 
 	if n.router != nil {
-		n.router.EnumerateDependencies(localization, include)
+		n.router.EnumerateDependencies(localization, func(l envs.Language, r assets.Reference) {
+			include(nil, n.router, l, r)
+		})
 	}
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (n *node) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {
-	inspect.Results(n, n.actions, include)
+func (n *node) EnumerateResults(include func(flows.Action, flows.Router, *flows.ResultInfo)) {
+	for _, action := range n.actions {
+		inspect.Results(action, func(r *flows.ResultInfo) {
+			include(action, nil, r)
+		})
+	}
 
 	if n.router != nil {
-		n.router.EnumerateResults(n, include)
+		n.router.EnumerateResults(func(r *flows.ResultInfo) {
+			include(nil, n.router, r)
+		})
 	}
 }
 
@@ -170,14 +190,14 @@ func (n *node) MarshalJSON() ([]byte, error) {
 
 	e.Actions = make([]json.RawMessage, len(n.actions))
 	for i := range n.actions {
-		e.Actions[i], err = json.Marshal(n.actions[i])
+		e.Actions[i], err = jsonx.Marshal(n.actions[i])
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	if n.router != nil {
-		e.Router, err = json.Marshal(n.router)
+		e.Router, err = jsonx.Marshal(n.router)
 		if err != nil {
 			return nil, err
 		}
@@ -188,5 +208,5 @@ func (n *node) MarshalJSON() ([]byte, error) {
 		e.Exits[i] = n.exits[i].(*exit)
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }

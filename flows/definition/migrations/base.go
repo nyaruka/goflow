@@ -1,13 +1,13 @@
 package migrations
 
 import (
-	"encoding/json"
 	"sort"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
@@ -110,7 +110,7 @@ func migrate(data []byte, from *semver.Version, to *semver.Version) ([]byte, err
 	}
 
 	// finally marshal back to JSON
-	return json.Marshal(migrated)
+	return jsonx.Marshal(migrated)
 }
 
 // Clone clones the given flow definition by replacing all UUIDs using the provided mapping and
@@ -124,12 +124,12 @@ func Clone(data []byte, depMapping map[uuids.UUID]uuids.UUID) ([]byte, error) {
 	remapUUIDs(clone, depMapping)
 
 	// finally marshal back to JSON
-	return json.Marshal(clone)
+	return jsonx.Marshal(clone)
 }
 
 // reads a flow definition as a flow primitive
 func readFlow(data []byte) (Flow, error) {
-	g, err := utils.JSONDecodeGeneric(data)
+	g, err := jsonx.DecodeGeneric(data)
 	if err != nil {
 		return nil, err
 	}
@@ -193,12 +193,13 @@ func remapUUIDs(data map[string]interface{}, depMapping map[uuids.UUID]uuids.UUI
 	walk(data, objectCallback, arrayCallback)
 }
 
-// extract the property names from a generic JSON object
+// extract the property names from a generic JSON object, sorted A-Z
 func objectProperties(obj map[string]interface{}) []string {
 	props := make([]string, 0, len(obj))
 	for k := range obj {
 		props = append(props, k)
 	}
+	sort.Strings(props)
 	return props
 }
 
@@ -208,8 +209,8 @@ func walk(j interface{}, objectCallback func(map[string]interface{}), arrayCallb
 	case map[string]interface{}:
 		objectCallback(typed)
 
-		for _, v := range typed {
-			walk(v, objectCallback, arrayCallback)
+		for _, p := range objectProperties(typed) {
+			walk(typed[p], objectCallback, arrayCallback)
 		}
 	case []interface{}:
 		arrayCallback(typed)

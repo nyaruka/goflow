@@ -14,8 +14,11 @@ import (
 	"github.com/pkg/errors"
 )
 
-var telRegex = regexp.MustCompile(`^[+ \d\-\(\)]{4,}$`)
-var cleanSpecialCharsRegex = regexp.MustCompile(`[+ \-\(\)]+`)
+// an implicit condition like +123-124-6546 or 1234 will be interpreted as a tel ~ condition
+var implicitIsPhoneNumberRegex = regexp.MustCompile(`^\+?[\-\d]{4,}$`)
+
+// used to strip formatting from phone number values
+var cleanPhoneNumberRegex = regexp.MustCompile(`[^+\d]+`)
 
 var comparatorAliases = map[string]Comparator{
 	"has": ComparatorContains,
@@ -28,32 +31,37 @@ const (
 	AttributeName      = "name"
 	AttributeLanguage  = "language"
 	AttributeURN       = "urn"
+	AttributeGroup     = "group"
 	AttributeCreatedOn = "created_on"
 )
 
 var attributes = map[string]assets.FieldType{
-	AttributeID:        assets.FieldTypeNumber,
+	AttributeID:        assets.FieldTypeText,
 	AttributeName:      assets.FieldTypeText,
 	AttributeLanguage:  assets.FieldTypeText,
 	AttributeURN:       assets.FieldTypeText,
+	AttributeGroup:     assets.FieldTypeText,
 	AttributeCreatedOn: assets.FieldTypeDatetime,
 }
 
-// FieldResolverFunc resolves a query property key to a possible contact field
-type FieldResolverFunc func(string) assets.Field
+// Resolver provides functions for resolving fields and groups referenced in queries
+type Resolver interface {
+	ResolveField(key string) assets.Field
+	ResolveGroup(name string) assets.Group
+}
 
 type visitor struct {
 	gen.BaseContactQLVisitor
 
-	redaction     envs.RedactionPolicy
-	fieldResolver FieldResolverFunc
+	redaction envs.RedactionPolicy
+	resolver  Resolver
 
 	errors []error
 }
 
 // creates a new ContactQL visitor
-func newVisitor(redaction envs.RedactionPolicy, fieldResolver FieldResolverFunc) *visitor {
-	return &visitor{redaction: redaction, fieldResolver: fieldResolver}
+func newVisitor(redaction envs.RedactionPolicy, resolver Resolver) *visitor {
+	return &visitor{redaction: redaction, resolver: resolver}
 }
 
 // Visit the top level parse tree
@@ -68,7 +76,7 @@ func (v *visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 
 // expression : TEXT
 func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) interface{} {
-	value := ctx.TEXT().GetText()
+	value := v.Visit(ctx.Literal()).(string)
 
 	asURN, _ := urns.Parse(value)
 
@@ -82,8 +90,8 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 
 		return newCondition(PropertyTypeScheme, scheme, ComparatorEqual, path, assets.FieldTypeText)
 
-	} else if telRegex.MatchString(value) {
-		value = cleanSpecialCharsRegex.ReplaceAllString(value, "")
+	} else if implicitIsPhoneNumberRegex.MatchString(value) {
+		value = cleanPhoneNumberRegex.ReplaceAllLiteralString(value, "")
 
 		return newCondition(PropertyTypeScheme, urns.TelScheme, ComparatorContains, value, assets.FieldTypeText)
 	}
@@ -96,7 +104,7 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 
 	condition := newCondition(PropertyTypeAttribute, AttributeName, comparator, value, attributes[AttributeName])
 
-	if err := condition.Validate(); err != nil {
+	if err := condition.Validate(v.resolver); err != nil {
 		v.addError(err)
 	}
 
@@ -134,7 +142,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 			v.addError(errors.New("cannot query on redacted URNs"))
 		}
 	} else {
-		field := v.fieldResolver(propKey)
+		field := v.resolver.ResolveField(propKey)
 		if field != nil {
 			propType = PropertyTypeField
 			valueType = field.Type()
@@ -145,7 +153,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 
 	condition := newCondition(propType, propKey, comparator, value, valueType)
 
-	if err := condition.Validate(); err != nil {
+	if err := condition.Validate(v.resolver); err != nil {
 		v.addError(err)
 	}
 

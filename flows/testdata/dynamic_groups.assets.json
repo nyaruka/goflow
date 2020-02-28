@@ -1,0 +1,66 @@
+{
+    "fields": [
+        {
+            "key": "gender",
+            "name": "Gender",
+            "type": "text"
+        },
+        {
+            "key": "age",
+            "name": "Age",
+            "type": "number"
+        }
+    ],
+    "groups": [
+        {
+            "uuid": "f10d4625-2e10-4bfb-9831-4ad0f3d86dcf",
+            "name": "Males",
+            "query": "gender = \"M\""
+        },
+        {
+            "uuid": "49862458-6e8c-4349-96b4-8a0991fd9cd0",
+            "name": "Old",
+            "query": "age > 30"
+        },
+        {
+            "uuid": "d0672c0f-d429-4173-a2f3-e1ebd578e8fa",
+            "name": "English",
+            "query": "language=eng"
+        },
+        {
+            "uuid": "32365991-cb23-4926-b410-8e419f79b8fa",
+            "name": "Español",
+            "query": "language=spa"
+        },
+        {
+            "uuid": "8349470e-ade5-4659-8792-95caa689b172",
+            "name": "Last Year",
+            "query": "created_on <= 2017-12-31"
+        },
+        {
+            "uuid": "0e3ed94f-b358-43fd-925c-33b1fa87ba9d",
+            "name": "Tel with 1800",
+            "query": "tel ~ 1800"
+        },
+        {
+            "uuid": "4c2ff50f-ff4f-46f0-b995-b3d635621244",
+            "name": "Twitter Crazies",
+            "query": "twitter ~ crazy"
+        },
+        {
+            "uuid": "655f5648-7d2b-4e14-bc92-23d102a7a0fd",
+            "name": "Broken",
+            "query": "xyz=X"
+        }
+    ],
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Empty Flow",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": []
+        }
+    ]
+}

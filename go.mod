@@ -10,14 +10,14 @@ require (
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible
 	github.com/mattn/kinako v0.0.0-20170717041458-332c0a7e205a // indirect
-	github.com/nyaruka/gocommon v1.1.1
+	github.com/nyaruka/gocommon v1.2.0
 	github.com/nyaruka/phonenumbers v1.0.41
 	github.com/pkg/errors v0.8.0
 	github.com/sergi/go-diff v1.0.0
 	github.com/shopspring/decimal v0.0.0-20180319170823-2df3e6ddaf6e
 	github.com/stretchr/testify v1.2.2
-	golang.org/x/net v0.0.0-20180921000356-2f5d2388922f
-	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
+	golang.org/x/net v0.0.0-20190620200207-3b0461eec859
+	golang.org/x/sync v0.0.0-20190423024810-112230192c58 // indirect
 	golang.org/x/text v0.3.0
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect

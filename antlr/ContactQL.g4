@@ -47,6 +47,6 @@ expression:
 	| expression OR expression	# combinationOr
 	| LPAREN expression RPAREN	# expressionGrouping
 	| TEXT COMPARATOR literal	# condition
-	| TEXT						# implicitCondition;
+	| literal					# implicitCondition;
 
 literal: TEXT # textLiteral | STRING # stringLiteral;

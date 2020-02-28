@@ -1,0 +1,59 @@
+{
+    "dependencies": [
+        {
+            "uuid": "83452c2e-d6e4-4fae-950a-156064e40068",
+            "name": "Customers",
+            "type": "group",
+            "missing": true
+        },
+        {
+            "uuid": "a8a6d847-0785-4f97-a8f8-3af98ed111a0",
+            "name": "Interesting",
+            "type": "label",
+            "missing": true
+        },
+        {
+            "key": "about_me",
+            "name": "",
+            "type": "field",
+            "missing": true
+        }
+    ],
+    "issues": [
+        {
+            "type": "missing_dependency",
+            "node_uuid": "f2350d86-e53d-432a-9038-902fe2325c69",
+            "action_uuid": "b1c671d6-ee32-49bd-b3e7-55de449bdda1",
+            "description": "missing group dependency '83452c2e-d6e4-4fae-950a-156064e40068'",
+            "dependency": {
+                "uuid": "83452c2e-d6e4-4fae-950a-156064e40068",
+                "name": "Customers",
+                "type": "group"
+            }
+        },
+        {
+            "type": "missing_dependency",
+            "node_uuid": "f2350d86-e53d-432a-9038-902fe2325c69",
+            "action_uuid": "67587939-cfd5-49df-a97c-1016e3378a97",
+            "description": "missing label dependency 'a8a6d847-0785-4f97-a8f8-3af98ed111a0'",
+            "dependency": {
+                "uuid": "a8a6d847-0785-4f97-a8f8-3af98ed111a0",
+                "name": "Interesting",
+                "type": "label"
+            }
+        },
+        {
+            "type": "missing_dependency",
+            "node_uuid": "5cba1736-911a-4b7c-9b2c-56aee3c0dac5",
+            "description": "missing field dependency 'about_me'",
+            "dependency": {
+                "key": "about_me",
+                "name": "",
+                "type": "field"
+            }
+        }
+    ],
+    "results": [],
+    "waiting_exits": [],
+    "parent_refs": []
+}

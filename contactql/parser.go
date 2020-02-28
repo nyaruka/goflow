@@ -3,6 +3,7 @@ package contactql
 import (
 	"fmt"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -62,6 +63,8 @@ const minNameTokenContainsLength = 2
 // URN based contains conditions ust be at least 3 characters long as the ES implementation uses trigrams
 const minURNContainsLength = 3
 
+var isNumberRegex = regexp.MustCompile(`^\d+(\.\d+)?$`)
+
 // QueryNode is the base for nodes in our query parse tree
 type QueryNode interface {
 	fmt.Stringer
@@ -100,7 +103,7 @@ func (c *Condition) Comparator() Comparator { return c.comparator }
 func (c *Condition) Value() string { return c.value }
 
 // Validate checks that this condition is valid (and thus can be evaluated)
-func (c *Condition) Validate() error {
+func (c *Condition) Validate(resolver Resolver) error {
 	switch c.comparator {
 	case ComparatorContains:
 		if c.propKey == AttributeName {
@@ -119,6 +122,31 @@ func (c *Condition) Validate() error {
 	case ComparatorGreaterThan, ComparatorGreaterThanOrEqual, ComparatorLessThan, ComparatorLessThanOrEqual:
 		if c.valueType != assets.FieldTypeNumber && c.valueType != assets.FieldTypeDatetime {
 			return errors.Errorf("comparisons with %s can only be used with date and number fields", c.comparator)
+		}
+	}
+
+	// if existence check, disallow certain attributes
+	if c.value == "" {
+		switch c.propKey {
+		case AttributeID, AttributeCreatedOn, AttributeGroup:
+			return errors.Errorf("can't check whether '%s' is set or not set", c.propKey)
+		}
+	} else {
+		// check values are valid for the attribute type
+		switch c.propKey {
+		case AttributeGroup:
+			group := resolver.ResolveGroup(c.value)
+			if group == nil {
+				return errors.Errorf("'%s' is not a valid group name", c.value)
+			}
+			c.value = group.Name()
+		case AttributeLanguage:
+			if c.value != "" {
+				_, err := envs.ParseLanguage(c.value)
+				if err != nil {
+					return errors.Errorf("'%s' is not a valid language code", c.value)
+				}
+			}
 		}
 	}
 
@@ -144,18 +172,28 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 		return false, nil
 	}
 
-	// check each resolved value
+	// evaluate condition against each resolved value
+	anyTrue := false
+	allTrue := true
 	for _, val := range vals {
 		res, err := c.evaluateValue(env, val)
 		if err != nil {
 			return false, err
 		}
 		if res {
-			return true, nil
+			anyTrue = true
+		} else {
+			allTrue = false
 		}
 	}
 
-	return false, nil
+	// foo != x is only true if all values of foo are not x
+	if c.comparator == ComparatorNotEqual {
+		return allTrue, nil
+	}
+
+	// foo = x is true if any value of foo is x
+	return anyTrue, nil
 }
 
 func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, error) {
@@ -187,8 +225,7 @@ func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, 
 func (c *Condition) String() string {
 	value := c.value
 
-	_, err := decimal.NewFromString(value)
-	if err != nil {
+	if !isNumberRegex.MatchString(value) {
 		// if not a decimal then quote
 		value = strconv.Quote(value)
 	}
@@ -249,16 +286,20 @@ func (b *BoolCombination) String() string {
 	return fmt.Sprintf("(%s)", strings.Join(children, fmt.Sprintf(" %s ", strings.ToUpper(string(b.op)))))
 }
 
+// ContactQuery is a parsed contact QL query
 type ContactQuery struct {
 	root QueryNode
 }
 
+// Root returns the root node of this query
 func (q *ContactQuery) Root() QueryNode { return q.root }
 
+// Evaluate returns whether the given queryable matches this query
 func (q *ContactQuery) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
 	return q.root.Evaluate(env, queryable)
 }
 
+// String returns the pretty formatted version of this query
 func (q *ContactQuery) String() string {
 	s := q.root.String()
 
@@ -270,9 +311,18 @@ func (q *ContactQuery) String() string {
 }
 
 // ParseQuery parses a ContactQL query from the given input
-func ParseQuery(text string, redaction envs.RedactionPolicy, fieldResolver FieldResolverFunc) (*ContactQuery, error) {
-	errListener := NewErrorListener()
+func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Country, resolver Resolver) (*ContactQuery, error) {
+	// preprocess text before parsing
+	text = strings.TrimSpace(text)
 
+	// if query is a valid number, rewrite as a tel = query
+	if redaction != envs.RedactionPolicyURNs {
+		if number := utils.ParsePhoneNumber(text, string(country)); number != "" {
+			text = fmt.Sprintf(`tel = %s`, number)
+		}
+	}
+
+	errListener := NewErrorListener()
 	input := antlr.NewInputStream(text)
 	lexer := gen.NewContactQLLexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
@@ -286,7 +336,7 @@ func ParseQuery(text string, redaction envs.RedactionPolicy, fieldResolver Field
 		return nil, errListener.Error()
 	}
 
-	visitor := newVisitor(redaction, fieldResolver)
+	visitor := newVisitor(redaction, resolver)
 	rootNode := visitor.Visit(tree).(QueryNode)
 
 	if len(visitor.errors) > 0 {

@@ -35,20 +35,12 @@ func LoadFlowFromAssets(path string, uuid assets.FlowUUID) (flows.Flow, error) {
 	return sa.Flows().Get(uuid)
 }
 
-func NewField(key string, name string, valueType assets.FieldType) *flows.Field {
-	return flows.NewField(types.NewField(assets.FieldUUID(uuids.New()), key, name, valueType))
-}
-
-func NewGroup(name string, query string) *flows.Group {
-	return flows.NewGroup(types.NewGroup(assets.GroupUUID(uuids.New()), name, query))
-}
-
 func NewChannel(name string, address string, schemes []string, roles []assets.ChannelRole, parent *assets.ChannelReference) *flows.Channel {
 	return flows.NewChannel(types.NewChannel(assets.ChannelUUID(uuids.New()), name, address, schemes, roles, parent))
 }
 
-func NewTelChannel(name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country string, matchPrefixes []string) *flows.Channel {
-	return flows.NewChannel(types.NewTelChannel(assets.ChannelUUID(uuids.New()), name, address, roles, parent, country, matchPrefixes))
+func NewTelChannel(name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country string, matchPrefixes []string, allowInternational bool) *flows.Channel {
+	return flows.NewChannel(types.NewTelChannel(assets.ChannelUUID(uuids.New()), name, address, roles, parent, country, matchPrefixes, allowInternational))
 }
 
 func NewClassifier(name, type_ string, intents []string) *flows.Classifier {

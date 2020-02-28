@@ -45,7 +45,7 @@ msgstr ""
 msgid "Creates a time from `hour`, `minute` and `second`"
 msgstr ""
 
-msgid "Empty values are removed from the returned list."
+msgid "Empty values are removed from the returned list. There is an optional final parameter `delimiters` which\nis string of characters used to split the text into words."
 msgstr ""
 
 msgid "Encodes `text` for use as a URL parameter."
@@ -150,6 +150,15 @@ msgstr ""
 msgid "Removes the first word of `text`."
 msgstr ""
 
+msgid "Removes whitespace from either end of `text`."
+msgstr ""
+
+msgid "Removes whitespace from the end of `text`."
+msgstr ""
+
+msgid "Removes whitespace from the start of `text`."
+msgstr ""
+
 msgid "Replaces up to `count` occurrences of `needle` with `replacement` in `text`."
 msgstr ""
 
@@ -252,7 +261,7 @@ msgstr ""
 msgid "Rounds `number` up to the nearest integer value."
 msgstr ""
 
-msgid "Splits `text` based on the given characters in `delimiters`."
+msgid "Splits `text` into an array of separated words."
 msgstr ""
 
 msgid "Splits `text` using the given `delimiter` and returns the field at `index`."
@@ -295,6 +304,9 @@ msgid "The week is considered to start on Sunday and week containing Jan 1st is 
 msgstr ""
 
 msgid "The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc."
+msgstr ""
+
+msgid "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace."
 msgstr ""
 
 msgid "There is an optional final parameter `delimiters` which is string of characters used\nto split the text into words."

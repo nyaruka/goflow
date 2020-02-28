@@ -5,12 +5,14 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
@@ -62,22 +64,22 @@ func (r *baseRouter) AllowTimeout() bool {
 func (r *baseRouter) ResultName() string { return r.resultName }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(string)) {
+func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(envs.Language, string)) {
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(assets.Reference)) {
+func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(envs.Language, assets.Reference)) {
 }
 
 // EnumerateResults enumerates all potential results on this object
-func (r *baseRouter) EnumerateResults(node flows.Node, include func(*flows.ResultInfo)) {
+func (r *baseRouter) EnumerateResults(include func(*flows.ResultInfo)) {
 	if r.resultName != "" {
 		categoryNames := make([]string, len(r.categories))
 		for i := range r.categories {
 			categoryNames[i] = r.categories[i].Name()
 		}
 
-		include(flows.NewResultInfo(r.resultName, categoryNames, node))
+		include(flows.NewResultInfo(r.resultName, categoryNames))
 	}
 }
 
@@ -164,7 +166,7 @@ func (r *baseRouter) routeToCategory(run flows.FlowRun, step flows.Step, categor
 
 		var extraJSON json.RawMessage
 		if extra != nil {
-			extraJSON, _ = json.Marshal(extra)
+			extraJSON, _ = jsonx.Marshal(extra)
 		}
 		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), input, extraJSON, dates.Now())
 		run.SaveResult(result)
@@ -225,7 +227,7 @@ func (r *baseRouter) marshal(e *baseRouterEnvelope) error {
 	var err error
 
 	if r.wait != nil {
-		e.Wait, err = json.Marshal(r.wait)
+		e.Wait, err = jsonx.Marshal(r.wait)
 		if err != nil {
 			return err
 		}

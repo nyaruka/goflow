@@ -2,8 +2,6 @@ package definition
 
 import (
 	"encoding/json"
-	"fmt"
-	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -11,7 +9,9 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/inspect"
+	"github.com/nyaruka/goflow/flows/inspect/issues"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
@@ -105,86 +105,16 @@ func (f *flow) validate() error {
 }
 
 // Inspect enumerates dependencies, results etc
-func (f *flow) Inspect() *flows.FlowInfo {
-	assetRefs, parentRefs := f.extractAssetAndParentRefs()
+func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
+	templates, assetRefs, parentRefs := f.extract()
 
-	return &flows.FlowInfo{
-		Dependencies: flows.NewDependencies(assetRefs),
-		Results:      f.extractResults(),
+	return &flows.Inspection{
+		Dependencies: inspect.NewDependencies(assetRefs, sa),
+		Results:      flows.NewResultSpecs(f.extractResults()),
 		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,
+		Issues:       issues.Check(sa, f, templates, assetRefs),
 	}
-}
-
-// Validate checks that all of this flow's dependencies exist
-func (f *flow) Validate(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	return f.validateAssets(sa, false, nil, missing)
-}
-
-// Validate checks that all of this flow's dependencies exist, and all our flow dependencies are also valid
-func (f *flow) ValidateRecursive(sa flows.SessionAssets, missing func(assets.Reference)) error {
-	seen := make(map[assets.FlowUUID]bool)
-
-	return f.validateAssets(sa, true, seen, missing)
-}
-
-type brokenDependency struct {
-	dependency assets.Reference
-	reason     error
-}
-
-func (f *flow) validateAssets(sa flows.SessionAssets, recursive bool, seen map[assets.FlowUUID]bool, missing func(assets.Reference)) error {
-	// prevent looping if recursive
-	if recursive && seen[f.UUID()] {
-		return nil
-	}
-
-	// extract all dependencies (assets, contacts)
-	deps := flows.NewDependencies(f.ExtractDependencies())
-
-	// check dependencies actually exist
-	missingAssets := make([]brokenDependency, 0)
-	err := deps.Check(sa, func(r assets.Reference, err error) {
-		missingAssets = append(missingAssets, brokenDependency{r, err})
-	})
-	if err != nil {
-		return err
-	}
-
-	if len(missingAssets) > 0 {
-		// if we have callback for missing dependencies, call that
-		if missing != nil {
-			for _, ma := range missingAssets {
-				missing(ma.dependency)
-			}
-		} else {
-			// otherwise error
-			depStrings := make([]string, len(missingAssets))
-			for i, ma := range missingAssets {
-				depStrings[i] = ma.dependency.String()
-				if ma.reason != nil {
-					depStrings[i] += fmt.Sprintf(" (%s)", ma.reason)
-				}
-			}
-			return errors.Errorf("missing dependencies: %s", strings.Join(depStrings, ","))
-		}
-	}
-
-	if recursive {
-		seen[f.UUID()] = true
-
-		// go check any non-missing flow dependencies
-		for _, flowRef := range deps.Flows {
-			flowDep, err := sa.Flows().Get(flowRef.UUID)
-			if err == nil {
-				if err := flowDep.(*flow).validateAssets(sa, true, seen, missing); err != nil {
-					return errors.Wrapf(err, "invalid child %s", flowRef)
-				}
-			}
-		}
-	}
-
-	return nil
 }
 
 // Context returns the properties available in expressions
@@ -215,9 +145,9 @@ func (f *flow) Reference() *assets.FlowReference {
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
 	templates := make([]string, 0)
-	include := func(template string) {
-		if template != "" {
-			templates = append(templates, template)
+	include := func(a flows.Action, r flows.Router, l envs.Language, t string) {
+		if t != "" {
+			templates = append(templates, t)
 		}
 	}
 
@@ -228,62 +158,49 @@ func (f *flow) ExtractTemplates() []string {
 	return templates
 }
 
-// ExtractDependencies extracts all asset dependencies
-func (f *flow) ExtractDependencies() []assets.Reference {
-	assetRefs, _ := f.extractAssetAndParentRefs()
-	return assetRefs
-}
-
-// ExtractDependencies extracts all asset dependencies
-func (f *flow) extractAssetAndParentRefs() ([]assets.Reference, []string) {
-	dependencies := make([]assets.Reference, 0)
-	dependenciesSeen := make(map[string]bool)
-
-	addDependency := func(r assets.Reference) {
-		if !utils.IsNil(r) && !r.Variable() {
-			key := fmt.Sprintf("%s:%s", r.Type(), r.Identity())
-			if !dependenciesSeen[key] {
-				dependencies = append(dependencies, r)
-				dependenciesSeen[key] = true
-			}
-
-			// TODO replace if we saw a field ref without a name but now have same field with a name
-		}
-	}
-
+// extracts all templates, asset dependencies and parent result references
+func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference, []string) {
+	templates := make([]flows.ExtractedTemplate, 0)
+	assetRefs := make([]flows.ExtractedReference, 0)
 	parentRefs := make(map[string]bool)
 
-	include := func(template string) {
-		ars, prs := inspect.ExtractFromTemplate(template)
-		for _, r := range ars {
-			addDependency(r)
-		}
-		for _, r := range prs {
-			parentRefs[r] = true
+	recordAssetRef := func(n flows.Node, a flows.Action, r flows.Router, l envs.Language, ref assets.Reference) {
+		if ref != nil && !ref.Variable() {
+			er := flows.NewExtractedReference(n, a, r, l, ref)
+			assetRefs = append(assetRefs, er)
 		}
 	}
 
 	for _, n := range f.nodes {
-		n.EnumerateTemplates(f.Localization(), include)
-		n.EnumerateDependencies(f.Localization(), func(r assets.Reference) {
-			addDependency(r)
+		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, l envs.Language, t string) {
+			templates = append(templates, flows.NewExtractedTemplate(n, a, r, l, t))
+			ars, prs := inspect.ExtractFromTemplate(t)
+			for _, ref := range ars {
+				recordAssetRef(n, a, r, l, ref)
+			}
+			for _, r := range prs {
+				parentRefs[r] = true
+			}
+		})
+		n.EnumerateDependencies(f.Localization(), func(a flows.Action, r flows.Router, l envs.Language, ref assets.Reference) {
+			recordAssetRef(n, a, r, l, ref)
 		})
 	}
 
-	return dependencies, utils.StringSetKeys(parentRefs)
+	return templates, assetRefs, utils.StringSetKeys(parentRefs)
 }
 
 // extracts all result specs
-func (f *flow) extractResults() []*flows.ResultInfo {
-	specs := make([]*flows.ResultInfo, 0)
+func (f *flow) extractResults() []flows.ExtractedResult {
+	results := make([]flows.ExtractedResult, 0)
 
 	for _, n := range f.nodes {
-		n.EnumerateResults(n, func(spec *flows.ResultInfo) {
-			specs = append(specs, spec)
+		n.EnumerateResults(func(a flows.Action, r flows.Router, i *flows.ResultInfo) {
+			results = append(results, flows.ExtractedResult{Node: n, Action: a, Router: r, Info: i})
 		})
 	}
 
-	return flows.MergeResultInfos(specs)
+	return results
 }
 
 // extracts all exits coming from nodes with waits
@@ -332,7 +249,7 @@ func ReadFlow(data json.RawMessage, migrationConfig *migrations.Config) (flows.F
 	}
 
 	header := &migrations.Header13{}
-	json.Unmarshal(data, header)
+	jsonx.Unmarshal(data, header)
 
 	if !IsVersionSupported(header.SpecVersion) {
 		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
@@ -376,5 +293,5 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		e.Nodes[i] = f.nodes[i].(*node)
 	}
 
-	return json.Marshal(e)
+	return jsonx.Marshal(e)
 }

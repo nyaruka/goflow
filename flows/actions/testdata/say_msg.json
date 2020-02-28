@@ -2,93 +2,95 @@
     {
         "description": "Error event and action skipped if both text and audio URL are empty",
         "no_input": true,
-        "in_flow_type": "voice",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "say_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "@(\"\")"
         },
+        "in_flow_type": "voice",
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "need either audio URL or backdown text, skipping",
-                "type": "error"
+                "text": "need either audio URL or backdown text, skipping"
             }
         ]
     },
     {
         "description": "IVR created event with msg attachment if we have an audio URL",
         "no_input": true,
-        "in_flow_type": "voice",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "say_msg",
-            "audio_url": "http://uploads.temba.io/welcome.m4a",
-            "text": "Hi there @contact.name"
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi there @contact.name",
+            "audio_url": "http://uploads.temba.io/welcome.m4a"
         },
+        "in_flow_type": "voice",
         "events": [
             {
+                "type": "ivr_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "msg": {
-                    "attachments": [
-                        "audio:http://uploads.temba.io/welcome.m4a"
-                    ],
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "urn": "tel:+12065551212",
                     "channel": {
-                        "name": "My Android Phone",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
                     },
                     "text": "Hi there Ryan Lewis",
-                    "urn": "tel:+12065551212",
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
-                },
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "ivr_created"
+                    "attachments": [
+                        "audio:http://uploads.temba.io/welcome.m4a"
+                    ]
+                }
             }
         ],
+        "templates": [
+            "Hi there @contact.name"
+        ],
         "inspection": {
-            "templates": [
-                "Hi there @contact.name"
-            ],
             "dependencies": [],
-            "results": []
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "IVR created event without msg attachment if we don't have an audio URL",
         "no_input": true,
-        "in_flow_type": "voice",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "say_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi there @contact.name"
         },
+        "in_flow_type": "voice",
         "events": [
             {
+                "type": "ivr_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "msg": {
-                    "channel": {
-                        "name": "My Android Phone",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "text": "Hi there Ryan Lewis",
-                    "urn": "tel:+12065551212",
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
-                },
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "ivr_created"
+                "msg": {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "urn": "tel:+12065551212",
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "text": "Hi there Ryan Lewis"
+                }
             }
         ]
     },
     {
         "description": "Text and audio URL can be localized",
         "no_input": true,
-        "in_flow_type": "voice",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "say_msg",
-            "audio_url": "http://uploads.temba.io/welcome.m4a",
-            "text": "Hi there @contact.name"
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi there @contact.name",
+            "audio_url": "http://uploads.temba.io/welcome.m4a"
         },
         "localization": {
             "spa": {
@@ -102,32 +104,36 @@
                 }
             }
         },
+        "in_flow_type": "voice",
         "events": [
             {
+                "type": "ivr_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "msg": {
-                    "attachments": [
-                        "audio:http://uploads.temba.io/bienvenido.m4a"
-                    ],
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "urn": "tel:+12065551212",
                     "channel": {
-                        "name": "My Android Phone",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
                     },
                     "text": "Hola Ryan Lewis",
-                    "urn": "tel:+12065551212",
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
-                },
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "ivr_created"
+                    "attachments": [
+                        "audio:http://uploads.temba.io/bienvenido.m4a"
+                    ]
+                }
             }
+        ],
+        "templates": [
+            "Hi there @contact.name",
+            "Hola @contact.name"
         ],
         "inspection": {
             "dependencies": [],
+            "issues": [],
             "results": [],
-            "templates": [
-                "Hi there @contact.name",
-                "Hola @contact.name"
-            ]
+            "waiting_exits": [],
+            "parent_refs": []
         }
     }
 ]

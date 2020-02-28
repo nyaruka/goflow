@@ -50,7 +50,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 		return nil
 	}
 
-	groups, err := resolveGroups(run, a.Groups, true, logEvent)
+	groups, err := resolveGroups(run, a.Groups, logEvent)
 	if err != nil {
 		return err
 	}

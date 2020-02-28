@@ -35,6 +35,7 @@ urns.telegram -> Telegram URN for the contact
 urns.twitter -> Twitter URN for the contact
 urns.twitterid -> Twitterid URN for the contact
 urns.viber -> Viber URN for the contact
+urns.vk -> Vk URN for the contact
 urns.wechat -> Wechat URN for the contact
 urns.whatsapp -> Whatsapp URN for the contact
 results -> the current run results
@@ -142,6 +143,7 @@ child.urns.telegram -> Telegram URN for the contact
 child.urns.twitter -> Twitter URN for the contact
 child.urns.twitterid -> Twitterid URN for the contact
 child.urns.viber -> Viber URN for the contact
+child.urns.vk -> Vk URN for the contact
 child.urns.wechat -> Wechat URN for the contact
 child.urns.whatsapp -> Whatsapp URN for the contact
 child.results -> the results saved by the run
@@ -189,6 +191,7 @@ parent.urns.telegram -> Telegram URN for the contact
 parent.urns.twitter -> Twitter URN for the contact
 parent.urns.twitterid -> Twitterid URN for the contact
 parent.urns.viber -> Viber URN for the contact
+parent.urns.vk -> Vk URN for the contact
 parent.urns.wechat -> Wechat URN for the contact
 parent.urns.whatsapp -> Whatsapp URN for the contact
 parent.results -> the results saved by the run

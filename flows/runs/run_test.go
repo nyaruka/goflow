@@ -1,7 +1,6 @@
 package runs_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
@@ -13,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -24,9 +24,15 @@ var sessionAssets = `{
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "My Android Phone",
-            "address": "+12345671111",
-            "schemes": ["tel"],
-            "roles": ["send", "receive"]
+            "address": "+17036975131",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ],
+            "country": "US"
         }
     ],
     "fields": [
@@ -129,7 +135,7 @@ func TestRun(t *testing.T) {
 	checkRun(run)
 
 	// check we can marshal and marshal the run and get the same values
-	runJSON, err := json.Marshal(run)
+	runJSON, err := jsonx.Marshal(run)
 	require.NoError(t, err)
 
 	run2, err := runs.ReadRun(session, runJSON, assets.IgnoreMissing)
@@ -182,11 +188,11 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(contact.urns))`,
-			`["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`,
+			`["tel:+12024561111","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`,
 		},
 		{
 			`@(json(urns))`,
-			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","tel":"tel:+12065551212","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"wechat":null,"whatsapp":null}`,
+			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","tel":"tel:+12024561111","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"vk":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(results.favorite_color))`,
@@ -198,11 +204,11 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(parent.contact.urns))`,
-			`["tel:+593979111222"]`,
+			`["tel:+12024562222"]`,
 		},
 		{
 			`@(json(parent.urns))`,
-			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+593979111222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"wechat":null,"whatsapp":null}`,
+			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"jiochat":null,"line":null,"mailto":null,"tel":"tel:+12024562222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"vk":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(parent.fields))`,

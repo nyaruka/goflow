@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -109,6 +110,8 @@ type FlowAssets interface {
 
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
+	contactql.Resolver
+
 	Source() assets.Source
 
 	Channels() *ChannelAssets
@@ -145,12 +148,8 @@ type Flow interface {
 	GetNode(uuid NodeUUID) Node
 	Reference() *assets.FlowReference
 
-	Inspect() *FlowInfo
-	Validate(SessionAssets, func(assets.Reference)) error
-	ValidateRecursive(SessionAssets, func(assets.Reference)) error
-
+	Inspect(sa SessionAssets) *Inspection
 	ExtractTemplates() []string
-	ExtractDependencies() []assets.Reference
 }
 
 // Node is a single node in a flow
@@ -162,9 +161,9 @@ type Node interface {
 
 	Validate(Flow, map[uuids.UUID]bool) error
 
-	EnumerateTemplates(Localization, func(string))
-	EnumerateDependencies(Localization, func(assets.Reference))
-	EnumerateResults(Node, func(*ResultInfo))
+	EnumerateTemplates(Localization, func(Action, Router, envs.Language, string))
+	EnumerateDependencies(Localization, func(Action, Router, envs.Language, assets.Reference))
+	EnumerateResults(func(Action, Router, *ResultInfo))
 }
 
 // Action is an action within a flow node
@@ -190,9 +189,9 @@ type Router interface {
 	Route(FlowRun, Step, EventCallback) (ExitUUID, error)
 	RouteTimeout(FlowRun, Step, EventCallback) (ExitUUID, error)
 
-	EnumerateTemplates(Localization, func(string))
-	EnumerateDependencies(Localization, func(assets.Reference))
-	EnumerateResults(Node, func(*ResultInfo))
+	EnumerateTemplates(Localization, func(envs.Language, string))
+	EnumerateDependencies(Localization, func(envs.Language, assets.Reference))
+	EnumerateResults(func(*ResultInfo))
 }
 
 // Exit is a route out of a node and optionally to another node
@@ -436,4 +435,20 @@ type FlowRun interface {
 // LegacyExtraContributor is something which contributes results for constructing @legacy_extra
 type LegacyExtraContributor interface {
 	LegacyExtra() Results
+}
+
+type Dependency interface {
+	Reference() assets.Reference
+	Type() string
+	Missing() bool
+}
+
+// Issue is a problem found during flow inspection
+type Issue interface {
+	utils.Typed
+
+	NodeUUID() NodeUUID
+	ActionUUID() ActionUUID
+	Language() envs.Language
+	Description() string
 }

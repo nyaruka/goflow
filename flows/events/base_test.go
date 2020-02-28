@@ -2,6 +2,7 @@ package events_test
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
 	"testing"
@@ -18,6 +19,7 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 	"github.com/shopspring/decimal"
 
@@ -252,7 +254,7 @@ func TestEventMarshaling(t *testing.T) {
 					"name": "Ryan Lewis",
 					"timezone": "America/Guayaquil",
 					"urns": [
-						"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+						"tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
 						"twitterid:54784326227#nyaruka",
 						"mailto:foo@bar.com"
 					],
@@ -323,6 +325,22 @@ func TestEventMarshaling(t *testing.T) {
 					"timezone": "America/Guayaquil"
 				},
 				"type": "environment_refreshed"
+			}`,
+		},
+		{
+			events.NewError(errors.New("I'm an error")),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"text": "I'm an error",
+				"type": "error"
+			}`,
+		},
+		{
+			events.NewDependencyError(assets.NewFieldReference("age", "Age")),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"text": "missing dependency: field[key=age,name=Age]",
+				"type": "error"
 			}`,
 		},
 		{
@@ -405,7 +423,7 @@ func TestEventMarshaling(t *testing.T) {
 	}
 
 	for _, tc := range eventTests {
-		eventJSON, err := json.Marshal(tc.event)
+		eventJSON, err := jsonx.Marshal(tc.event)
 		assert.NoError(t, err)
 
 		test.AssertEqualJSON(t, []byte(tc.marshaled), eventJSON, "event JSON mismatch")

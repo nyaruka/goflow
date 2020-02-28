@@ -1,0 +1,118 @@
+[
+    {
+        "description": "flow with invalid regexes in router case and localization of that case",
+        "flow": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "98503572-25bf-40ce-ad72-8836b6549a38": {
+                        "arguments": [
+                            "^^.("
+                        ]
+                    },
+                    "a51e5c8c-c891-401d-9c62-15fc37278c94": {
+                        "arguments": [
+                            "[a-z]"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "actions": [],
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "result_name": "Favorite Color",
+                        "categories": [
+                            {
+                                "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                                "name": "Numbers",
+                                "exit_uuid": "2f42b942-bf32-4e81-8ff3-f946b5e68dd8"
+                            },
+                            {
+                                "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                                "name": "Letters",
+                                "exit_uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97"
+                            },
+                            {
+                                "uuid": "fc4ee6b0-af6f-42e3-ae84-153c313e390a",
+                                "name": "Regex in Expression",
+                                "exit_uuid": "b1a08ddc-c7a6-49ee-93c9-e0e9fee7b4e3"
+                            },
+                            {
+                                "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                                "name": "Other",
+                                "exit_uuid": "17ec8700-cada-4cff-b3b1-351cac4d85c6"
+                            }
+                        ],
+                        "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                                "type": "has_pattern",
+                                "arguments": [
+                                    "\\d+"
+                                ],
+                                "category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                            },
+                            {
+                                "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+                                "type": "has_pattern",
+                                "arguments": [
+                                    "[["
+                                ],
+                                "category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                            },
+                            {
+                                "uuid": "bfad52b0-1bc9-4174-a0d4-524cd47e3186",
+                                "type": "has_pattern",
+                                "arguments": [
+                                    "@(\"[\")"
+                                ],
+                                "category_uuid": "fc4ee6b0-af6f-42e3-ae84-153c313e390a"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "2f42b942-bf32-4e81-8ff3-f946b5e68dd8"
+                        },
+                        {
+                            "uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97"
+                        },
+                        {
+                            "uuid": "b1a08ddc-c7a6-49ee-93c9-e0e9fee7b4e3"
+                        },
+                        {
+                            "uuid": "17ec8700-cada-4cff-b3b1-351cac4d85c6"
+                        }
+                    ]
+                }
+            ]
+        },
+        "issues": [
+            {
+                "type": "invalid_regex",
+                "description": "invalid regex: ^^.(",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "language": "spa",
+                "regex": "^^.("
+            },
+            {
+                "type": "invalid_regex",
+                "description": "invalid regex: [[",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "regex": "[["
+            }
+        ]
+    }
+]

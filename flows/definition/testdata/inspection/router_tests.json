@@ -1,0 +1,60 @@
+{
+    "dependencies": [
+        {
+            "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+            "type": "group"
+        },
+        {
+            "uuid": "bf282a79-aa74-4557-9932-22a9b3bce537",
+            "type": "group"
+        },
+        {
+            "key": "raw_district",
+            "name": "",
+            "type": "field"
+        },
+        {
+            "key": "district",
+            "name": "District",
+            "type": "field"
+        }
+    ],
+    "issues": [],
+    "results": [
+        {
+            "key": "urn_check",
+            "name": "URN Check",
+            "categories": [
+                "Telegram",
+                "Other"
+            ],
+            "node_uuids": [
+                "46d51f50-58de-49da-8d13-dadbf322685d"
+            ]
+        },
+        {
+            "key": "group_check",
+            "name": "Group Check",
+            "categories": [
+                "Testers",
+                "Other"
+            ],
+            "node_uuids": [
+                "08d71f03-dc18-450a-a82b-496f64862a56"
+            ]
+        },
+        {
+            "key": "district_check",
+            "name": "District Check",
+            "categories": [
+                "Valid",
+                "Invalid"
+            ],
+            "node_uuids": [
+                "8476e6fe-1c22-436c-be2c-c27afdc940f3"
+            ]
+        }
+    ],
+    "waiting_exits": [],
+    "parent_refs": []
+}

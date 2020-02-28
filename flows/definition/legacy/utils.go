@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 )
@@ -20,7 +21,7 @@ func ReadTranslations(data json.RawMessage) (Translations, error) {
 		return nil, nil
 	}
 	t := make(Translations)
-	return t, json.Unmarshal(data, &t)
+	return t, jsonx.Unmarshal(data, &t)
 }
 
 // Base looks up the translation in the given base language, or "base"
@@ -37,7 +38,7 @@ func (t *Translations) UnmarshalJSON(data []byte) error {
 	// sometimes legacy flows have a single string instead of a map
 	if data[0] == '"' {
 		var asString string
-		if err := json.Unmarshal(data, &asString); err != nil {
+		if err := jsonx.Unmarshal(data, &asString); err != nil {
 			return err
 		}
 		*t = Translations{"base": asString}
@@ -45,7 +46,7 @@ func (t *Translations) UnmarshalJSON(data []byte) error {
 	}
 
 	asMap := make(map[envs.Language]string)
-	if err := json.Unmarshal(data, &asMap); err != nil {
+	if err := jsonx.Unmarshal(data, &asMap); err != nil {
 		return err
 	}
 

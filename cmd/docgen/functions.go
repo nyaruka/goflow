@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/cmd/docgen/i18n"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // documentation extracted from the source code is in this language
@@ -79,7 +79,7 @@ func generateFunctionListing(baseDir string, outputDir string, items map[string]
 			}
 		}
 
-		data, err := utils.JSONMarshalPretty(translated)
+		data, err := jsonx.MarshalPretty(translated)
 		if err != nil {
 			return err
 		}

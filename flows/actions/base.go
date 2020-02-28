@@ -213,7 +213,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flow
 	}
 
 	// resolve group references
-	groups, err := resolveGroups(run, a.Groups, false, logEvent)
+	groups, err := resolveGroups(run, a.Groups, logEvent)
 	if err != nil {
 		return nil, nil, "", nil, err
 	}
@@ -269,7 +269,7 @@ type createMsgAction struct {
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, staticOnly bool, logEvent flows.EventCallback) ([]*flows.Group, error) {
+func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, logEvent flows.EventCallback) ([]*flows.Group, error) {
 	groupSet := run.Session().Assets().Groups()
 	groups := make([]*flows.Group, 0, len(references))
 
@@ -279,6 +279,9 @@ func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, stati
 		if ref.UUID != "" {
 			// group is a fixed group with a UUID
 			group = groupSet.Get(ref.UUID)
+			if group == nil {
+				logEvent(events.NewDependencyError(ref))
+			}
 		} else {
 			// group is an expression that evaluates to an existing group's name
 			evaluatedGroupName, err := run.EvaluateTemplate(ref.NameMatch)
@@ -294,11 +297,7 @@ func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, stati
 		}
 
 		if group != nil {
-			if staticOnly && group.IsDynamic() {
-				logEvent(events.NewErrorf("can't add or remove contacts from a dynamic group '%s'", group.Name()))
-			} else {
-				groups = append(groups, group)
-			}
+			groups = append(groups, group)
 		}
 	}
 
@@ -316,6 +315,9 @@ func resolveLabels(run flows.FlowRun, references []*assets.LabelReference, logEv
 		if ref.UUID != "" {
 			// label is a fixed label with a UUID
 			label = labelSet.Get(ref.UUID)
+			if label == nil {
+				logEvent(events.NewDependencyError(ref))
+			}
 		} else {
 			// label is an expression that evaluates to an existing label's name
 			evaluatedLabelName, err := run.EvaluateTemplate(ref.NameMatch)

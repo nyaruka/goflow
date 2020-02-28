@@ -1,3 +1,94 @@
+v0.76.2
+----------
+ * Add trim, trim_left and trim_right excellent functions
+
+v0.76.1
+----------
+ * Sort issues by node order
+ * Add issues to report on invalid regex and usage of @legacy_extra
+
+v0.76.0
+----------
+ * Validate language codes in contact queries
+ * Disallow group queries against group names that don't exist
+
+v0.75.1
+----------
+ * Remove contacts from broken groups
+
+v0.75.0
+----------
+ * Handle missing groups on contact creation
+ * Fix != with multiple values and add support for group attribute in contact queries
+ * Improve docs for operators
+
+v0.74.0
+----------
+ * Use jsonx functions for all JSON marshal/unmarshal
+ * Add support for removing a URN to the urns modifier
+ * Groups modifier should log errors for dynamic groups
+ * Rename snapshot flag to -update
+
+v0.73.0
+----------
+ * Include translation language with missing dependency issues
+
+v0.72.2
+----------
+ * Allow flow inspection without assets
+
+v0.72.1
+----------
+ * Quote telephone numbers in contact queries
+ * Tweak parsing of phone numbers in contact queries
+
+v0.72.0
+----------
+ * Rename "problems" to "issues"
+
+v0.71.3
+----------
+ * Implement missing_dependency as a type of problem
+ * Add framework for checking for problems during flow inspection
+
+v0.71.2
+----------
+ * Rework dependency and template extraction to include actions and routers
+
+v0.71.1
+----------
+ * Channels with no country are implicitly international
+
+v0.71.0
+----------
+ * Add field to channel assets which determines whether they should try to send internationally
+
+v0.70.0
+----------
+ * Make cloning a flow definition more deterministic
+ * Update actions to log error events when dependencies are missing
+ * Interpret contact queries which are formatted phone numbers as tel = queries
+
+v0.69.0
+----------
+ * Move JSON utils into their own package
+ * Track node UUIDs of dependencies
+
+v0.68.0
+----------
+ * Convert dependency inspection output to list of things with type attribute
+ * Replace Flow.CheckDepedencies and CheckDependenciesRecursive with passing assets to Inspect
+
+v0.67.1
+----------
+ * Update to gocommon v1.2.0
+
+v0.67.0
+----------
+ * Rename Flow.Validate to Flow.CheckDependencies for clarity
+ * Create error event when webhook response too big
+ * Rework webhook calls to use same calling code as other HTTP services
+
 v0.66.3
 ----------
  * Allow globals with empty values

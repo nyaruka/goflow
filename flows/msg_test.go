@@ -1,7 +1,6 @@
 package flows_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -9,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -29,7 +29,7 @@ func TestMsgIn(t *testing.T) {
 	msg.SetExternalID("EX346436734")
 
 	// test marshaling our msg
-	marshaled, err := json.Marshal(msg)
+	marshaled, err := jsonx.Marshal(msg)
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{

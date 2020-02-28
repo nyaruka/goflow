@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"unicode"
 	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -38,12 +39,15 @@ func init() {
 		// text functions
 		"char":              OneNumberFunction(Char),
 		"code":              OneTextFunction(Code),
-		"split":             TwoTextFunction(Split),
+		"split":             TextAndOptionalTextFunction(Split, types.XTextEmpty),
+		"trim":              TextAndOptionalTextFunction(Trim, types.XTextEmpty),
+		"trim_left":         TextAndOptionalTextFunction(TrimLeft, types.XTextEmpty),
+		"trim_right":        TextAndOptionalTextFunction(TrimRight, types.XTextEmpty),
 		"join":              TwoArgFunction(Join),
 		"title":             OneTextFunction(Title),
 		"word":              InitialTextFunction(1, 2, Word),
 		"remove_first_word": OneTextFunction(RemoveFirstWord),
-		"word_count":        InitialTextFunction(0, 1, WordCount),
+		"word_count":        TextAndOptionalTextFunction(WordCount, types.XTextEmpty),
 		"word_slice":        InitialTextFunction(1, 3, WordSlice),
 		"field":             InitialTextFunction(2, 2, Field),
 		"clean":             OneTextFunction(Clean),
@@ -384,24 +388,80 @@ func Code(env envs.Environment, text types.XText) types.XValue {
 	return types.NewXNumberFromInt(int(r))
 }
 
-// Split splits `text` based on the given characters in `delimiters`.
+// Split splits `text` into an array of separated words.
 //
-// Empty values are removed from the returned list.
+// Empty values are removed from the returned list. There is an optional final parameter `delimiters` which
+// is string of characters used to split the text into words.
 //
-//   @(split("a b c", " ")) -> [a, b, c]
+//   @(split("a b c")) -> [a, b, c]
 //   @(split("a", " ")) -> [a]
 //   @(split("abc..d", ".")) -> [abc, d]
 //   @(split("a.b.c.", ".")) -> [a, b, c]
 //   @(split("a|b,c  d", " .|,")) -> [a, b, c, d]
 //
-// @function split(text, delimiters)
+// @function split(text, [,delimiters])
 func Split(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
-	splits := make([]types.XValue, 0)
-	allSplits := utils.TokenizeStringByChars(text.Native(), delimiters.Native())
-	for i := range allSplits {
-		splits = append(splits, types.NewXText(allSplits[i]))
+	var splits []string
+
+	if delimiters != types.XTextEmpty {
+		splits = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	} else {
+		splits = utils.TokenizeString(text.Native())
 	}
-	return types.NewXArray(splits...)
+
+	nonEmpty := make([]types.XValue, 0)
+	for _, split := range splits {
+		nonEmpty = append(nonEmpty, types.NewXText(split))
+	}
+	return types.NewXArray(nonEmpty...)
+}
+
+// Trim removes whitespace from either end of `text`.
+//
+// There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
+//
+//   @(trim(" hello world    ")) -> hello world
+//   @(trim("+123157568", "+")) -> 123157568
+//
+// @function trim(text, [,chars])
+func Trim(env envs.Environment, text types.XText, chars types.XText) types.XValue {
+	if chars != types.XTextEmpty {
+		return types.NewXText(strings.Trim(text.Native(), chars.Native()))
+	}
+
+	return types.NewXText(strings.TrimSpace(text.Native()))
+}
+
+// TrimLeft removes whitespace from the start of `text`.
+//
+// There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
+//
+//   @("*" & trim_left(" hello world   ") & "*") -> *hello world   *
+//   @(trim_left("+12345+", "+")) -> 12345+
+//
+// @function trim_left(text, [,chars])
+func TrimLeft(env envs.Environment, text types.XText, chars types.XText) types.XValue {
+	if chars != types.XTextEmpty {
+		return types.NewXText(strings.TrimLeft(text.Native(), chars.Native()))
+	}
+
+	return types.NewXText(strings.TrimLeftFunc(text.Native(), unicode.IsSpace))
+}
+
+// TrimRight removes whitespace from the end of `text`.
+//
+// There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
+//
+//   @("*" & trim_right(" hello world   ") & "*") -> * hello world*
+//   @(trim_right("+12345+", "+")) -> +12345
+//
+// @function trim_right(text, [,chars])
+func TrimRight(env envs.Environment, text types.XText, chars types.XText) types.XValue {
+	if chars != types.XTextEmpty {
+		return types.NewXText(strings.TrimRight(text.Native(), chars.Native()))
+	}
+
+	return types.NewXText(strings.TrimRightFunc(text.Native(), unicode.IsSpace))
 }
 
 // Join joins the given `array` of strings with `separator` to make text.
@@ -605,13 +665,10 @@ func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 //   @(word_count("O'Grady O'Flaggerty", " ")) -> 2
 //
 // @function word_count(text [,delimiters])
-func WordCount(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
+func WordCount(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
 	var words []string
-	if len(args) == 1 && args[0] != nil {
-		delimiters, xerr := types.ToXText(env, args[0])
-		if xerr != nil {
-			return xerr
-		}
+
+	if delimiters != types.XTextEmpty {
 		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
 	} else {
 		words = utils.TokenizeString(text.Native())
@@ -1791,8 +1848,8 @@ func FormatLocation(env envs.Environment, path types.XText) types.XValue {
 //
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
 //   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
-//   @(format_urn(contact.urn)) -> (206) 555-1212
-//   @(format_urn(urns.tel)) -> (206) 555-1212
+//   @(format_urn(contact.urn)) -> (202) 456-1111
+//   @(format_urn(urns.tel)) -> (202) 456-1111
 //   @(format_urn(urns.mailto)) -> foo@bar.com
 //   @(format_urn("NOT URN")) -> ERROR
 //

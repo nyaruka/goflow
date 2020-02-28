@@ -1,0 +1,41 @@
+{
+    "dependencies": [],
+    "issues": [],
+    "results": [
+        {
+            "key": "favorite_color",
+            "name": "Favorite Color",
+            "categories": [
+                "Red",
+                "Blue",
+                "Other",
+                "No Response"
+            ],
+            "node_uuids": [
+                "46d51f50-58de-49da-8d13-dadbf322685d"
+            ]
+        },
+        {
+            "key": "soda",
+            "name": "Soda",
+            "categories": [
+                "Pepsi",
+                "Coke",
+                "Other"
+            ],
+            "node_uuids": [
+                "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+            ]
+        }
+    ],
+    "waiting_exits": [
+        "2f42b942-bf32-4e81-8ff3-f946b5e68dd8",
+        "dcdc29b6-4671-4c10-a614-5b1507f3df97",
+        "17ec8700-cada-4cff-b3b1-351cac4d85c6",
+        "f0649239-6ab2-4903-b5c5-f813beb5539d",
+        "3bd19c40-1114-4b83-b12e-f0c38054ba3f",
+        "9ad71fc4-c2f8-4aab-a193-7bafad172ca0",
+        "e80bc037-3b57-45b5-9f19-a8346a475578"
+    ],
+    "parent_refs": []
+}

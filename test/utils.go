@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/buger/jsonparser"
 	diff "github.com/sergi/go-diff/diffmatchpatch"
@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// AssertEqual is equivalent to assert.Equal for two XValue instances
+// AssertXEqual is equivalent to assert.Equal for two XValue instances
 func AssertXEqual(t *testing.T, expected types.XValue, actual types.XValue, msgAndArgs ...interface{}) bool {
 	if !types.Equals(expected, actual) {
 		return assert.Fail(t, fmt.Sprintf("Not equal: \n"+
@@ -27,10 +27,10 @@ func AssertXEqual(t *testing.T, expected types.XValue, actual types.XValue, msgA
 // NormalizeJSON re-formats the given JSON
 func NormalizeJSON(data json.RawMessage) ([]byte, error) {
 	var asGeneric interface{}
-	if err := json.Unmarshal(data, &asGeneric); err != nil {
+	if err := jsonx.Unmarshal(data, &asGeneric); err != nil {
 		return nil, err
 	}
-	return utils.JSONMarshalPretty(asGeneric)
+	return jsonx.MarshalPretty(asGeneric)
 }
 
 // AssertEqualJSON checks two JSON strings for equality

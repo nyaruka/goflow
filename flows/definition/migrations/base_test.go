@@ -12,7 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
@@ -40,7 +40,7 @@ func TestMigrateToVersion(t *testing.T) {
 			Migrated    json.RawMessage `json:"migrated"`
 		}{}
 
-		err = json.Unmarshal(testsJSON, &tests)
+		err = jsonx.Unmarshal(testsJSON, &tests)
 		require.NoError(t, err, "unable to read tests for version %s", version)
 
 		for _, tc := range tests {
@@ -172,7 +172,7 @@ func TestClone(t *testing.T) {
 			"2aad21f6-30b7-42c5-bd7f-1b720c154817": "cd8a68c0-6673-4a02-98a0-7fb3ac788860", // group used in has_group test
 		}
 
-		flowJSON, err := json.Marshal(flow)
+		flowJSON, err := jsonx.Marshal(flow)
 		require.NoError(t, err)
 
 		cloneJSON, err := migrations.Clone(flowJSON, depMappings)
@@ -204,7 +204,7 @@ func TestClone(t *testing.T) {
 
 		// if flow has a UI section, check UI node UUIDs correspond to real nodes
 		if len(clone.UI()) > 0 {
-			clonedUI, err := utils.JSONDecodeGeneric(clone.UI())
+			clonedUI, err := jsonx.DecodeGeneric(clone.UI())
 			require.NoError(t, err)
 
 			nodeMap := clonedUI.(map[string]interface{})["nodes"].(map[string]interface{})

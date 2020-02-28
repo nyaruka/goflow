@@ -9,7 +9,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/cmd/docgen/completion"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 )
@@ -57,7 +57,7 @@ func generateCompletionMap(baseDir string, outputDir string, items map[string][]
 	}
 
 	mapPath := path.Join(outputDir, "completion.json")
-	marshaled, _ := utils.JSONMarshalPretty(c)
+	marshaled, _ := jsonx.MarshalPretty(c)
 	ioutil.WriteFile(mapPath, marshaled, 0755)
 
 	fmt.Printf(" > %d completion map written to %s\n", len(items["context"]), mapPath)

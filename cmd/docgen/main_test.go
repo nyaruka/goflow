@@ -6,7 +6,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -47,14 +47,14 @@ func TestGenerateDocs(t *testing.T) {
 	assert.Equal(t, 11, len(root))
 
 	functions := readJSONOutput(t, outputDir, "functions.json").([]interface{})
-	assert.Equal(t, 76, len(functions))
+	assert.Equal(t, 79, len(functions))
 }
 
 func readJSONOutput(t *testing.T, outputDir string, name string) interface{} {
 	output, err := ioutil.ReadFile(path.Join(outputDir, name))
 	require.NoError(t, err)
 
-	generic, err := utils.JSONDecodeGeneric(output)
+	generic, err := jsonx.DecodeGeneric(output)
 	require.NoError(t, err)
 
 	return generic

@@ -3,70 +3,76 @@
         "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "timezone": "Africa/Kigali"
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without a contact",
-                "type": "error"
+                "text": "can't execute action in session without a contact"
             }
         ]
     },
     {
         "description": "Error event and action skipped if timezone contains expression error",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "timezone": "@(1 / 0)"
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @(1 / 0): division by zero",
-                "type": "error"
+                "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
+        "templates": [
+            "@(1 / 0)"
+        ],
         "inspection": {
-            "templates": [
-                "@(1 / 0)"
-            ],
             "dependencies": [],
-            "results": []
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "Error event and action skipped if timezone isn't valid",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "timezone": "xxxxxxxxxx"
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "unrecognized timezone: 'xxxxxxxxxx'",
-                "type": "error"
+                "text": "unrecognized timezone: 'xxxxxxxxxx'"
             }
         ],
+        "templates": [
+            "xxxxxxxxxx"
+        ],
         "inspection": {
-            "templates": [
-                "xxxxxxxxxx"
-            ],
             "dependencies": [],
-            "results": []
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
         }
     },
     {
         "description": "NOOP if timezone doesn't change",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "timezone": "America/Guayaquil"
         },
         "events": []
@@ -74,84 +80,84 @@
     {
         "description": "Timezone changed event if timezone cleared",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "timezone": ""
         },
         "events": [
             {
+                "type": "contact_timezone_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "timezone": "",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_timezone_changed"
+                "timezone": ""
             }
         ],
         "contact_after": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
-            "fields": {
-                "gender": {
-                    "text": "Male"
-                }
-            },
-            "groups": [
-                {
-                    "name": "Testers",
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-                },
-                {
-                    "name": "Males",
-                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
-                }
-            ],
-            "language": "eng",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Ryan Lewis",
+            "language": "eng",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "twitterid:54784326227#nyaruka"
             ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "fields": {
+                "gender": {
+                    "text": "Male"
+                }
+            }
         }
     },
     {
         "description": "Timezone changed event if timezone changes",
         "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_contact_timezone",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "timezone": "Africa/Kigali"
         },
         "events": [
             {
+                "type": "contact_timezone_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "timezone": "Africa/Kigali",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "contact_timezone_changed"
+                "timezone": "Africa/Kigali"
             }
         ],
         "contact_after": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
-            "fields": {
-                "gender": {
-                    "text": "Male"
-                }
-            },
-            "groups": [
-                {
-                    "name": "Testers",
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-                },
-                {
-                    "name": "Males",
-                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
-                }
-            ],
-            "language": "eng",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Ryan Lewis",
+            "language": "eng",
             "timezone": "Africa/Kigali",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "twitterid:54784326227#nyaruka"
             ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "fields": {
+                "gender": {
+                    "text": "Male"
+                }
+            }
         }
     }
 ]

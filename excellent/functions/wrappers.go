@@ -125,6 +125,26 @@ func TextAndIntegerFunction(f func(envs.Environment, types.XText, int) types.XVa
 	})
 }
 
+// TextAndOptionalTextFunction creates an XFunction from a function that takes either one or two text args
+func TextAndOptionalTextFunction(f func(envs.Environment, types.XText, types.XText) types.XValue, defaultVal types.XText) types.XFunction {
+	return MinAndMaxArgsCheck(1, 2, func(env envs.Environment, args ...types.XValue) types.XValue {
+		str1, xerr := types.ToXText(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+
+		str2 := defaultVal
+		if len(args) == 2 {
+			str2, xerr = types.ToXText(env, args[1])
+			if xerr != nil {
+				return xerr
+			}
+		}
+
+		return f(env, str1, str2)
+	})
+}
+
 // ThreeIntegerFunction creates an XFunction from a function that takes a text and an integer arg
 func ThreeIntegerFunction(f func(envs.Environment, int, int, int) types.XValue) types.XFunction {
 	return NumArgsCheck(3, func(env envs.Environment, args ...types.XValue) types.XValue {

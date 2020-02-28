@@ -2,18 +2,8 @@ package mobile
 
 // To build an Android Archive:
 //
+// go get golang.org/x/mobile/cmd/gomobile
 // gomobile bind -target android -javapkg=com.nyaruka.goflow -o mobile/goflow.aar github.com/nyaruka/goflow/mobile
-//
-// ... except gomobile doesn't yet support gomodules (https://github.com/golang/go/issues/27234). So you need to recreate
-// this as a non-module go project first, i.e.
-//
-// mkdir -p $GOPATH/src/github.com/nyaruka/goflow
-// rsync -a . $GOPATH/src/github.com/nyaruka/goflow
-// cd $GOPATH/src/github.com/nyaruka/goflow
-// GO111MODULE=on go mod vendor
-// GO111MODULE=off go get golang.org/x/mobile/cmd/gomobile
-// GO111MODULE=off $GOPATH/bin/gomobile init
-// GO111MODULE=off gomobile bind -target android -javapkg=com.nyaruka.goflow -o mobile/goflow.aar github.com/nyaruka/goflow/mobile
 
 import (
 	"encoding/json"
@@ -30,6 +20,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/Masterminds/semver"
 )
@@ -231,7 +222,7 @@ type Sprint struct {
 func (s *Sprint) Modifiers() *ModifierSlice {
 	mods := NewModifierSlice(len(s.target.Modifiers()))
 	for _, mod := range s.target.Modifiers() {
-		marshaled, _ := json.Marshal(mod)
+		marshaled, _ := jsonx.Marshal(mod)
 		mods.Add(&Modifier{type_: mod.Type(), payload: string(marshaled)})
 	}
 	return mods
@@ -241,7 +232,7 @@ func (s *Sprint) Modifiers() *ModifierSlice {
 func (s *Sprint) Events() *EventSlice {
 	events := NewEventSlice(len(s.target.Events()))
 	for _, event := range s.target.Events() {
-		marshaled, _ := json.Marshal(event)
+		marshaled, _ := jsonx.Marshal(event)
 		events.Add(&Event{type_: event.Type(), payload: string(marshaled)})
 	}
 	return events
@@ -281,7 +272,7 @@ func (s *Session) GetWait() *Wait {
 
 // ToJSON serializes this session as JSON
 func (s *Session) ToJSON() (string, error) {
-	data, err := json.Marshal(s.target)
+	data, err := jsonx.Marshal(s.target)
 	if err != nil {
 		return "", err
 	}

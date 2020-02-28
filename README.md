@@ -86,5 +86,5 @@ You can run all the tests with:
 If you've made changes to the flow engine output, regenerate the test files with:
 
 ```
-% go test github.com/nyaruka/goflow/test -write
+% go test github.com/nyaruka/goflow/test -update
 ```

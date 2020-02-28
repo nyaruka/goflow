@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 type RedactionPolicy string
@@ -69,8 +70,8 @@ func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }
 
 // Equal returns true if this instance is equal to the given instance
 func (e *environment) Equal(other Environment) bool {
-	asJSON1, _ := json.Marshal(e)
-	asJSON2, _ := json.Marshal(other)
+	asJSON1, _ := jsonx.Marshal(e)
+	asJSON2, _ := jsonx.Marshal(other)
 	return string(asJSON1) == string(asJSON2)
 }
 
@@ -134,7 +135,7 @@ func (e *environment) toEnvelope() *envEnvelope {
 
 // MarshalJSON marshals this environment into JSON
 func (e *environment) MarshalJSON() ([]byte, error) {
-	return json.Marshal(e.toEnvelope())
+	return jsonx.Marshal(e.toEnvelope())
 }
 
 //------------------------------------------------------------------------------------------

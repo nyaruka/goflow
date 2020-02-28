@@ -1,4 +1,4 @@
-// Code generated from ContactQL.g4 by ANTLR 4.7.2. DO NOT EDIT.
+// Code generated from ContactQL.g4 by ANTLR 4.8. DO NOT EDIT.
 
 package gen // ContactQL
 import (
@@ -23,7 +23,7 @@ var parserATN = []uint16{
 	3, 2, 2, 2, 4, 20, 3, 2, 2, 2, 6, 37, 3, 2, 2, 2, 8, 9, 5, 4, 3, 2, 9,
 	10, 7, 2, 2, 3, 10, 3, 3, 2, 2, 2, 11, 12, 8, 3, 1, 2, 12, 13, 7, 3, 2,
 	2, 13, 14, 5, 4, 3, 2, 14, 15, 7, 4, 2, 2, 15, 21, 3, 2, 2, 2, 16, 17,
-	7, 8, 2, 2, 17, 18, 7, 7, 2, 2, 18, 21, 5, 6, 4, 2, 19, 21, 7, 8, 2, 2,
+	7, 8, 2, 2, 17, 18, 7, 7, 2, 2, 18, 21, 5, 6, 4, 2, 19, 21, 5, 6, 4, 2,
 	20, 11, 3, 2, 2, 2, 20, 16, 3, 2, 2, 2, 20, 19, 3, 2, 2, 2, 21, 32, 3,
 	2, 2, 2, 22, 23, 12, 8, 2, 2, 23, 24, 7, 5, 2, 2, 24, 31, 5, 4, 3, 9, 25,
 	26, 12, 7, 2, 2, 26, 31, 5, 4, 3, 8, 27, 28, 12, 6, 2, 2, 28, 29, 7, 6,
@@ -277,8 +277,14 @@ func (s *ImplicitConditionContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *ImplicitConditionContext) TEXT() antlr.TerminalNode {
-	return s.GetToken(ContactQLParserTEXT, 0)
+func (s *ImplicitConditionContext) Literal() ILiteralContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILiteralContext)
 }
 
 func (s *ImplicitConditionContext) EnterRule(listener antlr.ParseTreeListener) {
@@ -692,7 +698,7 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 		_prevctx = localctx
 		{
 			p.SetState(17)
-			p.Match(ContactQLParserTEXT)
+			p.Literal()
 		}
 
 	}

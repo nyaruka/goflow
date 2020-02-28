@@ -44,6 +44,7 @@ type Channel interface {
 	Parent() *ChannelReference
 	Country() string
 	MatchPrefixes() []string
+	AllowInternational() bool
 }
 
 // ClassifierUUID is the UUID of an NLU classifier

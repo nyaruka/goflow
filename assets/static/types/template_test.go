@@ -1,11 +1,11 @@
 package types
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -28,11 +28,11 @@ func TestTemplate(t *testing.T) {
 	assert.Equal(t, 1, len(template.Translations()))
 
 	// test json and back
-	asJSON, err := json.Marshal(template)
+	asJSON, err := jsonx.Marshal(template)
 	assert.NoError(t, err)
 
 	copy := Template{}
-	err = json.Unmarshal(asJSON, &copy)
+	err = jsonx.Unmarshal(asJSON, &copy)
 
 	assert.Equal(t, copy.Name(), template.Name())
 	assert.Equal(t, copy.UUID(), template.UUID())
