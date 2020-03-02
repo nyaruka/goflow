@@ -44,7 +44,11 @@ func LegacyExtraCheck(sa flows.SessionAssets, flow flows.Flow, tpls []flows.Extr
 		})
 
 		if usesLegacyExtra {
-			report(newLegacyExtra(t.Node.UUID(), t.Action.UUID(), t.Language))
+			var actionUUID flows.ActionUUID
+			if t.Action != nil {
+				actionUUID = t.Action.UUID()
+			}
+			report(newLegacyExtra(t.Node.UUID(), actionUUID, t.Language))
 		}
 	}
 }
