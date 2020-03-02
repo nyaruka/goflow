@@ -1,3 +1,8 @@
+v0.76.3
+----------
+ * fix @legacy_extra issue on routers
+ * update gomobile instructions
+
 v0.76.2
 ----------
  * Add trim, trim_left and trim_right excellent functions
