@@ -313,13 +313,13 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 				childRun := currentRun
 				currentRun = parentRun
 
+				// can't resume into a run with a missing flow
+				if currentRun.Flow() == nil {
+					return errors.New("can't resume parent run with missing flow asset")
+				}
+
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusFailed {
-					// if flow for this run is a missing asset, we have a problem
-					if currentRun.Flow() == nil {
-						return errors.New("can't resume parent run with missing flow asset")
-					}
-
 					if destination, err = s.findResumeDestination(sprint, currentRun, false); err != nil {
 						failure(sprint, currentRun, step, errors.Wrapf(err, "can't resume run as node no longer exists"))
 					}
