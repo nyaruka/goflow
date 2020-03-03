@@ -1,13 +1,11 @@
 package engine_test
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"testing"
 	"time"
 
-	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -16,7 +14,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
-	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/jsonx"
@@ -686,54 +683,65 @@ func TestReadWithMissingAssets(t *testing.T) {
 	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Collect Age"), missingAssets[14])
 }
 
-func TestResumeWithMissingFlowAssets(t *testing.T) {
+func TestRunResuming(t *testing.T) {
+	assetsJSON, err := ioutil.ReadFile("testdata/subflows.json")
+	require.NoError(t, err)
+
+	session, _, err := test.CreateSession(assetsJSON, assets.FlowUUID("72162f46-dce3-4798-9f19-384a2447efc5"))
+	require.NoError(t, err)
+
+	// each run should be marked as completed
+	assert.Equal(t, 3, len(session.Runs()))
+	assert.Equal(t, flows.RunStatusCompleted, session.Runs()[0].Status())
+	assert.Equal(t, flows.RunStatusCompleted, session.Runs()[1].Status())
+	assert.Equal(t, flows.RunStatusCompleted, session.Runs()[2].Status())
+
+	// change the UUID of the third flow so the nter_flow in the second flow will error
+	assetsWithoutChildFlow := test.JSONReplace(assetsJSON, []string{"flows", "[2]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
+
+	session, _, err = test.CreateSession(assetsWithoutChildFlow, assets.FlowUUID("72162f46-dce3-4798-9f19-384a2447efc5"))
+	require.NoError(t, err)
+
+	// each run should be marked as failed
+	assert.Equal(t, 2, len(session.Runs()))
+	assert.Equal(t, flows.RunStatusFailed, session.Runs()[0].Status())
+	assert.Equal(t, flows.RunStatusFailed, session.Runs()[1].Status())
+}
+
+func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 	assetsJSON, err := ioutil.ReadFile("../../test/testdata/runner/subflow.json")
 	require.NoError(t, err)
 
-	sa, err := test.CreateSessionAssets(assetsJSON, "")
+	session1, _, err := test.CreateSession(assetsJSON, assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
 	require.NoError(t, err)
 
-	env := envs.NewBuilder().Build()
-	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
-	trigger := triggers.NewManual(env, assets.NewFlowReference(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"), "Parent Flow"), contact, nil)
-
-	// run session to wait in child flow
-	eng := engine.NewBuilder().Build()
-	session, _, err := eng.NewSession(sa, trigger)
-	require.NoError(t, err)
-	assert.Equal(t, flows.SessionStatusWaiting, session.Status())
-
-	// can't directly modify a session's assets but can reload it with different assets
-	sessionJSON, err := jsonx.Marshal(session)
-	require.NoError(t, err)
+	assert.Equal(t, flows.SessionStatusWaiting, session1.Status())
+	assert.Equal(t, flows.RunStatusActive, session1.Runs()[0].Status())
+	assert.Equal(t, flows.RunStatusWaiting, session1.Runs()[1].Status())
 
 	// change the UUID of the child flow so it will effectively be missing
 	assetsWithoutChildFlow := test.JSONReplace(assetsJSON, []string{"flows", "[1]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
-	sa, err = test.CreateSessionAssets(assetsWithoutChildFlow, "")
+
+	session2, _, err := test.ResumeSession(session1, assetsWithoutChildFlow, "Hello")
 	require.NoError(t, err)
 
-	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
-	require.NoError(t, err)
-
-	_, err = session.Resume(resumes.NewMsg(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
-
-	// should have an errored session
+	// should have a failed session
 	assert.NoError(t, err)
-	assert.Equal(t, flows.SessionStatusFailed, session.Status())
+	assert.Equal(t, flows.SessionStatusFailed, session2.Status())
+	assert.Equal(t, flows.RunStatusActive, session2.Runs()[0].Status())
+	assert.Equal(t, flows.RunStatusFailed, session2.Runs()[1].Status())
 
 	// change the UUID of the parent flow so it will effectively be missing
 	assetsWithoutParentFlow := test.JSONReplace(assetsJSON, []string{"flows", "[0]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
-	sa, err = test.CreateSessionAssets(assetsWithoutParentFlow, "")
+
+	session3, _, err := test.ResumeSession(session1, assetsWithoutParentFlow, "Hello")
 	require.NoError(t, err)
 
-	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
-	require.NoError(t, err)
-
-	_, err = session.Resume(resumes.NewMsg(env, contact, flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hello", nil)))
-
-	// should have an errored session
+	// should have an failed session
 	assert.NoError(t, err)
-	assert.Equal(t, flows.SessionStatusFailed, session.Status())
+	assert.Equal(t, flows.SessionStatusFailed, session3.Status())
+	assert.Equal(t, flows.RunStatusActive, session3.Runs()[0].Status())
+	assert.Equal(t, flows.RunStatusFailed, session3.Runs()[1].Status())
 }
 
 func TestWaitTimeout(t *testing.T) {
@@ -742,23 +750,10 @@ func TestWaitTimeout(t *testing.T) {
 	t1 := time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
 	dates.SetNowSource(dates.NewFixedNowSource(t1))
 
-	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
+	assetsJSON, err := ioutil.ReadFile("testdata/timeout_test.json")
 	require.NoError(t, err)
 
-	// create our session assets
-	sa, err := test.CreateSessionAssets(json.RawMessage(sessionAssets), "")
-	require.NoError(t, err)
-
-	flow, err := sa.Flows().Get(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
-	require.NoError(t, err)
-
-	contact := flows.NewEmptyContact(sa, "Joe", "eng", nil)
-	contact.AddURN(urns.URN("tel:+18005555777"), nil)
-	trigger := triggers.NewManual(nil, flow.Reference(), contact, nil)
-
-	// create session
-	eng := test.NewEngine()
-	session, sprint, err := eng.NewSession(sa, trigger)
+	session, sprint, err := test.CreateSession(assetsJSON, assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
 	require.NoError(t, err)
 
 	require.Equal(t, 1, len(session.Runs()[0].Path()))
@@ -786,22 +781,12 @@ func TestWaitTimeout(t *testing.T) {
 }
 
 func TestCurrentContext(t *testing.T) {
-	sessionAssets, err := ioutil.ReadFile("../../test/testdata/runner/subflow_loop_with_wait.json")
+	assetsJSON, err := ioutil.ReadFile("../../test/testdata/runner/subflow_loop_with_wait.json")
 	require.NoError(t, err)
 
-	// create our session assets
-	sa, err := test.CreateSessionAssets(json.RawMessage(sessionAssets), "")
+	session, _, err := test.CreateSession(assetsJSON, assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
 	require.NoError(t, err)
 
-	flow, err := sa.Flows().Get(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
-	require.NoError(t, err)
-
-	contact := flows.NewEmptyContact(sa, "Joe", "eng", nil)
-	trigger := triggers.NewManual(nil, flow.Reference(), contact, nil)
-
-	// create a waiting session
-	eng := test.NewEngine()
-	session, _, err := eng.NewSession(sa, trigger)
 	assert.Equal(t, string(flows.SessionStatusWaiting), string(session.Status()))
 
 	context := session.CurrentContext()

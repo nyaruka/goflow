@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -12,6 +13,8 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/utils/jsonx"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -534,6 +537,54 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 	}
 
 	return sa, nil
+}
+
+// CreateSession creates a new session from the give assets
+func CreateSession(assetsJSON json.RawMessage, flowUUID assets.FlowUUID) (flows.Session, flows.Sprint, error) {
+	sa, err := CreateSessionAssets(assetsJSON, "")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	flow, err := sa.Flows().Get(flowUUID)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	env := envs.NewBuilder().Build()
+	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
+	trigger := triggers.NewManual(env, flow.Reference(), contact, nil)
+	eng := engine.NewBuilder().Build()
+
+	return eng.NewSession(sa, trigger)
+}
+
+// ResumeSession resumes the given session with potentially different assets
+func ResumeSession(session flows.Session, assetsJSON json.RawMessage, msgText string) (flows.Session, flows.Sprint, error) {
+	// reload session with new assets
+	sessionJSON, err := jsonx.Marshal(session)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	sa, err := CreateSessionAssets(assetsJSON, "")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// re-use same engine instance
+	eng := session.Engine()
+
+	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, msgText, nil)
+
+	sprint, err := session.Resume(resumes.NewMsg(session.Environment(), session.Contact(), msg))
+
+	return session, sprint, err
 }
 
 // EventLog is a utility for testing things which take an event logger function
