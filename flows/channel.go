@@ -112,7 +112,7 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 
 	// tel is a special case because we do number based matching
 	if urn.URN().Scheme() == urns.TelScheme {
-		countryCode := utils.DeriveCountryFromTel(urn.URN().Path())
+		countryCode := envs.DeriveCountryFromTel(urn.URN().Path())
 		candidates := make([]*Channel, 0)
 
 		for _, ch := range s.all {

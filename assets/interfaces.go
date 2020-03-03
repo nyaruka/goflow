@@ -42,7 +42,7 @@ type Channel interface {
 	Schemes() []string
 	Roles() []ChannelRole
 	Parent() *ChannelReference
-	Country() string
+	Country() envs.Country
 	MatchPrefixes() []string
 	AllowInternational() bool
 }

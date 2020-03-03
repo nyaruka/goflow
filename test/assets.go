@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/assets/static/types"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/utils/uuids"
@@ -39,7 +40,7 @@ func NewChannel(name string, address string, schemes []string, roles []assets.Ch
 	return flows.NewChannel(types.NewChannel(assets.ChannelUUID(uuids.New()), name, address, schemes, roles, parent))
 }
 
-func NewTelChannel(name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country string, matchPrefixes []string, allowInternational bool) *flows.Channel {
+func NewTelChannel(name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country envs.Country, matchPrefixes []string, allowInternational bool) *flows.Channel {
 	return flows.NewChannel(types.NewTelChannel(assets.ChannelUUID(uuids.New()), name, address, roles, parent, country, matchPrefixes, allowInternational))
 }
 

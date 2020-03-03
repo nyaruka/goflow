@@ -2,6 +2,7 @@ package envs
 
 import (
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/phonenumbers"
 )
 
 func init() {
@@ -13,3 +14,12 @@ type Country string
 
 // NilCountry represents our nil, or unknown country
 var NilCountry = Country("")
+
+// DeriveCountryFromTel attempts to derive a country code (e.g. RW) from a phone number
+func DeriveCountryFromTel(number string) Country {
+	parsed, err := phonenumbers.Parse(number, "")
+	if err != nil {
+		return ""
+	}
+	return Country(phonenumbers.GetRegionCodeForNumber(parsed))
+}

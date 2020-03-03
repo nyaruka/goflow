@@ -52,9 +52,3 @@ func TestFindPhoneNumbers(t *testing.T) {
 	assert.Equal(t, []string{"+12024561111"}, utils.FindPhoneNumbers("Hi my phone is +12024561111 thanks", ""))
 	assert.Equal(t, []string{}, utils.FindPhoneNumbers("Hi my phone is (202) 456-1111 thanks", ""))
 }
-
-func TestDeriveCountryFromTel(t *testing.T) {
-	assert.Equal(t, "RW", utils.DeriveCountryFromTel("+250788383383"))
-	assert.Equal(t, "EC", utils.DeriveCountryFromTel("+593979000000"))
-	assert.Equal(t, "", utils.DeriveCountryFromTel("1234"))
-}
