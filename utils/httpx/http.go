@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/http/httputil"
 	"strings"
@@ -17,12 +18,22 @@ import (
 
 var debug = false
 
-// Do makes the given HTTP request using the current requestor and retry config
-func Do(client *http.Client, request *http.Request, retries *RetryConfig, disallowedHosts []string) (*http.Response, error) {
+func allowRequest(request *http.Request, disallowedHosts []string) bool {
 	host := strings.ToLower(request.URL.Hostname())
 
-	if utils.StringSliceContains(disallowedHosts, host, true) {
-		return nil, errors.Errorf("requests to host %s are disallowed", host)
+	// if host looks like an IP address, normalize it
+	asIP := net.ParseIP(host)
+	if asIP != nil {
+		host = asIP.String()
+	}
+
+	return utils.StringSliceContains(disallowedHosts, host, true)
+}
+
+// Do makes the given HTTP request using the current requestor and retry config
+func Do(client *http.Client, request *http.Request, retries *RetryConfig, disallowedHosts []string) (*http.Response, error) {
+	if allowRequest(request, disallowedHosts) {
+		return nil, errors.Errorf("requests to host %s are disallowed", request.URL.Hostname())
 	}
 
 	var response *http.Response

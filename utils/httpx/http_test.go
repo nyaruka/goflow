@@ -51,13 +51,22 @@ func TestDisallowedHosts(t *testing.T) {
 	assert.EqualError(t, err, "requests to host localhost are disallowed")
 
 	_, err = call("https://LOCALHOST:80")
-	assert.EqualError(t, err, "requests to host localhost are disallowed")
+	assert.EqualError(t, err, "requests to host LOCALHOST are disallowed")
 
 	_, err = call("https://127.0.0.1")
 	assert.EqualError(t, err, "requests to host 127.0.0.1 are disallowed")
 
+	_, err = call("https://127.0.00.1")
+	assert.EqualError(t, err, "requests to host 127.0.00.1 are disallowed")
+
 	_, err = call("https://[::1]:80")
 	assert.EqualError(t, err, "requests to host ::1 are disallowed")
+
+	_, err = call("https://[0:0:0:0:0:0:0:1]:80")
+	assert.EqualError(t, err, "requests to host 0:0:0:0:0:0:0:1 are disallowed")
+
+	_, err = call("https://[0000:0000:0000:0000:0000:0000:0000:0001]:80")
+	assert.EqualError(t, err, "requests to host 0000:0000:0000:0000:0000:0000:0000:0001 are disallowed")
 }
 
 func TestMaxBodyBytes(t *testing.T) {
