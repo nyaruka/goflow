@@ -175,7 +175,7 @@ func (c *Client) request(data url.Values, dest Response) (*httpx.Trace, error) {
 		"Content-Type": "application/x-www-form-urlencoded",
 	}
 
-	trace, err := httpx.NewTrace(c.httpClient, "POST", apiURL, strings.NewReader(data.Encode()), headers, c.httpRetries)
+	trace, err := httpx.NewTrace(c.httpClient, "POST", apiURL, strings.NewReader(data.Encode()), headers, c.httpRetries, nil)
 	if err != nil {
 		return trace, err
 	}

@@ -70,6 +70,7 @@ func TestService(t *testing.T) {
 	svc := luis.NewService(
 		http.DefaultClient,
 		nil,
+		nil,
 		test.NewClassifier("Booking", "luis", []string{"book_flight", "book_hotel"}),
 		"https://westus.api.cognitive.microsoft.com/luis/v2.0",
 		"f96abf2f-3b53-4766-8ea6-09a655222a02",

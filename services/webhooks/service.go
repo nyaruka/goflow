@@ -10,21 +10,22 @@ import (
 )
 
 type service struct {
-	httpClient     *http.Client
-	httpRetries    *httpx.RetryConfig
-	defaultHeaders map[string]string
-	maxBodyBytes   int
+	httpClient      *http.Client
+	httpRetries     *httpx.RetryConfig
+	disallowedHosts []string
+	defaultHeaders  map[string]string
+	maxBodyBytes    int
 }
 
 // NewServiceFactory creates a new webhook service factory
-func NewServiceFactory(httpClient *http.Client, httpRetries *httpx.RetryConfig, defaultHeaders map[string]string, maxBodyBytes int) engine.WebhookServiceFactory {
+func NewServiceFactory(httpClient *http.Client, httpRetries *httpx.RetryConfig, disallowedHosts []string, defaultHeaders map[string]string, maxBodyBytes int) engine.WebhookServiceFactory {
 	return func(flows.Session) (flows.WebhookService, error) {
-		return NewService(httpClient, httpRetries, defaultHeaders, maxBodyBytes), nil
+		return NewService(httpClient, httpRetries, disallowedHosts, defaultHeaders, maxBodyBytes), nil
 	}
 }
 
 // NewService creates a new default webhook service
-func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, defaultHeaders map[string]string, maxBodyBytes int) flows.WebhookService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, disallowedHosts []string, defaultHeaders map[string]string, maxBodyBytes int) flows.WebhookService {
 	return &service{
 		httpClient:     httpClient,
 		httpRetries:    httpRetries,
@@ -41,7 +42,7 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 		}
 	}
 
-	trace, err := httpx.DoTrace(s.httpClient, request, s.httpRetries, s.maxBodyBytes)
+	trace, err := httpx.DoTrace(s.httpClient, request, s.httpRetries, s.disallowedHosts, s.maxBodyBytes)
 	if trace != nil {
 		call := &flows.WebhookCall{Trace: trace}
 

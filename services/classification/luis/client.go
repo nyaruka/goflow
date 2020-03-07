@@ -41,21 +41,23 @@ type PredictResponse struct {
 
 // Client is a basic LUIS client
 type Client struct {
-	httpClient  *http.Client
-	httpRetries *httpx.RetryConfig
-	endpoint    string
-	appID       string
-	key         string
+	httpClient          *http.Client
+	httpRetries         *httpx.RetryConfig
+	httpDisallowedHosts []string
+	endpoint            string
+	appID               string
+	key                 string
 }
 
 // NewClient creates a new client
-func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, endpoint, appID, key string) *Client {
+func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpDisallowedHosts []string, endpoint, appID, key string) *Client {
 	return &Client{
-		httpClient:  httpClient,
-		httpRetries: httpRetries,
-		endpoint:    endpoint,
-		appID:       appID,
-		key:         key,
+		httpClient:          httpClient,
+		httpRetries:         httpRetries,
+		httpDisallowedHosts: httpDisallowedHosts,
+		endpoint:            endpoint,
+		appID:               appID,
+		key:                 key,
 	}
 }
 
@@ -63,7 +65,7 @@ func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, endpoint
 func (c *Client) Predict(q string) (*PredictResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/apps/%s?verbose=true&subscription-key=%s&q=%s", c.endpoint, c.appID, c.key, url.QueryEscape(q))
 
-	trace, err := httpx.NewTrace(c.httpClient, "GET", endpoint, nil, nil, c.httpRetries)
+	trace, err := httpx.NewTrace(c.httpClient, "GET", endpoint, nil, nil, c.httpRetries, c.httpDisallowedHosts)
 	if err != nil {
 		return nil, trace, err
 	}
