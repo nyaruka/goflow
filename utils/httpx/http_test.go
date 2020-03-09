@@ -28,47 +28,6 @@ func TestNewTrace(t *testing.T) {
 	assert.Equal(t, time.Date(2019, 10, 7, 15, 21, 31, 123456789, time.UTC), trace.EndTime)
 }
 
-func TestDisallowedHosts(t *testing.T) {
-	defer httpx.SetRequestor(httpx.DefaultRequestor)
-
-	disallowedHosts := []string{"localhost", "127.0.0.1", "::1"}
-
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://temba.io": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, ``, 1),
-		},
-	}))
-
-	call := func(url string) (*httpx.Trace, error) {
-		request, _ := http.NewRequest("GET", url, nil)
-		return httpx.DoTrace(http.DefaultClient, request, nil, disallowedHosts, -1)
-	}
-
-	_, err := call("https://temba.io")
-	assert.NoError(t, err)
-
-	_, err = call("https://localhost/path")
-	assert.EqualError(t, err, "requests to host localhost are disallowed")
-
-	_, err = call("https://LOCALHOST:80")
-	assert.EqualError(t, err, "requests to host LOCALHOST are disallowed")
-
-	_, err = call("https://127.0.0.1")
-	assert.EqualError(t, err, "requests to host 127.0.0.1 are disallowed")
-
-	_, err = call("https://127.0.00.1")
-	assert.EqualError(t, err, "requests to host 127.0.00.1 are disallowed")
-
-	_, err = call("https://[::1]:80")
-	assert.EqualError(t, err, "requests to host ::1 are disallowed")
-
-	_, err = call("https://[0:0:0:0:0:0:0:1]:80")
-	assert.EqualError(t, err, "requests to host 0:0:0:0:0:0:0:1 are disallowed")
-
-	_, err = call("https://[0000:0000:0000:0000:0000:0000:0000:0001]:80")
-	assert.EqualError(t, err, "requests to host 0000:0000:0000:0000:0000:0000:0000:0001 are disallowed")
-}
-
 func TestMaxBodyBytes(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
