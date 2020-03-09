@@ -1,3 +1,7 @@
+v0.77.1
+----------
+ * Fix not passing access config correctly to webhook services
+
 v0.77.0
 ----------
  * Allow http services to be configured with a list of disallowed hosts
