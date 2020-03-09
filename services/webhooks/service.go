@@ -29,6 +29,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAcc
 	return &service{
 		httpClient:     httpClient,
 		httpRetries:    httpRetries,
+		httpAccess:     httpAccess,
 		defaultHeaders: defaultHeaders,
 		maxBodyBytes:   maxBodyBytes,
 	}
