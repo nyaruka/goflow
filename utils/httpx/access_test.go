@@ -4,6 +4,7 @@ import (
 	"net"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/stretchr/testify/assert"
@@ -12,7 +13,7 @@ import (
 func TestAccessConfig(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	disallowedHosts := []net.IP{net.ParseIP("127.0.0.1"), net.ParseIP("::1")}
+	access := httpx.NewAccessConfig(30*time.Second, []net.IP{net.ParseIP("127.0.0.1"), net.ParseIP("::1")})
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://nyaruka.com": []httpx.MockResponse{
@@ -38,7 +39,7 @@ func TestAccessConfig(t *testing.T) {
 	}
 	for _, tc := range tests {
 		request, _ := http.NewRequest("GET", tc.url, nil)
-		_, err := httpx.DoTrace(http.DefaultClient, request, nil, httpx.NewAccessConfig(disallowedHosts), -1)
+		_, err := httpx.DoTrace(http.DefaultClient, request, nil, access, -1)
 
 		if tc.err != "" {
 			assert.EqualError(t, err, tc.err, "error message mismatch for url %s", tc.url)
