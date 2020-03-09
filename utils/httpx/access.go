@@ -27,7 +27,8 @@ func NewAccessConfig(resolveTimeout time.Duration, disallowedIPs []net.IP) *Acce
 func (c *AccessConfig) Allow(request *http.Request) (bool, error) {
 	host := strings.ToLower(request.URL.Hostname())
 
-	ctx, _ := context.WithTimeout(context.Background(), c.ResolveTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), c.ResolveTimeout)
+	defer cancel()
 
 	addrs, err := net.DefaultResolver.LookupIPAddr(ctx, host)
 	if err != nil {
