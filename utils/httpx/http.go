@@ -18,8 +18,14 @@ var debug = false
 
 // Do makes the given HTTP request using the current requestor and retry config
 func Do(client *http.Client, request *http.Request, retries *RetryConfig, access *AccessConfig) (*http.Response, error) {
-	if access != nil && !access.Allow(request) {
-		return nil, errors.Errorf("request to %s denied", request.URL.Hostname())
+	if access != nil {
+		allowed, err := access.Allow(request)
+		if err != nil {
+			return nil, err
+		}
+		if !allowed {
+			return nil, errors.Errorf("request to %s denied", request.URL.Hostname())
+		}
 	}
 
 	var response *http.Response

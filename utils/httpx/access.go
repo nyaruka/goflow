@@ -4,27 +4,34 @@ import (
 	"net"
 	"net/http"
 	"strings"
-
-	"github.com/nyaruka/goflow/utils"
 )
 
 // AccessConfig configures what can be accessed
 type AccessConfig struct {
-	DisallowedIPs []string
+	DisallowedIPs []net.IP
 }
 
-func NewAccessConfig(disallowedIPs []string) *AccessConfig {
+// NewAccessConfig creates a new access config
+func NewAccessConfig(disallowedIPs []net.IP) *AccessConfig {
 	return &AccessConfig{DisallowedIPs: disallowedIPs}
 }
 
-func (c *AccessConfig) Allow(request *http.Request) bool {
+// Allow determines whether the given request should be allowed
+func (c *AccessConfig) Allow(request *http.Request) (bool, error) {
 	host := strings.ToLower(request.URL.Hostname())
 
-	// if host looks like an IP address, normalize it
-	asIP := net.ParseIP(host)
-	if asIP != nil {
-		host = asIP.String()
+	addrs, err := net.LookupIP(host)
+	if err != nil {
+		return false, err
 	}
 
-	return !utils.StringSliceContains(c.DisallowedIPs, host, true)
+	// if any of the host's addresses appear in the disallowed list, deny the request
+	for _, addr := range addrs {
+		for _, disallowed := range c.DisallowedIPs {
+			if addr.Equal(disallowed) {
+				return false, nil
+			}
+		}
+	}
+	return true, nil
 }
