@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,7 +19,7 @@ func TestNewTrace(t *testing.T) {
 
 	server := test.NewTestHTTPServer(52025)
 
-	trace, err := httpx.NewTrace(http.DefaultClient, "GET", server.URL+"?cmd=success", nil, nil, nil)
+	trace, err := httpx.NewTrace(http.DefaultClient, "GET", server.URL+"?cmd=success", nil, nil, nil, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n", string(trace.RequestTrace))
 	assert.Equal(t, `{ "ok": "true" }`, string(trace.ResponseBody))
@@ -43,7 +44,7 @@ func TestMaxBodyBytes(t *testing.T) {
 
 	call := func(maxBodyBytes int) (*httpx.Trace, error) {
 		request, _ := http.NewRequest("GET", "https://temba.io", nil)
-		return httpx.DoTrace(http.DefaultClient, request, nil, maxBodyBytes)
+		return httpx.DoTrace(http.DefaultClient, request, nil, nil, maxBodyBytes)
 	}
 
 	trace, err := call(-1) // no body limit

@@ -22,7 +22,7 @@ func NewEngine() flows.Engine {
 		WithEmailServiceFactory(func(s flows.Session) (flows.EmailService, error) {
 			return newEmailService(), nil
 		}).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, retries, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, retries, nil, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).

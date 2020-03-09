@@ -455,7 +455,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 
 	request, _ := http.NewRequest("GET", "http://temba.io/", strings.NewReader(strings.Repeat("X", 20000)))
 
-	svc := webhooks.NewService(http.DefaultClient, nil, nil, 1024*1024)
+	svc := webhooks.NewService(http.DefaultClient, nil, nil, nil, 1024*1024)
 	call, err := svc.Call(nil, request)
 	require.NoError(t, err)
 

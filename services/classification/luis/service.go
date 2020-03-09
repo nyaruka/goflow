@@ -11,6 +11,7 @@ import (
 type service struct {
 	httpClient  *http.Client
 	httpRetries *httpx.RetryConfig
+	httpAccess  *httpx.AccessConfig
 	classifier  *flows.Classifier
 	endpoint    string
 	appID       string
@@ -18,10 +19,11 @@ type service struct {
 }
 
 // NewService creates a new classification service
-func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classifier *flows.Classifier, endpoint, appID, key string) flows.ClassificationService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAccess *httpx.AccessConfig, classifier *flows.Classifier, endpoint, appID, key string) flows.ClassificationService {
 	return &service{
 		httpClient:  httpClient,
 		httpRetries: httpRetries,
+		httpAccess:  httpAccess,
 		classifier:  classifier,
 		endpoint:    endpoint,
 		appID:       appID,
@@ -30,7 +32,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classif
 }
 
 func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	client := NewClient(s.httpClient, s.httpRetries, s.endpoint, s.appID, s.key)
+	client := NewClient(s.httpClient, s.httpRetries, s.httpAccess, s.endpoint, s.appID, s.key)
 
 	response, trace, err := client.Predict(input)
 	if trace != nil {

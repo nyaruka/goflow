@@ -51,7 +51,7 @@ func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, accessTo
 func (c *Client) Message(q string) (*MessageResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/message?v=%s&q=%s", apiBaseURL, version, url.QueryEscape(q))
 
-	trace, err := httpx.NewTrace(c.httpClient, "GET", endpoint, nil, c.headers, c.httpRetries)
+	trace, err := httpx.NewTrace(c.httpClient, "GET", endpoint, nil, c.headers, c.httpRetries, nil)
 	if err != nil {
 		return nil, trace, err
 	}
