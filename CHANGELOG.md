@@ -1,3 +1,7 @@
+v0.77.0
+----------
+ * Allow http services to be configured with a list of disallowed hosts
+
 v0.76.3
 ----------
  * fix @legacy_extra issue on routers
