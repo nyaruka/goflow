@@ -1,3 +1,7 @@
+v0.77.2
+----------
+ * Update README
+
 v0.77.1
 ----------
  * Fix not passing access config correctly to webhook services
