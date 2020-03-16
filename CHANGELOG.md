@@ -1,3 +1,7 @@
+v0.77.4
+----------
+ * Fix loading flow assets that are new spec but also have metadata section
+
 v0.77.3
 ----------
  * Update README
