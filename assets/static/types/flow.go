@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/buger/jsonparser"
+	"github.com/pkg/errors"
 )
 
 // Flow is a JSON serializable implementation of a flow asset
@@ -30,11 +31,20 @@ func (f *Flow) UnmarshalJSON(data []byte) error {
 	// alias our type so we don't end up here again
 	type alias Flow
 
-	// if there's a metadata field, this is a legacy definition, so read the UUID/name from there
-	legacyMetadata, _, _, _ := jsonparser.Get(data, "metadata")
-	if legacyMetadata != nil {
-		return jsonx.Unmarshal(legacyMetadata, (*alias)(f))
+	// try as new spec first
+	err := jsonx.Unmarshal(data, (*alias)(f))
+	if err == nil && f.UUID() != "" {
+		return nil
 	}
 
-	return jsonx.Unmarshal(data, (*alias)(f))
+	// and then as legacy spec
+	legacyMetadata, _, _, _ := jsonparser.Get(data, "metadata")
+	if legacyMetadata != nil {
+		err = jsonx.Unmarshal(legacyMetadata, (*alias)(f))
+		if err == nil && f.UUID() != "" {
+			return nil
+		}
+	}
+
+	return errors.New("can't parse UUID from flow asset")
 }

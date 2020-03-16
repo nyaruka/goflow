@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
@@ -91,7 +92,7 @@ type SessionAssets struct {
 
 // NewSessionAssets creates a new session assets
 func NewSessionAssets(source *AssetsSource) (*SessionAssets, error) {
-	s, err := engine.NewSessionAssets(source.target, nil)
+	s, err := engine.NewSessionAssets(source.target, &migrations.Config{BaseMediaURL: ""})
 	if err != nil {
 		return nil, err
 	}
