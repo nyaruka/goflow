@@ -140,13 +140,14 @@ func TestTriggerMarshaling(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
+	env := envs.NewBuilder().Build()
+
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	env := envs.NewBuilder().Build()
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 
@@ -492,10 +493,12 @@ func TestTriggerMarshaling(t *testing.T) {
 }
 
 func TestReadTrigger(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
-	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource(), nil)
+	sessionAssets, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 	require.NoError(t, err)
 
 	// error if no type field
@@ -508,14 +511,15 @@ func TestReadTrigger(t *testing.T) {
 }
 
 func TestTriggerSessionInitialization(t *testing.T) {
+	env := envs.NewBuilder().WithDateFormat(envs.DateFormatMonthDayYear).Build()
+
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
 	defaultEnv := envs.NewBuilder().Build()
-	env := envs.NewBuilder().WithDateFormat(envs.DateFormatMonthDayYear).Build()
 
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 

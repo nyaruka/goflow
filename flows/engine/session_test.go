@@ -129,7 +129,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	require.NoError(t, err)
 
 	// try to read it back but with no assets
-	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource(), nil)
+	sessionAssets, err := engine.NewSessionAssets(session.Environment(), static.NewEmptySource(), nil)
 
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }

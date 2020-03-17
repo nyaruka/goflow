@@ -519,6 +519,8 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 
 // CreateSessionAssets creates assets from given JSON
 func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flows.SessionAssets, error) {
+	env := envs.NewBuilder().Build()
+
 	// different tests different ports for the test HTTP server
 	if testServerURL != "" {
 		assetsJSON = json.RawMessage(strings.Replace(string(assetsJSON), "http://localhost", testServerURL, -1))
@@ -531,7 +533,7 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 	}
 
 	// create our engine session
-	sa, err := engine.NewSessionAssets(source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "error creating test session assets")
 	}

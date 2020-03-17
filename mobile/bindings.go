@@ -91,8 +91,8 @@ type SessionAssets struct {
 }
 
 // NewSessionAssets creates a new session assets
-func NewSessionAssets(source *AssetsSource) (*SessionAssets, error) {
-	s, err := engine.NewSessionAssets(source.target, &migrations.Config{BaseMediaURL: ""})
+func NewSessionAssets(environment *Environment, source *AssetsSource) (*SessionAssets, error) {
+	s, err := engine.NewSessionAssets(environment.target, source.target, &migrations.Config{BaseMediaURL: ""})
 	if err != nil {
 		return nil, err
 	}

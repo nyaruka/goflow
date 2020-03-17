@@ -17,7 +17,9 @@ import (
 )
 
 func TestIssueTypes(t *testing.T) {
-	assets, err := test.LoadSessionAssets("testdata/_assets.json")
+	env := envs.NewBuilder().Build()
+
+	assets, err := test.LoadSessionAssets(env, "testdata/_assets.json")
 	require.NoError(t, err)
 
 	for typeName := range issues.RegisteredTypes {
@@ -78,7 +80,9 @@ func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 }
 
 func TestIssues(t *testing.T) {
-	sa, err := test.LoadSessionAssets("testdata/_assets.json")
+	env := envs.NewBuilder().Build()
+
+	sa, err := test.LoadSessionAssets(env, "testdata/_assets.json")
 	require.NoError(t, err)
 
 	flow, err := definition.ReadFlow([]byte(`{

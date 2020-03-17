@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/inputs"
 
@@ -13,10 +14,12 @@ import (
 )
 
 func TestReadInput(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
-	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource(), nil)
+	sessionAssets, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 	require.NoError(t, err)
 
 	// error if no type field
