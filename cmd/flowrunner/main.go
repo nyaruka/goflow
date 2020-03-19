@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -25,6 +26,7 @@ import (
 	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
+	"github.com/buger/jsonparser"
 	"github.com/pkg/errors"
 )
 
@@ -43,7 +45,7 @@ const contactJSON = `{
 }
 `
 
-const usage = `usage: flowrunner [flags] <assets.json> <flow_uuid>`
+const usage = `usage: flowrunner [flags] <assets.json> [flow_uuid]`
 
 func main() {
 	var initialMsg, contactLang, witToken string
@@ -56,7 +58,7 @@ func main() {
 	flags.Parse(os.Args[1:])
 	args := flags.Args()
 
-	if len(args) != 2 {
+	if !(len(args) == 1 || len(args) == 2) {
 		fmt.Println(usage)
 		flags.PrintDefaults()
 		os.Exit(1)
@@ -99,7 +101,21 @@ func createEngine(witToken string) flows.Engine {
 
 // RunFlow steps through a flow
 func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang envs.Language, in io.Reader, out io.Writer) (*Repro, error) {
-	source, err := static.LoadSource(assetsPath)
+	assetsJSON, err := ioutil.ReadFile(assetsPath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "error reading assets file '%s'", assetsPath)
+	}
+
+	// if user didn't provide a flow UUID, look for the UUID of the first flow
+	if flowUUID == "" {
+		uuidBytes, _, _, err := jsonparser.Get(assetsJSON, "flows", "[0]", "uuid")
+		if err != nil {
+			return nil, errors.New("no flows found in assets file")
+		}
+		flowUUID = assets.FlowUUID(uuidBytes)
+	}
+
+	source, err := static.NewSource(assetsJSON)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +125,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		return nil, errors.Wrap(err, "error parsing assets")
 	}
 
-	flow, err := sa.Flows().Get(flowUUID)
+	flow, err := sa.Flows().Get(assets.FlowUUID(flowUUID))
 	if err != nil {
 		return nil, err
 	}

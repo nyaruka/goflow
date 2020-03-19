@@ -1,0 +1,176 @@
+{
+  "flows": [
+    {
+      "name": "Phone Numbers",
+      "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
+      "spec_version": "13.1.0",
+      "language": "eng",
+      "type": "messaging",
+      "nodes": [
+        {
+          "uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "Enter a backup phone number",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "03d29ca0-05e4-4e4f-b3ac-d5054238c642"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "12f9509b-f60d-49a1-a34f-df27643638f3",
+              "destination_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139"
+            }
+          ]
+        },
+        {
+          "uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "Sorry that doesn't look like a phone number. Try again.",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "feb3e9b8-afe1-4b33-93e7-2530544aece6"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
+              "destination_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139"
+            }
+          ]
+        },
+        {
+          "uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
+          "actions": [],
+          "router": {
+            "type": "switch",
+            "default_category_uuid": "dfa6a34b-bda6-46a4-ada0-e26668b77de8",
+            "cases": [
+              {
+                "arguments": [],
+                "type": "has_phone",
+                "uuid": "602b2de0-3674-40ce-ae48-2f8dfd44032d",
+                "category_uuid": "a8a442ce-41b9-4477-880e-8b507898bdce"
+              }
+            ],
+            "categories": [
+              {
+                "uuid": "a8a442ce-41b9-4477-880e-8b507898bdce",
+                "name": "Has Phone",
+                "exit_uuid": "2b9ce880-3556-410a-af5a-edd366a1d628"
+              },
+              {
+                "uuid": "dfa6a34b-bda6-46a4-ada0-e26668b77de8",
+                "name": "Other",
+                "exit_uuid": "6083707c-109a-442b-a2c6-b6d60bb1eaed"
+              }
+            ],
+            "operand": "@input.text",
+            "wait": {
+              "type": "msg"
+            },
+            "result_name": "Backup Phone"
+          },
+          "exits": [
+            {
+              "uuid": "2b9ce880-3556-410a-af5a-edd366a1d628",
+              "destination_uuid": "b7653335-7790-4f00-aede-7c6d03c8f829"
+            },
+            {
+              "uuid": "6083707c-109a-442b-a2c6-b6d60bb1eaed",
+              "destination_uuid": "36e57807-2608-471f-b5c8-0798aac2667e"
+            }
+          ]
+        },
+        {
+          "uuid": "b7653335-7790-4f00-aede-7c6d03c8f829",
+          "actions": [
+            {
+              "type": "add_contact_urn",
+              "uuid": "4f552bf3-31ad-4125-84e9-9011ab2c1e99",
+              "scheme": "tel",
+              "path": "@results.backup_phone"
+            },
+            {
+              "attachments": [],
+              "text": "Ok you've added @(format_urn(\"tel:\" & results.backup_phone))",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "717a7fae-7929-4e06-88ef-764b392009fa"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "91023689-f038-405e-a3c0-c4e8e8580bd9",
+              "destination_uuid": null
+            }
+          ]
+        }
+      ],
+      "_ui": {
+        "nodes": {
+          "626c8aa2-2903-4453-9ac5-1a2e6d21acf6": {
+            "position": {
+              "left": 220,
+              "top": 0
+            },
+            "type": "execute_actions"
+          },
+          "6e15badb-5c42-41e1-ae77-a34b9b850139": {
+            "type": "wait_for_response",
+            "position": {
+              "left": 300,
+              "top": 160
+            },
+            "config": {
+              "cases": {}
+            }
+          },
+          "36e57807-2608-471f-b5c8-0798aac2667e": {
+            "position": {
+              "left": 580,
+              "top": 100
+            },
+            "type": "execute_actions"
+          },
+          "b7653335-7790-4f00-aede-7c6d03c8f829": {
+            "position": {
+              "left": 280,
+              "top": 360
+            },
+            "type": "execute_actions"
+          }
+        }
+      },
+      "revision": 18,
+      "expire_after_minutes": 10080,
+      "localization": {}
+    }
+  ],
+  "groups": [
+    {
+      "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75",
+      "name": "NYC Area",
+      "query": "tel ~ +1718"
+    }
+  ],
+  "channels": [
+    {
+      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+      "name": "Android Channel",
+      "address": "+17036975131",
+      "schemes": [
+        "tel"
+      ],
+      "roles": [
+        "send",
+        "receive"
+      ],
+      "country": "US"
+    }
+  ]
+}
