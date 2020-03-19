@@ -316,7 +316,8 @@ func TestNewFlow(t *testing.T) {
 }
 
 func TestEmptyFlow(t *testing.T) {
-	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+	env := envs.NewBuilder().Build()
+	flow, err := test.LoadFlowFromAssets(env, "../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
 	marshaled, err := jsonx.Marshal(flow)
@@ -454,6 +455,8 @@ func TestReadFlow(t *testing.T) {
 }
 
 func TestExtractTemplates(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
 	testCases := []struct {
 		path      string
 		uuid      string
@@ -516,7 +519,7 @@ func TestExtractTemplates(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		flow, err := test.LoadFlowFromAssets(env, tc.path, assets.FlowUUID(tc.uuid))
 		require.NoError(t, err)
 
 		// try extracting all templates
@@ -526,6 +529,8 @@ func TestExtractTemplates(t *testing.T) {
 }
 
 func TestInspection(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
 	testCases := []struct {
 		path string
 		uuid string
@@ -557,7 +562,7 @@ func TestInspection(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		sa, err := test.LoadSessionAssets(tc.path)
+		sa, err := test.LoadSessionAssets(env, tc.path)
 		require.NoError(t, err)
 
 		flow, err := sa.Flows().Get(assets.FlowUUID(tc.uuid))

@@ -38,12 +38,12 @@ func TestContact(t *testing.T) {
 	}`))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source, nil)
+	env := envs.NewBuilder().Build()
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
 	android := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
-
-	env := envs.NewBuilder().Build()
 
 	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
@@ -125,7 +125,7 @@ func TestContact(t *testing.T) {
 
 func TestContactFormat(t *testing.T) {
 	env := envs.NewBuilder().Build()
-	sa, _ := engine.NewSessionAssets(static.NewEmptySource(), nil)
+	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 
 	// name takes precedence if set
 	contact := flows.NewEmptyContact(sa, "Joe", envs.NilLanguage, nil)
@@ -151,7 +151,8 @@ func TestContactFormat(t *testing.T) {
 }
 
 func TestContactSetPreferredChannel(t *testing.T) {
-	sa, _ := engine.NewSessionAssets(static.NewEmptySource(), nil)
+	env := envs.NewBuilder().Build()
+	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
@@ -205,12 +206,6 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		sa, err := engine.NewSessionAssets(source, nil)
-		require.NoError(t, err)
-
-		contact, err := flows.ReadContact(sa, tc.ContactBefore, assets.PanicOnMissing)
-		require.NoError(t, err)
-
 		envBuilder := envs.NewBuilder().
 			WithDefaultLanguage("eng").
 			WithAllowedLanguages([]envs.Language{"eng", "spa"}).
@@ -219,8 +214,14 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 		if tc.RedactURNs {
 			envBuilder.WithRedactionPolicy(envs.RedactionPolicyURNs)
 		}
-
 		env := envBuilder.Build()
+
+		sa, err := engine.NewSessionAssets(env, source, nil)
+		require.NoError(t, err)
+
+		contact, err := flows.ReadContact(sa, tc.ContactBefore, assets.IgnoreMissing)
+		require.NoError(t, err)
+
 		trigger := triggers.NewManual(
 			env,
 			assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Empty Flow"),

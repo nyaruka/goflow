@@ -104,7 +104,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		return nil, err
 	}
 
-	sa, err := engine.NewSessionAssets(source, nil)
+	sa, err := engine.NewSessionAssets(envs.NewBuilder().Build(), source, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "error parsing assets")
 	}

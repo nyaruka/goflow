@@ -365,3 +365,15 @@ func (s *FieldAssets) FirstOfType(valueType assets.FieldType) *Field {
 	}
 	return nil
 }
+
+func (s *FieldAssets) ResolveField(key string) assets.Field {
+	f := s.byKey[key]
+	if f != nil {
+		return f
+	}
+	return nil
+}
+
+func (s *FieldAssets) ResolveGroup(name string) assets.Group {
+	return nil
+}

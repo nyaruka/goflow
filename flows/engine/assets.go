@@ -2,6 +2,7 @@ package engine
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
@@ -26,7 +27,7 @@ type sessionAssets struct {
 var _ flows.SessionAssets = (*sessionAssets)(nil)
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
-func NewSessionAssets(source assets.Source, migrationConfig *migrations.Config) (flows.SessionAssets, error) {
+func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfig *migrations.Config) (flows.SessionAssets, error) {
 	channels, err := source.Channels()
 	if err != nil {
 		return nil, err
@@ -64,14 +65,17 @@ func NewSessionAssets(source assets.Source, migrationConfig *migrations.Config) 
 		return nil, err
 	}
 
+	fieldAssets := flows.NewFieldAssets(fields)
+	groupAssets, _ := flows.NewGroupAssets(env, fieldAssets, groups)
+
 	return &sessionAssets{
 		source:      source,
 		channels:    flows.NewChannelAssets(channels),
 		classifiers: flows.NewClassifierAssets(classifiers),
-		fields:      flows.NewFieldAssets(fields),
+		fields:      fieldAssets,
 		flows:       definition.NewFlowAssets(source, migrationConfig),
 		globals:     flows.NewGlobalAssets(globals),
-		groups:      flows.NewGroupAssets(groups),
+		groups:      groupAssets,
 		labels:      flows.NewLabelAssets(labels),
 		locations:   flows.NewLocationAssets(locations),
 		resthooks:   flows.NewResthookAssets(resthooks),

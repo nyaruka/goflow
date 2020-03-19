@@ -365,7 +365,7 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment) ([]*Group, []*Gr
 			continue
 		}
 
-		qualifies, err := group.CheckDynamicMembership(env, c, c.assets)
+		qualifies, err := group.CheckDynamicMembership(env, c)
 		if err != nil {
 			errs = append(errs, errors.Wrapf(err, "unable to re-evaluate membership of group '%s'", group.Name()))
 		}
