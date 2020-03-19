@@ -22,13 +22,13 @@ func TestHTTPLogs(t *testing.T) {
 		},
 	}))
 
-	trace1, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil)
+	trace1, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil, nil)
 	require.NoError(t, err)
 
-	trace2, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil)
+	trace2, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil, nil)
 	require.NoError(t, err)
 
-	trace3, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil)
+	trace3, err := httpx.NewTrace(http.DefaultClient, "GET", "http://temba.io/", nil, nil, nil, nil)
 	require.EqualError(t, err, "unable to connect to server")
 
 	log1 := flows.NewHTTPLog(trace1, flows.HTTPStatusFromCode)

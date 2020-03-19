@@ -1,3 +1,23 @@
+v0.77.4
+----------
+ * Fix loading flow assets that are new spec but also have metadata section
+
+v0.77.3
+----------
+ * Update README
+
+v0.77.2
+----------
+ * Update README
+
+v0.77.1
+----------
+ * Fix not passing access config correctly to webhook services
+
+v0.77.0
+----------
+ * Allow http services to be configured with a list of disallowed hosts
+
 v0.76.3
 ----------
  * fix @legacy_extra issue on routers

@@ -25,7 +25,8 @@ import (
 )
 
 func TestModifierTypes(t *testing.T) {
-	assets, err := test.LoadSessionAssets("testdata/_assets.json")
+	env := envs.NewBuilder().Build()
+	assets, err := test.LoadSessionAssets(env, "testdata/_assets.json")
 	require.NoError(t, err)
 
 	for typeName := range modifiers.RegisteredTypes {
@@ -109,7 +110,8 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 }
 
 func TestConstructors(t *testing.T) {
-	assets, err := test.LoadSessionAssets("testdata/_assets.json")
+	env := envs.NewBuilder().Build()
+	assets, err := test.LoadSessionAssets(env, "testdata/_assets.json")
 	require.NoError(t, err)
 
 	nexmo := assets.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
@@ -198,10 +200,11 @@ func TestConstructors(t *testing.T) {
 }
 
 func TestReadModifier(t *testing.T) {
+	env := envs.NewBuilder().Build()
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
-	sessionAssets, err := engine.NewSessionAssets(static.NewEmptySource(), nil)
+	sessionAssets, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 	require.NoError(t, err)
 
 	// error if no type field
@@ -236,7 +239,7 @@ func TestReadModifier(t *testing.T) {
 			{"uuid": "4349cdd6-5385-46f3-8e55-5750dd4f35fb", "name": "Winners"}
 		]
 	}`))
-	sessionAssets, err = engine.NewSessionAssets(source, nil)
+	sessionAssets, err = engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
 	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "groups", "modification": "add", "groups": [{"uuid": "cd1a2aa6-0d9d-4a8c-b32d-ca5de9c43bdb", "name": "Losers"}, {"uuid": "4349cdd6-5385-46f3-8e55-5750dd4f35fb", "name": "Winners"}]}`), missing)

@@ -10,13 +10,24 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/utils/dates"
+
 	"github.com/pkg/errors"
 )
 
 var debug = false
 
 // Do makes the given HTTP request using the current requestor and retry config
-func Do(client *http.Client, request *http.Request, retries *RetryConfig) (*http.Response, error) {
+func Do(client *http.Client, request *http.Request, retries *RetryConfig, access *AccessConfig) (*http.Response, error) {
+	if access != nil {
+		allowed, err := access.Allow(request)
+		if err != nil {
+			return nil, err
+		}
+		if !allowed {
+			return nil, errors.Errorf("request to %s denied", request.URL.Hostname())
+		}
+	}
+
 	var response *http.Response
 	var err error
 	retry := 0
@@ -61,7 +72,7 @@ func (t *Trace) String() string {
 }
 
 // DoTrace makes the given request saving traces of the complete request and response
-func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, maxBodyBytes int) (*Trace, error) {
+func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, access *AccessConfig, maxBodyBytes int) (*Trace, error) {
 	requestTrace, err := httputil.DumpRequestOut(request, true)
 	if err != nil {
 		return nil, err
@@ -73,7 +84,7 @@ func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, m
 		StartTime:    dates.Now(),
 	}
 
-	response, err := Do(client, request, retries)
+	response, err := Do(client, request, retries, access)
 	trace.EndTime = dates.Now()
 
 	if err != nil {
@@ -107,7 +118,7 @@ func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, m
 }
 
 // NewTrace makes the given request saving traces of the complete request and response
-func NewTrace(client *http.Client, method string, url string, body io.Reader, headers map[string]string, retries *RetryConfig) (*Trace, error) {
+func NewTrace(client *http.Client, method string, url string, body io.Reader, headers map[string]string, retries *RetryConfig, access *AccessConfig) (*Trace, error) {
 	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
@@ -117,7 +128,7 @@ func NewTrace(client *http.Client, method string, url string, body io.Reader, he
 		request.Header.Set(key, value)
 	}
 
-	return DoTrace(client, request, retries, -1)
+	return DoTrace(client, request, retries, access, -1)
 }
 
 // attempts to read the body of an HTTP response

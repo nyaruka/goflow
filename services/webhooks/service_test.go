@@ -1,11 +1,13 @@
 package webhooks_test
 
 import (
+	"net"
 	"net/http"
 	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/httpx"
 
@@ -157,4 +159,23 @@ func TestRetries(t *testing.T) {
 	assert.Equal(t, 200, c.Response.StatusCode)
 	assert.Equal(t, "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 4\r\nAccept-Encoding: gzip\r\n\r\nBODY", string(c.RequestTrace))
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 1\r\n\r\nb", string(c.ResponseTrace))
+}
+
+func TestAccessRestrictions(t *testing.T) {
+	retries := httpx.NewFixedRetries(5, 10)
+	access := httpx.NewAccessConfig(10, []net.IP{net.IPv4(127, 0, 0, 1)})
+
+	factory := webhooks.NewServiceFactory(http.DefaultClient, retries, access, map[string]string{"User-Agent": "Foo"}, 12345)
+	svc, err := factory(nil)
+	assert.NoError(t, err)
+
+	request, _ := http.NewRequest("GET", "http://localhost/foo", nil)
+	call, err := svc.Call(nil, request)
+
+	// actual error becomes a call with a connection error
+	assert.NoError(t, err)
+
+	// should still have a trace.. just no response part
+	assert.Equal(t, "GET /foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Foo\r\nAccept-Encoding: gzip\r\n\r\n", string(call.RequestTrace))
+	assert.Equal(t, "", string(call.ResponseTrace))
 }

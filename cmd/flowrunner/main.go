@@ -83,7 +83,7 @@ func main() {
 
 func createEngine(witToken string) flows.Engine {
 	builder := engine.NewBuilder().
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, map[string]string{"User-Agent": "goflow-runner"}, 10000))
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-runner"}, 10000))
 
 	if witToken != "" {
 		builder.WithClassificationServiceFactory(func(session flows.Session, classifier *flows.Classifier) (flows.ClassificationService, error) {
@@ -104,7 +104,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		return nil, err
 	}
 
-	sa, err := engine.NewSessionAssets(source, nil)
+	sa, err := engine.NewSessionAssets(envs.NewBuilder().Build(), source, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "error parsing assets")
 	}

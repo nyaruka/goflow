@@ -14,10 +14,10 @@ import (
     "github.com/nyaruka/goflow/utils"
 )
 
-source, _ := static.LoadSource("myassets.json")
-assets, _ := engine.NewSessionAssets(source, nil)
-contact := flows.NewContact(assets, ...)
 env := envs.NewBuilder().Build()
+source, _ := static.LoadSource("myassets.json")
+assets, _ := engine.NewSessionAssets(env, source, nil)
+contact := flows.NewContact(assets, ...)
 trigger := triggers.NewManual(env, contact, flow.Reference(), nil, nil, time.Now())
 eng := engine.NewBuilder().Build()
 session, sprint, err := eng.NewSession(assets, trigger)
@@ -25,7 +25,7 @@ session, sprint, err := eng.NewSession(assets, trigger)
 
 ## Sessions
 
-Sessions can easily be persisted between waits by calling `json.Marshal` on the `Session` instance to marshal it as JSON. You can inspect this JSON at https://sessions.temba.io/.
+Sessions can be persisted between waits by calling `json.Marshal` on the `Session` instance to marshal it as JSON. You can inspect this JSON at https://sessions.temba.io/.
 
 ## Utilities
 

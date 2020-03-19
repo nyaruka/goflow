@@ -8,12 +8,13 @@ import (
 	"github.com/nyaruka/goflow/assets/static/types"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // LoadSessionAssets loads a session assets instance from a static JSON file
-func LoadSessionAssets(path string) (flows.SessionAssets, error) {
+func LoadSessionAssets(env envs.Environment, path string) (flows.SessionAssets, error) {
 	assetsJSON, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -24,11 +25,13 @@ func LoadSessionAssets(path string) (flows.SessionAssets, error) {
 		return nil, err
 	}
 
-	return engine.NewSessionAssets(source, nil)
+	mconfig := &migrations.Config{BaseMediaURL: "http://temba.io/"}
+
+	return engine.NewSessionAssets(env, source, mconfig)
 }
 
-func LoadFlowFromAssets(path string, uuid assets.FlowUUID) (flows.Flow, error) {
-	sa, err := LoadSessionAssets(path)
+func LoadFlowFromAssets(env envs.Environment, path string, uuid assets.FlowUUID) (flows.Flow, error) {
+	sa, err := LoadSessionAssets(env, path)
 	if err != nil {
 		return nil, err
 	}

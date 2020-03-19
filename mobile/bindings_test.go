@@ -35,14 +35,14 @@ func TestMobileBindings(t *testing.T) {
 	source, err := mobile.NewAssetsSource(string(assetsJSON))
 	require.NoError(t, err)
 
-	// and create a new session assets
-	sa, err := mobile.NewSessionAssets(source)
-	require.NoError(t, err)
-
 	langs := mobile.NewStringSlice(2)
 	langs.Add("eng")
 	langs.Add("fra")
 	environment, err := mobile.NewEnvironment("DD-MM-YYYY", "tt:mm", "Africa/Kigali", "eng", langs, "RW", "none")
+	require.NoError(t, err)
+
+	// and create a new session assets
+	sa, err := mobile.NewSessionAssets(environment, source)
 	require.NoError(t, err)
 
 	contact := mobile.NewEmptyContact(sa)
