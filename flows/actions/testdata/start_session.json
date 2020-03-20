@@ -102,7 +102,7 @@
             ],
             "contact_query": "age > 20 OR gender = @fields.gender",
             "legacy_vars": [
-                "@(\"0788123123\")"
+                "@(\"5129165834\")"
             ],
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -133,7 +133,7 @@
                 "contact_query": "age > 20 OR gender = \"Male\"",
                 "urns": [
                     "tel:+1234567890",
-                    "tel:+250788123123"
+                    "tel:+15129165834"
                 ],
                 "run_summary": {
                     "uuid": "e7187099-7d38-4f60-955c-325957214c42",
@@ -174,7 +174,7 @@
         ],
         "templates": [
             "age > 20 OR gender = @fields.gender",
-            "@(\"0788123123\")"
+            "@(\"5129165834\")"
         ],
         "inspection": {
             "dependencies": [

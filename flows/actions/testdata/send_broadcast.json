@@ -92,7 +92,7 @@
             "legacy_vars": [
                 "@(\"\")",
                 "@contact.fields.gender",
-                "@(\"0788123123\")",
+                "@(\"5129165834\")",
                 "@contact.urn"
             ],
             "text": "Hi there!"
@@ -129,7 +129,7 @@
                 "urns": [
                     "tel:+1234567890",
                     "tel:male",
-                    "tel:+250788123123",
+                    "tel:+15129165834",
                     "tel:+12065551212"
                 ]
             }
@@ -137,7 +137,7 @@
         "templates": [
             "@(\"\")",
             "@contact.fields.gender",
-            "@(\"0788123123\")",
+            "@(\"5129165834\")",
             "@contact.urn",
             "Hi there!"
         ],

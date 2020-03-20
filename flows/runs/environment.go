@@ -34,6 +34,19 @@ func (e *runEnvironment) Timezone() *time.Location {
 	return e.run.Session().Environment().Timezone()
 }
 
+func (e *runEnvironment) DefaultCountry() envs.Country {
+	contact := e.run.Contact()
+
+	// if run has a contact with a preferred channel with a country, that overrides the environment's country
+	if contact != nil {
+		ch := contact.PreferredChannel()
+		if ch != nil && ch.Country() != envs.NilCountry {
+			return ch.Country()
+		}
+	}
+	return e.run.Session().Environment().DefaultCountry()
+}
+
 func (e *runEnvironment) Locations() (assets.LocationHierarchy, error) {
 	sessionAssets := e.run.Session().Assets()
 	hierarchies := sessionAssets.Locations().Hierarchies()
