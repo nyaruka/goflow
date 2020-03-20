@@ -39,4 +39,12 @@ func TestRunFlow(t *testing.T) {
 		"💬 message created \"Great, you are done!\"",
 		"",
 	}, lines)
+
+	// run again but don't specify the flow
+	in = strings.NewReader("I like red\npepsi\n")
+	out = &strings.Builder{}
+	_, err = main.RunFlow(test.NewEngine(), "testdata/two_questions.json", "", "", "eng", in, out)
+	require.NoError(t, err)
+
+	assert.Contains(t, out.String(), "Starting flow 'Two Questions'")
 }
