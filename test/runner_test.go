@@ -23,6 +23,7 @@ import (
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/nyaruka/goflow/utils/jsonx"
+	"github.com/nyaruka/goflow/utils/random"
 	"github.com/nyaruka/goflow/utils/smtpx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
@@ -191,6 +192,7 @@ func TestFlows(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, len(testCases) > 0)
 
+	defer random.SetGenerator(random.DefaultGenerator)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
@@ -200,6 +202,7 @@ func TestFlows(t *testing.T) {
 		var httpMocksCopy *httpx.MockRequestor
 		fmt.Printf("running %s\n", tc)
 
+		random.SetGenerator(random.NewSeededGenerator(123456))
 		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 		dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
 		smtpx.SetSender(smtpx.NewMockSender(""))

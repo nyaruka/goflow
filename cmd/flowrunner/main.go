@@ -65,7 +65,10 @@ func main() {
 	}
 
 	assetsPath := args[0]
-	flowUUID := assets.FlowUUID(args[1])
+	var flowUUID assets.FlowUUID
+	if len(args) == 2 {
+		flowUUID = assets.FlowUUID(args[1])
+	}
 
 	engine := createEngine(witToken)
 
