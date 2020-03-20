@@ -305,73 +305,102 @@ func TestContactQuery(t *testing.T) {
 	require.NoError(t, err)
 
 	testCases := []struct {
-		query  string
-		result bool
+		query     string
+		redaction envs.RedactionPolicy
+		result    bool
+		err       string
 	}{
-		{`name = "Ben Haggerty"`, true},
-		{`name = "Joe X"`, false},
-		{`name != "Joe X"`, true},
-		{`name ~ Ben`, true},
-		{`name ~ Joe`, false},
-		{`name = ""`, false},
-		{`name != ""`, true},
+		{`name = "Ben Haggerty"`, envs.RedactionPolicyNone, true, ""},
+		{`name = "Joe X"`, envs.RedactionPolicyNone, false, ""},
+		{`name != "Joe X"`, envs.RedactionPolicyNone, true, ""},
+		{`name != "Joe X"`, envs.RedactionPolicyNone, true, ""},
+		{`name ~ Joe`, envs.RedactionPolicyNone, false, ""},
+		{`name = ""`, envs.RedactionPolicyNone, false, ""},
+		{`name != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`id = 1234567`, true},
-		{`id = 5678889`, false},
+		{`id = 1234567`, envs.RedactionPolicyNone, true, ""},
+		{`id = 5678889`, envs.RedactionPolicyNone, false, ""},
 
-		{`language = ENG`, true},
-		{`language = FRA`, false},
-		{`language = ""`, false},
-		{`language != ""`, true},
+		{`language = ENG`, envs.RedactionPolicyNone, true, ""},
+		{`language = FRA`, envs.RedactionPolicyNone, false, ""},
+		{`language = ""`, envs.RedactionPolicyNone, false, ""},
+		{`language != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`created_on = 24-01-2020`, true},
-		{`created_on = 25-01-2020`, false},
-		{`created_on > 22-01-2020`, true},
-		{`created_on > 26-01-2020`, false},
+		{`created_on = 24-01-2020`, envs.RedactionPolicyNone, true, ""},
+		{`created_on = 25-01-2020`, envs.RedactionPolicyNone, false, ""},
+		{`created_on > 22-01-2020`, envs.RedactionPolicyNone, true, ""},
+		{`created_on > 26-01-2020`, envs.RedactionPolicyNone, false, ""},
 
-		{`tel = +12065551212`, true},
-		{`tel = +12065551313`, true},
-		{`tel = +13065551212`, false},
-		{`tel ~ 555`, true},
-		{`tel ~ 666`, false},
-		{`tel = ""`, false},
-		{`tel != ""`, true},
+		{`tel = +12065551212`, envs.RedactionPolicyNone, true, ""},
+		{`tel = +12065551313`, envs.RedactionPolicyNone, true, ""},
+		{`tel = +13065551212`, envs.RedactionPolicyNone, false, ""},
+		{`tel ~ 555`, envs.RedactionPolicyNone, true, ""},
+		{`tel ~ 666`, envs.RedactionPolicyNone, false, ""},
+		{`tel = ""`, envs.RedactionPolicyNone, false, ""},
+		{`tel != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`twitter = ewok`, true},
-		{`twitter = nicp`, false},
-		{`twitter ~ wok`, true},
-		{`twitter ~ EWO`, true},
-		{`twitter ~ ijk`, false},
-		{`twitter = ""`, false},
-		{`twitter != ""`, true},
+		{`tel = +12065551212`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`tel ~ 555`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`tel = ""`, envs.RedactionPolicyURNs, false, ""},
+		{`tel != ""`, envs.RedactionPolicyURNs, true, ""},
 
-		{`viber = ewok`, false},
-		{`viber ~ wok`, false},
-		{`viber = ""`, true},
-		{`viber != ""`, false},
+		{`twitter = ewok`, envs.RedactionPolicyNone, true, ""},
+		{`twitter = nicp`, envs.RedactionPolicyNone, false, ""},
+		{`twitter ~ wok`, envs.RedactionPolicyNone, true, ""},
+		{`twitter ~ EWO`, envs.RedactionPolicyNone, true, ""},
+		{`twitter ~ ijk`, envs.RedactionPolicyNone, false, ""},
+		{`twitter = ""`, envs.RedactionPolicyNone, false, ""},
+		{`twitter != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`urn = +12065551212`, true},
-		{`urn = ewok`, true},
-		{`urn = +13065551212`, false},
-		{`urn != +13065551212`, true},
-		{`urn ~ 555`, true},
-		{`urn ~ 666`, false},
-		{`urn = ""`, false},
-		{`urn != ""`, true},
+		{`viber = ewok`, envs.RedactionPolicyNone, false, ""},
+		{`viber ~ wok`, envs.RedactionPolicyNone, false, ""},
+		{`viber = ""`, envs.RedactionPolicyNone, true, ""},
+		{`viber != ""`, envs.RedactionPolicyNone, false, ""},
 
-		{`group = testers`, true},
-		{`group != testers`, false},
-		{`group = customers`, false},
-		{`group != customers`, true},
+		{`urn = +12065551212`, envs.RedactionPolicyNone, true, ""},
+		{`urn = ewok`, envs.RedactionPolicyNone, true, ""},
+		{`urn = +13065551212`, envs.RedactionPolicyNone, false, ""},
+		{`urn != +13065551212`, envs.RedactionPolicyNone, true, ""},
+		{`urn ~ 555`, envs.RedactionPolicyNone, true, ""},
+		{`urn ~ 666`, envs.RedactionPolicyNone, false, ""},
+		{`urn = ""`, envs.RedactionPolicyNone, false, ""},
+		{`urn != ""`, envs.RedactionPolicyNone, true, ""},
+
+		{`urn = +12065551212`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`urn ~ 555`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`urn = ""`, envs.RedactionPolicyURNs, false, ""},
+		{`urn != ""`, envs.RedactionPolicyURNs, true, ""},
+
+		{`group = testers`, envs.RedactionPolicyNone, true, ""},
+		{`group != testers`, envs.RedactionPolicyNone, false, ""},
+		{`group = customers`, envs.RedactionPolicyNone, false, ""},
+		{`group != customers`, envs.RedactionPolicyNone, true, ""},
+	}
+
+	doQuery := func(q string, redaction envs.RedactionPolicy) (bool, error) {
+		query, err := contactql.ParseQuery(q, redaction, "US", session.Assets())
+		if err != nil {
+			return false, err
+		}
+
+		var env envs.Environment
+		if redaction == envs.RedactionPolicyURNs {
+			env = envs.NewBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
+		} else {
+			env = session.Environment()
+		}
+
+		return contactql.EvaluateQuery(env, query, contact)
 	}
 
 	for _, tc := range testCases {
-		query, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, "US", session.Assets())
-		require.NoError(t, err, "unexpected error parsing '%s'", tc.query)
+		result, err := doQuery(tc.query, tc.redaction)
 
-		result, err := contactql.EvaluateQuery(session.Environment(), query, contact)
-		require.NoError(t, err, "unexpected error evaluating '%s'", tc.query)
-
-		assert.Equal(t, tc.result, result, "unexpected result for '%s' ('%s')", tc.query, query.String())
+		if tc.err != "" {
+			assert.EqualError(t, err, tc.err, "error mismatch evaluating '%s'", tc.query)
+		} else {
+			assert.NoError(t, err, "unexpected error evaluating '%s'", tc.query)
+			assert.Equal(t, tc.result, result, "unexpected result for '%s'", tc.query)
+		}
 	}
 }
