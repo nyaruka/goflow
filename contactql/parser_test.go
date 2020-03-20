@@ -67,6 +67,12 @@ func TestParseQuery(t *testing.T) {
 		{`URN=ewok`, `urn = "ewok"`, "", envs.RedactionPolicyNone},
 
 		// explicit conditions on URN with URN redaction
+		{`tel=""`, `tel = ""`, "", envs.RedactionPolicyURNs},
+		{`tel!=""`, `tel != ""`, "", envs.RedactionPolicyURNs},
+		{`mailto=""`, `mailto = ""`, "", envs.RedactionPolicyURNs},
+		{`mailto!=""`, `mailto != ""`, "", envs.RedactionPolicyURNs},
+		{`urn=""`, `urn = ""`, "", envs.RedactionPolicyURNs},
+		{`urn!=""`, `urn != ""`, "", envs.RedactionPolicyURNs},
 		{`tel = 233`, ``, "cannot query on redacted URNs", envs.RedactionPolicyURNs},
 		{`tel ~ 233`, ``, "cannot query on redacted URNs", envs.RedactionPolicyURNs},
 		{`mailto = user@example.com`, ``, "cannot query on redacted URNs", envs.RedactionPolicyURNs},
