@@ -1,12 +1,11 @@
 package actions
 
 import (
-	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
@@ -63,8 +62,7 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 	connection := run.Session().Trigger().Connection()
 
 	// if we have an audio URL, turn it into a message
-	attachments := []utils.Attachment{utils.Attachment(fmt.Sprintf("audio:%s", evaluatedAudioURL))}
-	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), "", attachments, nil, nil, flows.NilMsgTopic)
+	msg := flows.NewIVRMsgOut(connection.URN(), connection.Channel(), "", envs.NilLanguage, evaluatedAudioURL)
 	logEvent(events.NewIVRCreated(msg))
 
 	return nil
