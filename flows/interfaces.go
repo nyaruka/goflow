@@ -164,6 +164,7 @@ type Node interface {
 	EnumerateTemplates(Localization, func(Action, Router, envs.Language, string))
 	EnumerateDependencies(Localization, func(Action, Router, envs.Language, assets.Reference))
 	EnumerateResults(func(Action, Router, *ResultInfo))
+	EnumerateLocalizedText(func(uuids.UUID, string, []string))
 }
 
 // Action is an action within a flow node

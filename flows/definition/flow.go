@@ -218,6 +218,19 @@ func (f *flow) extractExitsFromWaits() []flows.ExitUUID {
 	return exitUUIDs
 }
 
+func (f *flow) extractBaseTranslation() LanguageTranslation {
+	langTrans := make(LanguageTranslation)
+	include := func(uuid uuids.UUID, property string, translated []string) {
+		langTrans.SetTextArray(uuid, property, translated)
+	}
+
+	for _, n := range f.nodes {
+		n.EnumerateLocalizedText(include)
+	}
+
+	return langTrans
+}
+
 var _ flows.Flow = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------

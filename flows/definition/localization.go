@@ -9,14 +9,14 @@ import (
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
-// the translations for a specific item, e.g.
+// ItemTranslation holds all property translations for a specific item, e.g.
 // {
 //   "text": "Do you like cheese?"
 //	 "quick_replies": ["Yes", "No"]
 // }
-type itemTranslations map[string][]string
+type ItemTranslation map[string][]string
 
-// the translations for a specific language, e.g.
+// LanguageTranslation holds all the item translations for a specific language, e.g.
 // {
 //   "f3368070-8db8-4549-872a-e69a9d060612": {
 //	   "text": "Do you like cheese?"
@@ -24,10 +24,10 @@ type itemTranslations map[string][]string
 //   },
 //   "7a1aec43-f3e1-42f0-b967-0ee75e725e3a": { ... }
 // }
-type languageTranslations map[uuids.UUID]itemTranslations
+type LanguageTranslation map[uuids.UUID]ItemTranslation
 
 // GetTextArray returns the requested item translation
-func (t languageTranslations) GetTextArray(uuid uuids.UUID, property string) []string {
+func (t LanguageTranslation) GetTextArray(uuid uuids.UUID, property string) []string {
 	item, found := t[uuid]
 	if found {
 		translation, found := item[property]
@@ -39,17 +39,17 @@ func (t languageTranslations) GetTextArray(uuid uuids.UUID, property string) []s
 }
 
 // SetTextArray updates the requested item translation
-func (t languageTranslations) SetTextArray(uuid uuids.UUID, property string, translated []string) {
+func (t LanguageTranslation) SetTextArray(uuid uuids.UUID, property string, translated []string) {
 	_, found := t[uuid]
 	if !found {
-		t[uuid] = make(itemTranslations)
+		t[uuid] = make(ItemTranslation)
 	}
 
 	t[uuid][property] = translated
 }
 
 // our top level container for all the translations for all languages
-type localization map[envs.Language]languageTranslations
+type localization map[envs.Language]LanguageTranslation
 
 // NewLocalization creates a new empty localization
 func NewLocalization() flows.Localization {
@@ -69,7 +69,7 @@ func (l localization) Languages() []envs.Language {
 func (l localization) AddItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string, translated []string) {
 	_, found := l[lang]
 	if !found {
-		l[lang] = make(languageTranslations)
+		l[lang] = make(LanguageTranslation)
 	}
 	l[lang].SetTextArray(itemUUID, property, translated)
 }
