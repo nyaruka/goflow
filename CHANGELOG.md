@@ -1,3 +1,13 @@
+v0.78.0
+----------
+ * Add support for extracting the "base" translation of a flow
+ * Allow queries on URNs to check if they are set or not
+ * Add Language.ToISO639_2()
+ * Make flowrunner easier to use by defaulting to first flow in the assets
+ * Default to current version in flowmigrate cmd
+ * Rework group asset loading so that parsing is not deferred
+ * Override environment country if contact has preferred channel with country
+
 v0.77.4
 ----------
  * Fix loading flow assets that are new spec but also have metadata section
