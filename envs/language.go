@@ -38,6 +38,12 @@ func (l Language) ToISO639_2(country Country) string {
 		return ""
 	}
 	code := lang.String()
+
+	// not all languages have a 2-letter code
+	if len(code) != 2 {
+		return ""
+	}
+
 	if country != NilCountry {
 		code += "-" + string(country)
 	}
