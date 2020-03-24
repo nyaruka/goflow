@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/utils/jsonx"
@@ -55,26 +57,8 @@ func flowInfo(action, path string) error {
 
 		base := flow.ExtractBaseTranslation()
 		base.Enumerate(func(uuid uuids.UUID, property string, texts []string) {
-			rows := make([][]string, len(texts))
-
-			for t, text := range texts {
-				rows[t] = make([]string, len(langs)+1)
-				rows[t][0] = text
-			}
-
-			for l, lang := range langs {
-				translation := flow.Localization().GetTranslation(lang)
-				translated := translation.GetTextArray(uuid, property)
-
-				for t, text := range translated {
-					if t < len(texts) {
-						rows[t][l+1] = text
-					}
-				}
-			}
-
-			for _, row := range rows {
-				writer.Write(row)
+			if len(texts) > 0 && texts[0] != "" {
+				writeTranslationRows(writer, flow, uuid, property, texts, langs)
 			}
 		})
 
@@ -82,4 +66,28 @@ func flowInfo(action, path string) error {
 	}
 
 	return nil
+}
+
+func writeTranslationRows(writer *csv.Writer, flow flows.Flow, uuid uuids.UUID, property string, texts []string, langs []envs.Language) {
+	rows := make([][]string, len(texts))
+
+	for t, text := range texts {
+		rows[t] = make([]string, len(langs)+1)
+		rows[t][0] = text
+	}
+
+	for l, lang := range langs {
+		translation := flow.Localization().GetTranslation(lang)
+		translated := translation.GetTextArray(uuid, property)
+
+		for t, text := range translated {
+			if t < len(texts) {
+				rows[t][l+1] = text
+			}
+		}
+	}
+
+	for _, row := range rows {
+		writer.Write(row)
+	}
 }
