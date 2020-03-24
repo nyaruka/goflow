@@ -62,7 +62,7 @@ func (c *Case) Dependencies(localization flows.Localization, include func(envs.L
 
 		// the group UUID might be different in different translations
 		for _, lang := range localization.Languages() {
-			arguments := localization.GetTranslations(lang).GetTextArray(c.UUID, "arguments")
+			arguments := localization.GetTranslation(lang).GetTextArray(c.UUID, "arguments")
 			if len(arguments) > 0 {
 				include(lang, groupRef(arguments))
 			}

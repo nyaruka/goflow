@@ -358,9 +358,9 @@ func (r *flowRun) GetTranslatedTextArray(uuid uuids.UUID, key string, native []s
 			return native
 		}
 
-		translations := r.Flow().Localization().GetTranslations(lang)
-		if translations != nil {
-			textArray := translations.GetTextArray(uuid, key)
+		translation := r.Flow().Localization().GetTranslation(lang)
+		if translation != nil {
+			textArray := translation.GetTextArray(uuid, key)
 			if textArray == nil {
 				return native
 			}

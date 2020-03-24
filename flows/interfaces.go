@@ -150,6 +150,7 @@ type Flow interface {
 
 	Inspect(sa SessionAssets) *Inspection
 	ExtractTemplates() []string
+	ExtractBaseTranslation() Translation
 }
 
 // Node is a single node in a flow
@@ -232,14 +233,15 @@ type Hint interface {
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
 	AddItemTranslation(envs.Language, uuids.UUID, string, []string)
-	GetTranslations(envs.Language) Translations
+	GetTranslation(envs.Language) Translation
 	Languages() []envs.Language
 }
 
-// Translations provide a way to get the translation for a specific language for a uuid/key pair
-type Translations interface {
+// Translation provide a way to get the translation for a specific language for a uuid/key pair
+type Translation interface {
 	GetTextArray(uuids.UUID, string) []string
 	SetTextArray(uuids.UUID, string, []string)
+	Enumerate(func(uuids.UUID, string, []string))
 }
 
 // Trigger represents something which can initiate a session with the flow engine
