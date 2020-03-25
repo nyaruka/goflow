@@ -1,20 +1,20 @@
-package gettext_test
+package i18n_test
 
 import (
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/nyaruka/goflow/utils/gettext"
+	"github.com/nyaruka/goflow/i18n"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestComments(t *testing.T) {
-	c := gettext.Comment{}
+	c := i18n.Comment{}
 	assert.Equal(t, "", c.String())
 
-	c = gettext.Comment{
+	c = i18n.Comment{
 		Translator: "translator",
 		Extracted:  "extracted",
 		References: []string{"src/foo.go"},
@@ -24,24 +24,24 @@ func TestComments(t *testing.T) {
 }
 
 func TestPOs(t *testing.T) {
-	po := gettext.NewPO("Generated for testing", time.Date(2020, 3, 25, 11, 50, 30, 123456789, time.UTC), "es")
+	po := i18n.NewPO("Generated for testing", time.Date(2020, 3, 25, 11, 50, 30, 123456789, time.UTC), "es")
 
-	po.AddEntry(&gettext.Entry{
+	po.AddEntry(&i18n.Entry{
 		MsgID:  "Yes",
 		MsgStr: "",
 	})
-	po.AddEntry(&gettext.Entry{
+	po.AddEntry(&i18n.Entry{
 		MsgID:  "Yes",
 		MsgStr: "Si",
 	})
 
-	po.AddEntry(&gettext.Entry{
+	po.AddEntry(&i18n.Entry{
 		MsgContext: "context1",
 		MsgID:      "No",
 		MsgStr:     "",
 	})
-	po.AddEntry(&gettext.Entry{
-		Comment: gettext.Comment{
+	po.AddEntry(&i18n.Entry{
+		Comment: i18n.Comment{
 			Extracted: "has_text",
 		},
 		MsgContext: "context1",
@@ -77,14 +77,14 @@ msgstr "No"
 }
 
 func TestEncodePOString(t *testing.T) {
-	assert.Equal(t, `""`, gettext.EncodePOString(""))
-	assert.Equal(t, `"FOO"`, gettext.EncodePOString("FOO"))
+	assert.Equal(t, `""`, i18n.EncodePOString(""))
+	assert.Equal(t, `"FOO"`, i18n.EncodePOString("FOO"))
 	assert.Equal(
 		t,
 		`""
 "FOO\n"
 "BAR"`,
-		gettext.EncodePOString("FOO\nBAR"),
+		i18n.EncodePOString("FOO\nBAR"),
 	)
 	assert.Equal(
 		t,
@@ -93,7 +93,7 @@ func TestEncodePOString(t *testing.T) {
 "FOO\n"
 "\n"
 "BAR\n"`,
-		gettext.EncodePOString("\nFOO\n\nBAR\n"),
+		i18n.EncodePOString("\nFOO\n\nBAR\n"),
 	)
 	assert.Equal(
 		t,
@@ -101,7 +101,7 @@ func TestEncodePOString(t *testing.T) {
 "FOO\n"
 "\n"
 "\n"`,
-		gettext.EncodePOString("FOO\n\n\n"),
+		i18n.EncodePOString("FOO\n\n\n"),
 	)
-	assert.Equal(t, `"FOO\tBAR"`, gettext.EncodePOString("FOO\tBAR"))
+	assert.Equal(t, `"FOO\tBAR"`, i18n.EncodePOString("FOO\tBAR"))
 }

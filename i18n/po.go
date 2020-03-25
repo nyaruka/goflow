@@ -1,4 +1,4 @@
-package gettext
+package i18n
 
 import (
 	"fmt"
