@@ -3,6 +3,7 @@ package i18n
 import (
 	"errors"
 	"fmt"
+	"net/url"
 	"sort"
 
 	"github.com/nyaruka/goflow/envs"
@@ -162,16 +163,17 @@ func poFromExtracted(initialComment string, lang envs.Language, extracted []*ext
 	pot := NewPO(initialComment, dates.Now(), lang.ToISO639_2(envs.NilCountry))
 
 	for _, ext := range extracted {
+		references := make([]string, len(ext.Locations))
+		for i, loc := range ext.Locations {
+			flowName := url.QueryEscape(loc.Flow.Name())
+			references[i] = fmt.Sprintf("%s/%s/%s:%d", flowName, string(loc.UUID), loc.Property, loc.Index)
+		}
+		sort.Strings(references)
+
 		context := ""
 		if !ext.Unique {
 			context = fmt.Sprintf("%s/%s:%d", string(ext.Locations[0].UUID), ext.Locations[0].Property, ext.Locations[0].Index)
 		}
-
-		references := make([]string, len(ext.Locations))
-		for i, loc := range ext.Locations {
-			references[i] = fmt.Sprintf("%s/%s/%s:%d", loc.Flow.UUID(), string(loc.UUID), loc.Property, loc.Index)
-		}
-		sort.Strings(references)
 
 		entry := &Entry{
 			Comment: Comment{

@@ -23,7 +23,7 @@ func TestFlowXGetText(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Contains(t, out.String(), `
-#: 615b8a0f-588c-4d20-a05f-363b0b4ce6f4/2ab9b033-77a8-4e56-a558-b568c00c9492/name:0
+#: Two+Questions/2ab9b033-77a8-4e56-a558-b568c00c9492/name:0
 msgid "Pepsi"
 msgstr "Pepsi"
 `)

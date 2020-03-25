@@ -57,8 +57,8 @@ func (c *Comment) String() string {
 	if c.Extracted != "" {
 		b.WriteString(fmt.Sprintf("#. %s\n", c.Extracted))
 	}
-	if len(c.References) > 0 {
-		b.WriteString(fmt.Sprintf("#: %s\n", strings.Join(c.References, ",")))
+	for _, ref := range c.References {
+		b.WriteString(fmt.Sprintf("#: %s\n", ref))
 	}
 	if len(c.Flags) > 0 {
 		b.WriteString(fmt.Sprintf("#, %s\n", strings.Join(c.Flags, ",")))

@@ -17,10 +17,15 @@ func TestComments(t *testing.T) {
 	c = i18n.Comment{
 		Translator: "translator",
 		Extracted:  "extracted",
-		References: []string{"src/foo.go"},
+		References: []string{"src/foo.go", "src/bar.go"},
 		Flags:      []string{"fuzzy"},
 	}
-	assert.Equal(t, "#  translator\n#. extracted\n#: src/foo.go\n#, fuzzy\n", c.String())
+	assert.Equal(t, `#  translator
+#. extracted
+#: src/foo.go
+#: src/bar.go
+#, fuzzy
+`, c.String())
 }
 
 func TestPOs(t *testing.T) {

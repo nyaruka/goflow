@@ -50,6 +50,13 @@ func TestExtractFromFlows(t *testing.T) {
 			true,
 			"two_questions.noargs.fr.po",
 		},
+		{
+			"testdata/translation_mismatches.json",
+			[]assets.FlowUUID{assets.FlowUUID(`19cad1f2-9110-4271-98d4-1b968bf19410`)},
+			envs.Language(`spa`),
+			false,
+			"translation_mismatches.noargs.es.po",
+		},
 	}
 
 	for _, tc := range tests {
