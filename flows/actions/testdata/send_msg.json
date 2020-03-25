@@ -51,6 +51,12 @@
             "Red",
             "Blue"
         ],
+        "localizables": [
+            "Hi there",
+            "http://example.com/red.jpg",
+            "Red",
+            "Blue"
+        ],
         "inspection": {
             "dependencies": [],
             "issues": [],
@@ -209,6 +215,9 @@
         "templates": [
             "Hi there @contact welcome to @globals.org_name, the secret password is @globals.password"
         ],
+        "localizables": [
+            "Hi there @contact welcome to @globals.org_name, the secret password is @globals.password"
+        ],
         "inspection": {
             "dependencies": [
                 {
@@ -326,6 +335,11 @@
             "@contact.name",
             "boy"
         ],
+        "localizables": [
+            "Hi @contact.name, who's a good boy?",
+            "@contact.name",
+            "boy"
+        ],
         "inspection": {
             "dependencies": [
                 {
@@ -401,6 +415,11 @@
             }
         ],
         "templates": [
+            "Hi Ryan Lewis, who's a good boy?",
+            "@contact.name",
+            "boy"
+        ],
+        "localizables": [
             "Hi Ryan Lewis, who's a good boy?",
             "@contact.name",
             "boy"
@@ -481,6 +500,11 @@
             "@contact.name",
             "niño"
         ],
+        "localizables": [
+            "Hi Ryan Lewis, who's a good boy?",
+            "@contact.name",
+            "boy"
+        ],
         "inspection": {
             "dependencies": [
                 {
@@ -534,6 +558,9 @@
             }
         ],
         "templates": [
+            "Hi there, it's time to get up!"
+        ],
+        "localizables": [
             "Hi there, it's time to get up!"
         ],
         "inspection": {
@@ -611,6 +638,12 @@
             "Yes",
             "No",
             "Si",
+            "No"
+        ],
+        "localizables": [
+            "Hi there!",
+            "http://example.com/red.jpg",
+            "Yes",
             "No"
         ],
         "inspection": {

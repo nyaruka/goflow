@@ -10,6 +10,9 @@
         "templates": [
             "Hi there!"
         ],
+        "localizables": [
+            "Hi there!"
+        ],
         "inspection": {
             "dependencies": [],
             "issues": [],

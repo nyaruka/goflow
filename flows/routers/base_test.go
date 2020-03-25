@@ -60,6 +60,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		Results           json.RawMessage `json:"results,omitempty"`
 		Events            json.RawMessage `json:"events,omitempty"`
 		Templates         []string        `json:"templates,omitempty"`
+		LocalizedText     []string        `json:"localizables,omitempty"`
 		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
@@ -119,6 +120,9 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		if tc.Templates != nil {
 			actual.Templates = flow.ExtractTemplates()
 		}
+		if tc.LocalizedText != nil {
+			actual.LocalizedText = flow.ExtractLocalizables()
+		}
 		if tc.Inspection != nil {
 			actual.Inspection, _ = jsonx.Marshal(flow.Inspect(sa))
 		}
@@ -134,6 +138,9 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 			// check extracted templates
 			assert.Equal(t, tc.Templates, actual.Templates, "extracted templates mismatch in %s", testName)
+
+			// check extracted localized text
+			assert.Equal(t, tc.LocalizedText, actual.LocalizedText, "extracted localized text mismatch in %s", testName)
 
 			// check inspection results
 			test.AssertEqualJSON(t, tc.Inspection, actual.Inspection, "inspection mismatch in %s", testName)

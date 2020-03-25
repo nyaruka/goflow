@@ -41,6 +41,11 @@
                 "category": "No"
             }
         ],
+        "localizables": [
+            "Yes",
+            "No",
+            "Other"
+        ],
         "inspection": {
             "dependencies": [],
             "issues": [],

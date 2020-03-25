@@ -89,19 +89,19 @@ func (e *Entry) String() string {
 }
 
 type PO struct {
-	Comment string
-	Header  Header
-	Entries []*Entry
+	InitialComment string
+	Header         Header
+	Entries        []*Entry
 
 	contexts map[string]map[string]*Entry
 }
 
-func NewPO(comment string, creationDate time.Time, lang string) *PO {
+func NewPO(initialComment string, creationDate time.Time, lang string) *PO {
 	return &PO{
-		Comment:  comment,
-		Header:   newHeader(creationDate, lang),
-		Entries:  make([]*Entry, 0),
-		contexts: make(map[string]map[string]*Entry),
+		InitialComment: initialComment,
+		Header:         newHeader(creationDate, lang),
+		Entries:        make([]*Entry, 0),
+		contexts:       make(map[string]map[string]*Entry),
 	}
 }
 
@@ -122,7 +122,7 @@ func (p *PO) AddEntry(e *Entry) {
 }
 
 func (p *PO) Write(w io.Writer) {
-	io.WriteString(w, fmt.Sprintf("# %s\n", p.Comment))
+	io.WriteString(w, fmt.Sprintf("# %s\n", p.InitialComment))
 	io.WriteString(w, "#\n")
 	io.WriteString(w, p.Header.asEntry().String())
 	io.WriteString(w, "\n")
