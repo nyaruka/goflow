@@ -222,6 +222,13 @@ func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, in
 	inspect.Dependencies(r.cases, localization, include)
 }
 
+// EnumerateLocalizedText enumerates all the localizable text on this object
+func (r *SwitchRouter) EnumerateLocalizedText(include func(uuids.UUID, string, []string)) {
+	inspect.LocalizedText(r.cases, include)
+
+	r.baseRouter.EnumerateLocalizedText(include)
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

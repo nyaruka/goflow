@@ -140,7 +140,7 @@ func (n *node) EnumerateLocalizedText(include func(uuids.UUID, string, []string)
 	}
 
 	if n.router != nil {
-		inspect.LocalizedText(n.router, include)
+		n.router.EnumerateLocalizedText(include)
 	}
 }
 

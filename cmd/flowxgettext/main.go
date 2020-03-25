@@ -58,15 +58,6 @@ type ExtractedText struct {
 	Unique      bool
 }
 
-func (t *ExtractedText) OnlyFromArguments() bool {
-	for _, loc := range t.Locations {
-		if loc.Property != "arguments" {
-			return false
-		}
-	}
-	return true
-}
-
 func FlowXGetText(lang envs.Language, excludeArgs bool, paths []string, writer io.Writer) error {
 	sources, err := loadFlows(paths)
 	if err != nil {
@@ -129,47 +120,59 @@ func extractText(lang envs.Language, excludeArgs bool, sources []flows.Flow) ([]
 			return nil, errors.New("flows use different base languages")
 		}
 
-		baseTranslation := flow.ExtractBaseTranslation()
 		var targetTranslation flows.Translation
 		if lang != envs.NilLanguage {
 			targetTranslation = flow.Localization().GetTranslation(lang)
 		}
 
-		baseTranslation.Enumerate(func(uuid uuids.UUID, property string, texts []string) {
-			// look up target translation if we have one
-			targets := make([]string, len(texts))
-			if targetTranslation != nil {
-				translation := targetTranslation.GetTextArray(uuid, property)
-				if translation != nil {
-					for t := range targets {
-						if t < len(translation) {
-							targets[t] = translation[t]
-						}
-					}
+		for _, node := range flow.Nodes() {
+			node.EnumerateLocalizedText(func(uuid uuids.UUID, property string, texts []string) {
+				if !excludeArgs || property != "arguments" {
+					exts := extractFromProperty(flow, uuid, property, texts, targetTranslation)
+					extracted = append(extracted, exts...)
 				}
-			}
-
-			for t, text := range texts {
-				if text != "" {
-					extracted = append(extracted, &ExtractedText{
-						Locations: []TextLocation{
-							TextLocation{
-								Flow:     flow,
-								UUID:     uuid,
-								Property: property,
-								Index:    t,
-							},
-						},
-						Base:        text,
-						Translation: targets[t],
-						Unique:      false,
-					})
-				}
-			}
-		})
+			})
+		}
 	}
 
 	return extracted, nil
+}
+
+func extractFromProperty(flow flows.Flow, uuid uuids.UUID, property string, texts []string, targetTranslation flows.Translation) []*ExtractedText {
+	extracted := make([]*ExtractedText, 0)
+
+	// look up target translation if we have one
+	targets := make([]string, len(texts))
+	if targetTranslation != nil {
+		translation := targetTranslation.GetTextArray(uuid, property)
+		if translation != nil {
+			for t := range targets {
+				if t < len(translation) {
+					targets[t] = translation[t]
+				}
+			}
+		}
+	}
+
+	for t, text := range texts {
+		if text != "" {
+			extracted = append(extracted, &ExtractedText{
+				Locations: []TextLocation{
+					TextLocation{
+						Flow:     flow,
+						UUID:     uuid,
+						Property: property,
+						Index:    t,
+					},
+				},
+				Base:        text,
+				Translation: targets[t],
+				Unique:      false,
+			})
+		}
+	}
+
+	return extracted
 }
 
 func mergeExtracted(extracted []*ExtractedText) []*ExtractedText {
@@ -235,19 +238,14 @@ func createPOT(lang envs.Language, extracted []*ExtractedText) *gettext.PO {
 			context = fmt.Sprintf("%s/%s:%d", string(ext.Locations[0].UUID), ext.Locations[0].Property, ext.Locations[0].Index)
 		}
 
-		comment := ""
-		if ext.OnlyFromArguments() {
-			comment = "only test arguments"
-		}
-
 		references := make([]string, len(ext.Locations))
 		for i, loc := range ext.Locations {
 			references[i] = fmt.Sprintf("%s/%s/%s:%d", loc.Flow.UUID(), string(loc.UUID), loc.Property, loc.Index)
 		}
+		sort.Strings(references)
 
 		entry := &gettext.Entry{
 			Comment: gettext.Comment{
-				Extracted:  comment,
 				References: references,
 			},
 			MsgContext: context,

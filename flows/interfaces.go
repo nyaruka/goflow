@@ -150,7 +150,6 @@ type Flow interface {
 
 	Inspect(sa SessionAssets) *Inspection
 	ExtractTemplates() []string
-	ExtractBaseTranslation() Translation
 }
 
 // Node is a single node in a flow
@@ -194,6 +193,7 @@ type Router interface {
 	EnumerateTemplates(Localization, func(envs.Language, string))
 	EnumerateDependencies(Localization, func(envs.Language, assets.Reference))
 	EnumerateResults(func(*ResultInfo))
+	EnumerateLocalizedText(func(uuids.UUID, string, []string))
 }
 
 // Exit is a route out of a node and optionally to another node

@@ -23,6 +23,8 @@ func TestFlowXGetText(t *testing.T) {
 	err := main.FlowXGetText(envs.Language("fra"), false, []string{"../../test/testdata/runner/two_questions.json"}, out)
 	require.NoError(t, err)
 
+	//ioutil.WriteFile("testdata/two_questions.fr.po", []byte(out.String()), 0666)
+
 	expected, err := ioutil.ReadFile("testdata/two_questions.fr.po")
 	require.NoError(t, err)
 
