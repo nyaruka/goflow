@@ -17,15 +17,14 @@ msgstr "Azul"
 msgid "Other"
 msgstr "Otro"
 
-#: Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:0
-msgctxt "e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:0"
-msgid "Red"
-msgstr "Rojo"
-
 #: Translated/d1ce3c92-7025-4607-a910-444361a6b9b3/name:0
 msgctxt "d1ce3c92-7025-4607-a910-444361a6b9b3/name:0"
 msgid "Red"
 msgstr "Roja"
+
+#: Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:0
+msgid "Red"
+msgstr "Rojo"
 
 #: Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/text:0
 msgid "Which pill?"
