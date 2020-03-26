@@ -4,6 +4,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"testing/iotest"
 	"time"
 
 	"github.com/nyaruka/goflow/i18n"
@@ -112,6 +113,11 @@ func TestReadPO(t *testing.T) {
 	assert.Equal(t, "e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:0", po.Entries[2].MsgContext)
 	assert.Equal(t, "Red", po.Entries[2].MsgID)
 	assert.Equal(t, "Rojo", po.Entries[2].MsgStr)
+
+	// try handling an i/o error
+	badReader := iotest.TimeoutReader(strings.NewReader(`# Generated`))
+	_, err = i18n.ReadPO(badReader)
+	assert.EqualError(t, err, "timeout")
 }
 
 func TestEncodeAndDecodePOString(t *testing.T) {
@@ -139,7 +145,7 @@ func TestEncodeAndDecodePOString(t *testing.T) {
 "\n"
 "\n"`,
 		},
-		{"FOO\tBAR", `"FOO\tBAR"`},
+		{"FOO\tB\\AR\"", `"FOO\tB\\AR\""`},
 	}
 
 	for _, tc := range tests {
