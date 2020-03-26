@@ -454,13 +454,14 @@ func TestReadFlow(t *testing.T) {
 	assert.Equal(t, 1, len(flow.Nodes()))
 }
 
-func TestExtractTemplates(t *testing.T) {
+func TestExtractTemplatesAndLocalizables(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
 	testCases := []struct {
-		path      string
-		uuid      string
-		templates []string
+		path         string
+		uuid         string
+		templates    []string
+		localizables []string
 	}{
 		{
 			"../../test/testdata/runner/two_questions.json",
@@ -485,6 +486,24 @@ func TestExtractTemplates(t *testing.T) {
 				`{ "contact": @(json(contact.uuid)), "soda": @(json(results.soda.value)) }`,
 				`Great, you are done and like @results.soda.value! Webhook status was @results.webhook.value`,
 				`Parfait, vous avez finis et tu aimes @results.soda.category`,
+			},
+			[]string{
+				"Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))",
+				"Red",
+				"Blue",
+				"red",
+				"blue",
+				"Red",
+				"Blue",
+				"Other",
+				"No Response",
+				"@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)",
+				"pepsi",
+				"coke coca cola",
+				"Pepsi",
+				"Coke",
+				"Other",
+				"Great, you are done and like @results.soda.value! Webhook status was @results.webhook.value",
 			},
 		},
 		{
@@ -515,6 +534,20 @@ func TestExtractTemplates(t *testing.T) {
 				`@fields.raw_district`,
 				`http://localhost/?cmd=success&name=@(url_encode(contact.name))`,
 			},
+			[]string{
+				"Here is your activation token",
+				"Hi @fields.first_name, Your activation token is @fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
+				"Hi @contact.name, are you ready?",
+				"Hi @contact.name, are you ready for these attachments?",
+				"image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(fields.state)))",
+				"Hi @contact.name, are you ready to complete today's survey?",
+				"This is a message to each of @contact.name's urns.",
+				"This is a reply with attachments and quick replies",
+				"image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(fields.state)))",
+				"Yes",
+				"No",
+				"Male",
+			},
 		},
 	}
 
@@ -525,6 +558,10 @@ func TestExtractTemplates(t *testing.T) {
 		// try extracting all templates
 		templates := flow.ExtractTemplates()
 		assert.Equal(t, tc.templates, templates, "extracted templates mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+
+		// try extracting all localizable text
+		localizables := flow.ExtractLocalizables()
+		assert.Equal(t, tc.localizables, localizables, "extracted localizables mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 	}
 }
 

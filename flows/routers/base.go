@@ -83,6 +83,13 @@ func (r *baseRouter) EnumerateResults(include func(*flows.ResultInfo)) {
 	}
 }
 
+// EnumerateLocalizables enumerates all the localizable text on this object
+func (r *baseRouter) EnumerateLocalizables(include func(uuids.UUID, string, []string)) {
+	for _, cat := range r.categories {
+		include(cat.LocalizationUUID(), "name", []string{cat.Name()})
+	}
+}
+
 func (r *baseRouter) validate(exits []flows.Exit) error {
 	// check wait timeout category is valid
 	if r.AllowTimeout() && !r.isValidCategory(r.wait.Timeout().CategoryUUID()) {

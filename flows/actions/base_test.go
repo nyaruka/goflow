@@ -91,6 +91,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		Webhook           json.RawMessage `json:"webhook,omitempty"`
 		ContactAfter      json.RawMessage `json:"contact_after,omitempty"`
 		Templates         []string        `json:"templates,omitempty"`
+		LocalizedText     []string        `json:"localizables,omitempty"`
 		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
@@ -254,6 +255,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		if tc.Templates != nil {
 			actual.Templates = flow.ExtractTemplates()
 		}
+		if tc.LocalizedText != nil {
+			actual.LocalizedText = flow.ExtractLocalizables()
+		}
 		if tc.Inspection != nil {
 			actual.Inspection, _ = jsonx.Marshal(flow.Inspect(sa))
 		}
@@ -278,6 +282,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			// check extracted templates
 			if tc.Templates != nil {
 				assert.Equal(t, tc.Templates, actual.Templates, "extracted templates mismatch in %s", testName)
+			}
+
+			// check extracted localized text
+			if tc.LocalizedText != nil {
+				assert.Equal(t, tc.LocalizedText, actual.LocalizedText, "extracted localized text mismatch in %s", testName)
 			}
 
 			// check inspection results

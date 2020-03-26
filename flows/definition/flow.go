@@ -158,6 +158,24 @@ func (f *flow) ExtractTemplates() []string {
 	return templates
 }
 
+// ExtractLocalizables extracts all localizable text
+func (f *flow) ExtractLocalizables() []string {
+	texts := make([]string, 0)
+	include := func(uuid uuids.UUID, property string, ts []string) {
+		for _, t := range ts {
+			if t != "" {
+				texts = append(texts, t)
+			}
+		}
+	}
+
+	for _, n := range f.nodes {
+		n.EnumerateLocalizables(include)
+	}
+
+	return texts
+}
+
 // extracts all templates, asset dependencies and parent result references
 func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference, []string) {
 	templates := make([]flows.ExtractedTemplate, 0)
@@ -216,19 +234,6 @@ func (f *flow) extractExitsFromWaits() []flows.ExitUUID {
 		}
 	}
 	return exitUUIDs
-}
-
-func (f *flow) ExtractBaseTranslation() flows.Translation {
-	langTrans := make(languageTranslation)
-	include := func(uuid uuids.UUID, property string, translated []string) {
-		langTrans.SetTextArray(uuid, property, translated)
-	}
-
-	for _, n := range f.nodes {
-		n.EnumerateLocalizedText(include)
-	}
-
-	return langTrans
 }
 
 var _ flows.Flow = (*flow)(nil)
