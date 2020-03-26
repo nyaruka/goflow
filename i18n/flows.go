@@ -160,7 +160,8 @@ func mergeExtracted(extracted []*extractedText) []*extractedText {
 }
 
 func poFromExtracted(initialComment string, lang envs.Language, extracted []*extractedText) *PO {
-	pot := NewPO(initialComment, dates.Now(), lang.ToISO639_2(envs.NilCountry))
+	header := NewPOHeader(initialComment, dates.Now(), lang.ToISO639_2(envs.NilCountry))
+	po := NewPO(header)
 
 	for _, ext := range extracted {
 		references := make([]string, len(ext.Locations))
@@ -175,8 +176,8 @@ func poFromExtracted(initialComment string, lang envs.Language, extracted []*ext
 			context = fmt.Sprintf("%s/%s:%d", string(ext.Locations[0].UUID), ext.Locations[0].Property, ext.Locations[0].Index)
 		}
 
-		entry := &Entry{
-			Comment: Comment{
+		entry := &POEntry{
+			Comment: POComment{
 				References: references,
 			},
 			MsgContext: context,
@@ -184,8 +185,8 @@ func poFromExtracted(initialComment string, lang envs.Language, extracted []*ext
 			MsgStr:     ext.Translation,
 		}
 
-		pot.AddEntry(entry)
+		po.AddEntry(entry)
 	}
 
-	return pot
+	return po
 }
