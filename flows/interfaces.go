@@ -179,11 +179,21 @@ type Action interface {
 	AllowedFlowTypes() []FlowType
 }
 
+// Category is how routers map results to exits
+type Category interface {
+	Localizable
+
+	UUID() CategoryUUID
+	Name() string
+	ExitUUID() ExitUUID
+}
+
 // Router is a router on a note which can pick an exit
 type Router interface {
 	utils.Typed
 
 	Wait() Wait
+	Categories() []Category
 	ResultName() string
 
 	Validate([]Exit) error

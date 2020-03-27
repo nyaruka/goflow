@@ -27,6 +27,8 @@ func (c *Category) ExitUUID() flows.ExitUUID { return c.exitUUID }
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Category) LocalizationUUID() uuids.UUID { return uuids.UUID(c.uuid) }
 
+var _ flows.Category = (*Category)(nil)
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
@@ -37,18 +39,15 @@ type categoryEnvelope struct {
 	ExitUUID flows.ExitUUID     `json:"exit_uuid,omitempty" validate:"required,uuid4"`
 }
 
-// UnmarshalJSON unmarshals a node category from the given JSON
-func (c *Category) UnmarshalJSON(data []byte) error {
+// ReadCategory unmarshals a router category from the given JSON
+func ReadCategory(data []byte) (flows.Category, error) {
 	e := &categoryEnvelope{}
 
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return errors.Wrap(err, "unable to read category")
+		return nil, errors.Wrap(err, "unable to read category")
 	}
 
-	c.uuid = e.UUID
-	c.name = e.Name
-	c.exitUUID = e.ExitUUID
-	return nil
+	return NewCategory(e.UUID, e.Name, e.ExitUUID), nil
 }
 
 // MarshalJSON marshals this node category into JSON
