@@ -213,7 +213,7 @@ func TestNewFlow(t *testing.T) {
 				routers.NewSwitch(
 					waits.NewMsgWait(nil, hints.NewImageHint()),
 					"Response 1",
-					[]*routers.Category{
+					[]flows.Category{
 						routers.NewCategory(
 							flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897"),
 							"Yes",

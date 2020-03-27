@@ -81,7 +81,7 @@ type SwitchRouter struct {
 }
 
 // NewSwitch creates a new switch router
-func NewSwitch(wait flows.Wait, resultName string, categories []*Category, operand string, cases []*Case, defaultCategory flows.CategoryUUID) *SwitchRouter {
+func NewSwitch(wait flows.Wait, resultName string, categories []flows.Category, operand string, cases []*Case, defaultCategory flows.CategoryUUID) *SwitchRouter {
 	return &SwitchRouter{
 		baseRouter: newBaseRouter(TypeSwitch, wait, resultName, categories),
 		default_:   defaultCategory,
