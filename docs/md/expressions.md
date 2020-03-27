@@ -712,6 +712,16 @@ Formats `urn` into human friendly text.
 @(format_urn("NOT URN")) → ERROR
 ```
 
+<h2 class="item_title"><a name="function:html_decode" href="#function:html_decode">html_decode(text)</a></h2>
+
+HTML decodes `text`
+
+
+```objectivec
+@(html_decode("Red &amp; Blue")) → Red & Blue
+@(html_decode("5 + 10")) → 5 + 10
+```
+
 <h2 class="item_title"><a name="function:if" href="#function:if">if(test, value1, value2)</a></h2>
 
 Returns `value1` if `test` is truthy or `value2` if not.

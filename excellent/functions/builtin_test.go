@@ -190,6 +190,10 @@ func TestFunctions(t *testing.T) {
 		{"datetime_diff", mdy, []types.XValue{xs("03-10-2019 1:00am"), xs("03-11-2019 1:00am"), xs("h")}, xi(23)},
 		{"datetime_diff", mdy, []types.XValue{xs("03-10-2019 1:00am"), xs("03-11-2019 1:00am"), xs("D")}, xi(1)},
 
+		{"datetime_from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
+		{"datetime_from_epoch", dmy, []types.XValue{ERROR}, ERROR},
+		{"datetime_from_epoch", dmy, []types.XValue{}, ERROR},
+
 		{"default", dmy, []types.XValue{xs("10"), xs("20")}, xs("10")},
 		{"default", dmy, []types.XValue{nil, xs("20")}, xs("20")},
 		{"default", dmy, []types.XValue{types.NewXErrorf("This is error"), xs("20")}, xs("20")},
@@ -329,9 +333,9 @@ func TestFunctions(t *testing.T) {
 		{"format_urn", dmy, []types.XValue{ERROR}, ERROR},
 		{"format_urn", dmy, []types.XValue{}, ERROR},
 
-		{"datetime_from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
-		{"datetime_from_epoch", dmy, []types.XValue{ERROR}, ERROR},
-		{"datetime_from_epoch", dmy, []types.XValue{}, ERROR},
+		{"html_decode", dmy, []types.XValue{xs(`Red&nbsp;&amp;&nbsp;Blue`)}, xs(`Red & Blue`)},
+		{"html_decode", dmy, []types.XValue{ERROR}, ERROR},
+		{"html_decode", dmy, []types.XValue{}, ERROR},
 
 		{"if", dmy, []types.XValue{types.XBooleanTrue, xs("10"), xs("20")}, xs("10")},
 		{"if", dmy, []types.XValue{types.XBooleanFalse, xs("10"), xs("20")}, xs("20")},
