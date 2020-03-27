@@ -90,7 +90,7 @@ msgstr "No"
 }
 
 func TestReadPO(t *testing.T) {
-	poFile, err := os.Open("testdata/translation_mismatches.noargs.es.po")
+	poFile, err := os.Open("testdata/exports/translation_mismatches.noargs.es.po")
 	require.NoError(t, err)
 
 	defer poFile.Close()

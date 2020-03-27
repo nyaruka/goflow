@@ -1,6 +1,7 @@
 package i18n_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/buger/jsonparser"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -35,35 +37,35 @@ func TestExtractFromFlows(t *testing.T) {
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
 			envs.NilLanguage,
 			nil,
-			"two_questions.po",
+			"exports/two_questions.po",
 		},
 		{
 			"../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
 			envs.Language("eng"),
 			nil,
-			"two_questions.en.po",
+			"exports/two_questions.en.po",
 		},
 		{
 			"../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
 			envs.Language(`fra`),
 			nil,
-			"two_questions.fr.po",
+			"exports/two_questions.fr.po",
 		},
 		{
 			"../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
 			envs.Language(`fra`),
 			[]string{"arguments"},
-			"two_questions.noargs.fr.po",
+			"exports/two_questions.noargs.fr.po",
 		},
 		{
 			"testdata/translation_mismatches.json",
 			[]assets.FlowUUID{assets.FlowUUID(`19cad1f2-9110-4271-98d4-1b968bf19410`)},
 			envs.Language(`spa`),
 			nil,
-			"translation_mismatches.noargs.es.po",
+			"exports/translation_mismatches.noargs.es.po",
 		},
 	}
 
@@ -197,6 +199,59 @@ func TestImportIntoFlows(t *testing.T) {
 			}
 		}
 	}`), localJSON, "post-import localization mismatch")
+}
+
+func TestImportNewTranslationIntoFlows(t *testing.T) {
+	sa, err := test.LoadSessionAssets(envs.NewBuilder().Build(), "../test/testdata/runner/two_questions.json")
+	require.NoError(t, err)
+
+	flow, err := sa.Flows().Get(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)
+	require.NoError(t, err)
+
+	poData, err := ioutil.ReadFile("testdata/imports/two_questions.es.po")
+	require.NoError(t, err)
+
+	po, err := i18n.ReadPO(bytes.NewReader(poData))
+
+	err = i18n.ImportIntoFlows(po, "spa", flow)
+	require.NoError(t, err)
+
+	localJSON, _ := json.Marshal(flow.Localization())
+	spaJSON, _, _, _ := jsonparser.Get(localJSON, "spa")
+
+	test.AssertEqualJSON(t, []byte(`{
+		"0a8467eb-911a-41db-8101-ccf415c48e6a": {
+			"text": ["Bueno, has terminado y te gusta @results.soda.category"]
+		},
+		"1024833c-91aa-4873-a3b5-3bac1ef55812": {
+			"name": ["Ninguna respuesta"]
+		},
+		"598ae7a5-2f81-48f1-afac-595262514aa1": {
+			"name": ["Rojo"]
+		},
+		"5ce6c69a-fdfe-4594-ab71-26be534d31c3": {
+			"name": ["Otros"]
+		},
+		"78ae8f05-f92e-43b2-a886-406eaea1b8e0": {
+			"name": ["Otros"]
+		},
+		"98503572-25bf-40ce-ad72-8836b6549a38": {
+			"arguments": ["rojo roja"]
+		},
+		"a51e5c8c-c891-401d-9c62-15fc37278c94": {
+			"arguments": ["azul"]
+		},
+		"c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e": {
+			"name": ["Azul"]
+		},
+		"d2a4052a-3fa9-4608-ab3e-5b9631440447": {
+			"text": ["Es @(TITLE(results.favorite_color.category_localized))! Cual es tu bebida favorita? (pepsi/coke)"]
+		},
+		"e97cd6d5-3354-4dbd-85bc-6c1f87849eec": {
+			"quick_replies": ["Rojo", "Azul"],
+			"text": ["Hola @contact.name! Cual es tu color favorito? (rojo/azul)"]
+		}
+	}`), spaJSON, "post-import localization mismatch")
 }
 
 func TestImportIntoFlowsWithDiffLanguages(t *testing.T) {
