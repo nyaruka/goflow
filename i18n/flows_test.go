@@ -1,6 +1,7 @@
 package i18n_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"strings"
@@ -114,22 +115,75 @@ func TestImportIntoFlows(t *testing.T) {
 	flow, err := sa.Flows().Get("19cad1f2-9110-4271-98d4-1b968bf19410")
 	require.NoError(t, err)
 
-	category := flow.Nodes()[1].Router().Categories()[0]
-
-	assert.Equal(t, "Red", category.Name())
-	assert.Equal(t, []string{"Roja"}, flow.Localization().GetItemTranslation("spa", category.LocalizationUUID(), "name"))
-
 	po := i18n.NewPO(nil)
+
+	// all instances of "Red" should be translated as "Rojo" (ignores the one which is already "Rojo")
 	po.AddEntry(&i18n.POEntry{
 		MsgID:  "Red",
 		MsgStr: "Rojo",
 	})
 
+	// all instances of "Blue" should be translated as "Azul oscura"
+	po.AddEntry(&i18n.POEntry{
+		MsgID:  "Blue",
+		MsgStr: "Azul oscura",
+	})
+
+	// except the quick reply instance of "Blue" should be translated as "Azul clara"
+	po.AddEntry(&i18n.POEntry{
+		MsgContext: "e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:1",
+		MsgID:      "Blue",
+		MsgStr:     "Azul clara",
+	})
+
+	updates := i18n.CalculateFlowUpdates(po, envs.Language("spa"), flow)
+	assert.Equal(t, 3, len(updates))
+	assert.Equal(t, `Translated/d1ce3c92-7025-4607-a910-444361a6b9b3/name:0 "Roja" -> "Rojo"`, updates[0].String())
+	assert.Equal(t, `Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:1 "Azul" -> "Azul clara"`, updates[1].String())
+	assert.Equal(t, `Translated/43f7e69e-727d-4cfe-81b8-564e7833052b/name:0 "Azul" -> "Azul oscura"`, updates[2].String())
+
 	err = i18n.ImportIntoFlows(po, envs.Language("spa"), flow)
 	require.NoError(t, err)
 
-	assert.Equal(t, "Red", category.Name())
-	assert.Equal(t, []string{"Rojo"}, flow.Localization().GetItemTranslation("spa", category.LocalizationUUID(), "name"))
+	localJSON, _ := json.Marshal(flow.Localization())
+	test.AssertEqualJSON(t, []byte(`{
+		"spa": {
+			"e42deebf-90fa-4636-81cb-d247a3d3ba75": {
+				"text": [
+					"Cual pastilla?"
+				],
+				"quick_replies": [
+					"Rojo",
+					"Azul clara"
+				]
+			},
+			"d1ce3c92-7025-4607-a910-444361a6b9b3": {
+				"name": [
+					"Rojo"
+				]
+			},
+			"43f7e69e-727d-4cfe-81b8-564e7833052b": {
+				"name": [
+					"Azul oscura"
+				]
+			},
+			"3a044264-81d1-4ba7-882a-e98740c8e724": {
+				"name": [
+					"Otro"
+				]
+			},
+			"61bc5ed3-e216-4457-8ce5-ad658e697f29": {
+				"arguments": [
+					"rojo"
+				]
+			},
+			"5f5fa09f-bf88-4719-ba64-cab9cf2f67b5": {
+				"arguments": [
+					"azul"
+				]
+			}
+		}
+	}`), localJSON, "post-import localization mismatch")
 }
 
 func TestImportIntoFlowsWithDiffLanguages(t *testing.T) {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"sort"
+	"strconv"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -231,7 +232,7 @@ func ImportIntoFlows(po *PO, translationsLanguage envs.Language, targets ...flow
 		return errors.New("can't import as the flow base language")
 	}
 
-	updates := CalculateFlowUpdates(po, translationsLanguage, targets)
+	updates := CalculateFlowUpdates(po, translationsLanguage, targets...)
 
 	applyUpdates(updates, translationsLanguage)
 
@@ -247,11 +248,11 @@ type TranslationUpdate struct {
 }
 
 func (u *TranslationUpdate) String() string {
-	return fmt.Sprintf("%s \"%s\" -> \"%s\"", u.textLocation.String(), u.Old, u.New)
+	return fmt.Sprintf("%s %s -> %s", u.textLocation.String(), strconv.Quote(u.Old), strconv.Quote(u.New))
 }
 
 // CalculateFlowUpdates calculates what updates should be made to translations in the given flows
-func CalculateFlowUpdates(po *PO, translationsLanguage envs.Language, targets []flows.Flow) []*TranslationUpdate {
+func CalculateFlowUpdates(po *PO, translationsLanguage envs.Language, targets ...flows.Flow) []*TranslationUpdate {
 	localized := findLocalizedText(translationsLanguage, nil, targets)
 	localizedByContext := make(map[string][]*localizedText, 0)
 	localizedByMsgID := make(map[string][]*localizedText, 0)
@@ -259,21 +260,27 @@ func CalculateFlowUpdates(po *PO, translationsLanguage envs.Language, targets []
 	for _, lt := range localized {
 		context := lt.Locations[0].MsgContext()
 		localizedByContext[context] = append(localizedByContext[context], lt)
-		localizedByMsgID[lt.Base] = append(localizedByMsgID[context], lt)
+		localizedByMsgID[lt.Base] = append(localizedByMsgID[lt.Base], lt)
 	}
 
 	updates := make([]*TranslationUpdate, 0)
+	addUpdate := func(lt *localizedText, e *POEntry) {
+		// only update if translation has actually changed
+		if lt.Translation != e.MsgStr {
+			updates = append(updates, &TranslationUpdate{
+				textLocation: lt.Locations[0],
+				Base:         lt.Base,
+				Old:          lt.Translation,
+				New:          e.MsgStr,
+			})
+		}
+	}
 
 	// create all context-less updates
 	for _, entry := range po.Entries {
 		if entry.MsgContext == "" {
 			for _, lt := range localizedByMsgID[entry.MsgID] {
-				updates = append(updates, &TranslationUpdate{
-					textLocation: lt.Locations[0],
-					Base:         lt.Base,
-					Old:          lt.Translation,
-					New:          entry.MsgStr,
-				})
+				addUpdate(lt, entry)
 			}
 		}
 	}
@@ -284,12 +291,7 @@ func CalculateFlowUpdates(po *PO, translationsLanguage envs.Language, targets []
 			for _, lt := range localizedByContext[entry.MsgContext] {
 				// only update if base text is still the same
 				if lt.Base == entry.MsgID {
-					updates = append(updates, &TranslationUpdate{
-						textLocation: lt.Locations[0],
-						Base:         lt.Base,
-						Old:          lt.Translation,
-						New:          entry.MsgStr,
-					})
+					addUpdate(lt, entry)
 				}
 			}
 		}
@@ -299,12 +301,14 @@ func CalculateFlowUpdates(po *PO, translationsLanguage envs.Language, targets []
 	locationsSeen := make(map[string]int)
 	deduped := make([]*TranslationUpdate, 0)
 	for i, update := range updates {
-		locIndex, existing := locationsSeen[update.String()]
+		locationStr := update.textLocation.MsgContext()
+
+		locIndex, existing := locationsSeen[locationStr]
 		if existing {
 			deduped[locIndex] = update
 		} else {
 			deduped = append(deduped, update)
-			locationsSeen[update.String()] = i
+			locationsSeen[locationStr] = i
 		}
 	}
 
@@ -313,8 +317,6 @@ func CalculateFlowUpdates(po *PO, translationsLanguage envs.Language, targets []
 
 func applyUpdates(updates []*TranslationUpdate, translationsLanguage envs.Language) {
 	for _, update := range updates {
-		fmt.Println(update.String())
-
 		localization := update.textLocation.Flow.Localization()
 		texts := localization.GetItemTranslation(translationsLanguage, update.UUID, update.Property)
 
