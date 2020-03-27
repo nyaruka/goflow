@@ -67,6 +67,13 @@ func TestExtractFromFlows(t *testing.T) {
 			nil,
 			"exports/translation_mismatches.noargs.es.po",
 		},
+		{
+			"testdata/multiple_flows.json",
+			[]assets.FlowUUID{`c426f38b-d940-4353-a081-362295938bbe`, `bc6a3e73-d5e2-4658-943c-0c24adc8dc0f`},
+			envs.Language(`spa`),
+			nil,
+			"exports/multiple_flows.es.po",
+		},
 	}
 
 	for _, tc := range tests {

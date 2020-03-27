@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -67,7 +68,7 @@ func ExtractFromFlows(initialComment string, translationsLanguage envs.Language,
 
 	merged := mergeExtracted(extracted)
 
-	return poFromExtracted(initialComment, translationsLanguage, merged), nil
+	return poFromExtracted(sources, initialComment, translationsLanguage, merged), nil
 }
 
 func findLocalizedText(translationsLanguage envs.Language, excludeProperties []string, sources []flows.Flow) []*localizedText {
@@ -187,8 +188,14 @@ func majorityTranslation(extracted []*localizedText) string {
 	return majority
 }
 
-func poFromExtracted(initialComment string, lang envs.Language, extracted []*localizedText) *PO {
+func poFromExtracted(sources []flows.Flow, initialComment string, lang envs.Language, extracted []*localizedText) *PO {
+	flowUUIDs := make([]string, len(sources))
+	for i, f := range sources {
+		flowUUIDs[i] = string(f.UUID())
+	}
+
 	header := NewPOHeader(initialComment, dates.Now(), lang.ToISO639_2(envs.NilCountry))
+	header.Custom["Source-Flows"] = strings.Join(flowUUIDs, ",")
 	po := NewPO(header)
 
 	for _, ext := range extracted {
