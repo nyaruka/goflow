@@ -1,3 +1,9 @@
+v0.78.1
+----------
+ * Add decode_html Excellent function
+ * Start of i18n work
+ * Prevent XText.Slice from panicking
+
 v0.78.0
 ----------
  * Add support for extracting the "base" translation of a flow
