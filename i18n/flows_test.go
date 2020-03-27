@@ -114,6 +114,11 @@ func TestImportIntoFlows(t *testing.T) {
 	flow, err := sa.Flows().Get("19cad1f2-9110-4271-98d4-1b968bf19410")
 	require.NoError(t, err)
 
+	category := flow.Nodes()[1].Router().Categories()[0]
+
+	assert.Equal(t, "Red", category.Name())
+	assert.Equal(t, []string{"Roja"}, flow.Localization().GetItemTranslation("spa", category.LocalizationUUID(), "name"))
+
 	po := i18n.NewPO(nil)
 	po.AddEntry(&i18n.POEntry{
 		MsgID:  "Red",
@@ -123,8 +128,8 @@ func TestImportIntoFlows(t *testing.T) {
 	err = i18n.ImportIntoFlows(po, envs.Language("spa"), flow)
 	require.NoError(t, err)
 
-	//flow.Nodes()[0].Router().
-	t.Fail()
+	assert.Equal(t, "Red", category.Name())
+	assert.Equal(t, []string{"Rojo"}, flow.Localization().GetItemTranslation("spa", category.LocalizationUUID(), "name"))
 }
 
 func TestImportIntoFlowsWithDiffLanguages(t *testing.T) {
