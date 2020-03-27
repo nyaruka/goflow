@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/uuids"
 )
@@ -27,26 +28,38 @@ type extractedText struct {
 	Unique      bool
 }
 
-// ExtractFromFlows extracts a PO file from a set of flows
-func ExtractFromFlows(initialComment string, lang envs.Language, excludeArgs bool, sources ...flows.Flow) (*PO, error) {
-	// check flows use same base language
-	baseLanguage := envs.NilLanguage
-	for _, flow := range sources {
-		if baseLanguage == envs.NilLanguage {
-			baseLanguage = flow.Language()
-		} else if baseLanguage != flow.Language() {
-			return nil, errors.New("flows use different base languages")
+func getBaseLanguage(set []flows.Flow) envs.Language {
+	if len(set) == 0 {
+		return envs.NilLanguage
+	}
+	baseLanguage := set[0].Language()
+	for _, flow := range set[1:] {
+		if baseLanguage != flow.Language() {
+			return envs.NilLanguage
 		}
 	}
+	return baseLanguage
+}
 
-	extracted := extractFromFlows(lang, excludeArgs, sources)
+// ExtractFromFlows extracts a PO file from a set of flows
+func ExtractFromFlows(initialComment string, translationsLanguage envs.Language, excludeProperties []string, sources ...flows.Flow) (*PO, error) {
+	// check all flows have same base language
+	baseLanguage := getBaseLanguage(sources)
+	if baseLanguage == envs.NilLanguage {
+		return nil, errors.New("can't extract from flows with differing base languages")
+	} else if translationsLanguage == baseLanguage {
+		translationsLanguage = envs.NilLanguage // we'll create a POT in the base language (i.e. no translations)
+	}
+
+	extracted := extractFromFlows(translationsLanguage, excludeProperties, sources)
 
 	merged := mergeExtracted(extracted)
 
-	return poFromExtracted(initialComment, lang, merged), nil
+	return poFromExtracted(initialComment, translationsLanguage, merged), nil
 }
 
-func extractFromFlows(lang envs.Language, excludeArgs bool, sources []flows.Flow) []*extractedText {
+func extractFromFlows(lang envs.Language, excludeProperties []string, sources []flows.Flow) []*extractedText {
+	exclude := utils.StringSet(excludeProperties)
 	extracted := make([]*extractedText, 0)
 
 	for _, flow := range sources {
@@ -57,7 +70,7 @@ func extractFromFlows(lang envs.Language, excludeArgs bool, sources []flows.Flow
 
 		for _, node := range flow.Nodes() {
 			node.EnumerateLocalizables(func(uuid uuids.UUID, property string, texts []string) {
-				if !excludeArgs || property != "arguments" {
+				if !exclude[property] {
 					exts := extractFromProperty(flow, uuid, property, texts, targetTranslation)
 					extracted = append(extracted, exts...)
 				}
