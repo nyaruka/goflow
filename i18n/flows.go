@@ -124,39 +124,47 @@ func mergeExtracted(extracted []*extractedText) []*extractedText {
 	for _, base := range bases {
 		extractionsForBase := byBase[base]
 
-		differingTranslations := false
-		singleTranslation := extractionsForBase[0].Translation
-		for _, ext := range extractionsForBase[1:] {
-			if singleTranslation == "" {
-				singleTranslation = ext.Translation
-			}
-			if ext.Translation != "" && ext.Translation != singleTranslation {
-				differingTranslations = true
+		majorityTranslation := majorityTranslation(extractionsForBase)
+
+		// all extractions with majority translation or no translation get merged into a new context-less extraction
+		mergedLocations := make([]textLocation, 0)
+
+		for _, ext := range extractionsForBase {
+			if ext.Translation == majorityTranslation || ext.Translation == "" {
+				mergedLocations = append(mergedLocations, ext.Locations[0])
+			} else {
+				merged = append(merged, ext)
 			}
 		}
 
-		if differingTranslations {
-			// we have differing translations, keep extractions for each location separate
-			for _, e := range extractionsForBase {
-				merged = append(merged, e)
-			}
-		} else {
-			// all translations were the same, create merged extraction for all locations
-			locations := make([]textLocation, len(extractionsForBase))
-			for i, ext := range extractionsForBase {
-				locations[i] = ext.Locations[0]
-			}
-
-			merged = append(merged, &extractedText{
-				Locations:   locations,
-				Base:        base,
-				Translation: singleTranslation,
-				Unique:      true,
-			})
-		}
+		merged = append(merged, &extractedText{
+			Locations:   mergedLocations,
+			Base:        base,
+			Translation: majorityTranslation,
+			Unique:      true,
+		})
 	}
 
 	return merged
+}
+
+// finds the majority non-empty translation
+func majorityTranslation(extracted []*extractedText) string {
+	counts := make(map[string]int)
+	for _, e := range extracted {
+		if e.Translation != "" {
+			counts[e.Translation]++
+		}
+	}
+	max := 0
+	majority := ""
+	for _, e := range extracted {
+		if counts[e.Translation] > max {
+			majority = e.Translation
+			max = counts[e.Translation]
+		}
+	}
+	return majority
 }
 
 func poFromExtracted(initialComment string, lang envs.Language, extracted []*extractedText) *PO {
