@@ -233,7 +233,8 @@ type Hint interface {
 
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
-	AddItemTranslation(envs.Language, uuids.UUID, string, []string)
+	GetItemTranslation(envs.Language, uuids.UUID, string) []string
+	SetItemTranslation(envs.Language, uuids.UUID, string, []string)
 	GetTranslation(envs.Language) Translation
 	Languages() []envs.Language
 }
@@ -241,7 +242,6 @@ type Localization interface {
 // Translation provide a way to get the translation for a specific language for a uuid/key pair
 type Translation interface {
 	GetTextArray(uuids.UUID, string) []string
-	SetTextArray(uuids.UUID, string, []string)
 	Enumerate(func(uuids.UUID, string, []string))
 }
 

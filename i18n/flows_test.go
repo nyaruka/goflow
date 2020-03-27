@@ -106,3 +106,34 @@ func TestExtractFromFlowsWithDiffLanguages(t *testing.T) {
 	_, err = i18n.ExtractFromFlows("", "fra", nil, engFlow, spaFlow)
 	assert.EqualError(t, err, "can't extract from flows with differing base languages")
 }
+
+func TestImportIntoFlows(t *testing.T) {
+	sa, err := test.LoadSessionAssets(envs.NewBuilder().Build(), "testdata/translation_mismatches.json")
+	require.NoError(t, err)
+
+	flow, err := sa.Flows().Get("19cad1f2-9110-4271-98d4-1b968bf19410")
+	require.NoError(t, err)
+
+	po := i18n.NewPO(nil)
+	po.AddEntry(&i18n.POEntry{
+		MsgID:  "Red",
+		MsgStr: "Rojo",
+	})
+
+	err = i18n.ImportIntoFlows(po, envs.Language("spa"), flow)
+	require.NoError(t, err)
+
+	//flow.Nodes()[0].Router().
+	t.Fail()
+}
+
+func TestImportIntoFlowsWithDiffLanguages(t *testing.T) {
+	sa, err := test.LoadSessionAssets(envs.NewBuilder().Build(), "testdata/different_languages.json")
+	require.NoError(t, err)
+
+	engFlow, _ := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+	spaFlow, _ := sa.Flows().Get("e9e1d54f-f213-44ca-883a-eb96d15151aa")
+
+	err = i18n.ImportIntoFlows(nil, "fra", engFlow, spaFlow)
+	assert.EqualError(t, err, "can't import into flows with differing base languages")
+}

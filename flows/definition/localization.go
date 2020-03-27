@@ -38,8 +38,8 @@ func (t languageTranslation) GetTextArray(uuid uuids.UUID, property string) []st
 	return nil
 }
 
-// SetTextArray updates the requested item translation
-func (t languageTranslation) SetTextArray(uuid uuids.UUID, property string, translated []string) {
+// creates/updates the requested item translation
+func (t languageTranslation) setTextArray(uuid uuids.UUID, property string, translated []string) {
 	_, found := t[uuid]
 	if !found {
 		t[uuid] = make(itemTranslation)
@@ -75,13 +75,22 @@ func (l localization) Languages() []envs.Language {
 	return languages
 }
 
-// AddItemTranslation adds a new item translation
-func (l localization) AddItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string, translated []string) {
+// GetItemTranslation gets an item translation
+func (l localization) GetItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string) []string {
+	translation, exists := l[lang]
+	if exists {
+		return translation.GetTextArray(itemUUID, property)
+	}
+	return nil
+}
+
+// SetItemTranslation sets an item translation
+func (l localization) SetItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string, translated []string) {
 	_, found := l[lang]
 	if !found {
 		l[lang] = make(languageTranslation)
 	}
-	l[lang].SetTextArray(itemUUID, property, translated)
+	l[lang].setTextArray(itemUUID, property, translated)
 }
 
 // GetTranslation returns the translation for the given language
