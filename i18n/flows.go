@@ -70,20 +70,15 @@ func ExtractFromFlows(initialComment string, translationsLanguage envs.Language,
 	return poFromExtracted(initialComment, translationsLanguage, merged), nil
 }
 
-func findLocalizedText(lang envs.Language, excludeProperties []string, sources []flows.Flow) []*localizedText {
+func findLocalizedText(translationsLanguage envs.Language, excludeProperties []string, sources []flows.Flow) []*localizedText {
 	exclude := utils.StringSet(excludeProperties)
 	extracted := make([]*localizedText, 0)
 
 	for _, flow := range sources {
-		var targetTranslation flows.Translation
-		if lang != envs.NilLanguage {
-			targetTranslation = flow.Localization().GetTranslation(lang)
-		}
-
 		for _, node := range flow.Nodes() {
 			node.EnumerateLocalizables(func(uuid uuids.UUID, property string, texts []string) {
 				if !exclude[property] {
-					exts := extractFromProperty(flow, uuid, property, texts, targetTranslation)
+					exts := extractFromProperty(translationsLanguage, flow, uuid, property, texts)
 					extracted = append(extracted, exts...)
 				}
 			})
@@ -93,13 +88,13 @@ func findLocalizedText(lang envs.Language, excludeProperties []string, sources [
 	return extracted
 }
 
-func extractFromProperty(flow flows.Flow, uuid uuids.UUID, property string, texts []string, targetTranslation flows.Translation) []*localizedText {
+func extractFromProperty(translationsLanguage envs.Language, flow flows.Flow, uuid uuids.UUID, property string, texts []string) []*localizedText {
 	extracted := make([]*localizedText, 0)
 
-	// look up target translation if we have one
+	// look up target translation if we have a translation language
 	targets := make([]string, len(texts))
-	if targetTranslation != nil {
-		translation := targetTranslation.GetTextArray(uuid, property)
+	if translationsLanguage != envs.NilLanguage {
+		translation := flow.Localization().GetItemTranslation(translationsLanguage, uuid, property)
 		if translation != nil {
 			for t := range targets {
 				if t < len(translation) {

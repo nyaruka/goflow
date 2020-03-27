@@ -136,6 +136,19 @@ func TestImportIntoFlows(t *testing.T) {
 		MsgStr:     "Azul clara",
 	})
 
+	// context-less entry which will be ignored because it doesn't match any text
+	po.AddEntry(&i18n.POEntry{
+		MsgID:  "Murky Green",
+		MsgStr: "Verde",
+	})
+
+	// entry which will be ignored because its context doesn't match anything in the flow
+	po.AddEntry(&i18n.POEntry{
+		MsgContext: "38c6ce0b-a746-48ae-ac64-f5f1163d80db/quick_replies:10",
+		MsgID:      "Lazy Pink",
+		MsgStr:     "Rosada",
+	})
+
 	updates := i18n.CalculateFlowUpdates(po, envs.Language("spa"), flow)
 	assert.Equal(t, 3, len(updates))
 	assert.Equal(t, `Translated/d1ce3c92-7025-4607-a910-444361a6b9b3/name:0 "Roja" -> "Rojo"`, updates[0].String())
@@ -195,4 +208,8 @@ func TestImportIntoFlowsWithDiffLanguages(t *testing.T) {
 
 	err = i18n.ImportIntoFlows(nil, "fra", engFlow, spaFlow)
 	assert.EqualError(t, err, "can't import into flows with differing base languages")
+
+	// also can't import in same language as the flow base language
+	err = i18n.ImportIntoFlows(nil, "eng", engFlow)
+	assert.EqualError(t, err, "can't import as the flow base language")
 }

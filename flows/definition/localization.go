@@ -26,8 +26,8 @@ type itemTranslation map[string][]string
 // }
 type languageTranslation map[uuids.UUID]itemTranslation
 
-// GetTextArray returns the requested item translation
-func (t languageTranslation) GetTextArray(uuid uuids.UUID, property string) []string {
+// returns the requested item translation
+func (t languageTranslation) getTextArray(uuid uuids.UUID, property string) []string {
 	item, found := t[uuid]
 	if found {
 		translation, found := item[property]
@@ -56,8 +56,6 @@ func (t languageTranslation) Enumerate(callback func(uuids.UUID, string, []strin
 	}
 }
 
-var _ flows.Translation = (languageTranslation(nil))
-
 // our top level container for all the translations for all languages
 type localization map[envs.Language]languageTranslation
 
@@ -79,7 +77,7 @@ func (l localization) Languages() []envs.Language {
 func (l localization) GetItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string) []string {
 	translation, exists := l[lang]
 	if exists {
-		return translation.GetTextArray(itemUUID, property)
+		return translation.getTextArray(itemUUID, property)
 	}
 	return nil
 }
@@ -91,11 +89,6 @@ func (l localization) SetItemTranslation(lang envs.Language, itemUUID uuids.UUID
 		l[lang] = make(languageTranslation)
 	}
 	l[lang].setTextArray(itemUUID, property, translated)
-}
-
-// GetTranslation returns the translation for the given language
-func (l localization) GetTranslation(lang envs.Language) flows.Translation {
-	return l[lang]
 }
 
 // ReadLocalization reads entire localization flow segment

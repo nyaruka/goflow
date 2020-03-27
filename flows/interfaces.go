@@ -245,14 +245,7 @@ type Hint interface {
 type Localization interface {
 	GetItemTranslation(envs.Language, uuids.UUID, string) []string
 	SetItemTranslation(envs.Language, uuids.UUID, string, []string)
-	GetTranslation(envs.Language) Translation
 	Languages() []envs.Language
-}
-
-// Translation provide a way to get the translation for a specific language for a uuid/key pair
-type Translation interface {
-	GetTextArray(uuids.UUID, string) []string
-	Enumerate(func(uuids.UUID, string, []string))
 }
 
 // Trigger represents something which can initiate a session with the flow engine
