@@ -1,3 +1,9 @@
+v0.79.0
+----------
+ * Add custom Source-Flows header to exported PO files
+ * Make router categories inspectable
+ * Importing of translations into flows
+
 v0.78.1
 ----------
  * Add decode_html Excellent function
