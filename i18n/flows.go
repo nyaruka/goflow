@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/url"
 	"sort"
+	"strconv"
+	"strings"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -21,7 +23,18 @@ type textLocation struct {
 	Index    int
 }
 
-type extractedText struct {
+// String returns a full string representation of this location for use in PO reference comments
+func (l *textLocation) String() string {
+	flowName := url.QueryEscape(l.Flow.Name())
+
+	return fmt.Sprintf("%s/%s/%s:%d", flowName, string(l.UUID), l.Property, l.Index)
+}
+
+func (l *textLocation) MsgContext() string {
+	return fmt.Sprintf("%s/%s:%d", string(l.UUID), l.Property, l.Index)
+}
+
+type localizedText struct {
 	Locations   []textLocation
 	Base        string
 	Translation string
@@ -51,27 +64,22 @@ func ExtractFromFlows(initialComment string, translationsLanguage envs.Language,
 		translationsLanguage = envs.NilLanguage // we'll create a POT in the base language (i.e. no translations)
 	}
 
-	extracted := extractFromFlows(translationsLanguage, excludeProperties, sources)
+	extracted := findLocalizedText(translationsLanguage, excludeProperties, sources)
 
 	merged := mergeExtracted(extracted)
 
-	return poFromExtracted(initialComment, translationsLanguage, merged), nil
+	return poFromExtracted(sources, initialComment, translationsLanguage, merged), nil
 }
 
-func extractFromFlows(lang envs.Language, excludeProperties []string, sources []flows.Flow) []*extractedText {
+func findLocalizedText(translationsLanguage envs.Language, excludeProperties []string, sources []flows.Flow) []*localizedText {
 	exclude := utils.StringSet(excludeProperties)
-	extracted := make([]*extractedText, 0)
+	extracted := make([]*localizedText, 0)
 
 	for _, flow := range sources {
-		var targetTranslation flows.Translation
-		if lang != envs.NilLanguage {
-			targetTranslation = flow.Localization().GetTranslation(lang)
-		}
-
 		for _, node := range flow.Nodes() {
 			node.EnumerateLocalizables(func(uuid uuids.UUID, property string, texts []string) {
 				if !exclude[property] {
-					exts := extractFromProperty(flow, uuid, property, texts, targetTranslation)
+					exts := extractFromProperty(translationsLanguage, flow, uuid, property, texts)
 					extracted = append(extracted, exts...)
 				}
 			})
@@ -81,13 +89,13 @@ func extractFromFlows(lang envs.Language, excludeProperties []string, sources []
 	return extracted
 }
 
-func extractFromProperty(flow flows.Flow, uuid uuids.UUID, property string, texts []string, targetTranslation flows.Translation) []*extractedText {
-	extracted := make([]*extractedText, 0)
+func extractFromProperty(translationsLanguage envs.Language, flow flows.Flow, uuid uuids.UUID, property string, texts []string) []*localizedText {
+	extracted := make([]*localizedText, 0)
 
-	// look up target translation if we have one
+	// look up target translation if we have a translation language
 	targets := make([]string, len(texts))
-	if targetTranslation != nil {
-		translation := targetTranslation.GetTextArray(uuid, property)
+	if translationsLanguage != envs.NilLanguage {
+		translation := flow.Localization().GetItemTranslation(translationsLanguage, uuid, property)
 		if translation != nil {
 			for t := range targets {
 				if t < len(translation) {
@@ -99,7 +107,7 @@ func extractFromProperty(flow flows.Flow, uuid uuids.UUID, property string, text
 
 	for t, text := range texts {
 		if text != "" {
-			extracted = append(extracted, &extractedText{
+			extracted = append(extracted, &localizedText{
 				Locations: []textLocation{
 					textLocation{
 						Flow:     flow,
@@ -118,9 +126,9 @@ func extractFromProperty(flow flows.Flow, uuid uuids.UUID, property string, text
 	return extracted
 }
 
-func mergeExtracted(extracted []*extractedText) []*extractedText {
+func mergeExtracted(extracted []*localizedText) []*localizedText {
 	// organize extracted texts by their base text
-	byBase := make(map[string][]*extractedText)
+	byBase := make(map[string][]*localizedText)
 	for _, e := range extracted {
 		byBase[e.Base] = append(byBase[e.Base], e)
 	}
@@ -132,7 +140,7 @@ func mergeExtracted(extracted []*extractedText) []*extractedText {
 	}
 	sort.Strings(bases)
 
-	merged := make([]*extractedText, 0)
+	merged := make([]*localizedText, 0)
 
 	for _, base := range bases {
 		extractionsForBase := byBase[base]
@@ -150,7 +158,7 @@ func mergeExtracted(extracted []*extractedText) []*extractedText {
 			}
 		}
 
-		merged = append(merged, &extractedText{
+		merged = append(merged, &localizedText{
 			Locations:   mergedLocations,
 			Base:        base,
 			Translation: majorityTranslation,
@@ -162,7 +170,7 @@ func mergeExtracted(extracted []*extractedText) []*extractedText {
 }
 
 // finds the majority non-empty translation
-func majorityTranslation(extracted []*extractedText) string {
+func majorityTranslation(extracted []*localizedText) string {
 	counts := make(map[string]int)
 	for _, e := range extracted {
 		if e.Translation != "" {
@@ -180,21 +188,26 @@ func majorityTranslation(extracted []*extractedText) string {
 	return majority
 }
 
-func poFromExtracted(initialComment string, lang envs.Language, extracted []*extractedText) *PO {
+func poFromExtracted(sources []flows.Flow, initialComment string, lang envs.Language, extracted []*localizedText) *PO {
+	flowUUIDs := make([]string, len(sources))
+	for i, f := range sources {
+		flowUUIDs[i] = string(f.UUID())
+	}
+
 	header := NewPOHeader(initialComment, dates.Now(), lang.ToISO639_2(envs.NilCountry))
+	header.Custom["Source-Flows"] = strings.Join(flowUUIDs, "; ")
 	po := NewPO(header)
 
 	for _, ext := range extracted {
 		references := make([]string, len(ext.Locations))
 		for i, loc := range ext.Locations {
-			flowName := url.QueryEscape(loc.Flow.Name())
-			references[i] = fmt.Sprintf("%s/%s/%s:%d", flowName, string(loc.UUID), loc.Property, loc.Index)
+			references[i] = loc.String()
 		}
 		sort.Strings(references)
 
 		context := ""
 		if !ext.Unique {
-			context = fmt.Sprintf("%s/%s:%d", string(ext.Locations[0].UUID), ext.Locations[0].Property, ext.Locations[0].Index)
+			context = ext.Locations[0].MsgContext()
 		}
 
 		entry := &POEntry{
@@ -210,4 +223,112 @@ func poFromExtracted(initialComment string, lang envs.Language, extracted []*ext
 	}
 
 	return po
+}
+
+// ImportIntoFlows imports translations from the given PO into the given flows
+func ImportIntoFlows(po *PO, translationsLanguage envs.Language, targets ...flows.Flow) error {
+	baseLanguage := getBaseLanguage(targets)
+	if baseLanguage == envs.NilLanguage {
+		return errors.New("can't import into flows with differing base languages")
+	} else if translationsLanguage == baseLanguage {
+		return errors.New("can't import as the flow base language")
+	}
+
+	updates := CalculateFlowUpdates(po, translationsLanguage, targets...)
+
+	applyUpdates(updates, translationsLanguage)
+
+	return nil
+}
+
+// TranslationUpdate describs a change to be made to a flow translation
+type TranslationUpdate struct {
+	textLocation
+	Base string
+	Old  string
+	New  string
+}
+
+func (u *TranslationUpdate) String() string {
+	return fmt.Sprintf("%s %s -> %s", u.textLocation.String(), strconv.Quote(u.Old), strconv.Quote(u.New))
+}
+
+// CalculateFlowUpdates calculates what updates should be made to translations in the given flows
+func CalculateFlowUpdates(po *PO, translationsLanguage envs.Language, targets ...flows.Flow) []*TranslationUpdate {
+	localized := findLocalizedText(translationsLanguage, nil, targets)
+	localizedByContext := make(map[string][]*localizedText, 0)
+	localizedByMsgID := make(map[string][]*localizedText, 0)
+
+	for _, lt := range localized {
+		context := lt.Locations[0].MsgContext()
+		localizedByContext[context] = append(localizedByContext[context], lt)
+		localizedByMsgID[lt.Base] = append(localizedByMsgID[lt.Base], lt)
+	}
+
+	updates := make([]*TranslationUpdate, 0)
+	addUpdate := func(lt *localizedText, e *POEntry) {
+		// only update if translation has actually changed
+		if lt.Translation != e.MsgStr {
+			updates = append(updates, &TranslationUpdate{
+				textLocation: lt.Locations[0],
+				Base:         lt.Base,
+				Old:          lt.Translation,
+				New:          e.MsgStr,
+			})
+		}
+	}
+
+	// create all context-less updates
+	for _, entry := range po.Entries {
+		if entry.MsgContext == "" {
+			for _, lt := range localizedByMsgID[entry.MsgID] {
+				addUpdate(lt, entry)
+			}
+		}
+	}
+
+	// create more specific context based updates
+	for _, entry := range po.Entries {
+		if entry.MsgContext != "" {
+			for _, lt := range localizedByContext[entry.MsgContext] {
+				// only update if base text is still the same
+				if lt.Base == entry.MsgID {
+					addUpdate(lt, entry)
+				}
+			}
+		}
+	}
+
+	// de-duplicate by location
+	locationsSeen := make(map[string]int)
+	deduped := make([]*TranslationUpdate, 0)
+	for i, update := range updates {
+		locationStr := update.textLocation.MsgContext()
+
+		locIndex, existing := locationsSeen[locationStr]
+		if existing {
+			deduped[locIndex] = update
+		} else {
+			deduped = append(deduped, update)
+			locationsSeen[locationStr] = i
+		}
+	}
+
+	return deduped
+}
+
+func applyUpdates(updates []*TranslationUpdate, translationsLanguage envs.Language) {
+	for _, update := range updates {
+		localization := update.textLocation.Flow.Localization()
+		texts := localization.GetItemTranslation(translationsLanguage, update.UUID, update.Property)
+
+		// grow existing array if necessary
+		for len(texts) < (update.Index + 1) {
+			texts = append(texts, "")
+		}
+
+		texts[update.Index] = update.New
+
+		localization.SetItemTranslation(translationsLanguage, update.UUID, update.Property, texts)
+	}
 }

@@ -37,7 +37,9 @@ func TestComments(t *testing.T) {
 }
 
 func TestPOCreation(t *testing.T) {
-	po := i18n.NewPO(i18n.NewPOHeader("Generated for testing", time.Date(2020, 3, 25, 11, 50, 30, 123456789, time.UTC), "es"))
+	header := i18n.NewPOHeader("Generated for testing", time.Date(2020, 3, 25, 11, 50, 30, 123456789, time.UTC), "es")
+	header.Custom["Foo"] = "Bar"
+	po := i18n.NewPO(header)
 
 	po.AddEntry(&i18n.POEntry{
 		MsgID:  "Yes",
@@ -76,6 +78,7 @@ msgstr ""
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+"Foo: Bar\n"
 
 msgid "Yes"
 msgstr "Si"
@@ -90,7 +93,7 @@ msgstr "No"
 }
 
 func TestReadPO(t *testing.T) {
-	poFile, err := os.Open("testdata/translation_mismatches.noargs.es.po")
+	poFile, err := os.Open("testdata/exports/translation_mismatches.noargs.es.po")
 	require.NoError(t, err)
 
 	defer poFile.Close()

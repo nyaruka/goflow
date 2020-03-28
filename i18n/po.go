@@ -13,10 +13,11 @@ const poDatetimeformat = "2006-01-02 15:04-0700"
 // POHeader contains metadata about a PO file
 type POHeader struct {
 	InitialComment  string
-	POTCreationDate time.Time // POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE
-	Language        string    // Language: e.g. en-US
-	MIMEVersion     string    // MIME-Version: 1.0
-	ContentType     string    // Content-Type: text/plain; charset=UTF-8
+	POTCreationDate time.Time         // POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE
+	Language        string            // Language: e.g. en-US
+	MIMEVersion     string            // MIME-Version: 1.0
+	ContentType     string            // Content-Type: text/plain; charset=UTF-8
+	Custom          map[string]string // other custom values
 }
 
 // NewPOHeader creates a new PO header with the given values
@@ -27,6 +28,7 @@ func NewPOHeader(initialComment string, creationDate time.Time, lang string) *PO
 		Language:        lang,
 		MIMEVersion:     "1.0",
 		ContentType:     "text/plain; charset=UTF-8",
+		Custom:          make(map[string]string),
 	}
 }
 
@@ -34,6 +36,7 @@ func NewPOHeader(initialComment string, creationDate time.Time, lang string) *PO
 func newPOHeaderFromEntry(e *POEntry) *POHeader {
 	h := &POHeader{
 		InitialComment: strings.Join(e.Comment.Translator, "\n"),
+		Custom:         make(map[string]string),
 	}
 
 	for _, line := range strings.Split(e.MsgStr, "\n") {
@@ -43,8 +46,9 @@ func newPOHeaderFromEntry(e *POEntry) *POHeader {
 		}
 		parts := strings.SplitN(line, ":", 2)
 		if len(parts) == 2 {
+			key := parts[0]
 			value := strings.TrimSpace(parts[1])
-			switch parts[0] {
+			switch key {
 			case "POT-Creation-Date":
 				h.POTCreationDate, _ = time.Parse(poDatetimeformat, value)
 			case "Language":
@@ -53,6 +57,8 @@ func newPOHeaderFromEntry(e *POEntry) *POHeader {
 				h.MIMEVersion = value
 			case "Content-Type":
 				h.ContentType = value
+			default:
+				h.Custom[key] = value
 			}
 		}
 	}
@@ -67,6 +73,10 @@ func (h *POHeader) asEntry() *POEntry {
 	fmt.Fprintf(b, "Language: %s\n", h.Language)
 	fmt.Fprintf(b, "MIME-Version: %s\n", h.MIMEVersion)
 	fmt.Fprintf(b, "Content-Type: %s\n", h.ContentType)
+
+	for key, val := range h.Custom {
+		fmt.Fprintf(b, "%s: %s\n", key, val)
+	}
 
 	return &POEntry{
 		Comment: POComment{
