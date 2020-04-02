@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"sort"
 	"strings"
 	"time"
 )
@@ -74,8 +75,13 @@ func (h *POHeader) asEntry() *POEntry {
 	fmt.Fprintf(b, "MIME-Version: %s\n", h.MIMEVersion)
 	fmt.Fprintf(b, "Content-Type: %s\n", h.ContentType)
 
-	for key, val := range h.Custom {
-		fmt.Fprintf(b, "%s: %s\n", key, val)
+	customKeys := make([]string, 0, len(h.Custom))
+	for key := range h.Custom {
+		customKeys = append(customKeys, key)
+	}
+	sort.Strings(customKeys)
+	for _, key := range customKeys {
+		fmt.Fprintf(b, "%s: %s\n", key, h.Custom[key])
 	}
 
 	return &POEntry{
