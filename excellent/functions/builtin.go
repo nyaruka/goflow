@@ -3,6 +3,7 @@ package functions
 import (
 	"bytes"
 	"fmt"
+	"html"
 	"math"
 	"net/url"
 	"regexp"
@@ -61,6 +62,7 @@ func init() {
 		"upper":             OneTextFunction(Upper),
 		"percent":           OneNumberFunction(Percent),
 		"url_encode":        OneTextFunction(URLEncode),
+		"html_decode":       OneTextFunction(HTMLDecode),
 
 		// bool functions
 		"and": MinArgsCheck(1, And),
@@ -941,6 +943,20 @@ func URLEncode(env envs.Environment, text types.XText) types.XValue {
 	// escapes spaces as %20 matching urllib.quote(s, safe="") in Python
 	encoded := strings.Replace(url.QueryEscape(text.Native()), "+", "%20", -1)
 	return types.NewXText(encoded)
+}
+
+// HTMLDecode HTML decodes `text`
+//
+//   @(html_decode("Red &amp; Blue")) -> Red & Blue
+//   @(html_decode("5 + 10")) -> 5 + 10
+//
+// @function html_decode(text)
+func HTMLDecode(env envs.Environment, text types.XText) types.XValue {
+	decoded := html.UnescapeString(text.Native())
+
+	// the common nbsp; turns into a unicode non breaking space, convert to a normal space
+	decoded = strings.ReplaceAll(decoded, "\U000000A0", " ")
+	return types.NewXText(decoded)
 }
 
 //------------------------------------------------------------------------------------------

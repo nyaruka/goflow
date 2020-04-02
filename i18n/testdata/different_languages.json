@@ -1,0 +1,20 @@
+{
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "English Flow",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": []
+        },
+        {
+            "uuid": "e9e1d54f-f213-44ca-883a-eb96d15151aa",
+            "name": "Spanish Flow",
+            "spec_version": "13.0",
+            "language": "spa",
+            "type": "messaging",
+            "nodes": []
+        }
+    ]
+}

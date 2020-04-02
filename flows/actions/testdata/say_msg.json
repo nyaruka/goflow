@@ -50,6 +50,9 @@
         "templates": [
             "Hi there @contact.name"
         ],
+        "localizables": [
+            "Hi there @contact.name"
+        ],
         "inspection": {
             "dependencies": [],
             "issues": [],
@@ -130,6 +133,9 @@
         "templates": [
             "Hi there @contact.name",
             "Hola @contact.name"
+        ],
+        "localizables": [
+            "Hi there @contact.name"
         ],
         "inspection": {
             "dependencies": [],

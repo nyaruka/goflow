@@ -1,0 +1,49 @@
+#  Testing
+#  
+#, fuzzy
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-03-25 13:57+0000\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#: Two+Questions/d2a4052a-3fa9-4608-ab3e-5b9631440447/text:0
+msgid "@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
+msgstr "Es @(TITLE(results.favorite_color.category_localized))! Cual es tu bebida favorita? (pepsi/coke)"
+
+#: Two+Questions/c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e/name:0
+#: Two+Questions/e97cd6d5-3354-4dbd-85bc-6c1f87849eec/quick_replies:1
+msgid "Blue"
+msgstr "Azul"
+
+#: Two+Questions/0a8467eb-911a-41db-8101-ccf415c48e6a/text:0
+msgid "Great, you are done and like @results.soda.value! Webhook status was @results.webhook.value"
+msgstr "Bueno, has terminado y te gusta @results.soda.category"
+
+#: Two+Questions/e97cd6d5-3354-4dbd-85bc-6c1f87849eec/text:0
+msgid "Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))"
+msgstr "Hola @contact.name! Cual es tu color favorito? (rojo/azul)"
+
+#: Two+Questions/1024833c-91aa-4873-a3b5-3bac1ef55812/name:0
+msgid "No Response"
+msgstr "Ninguna respuesta"
+
+#: Two+Questions/5ce6c69a-fdfe-4594-ab71-26be534d31c3/name:0
+#: Two+Questions/78ae8f05-f92e-43b2-a886-406eaea1b8e0/name:0
+msgid "Other"
+msgstr "Otros"
+
+#: Two+Questions/598ae7a5-2f81-48f1-afac-595262514aa1/name:0
+#: Two+Questions/e97cd6d5-3354-4dbd-85bc-6c1f87849eec/quick_replies:0
+msgid "Red"
+msgstr "Rojo"
+
+#: Two+Questions/a51e5c8c-c891-401d-9c62-15fc37278c94/arguments:0
+msgid "blue"
+msgstr "azul"
+
+#: Two+Questions/98503572-25bf-40ce-ad72-8836b6549a38/arguments:0
+msgid "red"
+msgstr "rojo roja"
+

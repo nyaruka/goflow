@@ -33,8 +33,7 @@ func templateValues(v reflect.Value, localization flows.Localization, include fu
 
 func Translations(localization flows.Localization, itemUUID uuids.UUID, property string, include func(envs.Language, string)) {
 	for _, lang := range localization.Languages() {
-		translations := localization.GetTranslations(lang)
-		for _, v := range translations.GetTextArray(itemUUID, property) {
+		for _, v := range localization.GetItemTranslation(lang, itemUUID, property) {
 			include(lang, v)
 		}
 	}

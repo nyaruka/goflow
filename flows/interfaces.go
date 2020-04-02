@@ -150,6 +150,7 @@ type Flow interface {
 
 	Inspect(sa SessionAssets) *Inspection
 	ExtractTemplates() []string
+	ExtractLocalizables() []string
 }
 
 // Node is a single node in a flow
@@ -164,6 +165,7 @@ type Node interface {
 	EnumerateTemplates(Localization, func(Action, Router, envs.Language, string))
 	EnumerateDependencies(Localization, func(Action, Router, envs.Language, assets.Reference))
 	EnumerateResults(func(Action, Router, *ResultInfo))
+	EnumerateLocalizables(func(uuids.UUID, string, []string))
 }
 
 // Action is an action within a flow node
@@ -177,11 +179,21 @@ type Action interface {
 	AllowedFlowTypes() []FlowType
 }
 
+// Category is how routers map results to exits
+type Category interface {
+	Localizable
+
+	UUID() CategoryUUID
+	Name() string
+	ExitUUID() ExitUUID
+}
+
 // Router is a router on a note which can pick an exit
 type Router interface {
 	utils.Typed
 
 	Wait() Wait
+	Categories() []Category
 	ResultName() string
 
 	Validate([]Exit) error
@@ -192,6 +204,7 @@ type Router interface {
 	EnumerateTemplates(Localization, func(envs.Language, string))
 	EnumerateDependencies(Localization, func(envs.Language, assets.Reference))
 	EnumerateResults(func(*ResultInfo))
+	EnumerateLocalizables(func(uuids.UUID, string, []string))
 }
 
 // Exit is a route out of a node and optionally to another node
@@ -230,15 +243,9 @@ type Hint interface {
 
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
-	AddItemTranslation(envs.Language, uuids.UUID, string, []string)
-	GetTranslations(envs.Language) Translations
+	GetItemTranslation(envs.Language, uuids.UUID, string) []string
+	SetItemTranslation(envs.Language, uuids.UUID, string, []string)
 	Languages() []envs.Language
-}
-
-// Translations provide a way to get the translation for a specific language for a uuid/key pair
-type Translations interface {
-	GetTextArray(uuids.UUID, string) []string
-	SetTextArray(uuids.UUID, string, []string)
 }
 
 // Trigger represents something which can initiate a session with the flow engine

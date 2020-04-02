@@ -24,7 +24,7 @@ type RandomRouter struct {
 }
 
 // NewRandom creates a new random router
-func NewRandom(wait flows.Wait, resultName string, categories []*Category) *RandomRouter {
+func NewRandom(wait flows.Wait, resultName string, categories []flows.Category) *RandomRouter {
 	return &RandomRouter{newBaseRouter(TypeRandom, wait, resultName, categories)}
 }
 

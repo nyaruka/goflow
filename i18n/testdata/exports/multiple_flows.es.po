@@ -1,0 +1,20 @@
+#  Testing
+#  
+#, fuzzy
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-03-25 13:57+0000\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-3: spa\n"
+"Source-Flows: c426f38b-d940-4353-a081-362295938bbe; bc6a3e73-d5e2-4658-943c-0c24adc8dc0f\n"
+
+#: Test+Flow+2/d5c5a77d-5daa-443c-a9c2-7c07805be2a9/text:0
+msgid "Good night"
+msgstr "Buenas noches"
+
+#: Test+Flow+1/f01d693b-2af2-49fb-9e38-146eb00937e9/text:0
+msgid "Hi @contact.name, are you ready?"
+msgstr "Hola @contact.name, ¿estás listo?"
+

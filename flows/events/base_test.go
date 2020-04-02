@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -466,4 +467,26 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 	assert.Equal(t, "XXXXXXX...", event.Request[9990:])
 	assert.Equal(t, 10000, len(event.Response))
 	assert.Equal(t, "YYYYYYY...", event.Response[9990:])
+}
+
+func TestWebhookCalledEventBadUTF8(t *testing.T) {
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
+
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"http://temba.io/": []httpx.MockResponse{
+			httpx.NewMockResponse(200, nil, "\xa0\xa1", -1),
+		},
+	}))
+
+	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
+
+	svc := webhooks.NewService(http.DefaultClient, nil, nil, nil, 1024*1024)
+	call, err := svc.Call(nil, request)
+	require.NoError(t, err)
+
+	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
+
+	assert.Equal(t, "http://temba.io/", event.URL)
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n\xa0\xa1", event.Response)
+	assert.False(t, utf8.Valid([]byte(event.Response)))
 }
