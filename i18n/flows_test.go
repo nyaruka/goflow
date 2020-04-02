@@ -35,16 +35,16 @@ func TestExtractFromFlows(t *testing.T) {
 		{
 			"../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
-			envs.NilLanguage,
+			envs.NilLanguage, // generate POT without translations
 			nil,
 			"exports/two_questions.po",
 		},
 		{
 			"../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
-			envs.Language("eng"),
+			envs.Language("eng"), // is languiage of flow, thus also generates POT without translations
 			nil,
-			"exports/two_questions.en.po",
+			"exports/two_questions.po",
 		},
 		{
 			"../test/testdata/runner/two_questions.json",
