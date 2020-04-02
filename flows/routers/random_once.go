@@ -27,10 +27,10 @@ type RandomOnceRouter struct {
 }
 
 // NewRandomOnce creates a new random once router
-func NewRandomOnce(wait flows.Wait, resultName string, categories []*Category, doneCategoryUUID flows.CategoryUUID) *RandomOnceRouter {
+func NewRandomOnce(wait flows.Wait, resultName string, categories []flows.Category, defaultCategoryUUID flows.CategoryUUID) *RandomOnceRouter {
 	return &RandomOnceRouter{
 		baseRouter:          newBaseRouter(TypeRandom, wait, resultName, categories),
-		defaultCategoryUUID: doneCategoryUUID,
+		defaultCategoryUUID: defaultCategoryUUID,
 	}
 }
 
@@ -55,9 +55,9 @@ func (r *RandomOnceRouter) Route(run flows.FlowRun, step flows.Step, logEvent fl
 	}
 
 	// convert that to bucket categories remaining
-	bucketsRemaining := make([]*Category, 0)
+	bucketsRemaining := make([]flows.Category, 0)
 	for _, c := range r.categories {
-		if !exitsTaken[c.exitUUID] && c.UUID() != r.defaultCategoryUUID {
+		if !exitsTaken[c.ExitUUID()] && c.UUID() != r.defaultCategoryUUID {
 			bucketsRemaining = append(bucketsRemaining, c)
 		}
 	}

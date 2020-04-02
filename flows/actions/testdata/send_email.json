@@ -45,6 +45,10 @@
             "Hi there@(1 / 0)",
             "So I was thinking...@(1 / 0)"
         ],
+        "localizables": [
+            "Hi there@(1 / 0)",
+            "So I was thinking...@(1 / 0)"
+        ],
         "inspection": {
             "dependencies": [],
             "issues": [],
@@ -202,6 +206,10 @@
             "Hola",
             "So I was thinking...",
             "Pues estuve pensando..."
+        ],
+        "localizables": [
+            "Hi there",
+            "So I was thinking..."
         ],
         "inspection": {
             "dependencies": [],

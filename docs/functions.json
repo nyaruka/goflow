@@ -623,6 +623,21 @@
         ]
     },
     {
+        "signature": "html_decode(text)",
+        "summary": "HTML decodes `text`",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(html_decode(\"Red &amp; Blue\"))",
+                "output": "Red & Blue"
+            },
+            {
+                "template": "@(html_decode(\"5 + 10\"))",
+                "output": "5 + 10"
+            }
+        ]
+    },
+    {
         "signature": "if(test, value1, value2)",
         "summary": "Returns `value1` if `test` is truthy or `value2` if not.",
         "detail": "If the first argument is an error that error is returned.",

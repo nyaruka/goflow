@@ -61,6 +61,17 @@ func (x XText) Compare(other XText) int {
 
 // Slice returns a substring of this text
 func (x XText) Slice(start, end int) XText {
+	length := x.Length()
+	if start < 0 {
+		start = 0
+	}
+	if end > length {
+		end = length
+	}
+	if start >= length || end < start {
+		return XTextEmpty
+	}
+
 	runes := []rune(x.native)[start:end]
 	return NewXText(string(runes))
 }

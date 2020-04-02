@@ -1,0 +1,70 @@
+{
+    "flows": [
+        {
+            "uuid": "c426f38b-d940-4353-a081-362295938bbe",
+            "name": "Test Flow 1",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "f01d693b-2af2-49fb-9e38-146eb00937e9": {
+                        "text": [
+                            "Hola @contact.name, ¿estás listo?"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "3a7fa967-f4a2-40e5-955c-c58ac2f1cfb9",
+                    "actions": [
+                        {
+                            "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name, are you ready?"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "uuid": "bc6a3e73-d5e2-4658-943c-0c24adc8dc0f",
+            "name": "Test Flow 2",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "d5c5a77d-5daa-443c-a9c2-7c07805be2a9": {
+                        "text": [
+                            "Buenas noches"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "4b1b5457-6da6-49e9-bd65-cd987c6d07a1",
+                    "actions": [
+                        {
+                            "uuid": "d5c5a77d-5daa-443c-a9c2-7c07805be2a9",
+                            "type": "send_msg",
+                            "text": "Good night"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,3 +1,29 @@
+v0.79.1
+----------
+ * Include 3-char language code as extra header in PO files
+
+v0.79.0
+----------
+ * Add custom Source-Flows header to exported PO files
+ * Make router categories inspectable
+ * Importing of translations into flows
+
+v0.78.1
+----------
+ * Add decode_html Excellent function
+ * Start of i18n work
+ * Prevent XText.Slice from panicking
+
+v0.78.0
+----------
+ * Add support for extracting the "base" translation of a flow
+ * Allow queries on URNs to check if they are set or not
+ * Add Language.ToISO639_2()
+ * Make flowrunner easier to use by defaulting to first flow in the assets
+ * Default to current version in flowmigrate cmd
+ * Rework group asset loading so that parsing is not deferred
+ * Override environment country if contact has preferred channel with country
+
 v0.77.4
 ----------
  * Fix loading flow assets that are new spec but also have metadata section

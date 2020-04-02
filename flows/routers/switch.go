@@ -62,7 +62,7 @@ func (c *Case) Dependencies(localization flows.Localization, include func(envs.L
 
 		// the group UUID might be different in different translations
 		for _, lang := range localization.Languages() {
-			arguments := localization.GetTranslations(lang).GetTextArray(c.UUID, "arguments")
+			arguments := localization.GetItemTranslation(lang, c.UUID, "arguments")
 			if len(arguments) > 0 {
 				include(lang, groupRef(arguments))
 			}
@@ -81,7 +81,7 @@ type SwitchRouter struct {
 }
 
 // NewSwitch creates a new switch router
-func NewSwitch(wait flows.Wait, resultName string, categories []*Category, operand string, cases []*Case, defaultCategoryUUID flows.CategoryUUID) *SwitchRouter {
+func NewSwitch(wait flows.Wait, resultName string, categories []flows.Category, operand string, cases []*Case, defaultCategoryUUID flows.CategoryUUID) *SwitchRouter {
 	return &SwitchRouter{
 		baseRouter:          newBaseRouter(TypeSwitch, wait, resultName, categories),
 		defaultCategoryUUID: defaultCategoryUUID,
@@ -220,6 +220,13 @@ func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, inclu
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(envs.Language, assets.Reference)) {
 	inspect.Dependencies(r.cases, localization, include)
+}
+
+// EnumerateLocalizables enumerates all the localizable text on this object
+func (r *SwitchRouter) EnumerateLocalizables(include func(uuids.UUID, string, []string)) {
+	inspect.LocalizedText(r.cases, include)
+
+	r.baseRouter.EnumerateLocalizables(include)
 }
 
 //------------------------------------------------------------------------------------------
