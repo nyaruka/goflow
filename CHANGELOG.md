@@ -1,3 +1,7 @@
+v0.80.0
+----------
+ * ivr_created events should include language of translated text
+
 v0.79.1
 ----------
  * Include 3-char language code as extra header in PO files
