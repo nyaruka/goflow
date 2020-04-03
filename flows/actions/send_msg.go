@@ -99,7 +99,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 		if a.Templating != nil {
 			translation := sa.Templates().FindTranslation(a.Templating.Template.UUID, channelRef, []envs.Language{run.Contact().Language(), run.Environment().DefaultLanguage()})
 			if translation != nil {
-				localizedVariables := run.GetTextArray(uuids.UUID(a.Templating.UUID), "variables", a.Templating.Variables)
+				localizedVariables, _ := run.GetTextArray(uuids.UUID(a.Templating.UUID), "variables", a.Templating.Variables)
 
 				// evaluate our variables
 				evaluatedVariables := make([]string, len(localizedVariables))

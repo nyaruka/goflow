@@ -610,7 +610,8 @@ an IVR say command using the message text.
         "text": "Hi Ryan Lewis, are you ready to complete today's survey?",
         "attachments": [
             "audio:http://uploads.temba.io/2353262.m4a"
-        ]
+        ],
+        "text_language": "eng"
     }
 }
 ```
