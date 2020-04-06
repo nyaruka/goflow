@@ -63,7 +63,9 @@ func TestActionTypes(t *testing.T) {
 	sort.Strings(typeNames)
 
 	for _, typeName := range typeNames {
-		testActionType(t, assetsJSON, typeName)
+		if typeName == "call_webhook" {
+			testActionType(t, assetsJSON, typeName)
+		}
 	}
 }
 

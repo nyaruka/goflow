@@ -24,10 +24,10 @@ type call struct {
 func (c *call) String() string { return c.method + " " + c.url }
 
 type webhook struct {
-	request     string
-	response    string
-	json        string
-	bodyIgnored bool
+	request   string
+	response  string
+	body      string
+	validJSON bool
 }
 
 func TestWebhookParsing(t *testing.T) {
@@ -46,41 +46,46 @@ func TestWebhookParsing(t *testing.T) {
 			// successful GET
 			call: call{"GET", "http://127.0.0.1:49994/?cmd=success", ""},
 			webhook: webhook{
-				request:  "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-				json:     `{ "ok": "true" }`,
+				request:   "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      `{ "ok": "true" }`,
+				validJSON: true,
 			},
 		}, {
 			// successful GET with valid JSON response body
 			call: call{"GET", "http://127.0.0.1:49994/?cmd=textjs", ""},
 			webhook: webhook{
-				request:  "GET /?cmd=textjs HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/javascript; charset=iso-8859-1\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-				json:     `{ "ok": "true" }`,
+				request:   "GET /?cmd=textjs HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/javascript; charset=iso-8859-1\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      `{ "ok": "true" }`,
+				validJSON: true,
 			},
 		}, {
 			// successful POST without request body and valid JSON response body
 			call: call{"POST", "http://127.0.0.1:49994/?cmd=success", ""},
 			webhook: webhook{
-				request:  "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-				json:     `{ "ok": "true" }`,
+				request:   "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      `{ "ok": "true" }`,
+				validJSON: true,
 			},
 		}, {
 			// successful POST with request body and valid JSON response body
 			call: call{"POST", "http://127.0.0.1:49994/?cmd=success", `{"contact": "Bob"}`},
 			webhook: webhook{
-				request:  "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 18\r\nAccept-Encoding: gzip\r\n\r\n{\"contact\": \"Bob\"}",
-				response: "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-				json:     `{ "ok": "true" }`,
+				request:   "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 18\r\nAccept-Encoding: gzip\r\n\r\n{\"contact\": \"Bob\"}",
+				response:  "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      `{ "ok": "true" }`,
+				validJSON: true,
 			},
 		}, {
 			// POST returning 503
 			call: call{"POST", "http://127.0.0.1:49994/?cmd=unavailable", ""},
 			webhook: webhook{
-				request:  "POST /?cmd=unavailable HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "HTTP/1.1 503 Service Unavailable\r\nContent-Length: 37\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
-				json:     `{ "errors": ["service unavailable"] }`,
+				request:   "POST /?cmd=unavailable HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "HTTP/1.1 503 Service Unavailable\r\nContent-Length: 37\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      `{ "errors": ["service unavailable"] }`,
+				validJSON: true,
 			},
 		}, {
 			// GET returning text body larger than allowed
@@ -90,26 +95,28 @@ func TestWebhookParsing(t *testing.T) {
 			// GET returning non-JSON body
 			call: call{"GET", "http://127.0.0.1:49994/?cmd=typeless&content=kthxbai", ""},
 			webhook: webhook{
-				request:     "GET /?cmd=typeless&content=kthxbai HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-				response:    "HTTP/1.1 200 OK\r\nContent-Length: 7\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nkthxbai",
-				json:        "",
-				bodyIgnored: true,
+				request:   "GET /?cmd=typeless&content=kthxbai HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nContent-Length: 7\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      "kthxbai",
+				validJSON: false,
 			},
 		}, {
 			// GET returning JSON body but an empty content-type header
 			call: call{"GET", "http://127.0.0.1:49994/?cmd=typeless&content=%7B%22msg%22%3A%20%22I%27m%20JSON%22%7D", ""},
 			webhook: webhook{
-				request:  "GET /?cmd=typeless&content=%7B%22msg%22%3A%20%22I%27m%20JSON%22%7D HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "HTTP/1.1 200 OK\r\nContent-Length: 19\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{\"msg\": \"I'm JSON\"}",
-				json:     `{"msg": "I'm JSON"}`,
+				request:   "GET /?cmd=typeless&content=%7B%22msg%22%3A%20%22I%27m%20JSON%22%7D HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nContent-Length: 19\r\nContent-Type: \r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      `{"msg": "I'm JSON"}`,
+				validJSON: true,
 			},
 		}, {
 			// connection error
 			call: call{"POST", "http://127.0.0.1:55555/", ""},
 			webhook: webhook{
-				request:  "POST / HTTP/1.1\r\nHost: 127.0.0.1:55555\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
-				response: "",
-				json:     "",
+				request:   "POST / HTTP/1.1\r\nHost: 127.0.0.1:55555\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "",
+				body:      "",
+				validJSON: false,
 			},
 		},
 	}
@@ -130,8 +137,8 @@ func TestWebhookParsing(t *testing.T) {
 			assert.Equal(t, tc.call.method, c.Request.Method, "method mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.request, string(c.RequestTrace), "request trace mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.response, string(c.ResponseTrace), "response mismatch for call %s", tc.call)
-			assert.Equal(t, tc.webhook.bodyIgnored, c.BodyIgnored, "body-ignored mismatch for call %s", tc.call)
-			assert.Equal(t, tc.webhook.json, string(c.ResponseBody), "body mismatch for call %s", tc.call)
+			assert.Equal(t, tc.webhook.body, string(c.ResponseBody), "body mismatch for call %s", tc.call)
+			assert.Equal(t, tc.webhook.validJSON, c.ValidJSON, "validJSON mismatch for call %s", tc.call)
 		}
 	}
 }
@@ -158,7 +165,8 @@ func TestRetries(t *testing.T) {
 
 	assert.Equal(t, 200, c.Response.StatusCode)
 	assert.Equal(t, "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 4\r\nAccept-Encoding: gzip\r\n\r\nBODY", string(c.RequestTrace))
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 1\r\n\r\nb", string(c.ResponseTrace))
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 1\r\n\r\n", string(c.ResponseTrace))
+	assert.Equal(t, "b", string(c.ResponseBody))
 }
 
 func TestAccessRestrictions(t *testing.T) {

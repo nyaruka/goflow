@@ -39,17 +39,18 @@ func AssertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMess
 		return true
 	}
 
+	message := fmt.Sprintf(msg, msgArgs...)
+
 	expectedNormalized, err := NormalizeJSON(expected)
-	require.NoError(t, err, "unable to normalize expected JSON: %s", string(expected))
+	require.NoError(t, err, "%s: unable to normalize expected JSON: %s", message, string(expected))
 
 	actualNormalized, err := NormalizeJSON(actual)
-	require.NoError(t, err, "unable to normalize actual JSON: %s", string(actual))
+	require.NoError(t, err, "%s: unable to normalize actual JSON: %s", message, string(actual))
 
 	differ := diff.New()
 	diffs := differ.DiffMain(string(expectedNormalized), string(actualNormalized), false)
 
 	if len(diffs) != 1 || diffs[0].Type != diff.DiffEqual {
-		message := fmt.Sprintf(msg, msgArgs...)
 		assert.Fail(t, message, differ.DiffPrettyText(diffs))
 		return false
 	}

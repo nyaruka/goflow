@@ -133,7 +133,7 @@ func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 	if call.Response != nil {
 		value = strconv.Itoa(call.Response.StatusCode)
 
-		if len(call.ResponseBody) < resultExtraMaxBytes {
+		if len(call.ResponseBody) < resultExtraMaxBytes && call.ValidJSON {
 			extra = call.ResponseBody
 		}
 	}

@@ -27,7 +27,8 @@ func TestMessage(t *testing.T) {
 	response, trace, err := client.Message("Hello")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
 	assert.Equal(t, "GET /message?v=20170307&q=Hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer 3246231\r\nAccept-Encoding: gzip\r\n\r\n", string(trace.RequestTrace))
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\nxx", string(trace.ResponseTrace))
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n", string(trace.ResponseTrace))
+	assert.Equal(t, "xx", string(trace.ResponseBody))
 	assert.Nil(t, response)
 
 	response, trace, err = client.Message("Hello")

@@ -460,6 +460,9 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 	call, err := svc.Call(nil, request)
 	require.NoError(t, err)
 
+	assert.Equal(t, 42, len(call.ResponseTrace))
+	assert.Equal(t, 20000, len(call.ResponseBody))
+
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
 
 	assert.Equal(t, "http://temba.io/", event.URL)
@@ -487,6 +490,6 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
 
 	assert.Equal(t, "http://temba.io/", event.URL)
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n\xa0\xa1", event.Response)
-	assert.False(t, utf8.Valid([]byte(event.Response)))
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n...", event.Response)
+	assert.True(t, utf8.ValidString(event.Response))
 }

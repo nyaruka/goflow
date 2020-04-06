@@ -1,11 +1,12 @@
 package httpx
 
 import (
+	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 
 	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/pkg/errors"
@@ -74,6 +75,7 @@ type MockResponse struct {
 	Headers    map[string]string
 	Body       []byte
 	BodyRepeat int
+	Gzip       bool
 }
 
 // Make mocks making the given request and returning this as the response
@@ -83,9 +85,18 @@ func (m MockResponse) Make(request *http.Request) *http.Response {
 		header.Set(k, v)
 	}
 
-	body := string(m.Body)
+	body := m.Body
 	if m.BodyRepeat > 1 {
-		body = strings.Repeat(body, m.BodyRepeat)
+		body = bytes.Repeat(body, m.BodyRepeat)
+	}
+	if m.Gzip {
+		header.Set("Content-Encoding", "gzip")
+
+		b := &bytes.Buffer{}
+		w := gzip.NewWriter(b)
+		w.Write(body)
+		w.Flush()
+		body = b.Bytes()
 	}
 
 	return &http.Response{
@@ -96,17 +107,22 @@ func (m MockResponse) Make(request *http.Request) *http.Response {
 		ProtoMajor:    1,
 		ProtoMinor:    0,
 		Header:        header,
-		Body:          ioutil.NopCloser(strings.NewReader(body)),
+		Body:          ioutil.NopCloser(bytes.NewReader(body)),
 		ContentLength: int64(len(body)),
 	}
 }
 
 // MockConnectionError mocks a connection error
-var MockConnectionError = MockResponse{0, nil, []byte{}, 0}
+var MockConnectionError = MockResponse{Status: 0, Headers: nil, Body: []byte{}, BodyRepeat: 0}
 
 // NewMockResponse creates a new mock response from a string
 func NewMockResponse(status int, headers map[string]string, body string) MockResponse {
-	return MockResponse{status, headers, []byte(body), 0}
+	return MockResponse{Status: status, Headers: headers, Body: []byte(body), BodyRepeat: 0}
+}
+
+// NewMockGzippedResponse creates a new mock response from a string
+func NewMockGzippedResponse(status int, headers map[string]string, body string) MockResponse {
+	return MockResponse{Status: status, Headers: headers, Body: []byte(body), BodyRepeat: 0, Gzip: true}
 }
 
 //------------------------------------------------------------------------------------------
@@ -118,6 +134,7 @@ type mockResponseEnvelope struct {
 	Headers    map[string]string `json:"headers,omitempty"`
 	Body       string            `json:"body" validate:"required"`
 	BodyRepeat int               `json:"body_repeat,omitempty"`
+	Gzip       bool              `json:"gzip,omitempty"`
 }
 
 func (m *MockResponse) MarshalJSON() ([]byte, error) {
@@ -126,6 +143,7 @@ func (m *MockResponse) MarshalJSON() ([]byte, error) {
 		Headers:    m.Headers,
 		Body:       string(m.Body),
 		BodyRepeat: m.BodyRepeat,
+		Gzip:       m.Gzip,
 	})
 }
 
@@ -139,5 +157,6 @@ func (m *MockResponse) UnmarshalJSON(data []byte) error {
 	m.Headers = e.Headers
 	m.Body = []byte(e.Body)
 	m.BodyRepeat = e.BodyRepeat
+	m.Gzip = e.Gzip
 	return nil
 }
