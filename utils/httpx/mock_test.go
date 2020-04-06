@@ -17,11 +17,11 @@ func TestMockRequestor(t *testing.T) {
 	// can create requestor with constructor
 	requestor1 := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://google.com": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, "this is google", 0),
-			httpx.NewMockResponse(201, nil, "this is google again", 0),
+			httpx.NewMockResponse(200, nil, "this is google"),
+			httpx.NewMockResponse(201, nil, "this is google again"),
 		},
 		"http://yahoo.com": []httpx.MockResponse{
-			httpx.NewMockResponse(202, nil, "this is yahoo", 0),
+			httpx.NewMockResponse(202, nil, "this is yahoo"),
 			httpx.MockConnectionError,
 		},
 	})

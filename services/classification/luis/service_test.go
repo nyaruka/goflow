@@ -63,7 +63,7 @@ func TestService(t *testing.T) {
 				  "label": "positive",
 				  "score": 0.731448531
 				}
-			}`, 1),
+			}`),
 		},
 	}))
 

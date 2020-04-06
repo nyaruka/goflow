@@ -57,29 +57,29 @@ func TestDoWithRetries(t *testing.T) {
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/1/": []httpx.MockResponse{
-			httpx.NewMockResponse(502, nil, "a", 1),
+			httpx.NewMockResponse(502, nil, "a"),
 		},
 		"http://temba.io/2/": []httpx.MockResponse{
-			httpx.NewMockResponse(503, nil, "a", 1),
-			httpx.NewMockResponse(504, nil, "b", 1),
-			httpx.NewMockResponse(505, nil, "c", 1),
+			httpx.NewMockResponse(503, nil, "a"),
+			httpx.NewMockResponse(504, nil, "b"),
+			httpx.NewMockResponse(505, nil, "c"),
 		},
 		"http://temba.io/3/": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, "a", 1),
+			httpx.NewMockResponse(200, nil, "a"),
 		},
 		"http://temba.io/4/": []httpx.MockResponse{
-			httpx.NewMockResponse(502, nil, "a", 1),
+			httpx.NewMockResponse(502, nil, "a"),
 		},
 		"http://temba.io/5/": []httpx.MockResponse{
-			httpx.NewMockResponse(502, nil, "a", 1),
-			httpx.NewMockResponse(200, nil, "b", 1),
+			httpx.NewMockResponse(502, nil, "a"),
+			httpx.NewMockResponse(200, nil, "b"),
 		},
 		"http://temba.io/6/": []httpx.MockResponse{
-			httpx.NewMockResponse(429, map[string]string{"Retry-After": "1"}, "a", 1),
-			httpx.NewMockResponse(201, nil, "b", 1),
+			httpx.NewMockResponse(429, map[string]string{"Retry-After": "1"}, "a"),
+			httpx.NewMockResponse(201, nil, "b"),
 		},
 		"http://temba.io/7/": []httpx.MockResponse{
-			httpx.NewMockResponse(429, map[string]string{"Retry-After": "100"}, "a", 1),
+			httpx.NewMockResponse(429, map[string]string{"Retry-After": "100"}, "a"),
 		},
 	})
 	httpx.SetRequestor(mocks)

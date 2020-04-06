@@ -16,8 +16,8 @@ func TestHTTPLogs(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, "hello", 1),
-			httpx.NewMockResponse(400, nil, "is error", 1),
+			httpx.NewMockResponse(200, nil, "hello"),
+			httpx.NewMockResponse(400, nil, "is error"),
 			httpx.MockConnectionError,
 		},
 	}))

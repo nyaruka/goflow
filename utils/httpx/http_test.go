@@ -35,10 +35,10 @@ func TestMaxBodyBytes(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://temba.io": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, testBody, 1),
-			httpx.NewMockResponse(200, nil, testBody, 1),
-			httpx.NewMockResponse(200, nil, testBody, 1),
-			httpx.NewMockResponse(200, nil, testBody, 1),
+			httpx.NewMockResponse(200, nil, testBody),
+			httpx.NewMockResponse(200, nil, testBody),
+			httpx.NewMockResponse(200, nil, testBody),
+			httpx.NewMockResponse(200, nil, testBody),
 		},
 	}))
 
@@ -67,3 +67,23 @@ func TestMaxBodyBytes(t *testing.T) {
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 26\r\n\r\n", string(trace.ResponseTrace))
 	assert.Equal(t, ``, string(trace.ResponseBody))
 }
+
+/*func TestEncoding(t *testing.T) {
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
+
+	gzipResponse := func(r httpx.MockResponse) {
+		gzip.NewWriter()
+	}
+
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"https://temba.io": []httpx.MockResponse{
+			httpx.NewMockResponse(200, map[string]string{"Content-Encoding": "gzip"}, "OK", 1),
+		},
+	}))
+
+	trace, err := httpx.NewTrace(http.DefaultClient, "GET", "https://temba.io", strings.NewReader("this is the body"), map[string]string{"Accept-Encoding": "gzip"}, nil, nil)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 16\r\nAccept-Encoding: gzip\r\n\r\nthis is the body", string(trace.RequestTrace))
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\nOK", string(trace.ResponseTrace))
+}*/

@@ -144,8 +144,8 @@ func TestRetries(t *testing.T) {
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": []httpx.MockResponse{
-			httpx.NewMockResponse(502, nil, "a", 1),
-			httpx.NewMockResponse(200, nil, "b", 1),
+			httpx.NewMockResponse(502, nil, "a"),
+			httpx.NewMockResponse(200, nil, "b"),
 		},
 	})
 	httpx.SetRequestor(mocks)

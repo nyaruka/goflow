@@ -450,7 +450,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, "Y", 20000),
+			httpx.NewMockResponse(200, nil, strings.Repeat("Y", 20000)),
 		},
 	}))
 
@@ -474,7 +474,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, "\xa0\xa1", -1),
+			httpx.NewMockResponse(200, nil, "\xa0\xa1"),
 		},
 	}))
 
