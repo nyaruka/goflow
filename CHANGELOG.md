@@ -1,3 +1,8 @@
+v0.81.0
+----------
+ * Rework httpx to replace NewTrace with NewRequest+DoTrace
+ * Separate out the header part of response traces from the body which won't always be valid UTF-8
+
 v0.80.0
 ----------
  * ivr_created events should include language of translated text
