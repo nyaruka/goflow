@@ -2,7 +2,6 @@ package httpx
 
 import (
 	"bytes"
-	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -75,7 +74,6 @@ type MockResponse struct {
 	Headers    map[string]string
 	Body       []byte
 	BodyRepeat int
-	Gzip       bool
 }
 
 // Make mocks making the given request and returning this as the response
@@ -88,15 +86,6 @@ func (m MockResponse) Make(request *http.Request) *http.Response {
 	body := m.Body
 	if m.BodyRepeat > 1 {
 		body = bytes.Repeat(body, m.BodyRepeat)
-	}
-	if m.Gzip {
-		header.Set("Content-Encoding", "gzip")
-
-		b := &bytes.Buffer{}
-		w := gzip.NewWriter(b)
-		w.Write(body)
-		w.Flush()
-		body = b.Bytes()
 	}
 
 	return &http.Response{
@@ -120,11 +109,6 @@ func NewMockResponse(status int, headers map[string]string, body string) MockRes
 	return MockResponse{Status: status, Headers: headers, Body: []byte(body), BodyRepeat: 0}
 }
 
-// NewMockGzippedResponse creates a new mock response from a string
-func NewMockGzippedResponse(status int, headers map[string]string, body string) MockResponse {
-	return MockResponse{Status: status, Headers: headers, Body: []byte(body), BodyRepeat: 0, Gzip: true}
-}
-
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
@@ -134,7 +118,6 @@ type mockResponseEnvelope struct {
 	Headers    map[string]string `json:"headers,omitempty"`
 	Body       string            `json:"body" validate:"required"`
 	BodyRepeat int               `json:"body_repeat,omitempty"`
-	Gzip       bool              `json:"gzip,omitempty"`
 }
 
 func (m *MockResponse) MarshalJSON() ([]byte, error) {
@@ -143,7 +126,6 @@ func (m *MockResponse) MarshalJSON() ([]byte, error) {
 		Headers:    m.Headers,
 		Body:       string(m.Body),
 		BodyRepeat: m.BodyRepeat,
-		Gzip:       m.Gzip,
 	})
 }
 
@@ -157,6 +139,5 @@ func (m *MockResponse) UnmarshalJSON(data []byte) error {
 	m.Headers = e.Headers
 	m.Body = []byte(e.Body)
 	m.BodyRepeat = e.BodyRepeat
-	m.Gzip = e.Gzip
 	return nil
 }

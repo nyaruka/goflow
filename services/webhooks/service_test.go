@@ -79,6 +79,24 @@ func TestWebhookParsing(t *testing.T) {
 				validJSON: true,
 			},
 		}, {
+			// successful POST receiving gzipped non-JSON body
+			call: call{"POST", "http://127.0.0.1:49994/?cmd=gzipped&content=Hello", ``},
+			webhook: webhook{
+				request:   "POST /?cmd=gzipped&content=Hello HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      `Hello`,
+				validJSON: false,
+			},
+		}, {
+			// successful POST receiving gzipped JSON body
+			call: call{"POST", "http://127.0.0.1:49994/?cmd=gzipped&content=%7B%22contact%22%3A%20%22Bob%22%7D", ``},
+			webhook: webhook{
+				request:   "POST /?cmd=gzipped&content=%7B%22contact%22%3A%20%22Bob%22%7D HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      `{"contact": "Bob"}`,
+				validJSON: true,
+			},
+		}, {
 			// POST returning 503
 			call: call{"POST", "http://127.0.0.1:49994/?cmd=unavailable", ""},
 			webhook: webhook{

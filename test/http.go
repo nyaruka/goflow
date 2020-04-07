@@ -1,6 +1,8 @@
 package test
 
 import (
+	"bytes"
+	"compress/gzip"
 	"fmt"
 	"net"
 	"net/http"
@@ -66,6 +68,13 @@ func testHTTPHandler(w http.ResponseWriter, r *http.Request) {
 	case "gone":
 		statusCode = http.StatusGone
 		data = []byte(`{ "errors": ["gone"] }`)
+	case "gzipped":
+		w.Header().Set("Content-Encoding", "gzip")
+		b := &bytes.Buffer{}
+		w := gzip.NewWriter(b)
+		w.Write(data)
+		w.Close()
+		data = b.Bytes()
 	}
 
 	w.Header().Set("Date", "Wed, 11 Apr 2018 18:24:30 GMT")

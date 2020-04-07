@@ -43,6 +43,12 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 		}
 	}
 
+	// If user has explicitly set Accept-Encoding: gzip, remove it as Transport will add this itself,
+	// and it only does automatic decompression if its the one to set it.
+	if request.Header.Get("Accept-Encoding") == "gzip" {
+		request.Header.Del("Accept-Encoding")
+	}
+
 	trace, err := httpx.DoTrace(s.httpClient, request, s.httpRetries, s.httpAccess, s.maxBodyBytes)
 	if trace != nil {
 		call := &flows.WebhookCall{Trace: trace}
