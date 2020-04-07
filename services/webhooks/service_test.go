@@ -83,7 +83,7 @@ func TestWebhookParsing(t *testing.T) {
 			call: call{"POST", "http://127.0.0.1:49994/?cmd=gzipped&content=Hello", ``},
 			webhook: webhook{
 				request:   "POST /?cmd=gzipped&content=Hello HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
-				response:  "HTTP/1.1 200 OK\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
 				body:      `Hello`,
 				validJSON: false,
 			},
@@ -92,7 +92,7 @@ func TestWebhookParsing(t *testing.T) {
 			call: call{"POST", "http://127.0.0.1:49994/?cmd=gzipped&content=%7B%22contact%22%3A%20%22Bob%22%7D", ``},
 			webhook: webhook{
 				request:   "POST /?cmd=gzipped&content=%7B%22contact%22%3A%20%22Bob%22%7D HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
-				response:  "HTTP/1.1 200 OK\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
 				body:      `{"contact": "Bob"}`,
 				validJSON: true,
 			},

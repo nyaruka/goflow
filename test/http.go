@@ -69,6 +69,7 @@ func testHTTPHandler(w http.ResponseWriter, r *http.Request) {
 		statusCode = http.StatusGone
 		data = []byte(`{ "errors": ["gone"] }`)
 	case "gzipped":
+		w.Header().Set("Content-Type", "application/x-gzip")
 		w.Header().Set("Content-Encoding", "gzip")
 		b := &bytes.Buffer{}
 		w := gzip.NewWriter(b)
