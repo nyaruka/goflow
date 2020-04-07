@@ -130,18 +130,18 @@ func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, a
 	return trace, nil
 }
 
-// NewTrace makes the given request saving traces of the complete request and response
-func NewTrace(client *http.Client, method string, url string, body io.Reader, headers map[string]string, retries *RetryConfig, access *AccessConfig) (*Trace, error) {
-	request, err := http.NewRequest(method, url, body)
+// NewRequest is a convenience method to create a request with the given headers
+func NewRequest(method string, url string, body io.Reader, headers map[string]string) (*http.Request, error) {
+	r, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
 	}
 
 	for key, value := range headers {
-		request.Header.Set(key, value)
+		r.Header.Set(key, value)
 	}
 
-	return DoTrace(client, request, retries, access, -1)
+	return r, nil
 }
 
 // attempts to read the body of an HTTP response

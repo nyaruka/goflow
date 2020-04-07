@@ -11,9 +11,10 @@ import (
 	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestNewTrace(t *testing.T) {
+func TestDoTrace(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
@@ -21,7 +22,10 @@ func TestNewTrace(t *testing.T) {
 	server := test.NewTestHTTPServer(52025)
 
 	// test with a text response
-	trace, err := httpx.NewTrace(http.DefaultClient, "GET", server.URL+"?cmd=success", nil, nil, nil, nil)
+	request, err := httpx.NewRequest("GET", server.URL+"?cmd=success", nil, nil)
+	require.NoError(t, err)
+
+	trace, err := httpx.DoTrace(http.DefaultClient, request, nil, nil, -1)
 	assert.NoError(t, err)
 	assert.Equal(t, "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n", string(trace.RequestTrace))
 	assert.Equal(t, `{ "ok": "true" }`, string(trace.ResponseBody))
@@ -34,7 +38,10 @@ func TestNewTrace(t *testing.T) {
 	assert.Equal(t, ">>>>>>>> GET http://127.0.0.1:52025?cmd=success\nGET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n\n<<<<<<<<\nHTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }", trace.String())
 
 	// test with a binary response
-	trace, err = httpx.NewTrace(http.DefaultClient, "GET", server.URL+"?cmd=binary&size=1000", nil, nil, nil, nil)
+	request, err = httpx.NewRequest("GET", server.URL+"?cmd=binary&size=1000", nil, nil)
+	require.NoError(t, err)
+
+	trace, err = httpx.DoTrace(http.DefaultClient, request, nil, nil, -1)
 	assert.NoError(t, err)
 	assert.Equal(t, "GET /?cmd=binary&size=1000 HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n", string(trace.RequestTrace))
 	assert.Equal(t, "HTTP/1.1 200 OK\r\nContent-Length: 1000\r\nContent-Type: application/octet-stream\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n", string(trace.ResponseTrace))
@@ -91,8 +98,10 @@ func TestNonUTF8(t *testing.T) {
 		},
 	}))
 
-	trace, err := httpx.NewTrace(http.DefaultClient, "GET", "https://temba.io", nil, nil, nil, nil)
+	request, err := httpx.NewRequest("GET", "https://temba.io", nil, nil)
+	require.NoError(t, err)
 
+	trace, err := httpx.DoTrace(http.DefaultClient, request, nil, nil, -1)
 	assert.NoError(t, err)
 	assert.Equal(t, "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n", string(trace.RequestTrace))
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n", string(trace.ResponseTrace))
