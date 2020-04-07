@@ -8,6 +8,7 @@ import (
 	"net/http/httputil"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/nyaruka/goflow/utils/dates"
 
@@ -57,7 +58,7 @@ type Trace struct {
 	RequestTrace  []byte
 	Response      *http.Response
 	ResponseTrace []byte
-	ResponseBody  []byte
+	ResponseBody  []byte // response body stored separately
 	StartTime     time.Time
 	EndTime       time.Time
 }
@@ -68,7 +69,23 @@ func (t *Trace) String() string {
 	b.WriteString(string(t.RequestTrace))
 	b.WriteString("\n<<<<<<<<\n")
 	b.WriteString(string(t.ResponseTrace))
+	b.WriteString(string(t.ResponseBody))
 	return b.String()
+}
+
+// ResponseTraceUTF8 returns a valid UTF-8 string version of trace, substituting the body with placeholder if it isn't valid UTF-8
+func (t *Trace) ResponseTraceUTF8(placeholder string) string {
+	// headers part assumed to be valid UTF-8
+	s := string(t.ResponseTrace)
+
+	// if body is valid UTF-8, include it
+	if utf8.Valid(t.ResponseBody) {
+		s += string(t.ResponseBody)
+	} else {
+		s += placeholder
+	}
+
+	return s
 }
 
 // DoTrace makes the given request saving traces of the complete request and response
@@ -98,16 +115,12 @@ func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, a
 	if err != nil {
 		return trace, err
 	}
-
 	trace.ResponseTrace = responseTrace
 
 	responseBody, err := readBody(response, maxBodyBytes)
 	if err != nil {
 		return trace, err
 	}
-
-	// add read body to response trace
-	trace.ResponseTrace = append(trace.ResponseTrace, responseBody...)
 	trace.ResponseBody = responseBody
 
 	if debug {

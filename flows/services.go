@@ -43,7 +43,7 @@ const (
 // WebhookCall is the result of a webhook call
 type WebhookCall struct {
 	*httpx.Trace
-	BodyIgnored bool
+	ValidJSON bool
 }
 
 // WebhookService provides webhook functionality to the engine
@@ -145,7 +145,7 @@ func newHTTPLogWithStatus(trace *httpx.Trace, status CallStatus) *HTTPLog {
 		URL:       trace.Request.URL.String(),
 		Status:    status,
 		Request:   string(trace.RequestTrace),
-		Response:  string(trace.ResponseTrace),
+		Response:  trace.ResponseTraceUTF8("..."),
 		CreatedOn: trace.StartTime,
 		ElapsedMS: int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
 	}
