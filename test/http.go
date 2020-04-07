@@ -50,7 +50,7 @@ func testHTTPHandler(w http.ResponseWriter, r *http.Request) {
 		size, _ := strconv.Atoi(sizeParam)
 		data = make([]byte, size)
 		for i := 0; i < size; i++ {
-			data[i] = byte(40 + i%10)
+			data[i] = byte(i % 255)
 		}
 
 		w.Header().Set("Content-Length", sizeParam)

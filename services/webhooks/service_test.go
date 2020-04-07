@@ -5,10 +5,12 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/stretchr/testify/assert"
@@ -204,4 +206,30 @@ func TestAccessRestrictions(t *testing.T) {
 	// should still have a trace.. just no response part
 	assert.Equal(t, "GET /foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Foo\r\nAccept-Encoding: gzip\r\n\r\n", string(call.RequestTrace))
 	assert.Equal(t, "", string(call.ResponseTrace))
+}
+
+func TestGzipEncoding(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	defer dates.SetNowSource(dates.DefaultNowSource)
+
+	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
+
+	server := test.NewTestHTTPServer(52025)
+
+	request, err := http.NewRequest("GET", server.URL+"?cmd=gzipped&content=Hello", nil)
+	require.NoError(t, err)
+
+	request.Header.Set("Accept-Encoding", "gzip")
+
+	svc, _ := session.Engine().Services().Webhook(session)
+	c, err := svc.Call(session, request)
+
+	// check that gzip decompression happens transparently
+	assert.Equal(t, 200, c.Response.StatusCode)
+	assert.Equal(t, "GET /?cmd=gzipped&content=Hello HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n", string(c.RequestTrace))
+	assert.Equal(t, "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n", string(c.ResponseTrace))
+	assert.Equal(t, "Hello", string(c.ResponseBody))
+	assert.Equal(t, "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nHello", c.ResponseTraceUTF8("..."))
 }
