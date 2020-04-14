@@ -398,6 +398,34 @@ Events are created when a contact is added or removed to/from one or more groups
 }
 ```
 </div>
+<h2 class="item_title"><a name="event:contact_is_blocked_changed" href="#event:contact_is_blocked_changed">contact_is_blocked_changed</a></h2>
+
+Events are created when the is_blocked of the contact has been changed.
+
+<div class="output_event">
+
+```json
+{
+    "type": "contact_is_blocked_changed",
+    "created_on": "2006-01-02T15:04:05Z",
+    "is_blocked": false
+}
+```
+</div>
+<h2 class="item_title"><a name="event:contact_is_stopped_changed" href="#event:contact_is_stopped_changed">contact_is_stopped_changed</a></h2>
+
+Events are created when the is_stopped of the contact has been changed.
+
+<div class="output_event">
+
+```json
+{
+    "type": "contact_is_stopped_changed",
+    "created_on": "2006-01-02T15:04:05Z",
+    "is_stopped": false
+}
+```
+</div>
 <h2 class="item_title"><a name="event:contact_language_changed" href="#event:contact_language_changed">contact_language_changed</a></h2>
 
 Events are created when the language of the contact has been changed.
