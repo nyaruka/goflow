@@ -176,6 +176,20 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
+			modifiers.NewIsBlocked(true),
+			`{
+				"type": "is_blocked",
+				"modification": true
+			}`,
+		},
+		{
+			modifiers.NewIsBlocked(false),
+			`{
+				"type": "is_blocked",
+				"modification": false
+			}`,
+		},
+		{
 			modifiers.NewTimezone(la),
 			`{
 				"type": "timezone",

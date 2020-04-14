@@ -1,0 +1,27 @@
+[
+    {
+        "description": "block a contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "is_blocked",
+            "modification": true
+        },
+        "contact_after": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "is_blocked": true,
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "is_blocked": true,
+                "type": "contact_is_blocked_changed"
+            }
+        ]
+    }
+]

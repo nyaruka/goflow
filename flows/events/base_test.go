@@ -212,6 +212,22 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewContactIsBlockedChanged(true),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"is_blocked": true,
+				"type": "contact_is_blocked_changed"
+			}`,
+		},
+		{
+			events.NewContactIsBlockedChanged(false),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"is_blocked": false,
+				"type": "contact_is_blocked_changed"
+			}`,
+		},
+		{
 			events.NewContactLanguageChanged(envs.Language("fra")),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
