@@ -11,7 +11,7 @@ func init() {
 // TypeContactIsBlockedChanged is the type of our contact is_blocked changed event
 const TypeContactIsBlockedChanged string = "contact_is_blocked_changed"
 
-// ContactIsBlockedChangedEvent events are created when the name of the contact has been changed.
+// ContactIsBlockedChangedEvent events are created when the is_blocked of the contact has been changed.
 //
 //   {
 //     "type": "contact_is_blocked_changed",

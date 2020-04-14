@@ -176,17 +176,17 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewIsBlocked(true),
+			modifiers.NewIsBlocked(modifiers.ShouldBlock),
 			`{
 				"type": "is_blocked",
-				"modification": true
+				"modification": "block"
 			}`,
 		},
 		{
-			modifiers.NewIsBlocked(false),
+			modifiers.NewIsBlocked(modifiers.ShouldUnblock),
 			`{
 				"type": "is_blocked",
-				"modification": false
+				"modification": "unblock"
 			}`,
 		},
 		{
