@@ -49,13 +49,17 @@ func TestContact(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	contact, _ := flows.NewContact(
-		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"),
+		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"), false, false,
 		nil, time.Now(), nil, nil, nil, assets.PanicOnMissing,
 	)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
+	assert.False(t, contact.IsBlocked())
+	assert.False(t, contact.IsStopped())
 	assert.Nil(t, contact.PreferredChannel())
 
+	contact.SetIsBlocked(true)
+	contact.SetIsStopped(true)
 	contact.SetTimezone(env.Timezone())
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
 	contact.AddURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil)
@@ -67,6 +71,8 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, envs.Language("eng"), contact.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
+	assert.True(t, contact.IsBlocked())
+	assert.True(t, contact.IsStopped())
 
 	assert.True(t, contact.HasURN("tel:+12024561111"))      // has URN
 	assert.True(t, contact.HasURN("tel:+120-2456-1111"))    // URN will be normalized
@@ -134,7 +140,7 @@ func TestContactFormat(t *testing.T) {
 
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
-		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, nil, time.Now(),
+		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, false, false, nil, time.Now(),
 		nil, nil, nil, assets.PanicOnMissing,
 	)
 	contact.AddURN(urns.URN("twitter:joey"), nil)
