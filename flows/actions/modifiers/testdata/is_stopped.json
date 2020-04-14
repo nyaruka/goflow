@@ -67,6 +67,7 @@
         "contact_before": {
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "name": "Bob",
+            "language": "fra",
             "is_stopped": true,
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
         },
@@ -77,6 +78,13 @@
         "contact_after": {
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "name": "Bob",
+            "language": "fra",
+            "groups": [
+                {
+                    "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+                    "name": "Francophones"
+                }
+            ],
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
         },
         "events": [
@@ -84,6 +92,56 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "is_stopped": false,
                 "type": "contact_is_stopped_changed"
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_added": [
+                    {
+                        "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+                        "name": "Francophones"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "is_stopped changed for stopping a contact and removing all groups",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "groups": [
+                {
+                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                    "name": "Customers"
+                }
+            ],
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "is_stopped",
+            "modification": "stop"
+        },
+        "contact_after": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "is_stopped": true,
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "is_stopped": true,
+                "type": "contact_is_stopped_changed"
+            },{
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_removed": [
+                    {
+                        "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                        "name": "Customers"
+                    }
+                ]
             }
         ]
     }

@@ -183,6 +183,20 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
+			modifiers.NewIsStopped(modifiers.ShouldStop),
+			`{
+				"type": "is_stopped",
+				"modification": "stop"
+			}`,
+		},
+		{
+			modifiers.NewIsStopped(modifiers.ShouldUnstop),
+			`{
+				"type": "is_stopped",
+				"modification": "unstop"
+			}`,
+		},
+		{
 			modifiers.NewIsBlocked(modifiers.ShouldUnblock),
 			`{
 				"type": "is_blocked",
