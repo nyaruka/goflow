@@ -228,6 +228,22 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewContactIsStoppedChanged(true),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"is_stopped": true,
+				"type": "contact_is_stopped_changed"
+			}`,
+		},
+		{
+			events.NewContactIsStoppedChanged(false),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"is_stopped": false,
+				"type": "contact_is_stopped_changed"
+			}`,
+		},
+		{
 			events.NewContactLanguageChanged(envs.Language("fra")),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
