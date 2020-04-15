@@ -366,27 +366,16 @@
 <div class="sourceCode" id="cb32"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb32-1"><a href="#cb32-1"></a>@(has_top_intent(results.intent, <span class="st">&quot;book_flight&quot;</span>, <span class="fl">0.5</span>)) → true</span>
 <span id="cb32-2"><a href="#cb32-2"></a>@(has_top_intent(results.intent, <span class="st">&quot;book_hotel&quot;</span>, <span class="fl">0.5</span>)) → false</span></code></pre></div>
 <h2 class="item_title">
-<a name="test:has_value" href="#test:has_value">has_value(value)</a>
-</h2>
-<p>Returns whether <code>value</code> is non-nil and not an error</p>
-<p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb33-1"><a href="#cb33-1"></a>@(has_value(<span class="st">&quot;hello&quot;</span>)) → true</span>
-<span id="cb33-2"><a href="#cb33-2"></a>@(has_value(<span class="st">&quot;hello&quot;</span>).match) → hello</span>
-<span id="cb33-3"><a href="#cb33-3"></a>@(has_value(datetime(<span class="st">&quot;foo&quot;</span>))) → false</span>
-<span id="cb33-4"><a href="#cb33-4"></a>@(has_value(not.existing)) → false</span>
-<span id="cb33-5"><a href="#cb33-5"></a>@(has_value(contact.fields.unset)) → false</span>
-<span id="cb33-6"><a href="#cb33-6"></a>@(has_value(<span class="st">&quot;&quot;</span>)) → false</span></code></pre></div>
-<h2 class="item_title">
 <a name="test:has_ward" href="#test:has_ward">has_ward(text, district, state)</a>
 </h2>
 <p>Tests whether a ward name is contained in the <code>text</code></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb34-1"><a href="#cb34-1"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</span>
-<span id="cb34-2"><a href="#cb34-2"></a>@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</span>
-<span id="cb34-3"><a href="#cb34-3"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) → false</span>
-<span id="cb34-4"><a href="#cb34-4"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</span>
-<span id="cb34-5"><a href="#cb34-5"></a>@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</span>
-<span id="cb34-6"><a href="#cb34-6"></a>@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) → false</span>
-<span id="cb34-7"><a href="#cb34-7"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb33-1"><a href="#cb33-1"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</span>
+<span id="cb33-2"><a href="#cb33-2"></a>@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</span>
+<span id="cb33-3"><a href="#cb33-3"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) → false</span>
+<span id="cb33-4"><a href="#cb33-4"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</span>
+<span id="cb33-5"><a href="#cb33-5"></a>@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</span>
+<span id="cb33-6"><a href="#cb33-6"></a>@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) → false</span>
+<span id="cb33-7"><a href="#cb33-7"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</span></code></pre></div>
 </div>
 
     </body>

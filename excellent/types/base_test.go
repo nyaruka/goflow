@@ -37,7 +37,6 @@ func TestXValue(t *testing.T) {
 		rendered  string
 		formatted string
 		asBool    bool
-		isEmpty   bool
 	}{
 		{
 			value:     nil,
@@ -45,140 +44,120 @@ func TestXValue(t *testing.T) {
 			rendered:  "",
 			formatted: "",
 			asBool:    false,
-			isEmpty:   true,
 		}, {
 			value:     types.NewXText(""),
 			marshaled: `""`,
 			rendered:  "",
 			formatted: "",
 			asBool:    false, // empty strings are false
-			isEmpty:   true,
 		}, {
 			value:     types.NewXText("FALSE"),
 			marshaled: `"FALSE"`,
 			rendered:  "FALSE",
 			formatted: "FALSE",
 			asBool:    false, // because it's string value is "false"
-			isEmpty:   false,
 		}, {
 			value:     types.NewXText("hello \"bob\""),
 			marshaled: `"hello \"bob\""`,
 			rendered:  "hello \"bob\"",
 			formatted: "hello \"bob\"",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXNumberFromInt(0),
 			marshaled: `0`,
 			rendered:  "0",
 			formatted: "0",
 			asBool:    false, // because any decimal != 0 is true
-			isEmpty:   false,
 		}, {
 			value:     types.NewXNumberFromInt(1234),
 			marshaled: `1234`,
 			rendered:  "1234",
 			formatted: "1,234",
 			asBool:    true, // because any decimal != 0 is true
-			isEmpty:   false,
 		}, {
 			value:     types.RequireXNumberFromString("123.00"),
 			marshaled: `123`,
 			rendered:  "123",
 			formatted: "123",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.RequireXNumberFromString("1234.5678"),
 			marshaled: `1234.5678`,
 			rendered:  "1234.5678",
 			formatted: "1,234.5678",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXBoolean(false),
 			marshaled: `false`,
 			rendered:  "false",
 			formatted: "false",
 			asBool:    false,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXBoolean(true),
 			marshaled: `true`,
 			rendered:  "true",
 			formatted: "true",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXDateTime(date1),
 			marshaled: `"2017-06-23T15:30:00.000000Z"`,
 			rendered:  "2017-06-23T15:30:00.000000Z",
 			formatted: "23-06-2017 15:30",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXDateTime(date2),
 			marshaled: `"2017-07-18T15:30:00.000000-05:00"`,
 			rendered:  "2017-07-18T15:30:00.000000-05:00",
 			formatted: "18-07-2017 20:30",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXArray(),
 			marshaled: `[]`,
 			rendered:  `[]`,
 			formatted: "",
 			asBool:    false,
-			isEmpty:   true,
 		}, {
 			value:     types.NewXArray(types.NewXNumberFromInt(1), types.NewXNumberFromInt(2)),
 			marshaled: `[1,2]`,
 			rendered:  `[1, 2]`,
 			formatted: "1, 2",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXArray(types.NewXDateTime(date1), types.NewXDateTime(date2)),
 			marshaled: `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
 			rendered:  `[2017-06-23T15:30:00.000000Z, 2017-07-18T15:30:00.000000-05:00]`,
 			formatted: "23-06-2017 15:30, 18-07-2017 20:30",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXArray(object1, object2),
 			marshaled: `[{"bar":123,"foo":"Hello"},{"bar":456,"foo":"World"}]`,
 			rendered:  `[{bar: 123, foo: Hello}, {bar: 456, foo: World}]`,
 			formatted: "- bar: 123\n  foo: Hello\n- bar: 456\n  foo: World",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.XObjectEmpty,
 			marshaled: `{}`,
 			rendered:  `{}`,
 			formatted: "",
 			asBool:    false,
-			isEmpty:   true,
 		}, {
 			value:     types.NewXObject(map[string]types.XValue{"first": object1, "second": object2}),
 			marshaled: `{"first":{"bar":123,"foo":"Hello"},"second":{"bar":456,"foo":"World"}}`,
 			rendered:  `{first: {bar: 123, foo: Hello}, second: {bar: 456, foo: World}}`,
 			formatted: "first:\n  bar: 123\n  foo: Hello\nsecond:\n  bar: 456\n  foo: World",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXObject(map[string]types.XValue{"__default__": types.NewXNumberFromInt(1), "foo": object1}),
 			marshaled: `{"foo":{"bar":123,"foo":"Hello"}}`,
 			rendered:  `1`,
 			formatted: "1",
 			asBool:    true,
-			isEmpty:   false,
 		}, {
 			value:     types.NewXError(errors.Errorf("it failed")), // once an error, always an error
 			marshaled: `null`,
 			rendered:  "",
 			formatted: "",
 			asBool:    false,
-			isEmpty:   false,
 		},
 	}
 	for _, test := range tests {
@@ -275,16 +254,4 @@ func TestEquals(t *testing.T) {
 
 type XBogusType struct {
 	types.XText
-}
-
-func TestIsEmpty(t *testing.T) {
-	assert.True(t, types.IsEmpty(nil))
-	assert.True(t, types.IsEmpty(types.NewXArray()))
-	assert.True(t, types.IsEmpty(types.XObjectEmpty))
-	assert.True(t, types.IsEmpty(types.NewXText("")))
-	assert.False(t, types.IsEmpty(types.NewXText("a")))
-	assert.False(t, types.IsEmpty(types.XBooleanFalse))
-	assert.False(t, types.IsEmpty(types.XBooleanTrue))
-	assert.False(t, types.IsEmpty(types.NewXNumberFromInt(0)))
-	assert.False(t, types.IsEmpty(types.NewXNumberFromInt(123)))
 }

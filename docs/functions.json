@@ -314,12 +314,8 @@
                 "output": "value"
             },
             {
-                "template": "@(default(array(1, 2), \"value\"))",
-                "output": "[1, 2]"
-            },
-            {
-                "template": "@(default(array(), \"value\"))",
-                "output": "value"
+                "template": "@(default(\"  \", \"value\"))",
+                "output": "\\x20\\x20"
             },
             {
                 "template": "@(default(datetime(\"invalid-date\"), \"today\"))",

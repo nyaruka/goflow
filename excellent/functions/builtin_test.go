@@ -196,6 +196,8 @@ func TestFunctions(t *testing.T) {
 
 		{"default", dmy, []types.XValue{xs("10"), xs("20")}, xs("10")},
 		{"default", dmy, []types.XValue{nil, xs("20")}, xs("20")},
+		{"default", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"__default__": xs("hello")}), xs("def")}, types.NewXObject(map[string]types.XValue{"__default__": xs("hello")})},
+		{"default", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"__default__": xs("")}), xs("def")}, xs("def")},
 		{"default", dmy, []types.XValue{types.NewXErrorf("This is error"), xs("20")}, xs("20")},
 		{"default", dmy, []types.XValue{}, ERROR},
 

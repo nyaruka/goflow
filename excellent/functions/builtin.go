@@ -1924,14 +1924,18 @@ func Count(env envs.Environment, value types.XValue) types.XValue {
 //   @(default(undeclared.var, "default_value")) -> default_value
 //   @(default("10", "20")) -> 10
 //   @(default("", "value")) -> value
-//   @(default(array(1, 2), "value")) -> [1, 2]
-//   @(default(array(), "value")) -> value
+//   @(default("  ", "value")) -> \x20\x20
 //   @(default(datetime("invalid-date"), "today")) -> today
 //   @(default(format_urn("invalid-urn"), "ok")) -> ok
 //
 // @function default(value, default)
 func Default(env envs.Environment, value types.XValue, def types.XValue) types.XValue {
-	if types.IsEmpty(value) || types.IsXError(value) {
+	asText, xerr := types.ToXText(env, value)
+	if xerr != nil {
+		return def
+	}
+
+	if len(asText.Native()) == 0 {
 		return def
 	}
 
