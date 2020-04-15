@@ -77,28 +77,6 @@ func Equals(x1 XValue, x2 XValue) bool {
 	}
 }
 
-// IsEmpty determines if the given value is empty
-func IsEmpty(x XValue) bool {
-	// nil is empty
-	if utils.IsNil(x) {
-		return true
-	}
-
-	// empty string is empty
-	text, isText := x.(XText)
-	if isText && text.Length() == 0 {
-		return true
-	}
-
-	// anything with count of zero is empty
-	countable, isCountable := x.(XCountable)
-	if isCountable && countable != nil && countable.Count() == 0 {
-		return true
-	}
-
-	return false
-}
-
 // Describe returns a representation of the given value for use in error messages
 func Describe(x XValue) string {
 	if utils.IsNil(x) {

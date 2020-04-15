@@ -204,6 +204,14 @@ func TestEvaluateTemplate(t *testing.T) {
 		}),
 		"func": functions.Lookup("upper"),
 		"err":  types.NewXError(errors.Errorf("an error")),
+		"object1": types.NewXObject(map[string]types.XValue{
+			"__default__": types.NewXText("123"),
+			"foo":         types.NewXNumberFromInt(123),
+		}),
+		"object2": types.NewXObject(map[string]types.XValue{
+			"__default__": types.XTextEmpty,
+			"foo":         types.NewXNumberFromInt(234),
+		}),
 	})
 
 	evaluateAsStringTests := []struct {
@@ -290,6 +298,10 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@(thing.missing)`, "", false},    // missing is nil which becomes empty string
 		{`@(thing.missing.xxx)`, "", true}, // but can't look up a property on nil
 		{`@(thing.xxx)`, "", true},
+
+		// objects with defaults
+		{`@object1`, "123", false},
+		{`@object2`, "", false},
 	}
 
 	env := envs.NewBuilder().Build()
