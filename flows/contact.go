@@ -383,26 +383,32 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment) ([]*Group, []*Gr
 	errs := make([]error, 0)
 
 	if c.Blocked() || c.Stopped() {
-		return added, removed, errs
-	}
-
-	for _, group := range c.assets.Groups().All() {
-		if !group.IsDynamic() {
-			continue
-		}
-
-		qualifies, err := group.CheckDynamicMembership(env, c)
-		if err != nil {
-			errs = append(errs, errors.Wrapf(err, "unable to re-evaluate membership of group '%s'", group.Name()))
-		}
-
-		if qualifies {
-			if c.groups.Add(group) {
-				added = append(added, group)
-			}
-		} else {
+		for _, group := range c.assets.Groups().All() {
 			if c.groups.Remove(group) {
 				removed = append(removed, group)
+			}
+		}
+
+	} else {
+
+		for _, group := range c.assets.Groups().All() {
+			if !group.IsDynamic() {
+				continue
+			}
+
+			qualifies, err := group.CheckDynamicMembership(env, c)
+			if err != nil {
+				errs = append(errs, errors.Wrapf(err, "unable to re-evaluate membership of group '%s'", group.Name()))
+			}
+
+			if qualifies {
+				if c.groups.Add(group) {
+					added = append(added, group)
+				}
+			} else {
+				if c.groups.Remove(group) {
+					removed = append(removed, group)
+				}
 			}
 		}
 	}

@@ -38,21 +38,10 @@ func (m *BlockedModifier) Apply(env envs.Environment, assets flows.SessionAssets
 
 		if m.State {
 			log(events.NewContactBlocked())
-			diff := make([]*flows.Group, 0, len(contact.Groups().All()))
-
-			for _, group := range contact.Groups().All() {
-				contact.Groups().Remove(group)
-				diff = append(diff, group)
-			}
-			// only generate event if contact's groups change
-			if len(diff) > 0 {
-				log(events.NewContactGroupsChanged(nil, diff))
-			}
-
 		} else {
 			log(events.NewContactUnblocked())
-			m.reevaluateDynamicGroups(env, assets, contact, log)
 		}
+		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
 }
 

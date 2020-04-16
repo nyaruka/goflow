@@ -35,24 +35,12 @@ func NewStopped(state bool) *StoppedModifier {
 func (m *StoppedModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	if m.State != contact.Stopped() {
 		contact.SetStopped(m.State)
-
 		if m.State {
 			log(events.NewContactStopped())
-			diff := make([]*flows.Group, 0, len(contact.Groups().All()))
-
-			for _, group := range contact.Groups().All() {
-				contact.Groups().Remove(group)
-				diff = append(diff, group)
-			}
-			// only generate event if contact's groups change
-			if len(diff) > 0 {
-				log(events.NewContactGroupsChanged(nil, diff))
-			}
-
 		} else {
 			log(events.NewContactUnstopped())
-			m.reevaluateDynamicGroups(env, assets, contact, log)
 		}
+		m.reevaluateDynamicGroups(env, assets, contact, log)
 	}
 }
 
