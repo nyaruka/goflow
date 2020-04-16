@@ -1,3 +1,7 @@
+v0.82.0
+----------
+ * Fix default to understand objects with defaults
+
 v0.81.0
 ----------
  * Rework httpx to replace NewTrace with NewRequest+DoTrace
