@@ -169,6 +169,35 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
+			modifiers.NewBlocked(true),
+			`{
+				"type": "blocked",
+				"state": true
+			}`,
+		},
+		{
+			modifiers.NewBlocked(false),
+			`{
+				"type": "blocked",
+				"state": false
+			}`,
+		},
+		{
+			modifiers.NewStopped(true),
+			`{
+				"type": "stopped",
+				"state": true
+			}`,
+		},
+		{
+			modifiers.NewStopped(false),
+			`{
+				"type": "stopped",
+				"state": false
+			}`,
+		},
+
+		{
 			modifiers.NewName("Bob"),
 			`{
 				"type": "name",
