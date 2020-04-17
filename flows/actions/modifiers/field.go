@@ -47,7 +47,7 @@ func (m *FieldModifier) Apply(env envs.Environment, assets flows.SessionAssets, 
 
 		contact.Fields().Set(m.field, m.value)
 		log(events.NewContactFieldChanged(m.field, m.value))
-		m.reevaluateDynamicGroups(env, assets, contact, log)
+		m.reevaluateGroups(env, assets, contact, false, log)
 	}
 }
 
