@@ -376,39 +376,32 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 	return !oldURNs.Equal(c.urns)
 }
 
-// ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) ReevaluateDynamicGroups(env envs.Environment) ([]*Group, []*Group, []error) {
+// ReevaluateGroups reevaluates membership of all dynamic groups for this contact
+func (c *Contact) ReevaluateGroups(env envs.Environment, removeStatic bool) ([]*Group, []*Group, []error) {
 	added := make([]*Group, 0)
 	removed := make([]*Group, 0)
 	errs := make([]error, 0)
 
-	if c.Blocked() || c.Stopped() {
-		for _, group := range c.assets.Groups().All() {
-			if c.groups.Remove(group) {
+	for _, group := range c.assets.Groups().All() {
+		if !group.IsDynamic() {
+			if removeStatic && c.groups.Remove(group) {
 				removed = append(removed, group)
 			}
+			continue
 		}
 
-	} else {
+		qualifies, err := group.CheckDynamicMembership(env, c)
+		if err != nil {
+			errs = append(errs, errors.Wrapf(err, "unable to re-evaluate membership of group '%s'", group.Name()))
+		}
 
-		for _, group := range c.assets.Groups().All() {
-			if !group.IsDynamic() {
-				continue
+		if qualifies {
+			if c.groups.Add(group) {
+				added = append(added, group)
 			}
-
-			qualifies, err := group.CheckDynamicMembership(env, c)
-			if err != nil {
-				errs = append(errs, errors.Wrapf(err, "unable to re-evaluate membership of group '%s'", group.Name()))
-			}
-
-			if qualifies {
-				if c.groups.Add(group) {
-					added = append(added, group)
-				}
-			} else {
-				if c.groups.Remove(group) {
-					removed = append(removed, group)
-				}
+		} else {
+			if c.groups.Remove(group) {
+				removed = append(removed, group)
 			}
 		}
 	}
