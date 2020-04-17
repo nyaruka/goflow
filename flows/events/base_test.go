@@ -212,6 +212,34 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewContactBlocked(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_blocked"
+			}`,
+		},
+		{
+			events.NewContactUnblocked(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_unblocked"
+			}`,
+		},
+		{
+			events.NewContactStopped(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_stopped"
+			}`,
+		},
+		{
+			events.NewContactUnstopped(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_unstopped"
+			}`,
+		},
+		{
 			events.NewContactLanguageChanged(envs.Language("fra")),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",

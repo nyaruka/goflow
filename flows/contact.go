@@ -26,6 +26,8 @@ type Contact struct {
 	id        ContactID
 	name      string
 	language  envs.Language
+	blocked   bool
+	stopped   bool
 	timezone  *time.Location
 	createdOn time.Time
 	urns      URNList
@@ -43,6 +45,8 @@ func NewContact(
 	id ContactID,
 	name string,
 	language envs.Language,
+	blocked bool,
+	stopped bool,
 	timezone *time.Location,
 	createdOn time.Time,
 	urns []urns.URN,
@@ -67,6 +71,8 @@ func NewContact(
 		id:        id,
 		name:      name,
 		language:  language,
+		blocked:   blocked,
+		stopped:   stopped,
 		timezone:  timezone,
 		createdOn: createdOn,
 		urns:      urnList,
@@ -82,6 +88,8 @@ func NewEmptyContact(sa SessionAssets, name string, language envs.Language, time
 		uuid:      ContactUUID(uuids.New()),
 		name:      name,
 		language:  language,
+		blocked:   false,
+		stopped:   false,
 		timezone:  timezone,
 		createdOn: dates.Now(),
 		urns:      URNList{},
@@ -102,6 +110,8 @@ func (c *Contact) Clone() *Contact {
 		id:        c.id,
 		name:      c.name,
 		language:  c.language,
+		blocked:   c.blocked,
+		stopped:   c.stopped,
 		timezone:  c.timezone,
 		createdOn: c.createdOn,
 		urns:      c.urns.clone(),
@@ -129,6 +139,18 @@ func (c *Contact) SetLanguage(lang envs.Language) { c.language = lang }
 
 // Language gets the language for this contact
 func (c *Contact) Language() envs.Language { return c.language }
+
+// Blocked returns whether the contact is blocked or not
+func (c *Contact) Blocked() bool { return c.blocked }
+
+// SetBlocked sets the blocked state of this contact
+func (c *Contact) SetBlocked(blocked bool) { c.blocked = blocked }
+
+// Stopped returns whether the contact is stopped or not
+func (c *Contact) Stopped() bool { return c.stopped }
+
+// SetStopped sets the stopped stte of this contact
+func (c *Contact) SetStopped(stopped bool) { c.stopped = stopped }
 
 // SetTimezone sets the timezone of this contact
 func (c *Contact) SetTimezone(tz *time.Location) {
@@ -354,14 +376,17 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 	return !oldURNs.Equal(c.urns)
 }
 
-// ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) ReevaluateDynamicGroups(env envs.Environment) ([]*Group, []*Group, []error) {
+// ReevaluateGroups reevaluates membership of all dynamic groups for this contact
+func (c *Contact) ReevaluateGroups(env envs.Environment, removeStatic bool) ([]*Group, []*Group, []error) {
 	added := make([]*Group, 0)
 	removed := make([]*Group, 0)
 	errs := make([]error, 0)
 
 	for _, group := range c.assets.Groups().All() {
 		if !group.IsDynamic() {
+			if removeStatic && c.groups.Remove(group) {
+				removed = append(removed, group)
+			}
 			continue
 		}
 
@@ -481,6 +506,8 @@ type contactEnvelope struct {
 	ID        ContactID                `json:"id,omitempty"`
 	Name      string                   `json:"name,omitempty"`
 	Language  envs.Language            `json:"language,omitempty"`
+	Stopped   bool                     `json:"stopped,omitempty"`
+	Blocked   bool                     `json:"blocked,omitempty"`
 	Timezone  string                   `json:"timezone,omitempty"`
 	CreatedOn time.Time                `json:"created_on" validate:"required"`
 	URNs      []urns.URN               `json:"urns,omitempty" validate:"dive,urn"`
@@ -502,6 +529,8 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		id:        envelope.ID,
 		name:      envelope.Name,
 		language:  envelope.Language,
+		blocked:   envelope.Blocked,
+		stopped:   envelope.Stopped,
 		createdOn: envelope.CreatedOn,
 		assets:    sa,
 	}
@@ -536,6 +565,8 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		UUID:      c.uuid,
 		ID:        c.id,
 		Language:  c.language,
+		Blocked:   c.blocked,
+		Stopped:   c.stopped,
 		CreatedOn: c.createdOn,
 	}
 
