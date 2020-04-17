@@ -20,6 +20,7 @@ const TypeStopped string = "stopped"
 // StoppedModifier modifies the stopped state of a contact
 type StoppedModifier struct {
 	baseModifier
+
 	State bool `json:"state"`
 }
 
@@ -40,7 +41,7 @@ func (m *StoppedModifier) Apply(env envs.Environment, assets flows.SessionAssets
 		} else {
 			log(events.NewContactUnstopped())
 		}
-		m.reevaluateDynamicGroups(env, assets, contact, log)
+		m.reevaluateGroups(env, assets, contact, m.State, log)
 	}
 }
 

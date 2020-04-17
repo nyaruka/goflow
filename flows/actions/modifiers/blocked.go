@@ -20,6 +20,7 @@ const TypeBlocked string = "blocked"
 // BlockedModifier modifies the blocked state of a contact
 type BlockedModifier struct {
 	baseModifier
+
 	State bool `json:"state"`
 }
 
@@ -41,7 +42,7 @@ func (m *BlockedModifier) Apply(env envs.Environment, assets flows.SessionAssets
 		} else {
 			log(events.NewContactUnblocked())
 		}
-		m.reevaluateDynamicGroups(env, assets, contact, log)
+		m.reevaluateGroups(env, assets, contact, m.State, log)
 	}
 }
 

@@ -376,17 +376,14 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 	return !oldURNs.Equal(c.urns)
 }
 
-// ReevaluateGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) ReevaluateGroups(env envs.Environment, removeStatic bool) ([]*Group, []*Group, []error) {
+// ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
+func (c *Contact) ReevaluateDynamicGroups(env envs.Environment) ([]*Group, []*Group, []error) {
 	added := make([]*Group, 0)
 	removed := make([]*Group, 0)
 	errs := make([]error, 0)
 
 	for _, group := range c.assets.Groups().All() {
 		if !group.IsDynamic() {
-			if removeStatic && c.groups.Remove(group) {
-				removed = append(removed, group)
-			}
 			continue
 		}
 
