@@ -1,3 +1,8 @@
+v0.83.0
+----------
+ * Add blocked and stopped modifiers and events
+ * Add blocked and stopped fields to contact
+
 v0.82.0
 ----------
  * Fix default to understand objects with defaults
