@@ -71,7 +71,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 
 		// apply the modifier
 		eventLog := test.NewEventLog()
-		modifier.Apply(envs.NewBuilder().Build(), sessionAssets, contact, eventLog.Log)
+		modifier.Apply(envs.NewBuilder().WithMaxValueLength(256).Build(), sessionAssets, contact, eventLog.Log)
 
 		// clone test case and populate with actual values
 		actual := tc
