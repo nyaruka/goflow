@@ -14,8 +14,8 @@ import (
 func TestPredict(t *testing.T) {
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=Hello": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, `xx`, 1), // non-JSON response
-			httpx.NewMockResponse(200, nil, `{}`, 1), // invalid JSON response
+			httpx.NewMockResponse(200, nil, `xx`), // non-JSON response
+			httpx.NewMockResponse(200, nil, `{}`), // invalid JSON response
 			httpx.NewMockResponse(200, nil, `{
 				"query": "book a flight to Quito",
 				"topScoringIntent": {
@@ -49,7 +49,7 @@ func TestPredict(t *testing.T) {
 				  "label": "positive",
 				  "score": 0.731448531
 				}
-			}`, 1),
+			}`),
 		},
 	}))
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
@@ -66,7 +66,8 @@ func TestPredict(t *testing.T) {
 	response, trace, err := client.Predict("Hello")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
 	assert.Equal(t, "GET /luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=Hello HTTP/1.1\r\nHost: westus.api.cognitive.microsoft.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n", string(trace.RequestTrace))
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\nxx", string(trace.ResponseTrace))
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n", string(trace.ResponseTrace))
+	assert.Equal(t, "xx", string(trace.ResponseBody))
 	assert.Nil(t, response)
 
 	response, trace, err = client.Predict("Hello")

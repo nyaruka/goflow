@@ -212,6 +212,34 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewContactBlocked(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_blocked"
+			}`,
+		},
+		{
+			events.NewContactUnblocked(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_unblocked"
+			}`,
+		},
+		{
+			events.NewContactStopped(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_stopped"
+			}`,
+		},
+		{
+			events.NewContactUnstopped(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_unstopped"
+			}`,
+		},
+		{
 			events.NewContactLanguageChanged(envs.Language("fra")),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
@@ -450,7 +478,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, "Y", 20000),
+			httpx.NewMockResponse(200, nil, strings.Repeat("Y", 20000)),
 		},
 	}))
 
@@ -459,6 +487,9 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 	svc := webhooks.NewService(http.DefaultClient, nil, nil, nil, 1024*1024)
 	call, err := svc.Call(nil, request)
 	require.NoError(t, err)
+
+	assert.Equal(t, 42, len(call.ResponseTrace))
+	assert.Equal(t, 20000, len(call.ResponseBody))
 
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
 
@@ -474,7 +505,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, "\xa0\xa1", -1),
+			httpx.NewMockResponse(200, nil, "\xa0\xa1"),
 		},
 	}))
 
@@ -487,6 +518,6 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
 
 	assert.Equal(t, "http://temba.io/", event.URL)
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n\xa0\xa1", event.Response)
-	assert.False(t, utf8.Valid([]byte(event.Response)))
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n...", event.Response)
+	assert.True(t, utf8.ValidString(event.Response))
 }

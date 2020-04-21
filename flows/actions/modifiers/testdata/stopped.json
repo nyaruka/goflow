@@ -1,0 +1,164 @@
+[
+    {
+        "description": "noop unstopping a not stopped contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "stopped",
+            "state": false
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": []
+    },
+    {
+        "description": "noop stopping a stopped contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "stopped": true,
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "stopped",
+            "state": true
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "stopped": true,
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": []
+    },
+    {
+        "description": "stopped changed for stopping a contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "stopped",
+            "state": true
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "stopped": true,
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "contact_stopped",
+                "created_on": "2018-10-18T14:20:30.000123456Z"
+            }
+        ]
+    },
+    {
+        "description": "stopped changed for unstopping a contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "language": "fra",
+            "stopped": true,
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "stopped",
+            "state": false
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "language": "fra",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+                    "name": "Francophones"
+                }
+            ]
+        },
+        "events": [
+            {
+                "type": "contact_unstopped",
+                "created_on": "2018-10-18T14:20:30.000123456Z"
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_added": [
+                    {
+                        "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+                        "name": "Francophones"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "stopped changed for stopping a contact and removing all groups",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "groups": [
+                {
+                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                    "name": "Customers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "fields": {
+                "gender": {
+                    "text": "male"
+                }
+            }
+        },
+        "modifier": {
+            "type": "stopped",
+            "state": true
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "stopped": true,
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "fields": {
+                "gender": {
+                    "text": "male"
+                }
+            }
+        },
+        "events": [
+            {
+                "type": "contact_stopped",
+                "created_on": "2018-10-18T14:20:30.000123456Z"
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_removed": [
+                    {
+                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                        "name": "Males"
+                    },
+                    {
+                        "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                        "name": "Customers"
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -508,24 +508,6 @@ Tests whether the top intent in a classification result has `name` and minimum `
 @(has_top_intent(results.intent, "book_hotel", 0.5)) → false
 ```
 
-<h2 class="item_title"><a name="test:has_value" href="#test:has_value">has_value(value)</a></h2>
-
-Returns whether `value` is non-nil and not an error
-
-Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
-to try to retrieve a value from fields or results which don't exist, rather these return an empty
-value.
-
-
-```objectivec
-@(has_value("hello")) → true
-@(has_value("hello").match) → hello
-@(has_value(datetime("foo"))) → false
-@(has_value(not.existing)) → false
-@(has_value(contact.fields.unset)) → false
-@(has_value("")) → false
-```
-
 <h2 class="item_title"><a name="test:has_ward" href="#test:has_ward">has_ward(text, district, state)</a></h2>
 
 Tests whether a ward name is contained in the `text`

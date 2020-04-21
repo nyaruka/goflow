@@ -17,7 +17,7 @@ func TestAccessConfig(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://nyaruka.com": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, ``, 1),
+			httpx.NewMockResponse(200, nil, ``),
 		},
 	}))
 

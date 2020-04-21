@@ -16,8 +16,8 @@ func TestPredict(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://nlp.bothub.it/parse": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, `xx`, 1), // non-JSON response
-			httpx.NewMockResponse(200, nil, `{}`, 1), // invalid JSON response
+			httpx.NewMockResponse(200, nil, `xx`), // non-JSON response
+			httpx.NewMockResponse(200, nil, `{}`), // invalid JSON response
 			httpx.NewMockResponse(200, nil, `{
 				"intent": {
 					"name": "book_flight",
@@ -51,7 +51,7 @@ func TestPredict(t *testing.T) {
 				"text": "book a flight to Quito",
 				"update_id": 4786,
 				"language": "pt_br"
-			}`, 1),
+			}`),
 		},
 	}))
 
@@ -60,7 +60,8 @@ func TestPredict(t *testing.T) {
 	response, trace, err := client.Parse("Hello")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
 	assert.Equal(t, "POST /parse HTTP/1.1\r\nHost: nlp.bothub.it\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 10\r\nAuthorization: Bearer 123e4567-e89b-12d3-a456-426655440000\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\ntext=Hello", string(trace.RequestTrace))
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\nxx", string(trace.ResponseTrace))
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n", string(trace.ResponseTrace))
+	assert.Equal(t, "xx", string(trace.ResponseBody))
 	assert.Nil(t, response)
 
 	response, trace, err = client.Parse("Hello")

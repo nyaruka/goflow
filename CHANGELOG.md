@@ -1,3 +1,25 @@
+v0.83.1
+----------
+ * Fix anywhere we truncate strings to do it by rune
+
+v0.83.0
+----------
+ * Add blocked and stopped modifiers and events
+ * Add blocked and stopped fields to contact
+
+v0.82.0
+----------
+ * Fix default to understand objects with defaults
+
+v0.81.0
+----------
+ * Rework httpx to replace NewTrace with NewRequest+DoTrace
+ * Separate out the header part of response traces from the body which won't always be valid UTF-8
+
+v0.80.0
+----------
+ * ivr_created events should include language of translated text
+
 v0.79.1
 ----------
  * Include 3-char language code as extra header in PO files

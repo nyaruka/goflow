@@ -320,10 +320,9 @@
 <div class="sourceCode" id="cb38"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb38-1"><a href="#cb38-1"></a>@(<span class="kw">default</span>(undeclared.var, <span class="st">&quot;default_value&quot;</span>)) → default_value</span>
 <span id="cb38-2"><a href="#cb38-2"></a>@(<span class="kw">default</span>(<span class="st">&quot;10&quot;</span>, <span class="st">&quot;20&quot;</span>)) → <span class="dv">10</span></span>
 <span id="cb38-3"><a href="#cb38-3"></a>@(<span class="kw">default</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;value&quot;</span>)) → value</span>
-<span id="cb38-4"><a href="#cb38-4"></a>@(<span class="kw">default</span>(array(<span class="dv">1</span>, <span class="dv">2</span>), <span class="st">&quot;value&quot;</span>)) → [<span class="dv">1</span>, <span class="dv">2</span>]</span>
-<span id="cb38-5"><a href="#cb38-5"></a>@(<span class="kw">default</span>(array(), <span class="st">&quot;value&quot;</span>)) → value</span>
-<span id="cb38-6"><a href="#cb38-6"></a>@(<span class="kw">default</span>(datetime(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</span>
-<span id="cb38-7"><a href="#cb38-7"></a>@(<span class="kw">default</span>(format_urn(<span class="st">&quot;invalid-urn&quot;</span>), <span class="st">&quot;ok&quot;</span>)) → ok</span></code></pre></div>
+<span id="cb38-4"><a href="#cb38-4"></a>@(<span class="kw">default</span>(<span class="st">&quot;  &quot;</span>, <span class="st">&quot;value&quot;</span>)) → \x20\x20</span>
+<span id="cb38-5"><a href="#cb38-5"></a>@(<span class="kw">default</span>(datetime(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</span>
+<span id="cb38-6"><a href="#cb38-6"></a>@(<span class="kw">default</span>(format_urn(<span class="st">&quot;invalid-urn&quot;</span>), <span class="st">&quot;ok&quot;</span>)) → ok</span></code></pre></div>
 <h2 class="item_title">
 <a name="function:epoch" href="#function:epoch">epoch(date)</a>
 </h2>

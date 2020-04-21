@@ -30,7 +30,7 @@ func TestService(t *testing.T) {
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://api.wit.ai/message?v=20170307&q=book+flight+to+Quito": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, `{"_text":"book flight to Quito","entities":{"intent":[{"confidence":0.84709152161066,"value":"book_flight"}]},"msg_id":"1M7fAcDWag76OmgDI"}`, 1),
+			httpx.NewMockResponse(200, nil, `{"_text":"book flight to Quito","entities":{"intent":[{"confidence":0.84709152161066,"value":"book_flight"}]},"msg_id":"1M7fAcDWag76OmgDI"}`),
 		},
 	}))
 

@@ -71,7 +71,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 
 		// apply the modifier
 		eventLog := test.NewEventLog()
-		modifier.Apply(envs.NewBuilder().Build(), sessionAssets, contact, eventLog.Log)
+		modifier.Apply(envs.NewBuilder().WithMaxValueLength(256).Build(), sessionAssets, contact, eventLog.Log)
 
 		// clone test case and populate with actual values
 		actual := tc
@@ -168,6 +168,35 @@ func TestConstructors(t *testing.T) {
 				"language": "fra"
 			}`,
 		},
+		{
+			modifiers.NewBlocked(true),
+			`{
+				"type": "blocked",
+				"state": true
+			}`,
+		},
+		{
+			modifiers.NewBlocked(false),
+			`{
+				"type": "blocked",
+				"state": false
+			}`,
+		},
+		{
+			modifiers.NewStopped(true),
+			`{
+				"type": "stopped",
+				"state": true
+			}`,
+		},
+		{
+			modifiers.NewStopped(false),
+			`{
+				"type": "stopped",
+				"state": false
+			}`,
+		},
+
 		{
 			modifiers.NewName("Bob"),
 			`{

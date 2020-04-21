@@ -58,10 +58,10 @@ func NewWebhookCalled(call *flows.WebhookCall, status flows.CallStatus, resthook
 		URL:         call.Request.URL.String(),
 		Status:      status,
 		Request:     utils.TruncateEllipsis(string(call.RequestTrace), trimTracesTo),
-		Response:    utils.TruncateEllipsis(string(call.ResponseTrace), trimTracesTo),
+		Response:    utils.TruncateEllipsis(string(call.ResponseTraceUTF8("...")), trimTracesTo),
 		ElapsedMS:   int((call.EndTime.Sub(call.StartTime)) / time.Millisecond),
 		Resthook:    resthook,
 		StatusCode:  statusCode,
-		BodyIgnored: call.BodyIgnored,
+		BodyIgnored: len(call.ResponseBody) > 0 && !call.ValidJSON,
 	}
 }

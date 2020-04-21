@@ -1,10 +1,11 @@
 package httpx
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 
 	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/pkg/errors"
@@ -69,10 +70,10 @@ func (r *MockRequestor) UnmarshalJSON(data []byte) error {
 var _ Requestor = (*MockRequestor)(nil)
 
 type MockResponse struct {
-	Status     int               `json:"status" validate:"required"`
-	Headers    map[string]string `json:"headers,omitempty"`
-	Body       string            `json:"body" validate:"required"`
-	BodyRepeat int               `json:"body_repeat,omitempty"`
+	Status     int
+	Headers    map[string]string
+	Body       []byte
+	BodyRepeat int
 }
 
 // Make mocks making the given request and returning this as the response
@@ -84,7 +85,7 @@ func (m MockResponse) Make(request *http.Request) *http.Response {
 
 	body := m.Body
 	if m.BodyRepeat > 1 {
-		body = strings.Repeat(body, m.BodyRepeat)
+		body = bytes.Repeat(body, m.BodyRepeat)
 	}
 
 	return &http.Response{
@@ -95,15 +96,48 @@ func (m MockResponse) Make(request *http.Request) *http.Response {
 		ProtoMajor:    1,
 		ProtoMinor:    0,
 		Header:        header,
-		Body:          ioutil.NopCloser(strings.NewReader(body)),
+		Body:          ioutil.NopCloser(bytes.NewReader(body)),
 		ContentLength: int64(len(body)),
 	}
 }
 
 // MockConnectionError mocks a connection error
-var MockConnectionError = MockResponse{0, nil, "", 0}
+var MockConnectionError = MockResponse{Status: 0, Headers: nil, Body: []byte{}, BodyRepeat: 0}
 
-// NewMockResponse creates a new mock response
-func NewMockResponse(status int, headers map[string]string, body string, bodyRepeat int) MockResponse {
-	return MockResponse{status, headers, body, bodyRepeat}
+// NewMockResponse creates a new mock response from a string
+func NewMockResponse(status int, headers map[string]string, body string) MockResponse {
+	return MockResponse{Status: status, Headers: headers, Body: []byte(body), BodyRepeat: 0}
+}
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+type mockResponseEnvelope struct {
+	Status     int               `json:"status" validate:"required"`
+	Headers    map[string]string `json:"headers,omitempty"`
+	Body       string            `json:"body" validate:"required"`
+	BodyRepeat int               `json:"body_repeat,omitempty"`
+}
+
+func (m *MockResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&mockResponseEnvelope{
+		Status:     m.Status,
+		Headers:    m.Headers,
+		Body:       string(m.Body),
+		BodyRepeat: m.BodyRepeat,
+	})
+}
+
+func (m *MockResponse) UnmarshalJSON(data []byte) error {
+	e := &mockResponseEnvelope{}
+	if err := json.Unmarshal(data, e); err != nil {
+		return err
+	}
+
+	m.Status = e.Status
+	m.Headers = e.Headers
+	m.Body = []byte(e.Body)
+	m.BodyRepeat = e.BodyRepeat
+	return nil
 }
