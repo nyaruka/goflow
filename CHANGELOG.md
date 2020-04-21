@@ -1,3 +1,7 @@
+v0.83.1
+----------
+ * Fix anywhere we truncate strings to do it by rune
+
 v0.83.0
 ----------
  * Add blocked and stopped modifiers and events
