@@ -245,5 +245,12 @@
                 }
             ]
         }
+    ],
+    "ticketers": [
+        {
+            "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+            "name": "Support Tickets",
+            "type": "mailgun"
+        }
     ]
 }

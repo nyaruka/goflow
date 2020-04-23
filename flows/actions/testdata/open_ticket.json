@@ -4,6 +4,10 @@
         "action": {
             "type": "open_ticket",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "ticketer": {
+                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                "name": "Support Tickets"
+            },
             "subject": "Need help @(1 / 0)",
             "result_name": "Ticket"
         },
@@ -27,7 +31,13 @@
             "Need help @(1 / 0)"
         ],
         "inspection": {
-            "dependencies": [],
+            "dependencies": [
+                {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets",
+                    "type": "ticketer"
+                }
+            ],
             "issues": [],
             "results": [],
             "waiting_exits": [],

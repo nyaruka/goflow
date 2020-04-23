@@ -220,8 +220,8 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				}
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
 			}).
-			WithTicketServiceFactory(func(flows.Session) (flows.TicketService, error) {
-				return mailgun.NewService(http.DefaultClient, nil, "tickets@nyaruka.com", "123456789"), nil
+			WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) {
+				return mailgun.NewService(http.DefaultClient, nil, t, "tickets@nyaruka.com", "123456789"), nil
 			}).
 			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
 				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil
@@ -432,12 +432,17 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewOpenTicket(
 				actionUUID,
+				assets.NewTicketerReference(assets.TicketerUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Support Tickets"),
 				"Need help",
 				"Ticket",
 			),
 			`{
-				"type": "open_ticket",
 				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+				"type": "open_ticket",
+				"ticketer": {
+					"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
+					"name": "Support Tickets"
+				},
 				"subject": "Need help",
 				"result_name": "Ticket"
 			}`,

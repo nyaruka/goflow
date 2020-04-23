@@ -11,15 +11,17 @@ import (
 type service struct {
 	httpClient  *http.Client
 	httpRetries *httpx.RetryConfig
+	ticketer    *flows.Ticketer
 	address     string
 	token       string
 }
 
 // NewService creates a new Mailgun email-based ticketing service
-func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, address, token string) flows.TicketService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, ticketer *flows.Ticketer, address, token string) flows.TicketService {
 	return &service{
 		httpClient:  httpClient,
 		httpRetries: httpRetries,
+		ticketer:    ticketer,
 		address:     address,
 		token:       token,
 	}

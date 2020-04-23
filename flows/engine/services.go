@@ -16,7 +16,7 @@ type WebhookServiceFactory func(flows.Session) (flows.WebhookService, error)
 type ClassificationServiceFactory func(flows.Session, *flows.Classifier) (flows.ClassificationService, error)
 
 // TicketServiceFactory resolves a session to a ticket service
-type TicketServiceFactory func(flows.Session) (flows.TicketService, error)
+type TicketServiceFactory func(flows.Session, *flows.Ticketer) (flows.TicketService, error)
 
 // AirtimeServiceFactory resolves a session to an airtime service
 type AirtimeServiceFactory func(flows.Session) (flows.AirtimeService, error)
@@ -40,7 +40,7 @@ func newEmptyServices() *services {
 		classification: func(flows.Session, *flows.Classifier) (flows.ClassificationService, error) {
 			return nil, errors.New("no classification service factory configured")
 		},
-		ticket: func(flows.Session) (flows.TicketService, error) {
+		ticket: func(flows.Session, *flows.Ticketer) (flows.TicketService, error) {
 			return nil, errors.New("no ticket service factory configured")
 		},
 		airtime: func(flows.Session) (flows.AirtimeService, error) {
@@ -61,8 +61,8 @@ func (s *services) Classification(session flows.Session, classifier *flows.Class
 	return s.classification(session, classifier)
 }
 
-func (s *services) Ticket(session flows.Session) (flows.TicketService, error) {
-	return s.ticket(session)
+func (s *services) Ticket(session flows.Session, ticketer *flows.Ticketer) (flows.TicketService, error) {
+	return s.ticket(session, ticketer)
 }
 
 func (s *services) Airtime(session flows.Session) (flows.AirtimeService, error) {

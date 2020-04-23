@@ -27,7 +27,7 @@ func NewEngine() flows.Engine {
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
-		WithTicketServiceFactory(func(flows.Session) (flows.TicketService, error) { return newTicketService(), nil }).
+		WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) { return newTicketService(t), nil }).
 		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
 		Build()
 }
@@ -88,11 +88,12 @@ var _ flows.ClassificationService = (*classificationService)(nil)
 
 // implementation of a ticket service for testing which just fakes opening a ticket
 type ticketService struct {
-	counter int
+	ticketer *flows.Ticketer
+	counter  int
 }
 
-func newTicketService() *ticketService {
-	return &ticketService{counter: 1000}
+func newTicketService(ticketer *flows.Ticketer) *ticketService {
+	return &ticketService{ticketer: ticketer, counter: 1000}
 }
 
 func (s *ticketService) Open(session flows.Session, subject string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {

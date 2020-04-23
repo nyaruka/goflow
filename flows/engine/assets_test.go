@@ -137,3 +137,7 @@ func (s *testSource) Resthooks() ([]assets.Resthook, error) {
 func (s *testSource) Templates() ([]assets.Template, error) {
 	return nil, s.err("templates")
 }
+
+func (s *testSource) Ticketers() ([]assets.Ticketer, error) {
+	return nil, s.err("ticketers")
+}

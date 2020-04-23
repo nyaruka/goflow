@@ -108,6 +108,16 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), templateRef.GenericUUID())
 	assert.Equal(t, "template[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Affirmation]", templateRef.String())
 	assert.NoError(t, utils.Validate(templateRef))
+
+	ticketerRef := assets.NewTicketerReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Support Tickets")
+	assert.Equal(t, "ticketer", ticketerRef.Type())
+	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", ticketerRef.Identity())
+	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), ticketerRef.GenericUUID())
+	assert.Equal(t, "ticketer[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Support Tickets]", ticketerRef.String())
+	assert.NoError(t, utils.Validate(ticketerRef))
+
+	// ticketer references must always be concrete
+	assert.EqualError(t, utils.Validate(assets.NewTicketerReference("", "Booking")), "field 'uuid' is required")
 }
 
 func TestChannelReferenceUnmarsal(t *testing.T) {

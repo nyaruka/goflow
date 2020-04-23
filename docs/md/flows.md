@@ -512,6 +512,10 @@ Is used to open a ticket for the contact.
 {
     "type": "open_ticket",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "ticketer": {
+        "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+        "name": "Support Tickets"
+    },
     "subject": "Needs help",
     "result_name": "Help Ticket"
 }

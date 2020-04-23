@@ -15,7 +15,7 @@ type Services interface {
 	Email(Session) (EmailService, error)
 	Webhook(Session) (WebhookService, error)
 	Classification(Session, *Classifier) (ClassificationService, error)
-	Ticket(Session) (TicketService, error)
+	Ticket(Session, *Ticketer) (TicketService, error)
 	Airtime(Session) (AirtimeService, error)
 }
 
