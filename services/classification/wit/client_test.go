@@ -15,7 +15,7 @@ func TestMessage(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://api.wit.ai/message?v=20170307&q=Hello": []httpx.MockResponse{
+		"https://api.wit.ai/message?v=20170307&q=Hello": {
 			httpx.NewMockResponse(200, nil, `xx`), // non-JSON response
 			httpx.NewMockResponse(200, nil, `{}`), // invalid JSON response
 			httpx.NewMockResponse(200, nil, `{"_text":"book flight","entities":{"intent":[{"confidence":0.84709152161066,"value":"book_flight"}]},"msg_id":"1M7fAcDWag76OmgDI"}`),
@@ -41,7 +41,7 @@ func TestMessage(t *testing.T) {
 	assert.NotNil(t, trace)
 	assert.Equal(t, "1M7fAcDWag76OmgDI", response.MsgID)
 	assert.Equal(t, "book flight", response.Text)
-	assert.Equal(t, map[string][]wit.EntityCandidate{"intent": []wit.EntityCandidate{
+	assert.Equal(t, map[string][]wit.EntityCandidate{"intent": {
 		wit.EntityCandidate{Value: "book_flight", Confidence: decimal.RequireFromString(`0.84709152161066`)},
 	}}, response.Entities)
 }
