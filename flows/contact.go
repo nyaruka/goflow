@@ -20,6 +20,20 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ContactStatus is status in which a contact is in
+type ContactStatus string
+
+const (
+	// ContactStatusActive is the contact status of active
+	ContactStatusActive ContactStatus = "active"
+
+	// ContactStatusBlocked is the contact status of blocked
+	ContactStatusBlocked ContactStatus = "blocked"
+
+	// ContactStatusStopped is the contact status of stopped
+	ContactStatusStopped ContactStatus = "stopped"
+)
+
 // Contact represents a person who is interacting with the flow
 type Contact struct {
 	uuid      ContactUUID

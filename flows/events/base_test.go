@@ -212,31 +212,27 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactBlocked(),
+			events.NewContactStatusChanged(flows.ContactStatusActive),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"type": "contact_blocked"
+				"type": "contact_status_changed",
+				"status": "active"
 			}`,
 		},
 		{
-			events.NewContactUnblocked(),
+			events.NewContactStatusChanged(flows.ContactStatusBlocked),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"type": "contact_unblocked"
+				"type": "contact_status_changed",
+				"status": "blocked"
 			}`,
 		},
 		{
-			events.NewContactStopped(),
+			events.NewContactStatusChanged(flows.ContactStatusStopped),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"type": "contact_stopped"
-			}`,
-		},
-		{
-			events.NewContactUnstopped(),
-			`{
-				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"type": "contact_unstopped"
+				"type": "contact_status_changed",
+				"status": "stopped"
 			}`,
 		},
 		{
