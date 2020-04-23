@@ -53,14 +53,14 @@ func (s *service) Classify(session flows.Session, input string, logHTTP flows.HT
 
 	for _, entity := range response.Entities {
 		result.Entities[entity.Type] = []flows.ExtractedEntity{
-			flows.ExtractedEntity{Value: entity.Entity, Confidence: entity.Score},
+			{Value: entity.Entity, Confidence: entity.Score},
 		}
 	}
 
 	// if sentiment analysis was included, convert to an entity
 	if response.SentimentAnalysis != nil {
 		result.Entities["sentiment"] = []flows.ExtractedEntity{
-			flows.ExtractedEntity{Value: response.SentimentAnalysis.Label, Confidence: response.SentimentAnalysis.Score},
+			{Value: response.SentimentAnalysis.Label, Confidence: response.SentimentAnalysis.Score},
 		}
 	}
 

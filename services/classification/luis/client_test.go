@@ -13,7 +13,7 @@ import (
 
 func TestPredict(t *testing.T) {
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=Hello": []httpx.MockResponse{
+		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=Hello": {
 			httpx.NewMockResponse(200, nil, `xx`), // non-JSON response
 			httpx.NewMockResponse(200, nil, `{}`), // invalid JSON response
 			httpx.NewMockResponse(200, nil, `{
@@ -81,12 +81,12 @@ func TestPredict(t *testing.T) {
 	assert.Equal(t, "book a flight to Quito", response.Query)
 	assert.Equal(t, &luis.ExtractedIntent{"Book Flight", decimal.RequireFromString(`0.9106805`)}, response.TopScoringIntent)
 	assert.Equal(t, []luis.ExtractedIntent{
-		luis.ExtractedIntent{"Book Flight", decimal.RequireFromString(`0.9106805`)},
-		luis.ExtractedIntent{"None", decimal.RequireFromString(`0.08910245`)},
-		luis.ExtractedIntent{"Book Hotel", decimal.RequireFromString(`0.07790734`)},
+		{"Book Flight", decimal.RequireFromString(`0.9106805`)},
+		{"None", decimal.RequireFromString(`0.08910245`)},
+		{"Book Hotel", decimal.RequireFromString(`0.07790734`)},
 	}, response.Intents)
 	assert.Equal(t, []luis.ExtractedEntity{
-		luis.ExtractedEntity{Entity: "quito", Type: "City", StartIndex: 17, EndIndex: 21, Score: decimal.RequireFromString(`0.9644149`)},
+		{Entity: "quito", Type: "City", StartIndex: 17, EndIndex: 21, Score: decimal.RequireFromString(`0.9644149`)},
 	}, response.Entities)
 	assert.Equal(t, &luis.SentimentAnalysis{"positive", decimal.RequireFromString(`0.731448531`)}, response.SentimentAnalysis)
 }

@@ -80,7 +80,7 @@ func TestServiceWithSuccessfulTopup(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []httpx.MockResponse{
+		"https://airtime-api.dtone.com/cgi-bin/shop/topup": {
 			httpx.NewMockResponse(200, nil, withCRLF(msisdnResponse)),
 			httpx.NewMockResponse(200, nil, withCRLF(reserveResponse)),
 			httpx.NewMockResponse(200, nil, withCRLF(topupResponse)),
@@ -126,7 +126,7 @@ func TestServiceFailedTransfers(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []httpx.MockResponse{
+		"https://airtime-api.dtone.com/cgi-bin/shop/topup": {
 			httpx.NewMockResponse(200, nil, withCRLF(msisdnResponse)),
 			httpx.NewMockResponse(200, nil, withCRLF(msisdnResponse)),
 		},

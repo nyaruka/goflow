@@ -29,7 +29,7 @@ func TestService(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito": []httpx.MockResponse{
+		"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito": {
 			httpx.NewMockResponse(200, nil, `{
 				"query": "book a flight to Quito",
 				"topScoringIntent": {
@@ -82,15 +82,15 @@ func TestService(t *testing.T) {
 	classification, err := svc.Classify(session, "book flight to Quito", httpLogger.Log)
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
-		flows.ExtractedIntent{Name: "Book Flight", Confidence: decimal.RequireFromString(`0.9106805`)},
-		flows.ExtractedIntent{Name: "None", Confidence: decimal.RequireFromString(`0.08910245`)},
-		flows.ExtractedIntent{Name: "Book Hotel", Confidence: decimal.RequireFromString(`0.07790734`)},
+		{Name: "Book Flight", Confidence: decimal.RequireFromString(`0.9106805`)},
+		{Name: "None", Confidence: decimal.RequireFromString(`0.08910245`)},
+		{Name: "Book Hotel", Confidence: decimal.RequireFromString(`0.07790734`)},
 	}, classification.Intents)
 	assert.Equal(t, map[string][]flows.ExtractedEntity{
-		"City": []flows.ExtractedEntity{
+		"City": {
 			flows.ExtractedEntity{Value: "quito", Confidence: decimal.RequireFromString(`0.9644149`)},
 		},
-		"sentiment": []flows.ExtractedEntity{
+		"sentiment": {
 			flows.ExtractedEntity{Value: "positive", Confidence: decimal.RequireFromString(`0.731448531`)},
 		},
 	}, classification.Entities)

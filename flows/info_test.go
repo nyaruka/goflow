@@ -28,10 +28,10 @@ func TestNewResultSpecs(t *testing.T) {
 	)
 
 	extracted := []flows.ExtractedResult{
-		flows.ExtractedResult{Node: node1, Info: flows.NewResultInfo("Response 1", []string{"Red", "Green"})},
-		flows.ExtractedResult{Node: node1, Info: flows.NewResultInfo("Response-1", nil)},
-		flows.ExtractedResult{Node: node2, Info: flows.NewResultInfo("Response-1", []string{"Green", "Blue"})},
-		flows.ExtractedResult{Node: node2, Info: flows.NewResultInfo("Favorite Beer", []string{})},
+		{Node: node1, Info: flows.NewResultInfo("Response 1", []string{"Red", "Green"})},
+		{Node: node1, Info: flows.NewResultInfo("Response-1", nil)},
+		{Node: node2, Info: flows.NewResultInfo("Response-1", []string{"Green", "Blue"})},
+		{Node: node2, Info: flows.NewResultInfo("Favorite Beer", []string{})},
 	}
 
 	specs := flows.NewResultSpecs(extracted)
