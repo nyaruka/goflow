@@ -35,38 +35,10 @@ func NewStatus(status flows.ContactStatus) *StatusModifier {
 // Apply applies this modification to the given contact
 func (m *StatusModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 
-	clearStatic := false
-	changed := false
-
-	if m.Status == flows.ContactStatusBlocked && !contact.Blocked() {
-		contact.SetBlocked(true)
-		clearStatic = true
-		changed = true
-	}
-
-	if m.Status == flows.ContactStatusStopped && !contact.Stopped() {
-		contact.SetStopped(true)
-		clearStatic = true
-		changed = true
-	}
-
-	if m.Status == flows.ContactStatusActive {
-		if contact.Blocked() {
-			contact.SetBlocked(false)
-			changed = true
-		}
-
-		if contact.Stopped() {
-			contact.SetStopped(false)
-			changed = true
-		}
-
-		clearStatic = false
-	}
-
+	changed, blockedOrStopped := contact.SetStatus(m.Status)
 	if changed {
 		log(events.NewContactStatusChanged(m.Status))
-		m.reevaluateGroups(env, assets, contact, clearStatic, log)
+		m.reevaluateGroups(env, assets, contact, blockedOrStopped, log)
 	}
 
 }

@@ -54,12 +54,9 @@ func TestContact(t *testing.T) {
 	)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
-	assert.False(t, contact.Blocked())
-	assert.False(t, contact.Stopped())
+	assert.Equal(t, flows.ContactStatusActive, contact.Status())
 	assert.Nil(t, contact.PreferredChannel())
 
-	contact.SetBlocked(true)
-	contact.SetStopped(true)
 	contact.SetTimezone(env.Timezone())
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
 	contact.AddURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil)
@@ -71,8 +68,15 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, envs.Language("eng"), contact.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
-	assert.True(t, contact.Blocked())
-	assert.True(t, contact.Stopped())
+
+	contact.SetStatus(flows.ContactStatusStopped)
+	assert.Equal(t, flows.ContactStatusStopped, contact.Status())
+
+	contact.SetStatus(flows.ContactStatusBlocked)
+	assert.Equal(t, flows.ContactStatusBlocked, contact.Status())
+
+	contact.SetStatus(flows.ContactStatusActive)
+	assert.Equal(t, flows.ContactStatusActive, contact.Status())
 
 	assert.True(t, contact.HasURN("tel:+12024561111"))      // has URN
 	assert.True(t, contact.HasURN("tel:+120-2456-1111"))    // URN will be normalized

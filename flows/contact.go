@@ -157,14 +157,34 @@ func (c *Contact) Language() envs.Language { return c.language }
 // Blocked returns whether the contact is blocked or not
 func (c *Contact) Blocked() bool { return c.blocked }
 
-// SetBlocked sets the blocked state of this contact
-func (c *Contact) SetBlocked(blocked bool) { c.blocked = blocked }
-
 // Stopped returns whether the contact is stopped or not
 func (c *Contact) Stopped() bool { return c.stopped }
 
-// SetStopped sets the stopped stte of this contact
-func (c *Contact) SetStopped(stopped bool) { c.stopped = stopped }
+// Status returns the contact status
+func (c *Contact) Status() ContactStatus {
+	if c.stopped {
+		return ContactStatusStopped
+	}
+
+	if c.blocked {
+		return ContactStatusBlocked
+	}
+
+	return ContactStatusActive
+}
+
+// SetStatus sets the status of this contact (blocked, stopped or active)
+func (c *Contact) SetStatus(status ContactStatus) (bool, bool) {
+
+	change := status != c.Status()
+
+	if change {
+		c.stopped = status == ContactStatusStopped
+		c.blocked = status == ContactStatusBlocked
+	}
+
+	return change, status == ContactStatusStopped || status == ContactStatusBlocked
+}
 
 // SetTimezone sets the timezone of this contact
 func (c *Contact) SetTimezone(tz *time.Location) {
