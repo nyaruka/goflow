@@ -56,7 +56,7 @@ func TestEventMarshaling(t *testing.T) {
 					ActualAmount:  decimal.RequireFromString("1.00"),
 				},
 				[]*flows.HTTPLog{
-					&flows.HTTPLog{
+					{
 						CreatedOn: dates.Now(),
 						ElapsedMS: 12,
 						Request:   "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -134,7 +134,7 @@ func TestEventMarshaling(t *testing.T) {
 			events.NewClassifierCalled(
 				assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
 				[]*flows.HTTPLog{
-					&flows.HTTPLog{
+					{
 						CreatedOn: dates.Now(),
 						ElapsedMS: 12,
 						Request:   "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -477,7 +477,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"http://temba.io/": []httpx.MockResponse{
+		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, strings.Repeat("Y", 20000)),
 		},
 	}))
@@ -504,7 +504,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"http://temba.io/": []httpx.MockResponse{
+		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, "\xa0\xa1"),
 		},
 	}))
