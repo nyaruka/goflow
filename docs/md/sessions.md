@@ -835,6 +835,31 @@ Events are created when an action wants to start other people in a flow.
 }
 ```
 </div>
+<h2 class="item_title"><a name="event:ticket_opened" href="#event:ticket_opened">ticket_opened</a></h2>
+
+Events are created when a new ticket is opened.
+
+<div class="output_event">
+
+```json
+{
+    "type": "ticket_opened",
+    "created_on": "2006-01-02T15:04:05Z",
+    "ticket_id": "234562",
+    "subject": "Need help",
+    "http_logs": [
+        {
+            "url": "https://api.zendesk.com/new_ticket",
+            "status": "success",
+            "request": "POST /new_ticket HTTP/1.1",
+            "response": "HTTP/1.1 200 OK\r\n\r\n",
+            "created_on": "2020-04-23T15:04:05Z",
+            "elapsed_ms": 123
+        }
+    ]
+}
+```
+</div>
 <h2 class="item_title"><a name="event:wait_timed_out" href="#event:wait_timed_out">wait_timed_out</a></h2>
 
 Events are sent by the caller when a wait has timed out - i.e. they are sent instead of

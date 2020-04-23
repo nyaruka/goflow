@@ -1,0 +1,37 @@
+[
+    {
+        "description": "Error event if subject contains expression errors",
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "subject": "Need help @(1 / 0)",
+            "result_name": "Ticket"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "error evaluating @(1 / 0): division by zero"
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Ticket",
+                "value": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "category": "Success"
+            }
+        ],
+        "templates": [
+            "Need help @(1 / 0)"
+        ],
+        "inspection": {
+            "dependencies": [],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    }
+]

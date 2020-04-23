@@ -15,6 +15,7 @@ type Services interface {
 	Email(Session) (EmailService, error)
 	Webhook(Session) (WebhookService, error)
 	Classification(Session, *Classifier) (ClassificationService, error)
+	Ticket(Session) (TicketService, error)
 	Airtime(Session) (AirtimeService, error)
 }
 
@@ -72,6 +73,18 @@ type Classification struct {
 // ClassificationService provides NLU functionality to the engine
 type ClassificationService interface {
 	Classify(session Session, input string, logHTTP HTTPLogCallback) (*Classification, error)
+}
+
+// Ticket is a ticket in a ticketing system
+type Ticket struct {
+	ID      string
+	Subject string
+}
+
+// TicketService provides ticketing functionality to the engine
+type TicketService interface {
+	// Open tries to open a new ticket
+	Open(session Session, subject string, logHTTP HTTPLogCallback) (*Ticket, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer

@@ -19,6 +19,7 @@ import (
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/services/email/smtp"
+	"github.com/nyaruka/goflow/services/ticket/mailgun"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -218,6 +219,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 					return wit.NewService(http.DefaultClient, nil, c, "123456789"), nil
 				}
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
+			}).
+			WithTicketServiceFactory(func(flows.Session) (flows.TicketService, error) {
+				return mailgun.NewService(http.DefaultClient, nil, "tickets@nyaruka.com", "123456789"), nil
 			}).
 			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
 				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil
@@ -426,15 +430,28 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
+			actions.NewOpenTicket(
+				actionUUID,
+				"Need help",
+				"Ticket",
+			),
+			`{
+				"type": "open_ticket",
+				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+				"subject": "Need help",
+				"result_name": "Ticket"
+			}`,
+		},
+		{
 			actions.NewPlayAudio(
 				actionUUID,
 				"http://uploads.temba.io/2353262.m4a",
 			),
 			`{
-			"type": "play_audio",
-			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-			"audio_url": "http://uploads.temba.io/2353262.m4a"
-		}`,
+				"type": "play_audio",
+				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+				"audio_url": "http://uploads.temba.io/2353262.m4a"
+			}`,
 		},
 		{
 			actions.NewSayMsg(

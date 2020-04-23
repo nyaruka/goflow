@@ -502,6 +502,52 @@ A [flow_entered](sessions.html#event:flow_entered) event will be created to reco
 }
 ```
 </div>
+<h2 class="item_title"><a name="action:open_ticket" href="#action:open_ticket">open_ticket</a></h2>
+
+Is used to open a ticket for the contact.
+
+<div class="input_action"><h3>Action</h3>
+
+```json
+{
+    "type": "open_ticket",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "subject": "Needs help",
+    "result_name": "Help Ticket"
+}
+```
+</div><div class="output_event"><h3>Event</h3>
+
+```json
+[
+    {
+        "type": "ticket_opened",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "ticket_id": "1001",
+        "subject": "Needs help",
+        "http_logs": [
+            {
+                "url": "http://api.zendesk.com/new_ticket",
+                "status": "success",
+                "request": "POST /new_ticket HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                "created_on": "2019-10-16T13:59:30.123456789Z",
+                "elapsed_ms": 0
+            }
+        ]
+    },
+    {
+        "type": "run_result_changed",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "name": "Help Ticket",
+        "value": "1001",
+        "category": "Success"
+    }
+]
+```
+</div>
 <h2 class="item_title"><a name="action:play_audio" href="#action:play_audio">play_audio</a></h2>
 
 Can be used to play an audio recording in a voice flow. It will generate an
@@ -1010,6 +1056,13 @@ will be created and it's the responsibility of the caller to act on that by init
                 "name": "Gender",
                 "value": "m",
                 "category": "Male",
+                "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
+                "created_on": "2018-04-11T18:24:30.123456Z"
+            },
+            "help_ticket": {
+                "name": "Help Ticket",
+                "value": "1001",
+                "category": "Success",
                 "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
                 "created_on": "2018-04-11T18:24:30.123456Z"
             },

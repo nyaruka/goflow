@@ -2,6 +2,7 @@ package test
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -26,6 +27,7 @@ func NewEngine() flows.Engine {
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
+		WithTicketServiceFactory(func(flows.Session) (flows.TicketService, error) { return newTicketService(), nil }).
 		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
 		Build()
 }
@@ -83,6 +85,30 @@ func (s *classificationService) Classify(session flows.Session, input string, lo
 }
 
 var _ flows.ClassificationService = (*classificationService)(nil)
+
+// implementation of a ticket service for testing which just fakes opening a ticket
+type ticketService struct {
+	counter int
+}
+
+func newTicketService() *ticketService {
+	return &ticketService{counter: 1000}
+}
+
+func (s *ticketService) Open(session flows.Session, subject string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
+	logHTTP(&flows.HTTPLog{
+		URL:       "http://api.zendesk.com/new_ticket",
+		Request:   "POST /new_ticket HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+		Status:    "success",
+		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
+		ElapsedMS: 0,
+	})
+
+	s.counter++
+
+	return &flows.Ticket{ID: strconv.Itoa(s.counter), Subject: subject}, nil
+}
 
 // implementation of an airtime service for testing which uses a fixed currency
 type airtimeService struct {
