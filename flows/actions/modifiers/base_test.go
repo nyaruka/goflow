@@ -172,7 +172,7 @@ func TestConstructors(t *testing.T) {
 			modifiers.NewStatus(flows.ContactStatusActive),
 			`{
 				"type": "status",
-				"status": "active"
+				"status": ""
 			}`,
 		},
 		{

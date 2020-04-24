@@ -25,7 +25,7 @@ type ContactStatus string
 
 const (
 	// ContactStatusActive is the contact status of active
-	ContactStatusActive ContactStatus = "active"
+	ContactStatusActive ContactStatus = ""
 
 	// ContactStatusBlocked is the contact status of blocked
 	ContactStatusBlocked ContactStatus = "blocked"
@@ -40,8 +40,7 @@ type Contact struct {
 	id        ContactID
 	name      string
 	language  envs.Language
-	blocked   bool
-	stopped   bool
+	status    ContactStatus
 	timezone  *time.Location
 	createdOn time.Time
 	urns      URNList
@@ -59,8 +58,7 @@ func NewContact(
 	id ContactID,
 	name string,
 	language envs.Language,
-	blocked bool,
-	stopped bool,
+	status ContactStatus,
 	timezone *time.Location,
 	createdOn time.Time,
 	urns []urns.URN,
@@ -85,8 +83,7 @@ func NewContact(
 		id:        id,
 		name:      name,
 		language:  language,
-		blocked:   blocked,
-		stopped:   stopped,
+		status:    status,
 		timezone:  timezone,
 		createdOn: createdOn,
 		urns:      urnList,
@@ -102,8 +99,7 @@ func NewEmptyContact(sa SessionAssets, name string, language envs.Language, time
 		uuid:      ContactUUID(uuids.New()),
 		name:      name,
 		language:  language,
-		blocked:   false,
-		stopped:   false,
+		status:    ContactStatusActive,
 		timezone:  timezone,
 		createdOn: dates.Now(),
 		urns:      URNList{},
@@ -124,8 +120,7 @@ func (c *Contact) Clone() *Contact {
 		id:        c.id,
 		name:      c.name,
 		language:  c.language,
-		blocked:   c.blocked,
-		stopped:   c.stopped,
+		status:    c.status,
 		timezone:  c.timezone,
 		createdOn: c.createdOn,
 		urns:      c.urns.clone(),
@@ -154,37 +149,11 @@ func (c *Contact) SetLanguage(lang envs.Language) { c.language = lang }
 // Language gets the language for this contact
 func (c *Contact) Language() envs.Language { return c.language }
 
-// Blocked returns whether the contact is blocked or not
-func (c *Contact) Blocked() bool { return c.blocked }
-
-// Stopped returns whether the contact is stopped or not
-func (c *Contact) Stopped() bool { return c.stopped }
-
 // Status returns the contact status
-func (c *Contact) Status() ContactStatus {
-	if c.stopped {
-		return ContactStatusStopped
-	}
-
-	if c.blocked {
-		return ContactStatusBlocked
-	}
-
-	return ContactStatusActive
-}
+func (c *Contact) Status() ContactStatus { return c.status }
 
 // SetStatus sets the status of this contact (blocked, stopped or active)
-func (c *Contact) SetStatus(status ContactStatus) (bool, bool) {
-
-	change := status != c.Status()
-
-	if change {
-		c.stopped = status == ContactStatusStopped
-		c.blocked = status == ContactStatusBlocked
-	}
-
-	return change, status == ContactStatusStopped || status == ContactStatusBlocked
-}
+func (c *Contact) SetStatus(status ContactStatus) { c.status = status }
 
 // SetTimezone sets the timezone of this contact
 func (c *Contact) SetTimezone(tz *time.Location) {
@@ -537,6 +506,7 @@ type contactEnvelope struct {
 	ID        ContactID                `json:"id,omitempty"`
 	Name      string                   `json:"name,omitempty"`
 	Language  envs.Language            `json:"language,omitempty"`
+	Status    ContactStatus            `json:"status,omitempty"`
 	Stopped   bool                     `json:"stopped,omitempty"`
 	Blocked   bool                     `json:"blocked,omitempty"`
 	Timezone  string                   `json:"timezone,omitempty"`
@@ -560,8 +530,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		id:        envelope.ID,
 		name:      envelope.Name,
 		language:  envelope.Language,
-		blocked:   envelope.Blocked,
-		stopped:   envelope.Stopped,
+		status:    envelope.Status,
 		createdOn: envelope.CreatedOn,
 		assets:    sa,
 	}
@@ -595,9 +564,8 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		Name:      c.name,
 		UUID:      c.uuid,
 		ID:        c.id,
+		Status:    c.status,
 		Language:  c.language,
-		Blocked:   c.blocked,
-		Stopped:   c.stopped,
 		CreatedOn: c.createdOn,
 	}
 

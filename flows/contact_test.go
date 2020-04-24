@@ -49,7 +49,7 @@ func TestContact(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	contact, _ := flows.NewContact(
-		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"), false, false,
+		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"), flows.ContactStatusActive,
 		nil, time.Now(), nil, nil, nil, assets.PanicOnMissing,
 	)
 
@@ -144,7 +144,7 @@ func TestContactFormat(t *testing.T) {
 
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
-		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, false, false, nil, time.Now(),
+		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, flows.ContactStatusActive, nil, time.Now(),
 		nil, nil, nil, assets.PanicOnMissing,
 	)
 	contact.AddURN(urns.URN("twitter:joey"), nil)

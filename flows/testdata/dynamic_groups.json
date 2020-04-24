@@ -172,7 +172,7 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
             "name": "Joe",
-            "blocked": true,
+            "status": "blocked",
             "urns": [
                 "tel:+12345678999",
                 "twitter:crazy_joe",
@@ -193,7 +193,7 @@
         "contact_after": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
-            "blocked": true,
+            "status": "blocked",
             "name": "Joe",
             "urns": [
                 "tel:+12345678999",
@@ -213,12 +213,12 @@
         }
     },
     {
-        "description": "blocked contact not added to dynamic groups",
+        "description": "stopped contact not added to dynamic groups",
         "contact_before": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
             "name": "Joe",
-            "stopped": true,
+            "status": "stopped",
             "urns": [
                 "tel:+12345678999",
                 "twitter:crazy_joe",
@@ -239,7 +239,7 @@
         "contact_after": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
-            "stopped": true,
+            "status": "stopped",
             "name": "Joe",
             "urns": [
                 "tel:+12345678999",
@@ -264,7 +264,7 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
             "name": "Joe",
-            "blocked": true,
+            "status": "blocked",
             "urns": [
                 "tel:+12345678999",
                 "twitter:crazy_joe",
@@ -285,7 +285,7 @@
         "contact_after": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
-            "blocked": true,
+            "status": "blocked",
             "name": "Joe",
             "urns": [
                 "tel:+12345678999",
@@ -310,7 +310,7 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
             "name": "Joe",
-            "stopped": true,
+            "status": "stopped",
             "urns": [
                 "tel:+12345678999",
                 "twitter:crazy_joe",
@@ -331,7 +331,7 @@
         "contact_after": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
-            "stopped": true,
+            "status": "stopped",
             "name": "Joe",
             "urns": [
                 "tel:+12345678999",

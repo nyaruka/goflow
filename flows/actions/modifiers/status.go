@@ -17,6 +17,8 @@ func init() {
 // TypeStatus is the type of our status modifier
 const TypeStatus string = "status"
 
+const modifierActiveContactStatus flows.ContactStatus = "active"
+
 // StatusModifier modifies the status of a contact
 type StatusModifier struct {
 	baseModifier
@@ -35,12 +37,16 @@ func NewStatus(status flows.ContactStatus) *StatusModifier {
 // Apply applies this modification to the given contact
 func (m *StatusModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 
-	changed, blockedOrStopped := contact.SetStatus(m.Status)
-	if changed {
-		log(events.NewContactStatusChanged(m.Status))
-		m.reevaluateGroups(env, assets, contact, blockedOrStopped, log)
+	modification := m.Status
+	if m.Status == modifierActiveContactStatus {
+		modification = flows.ContactStatusActive
 	}
 
+	if contact.Status() != modification {
+		contact.SetStatus(modification)
+		log(events.NewContactStatusChanged(m.Status))
+		m.reevaluateGroups(env, assets, contact, log)
+	}
 }
 
 var _ flows.Modifier = (*StatusModifier)(nil)

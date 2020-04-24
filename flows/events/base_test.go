@@ -216,7 +216,7 @@ func TestEventMarshaling(t *testing.T) {
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"type": "contact_status_changed",
-				"status": "active"
+				"status": ""
 			}`,
 		},
 		{
