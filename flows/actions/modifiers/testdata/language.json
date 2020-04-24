@@ -15,8 +15,8 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
-            "status": "active",
             "language": "fra",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
@@ -57,8 +57,8 @@
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
-            "status": "active",
             "language": "eng",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "events": []
