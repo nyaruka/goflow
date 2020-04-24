@@ -23,12 +23,14 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, tickete
 	}
 }
 
+// Open opens a ticket which for mailgun means just sending an initial email
 func (s *service) Open(session flows.Session, subject, body string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	ticket := flows.NewTicket(s.ticketer, subject, body)
 
 	fromAddress := fmt.Sprintf("thread+%s@%s", ticket.UUID, s.client.domain)
+	from := fmt.Sprintf("%s <%s>", session.Contact().Format(session.Environment()), fromAddress)
 
-	trace, err := s.client.SendMessage(fromAddress, s.to, subject, body)
+	trace, err := s.client.SendMessage(from, s.to, subject, body)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode))
 	}
