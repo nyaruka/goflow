@@ -39,7 +39,7 @@ type ParseResponse struct {
 	Language      string                   `json:"language"`
 }
 
-// Client is a basic Wit.ai client
+// Client is a basic Bothub client
 type Client struct {
 	httpClient  *http.Client
 	httpRetries *httpx.RetryConfig
