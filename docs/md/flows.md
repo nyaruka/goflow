@@ -956,6 +956,7 @@ will be created and it's the responsibility of the caller to act on that by init
             "id": 1234567,
             "name": "Bob Smith",
             "language": "eng",
+            "status": "active",
             "timezone": "Africa/Kigali",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [

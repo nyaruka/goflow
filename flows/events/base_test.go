@@ -277,6 +277,7 @@ func TestEventMarshaling(t *testing.T) {
 					"id": 1234567,
 					"language": "eng",
 					"name": "Ryan Lewis",
+					"status": "active",
 					"timezone": "America/Guayaquil",
 					"urns": [
 						"tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",

@@ -24,6 +24,9 @@ import (
 type ContactStatus string
 
 const (
+	// NilContactStatus is the empty contact status
+	NilContactStatus ContactStatus = ""
+
 	// ContactStatusActive is the contact status of active
 	ContactStatusActive ContactStatus = "active"
 
@@ -533,6 +536,10 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		status:    envelope.Status,
 		createdOn: envelope.CreatedOn,
 		assets:    sa,
+	}
+
+	if c.status == NilContactStatus {
+		c.status = ContactStatusActive
 	}
 
 	if envelope.Timezone != "" {

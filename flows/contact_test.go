@@ -273,6 +273,7 @@ func TestContactEqual(t *testing.T) {
 	assert.True(t, contact1.Equal(contact2))
 	assert.True(t, contact2.Equal(contact1))
 	assert.True(t, contact1.Equal(contact1.Clone()))
+	assert.Equal(t, flows.ContactStatusActive, contact1.Status())
 
 	// marshal and unmarshal contact 1 again
 	contact1JSON, err = jsonx.Marshal(contact1)

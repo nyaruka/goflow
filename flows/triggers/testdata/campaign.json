@@ -25,6 +25,7 @@
             "contact": {
                 "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
                 "name": "Bob",
+                "status": "active",
                 "created_on": "2018-01-01T12:00:00Z"
             },
             "triggered_on": "2000-01-01T00:00:00Z"
@@ -42,6 +43,7 @@
             "contact": {
                 "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
                 "name": "Bob",
+                "status": "active",
                 "created_on": "2018-01-01T12:00:00Z"
             },
             "event": {
