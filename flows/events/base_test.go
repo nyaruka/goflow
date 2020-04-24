@@ -361,6 +361,14 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewFailure(errors.New("503 is an failure")),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"text": "503 is an failure",
+				"type": "failure"
+			}`,
+		},
+		{
 			events.NewDependencyError(assets.NewFieldReference("age", "Age")),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
@@ -401,6 +409,13 @@ func TestEventMarshaling(t *testing.T) {
 				"hint": {"type": "image"},
 				"timeout_seconds": 500,
 				"type": "msg_wait"
+			}`,
+		},
+		{
+			events.NewWaitTimedOut(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "wait_timed_out"
 			}`,
 		},
 		{
@@ -467,6 +482,15 @@ func TestReadEvent(t *testing.T) {
 	// error if we don't recognize action type
 	_, err = events.ReadEvent([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+
+	// valid existing type
+	event, err := events.ReadEvent([]byte(`{"type": "contact_name_changed", "created_on": "2006-01-02T15:04:05Z", "name": "Bob Smith"}`))
+	require.NoError(t, err)
+
+	assert.Equal(t, events.TypeContactNameChanged, event.Type())
+	eventTime, _ := time.Parse(time.RFC3339, "2006-01-02T15:04:05Z")
+	assert.Equal(t, eventTime, event.CreatedOn())
+
 }
 
 func TestWebhookCalledEventTrimming(t *testing.T) {
