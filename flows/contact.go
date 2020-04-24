@@ -25,7 +25,7 @@ type ContactStatus string
 
 const (
 	// ContactStatusActive is the contact status of active
-	ContactStatusActive ContactStatus = ""
+	ContactStatusActive ContactStatus = "active"
 
 	// ContactStatusBlocked is the contact status of blocked
 	ContactStatusBlocked ContactStatus = "blocked"

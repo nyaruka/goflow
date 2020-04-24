@@ -4,6 +4,7 @@
         "contact_before": {
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "name": "Bob",
+            "status": "active",
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
         },
         "modifier": {
@@ -13,6 +14,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "events": []
@@ -72,6 +74,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "events": [
@@ -97,6 +100,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "events": [
@@ -112,6 +116,7 @@
         "contact_before": {
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "name": "Bob",
+            "status": "active",
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
         },
         "modifier": {
@@ -137,6 +142,7 @@
         "contact_before": {
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "name": "Bob",
+            "status": "active",
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
         },
         "modifier": {
@@ -174,6 +180,7 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "language": "fra",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
@@ -205,6 +212,7 @@
         "contact_before": {
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "name": "Bob",
+            "status": "active",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
