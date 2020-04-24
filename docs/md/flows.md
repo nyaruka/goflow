@@ -517,6 +517,7 @@ Is used to open a ticket for the contact.
         "name": "Support Tickets"
     },
     "subject": "Needs help",
+    "body": "@input",
     "result_name": "Help Ticket"
 }
 ```
@@ -528,8 +529,15 @@ Is used to open a ticket for the contact.
         "type": "ticket_opened",
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
-        "ticket_id": "1001",
-        "subject": "Needs help",
+        "ticket": {
+            "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+            "ticketer": {
+                "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+                "name": "Support Tickets"
+            },
+            "subject": "Needs help",
+            "body": "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3"
+        },
         "http_logs": [
             {
                 "url": "http://api.zendesk.com/new_ticket",
@@ -546,7 +554,7 @@ Is used to open a ticket for the contact.
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
         "name": "Help Ticket",
-        "value": "1001",
+        "value": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
         "category": "Success"
     }
 ]
@@ -575,7 +583,7 @@ the caller should handle as an IVR play command using the audio attachment.
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
     "msg": {
-        "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+        "uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
@@ -651,7 +659,7 @@ an IVR say command using the message text.
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
     "msg": {
-        "uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+        "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
@@ -776,7 +784,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
     "msg": {
-        "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+        "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
         "urn": "tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -1065,7 +1073,7 @@ will be created and it's the responsibility of the caller to act on that by init
             },
             "help_ticket": {
                 "name": "Help Ticket",
-                "value": "1001",
+                "value": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                 "category": "Success",
                 "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
                 "created_on": "2018-04-11T18:24:30.123456Z"

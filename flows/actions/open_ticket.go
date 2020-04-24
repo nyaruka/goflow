@@ -23,6 +23,7 @@ const TypeOpenTicket string = "open_ticket"
 //       "name": "Support Tickets"
 //     },
 //     "subject": "Needs help",
+//     "body": "@input",
 //     "result_name": "Help Ticket"
 //   }
 //
@@ -33,15 +34,17 @@ type OpenTicketAction struct {
 
 	Ticketer   *assets.TicketerReference `json:"ticketer" validate:"required"`
 	Subject    string                    `json:"subject" validate:"required" engine:"evaluated"`
+	Body       string                    `json:"body" engine:"evaluated"`
 	ResultName string                    `json:"result_name" validate:"required"`
 }
 
 // NewOpenTicket creates a new open ticket action
-func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, subject, resultName string) *OpenTicketAction {
+func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, subject, body, resultName string) *OpenTicketAction {
 	return &OpenTicketAction{
 		baseAction: newBaseAction(TypeOpenTicket, uuid),
 		Ticketer:   ticketer,
 		Subject:    subject,
+		Body:       body,
 		ResultName: resultName,
 	}
 }
@@ -55,10 +58,14 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 	if err != nil {
 		logEvent(events.NewError(err))
 	}
+	evaluatedBody, err := run.EvaluateTemplate(a.Body)
+	if err != nil {
+		logEvent(events.NewError(err))
+	}
 
-	ticket := a.open(run, step, ticketer, evaluatedSubject, logEvent)
+	ticket := a.open(run, step, ticketer, evaluatedSubject, evaluatedBody, logEvent)
 	if ticket != nil {
-		a.saveResult(run, step, a.ResultName, ticket.ID, CategorySuccess, "", "", nil, logEvent)
+		a.saveResult(run, step, a.ResultName, string(ticket.UUID), CategorySuccess, "", "", nil, logEvent)
 	} else {
 		a.saveResult(run, step, a.ResultName, "", CategoryFailure, "", "", nil, logEvent)
 	}
@@ -66,7 +73,7 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 	return nil
 }
 
-func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *flows.Ticketer, subject string, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *flows.Ticketer, subject, body string, logEvent flows.EventCallback) *flows.Ticket {
 	if ticketer == nil {
 		logEvent(events.NewDependencyError(a.Ticketer))
 		return nil
@@ -80,15 +87,13 @@ func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *fl
 
 	httpLogger := &flows.HTTPLogger{}
 
-	ticket, err := svc.Open(run.Session(), subject, httpLogger.Log)
+	ticket, err := svc.Open(run.Session(), subject, body, httpLogger.Log)
 	if err != nil {
 		logEvent(events.NewError(err))
 		return nil
 	}
 
-	if len(httpLogger.Logs) > 0 {
-		logEvent(events.NewTicketOpened(ticket, httpLogger.Logs))
-	}
+	logEvent(events.NewTicketOpened(ticket, httpLogger.Logs))
 
 	return ticket
 }

@@ -1,6 +1,30 @@
 package flows
 
-import "github.com/nyaruka/goflow/assets"
+import (
+	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/utils/uuids"
+)
+
+// TicketUUID is the UUID of a ticket
+type TicketUUID uuids.UUID
+
+// Ticket is a ticket in a ticketing system
+type Ticket struct {
+	UUID     TicketUUID                `json:"uuid"`
+	Ticketer *assets.TicketerReference `json:"ticketer"`
+	Subject  string                    `json:"subject"`
+	Body     string                    `json:"body"`
+}
+
+// NewTicket creates a new ticket
+func NewTicket(ticketer *Ticketer, subject, body string) *Ticket {
+	return &Ticket{
+		UUID:     TicketUUID(uuids.New()),
+		Ticketer: ticketer.Reference(),
+		Subject:  subject,
+		Body:     body,
+	}
+}
 
 // Ticketer represents a ticket issuing system.
 type Ticketer struct {

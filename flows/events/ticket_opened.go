@@ -16,8 +16,11 @@ const TypeTicketOpened string = "ticket_opened"
 //   {
 //     "type": "ticket_opened",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "ticket_id": "234562",
-//     "subject": "Need help",
+//     "ticket": {
+//       "uuid": "2e677ae6-9b57-423c-b022-7950503eef35",
+//       "subject": "Need help",
+//       "body": "Where are my cookies?"
+//     },
 //     "http_logs": [
 //       {
 //         "url": "https://api.zendesk.com/new_ticket",
@@ -34,17 +37,15 @@ const TypeTicketOpened string = "ticket_opened"
 type TicketOpenedEvent struct {
 	baseEvent
 
-	TicketID string           `json:"ticket_id"`
-	Subject  string           `json:"subject"`
-	HTTPLogs []*flows.HTTPLog `json:"http_logs"`
+	Ticket   *flows.Ticket    `json:"ticket"`
+	HTTPLogs []*flows.HTTPLog `json:"http_logs,omitempty"`
 }
 
 // NewTicketOpened returns a new ticket opened event
 func NewTicketOpened(ticket *flows.Ticket, httpLogs []*flows.HTTPLog) *TicketOpenedEvent {
 	return &TicketOpenedEvent{
 		baseEvent: newBaseEvent(TypeTicketOpened),
-		TicketID:  ticket.ID,
-		Subject:   ticket.Subject,
+		Ticket:    ticket,
 		HTTPLogs:  httpLogs,
 	}
 }

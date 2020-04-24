@@ -845,8 +845,12 @@ Events are created when a new ticket is opened.
 {
     "type": "ticket_opened",
     "created_on": "2006-01-02T15:04:05Z",
-    "ticket_id": "234562",
-    "subject": "Need help",
+    "ticket": {
+        "uuid": "2e677ae6-9b57-423c-b022-7950503eef35",
+        "ticketer": null,
+        "subject": "Need help",
+        "body": "Where are my cookies?"
+    },
     "http_logs": [
         {
             "url": "https://api.zendesk.com/new_ticket",

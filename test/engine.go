@@ -2,7 +2,6 @@ package test
 
 import (
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -89,14 +88,13 @@ var _ flows.ClassificationService = (*classificationService)(nil)
 // implementation of a ticket service for testing which just fakes opening a ticket
 type ticketService struct {
 	ticketer *flows.Ticketer
-	counter  int
 }
 
 func newTicketService(ticketer *flows.Ticketer) *ticketService {
-	return &ticketService{ticketer: ticketer, counter: 1000}
+	return &ticketService{ticketer: ticketer}
 }
 
-func (s *ticketService) Open(session flows.Session, subject string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
+func (s *ticketService) Open(session flows.Session, subject, body string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	logHTTP(&flows.HTTPLog{
 		URL:       "http://api.zendesk.com/new_ticket",
 		Request:   "POST /new_ticket HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -106,9 +104,7 @@ func (s *ticketService) Open(session flows.Session, subject string, logHTTP flow
 		ElapsedMS: 0,
 	})
 
-	s.counter++
-
-	return &flows.Ticket{ID: strconv.Itoa(s.counter), Subject: subject}, nil
+	return flows.NewTicket(s.ticketer, subject, body), nil
 }
 
 // implementation of an airtime service for testing which uses a fixed currency
