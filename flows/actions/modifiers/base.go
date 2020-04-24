@@ -39,7 +39,7 @@ func newBaseModifier(typeName string) baseModifier {
 func (m *baseModifier) Type() string { return m.Type_ }
 
 // helper to re-evaluate dynamic groups and log any changes to membership
-func (m *baseModifier) reevaluateGroups(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, clearStatic bool, log flows.EventCallback) {
+func (m *baseModifier) reevaluateGroups(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	added, removed, errors := contact.ReevaluateDynamicGroups(env)
 
 	// add error event for each group we couldn't re-evaluate
@@ -47,8 +47,8 @@ func (m *baseModifier) reevaluateGroups(env envs.Environment, assets flows.Sessi
 		log(events.NewError(err))
 	}
 
-	// some modifications can trigger removal from all static groups
-	if clearStatic {
+	// make sure from all static groups are removed for blocked or stopped contacts
+	if contact.Status() == flows.ContactStatusBlocked || contact.Status() == flows.ContactStatusStopped {
 		for _, g := range contact.Groups().All() {
 			if !g.IsDynamic() {
 				contact.Groups().Remove(g)
