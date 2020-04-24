@@ -20,14 +20,30 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ContactStatus is status in which a contact is in
+type ContactStatus string
+
+const (
+	// NilContactStatus is the empty contact status
+	NilContactStatus ContactStatus = ""
+
+	// ContactStatusActive is the contact status of active
+	ContactStatusActive ContactStatus = "active"
+
+	// ContactStatusBlocked is the contact status of blocked
+	ContactStatusBlocked ContactStatus = "blocked"
+
+	// ContactStatusStopped is the contact status of stopped
+	ContactStatusStopped ContactStatus = "stopped"
+)
+
 // Contact represents a person who is interacting with the flow
 type Contact struct {
 	uuid      ContactUUID
 	id        ContactID
 	name      string
 	language  envs.Language
-	blocked   bool
-	stopped   bool
+	status    ContactStatus
 	timezone  *time.Location
 	createdOn time.Time
 	urns      URNList
@@ -45,8 +61,7 @@ func NewContact(
 	id ContactID,
 	name string,
 	language envs.Language,
-	blocked bool,
-	stopped bool,
+	status ContactStatus,
 	timezone *time.Location,
 	createdOn time.Time,
 	urns []urns.URN,
@@ -71,8 +86,7 @@ func NewContact(
 		id:        id,
 		name:      name,
 		language:  language,
-		blocked:   blocked,
-		stopped:   stopped,
+		status:    status,
 		timezone:  timezone,
 		createdOn: createdOn,
 		urns:      urnList,
@@ -88,8 +102,7 @@ func NewEmptyContact(sa SessionAssets, name string, language envs.Language, time
 		uuid:      ContactUUID(uuids.New()),
 		name:      name,
 		language:  language,
-		blocked:   false,
-		stopped:   false,
+		status:    ContactStatusActive,
 		timezone:  timezone,
 		createdOn: dates.Now(),
 		urns:      URNList{},
@@ -110,8 +123,7 @@ func (c *Contact) Clone() *Contact {
 		id:        c.id,
 		name:      c.name,
 		language:  c.language,
-		blocked:   c.blocked,
-		stopped:   c.stopped,
+		status:    c.status,
 		timezone:  c.timezone,
 		createdOn: c.createdOn,
 		urns:      c.urns.clone(),
@@ -140,17 +152,11 @@ func (c *Contact) SetLanguage(lang envs.Language) { c.language = lang }
 // Language gets the language for this contact
 func (c *Contact) Language() envs.Language { return c.language }
 
-// Blocked returns whether the contact is blocked or not
-func (c *Contact) Blocked() bool { return c.blocked }
+// Status returns the contact status
+func (c *Contact) Status() ContactStatus { return c.status }
 
-// SetBlocked sets the blocked state of this contact
-func (c *Contact) SetBlocked(blocked bool) { c.blocked = blocked }
-
-// Stopped returns whether the contact is stopped or not
-func (c *Contact) Stopped() bool { return c.stopped }
-
-// SetStopped sets the stopped stte of this contact
-func (c *Contact) SetStopped(stopped bool) { c.stopped = stopped }
+// SetStatus sets the status of this contact (blocked, stopped or active)
+func (c *Contact) SetStatus(status ContactStatus) { c.status = status }
 
 // SetTimezone sets the timezone of this contact
 func (c *Contact) SetTimezone(tz *time.Location) {
@@ -503,6 +509,7 @@ type contactEnvelope struct {
 	ID        ContactID                `json:"id,omitempty"`
 	Name      string                   `json:"name,omitempty"`
 	Language  envs.Language            `json:"language,omitempty"`
+	Status    ContactStatus            `json:"status,omitempty"`
 	Stopped   bool                     `json:"stopped,omitempty"`
 	Blocked   bool                     `json:"blocked,omitempty"`
 	Timezone  string                   `json:"timezone,omitempty"`
@@ -526,10 +533,13 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		id:        envelope.ID,
 		name:      envelope.Name,
 		language:  envelope.Language,
-		blocked:   envelope.Blocked,
-		stopped:   envelope.Stopped,
+		status:    envelope.Status,
 		createdOn: envelope.CreatedOn,
 		assets:    sa,
+	}
+
+	if c.status == NilContactStatus {
+		c.status = ContactStatusActive
 	}
 
 	if envelope.Timezone != "" {
@@ -561,9 +571,8 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		Name:      c.name,
 		UUID:      c.uuid,
 		ID:        c.id,
+		Status:    c.status,
 		Language:  c.language,
-		Blocked:   c.blocked,
-		Stopped:   c.stopped,
 		CreatedOn: c.createdOn,
 	}
 

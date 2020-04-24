@@ -19,6 +19,7 @@ Is used when a session was triggered by a campaign event
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
@@ -47,6 +48,7 @@ Is used when a session was triggered by a channel event
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
@@ -117,6 +119,7 @@ Is used when a session was triggered manually by a user
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z"
@@ -138,6 +141,7 @@ Is used when a session was triggered by a message being received by the caller
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
@@ -180,6 +184,7 @@ Is used when a session is resumed with a new message from the contact
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
         "language": "fra",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z",
         "fields": {
             "gender": {
@@ -215,6 +220,7 @@ Is used when a session is resumed because the waiting run has expired
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
         "language": "fra",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z",
         "fields": {
             "gender": {
@@ -238,6 +244,7 @@ Is used when a session is resumed because a wait has timed out
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
         "language": "fra",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z",
         "fields": {
             "gender": {
@@ -352,19 +359,6 @@ Events are created when a NLU classifier is called.
 }
 ```
 </div>
-<h2 class="item_title"><a name="event:contact_blocked" href="#event:contact_blocked">contact_blocked</a></h2>
-
-Events are created when the contact is blocked
-
-<div class="output_event">
-
-```json
-{
-    "type": "contact_blocked",
-    "created_on": "2006-01-02T15:04:05Z"
-}
-```
-</div>
 <h2 class="item_title"><a name="event:contact_field_changed" href="#event:contact_field_changed">contact_field_changed</a></h2>
 
 Events are created when a custom field value of the contact has been changed.
@@ -459,16 +453,17 @@ Events are generated when the resume has a contact with differences to the curre
 }
 ```
 </div>
-<h2 class="item_title"><a name="event:contact_stopped" href="#event:contact_stopped">contact_stopped</a></h2>
+<h2 class="item_title"><a name="event:contact_status_changed" href="#event:contact_status_changed">contact_status_changed</a></h2>
 
-Events are created when the contact is stopped
+Events are created when the status of the contact has been changed.
 
 <div class="output_event">
 
 ```json
 {
-    "type": "contact_stopped",
-    "created_on": "2006-01-02T15:04:05Z"
+    "type": "contact_timezone_changed",
+    "created_on": "2006-01-02T15:04:05Z",
+    "timezone": ""
 }
 ```
 </div>
@@ -483,32 +478,6 @@ Events are created when the timezone of the contact has been changed.
     "type": "contact_timezone_changed",
     "created_on": "2006-01-02T15:04:05Z",
     "timezone": "Africa/Kigali"
-}
-```
-</div>
-<h2 class="item_title"><a name="event:contact_unblocked" href="#event:contact_unblocked">contact_unblocked</a></h2>
-
-Events are created when the contact is unblocked
-
-<div class="output_event">
-
-```json
-{
-    "type": "contact_unblocked",
-    "created_on": "2006-01-02T15:04:05Z"
-}
-```
-</div>
-<h2 class="item_title"><a name="event:contact_unstopped" href="#event:contact_unstopped">contact_unstopped</a></h2>
-
-Events are created when the contact is stopped
-
-<div class="output_event">
-
-```json
-{
-    "type": "contact_unstopped",
-    "created_on": "2006-01-02T15:04:05Z"
 }
 ```
 </div>
