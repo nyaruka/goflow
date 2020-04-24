@@ -59,14 +59,14 @@
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
                     "uuid": "5389414a-66b8-408b-afec-07c5d68f6784",
                     "name": "Nameless"
                 }
-            ],
-            "status": "active"
+            ]
         },
         "events": [
             {
