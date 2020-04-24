@@ -21,6 +21,7 @@ import (
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/classification/wit"
+	"github.com/nyaruka/goflow/services/ticket/mailgun"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/jsonx"
@@ -48,12 +49,15 @@ const contactJSON = `{
 const usage = `usage: flowrunner [flags] <assets.json> [flow_uuid]`
 
 func main() {
-	var initialMsg, contactLang, witToken string
+	var initialMsg, contactLang, witToken, mailgunDomain, mailgunAPIKey, mailgunToAddr string
 	var printRepro bool
 	flags := flag.NewFlagSet("", flag.ExitOnError)
 	flags.StringVar(&initialMsg, "msg", "", "initial message to trigger session with")
 	flags.StringVar(&contactLang, "lang", "eng", "initial language of the contact")
 	flags.StringVar(&witToken, "wit.token", "", "access token for wit.ai")
+	flags.StringVar(&mailgunDomain, "mailgun.domain", "", "domain for mailgun")
+	flags.StringVar(&mailgunAPIKey, "mailgun.apikey", "", "API key for mailgun")
+	flags.StringVar(&mailgunToAddr, "mailgun.toaddr", "", "To address for mailgun tickets")
 	flags.BoolVar(&printRepro, "repro", false, "print repro afterwards")
 	flags.Parse(os.Args[1:])
 	args := flags.Args()
@@ -65,9 +69,12 @@ func main() {
 	}
 
 	assetsPath := args[0]
-	flowUUID := assets.FlowUUID(args[1])
+	var flowUUID assets.FlowUUID
+	if len(args) == 2 {
+		flowUUID = assets.FlowUUID(args[1])
+	}
 
-	engine := createEngine(witToken)
+	engine := createEngine(witToken, mailgunDomain, mailgunAPIKey, mailgunToAddr)
 
 	repro, err := RunFlow(engine, assetsPath, flowUUID, initialMsg, envs.Language(contactLang), os.Stdin, os.Stdout)
 
@@ -83,7 +90,7 @@ func main() {
 	}
 }
 
-func createEngine(witToken string) flows.Engine {
+func createEngine(witToken, mailgunDomain, mailgunAPIKey, mailgunToAddr string) flows.Engine {
 	builder := engine.NewBuilder().
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-runner"}, 10000))
 
@@ -93,6 +100,14 @@ func createEngine(witToken string) flows.Engine {
 				return wit.NewService(http.DefaultClient, nil, classifier, witToken), nil
 			}
 			return nil, errors.New("only classifiers of type wit supported")
+		})
+	}
+	if mailgunDomain != "" {
+		builder.WithTicketServiceFactory(func(session flows.Session, ticketer *flows.Ticketer) (flows.TicketService, error) {
+			if ticketer.Type() == "mailgun" {
+				return mailgun.NewService(http.DefaultClient, nil, ticketer, mailgunDomain, mailgunAPIKey, mailgunToAddr), nil
+			}
+			return nil, errors.New("only ticketers of type mailgun supported")
 		})
 	}
 
@@ -270,6 +285,8 @@ func printEvents(log []flows.Event, out io.Writer) {
 			msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
 		case *events.SessionTriggeredEvent:
 			msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
+		case *events.TicketOpenedEvent:
+			msg = fmt.Sprintf("🎟️ ticket opened with subject \"%s\"", typed.Ticket.Subject)
 		case *events.WaitTimedOutEvent:
 			msg = "⏲️ resuming due to wait timeout"
 		case *events.WebhookCalledEvent:

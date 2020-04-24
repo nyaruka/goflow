@@ -17,16 +17,16 @@ type Client struct {
 	httpClient  *http.Client
 	httpRetries *httpx.RetryConfig
 	domain      string
-	token       string
+	apiKey      string
 }
 
 // NewClient creates a new mailgun client
-func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, domain, token string) *Client {
+func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, domain, apiKey string) *Client {
 	return &Client{
 		httpClient:  httpClient,
 		httpRetries: httpRetries,
 		domain:      domain,
-		token:       token,
+		apiKey:      apiKey,
 	}
 }
 
@@ -45,7 +45,7 @@ func (c *Client) SendMessage(from, to, subject, text string) (*httpx.Trace, erro
 	if err != nil {
 		return nil, err
 	}
-	req.SetBasicAuth("api", c.token)
+	req.SetBasicAuth("api", c.apiKey)
 
 	return httpx.DoTrace(c.httpClient, req, c.httpRetries, nil, -1)
 }
