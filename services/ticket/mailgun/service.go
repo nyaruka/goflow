@@ -30,7 +30,7 @@ func (s *service) Open(session flows.Session, subject, body string, logHTTP flow
 	fromAddress := fmt.Sprintf("thread+%s@%s", ticket.UUID, s.client.domain)
 	from := fmt.Sprintf("%s <%s>", session.Contact().Format(session.Environment()), fromAddress)
 
-	trace, err := s.client.SendMessage(from, s.to, subject, body)
+	_, trace, err := s.client.SendMessage(from, s.to, subject, body)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode))
 	}
