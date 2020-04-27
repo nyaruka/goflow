@@ -10,19 +10,21 @@ type TicketUUID uuids.UUID
 
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
-	UUID     TicketUUID                `json:"uuid"`
-	Ticketer *assets.TicketerReference `json:"ticketer"`
-	Subject  string                    `json:"subject"`
-	Body     string                    `json:"body"`
+	UUID       TicketUUID                `json:"uuid"`
+	Ticketer   *assets.TicketerReference `json:"ticketer"`
+	Subject    string                    `json:"subject"`
+	Body       string                    `json:"body"`
+	ExternalID string                    `json:"external_id,omitempty"`
 }
 
 // NewTicket creates a new ticket
-func NewTicket(ticketer *Ticketer, subject, body string) *Ticket {
+func NewTicket(uuid TicketUUID, ticketer *Ticketer, subject, body, externalID string) *Ticket {
 	return &Ticket{
-		UUID:     TicketUUID(uuids.New()),
-		Ticketer: ticketer.Reference(),
-		Subject:  subject,
-		Body:     body,
+		UUID:       uuid,
+		Ticketer:   ticketer.Reference(),
+		Subject:    subject,
+		Body:       body,
+		ExternalID: externalID,
 	}
 }
 

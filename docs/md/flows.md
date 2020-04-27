@@ -536,13 +536,14 @@ Is used to open a ticket for the contact.
                 "name": "Support Tickets"
             },
             "subject": "Needs help",
-            "body": "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3"
+            "body": "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3",
+            "external_id": "123456"
         },
         "http_logs": [
             {
-                "url": "http://api.zendesk.com/new_ticket",
+                "url": "http://nyaruka.zendesk.com/tickets.json",
                 "status": "success",
-                "request": "POST /new_ticket HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Needs help\"}",
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                 "created_on": "2019-10-16T13:59:30.123456789Z",
                 "elapsed_ms": 0

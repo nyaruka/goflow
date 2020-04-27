@@ -526,28 +526,29 @@ Event
 <span id="cb19-10"><a href="#cb19-10"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Support Tickets&quot;</span></span>
 <span id="cb19-11"><a href="#cb19-11"></a>            <span class="fu">},</span></span>
 <span id="cb19-12"><a href="#cb19-12"></a>            <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="st">&quot;Needs help&quot;</span><span class="fu">,</span></span>
-<span id="cb19-13"><a href="#cb19-13"></a>            <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi there</span><span class="ch">\n</span><span class="st">http://s3.amazon.com/bucket/test.jpg</span><span class="ch">\n</span><span class="st">http://s3.amazon.com/bucket/test.mp3&quot;</span></span>
-<span id="cb19-14"><a href="#cb19-14"></a>        <span class="fu">},</span></span>
-<span id="cb19-15"><a href="#cb19-15"></a>        <span class="dt">&quot;http_logs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb19-16"><a href="#cb19-16"></a>            <span class="fu">{</span></span>
-<span id="cb19-17"><a href="#cb19-17"></a>                <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://api.zendesk.com/new_ticket&quot;</span><span class="fu">,</span></span>
-<span id="cb19-18"><a href="#cb19-18"></a>                <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
-<span id="cb19-19"><a href="#cb19-19"></a>                <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST /new_ticket HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">&quot;</span><span class="fu">,</span></span>
-<span id="cb19-20"><a href="#cb19-20"></a>                <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.0 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 15</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">status</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">ok</span><span class="ch">\&quot;</span><span class="st">}&quot;</span><span class="fu">,</span></span>
-<span id="cb19-21"><a href="#cb19-21"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2019-10-16T13:59:30.123456789Z&quot;</span><span class="fu">,</span></span>
-<span id="cb19-22"><a href="#cb19-22"></a>                <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">0</span></span>
-<span id="cb19-23"><a href="#cb19-23"></a>            <span class="fu">}</span></span>
-<span id="cb19-24"><a href="#cb19-24"></a>        <span class="ot">]</span></span>
-<span id="cb19-25"><a href="#cb19-25"></a>    <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb19-26"><a href="#cb19-26"></a>    <span class="fu">{</span></span>
-<span id="cb19-27"><a href="#cb19-27"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
-<span id="cb19-28"><a href="#cb19-28"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
-<span id="cb19-29"><a href="#cb19-29"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
-<span id="cb19-30"><a href="#cb19-30"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Help Ticket&quot;</span><span class="fu">,</span></span>
-<span id="cb19-31"><a href="#cb19-31"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;4f15f627-b1e2-4851-8dbf-00ecf5d03034&quot;</span><span class="fu">,</span></span>
-<span id="cb19-32"><a href="#cb19-32"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span></span>
-<span id="cb19-33"><a href="#cb19-33"></a>    <span class="fu">}</span></span>
-<span id="cb19-34"><a href="#cb19-34"></a><span class="ot">]</span></span></code></pre></div>
+<span id="cb19-13"><a href="#cb19-13"></a>            <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi there</span><span class="ch">\n</span><span class="st">http://s3.amazon.com/bucket/test.jpg</span><span class="ch">\n</span><span class="st">http://s3.amazon.com/bucket/test.mp3&quot;</span><span class="fu">,</span></span>
+<span id="cb19-14"><a href="#cb19-14"></a>            <span class="dt">&quot;external_id&quot;</span><span class="fu">:</span> <span class="st">&quot;123456&quot;</span></span>
+<span id="cb19-15"><a href="#cb19-15"></a>        <span class="fu">},</span></span>
+<span id="cb19-16"><a href="#cb19-16"></a>        <span class="dt">&quot;http_logs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb19-17"><a href="#cb19-17"></a>            <span class="fu">{</span></span>
+<span id="cb19-18"><a href="#cb19-18"></a>                <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://nyaruka.zendesk.com/tickets.json&quot;</span><span class="fu">,</span></span>
+<span id="cb19-19"><a href="#cb19-19"></a>                <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb19-20"><a href="#cb19-20"></a>                <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST /tickets.json HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">subject</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Needs help</span><span class="ch">\&quot;</span><span class="st">}&quot;</span><span class="fu">,</span></span>
+<span id="cb19-21"><a href="#cb19-21"></a>                <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.0 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 15</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">status</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">ok</span><span class="ch">\&quot;</span><span class="st">}&quot;</span><span class="fu">,</span></span>
+<span id="cb19-22"><a href="#cb19-22"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2019-10-16T13:59:30.123456789Z&quot;</span><span class="fu">,</span></span>
+<span id="cb19-23"><a href="#cb19-23"></a>                <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">0</span></span>
+<span id="cb19-24"><a href="#cb19-24"></a>            <span class="fu">}</span></span>
+<span id="cb19-25"><a href="#cb19-25"></a>        <span class="ot">]</span></span>
+<span id="cb19-26"><a href="#cb19-26"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb19-27"><a href="#cb19-27"></a>    <span class="fu">{</span></span>
+<span id="cb19-28"><a href="#cb19-28"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb19-29"><a href="#cb19-29"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb19-30"><a href="#cb19-30"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb19-31"><a href="#cb19-31"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Help Ticket&quot;</span><span class="fu">,</span></span>
+<span id="cb19-32"><a href="#cb19-32"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;4f15f627-b1e2-4851-8dbf-00ecf5d03034&quot;</span><span class="fu">,</span></span>
+<span id="cb19-33"><a href="#cb19-33"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span></span>
+<span id="cb19-34"><a href="#cb19-34"></a>    <span class="fu">}</span></span>
+<span id="cb19-35"><a href="#cb19-35"></a><span class="ot">]</span></span></code></pre></div>
 </div>
 <h2 class="item_title">
 <a name="action:play_audio" href="#action:play_audio">play_audio</a>

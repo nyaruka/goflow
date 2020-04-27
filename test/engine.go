@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -96,15 +98,15 @@ func newTicketService(ticketer *flows.Ticketer) *ticketService {
 
 func (s *ticketService) Open(session flows.Session, subject, body string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	logHTTP(&flows.HTTPLog{
-		URL:       "http://api.zendesk.com/new_ticket",
-		Request:   "POST /new_ticket HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+		URL:       "http://nyaruka.zendesk.com/tickets.json",
+		Request:   fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"%s\"}", subject),
 		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
 		Status:    "success",
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 		ElapsedMS: 0,
 	})
 
-	return flows.NewTicket(s.ticketer, subject, body), nil
+	return flows.NewTicket(flows.TicketUUID(uuids.New()), s.ticketer, subject, body, "123456"), nil
 }
 
 // implementation of an airtime service for testing which uses a fixed currency

@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 type service struct {
@@ -25,9 +26,9 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, tickete
 
 // Open opens a ticket which for mailgun means just sending an initial email
 func (s *service) Open(session flows.Session, subject, body string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
-	ticket := flows.NewTicket(s.ticketer, subject, body)
+	ticketUUID := flows.TicketUUID(uuids.New())
 
-	fromAddress := fmt.Sprintf("thread+%s@%s", ticket.UUID, s.client.domain)
+	fromAddress := fmt.Sprintf("thread+%s@%s", ticketUUID, s.client.domain)
 	from := fmt.Sprintf("%s <%s>", session.Contact().Format(session.Environment()), fromAddress)
 
 	_, trace, err := s.client.SendMessage(from, s.to, subject, body)
@@ -38,5 +39,5 @@ func (s *service) Open(session flows.Session, subject, body string, logHTTP flow
 		return nil, err
 	}
 
-	return ticket, nil
+	return flows.NewTicket(ticketUUID, s.ticketer, subject, body, fromAddress), nil
 }
