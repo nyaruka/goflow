@@ -2,13 +2,13 @@ package mailgun
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"mime/multipart"
 	"net/http"
 
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 	"github.com/pkg/errors"
 )
@@ -56,10 +56,10 @@ func (c *Client) SendMessage(from, to, subject, text string) (string, *httpx.Tra
 		return "", trace, err
 	}
 
-	if trace.Response.StatusCode != 200 {
+	if trace.Response.StatusCode >= 400 {
 		response := &baseResponse{}
-		json.Unmarshal(trace.ResponseBody, response)
-		return "", trace, errors.Errorf("error calling mailgun API: %s", response.Message)
+		jsonx.Unmarshal(trace.ResponseBody, response)
+		return "", trace, errors.New(response.Message)
 	}
 
 	response := &messageResponse{}

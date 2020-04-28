@@ -7,6 +7,8 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/nyaruka/goflow/utils/uuids"
+
+	"github.com/pkg/errors"
 )
 
 type service struct {
@@ -31,7 +33,7 @@ func (s *service) Open(session flows.Session, subject, body string, logHTTP flow
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode))
 	}
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "error calling zendesk API")
 	}
 
 	return flows.NewTicket(ticketUUID, s.ticketer, subject, body, strconv.Itoa(ticketResponse.ID)), nil

@@ -31,6 +31,11 @@ func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, subdomai
 	}
 }
 
+type errorResponse struct {
+	Error       string `json:"error"`
+	Description string `json:"description"`
+}
+
 type ticketComment struct {
 	Body string `json:"body"`
 }
@@ -66,8 +71,10 @@ func (c *Client) CreateTicket(subject, body string) (*Ticket, *httpx.Trace, erro
 		return nil, trace, err
 	}
 
-	if trace.Response.StatusCode > 400 {
-		return nil, trace, errors.New("error calling Zendesk API")
+	if trace.Response.StatusCode >= 400 {
+		response := &errorResponse{}
+		jsonx.Unmarshal(trace.ResponseBody, response)
+		return nil, trace, errors.New(response.Description)
 	}
 
 	response := struct {
