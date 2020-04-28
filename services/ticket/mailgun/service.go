@@ -30,7 +30,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, tickete
 func (s *service) Open(session flows.Session, subject, body string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	ticketUUID := flows.TicketUUID(uuids.New())
 
-	fromAddress := fmt.Sprintf("thread+%s@%s", ticketUUID, s.client.domain)
+	fromAddress := fmt.Sprintf("ticket+%s@%s", ticketUUID, s.client.domain)
 	from := fmt.Sprintf("%s <%s>", session.Contact().Format(session.Environment()), fromAddress)
 
 	_, trace, err := s.client.SendMessage(from, s.toAddress, subject, body)
