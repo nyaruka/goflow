@@ -1,3 +1,8 @@
+v0.84.0
+----------
+ * Replace contact blocked and stopped fields with status field
+ * Rename blocked and stopped modifiers to contact status modifier
+
 v0.83.1
 ----------
  * Fix anywhere we truncate strings to do it by rune
