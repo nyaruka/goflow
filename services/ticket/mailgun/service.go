@@ -12,17 +12,17 @@ import (
 )
 
 type service struct {
-	client   *Client
-	ticketer *flows.Ticketer
-	to       string
+	client    *Client
+	ticketer  *flows.Ticketer
+	toAddress string
 }
 
 // NewService creates a new Mailgun email-based ticketing service
-func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, ticketer *flows.Ticketer, domain, apiKey, to string) flows.TicketService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, ticketer *flows.Ticketer, domain, apiKey, toAddress string) flows.TicketService {
 	return &service{
-		client:   NewClient(httpClient, httpRetries, domain, apiKey),
-		ticketer: ticketer,
-		to:       to,
+		client:    NewClient(httpClient, httpRetries, domain, apiKey),
+		ticketer:  ticketer,
+		toAddress: toAddress,
 	}
 }
 
@@ -33,7 +33,7 @@ func (s *service) Open(session flows.Session, subject, body string, logHTTP flow
 	fromAddress := fmt.Sprintf("thread+%s@%s", ticketUUID, s.client.domain)
 	from := fmt.Sprintf("%s <%s>", session.Contact().Format(session.Environment()), fromAddress)
 
-	_, trace, err := s.client.SendMessage(from, s.to, subject, body)
+	_, trace, err := s.client.SendMessage(from, s.toAddress, subject, body)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode))
 	}

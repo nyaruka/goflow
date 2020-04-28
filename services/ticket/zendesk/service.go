@@ -17,9 +17,9 @@ type service struct {
 }
 
 // NewService creates a new Zendesk ticketing service
-func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, ticketer *flows.Ticketer, subdomain, emailAddress, apiToken string) flows.TicketService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, ticketer *flows.Ticketer, subdomain, username, apiToken string) flows.TicketService {
 	return &service{
-		client:   NewClient(httpClient, httpRetries, subdomain, emailAddress, apiToken),
+		client:   NewClient(httpClient, httpRetries, subdomain, username, apiToken),
 		ticketer: ticketer,
 	}
 }

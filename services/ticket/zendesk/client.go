@@ -13,21 +13,21 @@ import (
 
 // Client is a basic zendesk client
 type Client struct {
-	httpClient   *http.Client
-	httpRetries  *httpx.RetryConfig
-	subdomain    string
-	emailAddress string
-	apiToken     string
+	httpClient  *http.Client
+	httpRetries *httpx.RetryConfig
+	subdomain   string
+	username    string
+	apiToken    string
 }
 
 // NewClient creates a new zendesk client
-func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, subdomain, emailAddress, apiToken string) *Client {
+func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, subdomain, username, apiToken string) *Client {
 	return &Client{
-		httpClient:   httpClient,
-		httpRetries:  httpRetries,
-		subdomain:    subdomain,
-		emailAddress: emailAddress,
-		apiToken:     apiToken,
+		httpClient:  httpClient,
+		httpRetries: httpRetries,
+		subdomain:   subdomain,
+		username:    username,
+		apiToken:    apiToken,
 	}
 }
 
@@ -97,7 +97,7 @@ func (c *Client) post(endpoint string, payload interface{}) (*httpx.Trace, error
 	if err != nil {
 		return nil, err
 	}
-	req.SetBasicAuth(c.emailAddress, c.apiToken)
+	req.SetBasicAuth(c.username, c.apiToken)
 
 	return httpx.DoTrace(c.httpClient, req, c.httpRetries, nil, -1)
 }
