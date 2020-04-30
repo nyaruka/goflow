@@ -19,7 +19,6 @@ import (
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/services/email/smtp"
-	"github.com/nyaruka/goflow/services/ticket/mailgun"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -221,7 +220,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
 			}).
 			WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) {
-				return mailgun.NewService(http.DefaultClient, nil, t, "mr.nyaruka.com", "123456789", "support@acme.com"), nil
+				return test.NewTicketService(t), nil
 			}).
 			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
 				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil

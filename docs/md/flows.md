@@ -541,12 +541,12 @@ Is used to open a ticket for the contact.
         },
         "http_logs": [
             {
-                "url": "http://nyaruka.zendesk.com/tickets.json",
+                "url": "http://nyaruka.tickets.com/tickets.json",
                 "status": "success",
                 "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Needs help\"}",
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                 "created_on": "2019-10-16T13:59:30.123456789Z",
-                "elapsed_ms": 0
+                "elapsed_ms": 1
             }
         ]
     },
