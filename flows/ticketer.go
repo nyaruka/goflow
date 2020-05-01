@@ -18,10 +18,10 @@ type Ticket struct {
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, ticketer *Ticketer, subject, body, externalID string) *Ticket {
+func NewTicket(uuid TicketUUID, ticketer *assets.TicketerReference, subject, body, externalID string) *Ticket {
 	return &Ticket{
 		UUID:       uuid,
-		Ticketer:   ticketer.Reference(),
+		Ticketer:   ticketer,
 		Subject:    subject,
 		Body:       body,
 		ExternalID: externalID,

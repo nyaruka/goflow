@@ -36,7 +36,8 @@ type ServiceCalledEvent struct {
 	baseEvent
 
 	Service    string                      `json:"service"`
-	Classifier *assets.ClassifierReference `json:"classifier"`
+	Classifier *assets.ClassifierReference `json:"classifier,omitempty"`
+	Ticketer   *assets.TicketerReference   `json:"ticketer,omitempty"`
 	HTTPLogs   []*flows.HTTPLog            `json:"http_logs"`
 }
 
@@ -47,5 +48,15 @@ func NewClassifierCalled(classifier *assets.ClassifierReference, httpLogs []*flo
 		Service:    "classifier",
 		Classifier: classifier,
 		HTTPLogs:   httpLogs,
+	}
+}
+
+// NewTicketerCalled returns a service called event for a ticketer
+func NewTicketerCalled(ticketer *assets.TicketerReference, httpLogs []*flows.HTTPLog) *ServiceCalledEvent {
+	return &ServiceCalledEvent{
+		baseEvent: newBaseEvent(TypeServiceCalled),
+		Service:   "ticketer",
+		Ticketer:  ticketer,
+		HTTPLogs:  httpLogs,
 	}
 }

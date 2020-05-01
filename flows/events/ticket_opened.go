@@ -25,32 +25,20 @@ const TypeTicketOpened string = "ticket_opened"
 //       "subject": "Need help",
 //       "body": "Where are my cookies?",
 //       "external_id": "32526523"
-//     },
-//     "http_logs": [
-//       {
-//         "url": "https://nyaruka.zendesk.com/api/v2/tickets.json",
-//         "status": "success",
-//         "request": "POST /tickets.json HTTP/1.1",
-//         "response": "HTTP/1.1 200 OK\r\n\r\n",
-//         "created_on": "2020-04-23T15:04:05Z",
-//         "elapsed_ms": 123
-//       }
-//     ]
+//     }
 //   }
 //
 // @event ticket_opened
 type TicketOpenedEvent struct {
 	baseEvent
 
-	Ticket   *flows.Ticket    `json:"ticket"`
-	HTTPLogs []*flows.HTTPLog `json:"http_logs,omitempty"`
+	Ticket *flows.Ticket `json:"ticket"`
 }
 
 // NewTicketOpened returns a new ticket opened event
-func NewTicketOpened(ticket *flows.Ticket, httpLogs []*flows.HTTPLog) *TicketOpenedEvent {
+func NewTicketOpened(ticket *flows.Ticket) *TicketOpenedEvent {
 	return &TicketOpenedEvent{
 		baseEvent: newBaseEvent(TypeTicketOpened),
 		Ticket:    ticket,
-		HTTPLogs:  httpLogs,
 	}
 }

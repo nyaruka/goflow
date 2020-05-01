@@ -74,6 +74,26 @@
         },
         "events": [
             {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status": "success",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Need help\"}",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                        "elapsed_ms": 1
+                    }
+                ]
+            },
+            {
                 "type": "ticket_opened",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -86,17 +106,7 @@
                     "subject": "Need help",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456"
-                },
-                "http_logs": [
-                    {
-                        "url": "http://nyaruka.tickets.com/tickets.json",
-                        "status": "success",
-                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Need help\"}",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                        "created_on": "2019-10-16T13:59:30.123456789Z",
-                        "elapsed_ms": 1
-                    }
-                ]
+                }
             },
             {
                 "type": "run_result_changed",
@@ -152,6 +162,26 @@
                 "text": "error evaluating @(1/ 0): division by zero"
             },
             {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status": "success",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Need help \"}",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                        "elapsed_ms": 1
+                    }
+                ]
+            },
+            {
                 "type": "ticket_opened",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -164,17 +194,7 @@
                     "subject": "Need help ",
                     "body": "Where are my cookies? ",
                     "external_id": "123456"
-                },
-                "http_logs": [
-                    {
-                        "url": "http://nyaruka.tickets.com/tickets.json",
-                        "status": "success",
-                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Need help \"}",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                        "created_on": "2019-10-16T13:59:30.123456789Z",
-                        "elapsed_ms": 1
-                    }
-                ]
+                }
             },
             {
                 "type": "run_result_changed",
@@ -222,6 +242,26 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "error calling ticket API"
+            },
+            {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status": "response_error",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Doomed to fail\"}",
+                        "response": "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
+                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                        "elapsed_ms": 1
+                    }
+                ]
             },
             {
                 "type": "run_result_changed",

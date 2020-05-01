@@ -824,17 +824,7 @@ Events are created when a new ticket is opened.
         "subject": "Need help",
         "body": "Where are my cookies?",
         "external_id": "32526523"
-    },
-    "http_logs": [
-        {
-            "url": "https://nyaruka.zendesk.com/api/v2/tickets.json",
-            "status": "success",
-            "request": "POST /tickets.json HTTP/1.1",
-            "response": "HTTP/1.1 200 OK\r\n\r\n",
-            "created_on": "2020-04-23T15:04:05Z",
-            "elapsed_ms": 123
-        }
-    ]
+    }
 }
 ```
 </div>

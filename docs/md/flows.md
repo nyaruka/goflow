@@ -527,6 +527,26 @@ Is used to open a ticket for the contact.
 ```json
 [
     {
+        "type": "service_called",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "service": "ticketer",
+        "ticketer": {
+            "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+            "name": "Support Tickets"
+        },
+        "http_logs": [
+            {
+                "url": "http://nyaruka.tickets.com/tickets.json",
+                "status": "success",
+                "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Needs help\"}",
+                "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                "created_on": "2019-10-16T13:59:30.123456789Z",
+                "elapsed_ms": 1
+            }
+        ]
+    },
+    {
         "type": "ticket_opened",
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -539,17 +559,7 @@ Is used to open a ticket for the contact.
             "subject": "Needs help",
             "body": "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3",
             "external_id": "123456"
-        },
-        "http_logs": [
-            {
-                "url": "http://nyaruka.tickets.com/tickets.json",
-                "status": "success",
-                "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Needs help\"}",
-                "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                "created_on": "2019-10-16T13:59:30.123456789Z",
-                "elapsed_ms": 1
-            }
-        ]
+        }
     },
     {
         "type": "run_result_changed",

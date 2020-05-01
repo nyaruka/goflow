@@ -90,10 +90,13 @@ func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *fl
 	ticket, err := svc.Open(run.Session(), subject, body, httpLogger.Log)
 	if err != nil {
 		logEvent(events.NewError(err))
-		return nil
 	}
-
-	logEvent(events.NewTicketOpened(ticket, httpLogger.Logs))
+	if len(httpLogger.Logs) > 0 {
+		logEvent(events.NewTicketerCalled(ticketer.Reference(), httpLogger.Logs))
+	}
+	if ticket != nil {
+		logEvent(events.NewTicketOpened(ticket))
+	}
 
 	return ticket
 }
