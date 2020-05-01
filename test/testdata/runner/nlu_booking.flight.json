@@ -173,8 +173,9 @@
                             "url": "http://test.acme.ai?classify"
                         }
                     ],
+                    "service": "classifier",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                    "type": "classifier_called"
+                    "type": "service_called"
                 },
                 {
                     "category": "Success",
@@ -317,8 +318,9 @@
                                         "url": "http://test.acme.ai?classify"
                                     }
                                 ],
+                                "service": "classifier",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "classifier_called"
+                                "type": "service_called"
                             },
                             {
                                 "category": "Success",

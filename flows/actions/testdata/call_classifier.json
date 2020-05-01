@@ -151,9 +151,10 @@
         },
         "events": [
             {
-                "type": "classifier_called",
+                "type": "service_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "classifier",
                 "classifier": {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking"
@@ -239,9 +240,10 @@
         },
         "events": [
             {
-                "type": "classifier_called",
+                "type": "service_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "classifier",
                 "classifier": {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking"
@@ -325,9 +327,10 @@
         },
         "events": [
             {
-                "type": "classifier_called",
+                "type": "service_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "classifier",
                 "classifier": {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking"

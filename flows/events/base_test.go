@@ -145,11 +145,13 @@ func TestEventMarshaling(t *testing.T) {
 				},
 			),
 			`{
+				"type": "service_called",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"service": "classifier",
 				"classifier": {
 					"uuid": "4b937f49-7fb7-43a5-8e57-14e2f028a471",
 					"name": "Booking"
 				},
-				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"http_logs": [
 					{
 						"created_on": "2018-10-18T14:20:30.000123456Z",
@@ -159,8 +161,7 @@ func TestEventMarshaling(t *testing.T) {
 						"status": "success",
 						"url": "https://api.wit.ai/message?v=20170307&q=hello"
 					}
-				],
-				"type": "classifier_called"
+				]
 			}`,
 		},
 		{
