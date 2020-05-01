@@ -1,3 +1,7 @@
+v0.85.0
+----------
+ * Add new service_called event to be used for classifiers and ticketers etc
+
 v0.84.0
 ----------
  * Replace contact blocked and stopped fields with status field
