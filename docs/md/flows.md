@@ -203,9 +203,10 @@ and entities were.
 ```json
 [
     {
-        "type": "classifier_called",
+        "type": "service_called",
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "service": "classifier",
         "classifier": {
             "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
             "name": "Booking"
