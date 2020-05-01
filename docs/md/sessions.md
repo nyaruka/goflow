@@ -332,33 +332,6 @@ Events are created when an action wants to send a message to other contacts.
 }
 ```
 </div>
-<h2 class="item_title"><a name="event:classifier_called" href="#event:classifier_called">classifier_called</a></h2>
-
-Events are created when a NLU classifier is called.
-
-<div class="output_event">
-
-```json
-{
-    "type": "classifier_called",
-    "created_on": "2006-01-02T15:04:05Z",
-    "classifier": {
-        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
-        "name": "Booking"
-    },
-    "http_logs": [
-        {
-            "url": "https://api.wit.ai/message?v=20170307&q=hello",
-            "status": "success",
-            "request": "GET /message?v=20170307&q=hello HTTP/1.1",
-            "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-            "created_on": "2006-01-02T15:04:05Z",
-            "elapsed_ms": 123
-        }
-    ]
-}
-```
-</div>
 <h2 class="item_title"><a name="event:contact_field_changed" href="#event:contact_field_changed">contact_field_changed</a></h2>
 
 Events are created when a custom field value of the contact has been changed.
@@ -753,6 +726,34 @@ the result was generated.
     "category": "Male",
     "category_localized": "Homme",
     "input": "M"
+}
+```
+</div>
+<h2 class="item_title"><a name="event:service_called" href="#event:service_called">service_called</a></h2>
+
+Events are created when an engine service is called.
+
+<div class="output_event">
+
+```json
+{
+    "type": "service_called",
+    "created_on": "2006-01-02T15:04:05Z",
+    "service": "classifier",
+    "classifier": {
+        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+        "name": "Booking"
+    },
+    "http_logs": [
+        {
+            "url": "https://api.wit.ai/message?v=20170307&q=hello",
+            "status": "success",
+            "request": "GET /message?v=20170307&q=hello HTTP/1.1",
+            "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+            "created_on": "2006-01-02T15:04:05Z",
+            "elapsed_ms": 123
+        }
+    ]
 }
 ```
 </div>
