@@ -487,6 +487,40 @@ func TestEventMarshaling(t *testing.T) {
 				}
 			}`,
 		},
+		{
+			events.NewTicketerCalled(
+				assets.NewTicketerReference(assets.TicketerUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Support"),
+				[]*flows.HTTPLog{
+					{
+						CreatedOn: dates.Now(),
+						ElapsedMS: 12,
+						Request:   "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						Response:  "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
+						Status:    flows.CallStatusSuccess,
+						URL:       "https://tickets.com",
+					},
+				},
+			),
+			`{
+				"type": "service_called",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"service": "ticketer",
+				"ticketer": {
+					"uuid": "4b937f49-7fb7-43a5-8e57-14e2f028a471",
+					"name": "Support"
+				},
+				"http_logs": [
+					{
+						"created_on": "2018-10-18T14:20:30.000123456Z",
+						"elapsed_ms": 12,
+						"request": "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						"response": "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
+						"status": "success",
+						"url": "https://tickets.com"
+					}
+				]
+			}`,
+		},
 	}
 
 	for _, tc := range eventTests {
