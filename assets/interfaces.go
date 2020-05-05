@@ -225,6 +225,7 @@ type Resthook interface {
 	Subscribers() []string
 }
 
+// TemplateUUID is the UUID of a template
 type TemplateUUID uuids.UUID
 
 // Template is a message template, currently only used by WhatsApp channels
@@ -267,6 +268,24 @@ type TemplateTranslation interface {
 	Channel() ChannelReference
 }
 
+// TicketerUUID is the UUID of a ticketer
+type TicketerUUID uuids.UUID
+
+// Ticketer is a system which can open or close tickets
+//
+//   {
+//     "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
+//     "name": "Support Tickets",
+//     "type": "mailgun"
+//   }
+//
+// @asset ticketer
+type Ticketer interface {
+	UUID() TicketerUUID
+	Name() string
+	Type() string
+}
+
 // Source is a source of assets
 type Source interface {
 	Channels() ([]Channel, error)
@@ -279,4 +298,5 @@ type Source interface {
 	Locations() ([]LocationHierarchy, error)
 	Resthooks() ([]Resthook, error)
 	Templates() ([]Template, error)
+	Ticketers() ([]Ticketer, error)
 }

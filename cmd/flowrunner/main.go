@@ -65,7 +65,10 @@ func main() {
 	}
 
 	assetsPath := args[0]
-	flowUUID := assets.FlowUUID(args[1])
+	var flowUUID assets.FlowUUID
+	if len(args) == 2 {
+		flowUUID = assets.FlowUUID(args[1])
+	}
 
 	engine := createEngine(witToken)
 
@@ -273,6 +276,8 @@ func printEvents(log []flows.Event, out io.Writer) {
 			msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
 		case *events.SessionTriggeredEvent:
 			msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
+		case *events.TicketOpenedEvent:
+			msg = fmt.Sprintf("🎟️ ticket opened with subject \"%s\"", typed.Ticket.Subject)
 		case *events.WaitTimedOutEvent:
 			msg = "⏲️ resuming due to wait timeout"
 		case *events.WebhookCalledEvent:

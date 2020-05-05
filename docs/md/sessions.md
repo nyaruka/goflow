@@ -805,6 +805,29 @@ Events are created when an action wants to start other people in a flow.
 }
 ```
 </div>
+<h2 class="item_title"><a name="event:ticket_opened" href="#event:ticket_opened">ticket_opened</a></h2>
+
+Events are created when a new ticket is opened.
+
+<div class="output_event">
+
+```json
+{
+    "type": "ticket_opened",
+    "created_on": "2006-01-02T15:04:05Z",
+    "ticket": {
+        "uuid": "2e677ae6-9b57-423c-b022-7950503eef35",
+        "ticketer": {
+            "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+            "name": "Support Tickets"
+        },
+        "subject": "Need help",
+        "body": "Where are my cookies?",
+        "external_id": "32526523"
+    }
+}
+```
+</div>
 <h2 class="item_title"><a name="event:wait_timed_out" href="#event:wait_timed_out">wait_timed_out</a></h2>
 
 Events are sent by the caller when a wait has timed out - i.e. they are sent instead of

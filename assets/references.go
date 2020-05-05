@@ -328,6 +328,43 @@ func (r *TemplateReference) Variable() bool {
 
 var _ UUIDReference = (*TemplateReference)(nil)
 
+// TicketerReference is used to reference a ticketer
+type TicketerReference struct {
+	UUID TicketerUUID `json:"uuid" validate:"required,uuid"`
+	Name string       `json:"name"`
+}
+
+// NewTicketerReference creates a new classifier reference with the given UUID and name
+func NewTicketerReference(uuid TicketerUUID, name string) *TicketerReference {
+	return &TicketerReference{UUID: uuid, Name: name}
+}
+
+// Type returns the name of the asset type
+func (r *TicketerReference) Type() string {
+	return "ticketer"
+}
+
+// GenericUUID returns the untyped UUID
+func (r *TicketerReference) GenericUUID() uuids.UUID {
+	return uuids.UUID(r.UUID)
+}
+
+// Identity returns the unique identity of the asset
+func (r *TicketerReference) Identity() string {
+	return string(r.UUID)
+}
+
+// Variable returns whether this a variable (vs concrete) reference
+func (r *TicketerReference) Variable() bool {
+	return false
+}
+
+func (r *TicketerReference) String() string {
+	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
+}
+
+var _ UUIDReference = (*TicketerReference)(nil)
+
 //------------------------------------------------------------------------------------------
 // Callbacks for missing assets
 //------------------------------------------------------------------------------------------
