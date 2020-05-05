@@ -1,3 +1,7 @@
+v0.86.0
+----------
+ * Add open_ticket actions and ticket_opened events
+
 v0.85.0
 ----------
  * Add new service_called event to be used for classifiers and ticketers etc
