@@ -23,6 +23,8 @@ func TestBuilder(t *testing.T) {
 	assert.EqualError(t, err, "no airtime service factory configured")
 	_, err = eng.Services().Classification(nil, nil)
 	assert.EqualError(t, err, "no classification service factory configured")
+	_, err = eng.Services().Ticket(nil, nil)
+	assert.EqualError(t, err, "no ticket service factory configured")
 	_, err = eng.Services().Webhook(nil)
 	assert.EqualError(t, err, "no webhook service factory configured")
 

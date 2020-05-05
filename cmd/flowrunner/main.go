@@ -204,8 +204,11 @@ func printEvents(log []flows.Event, out io.Writer) {
 		case *events.BroadcastCreatedEvent:
 			text := typed.Translations[typed.BaseLanguage].Text
 			msg = fmt.Sprintf("🔉 broadcasted '%s' to ...", text)
-		case *events.ClassifierCalledEvent:
-			msg = fmt.Sprintf("👁️‍🗨️ NLU classifier '%s' called", typed.Classifier.Name)
+		case *events.ServiceCalledEvent:
+			switch typed.Service {
+			case "classifier":
+				msg = fmt.Sprintf("👁️‍🗨️ NLU classifier '%s' called", typed.Classifier.Name)
+			}
 		case *events.ContactFieldChangedEvent:
 			var action string
 			if typed.Value != nil {
@@ -273,6 +276,8 @@ func printEvents(log []flows.Event, out io.Writer) {
 			msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
 		case *events.SessionTriggeredEvent:
 			msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
+		case *events.TicketOpenedEvent:
+			msg = fmt.Sprintf("🎟️ ticket opened with subject \"%s\"", typed.Ticket.Subject)
 		case *events.WaitTimedOutEvent:
 			msg = "⏲️ resuming due to wait timeout"
 		case *events.WebhookCalledEvent:

@@ -219,6 +219,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				}
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
 			}).
+			WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) {
+				return test.NewTicketService(t), nil
+			}).
 			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
 				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil
 			}).
@@ -426,15 +429,35 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
+			actions.NewOpenTicket(
+				actionUUID,
+				assets.NewTicketerReference(assets.TicketerUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Support Tickets"),
+				"Need help",
+				"Where are my cookies?",
+				"Ticket",
+			),
+			`{
+				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+				"type": "open_ticket",
+				"ticketer": {
+					"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
+					"name": "Support Tickets"
+				},
+				"subject": "Need help",
+				"body": "Where are my cookies?",
+				"result_name": "Ticket"
+			}`,
+		},
+		{
 			actions.NewPlayAudio(
 				actionUUID,
 				"http://uploads.temba.io/2353262.m4a",
 			),
 			`{
-			"type": "play_audio",
-			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-			"audio_url": "http://uploads.temba.io/2353262.m4a"
-		}`,
+				"type": "play_audio",
+				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+				"audio_url": "http://uploads.temba.io/2353262.m4a"
+			}`,
 		},
 		{
 			actions.NewSayMsg(

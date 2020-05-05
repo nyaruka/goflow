@@ -43,7 +43,7 @@ func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact) (
 		panic("can't check membership on a non-dynamic group")
 	}
 
-	if contact.Blocked() || contact.Stopped() {
+	if contact.Status() == ContactStatusStopped || contact.Status() == ContactStatusBlocked {
 		return false, nil
 	}
 

@@ -23,6 +23,7 @@
                     "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
+                    "status": "active",
                     "timezone": "America/Guayaquil",
                     "urns": [
                         "tel:+12065551212",
@@ -96,6 +97,7 @@
                         "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
+                        "status": "active",
                         "timezone": "America/Guayaquil",
                         "urns": [
                             "tel:+12065551212",
@@ -171,8 +173,9 @@
                             "url": "http://test.acme.ai?classify"
                         }
                     ],
+                    "service": "classifier",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                    "type": "classifier_called"
+                    "type": "service_called"
                 },
                 {
                     "category": "Success",
@@ -231,6 +234,7 @@
                     "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
+                    "status": "active",
                     "timezone": "America/Guayaquil",
                     "urns": [
                         "tel:+12065551212",
@@ -314,8 +318,9 @@
                                         "url": "http://test.acme.ai?classify"
                                     }
                                 ],
+                                "service": "classifier",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "classifier_called"
+                                "type": "service_called"
                             },
                             {
                                 "category": "Success",
@@ -461,6 +466,7 @@
                         "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
+                        "status": "active",
                         "timezone": "America/Guayaquil",
                         "urns": [
                             "tel:+12065551212",
@@ -514,6 +520,7 @@
             "id": 1234567,
             "language": "eng",
             "name": "Ben Haggerty",
+            "status": "active",
             "timezone": "America/Guayaquil",
             "urns": [
                 "tel:+12065551212",

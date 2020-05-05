@@ -56,7 +56,7 @@ func TestEventMarshaling(t *testing.T) {
 					ActualAmount:  decimal.RequireFromString("1.00"),
 				},
 				[]*flows.HTTPLog{
-					&flows.HTTPLog{
+					{
 						CreatedOn: dates.Now(),
 						ElapsedMS: 12,
 						Request:   "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -134,7 +134,7 @@ func TestEventMarshaling(t *testing.T) {
 			events.NewClassifierCalled(
 				assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
 				[]*flows.HTTPLog{
-					&flows.HTTPLog{
+					{
 						CreatedOn: dates.Now(),
 						ElapsedMS: 12,
 						Request:   "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -145,11 +145,13 @@ func TestEventMarshaling(t *testing.T) {
 				},
 			),
 			`{
+				"type": "service_called",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"service": "classifier",
 				"classifier": {
 					"uuid": "4b937f49-7fb7-43a5-8e57-14e2f028a471",
 					"name": "Booking"
 				},
-				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"http_logs": [
 					{
 						"created_on": "2018-10-18T14:20:30.000123456Z",
@@ -159,8 +161,7 @@ func TestEventMarshaling(t *testing.T) {
 						"status": "success",
 						"url": "https://api.wit.ai/message?v=20170307&q=hello"
 					}
-				],
-				"type": "classifier_called"
+				]
 			}`,
 		},
 		{
@@ -212,31 +213,27 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactBlocked(),
+			events.NewContactStatusChanged(flows.ContactStatusActive),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"type": "contact_blocked"
+				"type": "contact_status_changed",
+				"status": "active"
 			}`,
 		},
 		{
-			events.NewContactUnblocked(),
+			events.NewContactStatusChanged(flows.ContactStatusBlocked),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"type": "contact_unblocked"
+				"type": "contact_status_changed",
+				"status": "blocked"
 			}`,
 		},
 		{
-			events.NewContactStopped(),
+			events.NewContactStatusChanged(flows.ContactStatusStopped),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"type": "contact_stopped"
-			}`,
-		},
-		{
-			events.NewContactUnstopped(),
-			`{
-				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"type": "contact_unstopped"
+				"type": "contact_status_changed",
+				"status": "stopped"
 			}`,
 		},
 		{
@@ -281,6 +278,7 @@ func TestEventMarshaling(t *testing.T) {
 					"id": 1234567,
 					"language": "eng",
 					"name": "Ryan Lewis",
+					"status": "active",
 					"timezone": "America/Guayaquil",
 					"urns": [
 						"tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -365,6 +363,14 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewFailure(errors.New("503 is an failure")),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"text": "503 is an failure",
+				"type": "failure"
+			}`,
+		},
+		{
 			events.NewDependencyError(assets.NewFieldReference("age", "Age")),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
@@ -405,6 +411,13 @@ func TestEventMarshaling(t *testing.T) {
 				"hint": {"type": "image"},
 				"timeout_seconds": 500,
 				"type": "msg_wait"
+			}`,
+		},
+		{
+			events.NewWaitTimedOut(),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "wait_timed_out"
 			}`,
 		},
 		{
@@ -449,6 +462,65 @@ func TestEventMarshaling(t *testing.T) {
 				]
 			}`,
 		},
+		{
+			events.NewTicketOpened(
+				flows.NewTicket(
+					"a8b949ea-60c5-4f78-ae47-9c0a0ba61aa6",
+					assets.NewTicketerReference("5546b817-48b5-41e9-8c3a-26a4eb469003", "Support"),
+					"Need help",
+					"Where are my cookies?",
+					"1243252",
+				),
+			),
+			`{
+				"type": "ticket_opened",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"ticket": {
+					"uuid": "a8b949ea-60c5-4f78-ae47-9c0a0ba61aa6",
+					"ticketer": {
+						"uuid": "5546b817-48b5-41e9-8c3a-26a4eb469003",
+						"name": "Support"
+					},
+					"subject": "Need help",
+					"body": "Where are my cookies?",
+					"external_id": "1243252"
+				}
+			}`,
+		},
+		{
+			events.NewTicketerCalled(
+				assets.NewTicketerReference(assets.TicketerUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Support"),
+				[]*flows.HTTPLog{
+					{
+						CreatedOn: dates.Now(),
+						ElapsedMS: 12,
+						Request:   "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						Response:  "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
+						Status:    flows.CallStatusSuccess,
+						URL:       "https://tickets.com",
+					},
+				},
+			),
+			`{
+				"type": "service_called",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"service": "ticketer",
+				"ticketer": {
+					"uuid": "4b937f49-7fb7-43a5-8e57-14e2f028a471",
+					"name": "Support"
+				},
+				"http_logs": [
+					{
+						"created_on": "2018-10-18T14:20:30.000123456Z",
+						"elapsed_ms": 12,
+						"request": "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						"response": "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
+						"status": "success",
+						"url": "https://tickets.com"
+					}
+				]
+			}`,
+		},
 	}
 
 	for _, tc := range eventTests {
@@ -471,13 +543,22 @@ func TestReadEvent(t *testing.T) {
 	// error if we don't recognize action type
 	_, err = events.ReadEvent([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+
+	// valid existing type
+	event, err := events.ReadEvent([]byte(`{"type": "contact_name_changed", "created_on": "2006-01-02T15:04:05Z", "name": "Bob Smith"}`))
+	require.NoError(t, err)
+
+	assert.Equal(t, events.TypeContactNameChanged, event.Type())
+	eventTime, _ := time.Parse(time.RFC3339, "2006-01-02T15:04:05Z")
+	assert.Equal(t, eventTime, event.CreatedOn())
+
 }
 
 func TestWebhookCalledEventTrimming(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"http://temba.io/": []httpx.MockResponse{
+		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, strings.Repeat("Y", 20000)),
 		},
 	}))
@@ -504,7 +585,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"http://temba.io/": []httpx.MockResponse{
+		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, "\xa0\xa1"),
 		},
 	}))

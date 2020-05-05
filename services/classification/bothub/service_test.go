@@ -29,7 +29,7 @@ func TestService(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://nlp.bothub.it/parse": []httpx.MockResponse{
+		"https://nlp.bothub.it/parse": {
 			httpx.NewMockResponse(200, nil, `{
 				"intent": {
 				  "name": "book_flight",
@@ -79,11 +79,11 @@ func TestService(t *testing.T) {
 	classification, err := svc.Classify(session, "book my flight to Quito", httpLogger.Log)
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
-		flows.ExtractedIntent{Name: "book_flight", Confidence: decimal.RequireFromString(`0.9224673593230207`)},
-		flows.ExtractedIntent{Name: "book_hotel", Confidence: decimal.RequireFromString(`0.07753264067697924`)},
+		{Name: "book_flight", Confidence: decimal.RequireFromString(`0.9224673593230207`)},
+		{Name: "book_hotel", Confidence: decimal.RequireFromString(`0.07753264067697924`)},
 	}, classification.Intents)
 	assert.Equal(t, map[string][]flows.ExtractedEntity{
-		"destination": []flows.ExtractedEntity{
+		"destination": {
 			flows.ExtractedEntity{Value: "quito", Confidence: decimal.RequireFromString(`0.8824543190522534`)},
 		},
 	}, classification.Entities)

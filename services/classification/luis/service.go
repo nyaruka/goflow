@@ -9,32 +9,20 @@ import (
 
 // a classification service implementation for a LUIS app
 type service struct {
-	httpClient  *http.Client
-	httpRetries *httpx.RetryConfig
-	httpAccess  *httpx.AccessConfig
-	classifier  *flows.Classifier
-	endpoint    string
-	appID       string
-	key         string
+	client     *Client
+	classifier *flows.Classifier
 }
 
 // NewService creates a new classification service
 func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAccess *httpx.AccessConfig, classifier *flows.Classifier, endpoint, appID, key string) flows.ClassificationService {
 	return &service{
-		httpClient:  httpClient,
-		httpRetries: httpRetries,
-		httpAccess:  httpAccess,
-		classifier:  classifier,
-		endpoint:    endpoint,
-		appID:       appID,
-		key:         key,
+		client:     NewClient(httpClient, httpRetries, httpAccess, endpoint, appID, key),
+		classifier: classifier,
 	}
 }
 
 func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	client := NewClient(s.httpClient, s.httpRetries, s.httpAccess, s.endpoint, s.appID, s.key)
-
-	response, trace, err := client.Predict(input)
+	response, trace, err := s.client.Predict(input)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode))
 	}
@@ -53,14 +41,14 @@ func (s *service) Classify(session flows.Session, input string, logHTTP flows.HT
 
 	for _, entity := range response.Entities {
 		result.Entities[entity.Type] = []flows.ExtractedEntity{
-			flows.ExtractedEntity{Value: entity.Entity, Confidence: entity.Score},
+			{Value: entity.Entity, Confidence: entity.Score},
 		}
 	}
 
 	// if sentiment analysis was included, convert to an entity
 	if response.SentimentAnalysis != nil {
 		result.Entities["sentiment"] = []flows.ExtractedEntity{
-			flows.ExtractedEntity{Value: response.SentimentAnalysis.Label, Confidence: response.SentimentAnalysis.Score},
+			{Value: response.SentimentAnalysis.Label, Confidence: response.SentimentAnalysis.Score},
 		}
 	}
 

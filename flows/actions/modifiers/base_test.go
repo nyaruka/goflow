@@ -169,34 +169,26 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewBlocked(true),
+			modifiers.NewStatus(flows.ContactStatusActive),
 			`{
-				"type": "blocked",
-				"state": true
+				"type": "status",
+				"status": "active"
 			}`,
 		},
 		{
-			modifiers.NewBlocked(false),
+			modifiers.NewStatus(flows.ContactStatusBlocked),
 			`{
-				"type": "blocked",
-				"state": false
+				"type": "status",
+				"status": "blocked"
 			}`,
 		},
 		{
-			modifiers.NewStopped(true),
+			modifiers.NewStatus(flows.ContactStatusStopped),
 			`{
-				"type": "stopped",
-				"state": true
+				"type": "status",
+				"status": "stopped"
 			}`,
 		},
-		{
-			modifiers.NewStopped(false),
-			`{
-				"type": "stopped",
-				"state": false
-			}`,
-		},
-
 		{
 			modifiers.NewName("Bob"),
 			`{

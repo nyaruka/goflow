@@ -31,6 +31,7 @@ type Client struct {
 	token       string
 }
 
+// Response is base interface for any DTOne API response
 type Response interface {
 	Error() error
 }

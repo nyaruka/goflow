@@ -15,7 +15,7 @@ func TestPredict(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://nlp.bothub.it/parse": []httpx.MockResponse{
+		"https://nlp.bothub.it/parse": {
 			httpx.NewMockResponse(200, nil, `xx`), // non-JSON response
 			httpx.NewMockResponse(200, nil, `{}`), // invalid JSON response
 			httpx.NewMockResponse(200, nil, `{
@@ -74,13 +74,13 @@ func TestPredict(t *testing.T) {
 	assert.NotNil(t, trace)
 	assert.Equal(t, bothub.IntentMatch{"book_flight", decimal.RequireFromString(`0.8341536248216568`)}, response.Intent)
 	assert.Equal(t, []bothub.IntentMatch{
-		bothub.IntentMatch{"book_flight", decimal.RequireFromString(`0.8341536248216568`)},
-		bothub.IntentMatch{"book_hotel", decimal.RequireFromString(`0.16584637517834322`)},
+		{"book_flight", decimal.RequireFromString(`0.8341536248216568`)},
+		{"book_hotel", decimal.RequireFromString(`0.16584637517834322`)},
 	}, response.IntentRanking)
 	assert.Equal(t, []string{"destination"}, response.LabelsList)
 	assert.Equal(t, []string{"quito"}, response.EntitiesList)
 	assert.Equal(t, map[string][]bothub.EntityMatch{
-		"destination": []bothub.EntityMatch{
+		"destination": {
 			bothub.EntityMatch{Value: "quito", Entity: "quito", Confidence: decimal.RequireFromString(`0.7979280788804916`)},
 		},
 	}, response.Entities)

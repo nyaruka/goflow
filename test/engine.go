@@ -1,7 +1,9 @@
 package test
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -9,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -26,6 +29,7 @@ func NewEngine() flows.Engine {
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
+		WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) { return NewTicketService(t), nil }).
 		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
 		Build()
 }
@@ -83,6 +87,42 @@ func (s *classificationService) Classify(session flows.Session, input string, lo
 }
 
 var _ flows.ClassificationService = (*classificationService)(nil)
+
+// implementation of a ticket service for testing which fails if ticket subject contains "fail" and passes if not
+type ticketService struct {
+	ticketer *flows.Ticketer
+}
+
+// NewTicketService creates a new ticket service for testing
+func NewTicketService(ticketer *flows.Ticketer) flows.TicketService {
+	return &ticketService{ticketer: ticketer}
+}
+
+func (s *ticketService) Open(session flows.Session, subject, body string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
+	if strings.Contains(subject, "fail") {
+		logHTTP(&flows.HTTPLog{
+			URL:       "http://nyaruka.tickets.com/tickets.json",
+			Request:   fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"%s\"}", subject),
+			Response:  "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
+			Status:    flows.CallStatusResponseError,
+			CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
+			ElapsedMS: 1,
+		})
+
+		return nil, errors.New("error calling ticket API")
+	}
+
+	logHTTP(&flows.HTTPLog{
+		URL:       "http://nyaruka.tickets.com/tickets.json",
+		Request:   fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"%s\"}", subject),
+		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+		Status:    flows.CallStatusSuccess,
+		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
+		ElapsedMS: 1,
+	})
+
+	return flows.NewTicket(flows.TicketUUID(uuids.New()), s.ticketer.Reference(), subject, body, "123456"), nil
+}
 
 // implementation of an airtime service for testing which uses a fixed currency
 type airtimeService struct {

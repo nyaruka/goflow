@@ -4,6 +4,7 @@
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -29,6 +30,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
@@ -59,6 +61,7 @@
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -84,6 +87,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "events": [
@@ -104,6 +108,7 @@
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -133,6 +138,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
@@ -152,6 +158,7 @@
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "groups": [],
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
@@ -172,6 +179,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
@@ -203,6 +211,7 @@
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "groups": [
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -228,6 +237,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
+            "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "events": [

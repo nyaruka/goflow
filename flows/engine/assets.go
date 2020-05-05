@@ -22,6 +22,7 @@ type sessionAssets struct {
 	locations   *flows.LocationAssets
 	resthooks   *flows.ResthookAssets
 	templates   *flows.TemplateAssets
+	ticketers   *flows.TicketerAssets
 }
 
 var _ flows.SessionAssets = (*sessionAssets)(nil)
@@ -64,6 +65,10 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 	if err != nil {
 		return nil, err
 	}
+	ticketers, err := source.Ticketers()
+	if err != nil {
+		return nil, err
+	}
 
 	fieldAssets := flows.NewFieldAssets(fields)
 	groupAssets, _ := flows.NewGroupAssets(env, fieldAssets, groups)
@@ -80,6 +85,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		locations:   flows.NewLocationAssets(locations),
 		resthooks:   flows.NewResthookAssets(resthooks),
 		templates:   flows.NewTemplateAssets(templates),
+		ticketers:   flows.NewTicketerAssets(ticketers),
 	}, nil
 }
 
@@ -94,6 +100,7 @@ func (s *sessionAssets) Labels() *flows.LabelAssets           { return s.labels 
 func (s *sessionAssets) Locations() *flows.LocationAssets     { return s.locations }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets     { return s.resthooks }
 func (s *sessionAssets) Templates() *flows.TemplateAssets     { return s.templates }
+func (s *sessionAssets) Ticketers() *flows.TicketerAssets     { return s.ticketers }
 
 func (s *sessionAssets) ResolveField(key string) assets.Field {
 	f := s.Fields().Get(key)

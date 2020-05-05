@@ -23,6 +23,7 @@
                     "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
+                    "status": "active",
                     "timezone": "America/Guayaquil",
                     "urns": [
                         "tel:+12065551212",
@@ -96,6 +97,7 @@
                         "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
+                        "status": "active",
                         "timezone": "America/Guayaquil",
                         "urns": [
                             "tel:+12065551212",
@@ -175,6 +177,7 @@
                     "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
+                    "status": "active",
                     "timezone": "America/Guayaquil",
                     "urns": [
                         "tel:+12065551212",
@@ -310,6 +313,7 @@
                         "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
+                        "status": "active",
                         "timezone": "America/Guayaquil",
                         "urns": [
                             "tel:+12065551212",
@@ -375,6 +379,7 @@
                     "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
+                    "status": "active",
                     "timezone": "America/Guayaquil",
                     "urns": [
                         "tel:+12065551212",
@@ -530,6 +535,7 @@
                         "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
+                        "status": "active",
                         "timezone": "America/Guayaquil",
                         "urns": [
                             "tel:+12065551212",
@@ -591,6 +597,7 @@
             "id": 1234567,
             "language": "eng",
             "name": "Ben Haggerty",
+            "status": "active",
             "timezone": "America/Guayaquil",
             "urns": [
                 "tel:+12065551212",

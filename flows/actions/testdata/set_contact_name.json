@@ -100,6 +100,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "language": "eng",
+            "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
@@ -146,6 +147,7 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bryan",
             "language": "eng",
+            "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
@@ -198,6 +200,7 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus",
             "language": "eng",
+            "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [

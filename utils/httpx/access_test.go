@@ -16,7 +16,7 @@ func TestAccessConfig(t *testing.T) {
 	access := httpx.NewAccessConfig(30*time.Second, []net.IP{net.ParseIP("127.0.0.1"), net.ParseIP("::1")})
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://nyaruka.com": []httpx.MockResponse{
+		"https://nyaruka.com": {
 			httpx.NewMockResponse(200, nil, ``),
 		},
 	}))

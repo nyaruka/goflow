@@ -18,7 +18,7 @@ func TestClient(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []httpx.MockResponse{
+		"https://airtime-api.dtone.com/cgi-bin/shop/topup": {
 			httpx.NewMockResponse(200, nil, "info_txt=pong\r\n"),                  // successful ping
 			httpx.NewMockResponse(400, nil, "error_code=1\r\nerror_txt=Oops\r\n"), // unsuccessful ping
 			httpx.NewMockResponse(200, nil, withCRLF(msisdnResponse)),             // successful msdninfo query

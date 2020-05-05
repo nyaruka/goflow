@@ -9,26 +9,20 @@ import (
 
 // a classification service implementation for a wit.ai app
 type service struct {
-	httpClient  *http.Client
-	httpRetries *httpx.RetryConfig
-	classifier  *flows.Classifier
-	accessToken string
+	client     *Client
+	classifier *flows.Classifier
 }
 
 // NewService creates a new classification service
 func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classifier *flows.Classifier, accessToken string) flows.ClassificationService {
 	return &service{
-		httpClient:  httpClient,
-		httpRetries: httpRetries,
-		classifier:  classifier,
-		accessToken: accessToken,
+		client:     NewClient(httpClient, httpRetries, accessToken),
+		classifier: classifier,
 	}
 }
 
 func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	client := NewClient(s.httpClient, s.httpRetries, s.accessToken)
-
-	response, trace, err := client.Message(input)
+	response, trace, err := s.client.Message(input)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode))
 	}

@@ -85,6 +85,8 @@ func CheckReference(sa flows.SessionAssets, ref assets.Reference) bool {
 		return sa.Labels().Get(typed.UUID) != nil
 	case *assets.TemplateReference:
 		return sa.Templates().Get(typed.UUID) != nil
+	case *assets.TicketerReference:
+		return sa.Ticketers().Get(typed.UUID) != nil
 	default:
 		panic(fmt.Sprintf("unknown dependency type reference: %T", ref))
 	}

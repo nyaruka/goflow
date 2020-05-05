@@ -194,6 +194,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"status": "active",
 					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
@@ -236,6 +237,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"status": "active",
 					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
@@ -273,6 +275,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"status": "active",
 					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
@@ -318,6 +321,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"status": "active",
 					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
@@ -360,6 +364,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"status": "active",
 					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
@@ -405,6 +410,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"status": "active",
 					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
@@ -443,6 +449,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"created_on": "2018-10-20T09:49:31.23456789Z",
 					"language": "eng",
 					"name": "Bob",
+					"status": "active",
 					"urns": ["tel:+12065551212"],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
