@@ -1,3 +1,7 @@
+v0.86.1
+----------
+ * Do redaction of access keys from HTTP logs
+
 v0.86.0
 ----------
  * Add open_ticket actions and ticket_opened events
