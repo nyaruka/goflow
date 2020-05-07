@@ -1,3 +1,7 @@
+v0.86.2
+----------
+ * Fix spelling of Readact
+
 v0.86.1
 ----------
  * Do redaction of access keys from HTTP logs
