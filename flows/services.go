@@ -142,7 +142,8 @@ func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
 	return CallStatusSuccess
 }
 
-const ReadactMask = "****************"
+// RedactionMask is the redaction mask for HTTP service logs
+const RedactionMask = "****************"
 
 // NewHTTPLog creates a new HTTP log from a trace
 func NewHTTPLog(trace *httpx.Trace, statusFn HTTPStatusResolver, redact utils.Redactor) *HTTPLog {

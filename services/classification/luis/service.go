@@ -20,7 +20,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAcc
 	return &service{
 		client:     NewClient(httpClient, httpRetries, httpAccess, endpoint, appID, key),
 		classifier: classifier,
-		redactor:   utils.NewRedactor(flows.ReadactMask, key),
+		redactor:   utils.NewRedactor(flows.RedactionMask, key),
 	}
 }
 

@@ -71,7 +71,7 @@ func TestHTTPLogsRedaction(t *testing.T) {
 	trace2, err := httpx.DoTrace(http.DefaultClient, req2, nil, nil, -1)
 	require.NoError(t, err)
 
-	redactor := utils.NewRedactor(flows.ReadactMask, "987654321", "43t34wf#@f3")
+	redactor := utils.NewRedactor(flows.RedactionMask, "987654321", "43t34wf#@f3")
 
 	log1 := flows.NewHTTPLog(trace1, flows.HTTPStatusFromCode, redactor)
 	assert.Equal(t, "GET /code/****************/ HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: Go-http-client/1.1\r\nX-Code: ****************\r\nAccept-Encoding: gzip\r\n\r\n", log1.Request)

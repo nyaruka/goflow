@@ -23,7 +23,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, login, 
 	return &service{
 		client:   NewClient(httpClient, httpRetries, login, token),
 		currency: currency,
-		redactor: utils.NewRedactor(flows.ReadactMask, token),
+		redactor: utils.NewRedactor(flows.RedactionMask, token),
 	}
 }
 
