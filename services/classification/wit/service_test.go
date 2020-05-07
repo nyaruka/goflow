@@ -52,4 +52,5 @@ func TestService(t *testing.T) {
 
 	assert.Equal(t, 1, len(httpLogger.Logs))
 	assert.Equal(t, "https://api.wit.ai/message?v=20170307&q=book+flight+to+Quito", httpLogger.Logs[0].URL)
+	assert.Equal(t, "GET /message?v=20170307&q=book+flight+to+Quito HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n", httpLogger.Logs[0].Request)
 }

@@ -179,3 +179,10 @@ func TestTruncate(t *testing.T) {
 	assert.Equal(t, "你喜欢我当然喜欢的电", utils.Truncate("你喜欢我当然喜欢的电", 10))
 	assert.Equal(t, "你喜欢我当然喜", utils.Truncate("你喜欢我当然喜欢的电", 7))
 }
+
+func TestRedactor(t *testing.T) {
+	assert.Equal(t, "hello world", utils.NewRedactor("****")("hello world"))                         // nothing to redact
+	assert.Equal(t, "", utils.NewRedactor("****", "abc")(""))                                        // empty input
+	assert.Equal(t, "**** def **** def", utils.NewRedactor("****", "abc")("abc def abc def"))        // all instances redacted
+	assert.Equal(t, "**** def **** jkl", utils.NewRedactor("****", "abc", "ghi")("abc def ghi jkl")) // all values redacted
+}
