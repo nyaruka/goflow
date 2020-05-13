@@ -96,7 +96,9 @@
                 "@(\"\")",
                 "@contact.fields.gender",
                 "@(\"5129165834\")",
-                "@contact.urn"
+                "@contact.urn",
+                "Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool",
+                "  11708c34-d4ab-4b04-b82a-2578f6e0013c  "
             ],
             "text": "Hi there!"
         },
@@ -106,6 +108,12 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "scheme or path cannot be empty"
+            },
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "invalid tel number: Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool"
             },
             {
                 "type": "broadcast_created",
@@ -127,6 +135,10 @@
                     {
                         "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
                         "name": "Stavros"
+                    },
+                    {
+                        "uuid": "11708c34-d4ab-4b04-b82a-2578f6e0013c",
+                        "name": ""
                     }
                 ],
                 "urns": [
@@ -142,6 +154,8 @@
             "@contact.fields.gender",
             "@(\"5129165834\")",
             "@contact.urn",
+            "Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool",
+            "  11708c34-d4ab-4b04-b82a-2578f6e0013c  ",
             "Hi there!"
         ],
         "inspection": {
