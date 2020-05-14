@@ -1699,7 +1699,7 @@ func FormatDate(env envs.Environment, args ...types.XValue) types.XValue {
 // * `DD`        - day of month, zero padded 0-31
 // * `h`         - hour of the day 1-12
 // * `hh`        - hour of the day 01-12
-// * `tt`        - twenty four hour of the day 01-24
+// * `tt`        - twenty four hour of the day 00-23
 // * `m`         - minute 0-59
 // * `mm`        - minute 00-59
 // * `s`         - second 0-59
