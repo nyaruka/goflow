@@ -27,7 +27,6 @@ func TestAccessConfig(t *testing.T) {
 	}{
 		{"https://nyaruka.com", ""},
 
-		{"https://wqqwetqfeqgqgq.com", "lookup wqqwetqfeqgqgq.com: no such host"},
 		{"https://localhost/path", "request to localhost denied"},
 		{"https://LOCALHOST:80", "request to LOCALHOST denied"},
 		{"http://foo.localtest.me", "request to foo.localtest.me denied"},
