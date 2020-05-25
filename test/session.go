@@ -459,6 +459,7 @@ var voiceSessionTrigger = `{
             "eng", 
             "spa"
         ],
+        "default_country": "US",
         "redaction_policy": "none",
         "time_format": "hh:mm",
         "timezone": "America/Guayaquil"
