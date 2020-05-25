@@ -347,6 +347,7 @@ var sessionTrigger = `{
             "eng", 
             "spa"
         ],
+        "default_country": "US",
         "redaction_policy": "none",
         "time_format": "tt:mm",
         "timezone": "America/Guayaquil"
@@ -459,7 +460,6 @@ var voiceSessionTrigger = `{
             "eng", 
             "spa"
         ],
-        "default_country": "US",
         "redaction_policy": "none",
         "time_format": "hh:mm",
         "timezone": "America/Guayaquil"

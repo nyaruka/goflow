@@ -31,7 +31,7 @@ func (s *service) Classify(session flows.Session, input string, logHTTP flows.HT
 	language := ""
 	country := session.Environment().DefaultCountry()
 	if country != envs.NilCountry {
-		language = strings.ToLower(session.Environment().DefaultLanguage().ToISO639_2(country))
+		language = strings.ReplaceAll(strings.ToLower(session.Environment().DefaultLanguage().ToISO639_2(country)), "-", "_")
 	}
 
 	response, trace, err := s.client.Parse(input, language)
