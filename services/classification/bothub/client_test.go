@@ -57,19 +57,19 @@ func TestPredict(t *testing.T) {
 
 	client := bothub.NewClient(http.DefaultClient, nil, "123e4567-e89b-12d3-a456-426655440000")
 
-	response, trace, err := client.Parse("Hello")
+	response, trace, err := client.Parse("Hello", "en_us")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
-	assert.Equal(t, "POST /parse HTTP/1.1\r\nHost: nlp.bothub.it\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 10\r\nAuthorization: Bearer 123e4567-e89b-12d3-a456-426655440000\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\ntext=Hello", string(trace.RequestTrace))
+	assert.Equal(t, "POST /parse HTTP/1.1\r\nHost: nlp.bothub.it\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 25\r\nAuthorization: Bearer 123e4567-e89b-12d3-a456-426655440000\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\nlanguage=en_us&text=Hello", string(trace.RequestTrace))
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n", string(trace.ResponseTrace))
 	assert.Equal(t, "xx", string(trace.ResponseBody))
 	assert.Nil(t, response)
 
-	response, trace, err = client.Parse("Hello")
+	response, trace, err = client.Parse("Hello", "en_us")
 	assert.EqualError(t, err, `field 'intent_ranking' is required`)
 	assert.NotNil(t, trace)
 	assert.Nil(t, response)
 
-	response, trace, err = client.Parse("book a flight to Quito")
+	response, trace, err = client.Parse("book a flight to Quito", "en_us")
 	assert.NoError(t, err)
 	assert.NotNil(t, trace)
 	assert.Equal(t, bothub.IntentMatch{"book_flight", decimal.RequireFromString(`0.8341536248216568`)}, response.Intent)
