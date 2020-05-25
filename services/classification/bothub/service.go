@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/httpx"
@@ -27,12 +26,9 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classif
 }
 
 func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	// bothub requires language codes like en_us, pt_br so only send if we have country information
-	language := ""
 	country := session.Environment().DefaultCountry()
-	if country != envs.NilCountry {
-		language = strings.ReplaceAll(strings.ToLower(session.Environment().DefaultLanguage().ToISO639_2(country)), "-", "_")
-	}
+	language := session.Environment().DefaultLanguage().ToISO639_2(country)
+	language = strings.ReplaceAll(strings.ToLower(language), "-", "_") // en-US -> en_us
 
 	response, trace, err := s.client.Parse(input, language)
 	if trace != nil {
