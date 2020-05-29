@@ -1,0 +1,9 @@
+POST /parse HTTP/1.1
+Host: nlp.bothub.it
+User-Agent: Go-http-client/1.1
+Content-Length: 10
+Authorization: Bearer 123e4567-e89b-12d3-a456-426655440000
+Content-Type: application/x-www-form-urlencoded
+Accept-Encoding: gzip
+
+text=Hello
