@@ -5,13 +5,14 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/services/classification/bothub"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/shopspring/decimal"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPredict(t *testing.T) {
+func TestParse(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
@@ -59,7 +60,7 @@ func TestPredict(t *testing.T) {
 
 	response, trace, err := client.Parse("Hello", "en_us")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
-	assert.Equal(t, "POST /parse HTTP/1.1\r\nHost: nlp.bothub.it\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 25\r\nAuthorization: Bearer 123e4567-e89b-12d3-a456-426655440000\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\nlanguage=en_us&text=Hello", string(trace.RequestTrace))
+	test.AssertSnapshot(t, "parse_request", string(trace.RequestTrace))
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n", string(trace.ResponseTrace))
 	assert.Equal(t, "xx", string(trace.ResponseBody))
 	assert.Nil(t, response)
