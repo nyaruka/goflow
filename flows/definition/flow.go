@@ -2,6 +2,8 @@ package definition
 
 import (
 	"encoding/json"
+	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -161,7 +163,7 @@ func (f *flow) ExtractTemplates() []string {
 // ExtractLocalizables extracts all localizable text
 func (f *flow) ExtractLocalizables() []string {
 	texts := make([]string, 0)
-	include := func(uuid uuids.UUID, property string, ts []string) {
+	include := func(uuid uuids.UUID, property string, ts []string, w func([]string)) {
 		for _, t := range ts {
 			if t != "" {
 				texts = append(texts, t)
@@ -174,6 +176,49 @@ func (f *flow) ExtractLocalizables() []string {
 	}
 
 	return texts
+}
+
+// ChangeLanguage changes the language of the flow saving the current flow text as a translation and replacing it with
+// the specified translation. It returns an error if there are missing translations.
+func (f *flow) ChangeLanguage(lang envs.Language) error {
+	ll := f.localization.(localization)
+
+	oldTranslation := make(languageTranslation) // current flow text extracted as a translation
+	newTranslation := ll[lang]
+
+	if newTranslation == nil {
+		return errors.Errorf("flow has no translation for %s", lang)
+	}
+
+	// all the locations where the incoming translation is missing text to replace current flow text
+	missing := make([]string, 0)
+
+	include := func(uuid uuids.UUID, property string, oldValues []string, w func([]string)) {
+		// save current flow text into a translation
+		oldTranslation.setTextArray(uuid, property, oldValues)
+
+		newValues := newTranslation.getTextArray(uuid, property)
+
+		if len(oldValues) > 0 && len(newValues) == 0 {
+			missing = append(missing, fmt.Sprintf("%s/%s", uuid, property))
+		}
+
+		// update flow text in the definition
+		w(newValues)
+	}
+
+	for _, n := range f.nodes {
+		n.EnumerateLocalizables(include)
+	}
+
+	ll[f.language] = oldTranslation
+	f.language = lang
+
+	if len(missing) > 0 {
+		return errors.Errorf("missing %s translation for text at %s", lang, strings.Join(missing, ", "))
+	}
+
+	return nil
 }
 
 // extracts all templates, asset dependencies and parent result references

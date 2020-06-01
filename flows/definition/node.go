@@ -134,9 +134,9 @@ func (n *node) EnumerateResults(include func(flows.Action, flows.Router, *flows.
 }
 
 // EnumerateLocalizables enumerates all localizable text on this object
-func (n *node) EnumerateLocalizables(include func(uuids.UUID, string, []string)) {
+func (n *node) EnumerateLocalizables(include func(uuids.UUID, string, []string, func([]string))) {
 	for _, action := range n.actions {
-		inspect.LocalizedText(action, include)
+		inspect.LocalizableText(action, include)
 	}
 
 	if n.router != nil {
