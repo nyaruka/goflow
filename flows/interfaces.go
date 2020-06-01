@@ -152,6 +152,7 @@ type Flow interface {
 	Inspect(sa SessionAssets) *Inspection
 	ExtractTemplates() []string
 	ExtractLocalizables() []string
+	ChangeLanguage(envs.Language) (Flow, error)
 }
 
 // Node is a single node in a flow
