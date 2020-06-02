@@ -12,10 +12,11 @@ import (
 )
 
 const (
-	outputDir string = "docs"
+	outputDir  string = "docs"
+	localesDir string = "locales"
 )
 
-type generatorFunc func(baseDir string, outputDir string, items map[string][]*TaggedItem) error
+type generatorFunc func(baseDir, outputDir, localesDir string, items map[string][]*TaggedItem) error
 type generator struct {
 	name     string
 	function generatorFunc
@@ -28,14 +29,14 @@ func registerGenerator(name string, fn generatorFunc) {
 }
 
 func main() {
-	if err := GenerateDocs(".", outputDir); err != nil {
+	if err := GenerateDocs(".", outputDir, localesDir); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 }
 
 // GenerateDocs generates all documentation outputs
-func GenerateDocs(baseDir string, outputDir string) error {
+func GenerateDocs(baseDir, outputDir, localesDir string) error {
 	fmt.Println("Processing sources...")
 
 	// extract all documented items from the source code
@@ -53,7 +54,7 @@ func GenerateDocs(baseDir string, outputDir string) error {
 	for _, g := range generators {
 		fmt.Printf("Invoking generator: %s...\n", g.name)
 
-		if err := g.function(baseDir, outputDir, taggedItems); err != nil {
+		if err := g.function(baseDir, outputDir, localesDir, taggedItems); err != nil {
 			return errors.Wrapf(err, "error invoking generator %s", g.name)
 		}
 	}

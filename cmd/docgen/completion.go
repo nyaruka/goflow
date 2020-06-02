@@ -18,7 +18,7 @@ func init() {
 	registerGenerator("completion map", generateCompletionMap)
 }
 
-func generateCompletionMap(baseDir string, outputDir string, items map[string][]*TaggedItem) error {
+func generateCompletionMap(baseDir, outputDir, localesDir string, items map[string][]*TaggedItem) error {
 	types := []completion.Type{
 		// the dynamic types in the context aren't described in the code so we add them manually here
 		completion.NewDynamicType("fields", "fields", completion.NewProperty("{key}", "{key} for the contact", "any")),

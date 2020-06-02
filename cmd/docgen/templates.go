@@ -55,7 +55,7 @@ func registerContextFunc(f ContextFunc) {
 	contextFuncs = append(contextFuncs, f)
 }
 
-func generateTemplateDocs(baseDir string, outputDir string, items map[string][]*TaggedItem) error {
+func generateTemplateDocs(baseDir, outputDir, localesDir string, items map[string][]*TaggedItem) error {
 	if err := renderTemplateDocs(baseDir, outputDir, items); err != nil {
 		return errors.Wrap(err, "error rendering templates")
 	}
