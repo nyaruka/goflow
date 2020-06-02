@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -49,7 +50,7 @@ func RegisteredTypes() map[string](func() flows.Action) {
 	return registeredTypes
 }
 
-var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
+var uuidRegex = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)
 
 // the base of all action types
 type baseAction struct {
@@ -133,7 +134,7 @@ func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 	if call.Response != nil {
 		value = strconv.Itoa(call.Response.StatusCode)
 
-		if len(call.ResponseBody) < resultExtraMaxBytes {
+		if len(call.ResponseBody) < resultExtraMaxBytes && call.ValidJSON {
 			extra = call.ResponseBody
 		}
 	}
@@ -228,6 +229,8 @@ func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flow
 		if err != nil {
 			logEvent(events.NewError(err))
 		}
+
+		evaluatedLegacyVar = strings.TrimSpace(evaluatedLegacyVar)
 
 		if uuidRegex.MatchString(evaluatedLegacyVar) {
 			// if variable evaluates to a UUID, we assume it's a contact UUID

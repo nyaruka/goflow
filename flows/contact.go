@@ -20,12 +20,30 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ContactStatus is status in which a contact is in
+type ContactStatus string
+
+const (
+	// NilContactStatus is the empty contact status
+	NilContactStatus ContactStatus = ""
+
+	// ContactStatusActive is the contact status of active
+	ContactStatusActive ContactStatus = "active"
+
+	// ContactStatusBlocked is the contact status of blocked
+	ContactStatusBlocked ContactStatus = "blocked"
+
+	// ContactStatusStopped is the contact status of stopped
+	ContactStatusStopped ContactStatus = "stopped"
+)
+
 // Contact represents a person who is interacting with the flow
 type Contact struct {
 	uuid      ContactUUID
 	id        ContactID
 	name      string
 	language  envs.Language
+	status    ContactStatus
 	timezone  *time.Location
 	createdOn time.Time
 	urns      URNList
@@ -43,6 +61,7 @@ func NewContact(
 	id ContactID,
 	name string,
 	language envs.Language,
+	status ContactStatus,
 	timezone *time.Location,
 	createdOn time.Time,
 	urns []urns.URN,
@@ -67,6 +86,7 @@ func NewContact(
 		id:        id,
 		name:      name,
 		language:  language,
+		status:    status,
 		timezone:  timezone,
 		createdOn: createdOn,
 		urns:      urnList,
@@ -82,6 +102,7 @@ func NewEmptyContact(sa SessionAssets, name string, language envs.Language, time
 		uuid:      ContactUUID(uuids.New()),
 		name:      name,
 		language:  language,
+		status:    ContactStatusActive,
 		timezone:  timezone,
 		createdOn: dates.Now(),
 		urns:      URNList{},
@@ -102,6 +123,7 @@ func (c *Contact) Clone() *Contact {
 		id:        c.id,
 		name:      c.name,
 		language:  c.language,
+		status:    c.status,
 		timezone:  c.timezone,
 		createdOn: c.createdOn,
 		urns:      c.urns.clone(),
@@ -129,6 +151,12 @@ func (c *Contact) SetLanguage(lang envs.Language) { c.language = lang }
 
 // Language gets the language for this contact
 func (c *Contact) Language() envs.Language { return c.language }
+
+// Status returns the contact status
+func (c *Contact) Status() ContactStatus { return c.status }
+
+// SetStatus sets the status of this contact (blocked, stopped or active)
+func (c *Contact) SetStatus(status ContactStatus) { c.status = status }
 
 // SetTimezone sets the timezone of this contact
 func (c *Contact) SetTimezone(tz *time.Location) {
@@ -365,7 +393,7 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment) ([]*Group, []*Gr
 			continue
 		}
 
-		qualifies, err := group.CheckDynamicMembership(env, c, c.assets)
+		qualifies, err := group.CheckDynamicMembership(env, c)
 		if err != nil {
 			errs = append(errs, errors.Wrapf(err, "unable to re-evaluate membership of group '%s'", group.Name()))
 		}
@@ -481,6 +509,9 @@ type contactEnvelope struct {
 	ID        ContactID                `json:"id,omitempty"`
 	Name      string                   `json:"name,omitempty"`
 	Language  envs.Language            `json:"language,omitempty"`
+	Status    ContactStatus            `json:"status,omitempty"`
+	Stopped   bool                     `json:"stopped,omitempty"`
+	Blocked   bool                     `json:"blocked,omitempty"`
 	Timezone  string                   `json:"timezone,omitempty"`
 	CreatedOn time.Time                `json:"created_on" validate:"required"`
 	URNs      []urns.URN               `json:"urns,omitempty" validate:"dive,urn"`
@@ -502,8 +533,13 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		id:        envelope.ID,
 		name:      envelope.Name,
 		language:  envelope.Language,
+		status:    envelope.Status,
 		createdOn: envelope.CreatedOn,
 		assets:    sa,
+	}
+
+	if c.status == NilContactStatus {
+		c.status = ContactStatusActive
 	}
 
 	if envelope.Timezone != "" {
@@ -535,6 +571,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		Name:      c.name,
 		UUID:      c.uuid,
 		ID:        c.id,
+		Status:    c.status,
 		Language:  c.language,
 		CreatedOn: c.createdOn,
 	}

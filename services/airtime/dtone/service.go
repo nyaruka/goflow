@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/pkg/errors"
@@ -12,21 +13,17 @@ import (
 )
 
 type service struct {
-	httpClient  *http.Client
-	httpRetries *httpx.RetryConfig
-	login       string
-	apiToken    string
-	currency    string
+	client   *Client
+	currency string
+	redactor utils.Redactor
 }
 
 // NewService creates a new DTOne airtime service
-func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, login, apiToken, currency string) flows.AirtimeService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, login, token, currency string) flows.AirtimeService {
 	return &service{
-		httpClient:  httpClient,
-		httpRetries: httpRetries,
-		login:       login,
-		apiToken:    apiToken,
-		currency:    currency,
+		client:   NewClient(httpClient, httpRetries, login, token),
+		currency: currency,
+		redactor: utils.NewRedactor(flows.RedactionMask, token),
 	}
 }
 
@@ -38,11 +35,9 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		ActualAmount:  decimal.Zero,
 	}
 
-	client := NewClient(s.httpClient, s.httpRetries, s.login, s.apiToken)
-
-	info, trace, err := client.MSISDNInfo(recipient.Path(), s.currency, "1")
+	info, trace, err := s.client.MSISDNInfo(recipient.Path(), s.currency, "1")
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, httpLogStatus))
+		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
 	}
 	if err != nil {
 		return transfer, err
@@ -73,17 +68,17 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		return transfer, errors.Errorf("amount requested is smaller than the minimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
 	}
 
-	reservedID, trace, err := client.ReserveID()
+	reservedID, trace, err := s.client.ReserveID()
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, httpLogStatus))
+		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
 	}
 	if err != nil {
 		return transfer, err
 	}
 
-	topup, trace, err := client.Topup(reservedID.ReservedID, sender.Path(), recipient.Path(), useProduct, "")
+	topup, trace, err := s.client.Topup(reservedID.ReservedID, sender.Path(), recipient.Path(), useProduct, "")
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, httpLogStatus))
+		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
 	}
 	if err != nil {
 		return transfer, err

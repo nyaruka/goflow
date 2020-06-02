@@ -19,6 +19,7 @@ Is used when a session was triggered by a campaign event
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
@@ -47,6 +48,7 @@ Is used when a session was triggered by a channel event
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
@@ -117,6 +119,7 @@ Is used when a session was triggered manually by a user
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z"
@@ -138,6 +141,7 @@ Is used when a session was triggered by a message being received by the caller
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
@@ -180,6 +184,7 @@ Is used when a session is resumed with a new message from the contact
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
         "language": "fra",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z",
         "fields": {
             "gender": {
@@ -215,6 +220,7 @@ Is used when a session is resumed because the waiting run has expired
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
         "language": "fra",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z",
         "fields": {
             "gender": {
@@ -238,6 +244,7 @@ Is used when a session is resumed because a wait has timed out
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "name": "Bob",
         "language": "fra",
+        "status": "active",
         "created_on": "2018-01-01T12:00:00Z",
         "fields": {
             "gender": {
@@ -321,33 +328,6 @@ Events are created when an action wants to send a message to other contacts.
     ],
     "urns": [
         "tel:+12065551212"
-    ]
-}
-```
-</div>
-<h2 class="item_title"><a name="event:classifier_called" href="#event:classifier_called">classifier_called</a></h2>
-
-Events are created when a NLU classifier is called.
-
-<div class="output_event">
-
-```json
-{
-    "type": "classifier_called",
-    "created_on": "2006-01-02T15:04:05Z",
-    "classifier": {
-        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
-        "name": "Booking"
-    },
-    "http_logs": [
-        {
-            "url": "https://api.wit.ai/message?v=20170307&q=hello",
-            "status": "success",
-            "request": "GET /message?v=20170307&q=hello HTTP/1.1",
-            "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-            "created_on": "2006-01-02T15:04:05Z",
-            "elapsed_ms": 123
-        }
     ]
 }
 ```
@@ -443,6 +423,20 @@ Events are generated when the resume has a contact with differences to the curre
             "tel:+11231234567"
         ]
     }
+}
+```
+</div>
+<h2 class="item_title"><a name="event:contact_status_changed" href="#event:contact_status_changed">contact_status_changed</a></h2>
+
+Events are created when the status of the contact has been changed.
+
+<div class="output_event">
+
+```json
+{
+    "type": "contact_timezone_changed",
+    "created_on": "2006-01-02T15:04:05Z",
+    "timezone": ""
 }
 ```
 </div>
@@ -735,6 +729,34 @@ the result was generated.
 }
 ```
 </div>
+<h2 class="item_title"><a name="event:service_called" href="#event:service_called">service_called</a></h2>
+
+Events are created when an engine service is called.
+
+<div class="output_event">
+
+```json
+{
+    "type": "service_called",
+    "created_on": "2006-01-02T15:04:05Z",
+    "service": "classifier",
+    "classifier": {
+        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+        "name": "Booking"
+    },
+    "http_logs": [
+        {
+            "url": "https://api.wit.ai/message?v=20170307&q=hello",
+            "status": "success",
+            "request": "GET /message?v=20170307&q=hello HTTP/1.1",
+            "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+            "created_on": "2006-01-02T15:04:05Z",
+            "elapsed_ms": 123
+        }
+    ]
+}
+```
+</div>
 <h2 class="item_title"><a name="event:session_triggered" href="#event:session_triggered">session_triggered</a></h2>
 
 Events are created when an action wants to start other people in a flow.
@@ -779,6 +801,29 @@ Events are created when an action wants to start other people in a flow.
                 "created_on": "2000-01-01T00:00:00.000000000-00:00"
             }
         }
+    }
+}
+```
+</div>
+<h2 class="item_title"><a name="event:ticket_opened" href="#event:ticket_opened">ticket_opened</a></h2>
+
+Events are created when a new ticket is opened.
+
+<div class="output_event">
+
+```json
+{
+    "type": "ticket_opened",
+    "created_on": "2006-01-02T15:04:05Z",
+    "ticket": {
+        "uuid": "2e677ae6-9b57-423c-b022-7950503eef35",
+        "ticketer": {
+            "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+            "name": "Support Tickets"
+        },
+        "subject": "Need help",
+        "body": "Where are my cookies?",
+        "external_id": "32526523"
     }
 }
 ```

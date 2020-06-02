@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
@@ -150,6 +151,8 @@ func TestMigrateToLatest(t *testing.T) {
 }
 
 func TestClone(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
 	testCases := []struct {
 		path string
 		uuid string
@@ -164,7 +167,7 @@ func TestClone(t *testing.T) {
 		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 		defer uuids.SetGenerator(uuids.DefaultGenerator)
 
-		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		flow, err := test.LoadFlowFromAssets(env, tc.path, assets.FlowUUID(tc.uuid))
 		require.NoError(t, err)
 
 		depMappings := map[uuids.UUID]uuids.UUID{

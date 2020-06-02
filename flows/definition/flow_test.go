@@ -213,7 +213,7 @@ func TestNewFlow(t *testing.T) {
 				routers.NewSwitch(
 					waits.NewMsgWait(nil, hints.NewImageHint()),
 					"Response 1",
-					[]*routers.Category{
+					[]flows.Category{
 						routers.NewCategory(
 							flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897"),
 							"Yes",
@@ -316,7 +316,8 @@ func TestNewFlow(t *testing.T) {
 }
 
 func TestEmptyFlow(t *testing.T) {
-	flow, err := test.LoadFlowFromAssets("../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+	env := envs.NewBuilder().Build()
+	flow, err := test.LoadFlowFromAssets(env, "../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	require.NoError(t, err)
 
 	marshaled, err := jsonx.Marshal(flow)
@@ -453,11 +454,14 @@ func TestReadFlow(t *testing.T) {
 	assert.Equal(t, 1, len(flow.Nodes()))
 }
 
-func TestExtractTemplates(t *testing.T) {
+func TestExtractTemplatesAndLocalizables(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
 	testCases := []struct {
-		path      string
-		uuid      string
-		templates []string
+		path         string
+		uuid         string
+		templates    []string
+		localizables []string
 	}{
 		{
 			"../../test/testdata/runner/two_questions.json",
@@ -482,6 +486,24 @@ func TestExtractTemplates(t *testing.T) {
 				`{ "contact": @(json(contact.uuid)), "soda": @(json(results.soda.value)) }`,
 				`Great, you are done and like @results.soda.value! Webhook status was @results.webhook.value`,
 				`Parfait, vous avez finis et tu aimes @results.soda.category`,
+			},
+			[]string{
+				"Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))",
+				"Red",
+				"Blue",
+				"red",
+				"blue",
+				"Red",
+				"Blue",
+				"Other",
+				"No Response",
+				"@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)",
+				"pepsi",
+				"coke coca cola",
+				"Pepsi",
+				"Coke",
+				"Other",
+				"Great, you are done and like @results.soda.value! Webhook status was @results.webhook.value",
 			},
 		},
 		{
@@ -512,20 +534,40 @@ func TestExtractTemplates(t *testing.T) {
 				`@fields.raw_district`,
 				`http://localhost/?cmd=success&name=@(url_encode(contact.name))`,
 			},
+			[]string{
+				"Here is your activation token",
+				"Hi @fields.first_name, Your activation token is @fields.activation_token, your coupon is @(trigger.params.coupons[0].code)",
+				"Hi @contact.name, are you ready?",
+				"Hi @contact.name, are you ready for these attachments?",
+				"image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(fields.state)))",
+				"Hi @contact.name, are you ready to complete today's survey?",
+				"This is a message to each of @contact.name's urns.",
+				"This is a reply with attachments and quick replies",
+				"image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(fields.state)))",
+				"Yes",
+				"No",
+				"Male",
+			},
 		},
 	}
 
 	for _, tc := range testCases {
-		flow, err := test.LoadFlowFromAssets(tc.path, assets.FlowUUID(tc.uuid))
+		flow, err := test.LoadFlowFromAssets(env, tc.path, assets.FlowUUID(tc.uuid))
 		require.NoError(t, err)
 
 		// try extracting all templates
 		templates := flow.ExtractTemplates()
 		assert.Equal(t, tc.templates, templates, "extracted templates mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
+
+		// try extracting all localizable text
+		localizables := flow.ExtractLocalizables()
+		assert.Equal(t, tc.localizables, localizables, "extracted localizables mismatch for flow %s[uuid=%s]", tc.path, tc.uuid)
 	}
 }
 
 func TestInspection(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
 	testCases := []struct {
 		path string
 		uuid string
@@ -557,7 +599,7 @@ func TestInspection(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		sa, err := test.LoadSessionAssets(tc.path)
+		sa, err := test.LoadSessionAssets(env, tc.path)
 		require.NoError(t, err)
 
 		flow, err := sa.Flows().Get(assets.FlowUUID(tc.uuid))

@@ -4,33 +4,30 @@ import (
 	"net/http"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/httpx"
 )
 
 // a classification service implementation for a wit.ai app
 type service struct {
-	httpClient  *http.Client
-	httpRetries *httpx.RetryConfig
-	classifier  *flows.Classifier
-	accessToken string
+	client     *Client
+	classifier *flows.Classifier
+	redactor   utils.Redactor
 }
 
 // NewService creates a new classification service
 func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classifier *flows.Classifier, accessToken string) flows.ClassificationService {
 	return &service{
-		httpClient:  httpClient,
-		httpRetries: httpRetries,
-		classifier:  classifier,
-		accessToken: accessToken,
+		client:     NewClient(httpClient, httpRetries, accessToken),
+		classifier: classifier,
+		redactor:   utils.NewRedactor(flows.RedactionMask, accessToken),
 	}
 }
 
 func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	client := NewClient(s.httpClient, s.httpRetries, s.accessToken)
-
-	response, trace, err := client.Message(input)
+	response, trace, err := s.client.Message(input)
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode))
+		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
 	if err != nil {
 		return nil, err

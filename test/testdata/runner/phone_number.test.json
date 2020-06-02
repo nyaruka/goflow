@@ -1,0 +1,751 @@
+{
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Enter a backup phone number",
+                        "urn": "tel:+12065551212",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Enter a backup phone number",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-13T12:30:01.123456789Z",
+                        "flow": {
+                            "name": "Phone Numbers",
+                            "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
+                        },
+                        "modified_on": "2018-07-06T12:30:09.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "12f9509b-f60d-49a1-a34f-df27643638f3",
+                                "node_uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Phone Numbers",
+                        "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
+                    },
+                    "triggered_on": "2020-03-19T16:37:26.928919-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "msg": {
+                        "text": "135532",
+                        "urn": "tel:+12065551212",
+                        "uuid": "ba05c12e-16b2-4e13-8d89-e0cc9530a8fb"
+                    },
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "Other",
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "input": "135532",
+                    "name": "Backup Phone",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "run_result_changed",
+                    "value": "135532"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Sorry that doesn't look like a phone number. Try again.",
+                        "urn": "tel:+12065551212",
+                        "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                    },
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "input": {
+                    "created_on": "2020-03-19T16:37:31.207472-05:00",
+                    "text": "135532",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "ba05c12e-16b2-4e13-8d89-e0cc9530a8fb"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Enter a backup phone number",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "msg": {
+                                    "text": "135532",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "ba05c12e-16b2-4e13-8d89-e0cc9530a8fb"
+                                },
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "input": "135532",
+                                "name": "Backup Phone",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "run_result_changed",
+                                "value": "135532"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Sorry that doesn't look like a phone number. Try again.",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                                },
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-13T12:30:10.123456789Z",
+                        "flow": {
+                            "name": "Phone Numbers",
+                            "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
+                        },
+                        "modified_on": "2018-07-06T12:30:25.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "12f9509b-f60d-49a1-a34f-df27643638f3",
+                                "node_uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "exit_uuid": "6083707c-109a-442b-a2c6-b6d60bb1eaed",
+                                "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "exit_uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
+                                "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
+                                "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
+                                "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                            }
+                        ],
+                        "results": {
+                            "backup_phone": {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "input": "135532",
+                                "name": "Backup Phone",
+                                "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
+                                "value": "135532"
+                            }
+                        },
+                        "status": "waiting",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Phone Numbers",
+                        "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
+                    },
+                    "triggered_on": "2020-03-19T16:37:26.928919-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "msg": {
+                        "text": "718-456-7890",
+                        "urn": "tel:+12065551212",
+                        "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
+                    },
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "Has Phone",
+                    "created_on": "2018-07-06T12:30:33.123456789Z",
+                    "input": "718-456-7890",
+                    "name": "Backup Phone",
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "type": "run_result_changed",
+                    "value": "+17184567890"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:36.123456789Z",
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "contact_urns_changed",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore",
+                        "tel:+17184567890"
+                    ]
+                },
+                {
+                    "created_on": "2018-07-06T12:30:38.123456789Z",
+                    "groups_added": [
+                        {
+                            "name": "NYC Area",
+                            "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
+                        }
+                    ],
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "contact_groups_changed"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:40.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Ok you've added (718) 456-7890",
+                        "urn": "tel:+12065551212",
+                        "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
+                    },
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "msg_created"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "groups": [
+                        {
+                            "name": "NYC Area",
+                            "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
+                        }
+                    ],
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore",
+                        "tel:+17184567890"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "input": {
+                    "created_on": "2020-03-19T16:37:38.453883-05:00",
+                    "text": "718-456-7890",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Enter a backup phone number",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "msg": {
+                                    "text": "135532",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "ba05c12e-16b2-4e13-8d89-e0cc9530a8fb"
+                                },
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "input": "135532",
+                                "name": "Backup Phone",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "run_result_changed",
+                                "value": "135532"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Sorry that doesn't look like a phone number. Try again.",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                                },
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "msg": {
+                                    "text": "718-456-7890",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
+                                },
+                                "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Has Phone",
+                                "created_on": "2018-07-06T12:30:33.123456789Z",
+                                "input": "718-456-7890",
+                                "name": "Backup Phone",
+                                "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                                "type": "run_result_changed",
+                                "value": "+17184567890"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:36.123456789Z",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "contact_urns_changed",
+                                "urns": [
+                                    "tel:+12065551212",
+                                    "facebook:1122334455667788",
+                                    "mailto:ben@macklemore",
+                                    "tel:+17184567890"
+                                ]
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "groups_added": [
+                                    {
+                                        "name": "NYC Area",
+                                        "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
+                                    }
+                                ],
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "contact_groups_changed"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:40.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Ok you've added (718) 456-7890",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
+                                },
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_created"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:42.123456789Z",
+                        "expires_on": "2018-07-13T12:30:26.123456789Z",
+                        "flow": {
+                            "name": "Phone Numbers",
+                            "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
+                        },
+                        "modified_on": "2018-07-06T12:30:42.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "12f9509b-f60d-49a1-a34f-df27643638f3",
+                                "node_uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "exit_uuid": "6083707c-109a-442b-a2c6-b6d60bb1eaed",
+                                "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "exit_uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
+                                "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
+                                "exit_uuid": "2b9ce880-3556-410a-af5a-edd366a1d628",
+                                "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
+                                "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:35.123456789Z",
+                                "exit_uuid": "91023689-f038-405e-a3c0-c4e8e8580bd9",
+                                "node_uuid": "b7653335-7790-4f00-aede-7c6d03c8f829",
+                                "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                            }
+                        ],
+                        "results": {
+                            "backup_phone": {
+                                "category": "Has Phone",
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
+                                "input": "718-456-7890",
+                                "name": "Backup Phone",
+                                "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
+                                "value": "+17184567890"
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Phone Numbers",
+                        "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
+                    },
+                    "triggered_on": "2020-03-19T16:37:26.928919-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            }
+        }
+    ],
+    "resumes": [
+        {
+            "msg": {
+                "text": "135532",
+                "urn": "tel:+12065551212",
+                "uuid": "ba05c12e-16b2-4e13-8d89-e0cc9530a8fb"
+            },
+            "resumed_on": "2020-03-19T16:37:31.207472-05:00",
+            "type": "msg"
+        },
+        {
+            "msg": {
+                "text": "718-456-7890",
+                "urn": "tel:+12065551212",
+                "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
+            },
+            "resumed_on": "2020-03-19T16:37:38.453883-05:00",
+            "type": "msg"
+        }
+    ],
+    "trigger": {
+        "contact": {
+            "created_on": "2018-01-01T12:00:00Z",
+            "id": 1234567,
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+            "allowed_languages": [
+                "eng",
+                "eng"
+            ],
+            "date_format": "YYYY-MM-DD",
+            "max_value_length": 640,
+            "number_format": {
+                "decimal_symbol": ".",
+                "digit_grouping_symbol": ","
+            },
+            "redaction_policy": "none",
+            "time_format": "tt:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Phone Numbers",
+            "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
+        },
+        "triggered_on": "2020-03-19T16:37:26.928919-05:00",
+        "type": "manual"
+    }
+}

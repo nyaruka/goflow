@@ -8,15 +8,27 @@ import (
 	"net/http/httputil"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/nyaruka/goflow/utils/dates"
+
 	"github.com/pkg/errors"
 )
 
 var debug = false
 
 // Do makes the given HTTP request using the current requestor and retry config
-func Do(client *http.Client, request *http.Request, retries *RetryConfig) (*http.Response, error) {
+func Do(client *http.Client, request *http.Request, retries *RetryConfig, access *AccessConfig) (*http.Response, error) {
+	if access != nil {
+		allowed, err := access.Allow(request)
+		if err != nil {
+			return nil, err
+		}
+		if !allowed {
+			return nil, errors.Errorf("request to %s denied", request.URL.Hostname())
+		}
+	}
+
 	var response *http.Response
 	var err error
 	retry := 0
@@ -46,7 +58,7 @@ type Trace struct {
 	RequestTrace  []byte
 	Response      *http.Response
 	ResponseTrace []byte
-	ResponseBody  []byte
+	ResponseBody  []byte // response body stored separately
 	StartTime     time.Time
 	EndTime       time.Time
 }
@@ -57,11 +69,27 @@ func (t *Trace) String() string {
 	b.WriteString(string(t.RequestTrace))
 	b.WriteString("\n<<<<<<<<\n")
 	b.WriteString(string(t.ResponseTrace))
+	b.WriteString(string(t.ResponseBody))
 	return b.String()
 }
 
+// ResponseTraceUTF8 returns a valid UTF-8 string version of trace, substituting the body with placeholder if it isn't valid UTF-8
+func (t *Trace) ResponseTraceUTF8(placeholder string) string {
+	// headers part assumed to be valid UTF-8
+	s := string(t.ResponseTrace)
+
+	// if body is valid UTF-8, include it
+	if utf8.Valid(t.ResponseBody) {
+		s += string(t.ResponseBody)
+	} else {
+		s += placeholder
+	}
+
+	return s
+}
+
 // DoTrace makes the given request saving traces of the complete request and response
-func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, maxBodyBytes int) (*Trace, error) {
+func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, access *AccessConfig, maxBodyBytes int) (*Trace, error) {
 	requestTrace, err := httputil.DumpRequestOut(request, true)
 	if err != nil {
 		return nil, err
@@ -73,7 +101,7 @@ func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, m
 		StartTime:    dates.Now(),
 	}
 
-	response, err := Do(client, request, retries)
+	response, err := Do(client, request, retries, access)
 	trace.EndTime = dates.Now()
 
 	if err != nil {
@@ -87,16 +115,12 @@ func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, m
 	if err != nil {
 		return trace, err
 	}
-
 	trace.ResponseTrace = responseTrace
 
 	responseBody, err := readBody(response, maxBodyBytes)
 	if err != nil {
 		return trace, err
 	}
-
-	// add read body to response trace
-	trace.ResponseTrace = append(trace.ResponseTrace, responseBody...)
 	trace.ResponseBody = responseBody
 
 	if debug {
@@ -106,18 +130,18 @@ func DoTrace(client *http.Client, request *http.Request, retries *RetryConfig, m
 	return trace, nil
 }
 
-// NewTrace makes the given request saving traces of the complete request and response
-func NewTrace(client *http.Client, method string, url string, body io.Reader, headers map[string]string, retries *RetryConfig) (*Trace, error) {
-	request, err := http.NewRequest(method, url, body)
+// NewRequest is a convenience method to create a request with the given headers
+func NewRequest(method string, url string, body io.Reader, headers map[string]string) (*http.Request, error) {
+	r, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
 	}
 
 	for key, value := range headers {
-		request.Header.Set(key, value)
+		r.Header.Set(key, value)
 	}
 
-	return DoTrace(client, request, retries, -1)
+	return r, nil
 }
 
 // attempts to read the body of an HTTP response

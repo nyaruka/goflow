@@ -129,7 +129,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 	if isAttribute {
 		propType = PropertyTypeAttribute
 
-		if propKey == AttributeURN && v.redaction == envs.RedactionPolicyURNs {
+		if propKey == AttributeURN && v.redaction == envs.RedactionPolicyURNs && value != "" {
 			v.addError(errors.New("cannot query on redacted URNs"))
 		}
 
@@ -138,7 +138,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		propType = PropertyTypeScheme
 		valueType = assets.FieldTypeText
 
-		if v.redaction == envs.RedactionPolicyURNs {
+		if v.redaction == envs.RedactionPolicyURNs && value != "" {
 			v.addError(errors.New("cannot query on redacted URNs"))
 		}
 	} else {

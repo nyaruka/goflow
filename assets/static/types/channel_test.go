@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static/types"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
@@ -25,7 +26,7 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, []string{"tel"}, channel.Schemes())
 	assert.Equal(t, []assets.ChannelRole{assets.ChannelRoleSend}, channel.Roles())
 	assert.Nil(t, channel.Parent())
-	assert.Equal(t, "", channel.Country())
+	assert.Equal(t, envs.NilCountry, channel.Country())
 	assert.Nil(t, channel.MatchPrefixes())
 	assert.True(t, channel.AllowInternational())
 
@@ -43,7 +44,7 @@ func TestChannel(t *testing.T) {
 		false,
 	)
 
-	assert.Equal(t, "RW", channel.Country())
+	assert.Equal(t, envs.Country("RW"), channel.Country())
 	assert.Equal(t, []string{"+25079"}, channel.MatchPrefixes())
 	assert.False(t, channel.AllowInternational())
 }

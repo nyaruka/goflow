@@ -1,0 +1,964 @@
+[
+    {
+        "template": "@contact.uuid",
+        "output": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+    },
+    {
+        "template": "@contact.id",
+        "output": "1234567"
+    },
+    {
+        "template": "@CONTACT.NAME",
+        "output": "Ryan Lewis"
+    },
+    {
+        "template": "@contact.name",
+        "output": "Ryan Lewis"
+    },
+    {
+        "template": "@contact.language",
+        "output": "eng"
+    },
+    {
+        "template": "@contact.timezone",
+        "output": "America/Guayaquil"
+    },
+    {
+        "template": "@contact.urn",
+        "output": "tel:+12024561111"
+    },
+    {
+        "template": "@(urn_parts(contact.urn).scheme)",
+        "output": "tel"
+    },
+    {
+        "template": "@(urn_parts(contact.urn).path)",
+        "output": "+12024561111"
+    },
+    {
+        "template": "@(format_urn(contact.urn))",
+        "output": "(202) 456-1111"
+    },
+    {
+        "template": "@contact.urn",
+        "redact_urns": true,
+        "output": "tel:********"
+    },
+    {
+        "template": "@(urn_parts(contact.urn).scheme)",
+        "redact_urns": true,
+        "output": "tel"
+    },
+    {
+        "template": "@(urn_parts(contact.urn).path)",
+        "redact_urns": true,
+        "output": "********"
+    },
+    {
+        "template": "@(format_urn(contact.urn))",
+        "redact_urns": true,
+        "output": "********"
+    },
+    {
+        "template": "@contact.urns",
+        "output": "[tel:+12024561111, twitterid:54784326227#nyaruka, mailto:foo@bar.com]"
+    },
+    {
+        "template": "@(contact.urns[0])",
+        "output": "tel:+12024561111"
+    },
+    {
+        "template": "@(contact.urns[110])",
+        "error": "error evaluating @(contact.urns[110]): index 110 out of range for 3 items"
+    },
+    {
+        "template": "@(urn_parts(contact.urns[0]).scheme)",
+        "output": "tel"
+    },
+    {
+        "template": "@(urn_parts(contact.urns[0]).path)",
+        "output": "+12024561111"
+    },
+    {
+        "template": "@(urn_parts(contact.urns[0]).display)"
+    },
+    {
+        "template": "@(contact.urns[1])",
+        "output": "twitterid:54784326227#nyaruka"
+    },
+    {
+        "template": "@(format_urn(contact.urns[0]))",
+        "output": "(202) 456-1111"
+    },
+    {
+        "template": "@contact.urns",
+        "redact_urns": true,
+        "output": "[tel:********, twitterid:********, mailto:********]"
+    },
+    {
+        "template": "@(contact.urns[0])",
+        "redact_urns": true,
+        "output": "tel:********"
+    },
+    {
+        "template": "@urns",
+        "output": "{ext: , facebook: , fcm: , freshchat: , jiochat: , line: , mailto: mailto:foo@bar.com, tel: tel:+12024561111, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , wechat: , whatsapp: }"
+    },
+    {
+        "template": "@urns.tel",
+        "output": "tel:+12024561111"
+    },
+    {
+        "template": "@urns.mailto",
+        "output": "mailto:foo@bar.com"
+    },
+    {
+        "template": "@urns.viber"
+    },
+    {
+        "template": "@(format_urn(urns.tel))",
+        "output": "(202) 456-1111"
+    },
+    {
+        "template": "@urns.tel",
+        "redact_urns": true,
+        "output": "tel:********"
+    },
+    {
+        "template": "@urns.viber",
+        "redact_urns": true
+    },
+    {
+        "template": "@(foreach(contact.groups, extract, \"name\"))",
+        "output": "[Testers, Males]"
+    },
+    {
+        "template": "@(join(foreach(contact.groups, extract, \"name\"), \"|\"))",
+        "output": "Testers|Males"
+    },
+    {
+        "template": "@(count(contact.groups))",
+        "output": "2"
+    },
+    {
+        "template": "@contact.fields",
+        "output": "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00"
+    },
+    {
+        "template": "@contact.fields.activation_token",
+        "output": "AACC55"
+    },
+    {
+        "template": "@contact.fields.age",
+        "output": "23"
+    },
+    {
+        "template": "@contact.fields.join_date",
+        "output": "2017-12-02T00:00:00.000000-02:00"
+    },
+    {
+        "template": "@contact.fields.favorite_icecream",
+        "error": "error evaluating @contact.fields.favorite_icecream: object has no property 'favorite_icecream'"
+    },
+    {
+        "template": "@(is_error(contact.fields.favorite_icecream))",
+        "output": "true"
+    },
+    {
+        "template": "@(has_error(contact.fields.favorite_icecream).match)",
+        "output": "object has no property 'favorite_icecream'"
+    },
+    {
+        "template": "@(count(contact.fields))",
+        "output": "5"
+    },
+    {
+        "template": "@fields",
+        "output": "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00"
+    },
+    {
+        "template": "@fields.activation_token",
+        "output": "AACC55"
+    },
+    {
+        "template": "@fields.age",
+        "output": "23"
+    },
+    {
+        "template": "@fields.join_date",
+        "output": "2017-12-02T00:00:00.000000-02:00"
+    },
+    {
+        "template": "@fields.favorite_icecream",
+        "error": "error evaluating @fields.favorite_icecream: object has no property 'favorite_icecream'"
+    },
+    {
+        "template": "@(is_error(fields.favorite_icecream))",
+        "output": "true"
+    },
+    {
+        "template": "@(has_error(fields.favorite_icecream).match)",
+        "output": "object has no property 'favorite_icecream'"
+    },
+    {
+        "template": "@(count(fields))",
+        "output": "5"
+    },
+    {
+        "template": "@input",
+        "output": "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3"
+    },
+    {
+        "template": "@input.text",
+        "output": "Hi there"
+    },
+    {
+        "template": "@input.attachments",
+        "output": "[image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]"
+    },
+    {
+        "template": "@(input.attachments[0])",
+        "output": "image/jpeg:http://s3.amazon.com/bucket/test.jpg"
+    },
+    {
+        "template": "@input.created_on",
+        "output": "2017-12-31T11:35:10.035757-02:00"
+    },
+    {
+        "template": "@input.channel.name",
+        "output": "My Android Phone"
+    },
+    {
+        "template": "@results.favorite_color",
+        "output": "red"
+    },
+    {
+        "template": "@results.favorite_color.value",
+        "output": "red"
+    },
+    {
+        "template": "@results.favorite_color.category",
+        "output": "Red"
+    },
+    {
+        "template": "@results.favorite_color.category_localized",
+        "output": "Red"
+    },
+    {
+        "template": "@(is_error(results.favorite_icecream))",
+        "output": "true"
+    },
+    {
+        "template": "@(has_error(results.favorite_icecream).match)",
+        "output": "object has no property 'favorite_icecream'"
+    },
+    {
+        "template": "@(count(results))",
+        "output": "5"
+    },
+    {
+        "template": "@run.results.favorite_color",
+        "output": "red"
+    },
+    {
+        "template": "@run.results.favorite_color.value",
+        "output": "red"
+    },
+    {
+        "template": "@run.results.favorite_color.values",
+        "output": "[red]"
+    },
+    {
+        "template": "@(run.results.favorite_color.values[0])",
+        "output": "red"
+    },
+    {
+        "template": "@run.results.favorite_color.category",
+        "output": "Red"
+    },
+    {
+        "template": "@run.results.favorite_color.categories",
+        "output": "[Red]"
+    },
+    {
+        "template": "@(run.results.favorite_color.categories[0])",
+        "output": "Red"
+    },
+    {
+        "template": "@run.results.favorite_color.category_localized",
+        "output": "Red"
+    },
+    {
+        "template": "@run.results.favorite_color.categories_localized",
+        "output": "[Red]"
+    },
+    {
+        "template": "@run.results.favorite_icecream",
+        "error": "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'"
+    },
+    {
+        "template": "@(is_error(run.results.favorite_icecream))",
+        "output": "true"
+    },
+    {
+        "template": "@(has_error(run.results.favorite_icecream).match)",
+        "output": "object has no property 'favorite_icecream'"
+    },
+    {
+        "template": "@(count(run.results))",
+        "output": "5"
+    },
+    {
+        "template": "@run.status",
+        "output": "completed"
+    },
+    {
+        "template": "@webhook",
+        "output": "{results: [{state: WA}, {state: IN}]}"
+    },
+    {
+        "template": "@webhook.results",
+        "output": "[{state: WA}, {state: IN}]"
+    },
+    {
+        "template": "@(webhook.results[1])",
+        "output": "{state: IN}"
+    },
+    {
+        "template": "@(webhook.results[1].state)",
+        "output": "IN"
+    },
+    {
+        "template": "@trigger.params",
+        "output": "{address: {state: WA}, source: website}"
+    },
+    {
+        "template": "@trigger.params.source",
+        "output": "website"
+    },
+    {
+        "template": "@(count(trigger.params.address))",
+        "output": "1"
+    },
+    {
+        "template": "@(if(is_error(results.favorite_color.value), \"@flow.favorite_color\", results.favorite_color.value))",
+        "output": "red"
+    },
+    {
+        "template": "@(if(is_error(legacy_extra[\"0\"].default_city), \"@extra.0.default_city\", legacy_extra[\"0\"].default_city))",
+        "output": "@extra.0.default_city"
+    },
+    {
+        "template": "bob@nyaruka.com",
+        "output": "bob@nyaruka.com"
+    },
+    {
+        "template": "@twitter_handle",
+        "output": "@twitter_handle"
+    },
+    {
+        "template": "@(json(contact.uuid))",
+        "output": "\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\""
+    },
+    {
+        "template": "@(json(contact.name))",
+        "output": "\"Ryan Lewis\""
+    },
+    {
+        "template": "@(json(contact.urns))",
+        "output": "[\"tel:+12024561111\",\"twitterid:54784326227#nyaruka\",\"mailto:foo@bar.com\"]"
+    },
+    {
+        "template": "@(json(contact.urns[0]))",
+        "output": "\"tel:+12024561111\""
+    },
+    {
+        "template": "@(json(contact.fields))",
+        "output_json": {
+            "activation_token": "AACC55",
+            "age": 23,
+            "gender": "Male",
+            "join_date": "2017-12-02T00:00:00.000000-02:00",
+            "not_set": null
+        }
+    },
+    {
+        "template": "@(json(contact.fields.age))",
+        "output": "23"
+    },
+    {
+        "template": "@(json(contact))",
+        "output_json": {
+            "channel": {
+                "address": "+17036975131",
+                "name": "My Android Phone",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+            },
+            "created_on": "2018-06-20T11:40:30.123456Z",
+            "fields": {
+                "activation_token": "AACC55",
+                "age": 23,
+                "gender": "Male",
+                "join_date": "2017-12-02T00:00:00.000000-02:00",
+                "not_set": null
+            },
+            "first_name": "Ryan",
+            "groups": [
+                {
+                    "name": "Testers",
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                },
+                {
+                    "name": "Males",
+                    "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9"
+                }
+            ],
+            "id": "1234567",
+            "language": "eng",
+            "name": "Ryan Lewis",
+            "timezone": "America/Guayaquil",
+            "urn": "tel:+12024561111",
+            "urns": [
+                "tel:+12024561111",
+                "twitterid:54784326227#nyaruka",
+                "mailto:foo@bar.com"
+            ],
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        }
+    },
+    {
+        "template": "@(json(input))",
+        "output_json": {
+            "attachments": [
+                "image/jpeg:http://s3.amazon.com/bucket/test.jpg",
+                "audio/mp3:http://s3.amazon.com/bucket/test.mp3"
+            ],
+            "channel": {
+                "address": "+17036975131",
+                "name": "My Android Phone",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+            },
+            "created_on": "2017-12-31T11:35:10.035757-02:00",
+            "external_id": "",
+            "text": "Hi there",
+            "type": "msg",
+            "urn": "tel:+12065551212",
+            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+        }
+    },
+    {
+        "template": "@(json(run))",
+        "output_json": {
+            "contact": {
+                "channel": {
+                    "address": "+17036975131",
+                    "name": "My Android Phone",
+                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                },
+                "created_on": "2018-06-20T11:40:30.123456Z",
+                "fields": {
+                    "activation_token": "AACC55",
+                    "age": 23,
+                    "gender": "Male",
+                    "join_date": "2017-12-02T00:00:00.000000-02:00",
+                    "not_set": null
+                },
+                "first_name": "Ryan",
+                "groups": [
+                    {
+                        "name": "Testers",
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                    },
+                    {
+                        "name": "Males",
+                        "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9"
+                    }
+                ],
+                "id": "1234567",
+                "language": "eng",
+                "name": "Ryan Lewis",
+                "timezone": "America/Guayaquil",
+                "urn": "tel:+12024561111",
+                "urns": [
+                    "tel:+12024561111",
+                    "twitterid:54784326227#nyaruka",
+                    "mailto:foo@bar.com"
+                ],
+                "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            },
+            "created_on": "2018-04-11T13:24:30.123456Z",
+            "exited_on": "2018-04-11T13:24:30.123456Z",
+            "flow": {
+                "name": "Registration",
+                "revision": 123,
+                "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7"
+            },
+            "path": [
+                {
+                    "arrived_on": "2018-04-11T13:24:30.123456Z",
+                    "exit_uuid": "d7a36118-0a38-4b35-a7e4-ae89042f0d3c",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                },
+                {
+                    "arrived_on": "2018-04-11T13:24:30.123456Z",
+                    "exit_uuid": "100f2d68-2481-4137-a0a3-177620ba3c5f",
+                    "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                },
+                {
+                    "arrived_on": "2018-04-11T13:24:30.123456Z",
+                    "exit_uuid": "d898f9a4-f0fc-4ac4-a639-c98c602bb511",
+                    "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+                    "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                },
+                {
+                    "arrived_on": "2018-04-11T13:24:30.123456Z",
+                    "exit_uuid": "9fc5f8b4-2247-43db-b899-ab1ac50ba06c",
+                    "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
+                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                }
+            ],
+            "results": {
+                "2factor": {
+                    "category": "",
+                    "categories": [
+                        ""
+                    ],
+                    "category_localized": "",
+                    "categories_localized": [
+                        ""
+                    ],
+                    "created_on": "2018-04-11T13:24:30.123456Z",
+                    "extra": null,
+                    "input": "",
+                    "name": "2Factor",
+                    "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+                    "value": "34634624463525",
+                    "values": [
+                        "34634624463525"
+                    ]
+                },
+                "favorite_color": {
+                    "category": "Red",
+                    "categories": [
+                        "Red"
+                    ],
+                    "category_localized": "Red",
+                    "categories_localized": [
+                        "Red"
+                    ],
+                    "created_on": "2018-04-11T13:24:30.123456Z",
+                    "extra": null,
+                    "input": "",
+                    "name": "Favorite Color",
+                    "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+                    "value": "red",
+                    "values": [
+                        "red"
+                    ]
+                },
+                "intent": {
+                    "categories": [
+                        "Success"
+                    ],
+                    "categories_localized": [
+                        "Success"
+                    ],
+                    "category": "Success",
+                    "category_localized": "Success",
+                    "created_on": "2018-04-11T13:24:30.123456Z",
+                    "extra": {
+                        "entities": {
+                            "location": [
+                                {
+                                    "confidence": 1,
+                                    "value": "Quito"
+                                }
+                            ]
+                        },
+                        "intents": [
+                            {
+                                "confidence": 0.5,
+                                "name": "book_flight"
+                            },
+                            {
+                                "confidence": 0.25,
+                                "name": "book_hotel"
+                            }
+                        ]
+                    },
+                    "input": "Hi there",
+                    "name": "intent",
+                    "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+                    "value": "book_flight",
+                    "values": [
+                        "book_flight"
+                    ]
+                },
+                "phone_number": {
+                    "category": "",
+                    "categories": [
+                        ""
+                    ],
+                    "category_localized": "",
+                    "categories_localized": [
+                        ""
+                    ],
+                    "created_on": "2018-04-11T13:24:30.123456Z",
+                    "extra": null,
+                    "input": "",
+                    "name": "Phone Number",
+                    "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+                    "value": "+12344563452",
+                    "values": [
+                        "+12344563452"
+                    ]
+                },
+                "webhook": {
+                    "category": "Success",
+                    "categories": [
+                        "Success"
+                    ],
+                    "category_localized": "Success",
+                    "categories_localized": [
+                        "Success"
+                    ],
+                    "created_on": "2018-04-11T13:24:30.123456Z",
+                    "extra": {
+                        "results": [
+                            {
+                                "state": "WA"
+                            },
+                            {
+                                "state": "IN"
+                            }
+                        ]
+                    },
+                    "input": "GET http://127.0.0.1:49992/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
+                    "name": "webhook",
+                    "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+                    "value": "200",
+                    "values": [
+                        "200"
+                    ]
+                }
+            },
+            "status": "completed",
+            "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+        }
+    },
+    {
+        "template": "@(json(child))",
+        "output_json": {
+            "contact": {
+                "channel": {
+                    "address": "+17036975131",
+                    "name": "My Android Phone",
+                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                },
+                "created_on": "2018-06-20T11:40:30.123456Z",
+                "fields": {
+                    "activation_token": "AACC55",
+                    "age": 23,
+                    "gender": "Male",
+                    "join_date": "2017-12-02T00:00:00.000000-02:00",
+                    "not_set": null
+                },
+                "first_name": "Ryan",
+                "groups": [
+                    {
+                        "name": "Testers",
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                    },
+                    {
+                        "name": "Males",
+                        "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9"
+                    }
+                ],
+                "id": "1234567",
+                "language": "eng",
+                "name": "Ryan Lewis",
+                "timezone": "America/Guayaquil",
+                "urn": "tel:+12024561111",
+                "urns": [
+                    "tel:+12024561111",
+                    "twitterid:54784326227#nyaruka",
+                    "mailto:foo@bar.com"
+                ],
+                "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            },
+            "fields": {
+                "activation_token": "AACC55",
+                "age": 23,
+                "gender": "Male",
+                "join_date": "2017-12-02T00:00:00.000000-02:00",
+                "not_set": null
+            },
+            "flow": {
+                "name": "Collect Age",
+                "revision": 0,
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+            },
+            "results": {
+                "age": {
+                    "category": "Youth",
+                    "categories": [
+                        "Youth"
+                    ],
+                    "category_localized": "Youth",
+                    "categories_localized": [
+                        "Youth"
+                    ],
+                    "created_on": "2018-04-11T13:24:30.123456Z",
+                    "extra": null,
+                    "input": "",
+                    "name": "Age",
+                    "node_uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
+                    "value": "23",
+                    "values": [
+                        "23"
+                    ]
+                }
+            },
+            "run": {
+                "contact": {
+                    "channel": {
+                        "address": "+17036975131",
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2018-06-20T11:40:30.123456Z",
+                    "fields": {
+                        "activation_token": "AACC55",
+                        "age": 23,
+                        "gender": "Male",
+                        "join_date": "2017-12-02T00:00:00.000000-02:00",
+                        "not_set": null
+                    },
+                    "first_name": "Ryan",
+                    "groups": [
+                        {
+                            "name": "Testers",
+                            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                        },
+                        {
+                            "name": "Males",
+                            "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9"
+                        }
+                    ],
+                    "id": "1234567",
+                    "language": "eng",
+                    "name": "Ryan Lewis",
+                    "timezone": "America/Guayaquil",
+                    "urn": "tel:+12024561111",
+                    "urns": [
+                        "tel:+12024561111",
+                        "twitterid:54784326227#nyaruka",
+                        "mailto:foo@bar.com"
+                    ],
+                    "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+                },
+                "flow": {
+                    "name": "Collect Age",
+                    "revision": 0,
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                },
+                "results": {
+                    "age": {
+                        "category": "Youth",
+                        "categories": [
+                            "Youth"
+                        ],
+                        "category_localized": "Youth",
+                        "categories_localized": [
+                            "Youth"
+                        ],
+                        "created_on": "2018-04-11T13:24:30.123456Z",
+                        "extra": null,
+                        "input": "",
+                        "name": "Age",
+                        "node_uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
+                        "value": "23",
+                        "values": [
+                            "23"
+                        ]
+                    }
+                },
+                "status": "completed",
+                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+            },
+            "status": "completed",
+            "urns": {
+                "ext": null,
+                "facebook": null,
+                "fcm": null,
+                "freshchat": null,
+                "jiochat": null,
+                "line": null,
+                "mailto": "mailto:foo@bar.com",
+                "tel": "tel:+12024561111",
+                "telegram": null,
+                "twitter": null,
+                "twitterid": "twitterid:54784326227#nyaruka",
+                "viber": null,
+                "vk": null,
+                "wechat": null,
+                "whatsapp": null
+            },
+            "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+        }
+    },
+    {
+        "template": "@(json(parent))",
+        "output_json": {
+            "contact": {
+                "channel": {
+                    "address": "+17036975131",
+                    "name": "My Android Phone",
+                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                },
+                "created_on": "2018-01-01T12:00:00.000000Z",
+                "fields": {
+                    "activation_token": null,
+                    "age": 33,
+                    "gender": "Female",
+                    "join_date": null,
+                    "not_set": null
+                },
+                "first_name": "Jasmine",
+                "groups": [],
+                "id": "0",
+                "language": "spa",
+                "name": "Jasmine",
+                "timezone": null,
+                "urn": "tel:+12024562222",
+                "urns": [
+                    "tel:+12024562222"
+                ],
+                "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
+            },
+            "fields": {
+                "activation_token": null,
+                "age": 33,
+                "gender": "Female",
+                "join_date": null,
+                "not_set": null
+            },
+            "flow": {
+                "name": "Parent",
+                "revision": 0,
+                "uuid": "fece6eac-9127-4343-9269-56e88f391562"
+            },
+            "results": {
+                "role": {
+                    "category": "Reporter",
+                    "categories": [
+                        "Reporter"
+                    ],
+                    "category_localized": "Reporter",
+                    "categories_localized": [
+                        "Reporter"
+                    ],
+                    "created_on": "2000-01-01T00:00:00.000000Z",
+                    "extra": null,
+                    "input": "a reporter",
+                    "name": "Role",
+                    "node_uuid": "385cb848-5043-448e-9123-05cbcf26ad74",
+                    "value": "reporter",
+                    "values": [
+                        "reporter"
+                    ]
+                }
+            },
+            "run": {
+                "contact": {
+                    "channel": {
+                        "address": "+17036975131",
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2018-01-01T12:00:00.000000Z",
+                    "fields": {
+                        "activation_token": null,
+                        "age": 33,
+                        "gender": "Female",
+                        "join_date": null,
+                        "not_set": null
+                    },
+                    "first_name": "Jasmine",
+                    "groups": [],
+                    "id": "0",
+                    "language": "spa",
+                    "name": "Jasmine",
+                    "timezone": null,
+                    "urn": "tel:+12024562222",
+                    "urns": [
+                        "tel:+12024562222"
+                    ],
+                    "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
+                },
+                "flow": {
+                    "name": "Parent",
+                    "revision": 0,
+                    "uuid": "fece6eac-9127-4343-9269-56e88f391562"
+                },
+                "results": {
+                    "role": {
+                        "category": "Reporter",
+                        "categories": [
+                            "Reporter"
+                        ],
+                        "category_localized": "Reporter",
+                        "categories_localized": [
+                            "Reporter"
+                        ],
+                        "created_on": "2000-01-01T00:00:00.000000Z",
+                        "extra": null,
+                        "input": "a reporter",
+                        "name": "Role",
+                        "node_uuid": "385cb848-5043-448e-9123-05cbcf26ad74",
+                        "value": "reporter",
+                        "values": [
+                            "reporter"
+                        ]
+                    }
+                },
+                "status": "active",
+                "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
+            },
+            "status": "active",
+            "urns": {
+                "ext": null,
+                "facebook": null,
+                "fcm": null,
+                "freshchat": null,
+                "jiochat": null,
+                "line": null,
+                "mailto": null,
+                "tel": "tel:+12024562222",
+                "telegram": null,
+                "twitter": null,
+                "twitterid": null,
+                "viber": null,
+                "vk": null,
+                "wechat": null,
+                "whatsapp": null
+            },
+            "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
+        }
+    },
+    {
+        "template": "@(json(trigger))",
+        "output_json": {
+            "type": "flow_action",
+            "params": {
+                "source": "website",
+                "address": {
+                    "state": "WA"
+                }
+            },
+            "keyword": null
+        }
+    }
+]

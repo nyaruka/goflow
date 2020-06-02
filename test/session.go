@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -12,6 +13,8 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/utils/jsonx"
+	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 )
@@ -47,6 +50,13 @@ var sessionAssets = `{
             "name": "Booking",
             "type": "wit",
             "intents": ["book_flight", "book_hotel"]
+        }
+    ],
+    "ticketers": [
+        {
+            "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+            "name": "Support Tickets",
+            "type": "mailgun"
         }
     ],
     "flows": [
@@ -516,6 +526,8 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 
 // CreateSessionAssets creates assets from given JSON
 func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flows.SessionAssets, error) {
+	env := envs.NewBuilder().Build()
+
 	// different tests different ports for the test HTTP server
 	if testServerURL != "" {
 		assetsJSON = json.RawMessage(strings.Replace(string(assetsJSON), "http://localhost", testServerURL, -1))
@@ -528,12 +540,60 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 	}
 
 	// create our engine session
-	sa, err := engine.NewSessionAssets(source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "error creating test session assets")
 	}
 
 	return sa, nil
+}
+
+// CreateSession creates a new session from the give assets
+func CreateSession(assetsJSON json.RawMessage, flowUUID assets.FlowUUID) (flows.Session, flows.Sprint, error) {
+	sa, err := CreateSessionAssets(assetsJSON, "")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	flow, err := sa.Flows().Get(flowUUID)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	env := envs.NewBuilder().Build()
+	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
+	trigger := triggers.NewManual(env, flow.Reference(), contact, nil)
+	eng := engine.NewBuilder().Build()
+
+	return eng.NewSession(sa, trigger)
+}
+
+// ResumeSession resumes the given session with potentially different assets
+func ResumeSession(session flows.Session, assetsJSON json.RawMessage, msgText string) (flows.Session, flows.Sprint, error) {
+	// reload session with new assets
+	sessionJSON, err := jsonx.Marshal(session)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	sa, err := CreateSessionAssets(assetsJSON, "")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// re-use same engine instance
+	eng := session.Engine()
+
+	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, msgText, nil)
+
+	sprint, err := session.Resume(resumes.NewMsg(session.Environment(), session.Contact(), msg))
+
+	return session, sprint, err
 }
 
 // EventLog is a utility for testing things which take an event logger function

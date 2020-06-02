@@ -1,0 +1,207 @@
+{
+  "flows": [
+    {
+      "name": "Chain 1",
+      "uuid": "72162f46-dce3-4798-9f19-384a2447efc5",
+      "spec_version": "13.1.0",
+      "language": "eng",
+      "type": "messaging",
+      "nodes": [
+        {
+          "uuid": "807cb67f-6008-4908-b117-5171e5525cc2",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "1",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "02396fc5-295b-4c68-9c1b-59acfca2991a"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "aab9434c-f296-4ac5-915d-6bd4c85b12a5",
+              "destination_uuid": "d109c52f-23e8-4f15-bf3a-ad345cebb6d6"
+            }
+          ]
+        },
+        {
+          "uuid": "d109c52f-23e8-4f15-bf3a-ad345cebb6d6",
+          "actions": [
+            {
+              "uuid": "158defad-59b4-47c4-85a0-6cdf78bbc1b0",
+              "type": "enter_flow",
+              "flow": {
+                "uuid": "057c60a0-4075-4f58-bc10-158f2dfcecea",
+                "name": "Chain 2"
+              }
+            }
+          ],
+          "router": {
+            "type": "switch",
+            "operand": "@child.run.status",
+            "cases": [
+              {
+                "uuid": "5baa3856-2484-4d69-9fd0-de4b748aaeae",
+                "type": "has_only_text",
+                "arguments": [
+                  "completed"
+                ],
+                "category_uuid": "b720fbca-11c0-463c-b837-e7cfff3cedb6"
+              },
+              {
+                "uuid": "f199c912-1c1c-48f8-98ec-5b6bced8d4d6",
+                "arguments": [
+                  "expired"
+                ],
+                "type": "has_only_text",
+                "category_uuid": "a0cf8d3f-a81a-48df-b913-3e7e4f36dc7d"
+              }
+            ],
+            "categories": [
+              {
+                "uuid": "b720fbca-11c0-463c-b837-e7cfff3cedb6",
+                "name": "Complete",
+                "exit_uuid": "914aefbd-49d3-4c46-bd4f-a4fd93846a48"
+              },
+              {
+                "uuid": "a0cf8d3f-a81a-48df-b913-3e7e4f36dc7d",
+                "name": "Expired",
+                "exit_uuid": "702e15f0-5a01-47a8-9939-b1260b313079"
+              }
+            ],
+            "default_category_uuid": "a0cf8d3f-a81a-48df-b913-3e7e4f36dc7d"
+          },
+          "exits": [
+            {
+              "uuid": "914aefbd-49d3-4c46-bd4f-a4fd93846a48",
+              "destination_uuid": null
+            },
+            {
+              "uuid": "702e15f0-5a01-47a8-9939-b1260b313079",
+              "destination_uuid": null
+            }
+          ]
+        }
+      ],
+      "revision": 5,
+      "expire_after_minutes": 10080
+    },
+    {
+      "name": "Chain 2",
+      "uuid": "057c60a0-4075-4f58-bc10-158f2dfcecea",
+      "spec_version": "13.1.0",
+      "language": "eng",
+      "type": "messaging",
+      "nodes": [
+        {
+          "uuid": "f23f63d1-97fa-4a6c-8812-b99ca7887397",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "2",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "36b89bfc-3e1d-45cc-8df1-a47030a9baca"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "6da609ca-1de1-48c6-b987-0e7c0f602fa7",
+              "destination_uuid": "7e1e3ff3-09c8-4027-9996-165e9fa737a2"
+            }
+          ]
+        },
+        {
+          "uuid": "7e1e3ff3-09c8-4027-9996-165e9fa737a2",
+          "actions": [
+            {
+              "uuid": "a27ab2fb-1c9f-48b3-8b6b-4afc307a0f39",
+              "type": "enter_flow",
+              "flow": {
+                "uuid": "3a12aeb3-0535-45e0-ae21-a3d87eb0f122",
+                "name": "Chain 3"
+              }
+            }
+          ],
+          "router": {
+            "type": "switch",
+            "operand": "@child.run.status",
+            "cases": [
+              {
+                "uuid": "6de7fc2c-8b1d-446d-9886-dd8cee155209",
+                "type": "has_only_text",
+                "arguments": [
+                  "completed"
+                ],
+                "category_uuid": "1677a12e-8e92-49c6-8497-e8106120c748"
+              },
+              {
+                "uuid": "2e351481-215d-45da-9d38-c3de1806b54c",
+                "arguments": [
+                  "expired"
+                ],
+                "type": "has_only_text",
+                "category_uuid": "5b4d8167-f43a-4fb6-afce-47cd47536f02"
+              }
+            ],
+            "categories": [
+              {
+                "uuid": "1677a12e-8e92-49c6-8497-e8106120c748",
+                "name": "Complete",
+                "exit_uuid": "2171b62e-1d1c-4fc6-acd3-c5f1022fd24f"
+              },
+              {
+                "uuid": "5b4d8167-f43a-4fb6-afce-47cd47536f02",
+                "name": "Expired",
+                "exit_uuid": "126e8a6b-271d-4719-a2ac-fbf5755f009b"
+              }
+            ],
+            "default_category_uuid": "5b4d8167-f43a-4fb6-afce-47cd47536f02"
+          },
+          "exits": [
+            {
+              "uuid": "2171b62e-1d1c-4fc6-acd3-c5f1022fd24f",
+              "destination_uuid": null
+            },
+            {
+              "uuid": "126e8a6b-271d-4719-a2ac-fbf5755f009b",
+              "destination_uuid": null
+            }
+          ]
+        }
+      ],
+      "revision": 5,
+      "expire_after_minutes": 10080
+    },
+    {
+      "name": "Chain 3",
+      "uuid": "3a12aeb3-0535-45e0-ae21-a3d87eb0f122",
+      "spec_version": "13.1.0",
+      "language": "eng",
+      "type": "messaging",
+      "nodes": [
+        {
+          "uuid": "5bce6479-0df1-4683-b061-394df297dc8e",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "3",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "2539b234-e194-4def-895a-e065daf9238d"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "84c6c2d4-a8d4-4c97-87bd-6fd7ac60b4b0",
+              "destination_uuid": null
+            }
+          ]
+        }
+      ],
+      "revision": 2,
+      "expire_after_minutes": 10080
+    }
+  ]
+}

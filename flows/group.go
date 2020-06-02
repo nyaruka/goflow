@@ -14,42 +14,40 @@ import (
 type Group struct {
 	assets.Group
 
-	cachedQuery *contactql.ContactQuery
+	parsedQuery *contactql.ContactQuery
 }
 
 // NewGroup returns a new group object from the given group asset
-func NewGroup(asset assets.Group) *Group {
-	return &Group{Group: asset}
+func NewGroup(env envs.Environment, fields *FieldAssets, asset assets.Group) (*Group, error) {
+	if asset.Query() != "" {
+		query, err := contactql.ParseQuery(asset.Query(), env.RedactionPolicy(), env.DefaultCountry(), fields)
+		if err != nil {
+			return nil, err
+		}
+
+		return &Group{Group: asset, parsedQuery: query}, nil
+	}
+
+	return &Group{Group: asset}, nil
 }
 
 // Asset returns the underlying asset
 func (g *Group) Asset() assets.Group { return g.Group }
 
-// the parsed query of a dynamic group (cached)
-func (g *Group) parsedQuery(env envs.Environment, sa SessionAssets) (*contactql.ContactQuery, error) {
-	if g.Query() != "" && g.cachedQuery == nil {
-		var err error
-		if g.cachedQuery, err = contactql.ParseQuery(g.Query(), env.RedactionPolicy(), env.DefaultCountry(), sa); err != nil {
-			return nil, err
-		}
-	}
-	return g.cachedQuery, nil
-}
-
 // IsDynamic returns whether this group is dynamic
 func (g *Group) IsDynamic() bool { return g.Query() != "" }
 
 // CheckDynamicMembership returns whether the given contact belongs in this dynamic group
-func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact, sa SessionAssets) (bool, error) {
+func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact) (bool, error) {
 	if !g.IsDynamic() {
 		panic("can't check membership on a non-dynamic group")
 	}
-	parsedQuery, err := g.parsedQuery(env, sa)
-	if err != nil {
-		return false, err
+
+	if contact.Status() == ContactStatusStopped || contact.Status() == ContactStatusBlocked {
+		return false, nil
 	}
 
-	return contactql.EvaluateQuery(env, parsedQuery, contact)
+	return contactql.EvaluateQuery(env, g.parsedQuery, contact)
 }
 
 // Reference returns a reference to this group
@@ -156,17 +154,22 @@ type GroupAssets struct {
 }
 
 // NewGroupAssets creates a new set of group assets
-func NewGroupAssets(groups []assets.Group) *GroupAssets {
+func NewGroupAssets(env envs.Environment, fields *FieldAssets, groups []assets.Group) (*GroupAssets, []assets.Group) {
+	broken := make([]assets.Group, 0)
 	s := &GroupAssets{
-		all:    make([]*Group, len(groups)),
+		all:    make([]*Group, 0, len(groups)),
 		byUUID: make(map[assets.GroupUUID]*Group, len(groups)),
 	}
-	for i, asset := range groups {
-		group := NewGroup(asset)
-		s.all[i] = group
-		s.byUUID[group.UUID()] = group
+	for _, asset := range groups {
+		group, err := NewGroup(env, fields, asset)
+		if err != nil {
+			broken = append(broken, asset)
+		} else {
+			s.all = append(s.all, group)
+			s.byUUID[group.UUID()] = group
+		}
 	}
-	return s
+	return s, broken
 }
 
 // All returns all the groups

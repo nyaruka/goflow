@@ -37,7 +37,6 @@ func RegisterXTest(name string, function types.XFunction) {
 // XTESTS is our mapping of the excellent test names to their actual functions
 var XTESTS = map[string]types.XFunction{
 	"has_error": functions.OneArgFunction(HasError),
-	"has_value": functions.OneArgFunction(HasValue),
 
 	"has_only_text":   functions.TwoTextFunction(HasOnlyText),
 	"has_phrase":      functions.TwoTextFunction(HasPhrase),
@@ -73,6 +72,9 @@ var XTESTS = map[string]types.XFunction{
 	"has_state":    functions.OneTextFunction(HasState),
 	"has_district": functions.MinAndMaxArgsCheck(1, 2, HasDistrict),
 	"has_ward":     HasWard,
+
+	// for backward compatibility
+	"has_value": functions.OneTextFunction(HasText),
 }
 
 //------------------------------------------------------------------------------------------
@@ -142,28 +144,6 @@ func HasError(env envs.Environment, value types.XValue) types.XValue {
 	}
 
 	return FalseResult
-}
-
-// HasValue returns whether `value` is non-nil and not an error
-//
-// Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
-// to try to retrieve a value from fields or results which don't exist, rather these return an empty
-// value.
-//
-//   @(has_value("hello")) -> true
-//   @(has_value("hello").match) -> hello
-//   @(has_value(datetime("foo"))) -> false
-//   @(has_value(not.existing)) -> false
-//   @(has_value(contact.fields.unset)) -> false
-//   @(has_value("")) -> false
-//
-// @test has_value(value)
-func HasValue(env envs.Environment, value types.XValue) types.XValue {
-	if types.IsEmpty(value) || types.IsXError(value) {
-		return FalseResult
-	}
-
-	return NewTrueResult(value)
 }
 
 // HasGroup returns whether the `contact` is part of group with the passed in UUID

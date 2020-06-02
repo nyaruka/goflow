@@ -17,6 +17,7 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", channelRef.Identity())
 	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), channelRef.GenericUUID())
 	assert.Equal(t, "channel[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Nexmo]", channelRef.String())
+	assert.False(t, channelRef.Variable())
 	assert.NoError(t, utils.Validate(channelRef))
 
 	// channel references must always be concrete
@@ -27,6 +28,7 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", classifierRef.Identity())
 	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), classifierRef.GenericUUID())
 	assert.Equal(t, "classifier[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Booking]", classifierRef.String())
+	assert.False(t, classifierRef.Variable())
 	assert.NoError(t, utils.Validate(classifierRef))
 
 	// classifier references must always be concrete
@@ -36,6 +38,7 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, "field", fieldRef.Type())
 	assert.Equal(t, "gender", fieldRef.Identity())
 	assert.Equal(t, "field[key=gender,name=Gender]", fieldRef.String())
+	assert.False(t, fieldRef.Variable())
 	assert.NoError(t, utils.Validate(fieldRef))
 
 	// field references must have a key
@@ -46,6 +49,7 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", flowRef.Identity())
 	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), flowRef.GenericUUID())
 	assert.Equal(t, "flow[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Registration]", flowRef.String())
+	assert.False(t, flowRef.Variable())
 	assert.NoError(t, utils.Validate(flowRef))
 
 	// flow references must always be concrete
@@ -55,6 +59,7 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, "global", globalRef.Type())
 	assert.Equal(t, "org_name", globalRef.Identity())
 	assert.Equal(t, "global[key=org_name,name=Org Name]", globalRef.String())
+	assert.False(t, globalRef.Variable())
 	assert.NoError(t, utils.Validate(globalRef))
 
 	// global references must have a key
@@ -65,6 +70,7 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", groupRef.Identity())
 	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), groupRef.GenericUUID())
 	assert.Equal(t, "group[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Testers]", groupRef.String())
+	assert.False(t, groupRef.Variable())
 	assert.NoError(t, utils.Validate(groupRef))
 
 	// group references can be concrete or a name match template
@@ -87,6 +93,7 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", labelRef.Identity())
 	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), labelRef.GenericUUID())
 	assert.Equal(t, "label[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Spam]", labelRef.String())
+	assert.False(t, labelRef.Variable())
 	assert.NoError(t, utils.Validate(labelRef))
 
 	// label references can be concrete or a name match template
@@ -107,7 +114,19 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", templateRef.Identity())
 	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), templateRef.GenericUUID())
 	assert.Equal(t, "template[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Affirmation]", templateRef.String())
+	assert.False(t, templateRef.Variable())
 	assert.NoError(t, utils.Validate(templateRef))
+
+	ticketerRef := assets.NewTicketerReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Support Tickets")
+	assert.Equal(t, "ticketer", ticketerRef.Type())
+	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", ticketerRef.Identity())
+	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), ticketerRef.GenericUUID())
+	assert.Equal(t, "ticketer[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Support Tickets]", ticketerRef.String())
+	assert.False(t, ticketerRef.Variable())
+	assert.NoError(t, utils.Validate(ticketerRef))
+
+	// ticketer references must always be concrete
+	assert.EqualError(t, utils.Validate(assets.NewTicketerReference("", "Booking")), "field 'uuid' is required")
 }
 
 func TestChannelReferenceUnmarsal(t *testing.T) {

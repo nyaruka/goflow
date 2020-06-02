@@ -1,3 +1,97 @@
+v0.86.2
+----------
+ * Fix spelling of Readact
+
+v0.86.1
+----------
+ * Do redaction of access keys from HTTP logs
+
+v0.86.0
+----------
+ * Add open_ticket actions and ticket_opened events
+
+v0.85.0
+----------
+ * Add new service_called event to be used for classifiers and ticketers etc
+
+v0.84.0
+----------
+ * Replace contact blocked and stopped fields with status field
+ * Rename blocked and stopped modifiers to contact status modifier
+
+v0.83.1
+----------
+ * Fix anywhere we truncate strings to do it by rune
+
+v0.83.0
+----------
+ * Add blocked and stopped modifiers and events
+ * Add blocked and stopped fields to contact
+
+v0.82.0
+----------
+ * Fix default to understand objects with defaults
+
+v0.81.0
+----------
+ * Rework httpx to replace NewTrace with NewRequest+DoTrace
+ * Separate out the header part of response traces from the body which won't always be valid UTF-8
+
+v0.80.0
+----------
+ * ivr_created events should include language of translated text
+
+v0.79.1
+----------
+ * Include 3-char language code as extra header in PO files
+
+v0.79.0
+----------
+ * Add custom Source-Flows header to exported PO files
+ * Make router categories inspectable
+ * Importing of translations into flows
+
+v0.78.1
+----------
+ * Add decode_html Excellent function
+ * Start of i18n work
+ * Prevent XText.Slice from panicking
+
+v0.78.0
+----------
+ * Add support for extracting the "base" translation of a flow
+ * Allow queries on URNs to check if they are set or not
+ * Add Language.ToISO639_2()
+ * Make flowrunner easier to use by defaulting to first flow in the assets
+ * Default to current version in flowmigrate cmd
+ * Rework group asset loading so that parsing is not deferred
+ * Override environment country if contact has preferred channel with country
+
+v0.77.4
+----------
+ * Fix loading flow assets that are new spec but also have metadata section
+
+v0.77.3
+----------
+ * Update README
+
+v0.77.2
+----------
+ * Update README
+
+v0.77.1
+----------
+ * Fix not passing access config correctly to webhook services
+
+v0.77.0
+----------
+ * Allow http services to be configured with a list of disallowed hosts
+
+v0.76.3
+----------
+ * fix @legacy_extra issue on routers
+ * update gomobile instructions
+
 v0.76.2
 ----------
  * Add trim, trim_left and trim_right excellent functions

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/services/airtime/dtone"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/shopspring/decimal"
@@ -18,16 +19,16 @@ func TestClient(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://airtime-api.dtone.com/cgi-bin/shop/topup": []httpx.MockResponse{
-			httpx.NewMockResponse(200, nil, "info_txt=pong\r\n", 1),                  // successful ping
-			httpx.NewMockResponse(400, nil, "error_code=1\r\nerror_txt=Oops\r\n", 1), // unsuccessful ping
-			httpx.NewMockResponse(200, nil, withCRLF(msisdnResponse), 1),             // successful msdninfo query
-			httpx.NewMockResponse(200, nil, "xxx=yyy\r\n", 1),                        // unexpected response to msdninfo query
-			httpx.NewMockResponse(200, nil, withCRLF(reserveResponse), 1),            // successful reserve ID request
-			httpx.NewMockResponse(200, nil, "xxx=yyy\r\n", 1),                        // unexpected response to reserve ID request
-			httpx.NewMockResponse(200, nil, withCRLF(topupResponse), 1),              // successful topup request
-			httpx.NewMockResponse(200, nil, "xxx=yyy\r\n", 1),                        // unexpected response to topup request
-			httpx.MockConnectionError,                                                // timeout
+		"https://airtime-api.dtone.com/cgi-bin/shop/topup": {
+			httpx.NewMockResponse(200, nil, "info_txt=pong\r\n"),                  // successful ping
+			httpx.NewMockResponse(400, nil, "error_code=1\r\nerror_txt=Oops\r\n"), // unsuccessful ping
+			httpx.NewMockResponse(200, nil, withCRLF(msisdnResponse)),             // successful msdninfo query
+			httpx.NewMockResponse(200, nil, "xxx=yyy\r\n"),                        // unexpected response to msdninfo query
+			httpx.NewMockResponse(200, nil, withCRLF(reserveResponse)),            // successful reserve ID request
+			httpx.NewMockResponse(200, nil, "xxx=yyy\r\n"),                        // unexpected response to reserve ID request
+			httpx.NewMockResponse(200, nil, withCRLF(topupResponse)),              // successful topup request
+			httpx.NewMockResponse(200, nil, "xxx=yyy\r\n"),                        // unexpected response to topup request
+			httpx.MockConnectionError,                                             // timeout
 		},
 	})
 
@@ -39,7 +40,7 @@ func TestClient(t *testing.T) {
 	// test ping action
 	trace, err := cl.Ping()
 	assert.NoError(t, err)
-	assert.Equal(t, "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 76\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=ping&key=1570634730123&login=joe&md5=dbbf7ba35d298f2772712124ef9aab4f", string(trace.RequestTrace))
+	test.AssertSnapshot(t, "ping_request", string(trace.RequestTrace))
 
 	// test when ping returns error
 	_, err = cl.Ping()
@@ -48,7 +49,7 @@ func TestClient(t *testing.T) {
 	// test MSISDN info query
 	info, trace, err := cl.MSISDNInfo("+593970000001", "USD", "1")
 	assert.NoError(t, err)
-	assert.Equal(t, "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 155\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=msisdn_info&currency=USD&delivered_amount_info=1&destination_msisdn=%2B593970000001&key=1570634736123&login=joe&md5=922e0934bef1f4c5fa7ed60b20ba5085", string(trace.RequestTrace))
+	test.AssertSnapshot(t, "msisdn_request", string(trace.RequestTrace))
 	assert.Equal(t, "Ecuador", info.Country)
 
 	// test MSISDN info query when response is wrong format
@@ -59,7 +60,7 @@ func TestClient(t *testing.T) {
 	// test reserve ID action
 	reservedID, trace, err := cl.ReserveID()
 	assert.NoError(t, err)
-	assert.Equal(t, "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 82\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=reserve_id&key=1570634742123&login=joe&md5=093a9dbc314373451af92618f4a716c6", string(trace.RequestTrace))
+	test.AssertSnapshot(t, "reserve_id_request", string(trace.RequestTrace))
 	assert.Equal(t, 123456789, reservedID.ReservedID)
 
 	// test reserve ID action when response is wrong format
@@ -68,8 +69,9 @@ func TestClient(t *testing.T) {
 	assert.Nil(t, reservedID)
 
 	// test topup action
-	topup, _, err := cl.Topup(123455, "593999000001", "593999000002", "1", "2")
+	topup, trace, err := cl.Topup(123455, "593999000001", "593999000002", "1", "2")
 	assert.NoError(t, err)
+	test.AssertSnapshot(t, "topup_request", string(trace.RequestTrace))
 	assert.Equal(t, decimal.RequireFromString("1"), topup.ActualProductSent)
 
 	// test topup action when response is wrong format

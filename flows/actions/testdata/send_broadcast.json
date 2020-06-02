@@ -10,6 +10,9 @@
         "templates": [
             "Hi there!"
         ],
+        "localizables": [
+            "Hi there!"
+        ],
         "inspection": {
             "dependencies": [],
             "issues": [],
@@ -92,8 +95,10 @@
             "legacy_vars": [
                 "@(\"\")",
                 "@contact.fields.gender",
-                "@(\"0788123123\")",
-                "@contact.urn"
+                "@(\"5129165834\")",
+                "@contact.urn",
+                "Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool",
+                "  11708c34-d4ab-4b04-b82a-2578f6e0013c  "
             ],
             "text": "Hi there!"
         },
@@ -103,6 +108,12 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "scheme or path cannot be empty"
+            },
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "invalid tel number: Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool"
             },
             {
                 "type": "broadcast_created",
@@ -124,12 +135,16 @@
                     {
                         "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
                         "name": "Stavros"
+                    },
+                    {
+                        "uuid": "11708c34-d4ab-4b04-b82a-2578f6e0013c",
+                        "name": ""
                     }
                 ],
                 "urns": [
                     "tel:+1234567890",
                     "tel:male",
-                    "tel:+250788123123",
+                    "tel:+15129165834",
                     "tel:+12065551212"
                 ]
             }
@@ -137,8 +152,10 @@
         "templates": [
             "@(\"\")",
             "@contact.fields.gender",
-            "@(\"0788123123\")",
+            "@(\"5129165834\")",
             "@contact.urn",
+            "Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool",
+            "  11708c34-d4ab-4b04-b82a-2578f6e0013c  ",
             "Hi there!"
         ],
         "inspection": {

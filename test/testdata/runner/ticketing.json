@@ -1,0 +1,134 @@
+{
+    "flows": [
+        {
+            "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
+            "name": "Support",
+            "spec_version": "13.1",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "type": "send_msg",
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "text": "Hi! What can I help you with?"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                            "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "name": "All Responses",
+                                "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                            }
+                        ],
+                        "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                        "result_name": "Response 1",
+                        "operand": "@input.text",
+                        "cases": []
+                    },
+                    "exits": [
+                        {
+                            "uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
+                            "destination_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                    "actions": [
+                        {
+                            "type": "open_ticket",
+                            "uuid": "3cd8f2db-8429-462e-ab93-8041dd23abf1",
+                            "ticketer": {
+                                "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d",
+                                "name": "Support"
+                            },
+                            "subject": "New ticket",
+                            "body": "Last message: @input.text",
+                            "result_name": "Ticket"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                                "name": "Success",
+                                "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                            },
+                            {
+                                "uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9",
+                                "name": "Failure",
+                                "exit_uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                            }
+                        ],
+                        "default_category_uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9",
+                        "operand": "@results.ticket",
+                        "cases": [
+                            {
+                                "uuid": "73bfb9dc-9bbb-4928-92fd-d8957edf4a92",
+                                "type": "has_category",
+                                "arguments": [
+                                    "Success"
+                                ],
+                                "category_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
+                            "destination_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b"
+                        },
+                        {
+                            "uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
+                    "actions": [
+                        {
+                            "type": "send_email",
+                            "uuid": "d543b659-8c68-421e-bf0e-3e364ec5754b",
+                            "addresses": [
+                                "bob@nyaruka.com"
+                            ],
+                            "subject": "New ticket",
+                            "body": "Ticket @results.ticket.value opened"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "ticketers": [
+        {
+            "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d",
+            "name": "Support",
+            "type": "mailgun"
+        }
+    ]
+}

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/shopspring/decimal"
@@ -15,6 +16,7 @@ type Services interface {
 	Email(Session) (EmailService, error)
 	Webhook(Session) (WebhookService, error)
 	Classification(Session, *Classifier) (ClassificationService, error)
+	Ticket(Session, *Ticketer) (TicketService, error)
 	Airtime(Session) (AirtimeService, error)
 }
 
@@ -43,7 +45,7 @@ const (
 // WebhookCall is the result of a webhook call
 type WebhookCall struct {
 	*httpx.Trace
-	BodyIgnored bool
+	ValidJSON bool
 }
 
 // WebhookService provides webhook functionality to the engine
@@ -72,6 +74,12 @@ type Classification struct {
 // ClassificationService provides NLU functionality to the engine
 type ClassificationService interface {
 	Classify(session Session, input string, logHTTP HTTPLogCallback) (*Classification, error)
+}
+
+// TicketService provides ticketing functionality to the engine
+type TicketService interface {
+	// Open tries to open a new ticket
+	Open(session Session, subject, body string, logHTTP HTTPLogCallback) (*Ticket, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer
@@ -134,18 +142,31 @@ func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
 	return CallStatusSuccess
 }
 
+// RedactionMask is the redaction mask for HTTP service logs
+const RedactionMask = "****************"
+
 // NewHTTPLog creates a new HTTP log from a trace
-func NewHTTPLog(trace *httpx.Trace, statusFn HTTPStatusResolver) *HTTPLog {
-	return newHTTPLogWithStatus(trace, statusFn(trace))
+func NewHTTPLog(trace *httpx.Trace, statusFn HTTPStatusResolver, redact utils.Redactor) *HTTPLog {
+	return newHTTPLogWithStatus(trace, statusFn(trace), redact)
 }
 
 // creates a new HTTP log from a trace with an explicit status
-func newHTTPLogWithStatus(trace *httpx.Trace, status CallStatus) *HTTPLog {
+func newHTTPLogWithStatus(trace *httpx.Trace, status CallStatus, redact utils.Redactor) *HTTPLog {
+	url := trace.Request.URL.String()
+	request := string(trace.RequestTrace)
+	response := trace.ResponseTraceUTF8("...")
+
+	if redact != nil {
+		url = redact(url)
+		request = redact(request)
+		response = redact(response)
+	}
+
 	return &HTTPLog{
-		URL:       trace.Request.URL.String(),
+		URL:       url,
 		Status:    status,
-		Request:   string(trace.RequestTrace),
-		Response:  string(trace.ResponseTrace),
+		Request:   request,
+		Response:  response,
 		CreatedOn: trace.StartTime,
 		ElapsedMS: int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
 	}

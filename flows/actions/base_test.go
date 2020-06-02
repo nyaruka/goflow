@@ -91,6 +91,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		Webhook           json.RawMessage `json:"webhook,omitempty"`
 		ContactAfter      json.RawMessage `json:"contact_after,omitempty"`
 		Templates         []string        `json:"templates,omitempty"`
+		LocalizedText     []string        `json:"localizables,omitempty"`
 		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
@@ -211,12 +212,15 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
 				return smtp.NewService("mail.temba.io", 25, "nyaruka", "pass123", "flows@temba.io"), nil
 			}).
-			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
+			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 				if c.Type() == "wit" {
 					return wit.NewService(http.DefaultClient, nil, c, "123456789"), nil
 				}
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
+			}).
+			WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) {
+				return test.NewTicketService(t), nil
 			}).
 			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
 				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil
@@ -254,6 +258,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		if tc.Templates != nil {
 			actual.Templates = flow.ExtractTemplates()
 		}
+		if tc.LocalizedText != nil {
+			actual.LocalizedText = flow.ExtractLocalizables()
+		}
 		if tc.Inspection != nil {
 			actual.Inspection, _ = jsonx.Marshal(flow.Inspect(sa))
 		}
@@ -278,6 +285,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			// check extracted templates
 			if tc.Templates != nil {
 				assert.Equal(t, tc.Templates, actual.Templates, "extracted templates mismatch in %s", testName)
+			}
+
+			// check extracted localized text
+			if tc.LocalizedText != nil {
+				assert.Equal(t, tc.LocalizedText, actual.LocalizedText, "extracted localized text mismatch in %s", testName)
 			}
 
 			// check inspection results
@@ -417,15 +429,35 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
+			actions.NewOpenTicket(
+				actionUUID,
+				assets.NewTicketerReference(assets.TicketerUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Support Tickets"),
+				"Need help",
+				"Where are my cookies?",
+				"Ticket",
+			),
+			`{
+				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+				"type": "open_ticket",
+				"ticketer": {
+					"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
+					"name": "Support Tickets"
+				},
+				"subject": "Need help",
+				"body": "Where are my cookies?",
+				"result_name": "Ticket"
+			}`,
+		},
+		{
 			actions.NewPlayAudio(
 				actionUUID,
 				"http://uploads.temba.io/2353262.m4a",
 			),
 			`{
-			"type": "play_audio",
-			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-			"audio_url": "http://uploads.temba.io/2353262.m4a"
-		}`,
+				"type": "play_audio",
+				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+				"audio_url": "http://uploads.temba.io/2353262.m4a"
+			}`,
 		},
 		{
 			actions.NewSayMsg(

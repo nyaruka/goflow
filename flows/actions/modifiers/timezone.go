@@ -39,7 +39,7 @@ func (m *TimezoneModifier) Apply(env envs.Environment, assets flows.SessionAsset
 	if !timezonesEqual(contact.Timezone(), m.timezone) {
 		contact.SetTimezone(m.timezone)
 		log(events.NewContactTimezoneChanged(m.timezone))
-		m.reevaluateDynamicGroups(env, assets, contact, log)
+		m.reevaluateGroups(env, assets, contact, log)
 	}
 }
 

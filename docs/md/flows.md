@@ -203,9 +203,10 @@ and entities were.
 ```json
 [
     {
-        "type": "classifier_called",
+        "type": "service_called",
         "created_on": "2018-04-11T18:24:30.123456Z",
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "service": "classifier",
         "classifier": {
             "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
             "name": "Booking"
@@ -502,6 +503,75 @@ A [flow_entered](sessions.html#event:flow_entered) event will be created to reco
 }
 ```
 </div>
+<h2 class="item_title"><a name="action:open_ticket" href="#action:open_ticket">open_ticket</a></h2>
+
+Is used to open a ticket for the contact.
+
+<div class="input_action"><h3>Action</h3>
+
+```json
+{
+    "type": "open_ticket",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "ticketer": {
+        "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+        "name": "Support Tickets"
+    },
+    "subject": "Needs help",
+    "body": "@input",
+    "result_name": "Help Ticket"
+}
+```
+</div><div class="output_event"><h3>Event</h3>
+
+```json
+[
+    {
+        "type": "service_called",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "service": "ticketer",
+        "ticketer": {
+            "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+            "name": "Support Tickets"
+        },
+        "http_logs": [
+            {
+                "url": "http://nyaruka.tickets.com/tickets.json",
+                "status": "success",
+                "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Needs help\"}",
+                "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                "created_on": "2019-10-16T13:59:30.123456789Z",
+                "elapsed_ms": 1
+            }
+        ]
+    },
+    {
+        "type": "ticket_opened",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "ticket": {
+            "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+            "ticketer": {
+                "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+                "name": "Support Tickets"
+            },
+            "subject": "Needs help",
+            "body": "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3",
+            "external_id": "123456"
+        }
+    },
+    {
+        "type": "run_result_changed",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "name": "Help Ticket",
+        "value": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+        "category": "Success"
+    }
+]
+```
+</div>
 <h2 class="item_title"><a name="action:play_audio" href="#action:play_audio">play_audio</a></h2>
 
 Can be used to play an audio recording in a voice flow. It will generate an
@@ -525,7 +595,7 @@ the caller should handle as an IVR play command using the audio attachment.
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
     "msg": {
-        "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+        "uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
@@ -601,7 +671,7 @@ an IVR say command using the message text.
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
     "msg": {
-        "uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+        "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
@@ -610,7 +680,8 @@ an IVR say command using the message text.
         "text": "Hi Ryan Lewis, are you ready to complete today's survey?",
         "attachments": [
             "audio:http://uploads.temba.io/2353262.m4a"
-        ]
+        ],
+        "text_language": "eng"
     }
 }
 ```
@@ -725,7 +796,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
     "msg": {
-        "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+        "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
         "urn": "tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -955,6 +1026,7 @@ will be created and it's the responsibility of the caller to act on that by init
             "id": 1234567,
             "name": "Bob Smith",
             "language": "eng",
+            "status": "active",
             "timezone": "Africa/Kigali",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
@@ -1009,6 +1081,13 @@ will be created and it's the responsibility of the caller to act on that by init
                 "name": "Gender",
                 "value": "m",
                 "category": "Male",
+                "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
+                "created_on": "2018-04-11T18:24:30.123456Z"
+            },
+            "help_ticket": {
+                "name": "Help Ticket",
+                "value": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                "category": "Success",
                 "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
                 "created_on": "2018-04-11T18:24:30.123456Z"
             },

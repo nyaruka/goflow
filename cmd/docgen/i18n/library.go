@@ -3,13 +3,7 @@ package i18n
 import (
 	"io/ioutil"
 	"path"
-
-	"gopkg.in/leonelquinteros/gotext.v1"
 )
-
-func GetText(str string) string {
-	return gotext.Get(str)
-}
 
 type Library struct {
 	path string
@@ -28,7 +22,7 @@ func (l *Library) POPath(language, domain string) string {
 }
 
 func (l *Library) Activate(language, domain string) {
-	gotext.Configure(l.path, language, domain)
+	//gotext.Configure(l.path, language, domain)
 }
 
 func (l *Library) Languages() []string {

@@ -7,6 +7,7 @@
             "fields": {},
             "language": "eng",
             "name": "Joe",
+            "status": "active",
             "urns": [
                 "tel:+12345678999"
             ],
@@ -23,6 +24,7 @@
             "created_on": "2020-02-20T14:36:00Z",
             "language": "eng",
             "name": "Joe",
+            "status": "active",
             "urns": [
                 "tel:+12345678999"
             ],
@@ -40,6 +42,7 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
             "name": "Joe",
+            "status": "active",
             "urns": [
                 "tel:+12345678999",
                 "twitter:crazy_joe",
@@ -61,6 +64,7 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
             "name": "Joe",
+            "status": "active",
             "urns": [
                 "tel:+12345678999",
                 "twitter:crazy_joe",
@@ -110,6 +114,7 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
             "name": "Joe",
+            "status": "active",
             "urns": [
                 "tel:+12345678999",
                 "twitter:crazy_joe",
@@ -131,6 +136,7 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
             "name": "Joe",
+            "status": "active",
             "urns": [
                 "tel:+12345678999",
                 "twitter:crazy_joe",
@@ -164,6 +170,190 @@
                     "uuid": "8349470e-ade5-4659-8792-95caa689b172"
                 }
             ]
+        }
+    },
+    {
+        "description": "blocked contact not added to dynamic groups",
+        "contact_before": {
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "language": "spa",
+            "name": "Joe",
+            "status": "blocked",
+            "urns": [
+                "tel:+12345678999",
+                "twitter:crazy_joe",
+                "tel:+18005555777"
+            ],
+            "created_on": "2017-12-15T10:00:00Z",
+            "fields": {
+                "age": {
+                    "number": 37,
+                    "text": "37"
+                },
+                "gender": {
+                    "text": "M"
+                }
+            }
+        },
+        "redact_urns": false,
+        "contact_after": {
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "language": "spa",
+            "status": "blocked",
+            "name": "Joe",
+            "urns": [
+                "tel:+12345678999",
+                "twitter:crazy_joe",
+                "tel:+18005555777"
+            ],
+            "created_on": "2017-12-15T10:00:00Z",
+            "fields": {
+                "age": {
+                    "number": 37,
+                    "text": "37"
+                },
+                "gender": {
+                    "text": "M"
+                }
+            }
+        }
+    },
+    {
+        "description": "stopped contact not added to dynamic groups",
+        "contact_before": {
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "language": "spa",
+            "name": "Joe",
+            "status": "stopped",
+            "urns": [
+                "tel:+12345678999",
+                "twitter:crazy_joe",
+                "tel:+18005555777"
+            ],
+            "created_on": "2017-12-15T10:00:00Z",
+            "fields": {
+                "age": {
+                    "number": 37,
+                    "text": "37"
+                },
+                "gender": {
+                    "text": "M"
+                }
+            }
+        },
+        "redact_urns": false,
+        "contact_after": {
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "language": "spa",
+            "status": "stopped",
+            "name": "Joe",
+            "urns": [
+                "tel:+12345678999",
+                "twitter:crazy_joe",
+                "tel:+18005555777"
+            ],
+            "created_on": "2017-12-15T10:00:00Z",
+            "fields": {
+                "age": {
+                    "number": 37,
+                    "text": "37"
+                },
+                "gender": {
+                    "text": "M"
+                }
+            }
+        }
+    },
+    {
+        "description": "blocked contact not added to dynamic groups",
+        "contact_before": {
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "language": "spa",
+            "name": "Joe",
+            "status": "blocked",
+            "urns": [
+                "tel:+12345678999",
+                "twitter:crazy_joe",
+                "tel:+18005555777"
+            ],
+            "created_on": "2017-12-15T10:00:00Z",
+            "fields": {
+                "age": {
+                    "number": 37,
+                    "text": "37"
+                },
+                "gender": {
+                    "text": "M"
+                }
+            }
+        },
+        "redact_urns": true,
+        "contact_after": {
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "language": "spa",
+            "status": "blocked",
+            "name": "Joe",
+            "urns": [
+                "tel:+12345678999",
+                "twitter:crazy_joe",
+                "tel:+18005555777"
+            ],
+            "created_on": "2017-12-15T10:00:00Z",
+            "fields": {
+                "age": {
+                    "number": 37,
+                    "text": "37"
+                },
+                "gender": {
+                    "text": "M"
+                }
+            }
+        }
+    },
+    {
+        "description": "blocked contact not added to dynamic groups",
+        "contact_before": {
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "language": "spa",
+            "name": "Joe",
+            "status": "stopped",
+            "urns": [
+                "tel:+12345678999",
+                "twitter:crazy_joe",
+                "tel:+18005555777"
+            ],
+            "created_on": "2017-12-15T10:00:00Z",
+            "fields": {
+                "age": {
+                    "number": 37,
+                    "text": "37"
+                },
+                "gender": {
+                    "text": "M"
+                }
+            }
+        },
+        "redact_urns": true,
+        "contact_after": {
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "language": "spa",
+            "status": "stopped",
+            "name": "Joe",
+            "urns": [
+                "tel:+12345678999",
+                "twitter:crazy_joe",
+                "tel:+18005555777"
+            ],
+            "created_on": "2017-12-15T10:00:00Z",
+            "fields": {
+                "age": {
+                    "number": 37,
+                    "text": "37"
+                },
+                "gender": {
+                    "text": "M"
+                }
+            }
         }
     }
 ]

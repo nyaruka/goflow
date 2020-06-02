@@ -42,11 +42,15 @@
                     "text": "Hi there Ryan Lewis",
                     "attachments": [
                         "audio:http://uploads.temba.io/welcome.m4a"
-                    ]
+                    ],
+                    "text_language": "eng"
                 }
             }
         ],
         "templates": [
+            "Hi there @contact.name"
+        ],
+        "localizables": [
             "Hi there @contact.name"
         ],
         "inspection": {
@@ -78,7 +82,8 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
                     },
-                    "text": "Hi there Ryan Lewis"
+                    "text": "Hi there Ryan Lewis",
+                    "text_language": "eng"
                 }
             }
         ]
@@ -120,13 +125,17 @@
                     "text": "Hola Ryan Lewis",
                     "attachments": [
                         "audio:http://uploads.temba.io/bienvenido.m4a"
-                    ]
+                    ],
+                    "text_language": "spa"
                 }
             }
         ],
         "templates": [
             "Hi there @contact.name",
             "Hola @contact.name"
+        ],
+        "localizables": [
+            "Hi there @contact.name"
         ],
         "inspection": {
             "dependencies": [],

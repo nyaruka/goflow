@@ -37,7 +37,7 @@ func (m *LanguageModifier) Apply(env envs.Environment, assets flows.SessionAsset
 	if contact.Language() != m.Language {
 		contact.SetLanguage(m.Language)
 		log(events.NewContactLanguageChanged(m.Language))
-		m.reevaluateDynamicGroups(env, assets, contact, log)
+		m.reevaluateGroups(env, assets, contact, log)
 	}
 }
 

@@ -1,0 +1,293 @@
+[
+    {
+        "description": "Error event for invalid ticketer reference",
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "ticketer": {
+                "uuid": "dc61e948-26a1-407e-9739-b73b46400b51",
+                "name": "Deleted"
+            },
+            "subject": "Need help",
+            "body": "Where are my cookies?",
+            "result_name": "Ticket"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "missing dependency: ticketer[uuid=dc61e948-26a1-407e-9739-b73b46400b51,name=Deleted]"
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Ticket",
+                "value": "",
+                "category": "Failure"
+            }
+        ],
+        "templates": [
+            "Need help",
+            "Where are my cookies?"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "dc61e948-26a1-407e-9739-b73b46400b51",
+                    "name": "Deleted",
+                    "type": "ticketer",
+                    "missing": true
+                }
+            ],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing ticketer dependency 'dc61e948-26a1-407e-9739-b73b46400b51'",
+                    "dependency": {
+                        "uuid": "dc61e948-26a1-407e-9739-b73b46400b51",
+                        "name": "Deleted",
+                        "type": "ticketer"
+                    }
+                }
+            ],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Result with category success created if ticket opened",
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "ticketer": {
+                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                "name": "Support Tickets"
+            },
+            "subject": "Need help",
+            "body": "Last message: @input.text",
+            "result_name": "Ticket"
+        },
+        "events": [
+            {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status": "success",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Need help\"}",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                        "elapsed_ms": 1
+                    }
+                ]
+            },
+            {
+                "type": "ticket_opened",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "ticket": {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "ticketer": {
+                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                        "name": "Support Tickets"
+                    },
+                    "subject": "Need help",
+                    "body": "Last message: Hi everybody",
+                    "external_id": "123456"
+                }
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Ticket",
+                "value": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "category": "Success"
+            }
+        ],
+        "templates": [
+            "Need help",
+            "Last message: @input.text"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets",
+                    "type": "ticketer"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Error events if subject or body contain expression errors",
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "ticketer": {
+                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                "name": "Support Tickets"
+            },
+            "subject": "Need help @(1 / 0)",
+            "body": "Where are my cookies? @(1/ 0)",
+            "result_name": "Ticket"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "error evaluating @(1 / 0): division by zero"
+            },
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "error evaluating @(1/ 0): division by zero"
+            },
+            {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status": "success",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Need help \"}",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                        "elapsed_ms": 1
+                    }
+                ]
+            },
+            {
+                "type": "ticket_opened",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "ticket": {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "ticketer": {
+                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                        "name": "Support Tickets"
+                    },
+                    "subject": "Need help ",
+                    "body": "Where are my cookies? ",
+                    "external_id": "123456"
+                }
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Ticket",
+                "value": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "category": "Success"
+            }
+        ],
+        "templates": [
+            "Need help @(1 / 0)",
+            "Where are my cookies? @(1/ 0)"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets",
+                    "type": "ticketer"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Result with category failure created if ticket couldn't be opened",
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "ticketer": {
+                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                "name": "Support Tickets"
+            },
+            "subject": "Doomed to fail",
+            "body": "Last message: @input.text",
+            "result_name": "Ticket"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "error calling ticket API"
+            },
+            {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status": "response_error",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Doomed to fail\"}",
+                        "response": "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
+                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                        "elapsed_ms": 1
+                    }
+                ]
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Ticket",
+                "value": "",
+                "category": "Failure"
+            }
+        ],
+        "templates": [
+            "Doomed to fail",
+            "Last message: @input.text"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets",
+                    "type": "ticketer"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    }
+]

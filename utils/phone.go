@@ -40,12 +40,3 @@ func FindPhoneNumbers(s, country string) []string {
 	}
 	return nums
 }
-
-// DeriveCountryFromTel attempts to derive a country code (e.g. RW) from a phone number
-func DeriveCountryFromTel(number string) string {
-	parsed, err := phonenumbers.Parse(number, "")
-	if err != nil {
-		return ""
-	}
-	return phonenumbers.GetRegionCodeForNumber(parsed)
-}

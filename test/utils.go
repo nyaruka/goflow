@@ -3,6 +3,8 @@ package test
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -39,17 +41,18 @@ func AssertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMess
 		return true
 	}
 
+	message := fmt.Sprintf(msg, msgArgs...)
+
 	expectedNormalized, err := NormalizeJSON(expected)
-	require.NoError(t, err, "unable to normalize expected JSON: %s", string(expected))
+	require.NoError(t, err, "%s: unable to normalize expected JSON: %s", message, string(expected))
 
 	actualNormalized, err := NormalizeJSON(actual)
-	require.NoError(t, err, "unable to normalize actual JSON: %s", string(actual))
+	require.NoError(t, err, "%s: unable to normalize actual JSON: %s", message, string(actual))
 
 	differ := diff.New()
 	diffs := differ.DiffMain(string(expectedNormalized), string(actualNormalized), false)
 
 	if len(diffs) != 1 || diffs[0].Type != diff.DiffEqual {
-		message := fmt.Sprintf(msg, msgArgs...)
 		assert.Fail(t, message, differ.DiffPrettyText(diffs))
 		return false
 	}
@@ -68,4 +71,21 @@ func JSONReplace(data json.RawMessage, path []string, value json.RawMessage) jso
 // JSONDelete deletes a node in JSON
 func JSONDelete(data json.RawMessage, path []string) json.RawMessage {
 	return jsonparser.Delete(data, path...)
+}
+
+// AssertSnapshot checks that the file contains the expected text.
+// However it creates the file if -update was set or file doesn't exist.
+func AssertSnapshot(t *testing.T, name, expected string) {
+	path := fmt.Sprintf("testdata/%s_%s.snap", t.Name(), name)
+	_, err := os.Stat(path)
+
+	if UpdateSnapshots || os.IsNotExist(err) {
+		err := ioutil.WriteFile(path, []byte(expected), 0666)
+		require.NoError(t, err, "error writing snapshot file %s", path)
+	} else {
+		data, err := ioutil.ReadFile(path)
+		require.NoError(t, err, "error reading snapshot file %s", path)
+
+		assert.Equal(t, string(data), expected)
+	}
 }

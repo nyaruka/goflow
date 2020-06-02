@@ -2,6 +2,7 @@ package engine
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
@@ -21,12 +22,13 @@ type sessionAssets struct {
 	locations   *flows.LocationAssets
 	resthooks   *flows.ResthookAssets
 	templates   *flows.TemplateAssets
+	ticketers   *flows.TicketerAssets
 }
 
 var _ flows.SessionAssets = (*sessionAssets)(nil)
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
-func NewSessionAssets(source assets.Source, migrationConfig *migrations.Config) (flows.SessionAssets, error) {
+func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfig *migrations.Config) (flows.SessionAssets, error) {
 	channels, err := source.Channels()
 	if err != nil {
 		return nil, err
@@ -63,19 +65,27 @@ func NewSessionAssets(source assets.Source, migrationConfig *migrations.Config) 
 	if err != nil {
 		return nil, err
 	}
+	ticketers, err := source.Ticketers()
+	if err != nil {
+		return nil, err
+	}
+
+	fieldAssets := flows.NewFieldAssets(fields)
+	groupAssets, _ := flows.NewGroupAssets(env, fieldAssets, groups)
 
 	return &sessionAssets{
 		source:      source,
 		channels:    flows.NewChannelAssets(channels),
 		classifiers: flows.NewClassifierAssets(classifiers),
-		fields:      flows.NewFieldAssets(fields),
+		fields:      fieldAssets,
 		flows:       definition.NewFlowAssets(source, migrationConfig),
 		globals:     flows.NewGlobalAssets(globals),
-		groups:      flows.NewGroupAssets(groups),
+		groups:      groupAssets,
 		labels:      flows.NewLabelAssets(labels),
 		locations:   flows.NewLocationAssets(locations),
 		resthooks:   flows.NewResthookAssets(resthooks),
 		templates:   flows.NewTemplateAssets(templates),
+		ticketers:   flows.NewTicketerAssets(ticketers),
 	}, nil
 }
 
@@ -90,6 +100,7 @@ func (s *sessionAssets) Labels() *flows.LabelAssets           { return s.labels 
 func (s *sessionAssets) Locations() *flows.LocationAssets     { return s.locations }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets     { return s.resthooks }
 func (s *sessionAssets) Templates() *flows.TemplateAssets     { return s.templates }
+func (s *sessionAssets) Ticketers() *flows.TicketerAssets     { return s.ticketers }
 
 func (s *sessionAssets) ResolveField(key string) assets.Field {
 	f := s.Fields().Get(key)

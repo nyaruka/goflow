@@ -43,16 +43,18 @@ type PredictResponse struct {
 type Client struct {
 	httpClient  *http.Client
 	httpRetries *httpx.RetryConfig
+	httpAccess  *httpx.AccessConfig
 	endpoint    string
 	appID       string
 	key         string
 }
 
 // NewClient creates a new client
-func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, endpoint, appID, key string) *Client {
+func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAccess *httpx.AccessConfig, endpoint, appID, key string) *Client {
 	return &Client{
 		httpClient:  httpClient,
 		httpRetries: httpRetries,
+		httpAccess:  httpAccess,
 		endpoint:    endpoint,
 		appID:       appID,
 		key:         key,
@@ -63,7 +65,12 @@ func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, endpoint
 func (c *Client) Predict(q string) (*PredictResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/apps/%s?verbose=true&subscription-key=%s&q=%s", c.endpoint, c.appID, c.key, url.QueryEscape(q))
 
-	trace, err := httpx.NewTrace(c.httpClient, "GET", endpoint, nil, nil, c.httpRetries)
+	request, err := httpx.NewRequest("GET", endpoint, nil, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	trace, err := httpx.DoTrace(c.httpClient, request, c.httpRetries, c.httpAccess, -1)
 	if err != nil {
 		return nil, trace, err
 	}

@@ -29,7 +29,7 @@ func (t *testFlowThing) LocalizationUUID() uuids.UUID {
 
 func TestTemplates(t *testing.T) {
 	l := definition.NewLocalization()
-	l.AddItemTranslation(envs.Language("spa"), uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
+	l.SetItemTranslation(envs.Language("spa"), uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
 
 	thing := &testFlowThing{UUID: uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), Foo: "Hello", Bar: "World"}
 
@@ -82,6 +82,8 @@ func TestTemplatePaths(t *testing.T) {
 		"$.nodes[*].actions[@.type=\"call_webhook\"].body",
 		"$.nodes[*].actions[@.type=\"call_webhook\"].headers[*]",
 		"$.nodes[*].actions[@.type=\"call_webhook\"].url",
+		"$.nodes[*].actions[@.type=\"open_ticket\"].body",
+		"$.nodes[*].actions[@.type=\"open_ticket\"].subject",
 		"$.nodes[*].actions[@.type=\"play_audio\"].audio_url",
 		"$.nodes[*].actions[@.type=\"remove_contact_groups\"].groups[*].name_match",
 		"$.nodes[*].actions[@.type=\"say_msg\"].text",

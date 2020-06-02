@@ -23,11 +23,13 @@ func TestBuilder(t *testing.T) {
 	assert.EqualError(t, err, "no airtime service factory configured")
 	_, err = eng.Services().Classification(nil, nil)
 	assert.EqualError(t, err, "no classification service factory configured")
+	_, err = eng.Services().Ticket(nil, nil)
+	assert.EqualError(t, err, "no ticket service factory configured")
 	_, err = eng.Services().Webhook(nil)
 	assert.EqualError(t, err, "no webhook service factory configured")
 
 	// include a webhook service
-	webhookSvc := webhooks.NewService(&http.Client{}, nil, map[string]string{"User-Agent": "goflow"}, 1000)
+	webhookSvc := webhooks.NewService(&http.Client{}, nil, nil, map[string]string{"User-Agent": "goflow"}, 1000)
 
 	eng = engine.NewBuilder().
 		WithWebhookServiceFactory(func(flows.Session) (flows.WebhookService, error) { return webhookSvc, nil }).

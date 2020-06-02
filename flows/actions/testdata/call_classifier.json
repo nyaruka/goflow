@@ -151,9 +151,10 @@
         },
         "events": [
             {
-                "type": "classifier_called",
+                "type": "service_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "classifier",
                 "classifier": {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking"
@@ -162,7 +163,7 @@
                     {
                         "url": "https://api.wit.ai/message?v=20170307&q=Hi+everybody",
                         "status": "success",
-                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer 123456789\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 127\r\n\r\n{\"_text\":\"Hi everyone\",\"entities\":{\"intent\":[{\"confidence\":0.84709152161066,\"value\":\"greeting\"}]},\"msg_id\":\"1M7fAcDWag76OmgDI\"}",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
@@ -239,9 +240,10 @@
         },
         "events": [
             {
-                "type": "classifier_called",
+                "type": "service_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "classifier",
                 "classifier": {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking"
@@ -250,7 +252,7 @@
                     {
                         "url": "https://api.wit.ai/message?v=20170307&q=Hi+everybody",
                         "status": "response_error",
-                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer 123456789\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
                         "response": "HTTP/1.0 400 Bad Request\r\nContent-Length: 11\r\n\r\nnot working",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
@@ -325,9 +327,10 @@
         },
         "events": [
             {
-                "type": "classifier_called",
+                "type": "service_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "classifier",
                 "classifier": {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                     "name": "Booking"
@@ -336,7 +339,7 @@
                     {
                         "url": "https://api.wit.ai/message?v=20170307&q=Hi+everybody",
                         "status": "connection_error",
-                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer 123456789\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
                     }

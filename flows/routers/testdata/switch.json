@@ -203,6 +203,13 @@
             "yes",
             "no"
         ],
+        "localizables": [
+            "yes",
+            "no",
+            "Yes",
+            "No",
+            "Other"
+        ],
         "inspection": {
             "dependencies": [],
             "issues": [],
@@ -286,6 +293,13 @@
             "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "Testers"
         ],
+        "localizables": [
+            "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+            "Testers",
+            "Yes",
+            "No",
+            "Other"
+        ],
         "inspection": {
             "dependencies": [
                 {
@@ -367,6 +381,11 @@
         "templates": [
             "@contact.groups",
             "aa33640b-43b0-4df2-992c-ba357981da71"
+        ],
+        "localizables": [
+            "aa33640b-43b0-4df2-992c-ba357981da71",
+            "Yes",
+            "Other"
         ],
         "inspection": {
             "dependencies": [
@@ -473,6 +492,13 @@
             "yes",
             "yes"
         ],
+        "localizables": [
+            "yes",
+            "yes",
+            "Yes",
+            "Yes Again",
+            "Other"
+        ],
         "inspection": {
             "dependencies": [],
             "issues": [],
@@ -545,6 +571,12 @@
             "@(\"xxxxx\")",
             "yes",
             "no"
+        ],
+        "localizables": [
+            "yes",
+            "no",
+            "Yes",
+            "No"
         ],
         "inspection": {
             "dependencies": [],

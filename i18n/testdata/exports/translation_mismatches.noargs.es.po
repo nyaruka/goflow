@@ -1,0 +1,42 @@
+#  Testing
+#  
+#, fuzzy
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-03-25 13:57+0000\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-3: spa\n"
+"Source-Flows: 19cad1f2-9110-4271-98d4-1b968bf19410\n"
+
+#: Translated/43f7e69e-727d-4cfe-81b8-564e7833052b/name:0
+#: Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:1
+msgid "Blue"
+msgstr "Azul"
+
+#: Translated/3a044264-81d1-4ba7-882a-e98740c8e724/name:0
+msgid "Other"
+msgstr "Otro"
+
+#: Translated/d1ce3c92-7025-4607-a910-444361a6b9b3/name:0
+msgctxt "d1ce3c92-7025-4607-a910-444361a6b9b3/name:0"
+msgid "Red"
+msgstr "Roja"
+
+#: Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:0
+msgid "Red"
+msgstr "Rojo"
+
+#: Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/text:0
+msgid "Which pill?"
+msgstr "Cual pastilla?"
+
+#: Translated/5f5fa09f-bf88-4719-ba64-cab9cf2f67b5/arguments:0
+msgid "blue"
+msgstr "azul"
+
+#: Translated/61bc5ed3-e216-4457-8ce5-ad658e697f29/arguments:0
+msgid "red"
+msgstr "rojo"
+

@@ -114,13 +114,14 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 		return err
 	}
 
-	sa, err := engine.NewSessionAssets(source, nil)
+	env := envs.NewBuilder().Build()
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	if err != nil {
 		return errors.Wrap(err, "error parsing assets")
 	}
 
 	eng := engine.NewBuilder().WithAirtimeServiceFactory(svcFactory).Build()
-	env := envs.NewBuilder().Build()
 	contact := flows.NewEmptyContact(sa, "", "", nil)
 	contact.AddURN(destination, nil)
 

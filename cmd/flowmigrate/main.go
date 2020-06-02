@@ -25,7 +25,7 @@ func main() {
 	var pretty bool
 
 	flags := flag.NewFlagSet("", flag.ExitOnError)
-	flags.StringVar(&toVersion, "to", "", "Target flow spec version")
+	flags.StringVar(&toVersion, "to", definition.CurrentSpecVersion.String(), "Target flow spec version")
 	flags.StringVar(&baseMediaURL, "base-media-url", "", "Base URL for media files")
 	flags.BoolVar(&pretty, "pretty", false, "Pretty format output")
 	flags.Parse(os.Args[1:])

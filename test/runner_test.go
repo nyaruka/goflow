@@ -12,9 +12,8 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -106,27 +105,9 @@ type runResult struct {
 	outputs []*Output
 }
 
-func loadAssets(path string) (flows.SessionAssets, error) {
-	// load the test specific assets
-	assetsJSON, err := ioutil.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	// create the assets source
-	source, err := static.NewSource(assetsJSON)
-	if err != nil {
-		return nil, errors.Wrapf(err, "error reading test assets '%s'", path)
-	}
-
-	mconfig := &migrations.Config{BaseMediaURL: "http://temba.io/"}
-
-	return engine.NewSessionAssets(source, mconfig)
-}
-
 func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.RawMessage) (runResult, error) {
 	// load the test specific assets
-	sa, err := loadAssets(assetsPath)
+	sa, err := LoadSessionAssets(envs.NewBuilder().Build(), assetsPath)
 	if err != nil {
 		return runResult{}, err
 	}
@@ -140,7 +121,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
 			return smtp.NewService("mail.temba.io", 25, "nyaruka", "pass123", "flows@temba.io"), nil
 		}).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).

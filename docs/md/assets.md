@@ -198,5 +198,18 @@ Is a message template, currently only used by WhatsApp channels
 }
 ```
 
+<h2 class="item_title"><a name="asset:ticketer" href="#asset:ticketer">ticketer</a></h2>
+
+Is a system which can open or close tickets
+
+
+```objectivec
+{
+    "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
+    "name": "Support Tickets",
+    "type": "mailgun"
+}
+```
+
 
 </div>

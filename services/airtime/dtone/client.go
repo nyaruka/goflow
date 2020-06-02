@@ -31,6 +31,7 @@ type Client struct {
 	token       string
 }
 
+// Response is base interface for any DTOne API response
 type Response interface {
 	Error() error
 }
@@ -175,7 +176,12 @@ func (c *Client) request(data url.Values, dest Response) (*httpx.Trace, error) {
 		"Content-Type": "application/x-www-form-urlencoded",
 	}
 
-	trace, err := httpx.NewTrace(c.httpClient, "POST", apiURL, strings.NewReader(data.Encode()), headers, c.httpRetries)
+	request, err := httpx.NewRequest("POST", apiURL, strings.NewReader(data.Encode()), headers)
+	if err != nil {
+		return nil, err
+	}
+
+	trace, err := httpx.DoTrace(c.httpClient, request, c.httpRetries, nil, -1)
 	if err != nil {
 		return trace, err
 	}

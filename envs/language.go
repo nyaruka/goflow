@@ -2,7 +2,7 @@ package envs
 
 import (
 	"github.com/nyaruka/goflow/utils"
-	
+
 	"github.com/pkg/errors"
 	"golang.org/x/text/language"
 )
@@ -29,4 +29,23 @@ func ParseLanguage(lang string) (Language, error) {
 	}
 
 	return Language(base.ISO3()), nil
+}
+
+// ToISO639_2 returns the ISO 639-2 code with optional country
+func (l Language) ToISO639_2(country Country) string {
+	lang, err := language.ParseBase(string(l))
+	if err != nil {
+		return ""
+	}
+	code := lang.String()
+
+	// not all languages have a 2-letter code
+	if len(code) != 2 {
+		return ""
+	}
+
+	if country != NilCountry {
+		code += "-" + string(country)
+	}
+	return code
 }

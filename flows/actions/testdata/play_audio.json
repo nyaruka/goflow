@@ -19,6 +19,9 @@
         "templates": [
             "@(1 / 0).mp3"
         ],
+        "localizables": [
+            "@(1 / 0).mp3"
+        ],
         "inspection": {
             "dependencies": [],
             "issues": [],
@@ -45,6 +48,9 @@
             }
         ],
         "templates": [
+            "@(\"\")"
+        ],
+        "localizables": [
             "@(\"\")"
         ],
         "inspection": {

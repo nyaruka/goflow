@@ -485,8 +485,7 @@ Returns `value` if is not empty or an error, otherwise it returns `default`.
 @(default(undeclared.var, "default_value")) → default_value
 @(default("10", "20")) → 10
 @(default("", "value")) → value
-@(default(array(1, 2), "value")) → [1, 2]
-@(default(array(), "value")) → value
+@(default("  ", "value")) → \x20\x20
 @(default(datetime("invalid-date"), "today")) → today
 @(default(format_urn("invalid-urn"), "ok")) → ok
 ```
@@ -616,7 +615,7 @@ and '_' are ignored. Any other character is an error.
 * `DD`        - day of month, zero padded 0-31
 * `h`         - hour of the day 1-12
 * `hh`        - hour of the day 01-12
-* `tt`        - twenty four hour of the day 01-23
+* `tt`        - twenty four hour of the day 00-23
 * `m`         - minute 0-59
 * `mm`        - minute 00-59
 * `s`         - second 0-59
@@ -679,7 +678,7 @@ and '_' are ignored. Any other character is an error.
 
 * `h`         - hour of the day 1-12
 * `hh`        - hour of the day 01-12
-* `tt`        - twenty four hour of the day 01-23
+* `tt`        - twenty four hour of the day 00-23
 * `m`         - minute 0-59
 * `mm`        - minute 00-59
 * `s`         - second 0-59
@@ -710,6 +709,16 @@ Formats `urn` into human friendly text.
 @(format_urn(urns.tel)) → (202) 456-1111
 @(format_urn(urns.mailto)) → foo@bar.com
 @(format_urn("NOT URN")) → ERROR
+```
+
+<h2 class="item_title"><a name="function:html_decode" href="#function:html_decode">html_decode(text)</a></h2>
+
+HTML decodes `text`
+
+
+```objectivec
+@(html_decode("Red &amp; Blue")) → Red & Blue
+@(html_decode("5 + 10")) → 5 + 10
 ```
 
 <h2 class="item_title"><a name="function:if" href="#function:if">if(test, value1, value2)</a></h2>

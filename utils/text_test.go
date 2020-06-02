@@ -149,6 +149,12 @@ func TestIndent(t *testing.T) {
 	assert.Equal(t, ">>>x", utils.Indent("x", ">>>"))
 }
 
+func TestStringSet(t *testing.T) {
+	assert.Equal(t, map[string]bool{}, utils.StringSet(nil))
+	assert.Equal(t, map[string]bool{}, utils.StringSet([]string{}))
+	assert.Equal(t, map[string]bool{"x": true, "y": true, "a": true}, utils.StringSet([]string{"a", "x", "y"}))
+}
+
 func TestStringSetKeys(t *testing.T) {
 	assert.Equal(t, []string{}, utils.StringSetKeys(map[string]bool{}))
 	assert.Equal(t, []string{"a", "x", "y"}, utils.StringSetKeys(map[string]bool{"x": true, "y": true, "a": true}))
@@ -172,4 +178,11 @@ func TestTruncate(t *testing.T) {
 	assert.Equal(t, "你喜欢我当然喜欢的电", utils.Truncate("你喜欢我当然喜欢的电", 100))
 	assert.Equal(t, "你喜欢我当然喜欢的电", utils.Truncate("你喜欢我当然喜欢的电", 10))
 	assert.Equal(t, "你喜欢我当然喜", utils.Truncate("你喜欢我当然喜欢的电", 7))
+}
+
+func TestRedactor(t *testing.T) {
+	assert.Equal(t, "hello world", utils.NewRedactor("****")("hello world"))                         // nothing to redact
+	assert.Equal(t, "", utils.NewRedactor("****", "abc")(""))                                        // empty input
+	assert.Equal(t, "**** def **** def", utils.NewRedactor("****", "abc")("abc def abc def"))        // all instances redacted
+	assert.Equal(t, "**** def **** jkl", utils.NewRedactor("****", "abc", "ghi")("abc def ghi jkl")) // all values redacted
 }

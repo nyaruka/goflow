@@ -38,22 +38,23 @@ func TestContact(t *testing.T) {
 	}`))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source, nil)
+	env := envs.NewBuilder().Build()
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
 	android := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
-
-	env := envs.NewBuilder().Build()
 
 	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	contact, _ := flows.NewContact(
-		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"),
+		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"), flows.ContactStatusActive,
 		nil, time.Now(), nil, nil, nil, assets.PanicOnMissing,
 	)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
+	assert.Equal(t, flows.ContactStatusActive, contact.Status())
 	assert.Nil(t, contact.PreferredChannel())
 
 	contact.SetTimezone(env.Timezone())
@@ -67,6 +68,15 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, envs.Language("eng"), contact.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
+
+	contact.SetStatus(flows.ContactStatusStopped)
+	assert.Equal(t, flows.ContactStatusStopped, contact.Status())
+
+	contact.SetStatus(flows.ContactStatusBlocked)
+	assert.Equal(t, flows.ContactStatusBlocked, contact.Status())
+
+	contact.SetStatus(flows.ContactStatusActive)
+	assert.Equal(t, flows.ContactStatusActive, contact.Status())
 
 	assert.True(t, contact.HasURN("tel:+12024561111"))      // has URN
 	assert.True(t, contact.HasURN("tel:+120-2456-1111"))    // URN will be normalized
@@ -125,7 +135,7 @@ func TestContact(t *testing.T) {
 
 func TestContactFormat(t *testing.T) {
 	env := envs.NewBuilder().Build()
-	sa, _ := engine.NewSessionAssets(static.NewEmptySource(), nil)
+	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 
 	// name takes precedence if set
 	contact := flows.NewEmptyContact(sa, "Joe", envs.NilLanguage, nil)
@@ -134,7 +144,7 @@ func TestContactFormat(t *testing.T) {
 
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
-		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, nil, time.Now(),
+		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, flows.ContactStatusActive, nil, time.Now(),
 		nil, nil, nil, assets.PanicOnMissing,
 	)
 	contact.AddURN(urns.URN("twitter:joey"), nil)
@@ -151,7 +161,8 @@ func TestContactFormat(t *testing.T) {
 }
 
 func TestContactSetPreferredChannel(t *testing.T) {
-	sa, _ := engine.NewSessionAssets(static.NewEmptySource(), nil)
+	env := envs.NewBuilder().Build()
+	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
@@ -205,12 +216,6 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		sa, err := engine.NewSessionAssets(source, nil)
-		require.NoError(t, err)
-
-		contact, err := flows.ReadContact(sa, tc.ContactBefore, assets.PanicOnMissing)
-		require.NoError(t, err)
-
 		envBuilder := envs.NewBuilder().
 			WithDefaultLanguage("eng").
 			WithAllowedLanguages([]envs.Language{"eng", "spa"}).
@@ -219,8 +224,14 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 		if tc.RedactURNs {
 			envBuilder.WithRedactionPolicy(envs.RedactionPolicyURNs)
 		}
-
 		env := envBuilder.Build()
+
+		sa, err := engine.NewSessionAssets(env, source, nil)
+		require.NoError(t, err)
+
+		contact, err := flows.ReadContact(sa, tc.ContactBefore, assets.IgnoreMissing)
+		require.NoError(t, err)
+
 		trigger := triggers.NewManual(
 			env,
 			assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Empty Flow"),
@@ -262,6 +273,7 @@ func TestContactEqual(t *testing.T) {
 	assert.True(t, contact1.Equal(contact2))
 	assert.True(t, contact2.Equal(contact1))
 	assert.True(t, contact1.Equal(contact1.Clone()))
+	assert.Equal(t, flows.ContactStatusActive, contact1.Status())
 
 	// marshal and unmarshal contact 1 again
 	contact1JSON, err = jsonx.Marshal(contact1)
@@ -304,73 +316,102 @@ func TestContactQuery(t *testing.T) {
 	require.NoError(t, err)
 
 	testCases := []struct {
-		query  string
-		result bool
+		query     string
+		redaction envs.RedactionPolicy
+		result    bool
+		err       string
 	}{
-		{`name = "Ben Haggerty"`, true},
-		{`name = "Joe X"`, false},
-		{`name != "Joe X"`, true},
-		{`name ~ Ben`, true},
-		{`name ~ Joe`, false},
-		{`name = ""`, false},
-		{`name != ""`, true},
+		{`name = "Ben Haggerty"`, envs.RedactionPolicyNone, true, ""},
+		{`name = "Joe X"`, envs.RedactionPolicyNone, false, ""},
+		{`name != "Joe X"`, envs.RedactionPolicyNone, true, ""},
+		{`name != "Joe X"`, envs.RedactionPolicyNone, true, ""},
+		{`name ~ Joe`, envs.RedactionPolicyNone, false, ""},
+		{`name = ""`, envs.RedactionPolicyNone, false, ""},
+		{`name != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`id = 1234567`, true},
-		{`id = 5678889`, false},
+		{`id = 1234567`, envs.RedactionPolicyNone, true, ""},
+		{`id = 5678889`, envs.RedactionPolicyNone, false, ""},
 
-		{`language = ENG`, true},
-		{`language = FRA`, false},
-		{`language = ""`, false},
-		{`language != ""`, true},
+		{`language = ENG`, envs.RedactionPolicyNone, true, ""},
+		{`language = FRA`, envs.RedactionPolicyNone, false, ""},
+		{`language = ""`, envs.RedactionPolicyNone, false, ""},
+		{`language != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`created_on = 24-01-2020`, true},
-		{`created_on = 25-01-2020`, false},
-		{`created_on > 22-01-2020`, true},
-		{`created_on > 26-01-2020`, false},
+		{`created_on = 24-01-2020`, envs.RedactionPolicyNone, true, ""},
+		{`created_on = 25-01-2020`, envs.RedactionPolicyNone, false, ""},
+		{`created_on > 22-01-2020`, envs.RedactionPolicyNone, true, ""},
+		{`created_on > 26-01-2020`, envs.RedactionPolicyNone, false, ""},
 
-		{`tel = +12065551212`, true},
-		{`tel = +12065551313`, true},
-		{`tel = +13065551212`, false},
-		{`tel ~ 555`, true},
-		{`tel ~ 666`, false},
-		{`tel = ""`, false},
-		{`tel != ""`, true},
+		{`tel = +12065551212`, envs.RedactionPolicyNone, true, ""},
+		{`tel = +12065551313`, envs.RedactionPolicyNone, true, ""},
+		{`tel = +13065551212`, envs.RedactionPolicyNone, false, ""},
+		{`tel ~ 555`, envs.RedactionPolicyNone, true, ""},
+		{`tel ~ 666`, envs.RedactionPolicyNone, false, ""},
+		{`tel = ""`, envs.RedactionPolicyNone, false, ""},
+		{`tel != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`twitter = ewok`, true},
-		{`twitter = nicp`, false},
-		{`twitter ~ wok`, true},
-		{`twitter ~ EWO`, true},
-		{`twitter ~ ijk`, false},
-		{`twitter = ""`, false},
-		{`twitter != ""`, true},
+		{`tel = +12065551212`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`tel ~ 555`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`tel = ""`, envs.RedactionPolicyURNs, false, ""},
+		{`tel != ""`, envs.RedactionPolicyURNs, true, ""},
 
-		{`viber = ewok`, false},
-		{`viber ~ wok`, false},
-		{`viber = ""`, true},
-		{`viber != ""`, false},
+		{`twitter = ewok`, envs.RedactionPolicyNone, true, ""},
+		{`twitter = nicp`, envs.RedactionPolicyNone, false, ""},
+		{`twitter ~ wok`, envs.RedactionPolicyNone, true, ""},
+		{`twitter ~ EWO`, envs.RedactionPolicyNone, true, ""},
+		{`twitter ~ ijk`, envs.RedactionPolicyNone, false, ""},
+		{`twitter = ""`, envs.RedactionPolicyNone, false, ""},
+		{`twitter != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`urn = +12065551212`, true},
-		{`urn = ewok`, true},
-		{`urn = +13065551212`, false},
-		{`urn != +13065551212`, true},
-		{`urn ~ 555`, true},
-		{`urn ~ 666`, false},
-		{`urn = ""`, false},
-		{`urn != ""`, true},
+		{`viber = ewok`, envs.RedactionPolicyNone, false, ""},
+		{`viber ~ wok`, envs.RedactionPolicyNone, false, ""},
+		{`viber = ""`, envs.RedactionPolicyNone, true, ""},
+		{`viber != ""`, envs.RedactionPolicyNone, false, ""},
 
-		{`group = testers`, true},
-		{`group != testers`, false},
-		{`group = customers`, false},
-		{`group != customers`, true},
+		{`urn = +12065551212`, envs.RedactionPolicyNone, true, ""},
+		{`urn = ewok`, envs.RedactionPolicyNone, true, ""},
+		{`urn = +13065551212`, envs.RedactionPolicyNone, false, ""},
+		{`urn != +13065551212`, envs.RedactionPolicyNone, true, ""},
+		{`urn ~ 555`, envs.RedactionPolicyNone, true, ""},
+		{`urn ~ 666`, envs.RedactionPolicyNone, false, ""},
+		{`urn = ""`, envs.RedactionPolicyNone, false, ""},
+		{`urn != ""`, envs.RedactionPolicyNone, true, ""},
+
+		{`urn = +12065551212`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`urn ~ 555`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`urn = ""`, envs.RedactionPolicyURNs, false, ""},
+		{`urn != ""`, envs.RedactionPolicyURNs, true, ""},
+
+		{`group = testers`, envs.RedactionPolicyNone, true, ""},
+		{`group != testers`, envs.RedactionPolicyNone, false, ""},
+		{`group = customers`, envs.RedactionPolicyNone, false, ""},
+		{`group != customers`, envs.RedactionPolicyNone, true, ""},
+	}
+
+	doQuery := func(q string, redaction envs.RedactionPolicy) (bool, error) {
+		query, err := contactql.ParseQuery(q, redaction, "US", session.Assets())
+		if err != nil {
+			return false, err
+		}
+
+		var env envs.Environment
+		if redaction == envs.RedactionPolicyURNs {
+			env = envs.NewBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
+		} else {
+			env = session.Environment()
+		}
+
+		return contactql.EvaluateQuery(env, query, contact)
 	}
 
 	for _, tc := range testCases {
-		query, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, "US", session.Assets())
-		require.NoError(t, err, "unexpected error parsing '%s'", tc.query)
+		result, err := doQuery(tc.query, tc.redaction)
 
-		result, err := contactql.EvaluateQuery(session.Environment(), query, contact)
-		require.NoError(t, err, "unexpected error evaluating '%s'", tc.query)
-
-		assert.Equal(t, tc.result, result, "unexpected result for '%s' ('%s')", tc.query, query.String())
+		if tc.err != "" {
+			assert.EqualError(t, err, tc.err, "error mismatch evaluating '%s'", tc.query)
+		} else {
+			assert.NoError(t, err, "unexpected error evaluating '%s'", tc.query)
+			assert.Equal(t, tc.result, result, "unexpected result for '%s'", tc.query)
+		}
 	}
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows/engine"
 
 	"github.com/pkg/errors"
@@ -37,10 +38,12 @@ var assetsJSON = `{
 }`
 
 func TestSessionAssets(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, source, sa.Source())
@@ -65,9 +68,11 @@ func TestSessionAssets(t *testing.T) {
 }
 
 func TestSessionAssetsWithSourceErrors(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
 	source := &testSource{}
 
-	sa, err := engine.NewSessionAssets(source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
 	source.currentErrType = "flow"
@@ -76,7 +81,7 @@ func TestSessionAssetsWithSourceErrors(t *testing.T) {
 
 	for _, errType := range []string{"channels", "classifiers", "fields", "globals", "groups", "labels", "locations", "resthooks", "templates"} {
 		source.currentErrType = errType
-		_, err = engine.NewSessionAssets(source, nil)
+		_, err = engine.NewSessionAssets(env, source, nil)
 		assert.EqualError(t, err, fmt.Sprintf("unable to load %s assets", errType), "error mismatch for type %s", errType)
 	}
 }
@@ -131,4 +136,8 @@ func (s *testSource) Resthooks() ([]assets.Resthook, error) {
 
 func (s *testSource) Templates() ([]assets.Template, error) {
 	return nil, s.err("templates")
+}
+
+func (s *testSource) Ticketers() ([]assets.Ticketer, error) {
+	return nil, s.err("ticketers")
 }

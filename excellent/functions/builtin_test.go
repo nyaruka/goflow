@@ -190,8 +190,14 @@ func TestFunctions(t *testing.T) {
 		{"datetime_diff", mdy, []types.XValue{xs("03-10-2019 1:00am"), xs("03-11-2019 1:00am"), xs("h")}, xi(23)},
 		{"datetime_diff", mdy, []types.XValue{xs("03-10-2019 1:00am"), xs("03-11-2019 1:00am"), xs("D")}, xi(1)},
 
+		{"datetime_from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
+		{"datetime_from_epoch", dmy, []types.XValue{ERROR}, ERROR},
+		{"datetime_from_epoch", dmy, []types.XValue{}, ERROR},
+
 		{"default", dmy, []types.XValue{xs("10"), xs("20")}, xs("10")},
 		{"default", dmy, []types.XValue{nil, xs("20")}, xs("20")},
+		{"default", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"__default__": xs("hello")}), xs("def")}, types.NewXObject(map[string]types.XValue{"__default__": xs("hello")})},
+		{"default", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"__default__": xs("")}), xs("def")}, xs("def")},
 		{"default", dmy, []types.XValue{types.NewXErrorf("This is error"), xs("20")}, xs("20")},
 		{"default", dmy, []types.XValue{}, ERROR},
 
@@ -329,9 +335,9 @@ func TestFunctions(t *testing.T) {
 		{"format_urn", dmy, []types.XValue{ERROR}, ERROR},
 		{"format_urn", dmy, []types.XValue{}, ERROR},
 
-		{"datetime_from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
-		{"datetime_from_epoch", dmy, []types.XValue{ERROR}, ERROR},
-		{"datetime_from_epoch", dmy, []types.XValue{}, ERROR},
+		{"html_decode", dmy, []types.XValue{xs(`Red&nbsp;&amp;&nbsp;Blue`)}, xs(`Red & Blue`)},
+		{"html_decode", dmy, []types.XValue{ERROR}, ERROR},
+		{"html_decode", dmy, []types.XValue{}, ERROR},
 
 		{"if", dmy, []types.XValue{types.XBooleanTrue, xs("10"), xs("20")}, xs("10")},
 		{"if", dmy, []types.XValue{types.XBooleanFalse, xs("10"), xs("20")}, xs("20")},
@@ -472,8 +478,14 @@ func TestFunctions(t *testing.T) {
 
 		{"remove_first_word", dmy, []types.XValue{xs("hello World")}, xs("World")},
 		{"remove_first_word", dmy, []types.XValue{xs("hello")}, xs("")},
+		{"remove_first_word", dmy, []types.XValue{xs(`"hello"`)}, xs(`"`)},   // " ignored when extracting words, thus first word is hello
+		{"remove_first_word", dmy, []types.XValue{xs(`don't go`)}, xs(`go`)}, // ' included when extracting words
+		{"remove_first_word", dmy, []types.XValue{xs(`'start' this`)}, xs(`this`)},
+		{"remove_first_word", dmy, []types.XValue{xs(` ‘start’ this`)}, xs(`this`)},
+		{"remove_first_word", dmy, []types.XValue{xs("     hello World")}, xs("World")},
 		{"remove_first_word", dmy, []types.XValue{xs("😁 hello")}, xs("hello")},
 		{"remove_first_word", dmy, []types.XValue{xs("Hi there. I'm a flow!")}, xs("there. I'm a flow!")},
+		{"remove_first_word", dmy, []types.XValue{xs("ጥሩ ፍሰቶች")}, xs("ፍሰቶች")},
 		{"remove_first_word", dmy, []types.XValue{xs("")}, xs("")},
 		{"remove_first_word", dmy, []types.XValue{}, ERROR},
 

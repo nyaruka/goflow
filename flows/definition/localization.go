@@ -9,14 +9,14 @@ import (
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
-// the translations for a specific item, e.g.
+// holds all property translations for a specific item, e.g.
 // {
 //   "text": "Do you like cheese?"
 //	 "quick_replies": ["Yes", "No"]
 // }
-type itemTranslations map[string][]string
+type itemTranslation map[string][]string
 
-// the translations for a specific language, e.g.
+// holds all the item translations for a specific language, e.g.
 // {
 //   "f3368070-8db8-4549-872a-e69a9d060612": {
 //	   "text": "Do you like cheese?"
@@ -24,10 +24,10 @@ type itemTranslations map[string][]string
 //   },
 //   "7a1aec43-f3e1-42f0-b967-0ee75e725e3a": { ... }
 // }
-type languageTranslations map[uuids.UUID]itemTranslations
+type languageTranslation map[uuids.UUID]itemTranslation
 
-// GetTextArray returns the requested item translation
-func (t languageTranslations) GetTextArray(uuid uuids.UUID, property string) []string {
+// returns the requested item translation
+func (t languageTranslation) getTextArray(uuid uuids.UUID, property string) []string {
 	item, found := t[uuid]
 	if found {
 		translation, found := item[property]
@@ -38,18 +38,26 @@ func (t languageTranslations) GetTextArray(uuid uuids.UUID, property string) []s
 	return nil
 }
 
-// SetTextArray updates the requested item translation
-func (t languageTranslations) SetTextArray(uuid uuids.UUID, property string, translated []string) {
+// creates/updates the requested item translation
+func (t languageTranslation) setTextArray(uuid uuids.UUID, property string, translated []string) {
 	_, found := t[uuid]
 	if !found {
-		t[uuid] = make(itemTranslations)
+		t[uuid] = make(itemTranslation)
 	}
 
 	t[uuid][property] = translated
 }
 
+func (t languageTranslation) Enumerate(callback func(uuids.UUID, string, []string)) {
+	for uuid, it := range t {
+		for property, texts := range it {
+			callback(uuid, property, texts)
+		}
+	}
+}
+
 // our top level container for all the translations for all languages
-type localization map[envs.Language]languageTranslations
+type localization map[envs.Language]languageTranslation
 
 // NewLocalization creates a new empty localization
 func NewLocalization() flows.Localization {
@@ -65,18 +73,22 @@ func (l localization) Languages() []envs.Language {
 	return languages
 }
 
-// AddItemTranslation adds a new item translation
-func (l localization) AddItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string, translated []string) {
-	_, found := l[lang]
-	if !found {
-		l[lang] = make(languageTranslations)
+// GetItemTranslation gets an item translation
+func (l localization) GetItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string) []string {
+	translation, exists := l[lang]
+	if exists {
+		return translation.getTextArray(itemUUID, property)
 	}
-	l[lang].SetTextArray(itemUUID, property, translated)
+	return nil
 }
 
-// GetTranslations returns the translations for the given language
-func (l localization) GetTranslations(lang envs.Language) flows.Translations {
-	return l[lang]
+// SetItemTranslation sets an item translation
+func (l localization) SetItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string, translated []string) {
+	_, found := l[lang]
+	if !found {
+		l[lang] = make(languageTranslation)
+	}
+	l[lang].setTextArray(itemUUID, property, translated)
 }
 
 // ReadLocalization reads entire localization flow segment

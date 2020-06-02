@@ -1,12 +1,10 @@
 package actions
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
@@ -51,8 +49,8 @@ func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsgActio
 // Execute runs this action
 func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
-	localizedText := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
-	evaluatedText, err := run.EvaluateTemplate(localizedText)
+	localizedTexts, textLanguage := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{a.Text})
+	evaluatedText, err := run.EvaluateTemplate(localizedTexts[0])
 	if err != nil {
 		logEvent(events.NewError(err))
 	}
@@ -67,15 +65,10 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier f
 		return nil
 	}
 
-	var attachments []utils.Attachment
-	if localizedAudioURL != "" {
-		attachments = []utils.Attachment{utils.Attachment(fmt.Sprintf("audio:%s", localizedAudioURL))}
-	}
-
 	// an IVR flow must have been started with a connection
 	connection := run.Session().Trigger().Connection()
 
-	msg := flows.NewMsgOut(connection.URN(), connection.Channel(), evaluatedText, attachments, nil, nil, flows.NilMsgTopic)
+	msg := flows.NewIVRMsgOut(connection.URN(), connection.Channel(), evaluatedText, textLanguage, localizedAudioURL)
 	logEvent(events.NewIVRCreated(msg))
 
 	return nil

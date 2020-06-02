@@ -78,9 +78,7 @@ func (r *flowRun) Events() []flows.Event                { return r.events }
 func (r *flowRun) Results() flows.Results { return r.results }
 func (r *flowRun) SaveResult(result *flows.Result) {
 	// truncate value if necessary
-	if len(result.Value) > r.Environment().MaxValueLength() {
-		result.Value = result.Value[0:r.Environment().MaxValueLength()]
-	}
+	result.Value = utils.Truncate(result.Value, r.Environment().MaxValueLength())
 
 	r.results.Save(result)
 	r.modifiedOn = dates.Now()
@@ -340,31 +338,33 @@ func (r *flowRun) getLanguages() []envs.Language {
 }
 
 func (r *flowRun) GetText(uuid uuids.UUID, key string, native string) string {
-	textArray := r.GetTextArray(uuid, key, []string{native})
+	textArray, _ := r.GetTextArray(uuid, key, []string{native})
 	return textArray[0]
 }
 
-func (r *flowRun) GetTextArray(uuid uuids.UUID, key string, native []string) []string {
-	return r.GetTranslatedTextArray(uuid, key, native, r.getLanguages())
+func (r *flowRun) GetTextArray(uuid uuids.UUID, key string, native []string) ([]string, envs.Language) {
+	return r.getTranslatedText(uuid, key, native, r.getLanguages())
 }
 
 func (r *flowRun) GetTranslatedTextArray(uuid uuids.UUID, key string, native []string, languages []envs.Language) []string {
+	texts, _ := r.getTranslatedText(uuid, key, native, languages)
+	return texts
+}
+
+func (r *flowRun) getTranslatedText(uuid uuids.UUID, key string, native []string, languages []envs.Language) ([]string, envs.Language) {
+	nativeLang := r.Flow().Language()
+
 	if languages == nil {
 		languages = r.getLanguages()
 	}
 
 	for _, lang := range languages {
 		if lang == r.Flow().Language() {
-			return native
+			return native, nativeLang
 		}
 
-		translations := r.Flow().Localization().GetTranslations(lang)
-		if translations != nil {
-			textArray := translations.GetTextArray(uuid, key)
-			if textArray == nil {
-				return native
-			}
-
+		textArray := r.Flow().Localization().GetItemTranslation(lang, uuid, key)
+		if textArray != nil {
 			merged := make([]string, len(native))
 			for i := range native {
 				if i < len(textArray) && textArray[i] != "" {
@@ -373,10 +373,10 @@ func (r *flowRun) GetTranslatedTextArray(uuid uuids.UUID, key string, native []s
 					merged[i] = native[i]
 				}
 			}
-			return merged
+			return merged, lang
 		}
 	}
-	return native
+	return native, nativeLang
 }
 
 func (r *flowRun) Snapshot() flows.RunSummary {

@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -40,14 +41,18 @@ func (m *FieldModifier) Apply(env envs.Environment, assets flows.SessionAssets, 
 	oldValue := contact.Fields().Get(m.field)
 
 	if !m.value.Equals(oldValue) {
-		// truncate text value if necessary
-		if m.value != nil && m.value.Text.Length() > env.MaxValueLength() {
-			m.value.Text = m.value.Text.Slice(0, env.MaxValueLength())
+		var value *flows.Value
+
+		// copy and truncate text value if necessary
+		if m.value != nil {
+			v := *m.value
+			value = &v
+			value.Text = types.NewXText(utils.Truncate(value.Text.Native(), env.MaxValueLength()))
 		}
 
-		contact.Fields().Set(m.field, m.value)
-		log(events.NewContactFieldChanged(m.field, m.value))
-		m.reevaluateDynamicGroups(env, assets, contact, log)
+		contact.Fields().Set(m.field, value)
+		log(events.NewContactFieldChanged(m.field, value))
+		m.reevaluateGroups(env, assets, contact, log)
 	}
 }
 

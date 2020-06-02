@@ -39,7 +39,7 @@ type ParseResponse struct {
 	Language      string                   `json:"language"`
 }
 
-// Client is a basic Wit.ai client
+// Client is a basic Bothub client
 type Client struct {
 	httpClient  *http.Client
 	httpRetries *httpx.RetryConfig
@@ -67,7 +67,12 @@ func (c *Client) Parse(text string) (*ParseResponse, *httpx.Trace, error) {
 		"Authorization": fmt.Sprintf("Bearer %s", c.accessToken),
 	}
 
-	trace, err := httpx.NewTrace(c.httpClient, "POST", endpoint, strings.NewReader(form.Encode()), headers, c.httpRetries)
+	request, err := httpx.NewRequest("POST", endpoint, strings.NewReader(form.Encode()), headers)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	trace, err := httpx.DoTrace(c.httpClient, request, c.httpRetries, nil, -1)
 	if err != nil {
 		return nil, trace, err
 	}
