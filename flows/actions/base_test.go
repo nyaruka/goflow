@@ -188,9 +188,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
-				trigger = triggers.NewManualVoice(env, flow.Reference(), contact, connection, nil)
+				trigger = triggers.NewManualVoice(env, flow.Reference(), contact, connection, false, nil)
 			} else {
-				trigger = triggers.NewManual(env, flow.Reference(), contact, nil)
+				trigger = triggers.NewManual(env, flow.Reference(), contact, false, nil)
 			}
 		} else {
 			msg := flows.NewMsgIn(

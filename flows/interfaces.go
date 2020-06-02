@@ -261,6 +261,7 @@ type Trigger interface {
 	Flow() *assets.FlowReference
 	Contact() *Contact
 	Connection() *Connection
+	Batch() bool
 	Params() *types.XObject
 	TriggeredOn() time.Time
 }

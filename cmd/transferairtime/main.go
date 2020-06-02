@@ -125,7 +125,7 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 	contact := flows.NewEmptyContact(sa, "", "", nil)
 	contact.AddURN(destination, nil)
 
-	_, sprint, err := eng.NewSession(sa, triggers.NewManual(env, assets.NewFlowReference(assets.FlowUUID("2374f60d-7412-442c-9177-585967afa972"), "Airtime"), contact, nil))
+	_, sprint, err := eng.NewSession(sa, triggers.NewManual(env, assets.NewFlowReference(assets.FlowUUID("2374f60d-7412-442c-9177-585967afa972"), "Airtime"), contact, false, nil))
 	if err != nil {
 		return err
 	}

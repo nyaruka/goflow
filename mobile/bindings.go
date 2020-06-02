@@ -163,7 +163,7 @@ type Trigger struct {
 func NewManualTrigger(environment *Environment, contact *Contact, flow *FlowReference) *Trigger {
 	flowRef := assets.NewFlowReference(assets.FlowUUID(flow.uuid), flow.name)
 	return &Trigger{
-		target: triggers.NewManual(environment.target, flowRef, contact.target, nil),
+		target: triggers.NewManual(environment.target, flowRef, contact.target, false, nil),
 	}
 }
 
