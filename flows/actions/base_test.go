@@ -80,6 +80,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		NoURNs       bool                 `json:"no_urns,omitempty"`
 		NoInput      bool                 `json:"no_input,omitempty"`
 		RedactURNs   bool                 `json:"redact_urns,omitempty"`
+		AsBatch      bool                 `json:"as_batch,omitempty"`
 		Action       json.RawMessage      `json:"action"`
 		Localization json.RawMessage      `json:"localization,omitempty"`
 		InFlowType   flows.FlowType       `json:"in_flow_type,omitempty"`
@@ -183,14 +184,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		var trigger flows.Trigger
 		ignoreEventCount := 0
-		if tc.NoInput {
+		if tc.NoInput || tc.AsBatch {
 			var connection *flows.Connection
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
-				trigger = triggers.NewManualVoice(env, flow.Reference(), contact, connection, false, nil)
+				trigger = triggers.NewManualVoice(env, flow.Reference(), contact, connection, tc.AsBatch, nil)
 			} else {
-				trigger = triggers.NewManual(env, flow.Reference(), contact, false, nil)
+				trigger = triggers.NewManual(env, flow.Reference(), contact, tc.AsBatch, nil)
 			}
 		} else {
 			msg := flows.NewMsgIn(

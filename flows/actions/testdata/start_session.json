@@ -81,6 +81,30 @@
         }
     },
     {
+        "description": "Error event if executed in batch start",
+        "as_batch": true,
+        "action": {
+            "type": "start_session",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "contact_query": "age > 20",
+            "flow": {
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Collect Age"
+            }
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't start new sessions during batch starts"
+            }
+        ],
+        "templates": [
+            "age > 20"
+        ]
+    },
+    {
         "description": "Session triggered event if new session can be triggered",
         "action": {
             "type": "start_session",

@@ -56,6 +56,11 @@ func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, 
 
 // Execute runs this action
 func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+	if run.Session().BatchStart() {
+		logEvent(events.NewErrorf("can't send broadcasts during batch starts"))
+		return nil
+	}
+
 	groupRefs, contactRefs, _, urnList, err := a.resolveRecipients(run, logEvent)
 	if err != nil {
 		return err

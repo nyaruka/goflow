@@ -54,6 +54,11 @@ func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, urns []u
 
 // Execute runs our action
 func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+	if run.Session().BatchStart() {
+		logEvent(events.NewErrorf("can't start new sessions during batch starts"))
+		return nil
+	}
+
 	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, logEvent)
 	if err != nil {
 		return err
