@@ -123,6 +123,22 @@ func TestReadPO(t *testing.T) {
 	assert.EqualError(t, err, "timeout")
 }
 
+func TestGetText(t *testing.T) {
+	poFile, err := os.Open("testdata/simple.po")
+	require.NoError(t, err)
+
+	defer poFile.Close()
+	po, err := i18n.ReadPO(poFile)
+	require.NoError(t, err)
+
+	assert.Equal(t, "Rojo", po.GetText("Male", "Red"))
+	assert.Equal(t, "Roja", po.GetText("Female", "Red"))
+	assert.Equal(t, "Red", po.GetText("", "Red"))
+	assert.Equal(t, "Azul", po.GetText("", "Blue"))
+	assert.Equal(t, "Missing", po.GetText("", "Missing"))
+	assert.Equal(t, "Not even an entry", po.GetText("", "Not even an entry"))
+}
+
 func TestEncodeAndDecodePOString(t *testing.T) {
 	tests := []struct {
 		original string

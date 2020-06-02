@@ -314,12 +314,8 @@
                 "output": "value"
             },
             {
-                "template": "@(default(array(1, 2), \"value\"))",
-                "output": "[1, 2]"
-            },
-            {
-                "template": "@(default(array(), \"value\"))",
-                "output": "value"
+                "template": "@(default(\"  \", \"value\"))",
+                "output": "\\x20\\x20"
             },
             {
                 "template": "@(default(datetime(\"invalid-date\"), \"today\"))",
@@ -494,7 +490,7 @@
     {
         "signature": "format_datetime(datetime [,format [,timezone]])",
         "summary": "Formats `datetime` as text according to the given `format`.",
-        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM\n* `Z`         - hour and minute offset from UTC, or Z for UTC\n* `ZZZ`       - hour and minute offset from UTC\n\nTimezone should be a location name as specified in the IANA Time Zone database, such\nas \"America/Guayaquil\" or \"America/Los_Angeles\". If not specified, the current timezone\nwill be used. An error will be returned if the timezone is not recognized.",
+        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 00-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM\n* `Z`         - hour and minute offset from UTC, or Z for UTC\n* `ZZZ`       - hour and minute offset from UTC\n\nTimezone should be a location name as specified in the IANA Time Zone database, such\nas \"America/Guayaquil\" or \"America/Los_Angeles\". If not specified, the current timezone\nwill be used. An error will be returned if the timezone is not recognized.",
         "examples": [
             {
                 "template": "@(format_datetime(\"1979-07-18T15:00:00.000000Z\"))",
@@ -571,7 +567,7 @@
     {
         "signature": "format_time(time [,format])",
         "summary": "Formats `time` as text according to the given `format`.",
-        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM",
+        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 00-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM",
         "examples": [
             {
                 "template": "@(format_time(\"14:50:30.000000\"))",
@@ -606,11 +602,11 @@
             },
             {
                 "template": "@(format_urn(contact.urn))",
-                "output": "(206) 555-1212"
+                "output": "(202) 456-1111"
             },
             {
                 "template": "@(format_urn(urns.tel))",
-                "output": "(206) 555-1212"
+                "output": "(202) 456-1111"
             },
             {
                 "template": "@(format_urn(urns.mailto))",
@@ -619,6 +615,21 @@
             {
                 "template": "@(format_urn(\"NOT URN\"))",
                 "output": "ERROR"
+            }
+        ]
+    },
+    {
+        "signature": "html_decode(text)",
+        "summary": "HTML decodes `text`",
+        "detail": "",
+        "examples": [
+            {
+                "template": "@(html_decode(\"Red &amp; Blue\"))",
+                "output": "Red & Blue"
+            },
+            {
+                "template": "@(html_decode(\"5 + 10\"))",
+                "output": "5 + 10"
             }
         ]
     },
@@ -944,11 +955,11 @@
         "examples": [
             {
                 "template": "@(rand())",
-                "output": "0.3849275689214193274523267973563633859157562255859375"
+                "output": "0.607552015674623913099594574305228888988494873046875"
             },
             {
                 "template": "@(rand())",
-                "output": "0.607552015674623913099594574305228888988494873046875"
+                "output": "0.484677570947340263796121462291921488940715789794921875"
             }
         ]
     },
@@ -959,11 +970,11 @@
         "examples": [
             {
                 "template": "@(rand_between(1, 10))",
-                "output": "5"
+                "output": "10"
             },
             {
                 "template": "@(rand_between(1, 10))",
-                "output": "10"
+                "output": "2"
             }
         ]
     },
@@ -1179,12 +1190,12 @@
         ]
     },
     {
-        "signature": "split(text, delimiters)",
-        "summary": "Splits `text` based on the given characters in `delimiters`.",
-        "detail": "Empty values are removed from the returned list.",
+        "signature": "split(text, [,delimiters])",
+        "summary": "Splits `text` into an array of separated words.",
+        "detail": "Empty values are removed from the returned list. There is an optional final parameter `delimiters` which\nis string of characters used to split the text into words.",
         "examples": [
             {
-                "template": "@(split(\"a b c\", \" \"))",
+                "template": "@(split(\"a b c\"))",
                 "output": "[a, b, c]"
             },
             {
@@ -1354,6 +1365,51 @@
             {
                 "template": "@(today())",
                 "output": "2018-04-11"
+            }
+        ]
+    },
+    {
+        "signature": "trim(text, [,chars])",
+        "summary": "Removes whitespace from either end of `text`.",
+        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "examples": [
+            {
+                "template": "@(trim(\" hello world    \"))",
+                "output": "hello world"
+            },
+            {
+                "template": "@(trim(\"+123157568\", \"+\"))",
+                "output": "123157568"
+            }
+        ]
+    },
+    {
+        "signature": "trim_left(text, [,chars])",
+        "summary": "Removes whitespace from the start of `text`.",
+        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "examples": [
+            {
+                "template": "@(\"*\" & trim_left(\" hello world   \") & \"*\")",
+                "output": "*hello world   *"
+            },
+            {
+                "template": "@(trim_left(\"+12345+\", \"+\"))",
+                "output": "12345+"
+            }
+        ]
+    },
+    {
+        "signature": "trim_right(text, [,chars])",
+        "summary": "Removes whitespace from the end of `text`.",
+        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "examples": [
+            {
+                "template": "@(\"*\" & trim_right(\" hello world   \") & \"*\")",
+                "output": "* hello world*"
+            },
+            {
+                "template": "@(trim_right(\"+12345+\", \"+\"))",
+                "output": "+12345"
             }
         ]
     },

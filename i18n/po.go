@@ -209,6 +209,18 @@ func (p *PO) AddEntry(e *POEntry) {
 	}
 }
 
+func (p *PO) GetText(context, text string) string {
+	c, exists := p.contexts[context]
+	if !exists {
+		return text
+	}
+	entry := c[text]
+	if entry == nil || entry.MsgStr == "" {
+		return text
+	}
+	return entry.MsgStr
+}
+
 func (p *PO) Write(w io.Writer) {
 	if p.Header != nil {
 		p.Header.asEntry().Write(w)
