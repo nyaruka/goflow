@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "POT-Creation-Date: 2020-06-02 16:47-0500\n"
-"Language: en_US\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
@@ -33,10 +33,10 @@ msgid "Converts `text` into something that can be read by IVR systems."
 msgstr ""
 
 msgid "Converts `text` to lowercase."
-msgstr ""
+msgstr "Converte `text` em minúsculas."
 
 msgid "Converts `text` to uppercase."
-msgstr ""
+msgstr "Converte `text` em maiúsculas."
 
 msgid "Converts the UNIX epoch time `seconds` into a new date."
 msgstr ""
@@ -492,4 +492,3 @@ msgid ""
 "You can optionally pass in the number of decimal places to round to as `places`. If `places` < 0,\n"
 "it will round the integer part to the nearest 10^(-places)."
 msgstr ""
-

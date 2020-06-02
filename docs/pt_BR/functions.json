@@ -1,7 +1,7 @@
 [
     {
         "signature": "abs(number)",
-        "summary": "Devuelve el valor absoluto de `number`.",
+        "summary": "Returns the absolute value of `number`.",
         "detail": "",
         "examples": [
             {
@@ -707,7 +707,7 @@
     },
     {
         "signature": "lower(text)",
-        "summary": "Converts `text` to lowercase.",
+        "summary": "Converte `text` em minúsculas.",
         "detail": "",
         "examples": [
             {
@@ -1461,7 +1461,7 @@
     },
     {
         "signature": "upper(text)",
-        "summary": "Converts `text` to uppercase.",
+        "summary": "Converte `text` em maiúsculas.",
         "detail": "",
         "examples": [
             {

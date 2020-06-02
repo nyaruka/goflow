@@ -18,7 +18,7 @@ require (
 	golang.org/x/net v0.0.0-20200421231249-e086a090c8fd
 	golang.org/x/text v0.3.2
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/go-playground/validator.v9 v9.31.0
 	gopkg.in/mail.v2 v2.3.1 // indirect
 )

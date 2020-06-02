@@ -209,6 +209,12 @@ func (p *PO) AddEntry(e *POEntry) {
 	}
 }
 
+func (p *PO) Sort() {
+	sort.SliceStable(p.Entries, func(i, j int) bool {
+		return strings.Compare(p.Entries[i].MsgID, p.Entries[j].MsgID) < 0
+	})
+}
+
 func (p *PO) GetText(context, text string) string {
 	c, exists := p.contexts[context]
 	if !exists {
