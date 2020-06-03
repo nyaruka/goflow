@@ -77,7 +77,7 @@ func findLocalizedText(translationsLanguage envs.Language, excludeProperties []s
 
 	for _, flow := range sources {
 		for _, node := range flow.Nodes() {
-			node.EnumerateLocalizables(func(uuid uuids.UUID, property string, texts []string) {
+			node.EnumerateLocalizables(func(uuid uuids.UUID, property string, texts []string, write func([]string)) {
 				if !exclude[property] {
 					exts := extractFromProperty(translationsLanguage, flow, uuid, property, texts)
 					extracted = append(extracted, exts...)

@@ -152,6 +152,7 @@ type Flow interface {
 	Inspect(sa SessionAssets) *Inspection
 	ExtractTemplates() []string
 	ExtractLocalizables() []string
+	ChangeLanguage(envs.Language) (Flow, error)
 }
 
 // Node is a single node in a flow
@@ -166,7 +167,7 @@ type Node interface {
 	EnumerateTemplates(Localization, func(Action, Router, envs.Language, string))
 	EnumerateDependencies(Localization, func(Action, Router, envs.Language, assets.Reference))
 	EnumerateResults(func(Action, Router, *ResultInfo))
-	EnumerateLocalizables(func(uuids.UUID, string, []string))
+	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
 
 // Action is an action within a flow node
@@ -205,7 +206,7 @@ type Router interface {
 	EnumerateTemplates(Localization, func(envs.Language, string))
 	EnumerateDependencies(Localization, func(envs.Language, assets.Reference))
 	EnumerateResults(func(*ResultInfo))
-	EnumerateLocalizables(func(uuids.UUID, string, []string))
+	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
 
 // Exit is a route out of a node and optionally to another node
