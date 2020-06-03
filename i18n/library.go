@@ -1,10 +1,12 @@
 package i18n
 
 import (
+	"errors"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
+	"strings"
 )
 
 // Library is a collection of PO files providing translations in different languages
@@ -53,9 +55,12 @@ func (l *Library) Update(domain string, pot *PO) error {
 			"--sort-output",
 		}
 
+		b := &strings.Builder{}
+
 		cmd := exec.Command("msgmerge", args...)
+		cmd.Stderr = b
 		if err := cmd.Run(); err != nil {
-			return err
+			return errors.New(b.String())
 		}
 	}
 

@@ -21,10 +21,15 @@ func TestGenerateDocs(t *testing.T) {
 	localesDir, err := ioutil.TempDir("", "")
 	require.NoError(t, err)
 
-	os.Mkdir(path.Join(localesDir, "en_US"), 0700)
-
 	defer os.RemoveAll(outputDir)
 	defer os.RemoveAll(localesDir)
+
+	// and setup the locales directory for en_US and es
+	os.Mkdir(path.Join(localesDir, "en_US"), 0700)
+	os.Mkdir(path.Join(localesDir, "es"), 0700)
+
+	ioutil.WriteFile(path.Join(localesDir, "en_US", "functions.po"), []byte(``), 0700)
+	ioutil.WriteFile(path.Join(localesDir, "es", "functions.po"), []byte(``), 0700)
 
 	// tests run from the same working directory as the test file, so two directories up is our goflow root
 	err = GenerateDocs("../../", outputDir, localesDir)
