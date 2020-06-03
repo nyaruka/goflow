@@ -2,6 +2,8 @@ package definition
 
 import (
 	"encoding/json"
+	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -161,7 +163,7 @@ func (f *flow) ExtractTemplates() []string {
 // ExtractLocalizables extracts all localizable text
 func (f *flow) ExtractLocalizables() []string {
 	texts := make([]string, 0)
-	include := func(uuid uuids.UUID, property string, ts []string) {
+	include := func(uuid uuids.UUID, property string, ts []string, w func([]string)) {
 		for _, t := range ts {
 			if t != "" {
 				texts = append(texts, t)
@@ -174,6 +176,70 @@ func (f *flow) ExtractLocalizables() []string {
 	}
 
 	return texts
+}
+
+// ChangeLanguage changes the language of the flow saving the current flow text as a translation and replacing it with
+// the specified translation. It returns an error if there are missing translations.
+func (f *flow) ChangeLanguage(lang envs.Language) (flows.Flow, error) {
+	// make a copy of the flow
+	copy, err := f.copy()
+	if err != nil {
+		return nil, err
+	}
+
+	ll := copy.localization.(localization)
+
+	oldTranslation := make(languageTranslation) // current flow text extracted as a translation
+	newTranslation := ll[lang]
+
+	if newTranslation == nil {
+		return nil, errors.Errorf("no translation exists for %s", lang)
+	}
+
+	// all the locations where the incoming translation is missing text to replace current flow text
+	missing := make([]string, 0)
+
+	include := func(uuid uuids.UUID, property string, oldValues []string, w func([]string)) {
+		// save current flow text into a translation
+		if len(oldValues) > 0 {
+			oldTranslation.setTextArray(uuid, property, oldValues)
+		}
+
+		newValues := newTranslation.getTextArray(uuid, property)
+
+		if len(oldValues) > 0 && len(newValues) == 0 {
+			missing = append(missing, fmt.Sprintf("%s/%s", uuid, property))
+		} else {
+			w(newValues) // update flow text in the definition
+		}
+	}
+
+	for _, n := range copy.nodes {
+		n.EnumerateLocalizables(include)
+	}
+
+	ll[copy.language] = oldTranslation
+	copy.language = lang
+
+	if len(missing) > 0 {
+		return nil, errors.Errorf("missing %s translation for text at %s", lang, strings.Join(missing, ", "))
+	}
+
+	return copy, nil
+}
+
+// makes a copy of this flow which this differs from cloning as UUIDs are preserved
+func (f *flow) copy() (*flow, error) {
+	// by marshaling and unmarshaling...
+	marshaled, err := json.Marshal(f)
+	if err != nil {
+		return nil, err
+	}
+	cp, err := ReadFlow(marshaled, nil)
+	if err != nil {
+		return nil, err
+	}
+	return cp.(*flow), nil
 }
 
 // extracts all templates, asset dependencies and parent result references

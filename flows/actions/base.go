@@ -260,6 +260,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flow
 
 	// evaluate contact query
 	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, flows.ContactQueryEscaping, true)
+	contactQuery = strings.TrimSpace(contactQuery)
 
 	return groupRefs, contactRefs, contactQuery, urnList, nil
 }

@@ -65,7 +65,7 @@ type CampaignTrigger struct {
 // NewCampaign creates a new campaign trigger with the passed in values
 func NewCampaign(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, event *CampaignEvent) *CampaignTrigger {
 	return &CampaignTrigger{
-		baseTrigger: newBaseTrigger(TypeCampaign, env, flow, contact, nil, nil),
+		baseTrigger: newBaseTrigger(TypeCampaign, env, flow, contact, nil, false, nil),
 		event:       event,
 	}
 }

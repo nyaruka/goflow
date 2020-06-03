@@ -38,13 +38,23 @@ type baseTrigger struct {
 	flow        *assets.FlowReference
 	contact     *flows.Contact
 	connection  *flows.Connection
+	batch       bool
 	params      *types.XObject
 	triggeredOn time.Time
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, params *types.XObject) baseTrigger {
-	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, connection: connection, params: params, triggeredOn: dates.Now()}
+func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, batch bool, params *types.XObject) baseTrigger {
+	return baseTrigger{
+		type_:       typeName,
+		environment: env,
+		flow:        flow,
+		contact:     contact,
+		connection:  connection,
+		batch:       batch,
+		params:      params,
+		triggeredOn: dates.Now(),
+	}
 }
 
 // Type returns the type of this trigger
@@ -54,6 +64,7 @@ func (t *baseTrigger) Environment() envs.Environment { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference   { return t.flow }
 func (t *baseTrigger) Contact() *flows.Contact       { return t.contact }
 func (t *baseTrigger) Connection() *flows.Connection { return t.connection }
+func (t *baseTrigger) Batch() bool                   { return t.batch }
 func (t *baseTrigger) Params() *types.XObject        { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time        { return t.triggeredOn }
 
@@ -132,6 +143,7 @@ type baseTriggerEnvelope struct {
 	Flow        *assets.FlowReference `json:"flow" validate:"required"`
 	Contact     json.RawMessage       `json:"contact,omitempty"`
 	Connection  *flows.Connection     `json:"connection,omitempty"`
+	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
 	TriggeredOn time.Time             `json:"triggered_on" validate:"required"`
 }
@@ -156,6 +168,7 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 	t.type_ = e.Type
 	t.flow = e.Flow
 	t.connection = e.Connection
+	t.batch = e.Batch
 	t.triggeredOn = e.TriggeredOn
 
 	if e.Environment != nil {
@@ -182,6 +195,7 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	e.Type = t.type_
 	e.Flow = t.flow
 	e.Connection = t.connection
+	e.Batch = t.batch
 	e.TriggeredOn = t.triggeredOn
 
 	if t.environment != nil {

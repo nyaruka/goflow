@@ -87,9 +87,12 @@ func (r *baseRouter) EnumerateResults(include func(*flows.ResultInfo)) {
 }
 
 // EnumerateLocalizables enumerates all the localizable text on this object
-func (r *baseRouter) EnumerateLocalizables(include func(uuids.UUID, string, []string)) {
+func (r *baseRouter) EnumerateLocalizables(include func(uuids.UUID, string, []string, func([]string))) {
 	for _, cat := range r.categories {
-		include(cat.LocalizationUUID(), "name", []string{cat.Name()})
+		w := func(v []string) {
+			cat.(*Category).name = v[0]
+		}
+		include(cat.LocalizationUUID(), "name", []string{cat.Name()}, w)
 	}
 }
 
