@@ -262,6 +262,7 @@ type Trigger interface {
 	Flow() *assets.FlowReference
 	Contact() *Contact
 	Connection() *Connection
+	Batch() bool
 	Params() *types.XObject
 	TriggeredOn() time.Time
 }
@@ -365,6 +366,7 @@ type Session interface {
 
 	Status() SessionStatus
 	Trigger() Trigger
+	BatchStart() bool
 	PushFlow(Flow, FlowRun, bool)
 	Wait() ActivatedWait
 

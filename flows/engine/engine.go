@@ -23,6 +23,7 @@ func (e *engine) NewSession(sa flows.SessionAssets, trigger flows.Trigger) (flow
 		assets:     sa,
 		trigger:    trigger,
 		status:     flows.SessionStatusActive,
+		batchStart: trigger.Batch(),
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
 	}
 

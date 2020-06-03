@@ -66,7 +66,7 @@ func TestRunEnvironment(t *testing.T) {
 	contact, err := flows.ReadContact(sa, []byte(contactJSON), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	trigger := triggers.NewManual(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact, nil)
+	trigger := triggers.NewManual(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact, false, nil)
 	eng := engine.NewBuilder().Build()
 
 	session, _, err := eng.NewSession(sa, trigger)

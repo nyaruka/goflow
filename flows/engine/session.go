@@ -41,6 +41,7 @@ type session struct {
 	input   flows.Input
 
 	// state which is temporary to each call
+	batchStart bool
 	runsByUUID map[flows.RunUUID]flows.FlowRun
 	pushedFlow *pushedFlow
 	parentRun  flows.RunSummary
@@ -64,6 +65,8 @@ func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
 
 func (s *session) Input() flows.Input         { return s.input }
 func (s *session) SetInput(input flows.Input) { s.input = input }
+
+func (s *session) BatchStart() bool { return s.batchStart }
 
 func (s *session) PushFlow(flow flows.Flow, parentRun flows.FlowRun, terminal bool) {
 	s.pushedFlow = &pushedFlow{flow: flow, parentRun: parentRun, terminal: terminal}
