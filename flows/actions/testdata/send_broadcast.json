@@ -73,7 +73,30 @@
         }
     },
     {
-        "description": "Error event if executed in batch start",
+        "description": "Error event if executed in batch start and uses a group",
+        "as_batch": true,
+        "action": {
+            "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ],
+            "text": "Hi there!"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't send broadcasts to groups during batch starts"
+            }
+        ]
+    },
+    {
+        "description": "Broadcast created event for the message if executed in batch start but doesn't use a group",
         "as_batch": true,
         "action": {
             "type": "send_broadcast",
@@ -85,10 +108,18 @@
         },
         "events": [
             {
-                "type": "error",
+                "type": "broadcast_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't send broadcasts during batch starts"
+                "translations": {
+                    "eng": {
+                        "text": "Hi there!"
+                    }
+                },
+                "base_language": "eng",
+                "urns": [
+                    "tel:+1234567890"
+                ]
             }
         ]
     },
