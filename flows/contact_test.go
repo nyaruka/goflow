@@ -68,6 +68,8 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, envs.Language("eng"), contact.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
+	assert.Equal(t, envs.Country("US"), contact.Country())
+	assert.Equal(t, "en-US", contact.Locale(env).ToISO639_2())
 
 	contact.SetStatus(flows.ContactStatusStopped)
 	assert.Equal(t, flows.ContactStatusStopped, contact.Status())

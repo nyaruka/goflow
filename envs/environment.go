@@ -68,10 +68,12 @@ func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat 
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
 func (e *environment) MaxValueLength() int              { return e.maxValueLength }
 
+// DefaultLocale combines the default languages and countries into a locale
 func (e *environment) DefaultLocale() Locale {
 	return NewLocale(e.DefaultLanguage(), e.DefaultCountry())
 }
 
+// Now gets the current time in the eonvironment's timezone
 func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }
 
 // Equal returns true if this instance is equal to the given instance

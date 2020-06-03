@@ -19,6 +19,7 @@ func TestTemplate(t *testing.T) {
 	translation := NewTemplateTranslation(channel, envs.Language("eng"), envs.Country("US"), "Hello {{1}}", 1)
 	assert.Equal(t, channel, translation.Channel())
 	assert.Equal(t, envs.Language("eng"), translation.Language())
+	assert.Equal(t, envs.Country("US"), translation.Country())
 	assert.Equal(t, "Hello {{1}}", translation.Content())
 	assert.Equal(t, 1, translation.VariableCount())
 
