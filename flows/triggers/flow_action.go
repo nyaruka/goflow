@@ -54,22 +54,22 @@ type FlowActionTrigger struct {
 }
 
 // NewFlowAction creates a new flow action trigger with the passed in values
-func NewFlowAction(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, runSummary json.RawMessage) (*FlowActionTrigger, error) {
-	return newFlowAction(env, flow, contact, nil, runSummary)
+func NewFlowAction(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, runSummary json.RawMessage, batch bool) (*FlowActionTrigger, error) {
+	return newFlowAction(env, flow, contact, nil, runSummary, batch)
 }
 
 // NewFlowActionVoice creates a new flow action trigger with the passed in values
-func NewFlowActionVoice(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage) (*FlowActionTrigger, error) {
-	return newFlowAction(env, flow, contact, connection, runSummary)
+func NewFlowActionVoice(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage, batch bool) (*FlowActionTrigger, error) {
+	return newFlowAction(env, flow, contact, connection, runSummary, batch)
 }
 
-func newFlowAction(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage) (*FlowActionTrigger, error) {
+func newFlowAction(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage, batch bool) (*FlowActionTrigger, error) {
 	if !json.Valid(runSummary) {
 		return nil, errors.Errorf("invalid run summary JSON: %s", string(runSummary))
 	}
 
 	return &FlowActionTrigger{
-		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, connection, nil),
+		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, connection, batch, nil),
 		runSummary:  runSummary,
 	}, nil
 }

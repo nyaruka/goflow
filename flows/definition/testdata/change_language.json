@@ -1,0 +1,177 @@
+{
+  "flows": [
+    {
+      "uuid": "19cad1f2-9110-4271-98d4-1b968bf19410",
+      "name": "Change Language",
+      "spec_version": "13.1.0",
+      "language": "eng",
+      "type": "messaging",
+      "revision": 16,
+      "expire_after_minutes": 10080,
+      "localization": {
+        "spa": {
+          "e42deebf-90fa-4636-81cb-d247a3d3ba75": {
+            "text": [
+              "Cual pastilla?"
+            ],
+            "quick_replies": [
+              "Roja",
+              "Azul"
+            ]
+          },
+          "d1ce3c92-7025-4607-a910-444361a6b9b3": {
+            "name": [
+              "Roja"
+            ]
+          },
+          "43f7e69e-727d-4cfe-81b8-564e7833052b": {
+            "name": [
+              "Azul"
+            ]
+          },
+          "3a044264-81d1-4ba7-882a-e98740c8e724": {
+            "name": [
+              "Otro"
+            ]
+          },
+          "61bc5ed3-e216-4457-8ce5-ad658e697f29": {
+            "arguments": [
+              "rojo",
+              "roja"
+            ]
+          },
+          "5f5fa09f-bf88-4719-ba64-cab9cf2f67b5": {
+            "arguments": [
+              "azul"
+            ]
+          }
+        },
+        "ara": {
+          "e42deebf-90fa-4636-81cb-d247a3d3ba75": {
+            "text": [
+              "\u0627\u064a \u062d\u0628\u0648\u0628"
+            ],
+            "quick_replies": [
+              "\u0623\u062d\u0645\u0631",
+              "\u0623\u0632\u0631\u0642"
+            ]
+          },
+          "d1ce3c92-7025-4607-a910-444361a6b9b3": {
+            "name": [
+              "\u0623\u062d\u0645\u0631"
+            ]
+          },
+          "43f7e69e-727d-4cfe-81b8-564e7833052b": {
+            "name": [
+              "\u0623\u0632\u0631\u0642"
+            ]
+          }
+        }
+      },
+      "nodes": [
+        {
+          "uuid": "3236913b-9b55-4f01-8b4d-549848c27fe8",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "Which pill?",
+              "type": "send_msg",
+              "quick_replies": [
+                "Red",
+                "Blue"
+              ],
+              "uuid": "e42deebf-90fa-4636-81cb-d247a3d3ba75"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "500d5c80-0af7-45ce-a95e-e9ece647aa53",
+              "destination_uuid": "51ad5add-269f-439a-a251-a8e14c6099e2"
+            }
+          ]
+        },
+        {
+          "uuid": "51ad5add-269f-439a-a251-a8e14c6099e2",
+          "actions": [],
+          "router": {
+            "type": "switch",
+            "default_category_uuid": "3a044264-81d1-4ba7-882a-e98740c8e724",
+            "cases": [
+              {
+                "arguments": [
+                  "red"
+                ],
+                "type": "has_any_word",
+                "uuid": "61bc5ed3-e216-4457-8ce5-ad658e697f29",
+                "category_uuid": "d1ce3c92-7025-4607-a910-444361a6b9b3"
+              },
+              {
+                "arguments": [
+                  "blue"
+                ],
+                "type": "has_any_word",
+                "uuid": "5f5fa09f-bf88-4719-ba64-cab9cf2f67b5",
+                "category_uuid": "43f7e69e-727d-4cfe-81b8-564e7833052b"
+              }
+            ],
+            "categories": [
+              {
+                "uuid": "d1ce3c92-7025-4607-a910-444361a6b9b3",
+                "name": "Red",
+                "exit_uuid": "18ce1dab-9875-48ab-9e16-695bad91ecef"
+              },
+              {
+                "uuid": "43f7e69e-727d-4cfe-81b8-564e7833052b",
+                "name": "Blue",
+                "exit_uuid": "73b255e2-59ae-454f-902a-abd2cd1e4eab"
+              },
+              {
+                "uuid": "3a044264-81d1-4ba7-882a-e98740c8e724",
+                "name": "Other",
+                "exit_uuid": "bda03d7b-6ff8-46f2-8308-470ba2c1613c"
+              }
+            ],
+            "operand": "@input.text",
+            "wait": {
+              "type": "msg"
+            },
+            "result_name": "Pill"
+          },
+          "exits": [
+            {
+              "uuid": "18ce1dab-9875-48ab-9e16-695bad91ecef"
+            },
+            {
+              "uuid": "73b255e2-59ae-454f-902a-abd2cd1e4eab"
+            },
+            {
+              "uuid": "bda03d7b-6ff8-46f2-8308-470ba2c1613c",
+              "destination_uuid": null
+            }
+          ]
+        }
+      ],
+      "_ui": {
+        "nodes": {
+          "3236913b-9b55-4f01-8b4d-549848c27fe8": {
+            "position": {
+              "left": 80,
+              "top": 0
+            },
+            "type": "execute_actions"
+          },
+          "51ad5add-269f-439a-a251-a8e14c6099e2": {
+            "type": "wait_for_response",
+            "position": {
+              "left": 160,
+              "top": 160
+            },
+            "config": {
+              "cases": {}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

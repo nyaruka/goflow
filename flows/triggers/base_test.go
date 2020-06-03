@@ -160,6 +160,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		flow,
 		contact,
 		json.RawMessage(`{"uuid"}`),
+		false,
 	)
 	assert.EqualError(t, err, `invalid run summary JSON: {"uuid"}`)
 
@@ -168,6 +169,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		flow,
 		contact,
 		nil,
+		false,
 	)
 	assert.EqualError(t, err, `invalid run summary JSON: `)
 
@@ -176,6 +178,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		flow,
 		contact,
 		json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`),
+		false,
 	)
 
 	triggerTests := []struct {
@@ -357,6 +360,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				env,
 				flow,
 				contact,
+				true,
 				types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")}),
 			),
 			`{
@@ -383,6 +387,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"name": "Registration",
 					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
 				},
+				"batch": true,
 				"params": {
 					"foo": "bar"
 				},
@@ -396,6 +401,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				flow,
 				contact,
 				flows.NewConnection(channel, "tel:+12065551212"),
+				true,
 				types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")}),
 			),
 			`{
@@ -429,6 +435,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"name": "Registration",
 					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
 				},
+				"batch": true,
 				"params": {
 					"foo": "bar"
 				},
@@ -539,6 +546,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 		env,
 		flow,
 		contact,
+		false,
 		params,
 	)
 
@@ -562,6 +570,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 		nil,
 		flow,
 		nil,
+		false,
 		nil,
 	)
 

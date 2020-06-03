@@ -59,6 +59,12 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return err
 	}
 
+	// footgun prevention
+	if run.Session().BatchStart() && (len(groupRefs) > 0 || contactQuery != "") {
+		logEvent(events.NewErrorf("can't start new sessions for groups or queries during batch starts"))
+		return nil
+	}
+
 	runSnapshot, err := jsonx.Marshal(run.Snapshot())
 	if err != nil {
 		return err

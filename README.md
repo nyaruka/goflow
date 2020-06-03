@@ -18,7 +18,7 @@ env := envs.NewBuilder().Build()
 source, _ := static.LoadSource("myassets.json")
 assets, _ := engine.NewSessionAssets(env, source, nil)
 contact := flows.NewContact(assets, ...)
-trigger := triggers.NewManual(env, contact, flow.Reference(), nil, nil, time.Now())
+trigger := triggers.NewManual(env, contact, flow.Reference(), nil, false, nil, time.Now())
 eng := engine.NewBuilder().Build()
 session, sprint, err := eng.NewSession(assets, trigger)
 ```
