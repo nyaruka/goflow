@@ -90,4 +90,5 @@ func TestService(t *testing.T) {
 
 	assert.Equal(t, 1, len(httpLogger.Logs))
 	assert.Equal(t, "https://nlp.bothub.it/parse", httpLogger.Logs[0].URL)
+	assert.Equal(t, "POST /parse HTTP/1.1\r\nHost: nlp.bothub.it\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 28\r\nAuthorization: Bearer ****************\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\ntext=book+my+flight+to+Quito", httpLogger.Logs[0].Request)
 }

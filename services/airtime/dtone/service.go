@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/pkg/errors"
@@ -14,6 +15,7 @@ import (
 type service struct {
 	client   *Client
 	currency string
+	redactor utils.Redactor
 }
 
 // NewService creates a new DTOne airtime service
@@ -21,6 +23,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, login, 
 	return &service{
 		client:   NewClient(httpClient, httpRetries, login, token),
 		currency: currency,
+		redactor: utils.NewRedactor(flows.RedactionMask, token),
 	}
 }
 
@@ -34,7 +37,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 
 	info, trace, err := s.client.MSISDNInfo(recipient.Path(), s.currency, "1")
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, httpLogStatus))
+		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
 	}
 	if err != nil {
 		return transfer, err
@@ -67,7 +70,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 
 	reservedID, trace, err := s.client.ReserveID()
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, httpLogStatus))
+		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
 	}
 	if err != nil {
 		return transfer, err
@@ -75,7 +78,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 
 	topup, trace, err := s.client.Topup(reservedID.ReservedID, sender.Path(), recipient.Path(), useProduct, "")
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, httpLogStatus))
+		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
 	}
 	if err != nil {
 		return transfer, err

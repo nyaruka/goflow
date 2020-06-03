@@ -61,6 +61,12 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, logMod
 		return err
 	}
 
+	// footgun prevention
+	if run.Session().BatchStart() && len(groupRefs) > 0 {
+		logEvent(events.NewErrorf("can't send broadcasts to groups during batch starts"))
+		return nil
+	}
+
 	translations := make(map[envs.Language]*events.BroadcastTranslation)
 	languages := append([]envs.Language{run.Flow().Language()}, run.Flow().Localization().Languages()...)
 

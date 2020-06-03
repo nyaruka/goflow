@@ -73,6 +73,57 @@
         }
     },
     {
+        "description": "Error event if executed in batch start and uses a group",
+        "as_batch": true,
+        "action": {
+            "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ],
+            "text": "Hi there!"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't send broadcasts to groups during batch starts"
+            }
+        ]
+    },
+    {
+        "description": "Broadcast created event for the message if executed in batch start but doesn't use a group",
+        "as_batch": true,
+        "action": {
+            "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "urns": [
+                "tel:+1234567890"
+            ],
+            "text": "Hi there!"
+        },
+        "events": [
+            {
+                "type": "broadcast_created",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "translations": {
+                    "eng": {
+                        "text": "Hi there!"
+                    }
+                },
+                "base_language": "eng",
+                "urns": [
+                    "tel:+1234567890"
+                ]
+            }
+        ]
+    },
+    {
         "description": "Broadcast created event for the message",
         "action": {
             "type": "send_broadcast",
@@ -96,7 +147,9 @@
                 "@(\"\")",
                 "@contact.fields.gender",
                 "@(\"5129165834\")",
-                "@contact.urn"
+                "@contact.urn",
+                "Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool",
+                "  11708c34-d4ab-4b04-b82a-2578f6e0013c  "
             ],
             "text": "Hi there!"
         },
@@ -106,6 +159,12 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "text": "scheme or path cannot be empty"
+            },
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "invalid tel number: Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool"
             },
             {
                 "type": "broadcast_created",
@@ -127,6 +186,10 @@
                     {
                         "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
                         "name": "Stavros"
+                    },
+                    {
+                        "uuid": "11708c34-d4ab-4b04-b82a-2578f6e0013c",
+                        "name": ""
                     }
                 ],
                 "urns": [
@@ -142,6 +205,8 @@
             "@contact.fields.gender",
             "@(\"5129165834\")",
             "@contact.urn",
+            "Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool",
+            "  11708c34-d4ab-4b04-b82a-2578f6e0013c  ",
             "Hi there!"
         ],
         "inspection": {

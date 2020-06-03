@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -49,7 +50,7 @@ func RegisteredTypes() map[string](func() flows.Action) {
 	return registeredTypes
 }
 
-var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
+var uuidRegex = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)
 
 // the base of all action types
 type baseAction struct {
@@ -229,6 +230,8 @@ func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flow
 			logEvent(events.NewError(err))
 		}
 
+		evaluatedLegacyVar = strings.TrimSpace(evaluatedLegacyVar)
+
 		if uuidRegex.MatchString(evaluatedLegacyVar) {
 			// if variable evaluates to a UUID, we assume it's a contact UUID
 			contactRefs = append(contactRefs, flows.NewContactReference(flows.ContactUUID(evaluatedLegacyVar), ""))
@@ -257,6 +260,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flow
 
 	// evaluate contact query
 	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, flows.ContactQueryEscaping, true)
+	contactQuery = strings.TrimSpace(contactQuery)
 
 	return groupRefs, contactRefs, contactQuery, urnList, nil
 }

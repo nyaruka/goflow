@@ -96,5 +96,6 @@ func TestService(t *testing.T) {
 	}, classification.Entities)
 
 	assert.Equal(t, 1, len(httpLogger.Logs))
-	assert.Equal(t, "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=book+flight+to+Quito", httpLogger.Logs[0].URL)
+	assert.Equal(t, "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=****************&q=book+flight+to+Quito", httpLogger.Logs[0].URL)
+	assert.Equal(t, "GET /luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=****************&q=book+flight+to+Quito HTTP/1.1\r\nHost: westus.api.cognitive.microsoft.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n", httpLogger.Logs[0].Request)
 }

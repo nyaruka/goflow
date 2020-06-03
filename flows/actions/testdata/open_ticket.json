@@ -60,6 +60,41 @@
         }
     },
     {
+        "description": "Error event if executed in batch start",
+        "as_batch": true,
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "ticketer": {
+                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                "name": "Support Tickets"
+            },
+            "subject": "Need help",
+            "body": "Where are my cookies?",
+            "result_name": "Ticket"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't open tickets during batch starts"
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Ticket",
+                "value": "",
+                "category": "Failure"
+            }
+        ],
+        "templates": [
+            "Need help",
+            "Where are my cookies?"
+        ]
+    },
+    {
         "description": "Result with category success created if ticket opened",
         "action": {
             "type": "open_ticket",

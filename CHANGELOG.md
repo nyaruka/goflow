@@ -1,3 +1,15 @@
+v0.86.2
+----------
+ * Fix spelling of Readact
+
+v0.86.1
+----------
+ * Do redaction of access keys from HTTP logs
+
+v0.86.0
+----------
+ * Add open_ticket actions and ticket_opened events
+
 v0.85.0
 ----------
  * Add new service_called event to be used for classifiers and ticketers etc

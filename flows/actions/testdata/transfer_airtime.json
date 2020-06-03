@@ -217,14 +217,14 @@
                         "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
                         "status": "success",
                         "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 86\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=reserve_id&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 23\r\n\r\nreserved_id=123456789\r\n",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 23\r\n\r\nreserved_id=****************\r\n",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
                     },
                     {
                         "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
                         "status": "success",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 169\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=topup&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32&msisdn=%2B17036975131&product=3&reserved_id=123456789",
+                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 169\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=topup&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32&msisdn=%2B17036975131&product=3&reserved_id=****************",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 51\r\n\r\ndestination_currency=RWF\r\nactual_product_sent=500\r\n",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
@@ -472,14 +472,14 @@
                         "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
                         "status": "success",
                         "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 86\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=reserve_id&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 23\r\n\r\nreserved_id=123456789\r\n",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 23\r\n\r\nreserved_id=****************\r\n",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
                     },
                     {
                         "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
                         "status": "response_error",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 169\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=topup&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32&msisdn=%2B17036975131&product=3&reserved_id=123456789",
+                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 169\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=topup&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32&msisdn=%2B17036975131&product=3&reserved_id=****************",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 33\r\n\r\nerror_txt=Ooops\r\nerror_code=345\r\n",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
