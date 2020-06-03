@@ -38,6 +38,8 @@ type Environment interface {
 	RedactionPolicy() RedactionPolicy
 	MaxValueLength() int
 
+	DefaultLocale() Locale
+
 	// Convenience method to get the current time in the env timezone
 	Now() time.Time
 
@@ -65,6 +67,10 @@ func (e *environment) DefaultCountry() Country          { return e.defaultCountr
 func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
 func (e *environment) MaxValueLength() int              { return e.maxValueLength }
+
+func (e *environment) DefaultLocale() Locale {
+	return NewLocale(e.DefaultLanguage(), e.DefaultCountry())
+}
 
 func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }
 

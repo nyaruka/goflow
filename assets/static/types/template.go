@@ -51,16 +51,18 @@ type TemplateTranslation struct {
 		Channel       assets.ChannelReference `json:"channel"         validate:"required"`
 		Content       string                  `json:"content"         validate:"required"`
 		Language      envs.Language           `json:"language"        validate:"required"`
+		Country       envs.Country            `json:"country,omitempty"`
 		VariableCount int                     `json:"variable_count"`
 	}
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel assets.ChannelReference, language envs.Language, content string, variableCount int) *TemplateTranslation {
+func NewTemplateTranslation(channel assets.ChannelReference, language envs.Language, country envs.Country, content string, variableCount int) *TemplateTranslation {
 	t := &TemplateTranslation{}
 	t.t.Channel = channel
 	t.t.Content = content
 	t.t.Language = language
+	t.t.Country = country
 	t.t.VariableCount = variableCount
 	return t
 }
@@ -70,6 +72,9 @@ func (t *TemplateTranslation) Content() string { return t.t.Content }
 
 // Language returns the language this translation is in
 func (t *TemplateTranslation) Language() envs.Language { return t.t.Language }
+
+// Country returns the country this translation is for if any
+func (t *TemplateTranslation) Country() envs.Country { return t.t.Country }
 
 // VariableCount returns the number of variables in this template
 func (t *TemplateTranslation) VariableCount() int { return t.t.VariableCount }
