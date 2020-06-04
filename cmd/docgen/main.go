@@ -8,56 +8,17 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/pkg/errors"
+	"github.com/nyaruka/goflow/cmd/docgen/docs"
 )
 
 const (
-	outputDir  string = "docs"
-	localesDir string = "locales"
+	outputDir  = "docs"
+	localesDir = "locales"
 )
 
-type generatorFunc func(baseDir, outputDir, localesDir string, items map[string][]*TaggedItem) error
-type generator struct {
-	name     string
-	function generatorFunc
-}
-
-var generators []generator
-
-func registerGenerator(name string, fn generatorFunc) {
-	generators = append(generators, generator{name, fn})
-}
-
 func main() {
-	if err := GenerateDocs(".", outputDir, localesDir); err != nil {
+	if err := docs.Generate(".", outputDir, localesDir); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-}
-
-// GenerateDocs generates all documentation outputs
-func GenerateDocs(baseDir, outputDir, localesDir string) error {
-	fmt.Println("Processing sources...")
-
-	// extract all documented items from the source code
-	taggedItems, err := FindAllTaggedItems(baseDir)
-	if err != nil {
-		return errors.Wrap(err, "error extracting tagged items")
-	}
-
-	for k, v := range taggedItems {
-		fmt.Printf(" > Found %d tagged items with tag %s\n", len(v), k)
-	}
-
-	// invoke doc generators...
-
-	for _, g := range generators {
-		fmt.Printf("Invoking generator: %s...\n", g.name)
-
-		if err := g.function(baseDir, outputDir, localesDir, taggedItems); err != nil {
-			return errors.Wrapf(err, "error invoking generator %s", g.name)
-		}
-	}
-
-	return nil
 }

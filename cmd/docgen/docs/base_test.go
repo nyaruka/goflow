@@ -1,4 +1,4 @@
-package main
+package docs_test
 
 import (
 	"io/ioutil"
@@ -6,6 +6,7 @@ import (
 	"path"
 	"testing"
 
+	"github.com/nyaruka/goflow/cmd/docgen/docs"
 	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
@@ -28,19 +29,19 @@ func TestGenerateDocs(t *testing.T) {
 	os.Mkdir(path.Join(localesDir, "en_US"), 0700)
 	os.Mkdir(path.Join(localesDir, "es"), 0700)
 
-	ioutil.WriteFile(path.Join(localesDir, "en_US", "functions.po"), []byte(``), 0700)
-	ioutil.WriteFile(path.Join(localesDir, "es", "functions.po"), []byte(``), 0700)
+	ioutil.WriteFile(path.Join(localesDir, "en_US", "flows.po"), []byte(``), 0700)
+	ioutil.WriteFile(path.Join(localesDir, "es", "flows.po"), []byte(``), 0700)
 
 	// tests run from the same working directory as the test file, so two directories up is our goflow root
-	err = GenerateDocs("../../", outputDir, localesDir)
+	err = docs.Generate("../../../", outputDir, localesDir)
 	require.NoError(t, err)
 
 	// check each rendered template for changes
-	for _, template := range templates {
-		existing, err := ioutil.ReadFile("../../docs/md/" + template.path)
+	for _, template := range docs.Templates {
+		existing, err := ioutil.ReadFile("../../../docs/en_US/md/" + template.Path)
 		require.NoError(t, err)
 
-		generated, err := ioutil.ReadFile(path.Join(outputDir, "md", template.path))
+		generated, err := ioutil.ReadFile(path.Join(outputDir, "en_US", "md", template.Path))
 		require.NoError(t, err)
 
 		// if the docs we just generated don't match the existing ones, someone needs to run docgen
@@ -48,7 +49,7 @@ func TestGenerateDocs(t *testing.T) {
 	}
 
 	// check other outputs
-	completion := readJSONOutput(t, outputDir, "completion.json").(map[string]interface{})
+	completion := readJSONOutput(t, outputDir, "en_US", "completion.json").(map[string]interface{})
 	assert.Contains(t, completion, "types")
 	assert.Contains(t, completion, "root")
 
@@ -58,12 +59,12 @@ func TestGenerateDocs(t *testing.T) {
 	root := completion["root"].([]interface{})
 	assert.Equal(t, 11, len(root))
 
-	functions := readJSONOutput(t, outputDir, "functions.json").([]interface{})
+	functions := readJSONOutput(t, outputDir, "en_US", "functions.json").([]interface{})
 	assert.Equal(t, 80, len(functions))
 }
 
-func readJSONOutput(t *testing.T, outputDir string, name string) interface{} {
-	output, err := ioutil.ReadFile(path.Join(outputDir, name))
+func readJSONOutput(t *testing.T, file ...string) interface{} {
+	output, err := ioutil.ReadFile(path.Join(file...))
 	require.NoError(t, err)
 
 	generic, err := jsonx.DecodeGeneric(output)

@@ -1,4 +1,4 @@
-package main
+package docs
 
 import (
 	"fmt"
@@ -13,6 +13,7 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/i18n"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/random"
@@ -22,7 +23,7 @@ import (
 )
 
 func init() {
-	registerGenerator("template docs", generateTemplateDocs)
+	RegisterGenerator(&htmlDocsGenerator{})
 }
 
 const (
@@ -31,11 +32,11 @@ const (
 
 type urlResolver func(string, string) (string, error)
 
-var resources = []string{"styles.css"}
-var templates = []struct {
-	title         string
-	path          string
-	containsTypes []string // used for resolving links
+var Resources = []string{"styles.css"}
+var Templates = []struct {
+	Title         string
+	Path          string
+	ContainsTypes []string // used for resolving links
 }{
 	{"Flow Specification", "index.md", nil},
 	{"Flows", "flows.md", []string{"action", "router", "wait"}},
@@ -55,13 +56,23 @@ func registerContextFunc(f ContextFunc) {
 	contextFuncs = append(contextFuncs, f)
 }
 
-func generateTemplateDocs(baseDir, outputDir, localesDir string, items map[string][]*TaggedItem) error {
+type htmlDocsGenerator struct{}
+
+func (g *htmlDocsGenerator) Name() string {
+	return "html docs"
+}
+
+func (g *htmlDocsGenerator) ExtractText(items map[string][]*TaggedItem) []string {
+	return nil
+}
+
+func (g *htmlDocsGenerator) Generate(baseDir, outputDir string, items map[string][]*TaggedItem, po *i18n.PO) error {
 	if err := renderTemplateDocs(baseDir, outputDir, items); err != nil {
 		return errors.Wrap(err, "error rendering templates")
 	}
 
 	// copy static resources to docs dir
-	for _, res := range resources {
+	for _, res := range Resources {
 		src := path.Join(baseDir, templateDir, res)
 		dst := path.Join(outputDir, res)
 		if err := copyFile(src, dst); err != nil {
@@ -90,17 +101,17 @@ func renderTemplateDocs(baseDir string, outputDir string, items map[string][]*Ta
 		return err
 	}
 
-	for _, template := range templates {
-		templatePath := path.Join(baseDir, templateDir, template.path)
-		renderedPath := path.Join(outputDir, "md", template.path)
-		htmlPath := path.Join(outputDir, template.path[0:len(template.path)-3]+".html")
+	for _, template := range Templates {
+		templatePath := path.Join(baseDir, templateDir, template.Path)
+		renderedPath := path.Join(outputDir, "md", template.Path)
+		htmlPath := path.Join(outputDir, template.Path[0:len(template.Path)-3]+".html")
 
 		if err := renderTemplate(templatePath, renderedPath, context, linkResolver, linkTargets); err != nil {
 			return errors.Wrapf(err, "error rendering template %s", templatePath)
 		}
 
 		htmlTemplate := path.Join(baseDir, "cmd/docgen/templates/template.html")
-		htmlContext := map[string]string{"title": template.title}
+		htmlContext := map[string]string{"title": template.Title}
 
 		if err := renderHTML(renderedPath, htmlPath, htmlTemplate, htmlContext); err != nil {
 			return errors.Wrapf(err, "error rendering HTML from %s to %s", renderedPath, htmlPath)
@@ -160,9 +171,9 @@ func createLinkResolver(items map[string][]*TaggedItem) (urlResolver, map[string
 		}
 	}
 
-	for _, template := range templates {
-		for _, typeTag := range template.containsTypes {
-			typeTemplates[typeTag] = fmt.Sprintf("%s.html#%s:%%s", template.path[0:len(template.path)-3], typeTag)
+	for _, template := range Templates {
+		for _, typeTag := range template.ContainsTypes {
+			typeTemplates[typeTag] = fmt.Sprintf("%s.html#%s:%%s", template.Path[0:len(template.Path)-3], typeTag)
 		}
 	}
 

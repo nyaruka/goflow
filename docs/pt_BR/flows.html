@@ -1,0 +1,1172 @@
+<html>
+    <head>
+        <title>Flows</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <center>
+            <h7>Flows</h7>
+        </center>
+
+ <ul>
+<li><a href="#container">Container</a></li>
+<li><a href="#nodes">Nodes</a></li>
+<li><a href="#actions">Actions</a></li>
+</ul>  
+
+<h1 id="container">Container</h1>
+<p>Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest possible flow containing no nodes whatsoever (and therefore being a no-op) contains the following fields:</p>
+<ul>
+<li><code>uuid</code> the UUID</li>
+<li><code>name</code> the name</li>
+<li><code>language</code> the base authoring language used for localization</li>
+<li><code>type</code> the type, one of <code>messaging</code>, <code>messaging_offline</code>, <code>voice</code> whcih determines which actions are allowed in the flow</li>
+<li><code>nodes</code> the nodes (may be empty)</li>
+</ul>
+<p>For example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7bb5e7c-ad49-4e65-9e24-bf7f1e4ff00a&quot;</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Empty Flow&quot;</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>    <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;messaging&quot;</span><span class="fu">,</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">}</span></span></code></pre></div>
+<h1 id="nodes">Nodes</h1>
+<p>Flow definitions are composed of zero or more nodes, the first node is always the entry node.</p>
+<p>A Node consists of:</p>
+<ul>
+<li><code>uuid</code> the UUID</li>
+<li><code>actions</code> a list of 0-n actions which will be executed upon first entering a node</li>
+<li><code>router</code> an optional router which determines which exit to take</li>
+<li><code>exit</code> a list of 0-n exits which can be used to link to other nodes</li>
+</ul>
+<p>At its simplest, a node can be just a single action with no exits, wait or router, such as:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span><span class="st">&quot;5a06445e-d790-4bd3-a10b-b47bdcc9abed&quot;</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="dt">&quot;actions&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;abc0a2bf-6b4a-4ee0-83e1-1eebae6948ac&quot;</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;send_msg&quot;</span><span class="fu">,</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;What is your name?&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="fu">}</span></span></code></pre></div>
+<p>If a node wishes to route to another node, it can do so by defining one or more exits, each with the UUID of the node that is next. Without a router defined, the first exit will always be taken.</p>
+<p>An exit consists of:</p>
+<ul>
+<li><code>uuid</code> the UUID</li>
+<li><code>destination_uuid</code> the uuid of the node that should be visited if this exit is chosen by the router (optional)</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span><span class="st">&quot;5a06445e-d790-4bd3-a10b-b47bdcc9abed&quot;</span><span class="fu">,</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="dt">&quot;actions&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;abc0a2bf-6b4a-4ee0-83e1-1eebae6948ac&quot;</span><span class="fu">,</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;send_msg&quot;</span><span class="fu">,</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;What is your name?&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>    <span class="fu">}</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="dt">&quot;exits&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span><span class="st">&quot;eb7defc9-3c66-4dfc-80bc-825567ccd9de&quot;</span><span class="fu">,</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>        <span class="dt">&quot;destination_uuid&quot;</span><span class="fu">:</span><span class="st">&quot;ee0bee3f-34b3-4275-af78-f9ff52c82e6a&quot;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>    <span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="fu">}</span></span></code></pre></div>
+<h1 id="actions">Actions</h1>
+<p>Actions on a node generate events which can then be ingested by the engine container. In some cases the actions cause an immediate action, such as calling a webhook, in others the engine container is responsible for taking the action based on the event that is output, such as sending messages or updating contact fields. In either case the internal state of the engine is always updated to represent the new state so that flow execution is consistent. For example, while the engine itself does not have access to a contact store, it updates its internal representation of a contact’s state based on action performed on a flow so that later references in the flow are correct.</p>
+<div class="actions">
+<h2 class="item_title">
+<a name="action:add_contact_groups" href="#action:add_contact_groups">add_contact_groups</a>
+</h2>
+<p>Can be used to add a contact to one or more groups. A <a href="sessions.html#event:contact_groups_changed">contact_groups_changed</a> event will be created for the groups which the contact has been added to.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;add_contact_groups&quot;</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="fu">{</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1e1ce1e1-9288-4504-869e-022d1003c72a&quot;</span><span class="fu">,</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Customers&quot;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>        <span class="fu">}</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>    <span class="ot">]</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">{</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_groups_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="dt">&quot;groups_added&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>        <span class="fu">{</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1e1ce1e1-9288-4504-869e-022d1003c72a&quot;</span><span class="fu">,</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Customers&quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>        <span class="fu">}</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>    <span class="ot">]</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:add_contact_urn" href="#action:add_contact_urn">add_contact_urn</a>
+</h2>
+<p>Can be used to add a URN to the current contact. A <a href="sessions.html#event:contact_urns_changed">contact_urns_changed</a> event will be created when this action is encountered.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">{</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;add_contact_urn&quot;</span><span class="fu">,</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="dt">&quot;scheme&quot;</span><span class="fu">:</span> <span class="st">&quot;tel&quot;</span><span class="fu">,</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;@results.phone_number.value&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">{</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_urns_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>        <span class="st">&quot;tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="ot">,</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>        <span class="st">&quot;twitterid:54784326227#nyaruka&quot;</span><span class="ot">,</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>        <span class="st">&quot;mailto:foo@bar.com&quot;</span><span class="ot">,</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>        <span class="st">&quot;tel:+12344563452&quot;</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>    <span class="ot">]</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:add_input_labels" href="#action:add_input_labels">add_input_labels</a>
+</h2>
+<p>Can be used to add labels to the last user input on a flow. An <a href="sessions.html#event:input_labels_added">input_labels_added</a> event will be created with the labels added when this action is encountered. If there is no user input at that point then this action will be ignored.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">{</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;add_input_labels&quot;</span><span class="fu">,</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="dt">&quot;labels&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>        <span class="fu">{</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;3f65d88a-95dc-4140-9451-943e94e06fea&quot;</span><span class="fu">,</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Spam&quot;</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>        <span class="fu">}</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>    <span class="ot">]</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;input_labels_added&quot;</span><span class="fu">,</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="dt">&quot;input_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span><span class="fu">,</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="dt">&quot;labels&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>        <span class="fu">{</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;3f65d88a-95dc-4140-9451-943e94e06fea&quot;</span><span class="fu">,</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Spam&quot;</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>        <span class="fu">}</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>    <span class="ot">]</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:call_classifier" href="#action:call_classifier">call_classifier</a>
+</h2>
+<p>Can be used to classify the intent and entities from a given input using an NLU classifier. It always saves a result indicating whether the classification was successful, skipped or failed, and what the extracted intents and entities were.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">{</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;call_classifier&quot;</span><span class="fu">,</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="dt">&quot;classifier&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1c06c884-39dd-4ce4-ad9f-9a01cbe6c000&quot;</span><span class="fu">,</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Booking&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="fu">},</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;@input.text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>    <span class="dt">&quot;result_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Intent&quot;</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb11-1"><a href="#cb11-1"></a><span class="ot">[</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="fu">{</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;service_called&quot;</span><span class="fu">,</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>        <span class="dt">&quot;service&quot;</span><span class="fu">:</span> <span class="st">&quot;classifier&quot;</span><span class="fu">,</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a>        <span class="dt">&quot;classifier&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1c06c884-39dd-4ce4-ad9f-9a01cbe6c000&quot;</span><span class="fu">,</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Booking&quot;</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>        <span class="fu">},</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a>        <span class="dt">&quot;http_logs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a>            <span class="fu">{</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a>                <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://test.acme.ai?classify&quot;</span><span class="fu">,</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a>                <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a>                <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET /?classify HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: test.acme.ai</span><span class="ch">\r\n</span><span class="st">User-Agent: Go-http-client/1.1</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">&quot;</span><span class="fu">,</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>                <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.0 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 14</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">intents</span><span class="ch">\&quot;</span><span class="st">:[]}&quot;</span><span class="fu">,</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2019-10-16T13:59:30.123456789Z&quot;</span><span class="fu">,</span></span>
+<span id="cb11-18"><a href="#cb11-18"></a>                <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">1000</span></span>
+<span id="cb11-19"><a href="#cb11-19"></a>            <span class="fu">}</span></span>
+<span id="cb11-20"><a href="#cb11-20"></a>        <span class="ot">]</span></span>
+<span id="cb11-21"><a href="#cb11-21"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb11-22"><a href="#cb11-22"></a>    <span class="fu">{</span></span>
+<span id="cb11-23"><a href="#cb11-23"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb11-24"><a href="#cb11-24"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb11-25"><a href="#cb11-25"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb11-26"><a href="#cb11-26"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Intent&quot;</span><span class="fu">,</span></span>
+<span id="cb11-27"><a href="#cb11-27"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span><span class="fu">,</span></span>
+<span id="cb11-28"><a href="#cb11-28"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb11-29"><a href="#cb11-29"></a>        <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi there&quot;</span><span class="fu">,</span></span>
+<span id="cb11-30"><a href="#cb11-30"></a>        <span class="dt">&quot;extra&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-31"><a href="#cb11-31"></a>            <span class="dt">&quot;intents&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb11-32"><a href="#cb11-32"></a>                <span class="fu">{</span></span>
+<span id="cb11-33"><a href="#cb11-33"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span><span class="fu">,</span></span>
+<span id="cb11-34"><a href="#cb11-34"></a>                    <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.5</span></span>
+<span id="cb11-35"><a href="#cb11-35"></a>                <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb11-36"><a href="#cb11-36"></a>                <span class="fu">{</span></span>
+<span id="cb11-37"><a href="#cb11-37"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_hotel&quot;</span><span class="fu">,</span></span>
+<span id="cb11-38"><a href="#cb11-38"></a>                    <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.25</span></span>
+<span id="cb11-39"><a href="#cb11-39"></a>                <span class="fu">}</span></span>
+<span id="cb11-40"><a href="#cb11-40"></a>            <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb11-41"><a href="#cb11-41"></a>            <span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-42"><a href="#cb11-42"></a>                <span class="dt">&quot;location&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb11-43"><a href="#cb11-43"></a>                    <span class="fu">{</span></span>
+<span id="cb11-44"><a href="#cb11-44"></a>                        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Quito&quot;</span><span class="fu">,</span></span>
+<span id="cb11-45"><a href="#cb11-45"></a>                        <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
+<span id="cb11-46"><a href="#cb11-46"></a>                    <span class="fu">}</span></span>
+<span id="cb11-47"><a href="#cb11-47"></a>                <span class="ot">]</span></span>
+<span id="cb11-48"><a href="#cb11-48"></a>            <span class="fu">}</span></span>
+<span id="cb11-49"><a href="#cb11-49"></a>        <span class="fu">}</span></span>
+<span id="cb11-50"><a href="#cb11-50"></a>    <span class="fu">}</span></span>
+<span id="cb11-51"><a href="#cb11-51"></a><span class="ot">]</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:call_resthook" href="#action:call_resthook">call_resthook</a>
+</h2>
+<p>Can be used to call a resthook.</p>
+<p>A <a href="sessions.html#event:webhook_called">webhook_called</a> event will be created for each subscriber of the resthook with the results of the HTTP call. If the action has <code>result_name</code> set, a result will be created with that name, and if the resthook returns valid JSON, that will be accessible through <code>extra</code> on the result.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;call_resthook&quot;</span><span class="fu">,</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;new-registration&quot;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1"></a><span class="ot">[</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>    <span class="fu">{</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_called&quot;</span><span class="fu">,</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>        <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;new-registration&quot;</span><span class="fu">,</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>        <span class="dt">&quot;payload&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>            <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>                <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;+17036975131&quot;</span><span class="fu">,</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;My Android Phone&quot;</span><span class="fu">,</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>            <span class="fu">},</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a>            <span class="dt">&quot;contact&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ryan Lewis&quot;</span><span class="fu">,</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a>                <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12024561111&quot;</span><span class="fu">,</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a>            <span class="fu">},</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a>            <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-19"><a href="#cb13-19"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span><span class="fu">,</span></span>
+<span id="cb13-20"><a href="#cb13-20"></a>                <span class="dt">&quot;revision&quot;</span><span class="fu">:</span> <span class="dv">123</span><span class="fu">,</span></span>
+<span id="cb13-21"><a href="#cb13-21"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span></span>
+<span id="cb13-22"><a href="#cb13-22"></a>            <span class="fu">},</span></span>
+<span id="cb13-23"><a href="#cb13-23"></a>            <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-24"><a href="#cb13-24"></a>                <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb13-25"><a href="#cb13-25"></a>                    <span class="fu">{</span></span>
+<span id="cb13-26"><a href="#cb13-26"></a>                        <span class="dt">&quot;content_type&quot;</span><span class="fu">:</span> <span class="st">&quot;image/jpeg&quot;</span><span class="fu">,</span></span>
+<span id="cb13-27"><a href="#cb13-27"></a>                        <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span></span>
+<span id="cb13-28"><a href="#cb13-28"></a>                    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb13-29"><a href="#cb13-29"></a>                    <span class="fu">{</span></span>
+<span id="cb13-30"><a href="#cb13-30"></a>                        <span class="dt">&quot;content_type&quot;</span><span class="fu">:</span> <span class="st">&quot;audio/mp3&quot;</span><span class="fu">,</span></span>
+<span id="cb13-31"><a href="#cb13-31"></a>                        <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span></span>
+<span id="cb13-32"><a href="#cb13-32"></a>                    <span class="fu">}</span></span>
+<span id="cb13-33"><a href="#cb13-33"></a>                <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb13-34"><a href="#cb13-34"></a>                <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-35"><a href="#cb13-35"></a>                    <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;+17036975131&quot;</span><span class="fu">,</span></span>
+<span id="cb13-36"><a href="#cb13-36"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;My Android Phone&quot;</span><span class="fu">,</span></span>
+<span id="cb13-37"><a href="#cb13-37"></a>                    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span></span>
+<span id="cb13-38"><a href="#cb13-38"></a>                <span class="fu">},</span></span>
+<span id="cb13-39"><a href="#cb13-39"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2017-12-31T11:35:10.035757-02:00&quot;</span><span class="fu">,</span></span>
+<span id="cb13-40"><a href="#cb13-40"></a>                <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi there&quot;</span><span class="fu">,</span></span>
+<span id="cb13-41"><a href="#cb13-41"></a>                <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg&quot;</span><span class="fu">,</span></span>
+<span id="cb13-42"><a href="#cb13-42"></a>                <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-43"><a href="#cb13-43"></a>                    <span class="dt">&quot;display&quot;</span><span class="fu">:</span> <span class="st">&quot;(206) 555-1212&quot;</span><span class="fu">,</span></span>
+<span id="cb13-44"><a href="#cb13-44"></a>                    <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;+12065551212&quot;</span><span class="fu">,</span></span>
+<span id="cb13-45"><a href="#cb13-45"></a>                    <span class="dt">&quot;scheme&quot;</span><span class="fu">:</span> <span class="st">&quot;tel&quot;</span></span>
+<span id="cb13-46"><a href="#cb13-46"></a>                <span class="fu">},</span></span>
+<span id="cb13-47"><a href="#cb13-47"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span></span>
+<span id="cb13-48"><a href="#cb13-48"></a>            <span class="fu">},</span></span>
+<span id="cb13-49"><a href="#cb13-49"></a>            <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb13-50"><a href="#cb13-50"></a>                <span class="fu">{</span></span>
+<span id="cb13-51"><a href="#cb13-51"></a>                    <span class="dt">&quot;arrived_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-52"><a href="#cb13-52"></a>                    <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;d7a36118-0a38-4b35-a7e4-ae89042f0d3c&quot;</span><span class="fu">,</span></span>
+<span id="cb13-53"><a href="#cb13-53"></a>                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;72a1f5df-49f9-45df-94c9-d86f7ea064e5&quot;</span><span class="fu">,</span></span>
+<span id="cb13-54"><a href="#cb13-54"></a>                    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8720f157-ca1c-432f-9c0b-2014ddc77094&quot;</span></span>
+<span id="cb13-55"><a href="#cb13-55"></a>                <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb13-56"><a href="#cb13-56"></a>                <span class="fu">{</span></span>
+<span id="cb13-57"><a href="#cb13-57"></a>                    <span class="dt">&quot;arrived_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-58"><a href="#cb13-58"></a>                    <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;100f2d68-2481-4137-a0a3-177620ba3c5f&quot;</span><span class="fu">,</span></span>
+<span id="cb13-59"><a href="#cb13-59"></a>                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;3dcccbb4-d29c-41dd-a01f-16d814c9ab82&quot;</span><span class="fu">,</span></span>
+<span id="cb13-60"><a href="#cb13-60"></a>                    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;970b8069-50f5-4f6f-8f41-6b2d9f33d623&quot;</span></span>
+<span id="cb13-61"><a href="#cb13-61"></a>                <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb13-62"><a href="#cb13-62"></a>                <span class="fu">{</span></span>
+<span id="cb13-63"><a href="#cb13-63"></a>                    <span class="dt">&quot;arrived_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-64"><a href="#cb13-64"></a>                    <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;d898f9a4-f0fc-4ac4-a639-c98c602bb511&quot;</span><span class="fu">,</span></span>
+<span id="cb13-65"><a href="#cb13-65"></a>                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></span>
+<span id="cb13-66"><a href="#cb13-66"></a>                    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5ecda5fc-951c-437b-a17e-f85e49829fb9&quot;</span></span>
+<span id="cb13-67"><a href="#cb13-67"></a>                <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb13-68"><a href="#cb13-68"></a>                <span class="fu">{</span></span>
+<span id="cb13-69"><a href="#cb13-69"></a>                    <span class="dt">&quot;arrived_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-70"><a href="#cb13-70"></a>                    <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9fc5f8b4-2247-43db-b899-ab1ac50ba06c&quot;</span><span class="fu">,</span></span>
+<span id="cb13-71"><a href="#cb13-71"></a>                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c0781400-737f-4940-9a6c-1ec1c3df0325&quot;</span><span class="fu">,</span></span>
+<span id="cb13-72"><a href="#cb13-72"></a>                    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span></span>
+<span id="cb13-73"><a href="#cb13-73"></a>                <span class="fu">}</span></span>
+<span id="cb13-74"><a href="#cb13-74"></a>            <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb13-75"><a href="#cb13-75"></a>            <span class="dt">&quot;results&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-76"><a href="#cb13-76"></a>                <span class="dt">&quot;2factor&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-77"><a href="#cb13-77"></a>                    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb13-78"><a href="#cb13-78"></a>                    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb13-79"><a href="#cb13-79"></a>                    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-80"><a href="#cb13-80"></a>                    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb13-81"><a href="#cb13-81"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;2Factor&quot;</span><span class="fu">,</span></span>
+<span id="cb13-82"><a href="#cb13-82"></a>                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></span>
+<span id="cb13-83"><a href="#cb13-83"></a>                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;34634624463525&quot;</span></span>
+<span id="cb13-84"><a href="#cb13-84"></a>                <span class="fu">},</span></span>
+<span id="cb13-85"><a href="#cb13-85"></a>                <span class="dt">&quot;favorite_color&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-86"><a href="#cb13-86"></a>                    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Red&quot;</span><span class="fu">,</span></span>
+<span id="cb13-87"><a href="#cb13-87"></a>                    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;Red&quot;</span><span class="fu">,</span></span>
+<span id="cb13-88"><a href="#cb13-88"></a>                    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-89"><a href="#cb13-89"></a>                    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb13-90"><a href="#cb13-90"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Favorite Color&quot;</span><span class="fu">,</span></span>
+<span id="cb13-91"><a href="#cb13-91"></a>                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></span>
+<span id="cb13-92"><a href="#cb13-92"></a>                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;red&quot;</span></span>
+<span id="cb13-93"><a href="#cb13-93"></a>                <span class="fu">},</span></span>
+<span id="cb13-94"><a href="#cb13-94"></a>                <span class="dt">&quot;intent&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-95"><a href="#cb13-95"></a>                    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb13-96"><a href="#cb13-96"></a>                    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb13-97"><a href="#cb13-97"></a>                    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-98"><a href="#cb13-98"></a>                    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi there&quot;</span><span class="fu">,</span></span>
+<span id="cb13-99"><a href="#cb13-99"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Intent&quot;</span><span class="fu">,</span></span>
+<span id="cb13-100"><a href="#cb13-100"></a>                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c0781400-737f-4940-9a6c-1ec1c3df0325&quot;</span><span class="fu">,</span></span>
+<span id="cb13-101"><a href="#cb13-101"></a>                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span></span>
+<span id="cb13-102"><a href="#cb13-102"></a>                <span class="fu">},</span></span>
+<span id="cb13-103"><a href="#cb13-103"></a>                <span class="dt">&quot;phone_number&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-104"><a href="#cb13-104"></a>                    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb13-105"><a href="#cb13-105"></a>                    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb13-106"><a href="#cb13-106"></a>                    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-107"><a href="#cb13-107"></a>                    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb13-108"><a href="#cb13-108"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Phone Number&quot;</span><span class="fu">,</span></span>
+<span id="cb13-109"><a href="#cb13-109"></a>                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></span>
+<span id="cb13-110"><a href="#cb13-110"></a>                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;+12344563452&quot;</span></span>
+<span id="cb13-111"><a href="#cb13-111"></a>                <span class="fu">},</span></span>
+<span id="cb13-112"><a href="#cb13-112"></a>                <span class="dt">&quot;webhook&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-113"><a href="#cb13-113"></a>                    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb13-114"><a href="#cb13-114"></a>                    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb13-115"><a href="#cb13-115"></a>                    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-116"><a href="#cb13-116"></a>                    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;GET http://127.0.0.1:49998/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D&quot;</span><span class="fu">,</span></span>
+<span id="cb13-117"><a href="#cb13-117"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook&quot;</span><span class="fu">,</span></span>
+<span id="cb13-118"><a href="#cb13-118"></a>                    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></span>
+<span id="cb13-119"><a href="#cb13-119"></a>                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;200&quot;</span></span>
+<span id="cb13-120"><a href="#cb13-120"></a>                <span class="fu">}</span></span>
+<span id="cb13-121"><a href="#cb13-121"></a>            <span class="fu">},</span></span>
+<span id="cb13-122"><a href="#cb13-122"></a>            <span class="dt">&quot;run&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-123"><a href="#cb13-123"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-124"><a href="#cb13-124"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;692926ea-09d6-4942-bd38-d266ec8d3716&quot;</span></span>
+<span id="cb13-125"><a href="#cb13-125"></a>            <span class="fu">}</span></span>
+<span id="cb13-126"><a href="#cb13-126"></a>        <span class="fu">}</span></span>
+<span id="cb13-127"><a href="#cb13-127"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb13-128"><a href="#cb13-128"></a>    <span class="fu">{</span></span>
+<span id="cb13-129"><a href="#cb13-129"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></span>
+<span id="cb13-130"><a href="#cb13-130"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb13-131"><a href="#cb13-131"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb13-132"><a href="#cb13-132"></a>        <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://127.0.0.1:49998/?cmd=success&quot;</span><span class="fu">,</span></span>
+<span id="cb13-133"><a href="#cb13-133"></a>        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb13-134"><a href="#cb13-134"></a>        <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST /?cmd=success HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: 127.0.0.1:49998</span><span class="ch">\r\n</span><span class="st">User-Agent: goflow-testing</span><span class="ch">\r\n</span><span class="st">Content-Length: 2821</span><span class="ch">\r\n</span><span class="st">Content-Type: application/json</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">channel</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">address</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+17036975131</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">My Android Phone</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">57f1078f-88aa-46f4-a59a-948a5739c03d</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">contact</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Ryan Lewis</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">urn</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">tel:+12024561111</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">flow</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Registration</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">revision</span><span class="ch">\&quot;</span><span class="st">:123,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">50c3706e-fedb-42c0-8eab-dda3335714b7</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">attachments</span><span class="ch">\&quot;</span><span class="st">:[{</span><span class="ch">\&quot;</span><span class="st">content_type</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">image/jpeg</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">url</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">http://s3.amazon.com/bucket/test.jpg</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">content_type</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">audio/mp3</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">url</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">http://s3.amazon.com/bucket/test.mp3</span><span class="ch">\&quot;</span><span class="st">}],</span><span class="ch">\&quot;</span><span class="st">channel</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">address</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+17036975131</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">My Android Phone</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">57f1078f-88aa-46f4-a59a-948a5739c03d</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2017-12-31T11:35:10.035757-02:00</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">text</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Hi there</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">type</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">msg</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">urn</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">display</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">(206) 555-1212</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">path</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12065551212</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">scheme</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">tel</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">9bf91c2b-ce58-4cef-aacc-281e03f69ab5</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">path</span><span class="ch">\&quot;</span><span class="st">:[{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">d7a36118-0a38-4b35-a7e4-ae89042f0d3c</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">72a1f5df-49f9-45df-94c9-d86f7ea064e5</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">8720f157-ca1c-432f-9c0b-2014ddc77094</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">100f2d68-2481-4137-a0a3-177620ba3c5f</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">3dcccbb4-d29c-41dd-a01f-16d814c9ab82</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">970b8069-50f5-4f6f-8f41-6b2d9f33d623</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">d898f9a4-f0fc-4ac4-a639-c98c602bb511</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">5ecda5fc-951c-437b-a17e-f85e49829fb9</span><span class="ch">\&quot;</span><span class="st">},{</span><span class="ch">\&quot;</span><span class="st">arrived_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">exit_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">9fc5f8b4-2247-43db-b899-ab1ac50ba06c</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">c0781400-737f-4940-9a6c-1ec1c3df0325</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">312d3af0-a565-4c96-ba00-bd7f0d08e671</span><span class="ch">\&quot;</span><span class="st">}],</span><span class="ch">\&quot;</span><span class="st">results</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">2factor</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2Factor</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">34634624463525</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">favorite_color</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Red</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Red</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Favorite Color</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">red</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">intent</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Success</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Success</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Hi there</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Intent</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">c0781400-737f-4940-9a6c-1ec1c3df0325</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">book_flight</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">phone_number</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Phone Number</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">+12344563452</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\&quot;</span><span class="st">webhook</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">category</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Success</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">category_localized</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Success</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">GET http://127.0.0.1:49998/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">webhook</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">node_uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">value</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">200</span><span class="ch">\&quot;</span><span class="st">}},</span><span class="ch">\&quot;</span><span class="st">run</span><span class="ch">\&quot;</span><span class="st">:{</span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">2018-04-11T18:24:30.123456Z</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">692926ea-09d6-4942-bd38-d266ec8d3716</span><span class="ch">\&quot;</span><span class="st">}}&quot;</span><span class="fu">,</span></span>
+<span id="cb13-135"><a href="#cb13-135"></a>        <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 16</span><span class="ch">\r\n</span><span class="st">Content-Type: text/plain; charset=utf-8</span><span class="ch">\r\n</span><span class="st">Date: Wed, 11 Apr 2018 18:24:30 GMT</span><span class="ch">\r\n\r\n</span><span class="st">{ </span><span class="ch">\&quot;</span><span class="st">ok</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">true</span><span class="ch">\&quot;</span><span class="st"> }&quot;</span><span class="fu">,</span></span>
+<span id="cb13-136"><a href="#cb13-136"></a>        <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb13-137"><a href="#cb13-137"></a>        <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;new-registration&quot;</span><span class="fu">,</span></span>
+<span id="cb13-138"><a href="#cb13-138"></a>        <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span></span>
+<span id="cb13-139"><a href="#cb13-139"></a>    <span class="fu">}</span></span>
+<span id="cb13-140"><a href="#cb13-140"></a><span class="ot">]</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:call_webhook" href="#action:call_webhook">call_webhook</a>
+</h2>
+<p>Can be used to call an external service. The body, header and url fields may be templates and will be evaluated at runtime. A <a href="sessions.html#event:webhook_called">webhook_called</a> event will be created based on the results of the HTTP call. If this action has a <code>result_name</code>, then addtionally it will create a new result with that name. If the webhook returned valid JSON, that will be accessible through <code>extra</code> on the result.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">{</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;call_webhook&quot;</span><span class="fu">,</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>    <span class="dt">&quot;method&quot;</span><span class="fu">:</span> <span class="st">&quot;GET&quot;</span><span class="fu">,</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>    <span class="dt">&quot;headers&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>        <span class="dt">&quot;Authorization&quot;</span><span class="fu">:</span> <span class="st">&quot;Token AAFFZZHH&quot;</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>    <span class="fu">},</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>    <span class="dt">&quot;result_name&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook&quot;</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb15-1"><a href="#cb15-1"></a><span class="ot">[</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>    <span class="fu">{</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>        <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>        <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET /?cmd=success HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: localhost:49998</span><span class="ch">\r\n</span><span class="st">User-Agent: goflow-testing</span><span class="ch">\r\n</span><span class="st">Authorization: Token AAFFZZHH</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">&quot;</span><span class="fu">,</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a>        <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 16</span><span class="ch">\r\n</span><span class="st">Content-Type: text/plain; charset=utf-8</span><span class="ch">\r\n</span><span class="st">Date: Wed, 11 Apr 2018 18:24:30 GMT</span><span class="ch">\r\n\r\n</span><span class="st">{ </span><span class="ch">\&quot;</span><span class="st">ok</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">true</span><span class="ch">\&quot;</span><span class="st"> }&quot;</span><span class="fu">,</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a>        <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a>        <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a>    <span class="fu">{</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb15-16"><a href="#cb15-16"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook&quot;</span><span class="fu">,</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;200&quot;</span><span class="fu">,</span></span>
+<span id="cb15-19"><a href="#cb15-19"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb15-20"><a href="#cb15-20"></a>        <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;GET http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></span>
+<span id="cb15-21"><a href="#cb15-21"></a>        <span class="dt">&quot;extra&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb15-22"><a href="#cb15-22"></a>            <span class="dt">&quot;ok&quot;</span><span class="fu">:</span> <span class="st">&quot;true&quot;</span></span>
+<span id="cb15-23"><a href="#cb15-23"></a>        <span class="fu">}</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a>    <span class="fu">}</span></span>
+<span id="cb15-25"><a href="#cb15-25"></a><span class="ot">]</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:enter_flow" href="#action:enter_flow">enter_flow</a>
+</h2>
+<p>Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.</p>
+<p>A <a href="sessions.html#event:flow_entered">flow_entered</a> event will be created to record that the flow was started.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">{</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;enter_flow&quot;</span><span class="fu">,</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Collect Language&quot;</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a>    <span class="fu">}</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">{</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;flow_entered&quot;</span><span class="fu">,</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Collect Language&quot;</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a>    <span class="fu">},</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a>    <span class="dt">&quot;parent_run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;692926ea-09d6-4942-bd38-d266ec8d3716&quot;</span><span class="fu">,</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a>    <span class="dt">&quot;terminal&quot;</span><span class="fu">:</span> <span class="kw">false</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:open_ticket" href="#action:open_ticket">open_ticket</a>
+</h2>
+<p>Is used to open a ticket for the contact.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">{</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;open_ticket&quot;</span><span class="fu">,</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>    <span class="dt">&quot;ticketer&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;19dc6346-9623-4fe4-be80-538d493ecdf5&quot;</span><span class="fu">,</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Support Tickets&quot;</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a>    <span class="fu">},</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a>    <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="st">&quot;Needs help&quot;</span><span class="fu">,</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a>    <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;@input&quot;</span><span class="fu">,</span></span>
+<span id="cb18-10"><a href="#cb18-10"></a>    <span class="dt">&quot;result_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Help Ticket&quot;</span></span>
+<span id="cb18-11"><a href="#cb18-11"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb19-1"><a href="#cb19-1"></a><span class="ot">[</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>    <span class="fu">{</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;service_called&quot;</span><span class="fu">,</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>        <span class="dt">&quot;service&quot;</span><span class="fu">:</span> <span class="st">&quot;ticketer&quot;</span><span class="fu">,</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>        <span class="dt">&quot;ticketer&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;19dc6346-9623-4fe4-be80-538d493ecdf5&quot;</span><span class="fu">,</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Support Tickets&quot;</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a>        <span class="fu">},</span></span>
+<span id="cb19-11"><a href="#cb19-11"></a>        <span class="dt">&quot;http_logs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb19-12"><a href="#cb19-12"></a>            <span class="fu">{</span></span>
+<span id="cb19-13"><a href="#cb19-13"></a>                <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://nyaruka.tickets.com/tickets.json&quot;</span><span class="fu">,</span></span>
+<span id="cb19-14"><a href="#cb19-14"></a>                <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb19-15"><a href="#cb19-15"></a>                <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST /tickets.json HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">subject</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">Needs help</span><span class="ch">\&quot;</span><span class="st">}&quot;</span><span class="fu">,</span></span>
+<span id="cb19-16"><a href="#cb19-16"></a>                <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.0 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 15</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">status</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">ok</span><span class="ch">\&quot;</span><span class="st">}&quot;</span><span class="fu">,</span></span>
+<span id="cb19-17"><a href="#cb19-17"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2019-10-16T13:59:30.123456789Z&quot;</span><span class="fu">,</span></span>
+<span id="cb19-18"><a href="#cb19-18"></a>                <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
+<span id="cb19-19"><a href="#cb19-19"></a>            <span class="fu">}</span></span>
+<span id="cb19-20"><a href="#cb19-20"></a>        <span class="ot">]</span></span>
+<span id="cb19-21"><a href="#cb19-21"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb19-22"><a href="#cb19-22"></a>    <span class="fu">{</span></span>
+<span id="cb19-23"><a href="#cb19-23"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;ticket_opened&quot;</span><span class="fu">,</span></span>
+<span id="cb19-24"><a href="#cb19-24"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb19-25"><a href="#cb19-25"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb19-26"><a href="#cb19-26"></a>        <span class="dt">&quot;ticket&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb19-27"><a href="#cb19-27"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4f15f627-b1e2-4851-8dbf-00ecf5d03034&quot;</span><span class="fu">,</span></span>
+<span id="cb19-28"><a href="#cb19-28"></a>            <span class="dt">&quot;ticketer&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb19-29"><a href="#cb19-29"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;19dc6346-9623-4fe4-be80-538d493ecdf5&quot;</span><span class="fu">,</span></span>
+<span id="cb19-30"><a href="#cb19-30"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Support Tickets&quot;</span></span>
+<span id="cb19-31"><a href="#cb19-31"></a>            <span class="fu">},</span></span>
+<span id="cb19-32"><a href="#cb19-32"></a>            <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="st">&quot;Needs help&quot;</span><span class="fu">,</span></span>
+<span id="cb19-33"><a href="#cb19-33"></a>            <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi there</span><span class="ch">\n</span><span class="st">http://s3.amazon.com/bucket/test.jpg</span><span class="ch">\n</span><span class="st">http://s3.amazon.com/bucket/test.mp3&quot;</span><span class="fu">,</span></span>
+<span id="cb19-34"><a href="#cb19-34"></a>            <span class="dt">&quot;external_id&quot;</span><span class="fu">:</span> <span class="st">&quot;123456&quot;</span></span>
+<span id="cb19-35"><a href="#cb19-35"></a>        <span class="fu">}</span></span>
+<span id="cb19-36"><a href="#cb19-36"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb19-37"><a href="#cb19-37"></a>    <span class="fu">{</span></span>
+<span id="cb19-38"><a href="#cb19-38"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb19-39"><a href="#cb19-39"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb19-40"><a href="#cb19-40"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb19-41"><a href="#cb19-41"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Help Ticket&quot;</span><span class="fu">,</span></span>
+<span id="cb19-42"><a href="#cb19-42"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;4f15f627-b1e2-4851-8dbf-00ecf5d03034&quot;</span><span class="fu">,</span></span>
+<span id="cb19-43"><a href="#cb19-43"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span></span>
+<span id="cb19-44"><a href="#cb19-44"></a>    <span class="fu">}</span></span>
+<span id="cb19-45"><a href="#cb19-45"></a><span class="ot">]</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:play_audio" href="#action:play_audio">play_audio</a>
+</h2>
+<p>Can be used to play an audio recording in a voice flow. It will generate an <a href="sessions.html#event:ivr_created">ivr_created</a> event if there is a valid audio URL. This will contain a message which the caller should handle as an IVR play command using the audio attachment.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">{</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;play_audio&quot;</span><span class="fu">,</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>    <span class="dt">&quot;audio_url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://uploads.temba.io/2353262.m4a&quot;</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">{</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;ivr_created&quot;</span><span class="fu">,</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1b5491ec-2b83-445d-bebe-b4a1f677cf4c&quot;</span><span class="fu">,</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>    <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;44fe8d72-00ed-4736-acca-bbca70987315&quot;</span><span class="fu">,</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a>        <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12065551212&quot;</span><span class="fu">,</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a>        <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;fd47a886-451b-46fb-bcb6-242a4046c0c0&quot;</span><span class="fu">,</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Nexmo&quot;</span></span>
+<span id="cb21-11"><a href="#cb21-11"></a>        <span class="fu">},</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a>        <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb21-14"><a href="#cb21-14"></a>            <span class="st">&quot;audio:http://uploads.temba.io/2353262.m4a&quot;</span></span>
+<span id="cb21-15"><a href="#cb21-15"></a>        <span class="ot">]</span></span>
+<span id="cb21-16"><a href="#cb21-16"></a>    <span class="fu">}</span></span>
+<span id="cb21-17"><a href="#cb21-17"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:remove_contact_groups" href="#action:remove_contact_groups">remove_contact_groups</a>
+</h2>
+<p>Can be used to remove a contact from one or more groups. A <a href="sessions.html#event:contact_groups_changed">contact_groups_changed</a> event will be created for the groups which the contact is removed from. Groups can either be explicitly provided or <code>all_groups</code> can be set to true to remove the contact from all non-dynamic groups.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb22"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">{</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;remove_contact_groups&quot;</span><span class="fu">,</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>        <span class="fu">{</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registered Users&quot;</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>        <span class="fu">}</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a>    <span class="ot">]</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">{</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_groups_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb23-4"><a href="#cb23-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a>    <span class="dt">&quot;groups_removed&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a>        <span class="fu">{</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Testers&quot;</span></span>
+<span id="cb23-9"><a href="#cb23-9"></a>        <span class="fu">}</span></span>
+<span id="cb23-10"><a href="#cb23-10"></a>    <span class="ot">]</span></span>
+<span id="cb23-11"><a href="#cb23-11"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:say_msg" href="#action:say_msg">say_msg</a>
+</h2>
+<p>Can be used to communicate with the contact in a voice flow by either reading a message with TTS or playing a pre-recorded audio file. It will generate an <a href="sessions.html#event:ivr_created">ivr_created</a> event if there is a valid audio URL or backdown text. This will contain a message which the caller should handle as an IVR play command if it has an audio attachment, or otherwise an IVR say command using the message text.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb24"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">{</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;say_msg&quot;</span><span class="fu">,</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a>    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi @contact.name, are you ready to complete today&#39;s survey?&quot;</span><span class="fu">,</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a>    <span class="dt">&quot;audio_url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://uploads.temba.io/2353262.m4a&quot;</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb25"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">{</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;ivr_created&quot;</span><span class="fu">,</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1b5491ec-2b83-445d-bebe-b4a1f677cf4c&quot;</span><span class="fu">,</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a>    <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb25-6"><a href="#cb25-6"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;688e64f9-2456-4b42-afcb-91a2073e5459&quot;</span><span class="fu">,</span></span>
+<span id="cb25-7"><a href="#cb25-7"></a>        <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12065551212&quot;</span><span class="fu">,</span></span>
+<span id="cb25-8"><a href="#cb25-8"></a>        <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb25-9"><a href="#cb25-9"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;fd47a886-451b-46fb-bcb6-242a4046c0c0&quot;</span><span class="fu">,</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Nexmo&quot;</span></span>
+<span id="cb25-11"><a href="#cb25-11"></a>        <span class="fu">},</span></span>
+<span id="cb25-12"><a href="#cb25-12"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi Ryan Lewis, are you ready to complete today&#39;s survey?&quot;</span><span class="fu">,</span></span>
+<span id="cb25-13"><a href="#cb25-13"></a>        <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb25-14"><a href="#cb25-14"></a>            <span class="st">&quot;audio:http://uploads.temba.io/2353262.m4a&quot;</span></span>
+<span id="cb25-15"><a href="#cb25-15"></a>        <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb25-16"><a href="#cb25-16"></a>        <span class="dt">&quot;text_language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span></span>
+<span id="cb25-17"><a href="#cb25-17"></a>    <span class="fu">}</span></span>
+<span id="cb25-18"><a href="#cb25-18"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:send_broadcast" href="#action:send_broadcast">send_broadcast</a>
+</h2>
+<p>Can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups and a list of contacts.</p>
+<p>The URNs and text fields may be templates. A <a href="sessions.html#event:broadcast_created">broadcast_created</a> event will be created for each unique urn, contact and group with the evaluated text.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb26"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">{</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;send_broadcast&quot;</span><span class="fu">,</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a>    <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a>        <span class="st">&quot;tel:+12065551212&quot;</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb26-7"><a href="#cb26-7"></a>    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi @contact.name, are you ready to complete today&#39;s survey?&quot;</span></span>
+<span id="cb26-8"><a href="#cb26-8"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb27"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">{</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;broadcast_created&quot;</span><span class="fu">,</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a>    <span class="dt">&quot;translations&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>        <span class="dt">&quot;eng&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a>            <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi Ryan Lewis, are you ready to complete today&#39;s survey?&quot;</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a>        <span class="fu">}</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a>    <span class="fu">},</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a>    <span class="dt">&quot;base_language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span><span class="fu">,</span></span>
+<span id="cb27-11"><a href="#cb27-11"></a>    <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a>        <span class="st">&quot;tel:+12065551212&quot;</span></span>
+<span id="cb27-13"><a href="#cb27-13"></a>    <span class="ot">]</span></span>
+<span id="cb27-14"><a href="#cb27-14"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:send_email" href="#action:send_email">send_email</a>
+</h2>
+<p>Can be used to send an email to one or more recipients. The subject, body and addresses can all contain expressions.</p>
+<p>An <a href="sessions.html#event:email_sent">email_sent</a> event will be created if the email could be sent.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">{</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;send_email&quot;</span><span class="fu">,</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a>    <span class="dt">&quot;addresses&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb28-5"><a href="#cb28-5"></a>        <span class="st">&quot;@urns.mailto&quot;</span></span>
+<span id="cb28-6"><a href="#cb28-6"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a>    <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="st">&quot;Here is your activation token&quot;</span><span class="fu">,</span></span>
+<span id="cb28-8"><a href="#cb28-8"></a>    <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;Your activation token is @contact.fields.activation_token&quot;</span></span>
+<span id="cb28-9"><a href="#cb28-9"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb29"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">{</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;email_sent&quot;</span><span class="fu">,</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb29-5"><a href="#cb29-5"></a>    <span class="dt">&quot;to&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a>        <span class="st">&quot;foo@bar.com&quot;</span></span>
+<span id="cb29-7"><a href="#cb29-7"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb29-8"><a href="#cb29-8"></a>    <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="st">&quot;Here is your activation token&quot;</span><span class="fu">,</span></span>
+<span id="cb29-9"><a href="#cb29-9"></a>    <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;Your activation token is AACC55&quot;</span></span>
+<span id="cb29-10"><a href="#cb29-10"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:send_msg" href="#action:send_msg">send_msg</a>
+</h2>
+<p>Can be used to reply to the current contact in a flow. The text field may contain templates. The action will attempt to find pairs of URNs and channels which can be used for sending. If it can’t find such a pair, it will create a message without a channel or URN.</p>
+<p>A <a href="sessions.html#event:msg_created">msg_created</a> event will be created with the evaluated text.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">{</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;send_msg&quot;</span><span class="fu">,</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a>    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi @contact.name, are you ready to complete today&#39;s survey?&quot;</span><span class="fu">,</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a>    <span class="dt">&quot;templating&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;32c2ead6-3fa3-4402-8e27-9cc718175c5a&quot;</span><span class="fu">,</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a>        <span class="dt">&quot;template&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb30-8"><a href="#cb30-8"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;3ce100b7-a734-4b4e-891b-350b1279ade2&quot;</span><span class="fu">,</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;revive_issue&quot;</span></span>
+<span id="cb30-10"><a href="#cb30-10"></a>        <span class="fu">},</span></span>
+<span id="cb30-11"><a href="#cb30-11"></a>        <span class="dt">&quot;variables&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb30-12"><a href="#cb30-12"></a>            <span class="st">&quot;@contact.name&quot;</span></span>
+<span id="cb30-13"><a href="#cb30-13"></a>        <span class="ot">]</span></span>
+<span id="cb30-14"><a href="#cb30-14"></a>    <span class="fu">},</span></span>
+<span id="cb30-15"><a href="#cb30-15"></a>    <span class="dt">&quot;topic&quot;</span><span class="fu">:</span> <span class="st">&quot;event&quot;</span></span>
+<span id="cb30-16"><a href="#cb30-16"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb31"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">{</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_created&quot;</span><span class="fu">,</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb31-5"><a href="#cb31-5"></a>    <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb31-6"><a href="#cb31-6"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b52a7f80-f820-4163-9654-8a7258fbaae4&quot;</span><span class="fu">,</span></span>
+<span id="cb31-7"><a href="#cb31-7"></a>        <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="fu">,</span></span>
+<span id="cb31-8"><a href="#cb31-8"></a>        <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb31-9"><a href="#cb31-9"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="fu">,</span></span>
+<span id="cb31-10"><a href="#cb31-10"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;My Android Phone&quot;</span></span>
+<span id="cb31-11"><a href="#cb31-11"></a>        <span class="fu">},</span></span>
+<span id="cb31-12"><a href="#cb31-12"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi Ryan Lewis, are you ready to complete today&#39;s survey?&quot;</span><span class="fu">,</span></span>
+<span id="cb31-13"><a href="#cb31-13"></a>        <span class="dt">&quot;topic&quot;</span><span class="fu">:</span> <span class="st">&quot;event&quot;</span></span>
+<span id="cb31-14"><a href="#cb31-14"></a>    <span class="fu">}</span></span>
+<span id="cb31-15"><a href="#cb31-15"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:set_contact_channel" href="#action:set_contact_channel">set_contact_channel</a>
+</h2>
+<p>Can be used to change or clear the preferred channel of the current contact.</p>
+<p>Because channel affinity is a property of a contact’s URNs, a <a href="sessions.html#event:contact_urns_changed">contact_urns_changed</a> event will be created if any changes are made to the contact’s URNs.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">{</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_channel&quot;</span><span class="fu">,</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb32-4"><a href="#cb32-4"></a>    <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb32-5"><a href="#cb32-5"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4bb288a0-7fca-4da1-abe8-59a593aff648&quot;</span><span class="fu">,</span></span>
+<span id="cb32-6"><a href="#cb32-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Facebook Channel&quot;</span></span>
+<span id="cb32-7"><a href="#cb32-7"></a>    <span class="fu">}</span></span>
+<span id="cb32-8"><a href="#cb32-8"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb33"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb33-1"><a href="#cb33-1"></a><span class="ot">[]</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:set_contact_field" href="#action:set_contact_field">set_contact_field</a>
+</h2>
+<p>Can be used to update a field value on the contact. The value is a localizable template and white space is trimmed from the final value. An empty string clears the value. A <a href="sessions.html#event:contact_field_changed">contact_field_changed</a> event will be created with the corresponding value.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">{</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_field&quot;</span><span class="fu">,</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb34-4"><a href="#cb34-4"></a>    <span class="dt">&quot;field&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb34-5"><a href="#cb34-5"></a>        <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;gender&quot;</span><span class="fu">,</span></span>
+<span id="cb34-6"><a href="#cb34-6"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></span>
+<span id="cb34-7"><a href="#cb34-7"></a>    <span class="fu">},</span></span>
+<span id="cb34-8"><a href="#cb34-8"></a>    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Female&quot;</span></span>
+<span id="cb34-9"><a href="#cb34-9"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb35"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">{</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_field_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb35-3"><a href="#cb35-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb35-4"><a href="#cb35-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb35-5"><a href="#cb35-5"></a>    <span class="dt">&quot;field&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb35-6"><a href="#cb35-6"></a>        <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;gender&quot;</span><span class="fu">,</span></span>
+<span id="cb35-7"><a href="#cb35-7"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></span>
+<span id="cb35-8"><a href="#cb35-8"></a>    <span class="fu">},</span></span>
+<span id="cb35-9"><a href="#cb35-9"></a>    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb35-10"><a href="#cb35-10"></a>        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Female&quot;</span></span>
+<span id="cb35-11"><a href="#cb35-11"></a>    <span class="fu">}</span></span>
+<span id="cb35-12"><a href="#cb35-12"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:set_contact_language" href="#action:set_contact_language">set_contact_language</a>
+</h2>
+<p>Can be used to update the name of the contact. The language is a localizable template and white space is trimmed from the final value. An empty string clears the language. A <a href="sessions.html#event:contact_language_changed">contact_language_changed</a> event will be created with the corresponding value.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">{</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_language&quot;</span><span class="fu">,</span></span>
+<span id="cb36-3"><a href="#cb36-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb36-4"><a href="#cb36-4"></a>    <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span></span>
+<span id="cb36-5"><a href="#cb36-5"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb37"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb37-1"><a href="#cb37-1"></a><span class="ot">[]</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:set_contact_name" href="#action:set_contact_name">set_contact_name</a>
+</h2>
+<p>Can be used to update the name of the contact. The name is a localizable template and white space is trimmed from the final value. An empty string clears the name. A <a href="sessions.html#event:contact_name_changed">contact_name_changed</a> event will be created with the corresponding value.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb38"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">{</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_name&quot;</span><span class="fu">,</span></span>
+<span id="cb38-3"><a href="#cb38-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb38-4"><a href="#cb38-4"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob Smith&quot;</span></span>
+<span id="cb38-5"><a href="#cb38-5"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb39"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">{</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_name_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb39-3"><a href="#cb39-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb39-4"><a href="#cb39-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb39-5"><a href="#cb39-5"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob Smith&quot;</span></span>
+<span id="cb39-6"><a href="#cb39-6"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:set_contact_timezone" href="#action:set_contact_timezone">set_contact_timezone</a>
+</h2>
+<p>Can be used to update the timezone of the contact. The timezone is a localizable template and white space is trimmed from the final value. An empty string clears the timezone. A <a href="sessions.html#event:contact_timezone_changed">contact_timezone_changed</a> event will be created with the corresponding value.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb40"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb40-1"><a href="#cb40-1"></a><span class="fu">{</span></span>
+<span id="cb40-2"><a href="#cb40-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_contact_timezone&quot;</span><span class="fu">,</span></span>
+<span id="cb40-3"><a href="#cb40-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb40-4"><a href="#cb40-4"></a>    <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;Africa/Kigali&quot;</span></span>
+<span id="cb40-5"><a href="#cb40-5"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb41"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb41-1"><a href="#cb41-1"></a><span class="fu">{</span></span>
+<span id="cb41-2"><a href="#cb41-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_timezone_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb41-3"><a href="#cb41-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb41-4"><a href="#cb41-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb41-5"><a href="#cb41-5"></a>    <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;Africa/Kigali&quot;</span></span>
+<span id="cb41-6"><a href="#cb41-6"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:set_run_result" href="#action:set_run_result">set_run_result</a>
+</h2>
+<p>Can be used to save a result for a flow. The result will be available in the context for the run as <span class="citation" data-cites="results">@results</span>.[name]. The optional category can be used as a way of categorizing results, this can be useful for reporting or analytics.</p>
+<p>Both the value and category fields may be templates. A <a href="sessions.html#event:run_result_changed">run_result_changed</a> event will be created with the final values.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb42"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb42-1"><a href="#cb42-1"></a><span class="fu">{</span></span>
+<span id="cb42-2"><a href="#cb42-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;set_run_result&quot;</span><span class="fu">,</span></span>
+<span id="cb42-3"><a href="#cb42-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb42-4"><a href="#cb42-4"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span><span class="fu">,</span></span>
+<span id="cb42-5"><a href="#cb42-5"></a>    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></span>
+<span id="cb42-6"><a href="#cb42-6"></a>    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></span>
+<span id="cb42-7"><a href="#cb42-7"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb43"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb43-1"><a href="#cb43-1"></a><span class="fu">{</span></span>
+<span id="cb43-2"><a href="#cb43-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb43-3"><a href="#cb43-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb43-4"><a href="#cb43-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb43-5"><a href="#cb43-5"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span><span class="fu">,</span></span>
+<span id="cb43-6"><a href="#cb43-6"></a>    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></span>
+<span id="cb43-7"><a href="#cb43-7"></a>    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></span>
+<span id="cb43-8"><a href="#cb43-8"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:start_session" href="#action:start_session">start_session</a>
+</h2>
+<p>Can be used to trigger sessions for other contacts and groups. A <a href="sessions.html#event:session_triggered">session_triggered</a> event will be created and it’s the responsibility of the caller to act on that by initiating a new session with the flow engine.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb44"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb44-1"><a href="#cb44-1"></a><span class="fu">{</span></span>
+<span id="cb44-2"><a href="#cb44-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;start_session&quot;</span><span class="fu">,</span></span>
+<span id="cb44-3"><a href="#cb44-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb44-4"><a href="#cb44-4"></a>    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb44-5"><a href="#cb44-5"></a>        <span class="fu">{</span></span>
+<span id="cb44-6"><a href="#cb44-6"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1e1ce1e1-9288-4504-869e-022d1003c72a&quot;</span><span class="fu">,</span></span>
+<span id="cb44-7"><a href="#cb44-7"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Customers&quot;</span></span>
+<span id="cb44-8"><a href="#cb44-8"></a>        <span class="fu">}</span></span>
+<span id="cb44-9"><a href="#cb44-9"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb44-10"><a href="#cb44-10"></a>    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb44-11"><a href="#cb44-11"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
+<span id="cb44-12"><a href="#cb44-12"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></span>
+<span id="cb44-13"><a href="#cb44-13"></a>    <span class="fu">}</span></span>
+<span id="cb44-14"><a href="#cb44-14"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb45"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb45-1"><a href="#cb45-1"></a><span class="fu">{</span></span>
+<span id="cb45-2"><a href="#cb45-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;session_triggered&quot;</span><span class="fu">,</span></span>
+<span id="cb45-3"><a href="#cb45-3"></a>    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb45-4"><a href="#cb45-4"></a>    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb45-5"><a href="#cb45-5"></a>    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-6"><a href="#cb45-6"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></span>
+<span id="cb45-7"><a href="#cb45-7"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></span>
+<span id="cb45-8"><a href="#cb45-8"></a>    <span class="fu">},</span></span>
+<span id="cb45-9"><a href="#cb45-9"></a>    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb45-10"><a href="#cb45-10"></a>        <span class="fu">{</span></span>
+<span id="cb45-11"><a href="#cb45-11"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1e1ce1e1-9288-4504-869e-022d1003c72a&quot;</span><span class="fu">,</span></span>
+<span id="cb45-12"><a href="#cb45-12"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Customers&quot;</span></span>
+<span id="cb45-13"><a href="#cb45-13"></a>        <span class="fu">}</span></span>
+<span id="cb45-14"><a href="#cb45-14"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb45-15"><a href="#cb45-15"></a>    <span class="dt">&quot;run_summary&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-16"><a href="#cb45-16"></a>        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;692926ea-09d6-4942-bd38-d266ec8d3716&quot;</span><span class="fu">,</span></span>
+<span id="cb45-17"><a href="#cb45-17"></a>        <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-18"><a href="#cb45-18"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span><span class="fu">,</span></span>
+<span id="cb45-19"><a href="#cb45-19"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></span>
+<span id="cb45-20"><a href="#cb45-20"></a>        <span class="fu">},</span></span>
+<span id="cb45-21"><a href="#cb45-21"></a>        <span class="dt">&quot;contact&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-22"><a href="#cb45-22"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span><span class="fu">,</span></span>
+<span id="cb45-23"><a href="#cb45-23"></a>            <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1234567</span><span class="fu">,</span></span>
+<span id="cb45-24"><a href="#cb45-24"></a>            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob Smith&quot;</span><span class="fu">,</span></span>
+<span id="cb45-25"><a href="#cb45-25"></a>            <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span><span class="fu">,</span></span>
+<span id="cb45-26"><a href="#cb45-26"></a>            <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;active&quot;</span><span class="fu">,</span></span>
+<span id="cb45-27"><a href="#cb45-27"></a>            <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;Africa/Kigali&quot;</span><span class="fu">,</span></span>
+<span id="cb45-28"><a href="#cb45-28"></a>            <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-06-20T11:40:30.123456789Z&quot;</span><span class="fu">,</span></span>
+<span id="cb45-29"><a href="#cb45-29"></a>            <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb45-30"><a href="#cb45-30"></a>                <span class="st">&quot;tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="ot">,</span></span>
+<span id="cb45-31"><a href="#cb45-31"></a>                <span class="st">&quot;twitterid:54784326227#nyaruka&quot;</span><span class="ot">,</span></span>
+<span id="cb45-32"><a href="#cb45-32"></a>                <span class="st">&quot;mailto:foo@bar.com&quot;</span><span class="ot">,</span></span>
+<span id="cb45-33"><a href="#cb45-33"></a>                <span class="st">&quot;tel:+12344563452&quot;</span></span>
+<span id="cb45-34"><a href="#cb45-34"></a>            <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb45-35"><a href="#cb45-35"></a>            <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb45-36"><a href="#cb45-36"></a>                <span class="fu">{</span></span>
+<span id="cb45-37"><a href="#cb45-37"></a>                    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span><span class="fu">,</span></span>
+<span id="cb45-38"><a href="#cb45-38"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Males&quot;</span></span>
+<span id="cb45-39"><a href="#cb45-39"></a>                <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb45-40"><a href="#cb45-40"></a>                <span class="fu">{</span></span>
+<span id="cb45-41"><a href="#cb45-41"></a>                    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1e1ce1e1-9288-4504-869e-022d1003c72a&quot;</span><span class="fu">,</span></span>
+<span id="cb45-42"><a href="#cb45-42"></a>                    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Customers&quot;</span></span>
+<span id="cb45-43"><a href="#cb45-43"></a>                <span class="fu">}</span></span>
+<span id="cb45-44"><a href="#cb45-44"></a>            <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb45-45"><a href="#cb45-45"></a>            <span class="dt">&quot;fields&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-46"><a href="#cb45-46"></a>                <span class="dt">&quot;activation_token&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-47"><a href="#cb45-47"></a>                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;AACC55&quot;</span></span>
+<span id="cb45-48"><a href="#cb45-48"></a>                <span class="fu">},</span></span>
+<span id="cb45-49"><a href="#cb45-49"></a>                <span class="dt">&quot;age&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-50"><a href="#cb45-50"></a>                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;23&quot;</span><span class="fu">,</span></span>
+<span id="cb45-51"><a href="#cb45-51"></a>                    <span class="dt">&quot;number&quot;</span><span class="fu">:</span> <span class="dv">23</span></span>
+<span id="cb45-52"><a href="#cb45-52"></a>                <span class="fu">},</span></span>
+<span id="cb45-53"><a href="#cb45-53"></a>                <span class="dt">&quot;gender&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-54"><a href="#cb45-54"></a>                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Female&quot;</span></span>
+<span id="cb45-55"><a href="#cb45-55"></a>                <span class="fu">},</span></span>
+<span id="cb45-56"><a href="#cb45-56"></a>                <span class="dt">&quot;join_date&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-57"><a href="#cb45-57"></a>                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;2017-12-02&quot;</span><span class="fu">,</span></span>
+<span id="cb45-58"><a href="#cb45-58"></a>                    <span class="dt">&quot;datetime&quot;</span><span class="fu">:</span> <span class="st">&quot;2017-12-02T00:00:00.000000-02:00&quot;</span></span>
+<span id="cb45-59"><a href="#cb45-59"></a>                <span class="fu">}</span></span>
+<span id="cb45-60"><a href="#cb45-60"></a>            <span class="fu">}</span></span>
+<span id="cb45-61"><a href="#cb45-61"></a>        <span class="fu">},</span></span>
+<span id="cb45-62"><a href="#cb45-62"></a>        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;completed&quot;</span><span class="fu">,</span></span>
+<span id="cb45-63"><a href="#cb45-63"></a>        <span class="dt">&quot;results&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-64"><a href="#cb45-64"></a>            <span class="dt">&quot;2factor&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-65"><a href="#cb45-65"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;2Factor&quot;</span><span class="fu">,</span></span>
+<span id="cb45-66"><a href="#cb45-66"></a>                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;34634624463525&quot;</span><span class="fu">,</span></span>
+<span id="cb45-67"><a href="#cb45-67"></a>                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></span>
+<span id="cb45-68"><a href="#cb45-68"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></span>
+<span id="cb45-69"><a href="#cb45-69"></a>            <span class="fu">},</span></span>
+<span id="cb45-70"><a href="#cb45-70"></a>            <span class="dt">&quot;favorite_color&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-71"><a href="#cb45-71"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Favorite Color&quot;</span><span class="fu">,</span></span>
+<span id="cb45-72"><a href="#cb45-72"></a>                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;red&quot;</span><span class="fu">,</span></span>
+<span id="cb45-73"><a href="#cb45-73"></a>                <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Red&quot;</span><span class="fu">,</span></span>
+<span id="cb45-74"><a href="#cb45-74"></a>                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></span>
+<span id="cb45-75"><a href="#cb45-75"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></span>
+<span id="cb45-76"><a href="#cb45-76"></a>            <span class="fu">},</span></span>
+<span id="cb45-77"><a href="#cb45-77"></a>            <span class="dt">&quot;gender&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-78"><a href="#cb45-78"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span><span class="fu">,</span></span>
+<span id="cb45-79"><a href="#cb45-79"></a>                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></span>
+<span id="cb45-80"><a href="#cb45-80"></a>                <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span><span class="fu">,</span></span>
+<span id="cb45-81"><a href="#cb45-81"></a>                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c0781400-737f-4940-9a6c-1ec1c3df0325&quot;</span><span class="fu">,</span></span>
+<span id="cb45-82"><a href="#cb45-82"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></span>
+<span id="cb45-83"><a href="#cb45-83"></a>            <span class="fu">},</span></span>
+<span id="cb45-84"><a href="#cb45-84"></a>            <span class="dt">&quot;help_ticket&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-85"><a href="#cb45-85"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Help Ticket&quot;</span><span class="fu">,</span></span>
+<span id="cb45-86"><a href="#cb45-86"></a>                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;4f15f627-b1e2-4851-8dbf-00ecf5d03034&quot;</span><span class="fu">,</span></span>
+<span id="cb45-87"><a href="#cb45-87"></a>                <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb45-88"><a href="#cb45-88"></a>                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c0781400-737f-4940-9a6c-1ec1c3df0325&quot;</span><span class="fu">,</span></span>
+<span id="cb45-89"><a href="#cb45-89"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></span>
+<span id="cb45-90"><a href="#cb45-90"></a>            <span class="fu">},</span></span>
+<span id="cb45-91"><a href="#cb45-91"></a>            <span class="dt">&quot;intent&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-92"><a href="#cb45-92"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Intent&quot;</span><span class="fu">,</span></span>
+<span id="cb45-93"><a href="#cb45-93"></a>                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span><span class="fu">,</span></span>
+<span id="cb45-94"><a href="#cb45-94"></a>                <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb45-95"><a href="#cb45-95"></a>                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c0781400-737f-4940-9a6c-1ec1c3df0325&quot;</span><span class="fu">,</span></span>
+<span id="cb45-96"><a href="#cb45-96"></a>                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi there&quot;</span><span class="fu">,</span></span>
+<span id="cb45-97"><a href="#cb45-97"></a>                <span class="dt">&quot;extra&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-98"><a href="#cb45-98"></a>                    <span class="dt">&quot;intents&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb45-99"><a href="#cb45-99"></a>                        <span class="fu">{</span></span>
+<span id="cb45-100"><a href="#cb45-100"></a>                            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_flight&quot;</span><span class="fu">,</span></span>
+<span id="cb45-101"><a href="#cb45-101"></a>                            <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.5</span></span>
+<span id="cb45-102"><a href="#cb45-102"></a>                        <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb45-103"><a href="#cb45-103"></a>                        <span class="fu">{</span></span>
+<span id="cb45-104"><a href="#cb45-104"></a>                            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;book_hotel&quot;</span><span class="fu">,</span></span>
+<span id="cb45-105"><a href="#cb45-105"></a>                            <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.25</span></span>
+<span id="cb45-106"><a href="#cb45-106"></a>                        <span class="fu">}</span></span>
+<span id="cb45-107"><a href="#cb45-107"></a>                    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb45-108"><a href="#cb45-108"></a>                    <span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-109"><a href="#cb45-109"></a>                        <span class="dt">&quot;location&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb45-110"><a href="#cb45-110"></a>                            <span class="fu">{</span></span>
+<span id="cb45-111"><a href="#cb45-111"></a>                                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Quito&quot;</span><span class="fu">,</span></span>
+<span id="cb45-112"><a href="#cb45-112"></a>                                <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
+<span id="cb45-113"><a href="#cb45-113"></a>                            <span class="fu">}</span></span>
+<span id="cb45-114"><a href="#cb45-114"></a>                        <span class="ot">]</span></span>
+<span id="cb45-115"><a href="#cb45-115"></a>                    <span class="fu">}</span></span>
+<span id="cb45-116"><a href="#cb45-116"></a>                <span class="fu">},</span></span>
+<span id="cb45-117"><a href="#cb45-117"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></span>
+<span id="cb45-118"><a href="#cb45-118"></a>            <span class="fu">},</span></span>
+<span id="cb45-119"><a href="#cb45-119"></a>            <span class="dt">&quot;phone_number&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-120"><a href="#cb45-120"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Phone Number&quot;</span><span class="fu">,</span></span>
+<span id="cb45-121"><a href="#cb45-121"></a>                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;+12344563452&quot;</span><span class="fu">,</span></span>
+<span id="cb45-122"><a href="#cb45-122"></a>                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></span>
+<span id="cb45-123"><a href="#cb45-123"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></span>
+<span id="cb45-124"><a href="#cb45-124"></a>            <span class="fu">},</span></span>
+<span id="cb45-125"><a href="#cb45-125"></a>            <span class="dt">&quot;webhook&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-126"><a href="#cb45-126"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook&quot;</span><span class="fu">,</span></span>
+<span id="cb45-127"><a href="#cb45-127"></a>                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;200&quot;</span><span class="fu">,</span></span>
+<span id="cb45-128"><a href="#cb45-128"></a>                <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span><span class="fu">,</span></span>
+<span id="cb45-129"><a href="#cb45-129"></a>                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c0781400-737f-4940-9a6c-1ec1c3df0325&quot;</span><span class="fu">,</span></span>
+<span id="cb45-130"><a href="#cb45-130"></a>                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;GET http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></span>
+<span id="cb45-131"><a href="#cb45-131"></a>                <span class="dt">&quot;extra&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-132"><a href="#cb45-132"></a>                    <span class="dt">&quot;ok&quot;</span><span class="fu">:</span> <span class="st">&quot;true&quot;</span></span>
+<span id="cb45-133"><a href="#cb45-133"></a>                <span class="fu">},</span></span>
+<span id="cb45-134"><a href="#cb45-134"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></span>
+<span id="cb45-135"><a href="#cb45-135"></a>            <span class="fu">}</span></span>
+<span id="cb45-136"><a href="#cb45-136"></a>        <span class="fu">}</span></span>
+<span id="cb45-137"><a href="#cb45-137"></a>    <span class="fu">}</span></span>
+<span id="cb45-138"><a href="#cb45-138"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<h2 class="item_title">
+<a name="action:transfer_airtime" href="#action:transfer_airtime">transfer_airtime</a>
+</h2>
+<p>Attempts to make an airtime transfer to the contact.</p>
+<p>An <a href="sessions.html#event:airtime_transferred">airtime_transferred</a> event will be created if the airtime could be sent.</p>
+<div class="input_action">
+<h3>
+Action
+</h3>
+<div class="sourceCode" id="cb46"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb46-1"><a href="#cb46-1"></a><span class="fu">{</span></span>
+<span id="cb46-2"><a href="#cb46-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;transfer_airtime&quot;</span><span class="fu">,</span></span>
+<span id="cb46-3"><a href="#cb46-3"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></span>
+<span id="cb46-4"><a href="#cb46-4"></a>    <span class="dt">&quot;amounts&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb46-5"><a href="#cb46-5"></a>        <span class="dt">&quot;RWF&quot;</span><span class="fu">:</span> <span class="dv">500</span><span class="fu">,</span></span>
+<span id="cb46-6"><a href="#cb46-6"></a>        <span class="dt">&quot;USD&quot;</span><span class="fu">:</span> <span class="fl">0.5</span></span>
+<span id="cb46-7"><a href="#cb46-7"></a>    <span class="fu">},</span></span>
+<span id="cb46-8"><a href="#cb46-8"></a>    <span class="dt">&quot;result_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Reward Transfer&quot;</span></span>
+<span id="cb46-9"><a href="#cb46-9"></a><span class="fu">}</span></span></code></pre></div>
+</div>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb47"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb47-1"><a href="#cb47-1"></a><span class="ot">[</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a>    <span class="fu">{</span></span>
+<span id="cb47-3"><a href="#cb47-3"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;airtime_transferred&quot;</span><span class="fu">,</span></span>
+<span id="cb47-4"><a href="#cb47-4"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb47-5"><a href="#cb47-5"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb47-6"><a href="#cb47-6"></a>        <span class="dt">&quot;sender&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+17036975131&quot;</span><span class="fu">,</span></span>
+<span id="cb47-7"><a href="#cb47-7"></a>        <span class="dt">&quot;recipient&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="fu">,</span></span>
+<span id="cb47-8"><a href="#cb47-8"></a>        <span class="dt">&quot;currency&quot;</span><span class="fu">:</span> <span class="st">&quot;RWF&quot;</span><span class="fu">,</span></span>
+<span id="cb47-9"><a href="#cb47-9"></a>        <span class="dt">&quot;desired_amount&quot;</span><span class="fu">:</span> <span class="dv">500</span><span class="fu">,</span></span>
+<span id="cb47-10"><a href="#cb47-10"></a>        <span class="dt">&quot;actual_amount&quot;</span><span class="fu">:</span> <span class="dv">500</span><span class="fu">,</span></span>
+<span id="cb47-11"><a href="#cb47-11"></a>        <span class="dt">&quot;http_logs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb47-12"><a href="#cb47-12"></a>            <span class="fu">{</span></span>
+<span id="cb47-13"><a href="#cb47-13"></a>                <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://send.airtime.com&quot;</span><span class="fu">,</span></span>
+<span id="cb47-14"><a href="#cb47-14"></a>                <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb47-15"><a href="#cb47-15"></a>                <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET / HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: send.airtime.com</span><span class="ch">\r\n</span><span class="st">User-Agent: Go-http-client/1.1</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">&quot;</span><span class="fu">,</span></span>
+<span id="cb47-16"><a href="#cb47-16"></a>                <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.0 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 15</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">status</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">ok</span><span class="ch">\&quot;</span><span class="st">}&quot;</span><span class="fu">,</span></span>
+<span id="cb47-17"><a href="#cb47-17"></a>                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2019-10-16T13:59:30.123456789Z&quot;</span><span class="fu">,</span></span>
+<span id="cb47-18"><a href="#cb47-18"></a>                <span class="dt">&quot;elapsed_ms&quot;</span><span class="fu">:</span> <span class="dv">0</span></span>
+<span id="cb47-19"><a href="#cb47-19"></a>            <span class="fu">}</span></span>
+<span id="cb47-20"><a href="#cb47-20"></a>        <span class="ot">]</span></span>
+<span id="cb47-21"><a href="#cb47-21"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb47-22"><a href="#cb47-22"></a>    <span class="fu">{</span></span>
+<span id="cb47-23"><a href="#cb47-23"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></span>
+<span id="cb47-24"><a href="#cb47-24"></a>        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></span>
+<span id="cb47-25"><a href="#cb47-25"></a>        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;312d3af0-a565-4c96-ba00-bd7f0d08e671&quot;</span><span class="fu">,</span></span>
+<span id="cb47-26"><a href="#cb47-26"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Reward Transfer&quot;</span><span class="fu">,</span></span>
+<span id="cb47-27"><a href="#cb47-27"></a>        <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;500&quot;</span><span class="fu">,</span></span>
+<span id="cb47-28"><a href="#cb47-28"></a>        <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Success&quot;</span></span>
+<span id="cb47-29"><a href="#cb47-29"></a>    <span class="fu">}</span></span>
+<span id="cb47-30"><a href="#cb47-30"></a><span class="ot">]</span></span></code></pre></div>
+</div>
+</div>
+
+    </body>
+</html>
