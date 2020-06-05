@@ -1,4 +1,4 @@
-package main
+package docs
 
 import (
 	"fmt"
@@ -6,11 +6,12 @@ import (
 	"path"
 	"strings"
 
+	"github.com/nyaruka/goflow/i18n"
 	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
-	registerGenerator("function listing", generateFunctionListing)
+	RegisterGenerator(&functionListingGenerator{})
 }
 
 type functionExample struct {
@@ -25,7 +26,28 @@ type functionListing struct {
 	Examples  []*functionExample `json:"examples"`
 }
 
-func generateFunctionListing(baseDir string, outputDir string, items map[string][]*TaggedItem) error {
+type functionListingGenerator struct{}
+
+func (g *functionListingGenerator) Name() string {
+	return "function listing"
+}
+
+func (g *functionListingGenerator) ExtractText(items map[string][]*TaggedItem) []string {
+	msgs := make([]string, 0)
+
+	for _, funcItem := range items["function"] {
+		summary := funcItem.description[0]
+		detail := strings.TrimSpace(strings.Join(funcItem.description[1:len(funcItem.description)-1], "\n"))
+
+		msgs = append(msgs, summary)
+		if detail != "" {
+			msgs = append(msgs, detail)
+		}
+	}
+	return msgs
+}
+
+func (g *functionListingGenerator) Generate(baseDir, outputDir string, items map[string][]*TaggedItem, po *i18n.PO) error {
 	funcItems := items["function"]
 	listings := make([]*functionListing, len(funcItems))
 
@@ -41,10 +63,11 @@ func generateFunctionListing(baseDir string, outputDir string, items map[string]
 
 		listings[i] = &functionListing{
 			Signature: funcItem.tagValue + funcItem.tagExtra,
-			Summary:   summary,
-			Detail:    detail,
+			Summary:   po.GetText("", summary),
+			Detail:    po.GetText("", detail),
 			Examples:  examples,
 		}
+
 	}
 
 	data, err := jsonx.MarshalPretty(listings)
@@ -59,13 +82,6 @@ func generateFunctionListing(baseDir string, outputDir string, items map[string]
 	}
 
 	fmt.Printf(" > %d functions written to %s\n", len(listings), listingPath)
-
-	// print table of function signatures and summaries
-	//fmt.Printf("|Summary                                      |Signature                                                                                           |\n")
-	//fmt.Printf("|---------------------------------------------|----------------------------------------------------------------------------------------------------|\n")
-	//for _, fn := range listings {
-	//	fmt.Printf("|%-45s|%-100s|\n", fn.Signature, fn.Summary)
-	//}
 
 	return nil
 }

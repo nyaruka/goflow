@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/i18n"
+	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -92,7 +93,7 @@ msgstr "No"
 		b.String())
 }
 
-func TestReadPO(t *testing.T) {
+func TestReadAndWritePO(t *testing.T) {
 	poFile, err := os.Open("testdata/exports/translation_mismatches.noargs.es.po")
 	require.NoError(t, err)
 
@@ -121,6 +122,37 @@ func TestReadPO(t *testing.T) {
 	badReader := iotest.TimeoutReader(strings.NewReader(`# Generated`))
 	_, err = i18n.ReadPO(badReader)
 	assert.EqualError(t, err, "timeout")
+
+	// we can sort the entries
+	po.Sort()
+
+	assert.Equal(t, "Blue", po.Entries[0].MsgID)
+	assert.Equal(t, "Other", po.Entries[1].MsgID)
+	assert.Equal(t, "Red", po.Entries[2].MsgID)
+	assert.Equal(t, "", po.Entries[2].MsgContext)
+	assert.Equal(t, "Red", po.Entries[3].MsgID)
+	assert.Equal(t, "d1ce3c92-7025-4607-a910-444361a6b9b3/name:0", po.Entries[3].MsgContext)
+
+	// test writing the PO file
+	b := &strings.Builder{}
+	po.Write(b)
+	test.AssertSnapshot(t, "write_po", b.String())
+}
+
+func TestGetText(t *testing.T) {
+	poFile, err := os.Open("testdata/locales/es/simple.po")
+	require.NoError(t, err)
+
+	defer poFile.Close()
+	po, err := i18n.ReadPO(poFile)
+	require.NoError(t, err)
+
+	assert.Equal(t, "Rojo", po.GetText("Male", "Red"))
+	assert.Equal(t, "Roja", po.GetText("Female", "Red"))
+	assert.Equal(t, "Red", po.GetText("", "Red"))
+	assert.Equal(t, "Azul", po.GetText("", "Blue"))
+	assert.Equal(t, "Missing", po.GetText("", "Missing"))
+	assert.Equal(t, "Not even an entry", po.GetText("", "Not even an entry"))
 }
 
 func TestEncodeAndDecodePOString(t *testing.T) {
