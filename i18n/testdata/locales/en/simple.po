@@ -1,0 +1,23 @@
+#  this is a simple POT file
+#  
+#, fuzzy
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-06-02 15:16-0500\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Red"
+msgctxt "Male"
+msgstr ""
+
+msgid "Red"
+msgctxt "Female"
+msgstr ""
+
+msgid "Blue"
+msgstr ""
+
+msgid "Missing"
+msgstr ""

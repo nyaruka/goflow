@@ -1,0 +1,141 @@
+<html>
+    <head>
+        <title>Context</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <center>
+            <h7>Context</h7>
+        </center>
+
+ <ul>
+<li><a href="#root">Root</a></li>
+<li><a href="#types">Types</a></li>
+</ul>  
+
+<h1 id="root">Root</h1>
+<p>These are the top-level variables that can be accessed in the context:</p>
+<ul>
+<li><code>contact</code> the contact (<a href="context.html#context:contact">contact</a>)</li>
+<li><code>fields</code> the custom field values of the contact (fields)</li>
+<li><code>urns</code> the URN values of the contact (urns)</li>
+<li><code>results</code> the current run results (results)</li>
+<li><code>input</code> the current input from the contact (<a href="context.html#context:input">input</a>)</li>
+<li><code>run</code> the current run (<a href="context.html#context:run">run</a>)</li>
+<li><code>child</code> the last child run (<a href="context.html#context:related_run">related_run</a>)</li>
+<li><code>parent</code> the parent of the run (<a href="context.html#context:related_run">related_run</a>)</li>
+<li><code>webhook</code> the parsed JSON response of the last webhook call (any)</li>
+<li><code>globals</code> the global values (globals)</li>
+<li><code>trigger</code> the trigger that started this session (<a href="context.html#context:trigger">trigger</a>)</li>
+</ul>
+<h1 id="types">Types</h1>
+<p>The following types are found in the context:</p>
+<div class="context">
+<h2 class="item_title">
+<a name="context:channel" href="#context:channel">channel</a>
+</h2>
+<p>Defaults to the name (<a href="expressions.html#type:text">text</a>)</p>
+<ul>
+<li><code>uuid</code> the UUID of the channel (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>name</code> the name of the channel (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>address</code> the address of the channel (<a href="expressions.html#type:text">text</a>)</li>
+</ul>
+<h2 class="item_title">
+<a name="context:contact" href="#context:contact">contact</a>
+</h2>
+<p>Defaults to the name or URN (<a href="expressions.html#type:text">text</a>)</p>
+<ul>
+<li><code>uuid</code> the UUID of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>id</code> the numeric ID of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>first_name</code> the first name of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>name</code> the name of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>language</code> the language of the contact as 3-letter ISO code (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>created_on</code> the creation date of the contact (<a href="expressions.html#type:datetime">datetime</a>)</li>
+<li><code>urns</code> the URNs belonging to the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>urn</code> the preferred URN of the contact (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>groups</code> the groups the contact belongs to (<a href="context.html#context:group">group</a>)</li>
+<li><code>fields</code> the custom field values of the contact (fields)</li>
+<li><code>channel</code> the preferred channel of the contact (<a href="context.html#context:channel">channel</a>)</li>
+</ul>
+<h2 class="item_title">
+<a name="context:flow" href="#context:flow">flow</a>
+</h2>
+<p>Defaults to the name (<a href="expressions.html#type:text">text</a>)</p>
+<ul>
+<li><code>uuid</code> the UUID of the flow (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>name</code> the name of the flow (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>revision</code> the revision number of the flow (<a href="expressions.html#type:text">text</a>)</li>
+</ul>
+<h2 class="item_title">
+<a name="context:group" href="#context:group">group</a>
+</h2>
+<ul>
+<li><code>uuid</code> the UUID of the group (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>name</code> the name of the group (<a href="expressions.html#type:text">text</a>)</li>
+</ul>
+<h2 class="item_title">
+<a name="context:input" href="#context:input">input</a>
+</h2>
+<p>Defaults to the text and attachments (<a href="expressions.html#type:text">text</a>)</p>
+<ul>
+<li><code>uuid</code> the UUID of the input (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>created_on</code> the creation date of the input (<a href="expressions.html#type:datetime">datetime</a>)</li>
+<li><code>channel</code> the channel that the input was received on (<a href="context.html#context:channel">channel</a>)</li>
+<li><code>urn</code> the contact URN that the input was received on (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>text</code> the text part of the input (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>attachments</code> any attachments on the input (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>external_id</code> the external ID of the input (<a href="expressions.html#type:text">text</a>)</li>
+</ul>
+<h2 class="item_title">
+<a name="context:related_run" href="#context:related_run">related_run</a>
+</h2>
+<p>Defaults to the contact name and flow UUID (<a href="expressions.html#type:text">text</a>)</p>
+<ul>
+<li><code>uuid</code> the UUID of the run (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>contact</code> the contact of the run (<a href="context.html#context:contact">contact</a>)</li>
+<li><code>flow</code> the flow of the run (<a href="context.html#context:flow">flow</a>)</li>
+<li><code>fields</code> the custom field values of the run (fields)</li>
+<li><code>urns</code> the URN values of the run (urns)</li>
+<li><code>results</code> the results saved by the run (any)</li>
+<li><code>status</code> the current status of the run (<a href="expressions.html#type:text">text</a>)</li>
+</ul>
+<h2 class="item_title">
+<a name="context:result" href="#context:result">result</a>
+</h2>
+<p>Defaults to the value (<a href="expressions.html#type:text">text</a>)</p>
+<ul>
+<li><code>name</code> the name of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>value</code> the value of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>category</code> the category of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>category_localized</code> the localized category of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>input</code> the input of the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>extra</code> the extra data of the result such as a webhook response (any)</li>
+<li><code>node_uuid</code> the UUID of the node in the flow that generated the result (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>created_on</code> the creation date of the result (<a href="expressions.html#type:datetime">datetime</a>)</li>
+</ul>
+<h2 class="item_title">
+<a name="context:run" href="#context:run">run</a>
+</h2>
+<p>Defaults to the contact name and flow UUID (<a href="expressions.html#type:text">text</a>)</p>
+<ul>
+<li><code>uuid</code> the UUID of the run (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>contact</code> the contact of the run (<a href="context.html#context:contact">contact</a>)</li>
+<li><code>flow</code> the flow of the run (<a href="context.html#context:flow">flow</a>)</li>
+<li><code>status</code> the current status of the run (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>results</code> the results saved by the run (results)</li>
+<li><code>created_on</code> the creation date of the run (<a href="expressions.html#type:datetime">datetime</a>)</li>
+<li><code>exited_on</code> the exit date of the run (<a href="expressions.html#type:datetime">datetime</a>)</li>
+</ul>
+<h2 class="item_title">
+<a name="context:trigger" href="#context:trigger">trigger</a>
+</h2>
+<ul>
+<li><code>type</code> the type of trigger that started this session (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>params</code> the parameters passed to the trigger (any)</li>
+<li><code>keyword</code> the keyword match if this is a keyword trigger (any)</li>
+</ul>
+</div>
+
+    </body>
+</html>
