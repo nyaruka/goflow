@@ -1,4 +1,4 @@
-package main
+package docs
 
 import (
 	"fmt"
@@ -9,16 +9,27 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/cmd/docgen/completion"
+	"github.com/nyaruka/goflow/i18n"
 	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
 )
 
 func init() {
-	registerGenerator("completion map", generateCompletionMap)
+	RegisterGenerator(&completionGenerator{})
 }
 
-func generateCompletionMap(baseDir string, outputDir string, items map[string][]*TaggedItem) error {
+type completionGenerator struct{}
+
+func (g *completionGenerator) Name() string {
+	return "completion map"
+}
+
+func (g *completionGenerator) ExtractText(items map[string][]*TaggedItem) []string {
+	return nil
+}
+
+func (g *completionGenerator) Generate(baseDir, outputDir string, items map[string][]*TaggedItem, po *i18n.PO) error {
 	types := []completion.Type{
 		// the dynamic types in the context aren't described in the code so we add them manually here
 		completion.NewDynamicType("fields", "fields", completion.NewProperty("{key}", "{key} for the contact", "any")),
@@ -63,9 +74,9 @@ func generateCompletionMap(baseDir string, outputDir string, items map[string][]
 	fmt.Printf(" > %d completion map written to %s\n", len(items["context"]), mapPath)
 
 	context := completion.NewContext(map[string][]string{
-		"fields":  []string{"age", "gender"},
-		"globals": []string{"org_name"},
-		"results": []string{"response_1"},
+		"fields":  {"age", "gender"},
+		"globals": {"org_name"},
+		"results": {"response_1"},
 	})
 	nodes := c.EnumerateNodes(context)
 

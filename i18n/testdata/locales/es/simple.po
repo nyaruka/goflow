@@ -1,0 +1,23 @@
+#  this is a simple PO file
+#  
+#, fuzzy
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-06-02 15:16-0500\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgctxt "Male"
+msgid "Red"
+msgstr "Rojo"
+
+msgctxt "Female"
+msgid "Red"
+msgstr "Roja"
+
+msgid "Blue"
+msgstr "Azul"
+
+msgid "Missing"
+msgstr ""

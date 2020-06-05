@@ -1,3 +1,14 @@
+v0.88.0
+----------
+ * Add support for localized documentation
+
+v0.87.0
+----------
+ * Disallow opening tickets, starting sessions and sending broadcasts when doing batch start
+ * Add ability to change the language of a flow
+ * Update our format_datetime docs to properly show range of 01-24
+ * Fix evaluation of legacy vars in other-contacts actions
+
 v0.86.2
 ----------
  * Fix spelling of Readact
