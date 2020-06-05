@@ -209,6 +209,33 @@ func (p *PO) AddEntry(e *POEntry) {
 	}
 }
 
+// Sort sorts entries by ID and context
+func (p *PO) Sort() {
+	sort.SliceStable(p.Entries, func(i, j int) bool {
+		e1 := p.Entries[i]
+		e2 := p.Entries[j]
+		cmp := strings.Compare(e1.MsgID, e2.MsgID)
+		if cmp == 0 {
+			return strings.Compare(e1.MsgContext, e2.MsgContext) < 0
+		}
+		return cmp < 0
+	})
+}
+
+// GetText gets the translations of text with the given context (optional)
+func (p *PO) GetText(context, text string) string {
+	c, exists := p.contexts[context]
+	if !exists {
+		return text
+	}
+	entry := c[text]
+	if entry == nil || entry.MsgStr == "" {
+		return text
+	}
+	return entry.MsgStr
+}
+
+// Write writes this PO to the given writer
 func (p *PO) Write(w io.Writer) {
 	if p.Header != nil {
 		p.Header.asEntry().Write(w)

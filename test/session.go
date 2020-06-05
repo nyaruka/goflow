@@ -563,7 +563,7 @@ func CreateSession(assetsJSON json.RawMessage, flowUUID assets.FlowUUID) (flows.
 
 	env := envs.NewBuilder().Build()
 	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
-	trigger := triggers.NewManual(env, flow.Reference(), contact, nil)
+	trigger := triggers.NewManual(env, flow.Reference(), contact, false, nil)
 	eng := engine.NewBuilder().Build()
 
 	return eng.NewSession(sa, trigger)

@@ -1,0 +1,185 @@
+<html>
+    <head>
+        <title>Assets</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <center>
+            <h7>Assets</h7>
+        </center>
+
+ <ul>
+<li><a href="#types">Types</a></li>
+</ul>  
+
+<p>Assets are objects which can be referenced in a flow definition or flow definitions themselves. For example the <a href="flows.html#action:set_contact_field">set_contact_field</a> action references a field asset.</p>
+<h1 id="types">Types</h1>
+<div class="assets">
+<h2 class="item_title">
+<a name="asset:channel" href="#asset:channel">channel</a>
+</h2>
+<p>Is something that can send/receive messages.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb1-1"><a href="#cb1-1"></a>{</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;14782905-81a6-4910-bc9f-93ad287b23c3&quot;</span>,</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;My Android&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    <span class="st">&quot;address&quot;</span>: <span class="st">&quot;+593979011111&quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    <span class="st">&quot;schemes&quot;</span>: [</span>
+<span id="cb1-6"><a href="#cb1-6"></a>        <span class="st">&quot;tel&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>    ],</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    <span class="st">&quot;roles&quot;</span>: [</span>
+<span id="cb1-9"><a href="#cb1-9"></a>        <span class="st">&quot;send&quot;</span>,</span>
+<span id="cb1-10"><a href="#cb1-10"></a>        <span class="st">&quot;receive&quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>    ],</span>
+<span id="cb1-12"><a href="#cb1-12"></a>    <span class="st">&quot;country&quot;</span>: <span class="st">&quot;EC&quot;</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:classifier" href="#asset:classifier">classifier</a>
+</h2>
+<p>Is an NLU classifier.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb2-1"><a href="#cb2-1"></a>{</span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;37657cf7-5eab-4286-9cb0-bbf270587bad&quot;</span>,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Booking&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="st">&quot;type&quot;</span>: <span class="st">&quot;wit&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="st">&quot;intents&quot;</span>: [</span>
+<span id="cb2-6"><a href="#cb2-6"></a>        <span class="st">&quot;book_flight&quot;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>        <span class="st">&quot;book_hotel&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    ]</span>
+<span id="cb2-9"><a href="#cb2-9"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:field" href="#asset:field">field</a>
+</h2>
+<p>Is a custom contact property.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb3-1"><a href="#cb3-1"></a>{</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;d66a7823-eada-40e5-9a3a-57239d4690bf&quot;</span>,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="st">&quot;key&quot;</span>: <span class="st">&quot;gender&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Gender&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="st">&quot;type&quot;</span>: <span class="st">&quot;text&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:flow" href="#asset:flow">flow</a>
+</h2>
+<p>Is graph of nodes with actions and routers.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb4-1"><a href="#cb4-1"></a>{</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;14782905-81a6-4910-bc9f-93ad287b23c3&quot;</span>,</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Registration&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="st">&quot;definition&quot;</span>: {</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="st">&quot;nodes&quot;</span>: []</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    }</span>
+<span id="cb4-7"><a href="#cb4-7"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:global" href="#asset:global">global</a>
+</h2>
+<p>Is a named constant.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb5-1"><a href="#cb5-1"></a>{</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="st">&quot;key&quot;</span>: <span class="st">&quot;organization_name&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Organization Name&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="st">&quot;value&quot;</span>: <span class="st">&quot;U-Report&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:group" href="#asset:group">group</a>
+</h2>
+<p>Is a set of contacts which can be static or dynamic (i.e. based on a query).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb6-1"><a href="#cb6-1"></a>{</span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;14782905-81a6-4910-bc9f-93ad287b23c3&quot;</span>,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Youth&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="st">&quot;query&quot;</span>: <span class="st">&quot;age &lt;= 18&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:label" href="#asset:label">label</a>
+</h2>
+<p>Is an organizational tag that can be applied to a message.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb7-1"><a href="#cb7-1"></a>{</span>
+<span id="cb7-2"><a href="#cb7-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;14782905-81a6-4910-bc9f-93ad287b23c3&quot;</span>,</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Spam&quot;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:location" href="#asset:location">location</a>
+</h2>
+<p>Is a searchable hierarchy of locations.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb8-1"><a href="#cb8-1"></a>{</span>
+<span id="cb8-2"><a href="#cb8-2"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Rwanda&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="st">&quot;aliases&quot;</span>: [</span>
+<span id="cb8-4"><a href="#cb8-4"></a>        <span class="st">&quot;Ruanda&quot;</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>    ],</span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="st">&quot;children&quot;</span>: [</span>
+<span id="cb8-7"><a href="#cb8-7"></a>        {</span>
+<span id="cb8-8"><a href="#cb8-8"></a>            <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Kigali City&quot;</span>,</span>
+<span id="cb8-9"><a href="#cb8-9"></a>            <span class="st">&quot;aliases&quot;</span>: [</span>
+<span id="cb8-10"><a href="#cb8-10"></a>                <span class="st">&quot;Kigali&quot;</span>,</span>
+<span id="cb8-11"><a href="#cb8-11"></a>                <span class="st">&quot;Kigari&quot;</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a>            ],</span>
+<span id="cb8-13"><a href="#cb8-13"></a>            <span class="st">&quot;children&quot;</span>: [</span>
+<span id="cb8-14"><a href="#cb8-14"></a>                {</span>
+<span id="cb8-15"><a href="#cb8-15"></a>                    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Gasabo&quot;</span>,</span>
+<span id="cb8-16"><a href="#cb8-16"></a>                    <span class="st">&quot;children&quot;</span>: [</span>
+<span id="cb8-17"><a href="#cb8-17"></a>                        {</span>
+<span id="cb8-18"><a href="#cb8-18"></a>                            <span class="st">&quot;id&quot;</span>: <span class="st">&quot;575743222&quot;</span>,</span>
+<span id="cb8-19"><a href="#cb8-19"></a>                            <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Gisozi&quot;</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a>                        },</span>
+<span id="cb8-21"><a href="#cb8-21"></a>                        {</span>
+<span id="cb8-22"><a href="#cb8-22"></a>                            <span class="st">&quot;id&quot;</span>: <span class="st">&quot;457378732&quot;</span>,</span>
+<span id="cb8-23"><a href="#cb8-23"></a>                            <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Ndera&quot;</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a>                        }</span>
+<span id="cb8-25"><a href="#cb8-25"></a>                    ]</span>
+<span id="cb8-26"><a href="#cb8-26"></a>                },</span>
+<span id="cb8-27"><a href="#cb8-27"></a>                {</span>
+<span id="cb8-28"><a href="#cb8-28"></a>                    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Nyarugenge&quot;</span>,</span>
+<span id="cb8-29"><a href="#cb8-29"></a>                    <span class="st">&quot;children&quot;</span>: []</span>
+<span id="cb8-30"><a href="#cb8-30"></a>                }</span>
+<span id="cb8-31"><a href="#cb8-31"></a>            ]</span>
+<span id="cb8-32"><a href="#cb8-32"></a>        },</span>
+<span id="cb8-33"><a href="#cb8-33"></a>        {</span>
+<span id="cb8-34"><a href="#cb8-34"></a>            <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Eastern Province&quot;</span></span>
+<span id="cb8-35"><a href="#cb8-35"></a>        }</span>
+<span id="cb8-36"><a href="#cb8-36"></a>    ]</span>
+<span id="cb8-37"><a href="#cb8-37"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:resthook" href="#asset:resthook">resthook</a>
+</h2>
+<p>Is a set of URLs which are subscribed to the named event.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb9-1"><a href="#cb9-1"></a>{</span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="st">&quot;slug&quot;</span>: <span class="st">&quot;new-registration&quot;</span>,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="st">&quot;subscribers&quot;</span>: [</span>
+<span id="cb9-4"><a href="#cb9-4"></a>        <span class="st">&quot;http://example.com/record.php?@contact.uuid&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>    ]</span>
+<span id="cb9-6"><a href="#cb9-6"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:template" href="#asset:template">template</a>
+</h2>
+<p>Is a message template, currently only used by WhatsApp channels</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb10-1"><a href="#cb10-1"></a>{</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;revive-issue&quot;</span>,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;14782905-81a6-4910-bc9f-93ad287b23c3&quot;</span>,</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="st">&quot;translations&quot;</span>: [</span>
+<span id="cb10-5"><a href="#cb10-5"></a>        {</span>
+<span id="cb10-6"><a href="#cb10-6"></a>            <span class="st">&quot;language&quot;</span>: <span class="st">&quot;eng&quot;</span>,</span>
+<span id="cb10-7"><a href="#cb10-7"></a>            <span class="st">&quot;content&quot;</span>: <span class="st">&quot;Hi {{1}}, are you still experiencing your issue?&quot;</span>,</span>
+<span id="cb10-8"><a href="#cb10-8"></a>            <span class="st">&quot;channel&quot;</span>: {</span>
+<span id="cb10-9"><a href="#cb10-9"></a>                <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;cf26be4c-875f-4094-9e08-162c3c9dcb5b&quot;</span>,</span>
+<span id="cb10-10"><a href="#cb10-10"></a>                <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Twilio Channel&quot;</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>            }</span>
+<span id="cb10-12"><a href="#cb10-12"></a>        },</span>
+<span id="cb10-13"><a href="#cb10-13"></a>        {</span>
+<span id="cb10-14"><a href="#cb10-14"></a>            <span class="st">&quot;language&quot;</span>: <span class="st">&quot;fra&quot;</span>,</span>
+<span id="cb10-15"><a href="#cb10-15"></a>            <span class="st">&quot;content&quot;</span>: <span class="st">&quot;Bonjour {{1}}&quot;</span>,</span>
+<span id="cb10-16"><a href="#cb10-16"></a>            <span class="st">&quot;channel&quot;</span>: {</span>
+<span id="cb10-17"><a href="#cb10-17"></a>                <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;cf26be4c-875f-4094-9e08-162c3c9dcb5b&quot;</span>,</span>
+<span id="cb10-18"><a href="#cb10-18"></a>                <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Twilio Channel&quot;</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a>            }</span>
+<span id="cb10-20"><a href="#cb10-20"></a>        }</span>
+<span id="cb10-21"><a href="#cb10-21"></a>    ]</span>
+<span id="cb10-22"><a href="#cb10-22"></a>}</span></code></pre></div>
+<h2 class="item_title">
+<a name="asset:ticketer" href="#asset:ticketer">ticketer</a>
+</h2>
+<p>Is a system which can open or close tickets</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb11-1"><a href="#cb11-1"></a>{</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="st">&quot;uuid&quot;</span>: <span class="st">&quot;37657cf7-5eab-4286-9cb0-bbf270587bad&quot;</span>,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="st">&quot;name&quot;</span>: <span class="st">&quot;Support Tickets&quot;</span>,</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="st">&quot;type&quot;</span>: <span class="st">&quot;mailgun&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>}</span></code></pre></div>
+</div>
+
+    </body>
+</html>

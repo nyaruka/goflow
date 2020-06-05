@@ -69,7 +69,7 @@ func NewChannel(env envs.Environment, flow *assets.FlowReference, contact *flows
 	}
 
 	return &ChannelTrigger{
-		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, nil, params),
+		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, nil, false, params),
 		event:       event,
 	}
 }
@@ -80,7 +80,7 @@ func NewIncomingCall(env envs.Environment, flow *assets.FlowReference, contact *
 	connection := flows.NewConnection(channel, urn)
 
 	return &ChannelTrigger{
-		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, connection, types.XObjectEmpty),
+		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, connection, false, types.XObjectEmpty),
 		event:       event,
 	}
 }
