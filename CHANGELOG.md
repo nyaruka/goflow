@@ -1,3 +1,7 @@
+v0.88.0
+----------
+ * Add support for localized documentation
+
 v0.87.0
 ----------
  * Disallow opening tickets, starting sessions and sending broadcasts when doing batch start
