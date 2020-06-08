@@ -627,20 +627,20 @@ func TestChangeLanguage(t *testing.T) {
 	flow, err := test.LoadFlowFromAssets(env, "testdata/change_language.json", "19cad1f2-9110-4271-98d4-1b968bf19410")
 	require.NoError(t, err)
 
-	// can't change to kinyarwanda because there's no translation
-	_, err = flow.ChangeLanguage("kin")
-	assert.EqualError(t, err, "no translation exists for kin")
+	assertLanguageChange := func(lang envs.Language) {
+		copy, err := flow.ChangeLanguage(lang)
+		assert.NoError(t, err)
 
-	// can't change to arabic because it's missing translations
-	_, err = flow.ChangeLanguage("ara")
-	assert.EqualError(t, err, "missing ara translation for text at 61bc5ed3-e216-4457-8ce5-ad658e697f29/arguments, 5f5fa09f-bf88-4719-ba64-cab9cf2f67b5/arguments, 3a044264-81d1-4ba7-882a-e98740c8e724/name")
+		marshaled, err := jsonx.MarshalPretty(copy)
+		require.NoError(t, err)
+		test.AssertSnapshot(t, "change_language_to_"+string(lang), string(marshaled))
 
-	// can change to spanish because that translation is complete
-	copy, err := flow.ChangeLanguage("spa")
-	assert.NoError(t, err)
+		// check flow is valid by reading it back
+		_, err = definition.ReadFlow(marshaled, nil)
+		assert.NoError(t, err)
+	}
 
-	marshaled, err := jsonx.MarshalPretty(copy)
-	require.NoError(t, err)
-
-	test.AssertSnapshot(t, "change_language_to_spa", string(marshaled))
+	assertLanguageChange("spa") // has a complete translation
+	assertLanguageChange("ara") // missing translations will be left in eng
+	assertLanguageChange("kin") // everything is missing and will be left in eng
 }
