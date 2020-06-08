@@ -26,11 +26,10 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classif
 }
 
 func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	country := session.Environment().DefaultCountry()
-	language := session.Environment().DefaultLanguage().ToISO639_2(country)
-	language = strings.ReplaceAll(strings.ToLower(language), "-", "_") // en-US -> en_us
+	locale := session.Environment().DefaultLocale()
+	localeStr := strings.ReplaceAll(strings.ToLower(locale.ToISO639_2()), "-", "_") // en-US -> en_us
 
-	response, trace, err := s.client.Parse(input, language)
+	response, trace, err := s.client.Parse(input, localeStr)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}

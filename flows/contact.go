@@ -152,6 +152,26 @@ func (c *Contact) SetLanguage(lang envs.Language) { c.language = lang }
 // Language gets the language for this contact
 func (c *Contact) Language() envs.Language { return c.language }
 
+// Country gets the country for this contact..
+//
+// TODO: currently this is taken from their preferred channel but probably should become an explicit field at some point
+func (c *Contact) Country() envs.Country {
+	ch := c.PreferredChannel()
+	if ch != nil && ch.Country() != envs.NilCountry {
+		return ch.Country()
+	}
+	return envs.NilCountry
+}
+
+// Locale gets the locale for this contact, using the environment country if contact doesn't have one
+func (c *Contact) Locale(env envs.Environment) envs.Locale {
+	country := c.Country()
+	if country == envs.NilCountry {
+		country = env.DefaultCountry()
+	}
+	return envs.NewLocale(c.language, country)
+}
+
 // Status returns the contact status
 func (c *Contact) Status() ContactStatus { return c.status }
 

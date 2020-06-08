@@ -264,6 +264,7 @@ type Template interface {
 type TemplateTranslation interface {
 	Content() string
 	Language() envs.Language
+	Country() envs.Country
 	VariableCount() int
 	Channel() ChannelReference
 }

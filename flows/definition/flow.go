@@ -2,8 +2,6 @@ package definition
 
 import (
 	"encoding/json"
-	"fmt"
-	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -189,28 +187,23 @@ func (f *flow) ChangeLanguage(lang envs.Language) (flows.Flow, error) {
 
 	ll := copy.localization.(localization)
 
-	oldTranslation := make(languageTranslation) // current flow text extracted as a translation
-	newTranslation := ll[lang]
-
-	if newTranslation == nil {
-		return nil, errors.Errorf("no translation exists for %s", lang)
+	outTranslation := make(languageTranslation) // current flow text extracted out as a translation
+	inTranslation := ll[lang]                   // translation being imported in as new flow text
+	if inTranslation == nil {
+		inTranslation = languageTranslation{}
 	}
-
-	// all the locations where the incoming translation is missing text to replace current flow text
-	missing := make([]string, 0)
 
 	include := func(uuid uuids.UUID, property string, oldValues []string, w func([]string)) {
 		// save current flow text into a translation
 		if len(oldValues) > 0 {
-			oldTranslation.setTextArray(uuid, property, oldValues)
+			outTranslation.setTextArray(uuid, property, oldValues)
 		}
 
-		newValues := newTranslation.getTextArray(uuid, property)
+		newValues := inTranslation.getTextArray(uuid, property)
 
-		if len(oldValues) > 0 && len(newValues) == 0 {
-			missing = append(missing, fmt.Sprintf("%s/%s", uuid, property))
-		} else {
-			w(newValues) // update flow text in the definition
+		// if we have a translation, update flow text in the definition, if not then leave it as is
+		if len(newValues) > 0 {
+			w(newValues)
 		}
 	}
 
@@ -218,12 +211,9 @@ func (f *flow) ChangeLanguage(lang envs.Language) (flows.Flow, error) {
 		n.EnumerateLocalizables(include)
 	}
 
-	ll[copy.language] = oldTranslation
+	ll[copy.language] = outTranslation
+	delete(ll, lang)
 	copy.language = lang
-
-	if len(missing) > 0 {
-		return nil, errors.Errorf("missing %s translation for text at %s", lang, strings.Join(missing, ", "))
-	}
 
 	return copy, nil
 }
