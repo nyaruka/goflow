@@ -13,7 +13,6 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/i18n"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/random"
@@ -62,11 +61,7 @@ func (g *htmlDocsGenerator) Name() string {
 	return "html docs"
 }
 
-func (g *htmlDocsGenerator) ExtractText(items map[string][]*TaggedItem) []string {
-	return nil
-}
-
-func (g *htmlDocsGenerator) Generate(baseDir, outputDir string, items map[string][]*TaggedItem, po *i18n.PO) error {
+func (g *htmlDocsGenerator) Generate(baseDir, outputDir string, items map[string][]*TaggedItem, gettext func(string) string) error {
 	if err := renderTemplateDocs(baseDir, outputDir, items); err != nil {
 		return errors.Wrap(err, "error rendering templates")
 	}

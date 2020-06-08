@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2020-06-04 19:02-0500\n"
+"POT-Creation-Date: 2020-06-08 17:29-0500\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -491,4 +491,199 @@ msgstr ""
 msgid ""
 "You can optionally pass in the number of decimal places to round to as `places`. If `places` < 0,\n"
 "it will round the integer part to the nearest 10^(-places)."
+msgstr ""
+
+msgid "any attachments on the input"
+msgstr ""
+
+msgid "the URN values of the contact"
+msgstr ""
+
+msgid "the URN values of the run"
+msgstr ""
+
+msgid "the URNs belonging to the contact"
+msgstr ""
+
+msgid "the UUID of the channel"
+msgstr ""
+
+msgid "the UUID of the contact"
+msgstr ""
+
+msgid "the UUID of the flow"
+msgstr ""
+
+msgid "the UUID of the group"
+msgstr ""
+
+msgid "the UUID of the input"
+msgstr ""
+
+msgid "the UUID of the node in the flow that generated the result"
+msgstr ""
+
+msgid "the UUID of the run"
+msgstr ""
+
+msgid "the address of the channel"
+msgstr ""
+
+msgid "the category of the result"
+msgstr ""
+
+msgid "the channel that the input was received on"
+msgstr ""
+
+msgid "the contact"
+msgstr "o contato"
+
+msgid "the contact URN that the input was received on"
+msgstr ""
+
+msgid "the contact name and flow UUID"
+msgstr ""
+
+msgid "the contact of the run"
+msgstr ""
+
+msgid "the creation date of the contact"
+msgstr ""
+
+msgid "the creation date of the input"
+msgstr ""
+
+msgid "the creation date of the result"
+msgstr ""
+
+msgid "the creation date of the run"
+msgstr ""
+
+msgid "the current input from the contact"
+msgstr ""
+
+msgid "the current run"
+msgstr ""
+
+msgid "the current run results"
+msgstr ""
+
+msgid "the current status of the run"
+msgstr ""
+
+msgid "the custom field values of the contact"
+msgstr ""
+
+msgid "the custom field values of the run"
+msgstr ""
+
+msgid "the exit date of the run"
+msgstr ""
+
+msgid "the external ID of the input"
+msgstr ""
+
+msgid "the extra data of the result such as a webhook response"
+msgstr ""
+
+msgid "the first name of the contact"
+msgstr ""
+
+msgid "the flow of the run"
+msgstr ""
+
+msgid "the global value {key}"
+msgstr ""
+
+msgid "the global values"
+msgstr ""
+
+msgid "the groups the contact belongs to"
+msgstr ""
+
+msgid "the input of the result"
+msgstr ""
+
+msgid "the keyword match if this is a keyword trigger"
+msgstr ""
+
+msgid "the language of the contact as 3-letter ISO code"
+msgstr ""
+
+msgid "the last child run"
+msgstr ""
+
+msgid "the localized category of the result"
+msgstr ""
+
+msgid "the name"
+msgstr ""
+
+msgid "the name of the channel"
+msgstr ""
+
+msgid "the name of the contact"
+msgstr ""
+
+msgid "the name of the flow"
+msgstr ""
+
+msgid "the name of the group"
+msgstr ""
+
+msgid "the name of the result"
+msgstr ""
+
+msgid "the name or URN"
+msgstr ""
+
+msgid "the numeric ID of the contact"
+msgstr ""
+
+msgid "the parameters passed to the trigger"
+msgstr ""
+
+msgid "the parent of the run"
+msgstr ""
+
+msgid "the parsed JSON response of the last webhook call"
+msgstr ""
+
+msgid "the preferred URN of the contact"
+msgstr ""
+
+msgid "the preferred channel of the contact"
+msgstr ""
+
+msgid "the result for {key}"
+msgstr ""
+
+msgid "the results saved by the run"
+msgstr ""
+
+msgid "the revision number of the flow"
+msgstr ""
+
+msgid "the text and attachments"
+msgstr ""
+
+msgid "the text part of the input"
+msgstr ""
+
+msgid "the trigger that started this session"
+msgstr ""
+
+msgid "the type of trigger that started this session"
+msgstr ""
+
+msgid "the value"
+msgstr ""
+
+msgid "the value of the result"
+msgstr ""
+
+msgid "{key} for the contact"
+msgstr ""
+
+msgid "{type} URN for the contact"
 msgstr ""
