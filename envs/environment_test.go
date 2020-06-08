@@ -45,7 +45,14 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, 640, env.MaxValueLength())
 
 	// can create with valid values
-	env, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "default_language": "eng", "allowed_languages": ["eng", "fra"], "default_country": "RW", "timezone": "Africa/Kigali"}`))
+	env, err = envs.ReadEnvironment(json.RawMessage(`{
+		"date_format": "DD-MM-YYYY", 
+		"time_format": "tt:mm:ss", 
+		"default_language": "eng", 
+		"allowed_languages": ["eng", "fra"], 
+		"default_country": "RW", 
+		"timezone": "Africa/Kigali"
+	}`))
 	assert.NoError(t, err)
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())
 	assert.Equal(t, envs.TimeFormatHourMinuteSecond, env.TimeFormat())
@@ -53,6 +60,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, envs.Language("eng"), env.DefaultLanguage())
 	assert.Equal(t, []envs.Language{envs.Language("eng"), envs.Language("fra")}, env.AllowedLanguages())
 	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
+	assert.Equal(t, "en-RW", env.DefaultLocale().ToISO639_2())
 
 	data, err := jsonx.Marshal(env)
 	require.NoError(t, err)

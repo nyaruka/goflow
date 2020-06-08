@@ -31,20 +31,31 @@ func (t *Template) Reference() *assets.TemplateReference {
 }
 
 // FindTranslation finds the matching translation for the passed in channel and languages (in priority order)
-func (t *Template) FindTranslation(channel assets.ChannelUUID, langs []envs.Language) *TemplateTranslation {
+func (t *Template) FindTranslation(channel assets.ChannelUUID, locales []envs.Locale) *TemplateTranslation {
 	// first iterate through and find all translations that are for this channel
-	matches := make(map[envs.Language]assets.TemplateTranslation)
+	candidatesByLocale := make(map[envs.Locale]*TemplateTranslation)
+	candidatesByLang := make(map[envs.Language]*TemplateTranslation)
 	for _, tr := range t.Template.Translations() {
 		if tr.Channel().UUID == channel {
-			matches[tr.Language()] = tr
+			tt := NewTemplateTranslation(tr)
+			candidatesByLocale[tt.Locale()] = tt
+			candidatesByLang[tt.Language()] = tt
 		}
 	}
 
-	// now find the first that matches our language
-	for _, lang := range langs {
-		tr := matches[lang]
-		if tr != nil {
-			return NewTemplateTranslation(tr)
+	// first look for exact locale match
+	for _, locale := range locales {
+		tt := candidatesByLocale[locale]
+		if tt != nil {
+			return tt
+		}
+	}
+
+	// if that fails look for language match
+	for _, locale := range locales {
+		tt := candidatesByLang[locale.Language]
+		if tt != nil {
+			return tt
 		}
 	}
 
@@ -60,6 +71,9 @@ type TemplateTranslation struct {
 func NewTemplateTranslation(t assets.TemplateTranslation) *TemplateTranslation {
 	return &TemplateTranslation{TemplateTranslation: t}
 }
+
+// Locale returns the locale
+func (t *TemplateTranslation) Locale() envs.Locale { return envs.NewLocale(t.Language(), t.Country()) }
 
 // Asset returns the underlying asset
 func (t *TemplateTranslation) Asset() assets.TemplateTranslation { return t.TemplateTranslation }
@@ -108,7 +122,7 @@ func (a *TemplateAssets) Get(uuid assets.TemplateUUID) *Template {
 
 // FindTranslation looks through our list of templates to find the template matching the passed in uuid
 // If no template or translation is found then empty string is returned
-func (a *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, langs []envs.Language) *TemplateTranslation {
+func (a *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, locales []envs.Locale) *TemplateTranslation {
 	// no channel, can't match to a template
 	if channel == nil {
 		return nil
@@ -122,5 +136,5 @@ func (a *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *asse
 	}
 
 	// look through our translations looking for a match by both channel and translation
-	return template.FindTranslation(channel.UUID, langs)
+	return template.FindTranslation(channel.UUID, locales)
 }

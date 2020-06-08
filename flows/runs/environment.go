@@ -39,9 +39,9 @@ func (e *runEnvironment) DefaultCountry() envs.Country {
 
 	// if run has a contact with a preferred channel with a country, that overrides the environment's country
 	if contact != nil {
-		ch := contact.PreferredChannel()
-		if ch != nil && ch.Country() != envs.NilCountry {
-			return ch.Country()
+		cc := contact.Country()
+		if cc != envs.NilCountry {
+			return cc
 		}
 	}
 	return e.run.Session().Environment().DefaultCountry()
