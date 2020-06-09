@@ -1,4 +1,4 @@
-contact -> the contact (defaults to the name or URN)
+contact -> o contato (defaults to the name or URN)
 contact.uuid -> the UUID of the contact
 contact.id -> the numeric ID of the contact
 contact.first_name -> the first name of the contact

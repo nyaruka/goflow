@@ -449,7 +449,7 @@
     "root": [
         {
             "key": "contact",
-            "help": "the contact",
+            "help": "o contato",
             "type": "contact"
         },
         {
@@ -506,7 +506,7 @@
     "root_no_session": [
         {
             "key": "contact",
-            "help": "the contact",
+            "help": "o contato",
             "type": "contact"
         },
         {
