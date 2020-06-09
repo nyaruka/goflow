@@ -128,7 +128,7 @@ func (c *Condition) Validate(resolver Resolver) error {
 	// if existence check, disallow certain attributes
 	if c.value == "" {
 		switch c.propKey {
-		case AttributeID, AttributeCreatedOn, AttributeGroup:
+		case AttributeUUID, AttributeID, AttributeCreatedOn, AttributeGroup:
 			return errors.Errorf("can't check whether '%s' is set or not set", c.propKey)
 		}
 	} else {

@@ -27,6 +27,7 @@ var comparatorAliases = map[string]Comparator{
 
 // Fixed attributes that can be searched
 const (
+	AttributeUUID      = "uuid"
 	AttributeID        = "id"
 	AttributeName      = "name"
 	AttributeLanguage  = "language"
@@ -36,6 +37,7 @@ const (
 )
 
 var attributes = map[string]assets.FieldType{
+	AttributeUUID:      assets.FieldTypeText,
 	AttributeID:        assets.FieldTypeText,
 	AttributeName:      assets.FieldTypeText,
 	AttributeLanguage:  assets.FieldTypeText,
