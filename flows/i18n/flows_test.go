@@ -13,7 +13,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/i18n"
+	"github.com/nyaruka/goflow/flows/i18n"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 
@@ -33,28 +33,28 @@ func TestExtractFromFlows(t *testing.T) {
 		po           string
 	}{
 		{
-			"../test/testdata/runner/two_questions.json",
+			"../../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
 			envs.NilLanguage, // generate POT without translations
 			nil,
 			"exports/two_questions.po",
 		},
 		{
-			"../test/testdata/runner/two_questions.json",
+			"../../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
 			envs.Language("eng"), // is languiage of flow, thus also generates POT without translations
 			nil,
 			"exports/two_questions.po",
 		},
 		{
-			"../test/testdata/runner/two_questions.json",
+			"../../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
 			envs.Language(`fra`),
 			nil,
 			"exports/two_questions.fr.po",
 		},
 		{
-			"../test/testdata/runner/two_questions.json",
+			"../../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
 			envs.Language(`fra`),
 			[]string{"arguments"},
@@ -209,7 +209,7 @@ func TestImportIntoFlows(t *testing.T) {
 }
 
 func TestImportNewTranslationIntoFlows(t *testing.T) {
-	sa, err := test.LoadSessionAssets(envs.NewBuilder().Build(), "../test/testdata/runner/two_questions.json")
+	sa, err := test.LoadSessionAssets(envs.NewBuilder().Build(), "../../test/testdata/runner/two_questions.json")
 	require.NoError(t, err)
 
 	flow, err := sa.Flows().Get(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)

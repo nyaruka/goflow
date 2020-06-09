@@ -7,7 +7,7 @@ import (
 	"testing/iotest"
 	"time"
 
-	"github.com/nyaruka/goflow/i18n"
+	"github.com/nyaruka/goflow/flows/i18n"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
