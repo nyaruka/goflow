@@ -1,3 +1,8 @@
+v0.89.0
+----------
+ * Tweak change language functionality to allow missing translations
+ * Add country to template translations and use when resolving templates
+
 v0.88.0
 ----------
  * Add support for localized documentation

@@ -97,7 +97,13 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 
 		// do we have a template defined?
 		if a.Templating != nil {
-			translation := sa.Templates().FindTranslation(a.Templating.Template.UUID, channelRef, []envs.Language{run.Contact().Language(), run.Environment().DefaultLanguage()})
+			// looks for a translation in these locales
+			locales := []envs.Locale{
+				run.Contact().Locale(run.Environment()),
+				run.Environment().DefaultLocale(),
+			}
+
+			translation := sa.Templates().FindTranslation(a.Templating.Template.UUID, channelRef, locales)
 			if translation != nil {
 				localizedVariables, _ := run.GetTextArray(uuids.UUID(a.Templating.UUID), "variables", a.Templating.Variables)
 

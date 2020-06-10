@@ -2,7 +2,7 @@
     "uuid": "19cad1f2-9110-4271-98d4-1b968bf19410",
     "name": "Change Language",
     "spec_version": "13.1.0",
-    "language": "spa",
+    "language": "kin",
     "type": "messaging",
     "revision": 16,
     "expire_after_minutes": 10080,
@@ -63,6 +63,43 @@
                     "Which pill?"
                 ]
             }
+        },
+        "spa": {
+            "3a044264-81d1-4ba7-882a-e98740c8e724": {
+                "name": [
+                    "Otro"
+                ]
+            },
+            "43f7e69e-727d-4cfe-81b8-564e7833052b": {
+                "name": [
+                    "Azul"
+                ]
+            },
+            "5f5fa09f-bf88-4719-ba64-cab9cf2f67b5": {
+                "arguments": [
+                    "azul"
+                ]
+            },
+            "61bc5ed3-e216-4457-8ce5-ad658e697f29": {
+                "arguments": [
+                    "rojo",
+                    "roja"
+                ]
+            },
+            "d1ce3c92-7025-4607-a910-444361a6b9b3": {
+                "name": [
+                    "Roja"
+                ]
+            },
+            "e42deebf-90fa-4636-81cb-d247a3d3ba75": {
+                "quick_replies": [
+                    "Roja",
+                    "Azul"
+                ],
+                "text": [
+                    "Cual pastilla?"
+                ]
+            }
         }
     },
     "nodes": [
@@ -72,10 +109,10 @@
                 {
                     "type": "send_msg",
                     "uuid": "e42deebf-90fa-4636-81cb-d247a3d3ba75",
-                    "text": "Cual pastilla?",
+                    "text": "Which pill?",
                     "quick_replies": [
-                        "Roja",
-                        "Azul"
+                        "Red",
+                        "Blue"
                     ]
                 }
             ],
@@ -97,17 +134,17 @@
                 "categories": [
                     {
                         "uuid": "d1ce3c92-7025-4607-a910-444361a6b9b3",
-                        "name": "Roja",
+                        "name": "Red",
                         "exit_uuid": "18ce1dab-9875-48ab-9e16-695bad91ecef"
                     },
                     {
                         "uuid": "43f7e69e-727d-4cfe-81b8-564e7833052b",
-                        "name": "Azul",
+                        "name": "Blue",
                         "exit_uuid": "73b255e2-59ae-454f-902a-abd2cd1e4eab"
                     },
                     {
                         "uuid": "3a044264-81d1-4ba7-882a-e98740c8e724",
-                        "name": "Otro",
+                        "name": "Other",
                         "exit_uuid": "bda03d7b-6ff8-46f2-8308-470ba2c1613c"
                     }
                 ],
@@ -117,8 +154,7 @@
                         "uuid": "61bc5ed3-e216-4457-8ce5-ad658e697f29",
                         "type": "has_any_word",
                         "arguments": [
-                            "rojo",
-                            "roja"
+                            "red"
                         ],
                         "category_uuid": "d1ce3c92-7025-4607-a910-444361a6b9b3"
                     },
@@ -126,7 +162,7 @@
                         "uuid": "5f5fa09f-bf88-4719-ba64-cab9cf2f67b5",
                         "type": "has_any_word",
                         "arguments": [
-                            "azul"
+                            "blue"
                         ],
                         "category_uuid": "43f7e69e-727d-4cfe-81b8-564e7833052b"
                     }
