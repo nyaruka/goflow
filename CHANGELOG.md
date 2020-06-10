@@ -1,3 +1,9 @@
+v0.90.0
+----------
+ * Allow querying contacts by UUID
+ * Move i18n package under flows to avoid confusion with locales package
+ * Add completion to localized documentation
+
 v0.89.0
 ----------
  * Tweak change language functionality to allow missing translations
