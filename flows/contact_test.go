@@ -332,6 +332,9 @@ func TestContactQuery(t *testing.T) {
 		{`name = ""`, envs.RedactionPolicyNone, false, ""},
 		{`name != ""`, envs.RedactionPolicyNone, true, ""},
 
+		{`uuid = ba96bf7f-bc2a-4873-a7c7-254d1927c4e3`, envs.RedactionPolicyNone, true, ""},
+		{`uuid = 3bf7edda-b926-4a78-9131-d336df77d44f`, envs.RedactionPolicyNone, false, ""},
+
 		{`id = 1234567`, envs.RedactionPolicyNone, true, ""},
 		{`id = 5678889`, envs.RedactionPolicyNone, false, ""},
 

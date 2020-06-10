@@ -33,18 +33,18 @@ func TestCompletion(t *testing.T) {
 	assert.Nil(t, c.Validate())
 
 	nodes := c.EnumerateNodes(completion.NewContext(map[string][]string{
-		"fields": []string{"age", "gender"},
+		"fields": {"age", "gender"},
 	}))
 
 	assert.Equal(t, []completion.Node{
-		completion.Node{Path: "contact", Help: "the run contact"},
-		completion.Node{Path: "contact.name", Help: "the full name of the contact"},
-		completion.Node{Path: "contact.fields", Help: "the custom field values of the contact"},
-		completion.Node{Path: "contact.fields.age", Help: "the value of age"},
-		completion.Node{Path: "contact.fields.gender", Help: "the value of gender"},
-		completion.Node{Path: "contact.groups", Help: "the groups that the contact belongs to"},
-		completion.Node{Path: "contact.groups[0]", Help: "first of the groups that the contact belongs to"},
-		completion.Node{Path: "contact.groups[0].uuid", Help: "the UUID of the group"},
-		completion.Node{Path: "contact.groups[0].name", Help: "the name of the group"},
+		{Path: "contact", Help: "the run contact"},
+		{Path: "contact.name", Help: "the full name of the contact"},
+		{Path: "contact.fields", Help: "the custom field values of the contact"},
+		{Path: "contact.fields.age", Help: "the value of age"},
+		{Path: "contact.fields.gender", Help: "the value of gender"},
+		{Path: "contact.groups", Help: "the groups that the contact belongs to"},
+		{Path: "contact.groups[0]", Help: "first of the groups that the contact belongs to"},
+		{Path: "contact.groups[0].uuid", Help: "the UUID of the group"},
+		{Path: "contact.groups[0].name", Help: "the name of the group"},
 	}, nodes)
 }

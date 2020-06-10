@@ -9,7 +9,6 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/cmd/docgen/completion"
-	"github.com/nyaruka/goflow/i18n"
 	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/pkg/errors"
@@ -25,19 +24,15 @@ func (g *completionGenerator) Name() string {
 	return "completion map"
 }
 
-func (g *completionGenerator) ExtractText(items map[string][]*TaggedItem) []string {
-	return nil
-}
-
-func (g *completionGenerator) Generate(baseDir, outputDir string, items map[string][]*TaggedItem, po *i18n.PO) error {
+func (g *completionGenerator) Generate(baseDir, outputDir string, items map[string][]*TaggedItem, gettext func(string) string) error {
 	types := []completion.Type{
 		// the dynamic types in the context aren't described in the code so we add them manually here
-		completion.NewDynamicType("fields", "fields", completion.NewProperty("{key}", "{key} for the contact", "any")),
-		completion.NewDynamicType("results", "results", completion.NewProperty("{key}", "the result for {key}", "result")),
-		completion.NewDynamicType("globals", "globals", completion.NewProperty("{key}", "the global value {key}", "text")),
+		completion.NewDynamicType("fields", "fields", completion.NewProperty("{key}", gettext("{key} for the contact"), "any")),
+		completion.NewDynamicType("results", "results", completion.NewProperty("{key}", gettext("the result for {key}"), "result")),
+		completion.NewDynamicType("globals", "globals", completion.NewProperty("{key}", gettext("the global value {key}"), "text")),
 
 		// the urns type also added here as it's "dynamic" in sense that keys are known at build time
-		createURNsType(),
+		createURNsType(gettext),
 	}
 
 	// now collect the types from tagged docstrings
@@ -51,6 +46,7 @@ func (g *completionGenerator) Generate(baseDir, outputDir string, items map[stri
 			if prop == nil {
 				return errors.Errorf("invalid format for property description \"%s\"", propDesc)
 			}
+			prop.Help = gettext(prop.Help)
 			properties[i] = prop
 		}
 
@@ -91,11 +87,12 @@ func (g *completionGenerator) Generate(baseDir, outputDir string, items map[stri
 	return nil
 }
 
-func createURNsType() completion.Type {
+func createURNsType(gettext func(string) string) completion.Type {
 	properties := make([]*completion.Property, 0, len(urns.ValidSchemes))
 	for k := range urns.ValidSchemes {
 		name := strings.Title(k)
-		properties = append(properties, completion.NewProperty(k, name+" URN for the contact", "text"))
+		help := strings.ReplaceAll(gettext("{type} URN for the contact"), "{type}", name)
+		properties = append(properties, completion.NewProperty(k, help, "text"))
 	}
 	sort.SliceStable(properties, func(i, j int) bool { return properties[i].Key < properties[j].Key })
 

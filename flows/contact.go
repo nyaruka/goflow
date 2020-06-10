@@ -436,6 +436,8 @@ func (c *Contact) ReevaluateDynamicGroups(env envs.Environment) ([]*Group, []*Gr
 func (c *Contact) QueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []interface{} {
 	if propType == contactql.PropertyTypeAttribute {
 		switch key {
+		case contactql.AttributeUUID:
+			return []interface{}{string(c.uuid)}
 		case contactql.AttributeID:
 			if c.id != 0 {
 				return []interface{}{decimal.New(int64(c.id), 0)}
