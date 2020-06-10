@@ -1,3 +1,7 @@
+v0.91.0
+----------
+ * Move generic PO stuff into utils/i18n
+
 v0.90.0
 ----------
  * Allow querying contacts by UUID
