@@ -76,15 +76,17 @@ type Condition struct {
 	comparator Comparator
 	value      string
 	valueType  assets.FieldType
+	reference  assets.Reference
 }
 
-func newCondition(propType PropertyType, propKey string, comparator Comparator, value string, valueType assets.FieldType) *Condition {
+func newCondition(propType PropertyType, propKey string, comparator Comparator, value string, valueType assets.FieldType, reference assets.Reference) *Condition {
 	return &Condition{
 		propType:   propType,
 		propKey:    propKey,
 		comparator: comparator,
 		value:      value,
 		valueType:  valueType,
+		reference:  reference,
 	}
 }
 
@@ -138,6 +140,7 @@ func (c *Condition) Validate(resolver Resolver) error {
 				return NewQueryErrorf("'%s' is not a valid group name", c.value)
 			}
 			c.value = group.Name()
+			c.reference = assets.NewGroupReference(group.UUID(), group.Name())
 		case AttributeLanguage:
 			if c.value != "" {
 				_, err := envs.ParseLanguage(c.value)
