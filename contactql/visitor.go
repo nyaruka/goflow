@@ -1,6 +1,7 @@
 package contactql
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -11,8 +12,21 @@ import (
 	"github.com/nyaruka/goflow/envs"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/pkg/errors"
 )
+
+// QueryError is used when an error is a result of an invalid query
+type QueryError struct {
+	msg string
+}
+
+func (e *QueryError) Error() string {
+	return e.msg
+}
+
+// NewQueryErrorf creates a new query error
+func NewQueryErrorf(err string, args ...interface{}) *QueryError {
+	return &QueryError{fmt.Sprintf(err, args...)}
+}
 
 // an implicit condition like +123-124-6546 or 1234 will be interpreted as a tel ~ condition
 var implicitIsPhoneNumberRegex = regexp.MustCompile(`^\+?[\-\d]{4,}$`)
@@ -132,7 +146,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		propType = PropertyTypeAttribute
 
 		if propKey == AttributeURN && v.redaction == envs.RedactionPolicyURNs && value != "" {
-			v.addError(errors.New("cannot query on redacted URNs"))
+			v.addError(NewQueryErrorf("cannot query on redacted URNs"))
 		}
 
 	} else if urns.IsValidScheme(propKey) {
@@ -141,7 +155,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		valueType = assets.FieldTypeText
 
 		if v.redaction == envs.RedactionPolicyURNs && value != "" {
-			v.addError(errors.New("cannot query on redacted URNs"))
+			v.addError(NewQueryErrorf("cannot query on redacted URNs"))
 		}
 	} else {
 		field := v.resolver.ResolveField(propKey)
@@ -149,7 +163,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 			propType = PropertyTypeField
 			valueType = field.Type()
 		} else {
-			v.addError(errors.Errorf("can't resolve '%s' to attribute, scheme or field", propKey))
+			v.addError(NewQueryErrorf("can't resolve '%s' to attribute, scheme or field", propKey))
 		}
 	}
 

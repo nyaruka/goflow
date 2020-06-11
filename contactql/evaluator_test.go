@@ -166,9 +166,9 @@ func TestEvaluationErrors(t *testing.T) {
 		errMsg string
 	}{
 		{`age = 3X`, "can't convert '3X' to a number"},
-		{`dob = 32`, "string '32' couldn't be parsed as a date"},
-		{`dob = 32 AND name = Bob`, "string '32' couldn't be parsed as a date"},
-		{`name = Bob OR dob = 32`, "string '32' couldn't be parsed as a date"},
+		{`dob = 32`, "can't convert '32' to a date"},
+		{`dob = 32 AND name = Bob`, "can't convert '32' to a date"},
+		{`name = Bob OR dob = 32`, "can't convert '32' to a date"},
 	}
 
 	resolver := contactql.NewMockResolver(map[string]assets.Field{

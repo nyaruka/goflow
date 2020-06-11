@@ -2,7 +2,6 @@ package contactql
 
 import (
 	"fmt"
-	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -14,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -108,20 +106,20 @@ func (c *Condition) Validate(resolver Resolver) error {
 	case ComparatorContains:
 		if c.propKey == AttributeName {
 			if len(tokenizeNameValue(c.value)) == 0 {
-				return errors.Errorf("value must contain a word of at least %d characters long for a contains condition on name", minNameTokenContainsLength)
+				return NewQueryErrorf("value must contain a word of at least %d characters long for a contains condition on name", minNameTokenContainsLength)
 			}
 		} else if c.propKey == AttributeURN || c.propType == PropertyTypeScheme {
 			if len(c.value) < minURNContainsLength {
-				return errors.Errorf("value must be least %d characters long for a contains condition on a URN", minURNContainsLength)
+				return NewQueryErrorf("value must be least %d characters long for a contains condition on a URN", minURNContainsLength)
 			}
 		} else {
 			// ~ can only be used with the name/urn attributes or actual URNs
-			return errors.Errorf("contains conditions can only be used with name or URN values")
+			return NewQueryErrorf("contains conditions can only be used with name or URN values")
 		}
 
 	case ComparatorGreaterThan, ComparatorGreaterThanOrEqual, ComparatorLessThan, ComparatorLessThanOrEqual:
 		if c.valueType != assets.FieldTypeNumber && c.valueType != assets.FieldTypeDatetime {
-			return errors.Errorf("comparisons with %s can only be used with date and number fields", c.comparator)
+			return NewQueryErrorf("comparisons with %s can only be used with date and number fields", c.comparator)
 		}
 	}
 
@@ -129,7 +127,7 @@ func (c *Condition) Validate(resolver Resolver) error {
 	if c.value == "" {
 		switch c.propKey {
 		case AttributeUUID, AttributeID, AttributeCreatedOn, AttributeGroup:
-			return errors.Errorf("can't check whether '%s' is set or not set", c.propKey)
+			return NewQueryErrorf("can't check whether '%s' is set or not set", c.propKey)
 		}
 	} else {
 		// check values are valid for the attribute type
@@ -137,14 +135,14 @@ func (c *Condition) Validate(resolver Resolver) error {
 		case AttributeGroup:
 			group := resolver.ResolveGroup(c.value)
 			if group == nil {
-				return errors.Errorf("'%s' is not a valid group name", c.value)
+				return NewQueryErrorf("'%s' is not a valid group name", c.value)
 			}
 			c.value = group.Name()
 		case AttributeLanguage:
 			if c.value != "" {
 				_, err := envs.ParseLanguage(c.value)
 				if err != nil {
-					return errors.Errorf("'%s' is not a valid language code", c.value)
+					return NewQueryErrorf("'%s' is not a valid language code", c.value)
 				}
 			}
 		}
@@ -206,20 +204,19 @@ func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, 
 	case decimal.Decimal:
 		asDecimal, err := decimal.NewFromString(c.value)
 		if err != nil {
-			return false, errors.Errorf("can't convert '%s' to a number", c.value)
+			return false, NewQueryErrorf("can't convert '%s' to a number", c.value)
 		}
 		return numberComparison(val.(decimal.Decimal), c.comparator, asDecimal)
 
 	case time.Time:
 		asDate, err := envs.DateTimeFromString(env, c.value, false)
 		if err != nil {
-			return false, err
+			return false, NewQueryErrorf("can't convert '%s' to a date", c.value)
 		}
 		return dateComparison(val.(time.Time), c.comparator, asDate)
-
-	default:
-		return false, errors.Errorf("unsupported query data type: %+v", reflect.TypeOf(val))
 	}
+
+	panic(fmt.Sprintf("unsupported query data type: %T", val))
 }
 
 func (c *Condition) String() string {
@@ -361,7 +358,7 @@ func (l *errorListener) HasErrors() bool {
 }
 
 func (l *errorListener) Error() error {
-	return errors.Errorf(strings.Join(l.messages, "\n"))
+	return NewQueryErrorf(strings.Join(l.messages, "\n"))
 }
 
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
