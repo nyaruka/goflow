@@ -1,3 +1,7 @@
+v0.91.1
+----------
+ * Fix clearing of fields
+
 v0.91.0
 ----------
  * Move generic PO stuff into utils/i18n
