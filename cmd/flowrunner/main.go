@@ -281,7 +281,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 		case *events.WaitTimedOutEvent:
 			msg = "⏲️ resuming due to wait timeout"
 		case *events.WebhookCalledEvent:
-			url := truncate(typed.URL, 50)
+			url := utils.TruncateEllipsis(typed.URL, 50)
 			msg = fmt.Sprintf("☁️ called %s", url)
 		default:
 			msg = fmt.Sprintf("❓ %s event", typed.Type())
@@ -295,13 +295,4 @@ func printEvents(log []flows.Event, out io.Writer) {
 type Repro struct {
 	Trigger flows.Trigger  `json:"trigger"`
 	Resumes []flows.Resume `json:"resumes,omitempty"`
-}
-
-func truncate(str string, length int) string {
-	ending := "..."
-	runes := []rune(str)
-	if len(runes) > length {
-		return string(runes[0:length-len(ending)]) + ending
-	}
-	return str
 }
