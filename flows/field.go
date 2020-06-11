@@ -9,8 +9,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 // Field represents a contact field
@@ -156,19 +154,12 @@ func (v *FieldValue) QueryValue() interface{} {
 type FieldValues map[string]*FieldValue
 
 // NewFieldValues creates a new field value map
-func NewFieldValues(a SessionAssets, values map[string]*Value, missing assets.MissingCallback) (FieldValues, error) {
+func NewFieldValues(a SessionAssets, values map[string]*Value, missing assets.MissingCallback) FieldValues {
 	allFields := a.Fields().All()
 	fieldValues := make(FieldValues, len(allFields))
 	for _, field := range allFields {
 		value := values[field.Key()]
-		if value != nil {
-			if value.Text.Empty() {
-				return nil, errors.Errorf("field values can't be empty")
-			}
-			fieldValues[field.Key()] = NewFieldValue(field, value)
-		} else {
-			fieldValues[field.Key()] = nil
-		}
+		fieldValues.Set(field, value)
 	}
 
 	// log any unmatched field keys as missing assets
@@ -179,7 +170,7 @@ func NewFieldValues(a SessionAssets, values map[string]*Value, missing assets.Mi
 		}
 	}
 
-	return fieldValues, nil
+	return fieldValues
 }
 
 // Clone returns a clone of this set of field values
@@ -202,17 +193,11 @@ func (f FieldValues) Get(field *Field) *Value {
 
 // Set sets the value for the given field (can be null to clear it)
 func (f FieldValues) Set(field *Field, value *Value) {
-	if value == nil {
-		f.Clear(field)
-	} else {
-		fieldValue := NewFieldValue(field, value)
-		f[field.Key()] = fieldValue
+	var fv *FieldValue
+	if value != nil && !value.Text.Empty() {
+		fv = NewFieldValue(field, value)
 	}
-}
-
-// Clear clears the value set for the given field
-func (f FieldValues) Clear(field *Field) {
-	delete(f, field.Key())
+	f[field.Key()] = fv
 }
 
 // Parse parses a raw string field value into the different possible types

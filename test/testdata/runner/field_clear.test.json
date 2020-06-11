@@ -1,0 +1,203 @@
+{
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:05.123456789Z",
+                    "field": {
+                        "key": "gender",
+                        "name": "Gender"
+                    },
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "contact_field_changed",
+                    "value": {
+                        "text": "M"
+                    }
+                },
+                {
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
+                    "field": {
+                        "key": "gender",
+                        "name": "Gender"
+                    },
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "contact_field_changed",
+                    "value": null
+                },
+                {
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
+                    "msg": {
+                        "text": "It's a !",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "msg_created"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:05.123456789Z",
+                                "field": {
+                                    "key": "gender",
+                                    "name": "Gender"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "contact_field_changed",
+                                "value": {
+                                    "text": "M"
+                                }
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "field": {
+                                    "key": "gender",
+                                    "name": "Gender"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "contact_field_changed",
+                                "value": null
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "msg": {
+                                    "text": "It's a !",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:11.123456789Z",
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
+                        "flow": {
+                            "name": "Field Clear",
+                            "uuid": "999c5562-5eb0-4f18-9735-bca0b8d1378e"
+                        },
+                        "modified_on": "2018-07-06T12:30:11.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "c7c85cef-12d1-4225-afb0-91d1a72cf7b9",
+                                "node_uuid": "2cba8049-4e9b-41cd-8bd0-a9e8396c2dc4",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            }
+                        ],
+                        "status": "completed",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Field Clear",
+                        "uuid": "999c5562-5eb0-4f18-9735-bca0b8d1378e"
+                    },
+                    "triggered_on": "2020-06-11T10:02:52.504462-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            }
+        }
+    ],
+    "resumes": null,
+    "trigger": {
+        "contact": {
+            "created_on": "2018-01-01T12:00:00Z",
+            "id": 1234567,
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+            "allowed_languages": [
+                "eng",
+                "eng"
+            ],
+            "date_format": "YYYY-MM-DD",
+            "max_value_length": 640,
+            "number_format": {
+                "decimal_symbol": ".",
+                "digit_grouping_symbol": ","
+            },
+            "redaction_policy": "none",
+            "time_format": "tt:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Field Clear",
+            "uuid": "999c5562-5eb0-4f18-9735-bca0b8d1378e"
+        },
+        "triggered_on": "2020-06-11T10:02:52.504462-05:00",
+        "type": "manual"
+    }
+}

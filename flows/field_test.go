@@ -24,15 +24,13 @@ func TestFieldValues(t *testing.T) {
 	age := fields.Get("age")
 
 	// can have no values for any fields
-	fieldVals, err := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, assets.PanicOnMissing)
-	assert.NoError(t, err)
+	fieldVals := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, assets.PanicOnMissing)
 
 	// can have a value but not in the right type for that field (age below)
-	fieldVals, err = flows.NewFieldValues(session.Assets(), map[string]*flows.Value{
+	fieldVals = flows.NewFieldValues(session.Assets(), map[string]*flows.Value{
 		"gender": flows.NewValue(types.NewXText("Male"), nil, nil, utils.LocationPath(""), utils.LocationPath(""), utils.LocationPath("")),
 		"age":    flows.NewValue(types.NewXText("nan"), nil, nil, utils.LocationPath(""), utils.LocationPath(""), utils.LocationPath("")),
 	}, assets.PanicOnMissing)
-	assert.NoError(t, err)
 
 	assert.Equal(t, types.NewXText("Male"), fieldVals.Get(gender).Text)
 	assert.Equal(t, types.NewXText("nan"), fieldVals.Get(age).Text)
