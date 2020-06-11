@@ -75,11 +75,7 @@ func NewContact(
 	}
 
 	groupList := NewGroupList(sa, groups, missing)
-
-	fieldValues, err := NewFieldValues(sa, fields, missing)
-	if err != nil {
-		return nil, err
-	}
+	fieldValues := NewFieldValues(sa, fields, missing)
 
 	return &Contact{
 		uuid:      uuid,
@@ -579,10 +575,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 	}
 
 	c.groups = NewGroupList(sa, envelope.Groups, missing)
-
-	if c.fields, err = NewFieldValues(sa, envelope.Fields, missing); err != nil {
-		return nil, errors.Wrap(err, "error reading fields")
-	}
+	c.fields = NewFieldValues(sa, envelope.Fields, missing)
 
 	return c, nil
 }
