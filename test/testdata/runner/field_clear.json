@@ -1,0 +1,56 @@
+{
+    "flows": [
+        {
+            "name": "Field Clear",
+            "uuid": "999c5562-5eb0-4f18-9735-bca0b8d1378e",
+            "spec_version": "13.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "2cba8049-4e9b-41cd-8bd0-a9e8396c2dc4",
+                    "actions": [
+                        {
+                            "uuid": "df4190ac-ac41-4026-95c3-2c121b42338d",
+                            "type": "set_contact_field",
+                            "field": {
+                                "key": "gender",
+                                "name": "Gender"
+                            },
+                            "value": "M"
+                        },
+                        {
+                            "uuid": "9f0002d9-e00e-4126-bb37-7fa71b356f20",
+                            "type": "set_contact_field",
+                            "field": {
+                                "key": "gender",
+                                "name": "Gender"
+                            },
+                            "value": ""
+                        },
+                        {
+                            "attachments": [],
+                            "text": "It's a @fields.gender!",
+                            "type": "send_msg",
+                            "quick_replies": [],
+                            "uuid": "0636e4a3-d901-4e4d-bb9d-67634ed505d1"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "c7c85cef-12d1-4225-afb0-91d1a72cf7b9"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "uuid": "2ddd4c1b-e3cf-472e-b135-440b3453ba37",
+            "key": "gender",
+            "name": "Gender",
+            "type": "text"
+        }
+    ]
+}

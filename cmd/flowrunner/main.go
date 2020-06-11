@@ -212,7 +212,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 		case *events.ContactFieldChangedEvent:
 			var action string
 			if typed.Value != nil {
-				action = fmt.Sprintf("changed to '%s'", typed.Value.Text)
+				action = fmt.Sprintf("changed to '%s'", typed.Value.Text.Native())
 			} else {
 				action = "cleared"
 			}
@@ -294,7 +294,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 // Repro describes the trigger and resumes needed to reproduce this session
 type Repro struct {
 	Trigger flows.Trigger  `json:"trigger"`
-	Resumes []flows.Resume `json:"resumes"`
+	Resumes []flows.Resume `json:"resumes,omitempty"`
 }
 
 func truncate(str string, length int) string {

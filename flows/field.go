@@ -202,17 +202,11 @@ func (f FieldValues) Get(field *Field) *Value {
 
 // Set sets the value for the given field (can be null to clear it)
 func (f FieldValues) Set(field *Field, value *Value) {
-	if value == nil {
-		f.Clear(field)
-	} else {
-		fieldValue := NewFieldValue(field, value)
-		f[field.Key()] = fieldValue
+	var fv *FieldValue
+	if value != nil {
+		fv = NewFieldValue(field, value)
 	}
-}
-
-// Clear clears the value set for the given field
-func (f FieldValues) Clear(field *Field) {
-	delete(f, field.Key())
+	f[field.Key()] = fv
 }
 
 // Parse parses a raw string field value into the different possible types
