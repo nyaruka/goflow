@@ -14,12 +14,12 @@ import (
 
 func TestInspect(t *testing.T) {
 	tests := []struct {
-		Query string
-		Info  *contactql.Inspection
+		Query      string
+		Inspection *contactql.Inspection
 	}{
 		{
 			Query: "bob",
-			Info: &contactql.Inspection{
+			Inspection: &contactql.Inspection{
 				Attributes:   []string{"name"},
 				Schemes:      []string{},
 				Fields:       []*assets.FieldReference{},
@@ -29,7 +29,7 @@ func TestInspect(t *testing.T) {
 		},
 		{
 			Query: "age > 18 AND name != \"\" OR twitter = bobby OR tel ~1234",
-			Info: &contactql.Inspection{
+			Inspection: &contactql.Inspection{
 				Attributes: []string{"name"},
 				Schemes:    []string{"tel", "twitter"},
 				Fields: []*assets.FieldReference{
@@ -41,7 +41,7 @@ func TestInspect(t *testing.T) {
 		},
 		{
 			Query: "id = 123",
-			Info: &contactql.Inspection{
+			Inspection: &contactql.Inspection{
 				Attributes:   []string{"id"},
 				Schemes:      []string{},
 				Fields:       []*assets.FieldReference{},
@@ -51,7 +51,7 @@ func TestInspect(t *testing.T) {
 		},
 		{
 			Query: "group = U-reporters",
-			Info: &contactql.Inspection{
+			Inspection: &contactql.Inspection{
 				Attributes: []string{"group"},
 				Schemes:    []string{},
 				Fields:     []*assets.FieldReference{},
@@ -75,7 +75,7 @@ func TestInspect(t *testing.T) {
 		query, err := contactql.ParseQuery(tc.Query, envs.RedactionPolicyNone, envs.NilCountry, resolver)
 		require.NoError(t, err, "error parsing %s", tc.Query)
 
-		assert.Equal(t, tc.Info, contactql.Inspect(query), "inspect mismatch for query %s", tc.Query)
+		assert.Equal(t, tc.Inspection, contactql.Inspect(query), "inspect mismatch for query %s", tc.Query)
 	}
 
 }
