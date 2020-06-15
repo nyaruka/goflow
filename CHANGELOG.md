@@ -1,3 +1,7 @@
+v0.92.0
+----------
+ * Move elastic functionality from mailroom
+
 v0.91.1
 ----------
  * Fix clearing of fields
