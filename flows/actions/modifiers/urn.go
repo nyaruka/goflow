@@ -27,7 +27,8 @@ const (
 	URNRemove URNModification = "remove"
 )
 
-// URNModifier modifies a URN on a contact
+// URNModifier modifies a URN on a contact. This has been replaced by URNsModifier but is kept here for now
+// to support processing of old Surveyor submissions.
 type URNModifier struct {
 	baseModifier
 
