@@ -211,6 +211,14 @@ func TestConstructors(t *testing.T) {
 				"modification": "append"
 			}`,
 		},
+		{
+			modifiers.NewURNs([]urns.URN{urns.URN("tel:+1234567890"), urns.URN("tel:+1234567891")}, modifiers.URNsSet),
+			`{
+				"type": "urns",
+				"urns": ["tel:+1234567890", "tel:+1234567891"],
+				"modification": "set"
+			}`,
+		},
 	}
 
 	for _, tc := range tests {
