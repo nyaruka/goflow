@@ -199,6 +199,13 @@ func (c *Contact) Name() string { return c.name }
 // URNs returns the URNs of this contact
 func (c *Contact) URNs() URNList { return c.urns }
 
+// ClearURNs clears the URNs on this contact
+func (c *Contact) ClearURNs() bool {
+	hadURNS := len(c.urns) > 0
+	c.urns = URNList{}
+	return hadURNS
+}
+
 // AddURN adds a new URN to this contact
 func (c *Contact) AddURN(urn urns.URN, channel *Channel) bool {
 	if c.HasURN(urn) {
