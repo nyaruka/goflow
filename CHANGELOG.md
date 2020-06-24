@@ -1,3 +1,7 @@
+v0.93.0
+----------
+ * Add urns modifier to replace all the URNs on a contact
+
 v0.92.0
 ----------
  * Move elastic functionality from mailroom
