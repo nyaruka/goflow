@@ -121,6 +121,37 @@
         ]
     },
     {
+        "description": "URNs changed event if URNs cleared",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "urns": [
+                "tel:+17036971111",
+                "tel:+17036972222"
+            ],
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "urns",
+            "urns": [],
+            "modification": "set"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "contact_urns_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "urns": []
+            }
+        ]
+    },
+    {
         "description": "URN normalized before checking existence",
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",

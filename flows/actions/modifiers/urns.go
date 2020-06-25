@@ -50,7 +50,7 @@ func (m *URNsModifier) Apply(env envs.Environment, assets flows.SessionAssets, c
 	modified := false
 
 	if m.Modification == URNsSet {
-		contact.ClearURNs()
+		modified = contact.ClearURNs()
 	}
 
 	for _, urn := range m.URNs {
