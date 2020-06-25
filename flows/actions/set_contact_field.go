@@ -52,8 +52,8 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 		return nil
 	}
 
-	rawValue, err := run.EvaluateTemplate(a.Value)
-	rawValue = strings.TrimSpace(rawValue)
+	value, err := run.EvaluateTemplate(a.Value)
+	value = strings.TrimSpace(value)
 
 	// if we received an error, log it
 	if err != nil {
@@ -65,9 +65,7 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logM
 	field := fields.Get(a.Field.Key)
 
 	if field != nil {
-		newValue := run.Contact().Fields().Parse(run.Environment(), fields, field, rawValue)
-
-		a.applyModifier(run, modifiers.NewField(field, newValue), logModifier, logEvent)
+		a.applyModifier(run, modifiers.NewField(field, value), logModifier, logEvent)
 	} else {
 		logEvent(events.NewDependencyError(a.Field))
 	}
