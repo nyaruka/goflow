@@ -1,3 +1,7 @@
+v0.93.1
+----------
+ * Fix clearing all URNs
+
 v0.93.0
 ----------
  * Add urns modifier to replace all the URNs on a contact
