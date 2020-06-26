@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
@@ -206,8 +205,8 @@ type Label interface {
 //
 // @asset location
 type LocationHierarchy interface {
-	FindByPath(path utils.LocationPath) *utils.Location
-	FindByName(name string, level utils.LocationLevel, parent *utils.Location) []*utils.Location
+	FindByPath(path envs.LocationPath) *envs.Location
+	FindByName(name string, level envs.LocationLevel, parent *envs.Location) []*envs.Location
 }
 
 // Resthook is a set of URLs which are subscribed to the named event.

@@ -6,7 +6,6 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 )
 
 type environment struct {
@@ -36,7 +35,7 @@ type assetLocationResolver struct {
 }
 
 // FindLocations returns locations with the matching name (case-insensitive), level and parent (optional)
-func (r *assetLocationResolver) FindLocations(name string, level utils.LocationLevel, parent *utils.Location) []*utils.Location {
+func (r *assetLocationResolver) FindLocations(name string, level envs.LocationLevel, parent *envs.Location) []*envs.Location {
 	return r.locations.FindByName(name, level, parent)
 }
 
@@ -46,7 +45,7 @@ func (r *assetLocationResolver) FindLocations(name string, level utils.LocationL
 //   2. Match with punctuation removed
 //   3. Split input into words and try to match each word
 //   4. Try to match pairs of words
-func (r *assetLocationResolver) FindLocationsFuzzy(text string, level utils.LocationLevel, parent *utils.Location) []*utils.Location {
+func (r *assetLocationResolver) FindLocationsFuzzy(text string, level envs.LocationLevel, parent *envs.Location) []*envs.Location {
 	// try matching name exactly
 	if locations := r.FindLocations(text, level, parent); len(locations) > 0 {
 		return locations
@@ -74,9 +73,9 @@ func (r *assetLocationResolver) FindLocationsFuzzy(text string, level utils.Loca
 		}
 	}
 
-	return []*utils.Location{}
+	return []*envs.Location{}
 }
 
-func (r *assetLocationResolver) LookupLocation(path utils.LocationPath) *utils.Location {
+func (r *assetLocationResolver) LookupLocation(path envs.LocationPath) *envs.Location {
 	return r.locations.FindByPath(path)
 }

@@ -34,16 +34,16 @@ func (f *Field) Reference() *assets.FieldReference {
 
 // Value represents a value in each of the field types
 type Value struct {
-	Text     types.XText        `json:"text" validate:"required"`
-	Datetime *types.XDateTime   `json:"datetime,omitempty"`
-	Number   *types.XNumber     `json:"number,omitempty"`
-	State    utils.LocationPath `json:"state,omitempty"`
-	District utils.LocationPath `json:"district,omitempty"`
-	Ward     utils.LocationPath `json:"ward,omitempty"`
+	Text     types.XText       `json:"text" validate:"required"`
+	Datetime *types.XDateTime  `json:"datetime,omitempty"`
+	Number   *types.XNumber    `json:"number,omitempty"`
+	State    envs.LocationPath `json:"state,omitempty"`
+	District envs.LocationPath `json:"district,omitempty"`
+	Ward     envs.LocationPath `json:"ward,omitempty"`
 }
 
 // NewValue creates an empty value
-func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber, state utils.LocationPath, district utils.LocationPath, ward utils.LocationPath) *Value {
+func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber, state envs.LocationPath, district envs.LocationPath, ward envs.LocationPath) *Value {
 	return &Value{
 		Text:     text,
 		Datetime: datetime,
@@ -218,17 +218,17 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 		asDateTime = &parsedDate
 	}
 
-	var asLocation *utils.Location
+	var asLocation *envs.Location
 
 	// to do location parsing we need an environment with location support
 	locations := env.LocationResolver()
 
 	if locations != nil {
 		// for locations, if it has a '>' then it is explicit, look it up that way
-		if utils.IsPossibleLocationPath(rawValue) {
-			asLocation = locations.LookupLocation(utils.LocationPath(rawValue))
+		if envs.IsPossibleLocationPath(rawValue) {
+			asLocation = locations.LookupLocation(envs.LocationPath(rawValue))
 		} else {
-			var matchingLocations []*utils.Location
+			var matchingLocations []*envs.Location
 
 			if field.Type() == assets.FieldTypeWard {
 				parent := f.getFirstLocationValue(env, fields, assets.FieldTypeDistrict)
@@ -250,18 +250,18 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 		}
 	}
 
-	var asState, asDistrict, asWard utils.LocationPath
+	var asState, asDistrict, asWard envs.LocationPath
 	if asLocation != nil {
 		switch asLocation.Level() {
 		case LocationLevelState:
-			asState = utils.LocationPath(asLocation.Path())
+			asState = envs.LocationPath(asLocation.Path())
 		case LocationLevelDistrict:
-			asState = utils.LocationPath(asLocation.Parent().Path())
-			asDistrict = utils.LocationPath(asLocation.Path())
+			asState = envs.LocationPath(asLocation.Parent().Path())
+			asDistrict = envs.LocationPath(asLocation.Path())
 		case LocationLevelWard:
-			asState = utils.LocationPath(asLocation.Parent().Parent().Path())
-			asDistrict = utils.LocationPath(asLocation.Parent().Path())
-			asWard = utils.LocationPath(asLocation.Path())
+			asState = envs.LocationPath(asLocation.Parent().Parent().Path())
+			asDistrict = envs.LocationPath(asLocation.Parent().Path())
+			asWard = envs.LocationPath(asLocation.Path())
 		}
 	}
 
@@ -295,7 +295,7 @@ func (f FieldValues) Context(env envs.Environment) map[string]types.XValue {
 	return entries
 }
 
-func (f FieldValues) getFirstLocationValue(env envs.Environment, fields *FieldAssets, valueType assets.FieldType) *utils.Location {
+func (f FieldValues) getFirstLocationValue(env envs.Environment, fields *FieldAssets, valueType assets.FieldType) *envs.Location {
 	// do we have a field of this type?
 	field := fields.FirstOfType(valueType)
 	if field == nil {
@@ -307,7 +307,7 @@ func (f FieldValues) getFirstLocationValue(env envs.Environment, fields *FieldAs
 		return nil
 	}
 
-	return env.LocationResolver().LookupLocation(utils.LocationPath(value.(types.XText).Native()))
+	return env.LocationResolver().LookupLocation(envs.LocationPath(value.(types.XText).Native()))
 }
 
 // FieldAssets provides access to all field assets
