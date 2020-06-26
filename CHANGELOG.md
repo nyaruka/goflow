@@ -1,3 +1,9 @@
+v0.94.0
+----------
+ * Move all location stuff from utils to envs
+ * Simplify resolving locations from environments
+ * Refactor field modifiers to take raw values and location parsing to not require a session
+
 v0.93.1
 ----------
  * Fix clearing all URNs
