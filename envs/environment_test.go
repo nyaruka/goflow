@@ -43,6 +43,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, envs.TimeFormatHourMinute, env.TimeFormat())
 	assert.Equal(t, envs.DefaultNumberFormat, env.NumberFormat())
 	assert.Equal(t, 640, env.MaxValueLength())
+	assert.Nil(t, env.LocationResolver())
 
 	// can create with valid values
 	env, err = envs.ReadEnvironment(json.RawMessage(`{
@@ -61,6 +62,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, []envs.Language{envs.Language("eng"), envs.Language("fra")}, env.AllowedLanguages())
 	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, "en-RW", env.DefaultLocale().ToISO639_2())
+	assert.Nil(t, env.LocationResolver())
 
 	data, err := jsonx.Marshal(env)
 	require.NoError(t, err)
@@ -115,4 +117,5 @@ func TestEnvironmentBuilder(t *testing.T) {
 	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: "'"}, env.NumberFormat())
 	assert.Equal(t, envs.RedactionPolicyURNs, env.RedactionPolicy())
 	assert.Equal(t, 1024, env.MaxValueLength())
+	assert.Nil(t, env.LocationResolver())
 }
