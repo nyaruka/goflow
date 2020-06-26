@@ -109,8 +109,5 @@ func TestRunEnvironment(t *testing.T) {
 	runEnv := session.Runs()[0].Environment()
 	assert.Equal(t, envs.Country("US"), runEnv.DefaultCountry())
 	assert.Equal(t, tzEC, runEnv.Timezone())
-
-	locationsEnv, _ := runEnv.(flows.Environment)
-	assert.NotNil(t, locationsEnv)
-	assert.True(t, locationsEnv.HasLocations())
+	assert.NotNil(t, runEnv.LocationResolver())
 }

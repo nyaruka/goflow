@@ -221,27 +221,27 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 	var asLocation *utils.Location
 
 	// to do location parsing we need an environment with location support
-	locationsEnv, _ := env.(Environment)
+	locations := env.LocationResolver()
 
-	if locationsEnv != nil && locationsEnv.HasLocations() {
+	if locations != nil {
 		// for locations, if it has a '>' then it is explicit, look it up that way
 		if utils.IsPossibleLocationPath(rawValue) {
-			asLocation = locationsEnv.LookupLocation(utils.LocationPath(rawValue))
+			asLocation = locations.LookupLocation(utils.LocationPath(rawValue))
 		} else {
 			var matchingLocations []*utils.Location
 
 			if field.Type() == assets.FieldTypeWard {
-				parent := f.getFirstLocationValue(locationsEnv, fields, assets.FieldTypeDistrict)
+				parent := f.getFirstLocationValue(env, fields, assets.FieldTypeDistrict)
 				if parent != nil {
-					matchingLocations = locationsEnv.FindLocationsFuzzy(rawValue, LocationLevelWard, parent)
+					matchingLocations = locations.FindLocationsFuzzy(rawValue, LocationLevelWard, parent)
 				}
 			} else if field.Type() == assets.FieldTypeDistrict {
-				parent := f.getFirstLocationValue(locationsEnv, fields, assets.FieldTypeState)
+				parent := f.getFirstLocationValue(env, fields, assets.FieldTypeState)
 				if parent != nil {
-					matchingLocations = locationsEnv.FindLocationsFuzzy(rawValue, LocationLevelDistrict, parent)
+					matchingLocations = locations.FindLocationsFuzzy(rawValue, LocationLevelDistrict, parent)
 				}
 			} else if field.Type() == assets.FieldTypeState {
-				matchingLocations = locationsEnv.FindLocationsFuzzy(rawValue, LocationLevelState, nil)
+				matchingLocations = locations.FindLocationsFuzzy(rawValue, LocationLevelState, nil)
 			}
 
 			if len(matchingLocations) > 0 {
@@ -295,7 +295,7 @@ func (f FieldValues) Context(env envs.Environment) map[string]types.XValue {
 	return entries
 }
 
-func (f FieldValues) getFirstLocationValue(env Environment, fields *FieldAssets, valueType assets.FieldType) *utils.Location {
+func (f FieldValues) getFirstLocationValue(env envs.Environment, fields *FieldAssets, valueType assets.FieldType) *utils.Location {
 	// do we have a field of this type?
 	field := fields.FirstOfType(valueType)
 	if field == nil {
@@ -307,7 +307,7 @@ func (f FieldValues) getFirstLocationValue(env Environment, fields *FieldAssets,
 		return nil
 	}
 
-	return env.LookupLocation(utils.LocationPath(value.(types.XText).Native()))
+	return env.LocationResolver().LookupLocation(utils.LocationPath(value.(types.XText).Native()))
 }
 
 // FieldAssets provides access to all field assets

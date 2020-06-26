@@ -390,16 +390,6 @@ type RunSummary interface {
 	Results() Results
 }
 
-// Environment is an extension of envs.Environment which adds support for location parsing
-type Environment interface {
-	envs.Environment
-
-	HasLocations() bool
-	FindLocations(string, utils.LocationLevel, *utils.Location) []*utils.Location
-	FindLocationsFuzzy(string, utils.LocationLevel, *utils.Location) []*utils.Location
-	LookupLocation(utils.LocationPath) *utils.Location
-}
-
 // FlowRun is a single contact's journey through a flow. It records the path they have taken,
 // and the results that have been collected.
 type FlowRun interface {

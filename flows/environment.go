@@ -12,22 +12,32 @@ import (
 type environment struct {
 	envs.Environment
 
-	locations assets.LocationHierarchy
+	locationResolver envs.LocationResolver
 }
 
 // NewEnvironment creates a new environment
-func NewEnvironment(base envs.Environment, locations assets.LocationHierarchy) Environment {
-	return &environment{base, locations}
+func NewEnvironment(base envs.Environment, la *LocationAssets) envs.Environment {
+	var locationResolver envs.LocationResolver
+
+	hierarchies := la.Hierarchies()
+	if len(hierarchies) > 0 {
+		locationResolver = &assetLocationResolver{hierarchies[0]}
+	}
+
+	return &environment{base, locationResolver}
 }
 
-// HasLocations returns whether this environment has location support
-func (e *environment) HasLocations() bool {
-	return e.locations != nil
+func (e *environment) LocationResolver() envs.LocationResolver {
+	return e.locationResolver
+}
+
+type assetLocationResolver struct {
+	locations assets.LocationHierarchy
 }
 
 // FindLocations returns locations with the matching name (case-insensitive), level and parent (optional)
-func (e *environment) FindLocations(name string, level utils.LocationLevel, parent *utils.Location) []*utils.Location {
-	return e.locations.FindByName(name, level, parent)
+func (r *assetLocationResolver) FindLocations(name string, level utils.LocationLevel, parent *utils.Location) []*utils.Location {
+	return r.locations.FindByName(name, level, parent)
 }
 
 // FindLocationsFuzzy returns matching locations like FindLocations but attempts the following strategies
@@ -36,22 +46,22 @@ func (e *environment) FindLocations(name string, level utils.LocationLevel, pare
 //   2. Match with punctuation removed
 //   3. Split input into words and try to match each word
 //   4. Try to match pairs of words
-func (e *environment) FindLocationsFuzzy(text string, level utils.LocationLevel, parent *utils.Location) []*utils.Location {
+func (r *assetLocationResolver) FindLocationsFuzzy(text string, level utils.LocationLevel, parent *utils.Location) []*utils.Location {
 	// try matching name exactly
-	if locations := e.FindLocations(text, level, parent); len(locations) > 0 {
+	if locations := r.FindLocations(text, level, parent); len(locations) > 0 {
 		return locations
 	}
 
 	// try with punctuation removed
 	stripped := strings.TrimSpace(regexp.MustCompile(`\W+`).ReplaceAllString(text, ""))
-	if locations := e.FindLocations(stripped, level, parent); len(locations) > 0 {
+	if locations := r.FindLocations(stripped, level, parent); len(locations) > 0 {
 		return locations
 	}
 
 	// try on each tokenized word
 	words := regexp.MustCompile(`\W+`).Split(text, -1)
 	for _, word := range words {
-		if locations := e.FindLocations(word, level, parent); len(locations) > 0 {
+		if locations := r.FindLocations(word, level, parent); len(locations) > 0 {
 			return locations
 		}
 	}
@@ -59,7 +69,7 @@ func (e *environment) FindLocationsFuzzy(text string, level utils.LocationLevel,
 	// try with each pair of words
 	for i := 0; i < len(words)-1; i++ {
 		wordPair := strings.Join(words[i:i+2], " ")
-		if locations := e.FindLocations(wordPair, level, parent); len(locations) > 0 {
+		if locations := r.FindLocations(wordPair, level, parent); len(locations) > 0 {
 			return locations
 		}
 	}
@@ -67,8 +77,6 @@ func (e *environment) FindLocationsFuzzy(text string, level utils.LocationLevel,
 	return []*utils.Location{}
 }
 
-func (e *environment) LookupLocation(path utils.LocationPath) *utils.Location {
-	return e.locations.FindByPath(path)
+func (r *assetLocationResolver) LookupLocation(path utils.LocationPath) *utils.Location {
+	return r.locations.FindByPath(path)
 }
-
-var _ Environment = (*environment)(nil)
