@@ -1,3 +1,7 @@
+v0.94.1
+----------
+ * Add IsQueryError util
+
 v0.94.0
 ----------
  * Move all location stuff from utils to envs
