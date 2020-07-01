@@ -248,7 +248,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 
 		eng := engine.NewBuilder().Build()
 		session, _, _ := eng.NewSession(sa, trigger)
-		afterJSON, _ := json.Marshal(session.Contact())
+		afterJSON, _ := jsonx.Marshal(session.Contact())
 
 		test.AssertEqualJSON(t, tc.ContactAfter, afterJSON, "contact JSON mismatch in '%s'", tc.Description)
 	}

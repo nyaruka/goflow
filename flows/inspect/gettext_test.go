@@ -1,13 +1,13 @@
 package inspect_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -36,7 +36,7 @@ func TestLocalizableText(t *testing.T) {
 		"text":          {"Hi there"},
 	}, extracted)
 
-	data, _ := json.Marshal(sendMsg)
+	data, _ := jsonx.Marshal(sendMsg)
 	test.AssertEqualJSON(t, []byte(`{
 		"uuid": "7a463f01-2bf4-4ea6-8d7b-3f743d19f27a",
 		"type": "send_msg",

@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/contactql/es"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/olivere/elastic"
 	"github.com/stretchr/testify/assert"
@@ -67,7 +68,7 @@ func TestElasticSort(t *testing.T) {
 		}
 
 		src, _ := sort.Source()
-		encoded, _ := json.Marshal(src)
+		encoded, _ := jsonx.Marshal(src)
 		assert.Equal(t, tc.Elastic, string(encoded))
 	}
 }
@@ -131,7 +132,7 @@ func TestElasticQuery(t *testing.T) {
 			continue
 		}
 
-		asJSON, err := json.Marshal(source)
+		asJSON, err := jsonx.Marshal(source)
 		assert.NoError(t, err, "error marshaling elastic query in ", testName)
 		if err != nil {
 			continue

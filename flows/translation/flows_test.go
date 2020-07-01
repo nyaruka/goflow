@@ -2,14 +2,12 @@ package translation_test
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/buger/jsonparser"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -17,7 +15,9 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/i18n"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
+	"github.com/buger/jsonparser"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -168,7 +168,7 @@ func TestImportIntoFlows(t *testing.T) {
 	err = translation.ImportIntoFlows(po, envs.Language("spa"), flow)
 	require.NoError(t, err)
 
-	localJSON, _ := json.Marshal(flow.Localization())
+	localJSON, _ := jsonx.Marshal(flow.Localization())
 	test.AssertEqualJSON(t, []byte(`{
 		"spa": {
 			"e42deebf-90fa-4636-81cb-d247a3d3ba75": {
@@ -224,7 +224,7 @@ func TestImportNewTranslationIntoFlows(t *testing.T) {
 	err = translation.ImportIntoFlows(po, "spa", flow)
 	require.NoError(t, err)
 
-	localJSON, _ := json.Marshal(flow.Localization())
+	localJSON, _ := jsonx.Marshal(flow.Localization())
 	spaJSON, _, _, _ := jsonparser.Get(localJSON, "spa")
 
 	test.AssertEqualJSON(t, []byte(`{
