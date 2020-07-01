@@ -1,7 +1,6 @@
 package contactql
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -13,20 +12,6 @@ import (
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
-
-// QueryError is used when an error is a result of an invalid query
-type QueryError struct {
-	msg string
-}
-
-func (e *QueryError) Error() string {
-	return e.msg
-}
-
-// NewQueryErrorf creates a new query error
-func NewQueryErrorf(err string, args ...interface{}) *QueryError {
-	return &QueryError{fmt.Sprintf(err, args...)}
-}
 
 // an implicit condition like +123-124-6546 or 1234 will be interpreted as a tel ~ condition
 var implicitIsPhoneNumberRegex = regexp.MustCompile(`^\+?[\-\d]{4,}$`)
