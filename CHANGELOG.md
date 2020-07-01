@@ -1,3 +1,7 @@
+v0.94.2
+----------
+ * Use jsonx.Marshal consistently
+
 v0.94.1
 ----------
  * Add IsQueryError util
