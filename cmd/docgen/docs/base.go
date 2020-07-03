@@ -5,8 +5,8 @@ import (
 	"os"
 	"path"
 
-	"github.com/nyaruka/goflow/flows/i18n"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/i18n"
 
 	"github.com/pkg/errors"
 )

@@ -133,6 +133,10 @@ func TestContact(t *testing.T) {
 		"urns":        contact.URNs().ToXValue(env),
 		"uuid":        types.NewXText(string(contact.UUID())),
 	}), flows.Context(env, contact))
+
+	assert.True(t, contact.ClearURNs()) // did have URNs
+	assert.False(t, contact.ClearURNs())
+	assert.Equal(t, flows.URNList{}, contact.URNs())
 }
 
 func TestContactFormat(t *testing.T) {
@@ -244,7 +248,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 
 		eng := engine.NewBuilder().Build()
 		session, _, _ := eng.NewSession(sa, trigger)
-		afterJSON, _ := json.Marshal(session.Contact())
+		afterJSON, _ := jsonx.Marshal(session.Contact())
 
 		test.AssertEqualJSON(t, tc.ContactAfter, afterJSON, "contact JSON mismatch in '%s'", tc.Description)
 	}

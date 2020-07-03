@@ -1,4 +1,4 @@
-package i18n
+package translation
 
 import (
 	"errors"
@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/i18n"
 	"github.com/nyaruka/goflow/utils/uuids"
 )
 
@@ -55,7 +56,7 @@ func getBaseLanguage(set []flows.Flow) envs.Language {
 }
 
 // ExtractFromFlows extracts a PO file from a set of flows
-func ExtractFromFlows(initialComment string, translationsLanguage envs.Language, excludeProperties []string, sources ...flows.Flow) (*PO, error) {
+func ExtractFromFlows(initialComment string, translationsLanguage envs.Language, excludeProperties []string, sources ...flows.Flow) (*i18n.PO, error) {
 	// check all flows have same base language
 	baseLanguage := getBaseLanguage(sources)
 	if baseLanguage == envs.NilLanguage {
@@ -188,16 +189,16 @@ func majorityTranslation(extracted []*localizedText) string {
 	return majority
 }
 
-func poFromExtracted(sources []flows.Flow, initialComment string, lang envs.Language, extracted []*localizedText) *PO {
+func poFromExtracted(sources []flows.Flow, initialComment string, lang envs.Language, extracted []*localizedText) *i18n.PO {
 	flowUUIDs := make([]string, len(sources))
 	for i, f := range sources {
 		flowUUIDs[i] = string(f.UUID())
 	}
 
-	header := NewPOHeader(initialComment, dates.Now(), envs.NewLocale(lang, envs.NilCountry).ToISO639_2())
+	header := i18n.NewPOHeader(initialComment, dates.Now(), envs.NewLocale(lang, envs.NilCountry).ToISO639_2())
 	header.Custom["Source-Flows"] = strings.Join(flowUUIDs, "; ")
 	header.Custom["Language-3"] = string(lang)
-	po := NewPO(header)
+	po := i18n.NewPO(header)
 
 	for _, ext := range extracted {
 		references := make([]string, len(ext.Locations))
@@ -211,8 +212,8 @@ func poFromExtracted(sources []flows.Flow, initialComment string, lang envs.Lang
 			context = ext.Locations[0].MsgContext()
 		}
 
-		entry := &POEntry{
-			Comment: POComment{
+		entry := &i18n.POEntry{
+			Comment: i18n.POComment{
 				References: references,
 			},
 			MsgContext: context,
@@ -227,7 +228,7 @@ func poFromExtracted(sources []flows.Flow, initialComment string, lang envs.Lang
 }
 
 // ImportIntoFlows imports translations from the given PO into the given flows
-func ImportIntoFlows(po *PO, translationsLanguage envs.Language, targets ...flows.Flow) error {
+func ImportIntoFlows(po *i18n.PO, translationsLanguage envs.Language, targets ...flows.Flow) error {
 	baseLanguage := getBaseLanguage(targets)
 	if baseLanguage == envs.NilLanguage {
 		return errors.New("can't import into flows with differing base languages")
@@ -255,7 +256,7 @@ func (u *TranslationUpdate) String() string {
 }
 
 // CalculateFlowUpdates calculates what updates should be made to translations in the given flows
-func CalculateFlowUpdates(po *PO, translationsLanguage envs.Language, targets ...flows.Flow) []*TranslationUpdate {
+func CalculateFlowUpdates(po *i18n.PO, translationsLanguage envs.Language, targets ...flows.Flow) []*TranslationUpdate {
 	localized := findLocalizedText(translationsLanguage, nil, targets)
 	localizedByContext := make(map[string][]*localizedText, 0)
 	localizedByMsgID := make(map[string][]*localizedText, 0)
@@ -267,7 +268,7 @@ func CalculateFlowUpdates(po *PO, translationsLanguage envs.Language, targets ..
 	}
 
 	updates := make([]*TranslationUpdate, 0)
-	addUpdate := func(lt *localizedText, e *POEntry) {
+	addUpdate := func(lt *localizedText, e *i18n.POEntry) {
 		// only update if translation has actually changed
 		if lt.Translation != e.MsgStr {
 			updates = append(updates, &TranslationUpdate{

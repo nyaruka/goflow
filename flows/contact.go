@@ -75,11 +75,7 @@ func NewContact(
 	}
 
 	groupList := NewGroupList(sa, groups, missing)
-
-	fieldValues, err := NewFieldValues(sa, fields, missing)
-	if err != nil {
-		return nil, err
-	}
+	fieldValues := NewFieldValues(sa, fields, missing)
 
 	return &Contact{
 		uuid:      uuid,
@@ -202,6 +198,13 @@ func (c *Contact) Name() string { return c.name }
 
 // URNs returns the URNs of this contact
 func (c *Contact) URNs() URNList { return c.urns }
+
+// ClearURNs clears the URNs on this contact
+func (c *Contact) ClearURNs() bool {
+	hadURNS := len(c.urns) > 0
+	c.urns = URNList{}
+	return hadURNS
+}
 
 // AddURN adds a new URN to this contact
 func (c *Contact) AddURN(urn urns.URN, channel *Channel) bool {
@@ -579,10 +582,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 	}
 
 	c.groups = NewGroupList(sa, envelope.Groups, missing)
-
-	if c.fields, err = NewFieldValues(sa, envelope.Fields, missing); err != nil {
-		return nil, errors.Wrap(err, "error reading fields")
-	}
+	c.fields = NewFieldValues(sa, envelope.Fields, missing)
 
 	return c, nil
 }

@@ -221,7 +221,7 @@ func (f *flow) ChangeLanguage(lang envs.Language) (flows.Flow, error) {
 // makes a copy of this flow which this differs from cloning as UUIDs are preserved
 func (f *flow) copy() (*flow, error) {
 	// by marshaling and unmarshaling...
-	marshaled, err := json.Marshal(f)
+	marshaled, err := jsonx.Marshal(f)
 	if err != nil {
 		return nil, err
 	}

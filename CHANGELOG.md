@@ -1,3 +1,43 @@
+v0.94.2
+----------
+ * Use jsonx.Marshal consistently
+
+v0.94.1
+----------
+ * Add IsQueryError util
+
+v0.94.0
+----------
+ * Move all location stuff from utils to envs
+ * Simplify resolving locations from environments
+ * Refactor field modifiers to take raw values and location parsing to not require a session
+
+v0.93.1
+----------
+ * Fix clearing all URNs
+
+v0.93.0
+----------
+ * Add urns modifier to replace all the URNs on a contact
+
+v0.92.0
+----------
+ * Move elastic functionality from mailroom
+
+v0.91.1
+----------
+ * Fix clearing of fields
+
+v0.91.0
+----------
+ * Move generic PO stuff into utils/i18n
+
+v0.90.0
+----------
+ * Allow querying contacts by UUID
+ * Move i18n package under flows to avoid confusion with locales package
+ * Add completion to localized documentation
+
 v0.89.0
 ----------
  * Tweak change language functionality to allow missing translations

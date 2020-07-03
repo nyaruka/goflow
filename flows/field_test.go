@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -24,15 +23,13 @@ func TestFieldValues(t *testing.T) {
 	age := fields.Get("age")
 
 	// can have no values for any fields
-	fieldVals, err := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, assets.PanicOnMissing)
-	assert.NoError(t, err)
+	fieldVals := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, assets.PanicOnMissing)
 
 	// can have a value but not in the right type for that field (age below)
-	fieldVals, err = flows.NewFieldValues(session.Assets(), map[string]*flows.Value{
-		"gender": flows.NewValue(types.NewXText("Male"), nil, nil, utils.LocationPath(""), utils.LocationPath(""), utils.LocationPath("")),
-		"age":    flows.NewValue(types.NewXText("nan"), nil, nil, utils.LocationPath(""), utils.LocationPath(""), utils.LocationPath("")),
+	fieldVals = flows.NewFieldValues(session.Assets(), map[string]*flows.Value{
+		"gender": flows.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
+		"age":    flows.NewValue(types.NewXText("nan"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
 	}, assets.PanicOnMissing)
-	assert.NoError(t, err)
 
 	assert.Equal(t, types.NewXText("Male"), fieldVals.Get(gender).Text)
 	assert.Equal(t, types.NewXText("nan"), fieldVals.Get(age).Text)
@@ -58,11 +55,11 @@ func TestValues(t *testing.T) {
 	num2 := types.RequireXNumberFromString("23")
 	num3 := types.RequireXNumberFromString("45")
 
-	v1 := flows.NewValue(types.NewXText("Male"), nil, nil, utils.LocationPath(""), utils.LocationPath(""), utils.LocationPath(""))
-	v2 := flows.NewValue(types.NewXText("Male"), nil, nil, utils.LocationPath(""), utils.LocationPath(""), utils.LocationPath(""))
-	v3 := flows.NewValue(types.NewXText("23"), nil, &num1, utils.LocationPath(""), utils.LocationPath(""), utils.LocationPath(""))
-	v4 := flows.NewValue(types.NewXText("23x"), nil, &num2, utils.LocationPath(""), utils.LocationPath(""), utils.LocationPath(""))
-	v5 := flows.NewValue(types.NewXText("23x"), nil, &num3, utils.LocationPath(""), utils.LocationPath(""), utils.LocationPath(""))
+	v1 := flows.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
+	v2 := flows.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
+	v3 := flows.NewValue(types.NewXText("23"), nil, &num1, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
+	v4 := flows.NewValue(types.NewXText("23x"), nil, &num2, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
+	v5 := flows.NewValue(types.NewXText("23x"), nil, &num3, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
 	v6 := (*flows.Value)(nil)
 
 	assert.True(t, v1.Equals(v1))

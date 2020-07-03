@@ -7,8 +7,8 @@ import (
 	"testing/iotest"
 	"time"
 
-	"github.com/nyaruka/goflow/flows/i18n"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils/i18n"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -94,7 +94,7 @@ msgstr "No"
 }
 
 func TestReadAndWritePO(t *testing.T) {
-	poFile, err := os.Open("testdata/exports/translation_mismatches.noargs.es.po")
+	poFile, err := os.Open("testdata/translation_mismatches.noargs.es.po")
 	require.NoError(t, err)
 
 	defer poFile.Close()

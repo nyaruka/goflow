@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 
-	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -38,7 +37,7 @@ func textComparison(objectVal string, comparator Comparator, queryVal string, is
 		}
 		return strings.Contains(objectVal, queryVal), nil
 	}
-	return false, errors.Errorf("can't query text fields with %s", comparator)
+	return false, NewQueryErrorf("can't query text fields with %s", comparator)
 }
 
 func numberComparison(objectVal decimal.Decimal, comparator Comparator, queryVal decimal.Decimal) (bool, error) {
@@ -54,7 +53,7 @@ func numberComparison(objectVal decimal.Decimal, comparator Comparator, queryVal
 	case ComparatorLessThanOrEqual:
 		return objectVal.LessThanOrEqual(queryVal), nil
 	}
-	return false, errors.Errorf("can't query number fields with %s", comparator)
+	return false, NewQueryErrorf("can't query number fields with %s", comparator)
 }
 
 func dateComparison(objectVal time.Time, comparator Comparator, queryVal time.Time) (bool, error) {
@@ -72,7 +71,7 @@ func dateComparison(objectVal time.Time, comparator Comparator, queryVal time.Ti
 	case ComparatorLessThanOrEqual:
 		return objectVal.Before(utcDayEnd), nil
 	}
-	return false, errors.Errorf("can't query datetime fields with %s", comparator)
+	return false, NewQueryErrorf("can't query datetime fields with %s", comparator)
 }
 
 // performs a prefix match which should be equivalent to an edge_ngram filter in ES

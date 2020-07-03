@@ -2,14 +2,14 @@ package flows
 
 import (
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
 )
 
 // location levels which can be field types
 const (
-	LocationLevelState    = utils.LocationLevel(1)
-	LocationLevelDistrict = utils.LocationLevel(2)
-	LocationLevelWard     = utils.LocationLevel(3)
+	LocationLevelState    = envs.LocationLevel(1)
+	LocationLevelDistrict = envs.LocationLevel(2)
+	LocationLevelWard     = envs.LocationLevel(3)
 )
 
 // LocationAssets provides access to location assets

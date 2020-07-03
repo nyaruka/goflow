@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/utils/httpx"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -95,6 +96,6 @@ func TestMockRequestorMarshaling(t *testing.T) {
 	assert.Equal(t, requestor1, requestor2)
 
 	// test re-marshaling
-	marshaled, err := json.Marshal(requestor2)
+	marshaled, err := jsonx.Marshal(requestor2)
 	assert.JSONEq(t, string(asJSON), string(marshaled))
 }
