@@ -3,6 +3,7 @@ package triggers
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -36,20 +37,6 @@ type ManualTrigger struct {
 	baseTrigger
 }
 
-// NewManual creates a new manual trigger
-func NewManual(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, batch bool, params *types.XObject) flows.Trigger {
-	return &ManualTrigger{
-		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, nil, batch, params),
-	}
-}
-
-// NewManualVoice creates a new manual trigger with a channel connection for voice
-func NewManualVoice(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, batch bool, params *types.XObject) flows.Trigger {
-	return &ManualTrigger{
-		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, connection, batch, params),
-	}
-}
-
 // Context for manual triggers always has non-nil params
 func (t *ManualTrigger) Context(env envs.Environment) map[string]types.XValue {
 	params := t.params
@@ -65,6 +52,45 @@ func (t *ManualTrigger) Context(env envs.Environment) map[string]types.XValue {
 }
 
 var _ flows.Trigger = (*ManualTrigger)(nil)
+
+//------------------------------------------------------------------------------------------
+// Builder
+//------------------------------------------------------------------------------------------
+
+// ManualBuilder is a builder for manual type triggers
+type ManualBuilder struct {
+	t *ManualTrigger
+}
+
+// Manual returns a manual trigger builder
+func (b *Builder) Manual() *ManualBuilder {
+	return &ManualBuilder{
+		t: &ManualTrigger{baseTrigger: newBaseTrigger(TypeManual, b.environment, b.flow, b.contact, nil, false, nil)},
+	}
+}
+
+// WithParams sets the params for the trigger
+func (b *ManualBuilder) WithParams(params *types.XObject) *ManualBuilder {
+	b.t.params = params
+	return b
+}
+
+// WithConnection sets the channel connection for the trigger
+func (b *ManualBuilder) WithConnection(channel *assets.ChannelReference, urn urns.URN) *ManualBuilder {
+	b.t.connection = flows.NewConnection(channel, urn)
+	return b
+}
+
+// AsBatch sets batch mode on for the trigger
+func (b *ManualBuilder) AsBatch() *ManualBuilder {
+	b.t.batch = true
+	return b
+}
+
+// Build builds the trigger
+func (b *ManualBuilder) Build() *ManualTrigger {
+	return b.t
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
