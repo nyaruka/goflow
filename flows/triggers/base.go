@@ -102,21 +102,6 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 	return nil
 }
 
-// Context returns the properties available in expressions
-//
-//   type:text -> the type of trigger that started this session
-//   params:any -> the parameters passed to the trigger
-//   keyword:any -> the keyword match if this is a keyword trigger
-//
-// @context trigger
-func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
-	return map[string]types.XValue{
-		"type":    types.NewXText(t.type_),
-		"params":  t.params,
-		"keyword": nil,
-	}
-}
-
 // EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
 // as far as the engine is concerned
 func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
@@ -131,6 +116,48 @@ func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
 	if len(added) > 0 || len(removed) > 0 {
 		logEvent(events.NewContactGroupsChanged(added, removed))
 	}
+}
+
+//------------------------------------------------------------------------------------------
+// Expressions context
+//------------------------------------------------------------------------------------------
+
+// Context is the schema of trigger objects in the context, across all types
+type Context struct {
+	Type    string
+	Params  *types.XObject
+	Keyword string
+}
+
+func (c *Context) asMap() map[string]types.XValue {
+	return map[string]types.XValue{
+		"type":    types.NewXText(c.Type),
+		"params":  c.Params,
+		"keyword": types.NewXText(c.Keyword),
+	}
+}
+
+func (t *baseTrigger) context() *Context {
+	params := t.params
+	if params == nil {
+		params = types.XObjectEmpty
+	}
+
+	return &Context{
+		Type:   t.type_,
+		Params: params,
+	}
+}
+
+// Context returns the properties available in expressions
+//
+//   type:text -> the type of trigger that started this session
+//   params:any -> the parameters passed to the trigger
+//   keyword:any -> the keyword match if this is a keyword trigger
+//
+// @context trigger
+func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
+	return t.context().asMap()
 }
 
 //------------------------------------------------------------------------------------------

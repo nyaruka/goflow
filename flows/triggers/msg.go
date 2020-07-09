@@ -87,16 +87,12 @@ func (t *MsgTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallba
 
 // Context for msg triggers additionally exposes the keyword match
 func (t *MsgTrigger) Context(env envs.Environment) map[string]types.XValue {
-	var keyword types.XValue
+	c := t.context()
 	if t.match != nil {
-		keyword = types.NewXText(t.match.Keyword)
+		c.Keyword = t.match.Keyword
 	}
 
-	return map[string]types.XValue{
-		"type":    types.NewXText(t.type_),
-		"params":  t.params,
-		"keyword": keyword,
-	}
+	return c.asMap()
 }
 
 var _ flows.Trigger = (*MsgTrigger)(nil)
