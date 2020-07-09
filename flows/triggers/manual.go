@@ -29,12 +29,17 @@ const TypeManual string = "manual"
 //       "name": "Bob",
 //       "created_on": "2018-01-01T12:00:00.000000Z"
 //     },
+//     "user": "bob@nyaruka.com",
+//     "origin": "ui",
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
 //
 // @trigger manual
 type ManualTrigger struct {
 	baseTrigger
+
+	user   string
+	origin string
 }
 
 // Context for manual triggers always has non-nil params
@@ -81,6 +86,18 @@ func (b *ManualBuilder) WithConnection(channel *assets.ChannelReference, urn urn
 	return b
 }
 
+// WithUser sets the user (e.g. an email address, login) for the trigger
+func (b *ManualBuilder) WithUser(user string) *ManualBuilder {
+	b.t.user = user
+	return b
+}
+
+// WithOrigin sets the origin (e.g. ui, api) for the trigger
+func (b *ManualBuilder) WithOrigin(origin string) *ManualBuilder {
+	b.t.origin = origin
+	return b
+}
+
 // AsBatch sets batch mode on for the trigger
 func (b *ManualBuilder) AsBatch() *ManualBuilder {
 	b.t.batch = true
@@ -96,15 +113,24 @@ func (b *ManualBuilder) Build() *ManualTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type manualTriggerEnvelope struct {
+	baseTriggerEnvelope
+	User   string `json:"user,omitempty"`
+	Origin string `json:"origin,omitempty"`
+}
+
 func readManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &baseTriggerEnvelope{}
+	e := &manualTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	t := &ManualTrigger{}
+	t := &ManualTrigger{
+		user:   e.User,
+		origin: e.Origin,
+	}
 
-	if err := t.unmarshal(sessionAssets, e, missing); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -113,9 +139,12 @@ func readManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, 
 
 // MarshalJSON marshals this trigger into JSON
 func (t *ManualTrigger) MarshalJSON() ([]byte, error) {
-	e := &baseTriggerEnvelope{}
+	e := &manualTriggerEnvelope{
+		User:   t.user,
+		Origin: t.origin,
+	}
 
-	if err := t.marshal(e); err != nil {
+	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
