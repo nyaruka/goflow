@@ -134,6 +134,26 @@ func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
 }
 
 //------------------------------------------------------------------------------------------
+// Builder
+//------------------------------------------------------------------------------------------
+
+// Builder is a builder for triggers
+type Builder struct {
+	environment envs.Environment
+	flow        *assets.FlowReference
+	contact     *flows.Contact
+}
+
+// NewBuilder creates a new trigger builder
+func NewBuilder(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact) *Builder {
+	return &Builder{
+		environment: env,
+		flow:        flow,
+		contact:     contact,
+	}
+}
+
+//------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 

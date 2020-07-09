@@ -185,14 +185,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		var trigger flows.Trigger
 		ignoreEventCount := 0
 		if tc.NoInput || tc.AsBatch {
-			var connection *flows.Connection
+			tb := triggers.NewBuilder(env, flow.Reference(), contact).Manual().AsBatch()
+
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
-				trigger = triggers.NewManualVoice(env, flow.Reference(), contact, connection, tc.AsBatch, nil)
-			} else {
-				trigger = triggers.NewManual(env, flow.Reference(), contact, tc.AsBatch, nil)
+				tb = tb.WithConnection(channel.Reference(), urns.URN("tel:+12065551212"))
 			}
+
+			trigger = tb.Build()
 		} else {
 			msg := flows.NewMsgIn(
 				flows.MsgUUID("aa90ce99-3b4d-44ba-b0ca-79e63d9ed842"),
@@ -204,7 +204,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 					"audio/mp3:http://s3.amazon.com/bucket/test.mp3",
 				},
 			)
-			trigger = triggers.NewMsg(env, flow.Reference(), contact, msg, nil)
+			trigger = triggers.NewBuilder(env, flow.Reference(), contact).Msg(msg).Build()
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
