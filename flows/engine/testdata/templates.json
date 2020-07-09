@@ -951,14 +951,16 @@
     {
         "template": "@(json(trigger))",
         "output_json": {
-            "type": "flow_action",
+            "keyword": "",
+            "origin": "",
             "params": {
                 "source": "website",
                 "address": {
                     "state": "WA"
                 }
             },
-            "keyword": null
+            "type": "flow_action",
+            "user": ""
         }
     }
 ]
