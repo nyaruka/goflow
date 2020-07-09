@@ -347,6 +347,7 @@ var sessionTrigger = `{
             "eng", 
             "spa"
         ],
+        "default_country": "US",
         "redaction_policy": "none",
         "time_format": "tt:mm",
         "timezone": "America/Guayaquil"
