@@ -1,0 +1,36 @@
+{
+    "type": "campaign",
+    "environment": {
+        "date_format": "YYYY-MM-DD",
+        "time_format": "tt:mm",
+        "timezone": "UTC",
+        "number_format": {
+            "decimal_symbol": ".",
+            "digit_grouping_symbol": ","
+        },
+        "redaction_policy": "none",
+        "max_value_length": 640
+    },
+    "flow": {
+        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+        "name": "Registration"
+    },
+    "contact": {
+        "uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b",
+        "name": "Bob",
+        "language": "eng",
+        "status": "active",
+        "created_on": "2018-10-20T09:49:31.23456789Z",
+        "urns": [
+            "tel:+12065551212"
+        ]
+    },
+    "triggered_on": "2018-10-20T09:49:31.23456789Z",
+    "event": {
+        "uuid": "8d339613-f0be-48b7-92ee-155f4c7576f8",
+        "campaign": {
+            "uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e",
+            "name": "Reminders"
+        }
+    }
+}
