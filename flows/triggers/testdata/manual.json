@@ -28,11 +28,11 @@
         },
         "events": [],
         "context": {
-            "type": "manual",
+            "keyword": null,
             "params": {
                 "foo": "bar"
             },
-            "keyword": null
+            "type": "manual"
         }
     },
     {
@@ -53,9 +53,9 @@
         },
         "events": [],
         "context": {
-            "type": "manual",
+            "keyword": null,
             "params": {},
-            "keyword": null
+            "type": "manual"
         }
     }
 ]

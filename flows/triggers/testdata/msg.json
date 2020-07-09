@@ -88,13 +88,14 @@
                 "status": "active",
                 "created_on": "2018-01-01T12:00:00Z"
             },
+            "triggered_on": "2000-01-01T00:00:00Z",
             "msg": {
                 "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                "urn": "tel:+12065551212",
                 "channel": {
                     "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
                     "name": "Twilio"
                 },
-                "urn": "tel:+12065551212",
                 "text": "hi there",
                 "attachments": [
                     "https://s3.amazon.com/mybucket/attachment.jpg"
@@ -103,32 +104,31 @@
             "keyword_match": {
                 "type": "first_word",
                 "keyword": "start"
-            },
-            "triggered_on": "2000-01-01T00:00:00Z"
+            }
         },
         "events": [
             {
+                "type": "msg_received",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "msg": {
-                    "attachments": [
-                        "https://s3.amazon.com/mybucket/attachment.jpg"
-                    ],
+                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                    "urn": "tel:+12065551212",
                     "channel": {
-                        "name": "Twilio",
-                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf"
+                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                        "name": "Twilio"
                     },
                     "text": "hi there",
-                    "urn": "tel:+12065551212",
-                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b"
-                },
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "msg_received"
+                    "attachments": [
+                        "https://s3.amazon.com/mybucket/attachment.jpg"
+                    ]
+                }
             }
         ],
         "context": {
-            "type": "msg",
+            "keyword": "start",
             "params": null,
-            "keyword": "start"
+            "type": "msg"
         }
     },
     {
@@ -145,43 +145,43 @@
                 "status": "active",
                 "created_on": "2018-01-01T12:00:00Z"
             },
+            "triggered_on": "2000-01-01T00:00:00Z",
             "msg": {
                 "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                "urn": "tel:+12065551212",
                 "channel": {
                     "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
                     "name": "Twilio"
                 },
-                "urn": "tel:+12065551212",
                 "text": "hi there",
                 "attachments": [
                     "https://s3.amazon.com/mybucket/attachment.jpg"
                 ]
-            },
-            "triggered_on": "2000-01-01T00:00:00Z"
+            }
         },
         "events": [
             {
+                "type": "msg_received",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "msg": {
-                    "attachments": [
-                        "https://s3.amazon.com/mybucket/attachment.jpg"
-                    ],
+                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                    "urn": "tel:+12065551212",
                     "channel": {
-                        "name": "Twilio",
-                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf"
+                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                        "name": "Twilio"
                     },
                     "text": "hi there",
-                    "urn": "tel:+12065551212",
-                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b"
-                },
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "type": "msg_received"
+                    "attachments": [
+                        "https://s3.amazon.com/mybucket/attachment.jpg"
+                    ]
+                }
             }
         ],
         "context": {
-            "type": "msg",
+            "keyword": null,
             "params": null,
-            "keyword": null
+            "type": "msg"
         }
     }
 ]
