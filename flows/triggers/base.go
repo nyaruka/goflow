@@ -154,7 +154,9 @@ func (t *baseTrigger) context() *Context {
 //
 //   type:text -> the type of trigger that started this session
 //   params:any -> the parameters passed to the trigger
-//   keyword:any -> the keyword match if this is a keyword trigger
+//   keyword:text -> the keyword match if this is a keyword trigger
+//   user:text -> the user who started this session if this is a manual trigger
+//   origin:text -> the origin of this session if this is a manual trigger
 //
 // @context trigger
 func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {

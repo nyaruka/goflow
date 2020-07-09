@@ -441,7 +441,17 @@
                 {
                     "key": "keyword",
                     "help": "the keyword match if this is a keyword trigger",
-                    "type": "any"
+                    "type": "text"
+                },
+                {
+                    "key": "user",
+                    "help": "the user who started this session if this is a manual trigger",
+                    "type": "text"
+                },
+                {
+                    "key": "origin",
+                    "help": "the origin of this session if this is a manual trigger",
+                    "type": "text"
                 }
             ]
         }
