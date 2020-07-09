@@ -83,9 +83,11 @@
         },
         "events": [],
         "context": {
-            "keyword": null,
-            "params": null,
-            "type": "flow_action"
+            "keyword": "",
+            "origin": "",
+            "params": {},
+            "type": "flow_action",
+            "user": ""
         }
     }
 ]

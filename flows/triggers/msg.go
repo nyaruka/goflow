@@ -89,9 +89,8 @@ func (t *MsgTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallba
 func (t *MsgTrigger) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
 	if t.match != nil {
-		c.Keyword = t.match.Keyword
+		c.keyword = t.match.Keyword
 	}
-
 	return c.asMap()
 }
 

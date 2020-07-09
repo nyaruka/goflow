@@ -127,8 +127,10 @@
         ],
         "context": {
             "keyword": "start",
-            "params": null,
-            "type": "msg"
+            "origin": "",
+            "params": {},
+            "type": "msg",
+            "user": ""
         }
     },
     {
@@ -179,9 +181,11 @@
             }
         ],
         "context": {
-            "keyword": null,
-            "params": null,
-            "type": "msg"
+            "keyword": "",
+            "origin": "",
+            "params": {},
+            "type": "msg",
+            "user": ""
         }
     }
 ]

@@ -44,7 +44,10 @@ type ManualTrigger struct {
 
 // Context for manual triggers always has non-nil params
 func (t *ManualTrigger) Context(env envs.Environment) map[string]types.XValue {
-	return t.context().asMap()
+	c := t.context()
+	c.user = t.user
+	c.origin = t.origin
+	return c.asMap()
 }
 
 var _ flows.Trigger = (*ManualTrigger)(nil)

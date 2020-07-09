@@ -124,16 +124,20 @@ func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
 
 // Context is the schema of trigger objects in the context, across all types
 type Context struct {
-	Type    string
-	Params  *types.XObject
-	Keyword string
+	type_   string
+	params  *types.XObject
+	keyword string
+	user    string
+	origin  string
 }
 
 func (c *Context) asMap() map[string]types.XValue {
 	return map[string]types.XValue{
-		"type":    types.NewXText(c.Type),
-		"params":  c.Params,
-		"keyword": types.NewXText(c.Keyword),
+		"type":    types.NewXText(c.type_),
+		"params":  c.params,
+		"keyword": types.NewXText(c.keyword),
+		"user":    types.NewXText(c.user),
+		"origin":  types.NewXText(c.origin),
 	}
 }
 
@@ -143,10 +147,7 @@ func (t *baseTrigger) context() *Context {
 		params = types.XObjectEmpty
 	}
 
-	return &Context{
-		Type:   t.type_,
-		Params: params,
-	}
+	return &Context{type_: t.type_, params: params}
 }
 
 // Context returns the properties available in expressions
