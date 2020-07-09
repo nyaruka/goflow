@@ -163,354 +163,78 @@ func TestTriggerMarshaling(t *testing.T) {
 	})
 
 	triggerTests := []struct {
-		trigger   flows.Trigger
-		marshaled string
+		trigger  flows.Trigger
+		snapshot string
 	}{
 		{
 			triggers.NewBuilder(env, flow, contact).
 				Campaign(triggers.NewCampaignReference("8cd472c4-bb85-459a-8c9a-c04708af799e", "Reminders"), "8d339613-f0be-48b7-92ee-155f4c7576f8").
 				Build(),
-			`{
-				"contact": {
-					"created_on": "2018-10-20T09:49:31.23456789Z",
-					"language": "eng",
-					"name": "Bob",
-					"status": "active",
-					"urns": ["tel:+12065551212"],
-					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
-				},
-				"environment": {
-					"date_format": "YYYY-MM-DD",
-					"max_value_length": 640,
-					"number_format": {
-						"decimal_symbol": ".",
-						"digit_grouping_symbol": ","
-					},
-					"redaction_policy": "none",
-					"time_format": "tt:mm",
-					"timezone": "UTC"
-				},
-				"event": {
-					"campaign": {
-						"name": "Reminders",
-						"uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e"
-					},
-					"uuid": "8d339613-f0be-48b7-92ee-155f4c7576f8"
-				},
-				"flow": {
-					"name": "Registration",
-					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
-				},
-				"triggered_on": "2018-10-20T09:49:31.23456789Z",
-				"type": "campaign"
-			}`,
-		},
-		{
-			triggers.NewBuilder(env, flow, contact).
-				Channel(channel, triggers.ChannelEventTypeNewConversation).
-				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
-				Build(),
-			`{
-				"contact": {
-					"created_on": "2018-10-20T09:49:31.23456789Z",
-					"language": "eng",
-					"name": "Bob",
-					"status": "active",
-					"urns": ["tel:+12065551212"],
-					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
-				},
-				"environment": {
-					"date_format": "YYYY-MM-DD",
-					"max_value_length": 640,
-					"number_format": {
-						"decimal_symbol": ".",
-						"digit_grouping_symbol": ","
-					},
-					"redaction_policy": "none",
-					"time_format": "tt:mm",
-					"timezone": "UTC"
-				},
-				"event": {
-					"channel": {
-						"name": "Nexmo",
-						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
-					},
-					"type": "new_conversation"
-				},
-				"flow": {
-					"name": "Registration",
-					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
-				},
-				"params": {
-					"foo": "bar"
-				},
-				"triggered_on": "2018-10-20T09:49:31.23456789Z",
-				"type": "channel"
-			}`,
-		},
-		{
-			triggers.NewBuilder(env, flow, contact).
-				FlowAction(json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
-				WithConnection(channel, "tel:+12065551212").
-				AsBatch().
-				Build(),
-			`{
-				"connection": {
-					"channel": {
-						"name": "Nexmo",
-						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
-					},
-					"urn": "tel:+12065551212"
-				},
-				"contact": {
-					"created_on": "2018-10-20T09:49:31.23456789Z",
-					"language": "eng",
-					"name": "Bob",
-					"status": "active",
-					"urns": ["tel:+12065551212"],
-					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
-				},
-				"environment": {
-					"date_format": "YYYY-MM-DD",
-					"max_value_length": 640,
-					"number_format": {
-						"decimal_symbol": ".",
-						"digit_grouping_symbol": ","
-					},
-					"redaction_policy": "none",
-					"time_format": "tt:mm",
-					"timezone": "UTC"
-				},
-				"flow": {
-					"name": "Registration",
-					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
-				},
-				"run_summary": {
-					"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"
-				},
-				"batch": true,
-				"triggered_on": "2018-10-20T09:49:31.23456789Z",
-				"type": "flow_action"
-			}`,
-		},
-		{
-			triggers.NewBuilder(env, flow, contact).
-				FlowAction(json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
-				Build(),
-			`{
-				"contact": {
-					"created_on": "2018-10-20T09:49:31.23456789Z",
-					"language": "eng",
-					"name": "Bob",
-					"status": "active",
-					"urns": ["tel:+12065551212"],
-					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
-				},
-				"environment": {
-					"date_format": "YYYY-MM-DD",
-					"max_value_length": 640,
-					"number_format": {
-						"decimal_symbol": ".",
-						"digit_grouping_symbol": ","
-					},
-					"redaction_policy": "none",
-					"time_format": "tt:mm",
-					"timezone": "UTC"
-				},
-				"flow": {
-					"name": "Registration",
-					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
-				},
-				"run_summary": {
-					"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"
-				},
-				"triggered_on": "2018-10-20T09:49:31.23456789Z",
-				"type": "flow_action"
-			}`,
+			"campaign",
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
 				Channel(channel, triggers.ChannelEventTypeIncomingCall).
 				WithConnection(urns.URN("tel:+12065551212")).
 				Build(),
-			`{
-				"connection": {
-					"channel": {
-						"name": "Nexmo",
-						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
-					},
-					"urn": "tel:+12065551212"
-				},
-				"contact": {
-					"created_on": "2018-10-20T09:49:31.23456789Z",
-					"language": "eng",
-					"name": "Bob",
-					"status": "active",
-					"urns": ["tel:+12065551212"],
-					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
-				},
-				"environment": {
-					"date_format": "YYYY-MM-DD",
-					"max_value_length": 640,
-					"number_format": {
-						"decimal_symbol": ".",
-						"digit_grouping_symbol": ","
-					},
-					"redaction_policy": "none",
-					"time_format": "tt:mm",
-					"timezone": "UTC"
-				},
-				"event": {
-					"channel": {
-						"name": "Nexmo",
-						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
-					},
-					"type": "incoming_call"
-				},
-				"flow": {
-					"name": "Registration",
-					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
-				},
-				"params": {},
-				"triggered_on": "2018-10-20T09:49:31.23456789Z",
-				"type": "channel"
-			}`,
+			"channel_incoming_call",
+		},
+		{
+			triggers.NewBuilder(env, flow, contact).
+				Channel(channel, triggers.ChannelEventTypeNewConversation).
+				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
+				Build(),
+			"channel_new_conversation",
+		},
+		{
+			triggers.NewBuilder(env, flow, contact).
+				FlowAction(json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
+				Build(),
+			"flow_action",
+		},
+		{
+			triggers.NewBuilder(env, flow, contact).
+				FlowAction(json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
+				WithConnection(channel, "tel:+12065551212").
+				AsBatch().
+				Build(),
+			"flow_action_ivr",
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).Manual().
-				AsBatch().
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
+				AsBatch().
 				Build(),
-			`{
-				"contact": {
-					"created_on": "2018-10-20T09:49:31.23456789Z",
-					"language": "eng",
-					"name": "Bob",
-					"status": "active",
-					"urns": ["tel:+12065551212"],
-					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
-				},
-				"environment": {
-					"date_format": "YYYY-MM-DD",
-					"max_value_length": 640,
-					"number_format": {
-						"decimal_symbol": ".",
-						"digit_grouping_symbol": ","
-					},
-					"redaction_policy": "none",
-					"time_format": "tt:mm",
-					"timezone": "UTC"
-				},
-				"flow": {
-					"name": "Registration",
-					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
-				},
-				"batch": true,
-				"params": {
-					"foo": "bar"
-				},
-				"triggered_on": "2018-10-20T09:49:31.23456789Z",
-				"type": "manual"
-			}`,
+			"manual",
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).Manual().
 				WithConnection(channel, "tel:+12065551212").
-				AsBatch().
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
+				AsBatch().
 				Build(),
-			`{
-				"connection": {
-					"channel": {
-						"name": "Nexmo",
-						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
-					},
-					"urn": "tel:+12065551212"
-				},
-				"contact": {
-					"created_on": "2018-10-20T09:49:31.23456789Z",
-					"language": "eng",
-					"name": "Bob",
-					"status": "active",
-					"urns": ["tel:+12065551212"],
-					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
-				},
-				"environment": {
-					"date_format": "YYYY-MM-DD",
-					"max_value_length": 640,
-					"number_format": {
-						"decimal_symbol": ".",
-						"digit_grouping_symbol": ","
-					},
-					"redaction_policy": "none",
-					"time_format": "tt:mm",
-					"timezone": "UTC"
-				},
-				"flow": {
-					"name": "Registration",
-					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
-				},
-				"batch": true,
-				"params": {
-					"foo": "bar"
-				},
-				"triggered_on": "2018-10-20T09:49:31.23456789Z",
-				"type": "manual"
-			}`,
+			"manual_ivr",
+		},
+		{
+			triggers.NewBuilder(env, flow, contact).
+				Manual().
+				Build(),
+			"manual_minimal",
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
 				Msg(flows.NewMsgIn(flows.MsgUUID("c8005ee3-4628-4d76-be66-906352cb1935"), urns.URN("tel:+1234567890"), channel, "Hi there", nil)).
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
 				Build(),
-			`{
-				"contact": {
-					"created_on": "2018-10-20T09:49:31.23456789Z",
-					"language": "eng",
-					"name": "Bob",
-					"status": "active",
-					"urns": ["tel:+12065551212"],
-					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
-				},
-				"environment": {
-					"date_format": "YYYY-MM-DD",
-					"max_value_length": 640,
-					"number_format": {
-						"decimal_symbol": ".",
-						"digit_grouping_symbol": ","
-					},
-					"redaction_policy": "none",
-					"time_format": "tt:mm",
-					"timezone": "UTC"
-				},
-				"flow": {
-					"name": "Registration",
-					"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"
-				},
-				"keyword_match": {
-					"keyword": "hi",
-					"type": "first_word"
-				},
-				"msg": {
-					"channel": {
-						"name": "Nexmo",
-						"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7"
-					},
-					"text": "Hi there",
-					"urn": "tel:+1234567890",
-					"uuid": "c8005ee3-4628-4d76-be66-906352cb1935"
-				},
-				"triggered_on": "2018-10-20T09:49:31.23456789Z",
-				"type": "msg"
-			}`,
+			"msg",
 		},
 	}
 
 	for _, tc := range triggerTests {
-		triggerJSON, err := jsonx.Marshal(tc.trigger)
+		triggerJSON, err := jsonx.MarshalPretty(tc.trigger)
 		assert.NoError(t, err)
 
-		test.AssertEqualJSON(t, []byte(tc.marshaled), triggerJSON, "trigger JSON mismatch")
+		test.AssertSnapshot(t, tc.snapshot, string(triggerJSON))
 
 		// then try to read from the JSON
 		_, err = triggers.ReadTrigger(sa, triggerJSON, assets.PanicOnMissing)
