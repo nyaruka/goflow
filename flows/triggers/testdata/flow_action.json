@@ -53,6 +53,7 @@
                 "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
                 "name": "Trigger Tester"
             },
+            "triggered_on": "2000-01-01T00:00:00Z",
             "run_summary": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "flow": {
@@ -78,14 +79,13 @@
                         "created_on": "2018-01-01T12:00:00.000000000-00:00"
                     }
                 }
-            },
-            "triggered_on": "2000-01-01T00:00:00Z"
+            }
         },
         "events": [],
         "context": {
-            "type": "flow_action",
+            "keyword": null,
             "params": null,
-            "keyword": null
+            "type": "flow_action"
         }
     }
 ]
