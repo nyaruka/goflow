@@ -35,7 +35,7 @@ func NewStep(node flows.Node, arrivedOn time.Time) flows.Step {
 		stepUUID:  flows.StepUUID(uuids.New()),
 		nodeUUID:  node.UUID(),
 		arrivedOn: arrivedOn,
-		wantsResponse: !hasExits,
+		wantsResponse: hasExits,
 	}
 }
 
