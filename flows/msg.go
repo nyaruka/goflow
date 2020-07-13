@@ -51,6 +51,7 @@ type MsgOut struct {
 	Templating_   *MsgTemplating `json:"templating,omitempty"`
 	Topic_        MsgTopic       `json:"topic,omitempty"`
 	TextLanguage  envs.Language  `json:"text_language,omitempty"`
+	WantsResponse bool			 `json:"wants_response"`
 }
 
 // NewMsgIn creates a new incoming message
@@ -67,7 +68,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating, topic MsgTopic) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating, topic MsgTopic, wantsResponse bool) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(uuids.New()),
@@ -79,6 +80,7 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, atta
 		QuickReplies_: quickReplies,
 		Templating_:   templating,
 		Topic_:        topic,
+		WantsResponse: wantsResponse,
 	}
 }
 

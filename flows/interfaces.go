@@ -325,7 +325,7 @@ type Step interface {
 	NodeUUID() NodeUUID
 	ExitUUID() ExitUUID
 	ArrivedOn() time.Time
-
+	WantsResponse() bool
 	Leave(ExitUUID)
 }
 

@@ -15,14 +15,27 @@ type step struct {
 	nodeUUID  flows.NodeUUID
 	exitUUID  flows.ExitUUID
 	arrivedOn time.Time
+	wantsResponse bool
+}
+
+func (s *step) WantsResponse() bool {
+	return s.wantsResponse
 }
 
 // NewStep creates a new step
 func NewStep(node flows.Node, arrivedOn time.Time) flows.Step {
+	var hasExits = false
+
+	for _, e := range node.Exits() {
+		if len(e.DestinationUUID()) != 0 {
+			hasExits = true
+		}
+	}
 	return &step{
 		stepUUID:  flows.StepUUID(uuids.New()),
 		nodeUUID:  node.UUID(),
 		arrivedOn: arrivedOn,
+		wantsResponse: !hasExits,
 	}
 }
 
