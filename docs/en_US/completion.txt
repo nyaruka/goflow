@@ -203,3 +203,5 @@ trigger -> the trigger that started this session
 trigger.type -> the type of trigger that started this session
 trigger.params -> the parameters passed to the trigger
 trigger.keyword -> the keyword match if this is a keyword trigger
+trigger.user -> the user who started this session if this is a manual trigger
+trigger.origin -> the origin of this session if this is a manual trigger

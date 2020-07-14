@@ -223,6 +223,8 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).Manual().
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
+				WithUser("bob@nyaruka.com").
+				WithOrigin("api").
 				AsBatch().
 				Build(),
 			"manual",

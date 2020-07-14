@@ -57,9 +57,11 @@
         },
         "events": [],
         "context": {
-            "keyword": null,
-            "params": null,
-            "type": "channel"
+            "keyword": "",
+            "origin": "",
+            "params": {},
+            "type": "channel",
+            "user": ""
         }
     }
 ]

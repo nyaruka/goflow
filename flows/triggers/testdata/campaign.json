@@ -57,9 +57,11 @@
         },
         "events": [],
         "context": {
-            "keyword": null,
-            "params": null,
-            "type": "campaign"
+            "keyword": "",
+            "origin": "",
+            "params": {},
+            "type": "campaign",
+            "user": ""
         }
     }
 ]

@@ -122,7 +122,9 @@ Is used when a session was triggered manually by a user
         "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
-    "triggered_on": "2000-01-01T00:00:00Z"
+    "triggered_on": "2000-01-01T00:00:00Z",
+    "user": "bob@nyaruka.com",
+    "origin": "ui"
 }
 ```
 
