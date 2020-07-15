@@ -132,10 +132,10 @@
     {
         "description": "Result with category success created if classification happens",
         "http_mocks": {
-            "https://api.wit.ai/message?v=20170307&q=Hi+everybody": [
+            "https://api.wit.ai/message?v=20200513&q=Hi+everybody": [
                 {
                     "status": 200,
-                    "body": "{\"_text\":\"Hi everyone\",\"entities\":{\"intent\":[{\"confidence\":0.84709152161066,\"value\":\"greeting\"}]},\"msg_id\":\"1M7fAcDWag76OmgDI\"}"
+                    "body": "{\"text\":\"Hi everyone\",\"intents\":[{\"id\":\"754569408690533\",\"name\":\"book_flight\",\"confidence\":\"0.9024\"}],\"entities\":{\"Destination:Location\":[{\"id\":\"285857329187179\",\"name\":\"Destination\",\"role\":\"Location\",\"value\":\"Quito\",\"confidence\":0.9648}]}}"
                 }
             ]
         },
@@ -161,10 +161,10 @@
                 },
                 "http_logs": [
                     {
-                        "url": "https://api.wit.ai/message?v=20170307&q=Hi+everybody",
+                        "url": "https://api.wit.ai/message?v=20200513&q=Hi+everybody",
                         "status": "success",
-                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 127\r\n\r\n{\"_text\":\"Hi everyone\",\"entities\":{\"intent\":[{\"confidence\":0.84709152161066,\"value\":\"greeting\"}]},\"msg_id\":\"1M7fAcDWag76OmgDI\"}",
+                        "request": "GET /message?v=20200513&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 240\r\n\r\n{\"text\":\"Hi everyone\",\"intents\":[{\"id\":\"754569408690533\",\"name\":\"book_flight\",\"confidence\":\"0.9024\"}],\"entities\":{\"Destination:Location\":[{\"id\":\"285857329187179\",\"name\":\"Destination\",\"role\":\"Location\",\"value\":\"Quito\",\"confidence\":0.9648}]}}",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
                     }
@@ -175,16 +175,24 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Intent",
-                "value": "greeting",
+                "value": "book_flight",
                 "category": "Success",
                 "input": "Hi everybody",
                 "extra": {
                     "intents": [
                         {
-                            "name": "greeting",
-                            "confidence": 0.84709152161066
+                            "name": "book_flight",
+                            "confidence": 0.9024
                         }
-                    ]
+                    ],
+                    "entities": {
+                        "Destination": [
+                            {
+                                "value": "Quito",
+                                "confidence": 0.9648
+                            }
+                        ]
+                    }
                 }
             }
         ],
@@ -221,7 +229,7 @@
     {
         "description": "Result with category failure created if classifier request fails",
         "http_mocks": {
-            "https://api.wit.ai/message?v=20170307&q=Hi+everybody": [
+            "https://api.wit.ai/message?v=20200513&q=Hi+everybody": [
                 {
                     "status": 400,
                     "body": "not working"
@@ -250,9 +258,9 @@
                 },
                 "http_logs": [
                     {
-                        "url": "https://api.wit.ai/message?v=20170307&q=Hi+everybody",
+                        "url": "https://api.wit.ai/message?v=20200513&q=Hi+everybody",
                         "status": "response_error",
-                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "request": "GET /message?v=20200513&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
                         "response": "HTTP/1.0 400 Bad Request\r\nContent-Length: 11\r\n\r\nnot working",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
@@ -308,7 +316,7 @@
     {
         "description": "Result with category failure created if classifier request fails with connection error",
         "http_mocks": {
-            "https://api.wit.ai/message?v=20170307&q=Hi+everybody": [
+            "https://api.wit.ai/message?v=20200513&q=Hi+everybody": [
                 {
                     "status": 0,
                     "body": ""
@@ -337,9 +345,9 @@
                 },
                 "http_logs": [
                     {
-                        "url": "https://api.wit.ai/message?v=20170307&q=Hi+everybody",
+                        "url": "https://api.wit.ai/message?v=20200513&q=Hi+everybody",
                         "status": "connection_error",
-                        "request": "GET /message?v=20170307&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "request": "GET /message?v=20200513&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
                     }

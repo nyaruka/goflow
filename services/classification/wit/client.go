@@ -14,19 +14,38 @@ import (
 
 const (
 	apiBaseURL = "https://api.wit.ai"
-	version    = "20170307"
+	version    = "20200513"
 )
 
-type EntityCandidate struct {
+// IntentMatch is possible intent match
+type IntentMatch struct {
+	ID         string          `json:"id"`
+	Name       string          `json:"name"`
+	Confidence decimal.Decimal `json:"confidence"`
+}
+
+// EntityMatch is possible entity match
+type EntityMatch struct {
+	ID         string          `json:"id"`
+	Name       string          `json:"name"`
+	Role       string          `json:"role"`
+	Value      string          `json:"value"`
+	Confidence decimal.Decimal `json:"confidence"`
+}
+
+// TraitMatch is possible trait match
+type TraitMatch struct {
+	ID         string          `json:"id"`
 	Value      string          `json:"value"`
 	Confidence decimal.Decimal `json:"confidence"`
 }
 
 // MessageResponse is the response from a /message request
 type MessageResponse struct {
-	MsgID    string                       `json:"msg_id"`
-	Text     string                       `json:"_text"`
-	Entities map[string][]EntityCandidate `json:"entities" validate:"required"`
+	Text     string                   `json:"text"`
+	Intents  []IntentMatch            `json:"intents" validate:"required"`
+	Entities map[string][]EntityMatch `json:"entities"`
+	Traits   map[string][]TraitMatch  `json:"traits"`
 }
 
 // Client is a basic Wit.ai client
