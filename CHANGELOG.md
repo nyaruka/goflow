@@ -1,3 +1,11 @@
+v0.95.0
+----------
+ * Use latest wit.ai API version
+ * Allow searching with values containing single quotes
+ * Add user and origin fields to manual triggers
+ * Add builder for triggers
+ * Pass language to bothub API calls
+
 v0.94.2
 ----------
  * Use jsonx.Marshal consistently
