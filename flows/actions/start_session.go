@@ -59,9 +59,16 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return err
 	}
 
-	// footgun prevention
+	// batch footgun prevention
 	if run.Session().BatchStart() && (len(groupRefs) > 0 || contactQuery != "") {
 		logEvent(events.NewErrorf("can't start new sessions for groups or queries during batch starts"))
+		return nil
+	}
+
+	// loop footgun prevention
+	ref := run.Session().Reference()
+	if ref.AncestorsSinceInput >= 5 {
+		logEvent(events.NewErrorf("too many sessions have been spawned since the last time input was received"))
 		return nil
 	}
 

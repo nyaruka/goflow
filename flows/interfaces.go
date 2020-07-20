@@ -250,6 +250,13 @@ type Localization interface {
 	Languages() []envs.Language
 }
 
+// SessionReference provides information about a session that triggers another session
+type SessionReference struct {
+	UUID                SessionUUID `json:"uuid"`
+	Ancestors           int         `json:"ancestors"`
+	AncestorsSinceInput int         `json:"ancestors_since_input"`
+}
+
 // Trigger represents something which can initiate a session with the flow engine
 type Trigger interface {
 	utils.Typed
@@ -264,6 +271,7 @@ type Trigger interface {
 	Connection() *Connection
 	Batch() bool
 	Params() *types.XObject
+	FromSession() *SessionReference
 	TriggeredOn() time.Time
 }
 
@@ -376,6 +384,7 @@ type Session interface {
 	GetCurrentChild(FlowRun) FlowRun
 	ParentRun() RunSummary
 	CurrentContext() *types.XObject
+	Reference() *SessionReference
 
 	Engine() Engine
 }

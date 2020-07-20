@@ -174,12 +174,16 @@ func TestTriggerMarshaling(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
+	eng := engine.NewBuilder().Build()
+	session, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	require.NoError(t, err)
+
 	// can't create a trigger with invalid JSON
 	assert.Panics(t, func() {
-		triggers.NewBuilder(env, flow, contact).FlowAction(json.RawMessage(`{"uuid"}`)).Build()
+		triggers.NewBuilder(env, flow, contact).FlowAction(nil, json.RawMessage(`{"uuid"}`)).Build()
 	})
 	assert.Panics(t, func() {
-		triggers.NewBuilder(env, flow, contact).FlowAction(nil).Build()
+		triggers.NewBuilder(env, flow, contact).FlowAction(nil, nil).Build()
 	})
 
 	triggerTests := []struct {
@@ -208,20 +212,21 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
-				FlowAction(json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
+				FlowAction(session, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
 				Build(),
 			"flow_action",
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
-				FlowAction(json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
+				FlowAction(session, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
 				WithConnection(channel, "tel:+12065551212").
 				AsBatch().
 				Build(),
 			"flow_action_ivr",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).Manual().
+			triggers.NewBuilder(env, flow, contact).
+				Manual().
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
 				WithUser("bob@nyaruka.com").
 				WithOrigin("api").
@@ -230,7 +235,8 @@ func TestTriggerMarshaling(t *testing.T) {
 			"manual",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).Manual().
+			triggers.NewBuilder(env, flow, contact).
+				Manual().
 				WithConnection(channel, "tel:+12065551212").
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
 				AsBatch().
