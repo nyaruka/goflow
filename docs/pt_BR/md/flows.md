@@ -421,9 +421,11 @@ through `extra` on the result.
 
 Can be used to call an external service. The body, header and url fields may be
 templates and will be evaluated at runtime. A [webhook_called](sessions.html#event:webhook_called) event will be created based on
-the results of the HTTP call. If this action has a `result_name`, then addtionally it will create
-a new result with that name. If the webhook returned valid JSON, that will be accessible
-through `extra` on the result.
+the results of the HTTP call. If this action has a `result_name`, then additionally it will create
+a new result with that name. The value of the result will be the status code and the category will be
+`Success` or `Failed`. If the webhook returned valid JSON which is less than 10000 bytes, that will be
+accessible through `extra` on the result. The last JSON response from a webhook call in the current
+sprint will additionally be accessible in expressions as `@webhook` regardless of size.
 
 <div class="input_action"><h3>Action</h3>
 
