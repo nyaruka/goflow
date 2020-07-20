@@ -46,20 +46,22 @@
                 "status": "active",
                 "created_on": "2018-01-01T12:00:00Z"
             },
+            "triggered_on": "2000-01-01T00:00:00Z",
             "event": {
                 "type": "new_conversation",
                 "channel": {
                     "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
                     "name": "Facebook"
                 }
-            },
-            "triggered_on": "2000-01-01T00:00:00Z"
+            }
         },
         "events": [],
         "context": {
+            "keyword": "",
+            "origin": "",
+            "params": {},
             "type": "channel",
-            "params": null,
-            "keyword": null
+            "user": ""
         }
     }
 ]

@@ -122,7 +122,9 @@ Is used when a session was triggered manually by a user
         "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
-    "triggered_on": "2000-01-01T00:00:00Z"
+    "triggered_on": "2000-01-01T00:00:00Z",
+    "user": "bob@nyaruka.com",
+    "origin": "ui"
 }
 ```
 
@@ -746,9 +748,9 @@ Events are created when an engine service is called.
     },
     "http_logs": [
         {
-            "url": "https://api.wit.ai/message?v=20170307&q=hello",
+            "url": "https://api.wit.ai/message?v=20200513&q=hello",
             "status": "success",
-            "request": "GET /message?v=20170307&q=hello HTTP/1.1",
+            "request": "GET /message?v=20200513&q=hello HTTP/1.1",
             "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
             "created_on": "2006-01-02T15:04:05Z",
             "elapsed_ms": 123

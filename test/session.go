@@ -347,6 +347,7 @@ var sessionTrigger = `{
             "eng", 
             "spa"
         ],
+        "default_country": "US",
         "redaction_policy": "none",
         "time_format": "tt:mm",
         "timezone": "America/Guayaquil"
@@ -562,7 +563,7 @@ func CreateSession(assetsJSON json.RawMessage, flowUUID assets.FlowUUID) (flows.
 
 	env := envs.NewBuilder().Build()
 	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
-	trigger := triggers.NewManual(env, flow.Reference(), contact, false, nil)
+	trigger := triggers.NewBuilder(env, flow.Reference(), contact).Manual().Build()
 	eng := engine.NewBuilder().Build()
 
 	return eng.NewSession(sa, trigger)

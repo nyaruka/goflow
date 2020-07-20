@@ -77,7 +77,7 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "Ben Haggerty", envs.Language("eng"), nil)
 
 	// a manual trigger will wait at the initial wait
-	trigger := triggers.NewManual(env, flow.Reference(), contact, false, nil)
+	trigger := triggers.NewBuilder(env, flow.Reference(), contact).Manual().Build()
 
 	session, sprint, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
@@ -90,9 +90,9 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 
 	// whereas a msg trigger will skip over it
 	msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hi there", nil)
-	trigger = triggers.NewMsg(env, flow.Reference(), contact, msg, nil)
+	trigger2 := triggers.NewBuilder(env, flow.Reference(), contact).Msg(msg).Build()
 
-	session, sprint, err = eng.NewSession(sa, trigger)
+	session, sprint, err = eng.NewSession(sa, trigger2)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())

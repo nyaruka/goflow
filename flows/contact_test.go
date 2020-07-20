@@ -238,13 +238,11 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 		contact, err := flows.ReadContact(sa, tc.ContactBefore, assets.IgnoreMissing)
 		require.NoError(t, err)
 
-		trigger := triggers.NewManual(
+		trigger := triggers.NewBuilder(
 			env,
 			assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Empty Flow"),
 			contact,
-			false,
-			nil,
-		)
+		).Manual().Build()
 
 		eng := engine.NewBuilder().Build()
 		session, _, _ := eng.NewSession(sa, trigger)

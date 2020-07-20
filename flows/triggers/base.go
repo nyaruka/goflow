@@ -102,21 +102,6 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 	return nil
 }
 
-// Context returns the properties available in expressions
-//
-//   type:text -> the type of trigger that started this session
-//   params:any -> the parameters passed to the trigger
-//   keyword:any -> the keyword match if this is a keyword trigger
-//
-// @context trigger
-func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
-	return map[string]types.XValue{
-		"type":    types.NewXText(t.type_),
-		"params":  t.params,
-		"keyword": nil,
-	}
-}
-
 // EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
 // as far as the engine is concerned
 func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
@@ -130,6 +115,71 @@ func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
 		logEvent(events.NewContactGroupsChanged(added, removed))
+	}
+}
+
+//------------------------------------------------------------------------------------------
+// Expressions context
+//------------------------------------------------------------------------------------------
+
+// Context is the schema of trigger objects in the context, across all types
+type Context struct {
+	type_   string
+	params  *types.XObject
+	keyword string
+	user    string
+	origin  string
+}
+
+func (c *Context) asMap() map[string]types.XValue {
+	return map[string]types.XValue{
+		"type":    types.NewXText(c.type_),
+		"params":  c.params,
+		"keyword": types.NewXText(c.keyword),
+		"user":    types.NewXText(c.user),
+		"origin":  types.NewXText(c.origin),
+	}
+}
+
+func (t *baseTrigger) context() *Context {
+	params := t.params
+	if params == nil {
+		params = types.XObjectEmpty
+	}
+
+	return &Context{type_: t.type_, params: params}
+}
+
+// Context returns the properties available in expressions
+//
+//   type:text -> the type of trigger that started this session
+//   params:any -> the parameters passed to the trigger
+//   keyword:text -> the keyword match if this is a keyword trigger
+//   user:text -> the user who started this session if this is a manual trigger
+//   origin:text -> the origin of this session if this is a manual trigger
+//
+// @context trigger
+func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
+	return t.context().asMap()
+}
+
+//------------------------------------------------------------------------------------------
+// Builder
+//------------------------------------------------------------------------------------------
+
+// Builder is a builder for triggers
+type Builder struct {
+	environment envs.Environment
+	flow        *assets.FlowReference
+	contact     *flows.Contact
+}
+
+// NewBuilder creates a new trigger builder
+func NewBuilder(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact) *Builder {
+	return &Builder{
+		environment: env,
+		flow:        flow,
+		contact:     contact,
 	}
 }
 
