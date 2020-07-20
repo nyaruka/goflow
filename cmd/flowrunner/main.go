@@ -148,9 +148,9 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 	if initialMsg != "" {
 		msg := createMessage(contact, initialMsg)
-		repro.Trigger = triggers.NewMsg(env, flow.Reference(), contact, msg, nil)
+		repro.Trigger = triggers.NewBuilder(env, flow.Reference(), contact).Msg(msg).Build()
 	} else {
-		repro.Trigger = triggers.NewManual(env, flow.Reference(), contact, false, nil)
+		repro.Trigger = triggers.NewBuilder(env, flow.Reference(), contact).Manual().Build()
 	}
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
@@ -212,7 +212,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 		case *events.ContactFieldChangedEvent:
 			var action string
 			if typed.Value != nil {
-				action = fmt.Sprintf("changed to '%s'", typed.Value.Text)
+				action = fmt.Sprintf("changed to '%s'", typed.Value.Text.Native())
 			} else {
 				action = "cleared"
 			}
@@ -281,7 +281,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 		case *events.WaitTimedOutEvent:
 			msg = "⏲️ resuming due to wait timeout"
 		case *events.WebhookCalledEvent:
-			url := truncate(typed.URL, 50)
+			url := utils.TruncateEllipsis(typed.URL, 50)
 			msg = fmt.Sprintf("☁️ called %s", url)
 		default:
 			msg = fmt.Sprintf("❓ %s event", typed.Type())
@@ -294,14 +294,5 @@ func printEvents(log []flows.Event, out io.Writer) {
 // Repro describes the trigger and resumes needed to reproduce this session
 type Repro struct {
 	Trigger flows.Trigger  `json:"trigger"`
-	Resumes []flows.Resume `json:"resumes"`
-}
-
-func truncate(str string, length int) string {
-	ending := "..."
-	runes := []rune(str)
-	if len(runes) > length {
-		return string(runes[0:length-len(ending)]) + ending
-	}
-	return str
+	Resumes []flows.Resume `json:"resumes,omitempty"`
 }

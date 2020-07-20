@@ -75,6 +75,6 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, logMod
 		return nil
 	}
 
-	a.applyModifier(run, modifiers.NewURN(urn, modifiers.URNAppend), logModifier, logEvent)
+	a.applyModifier(run, modifiers.NewURNs([]urns.URN{urn}, modifiers.URNsAppend), logModifier, logEvent)
 	return nil
 }

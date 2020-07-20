@@ -29,8 +29,42 @@ func TestService(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
-		"https://api.wit.ai/message?v=20170307&q=book+flight+to+Quito": {
-			httpx.NewMockResponse(200, nil, `{"_text":"book flight to Quito","entities":{"intent":[{"confidence":0.84709152161066,"value":"book_flight"}]},"msg_id":"1M7fAcDWag76OmgDI"}`),
+		"https://api.wit.ai/message?v=20200513&q=book+flight+to+Quito": {
+			httpx.NewMockResponse(200, nil, `{
+				"text": "I want to book a flight to Quito",
+				"intents": [
+				  {
+					"id": "754569408690533",
+					"name": "book_flight",
+					"confidence": 0.9024
+				  }
+				],
+				"entities": {
+				  "Destination:Location": [
+					{
+					  "id": "285857329187179",
+					  "name": "Destination",
+					  "role": "Location",
+					  "start": 27,
+					  "end": 33,
+					  "body": "Quito",
+					  "confidence": 0.9648,
+					  "entities": [],
+					  "value": "Quito",
+					  "type": "value"
+					}
+				  ]
+				},
+				"traits": {
+				  "wit$sentiment": [
+					{
+					  "id": "5ac2b50a-44e4-466e-9d49-bad6bd40092c",
+					  "value": "neutral",
+					  "confidence": 0.5816
+					}
+				  ]
+				}
+			}`),
 		},
 	}))
 
@@ -46,11 +80,13 @@ func TestService(t *testing.T) {
 	classification, err := svc.Classify(session, "book flight to Quito", httpLogger.Log)
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
-		{Name: "book_flight", Confidence: decimal.RequireFromString(`0.84709152161066`)},
+		{Name: "book_flight", Confidence: decimal.RequireFromString(`0.9024`)},
 	}, classification.Intents)
-	assert.Equal(t, map[string][]flows.ExtractedEntity{}, classification.Entities)
+	assert.Equal(t, map[string][]flows.ExtractedEntity{
+		"Destination": {{Value: "Quito", Confidence: decimal.RequireFromString(`0.9648`)}},
+	}, classification.Entities)
 
 	assert.Equal(t, 1, len(httpLogger.Logs))
-	assert.Equal(t, "https://api.wit.ai/message?v=20170307&q=book+flight+to+Quito", httpLogger.Logs[0].URL)
-	assert.Equal(t, "GET /message?v=20170307&q=book+flight+to+Quito HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n", httpLogger.Logs[0].Request)
+	assert.Equal(t, "https://api.wit.ai/message?v=20200513&q=book+flight+to+Quito", httpLogger.Logs[0].URL)
+	assert.Equal(t, "GET /message?v=20200513&q=book+flight+to+Quito HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n", httpLogger.Logs[0].Request)
 }

@@ -40,6 +40,8 @@ type Environment interface {
 
 	DefaultLocale() Locale
 
+	LocationResolver() LocationResolver
+
 	// Convenience method to get the current time in the env timezone
 	Now() time.Time
 
@@ -72,6 +74,8 @@ func (e *environment) MaxValueLength() int              { return e.maxValueLengt
 func (e *environment) DefaultLocale() Locale {
 	return NewLocale(e.DefaultLanguage(), e.DefaultCountry())
 }
+
+func (e *environment) LocationResolver() LocationResolver { return nil }
 
 // Now gets the current time in the eonvironment's timezone
 func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }

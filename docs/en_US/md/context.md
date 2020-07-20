@@ -111,7 +111,9 @@ Defaults to the contact name and flow UUID ([text](expressions.html#type:text))
 
  * `type` the type of trigger that started this session ([text](expressions.html#type:text))
  * `params` the parameters passed to the trigger (any)
- * `keyword` the keyword match if this is a keyword trigger (any)
+ * `keyword` the keyword match if this is a keyword trigger ([text](expressions.html#type:text))
+ * `user` the user who started this session if this is a manual trigger ([text](expressions.html#type:text))
+ * `origin` the origin of this session if this is a manual trigger ([text](expressions.html#type:text))
 
 
 </div>

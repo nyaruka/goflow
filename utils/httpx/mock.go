@@ -121,7 +121,7 @@ type mockResponseEnvelope struct {
 }
 
 func (m *MockResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&mockResponseEnvelope{
+	return jsonx.Marshal(&mockResponseEnvelope{
 		Status:     m.Status,
 		Headers:    m.Headers,
 		Body:       string(m.Body),

@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -116,7 +115,6 @@ func TestConstructors(t *testing.T) {
 
 	nexmo := assets.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
 	age := assets.Fields().Get("age")
-	ageValue := types.NewXNumberFromInt(37)
 	testers := assets.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")
 	la, _ := time.LoadLocation("America/Los_Angeles")
 
@@ -135,17 +133,14 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewField(age, flows.NewValue(types.NewXText("37 years"), nil, &ageValue, "", "", "")),
+			modifiers.NewField(age, "37 years"),
 			`{
 				"type": "field",
 				"field": {
 					"key": "age",
 					"name": "Age"
 				},
-				"value": {
-					"text": "37 years",
-					"number": 37
-				}
+				"value": "37 years"
 			}`,
 		},
 		{
@@ -211,6 +206,14 @@ func TestConstructors(t *testing.T) {
 				"modification": "append"
 			}`,
 		},
+		{
+			modifiers.NewURNs([]urns.URN{urns.URN("tel:+1234567890"), urns.URN("tel:+1234567891")}, modifiers.URNsSet),
+			`{
+				"type": "urns",
+				"urns": ["tel:+1234567890", "tel:+1234567891"],
+				"modification": "set"
+			}`,
+		},
 	}
 
 	for _, tc := range tests {
@@ -268,4 +271,37 @@ func TestReadModifier(t *testing.T) {
 	assert.NotNil(t, mod)
 	assert.Equal(t, "groups", mod.Type())
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("cd1a2aa6-0d9d-4a8c-b32d-ca5de9c43bdb"), "Losers"), missingAssets[len(missingAssets)-1])
+}
+
+func TestFieldValueTypes(t *testing.T) {
+	source, err := static.NewSource([]byte(`{
+		"fields": [
+			{"key": "age", "name": "Age", "type": "number"}
+		]
+	}`))
+	require.NoError(t, err)
+
+	env := envs.NewBuilder().Build()
+	sessionAssets, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	// value can be omitted
+	mod, err := modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}}`), assets.PanicOnMissing)
+	assert.NoError(t, err)
+	assert.Equal(t, "", mod.(*modifiers.FieldModifier).Value())
+
+	// or be null
+	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}, "value": null}`), assets.PanicOnMissing)
+	assert.NoError(t, err)
+	assert.Equal(t, "", mod.(*modifiers.FieldModifier).Value())
+
+	// or be a value object
+	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}, "value": {"text": "37 years", "number": 37}}`), assets.PanicOnMissing)
+	assert.NoError(t, err)
+	assert.Equal(t, "37 years", mod.(*modifiers.FieldModifier).Value())
+
+	// or be a string
+	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}, "value": "39 years"}`), assets.PanicOnMissing)
+	assert.NoError(t, err)
+	assert.Equal(t, "39 years", mod.(*modifiers.FieldModifier).Value())
 }

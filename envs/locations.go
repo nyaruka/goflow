@@ -1,9 +1,11 @@
-package utils
+package envs
 
 import (
 	"encoding/json"
 	"regexp"
 	"strings"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 // LocationLevel is a numeric level, e.g. 0 = country, 1 = state
@@ -12,9 +14,15 @@ type LocationLevel int
 // LocationPath is a location described by a path Country > State ...
 type LocationPath string
 
+// LocationResolver is used to resolve locations from names or hierarchical paths
+type LocationResolver interface {
+	FindLocations(string, LocationLevel, *Location) []*Location
+	FindLocationsFuzzy(string, LocationLevel, *Location) []*Location
+	LookupLocation(LocationPath) *Location
+}
+
 const (
 	LocationPathSeparator = ">"
-	//LocationPaddedPathSeparator = " > "
 )
 
 var spaceRegex = regexp.MustCompile(`\s+`)
@@ -209,7 +217,7 @@ func (h *LocationHierarchy) FindByPath(path LocationPath) *Location {
 
 func (h *LocationHierarchy) UnmarshalJSON(data []byte) error {
 	var le locationEnvelope
-	if err := UnmarshalAndValidate(data, &le); err != nil {
+	if err := utils.UnmarshalAndValidate(data, &le); err != nil {
 		return err
 	}
 
@@ -247,7 +255,7 @@ func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel
 // ReadLocationHierarchy reads a location hierarchy from the given JSON
 func ReadLocationHierarchy(data json.RawMessage) (*LocationHierarchy, error) {
 	var le locationEnvelope
-	if err := UnmarshalAndValidate(data, &le); err != nil {
+	if err := utils.UnmarshalAndValidate(data, &le); err != nil {
 		return nil, err
 	}
 

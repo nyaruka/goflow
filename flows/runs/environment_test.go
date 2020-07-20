@@ -34,7 +34,36 @@ var assetsJSON = `{
 			"roles": ["send", "receive"],
 			"country": "US"
     	}
-  	]
+	  ],
+	  "locations": [
+        {
+            "name": "Rwanda",
+            "aliases": ["Ruanda"],		
+            "children": [
+                {
+                    "name": "Kigali City",
+                    "aliases": ["Kigali", "Kigari"],
+                    "children": [
+                        {
+                            "name": "Gasabo",
+                            "children": [
+                                {
+                                    "name": "Gisozi"
+                                },
+                                {
+                                    "name": "Ndera"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Nyarugenge",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }`
 
 const contactJSON = `{
@@ -66,7 +95,7 @@ func TestRunEnvironment(t *testing.T) {
 	contact, err := flows.ReadContact(sa, []byte(contactJSON), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	trigger := triggers.NewManual(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact, false, nil)
+	trigger := triggers.NewBuilder(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact).Manual().Build()
 	eng := engine.NewBuilder().Build()
 
 	session, _, err := eng.NewSession(sa, trigger)
@@ -80,4 +109,5 @@ func TestRunEnvironment(t *testing.T) {
 	runEnv := session.Runs()[0].Environment()
 	assert.Equal(t, envs.Country("US"), runEnv.DefaultCountry())
 	assert.Equal(t, tzEC, runEnv.Timezone())
+	assert.NotNil(t, runEnv.LocationResolver())
 }

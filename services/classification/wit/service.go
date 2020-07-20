@@ -2,6 +2,7 @@ package wit
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -34,29 +35,24 @@ func (s *service) Classify(session flows.Session, input string, logHTTP flows.HT
 	}
 
 	result := &flows.Classification{
-		Intents:  make([]flows.ExtractedIntent, 0, 1),
+		Intents:  make([]flows.ExtractedIntent, len(response.Intents)),
 		Entities: make(map[string][]flows.ExtractedEntity),
 	}
 
-	// wit returns intent as just another entity so we need to extract it by name
-	for name, entity := range response.Entities {
-		if name == "intent" {
-			for _, candidate := range entity {
-				result.Intents = append(result.Intents, flows.ExtractedIntent{
-					Name:       candidate.Value,
-					Confidence: candidate.Confidence,
-				})
-			}
-		} else {
-			entities := make([]flows.ExtractedEntity, 0, len(entity))
-			for _, candidate := range entity {
-				entities = append(entities, flows.ExtractedEntity{
-					Value:      candidate.Value,
-					Confidence: candidate.Confidence,
-				})
-			}
-			result.Entities[name] = entities
+	for i, intent := range response.Intents {
+		result.Intents[i] = flows.ExtractedIntent{Name: intent.Name, Confidence: intent.Confidence}
+	}
+
+	for nameAndRole, entity := range response.Entities {
+		name := strings.Split(nameAndRole, ":")[0]
+		entities := make([]flows.ExtractedEntity, 0, len(entity))
+		for _, candidate := range entity {
+			entities = append(entities, flows.ExtractedEntity{
+				Value:      candidate.Value,
+				Confidence: candidate.Confidence,
+			})
 		}
+		result.Entities[name] = entities
 	}
 
 	return result, nil

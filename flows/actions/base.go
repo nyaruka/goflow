@@ -155,7 +155,7 @@ func (a *baseAction) updateWebhook(run flows.FlowRun, call *flows.WebhookCall) {
 
 // helper to apply a contact modifier
 func (a *baseAction) applyModifier(run flows.FlowRun, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) {
-	mod.Apply(run.Session().Environment(), run.Session().Assets(), run.Contact(), logEvent)
+	mod.Apply(run.Environment(), run.Session().Assets(), run.Contact(), logEvent)
 	logModifier(mod)
 }
 

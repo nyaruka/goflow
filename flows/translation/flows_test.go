@@ -1,22 +1,23 @@
-package i18n_test
+package translation_test
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/buger/jsonparser"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/i18n"
+	"github.com/nyaruka/goflow/flows/translation"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
+	"github.com/nyaruka/goflow/utils/i18n"
+	"github.com/nyaruka/goflow/utils/jsonx"
 
+	"github.com/buger/jsonparser"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -88,7 +89,7 @@ func TestExtractFromFlows(t *testing.T) {
 			sources = append(sources, flow)
 		}
 
-		po, err := i18n.ExtractFromFlows("Testing", tc.lang, tc.excludeProps, sources...)
+		po, err := translation.ExtractFromFlows("Testing", tc.lang, tc.excludeProps, sources...)
 		assert.NoError(t, err)
 
 		b := &strings.Builder{}
@@ -113,7 +114,7 @@ func TestExtractFromFlowsWithDiffLanguages(t *testing.T) {
 	engFlow, _ := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	spaFlow, _ := sa.Flows().Get("e9e1d54f-f213-44ca-883a-eb96d15151aa")
 
-	_, err = i18n.ExtractFromFlows("", "fra", nil, engFlow, spaFlow)
+	_, err = translation.ExtractFromFlows("", "fra", nil, engFlow, spaFlow)
 	assert.EqualError(t, err, "can't extract from flows with differing base languages")
 }
 
@@ -158,16 +159,16 @@ func TestImportIntoFlows(t *testing.T) {
 		MsgStr:     "Rosada",
 	})
 
-	updates := i18n.CalculateFlowUpdates(po, envs.Language("spa"), flow)
+	updates := translation.CalculateFlowUpdates(po, envs.Language("spa"), flow)
 	assert.Equal(t, 3, len(updates))
 	assert.Equal(t, `Translated/d1ce3c92-7025-4607-a910-444361a6b9b3/name:0 "Roja" -> "Rojo"`, updates[0].String())
 	assert.Equal(t, `Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:1 "Azul" -> "Azul clara"`, updates[1].String())
 	assert.Equal(t, `Translated/43f7e69e-727d-4cfe-81b8-564e7833052b/name:0 "Azul" -> "Azul oscura"`, updates[2].String())
 
-	err = i18n.ImportIntoFlows(po, envs.Language("spa"), flow)
+	err = translation.ImportIntoFlows(po, envs.Language("spa"), flow)
 	require.NoError(t, err)
 
-	localJSON, _ := json.Marshal(flow.Localization())
+	localJSON, _ := jsonx.Marshal(flow.Localization())
 	test.AssertEqualJSON(t, []byte(`{
 		"spa": {
 			"e42deebf-90fa-4636-81cb-d247a3d3ba75": {
@@ -220,10 +221,10 @@ func TestImportNewTranslationIntoFlows(t *testing.T) {
 
 	po, err := i18n.ReadPO(bytes.NewReader(poData))
 
-	err = i18n.ImportIntoFlows(po, "spa", flow)
+	err = translation.ImportIntoFlows(po, "spa", flow)
 	require.NoError(t, err)
 
-	localJSON, _ := json.Marshal(flow.Localization())
+	localJSON, _ := jsonx.Marshal(flow.Localization())
 	spaJSON, _, _, _ := jsonparser.Get(localJSON, "spa")
 
 	test.AssertEqualJSON(t, []byte(`{
@@ -268,10 +269,10 @@ func TestImportIntoFlowsWithDiffLanguages(t *testing.T) {
 	engFlow, _ := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	spaFlow, _ := sa.Flows().Get("e9e1d54f-f213-44ca-883a-eb96d15151aa")
 
-	err = i18n.ImportIntoFlows(nil, "fra", engFlow, spaFlow)
+	err = translation.ImportIntoFlows(nil, "fra", engFlow, spaFlow)
 	assert.EqualError(t, err, "can't import into flows with differing base languages")
 
 	// also can't import in same language as the flow base language
-	err = i18n.ImportIntoFlows(nil, "eng", engFlow)
+	err = translation.ImportIntoFlows(nil, "eng", engFlow)
 	assert.EqualError(t, err, "can't import as the flow base language")
 }

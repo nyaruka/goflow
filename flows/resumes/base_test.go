@@ -87,7 +87,7 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		env := envs.NewBuilder().Build()
 		eng := engine.NewBuilder().Build()
 		contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
-		trigger := triggers.NewManual(env, flow.Reference(), contact, false, nil)
+		trigger := triggers.NewBuilder(env, flow.Reference(), contact).Manual().Build()
 		session, _, err := eng.NewSession(sa, trigger)
 		require.NoError(t, err)
 		require.Equal(t, flows.SessionStatusWaiting, session.Status())

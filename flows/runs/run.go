@@ -21,7 +21,7 @@ import (
 type flowRun struct {
 	uuid        flows.RunUUID
 	session     flows.Session
-	environment flows.RunEnvironment
+	environment *runEnvironment
 
 	flow    flows.Flow
 	flowRef *assets.FlowReference
@@ -66,9 +66,9 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.
 	return r
 }
 
-func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
-func (r *flowRun) Session() flows.Session            { return r.session }
-func (r *flowRun) Environment() flows.RunEnvironment { return r.environment }
+func (r *flowRun) UUID() flows.RunUUID           { return r.uuid }
+func (r *flowRun) Session() flows.Session        { return r.session }
+func (r *flowRun) Environment() envs.Environment { return r.environment }
 
 func (r *flowRun) Flow() flows.Flow                     { return r.flow }
 func (r *flowRun) FlowReference() *assets.FlowReference { return r.flowRef }

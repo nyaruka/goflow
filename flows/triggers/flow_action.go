@@ -2,14 +2,13 @@ package triggers
 
 import (
 	"encoding/json"
+	"fmt"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/jsonx"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -53,31 +52,50 @@ type FlowActionTrigger struct {
 	runSummary json.RawMessage
 }
 
-// NewFlowAction creates a new flow action trigger with the passed in values
-func NewFlowAction(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, runSummary json.RawMessage, batch bool) (*FlowActionTrigger, error) {
-	return newFlowAction(env, flow, contact, nil, runSummary, batch)
-}
-
-// NewFlowActionVoice creates a new flow action trigger with the passed in values
-func NewFlowActionVoice(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage, batch bool) (*FlowActionTrigger, error) {
-	return newFlowAction(env, flow, contact, connection, runSummary, batch)
-}
-
-func newFlowAction(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, runSummary json.RawMessage, batch bool) (*FlowActionTrigger, error) {
-	if !json.Valid(runSummary) {
-		return nil, errors.Errorf("invalid run summary JSON: %s", string(runSummary))
-	}
-
-	return &FlowActionTrigger{
-		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, connection, batch, nil),
-		runSummary:  runSummary,
-	}, nil
-}
-
 // RunSummary returns the summary of the run that triggered this session
 func (t *FlowActionTrigger) RunSummary() json.RawMessage { return t.runSummary }
 
 var _ flows.TriggerWithRun = (*FlowActionTrigger)(nil)
+
+//------------------------------------------------------------------------------------------
+// Builder
+//------------------------------------------------------------------------------------------
+
+// FlowActionBuilder is a builder for flow action type triggers
+type FlowActionBuilder struct {
+	t *FlowActionTrigger
+}
+
+// FlowAction returns a flow action trigger builder
+func (b *Builder) FlowAction(runSummary json.RawMessage) *FlowActionBuilder {
+	if !json.Valid(runSummary) {
+		panic(fmt.Sprintf("invalid run summary JSON: %s", string(runSummary)))
+	}
+
+	return &FlowActionBuilder{
+		t: &FlowActionTrigger{
+			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, nil, false, nil),
+			runSummary:  runSummary,
+		},
+	}
+}
+
+// WithConnection sets the channel connection for the trigger
+func (b *FlowActionBuilder) WithConnection(channel *assets.ChannelReference, urn urns.URN) *FlowActionBuilder {
+	b.t.connection = flows.NewConnection(channel, urn)
+	return b
+}
+
+// AsBatch sets batch mode on for the trigger
+func (b *FlowActionBuilder) AsBatch() *FlowActionBuilder {
+	b.t.batch = true
+	return b
+}
+
+// Build builds the trigger
+func (b *FlowActionBuilder) Build() *FlowActionTrigger {
+	return b.t
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
