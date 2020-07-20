@@ -1,3 +1,7 @@
+v0.95.1
+----------
+ * Improve documentation of call_webhook action
+
 v0.95.0
 ----------
  * Use latest wit.ai API version
