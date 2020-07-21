@@ -30,10 +30,8 @@ func NewChildHistory(parent Session) SessionHistory {
 // looks through a session's events to see if it received input
 func sessionReceivedInput(s Session) bool {
 	for _, r := range s.Runs() {
-		for _, e := range r.Events() {
-			if e.Type() == "msg_received" {
-				return true
-			}
+		if r.ReceivedInput() {
+			return true
 		}
 	}
 	return false

@@ -413,6 +413,7 @@ type FlowRun interface {
 	LogEvent(Step, Event)
 	LogError(Step, error)
 	Events() []Event
+	ReceivedInput() bool
 
 	EvaluateTemplateValue(string) (types.XValue, error)
 	EvaluateTemplateText(string, excellent.Escaping, bool) (string, error)

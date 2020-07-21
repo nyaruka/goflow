@@ -21,7 +21,7 @@ func TestHistory(t *testing.T) {
 		"flows": [
 			{
 				"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058",
-				"name": "Inception",
+				"name": "Empty",
 				"spec_version": "13.1",
 				"language": "eng",
 				"type": "messaging",

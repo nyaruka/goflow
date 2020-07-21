@@ -14,6 +14,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/jsonx"
@@ -273,4 +274,48 @@ func TestCurrentContext(t *testing.T) {
 	flowContext, _ = runContext.(*types.XObject).Get("flow")
 	flowName, _ = flowContext.(*types.XObject).Get("name")
 	assert.Equal(t, types.NewXText("Parent Flow"), flowName)
+}
+
+func TestSessionHistory(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	source, err := static.NewSource([]byte(`{
+		"flows": [
+			{
+				"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058",
+				"name": "Empty",
+				"spec_version": "13.1",
+				"language": "eng",
+				"type": "messaging",
+				"nodes": []
+			}
+		]
+	}`))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
+	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+
+	// trigger session manually which will have no history
+	eng := engine.NewBuilder().Build()
+	session1, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	require.NoError(t, err)
+
+	assert.Equal(t, flows.EmptyHistory, session1.History())
+
+	// trigger another session from that session
+	runSummary := session1.Runs()[0].Snapshot()
+	runSummaryJSON, _ := jsonx.Marshal(runSummary)
+
+	session2, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).FlowAction(session1, runSummaryJSON).Build())
+	require.NoError(t, err)
+
+	assert.Equal(t, flows.SessionHistory{
+		ParentUUID:          session1.UUID(),
+		Ancestors:           1,
+		AncestorsSinceInput: 1,
+	}, session2.History())
 }
