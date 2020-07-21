@@ -66,7 +66,7 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 	}
 
 	// loop footgun prevention
-	ref := run.Session().Reference()
+	ref := run.Session().History()
 	if ref.AncestorsSinceInput >= 5 {
 		logEvent(events.NewErrorf("too many sessions have been spawned since the last time input was received"))
 		return nil

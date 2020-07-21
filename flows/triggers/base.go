@@ -40,12 +40,12 @@ type baseTrigger struct {
 	connection  *flows.Connection
 	batch       bool
 	params      *types.XObject
-	fromSession *flows.SessionReference
+	history     *flows.SessionHistory
 	triggeredOn time.Time
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, batch bool, fromSession *flows.SessionReference) baseTrigger {
+func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, batch bool, history *flows.SessionHistory) baseTrigger {
 	return baseTrigger{
 		type_:       typeName,
 		environment: env,
@@ -53,7 +53,7 @@ func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowRefe
 		contact:     contact,
 		connection:  connection,
 		batch:       batch,
-		fromSession: fromSession,
+		history:     history,
 		triggeredOn: dates.Now(),
 	}
 }
@@ -61,14 +61,14 @@ func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowRefe
 // Type returns the type of this trigger
 func (t *baseTrigger) Type() string { return t.type_ }
 
-func (t *baseTrigger) Environment() envs.Environment        { return t.environment }
-func (t *baseTrigger) Flow() *assets.FlowReference          { return t.flow }
-func (t *baseTrigger) Contact() *flows.Contact              { return t.contact }
-func (t *baseTrigger) Connection() *flows.Connection        { return t.connection }
-func (t *baseTrigger) Batch() bool                          { return t.batch }
-func (t *baseTrigger) Params() *types.XObject               { return t.params }
-func (t *baseTrigger) FromSession() *flows.SessionReference { return t.fromSession }
-func (t *baseTrigger) TriggeredOn() time.Time               { return t.triggeredOn }
+func (t *baseTrigger) Environment() envs.Environment  { return t.environment }
+func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
+func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
+func (t *baseTrigger) Connection() *flows.Connection  { return t.connection }
+func (t *baseTrigger) Batch() bool                    { return t.batch }
+func (t *baseTrigger) Params() *types.XObject         { return t.params }
+func (t *baseTrigger) History() *flows.SessionHistory { return t.history }
+func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 // Initialize initializes the session
 func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback) error {
@@ -190,15 +190,15 @@ func NewBuilder(env envs.Environment, flow *assets.FlowReference, contact *flows
 //------------------------------------------------------------------------------------------
 
 type baseTriggerEnvelope struct {
-	Type        string                  `json:"type" validate:"required"`
-	Environment json.RawMessage         `json:"environment,omitempty"`
-	Flow        *assets.FlowReference   `json:"flow" validate:"required"`
-	Contact     json.RawMessage         `json:"contact,omitempty"`
-	Connection  *flows.Connection       `json:"connection,omitempty"`
-	Batch       bool                    `json:"batch,omitempty"`
-	Params      json.RawMessage         `json:"params,omitempty"`
-	FromSession *flows.SessionReference `json:"from_session,omitempty"`
-	TriggeredOn time.Time               `json:"triggered_on" validate:"required"`
+	Type        string                `json:"type" validate:"required"`
+	Environment json.RawMessage       `json:"environment,omitempty"`
+	Flow        *assets.FlowReference `json:"flow" validate:"required"`
+	Contact     json.RawMessage       `json:"contact,omitempty"`
+	Connection  *flows.Connection     `json:"connection,omitempty"`
+	Batch       bool                  `json:"batch,omitempty"`
+	Params      json.RawMessage       `json:"params,omitempty"`
+	History     *flows.SessionHistory `json:"history,omitempty"`
+	TriggeredOn time.Time             `json:"triggered_on" validate:"required"`
 }
 
 // ReadTrigger reads a trigger from the given JSON
@@ -222,7 +222,7 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 	t.flow = e.Flow
 	t.connection = e.Connection
 	t.batch = e.Batch
-	t.fromSession = e.FromSession
+	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
 
 	if e.Environment != nil {
@@ -250,7 +250,7 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	e.Flow = t.flow
 	e.Connection = t.connection
 	e.Batch = t.batch
-	e.FromSession = t.fromSession
+	e.History = t.history
 	e.TriggeredOn = t.triggeredOn
 
 	if t.environment != nil {

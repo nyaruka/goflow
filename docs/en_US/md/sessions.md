@@ -75,11 +75,6 @@ Is used when another session triggered this run using a trigger_flow action.
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Age"
     },
-    "from_session": {
-        "uuid": "",
-        "ancestors": 3,
-        "ancestors_since_input": 1
-    },
     "triggered_on": "2000-01-01T00:00:00Z",
     "run_summary": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",

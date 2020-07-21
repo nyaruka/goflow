@@ -133,34 +133,12 @@ func (s *session) waitingRun() flows.FlowRun {
 	return nil
 }
 
-func (s *session) Reference() *flows.SessionReference {
-	from := s.trigger.FromSession()
-	ancestors := 0
-	ancestorsSinceinput := 0
-	if from != nil {
-		ancestors = from.Ancestors + 1
-		if !s.recievedInput() {
-			ancestorsSinceinput = from.AncestorsSinceInput + 1
-		}
+func (s *session) History() flows.SessionHistory {
+	history := s.trigger.History()
+	if history != nil {
+		return *history
 	}
-
-	return &flows.SessionReference{
-		UUID:                s.uuid,
-		Ancestors:           ancestors,
-		AncestorsSinceInput: ancestorsSinceinput,
-	}
-}
-
-// looks through this session's events to see if we ever received input
-func (s *session) recievedInput() bool {
-	for _, run := range s.runs {
-		for _, e := range run.Events() {
-			if e.Type() == events.TypeMsgReceived {
-				return true
-			}
-		}
-	}
-	return false
+	return flows.EmptyHistory
 }
 
 func (s *session) Engine() flows.Engine { return s.engine }

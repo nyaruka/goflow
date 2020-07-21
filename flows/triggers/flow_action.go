@@ -77,9 +77,11 @@ func (b *Builder) FlowAction(from flows.Session, runSummary json.RawMessage) *Fl
 		panic(fmt.Sprintf("invalid run summary JSON: %s", string(runSummary)))
 	}
 
+	history := flows.NewChildHistory(from)
+
 	return &FlowActionBuilder{
 		t: &FlowActionTrigger{
-			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, nil, false, from.Reference()),
+			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, nil, false, &history),
 			runSummary:  runSummary,
 		},
 	}
