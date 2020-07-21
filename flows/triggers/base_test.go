@@ -178,12 +178,14 @@ func TestTriggerMarshaling(t *testing.T) {
 	session, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
 	require.NoError(t, err)
 
+	history := flows.NewChildHistory(session)
+
 	// can't create a trigger with invalid JSON
 	assert.Panics(t, func() {
-		triggers.NewBuilder(env, flow, contact).FlowAction(nil, json.RawMessage(`{"uuid"}`)).Build()
+		triggers.NewBuilder(env, flow, contact).FlowAction(history, json.RawMessage(`{"uuid"}`)).Build()
 	})
 	assert.Panics(t, func() {
-		triggers.NewBuilder(env, flow, contact).FlowAction(nil, nil).Build()
+		triggers.NewBuilder(env, flow, contact).FlowAction(history, nil).Build()
 	})
 
 	triggerTests := []struct {
@@ -212,13 +214,13 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
-				FlowAction(session, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
+				FlowAction(history, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
 				Build(),
 			"flow_action",
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
-				FlowAction(session, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
+				FlowAction(history, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
 				WithConnection(channel, "tel:+12065551212").
 				AsBatch().
 				Build(),

@@ -8,6 +8,9 @@ import (
 	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
+// max number of times a session can trigger another session without there being input from the contact
+const maxAncestorsSinceInput = 5
+
 func init() {
 	registerType(TypeStartSession, func() flows.Action { return &StartSessionAction{} })
 }
@@ -67,7 +70,7 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 
 	// loop footgun prevention
 	ref := run.Session().History()
-	if ref.AncestorsSinceInput >= 5 {
+	if ref.AncestorsSinceInput >= maxAncestorsSinceInput {
 		logEvent(events.NewErrorf("too many sessions have been spawned since the last time input was received"))
 		return nil
 	}

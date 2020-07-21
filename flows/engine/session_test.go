@@ -309,8 +309,9 @@ func TestSessionHistory(t *testing.T) {
 	// trigger another session from that session
 	runSummary := session1.Runs()[0].Snapshot()
 	runSummaryJSON, _ := jsonx.Marshal(runSummary)
+	history := flows.NewChildHistory(session1)
 
-	session2, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).FlowAction(session1, runSummaryJSON).Build())
+	session2, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).FlowAction(history, runSummaryJSON).Build())
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.SessionHistory{
