@@ -75,14 +75,18 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return nil
 	}
 
+	// if we don't have any recipients, noop
+	if !(len(urnList) > 0 || len(groupRefs) > 0 || len(contactRefs) > 0 || a.ContactQuery != "" || a.CreateContact) {
+		return nil
+	}
+
 	runSnapshot, err := jsonx.Marshal(run.Snapshot())
 	if err != nil {
 		return err
 	}
 
-	// if we have any recipients, log an event
-	if len(urnList) > 0 || len(groupRefs) > 0 || len(contactRefs) > 0 || a.ContactQuery != "" || a.CreateContact {
-		logEvent(events.NewSessionTriggered(a.Flow, groupRefs, contactRefs, contactQuery, a.CreateContact, urnList, runSnapshot))
-	}
+	history := flows.NewChildHistory(run.Session())
+
+	logEvent(events.NewSessionTriggered(a.Flow, groupRefs, contactRefs, contactQuery, a.CreateContact, urnList, runSnapshot, history))
 	return nil
 }

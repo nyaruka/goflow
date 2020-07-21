@@ -919,11 +919,9 @@ func TestStartSessionLoopProtection(t *testing.T) {
 			}
 		}
 
-		history := flows.NewChildHistory(session)
-
 		// if it exists, trigger a new session
 		if event != nil {
-			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(history, event.RunSummary).Build()
+			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(event.History, event.RunSummary).Build()
 
 			session, sprint, err = eng.NewSession(sa, trigger)
 			require.NoError(t, err)
@@ -1056,11 +1054,9 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 			}
 		}
 
-		history := flows.NewChildHistory(session)
-
 		// if it exists, trigger a new session
 		if event != nil {
-			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(history, event.RunSummary).Build()
+			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(event.History, event.RunSummary).Build()
 
 			session, sprint, err = eng.NewSession(sa, trigger)
 			require.NoError(t, err)

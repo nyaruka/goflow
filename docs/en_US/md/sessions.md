@@ -808,6 +808,11 @@ Events are created when an action wants to start other people in a flow.
                 "created_on": "2000-01-01T00:00:00.000000000-00:00"
             }
         }
+    },
+    "history": {
+        "parent_uuid": "55105da5-abb5-4690-b1f6-ec2e5762a561",
+        "ancestors": 3,
+        "ancestors_since_input": 1
     }
 }
 ```

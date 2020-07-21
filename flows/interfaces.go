@@ -377,7 +377,7 @@ type Session interface {
 	GetCurrentChild(FlowRun) FlowRun
 	ParentRun() RunSummary
 	CurrentContext() *types.XObject
-	History() SessionHistory
+	History() *SessionHistory
 
 	Engine() Engine
 }

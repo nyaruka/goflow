@@ -314,7 +314,7 @@ func TestSessionHistory(t *testing.T) {
 	session2, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).FlowAction(history, runSummaryJSON).Build())
 	require.NoError(t, err)
 
-	assert.Equal(t, flows.SessionHistory{
+	assert.Equal(t, &flows.SessionHistory{
 		ParentUUID:          session1.UUID(),
 		Ancestors:           1,
 		AncestorsSinceInput: 1,

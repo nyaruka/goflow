@@ -72,14 +72,14 @@ type FlowActionBuilder struct {
 }
 
 // FlowAction returns a flow action trigger builder
-func (b *Builder) FlowAction(history flows.SessionHistory, runSummary json.RawMessage) *FlowActionBuilder {
+func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary json.RawMessage) *FlowActionBuilder {
 	if !json.Valid(runSummary) {
 		panic(fmt.Sprintf("invalid run summary JSON: %s", string(runSummary)))
 	}
 
 	return &FlowActionBuilder{
 		t: &FlowActionTrigger{
-			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, nil, false, &history),
+			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, nil, false, history),
 			runSummary:  runSummary,
 		},
 	}
