@@ -23,8 +23,8 @@ const TypeFlowAction string = "flow_action"
 //   {
 //     "type": "flow_action",
 //     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Age"},
-//     "from_session": {
-//	     "uuid": "a5b25fb0-75fd-4898-a34f-5ff14fc19078",
+//     "history": {
+//       "parent_uuid": "a5b25fb0-75fd-4898-a34f-5ff14fc19078",
 //       "ancestors": 3,
 //       "ancestors_since_input": 1
 //     },

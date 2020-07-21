@@ -11,10 +11,12 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/classification/wit"
@@ -851,4 +853,88 @@ func TestResthookPayload(t *testing.T) {
 			"uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
 		}
 	}`), []byte(payload), "payload mismatch")
+}
+
+func TestStartSessionLoopProtection(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	source, err := static.NewSource([]byte(`{
+		"flows": [
+			{
+				"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058",
+				"name": "Inception",
+				"spec_version": "13.1",
+				"language": "eng",
+				"type": "messaging",
+				"nodes": [
+					{
+						"uuid": "cc49453a-78ed-48a6-8b94-318b46517071",
+						"actions": [
+							{
+								"uuid": "cdf981ae-a9cf-4c32-98f3-65bac07bf990",
+								"type": "start_session",
+								"flow": {
+									"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058", 
+									"name": "Inception"
+								},
+								"contacts": [
+									{
+										"uuid": "51b41bf2-b2e1-439b-ab9b-dd4c9cef6266", 
+										"name": "Bob"
+									}
+								]
+							}
+						],
+						"exits": [
+							{
+								"uuid": "717ee506-7b2d-4a18-b142-eafed0c5e9d8"
+							}
+						]
+					}
+				]
+			}
+		]
+	}`))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
+	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+
+	eng := engine.NewBuilder().Build()
+	session, sprint, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	require.NoError(t, err)
+
+	sessions := make([]flows.Session, 0)
+
+	for {
+		// look for a session triggered event
+		var event *events.SessionTriggeredEvent
+		for _, e := range sprint.Events() {
+			if e.Type() == events.TypeSessionTriggered {
+				event = e.(*events.SessionTriggeredEvent)
+			}
+		}
+
+		// if it exists, trigger a new session
+		if event != nil {
+			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(session, event.RunSummary).Build()
+
+			session, sprint, err = eng.NewSession(sa, trigger)
+			require.NoError(t, err)
+
+			sessions = append(sessions, session)
+		} else {
+			break
+		}
+	}
+
+	assert.Equal(t, 5, len(sessions))
+
+	// final session should have an error event
+	finalEvent := sprint.Events()[len(sprint.Events())-1]
+	assert.Equal(t, events.TypeError, finalEvent.Type())
+	assert.Equal(t, "too many sessions have been spawned since the last time input was received", finalEvent.(*events.ErrorEvent).Text)
 }
