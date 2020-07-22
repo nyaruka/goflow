@@ -21,6 +21,7 @@ type BaseObject struct {
 type SubObject struct {
 	UUID      string `json:"uuid" validate:"uuid"`
 	UUID4     string `json:"uuid4" validate:"uuid4"`
+	URL       string `json:"url" validate:"url"`
 	SomeValue int    `json:"some_value" validate:"two_or_three"`
 }
 
@@ -42,6 +43,7 @@ func TestValidate(t *testing.T) {
 		Bar: SubObject{
 			UUID:      "ffffffff-ffff-ffff-bf1a-4186adc14195",
 			UUID4:     "f0a26027-9ae9-422a-bf1a-4186adc14195",
+			URL:       "http://google.com",
 			SomeValue: 2,
 		},
 		Things:     []string{"GET", "POST", "PATCH"},
@@ -57,6 +59,7 @@ func TestValidate(t *testing.T) {
 		Bar: SubObject{
 			UUID:      "12345abcdefe",
 			UUID4:     "ffffffff-ffff-ffff-bf1a-4186adc14195",
+			URL:       "?///////:",
 			SomeValue: 0,
 		},
 		Things:     nil,
@@ -72,6 +75,7 @@ func TestValidate(t *testing.T) {
 		`field 'foo' is required`,
 		`field 'bar.uuid' must be a valid UUID`,
 		`field 'bar.uuid4' must be a valid UUID4`,
+		"field 'bar.url' is not a valid URL",
 		`field 'bar.some_value' is not two or three!`,
 		`field 'things' must have a minimum of 1 items`,
 		`field 'date_format' is not a valid date format`,
@@ -85,6 +89,7 @@ func TestValidate(t *testing.T) {
 		Bar: SubObject{
 			UUID:      "ffffffff-ffff-ffff-bf1a-4186adc14195",
 			UUID4:     "f0a26027-9ae9-422a-bf1a-4186adc14195",
+			URL:       "http://google.com",
 			SomeValue: 2,
 		},
 		Things: []string{"UGHHH"},
