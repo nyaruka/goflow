@@ -415,6 +415,16 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 		session = voiceSession
 	}
 
+	// marshal/unmarshal session as way to clone it so every action starts with the same session
+	sessionJSON, err := jsonx.Marshal(session)
+	if err != nil {
+		return nil, err
+	}
+	session, err = session.Engine().ReadSession(session.Assets(), sessionJSON, assets.PanicOnMissing)
+	if err != nil {
+		return nil, err
+	}
+
 	run := session.Runs()[0]
 	step := run.Path()[len(run.Path())-1]
 	modifierLog := func(flows.Modifier) {}
@@ -425,7 +435,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 		eventList = append(eventList, e)
 	}
 
-	err := action.Execute(run, step, modifierLog, eventLog)
+	err = action.Execute(run, step, modifierLog, eventLog)
 	if err != nil {
 		return nil, err
 	}

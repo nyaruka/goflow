@@ -374,7 +374,7 @@ through `extra` on the result.
                     "created_on": "2018-04-11T18:24:30.123456Z",
                     "input": "Hi there",
                     "name": "Intent",
-                    "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
+                    "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
                     "value": "book_flight"
                 },
                 "phone_number": {
@@ -408,7 +408,7 @@ through `extra` on the result.
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
         "url": "http://127.0.0.1:49998/?cmd=success",
         "status": "success",
-        "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49998\r\nUser-Agent: goflow-testing\r\nContent-Length: 2821\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":{\"address\":\"+17036975131\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12024561111\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+17036975131\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2017-12-31T11:35:10.035757-02:00\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\"path\":[{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d7a36118-0a38-4b35-a7e4-ae89042f0d3c\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"8720f157-ca1c-432f-9c0b-2014ddc77094\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"100f2d68-2481-4137-a0a3-177620ba3c5f\",\"node_uuid\":\"3dcccbb4-d29c-41dd-a01f-16d814c9ab82\",\"uuid\":\"970b8069-50f5-4f6f-8f41-6b2d9f33d623\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"9fc5f8b4-2247-43db-b899-ab1ac50ba06c\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"312d3af0-a565-4c96-ba00-bd7f0d08e671\"}],\"results\":{\"2factor\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"2Factor\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"34634624463525\"},\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"intent\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"Hi there\",\"name\":\"Intent\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"value\":\"book_flight\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"},\"webhook\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"GET http://127.0.0.1:49998/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D\",\"name\":\"webhook\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"200\"}},\"run\":{\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"uuid\":\"692926ea-09d6-4942-bd38-d266ec8d3716\"}}",
+        "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49998\r\nUser-Agent: goflow-testing\r\nContent-Length: 2821\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":{\"address\":\"+17036975131\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"contact\":{\"name\":\"Ryan Lewis\",\"urn\":\"tel:+12024561111\",\"uuid\":\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"},\"flow\":{\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\"input\":{\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+17036975131\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2017-12-31T11:35:10.035757-02:00\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"(206) 555-1212\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\"path\":[{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d7a36118-0a38-4b35-a7e4-ae89042f0d3c\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"8720f157-ca1c-432f-9c0b-2014ddc77094\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"100f2d68-2481-4137-a0a3-177620ba3c5f\",\"node_uuid\":\"3dcccbb4-d29c-41dd-a01f-16d814c9ab82\",\"uuid\":\"970b8069-50f5-4f6f-8f41-6b2d9f33d623\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"9fc5f8b4-2247-43db-b899-ab1ac50ba06c\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"312d3af0-a565-4c96-ba00-bd7f0d08e671\"}],\"results\":{\"2factor\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"2Factor\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"34634624463525\"},\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"intent\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"Hi there\",\"name\":\"Intent\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"book_flight\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"\",\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"},\"webhook\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"GET http://127.0.0.1:49998/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D\",\"name\":\"webhook\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"200\"}},\"run\":{\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"uuid\":\"692926ea-09d6-4942-bd38-d266ec8d3716\"}}",
         "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
         "elapsed_ms": 0,
         "resthook": "new-registration",
@@ -948,12 +948,12 @@ A [contact_status_changed](sessions.html#event:contact_status_changed) event wil
         "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
         "groups_removed": [
             {
-                "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9",
-                "name": "Males"
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Testers"
             },
             {
-                "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
-                "name": "Customers"
+                "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9",
+                "name": "Males"
             }
         ]
     }
@@ -1068,16 +1068,25 @@ will be created and it's the responsibility of the caller to act on that by init
         "contact": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "id": 1234567,
-            "name": "Bob Smith",
+            "name": "Ryan Lewis",
             "language": "eng",
-            "status": "blocked",
-            "timezone": "Africa/Kigali",
+            "status": "active",
+            "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "twitterid:54784326227#nyaruka",
-                "mailto:foo@bar.com",
-                "tel:+12344563452"
+                "mailto:foo@bar.com"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9",
+                    "name": "Males"
+                }
             ],
             "fields": {
                 "activation_token": {
@@ -1088,7 +1097,7 @@ will be created and it's the responsibility of the caller to act on that by init
                     "number": 23
                 },
                 "gender": {
-                    "text": "Female"
+                    "text": "Male"
                 },
                 "join_date": {
                     "text": "2017-12-02",
@@ -1111,25 +1120,11 @@ will be created and it's the responsibility of the caller to act on that by init
                 "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
                 "created_on": "2018-04-11T18:24:30.123456Z"
             },
-            "gender": {
-                "name": "Gender",
-                "value": "m",
-                "category": "Male",
-                "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-                "created_on": "2018-04-11T18:24:30.123456Z"
-            },
-            "help_ticket": {
-                "name": "Help Ticket",
-                "value": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
-                "category": "Success",
-                "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-                "created_on": "2018-04-11T18:24:30.123456Z"
-            },
             "intent": {
                 "name": "Intent",
                 "value": "book_flight",
                 "category": "Success",
-                "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
+                "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
                 "input": "Hi there",
                 "extra": {
                     "intents": [
@@ -1163,10 +1158,17 @@ will be created and it's the responsibility of the caller to act on that by init
                 "name": "webhook",
                 "value": "200",
                 "category": "Success",
-                "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-                "input": "GET http://localhost:49998/?cmd=success",
+                "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+                "input": "GET http://127.0.0.1:49998/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
                 "extra": {
-                    "ok": "true"
+                    "results": [
+                        {
+                            "state": "WA"
+                        },
+                        {
+                            "state": "IN"
+                        }
+                    ]
                 },
                 "created_on": "2018-04-11T18:24:30.123456Z"
             }
