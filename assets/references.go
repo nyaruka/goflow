@@ -11,8 +11,8 @@ import (
 )
 
 func init() {
-	utils.Validator.RegisterStructValidation(GroupReferenceValidation, GroupReference{})
-	utils.Validator.RegisterStructValidation(LabelReferenceValidation, LabelReference{})
+	utils.RegisterStructValidator(GroupReferenceValidation, GroupReference{})
+	utils.RegisterStructValidator(LabelReferenceValidation, LabelReference{})
 }
 
 // Reference is interface for all reference types
