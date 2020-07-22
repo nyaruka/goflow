@@ -148,7 +148,7 @@ var sessionAssets = `{
                                 "name": "Booking"
                             },
                             "input": "@input.text",
-                            "result_name": "intent"
+                            "result_name": "Intent"
                         }
                     ],
                     "exits": [
