@@ -1,0 +1,99 @@
+[
+    {
+        "description": "Read fails if status is invalid",
+        "action": {
+            "type": "set_contact_status",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "status": "drunk"
+        },
+        "read_error": "field 'status' is not a valid contact status"
+    },
+    {
+        "description": "Error event if session has no contact",
+        "no_contact": true,
+        "action": {
+            "type": "set_contact_status",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "status": "blocked"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't execute action in session without a contact"
+            }
+        ]
+    },
+    {
+        "description": "NOOP if status doesn't change",
+        "action": {
+            "type": "set_contact_status",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "status": "active"
+        },
+        "events": [],
+        "inspection": {
+            "dependencies": [],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Status changed event if status changes",
+        "action": {
+            "type": "set_contact_status",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "status": "blocked"
+        },
+        "events": [
+            {
+                "type": "contact_status_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "status": "blocked"
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "groups_removed": [
+                    {
+                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                        "name": "Males"
+                    },
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Testers"
+                    }
+                ]
+            }
+        ],
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "status": "blocked",
+            "timezone": "America/Guayaquil",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "fields": {
+                "gender": {
+                    "text": "Male"
+                }
+            }
+        },
+        "inspection": {
+            "dependencies": [],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    }
+]

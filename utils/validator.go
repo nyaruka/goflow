@@ -112,6 +112,8 @@ func Validate(obj interface{}) error {
 			problem = "is not a valid language code"
 		case "country":
 			problem = "is not a valid country code"
+		case "contact_status":
+			problem = "is not a valid contact status"
 		default:
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}
