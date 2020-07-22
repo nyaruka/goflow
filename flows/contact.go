@@ -15,10 +15,17 @@ import (
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
-	"github.com/shopspring/decimal"
 
 	"github.com/pkg/errors"
+	"github.com/shopspring/decimal"
+	validator "gopkg.in/go-playground/validator.v9"
 )
+
+func init() {
+	utils.RegisterValidatorAlias("contact_status", "eq=active|eq=blocked|eq=stopped", func(validator.FieldError) string {
+		return "is not a valid contact status"
+	})
+}
 
 // ContactStatus is status in which a contact is in
 type ContactStatus string

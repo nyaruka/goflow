@@ -4,12 +4,9 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
-	utils.Validator.RegisterAlias("contact_status", "eq=active|eq=blocked|eq=stopped")
-
 	registerType(TypeSetContactStatus, func() flows.Action { return &SetContactStatusAction{} })
 }
 

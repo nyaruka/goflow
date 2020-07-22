@@ -8,10 +8,14 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/uuids"
+
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 func init() {
-	utils.Validator.RegisterAlias("msg_topic", "eq=event|eq=account|eq=purchase|eq=agent")
+	utils.RegisterValidatorAlias("msg_topic", "eq=event|eq=account|eq=purchase|eq=agent", func(validator.FieldError) string {
+		return "is not a valid message topic"
+	})
 }
 
 // MsgTopic is the topic, as required by some channel types
