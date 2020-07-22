@@ -9,6 +9,7 @@ import (
 	_ "github.com/nyaruka/goflow/envs"
 	_ "github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+	"gopkg.in/go-playground/validator.v9"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -20,7 +21,7 @@ type BaseObject struct {
 type SubObject struct {
 	UUID      string `json:"uuid" validate:"uuid"`
 	UUID4     string `json:"uuid4" validate:"uuid4"`
-	SomeValue int    `json:"some_value" validate:"eq=2|eq=3"`
+	SomeValue int    `json:"some_value" validate:"two_or_three"`
 }
 
 type TestObject struct {
@@ -29,10 +30,12 @@ type TestObject struct {
 	Things     []string  `json:"things" validate:"min=1,max=3,dive,http_method"`
 	DateFormat string    `json:"date_format" validate:"date_format"`
 	TimeFormat string    `json:"time_format" validate:"time_format"`
-	Topic      string    `json:"topic" validate:"msg_topic"`
+	Hex        string    `json:"hex" validate:"hexadecimal"`
 }
 
 func TestValidate(t *testing.T) {
+	utils.RegisterValidatorAlias("two_or_three", "eq=2|eq=3", func(e validator.FieldError) string { return "is not two or three!" })
+
 	// test with valid object
 	errs := utils.Validate(&TestObject{
 		BaseObject: BaseObject{Foo: "hello"},
@@ -44,7 +47,7 @@ func TestValidate(t *testing.T) {
 		Things:     []string{"GET", "POST", "PATCH"},
 		DateFormat: "DD-MM-YYYY",
 		TimeFormat: "hh:mm:ss",
-		Topic:      "account",
+		Hex:        "0A",
 	})
 	assert.Nil(t, errs)
 
@@ -59,7 +62,7 @@ func TestValidate(t *testing.T) {
 		Things:     nil,
 		DateFormat: "hh:mm",
 		TimeFormat: "DD-MM",
-		Topic:      "beer",
+		Hex:        "XY",
 	})
 	assert.NotNil(t, errs)
 
@@ -69,11 +72,11 @@ func TestValidate(t *testing.T) {
 		`field 'foo' is required`,
 		`field 'bar.uuid' must be a valid UUID`,
 		`field 'bar.uuid4' must be a valid UUID4`,
-		`field 'bar.some_value' failed tag 'eq=2|eq=3'`,
+		`field 'bar.some_value' is not two or three!`,
 		`field 'things' must have a minimum of 1 items`,
 		`field 'date_format' is not a valid date format`,
 		`field 'time_format' is not a valid time format`,
-		`field 'topic' is not a valid message topic`,
+		`field 'hex' failed tag 'hexadecimal'`,
 	}, msgs)
 
 	// test with another invalid object
@@ -85,7 +88,7 @@ func TestValidate(t *testing.T) {
 			SomeValue: 2,
 		},
 		Things: []string{"UGHHH"},
-		Topic:  "football",
+		Hex:    "ZY",
 	})
 	assert.NotNil(t, errs)
 
@@ -93,7 +96,7 @@ func TestValidate(t *testing.T) {
 	msgs = strings.Split(errs.Error(), ", ")
 	assert.Equal(t, []string{
 		`field 'things[0]' is not a valid HTTP method`,
-		`field 'topic' is not a valid message topic`,
+		`field 'hex' failed tag 'hexadecimal'`,
 	}, msgs)
 }
 

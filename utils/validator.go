@@ -7,16 +7,32 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/utils/jsonx"
+
 	"github.com/pkg/errors"
-	validator "gopkg.in/go-playground/validator.v9"
+	"gopkg.in/go-playground/validator.v9"
 )
 
-// Validator is our system validator, it can be shared across threads
-var Validator = validator.New()
+// our system validator, it can be shared across threads
+var valx = validator.New()
+
+// ErrorMessageFunc is the type for a function that can convert a field error to user friendly message
+type ErrorMessageFunc func(validator.FieldError) string
+
+var messageFuncs = map[string]ErrorMessageFunc{
+	"required": func(e validator.FieldError) string { return "is required" },
+	"uuid":     func(e validator.FieldError) string { return "must be a valid UUID" },
+	"uuid4":    func(e validator.FieldError) string { return "must be a valid UUID4" },
+	"url":      func(e validator.FieldError) string { return "is not a valid URL" },
+	"min":      func(e validator.FieldError) string { return fmt.Sprintf("must have a minimum of %s items", e.Param()) },
+	"max":      func(e validator.FieldError) string { return fmt.Sprintf("must have a maximum of %s items", e.Param()) },
+	"mutually_exclusive": func(e validator.FieldError) string {
+		return fmt.Sprintf("is mutually exclusive with '%s'", e.Param())
+	},
+}
 
 func init() {
 	// use JSON tags as field names in validation error messages
-	Validator.RegisterTagNameFunc(func(fld reflect.StructField) string {
+	valx.RegisterTagNameFunc(func(fld reflect.StructField) string {
 		name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
 		if name == "" {
 			return "-"
@@ -24,7 +40,28 @@ func init() {
 		return name
 	})
 
-	Validator.RegisterAlias("http_method", "eq=GET|eq=HEAD|eq=POST|eq=PUT|eq=PATCH|eq=DELETE")
+	RegisterValidatorAlias("http_method", "eq=GET|eq=HEAD|eq=POST|eq=PUT|eq=PATCH|eq=DELETE", func(validator.FieldError) string {
+		return "is not a valid HTTP method"
+	})
+}
+
+// RegisterValidatorTag registers a tag
+func RegisterValidatorTag(tag string, fn validator.Func, message ErrorMessageFunc) {
+	valx.RegisterValidation(tag, fn)
+
+	messageFuncs[tag] = message
+}
+
+// RegisterValidatorAlias registers a tag alias
+func RegisterValidatorAlias(alias, tags string, message ErrorMessageFunc) {
+	valx.RegisterAlias(alias, tags)
+
+	messageFuncs[alias] = message
+}
+
+// RegisterStructValidator registers a struct level validator
+func RegisterStructValidator(fn validator.StructLevelFunc, types ...interface{}) {
+	valx.RegisterStructValidation(fn, types...)
 }
 
 // ValidationErrors combines multiple validation errors as a single error
@@ -51,9 +88,9 @@ func Validate(obj interface{}) error {
 	v := reflect.Indirect(reflect.ValueOf(obj))
 
 	if v.Type().Kind() == reflect.Slice {
-		err = Validator.Var(obj, `required,dive`)
+		err = valx.Var(obj, `required,dive`)
 	} else {
-		err = Validator.Struct(obj)
+		err = valx.Struct(obj)
 	}
 
 	if err == nil {
@@ -85,34 +122,10 @@ func Validate(obj interface{}) error {
 
 		// generate a more user friendly description of the problem
 		var problem string
-		switch fieldErr.Tag() {
-		case "required":
-			problem = "is required"
-		case "uuid":
-			problem = "must be a valid UUID"
-		case "uuid4":
-			problem = "must be a valid UUID4"
-		case "url":
-			problem = "is not a valid URL"
-		case "min":
-			problem = fmt.Sprintf("must have a minimum of %s items", fieldErr.Param())
-		case "max":
-			problem = fmt.Sprintf("must have a maximum of %s items", fieldErr.Param())
-		case "mutually_exclusive":
-			problem = fmt.Sprintf("is mutually exclusive with '%s'", fieldErr.Param())
-		case "http_method":
-			problem = "is not a valid HTTP method"
-		case "msg_topic":
-			problem = "is not a valid message topic"
-		case "date_format":
-			problem = "is not a valid date format"
-		case "time_format":
-			problem = "is not a valid time format"
-		case "language":
-			problem = "is not a valid language code"
-		case "country":
-			problem = "is not a valid country code"
-		default:
+		messageFunc := messageFuncs[fieldErr.Tag()]
+		if messageFunc != nil {
+			problem = messageFunc(fieldErr)
+		} else {
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}
 
