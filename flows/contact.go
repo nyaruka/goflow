@@ -537,17 +537,17 @@ var _ assets.Reference = (*ContactReference)(nil)
 //------------------------------------------------------------------------------------------
 
 type contactEnvelope struct {
-	UUID      ContactUUID              `json:"uuid" validate:"required,uuid4"`
+	UUID      ContactUUID              `json:"uuid"                validate:"required,uuid4"`
 	ID        ContactID                `json:"id,omitempty"`
 	Name      string                   `json:"name,omitempty"`
 	Language  envs.Language            `json:"language,omitempty"`
-	Status    ContactStatus            `json:"status,omitempty"`
+	Status    ContactStatus            `json:"status,omitempty"    validate:"omitempty,contact_status"`
 	Stopped   bool                     `json:"stopped,omitempty"`
 	Blocked   bool                     `json:"blocked,omitempty"`
 	Timezone  string                   `json:"timezone,omitempty"`
-	CreatedOn time.Time                `json:"created_on" validate:"required"`
-	URNs      []urns.URN               `json:"urns,omitempty" validate:"dive,urn"`
-	Groups    []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
+	CreatedOn time.Time                `json:"created_on"          validate:"required"`
+	URNs      []urns.URN               `json:"urns,omitempty"      validate:"dive,urn"`
+	Groups    []*assets.GroupReference `json:"groups,omitempty"    validate:"dive"`
 	Fields    map[string]*Value        `json:"fields,omitempty"`
 }
 
