@@ -1,3 +1,10 @@
+v0.96.0
+----------
+ * Reorganize validation code so utils doesn't have to know about tags defined higher up
+ * Clone the test session during doc generation so actions always start with the same session
+ * Add action to change contact status
+ * Add historical information to triggers about the session that triggered them and use to prevent looping
+
 v0.95.1
 ----------
  * Improve documentation of call_webhook action
