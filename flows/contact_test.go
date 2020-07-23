@@ -139,6 +139,26 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, flows.URNList{}, contact.URNs())
 }
 
+func TestReadContact(t *testing.T) {
+	source, err := static.NewSource([]byte(`{}`))
+	require.NoError(t, err)
+
+	env := envs.NewBuilder().Build()
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	// read minimal contact
+	contact, err := flows.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
+	assert.NoError(t, err)
+	assert.Equal(t, flows.ContactUUID("a20f7948-e497-4a4a-be3c-b17f79f7ab7d"), contact.UUID())
+	assert.Equal(t, flows.ContactStatusActive, contact.Status())
+
+	// read invalid contact
+	_, err = flows.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "drunk", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
+	assert.EqualError(t, err, "unable to read contact: field 'status' is not a valid contact status")
+}
+
 func TestContactFormat(t *testing.T) {
 	env := envs.NewBuilder().Build()
 	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)

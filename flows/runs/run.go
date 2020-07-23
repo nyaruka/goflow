@@ -153,11 +153,15 @@ func (r *flowRun) LogError(step flows.Step, err error) {
 // find the first event matching the given step UUID and type
 func (r *flowRun) findEvent(stepUUID flows.StepUUID, eType string) flows.Event {
 	for _, e := range r.events {
-		if e.StepUUID() == stepUUID && e.Type() == eType {
+		if (stepUUID == "" || e.StepUUID() == stepUUID) && e.Type() == eType {
 			return e
 		}
 	}
 	return nil
+}
+
+func (r *flowRun) ReceivedInput() bool {
+	return r.findEvent("", events.TypeMsgReceived) != nil
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }

@@ -23,6 +23,11 @@ const TypeFlowAction string = "flow_action"
 //   {
 //     "type": "flow_action",
 //     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Age"},
+//     "history": {
+//       "parent_uuid": "a5b25fb0-75fd-4898-a34f-5ff14fc19078",
+//       "ancestors": 3,
+//       "ancestors_since_input": 1
+//     },
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
 //     "run_summary": {
 //       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -67,14 +72,14 @@ type FlowActionBuilder struct {
 }
 
 // FlowAction returns a flow action trigger builder
-func (b *Builder) FlowAction(runSummary json.RawMessage) *FlowActionBuilder {
+func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary json.RawMessage) *FlowActionBuilder {
 	if !json.Valid(runSummary) {
 		panic(fmt.Sprintf("invalid run summary JSON: %s", string(runSummary)))
 	}
 
 	return &FlowActionBuilder{
 		t: &FlowActionTrigger{
-			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, nil, false, nil),
+			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, nil, false, history),
 			runSummary:  runSummary,
 		},
 	}

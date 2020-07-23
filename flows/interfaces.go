@@ -264,6 +264,7 @@ type Trigger interface {
 	Connection() *Connection
 	Batch() bool
 	Params() *types.XObject
+	History() *SessionHistory
 	TriggeredOn() time.Time
 }
 
@@ -376,6 +377,7 @@ type Session interface {
 	GetCurrentChild(FlowRun) FlowRun
 	ParentRun() RunSummary
 	CurrentContext() *types.XObject
+	History() *SessionHistory
 
 	Engine() Engine
 }
@@ -411,6 +413,7 @@ type FlowRun interface {
 	LogEvent(Step, Event)
 	LogError(Step, error)
 	Events() []Event
+	ReceivedInput() bool
 
 	EvaluateTemplateValue(string) (types.XValue, error)
 	EvaluateTemplateText(string, excellent.Escaping, bool) (string, error)

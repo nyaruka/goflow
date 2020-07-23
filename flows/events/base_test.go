@@ -434,6 +434,7 @@ func TestEventMarshaling(t *testing.T) {
 				false,
 				[]urns.URN{urns.URN("tel:+12345678900")},
 				json.RawMessage(`{"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"}`),
+				&flows.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
 			),
 			`{
 				"contacts": [
@@ -456,6 +457,11 @@ func TestEventMarshaling(t *testing.T) {
 				],
 				"run_summary": {
 					"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"
+				},
+				"history": {
+					"parent_uuid": "418a704c-f33e-4924-a00e-1763d1498a13",
+					"ancestors": 2,
+					"ancestors_since_input": 0
 				},
 				"type": "session_triggered",
 				"urns": [

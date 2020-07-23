@@ -112,6 +112,11 @@
                         "name": "Collect Language",
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     },
+                    "history": {
+                        "ancestors": 1,
+                        "ancestors_since_input": 0,
+                        "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    },
                     "run_summary": {
                         "contact": {
                             "created_on": "2000-01-01T00:00:00Z",
@@ -576,6 +581,11 @@
                                 "flow": {
                                     "name": "Collect Language",
                                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                                },
+                                "history": {
+                                    "ancestors": 1,
+                                    "ancestors_since_input": 0,
+                                    "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                                 },
                                 "run_summary": {
                                     "contact": {
