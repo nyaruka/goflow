@@ -219,6 +219,38 @@ func TestParseQuery(t *testing.T) {
 }
 
 func TestParsingErrors(t *testing.T) {
-	_, err := contactql.ParseQuery("name = ", envs.RedactionPolicyNone, "US", nil)
-	assert.EqualError(t, err, "mismatched input '<EOF>' expecting {TEXT, STRING}")
+	tests := []struct {
+		query    string
+		errMsg   string
+		errCode  string
+		errExtra map[string]string
+	}{
+		{
+			query:    `$`,
+			errMsg:   "mismatched input '$' expecting {'(', TEXT, STRING}",
+			errCode:  "query_unexpected_token",
+			errExtra: map[string]string{"token": "$"},
+		},
+		{
+			query:    `name = `,
+			errMsg:   "mismatched input '<EOF>' expecting {TEXT, STRING}",
+			errCode:  "query_unexpected_token",
+			errExtra: map[string]string{"token": "<EOF>"},
+		},
+		{
+			query:    `name = "x`,
+			errMsg:   "extraneous input '\"' expecting {TEXT, STRING}",
+			errCode:  "",
+			errExtra: nil,
+		},
+	}
+
+	for _, tc := range tests {
+		_, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, "US", nil)
+		assert.EqualError(t, err, tc.errMsg)
+
+		qerr := err.(*contactql.QueryError)
+		assert.Equal(t, tc.errCode, qerr.Code())
+		assert.Equal(t, tc.errExtra, qerr.Extra())
+	}
 }
