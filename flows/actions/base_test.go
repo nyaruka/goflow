@@ -620,6 +620,17 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
+			actions.NewSetContactStatus(
+				actionUUID,
+				flows.ContactStatusBlocked,
+			),
+			`{
+				"type": "set_contact_status",
+				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+				"status": "blocked"
+			}`,
+		},
+		{
 			actions.NewSetContactTimezone(
 				actionUUID,
 				"Africa/Kigali",

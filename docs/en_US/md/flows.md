@@ -918,6 +918,48 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 }
 ```
 </div>
+<h2 class="item_title"><a name="action:set_contact_status" href="#action:set_contact_status">set_contact_status</a></h2>
+
+Can be used to update the status of the contact, e.g. to block or unblock the contact.
+A [contact_status_changed](sessions.html#event:contact_status_changed) event will be created with the corresponding value.
+
+<div class="input_action"><h3>Action</h3>
+
+```json
+{
+    "type": "set_contact_status",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "status": "blocked"
+}
+```
+</div><div class="output_event"><h3>Event</h3>
+
+```json
+[
+    {
+        "type": "contact_status_changed",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "status": "blocked"
+    },
+    {
+        "type": "contact_groups_changed",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+        "groups_removed": [
+            {
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Testers"
+            },
+            {
+                "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9",
+                "name": "Males"
+            }
+        ]
+    }
+]
+```
+</div>
 <h2 class="item_title"><a name="action:set_contact_timezone" href="#action:set_contact_timezone">set_contact_timezone</a></h2>
 
 Can be used to update the timezone of the contact. The timezone is a localizable
