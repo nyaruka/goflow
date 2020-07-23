@@ -1173,6 +1173,11 @@ will be created and it's the responsibility of the caller to act on that by init
                 "created_on": "2018-04-11T18:24:30.123456Z"
             }
         }
+    },
+    "history": {
+        "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+        "ancestors": 1,
+        "ancestors_since_input": 0
     }
 }
 ```

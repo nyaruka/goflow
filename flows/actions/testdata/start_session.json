@@ -197,6 +197,11 @@
                     },
                     "status": "active",
                     "results": {}
+                },
+                "history": {
+                    "parent_uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+                    "ancestors": 1,
+                    "ancestors_since_input": 1
                 }
             }
         ]
@@ -291,6 +296,11 @@
                     },
                     "status": "active",
                     "results": {}
+                },
+                "history": {
+                    "parent_uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+                    "ancestors": 1,
+                    "ancestors_since_input": 0
                 }
             }
         ],
@@ -383,6 +393,11 @@
                     },
                     "status": "active",
                     "results": {}
+                },
+                "history": {
+                    "parent_uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+                    "ancestors": 1,
+                    "ancestors_since_input": 0
                 }
             }
         ],
@@ -466,6 +481,11 @@
                     },
                     "status": "active",
                     "results": {}
+                },
+                "history": {
+                    "parent_uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+                    "ancestors": 1,
+                    "ancestors_since_input": 0
                 }
             }
         ],

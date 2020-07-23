@@ -71,7 +71,7 @@ type ChannelBuilder struct {
 func (b *Builder) Channel(channel *assets.ChannelReference, eventType ChannelEventType) *ChannelBuilder {
 	return &ChannelBuilder{
 		t: &ChannelTrigger{
-			baseTrigger: newBaseTrigger(TypeChannel, b.environment, b.flow, b.contact, nil, false, types.XObjectEmpty),
+			baseTrigger: newBaseTrigger(TypeChannel, b.environment, b.flow, b.contact, nil, false, nil),
 			event:       &ChannelEvent{Type: eventType, Channel: channel},
 		},
 	}

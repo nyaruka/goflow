@@ -8,6 +8,9 @@ import (
 	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
+// max number of times a session can trigger another session without there being input from the contact
+const maxAncestorsSinceInput = 5
+
 func init() {
 	registerType(TypeStartSession, func() flows.Action { return &StartSessionAction{} })
 }
@@ -59,9 +62,21 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return err
 	}
 
-	// footgun prevention
+	// batch footgun prevention
 	if run.Session().BatchStart() && (len(groupRefs) > 0 || contactQuery != "") {
 		logEvent(events.NewErrorf("can't start new sessions for groups or queries during batch starts"))
+		return nil
+	}
+
+	// loop footgun prevention
+	ref := run.Session().History()
+	if ref.AncestorsSinceInput >= maxAncestorsSinceInput {
+		logEvent(events.NewErrorf("too many sessions have been spawned since the last time input was received"))
+		return nil
+	}
+
+	// if we don't have any recipients, noop
+	if !(len(urnList) > 0 || len(groupRefs) > 0 || len(contactRefs) > 0 || a.ContactQuery != "" || a.CreateContact) {
 		return nil
 	}
 
@@ -70,9 +85,8 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, logModi
 		return err
 	}
 
-	// if we have any recipients, log an event
-	if len(urnList) > 0 || len(groupRefs) > 0 || len(contactRefs) > 0 || a.ContactQuery != "" || a.CreateContact {
-		logEvent(events.NewSessionTriggered(a.Flow, groupRefs, contactRefs, contactQuery, a.CreateContact, urnList, runSnapshot))
-	}
+	history := flows.NewChildHistory(run.Session())
+
+	logEvent(events.NewSessionTriggered(a.Flow, groupRefs, contactRefs, contactQuery, a.CreateContact, urnList, runSnapshot, history))
 	return nil
 }

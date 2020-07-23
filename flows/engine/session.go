@@ -133,6 +133,14 @@ func (s *session) waitingRun() flows.FlowRun {
 	return nil
 }
 
+func (s *session) History() *flows.SessionHistory {
+	history := s.trigger.History()
+	if history != nil {
+		return history
+	}
+	return flows.EmptyHistory
+}
+
 func (s *session) Engine() flows.Engine { return s.engine }
 
 //------------------------------------------------------------------------------------------
