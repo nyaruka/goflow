@@ -53,13 +53,18 @@
                     "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
                     "name": "Facebook"
                 }
+            },
+            "params": {
+                "referer_id": "234567345"
             }
         },
         "events": [],
         "context": {
             "keyword": "",
             "origin": "",
-            "params": {},
+            "params": {
+                "referer_id": "234567345"
+            },
             "type": "channel",
             "user": ""
         }
