@@ -1,0 +1,42 @@
+{
+    "type": "msg",
+    "environment": {
+        "date_format": "YYYY-MM-DD",
+        "time_format": "tt:mm",
+        "timezone": "UTC",
+        "number_format": {
+            "decimal_symbol": ".",
+            "digit_grouping_symbol": ","
+        },
+        "redaction_policy": "none",
+        "max_value_length": 640
+    },
+    "flow": {
+        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+        "name": "Registration"
+    },
+    "contact": {
+        "uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b",
+        "name": "Bob",
+        "language": "eng",
+        "status": "active",
+        "created_on": "2018-10-20T09:49:31.23456789Z",
+        "urns": [
+            "tel:+12065551212"
+        ]
+    },
+    "triggered_on": "2018-10-20T09:49:31.23456789Z",
+    "msg": {
+        "uuid": "c8005ee3-4628-4d76-be66-906352cb1935",
+        "urn": "tel:+1234567890",
+        "channel": {
+            "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+            "name": "Nexmo"
+        },
+        "text": "Hi there"
+    },
+    "keyword_match": {
+        "type": "first_word",
+        "keyword": "hi"
+    }
+}

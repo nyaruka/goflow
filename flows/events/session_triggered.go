@@ -40,6 +40,11 @@ const TypeSessionTriggered string = "session_triggered"
 //           "created_on": "2000-01-01T00:00:00.000000000-00:00"
 //         }
 //       }
+//     },
+//     "history": {
+//       "parent_uuid": "55105da5-abb5-4690-b1f6-ec2e5762a561",
+//       "ancestors": 3,
+//       "ancestors_since_input": 1
 //     }
 //   }
 //
@@ -54,10 +59,11 @@ type SessionTriggeredEvent struct {
 	CreateContact bool                      `json:"create_contact,omitempty"`
 	URNs          []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
 	RunSummary    json.RawMessage           `json:"run_summary"`
+	History       *flows.SessionHistory     `json:"history"`
 }
 
 // NewSessionTriggered returns a new session triggered event
-func NewSessionTriggered(flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, createContact bool, urns []urns.URN, runSummary json.RawMessage) *SessionTriggeredEvent {
+func NewSessionTriggered(flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, createContact bool, urns []urns.URN, runSummary json.RawMessage, history *flows.SessionHistory) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
 		baseEvent:     newBaseEvent(TypeSessionTriggered),
 		Flow:          flow,
@@ -67,5 +73,6 @@ func NewSessionTriggered(flow *assets.FlowReference, groups []*assets.GroupRefer
 		CreateContact: createContact,
 		URNs:          urns,
 		RunSummary:    runSummary,
+		History:       history,
 	}
 }

@@ -11,10 +11,13 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/classification/wit"
@@ -185,14 +188,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		var trigger flows.Trigger
 		ignoreEventCount := 0
 		if tc.NoInput || tc.AsBatch {
-			var connection *flows.Connection
+			tb := triggers.NewBuilder(env, flow.Reference(), contact).Manual().AsBatch()
+
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-				connection = flows.NewConnection(channel.Reference(), urns.URN("tel:+12065551212"))
-				trigger = triggers.NewManualVoice(env, flow.Reference(), contact, connection, tc.AsBatch, nil)
-			} else {
-				trigger = triggers.NewManual(env, flow.Reference(), contact, tc.AsBatch, nil)
+				tb = tb.WithConnection(channel.Reference(), urns.URN("tel:+12065551212"))
 			}
+
+			trigger = tb.Build()
 		} else {
 			msg := flows.NewMsgIn(
 				flows.MsgUUID("aa90ce99-3b4d-44ba-b0ca-79e63d9ed842"),
@@ -204,7 +207,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 					"audio/mp3:http://s3.amazon.com/bucket/test.mp3",
 				},
 			)
-			trigger = triggers.NewMsg(env, flow.Reference(), contact, msg, nil)
+			trigger = triggers.NewBuilder(env, flow.Reference(), contact).Msg(msg).Build()
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
@@ -617,6 +620,17 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
+			actions.NewSetContactStatus(
+				actionUUID,
+				flows.ContactStatusBlocked,
+			),
+			`{
+				"type": "set_contact_status",
+				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+				"status": "blocked"
+			}`,
+		},
+		{
 			actions.NewSetContactTimezone(
 				actionUUID,
 				"Africa/Kigali",
@@ -731,124 +745,222 @@ func TestResthookPayload(t *testing.T) {
 	payload, err := run.EvaluateTemplate(actions.ResthookPayload)
 	require.NoError(t, err)
 
-	test.AssertEqualJSON(t, []byte(`{
-		"channel": {
-			"address": "+17036975131",
-			"name": "My Android Phone",
-			"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-		},
-		"contact": {
-			"name": "Ryan Lewis",
-			"urn": "tel:+12024561111",
-			"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
-		},
-		"flow": {
-			"name": "Registration",
-			"revision": 123,
-			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7"
-		},
-		"input": {
-			"attachments": [
-				{
-					"content_type": "image/jpeg",
-					"url": "http://s3.amazon.com/bucket/test.jpg"
-				},
-				{
-					"content_type": "audio/mp3",
-					"url": "http://s3.amazon.com/bucket/test.mp3"
-				}
-			],
-			"channel": {
-				"address": "+17036975131",
-				"name": "My Android Phone",
-				"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-			},
-			"created_on": "2017-12-31T11:35:10.035757-02:00",
-			"text": "Hi there",
-			"type": "msg",
-			"urn": {
-				"display": "(206) 555-1212",
-				"path": "+12065551212",
-				"scheme": "tel"
-			},
-			"uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-		},
-		"path": [
+	pretty, err := jsonx.MarshalPretty(json.RawMessage(payload))
+	require.NoError(t, err)
+
+	test.AssertSnapshot(t, "resthook_payload", string(pretty))
+}
+
+func TestStartSessionLoopProtection(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	source, err := static.NewSource([]byte(`{
+		"flows": [
 			{
-				"arrived_on": "2018-07-06T12:30:03.123456Z",
-				"exit_uuid": "d7a36118-0a38-4b35-a7e4-ae89042f0d3c",
-				"node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
-				"uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
-			},
-			{
-				"arrived_on": "2018-07-06T12:30:19.123456Z",
-				"exit_uuid": "100f2d68-2481-4137-a0a3-177620ba3c5f",
-				"node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-				"uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
-			},
-			{
-				"arrived_on": "2018-07-06T12:30:28.123456Z",
-				"exit_uuid": "d898f9a4-f0fc-4ac4-a639-c98c602bb511",
-				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
-			},
-			{
-				"arrived_on": "2018-07-06T12:30:55.123456Z",
-				"exit_uuid": "9fc5f8b4-2247-43db-b899-ab1ac50ba06c",
-				"node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-				"uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+				"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058",
+				"name": "Inception",
+				"spec_version": "13.1",
+				"language": "eng",
+				"type": "messaging",
+				"nodes": [
+					{
+						"uuid": "cc49453a-78ed-48a6-8b94-318b46517071",
+						"actions": [
+							{
+								"uuid": "cdf981ae-a9cf-4c32-98f3-65bac07bf990",
+								"type": "start_session",
+								"flow": {
+									"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058", 
+									"name": "Inception"
+								},
+								"contacts": [
+									{
+										"uuid": "51b41bf2-b2e1-439b-ab9b-dd4c9cef6266", 
+										"name": "Bob"
+									}
+								]
+							}
+						],
+						"exits": [
+							{
+								"uuid": "717ee506-7b2d-4a18-b142-eafed0c5e9d8"
+							}
+						]
+					}
+				]
 			}
-		],
-		"results": {
-			"2factor": {
-				"category": "",
-				"category_localized": "",
-				"created_on": "2018-07-06T12:30:37.123456Z",
-				"input": "",
-				"name": "2Factor",
-				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"value": "34634624463525"
-			},
-			"favorite_color": {
-				"category": "Red",
-				"category_localized": "Red",
-				"created_on": "2018-07-06T12:30:33.123456Z",
-				"input": "",
-				"name": "Favorite Color",
-				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"value": "red"
-			},
-			"intent": {
-				"category": "Success",
-				"category_localized": "Success",
-				"created_on": "2018-07-06T12:30:51.123456Z",
-				"input": "Hi there",
-				"name": "intent",
-				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"value": "book_flight"
-			},
-			"phone_number": {
-				"category": "",
-				"category_localized": "",
-				"created_on": "2018-07-06T12:30:29.123456Z",
-				"input": "",
-				"name": "Phone Number",
-				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"value": "+12344563452"
-			},
-			"webhook": {
-				"category": "Success",
-				"category_localized": "Success",
-				"created_on": "2018-07-06T12:30:45.123456Z",
-				"input": "GET http://127.0.0.1:49999/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
-				"name": "webhook",
-				"node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-				"value": "200"
+		]
+	}`))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
+	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+
+	eng := engine.NewBuilder().Build()
+	session, sprint, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	require.NoError(t, err)
+
+	sessions := make([]flows.Session, 0)
+
+	for {
+		// look for a session triggered event
+		var event *events.SessionTriggeredEvent
+		for _, e := range sprint.Events() {
+			if e.Type() == events.TypeSessionTriggered {
+				event = e.(*events.SessionTriggeredEvent)
 			}
-		},
-		"run": {
-			"created_on": "2018-07-06T12:30:00.123456Z",
-			"uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
 		}
-	}`), []byte(payload), "payload mismatch")
+
+		// if it exists, trigger a new session
+		if event != nil {
+			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(event.History, event.RunSummary).Build()
+
+			session, sprint, err = eng.NewSession(sa, trigger)
+			require.NoError(t, err)
+
+			sessions = append(sessions, session)
+		} else {
+			break
+		}
+	}
+
+	assert.Equal(t, 5, len(sessions))
+
+	// final session should have an error event
+	finalEvent := sprint.Events()[len(sprint.Events())-1]
+	assert.Equal(t, events.TypeError, finalEvent.Type())
+	assert.Equal(t, "too many sessions have been spawned since the last time input was received", finalEvent.(*events.ErrorEvent).Text)
+}
+
+func TestStartSessionLoopProtectionWithInput(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	source, err := static.NewSource([]byte(`{
+		"flows": [
+			{
+				"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058",
+				"name": "Inception",
+				"spec_version": "13.1",
+				"language": "eng",
+				"type": "messaging",
+				"nodes": [
+					{
+						"uuid": "bff26109-b7b4-465f-8c9e-ddbf465af5f1",
+						"actions": [
+							{
+								"uuid": "b3779a48-351c-499f-a2ba-f497b3248659",
+								"type": "send_msg",
+								"text": "Say something"
+							}
+						],
+						"exits": [
+							{
+								"uuid": "a5efd0ef-303f-4ae9-9f86-0c7ddaf3abf1",
+								"destination_uuid": "4c83851e-f0bf-4c59-ba11-220ecccfcebb"
+							}
+						]
+					},
+					{
+						"uuid": "4c83851e-f0bf-4c59-ba11-220ecccfcebb",
+						"router": {
+							"type": "switch",
+							"wait": {
+								"type": "msg"
+							},
+							"categories": [
+								{
+									"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+									"name": "All Responses",
+									"exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+								}
+							],
+							"default_category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+							"result_name": "Name",
+							"operand": "@input.text",
+							"cases": []
+						},
+						"exits": [
+							{
+								"uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8",
+								"destination_uuid": "cc49453a-78ed-48a6-8b94-318b46517071"
+							}
+						]
+					},
+					{
+						"uuid": "cc49453a-78ed-48a6-8b94-318b46517071",
+						"actions": [
+							{
+								"uuid": "cdf981ae-a9cf-4c32-98f3-65bac07bf990",
+								"type": "start_session",
+								"flow": {
+									"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058", 
+									"name": "Inception"
+								},
+								"contacts": [
+									{
+										"uuid": "51b41bf2-b2e1-439b-ab9b-dd4c9cef6266", 
+										"name": "Bob"
+									}
+								]
+							}
+						],
+						"exits": [
+							{
+								"uuid": "717ee506-7b2d-4a18-b142-eafed0c5e9d8"
+							}
+						]
+					}
+				]
+			}
+		]
+	}`))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
+	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+
+	eng := engine.NewBuilder().Build()
+	session, sprint, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	require.NoError(t, err)
+
+	sessions := make([]flows.Session, 0)
+
+	for {
+		if len(sessions) == 10 {
+			break
+		}
+
+		if session.Status() == flows.SessionStatusWaiting {
+			sprint, err = session.Resume(resumes.NewMsg(nil, nil, flows.NewMsgIn("f8effb01-d467-4bd8-bd15-572f4c959419", urns.NilURN, nil, "Hi there", nil)))
+			require.NoError(t, err)
+		}
+
+		// look for a session triggered event
+		var event *events.SessionTriggeredEvent
+		for _, e := range sprint.Events() {
+			if e.Type() == events.TypeSessionTriggered {
+				event = e.(*events.SessionTriggeredEvent)
+			}
+		}
+
+		// if it exists, trigger a new session
+		if event != nil {
+			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(event.History, event.RunSummary).Build()
+
+			session, sprint, err = eng.NewSession(sa, trigger)
+			require.NoError(t, err)
+
+			sessions = append(sessions, session)
+		} else {
+			break
+		}
+	}
+
+	assert.Equal(t, 10, len(sessions))
 }

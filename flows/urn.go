@@ -16,8 +16,12 @@ import (
 var redacted = "********"
 
 func init() {
-	utils.Validator.RegisterValidation("urn", ValidateURN)
-	utils.Validator.RegisterValidation("urnscheme", ValidateURNScheme)
+	utils.RegisterValidatorTag("urn", ValidateURN, func(validator.FieldError) string {
+		return "is not a valid URN"
+	})
+	utils.RegisterValidatorTag("urnscheme", ValidateURNScheme, func(validator.FieldError) string {
+		return "is not a valid URN scheme"
+	})
 }
 
 // ValidateURN validates whether the field value is a valid URN

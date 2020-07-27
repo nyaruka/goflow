@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/modifiers"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"

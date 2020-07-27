@@ -44,6 +44,7 @@ func TestParseQuery(t *testing.T) {
 
 		// explicit conditions on name
 		{`Name=will`, `name = "will"`, "", envs.RedactionPolicyNone},
+		{`Name=O'Shea`, `name = "O'Shea"`, "", envs.RedactionPolicyNone},
 		{`Name ~ "felix"`, `name ~ "felix"`, "", envs.RedactionPolicyNone},
 		{`Name HAS "Felix"`, `name ~ "Felix"`, "", envs.RedactionPolicyNone},
 		{`name is ""`, `name = ""`, "", envs.RedactionPolicyNone},            // is not set

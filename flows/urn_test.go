@@ -11,10 +11,29 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+type testStruct struct {
+	ValidURN      string `json:"valid_urn" validate:"urn"`
+	InvalidURN    string `json:"invalid_urn" validate:"urn"`
+	ValidScheme   string `json:"valid_scheme" validate:"urnscheme"`
+	InvalidScheme string `json:"invalid_scheme" validate:"urnscheme"`
+}
+
+func TestURNValidation(t *testing.T) {
+	obj := testStruct{
+		ValidURN:      "tel:+123456789",
+		InvalidURN:    "xyz",
+		ValidScheme:   "viber",
+		InvalidScheme: "$%@^#^^!!!",
+	}
+	err := utils.Validate(obj)
+	assert.EqualError(t, err, "field 'invalid_urn' is not a valid URN, field 'invalid_scheme' is not a valid URN scheme")
+}
 
 func TestContactURN(t *testing.T) {
 	env := envs.NewBuilder().Build()

@@ -74,6 +74,11 @@ Is used when another session triggered this run using a trigger_flow action.
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Age"
     },
+    "history": {
+        "parent_uuid": "a5b25fb0-75fd-4898-a34f-5ff14fc19078",
+        "ancestors": 3,
+        "ancestors_since_input": 1
+    },
     "triggered_on": "2000-01-01T00:00:00Z",
     "run_summary": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -122,7 +127,9 @@ Is used when a session was triggered manually by a user
         "status": "active",
         "created_on": "2018-01-01T12:00:00Z"
     },
-    "triggered_on": "2000-01-01T00:00:00Z"
+    "triggered_on": "2000-01-01T00:00:00Z",
+    "user": "bob@nyaruka.com",
+    "origin": "ui"
 }
 ```
 
@@ -746,9 +753,9 @@ Events are created when an engine service is called.
     },
     "http_logs": [
         {
-            "url": "https://api.wit.ai/message?v=20170307&q=hello",
+            "url": "https://api.wit.ai/message?v=20200513&q=hello",
             "status": "success",
-            "request": "GET /message?v=20170307&q=hello HTTP/1.1",
+            "request": "GET /message?v=20200513&q=hello HTTP/1.1",
             "response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
             "created_on": "2006-01-02T15:04:05Z",
             "elapsed_ms": 123
@@ -801,6 +808,11 @@ Events are created when an action wants to start other people in a flow.
                 "created_on": "2000-01-01T00:00:00.000000000-00:00"
             }
         }
+    },
+    "history": {
+        "parent_uuid": "55105da5-abb5-4690-b1f6-ec2e5762a561",
+        "ancestors": 3,
+        "ancestors_since_input": 1
     }
 }
 ```

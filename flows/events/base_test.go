@@ -137,10 +137,10 @@ func TestEventMarshaling(t *testing.T) {
 					{
 						CreatedOn: dates.Now(),
 						ElapsedMS: 12,
-						Request:   "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						Request:   "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 						Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
 						Status:    flows.CallStatusSuccess,
-						URL:       "https://api.wit.ai/message?v=20170307&q=hello",
+						URL:       "https://api.wit.ai/message?v=20200513&q=hello",
 					},
 				},
 			),
@@ -156,10 +156,10 @@ func TestEventMarshaling(t *testing.T) {
 					{
 						"created_on": "2018-10-18T14:20:30.000123456Z",
 						"elapsed_ms": 12,
-						"request": "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						"request": "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 						"response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
 						"status": "success",
-						"url": "https://api.wit.ai/message?v=20170307&q=hello"
+						"url": "https://api.wit.ai/message?v=20200513&q=hello"
 					}
 				]
 			}`,
@@ -341,6 +341,7 @@ func TestEventMarshaling(t *testing.T) {
 						"spa"
 					],
 					"date_format": "DD-MM-YYYY",
+					"default_country": "US",
 					"default_language": "eng",
 					"max_value_length": 640,
 					"number_format": {
@@ -434,6 +435,7 @@ func TestEventMarshaling(t *testing.T) {
 				false,
 				[]urns.URN{urns.URN("tel:+12345678900")},
 				json.RawMessage(`{"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"}`),
+				&flows.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
 			),
 			`{
 				"contacts": [
@@ -456,6 +458,11 @@ func TestEventMarshaling(t *testing.T) {
 				],
 				"run_summary": {
 					"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"
+				},
+				"history": {
+					"parent_uuid": "418a704c-f33e-4924-a00e-1763d1498a13",
+					"ancestors": 2,
+					"ancestors_since_input": 0
 				},
 				"type": "session_triggered",
 				"urns": [
@@ -495,7 +502,7 @@ func TestEventMarshaling(t *testing.T) {
 					{
 						CreatedOn: dates.Now(),
 						ElapsedMS: 12,
-						Request:   "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						Request:   "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 						Response:  "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
 						Status:    flows.CallStatusSuccess,
 						URL:       "https://tickets.com",
@@ -514,7 +521,7 @@ func TestEventMarshaling(t *testing.T) {
 					{
 						"created_on": "2018-10-18T14:20:30.000123456Z",
 						"elapsed_ms": 12,
-						"request": "GET /message?v=20170307&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+						"request": "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 						"response": "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
 						"status": "success",
 						"url": "https://tickets.com"

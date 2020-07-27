@@ -40,11 +40,12 @@ type baseTrigger struct {
 	connection  *flows.Connection
 	batch       bool
 	params      *types.XObject
+	history     *flows.SessionHistory
 	triggeredOn time.Time
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, batch bool, params *types.XObject) baseTrigger {
+func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, batch bool, history *flows.SessionHistory) baseTrigger {
 	return baseTrigger{
 		type_:       typeName,
 		environment: env,
@@ -52,7 +53,7 @@ func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowRefe
 		contact:     contact,
 		connection:  connection,
 		batch:       batch,
-		params:      params,
+		history:     history,
 		triggeredOn: dates.Now(),
 	}
 }
@@ -60,13 +61,14 @@ func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowRefe
 // Type returns the type of this trigger
 func (t *baseTrigger) Type() string { return t.type_ }
 
-func (t *baseTrigger) Environment() envs.Environment { return t.environment }
-func (t *baseTrigger) Flow() *assets.FlowReference   { return t.flow }
-func (t *baseTrigger) Contact() *flows.Contact       { return t.contact }
-func (t *baseTrigger) Connection() *flows.Connection { return t.connection }
-func (t *baseTrigger) Batch() bool                   { return t.batch }
-func (t *baseTrigger) Params() *types.XObject        { return t.params }
-func (t *baseTrigger) TriggeredOn() time.Time        { return t.triggeredOn }
+func (t *baseTrigger) Environment() envs.Environment  { return t.environment }
+func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
+func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
+func (t *baseTrigger) Connection() *flows.Connection  { return t.connection }
+func (t *baseTrigger) Batch() bool                    { return t.batch }
+func (t *baseTrigger) Params() *types.XObject         { return t.params }
+func (t *baseTrigger) History() *flows.SessionHistory { return t.history }
+func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 // Initialize initializes the session
 func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback) error {
@@ -102,21 +104,6 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallb
 	return nil
 }
 
-// Context returns the properties available in expressions
-//
-//   type:text -> the type of trigger that started this session
-//   params:any -> the parameters passed to the trigger
-//   keyword:any -> the keyword match if this is a keyword trigger
-//
-// @context trigger
-func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
-	return map[string]types.XValue{
-		"type":    types.NewXText(t.type_),
-		"params":  t.params,
-		"keyword": nil,
-	}
-}
-
 // EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
 // as far as the engine is concerned
 func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
@@ -134,6 +121,71 @@ func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
 }
 
 //------------------------------------------------------------------------------------------
+// Expressions context
+//------------------------------------------------------------------------------------------
+
+// Context is the schema of trigger objects in the context, across all types
+type Context struct {
+	type_   string
+	params  *types.XObject
+	keyword string
+	user    string
+	origin  string
+}
+
+func (c *Context) asMap() map[string]types.XValue {
+	return map[string]types.XValue{
+		"type":    types.NewXText(c.type_),
+		"params":  c.params,
+		"keyword": types.NewXText(c.keyword),
+		"user":    types.NewXText(c.user),
+		"origin":  types.NewXText(c.origin),
+	}
+}
+
+func (t *baseTrigger) context() *Context {
+	params := t.params
+	if params == nil {
+		params = types.XObjectEmpty
+	}
+
+	return &Context{type_: t.type_, params: params}
+}
+
+// Context returns the properties available in expressions
+//
+//   type:text -> the type of trigger that started this session
+//   params:any -> the parameters passed to the trigger
+//   keyword:text -> the keyword match if this is a keyword trigger
+//   user:text -> the user who started this session if this is a manual trigger
+//   origin:text -> the origin of this session if this is a manual trigger
+//
+// @context trigger
+func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
+	return t.context().asMap()
+}
+
+//------------------------------------------------------------------------------------------
+// Builder
+//------------------------------------------------------------------------------------------
+
+// Builder is a builder for triggers
+type Builder struct {
+	environment envs.Environment
+	flow        *assets.FlowReference
+	contact     *flows.Contact
+}
+
+// NewBuilder creates a new trigger builder
+func NewBuilder(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact) *Builder {
+	return &Builder{
+		environment: env,
+		flow:        flow,
+		contact:     contact,
+	}
+}
+
+//------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
@@ -145,6 +197,7 @@ type baseTriggerEnvelope struct {
 	Connection  *flows.Connection     `json:"connection,omitempty"`
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
+	History     *flows.SessionHistory `json:"history,omitempty"`
 	TriggeredOn time.Time             `json:"triggered_on" validate:"required"`
 }
 
@@ -169,6 +222,7 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 	t.flow = e.Flow
 	t.connection = e.Connection
 	t.batch = e.Batch
+	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
 
 	if e.Environment != nil {
@@ -196,6 +250,7 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	e.Flow = t.flow
 	e.Connection = t.connection
 	e.Batch = t.batch
+	e.History = t.history
 	e.TriggeredOn = t.triggeredOn
 
 	if t.environment != nil {
