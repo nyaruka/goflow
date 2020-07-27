@@ -1,3 +1,10 @@
+v0.97.0
+----------
+ * Re-add classifier_called events for backward compatibility
+ * Groups modifier should generate error if asked to operate on blocked or stopped contact
+ * Move modifiers package out of actions package
+ * ContactQL parser errors should contain more info
+
 v0.96.0
 ----------
  * Reorganize validation code so utils doesn't have to know about tags defined higher up
