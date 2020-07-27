@@ -322,7 +322,7 @@ func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Countr
 		}
 	}
 
-	errListener := NewErrorListener()
+	errListener := &errorListener{}
 	input := antlr.NewInputStream(text)
 	lexer := gen.NewContactQLLexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
@@ -332,8 +332,9 @@ func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Countr
 	tree := p.Parse()
 
 	// if we ran into errors parsing, bail
-	if errListener.HasErrors() {
-		return nil, errListener.Error()
+	err := errListener.Error()
+	if err != nil {
+		return nil, err
 	}
 
 	visitor := newVisitor(redaction, resolver)
@@ -349,23 +350,27 @@ func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Countr
 type errorListener struct {
 	*antlr.DefaultErrorListener
 
-	messages []string
-}
-
-func NewErrorListener() *errorListener {
-	return &errorListener{}
-}
-
-func (l *errorListener) HasErrors() bool {
-	return len(l.messages) > 0
+	errs []*QueryError
 }
 
 func (l *errorListener) Error() error {
-	return NewQueryErrorf(strings.Join(l.messages, "\n"))
+	if len(l.errs) > 0 {
+		return l.errs[0]
+	}
+	return nil
 }
 
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
-	l.messages = append(l.messages, msg)
+	var err *QueryError
+	switch typed := e.(type) {
+	case *antlr.InputMisMatchException:
+		token := typed.GetOffendingToken().GetText()
+		err = NewQueryError(msg, "query_unexpected_token", map[string]string{"token": token})
+	default:
+		err = NewQueryErrorf(msg)
+	}
+
+	l.errs = append(l.errs, err)
 }
 
 func tokenizeNameValue(value string) []string {
