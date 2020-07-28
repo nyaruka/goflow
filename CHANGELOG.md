@@ -1,3 +1,7 @@
+v0.98.0
+----------
+ * Rework error handling in contactql so more errors are caught during parsing and have associated codes
+
 v0.97.0
 ----------
  * Re-add classifier_called events for backward compatibility
