@@ -106,7 +106,7 @@ func TestParseQuery(t *testing.T) {
 		{`will and felix`, `name ~ "will" AND name ~ "felix"`, "", envs.RedactionPolicyNone}, // explicit AND
 		{`will or felix or matt`, `(name ~ "will" OR name ~ "felix") OR name ~ "matt"`, "", envs.RedactionPolicyNone},
 		{`name=will or Name ~ "felix"`, `name = "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone},
-		{`Name is will or Name has felix`, `name = "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone}, // comparator aliases
+		{`Name is will or Name has felix`, `name = "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone}, // operator aliases
 		{`will or Name ~ "felix"`, `name ~ "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone},
 
 		// boolean operator precedence is AND before OR, even when AND is implicit

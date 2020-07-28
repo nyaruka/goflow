@@ -107,14 +107,14 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 		fieldType := field.Type()
 
 		// special cases for set/unset
-		if (c.Comparator() == contactql.ComparatorEqual || c.Comparator() == contactql.ComparatorNotEqual) && c.Value() == "" {
+		if (c.Operator() == contactql.OpEqual || c.Operator() == contactql.OpNotEqual) && c.Value() == "" {
 			query = elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(
 				fieldQuery,
 				elastic.NewExistsQuery("fields."+string(field.Type())),
 			))
 
 			// if we are looking for unset, inverse our query
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				query = not(query)
 			}
 			return query, nil
@@ -122,9 +122,9 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 
 		if fieldType == assets.FieldTypeText {
 			value := strings.ToLower(c.Value())
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				query = elastic.NewTermQuery("fields.text", value)
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				query = elastic.NewBoolQuery().Must(
 					fieldQuery,
 					elastic.NewTermQuery("fields.text", value),
@@ -132,7 +132,7 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 				)
 				return not(elastic.NewNestedQuery("fields", query)), nil
 			} else {
-				return nil, queryError("unsupported text comparator: %s", c.Comparator())
+				return nil, queryError("unsupported text comparator: %s", c.Operator())
 			}
 
 			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
@@ -140,9 +140,9 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 		} else if fieldType == assets.FieldTypeNumber {
 			value := c.ValueAsNumber()
 
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				query = elastic.NewMatchQuery("fields.number", value)
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				return not(
 					elastic.NewNestedQuery("fields",
 						elastic.NewBoolQuery().Must(
@@ -151,16 +151,16 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 						),
 					),
 				), nil
-			} else if c.Comparator() == contactql.ComparatorGreaterThan {
+			} else if c.Operator() == contactql.OpGreaterThan {
 				query = elastic.NewRangeQuery("fields.number").Gt(value)
-			} else if c.Comparator() == contactql.ComparatorGreaterThanOrEqual {
+			} else if c.Operator() == contactql.OpGreaterThanOrEqual {
 				query = elastic.NewRangeQuery("fields.number").Gte(value)
-			} else if c.Comparator() == contactql.ComparatorLessThan {
+			} else if c.Operator() == contactql.OpLessThan {
 				query = elastic.NewRangeQuery("fields.number").Lt(value)
-			} else if c.Comparator() == contactql.ComparatorLessThanOrEqual {
+			} else if c.Operator() == contactql.OpLessThanOrEqual {
 				query = elastic.NewRangeQuery("fields.number").Lte(value)
 			} else {
-				return nil, queryError("unsupported number comparator: %s", c.Comparator())
+				return nil, queryError("unsupported number comparator: %s", c.Operator())
 			}
 
 			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
@@ -169,9 +169,9 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 			value := c.ValueAsDate()
 			start, end := dates.DayToUTCRange(value, value.Location())
 
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				query = elastic.NewRangeQuery("fields.datetime").Gte(start).Lt(end)
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				return not(
 					elastic.NewNestedQuery("fields",
 						elastic.NewBoolQuery().Must(
@@ -180,16 +180,16 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 						),
 					),
 				), nil
-			} else if c.Comparator() == contactql.ComparatorGreaterThan {
+			} else if c.Operator() == contactql.OpGreaterThan {
 				query = elastic.NewRangeQuery("fields.datetime").Gte(end)
-			} else if c.Comparator() == contactql.ComparatorGreaterThanOrEqual {
+			} else if c.Operator() == contactql.OpGreaterThanOrEqual {
 				query = elastic.NewRangeQuery("fields.datetime").Gte(start)
-			} else if c.Comparator() == contactql.ComparatorLessThan {
+			} else if c.Operator() == contactql.OpLessThan {
 				query = elastic.NewRangeQuery("fields.datetime").Lt(start)
-			} else if c.Comparator() == contactql.ComparatorLessThanOrEqual {
+			} else if c.Operator() == contactql.OpLessThanOrEqual {
 				query = elastic.NewRangeQuery("fields.datetime").Lt(end)
 			} else {
-				return nil, queryError("unsupported datetime comparator: %s", c.Comparator())
+				return nil, queryError("unsupported datetime comparator: %s", c.Operator())
 			}
 
 			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
@@ -198,9 +198,9 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 			value := strings.ToLower(c.Value())
 			var name = fmt.Sprintf("fields.%s_keyword", string(fieldType))
 
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				query = elastic.NewTermQuery(name, value)
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				return not(
 					elastic.NewNestedQuery("fields",
 						elastic.NewBoolQuery().Must(
@@ -210,7 +210,7 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 					),
 				), nil
 			} else {
-				return nil, queryError("unsupported location comparator: %s", c.Comparator())
+				return nil, queryError("unsupported location comparator: %s", c.Operator())
 			}
 
 			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
@@ -221,7 +221,7 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 		value := strings.ToLower(c.Value())
 
 		// special case for set/unset for name and language
-		if (c.Comparator() == contactql.ComparatorEqual || c.Comparator() == contactql.ComparatorNotEqual) && value == "" &&
+		if (c.Operator() == contactql.OpEqual || c.Operator() == contactql.OpNotEqual) && value == "" &&
 			(key == contactql.AttributeName || key == contactql.AttributeLanguage) {
 
 			query = elastic.NewBoolQuery().Must(
@@ -229,7 +229,7 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 				not(elastic.NewTermQuery(fmt.Sprintf("%s.keyword", key), "")),
 			)
 
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				query = not(query)
 			}
 
@@ -237,74 +237,74 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 		}
 
 		if key == contactql.AttributeName {
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				return elastic.NewTermQuery("name.keyword", c.Value()), nil
-			} else if c.Comparator() == contactql.ComparatorContains {
+			} else if c.Operator() == contactql.OpContains {
 				return elastic.NewMatchQuery("name", value), nil
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				return not(elastic.NewTermQuery("name.keyword", c.Value())), nil
 			} else {
-				return nil, queryError("unsupported name query comparator: %s", c.Comparator())
+				return nil, queryError("unsupported name query comparator: %s", c.Operator())
 			}
 		} else if key == contactql.AttributeUUID {
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				return elastic.NewTermQuery("uuid", value), nil
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				return not(elastic.NewTermQuery("uuid", value)), nil
 			}
-			return nil, queryError("unsupported comparator for uuid: %s", c.Comparator())
+			return nil, queryError("unsupported comparator for uuid: %s", c.Operator())
 		} else if key == contactql.AttributeID {
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				return elastic.NewIdsQuery().Ids(value), nil
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				return not(elastic.NewIdsQuery().Ids(value)), nil
 			}
-			return nil, queryError("unsupported comparator for id: %s", c.Comparator())
+			return nil, queryError("unsupported comparator for id: %s", c.Operator())
 		} else if key == contactql.AttributeLanguage {
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				return elastic.NewTermQuery("language", value), nil
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				return not(elastic.NewTermQuery("language", value)), nil
 			} else {
-				return nil, queryError("unsupported language comparator: %s", c.Comparator())
+				return nil, queryError("unsupported language comparator: %s", c.Operator())
 			}
 		} else if key == contactql.AttributeCreatedOn {
 			value := c.ValueAsDate()
 			start, end := dates.DayToUTCRange(value, value.Location())
 
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				return elastic.NewRangeQuery("created_on").Gte(start).Lt(end), nil
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				return not(elastic.NewRangeQuery("created_on").Gte(start).Lt(end)), nil
-			} else if c.Comparator() == contactql.ComparatorGreaterThan {
+			} else if c.Operator() == contactql.OpGreaterThan {
 				return elastic.NewRangeQuery("created_on").Gte(end), nil
-			} else if c.Comparator() == contactql.ComparatorGreaterThanOrEqual {
+			} else if c.Operator() == contactql.OpGreaterThanOrEqual {
 				return elastic.NewRangeQuery("created_on").Gte(start), nil
-			} else if c.Comparator() == contactql.ComparatorLessThan {
+			} else if c.Operator() == contactql.OpLessThan {
 				return elastic.NewRangeQuery("created_on").Lt(start), nil
-			} else if c.Comparator() == contactql.ComparatorLessThanOrEqual {
+			} else if c.Operator() == contactql.OpLessThanOrEqual {
 				return elastic.NewRangeQuery("created_on").Lt(end), nil
 			} else {
-				return nil, queryError("unsupported created_on comparator: %s", c.Comparator())
+				return nil, queryError("unsupported created_on comparator: %s", c.Operator())
 			}
 		} else if key == contactql.AttributeURN {
 			value := strings.ToLower(c.Value())
 
 			// special case for set/unset
-			if (c.Comparator() == contactql.ComparatorEqual || c.Comparator() == contactql.ComparatorNotEqual) && value == "" {
+			if (c.Operator() == contactql.OpEqual || c.Operator() == contactql.OpNotEqual) && value == "" {
 				query = elastic.NewNestedQuery("urns", elastic.NewExistsQuery("urns.path"))
-				if c.Comparator() == contactql.ComparatorEqual {
+				if c.Operator() == contactql.OpEqual {
 					query = not(query)
 				}
 				return query, nil
 			}
 
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				return elastic.NewNestedQuery("urns", elastic.NewTermQuery("urns.path.keyword", value)), nil
-			} else if c.Comparator() == contactql.ComparatorContains {
+			} else if c.Operator() == contactql.OpContains {
 				return elastic.NewNestedQuery("urns", elastic.NewMatchPhraseQuery("urns.path", value)), nil
 			} else {
-				return nil, queryError("unsupported urn comparator: %s", c.Comparator())
+				return nil, queryError("unsupported urn comparator: %s", c.Operator())
 			}
 
 		} else if key == contactql.AttributeGroup {
@@ -317,12 +317,12 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 				return nil, queryError("no such group with name '%s", c.Value())
 			}
 
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				return elastic.NewTermQuery("groups", group.UUID()), nil
-			} else if c.Comparator() == contactql.ComparatorNotEqual {
+			} else if c.Operator() == contactql.OpNotEqual {
 				return not(elastic.NewTermQuery("groups", group.UUID())), nil
 			} else {
-				return nil, queryError("unsupported group comparator: %s", c.Comparator())
+				return nil, queryError("unsupported group comparator: %s", c.Operator())
 			}
 
 		} else {
@@ -332,29 +332,29 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 		value := strings.ToLower(c.Value())
 
 		// special case for set/unset
-		if (c.Comparator() == contactql.ComparatorEqual || c.Comparator() == contactql.ComparatorNotEqual) && value == "" {
+		if (c.Operator() == contactql.OpEqual || c.Operator() == contactql.OpNotEqual) && value == "" {
 			query = elastic.NewNestedQuery("urns", elastic.NewBoolQuery().Must(
 				elastic.NewTermQuery("urns.scheme", key),
 				elastic.NewExistsQuery("urns.path"),
 			))
-			if c.Comparator() == contactql.ComparatorEqual {
+			if c.Operator() == contactql.OpEqual {
 				query = not(query)
 			}
 			return query, nil
 		}
 
-		if c.Comparator() == contactql.ComparatorEqual {
+		if c.Operator() == contactql.OpEqual {
 			return elastic.NewNestedQuery("urns", elastic.NewBoolQuery().Must(
 				elastic.NewTermQuery("urns.path.keyword", value),
 				elastic.NewTermQuery("urns.scheme", key)),
 			), nil
-		} else if c.Comparator() == contactql.ComparatorContains {
+		} else if c.Operator() == contactql.OpContains {
 			return elastic.NewNestedQuery("urns", elastic.NewBoolQuery().Must(
 				elastic.NewMatchPhraseQuery("urns.path", value),
 				elastic.NewTermQuery("urns.scheme", key)),
 			), nil
 		} else {
-			return nil, queryError("unsupported scheme comparator: %s", c.Comparator())
+			return nil, queryError("unsupported scheme comparator: %s", c.Operator())
 		}
 	}
 

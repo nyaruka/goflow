@@ -22,16 +22,16 @@ func EvaluateQuery(env envs.Environment, query *ContactQuery, queryable Queryabl
 	return query.Evaluate(env, queryable)
 }
 
-func textComparison(objectVal string, comparator Comparator, queryVal string, isName bool) bool {
+func textComparison(objectVal string, op Operator, queryVal string, isName bool) bool {
 	objectVal = strings.TrimSpace(strings.ToLower(objectVal))
 	queryVal = strings.TrimSpace(strings.ToLower(queryVal))
 
-	switch comparator {
-	case ComparatorEqual:
+	switch op {
+	case OpEqual:
 		return objectVal == queryVal
-	case ComparatorNotEqual:
+	case OpNotEqual:
 		return objectVal != queryVal
-	case ComparatorContains:
+	case OpContains:
 		// name is special case
 		if isName {
 			return tokenizedPrefixMatch(objectVal, queryVal, 8)
@@ -39,43 +39,43 @@ func textComparison(objectVal string, comparator Comparator, queryVal string, is
 		return strings.Contains(objectVal, queryVal)
 	}
 
-	panic(fmt.Sprintf("can't query text fields with %s", comparator))
+	panic(fmt.Sprintf("can't query text fields with %s", op))
 }
 
-func numberComparison(objectVal decimal.Decimal, comparator Comparator, queryVal decimal.Decimal) bool {
-	switch comparator {
-	case ComparatorEqual:
+func numberComparison(objectVal decimal.Decimal, op Operator, queryVal decimal.Decimal) bool {
+	switch op {
+	case OpEqual:
 		return objectVal.Equal(queryVal)
-	case ComparatorGreaterThan:
+	case OpGreaterThan:
 		return objectVal.GreaterThan(queryVal)
-	case ComparatorGreaterThanOrEqual:
+	case OpGreaterThanOrEqual:
 		return objectVal.GreaterThanOrEqual(queryVal)
-	case ComparatorLessThan:
+	case OpLessThan:
 		return objectVal.LessThan(queryVal)
-	case ComparatorLessThanOrEqual:
+	case OpLessThanOrEqual:
 		return objectVal.LessThanOrEqual(queryVal)
 	}
 
-	panic(fmt.Sprintf("can't query number fields with %s", comparator))
+	panic(fmt.Sprintf("can't query number fields with %s", op))
 }
 
-func dateComparison(objectVal time.Time, comparator Comparator, queryVal time.Time) bool {
+func dateComparison(objectVal time.Time, op Operator, queryVal time.Time) bool {
 	utcDayStart, utcDayEnd := dates.DayToUTCRange(queryVal, queryVal.Location())
 
-	switch comparator {
-	case ComparatorEqual:
+	switch op {
+	case OpEqual:
 		return (objectVal.Equal(utcDayStart) || objectVal.After(utcDayStart)) && objectVal.Before(utcDayEnd)
-	case ComparatorGreaterThan:
+	case OpGreaterThan:
 		return objectVal.After(utcDayEnd) || objectVal.Equal(utcDayEnd)
-	case ComparatorGreaterThanOrEqual:
+	case OpGreaterThanOrEqual:
 		return objectVal.After(utcDayStart) || objectVal.Equal(utcDayStart)
-	case ComparatorLessThan:
+	case OpLessThan:
 		return objectVal.Before(utcDayStart)
-	case ComparatorLessThanOrEqual:
+	case OpLessThanOrEqual:
 		return objectVal.Before(utcDayEnd)
 	}
 
-	panic(fmt.Sprintf("can't query date fields with %s", comparator))
+	panic(fmt.Sprintf("can't query date fields with %s", op))
 }
 
 // performs a prefix match which should be equivalent to an edge_ngram filter in ES

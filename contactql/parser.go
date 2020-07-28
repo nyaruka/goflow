@@ -16,18 +16,18 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// Comparator is a way of comparing two values in a condition
-type Comparator string
+// Operator is a comparison operation between two values in a condition
+type Operator string
 
-// supported comparators
+// supported operators
 const (
-	ComparatorEqual              Comparator = "="
-	ComparatorNotEqual           Comparator = "!="
-	ComparatorContains           Comparator = "~"
-	ComparatorGreaterThan        Comparator = ">"
-	ComparatorLessThan           Comparator = "<"
-	ComparatorGreaterThanOrEqual Comparator = ">="
-	ComparatorLessThanOrEqual    Comparator = "<="
+	OpEqual              Operator = "="
+	OpNotEqual           Operator = "!="
+	OpContains           Operator = "~"
+	OpGreaterThan        Operator = ">"
+	OpLessThan           Operator = "<"
+	OpGreaterThanOrEqual Operator = ">="
+	OpLessThanOrEqual    Operator = "<="
 )
 
 // BoolOperator is a boolean operator (and or or)
@@ -73,7 +73,7 @@ type QueryNode interface {
 type Condition struct {
 	propType      PropertyType
 	propKey       string
-	comparator    Comparator
+	operator      Operator
 	value         string
 	valueAsNumber decimal.Decimal
 	valueAsDate   time.Time
@@ -81,14 +81,14 @@ type Condition struct {
 	reference     assets.Reference
 }
 
-func newCondition(propType PropertyType, propKey string, comparator Comparator, value string, valueType assets.FieldType, reference assets.Reference) *Condition {
+func newCondition(propType PropertyType, propKey string, operator Operator, value string, valueType assets.FieldType, reference assets.Reference) *Condition {
 	return &Condition{
-		propType:   propType,
-		propKey:    propKey,
-		comparator: comparator,
-		value:      value,
-		valueType:  valueType,
-		reference:  reference,
+		propType:  propType,
+		propKey:   propKey,
+		operator:  operator,
+		value:     value,
+		valueType: valueType,
+		reference: reference,
 	}
 }
 
@@ -98,8 +98,8 @@ func (c *Condition) PropertyKey() string { return c.propKey }
 // PropertyType returns the type (attribute, scheme, field)
 func (c *Condition) PropertyType() PropertyType { return c.propType }
 
-// Comparator returns the type of comparison being made
-func (c *Condition) Comparator() Comparator { return c.comparator }
+// Operator returns the type of comparison being made
+func (c *Condition) Operator() Operator { return c.operator }
 
 // Value returns the value being compared against
 func (c *Condition) Value() string { return c.value }
@@ -112,8 +112,8 @@ func (c *Condition) ValueAsDate() time.Time { return c.valueAsDate }
 
 // Validate checks that this condition is valid (and thus can be evaluated)
 func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
-	switch c.comparator {
-	case ComparatorContains:
+	switch c.operator {
+	case OpContains:
 		if c.propKey == AttributeName {
 			if len(tokenizeNameValue(c.value)) == 0 {
 				return NewQueryError(ErrInvalidPartialName, "contains operator on name requires token of minimum length %d", minNameTokenContainsLength).withExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
@@ -127,17 +127,17 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 			return NewQueryError(ErrUnsupportedContains, "contains conditions can only be used with name or URN values").withExtra("property", c.propKey)
 		}
 
-	case ComparatorGreaterThan, ComparatorGreaterThanOrEqual, ComparatorLessThan, ComparatorLessThanOrEqual:
+	case OpGreaterThan, OpGreaterThanOrEqual, OpLessThan, OpLessThanOrEqual:
 		if c.valueType != assets.FieldTypeNumber && c.valueType != assets.FieldTypeDatetime {
-			return NewQueryError(ErrUnsupportedComparison, "comparisons with %s can only be used with date and number fields", c.comparator).withExtra("property", c.propKey).withExtra("operator", string(c.comparator))
+			return NewQueryError(ErrUnsupportedComparison, "comparisons with %s can only be used with date and number fields", c.operator).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
 		}
 	}
 
 	// if existence check, disallow certain attributes
-	if (c.comparator == ComparatorEqual || c.comparator == ComparatorNotEqual) && c.value == "" {
+	if (c.operator == OpEqual || c.operator == OpNotEqual) && c.value == "" {
 		switch c.propKey {
 		case AttributeUUID, AttributeID, AttributeCreatedOn, AttributeGroup:
-			return NewQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).withExtra("property", c.propKey).withExtra("operator", string(c.comparator))
+			return NewQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
 		}
 	} else {
 		// check values are valid for the attribute type
@@ -183,9 +183,9 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 
 	// is this an existence check?
 	if c.value == "" {
-		if c.comparator == ComparatorEqual {
+		if c.operator == OpEqual {
 			return len(vals) == 0, nil // x = "" is true if x doesn't exist
-		} else if c.comparator == ComparatorNotEqual {
+		} else if c.operator == OpNotEqual {
 			return len(vals) > 0, nil // x != "" is false if x doesn't exist (i.e. true if x does exist)
 		}
 	}
@@ -207,7 +207,7 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 	}
 
 	// foo != x is only true if all values of foo are not x
-	if c.comparator == ComparatorNotEqual {
+	if c.operator == OpNotEqual {
 		return allTrue, nil
 	}
 
@@ -220,13 +220,13 @@ func (c *Condition) evaluateValue(env envs.Environment, val interface{}) bool {
 	case string:
 		isName := c.propKey == AttributeName // needs to be handled as special case
 
-		return textComparison(val.(string), c.comparator, c.value, isName)
+		return textComparison(val.(string), c.operator, c.value, isName)
 
 	case decimal.Decimal:
-		return numberComparison(val.(decimal.Decimal), c.comparator, c.valueAsNumber)
+		return numberComparison(val.(decimal.Decimal), c.operator, c.valueAsNumber)
 
 	case time.Time:
-		return dateComparison(val.(time.Time), c.comparator, c.valueAsDate)
+		return dateComparison(val.(time.Time), c.operator, c.valueAsDate)
 	}
 
 	panic(fmt.Sprintf("unsupported query data type: %T", val))
@@ -240,7 +240,7 @@ func (c *Condition) String() string {
 		value = strconv.Quote(value)
 	}
 
-	return fmt.Sprintf(`%s %s %s`, c.propKey, c.comparator, value)
+	return fmt.Sprintf(`%s %s %s`, c.propKey, c.operator, value)
 }
 
 // BoolCombination is a AND or OR combination of multiple conditions

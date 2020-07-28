@@ -19,9 +19,9 @@ var implicitIsPhoneNumberRegex = regexp.MustCompile(`^\+?[\-\d]{4,}$`)
 // used to strip formatting from phone number values
 var cleanPhoneNumberRegex = regexp.MustCompile(`[^+\d]+`)
 
-var comparatorAliases = map[string]Comparator{
-	"has": ComparatorContains,
-	"is":  ComparatorEqual,
+var operatorAliases = map[string]Operator{
+	"has": OpContains,
+	"is":  OpEqual,
 }
 
 // Fixed attributes that can be searched
@@ -84,26 +84,26 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 	if v.env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		num, err := strconv.Atoi(value)
 		if err == nil {
-			return newCondition(PropertyTypeAttribute, AttributeID, ComparatorEqual, strconv.Itoa(num), attributes[AttributeID], nil)
+			return newCondition(PropertyTypeAttribute, AttributeID, OpEqual, strconv.Itoa(num), attributes[AttributeID], nil)
 		}
 	} else if asURN != urns.NilURN {
 		scheme, path, _, _ := asURN.ToParts()
 
-		return newCondition(PropertyTypeScheme, scheme, ComparatorEqual, path, assets.FieldTypeText, nil)
+		return newCondition(PropertyTypeScheme, scheme, OpEqual, path, assets.FieldTypeText, nil)
 
 	} else if implicitIsPhoneNumberRegex.MatchString(value) {
 		value = cleanPhoneNumberRegex.ReplaceAllLiteralString(value, "")
 
-		return newCondition(PropertyTypeScheme, urns.TelScheme, ComparatorContains, value, assets.FieldTypeText, nil)
+		return newCondition(PropertyTypeScheme, urns.TelScheme, OpContains, value, assets.FieldTypeText, nil)
 	}
 
 	// convert to contains condition only if we have the right tokens, otherwise make equals check
-	comparator := ComparatorContains
+	operator := OpContains
 	if len(tokenizeNameValue(value)) == 0 {
-		comparator = ComparatorEqual
+		operator = OpEqual
 	}
 
-	condition := newCondition(PropertyTypeAttribute, AttributeName, comparator, value, attributes[AttributeName], nil)
+	condition := newCondition(PropertyTypeAttribute, AttributeName, operator, value, attributes[AttributeName], nil)
 
 	if err := condition.Validate(v.env, v.resolver); err != nil {
 		v.addError(err)
@@ -115,12 +115,12 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 // expression : TEXT COMPARATOR literal
 func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 	propKey := strings.ToLower(ctx.TEXT().GetText())
-	comparatorText := strings.ToLower(ctx.COMPARATOR().GetText())
+	operatorText := strings.ToLower(ctx.COMPARATOR().GetText())
 	value := v.Visit(ctx.Literal()).(string)
 
-	comparator, isAlias := comparatorAliases[comparatorText]
+	operator, isAlias := operatorAliases[operatorText]
 	if !isAlias {
-		comparator = Comparator(comparatorText)
+		operator = Operator(operatorText)
 	}
 
 	var propType PropertyType
@@ -154,7 +154,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		}
 	}
 
-	condition := newCondition(propType, propKey, comparator, value, valueType, reference)
+	condition := newCondition(propType, propKey, operator, value, valueType, reference)
 
 	if err := condition.Validate(v.env, v.resolver); err != nil {
 		v.addError(err)
