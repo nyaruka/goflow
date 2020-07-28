@@ -54,15 +54,15 @@ type Resolver interface {
 type visitor struct {
 	gen.BaseContactQLVisitor
 
-	redaction envs.RedactionPolicy
-	resolver  Resolver
+	env      envs.Environment
+	resolver Resolver
 
 	errors []error
 }
 
 // creates a new ContactQL visitor
-func newVisitor(redaction envs.RedactionPolicy, resolver Resolver) *visitor {
-	return &visitor{redaction: redaction, resolver: resolver}
+func newVisitor(env envs.Environment, resolver Resolver) *visitor {
+	return &visitor{env: env, resolver: resolver}
 }
 
 // Visit the top level parse tree
@@ -81,7 +81,7 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 
 	asURN, _ := urns.Parse(value)
 
-	if v.redaction == envs.RedactionPolicyURNs {
+	if v.env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		num, err := strconv.Atoi(value)
 		if err == nil {
 			return newCondition(PropertyTypeAttribute, AttributeID, ComparatorEqual, strconv.Itoa(num), attributes[AttributeID], nil)
@@ -105,7 +105,7 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 
 	condition := newCondition(PropertyTypeAttribute, AttributeName, comparator, value, attributes[AttributeName], nil)
 
-	if err := condition.Validate(v.resolver); err != nil {
+	if err := condition.Validate(v.env, v.resolver); err != nil {
 		v.addError(err)
 	}
 
@@ -131,8 +131,8 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 	if isAttribute {
 		propType = PropertyTypeAttribute
 
-		if propKey == AttributeURN && v.redaction == envs.RedactionPolicyURNs && value != "" {
-			v.addError(NewQueryErrorf("cannot query on redacted URNs"))
+		if propKey == AttributeURN && v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
+			v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
 		}
 
 	} else if urns.IsValidScheme(propKey) {
@@ -140,8 +140,8 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		propType = PropertyTypeScheme
 		valueType = assets.FieldTypeText
 
-		if v.redaction == envs.RedactionPolicyURNs && value != "" {
-			v.addError(NewQueryErrorf("cannot query on redacted URNs"))
+		if v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
+			v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
 		}
 	} else {
 		field := v.resolver.ResolveField(propKey)
@@ -150,13 +150,13 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 			valueType = field.Type()
 			reference = assets.NewFieldReference(field.Key(), field.Name())
 		} else {
-			v.addError(NewQueryErrorf("can't resolve '%s' to attribute, scheme or field", propKey))
+			v.addError(NewQueryError(ErrUnknownProperty, "can't resolve '%s' to attribute, scheme or field", propKey).withExtra("property", propKey))
 		}
 	}
 
 	condition := newCondition(propType, propKey, comparator, value, valueType, reference)
 
-	if err := condition.Validate(v.resolver); err != nil {
+	if err := condition.Validate(v.env, v.resolver); err != nil {
 		v.addError(err)
 	}
 

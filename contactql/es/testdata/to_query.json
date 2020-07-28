@@ -372,7 +372,7 @@
     {
         "description": "invalid datetime operand",
         "query": "dob=10",
-        "error": "string '10' couldn't be parsed as a date"
+        "error": "can't convert '10' to a date"
     },
     {
         "description": "invalid number >",
@@ -1336,7 +1336,7 @@
     {
         "description": "invalid created_on operand",
         "query": "created_on<dog",
-        "error": "string 'dog' couldn't be parsed as a date"
+        "error": "can't convert 'dog' to a date"
     },
     {
         "description": "valid tel is set",

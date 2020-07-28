@@ -71,12 +71,14 @@ type QueryNode interface {
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
 type Condition struct {
-	propType   PropertyType
-	propKey    string
-	comparator Comparator
-	value      string
-	valueType  assets.FieldType
-	reference  assets.Reference
+	propType      PropertyType
+	propKey       string
+	comparator    Comparator
+	value         string
+	valueAsNumber decimal.Decimal
+	valueAsDate   time.Time
+	valueType     assets.FieldType
+	reference     assets.Reference
 }
 
 func newCondition(propType PropertyType, propKey string, comparator Comparator, value string, valueType assets.FieldType, reference assets.Reference) *Condition {
@@ -102,50 +104,70 @@ func (c *Condition) Comparator() Comparator { return c.comparator }
 // Value returns the value being compared against
 func (c *Condition) Value() string { return c.value }
 
+// ValueAsNumber returns the value as a number if value type is number
+func (c *Condition) ValueAsNumber() decimal.Decimal { return c.valueAsNumber }
+
+// ValueAsDate returns the value as a date if condition is datetime
+func (c *Condition) ValueAsDate() time.Time { return c.valueAsDate }
+
 // Validate checks that this condition is valid (and thus can be evaluated)
-func (c *Condition) Validate(resolver Resolver) error {
+func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 	switch c.comparator {
 	case ComparatorContains:
 		if c.propKey == AttributeName {
 			if len(tokenizeNameValue(c.value)) == 0 {
-				return NewQueryErrorf("value must contain a word of at least %d characters long for a contains condition on name", minNameTokenContainsLength)
+				return NewQueryError(ErrInvalidPartialName, "contains operator on name requires token of minimum length %d", minNameTokenContainsLength).withExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
 			}
 		} else if c.propKey == AttributeURN || c.propType == PropertyTypeScheme {
 			if len(c.value) < minURNContainsLength {
-				return NewQueryErrorf("value must be least %d characters long for a contains condition on a URN", minURNContainsLength)
+				return NewQueryError(ErrInvalidPartialURN, "contains operator on URN requires value of minimum length %d", minURNContainsLength).withExtra("min_value_length", strconv.Itoa(minURNContainsLength))
 			}
 		} else {
 			// ~ can only be used with the name/urn attributes or actual URNs
-			return NewQueryErrorf("contains conditions can only be used with name or URN values")
+			return NewQueryError(ErrUnsupportedContains, "contains conditions can only be used with name or URN values").withExtra("property", c.propKey)
 		}
 
 	case ComparatorGreaterThan, ComparatorGreaterThanOrEqual, ComparatorLessThan, ComparatorLessThanOrEqual:
 		if c.valueType != assets.FieldTypeNumber && c.valueType != assets.FieldTypeDatetime {
-			return NewQueryErrorf("comparisons with %s can only be used with date and number fields", c.comparator)
+			return NewQueryError(ErrUnsupportedComparison, "comparisons with %s can only be used with date and number fields", c.comparator).withExtra("property", c.propKey).withExtra("operator", string(c.comparator))
 		}
 	}
 
 	// if existence check, disallow certain attributes
-	if c.value == "" {
+	if (c.comparator == ComparatorEqual || c.comparator == ComparatorNotEqual) && c.value == "" {
 		switch c.propKey {
 		case AttributeUUID, AttributeID, AttributeCreatedOn, AttributeGroup:
-			return NewQueryErrorf("can't check whether '%s' is set or not set", c.propKey)
+			return NewQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).withExtra("property", c.propKey).withExtra("operator", string(c.comparator))
 		}
 	} else {
 		// check values are valid for the attribute type
-		switch c.propKey {
-		case AttributeGroup:
+		if c.valueType == assets.FieldTypeNumber {
+			asDecimal, err := decimal.NewFromString(c.value)
+			if err != nil {
+				return NewQueryError(ErrInvalidNumber, "can't convert '%s' to a number", c.value).withExtra("value", c.value)
+			}
+			c.valueAsNumber = asDecimal
+
+		} else if c.valueType == assets.FieldTypeDatetime {
+			asDate, err := envs.DateTimeFromString(env, c.value, false)
+			if err != nil {
+				return NewQueryError(ErrInvalidDate, "can't convert '%s' to a date", c.value).withExtra("value", c.value)
+			}
+			c.valueAsDate = asDate
+
+		} else if c.propKey == AttributeGroup {
 			group := resolver.ResolveGroup(c.value)
 			if group == nil {
-				return NewQueryErrorf("'%s' is not a valid group name", c.value)
+				return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
 			}
 			c.value = group.Name()
 			c.reference = assets.NewGroupReference(group.UUID(), group.Name())
-		case AttributeLanguage:
+
+		} else if c.propKey == AttributeLanguage {
 			if c.value != "" {
 				_, err := envs.ParseLanguage(c.value)
 				if err != nil {
-					return NewQueryErrorf("'%s' is not a valid language code", c.value)
+					return NewQueryError(ErrInvalidLanguage, "'%s' is not a valid language code", c.value).withExtra("value", c.value)
 				}
 			}
 		}
@@ -177,11 +199,7 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 	anyTrue := false
 	allTrue := true
 	for _, val := range vals {
-		res, err := c.evaluateValue(env, val)
-		if err != nil {
-			return false, err
-		}
-		if res {
+		if c.evaluateValue(env, val) {
 			anyTrue = true
 		} else {
 			allTrue = false
@@ -197,7 +215,7 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 	return anyTrue, nil
 }
 
-func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, error) {
+func (c *Condition) evaluateValue(env envs.Environment, val interface{}) bool {
 	switch val.(type) {
 	case string:
 		isName := c.propKey == AttributeName // needs to be handled as special case
@@ -205,18 +223,10 @@ func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, 
 		return textComparison(val.(string), c.comparator, c.value, isName)
 
 	case decimal.Decimal:
-		asDecimal, err := decimal.NewFromString(c.value)
-		if err != nil {
-			return false, NewQueryErrorf("can't convert '%s' to a number", c.value)
-		}
-		return numberComparison(val.(decimal.Decimal), c.comparator, asDecimal)
+		return numberComparison(val.(decimal.Decimal), c.comparator, c.valueAsNumber)
 
 	case time.Time:
-		asDate, err := envs.DateTimeFromString(env, c.value, false)
-		if err != nil {
-			return false, NewQueryErrorf("can't convert '%s' to a date", c.value)
-		}
-		return dateComparison(val.(time.Time), c.comparator, asDate)
+		return dateComparison(val.(time.Time), c.comparator, c.valueAsDate)
 	}
 
 	panic(fmt.Sprintf("unsupported query data type: %T", val))
@@ -311,13 +321,13 @@ func (q *ContactQuery) String() string {
 }
 
 // ParseQuery parses a ContactQL query from the given input
-func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Country, resolver Resolver) (*ContactQuery, error) {
+func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQuery, error) {
 	// preprocess text before parsing
 	text = strings.TrimSpace(text)
 
 	// if query is a valid number, rewrite as a tel = query
-	if redaction != envs.RedactionPolicyURNs {
-		if number := utils.ParsePhoneNumber(text, string(country)); number != "" {
+	if env.RedactionPolicy() != envs.RedactionPolicyURNs {
+		if number := utils.ParsePhoneNumber(text, string(env.DefaultCountry())); number != "" {
 			text = fmt.Sprintf(`tel = %s`, number)
 		}
 	}
@@ -337,7 +347,7 @@ func ParseQuery(text string, redaction envs.RedactionPolicy, country envs.Countr
 		return nil, err
 	}
 
-	visitor := newVisitor(redaction, resolver)
+	visitor := newVisitor(env, resolver)
 	rootNode := visitor.Visit(tree).(QueryNode)
 
 	if len(visitor.errors) > 0 {
@@ -365,9 +375,9 @@ func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol
 	switch typed := e.(type) {
 	case *antlr.InputMisMatchException:
 		token := typed.GetOffendingToken().GetText()
-		err = NewQueryError(msg, "query_unexpected_token", map[string]string{"token": token})
+		err = NewQueryError(ErrUnexpectedToken, msg).withExtra("token", token)
 	default:
-		err = NewQueryErrorf(msg)
+		err = NewQueryError("", msg)
 	}
 
 	l.errs = append(l.errs, err)

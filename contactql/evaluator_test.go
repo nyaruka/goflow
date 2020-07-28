@@ -143,46 +143,11 @@ func TestEvaluateQuery(t *testing.T) {
 	}, map[string]assets.Group{})
 
 	for _, test := range tests {
-		parsed, err := contactql.ParseQuery(test.query, envs.RedactionPolicyNone, "", resolver)
+		parsed, err := contactql.ParseQuery(env, test.query, resolver)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult, err := contactql.EvaluateQuery(env, parsed, testObj)
 		assert.NoError(t, err, "unexpected error evaluating '%s'", test.query)
 		assert.Equal(t, test.result, actualResult, "unexpected result for '%s'", test.query)
-	}
-}
-
-func TestEvaluationErrors(t *testing.T) {
-	env := envs.NewBuilder().Build()
-	var testObj = TestQueryable{
-		"name":   []interface{}{"Bob Smithwick"},
-		"gender": []interface{}{"male"},
-		"age":    []interface{}{decimal.NewFromFloat(36)},
-		"dob":    []interface{}{time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC)},
-	}
-
-	tests := []struct {
-		query  string
-		errMsg string
-	}{
-		{`age = 3X`, "can't convert '3X' to a number"},
-		{`dob = 32`, "can't convert '32' to a date"},
-		{`dob = 32 AND name = Bob`, "can't convert '32' to a date"},
-		{`name = Bob OR dob = 32`, "can't convert '32' to a date"},
-	}
-
-	resolver := contactql.NewMockResolver(map[string]assets.Field{
-		"age":    types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
-		"dob":    types.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
-		"gender": types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
-	}, map[string]assets.Group{})
-
-	for _, test := range tests {
-		parsed, err := contactql.ParseQuery(test.query, envs.RedactionPolicyNone, "", resolver)
-		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
-
-		actualResult, err := contactql.EvaluateQuery(env, parsed, testObj)
-		assert.EqualError(t, err, test.errMsg, "unexpected error evaluating '%s'", test.query)
-		assert.False(t, actualResult, "unexpected non-false result for '%s'", test.query)
 	}
 }

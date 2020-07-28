@@ -4,7 +4,24 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/pkg/errors"
+)
+
+// error codes with values included in extra
+const (
+	ErrUnexpectedToken       = "unexpected_token"       // `token` the unexpected token
+	ErrInvalidNumber         = "invalid_number"         // `value` the value we tried to parse as a number
+	ErrInvalidDate           = "invalid_date"           // `value` the value we tried to parse as a date
+	ErrInvalidLanguage       = "invalid_language"       // `value` the value we tried to parse as a language code
+	ErrInvalidGroup          = "invalid_group"          // `value` the value we tried to parse as a group name
+	ErrInvalidPartialName    = "invalid_partial_name"   // `min_token_length` the minimum length of token required for name contains condition
+	ErrInvalidPartialURN     = "invalid_partial_urn"    // `min_value_length` the minimum length of value required for URN contains condition
+	ErrUnsupportedContains   = "unsupported_contains"   // `property` the property key
+	ErrUnsupportedComparison = "unsupported_comparison" // `property` the property key, `operator` one of =>, <, >=, <=
+	ErrUnsupportedSetCheck   = "unsupported_setcheck"   // `property` the property key, `operator` one of =, !=
+	ErrUnknownProperty       = "unknown_property"       // `property` the property key
+	ErrRedactedURNs          = "redacted_urns"
 )
 
 // QueryError is used when an error is a result of an invalid query
@@ -14,14 +31,17 @@ type QueryError struct {
 	extra map[string]string
 }
 
-// NewQueryErrorf creates a new query error
-func NewQueryErrorf(err string, args ...interface{}) *QueryError {
-	return &QueryError{msg: fmt.Sprintf(err, args...)}
+// NewQueryError creates a new query error
+func NewQueryError(code, err string, args ...interface{}) *QueryError {
+	return &QueryError{code: code, msg: fmt.Sprintf(err, args...)}
 }
 
-// NewQueryError creates a new query error
-func NewQueryError(msg string, code string, extra map[string]string) *QueryError {
-	return &QueryError{msg: msg, code: code, extra: extra}
+func (e *QueryError) withExtra(k, v string) *QueryError {
+	if e.extra == nil {
+		e.extra = make(map[string]string)
+	}
+	e.extra[k] = v
+	return e
 }
 
 // Error returns the error message
