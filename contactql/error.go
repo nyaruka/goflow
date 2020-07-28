@@ -4,7 +4,22 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/pkg/errors"
+)
+
+// error codes with values included in extra
+const (
+	ErrUnexpectedToken       = "unexpected_token"       // `token` the unexpected token
+	ErrInvalidNumber         = "invalid_number"         // `value` the value we tried to parse as a number
+	ErrInvalidDate           = "invalid_date"           // `value` the value we tried to parse as a date
+	ErrInvalidLanguage       = "invalid_language"       // `value` the value we tried to parse as a language code
+	ErrInvalidGroup          = "invalid_group"          // `value` the value we tried to parse as a group name
+	ErrUnsupportedContains   = "unsupported_contains"   // `property` the property key
+	ErrUnsupportedComparison = "unsupported_comparison" // `property` the property key, `operator` one of =>, <, >=, <=
+	ErrUnsupportedSetCheck   = "unsupported_setcheck"   // `property` the property key, `operator` one of =, !=
+	ErrUnknownProperty       = "unknown_property"       // `property` the property key
+	ErrRedactedURNs          = "redacted_urns"
 )
 
 // QueryError is used when an error is a result of an invalid query
@@ -19,9 +34,17 @@ func NewQueryErrorf(err string, args ...interface{}) *QueryError {
 	return &QueryError{msg: fmt.Sprintf(err, args...)}
 }
 
-// NewQueryError creates a new query error
-func NewQueryError(msg string, code string, extra map[string]string) *QueryError {
-	return &QueryError{msg: msg, code: code, extra: extra}
+func (e *QueryError) withExtra(k, v string) *QueryError {
+	if e.extra == nil {
+		e.extra = make(map[string]string)
+	}
+	e.extra[k] = v
+	return e
+}
+
+func (e *QueryError) withCode(code string) *QueryError {
+	e.code = code
+	return e
 }
 
 // Error returns the error message

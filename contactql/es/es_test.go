@@ -101,7 +101,7 @@ func TestElasticQuery(t *testing.T) {
 		}
 		env := envs.NewBuilder().WithTimezone(ny).WithRedactionPolicy(redactionPolicy).Build()
 
-		qlQuery, err := contactql.ParseQuery(tc.Query, env.RedactionPolicy(), env.DefaultCountry(), resolver)
+		qlQuery, err := contactql.ParseQuery(env, tc.Query, resolver)
 
 		var query elastic.Query
 		if err == nil {

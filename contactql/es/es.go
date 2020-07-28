@@ -10,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/olivere/elastic"
 	"github.com/pkg/errors"
-	"github.com/shopspring/decimal"
 )
 
 // ToElasticQuery converts a contactql query to an Elastic query returning the normalized view as well as the elastic query
@@ -139,10 +138,7 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
 
 		} else if fieldType == assets.FieldTypeNumber {
-			value, err := decimal.NewFromString(c.Value())
-			if err != nil {
-				return nil, queryError("can't convert '%s' to a number", c.Value())
-			}
+			value := c.ValueAsNumber()
 
 			if c.Comparator() == contactql.ComparatorEqual {
 				query = elastic.NewMatchQuery("fields.number", value)
@@ -170,10 +166,7 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
 
 		} else if fieldType == assets.FieldTypeDatetime {
-			value, err := envs.DateTimeFromString(env, c.Value(), false)
-			if err != nil {
-				return nil, queryError("string '%s' couldn't be parsed as a date", c.Value())
-			}
+			value := c.ValueAsDate()
 			start, end := dates.DayToUTCRange(value, value.Location())
 
 			if c.Comparator() == contactql.ComparatorEqual {
@@ -276,10 +269,7 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 				return nil, queryError("unsupported language comparator: %s", c.Comparator())
 			}
 		} else if key == contactql.AttributeCreatedOn {
-			value, err := envs.DateTimeFromString(env, c.Value(), false)
-			if err != nil {
-				return nil, queryError("string '%s' couldn't be parsed as a date", c.Value())
-			}
+			value := c.ValueAsDate()
 			start, end := dates.DayToUTCRange(value, value.Location())
 
 			if c.Comparator() == contactql.ComparatorEqual {

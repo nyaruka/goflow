@@ -20,7 +20,7 @@ type Group struct {
 // NewGroup returns a new group object from the given group asset
 func NewGroup(env envs.Environment, fields *FieldAssets, asset assets.Group) (*Group, error) {
 	if asset.Query() != "" {
-		query, err := contactql.ParseQuery(asset.Query(), env.RedactionPolicy(), env.DefaultCountry(), fields)
+		query, err := contactql.ParseQuery(env, asset.Query(), fields)
 		if err != nil {
 			return nil, err
 		}

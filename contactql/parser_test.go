@@ -207,7 +207,9 @@ func TestParseQuery(t *testing.T) {
 	})
 
 	for _, tc := range tests {
-		parsed, err := contactql.ParseQuery(tc.text, tc.redact, "US", resolver)
+		env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithDefaultCountry("US").WithRedactionPolicy(tc.redact).Build()
+
+		parsed, err := contactql.ParseQuery(env, tc.text, resolver)
 		if tc.err != "" {
 			assert.EqualError(t, err, tc.err, "error mismatch for '%s'", tc.text)
 			assert.Nil(t, parsed)
@@ -228,13 +230,13 @@ func TestParsingErrors(t *testing.T) {
 		{
 			query:    `$`,
 			errMsg:   "mismatched input '$' expecting {'(', TEXT, STRING}",
-			errCode:  "query_unexpected_token",
+			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "$"},
 		},
 		{
 			query:    `name = `,
 			errMsg:   "mismatched input '<EOF>' expecting {TEXT, STRING}",
-			errCode:  "query_unexpected_token",
+			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "<EOF>"},
 		},
 		{
@@ -243,10 +245,53 @@ func TestParsingErrors(t *testing.T) {
 			errCode:  "",
 			errExtra: nil,
 		},
+		{
+			query:    `beers = 12`,
+			errMsg:   "can't resolve 'beers' to attribute, scheme or field",
+			errCode:  "unknown_property",
+			errExtra: map[string]string{"property": "beers"},
+		},
+		{
+			query:    `age = XZ`,
+			errMsg:   "can't convert 'XZ' to a number",
+			errCode:  "invalid_number",
+			errExtra: map[string]string{"value": "XZ"},
+		},
+		{
+			query:    `dob = AB`,
+			errMsg:   "can't convert 'AB' to a date",
+			errCode:  "invalid_date",
+			errExtra: map[string]string{"value": "AB"},
+		},
+		{
+			query:    `created_on = AB`,
+			errMsg:   "can't convert 'AB' to a date",
+			errCode:  "invalid_date",
+			errExtra: map[string]string{"value": "AB"},
+		},
+		{
+			query:    `group = "Cool Kids"`,
+			errMsg:   "'Cool Kids' is not a valid group name",
+			errCode:  "invalid_group",
+			errExtra: map[string]string{"value": "Cool Kids"},
+		},
+		{
+			query:    `language = "zzzzzz"`,
+			errMsg:   "'zzzzzz' is not a valid language code",
+			errCode:  "invalid_language",
+			errExtra: map[string]string{"value": "zzzzzz"},
+		},
 	}
 
+	env := envs.NewBuilder().WithDefaultCountry("US").Build()
+	resolver := contactql.NewMockResolver(map[string]assets.Field{
+		"age":    types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
+		"dob":    types.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
+		"gender": types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
+	}, map[string]assets.Group{})
+
 	for _, tc := range tests {
-		_, err := contactql.ParseQuery(tc.query, envs.RedactionPolicyNone, "US", nil)
+		_, err := contactql.ParseQuery(env, tc.query, resolver)
 		assert.EqualError(t, err, tc.errMsg)
 
 		qerr := err.(*contactql.QueryError)

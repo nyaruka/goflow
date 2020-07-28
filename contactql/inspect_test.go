@@ -63,6 +63,7 @@ func TestInspect(t *testing.T) {
 		},
 	}
 
+	env := envs.NewBuilder().Build()
 	resolver := contactql.NewMockResolver(map[string]assets.Field{
 		"age":    types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
 		"dob":    types.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
@@ -72,7 +73,7 @@ func TestInspect(t *testing.T) {
 	})
 
 	for _, tc := range tests {
-		query, err := contactql.ParseQuery(tc.Query, envs.RedactionPolicyNone, envs.NilCountry, resolver)
+		query, err := contactql.ParseQuery(env, tc.Query, resolver)
 		require.NoError(t, err, "error parsing %s", tc.Query)
 
 		assert.Equal(t, tc.Inspection, contactql.Inspect(query), "inspect mismatch for query %s", tc.Query)

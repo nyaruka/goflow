@@ -17,7 +17,6 @@ import (
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
-	"github.com/shopspring/decimal"
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
@@ -450,7 +449,7 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 			return []interface{}{string(c.uuid)}
 		case contactql.AttributeID:
 			if c.id != 0 {
-				return []interface{}{decimal.New(int64(c.id), 0)}
+				return []interface{}{fmt.Sprintf("%d", c.id)}
 			}
 			return nil
 		case contactql.AttributeName:

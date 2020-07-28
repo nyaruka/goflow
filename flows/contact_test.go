@@ -417,16 +417,16 @@ func TestContactQuery(t *testing.T) {
 	}
 
 	doQuery := func(q string, redaction envs.RedactionPolicy) (bool, error) {
-		query, err := contactql.ParseQuery(q, redaction, "US", session.Assets())
-		if err != nil {
-			return false, err
-		}
-
 		var env envs.Environment
 		if redaction == envs.RedactionPolicyURNs {
 			env = envs.NewBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
 		} else {
 			env = session.Environment()
+		}
+
+		query, err := contactql.ParseQuery(env, q, session.Assets())
+		if err != nil {
+			return false, err
 		}
 
 		return contactql.EvaluateQuery(env, query, contact)
