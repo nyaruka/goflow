@@ -246,12 +246,6 @@ func TestParsingErrors(t *testing.T) {
 			errExtra: nil,
 		},
 		{
-			query:    `beers = 12`,
-			errMsg:   "can't resolve 'beers' to attribute, scheme or field",
-			errCode:  "unknown_property",
-			errExtra: map[string]string{"property": "beers"},
-		},
-		{
 			query:    `age = XZ`,
 			errMsg:   "can't convert 'XZ' to a number",
 			errCode:  "invalid_number",
@@ -281,6 +275,48 @@ func TestParsingErrors(t *testing.T) {
 			errCode:  "invalid_language",
 			errExtra: map[string]string{"value": "zzzzzz"},
 		},
+		{
+			query:    `name ~ "x"`,
+			errMsg:   "contains operator on name requires token of minimum length 2",
+			errCode:  "invalid_partial_name",
+			errExtra: map[string]string{"min_token_length": "2"},
+		},
+		{
+			query:    `urn ~ "23"`,
+			errMsg:   "contains operator on URN requires value of minimum length 3",
+			errCode:  "invalid_partial_urn",
+			errExtra: map[string]string{"min_value_length": "3"},
+		},
+		{
+			query:    `uuid ~ 234`,
+			errMsg:   "contains conditions can only be used with name or URN values",
+			errCode:  "unsupported_contains",
+			errExtra: map[string]string{"property": "uuid"},
+		},
+		{
+			query:    `uuid > 123`,
+			errMsg:   "comparisons with > can only be used with date and number fields",
+			errCode:  "unsupported_comparison",
+			errExtra: map[string]string{"property": "uuid", "operator": ">"},
+		},
+		{
+			query:    `uuid = ""`,
+			errMsg:   "can't check whether 'uuid' is set or not set",
+			errCode:  "unsupported_setcheck",
+			errExtra: map[string]string{"property": "uuid", "operator": "="},
+		},
+		{
+			query:    `uuid != ""`,
+			errMsg:   "can't check whether 'uuid' is set or not set",
+			errCode:  "unsupported_setcheck",
+			errExtra: map[string]string{"property": "uuid", "operator": "!="},
+		},
+		{
+			query:    `beers = 12`,
+			errMsg:   "can't resolve 'beers' to attribute, scheme or field",
+			errCode:  "unknown_property",
+			errExtra: map[string]string{"property": "beers"},
+		},
 	}
 
 	env := envs.NewBuilder().WithDefaultCountry("US").Build()
@@ -292,7 +328,7 @@ func TestParsingErrors(t *testing.T) {
 
 	for _, tc := range tests {
 		_, err := contactql.ParseQuery(env, tc.query, resolver)
-		assert.EqualError(t, err, tc.errMsg)
+		assert.EqualError(t, err, tc.errMsg, "error mismatch for '%s'", tc.query)
 
 		qerr := err.(*contactql.QueryError)
 		assert.Equal(t, tc.errCode, qerr.Code())

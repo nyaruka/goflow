@@ -31,9 +31,9 @@ type QueryError struct {
 	extra map[string]string
 }
 
-// NewQueryErrorf creates a new query error
-func NewQueryErrorf(err string, args ...interface{}) *QueryError {
-	return &QueryError{msg: fmt.Sprintf(err, args...)}
+// NewQueryError creates a new query error
+func NewQueryError(code, err string, args ...interface{}) *QueryError {
+	return &QueryError{code: code, msg: fmt.Sprintf(err, args...)}
 }
 
 func (e *QueryError) withExtra(k, v string) *QueryError {
@@ -41,11 +41,6 @@ func (e *QueryError) withExtra(k, v string) *QueryError {
 		e.extra = make(map[string]string)
 	}
 	e.extra[k] = v
-	return e
-}
-
-func (e *QueryError) withCode(code string) *QueryError {
-	e.code = code
 	return e
 }
 

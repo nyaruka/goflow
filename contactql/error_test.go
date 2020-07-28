@@ -11,9 +11,9 @@ import (
 )
 
 func TestQueryError(t *testing.T) {
-	e := contactql.NewQueryErrorf("bad query")
+	e := contactql.NewQueryError("bad_query", "Bad Query")
 
-	assert.Equal(t, "bad query", e.Error())
+	assert.Equal(t, "Bad Query", e.Error())
 
 	e1 := errors.Wrap(errors.Wrap(e, "wrapped once"), "wrapped twice")
 	isQueryError, cause := contactql.IsQueryError(e1)

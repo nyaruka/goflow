@@ -116,20 +116,20 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 	case ComparatorContains:
 		if c.propKey == AttributeName {
 			if len(tokenizeNameValue(c.value)) == 0 {
-				return NewQueryErrorf("contains operator on name requires token of minimum length %d", minNameTokenContainsLength).withCode(ErrInvalidPartialName).withExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
+				return NewQueryError(ErrInvalidPartialName, "contains operator on name requires token of minimum length %d", minNameTokenContainsLength).withExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
 			}
 		} else if c.propKey == AttributeURN || c.propType == PropertyTypeScheme {
 			if len(c.value) < minURNContainsLength {
-				return NewQueryErrorf("contains operator on URN requires value of minimum length %d", minURNContainsLength).withCode(ErrInvalidPartialURN).withExtra("min_value_length", strconv.Itoa(minURNContainsLength))
+				return NewQueryError(ErrInvalidPartialURN, "contains operator on URN requires value of minimum length %d", minURNContainsLength).withExtra("min_value_length", strconv.Itoa(minURNContainsLength))
 			}
 		} else {
 			// ~ can only be used with the name/urn attributes or actual URNs
-			return NewQueryErrorf("contains conditions can only be used with name or URN values").withCode(ErrUnsupportedContains).withExtra("property", c.propKey)
+			return NewQueryError(ErrUnsupportedContains, "contains conditions can only be used with name or URN values").withExtra("property", c.propKey)
 		}
 
 	case ComparatorGreaterThan, ComparatorGreaterThanOrEqual, ComparatorLessThan, ComparatorLessThanOrEqual:
 		if c.valueType != assets.FieldTypeNumber && c.valueType != assets.FieldTypeDatetime {
-			return NewQueryErrorf("comparisons with %s can only be used with date and number fields", c.comparator).withCode(ErrUnsupportedComparison).withExtra("property", c.propKey).withExtra("operator", string(c.comparator))
+			return NewQueryError(ErrUnsupportedComparison, "comparisons with %s can only be used with date and number fields", c.comparator).withExtra("property", c.propKey).withExtra("operator", string(c.comparator))
 		}
 	}
 
@@ -137,28 +137,28 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 	if (c.comparator == ComparatorEqual || c.comparator == ComparatorNotEqual) && c.value == "" {
 		switch c.propKey {
 		case AttributeUUID, AttributeID, AttributeCreatedOn, AttributeGroup:
-			return NewQueryErrorf("can't check whether '%s' is set or not set", c.propKey).withCode(ErrUnsupportedSetCheck).withExtra("property", c.propKey).withExtra("operator", string(c.comparator))
+			return NewQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).withExtra("property", c.propKey).withExtra("operator", string(c.comparator))
 		}
 	} else {
 		// check values are valid for the attribute type
 		if c.valueType == assets.FieldTypeNumber {
 			asDecimal, err := decimal.NewFromString(c.value)
 			if err != nil {
-				return NewQueryErrorf("can't convert '%s' to a number", c.value).withCode(ErrInvalidNumber).withExtra("value", c.value)
+				return NewQueryError(ErrInvalidNumber, "can't convert '%s' to a number", c.value).withExtra("value", c.value)
 			}
 			c.valueAsNumber = asDecimal
 
 		} else if c.valueType == assets.FieldTypeDatetime {
 			asDate, err := envs.DateTimeFromString(env, c.value, false)
 			if err != nil {
-				return NewQueryErrorf("can't convert '%s' to a date", c.value).withCode(ErrInvalidDate).withExtra("value", c.value)
+				return NewQueryError(ErrInvalidDate, "can't convert '%s' to a date", c.value).withExtra("value", c.value)
 			}
 			c.valueAsDate = asDate
 
 		} else if c.propKey == AttributeGroup {
 			group := resolver.ResolveGroup(c.value)
 			if group == nil {
-				return NewQueryErrorf("'%s' is not a valid group name", c.value).withCode(ErrInvalidGroup).withExtra("value", c.value)
+				return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
 			}
 			c.value = group.Name()
 			c.reference = assets.NewGroupReference(group.UUID(), group.Name())
@@ -167,7 +167,7 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 			if c.value != "" {
 				_, err := envs.ParseLanguage(c.value)
 				if err != nil {
-					return NewQueryErrorf("'%s' is not a valid language code", c.value).withCode(ErrInvalidLanguage).withExtra("value", c.value)
+					return NewQueryError(ErrInvalidLanguage, "'%s' is not a valid language code", c.value).withExtra("value", c.value)
 				}
 			}
 		}
@@ -375,9 +375,9 @@ func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol
 	switch typed := e.(type) {
 	case *antlr.InputMisMatchException:
 		token := typed.GetOffendingToken().GetText()
-		err = NewQueryErrorf(msg).withCode(ErrUnexpectedToken).withExtra("token", token)
+		err = NewQueryError(ErrUnexpectedToken, msg).withExtra("token", token)
 	default:
-		err = NewQueryErrorf(msg)
+		err = NewQueryError("", msg)
 	}
 
 	l.errs = append(l.errs, err)

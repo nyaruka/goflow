@@ -367,5 +367,5 @@ func not(queries ...elastic.Query) *elastic.BoolQuery {
 }
 
 func queryError(err string, args ...interface{}) error {
-	return contactql.NewQueryErrorf(err, args...)
+	return contactql.NewQueryError("", err, args...)
 }

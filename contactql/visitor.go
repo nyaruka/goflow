@@ -132,7 +132,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		propType = PropertyTypeAttribute
 
 		if propKey == AttributeURN && v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
-			v.addError(NewQueryErrorf("cannot query on redacted URNs").withCode(ErrRedactedURNs))
+			v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
 		}
 
 	} else if urns.IsValidScheme(propKey) {
@@ -141,7 +141,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		valueType = assets.FieldTypeText
 
 		if v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
-			v.addError(NewQueryErrorf("cannot query on redacted URNs").withCode(ErrRedactedURNs))
+			v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
 		}
 	} else {
 		field := v.resolver.ResolveField(propKey)
@@ -150,7 +150,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 			valueType = field.Type()
 			reference = assets.NewFieldReference(field.Key(), field.Name())
 		} else {
-			v.addError(NewQueryErrorf("can't resolve '%s' to attribute, scheme or field", propKey).withCode(ErrUnknownProperty).withExtra("property", propKey))
+			v.addError(NewQueryError(ErrUnknownProperty, "can't resolve '%s' to attribute, scheme or field", propKey).withExtra("property", propKey))
 		}
 	}
 
