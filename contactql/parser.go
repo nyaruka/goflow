@@ -116,11 +116,11 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 	case ComparatorContains:
 		if c.propKey == AttributeName {
 			if len(tokenizeNameValue(c.value)) == 0 {
-				return NewQueryErrorf("value must contain a word of at least %d characters long for a contains condition on name", minNameTokenContainsLength)
+				return NewQueryErrorf("contains operator on name requires token of minimum length %d", minNameTokenContainsLength).withCode(ErrInvalidPartialName).withExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
 			}
 		} else if c.propKey == AttributeURN || c.propType == PropertyTypeScheme {
 			if len(c.value) < minURNContainsLength {
-				return NewQueryErrorf("value must be least %d characters long for a contains condition on a URN", minURNContainsLength)
+				return NewQueryErrorf("contains operator on URN requires value of minimum length %d", minURNContainsLength).withCode(ErrInvalidPartialURN).withExtra("min_value_length", strconv.Itoa(minURNContainsLength))
 			}
 		} else {
 			// ~ can only be used with the name/urn attributes or actual URNs
@@ -199,11 +199,7 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 	anyTrue := false
 	allTrue := true
 	for _, val := range vals {
-		res, err := c.evaluateValue(env, val)
-		if err != nil {
-			return false, err
-		}
-		if res {
+		if c.evaluateValue(env, val) {
 			anyTrue = true
 		} else {
 			allTrue = false
@@ -219,7 +215,7 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 	return anyTrue, nil
 }
 
-func (c *Condition) evaluateValue(env envs.Environment, val interface{}) (bool, error) {
+func (c *Condition) evaluateValue(env envs.Environment, val interface{}) bool {
 	switch val.(type) {
 	case string:
 		isName := c.propKey == AttributeName // needs to be handled as special case

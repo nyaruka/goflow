@@ -1,6 +1,7 @@
 package contactql
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -21,57 +22,60 @@ func EvaluateQuery(env envs.Environment, query *ContactQuery, queryable Queryabl
 	return query.Evaluate(env, queryable)
 }
 
-func textComparison(objectVal string, comparator Comparator, queryVal string, isName bool) (bool, error) {
+func textComparison(objectVal string, comparator Comparator, queryVal string, isName bool) bool {
 	objectVal = strings.TrimSpace(strings.ToLower(objectVal))
 	queryVal = strings.TrimSpace(strings.ToLower(queryVal))
 
 	switch comparator {
 	case ComparatorEqual:
-		return objectVal == queryVal, nil
+		return objectVal == queryVal
 	case ComparatorNotEqual:
-		return objectVal != queryVal, nil
+		return objectVal != queryVal
 	case ComparatorContains:
 		// name is special case
 		if isName {
-			return tokenizedPrefixMatch(objectVal, queryVal, 8), nil
+			return tokenizedPrefixMatch(objectVal, queryVal, 8)
 		}
-		return strings.Contains(objectVal, queryVal), nil
+		return strings.Contains(objectVal, queryVal)
 	}
-	return false, NewQueryErrorf("can't query text fields with %s", comparator)
+
+	panic(fmt.Sprintf("can't query text fields with %s", comparator))
 }
 
-func numberComparison(objectVal decimal.Decimal, comparator Comparator, queryVal decimal.Decimal) (bool, error) {
+func numberComparison(objectVal decimal.Decimal, comparator Comparator, queryVal decimal.Decimal) bool {
 	switch comparator {
 	case ComparatorEqual:
-		return objectVal.Equal(queryVal), nil
+		return objectVal.Equal(queryVal)
 	case ComparatorGreaterThan:
-		return objectVal.GreaterThan(queryVal), nil
+		return objectVal.GreaterThan(queryVal)
 	case ComparatorGreaterThanOrEqual:
-		return objectVal.GreaterThanOrEqual(queryVal), nil
+		return objectVal.GreaterThanOrEqual(queryVal)
 	case ComparatorLessThan:
-		return objectVal.LessThan(queryVal), nil
+		return objectVal.LessThan(queryVal)
 	case ComparatorLessThanOrEqual:
-		return objectVal.LessThanOrEqual(queryVal), nil
+		return objectVal.LessThanOrEqual(queryVal)
 	}
-	return false, NewQueryErrorf("can't query number fields with %s", comparator)
+
+	panic(fmt.Sprintf("can't query number fields with %s", comparator))
 }
 
-func dateComparison(objectVal time.Time, comparator Comparator, queryVal time.Time) (bool, error) {
+func dateComparison(objectVal time.Time, comparator Comparator, queryVal time.Time) bool {
 	utcDayStart, utcDayEnd := dates.DayToUTCRange(queryVal, queryVal.Location())
 
 	switch comparator {
 	case ComparatorEqual:
-		return (objectVal.Equal(utcDayStart) || objectVal.After(utcDayStart)) && objectVal.Before(utcDayEnd), nil
+		return (objectVal.Equal(utcDayStart) || objectVal.After(utcDayStart)) && objectVal.Before(utcDayEnd)
 	case ComparatorGreaterThan:
-		return objectVal.After(utcDayEnd) || objectVal.Equal(utcDayEnd), nil
+		return objectVal.After(utcDayEnd) || objectVal.Equal(utcDayEnd)
 	case ComparatorGreaterThanOrEqual:
-		return objectVal.After(utcDayStart) || objectVal.Equal(utcDayStart), nil
+		return objectVal.After(utcDayStart) || objectVal.Equal(utcDayStart)
 	case ComparatorLessThan:
-		return objectVal.Before(utcDayStart), nil
+		return objectVal.Before(utcDayStart)
 	case ComparatorLessThanOrEqual:
-		return objectVal.Before(utcDayEnd), nil
+		return objectVal.Before(utcDayEnd)
 	}
-	return false, NewQueryErrorf("can't query datetime fields with %s", comparator)
+
+	panic(fmt.Sprintf("can't query date fields with %s", comparator))
 }
 
 // performs a prefix match which should be equivalent to an edge_ngram filter in ES

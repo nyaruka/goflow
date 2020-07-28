@@ -15,6 +15,8 @@ const (
 	ErrInvalidDate           = "invalid_date"           // `value` the value we tried to parse as a date
 	ErrInvalidLanguage       = "invalid_language"       // `value` the value we tried to parse as a language code
 	ErrInvalidGroup          = "invalid_group"          // `value` the value we tried to parse as a group name
+	ErrInvalidPartialName    = "invalid_partial_name"   // `min_token_length` the minimum length of token required for name contains condition
+	ErrInvalidPartialURN     = "invalid_partial_urn"    // `min_value_length` the minimum length of value required for URN contains condition
 	ErrUnsupportedContains   = "unsupported_contains"   // `property` the property key
 	ErrUnsupportedComparison = "unsupported_comparison" // `property` the property key, `operator` one of =>, <, >=, <=
 	ErrUnsupportedSetCheck   = "unsupported_setcheck"   // `property` the property key, `operator` one of =, !=

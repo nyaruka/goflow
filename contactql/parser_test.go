@@ -50,7 +50,7 @@ func TestParseQuery(t *testing.T) {
 		{`name is ""`, `name = ""`, "", envs.RedactionPolicyNone},            // is not set
 		{`name != ""`, `name != ""`, "", envs.RedactionPolicyNone},           // is set
 		{`name != "felix"`, `name != "felix"`, "", envs.RedactionPolicyNone}, // is not equal to value
-		{`Name ~ ""`, ``, "value must contain a word of at least 2 characters long for a contains condition on name", envs.RedactionPolicyNone},
+		{`Name ~ ""`, ``, "contains operator on name requires token of minimum length 2", envs.RedactionPolicyNone},
 
 		// explicit attribute conditions
 		{`language = spa`, `language = "spa"`, "", envs.RedactionPolicyNone},
@@ -62,7 +62,7 @@ func TestParseQuery(t *testing.T) {
 		{`tel!=""`, `tel != ""`, "", envs.RedactionPolicyNone},
 		{`tel IS 233`, `tel = 233`, "", envs.RedactionPolicyNone},
 		{`tel HAS 233`, `tel ~ 233`, "", envs.RedactionPolicyNone},
-		{`tel ~ 23`, ``, "value must be least 3 characters long for a contains condition on a URN", envs.RedactionPolicyNone},
+		{`tel ~ 23`, ``, "contains operator on URN requires value of minimum length 3", envs.RedactionPolicyNone},
 		{`mailto = user@example.com`, `mailto = "user@example.com"`, "", envs.RedactionPolicyNone},
 		{`MAILTO ~ user@example.com`, `mailto ~ "user@example.com"`, "", envs.RedactionPolicyNone},
 		{`URN=ewok`, `urn = "ewok"`, "", envs.RedactionPolicyNone},
