@@ -1,6 +1,6 @@
 [
     {
-        "description": "valid text is set",
+        "description": "text field is set",
         "query": "color!=\"\"",
         "elastic": {
             "nested": {
@@ -25,7 +25,7 @@
         }
     },
     {
-        "description": "valid text is unset",
+        "description": "text field is not set",
         "query": "color=\"\"",
         "elastic": {
             "bool": {
@@ -54,7 +54,7 @@
         }
     },
     {
-        "description": "valid text =",
+        "description": "text field equality",
         "query": "color=red",
         "elastic": {
             "nested": {
@@ -79,7 +79,7 @@
         }
     },
     {
-        "description": "valid text !=",
+        "description": "text field inequality",
         "query": "color != red",
         "elastic": {
             "bool": {
@@ -113,27 +113,27 @@
         }
     },
     {
-        "description": "invalid text >",
+        "description": "text field greater than",
         "query": "color > red",
         "error": "comparisons with > can only be used with date and number fields"
     },
     {
-        "description": "invalid text <",
+        "description": "text field less than",
         "query": "color < red",
         "error": "comparisons with < can only be used with date and number fields"
     },
     {
-        "description": "invalid text < \"\"",
+        "description": "text field less than empty string",
         "query": "color < \"\"",
         "error": "comparisons with < can only be used with date and number fields"
     },
     {
-        "description": "invalid text > \"\"",
+        "description": "text field greater than empty string",
         "query": "color > \"\"",
         "error": "comparisons with > can only be used with date and number fields"
     },
     {
-        "description": "valid number is set",
+        "description": "number field is set",
         "query": "age!=\"\"",
         "elastic": {
             "nested": {
@@ -158,7 +158,7 @@
         }
     },
     {
-        "description": "valid number is unset",
+        "description": "number field is not set",
         "query": "age=\"\"",
         "elastic": {
             "bool": {
@@ -187,7 +187,7 @@
         }
     },
     {
-        "description": "valid number =",
+        "description": "number field equality",
         "query": "age=10",
         "elastic": {
             "nested": {
@@ -214,7 +214,7 @@
         }
     },
     {
-        "description": "valid number !=",
+        "description": "number field inequality",
         "query": "age!=10",
         "elastic": {
             "bool": {
@@ -245,7 +245,7 @@
         }
     },
     {
-        "description": "valid number <=",
+        "description": "number field less than or equal",
         "query": "age<=10",
         "elastic": {
             "nested": {
@@ -275,7 +275,7 @@
         }
     },
     {
-        "description": "valid number >=",
+        "description": "number field greater than or equal",
         "query": "age>=10",
         "elastic": {
             "nested": {
@@ -305,7 +305,7 @@
         }
     },
     {
-        "description": "valid number <",
+        "description": "number field less than",
         "query": "age<10",
         "elastic": {
             "nested": {
@@ -335,7 +335,7 @@
         }
     },
     {
-        "description": "valid number >",
+        "description": "number field greater than",
         "query": "age>10",
         "elastic": {
             "nested": {
@@ -365,22 +365,27 @@
         }
     },
     {
-        "description": "invalid number operand",
+        "description": "number field with invalid value",
         "query": "age=fred",
         "error": "can't convert 'fred' to a number"
     },
     {
-        "description": "invalid datetime operand",
-        "query": "dob=10",
-        "error": "can't convert '10' to a date"
-    },
-    {
-        "description": "invalid number >",
+        "description": "number field greater than empty string",
         "query": "age > \"\"",
         "error": "can't convert '' to a number"
     },
     {
-        "description": "valid date is set",
+        "description": "datetime field with invalid value",
+        "query": "dob=10",
+        "error": "can't convert '10' to a date"
+    },
+    {
+        "description": "datetime field greater than empty string",
+        "query": "dob > \"\"",
+        "error": "can't convert '' to a date"
+    },
+    {
+        "description": "date field is set",
         "query": "dob!=\"\"",
         "elastic": {
             "nested": {
@@ -405,7 +410,7 @@
         }
     },
     {
-        "description": "valid date is unset",
+        "description": "date field is not set",
         "query": "dob=\"\"",
         "elastic": {
             "bool": {
@@ -434,7 +439,7 @@
         }
     },
     {
-        "description": "valid date =",
+        "description": "date field equality",
         "query": "dob=2018-06-23",
         "elastic": {
             "nested": {
@@ -464,7 +469,7 @@
         }
     },
     {
-        "description": "valid date !=",
+        "description": "date field inequality",
         "query": "dob!=2018-06-23",
         "elastic": {
             "bool": {
@@ -498,7 +503,7 @@
         }
     },
     {
-        "description": "valid date >",
+        "description": "date field greater than",
         "query": "dob>2018-06-23",
         "elastic": {
             "nested": {
@@ -528,7 +533,7 @@
         }
     },
     {
-        "description": "valid date >=",
+        "description": "date field greater than",
         "query": "dob>=2018-06-23",
         "elastic": {
             "nested": {
@@ -558,7 +563,7 @@
         }
     },
     {
-        "description": "valid date <",
+        "description": "date field less than",
         "query": "dob<2018-06-23",
         "elastic": {
             "nested": {
@@ -588,7 +593,7 @@
         }
     },
     {
-        "description": "valid date <=",
+        "description": "date field less than or equal",
         "query": "dob<=2018-06-23",
         "elastic": {
             "nested": {
@@ -618,7 +623,7 @@
         }
     },
     {
-        "description": "valid implicit name",
+        "description": "implicit name",
         "query": "will",
         "elastic": {
             "match": {
@@ -629,9 +634,9 @@
         }
     },
     {
-        "description": "valid implicit name",
+        "description": "implicit name with URN redaction",
         "query": "will",
-        "is_anon": true,
+        "redact_urns": true,
         "elastic": {
             "match": {
                 "name": {
@@ -641,9 +646,9 @@
         }
     },
     {
-        "description": "valid implicit id (anon)",
+        "description": "implicit id with URN redaction",
         "query": "7979",
-        "is_anon": true,
+        "redact_urns": true,
         "elastic": {
             "ids": {
                 "values": [
@@ -653,7 +658,7 @@
         }
     },
     {
-        "description": "valid implicit tel (normal)",
+        "description": "implicit tel",
         "query": "7979",
         "elastic": {
             "nested": {
@@ -680,7 +685,7 @@
         }
     },
     {
-        "description": "valid state is set",
+        "description": "state field is set",
         "query": "state!=\"\"",
         "elastic": {
             "nested": {
@@ -705,7 +710,7 @@
         }
     },
     {
-        "description": "valid state is unset",
+        "description": "state field is not set",
         "query": "state=\"\"",
         "elastic": {
             "bool": {
@@ -734,7 +739,7 @@
         }
     },
     {
-        "description": "valid state =",
+        "description": "state field equality",
         "query": "state=washington",
         "elastic": {
             "nested": {
@@ -759,7 +764,7 @@
         }
     },
     {
-        "description": "valid state !=",
+        "description": "state field inequality",
         "query": "state!=washington",
         "elastic": {
             "bool": {
@@ -788,12 +793,12 @@
         }
     },
     {
-        "description": "invalid state <",
+        "description": "state field with greater than",
         "query": "state<washington",
         "error": "comparisons with < can only be used with date and number fields"
     },
     {
-        "description": "valid district is set",
+        "description": "district field is set",
         "query": "district!=\"\"",
         "elastic": {
             "nested": {
@@ -818,7 +823,7 @@
         }
     },
     {
-        "description": "valid district is unset",
+        "description": "district field is unset",
         "query": "district=\"\"",
         "elastic": {
             "bool": {
@@ -847,7 +852,7 @@
         }
     },
     {
-        "description": "valid district =",
+        "description": "district field equality",
         "query": "district=chelan",
         "elastic": {
             "nested": {
@@ -872,7 +877,7 @@
         }
     },
     {
-        "description": "valid district !=",
+        "description": "vdistrict field inequality",
         "query": "district!=chelan",
         "elastic": {
             "bool": {
@@ -901,12 +906,12 @@
         }
     },
     {
-        "description": "invalid district <",
+        "description": "district field with greater than",
         "query": "district<chelan",
         "error": "comparisons with < can only be used with date and number fields"
     },
     {
-        "description": "valid ward is set",
+        "description": "ward field is set",
         "query": "ward!=\"\"",
         "elastic": {
             "nested": {
@@ -931,7 +936,7 @@
         }
     },
     {
-        "description": "valid ward is unset",
+        "description": "ward field is unset",
         "query": "ward=\"\"",
         "elastic": {
             "bool": {
@@ -960,7 +965,7 @@
         }
     },
     {
-        "description": "valid ward =",
+        "description": "ward field equality",
         "query": "ward=stevens",
         "elastic": {
             "nested": {
@@ -985,7 +990,7 @@
         }
     },
     {
-        "description": "valid ward !=",
+        "description": "ward field inequality",
         "query": "ward!=stevens",
         "elastic": {
             "bool": {
@@ -1014,12 +1019,12 @@
         }
     },
     {
-        "description": "invalid ward <",
+        "description": "ward field with greater than",
         "query": "ward<stevens",
         "error": "comparisons with < can only be used with date and number fields"
     },
     {
-        "description": "valid name =",
+        "description": "name equality",
         "query": "name=chef",
         "elastic": {
             "term": {
@@ -1028,7 +1033,44 @@
         }
     },
     {
-        "description": "valid name is unset",
+        "description": "name inequality",
+        "query": "name!=chef",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "term": {
+                        "name.keyword": "chef"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "name is set",
+        "query": "name!=\"\"",
+        "elastic": {
+            "bool": {
+                "must": [
+                    {
+                        "exists": {
+                            "field": "name"
+                        }
+                    },
+                    {
+                        "bool": {
+                            "must_not": {
+                                "term": {
+                                    "name.keyword": ""
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "description": "name is not set",
         "query": "name=\"\"",
         "elastic": {
             "bool": {
@@ -1056,31 +1098,7 @@
         }
     },
     {
-        "description": "valid name is set",
-        "query": "name!=\"\"",
-        "elastic": {
-            "bool": {
-                "must": [
-                    {
-                        "exists": {
-                            "field": "name"
-                        }
-                    },
-                    {
-                        "bool": {
-                            "must_not": {
-                                "term": {
-                                    "name.keyword": ""
-                                }
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    {
-        "description": "valid name ~",
+        "description": "name contains",
         "query": "name~chef",
         "elastic": {
             "match": {
@@ -1091,25 +1109,12 @@
         }
     },
     {
-        "description": "valid name !=",
-        "query": "name!=chef",
-        "elastic": {
-            "bool": {
-                "must_not": {
-                    "term": {
-                        "name.keyword": "chef"
-                    }
-                }
-            }
-        }
-    },
-    {
-        "description": "invalid name >",
+        "description": "name with greater than",
         "query": "name>chef",
         "error": "comparisons with > can only be used with date and number fields"
     },
     {
-        "description": "valid uuid =",
+        "description": "uuid equality",
         "query": "uuid=bbe6dba0-818b-4c5a-be51-10432095e27a",
         "elastic": {
             "term": {
@@ -1118,7 +1123,7 @@
         }
     },
     {
-        "description": "valid uuid !=",
+        "description": "uuid inequality",
         "query": "uuid!=bbe6dba0-818b-4c5a-be51-10432095e27a",
         "elastic": {
             "bool": {
@@ -1131,7 +1136,7 @@
         }
     },
     {
-        "description": "valid id =",
+        "description": "id equality",
         "query": "id=123",
         "elastic": {
             "ids": {
@@ -1142,7 +1147,7 @@
         }
     },
     {
-        "description": "valid id !=",
+        "description": "id inequality",
         "query": "id!=123",
         "elastic": {
             "bool": {
@@ -1157,7 +1162,53 @@
         }
     },
     {
-        "description": "valid language is unset",
+        "description": "language equality",
+        "query": "language=spa",
+        "elastic": {
+            "term": {
+                "language": "spa"
+            }
+        }
+    },
+    {
+        "description": "language inequality",
+        "query": "language!=fra",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "term": {
+                        "language": "fra"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "language is set",
+        "query": "language!=\"\"",
+        "elastic": {
+            "bool": {
+                "must": [
+                    {
+                        "exists": {
+                            "field": "language"
+                        }
+                    },
+                    {
+                        "bool": {
+                            "must_not": {
+                                "term": {
+                                    "language.keyword": ""
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "description": "language is not set",
         "query": "language=\"\"",
         "elastic": {
             "bool": {
@@ -1185,68 +1236,22 @@
         }
     },
     {
-        "description": "valid language is set",
-        "query": "language!=\"\"",
-        "elastic": {
-            "bool": {
-                "must": [
-                    {
-                        "exists": {
-                            "field": "language"
-                        }
-                    },
-                    {
-                        "bool": {
-                            "must_not": {
-                                "term": {
-                                    "language.keyword": ""
-                                }
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    {
-        "description": "valid language =",
-        "query": "language=spa",
-        "elastic": {
-            "term": {
-                "language": "spa"
-            }
-        }
-    },
-    {
-        "description": "valid language !=",
-        "query": "language!=fra",
-        "elastic": {
-            "bool": {
-                "must_not": {
-                    "term": {
-                        "language": "fra"
-                    }
-                }
-            }
-        }
-    },
-    {
-        "description": "invalid language =",
+        "description": "language equality with invalid language",
         "query": "language=dog",
         "error": "'dog' is not a valid language code"
     },
     {
-        "description": "invalid language !=",
+        "description": "language inequality with invalid language",
         "query": "language!=dog",
         "error": "'dog' is not a valid language code"
     },
     {
-        "description": "invalid language >",
+        "description": "language greater than with invalid language",
         "query": "language>dog",
         "error": "comparisons with > can only be used with date and number fields"
     },
     {
-        "description": "valid created_on >",
+        "description": "created_on greater than",
         "query": "created_on>2018-06-23",
         "elastic": {
             "range": {
@@ -1260,7 +1265,7 @@
         }
     },
     {
-        "description": "valid created_on >=",
+        "description": "created_on greater than or equal",
         "query": "created_on>=2018-06-23",
         "elastic": {
             "range": {
@@ -1274,7 +1279,7 @@
         }
     },
     {
-        "description": "valid created_on <",
+        "description": "created_on less than",
         "query": "created_on<2018-06-23",
         "elastic": {
             "range": {
@@ -1288,7 +1293,7 @@
         }
     },
     {
-        "description": "valid created_on <=",
+        "description": "created_on less than or equal",
         "query": "created_on<=2018-06-23",
         "elastic": {
             "range": {
@@ -1302,7 +1307,7 @@
         }
     },
     {
-        "description": "valid created_on =",
+        "description": "created_on equality",
         "query": "created_on=2018-06-23",
         "elastic": {
             "range": {
@@ -1316,7 +1321,7 @@
         }
     },
     {
-        "description": "valid created_on !=",
+        "description": "created_on inequality",
         "query": "created_on!=2018-06-23",
         "elastic": {
             "bool": {
@@ -1334,12 +1339,12 @@
         }
     },
     {
-        "description": "invalid created_on operand",
+        "description": "created_on less than with invalid date",
         "query": "created_on<dog",
         "error": "can't convert 'dog' to a date"
     },
     {
-        "description": "valid tel is set",
+        "description": "tel scheme is set",
         "query": "tel!=\"\"",
         "elastic": {
             "nested": {
@@ -1364,7 +1369,7 @@
         }
     },
     {
-        "description": "valid tel is unset",
+        "description": "tel scheme is not set",
         "query": "tel=\"\"",
         "elastic": {
             "bool": {
@@ -1393,7 +1398,7 @@
         }
     },
     {
-        "description": "valid tel =",
+        "description": "tel scheme equality",
         "query": "tel=12345",
         "elastic": {
             "nested": {
@@ -1418,12 +1423,12 @@
         }
     },
     {
-        "description": "valid tel !=",
+        "description": "tel scheme inequality",
         "query": "tel!=12345",
         "error": "unsupported scheme comparator: !="
     },
     {
-        "description": "valid tel ~",
+        "description": "tel scheme contains",
         "query": "tel~12345",
         "elastic": {
             "nested": {
@@ -1450,14 +1455,14 @@
         }
     },
     {
-        "description": "invalid tel >",
+        "description": "tel scheme greater than",
         "query": "tel>12345",
         "error": "comparisons with > can only be used with date and number fields"
     },
     {
-        "description": "valid tel is set on anon org",
+        "description": "tel scheme is set with URN redaction",
         "query": "tel!=\"\"",
-        "is_anon": true,
+        "redact_urns": true,
         "elastic": {
             "nested": {
                 "path": "urns",
@@ -1481,9 +1486,9 @@
         }
     },
     {
-        "description": "valid tel is unset on anon org",
+        "description": "tel scheme is not set with URN redaction",
         "query": "tel=\"\"",
-        "is_anon": true,
+        "redact_urns": true,
         "elastic": {
             "bool": {
                 "must_not": {
@@ -1511,13 +1516,112 @@
         }
     },
     {
-        "description": "tel on anon org",
+        "description": "tel scheme equality with URN redaction",
         "query": "tel=12345",
-        "is_anon": true,
+        "redact_urns": true,
         "error": "cannot query on redacted URNs"
     },
     {
-        "description": "unsupported field",
+        "description": "urn is set",
+        "query": "urn !=\"\"",
+        "elastic": {
+            "nested": {
+                "path": "urns",
+                "query": {
+                    "exists": {
+                        "field": "urns.path"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "urn is not set",
+        "query": "urn=\"\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "nested": {
+                        "path": "urns",
+                        "query": {
+                            "exists": {
+                                "field": "urns.path"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "urn equality",
+        "query": "urn=\"+12067799192\"",
+        "elastic": {
+            "nested": {
+                "path": "urns",
+                "query": {
+                    "term": {
+                        "urns.path.keyword": "+12067799192"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "urn inequality",
+        "query": "urn!=\"+12067799192\"",
+        "error": "unsupported urn comparator: !="
+    },
+    {
+        "description": "urn contains",
+        "query": "urn~12345",
+        "elastic": {
+            "nested": {
+                "path": "urns",
+                "query": {
+                    "match_phrase": {
+                        "urns.path": {
+                            "query": "12345"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "group equality",
+        "query": "group = \"U-Reporters\"",
+        "elastic": {
+            "term": {
+                "groups": "8de30b78-d9ef-4db2-b2e8-4f7b6aef64cf"
+            }
+        }
+    },
+    {
+        "description": "group equality with invalid group",
+        "query": "group = \"Spammers\"",
+        "error": "'Spammers' is not a valid group name"
+    },
+    {
+        "description": "group inequality",
+        "query": "group != \"U-Reporters\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "term": {
+                        "groups": "8de30b78-d9ef-4db2-b2e8-4f7b6aef64cf"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "group inequality with invalid group",
+        "query": "group != \"Spammers\"",
+        "error": "'Spammers' is not a valid group name"
+    },
+    {
+        "description": "unknown property equality",
         "query": "unsupported=12345",
         "error": "can't resolve 'unsupported' to attribute, scheme or field"
     },
@@ -1634,99 +1738,5 @@
                 ]
             }
         }
-    },
-    {
-        "description": "urn is unset",
-        "query": "urn=\"\"",
-        "elastic": {
-            "bool": {
-                "must_not": {
-                    "nested": {
-                        "path": "urns",
-                        "query": {
-                            "exists": {
-                                "field": "urns.path"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    {
-        "description": "urn is set",
-        "query": "urn !=\"\"",
-        "elastic": {
-            "nested": {
-                "path": "urns",
-                "query": {
-                    "exists": {
-                        "field": "urns.path"
-                    }
-                }
-            }
-        }
-    },
-    {
-        "description": "urn is number",
-        "query": "urn=\"+12067799192\"",
-        "elastic": {
-            "nested": {
-                "path": "urns",
-                "query": {
-                    "term": {
-                        "urns.path.keyword": "+12067799192"
-                    }
-                }
-            }
-        }
-    },
-    {
-        "description": "urn contains 12345",
-        "query": "urn~12345",
-        "elastic": {
-            "nested": {
-                "path": "urns",
-                "query": {
-                    "match_phrase": {
-                        "urns.path": {
-                            "query": "12345"
-                        }
-                    }
-                }
-            }
-        }
-    },
-    {
-        "description": "group = valid group name",
-        "query": "group = \"U-Reporters\"",
-        "elastic": {
-            "term": {
-                "groups": "8de30b78-d9ef-4db2-b2e8-4f7b6aef64cf"
-            }
-        }
-    },
-    {
-        "description": "group = invalid group name",
-        "query": "group = \"Spammers\"",
-        "error": "'Spammers' is not a valid group name"
-    },
-    {
-        "description": "group not equals a valid name",
-        "query": "group != \"U-Reporters\"",
-        "elastic": {
-            "bool": {
-                "must_not": {
-                    "term": {
-                        "groups": "8de30b78-d9ef-4db2-b2e8-4f7b6aef64cf"
-                    }
-                }
-            }
-        }
-    },
-    {
-        "description": "group != invalid group name",
-        "query": "group != \"Spammers\"",
-        "error": "'Spammers' is not a valid group name"
     }
 ]

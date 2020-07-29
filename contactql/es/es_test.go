@@ -81,7 +81,7 @@ func TestElasticQuery(t *testing.T) {
 		Query       string          `json:"query"`
 		Elastic     json.RawMessage `json:"elastic"`
 		Error       string          `json:"error"`
-		IsAnon      bool            `json:"is_anon"`
+		RedactURNs  bool            `json:"redact_urns"`
 	}
 	tcs := make([]TestCase, 0, 20)
 	tcJSON, err := ioutil.ReadFile("testdata/to_query.json")
@@ -96,7 +96,7 @@ func TestElasticQuery(t *testing.T) {
 		testName := fmt.Sprintf("test '%s' for query '%s'", tc.Description, tc.Query)
 
 		redactionPolicy := envs.RedactionPolicyNone
-		if tc.IsAnon {
+		if tc.RedactURNs {
 			redactionPolicy = envs.RedactionPolicyURNs
 		}
 		env := envs.NewBuilder().WithTimezone(ny).WithRedactionPolicy(redactionPolicy).Build()
