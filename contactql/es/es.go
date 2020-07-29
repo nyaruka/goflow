@@ -301,6 +301,8 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 
 			if c.Operator() == contactql.OpEqual {
 				return elastic.NewNestedQuery("urns", elastic.NewTermQuery("urns.path.keyword", value)), nil
+			} else if c.Operator() == contactql.OpNotEqual {
+				return not(elastic.NewNestedQuery("urns", elastic.NewTermQuery("urns.path.keyword", value))), nil
 			} else if c.Operator() == contactql.OpContains {
 				return elastic.NewNestedQuery("urns", elastic.NewMatchPhraseQuery("urns.path", value)), nil
 			} else {
@@ -348,6 +350,11 @@ func conditionToElasticQuery(env envs.Environment, resolver contactql.Resolver, 
 				elastic.NewTermQuery("urns.path.keyword", value),
 				elastic.NewTermQuery("urns.scheme", key)),
 			), nil
+		} else if c.Operator() == contactql.OpNotEqual {
+			return not(elastic.NewNestedQuery("urns", elastic.NewBoolQuery().Must(
+				elastic.NewTermQuery("urns.path.keyword", value),
+				elastic.NewTermQuery("urns.scheme", key)),
+			)), nil
 		} else if c.Operator() == contactql.OpContains {
 			return elastic.NewNestedQuery("urns", elastic.NewBoolQuery().Must(
 				elastic.NewMatchPhraseQuery("urns.path", value),
