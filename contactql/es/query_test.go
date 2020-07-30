@@ -1,7 +1,6 @@
 package es_test
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -13,10 +12,12 @@ import (
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/contactql/es"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/olivere/elastic"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func newMockResolver() contactql.Resolver {
@@ -39,19 +40,19 @@ func newMockResolver() contactql.Resolver {
 func TestElasticQuery(t *testing.T) {
 	resolver := newMockResolver()
 
-	type TestCase struct {
+	type testCase struct {
 		Description string          `json:"description"`
 		Query       string          `json:"query"`
 		Elastic     json.RawMessage `json:"elastic"`
 		Error       string          `json:"error"`
 		RedactURNs  bool            `json:"redact_urns"`
 	}
-	tcs := make([]TestCase, 0, 20)
+	tcs := make([]testCase, 0, 20)
 	tcJSON, err := ioutil.ReadFile("testdata/to_query.json")
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	err = json.Unmarshal(tcJSON, &tcs)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	ny, _ := time.LoadLocation("America/New_York")
 
@@ -90,20 +91,11 @@ func TestElasticQuery(t *testing.T) {
 		}
 
 		source, err := query.Source()
-		assert.NoError(t, err, "error reqesting source for elastic query in ", testName)
-		if err != nil {
-			continue
-		}
+		require.NoError(t, err, "error reqesting source for elastic query in ", testName)
 
 		asJSON, err := jsonx.Marshal(source)
-		assert.NoError(t, err, "error marshaling elastic query in ", testName)
-		if err != nil {
-			continue
-		}
+		require.NoError(t, err)
 
-		compacted := &bytes.Buffer{}
-		json.Compact(compacted, tc.Elastic)
-
-		assert.Equal(t, compacted.String(), string(asJSON), "elastic query mismatch in ", testName)
+		test.AssertEqualJSON(t, tc.Elastic, asJSON, "elastic mismatch in %s", testName)
 	}
 }

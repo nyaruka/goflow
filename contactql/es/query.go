@@ -12,7 +12,7 @@ import (
 	"github.com/olivere/elastic"
 )
 
-// ToElasticQuery converts a contactql query to an Elastic query returning the normalized view as well as the elastic query
+// ToElasticQuery converts a contactql query to an Elastic query
 func ToElasticQuery(env envs.Environment, query *contactql.ContactQuery) elastic.Query {
 	return nodeToElastic(env, query.Root())
 }

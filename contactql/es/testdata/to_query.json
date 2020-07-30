@@ -203,7 +203,7 @@
                             {
                                 "match": {
                                     "fields.number": {
-                                        "query": "10"
+                                        "query": 10
                                     }
                                 }
                             }
@@ -232,7 +232,7 @@
                                     {
                                         "match": {
                                             "fields.number": {
-                                                "query": "10"
+                                                "query": 10
                                             }
                                         }
                                     }
@@ -264,7 +264,7 @@
                                         "from": null,
                                         "include_lower": true,
                                         "include_upper": true,
-                                        "to": "10"
+                                        "to": 10
                                     }
                                 }
                             }
@@ -291,7 +291,7 @@
                             {
                                 "range": {
                                     "fields.number": {
-                                        "from": "10",
+                                        "from": 10,
                                         "include_lower": true,
                                         "include_upper": true,
                                         "to": null
@@ -324,7 +324,7 @@
                                         "from": null,
                                         "include_lower": true,
                                         "include_upper": false,
-                                        "to": "10"
+                                        "to": 10
                                     }
                                 }
                             }
@@ -351,7 +351,7 @@
                             {
                                 "range": {
                                     "fields.number": {
-                                        "from": "10",
+                                        "from": 10,
                                         "include_lower": false,
                                         "include_upper": true,
                                         "to": null
@@ -1713,7 +1713,7 @@
                                         {
                                             "range": {
                                                 "fields.number": {
-                                                    "from": "10",
+                                                    "from": 10,
                                                     "include_lower": false,
                                                     "include_upper": true,
                                                     "to": null
@@ -1770,7 +1770,7 @@
                                         {
                                             "range": {
                                                 "fields.number": {
-                                                    "from": "10",
+                                                    "from": 10,
                                                     "include_lower": false,
                                                     "include_upper": true,
                                                     "to": null
