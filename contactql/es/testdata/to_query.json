@@ -1425,7 +1425,31 @@
     {
         "description": "tel scheme inequality",
         "query": "tel!=12345",
-        "error": "unsupported scheme comparator: !="
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "nested": {
+                        "path": "urns",
+                        "query": {
+                            "bool": {
+                                "must": [
+                                    {
+                                        "term": {
+                                            "urns.path.keyword": "12345"
+                                        }
+                                    },
+                                    {
+                                        "term": {
+                                            "urns.scheme": "tel"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
     },
     {
         "description": "tel scheme contains",
@@ -1554,7 +1578,7 @@
         }
     },
     {
-        "description": "urn equality",
+        "description": "urn attribute equality",
         "query": "urn=\"+12067799192\"",
         "elastic": {
             "nested": {
@@ -1568,12 +1592,25 @@
         }
     },
     {
-        "description": "urn inequality",
+        "description": "urn attribute inequality",
         "query": "urn!=\"+12067799192\"",
-        "error": "unsupported urn comparator: !="
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "nested": {
+                        "path": "urns",
+                        "query": {
+                            "term": {
+                                "urns.path.keyword": "+12067799192"
+                            }
+                        }
+                    }
+                }
+            }
+        }
     },
     {
-        "description": "urn contains",
+        "description": "urn attribute contains",
         "query": "urn~12345",
         "elastic": {
             "nested": {
