@@ -84,17 +84,17 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 	if v.env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		num, err := strconv.Atoi(value)
 		if err == nil {
-			return newCondition(PropertyTypeAttribute, AttributeID, OpEqual, strconv.Itoa(num), attributes[AttributeID], nil)
+			return newCondition(AttributeID, PropertyTypeAttribute, nil, OpEqual, strconv.Itoa(num), attributes[AttributeID])
 		}
 	} else if asURN != urns.NilURN {
 		scheme, path, _, _ := asURN.ToParts()
 
-		return newCondition(PropertyTypeScheme, scheme, OpEqual, path, assets.FieldTypeText, nil)
+		return newCondition(scheme, PropertyTypeScheme, nil, OpEqual, path, assets.FieldTypeText)
 
 	} else if implicitIsPhoneNumberRegex.MatchString(value) {
 		value = cleanPhoneNumberRegex.ReplaceAllLiteralString(value, "")
 
-		return newCondition(PropertyTypeScheme, urns.TelScheme, OpContains, value, assets.FieldTypeText, nil)
+		return newCondition(urns.TelScheme, PropertyTypeScheme, nil, OpContains, value, assets.FieldTypeText)
 	}
 
 	// convert to contains condition only if we have the right tokens, otherwise make equals check
@@ -103,7 +103,7 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 		operator = OpEqual
 	}
 
-	condition := newCondition(PropertyTypeAttribute, AttributeName, operator, value, attributes[AttributeName], nil)
+	condition := newCondition(AttributeName, PropertyTypeAttribute, nil, operator, value, attributes[AttributeName])
 
 	if err := condition.Validate(v.env, v.resolver); err != nil {
 		v.addError(err)
@@ -124,7 +124,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 	}
 
 	var propType PropertyType
-	var reference assets.Reference
+	var propField assets.Field
 
 	// first try to match a fixed attribute
 	valueType, isAttribute := attributes[propKey]
@@ -147,14 +147,14 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		field := v.resolver.ResolveField(propKey)
 		if field != nil {
 			propType = PropertyTypeField
+			propField = field
 			valueType = field.Type()
-			reference = assets.NewFieldReference(field.Key(), field.Name())
 		} else {
 			v.addError(NewQueryError(ErrUnknownProperty, "can't resolve '%s' to attribute, scheme or field", propKey).withExtra("property", propKey))
 		}
 	}
 
-	condition := newCondition(propType, propKey, operator, value, valueType, reference)
+	condition := newCondition(propKey, propType, propField, operator, value, valueType)
 
 	if err := condition.Validate(v.env, v.resolver); err != nil {
 		v.addError(err)

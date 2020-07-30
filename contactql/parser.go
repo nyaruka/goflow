@@ -71,24 +71,25 @@ type QueryNode interface {
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
 type Condition struct {
-	propType      PropertyType
 	propKey       string
+	propType      PropertyType
+	propField     assets.Field
 	operator      Operator
 	value         string
 	valueAsNumber decimal.Decimal
 	valueAsDate   time.Time
+	valueAsGroup  assets.Group
 	valueType     assets.FieldType
-	reference     assets.Reference
 }
 
-func newCondition(propType PropertyType, propKey string, operator Operator, value string, valueType assets.FieldType, reference assets.Reference) *Condition {
+func newCondition(propKey string, propType PropertyType, propField assets.Field, operator Operator, value string, valueType assets.FieldType) *Condition {
 	return &Condition{
-		propType:  propType,
 		propKey:   propKey,
+		propType:  propType,
+		propField: propField,
 		operator:  operator,
 		value:     value,
 		valueType: valueType,
-		reference: reference,
 	}
 }
 
@@ -97,6 +98,9 @@ func (c *Condition) PropertyKey() string { return c.propKey }
 
 // PropertyType returns the type (attribute, scheme, field)
 func (c *Condition) PropertyType() PropertyType { return c.propType }
+
+// PropertyField returns the field for the property being queried if it's a field
+func (c *Condition) PropertyField() assets.Field { return c.propField }
 
 // Operator returns the type of comparison being made
 func (c *Condition) Operator() Operator { return c.operator }
@@ -109,6 +113,9 @@ func (c *Condition) ValueAsNumber() decimal.Decimal { return c.valueAsNumber }
 
 // ValueAsDate returns the value as a date if condition is datetime
 func (c *Condition) ValueAsDate() time.Time { return c.valueAsDate }
+
+// ValueAsGroup returns the value as a group if condition is on the group attribute
+func (c *Condition) ValueAsGroup() assets.Group { return c.valueAsGroup }
 
 // Validate checks that this condition is valid (and thus can be evaluated)
 func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
@@ -161,7 +168,7 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 				return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
 			}
 			c.value = group.Name()
-			c.reference = assets.NewGroupReference(group.UUID(), group.Name())
+			c.valueAsGroup = group
 
 		} else if c.propKey == AttributeLanguage {
 			if c.value != "" {

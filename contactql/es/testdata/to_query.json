@@ -1658,6 +1658,16 @@
         "error": "'Spammers' is not a valid group name"
     },
     {
+        "description": "group is set",
+        "query": "group != \"\"",
+        "error": "can't check whether 'group' is set or not set"
+    },
+    {
+        "description": "group is not set",
+        "query": "group = \"\"",
+        "error": "can't check whether 'group' is set or not set"
+    },
+    {
         "description": "unknown property equality",
         "query": "unsupported=12345",
         "error": "can't resolve 'unsupported' to attribute, scheme or field"

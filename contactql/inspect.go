@@ -30,16 +30,19 @@ func Inspect(query *ContactQuery) *Inspection {
 			schemes[c.propKey] = true
 		}
 
-		switch typed := c.reference.(type) {
-		case *assets.FieldReference:
-			if !refsSeen[typed.String()] {
-				fieldRefs = append(fieldRefs, typed)
-				refsSeen[typed.String()] = true
+		if c.propField != nil {
+			ref := assets.NewFieldReference(c.propField.Key(), c.propField.Name())
+			if !refsSeen[ref.String()] {
+				fieldRefs = append(fieldRefs, ref)
+				refsSeen[ref.String()] = true
 			}
-		case *assets.GroupReference:
-			if !refsSeen[typed.String()] {
-				groupRefs = append(groupRefs, typed)
-				refsSeen[typed.String()] = true
+		}
+
+		if c.valueAsGroup != nil {
+			ref := assets.NewGroupReference(c.valueAsGroup.UUID(), c.valueAsGroup.Name())
+			if !refsSeen[ref.String()] {
+				groupRefs = append(groupRefs, ref)
+				refsSeen[ref.String()] = true
 			}
 		}
 	})
