@@ -1,3 +1,8 @@
+v0.99.0
+----------
+ * Rework elastic query generation so that all errors are caught at parsing stage
+ * Allow URN inequality in elastic searches
+
 v0.98.0
 ----------
  * Rework error handling in contactql so more errors are caught during parsing and have associated codes
