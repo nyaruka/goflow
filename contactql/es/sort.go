@@ -8,38 +8,40 @@ import (
 	"github.com/nyaruka/goflow/contactql"
 
 	"github.com/olivere/elastic"
+	"github.com/pkg/errors"
 )
 
-// ToElasticFieldSort returns the FieldSort for the passed in field
-func ToElasticFieldSort(resolver contactql.Resolver, fieldName string) (*elastic.FieldSort, error) {
-	// no field name? default to most recent first by id
-	if fieldName == "" {
+// ToElasticFieldSort returns the elastic FieldSort for the passed in sort by string
+func ToElasticFieldSort(sortBy string, resolver contactql.Resolver) (*elastic.FieldSort, error) {
+	// default to most recent first by id
+	if sortBy == "" {
 		return elastic.NewFieldSort("id").Desc(), nil
 	}
 
 	// figure out if we are ascending or descending (default is ascending, can be changed with leading -)
+	property := sortBy
 	ascending := true
-	if strings.HasPrefix(fieldName, "-") {
+	if strings.HasPrefix(sortBy, "-") {
 		ascending = false
-		fieldName = fieldName[1:]
+		property = sortBy[1:]
 	}
 
-	fieldName = strings.ToLower(fieldName)
+	property = strings.ToLower(property)
 
 	// name needs to be sorted by keyword field
-	if fieldName == contactql.AttributeName {
+	if property == contactql.AttributeName {
 		return elastic.NewFieldSort("name.keyword").Order(ascending), nil
 	}
 
 	// other attributes are straight sorts
-	if fieldName == contactql.AttributeID || fieldName == contactql.AttributeCreatedOn || fieldName == contactql.AttributeLanguage {
-		return elastic.NewFieldSort(fieldName).Order(ascending), nil
+	if property == contactql.AttributeID || property == contactql.AttributeCreatedOn || property == contactql.AttributeLanguage {
+		return elastic.NewFieldSort(property).Order(ascending), nil
 	}
 
 	// we are sorting by a custom field
-	field := resolver.ResolveField(fieldName)
+	field := resolver.ResolveField(property)
 	if field == nil {
-		return nil, contactql.NewQueryError("", "unable to find field with name: %s", fieldName)
+		return nil, errors.Errorf("no such field with key: %s", property)
 	}
 
 	var key string
