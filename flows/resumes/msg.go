@@ -60,6 +60,11 @@ func (r *MsgResume) Msg() *flows.MsgIn { return r.msg }
 
 // Apply applies our state changes and saves any events to the run
 func (r *MsgResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) error {
+	// do base changes (contact, environment)
+	if err := r.baseResume.Apply(run, logEvent); err != nil {
+		return err
+	}
+
 	// update our input
 	input, err := inputs.NewMsg(run.Session().Assets(), r.msg, r.ResumedOn())
 	if err != nil {
@@ -69,8 +74,7 @@ func (r *MsgResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) error
 	run.Session().SetInput(input)
 	run.ResetExpiration(nil)
 	logEvent(events.NewMsgReceived(r.msg))
-
-	return r.baseResume.Apply(run, logEvent)
+	return nil
 }
 
 var _ flows.Resume = (*MsgResume)(nil)

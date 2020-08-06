@@ -26,23 +26,25 @@ var operatorAliases = map[string]Operator{
 
 // Fixed attributes that can be searched
 const (
-	AttributeUUID      = "uuid"
-	AttributeID        = "id"
-	AttributeName      = "name"
-	AttributeLanguage  = "language"
-	AttributeURN       = "urn"
-	AttributeGroup     = "group"
-	AttributeCreatedOn = "created_on"
+	AttributeUUID       = "uuid"
+	AttributeID         = "id"
+	AttributeName       = "name"
+	AttributeLanguage   = "language"
+	AttributeURN        = "urn"
+	AttributeGroup      = "group"
+	AttributeCreatedOn  = "created_on"
+	AttributeLastSeenOn = "last_seen_on"
 )
 
 var attributes = map[string]assets.FieldType{
-	AttributeUUID:      assets.FieldTypeText,
-	AttributeID:        assets.FieldTypeText,
-	AttributeName:      assets.FieldTypeText,
-	AttributeLanguage:  assets.FieldTypeText,
-	AttributeURN:       assets.FieldTypeText,
-	AttributeGroup:     assets.FieldTypeText,
-	AttributeCreatedOn: assets.FieldTypeDatetime,
+	AttributeUUID:       assets.FieldTypeText,
+	AttributeID:         assets.FieldTypeText,
+	AttributeName:       assets.FieldTypeText,
+	AttributeLanguage:   assets.FieldTypeText,
+	AttributeURN:        assets.FieldTypeText,
+	AttributeGroup:      assets.FieldTypeText,
+	AttributeCreatedOn:  assets.FieldTypeDatetime,
+	AttributeLastSeenOn: assets.FieldTypeDatetime,
 }
 
 // Resolver provides functions for resolving fields and groups referenced in queries

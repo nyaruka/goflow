@@ -48,24 +48,40 @@ func TestContact(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
-	contact, _ := flows.NewContact(
-		sa, flows.ContactUUID(uuids.New()), flows.ContactID(12345), "Joe Bloggs", envs.Language("eng"), flows.ContactStatusActive,
-		nil, time.Now(), nil, nil, nil, assets.PanicOnMissing,
+	tz, _ := time.LoadLocation("America/Bogota")
+
+	contact, err := flows.NewContact(
+		sa,
+		flows.ContactUUID(uuids.New()),
+		flows.ContactID(12345),
+		"Joe Bloggs",
+		envs.Language("eng"),
+		flows.ContactStatusActive,
+		tz,
+		time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC),
+		nil,
+		nil,
+		nil,
+		nil,
+		assets.PanicOnMissing,
 	)
+	require.NoError(t, err)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
 	assert.Equal(t, flows.ContactStatusActive, contact.Status())
+	assert.Nil(t, contact.LastSeenOn())
 	assert.Nil(t, contact.PreferredChannel())
 
-	contact.SetTimezone(env.Timezone())
-	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
+	contact.SetLastSeenOn(time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC))
+	assert.Equal(t, time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC), *contact.LastSeenOn())
+
 	contact.AddURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil)
 	contact.AddURN(urns.URN("twitter:joey"), nil)
 	contact.AddURN(urns.URN("whatsapp:235423721788"), nil)
 
 	assert.Equal(t, "Joe Bloggs", contact.Name())
 	assert.Equal(t, flows.ContactID(12345), contact.ID())
-	assert.Equal(t, env.Timezone(), contact.Timezone())
+	assert.Equal(t, tz, contact.Timezone())
 	assert.Equal(t, envs.Language("eng"), contact.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
 	assert.Equal(t, envs.Country("US"), contact.Country())
@@ -110,7 +126,7 @@ func TestContact(t *testing.T) {
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
 	assert.Equal(t, flows.ContactID(12345), clone.ID())
-	assert.Equal(t, env.Timezone(), clone.Timezone())
+	assert.Equal(t, tz, clone.Timezone())
 	assert.Equal(t, envs.Language("eng"), clone.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
 
@@ -119,19 +135,20 @@ func TestContact(t *testing.T) {
 	assert.Nil(t, mrNil.Clone())
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
-		"__default__": types.NewXText("Joe Bloggs"),
-		"channel":     flows.Context(env, android),
-		"created_on":  types.NewXDateTime(contact.CreatedOn()),
-		"fields":      flows.Context(env, contact.Fields()),
-		"first_name":  types.NewXText("Joe"),
-		"groups":      contact.Groups().ToXValue(env),
-		"id":          types.NewXText("12345"),
-		"language":    types.NewXText("eng"),
-		"name":        types.NewXText("Joe Bloggs"),
-		"timezone":    types.NewXText("UTC"),
-		"urn":         contact.URNs()[0].ToXValue(env),
-		"urns":        contact.URNs().ToXValue(env),
-		"uuid":        types.NewXText(string(contact.UUID())),
+		"__default__":  types.NewXText("Joe Bloggs"),
+		"channel":      flows.Context(env, android),
+		"created_on":   types.NewXDateTime(contact.CreatedOn()),
+		"last_seen_on": types.NewXDateTime(*contact.LastSeenOn()),
+		"fields":       flows.Context(env, contact.Fields()),
+		"first_name":   types.NewXText("Joe"),
+		"groups":       contact.Groups().ToXValue(env),
+		"id":           types.NewXText("12345"),
+		"language":     types.NewXText("eng"),
+		"name":         types.NewXText("Joe Bloggs"),
+		"timezone":     types.NewXText("America/Bogota"),
+		"urn":          contact.URNs()[0].ToXValue(env),
+		"urns":         contact.URNs().ToXValue(env),
+		"uuid":         types.NewXText(string(contact.UUID())),
 	}), flows.Context(env, contact))
 
 	assert.True(t, contact.ClearURNs()) // did have URNs
@@ -170,8 +187,19 @@ func TestContactFormat(t *testing.T) {
 
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
-		sa, flows.ContactUUID(uuids.New()), flows.ContactID(1234), "", envs.NilLanguage, flows.ContactStatusActive, nil, time.Now(),
-		nil, nil, nil, assets.PanicOnMissing,
+		sa,
+		flows.ContactUUID(uuids.New()),
+		flows.ContactID(1234),
+		"",
+		envs.NilLanguage,
+		flows.ContactStatusActive,
+		nil,
+		time.Now(),
+		nil,
+		nil,
+		nil,
+		nil,
+		assets.PanicOnMissing,
 	)
 	contact.AddURN(urns.URN("twitter:joey"), nil)
 	assert.Equal(t, "joey", contact.Format(env))
@@ -334,7 +362,8 @@ func TestContactQuery(t *testing.T) {
 			"tel:+12065551313", 
 			"twitter:ewok"
 		],
-		"created_on": "2020-01-24T13:24:30.000000000-00:00"
+		"created_on": "2020-01-24T13:24:30Z",
+		"last_seen_on": "2020-08-06T15:41:30Z"
 	}`)
 
 	contact, err := flows.ReadContact(session.Assets(), contactJSON, assets.PanicOnMissing)
@@ -369,6 +398,13 @@ func TestContactQuery(t *testing.T) {
 		{`created_on = 25-01-2020`, envs.RedactionPolicyNone, false, ""},
 		{`created_on > 22-01-2020`, envs.RedactionPolicyNone, true, ""},
 		{`created_on > 26-01-2020`, envs.RedactionPolicyNone, false, ""},
+
+		{`last_seen_on = 06-08-2020`, envs.RedactionPolicyNone, true, ""},
+		{`last_seen_on = 07-08-2020`, envs.RedactionPolicyNone, false, ""},
+		{`last_seen_on > 05-08-2020`, envs.RedactionPolicyNone, true, ""},
+		{`last_seen_on > 08-08-2020`, envs.RedactionPolicyNone, false, ""},
+		{`last_seen_on != ""`, envs.RedactionPolicyNone, true, ""},
+		{`last_seen_on = ""`, envs.RedactionPolicyNone, false, ""},
 
 		{`tel = +12065551212`, envs.RedactionPolicyNone, true, ""},
 		{`tel = +12065551313`, envs.RedactionPolicyNone, true, ""},

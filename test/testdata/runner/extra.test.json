@@ -301,7 +301,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:29.123456789Z",
+                    "created_on": "2018-07-06T12:30:30.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -343,6 +343,7 @@
                     "created_on": "2000-01-01T00:00:00Z",
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -462,7 +463,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -500,7 +501,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:39.123456789Z",
-                        "expires_on": "2018-07-06T12:30:27.123456789Z",
+                        "expires_on": "2018-07-06T12:30:28.123456789Z",
                         "flow": {
                             "name": "Legacy Extra",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"

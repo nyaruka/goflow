@@ -147,6 +147,7 @@
                             ],
                             "id": 1234567,
                             "language": "eng",
+                            "last_seen_on": "2000-01-01T00:00:00Z",
                             "name": "Ben Haggerty",
                             "status": "active",
                             "timezone": "America/Guayaquil",
@@ -439,6 +440,7 @@
                         }
                     ],
                     "id": 1234567,
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Jeff Jefferson",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -617,6 +619,7 @@
                                         ],
                                         "id": 1234567,
                                         "language": "eng",
+                                        "last_seen_on": "2000-01-01T00:00:00Z",
                                         "name": "Ben Haggerty",
                                         "status": "active",
                                         "timezone": "America/Guayaquil",

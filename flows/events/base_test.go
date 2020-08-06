@@ -277,6 +277,7 @@ func TestEventMarshaling(t *testing.T) {
 					],
 					"id": 1234567,
 					"language": "eng",
+					"last_seen_on": "2017-12-31T11:35:10.035757258-02:00",
 					"name": "Ryan Lewis",
 					"status": "active",
 					"timezone": "America/Guayaquil",

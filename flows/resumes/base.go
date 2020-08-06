@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/jsonx"
@@ -66,8 +65,6 @@ func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) erro
 		}
 
 		run.Session().SetContact(r.contact)
-
-		triggers.EnsureDynamicGroups(run.Session(), logEvent)
 	}
 
 	if run.Status() == flows.RunStatusWaiting {
