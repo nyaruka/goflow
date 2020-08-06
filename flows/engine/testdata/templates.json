@@ -521,14 +521,14 @@
             ],
             "results": {
                 "2factor": {
-                    "category": "",
                     "categories": [
                         ""
                     ],
-                    "category_localized": "",
                     "categories_localized": [
                         ""
                     ],
+                    "category": "",
+                    "category_localized": "",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": null,
                     "input": "",
@@ -540,14 +540,14 @@
                     ]
                 },
                 "favorite_color": {
-                    "category": "Red",
                     "categories": [
                         "Red"
                     ],
-                    "category_localized": "Red",
                     "categories_localized": [
                         "Red"
                     ],
+                    "category": "Red",
+                    "category_localized": "Red",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": null,
                     "input": "",
@@ -597,14 +597,14 @@
                     ]
                 },
                 "phone_number": {
-                    "category": "",
                     "categories": [
                         ""
                     ],
-                    "category_localized": "",
                     "categories_localized": [
                         ""
                     ],
+                    "category": "",
+                    "category_localized": "",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": null,
                     "input": "",
@@ -616,14 +616,14 @@
                     ]
                 },
                 "webhook": {
-                    "category": "Success",
                     "categories": [
                         "Success"
                     ],
-                    "category_localized": "Success",
                     "categories_localized": [
                         "Success"
                     ],
+                    "category": "Success",
+                    "category_localized": "Success",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": {
                         "results": [
@@ -702,14 +702,14 @@
             },
             "results": {
                 "age": {
-                    "category": "Youth",
                     "categories": [
                         "Youth"
                     ],
-                    "category_localized": "Youth",
                     "categories_localized": [
                         "Youth"
                     ],
+                    "category": "Youth",
+                    "category_localized": "Youth",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": null,
                     "input": "",
@@ -766,14 +766,14 @@
                 },
                 "results": {
                     "age": {
-                        "category": "Youth",
                         "categories": [
                             "Youth"
                         ],
-                        "category_localized": "Youth",
                         "categories_localized": [
                             "Youth"
                         ],
+                        "category": "Youth",
+                        "category_localized": "Youth",
                         "created_on": "2018-04-11T13:24:30.123456Z",
                         "extra": null,
                         "input": "",
@@ -852,14 +852,14 @@
             },
             "results": {
                 "role": {
-                    "category": "Reporter",
                     "categories": [
                         "Reporter"
                     ],
-                    "category_localized": "Reporter",
                     "categories_localized": [
                         "Reporter"
                     ],
+                    "category": "Reporter",
+                    "category_localized": "Reporter",
                     "created_on": "2000-01-01T00:00:00.000000Z",
                     "extra": null,
                     "input": "a reporter",
@@ -905,14 +905,14 @@
                 },
                 "results": {
                     "role": {
-                        "category": "Reporter",
                         "categories": [
                             "Reporter"
                         ],
-                        "category_localized": "Reporter",
                         "categories_localized": [
                             "Reporter"
                         ],
+                        "category": "Reporter",
+                        "category_localized": "Reporter",
                         "created_on": "2000-01-01T00:00:00.000000Z",
                         "extra": null,
                         "input": "a reporter",
@@ -954,10 +954,10 @@
             "keyword": "",
             "origin": "",
             "params": {
-                "source": "website",
                 "address": {
                     "state": "WA"
-                }
+                },
+                "source": "website"
             },
             "type": "flow_action",
             "user": ""
