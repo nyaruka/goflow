@@ -251,9 +251,7 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 	}
 
 	// resumes are allowed to make state changes
-	if err := resume.Apply(waitingRun, logEvent); err != nil {
-		return err
-	}
+	resume.Apply(waitingRun, logEvent)
 
 	// ensure dynamic groups are correct
 	s.ensureDynamicGroups(logEvent)
