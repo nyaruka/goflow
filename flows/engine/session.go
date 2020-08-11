@@ -63,8 +63,15 @@ func (s *session) SetEnvironment(env envs.Environment) { s.env = env }
 func (s *session) Contact() *flows.Contact           { return s.contact }
 func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
 
-func (s *session) Input() flows.Input         { return s.input }
-func (s *session) SetInput(input flows.Input) { s.input = input }
+func (s *session) Input() flows.Input { return s.input }
+func (s *session) SetInput(input flows.Input) {
+	s.input = input
+
+	// if we have a contact, update their last seen date
+	if input != nil && s.contact != nil {
+		s.contact.SetLastSeenOn(input.CreatedOn())
+	}
+}
 
 func (s *session) BatchStart() bool { return s.batchStart }
 
@@ -159,6 +166,9 @@ func (s *session) start(trigger flows.Trigger) (flows.Sprint, error) {
 		return sprint, err
 	}
 
+	// ensure dynamic groups are correct
+	s.ensureDynamicGroups(sprint.LogEvent)
+
 	// off to the races...
 	if err := s.continueUntilWait(sprint, nil, noDestination, nil, trigger); err != nil {
 		return sprint, err
@@ -241,9 +251,10 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 	}
 
 	// resumes are allowed to make state changes
-	if err := resume.Apply(waitingRun, logEvent); err != nil {
-		return err
-	}
+	resume.Apply(waitingRun, logEvent)
+
+	// ensure dynamic groups are correct
+	s.ensureDynamicGroups(logEvent)
 
 	_, isTimeout := resume.(*resumes.WaitTimeoutResume)
 
@@ -480,6 +491,26 @@ func (s *session) pickNodeExit(sprint flows.Sprint, run flows.FlowRun, node flow
 
 	// no exit? return no destination
 	return noDestination, nil
+}
+
+// EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
+// as far as the engine is concerned
+func (s *session) ensureDynamicGroups(logEvent flows.EventCallback) {
+	if s.contact == nil {
+		return
+	}
+
+	added, removed, errors := s.contact.ReevaluateDynamicGroups(s.Environment())
+
+	// add error event for each group we couldn't re-evaluate
+	for _, err := range errors {
+		logEvent(events.NewError(err))
+	}
+
+	// add groups changed event for the groups we were added/removed to/from
+	if len(added) > 0 || len(removed) > 0 {
+		logEvent(events.NewContactGroupsChanged(added, removed))
+	}
 }
 
 const noDestination = flows.NodeUUID("")

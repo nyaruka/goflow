@@ -166,7 +166,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -240,6 +240,7 @@
                     ],
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ryan Lewis",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -300,7 +301,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -355,7 +356,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:26.123456789Z",
-                        "expires_on": "2018-07-06T12:30:10.123456789Z",
+                        "expires_on": "2018-07-06T12:30:11.123456789Z",
                         "flow": {
                             "name": "Brochure",
                             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"

@@ -230,7 +230,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "created_on": "2018-07-06T12:30:23.123456789Z",
                     "msg": {
                         "text": "Ben",
                         "urn": "tel:+12065551212",
@@ -306,6 +306,7 @@
                     },
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2018-10-26T12:21:26.836366-05:00",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -435,7 +436,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "msg": {
                                     "text": "Ben",
                                     "urn": "tel:+12065551212",

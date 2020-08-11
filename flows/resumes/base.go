@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/jsonx"
@@ -52,7 +51,7 @@ func (r *baseResume) Contact() *flows.Contact       { return r.contact }
 func (r *baseResume) ResumedOn() time.Time          { return r.resumedOn }
 
 // Apply applies our state changes and saves any events to the run
-func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) error {
+func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
 	if r.environment != nil {
 		if !run.Session().Environment().Equal(r.environment) {
 			logEvent(events.NewEnvironmentRefreshed(r.environment))
@@ -66,15 +65,11 @@ func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) erro
 		}
 
 		run.Session().SetContact(r.contact)
-
-		triggers.EnsureDynamicGroups(run.Session(), logEvent)
 	}
 
 	if run.Status() == flows.RunStatusWaiting {
 		run.SetStatus(flows.RunStatusActive)
 	}
-
-	return nil
 }
 
 //------------------------------------------------------------------------------------------

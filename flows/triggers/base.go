@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/dates"
 	"github.com/nyaruka/goflow/utils/jsonx"
@@ -93,8 +92,6 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 
 	if t.contact != nil {
 		session.SetContact(t.contact.Clone())
-
-		EnsureDynamicGroups(session, logEvent)
 	}
 	return nil
 }
@@ -102,22 +99,6 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 // InitializeRun performs additional initialization when we create our first run
 func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallback) error {
 	return nil
-}
-
-// EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
-// as far as the engine is concerned
-func EnsureDynamicGroups(session flows.Session, logEvent flows.EventCallback) {
-	added, removed, errors := session.Contact().ReevaluateDynamicGroups(session.Environment())
-
-	// add error event for each group we couldn't re-evaluate
-	for _, err := range errors {
-		logEvent(events.NewError(err))
-	}
-
-	// add groups changed event for the groups we were added/removed to/from
-	if len(added) > 0 || len(removed) > 0 {
-		logEvent(events.NewContactGroupsChanged(added, removed))
-	}
 }
 
 //------------------------------------------------------------------------------------------

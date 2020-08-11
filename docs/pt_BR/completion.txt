@@ -5,6 +5,7 @@ contact.first_name -> the first name of the contact
 contact.name -> the name of the contact
 contact.language -> the language of the contact as 3-letter ISO code
 contact.created_on -> the creation date of the contact
+contact.last_seen_on -> the last seen date of the contact
 contact.urns -> the URNs belonging to the contact
 contact.urns[0] -> first of the URNs belonging to the contact
 contact.urn -> the preferred URN of the contact
@@ -69,6 +70,7 @@ run.contact.first_name -> the first name of the contact
 run.contact.name -> the name of the contact
 run.contact.language -> the language of the contact as 3-letter ISO code
 run.contact.created_on -> the creation date of the contact
+run.contact.last_seen_on -> the last seen date of the contact
 run.contact.urns -> the URNs belonging to the contact
 run.contact.urns[0] -> first of the URNs belonging to the contact
 run.contact.urn -> the preferred URN of the contact
@@ -109,6 +111,7 @@ child.contact.first_name -> the first name of the contact
 child.contact.name -> the name of the contact
 child.contact.language -> the language of the contact as 3-letter ISO code
 child.contact.created_on -> the creation date of the contact
+child.contact.last_seen_on -> the last seen date of the contact
 child.contact.urns -> the URNs belonging to the contact
 child.contact.urns[0] -> first of the URNs belonging to the contact
 child.contact.urn -> the preferred URN of the contact
@@ -157,6 +160,7 @@ parent.contact.first_name -> the first name of the contact
 parent.contact.name -> the name of the contact
 parent.contact.language -> the language of the contact as 3-letter ISO code
 parent.contact.created_on -> the creation date of the contact
+parent.contact.last_seen_on -> the last seen date of the contact
 parent.contact.urns -> the URNs belonging to the contact
 parent.contact.urns[0] -> first of the URNs belonging to the contact
 parent.contact.urn -> the preferred URN of the contact

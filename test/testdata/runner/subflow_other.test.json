@@ -244,7 +244,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -300,6 +300,7 @@
                     },
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -367,12 +368,12 @@
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T12:30:20.123456789Z",
+                        "expires_on": "2018-07-06T12:30:21.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                         },
-                        "modified_on": "2018-07-06T12:30:22.123456789Z",
+                        "modified_on": "2018-07-06T12:30:23.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -412,7 +413,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -455,7 +456,7 @@
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T12:30:20.123456789Z",
+                        "expires_on": "2018-07-06T12:30:21.123456789Z",
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
@@ -558,7 +559,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:40.123456789Z",
+                    "created_on": "2018-07-06T12:30:41.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -628,6 +629,7 @@
                     },
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -714,7 +716,7 @@
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T12:30:37.123456789Z",
+                        "expires_on": "2018-07-06T12:30:38.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
@@ -771,7 +773,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -813,7 +815,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:40.123456789Z",
+                                "created_on": "2018-07-06T12:30:41.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -851,7 +853,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:50.123456789Z",
-                        "expires_on": "2018-07-06T12:30:37.123456789Z",
+                        "expires_on": "2018-07-06T12:30:38.123456789Z",
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
@@ -961,7 +963,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:31:00.123456789Z",
+                    "created_on": "2018-07-06T12:31:01.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -1017,6 +1019,7 @@
                     },
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -1102,7 +1105,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:00.123456789Z",
+                                "created_on": "2018-07-06T12:31:01.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -1145,7 +1148,7 @@
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T12:30:58.123456789Z",
+                        "expires_on": "2018-07-06T12:30:59.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
@@ -1224,7 +1227,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -1266,7 +1269,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:40.123456789Z",
+                                "created_on": "2018-07-06T12:30:41.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -1304,7 +1307,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:50.123456789Z",
-                        "expires_on": "2018-07-06T12:30:37.123456789Z",
+                        "expires_on": "2018-07-06T12:30:38.123456789Z",
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
@@ -1414,7 +1417,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:31:16.123456789Z",
+                    "created_on": "2018-07-06T12:31:17.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -1465,6 +1468,7 @@
                     },
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -1550,7 +1554,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:00.123456789Z",
+                                "created_on": "2018-07-06T12:31:01.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -1592,7 +1596,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:16.123456789Z",
+                                "created_on": "2018-07-06T12:31:17.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -1630,7 +1634,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:31:26.123456789Z",
-                        "expires_on": "2018-07-06T12:31:14.123456789Z",
+                        "expires_on": "2018-07-06T12:31:15.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
@@ -1716,7 +1720,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -1758,7 +1762,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:40.123456789Z",
+                                "created_on": "2018-07-06T12:30:41.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -1796,7 +1800,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:50.123456789Z",
-                        "expires_on": "2018-07-06T12:30:37.123456789Z",
+                        "expires_on": "2018-07-06T12:30:38.123456789Z",
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"

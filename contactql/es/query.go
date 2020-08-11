@@ -256,6 +256,35 @@ func attributeConditionToElastic(env envs.Environment, c *contactql.Condition) e
 		default:
 			panic(fmt.Sprintf("unsupported created_on attribute operator: %s", c.Operator()))
 		}
+	case contactql.AttributeLastSeenOn:
+		// special case for set/unset
+		if (c.Operator() == contactql.OpEqual || c.Operator() == contactql.OpNotEqual) && value == "" {
+			query = elastic.NewExistsQuery("last_seen_on")
+			if c.Operator() == contactql.OpEqual {
+				query = not(query)
+			}
+			return query
+		}
+
+		value := c.ValueAsDate()
+		start, end := dates.DayToUTCRange(value, value.Location())
+
+		switch c.Operator() {
+		case contactql.OpEqual:
+			return elastic.NewRangeQuery("last_seen_on").Gte(start).Lt(end)
+		case contactql.OpNotEqual:
+			return not(elastic.NewRangeQuery("last_seen_on").Gte(start).Lt(end))
+		case contactql.OpGreaterThan:
+			return elastic.NewRangeQuery("last_seen_on").Gte(end)
+		case contactql.OpGreaterThanOrEqual:
+			return elastic.NewRangeQuery("last_seen_on").Gte(start)
+		case contactql.OpLessThan:
+			return elastic.NewRangeQuery("last_seen_on").Lt(start)
+		case contactql.OpLessThanOrEqual:
+			return elastic.NewRangeQuery("last_seen_on").Lt(end)
+		default:
+			panic(fmt.Sprintf("unsupported last_seen_on attribute operator: %s", c.Operator()))
+		}
 	case contactql.AttributeURN:
 		value := strings.ToLower(c.Value())
 

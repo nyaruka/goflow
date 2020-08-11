@@ -279,7 +279,7 @@ type TriggerWithRun interface {
 type Resume interface {
 	utils.Typed
 
-	Apply(FlowRun, EventCallback) error
+	Apply(FlowRun, EventCallback)
 
 	Environment() envs.Environment
 	Contact() *Contact

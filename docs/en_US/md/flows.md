@@ -1073,6 +1073,7 @@ will be created and it's the responsibility of the caller to act on that by init
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "last_seen_on": "2017-12-31T11:35:10.035757258-02:00",
             "urns": [
                 "tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "twitterid:54784326227#nyaruka",

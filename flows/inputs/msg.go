@@ -32,7 +32,7 @@ type MsgInput struct {
 }
 
 // NewMsg creates a new user input based on a message
-func NewMsg(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) (*MsgInput, error) {
+func NewMsg(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) *MsgInput {
 	// load the channel
 	var channel *flows.Channel
 	if msg.Channel() != nil {
@@ -45,7 +45,7 @@ func NewMsg(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) (
 		text:        msg.Text(),
 		attachments: msg.Attachments(),
 		externalID:  msg.ExternalID(),
-	}, nil
+	}
 }
 
 // Context returns the properties available in expressions

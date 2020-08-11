@@ -1344,6 +1344,121 @@
         "error": "can't convert 'dog' to a date"
     },
     {
+        "description": "last_seen_on greater than",
+        "query": "last_seen_on>2018-06-23",
+        "elastic": {
+            "range": {
+                "last_seen_on": {
+                    "from": "2018-06-24T00:00:00-04:00",
+                    "include_lower": true,
+                    "include_upper": true,
+                    "to": null
+                }
+            }
+        }
+    },
+    {
+        "description": "last_seen_on greater than or equal",
+        "query": "last_seen_on>=2018-06-23",
+        "elastic": {
+            "range": {
+                "last_seen_on": {
+                    "from": "2018-06-23T00:00:00-04:00",
+                    "include_lower": true,
+                    "include_upper": true,
+                    "to": null
+                }
+            }
+        }
+    },
+    {
+        "description": "last_seen_on less than",
+        "query": "last_seen_on<2018-06-23",
+        "elastic": {
+            "range": {
+                "last_seen_on": {
+                    "from": null,
+                    "include_lower": true,
+                    "include_upper": false,
+                    "to": "2018-06-23T00:00:00-04:00"
+                }
+            }
+        }
+    },
+    {
+        "description": "last_seen_on less than or equal",
+        "query": "last_seen_on<=2018-06-23",
+        "elastic": {
+            "range": {
+                "last_seen_on": {
+                    "from": null,
+                    "include_lower": true,
+                    "include_upper": false,
+                    "to": "2018-06-24T00:00:00-04:00"
+                }
+            }
+        }
+    },
+    {
+        "description": "last_seen_on equality",
+        "query": "last_seen_on=2018-06-23",
+        "elastic": {
+            "range": {
+                "last_seen_on": {
+                    "from": "2018-06-23T00:00:00-04:00",
+                    "include_lower": true,
+                    "include_upper": false,
+                    "to": "2018-06-24T00:00:00-04:00"
+                }
+            }
+        }
+    },
+    {
+        "description": "last_seen_on inequality",
+        "query": "last_seen_on!=2018-06-23",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "range": {
+                        "last_seen_on": {
+                            "from": "2018-06-23T00:00:00-04:00",
+                            "include_lower": true,
+                            "include_upper": false,
+                            "to": "2018-06-24T00:00:00-04:00"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "last_seen_on is set",
+        "query": "last_seen_on != \"\"",
+        "elastic": {
+            "exists": {
+                "field": "last_seen_on"
+            }
+        }
+    },
+    {
+        "description": "last_seen_on is not set",
+        "query": "last_seen_on = \"\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "exists": {
+                        "field": "last_seen_on"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "last_seen_on less than with invalid date",
+        "query": "last_seen_on<dog",
+        "error": "can't convert 'dog' to a date"
+    },
+    {
         "description": "tel scheme is set",
         "query": "tel!=\"\"",
         "elastic": {

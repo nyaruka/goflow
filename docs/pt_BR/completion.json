@@ -171,6 +171,11 @@
                     "type": "datetime"
                 },
                 {
+                    "key": "last_seen_on",
+                    "help": "the last seen date of the contact",
+                    "type": "any"
+                },
+                {
                     "key": "urns",
                     "help": "the URNs belonging to the contact",
                     "type": "text",
