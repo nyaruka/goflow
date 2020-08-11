@@ -1,3 +1,7 @@
+v0.100.0
+----------
+ * Add last_seen_on to contacts and expose in expressions and queries
+
 v0.99.0
 ----------
  * Rework elastic query generation so that all errors are caught at parsing stage
