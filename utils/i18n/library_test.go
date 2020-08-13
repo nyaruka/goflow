@@ -19,14 +19,14 @@ func TestLibrary(t *testing.T) {
 
 	defer os.RemoveAll(libraryDir)
 
-	// and setup the locales directory for en_US and es
+	// and setup the locale directory for en_US and es
 	os.Mkdir(path.Join(libraryDir, "en"), 0700)
 	os.Mkdir(path.Join(libraryDir, "es"), 0700)
 
 	// copy sample PO files from testdata
-	poEN, err := ioutil.ReadFile(path.Join("testdata", "locales", "en", "simple.po"))
+	poEN, err := ioutil.ReadFile(path.Join("testdata", "locale", "en", "simple.po"))
 	require.NoError(t, err)
-	poES, err := ioutil.ReadFile(path.Join("testdata", "locales", "es", "simple.po"))
+	poES, err := ioutil.ReadFile(path.Join("testdata", "locale", "es", "simple.po"))
 	require.NoError(t, err)
 	ioutil.WriteFile(path.Join(libraryDir, "en", "simple.po"), poEN, 0700)
 	ioutil.WriteFile(path.Join(libraryDir, "es", "simple.po"), poES, 0700)
