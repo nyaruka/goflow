@@ -5,7 +5,7 @@ contact.first_name -> o primeiro nome do contato
 contact.name -> o nome do contato
 contact.language -> a língua do contato como código ISO de 3 letras
 contact.created_on -> a data de criação do contato
-contact.last_seen_on -> the last seen date of the contact
+contact.last_seen_on -> a data de criação do contato
 contact.urns -> as URNs pertencentes ao contato
 contact.urns[0] -> first of as URNs pertencentes ao contato
 contact.urn -> a URN preferida do contato
@@ -70,7 +70,7 @@ run.contact.first_name -> o primeiro nome do contato
 run.contact.name -> o nome do contato
 run.contact.language -> a língua do contato como código ISO de 3 letras
 run.contact.created_on -> a data de criação do contato
-run.contact.last_seen_on -> the last seen date of the contact
+run.contact.last_seen_on -> a data de criação do contato
 run.contact.urns -> as URNs pertencentes ao contato
 run.contact.urns[0] -> first of as URNs pertencentes ao contato
 run.contact.urn -> a URN preferida do contato
@@ -111,7 +111,7 @@ child.contact.first_name -> o primeiro nome do contato
 child.contact.name -> o nome do contato
 child.contact.language -> a língua do contato como código ISO de 3 letras
 child.contact.created_on -> a data de criação do contato
-child.contact.last_seen_on -> the last seen date of the contact
+child.contact.last_seen_on -> a data de criação do contato
 child.contact.urns -> as URNs pertencentes ao contato
 child.contact.urns[0] -> first of as URNs pertencentes ao contato
 child.contact.urn -> a URN preferida do contato
@@ -160,7 +160,7 @@ parent.contact.first_name -> o primeiro nome do contato
 parent.contact.name -> o nome do contato
 parent.contact.language -> a língua do contato como código ISO de 3 letras
 parent.contact.created_on -> a data de criação do contato
-parent.contact.last_seen_on -> the last seen date of the contact
+parent.contact.last_seen_on -> a data de criação do contato
 parent.contact.urns -> as URNs pertencentes ao contato
 parent.contact.urns[0] -> first of as URNs pertencentes ao contato
 parent.contact.urn -> a URN preferida do contato
@@ -207,5 +207,5 @@ trigger -> o gatilho que iniciou a sessão
 trigger.type -> o tipo do gatilho que iniciou a sessão
 trigger.params -> os parâmetros passados para o gatilho
 trigger.keyword -> a palavra para combinar se uma uma palavra de gatilho
-trigger.user -> the user who started this session if this is a manual trigger
-trigger.origin -> the origin of this session if this is a manual trigger
+trigger.user -> a palavra para combinar se uma uma palavra de gatilho
+trigger.origin -> a palavra para combinar se uma uma palavra de gatilho

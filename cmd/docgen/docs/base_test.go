@@ -38,10 +38,10 @@ func TestGenerateDocs(t *testing.T) {
 
 	// check each rendered template for changes
 	for _, template := range docs.Templates {
-		existing, err := ioutil.ReadFile("../../../docs/en_US/md/" + template.Path)
+		existing, err := ioutil.ReadFile("../../../docs/en-us/md/" + template.Path)
 		require.NoError(t, err)
 
-		generated, err := ioutil.ReadFile(path.Join(outputDir, "en_US", "md", template.Path))
+		generated, err := ioutil.ReadFile(path.Join(outputDir, "en-us", "md", template.Path))
 		require.NoError(t, err)
 
 		// if the docs we just generated don't match the existing ones, someone needs to run docgen
@@ -49,7 +49,7 @@ func TestGenerateDocs(t *testing.T) {
 	}
 
 	// check other outputs
-	completion := readJSONOutput(t, outputDir, "en_US", "completion.json").(map[string]interface{})
+	completion := readJSONOutput(t, outputDir, "en-us", "completion.json").(map[string]interface{})
 	assert.Contains(t, completion, "types")
 	assert.Contains(t, completion, "root")
 
@@ -59,7 +59,7 @@ func TestGenerateDocs(t *testing.T) {
 	root := completion["root"].([]interface{})
 	assert.Equal(t, 11, len(root))
 
-	functions := readJSONOutput(t, outputDir, "en_US", "functions.json").([]interface{})
+	functions := readJSONOutput(t, outputDir, "en-US", "functions.json").([]interface{})
 	assert.Equal(t, 80, len(functions))
 }
 

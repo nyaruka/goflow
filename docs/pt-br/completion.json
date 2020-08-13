@@ -172,7 +172,7 @@
                 },
                 {
                     "key": "last_seen_on",
-                    "help": "the last seen date of the contact",
+                    "help": "a data de criação do contato",
                     "type": "any"
                 },
                 {
@@ -450,12 +450,12 @@
                 },
                 {
                     "key": "user",
-                    "help": "the user who started this session if this is a manual trigger",
+                    "help": "a palavra para combinar se uma uma palavra de gatilho",
                     "type": "text"
                 },
                 {
                     "key": "origin",
-                    "help": "the origin of this session if this is a manual trigger",
+                    "help": "a palavra para combinar se uma uma palavra de gatilho",
                     "type": "text"
                 }
             ]

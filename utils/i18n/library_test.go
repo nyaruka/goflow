@@ -35,7 +35,7 @@ func TestLibrary(t *testing.T) {
 
 	assert.Equal(t, libraryDir, library.Path())
 	assert.Equal(t, "en", library.SrcLanguage())
-	assert.Equal(t, []string{"en", "es"}, library.Languages())
+	assert.Equal(t, []string{"en", "es"}, library.Locales())
 
 	es, err := library.Load("es", "simple")
 	require.NoError(t, err)
