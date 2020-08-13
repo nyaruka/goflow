@@ -1,3 +1,7 @@
+v0.101.0
+----------
+ * Use language codes (e.g. en-us) rather than locale names (en_US) for docs directories
+
 v0.100.1
 ----------
  * Add completed pt_BR translation
