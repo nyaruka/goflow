@@ -33,7 +33,7 @@ func RegisterGenerator(g Generator) {
 }
 
 // Generate generates all documentation outputs
-func Generate(baseDir, outputDir, localesDir string) error {
+func Generate(baseDir, outputDir, localeDir string) error {
 	fmt.Println("Processing sources...")
 
 	// extract all documented items from the source code
@@ -46,7 +46,7 @@ func Generate(baseDir, outputDir, localesDir string) error {
 		fmt.Printf(" > Found %d tagged items with tag %s\n", len(v), k)
 	}
 
-	locales := i18n.NewLibrary(localesDir, srcLanguage)
+	locales := i18n.NewLibrary(localeDir, srcLanguage)
 
 	// keep track of all unique strings we look up via gettext
 	msgIDs := make(map[string]bool)

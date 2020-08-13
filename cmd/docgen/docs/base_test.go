@@ -18,22 +18,22 @@ func TestGenerateDocs(t *testing.T) {
 	outputDir, err := ioutil.TempDir("", "")
 	require.NoError(t, err)
 
-	// create a temporary directory to hold generated locales files
-	localesDir, err := ioutil.TempDir("", "")
+	// create a temporary directory to hold generated locale files
+	localeDir, err := ioutil.TempDir("", "")
 	require.NoError(t, err)
 
 	defer os.RemoveAll(outputDir)
-	defer os.RemoveAll(localesDir)
+	defer os.RemoveAll(localeDir)
 
-	// and setup the locales directory for en_US and es
-	os.Mkdir(path.Join(localesDir, "en_US"), 0700)
-	os.Mkdir(path.Join(localesDir, "es"), 0700)
+	// and setup the locale directory for en_US and es
+	os.Mkdir(path.Join(localeDir, "en_US"), 0700)
+	os.Mkdir(path.Join(localeDir, "es"), 0700)
 
-	ioutil.WriteFile(path.Join(localesDir, "en_US", "flows.po"), []byte(``), 0700)
-	ioutil.WriteFile(path.Join(localesDir, "es", "flows.po"), []byte(``), 0700)
+	ioutil.WriteFile(path.Join(localeDir, "en_US", "flows.po"), []byte(``), 0700)
+	ioutil.WriteFile(path.Join(localeDir, "es", "flows.po"), []byte(``), 0700)
 
 	// tests run from the same working directory as the test file, so two directories up is our goflow root
-	err = docs.Generate("../../../", outputDir, localesDir)
+	err = docs.Generate("../../../", outputDir, localeDir)
 	require.NoError(t, err)
 
 	// check each rendered template for changes

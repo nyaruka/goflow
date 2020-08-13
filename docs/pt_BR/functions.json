@@ -1,7 +1,7 @@
 [
     {
         "signature": "abs(number)",
-        "summary": "Returns the absolute value of `number`.",
+        "summary": "Retorna o valor absoluto de `number`.",
         "detail": "",
         "examples": [
             {
@@ -20,7 +20,7 @@
     },
     {
         "signature": "and(values...)",
-        "summary": "Returns whether all the given `values` are truthy.",
+        "summary": "Retorna se todos os `values` dados são verdadeiros.",
         "detail": "",
         "examples": [
             {
@@ -35,7 +35,7 @@
     },
     {
         "signature": "array(values...)",
-        "summary": "Takes multiple `values` and returns them as an array.",
+        "summary": " Toma multiplos `values` e retorna todos em uma matriz.",
         "detail": "",
         "examples": [
             {
@@ -58,7 +58,7 @@
     },
     {
         "signature": "attachment_parts(attachment)",
-        "summary": "Parses an attachment into its different parts",
+        "summary": "Analisa um anexo em suas diferentes partes",
         "detail": "",
         "examples": [
             {
@@ -69,8 +69,8 @@
     },
     {
         "signature": "boolean(value)",
-        "summary": "Tries to convert `value` to a boolean.",
-        "detail": "An error is returned if the value can't be converted.",
+        "summary": "Tenta converter `value` em um boleano.",
+        "detail": "Um erro é retornado se o valor não puder ser convertido",
         "examples": [
             {
                 "template": "@(boolean(array(1, 2)))",
@@ -88,8 +88,8 @@
     },
     {
         "signature": "char(code)",
-        "summary": "Returns the character for the given UNICODE `code`.",
-        "detail": "It is the inverse of [function:code].",
+        "summary": "Retorna o caractere para o `code` UNICODE dado.",
+        "detail": "Isso é o inverso de [function:code]",
         "examples": [
             {
                 "template": "@(char(33))",
@@ -107,7 +107,7 @@
     },
     {
         "signature": "clean(text)",
-        "summary": "Removes any non-printable characters from `text`.",
+        "summary": "Remove quaisquer caracteres não imprimíveis do `text`.",
         "detail": "",
         "examples": [
             {
@@ -122,8 +122,8 @@
     },
     {
         "signature": "code(text)",
-        "summary": "Returns the UNICODE code for the first character of `text`.",
-        "detail": "It is the inverse of [function:char].",
+        "summary": "Retorna o código UNICODE do primeiro caractere de `text`.",
+        "detail": "Isso é o inverso de [function:char]",
         "examples": [
             {
                 "template": "@(code(\"a\"))",
@@ -153,8 +153,8 @@
     },
     {
         "signature": "count(value)",
-        "summary": "Returns the number of items in the given array or properties on an object.",
-        "detail": "It will return an error if it is passed an item which isn't countable.",
+        "summary": "Retorna o número de items em uma matriz ou propriedades em um objeto.",
+        "detail": "Isso retornará um erro se for passado um item que não é contabilizável.",
         "examples": [
             {
                 "template": "@(count(contact.fields))",
@@ -176,8 +176,8 @@
     },
     {
         "signature": "date(value)",
-        "summary": "Tries to convert `value` to a date.",
-        "detail": "If it is text then it will be parsed into a date using the default date format.\nAn error is returned if the value can't be converted.",
+        "summary": "Tenta converter `value` em uma data.",
+        "detail": "Se for texto, então isso será analisado para uma data utilizando o formato padrão.\nUm erro é retornado se o valor não puder ser convertido.",
         "examples": [
             {
                 "template": "@(date(\"1979-07-18\"))",
@@ -199,7 +199,7 @@
     },
     {
         "signature": "date_from_parts(year, month, day)",
-        "summary": "Creates a date from `year`, `month` and `day`.",
+        "summary": "Cria uma data a partir de um `year`, `month` e `day`.",
         "detail": "",
         "examples": [
             {
@@ -218,8 +218,8 @@
     },
     {
         "signature": "datetime(value)",
-        "summary": "Tries to convert `value` to a datetime.",
-        "detail": "If it is text then it will be parsed into a datetime using the default date\nand time formats. An error is returned if the value can't be converted.",
+        "summary": "Tenta converter `value` em uma datetime.",
+        "detail": "Se for texto, então isso será analisado para uma data/hora utilizando o formato padrão\ne formatos de tempo. Um erro é retornado se o valor não puder ser convertido.",
         "examples": [
             {
                 "template": "@(datetime(\"1979-07-18\"))",
@@ -241,8 +241,8 @@
     },
     {
         "signature": "datetime_add(datetime, offset, unit)",
-        "summary": "Calculates the date value arrived at by adding `offset` number of `unit` to the `datetime`",
-        "detail": "Valid durations are \"Y\" for years, \"M\" for months, \"W\" for weeks, \"D\" for days, \"h\" for hour,\n\"m\" for minutes, \"s\" for seconds",
+        "summary": "Calcula o valor da data de entrada adicionada por `offset`, de numero de `unit` para `datetime`",
+        "detail": "Durações válidas são \"Y\" para anos, \"M\" para meses, \"W\" para semanas, \"D\" para dias, \"h\" para hora,\n\"m\" para minutos, \"s\" para segundos",
         "examples": [
             {
                 "template": "@(datetime_add(\"2017-01-15\", 5, \"D\"))",
@@ -256,8 +256,8 @@
     },
     {
         "signature": "datetime_diff(date1, date2, unit)",
-        "summary": "Returns the duration between `date1` and `date2` in the `unit` specified.",
-        "detail": "Valid durations are \"Y\" for years, \"M\" for months, \"W\" for weeks, \"D\" for days, \"h\" for hour,\n\"m\" for minutes, \"s\" for seconds.",
+        "summary": "Retorna a duração entre `date1` e `date2` na `unit` especificada.",
+        "detail": "Durações válidas são \"Y\" para anos, \"M\" para meses, \"W\" para semanas, \"D\" para dias, \"h\" para hora,\n\"m\" para minutos, \"s\" para segundos.",
         "examples": [
             {
                 "template": "@(datetime_diff(\"2017-01-15\", \"2017-01-17\", \"D\"))",
@@ -283,7 +283,7 @@
     },
     {
         "signature": "datetime_from_epoch(seconds)",
-        "summary": "Converts the UNIX epoch time `seconds` into a new date.",
+        "summary": "Converte o tempo de UNIX epoch em `seconds` para uma nova data",
         "detail": "",
         "examples": [
             {
@@ -298,7 +298,7 @@
     },
     {
         "signature": "default(value, default)",
-        "summary": "Returns `value` if is not empty or an error, otherwise it returns `default`.",
+        "summary": "Retorna `value` se não for vazio ou erro, de outra forma retorna `default`.",
         "detail": "",
         "examples": [
             {
@@ -329,8 +329,8 @@
     },
     {
         "signature": "epoch(date)",
-        "summary": "Converts `date` to a UNIX epoch time.",
-        "detail": "The returned number can contain fractional seconds.",
+        "summary": "Converte `date` para um UNIX epoch.",
+        "detail": "O número retornado pode conter segundos fracionados.",
         "examples": [
             {
                 "template": "@(epoch(\"2017-06-12T16:56:59.000000Z\"))",
@@ -352,7 +352,7 @@
     },
     {
         "signature": "extract(object, properties)",
-        "summary": "Takes an object and extracts the named property.",
+        "summary": "Toma um objeto e extrai a propriedade nomeada.",
         "detail": "",
         "examples": [
             {
@@ -367,7 +367,7 @@
     },
     {
         "signature": "extract_object(object, properties...)",
-        "summary": "Takes an object and returns a new object by extracting only the named properties.",
+        "summary": "Toma um objeto e retorna um novo objeto extraindo somente as propriedades nomeadas.",
         "detail": "",
         "examples": [
             {
@@ -378,8 +378,8 @@
     },
     {
         "signature": "field(text, index, delimiter)",
-        "summary": "Splits `text` using the given `delimiter` and returns the field at `index`.",
-        "detail": "The index starts at zero. When splitting with a space, the delimiter is considered to be all whitespace.",
+        "summary": "Divide `text` utilizando o dado `delimiter` e retorna o campo no `index`.",
+        "detail": "O índice inicia em zero. Quando separando com um espaço, o delimitador é considerado para ser espaços em branco.",
         "examples": [
             {
                 "template": "@(field(\"a,b,c\", 1, \",\"))",
@@ -409,8 +409,8 @@
     },
     {
         "signature": "foreach(values, func, [args...])",
-        "summary": "Creates a new array by applying `func` to each value in `values`.",
-        "detail": "If the given function takes more than one argument, you can pass additional arguments after the function.",
+        "summary": "Cria uma nova matriz aplicando uma `func` para cada valor em `values`.",
+        "detail": "Se a função dada leva mais de um argumento, você pode passar argumentos adicionais após a função.",
         "examples": [
             {
                 "template": "@(foreach(array(\"a\", \"b\", \"c\"), upper))",
@@ -424,8 +424,8 @@
     },
     {
         "signature": "foreach_value(object, func, [args...])",
-        "summary": "Creates a new object by applying `func` to each property value of `object`.",
-        "detail": "If the given function takes more than one argument, you can pass additional arguments after the function.",
+        "summary": "Cria um novo objeto aplicando uma `func` para cada valor de propriedade de `object`.",
+        "detail": "Se a função dada leva mais de um argumento, você pode passar argumentos adicionais após a função.",
         "examples": [
             {
                 "template": "@(foreach_value(object(\"a\", \"x\", \"b\", \"y\"), upper))",
@@ -439,7 +439,7 @@
     },
     {
         "signature": "format(value)",
-        "summary": "Formats `value` according to its type.",
+        "summary": "Formata `value` de acordo com o seu tipo.",
         "detail": "",
         "examples": [
             {
@@ -458,8 +458,8 @@
     },
     {
         "signature": "format_date(date, [,format])",
-        "summary": "Formats `date` as text according to the given `format`.",
-        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31",
+        "summary": "Formata `date` como texto de acordo com o `format` dado.",
+        "detail": "Se `format` não é especificado então o formato padrão do ambiente é utilizado. A string\npara formatação pode ser contituída dos seguintes caracteres. Os caracteres ' ', ':', ',', 'T', '-'\ne '_' são ignorados. Quaisquer outros caracteres são um erro.\n\n* `YY`        - últimos dois dígitos do ano 0-99\n* `YYYY`        - quatro dígitos do ano 0000-9999\n* `M`        - mês 1-12\n* `MM`        - mês 01-12\n* `D`        - dia do mês, 1-31\n* `DD`        - dia do mês, preenchido com zeros 0-31",
         "examples": [
             {
                 "template": "@(format_date(\"1979-07-18T15:00:00.000000Z\"))",
@@ -489,8 +489,8 @@
     },
     {
         "signature": "format_datetime(datetime [,format [,timezone]])",
-        "summary": "Formats `datetime` as text according to the given `format`.",
-        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 00-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM\n* `Z`         - hour and minute offset from UTC, or Z for UTC\n* `ZZZ`       - hour and minute offset from UTC\n\nTimezone should be a location name as specified in the IANA Time Zone database, such\nas \"America/Guayaquil\" or \"America/Los_Angeles\". If not specified, the current timezone\nwill be used. An error will be returned if the timezone is not recognized.",
+        "summary": "Formata `datetime` para texto de acordo com o `format` dado",
+        "detail": "Se `format` não é especificado então o formato padrão do ambiente é utilizado. A string\npara formatação pode ser contituída dos seguintes caracteres. Os caracteres ' ', ':', ',', 'T', '-'\ne '_' são ignorados. Quaisquer outros caracteres são um erro.\n\n* `YY`        - últimos dois dígitos do ano 0-99\n* `YYYY`        - quatro dígitos do ano 0000-9999\n* `M`        - mês 1-12\n* `MM`        - mês 01-12\n* `D`        - dia do mês, 1-31\n* `DD`        - dia do mês, preenchido com zeros 0-31\n* `h`        - hora do dia 1-12\n* `hh`        - hora do dia 01-12\n* `tt`        - hora do dia no formato de 24 horas 00-23\n* `m`        - minuto 0-59\n* `mm`        - minuto 00-59\n* `s`        - segundo 0-59\n* `ss`        - segundo 00-59\n* `fff`        - milissegundo\n* `ffffff`        - microssegundo\n* `fffffffff`        - nanossegundo\n* `aa`        - am ou pm\n* `AA`        - AM ou PM\n* `Z`        - off em hora e minutos do UTC, ou Z para UTC\n* `ZZZ`        - offset em hora e minutos do UTC\n\nFuso horário deve ser um nome da localização como especificado no banco de dados de fuso horário da IANA, como\n\"America/Guayaquil\" ou \"America/Los_Angeles\". Se não especificado, o fuso horário atual\nserá utilizado. Um erro será retornado se o fuso horário não for reconhecido.",
         "examples": [
             {
                 "template": "@(format_datetime(\"1979-07-18T15:00:00.000000Z\"))",
@@ -524,7 +524,7 @@
     },
     {
         "signature": "format_location(location)",
-        "summary": "Formats the given `location` as its name.",
+        "summary": "Formata uma `location` dada como seu nome.",
         "detail": "",
         "examples": [
             {
@@ -539,8 +539,8 @@
     },
     {
         "signature": "format_number(number, places [, humanize])",
-        "summary": "Formats `number` to the given number of decimal `places`.",
-        "detail": "An optional third argument `humanize` can be false to disable the use of thousand separators.",
+        "summary": "Formata `number` para um dado numero de `places` decimais",
+        "detail": "Um terceiro argumento opcional `humanize` pode ser falso para desabilitar o uso de milhares de separadores.",
         "examples": [
             {
                 "template": "@(format_number(1234))",
@@ -566,8 +566,8 @@
     },
     {
         "signature": "format_time(time [,format])",
-        "summary": "Formats `time` as text according to the given `format`.",
-        "detail": "If `format` is not specified then the environment's default format is used. The format\nstring can consist of the following characters. The characters ' ', ':', ',', 'T', '-'\nand '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 00-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM",
+        "summary": "Formata `time` para texto de acordo com o `format` dado.",
+        "detail": "Se `format` não é especificado então o formato padrão do ambiente é utilizado. A string\npara formatação pode ser contituída dos seguintes caracteres. Os caracteres ' ', ':', ',', 'T', '-'\ne '_' são ignorados. Quaisquer outros caracteres são um erro.\n\n* `h`        - hora do dia 1-12\n* `hh`        - hora do dia 01-12\n* `tt`        - hora do dia no formato de 24 horas 00-23\n* `m`        - minuto 0-59\n* `mm`        - minuto 00-59\n* `s`        - segundo 0-59\n* `ss`        - segundo 00-59\n* `fff`        - milissegundo\n* `ffffff`        - microssegundo\n* `fffffffff`        - nanossegundo\n* `aa`        - am ou pm\n* `AA`        - AM ou PM",
         "examples": [
             {
                 "template": "@(format_time(\"14:50:30.000000\"))",
@@ -589,7 +589,7 @@
     },
     {
         "signature": "format_urn(urn)",
-        "summary": "Formats `urn` into human friendly text.",
+        "summary": "Formata `urn` para um texto amigável.",
         "detail": "",
         "examples": [
             {
@@ -620,7 +620,7 @@
     },
     {
         "signature": "html_decode(text)",
-        "summary": "HTML decodes `text`",
+        "summary": "HTML decodifica `text`",
         "detail": "",
         "examples": [
             {
@@ -635,8 +635,8 @@
     },
     {
         "signature": "if(test, value1, value2)",
-        "summary": "Returns `value1` if `test` is truthy or `value2` if not.",
-        "detail": "If the first argument is an error that error is returned.",
+        "summary": "Retorna `value1` se `test` é verdadeiro ou `value2` caso contrário.",
+        "detail": "Se o primeiro argumento é um erro, esse é retornado.",
         "examples": [
             {
                 "template": "@(if(1 = 1, \"foo\", \"bar\"))",
@@ -650,7 +650,7 @@
     },
     {
         "signature": "is_error(value)",
-        "summary": "Returns whether `value` is an error",
+        "summary": "Retorna se `value` é um erro.",
         "detail": "",
         "examples": [
             {
@@ -669,7 +669,7 @@
     },
     {
         "signature": "join(array, separator)",
-        "summary": "Joins the given `array` of strings with `separator` to make text.",
+        "summary": "Junta o `array` dado de strings com o `separator` para fazer o texto.",
         "detail": "",
         "examples": [
             {
@@ -684,7 +684,7 @@
     },
     {
         "signature": "json(value)",
-        "summary": "Returns the JSON representation of `value`.",
+        "summary": "Retorna a representação em JSON de `value`.",
         "detail": "",
         "examples": [
             {
@@ -707,7 +707,7 @@
     },
     {
         "signature": "lower(text)",
-        "summary": "Converte `text` em minúsculas.",
+        "summary": "Converte `text` para minúsculo.",
         "detail": "",
         "examples": [
             {
@@ -730,7 +730,7 @@
     },
     {
         "signature": "max(numbers...)",
-        "summary": "Returns the maximum value in `numbers`.",
+        "summary": "Retorna o maior valor em `numbers`.",
         "detail": "",
         "examples": [
             {
@@ -749,7 +749,7 @@
     },
     {
         "signature": "mean(numbers...)",
-        "summary": "Returns the arithmetic mean of `numbers`.",
+        "summary": "Retorna a média aritimética dos `numbers`.",
         "detail": "",
         "examples": [
             {
@@ -768,7 +768,7 @@
     },
     {
         "signature": "min(numbers...)",
-        "summary": "Returns the minimum value in `numbers`.",
+        "summary": "Retorna o menor valor em `numbers`.",
         "detail": "",
         "examples": [
             {
@@ -787,7 +787,7 @@
     },
     {
         "signature": "mod(dividend, divisor)",
-        "summary": "Returns the remainder of the division of `dividend` by `divisor`.",
+        "summary": "Retorna o resto da divisão de `dividend` pelo `divisor`.",
         "detail": "",
         "examples": [
             {
@@ -806,7 +806,7 @@
     },
     {
         "signature": "now()",
-        "summary": "Returns the current date and time in the current timezone.",
+        "summary": "Retorna a data atual e o tempo no fuso horário atual.",
         "detail": "",
         "examples": [
             {
@@ -817,8 +817,8 @@
     },
     {
         "signature": "number(value)",
-        "summary": "Tries to convert `value` to a number.",
-        "detail": "An error is returned if the value can't be converted.",
+        "summary": "Tenta converter `value` em um número.",
+        "detail": "Um erro é retornado se o valor não puder ser convertido",
         "examples": [
             {
                 "template": "@(number(10))",
@@ -836,7 +836,7 @@
     },
     {
         "signature": "object(pairs...)",
-        "summary": "Takes property name value pairs and returns them as a new object.",
+        "summary": "Toma os pares de nome da propriedade e valor e retorna como um novo objeto.",
         "detail": "",
         "examples": [
             {
@@ -855,7 +855,7 @@
     },
     {
         "signature": "or(values...)",
-        "summary": "Returns whether if any of the given `values` are truthy.",
+        "summary": "Retorna se algum dos valores em `values` é verdadeiro.",
         "detail": "",
         "examples": [
             {
@@ -870,8 +870,8 @@
     },
     {
         "signature": "parse_datetime(text, format [,timezone])",
-        "summary": "Parses `text` into a date using the given `format`.",
-        "detail": "The format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `YY`        - last two digits of year 0-99\n* `YYYY`      - four digits of year 0000-9999\n* `M`         - month 1-12\n* `MM`        - month 01-12\n* `D`         - day of month, 1-31\n* `DD`        - day of month, zero padded 0-31\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM\n* `Z`         - hour and minute offset from UTC, or Z for UTC\n* `ZZZ`       - hour and minute offset from UTC\n\nTimezone should be a location name as specified in the IANA Time Zone database, such\nas \"America/Guayaquil\" or \"America/Los_Angeles\". If not specified, the current timezone\nwill be used. An error will be returned if the timezone is not recognized.\n\nNote that fractional seconds will be parsed even without an explicit format identifier.\nYou should only specify fractional seconds when you want to assert the number of places\nin the input format.\n\nparse_datetime will return an error if it is unable to convert the text to a datetime.",
+        "summary": "Analisa o `text` em uma data usando um `format` dado.",
+        "detail": "A string\npara formatação pode ser contituída dos seguintes caracteres. Os caracteres ' ', ':', ',', 'T', '-'\ne '_' são ignorados. Quaisquer outros caracteres são um erro.\n\n* `YY`        - últimos dois dígitos do ano 0-99\n* `YYYY`        - quatro dígitos do ano 0000-9999\n* `M`        - mês 1-12\n* `MM`        - mês 01-12\n* `D`        - dia do mês, 1-31\n* `DD`        - dia do mês, preenchido com zeros 0-31\n* `h`        - hora do dia 1-12\n* `hh`        - hora do dia 01-12\n* `tt`        - hora do dia no formato de 24 horas 00-23\n* `m`        - minuto 0-59\n* `mm`        - minuto 00-59\n* `s`        - segundo 0-59\n* `ss`        - segundo 00-59\n* `fff`        - milissegundo\n* `ffffff`        - microssegundo\n* `fffffffff`        - nanossegundo\n* `aa`        - am ou pm\n* `AA`        - AM ou PM\n* `Z`        - off em hora e minutos do UTC, ou Z para UTC\n* `ZZZ`        - offset em hora e minutos do UTC\n\nFuso horário deve ser um nome da localização como especificado no banco de dados de fuso horário da IANA, como\n\"America/Guayaquil\" ou \"America/Los_Angeles\". Se não especificado, o fuso horário atual\nserá utilizado. Um erro será retornado se o fuso horário não for reconhecido.\n\nNote que os segundos fracionados serão analisados mesmo sem um identificador de formato explícito.\nVocê deve somente especificar os segundos fracionados quando quer garantir o numero de lugares\nno formato de entrada.\n\nparse_datetime irá retornar um erro se não for capaz de converter o texto em um datetime.",
         "examples": [
             {
                 "template": "@(parse_datetime(\"1979-07-18\", \"YYYY-MM-DD\"))",
@@ -893,8 +893,8 @@
     },
     {
         "signature": "parse_json(text)",
-        "summary": "Tries to parse `text` as JSON.",
-        "detail": "If the given `text` is not valid JSON, then an error is returned",
+        "summary": "Tenta analisar `text` como um JSON.",
+        "detail": "Se o texto dado não é um JSON válido, então um erro é retornado.",
         "examples": [
             {
                 "template": "@(parse_json(\"{\\\"foo\\\": \\\"bar\\\"}\").foo)",
@@ -912,8 +912,8 @@
     },
     {
         "signature": "parse_time(text, format)",
-        "summary": "Parses `text` into a time using the given `format`.",
-        "detail": "The format string can consist of the following characters. The characters\n' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.\n\n* `h`         - hour of the day 1-12\n* `hh`        - hour of the day 01-12\n* `tt`        - twenty four hour of the day 01-23\n* `m`         - minute 0-59\n* `mm`        - minute 00-59\n* `s`         - second 0-59\n* `ss`        - second 00-59\n* `fff`       - milliseconds\n* `ffffff`    - microseconds\n* `fffffffff` - nanoseconds\n* `aa`        - am or pm\n* `AA`        - AM or PM\n\nNote that fractional seconds will be parsed even without an explicit format identifier.\nYou should only specify fractional seconds when you want to assert the number of places\nin the input format.\n\nparse_time will return an error if it is unable to convert the text to a time.",
+        "summary": "Analisa o `text` em um tempo usando o `format` dado.",
+        "detail": "A string\npara formatação pode ser contituída dos seguintes caracteres. Os caracteres ' ', ':', ',', 'T', '-'\ne '_' são ignorados. Quaisquer outros caracteres são um erro.\n\n* `h`        - hora do dia 1-12\n* `hh`        - hora do dia 01-12\n* `tt`        - hora do dia no formato de 24 horas 00-23\n* `m`        - minuto 0-59\n* `mm`        - minuto 00-59\n* `s`        - segundo 0-59\n* `ss`        - segundo 00-59\n* `fff`        - milissegundo\n* `ffffff`        - microssegundo\n* `fffffffff`        - nanossegundo\n* `aa`        - am ou pm\n* `AA`        - AM ou PM\n\nNote que os segundos fracionados serão analisados mesmo sem um identificador de formato explícito.\nVocê deve somente especificar os segundos fracionados quando quer garantir o numero de lugares\nno formato de entrada.\n\nparse_datetime irá retornar um erro se não for capaz de converter o texto em um datetime.",
         "examples": [
             {
                 "template": "@(parse_time(\"15:28\", \"tt:mm\"))",
@@ -931,7 +931,7 @@
     },
     {
         "signature": "percent(number)",
-        "summary": "Formats `number` as a percentage.",
+        "summary": "Formata `number` como uma porcentagem.",
         "detail": "",
         "examples": [
             {
@@ -950,7 +950,7 @@
     },
     {
         "signature": "rand()",
-        "summary": "Returns a single random number between [0.0-1.0).",
+        "summary": "Retorna um número único aleatório entre [0.0-1.0).",
         "detail": "",
         "examples": [
             {
@@ -965,7 +965,7 @@
     },
     {
         "signature": "rand_between()",
-        "summary": "A single random integer in the given inclusive range.",
+        "summary": "Um número aleatório simples no intervalo fornecido.",
         "detail": "",
         "examples": [
             {
@@ -980,8 +980,8 @@
     },
     {
         "signature": "read_chars(text)",
-        "summary": "Converts `text` into something that can be read by IVR systems.",
-        "detail": "ReadChars will split the numbers such as they are easier to understand. This includes\nsplitting in 3s or 4s if appropriate.",
+        "summary": "Converte `text` em algo que pode ser lido por sistemas IVR.",
+        "detail": "ReadChars irá dividir os números de forma que fiquem fáceis de entender. Isso inclui\ndividor em 3s ou 4s se apropriado.",
         "examples": [
             {
                 "template": "@(read_chars(\"1234\"))",
@@ -999,8 +999,8 @@
     },
     {
         "signature": "regex_match(text, pattern [,group])",
-        "summary": "Returns the first match of the regular expression `pattern` in `text`.",
-        "detail": "An optional third parameter `group` determines which matching group will be returned.",
+        "summary": "Retorna a primeira correspondência da expressão regular `pattern` no `text`.",
+        "detail": "Um terceiro argumento opcional `group` determina qual grupo correspondente será retornado.",
         "examples": [
             {
                 "template": "@(regex_match(\"sda34dfddg67\", \"\\d+\"))",
@@ -1026,7 +1026,7 @@
     },
     {
         "signature": "remove_first_word(text)",
-        "summary": "Removes the first word of `text`.",
+        "summary": "Remove a primeira palavra do `text`.",
         "detail": "",
         "examples": [
             {
@@ -1041,7 +1041,7 @@
     },
     {
         "signature": "repeat(text, count)",
-        "summary": "Returns `text` repeated `count` number of times.",
+        "summary": "Retorna `text` repetido `count` número de vezes.",
         "detail": "",
         "examples": [
             {
@@ -1056,8 +1056,8 @@
     },
     {
         "signature": "replace(text, needle, replacement [, count])",
-        "summary": "Replaces up to `count` occurrences of `needle` with `replacement` in `text`.",
-        "detail": "If `count` is omitted or is less than 0 then all occurrences are replaced.",
+        "summary": "Substitui até em até `count` ocorrências de `needle` por `replacement` em `text`.",
+        "detail": "If `count` é omitido ou menor do que 0, então todas as ocorrências serão substituídas.",
         "examples": [
             {
                 "template": "@(replace(\"foo bar foo\", \"foo\", \"zap\"))",
@@ -1075,7 +1075,7 @@
     },
     {
         "signature": "replace_time(datetime)",
-        "summary": "Returns a new datetime with the time part replaced by the `time`.",
+        "summary": "Retorna um novo datetime com a parte do tempo substituída pelo `time`.",
         "detail": "",
         "examples": [
             {
@@ -1094,8 +1094,8 @@
     },
     {
         "signature": "round(number [,places])",
-        "summary": "Rounds `number` to the nearest value.",
-        "detail": "You can optionally pass in the number of decimal places to round to as `places`. If `places` < 0,\nit will round the integer part to the nearest 10^(-places).",
+        "summary": "Arredonda `number` para o valor mais próximo.",
+        "detail": "Você pode, opcionalmente, passar o numero de casas decimais para arredondar como `places`. Se `places` < 0,\nele irá arrendondar para a parte inteira do mais próxido 10^(-casas).",
         "examples": [
             {
                 "template": "@(round(12))",
@@ -1129,8 +1129,8 @@
     },
     {
         "signature": "round_down(number [,places])",
-        "summary": "Rounds `number` down to the nearest integer value.",
-        "detail": "You can optionally pass in the number of decimal places to round to as `places`.",
+        "summary": "Arredonda `number` para o número inteiro inferior mais próximo.",
+        "detail": "Você pode, opcionalmente, passar o número de casas decimais para arredondar como `places`.",
         "examples": [
             {
                 "template": "@(round_down(12))",
@@ -1160,8 +1160,8 @@
     },
     {
         "signature": "round_up(number [,places])",
-        "summary": "Rounds `number` up to the nearest integer value.",
-        "detail": "You can optionally pass in the number of decimal places to round to as `places`.",
+        "summary": "Arredonda `number` para o inteiro superior mais próximo.",
+        "detail": "Você pode, opcionalmente, passar o número de casas decimais para arredondar como `places`.",
         "examples": [
             {
                 "template": "@(round_up(12))",
@@ -1191,8 +1191,8 @@
     },
     {
         "signature": "split(text, [,delimiters])",
-        "summary": "Splits `text` into an array of separated words.",
-        "detail": "Empty values are removed from the returned list. There is an optional final parameter `delimiters` which\nis string of characters used to split the text into words.",
+        "summary": "Divide `text` em uma matriz com palavras separadas.",
+        "detail": "Valores vazios são removidos por uma lista retornada. Há um parâmetro final opcional `delimiters`  que\né uma cadeia de caracteres utilizada para dividir o texto em palavras.",
         "examples": [
             {
                 "template": "@(split(\"a b c\"))",
@@ -1218,8 +1218,8 @@
     },
     {
         "signature": "text(value)",
-        "summary": "Tries to convert `value` to text.",
-        "detail": "An error is returned if the value can't be converted.",
+        "summary": "Tenta converter `value` em um texto.",
+        "detail": "Um erro é retornado se o valor não puder ser convertido",
         "examples": [
             {
                 "template": "@(text(3 = 3))",
@@ -1237,8 +1237,8 @@
     },
     {
         "signature": "text_compare(text1, text2)",
-        "summary": "Returns the dictionary order of `text1` and `text2`.",
-        "detail": "The return value will be -1 if `text1` comes before `text2`, 0 if they are equal\nand 1 if `text1` comes after `text2`.",
+        "summary": "Retorna a ordem de dicionário de `text1` e `text2`.",
+        "detail": "O valor de retorno será -1 se `text1` vier antes de `text2`, 0 se forem iguais\ne 1 se `text1` vier depois de `text2`.",
         "examples": [
             {
                 "template": "@(text_compare(\"abc\", \"abc\"))",
@@ -1256,7 +1256,7 @@
     },
     {
         "signature": "text_length(value)",
-        "summary": "Returns the length (number of characters) of `value` when converted to text.",
+        "summary": "Retorna o tamanho (número de caracteres) de `value` quando convertido em texto.",
         "detail": "",
         "examples": [
             {
@@ -1271,8 +1271,8 @@
     },
     {
         "signature": "text_slice(text, start [, end])",
-        "summary": "Returns the portion of `text` between `start` (inclusive) and `end` (exclusive).",
-        "detail": "If `end` is not specified then the entire rest of `text` will be included. Negative values\nfor `start` or `end` start at the end of `text`.",
+        "summary": "Retorna a porção de `text` entre `start` (inclusivo) e `end` (exclusivo).",
+        "detail": "Se o `end` não foi especificado, então todo o resto de `text` será incluido. Valores negativos\npara `start` ou `end`, começarão no final do `text`.",
         "examples": [
             {
                 "template": "@(text_slice(\"hello\", 2))",
@@ -1294,8 +1294,8 @@
     },
     {
         "signature": "time(value)",
-        "summary": "Tries to convert `value` to a time.",
-        "detail": "If it is text then it will be parsed into a time using the default time format.\nAn error is returned if the value can't be converted.",
+        "summary": "Tenta converter `value` em um tempo.",
+        "detail": "Se for texto, então será analisado para um tempo utilizando o formato padrão.\nUm erro é retornado se o valor não puder ser convertido.",
         "examples": [
             {
                 "template": "@(time(\"10:30\"))",
@@ -1317,7 +1317,7 @@
     },
     {
         "signature": "time_from_parts(hour, minute, second)",
-        "summary": "Creates a time from `hour`, `minute` and `second`",
+        "summary": "Cria um tempo a partir de `hour`, `minute` e `second`",
         "detail": "",
         "examples": [
             {
@@ -1336,7 +1336,7 @@
     },
     {
         "signature": "title(text)",
-        "summary": "Capitalizes each word in `text`.",
+        "summary": "Deixa com letra maiúscula cada palavra em `text`.",
         "detail": "",
         "examples": [
             {
@@ -1359,7 +1359,7 @@
     },
     {
         "signature": "today()",
-        "summary": "Returns the current date in the environment timezone.",
+        "summary": "Retorna a data atual no fuso horário do ambiente.",
         "detail": "",
         "examples": [
             {
@@ -1370,8 +1370,8 @@
     },
     {
         "signature": "trim(text, [,chars])",
-        "summary": "Removes whitespace from either end of `text`.",
-        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "summary": "Remove espaço em branco de qualquer uma das extremidades do `text`.",
+        "detail": "Existe um parâmetro final opcional `chars` que é uma string de caracters a serem removidos ao invés de espaços em branco.",
         "examples": [
             {
                 "template": "@(trim(\" hello world    \"))",
@@ -1385,8 +1385,8 @@
     },
     {
         "signature": "trim_left(text, [,chars])",
-        "summary": "Removes whitespace from the start of `text`.",
-        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "summary": "Remove espaço em branco do começo do `text`.",
+        "detail": "Existe um parâmetro final opcional `chars` que é uma string de caracters a serem removidos ao invés de espaços em branco.",
         "examples": [
             {
                 "template": "@(\"*\" & trim_left(\" hello world   \") & \"*\")",
@@ -1400,8 +1400,8 @@
     },
     {
         "signature": "trim_right(text, [,chars])",
-        "summary": "Removes whitespace from the end of `text`.",
-        "detail": "There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.",
+        "summary": "Remove espaço em branco do final do `text`.",
+        "detail": "Existe um parâmetro final opcional `chars` que é uma string de caracters a serem removidos ao invés de espaços em branco.",
         "examples": [
             {
                 "template": "@(\"*\" & trim_right(\" hello world   \") & \"*\")",
@@ -1415,8 +1415,8 @@
     },
     {
         "signature": "tz(date)",
-        "summary": "Returns the name of the timezone of `date`.",
-        "detail": "If no timezone information is present in the date, then the current timezone will be returned.",
+        "summary": "Retorna o nome do fuso horário de `date`.",
+        "detail": "Se não existe informação presente de fuso horário na data, então o fuso horário atual será retornado.",
         "examples": [
             {
                 "template": "@(tz(\"2017-01-15T02:15:18.123456Z\"))",
@@ -1438,8 +1438,8 @@
     },
     {
         "signature": "tz_offset(date)",
-        "summary": "Returns the offset of the timezone of `date`.",
-        "detail": "The offset is returned in the format `[+/-]HH:MM`. If no timezone information is present in the date,\nthen the current timezone offset will be returned.",
+        "summary": "Retorna o offset do fuso horário de `date`.",
+        "detail": "O offset é retornado no formato `[+/-]HH:MM`. Se nenhuma informação de fuso horário  está presente na data, \nentão o offset do fuso horário atual será retornado.",
         "examples": [
             {
                 "template": "@(tz_offset(\"2017-01-15T02:15:18.123456Z\"))",
@@ -1461,7 +1461,7 @@
     },
     {
         "signature": "upper(text)",
-        "summary": "Converte `text` em maiúsculas.",
+        "summary": "Converte `text` para maiúsculo.",
         "detail": "",
         "examples": [
             {
@@ -1476,7 +1476,7 @@
     },
     {
         "signature": "url_encode(text)",
-        "summary": "Encodes `text` for use as a URL parameter.",
+        "summary": "Codifica o `text` para ser usado como uma URL de parâmetro.",
         "detail": "",
         "examples": [
             {
@@ -1491,7 +1491,7 @@
     },
     {
         "signature": "urn_parts(urn)",
-        "summary": "Parses a URN into its different parts",
+        "summary": "Analise uma URN em suas diferentes partes",
         "detail": "",
         "examples": [
             {
@@ -1510,8 +1510,8 @@
     },
     {
         "signature": "week_number(date)",
-        "summary": "Returns the week number (1-54) of `date`.",
-        "detail": "The week is considered to start on Sunday and week containing Jan 1st is week number 1.",
+        "summary": "Retorna o número da semana (1-54) de `date`.",
+        "detail": "A semana é considerada para começar no Domingo e a semana contendo 1.º de Janeiro é a semana de número 1.",
         "examples": [
             {
                 "template": "@(week_number(\"2019-01-01\"))",
@@ -1529,8 +1529,8 @@
     },
     {
         "signature": "weekday(date)",
-        "summary": "Returns the day of the week for `date`.",
-        "detail": "The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc.",
+        "summary": "Retorna o dia da semana para `date`.",
+        "detail": "A semana é considerada para iniciar no Domingo, então Domingo retorna 0, Segunda retorna 1 etc.",
         "examples": [
             {
                 "template": "@(weekday(\"2017-01-15\"))",
@@ -1544,8 +1544,8 @@
     },
     {
         "signature": "word(text, index [,delimiters])",
-        "summary": "Returns the word at `index` in `text`.",
-        "detail": "Indexes start at zero. There is an optional final parameter `delimiters` which\nis string of characters used to split the text into words.",
+        "summary": "Retorna a palavra em um `index` no `text`.",
+        "detail": "Índices começam em zero. Há um parâmetro final opcional `delimiters` que\né uma cadeia de caracteres usada para separar o texto em palavras.",
         "examples": [
             {
                 "template": "@(word(\"bee cat dog\", 0))",
@@ -1583,8 +1583,8 @@
     },
     {
         "signature": "word_count(text [,delimiters])",
-        "summary": "Returns the number of words in `text`.",
-        "detail": "There is an optional final parameter `delimiters` which is string of characters used\nto split the text into words.",
+        "summary": "Retorna o número de palavras em `text`.",
+        "detail": "Existe um parâmetro final opcional `delimiters` que é uma string de caracteres utilizada\npara dividir o texto em palavras. ",
         "examples": [
             {
                 "template": "@(word_count(\"foo bar\"))",
@@ -1614,8 +1614,8 @@
     },
     {
         "signature": "word_slice(text, start, end [,delimiters])",
-        "summary": "Extracts a sub-sequence of words from `text`.",
-        "detail": "The returned words are those from `start` up to but not-including `end`. Indexes start at zero and a negative\nend value means that all words after the start should be returned. There is an optional final parameter `delimiters`\nwhich is string of characters used to split the text into words.",
+        "summary": "Extrai uma sub sequência de palavras de `text`.",
+        "detail": "As palavras retornadas são aquelas de `start` até, mas não incluindo, `end`. Índices começam no zero e um valor final\nnegativo significa que todas as palavras após o início devem ser retornadas. Existe um parâmetro final opcional `delimiter`\nque é uma string com caracteres utilizados para dividir o texto em palavras.",
         "examples": [
             {
                 "template": "@(word_slice(\"bee cat dog\", 0, 1))",
