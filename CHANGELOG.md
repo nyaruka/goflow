@@ -1,3 +1,7 @@
+v0.100.1
+----------
+ * Add completed pt_BR translation
+
 v0.100.0
 ----------
  * Add last_seen_on to contacts and expose in expressions and queries
