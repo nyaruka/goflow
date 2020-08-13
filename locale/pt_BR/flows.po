@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2020-08-13 13:42-0500\n"
+"POT-Creation-Date: 2020-08-13 15:00-0500\n"
 "Last-Translator: Matheus Soares <matheus.soares@ilhasoft.com.br>, 2020\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/110636/pt_BR/)\n"
 "Language: pt_BR\n"
