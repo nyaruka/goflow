@@ -2,7 +2,7 @@
 
 ## Specification
 
-See [here](https://nyaruka.github.io/goflow/en_US/) for the complete specification docs.
+See [here](https://nyaruka.github.io/goflow/en-us/) for the complete specification docs.
 
 ## Basic Usage
 
