@@ -1,3 +1,7 @@
+v0.101.2
+----------
+ * Add empty localizations for all the languages used in RapidPro
+
 v0.101.1
 ----------
  * Fix test
