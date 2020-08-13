@@ -1,0 +1,120 @@
+body {
+    margin: 0;
+    background-color: #fcfcfc;
+    font-family: "Roboto Slab", "ff-tisa-web-pro", "Georgia", Arial, sans-serif;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-print-color-adjust: exact;
+}
+
+h1, h2, h3, h7 {
+    font-family: "Roboto Slab", "ff-tisa-web-pro", "Georgia", Arial, sans-serif;
+    margin: 20px 0 10px;
+    padding: 0;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+h2.item_title {
+    font-size: 18px;
+    color: white;
+    background-color: #555;
+    border-radius: 5px;
+    padding: 7px 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: normal;
+}
+
+h2.item_title a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.context h2.item_title, .operators h2.item_title {
+    background-color: rgb(142, 94, 167);
+}
+
+.functions h2.item_title, .tests h2.item_title {
+    background-color: #00B9A7;
+}
+
+.actions h2.item_title {
+    background-color: #246068;
+}
+
+.events h2.item_title {
+    background-color: #AA4139;
+}
+
+h3 {
+    font-size: 16px;
+    margin: 10px 0px 0px 0px;
+    color: #333;
+}
+
+h7 {
+    color: #333;
+    font-size: 36px;
+    padding: 20px;
+}
+
+.actions h1 {
+    color: #333;
+}
+
+.input_action {
+    position: relative;
+}
+
+.input_action h2 {
+    position: absolute;
+    right: 15px;
+    color: #888;
+}
+
+.output_event {
+    position: relative;
+}
+
+.output_event h2 {
+    position: absolute;
+    right: 15px;
+    color: #888;
+}
+
+/**
+ * Code snippets
+ */
+
+pre {
+    background-color: #EEE;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+
+p code, li code {
+    color: #444;
+    background-color: #EEE;
+    border-radius: 3px;
+    padding: 0px 4px 1px 4px;
+}
+
+/* reserved words */
+code .dt {
+    color: #333;
+    font-weight: bold;
+}
+
+/* strings */
+code .st {
+    color: #459;
+}

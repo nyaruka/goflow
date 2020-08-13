@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "POT-Creation-Date: 2020-08-13 15:00-0500\n"
-"Language: en_US\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
@@ -536,7 +536,7 @@ msgid "the channel that the input was received on"
 msgstr ""
 
 msgid "the contact"
-msgstr ""
+msgstr "el contacto"
 
 msgid "the contact URN that the input was received on"
 msgstr ""
@@ -620,25 +620,25 @@ msgid "the localized category of the result"
 msgstr ""
 
 msgid "the name"
-msgstr ""
+msgstr "el nombre"
 
 msgid "the name of the channel"
-msgstr ""
+msgstr "el nombre del canal"
 
 msgid "the name of the contact"
-msgstr ""
+msgstr "el nombre del contacto"
 
 msgid "the name of the flow"
-msgstr ""
+msgstr "el nombre del flujo"
 
 msgid "the name of the group"
-msgstr ""
+msgstr "el nombre del grupo"
 
 msgid "the name of the result"
-msgstr ""
+msgstr "el nombre del resultado"
 
 msgid "the name or URN"
-msgstr ""
+msgstr "el nombre o URN"
 
 msgid "the numeric ID of the contact"
 msgstr ""
@@ -686,14 +686,13 @@ msgid "the user who started this session if this is a manual trigger"
 msgstr ""
 
 msgid "the value"
-msgstr ""
+msgstr "el valor"
 
 msgid "the value of the result"
-msgstr ""
+msgstr "el valor del resultado"
 
 msgid "{key} for the contact"
 msgstr ""
 
 msgid "{type} URN for the contact"
 msgstr ""
-

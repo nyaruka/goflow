@@ -1,0 +1,382 @@
+<html>
+    <head>
+        <title>Routing</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <center>
+            <h7>Routing</h7>
+        </center>
+
+ <ul>
+<li><a href="#routers">Routers</a></li>
+<li><a href="#waits">Waits</a></li>
+<li><a href="#tests">Tests</a></li>
+</ul>  
+
+<p>If a node has a single exit, the engine will pick that when leaving that node. If the node has more than one exit, then we need a router to choose an exit.</p>
+<h1 id="routers">Routers</h1>
+<p>Routers are primarily responsible for picking exits but can also generate events and save results. All routers have the following properties:</p>
+<ul>
+<li><code>type</code> router type</li>
+<li><code>wait</code> optional <a href="#waits">wait</a></li>
+<li><code>result_name</code> optional result name if router should save a result</li>
+<li><code>categories</code> possible categories of any result saved by this router</li>
+</ul>
+<p>Different router types have different logic for how an exit will be chosen.</p>
+<h2 id="switch">Switch</h2>
+<p>If a node wishes to route differently based on some state in the session, it can add a <code>switch</code> router which defines one or more <code>cases</code>. Each case defines a <code>type</code> which is the name of an expression function that is run by passing the evaluation of <code>operand</code> as the first argument. Cases may define additional arguments using the <code>arguments</code> array on a case. If no case evaluates to true, then the <code>default_category_uuid</code> will be used, otherwise flow execution will stop.</p>
+<p>A <code>switch</code> router has these additional properties:</p>
+<ul>
+<li><code>operand</code> the template which will be evaluated against each of our cases</li>
+<li><code>cases</code> a list of 1-n cases which are evaluated in order until one is true</li>
+<li><code>default_category_uuid</code> the uuid of the default category to take if no case matches (optional)</li>
+</ul>
+<p>Each case consists of:</p>
+<ul>
+<li><code>uuid</code> the UUID</li>
+<li><code>type</code> the type of this test which is the name of a <a href="#tests">test function</a> - it will be called with the operand as the first argument</li>
+<li><code>arguments</code> an optional list of templates which can be passed as extra arguments to the test (after the initial operand)</li>
+<li><code>category_uuid</code> the uuid of the category that should be taken if this case evaluated to true</li>
+</ul>
+<p>The following is an example switch router with 2 cases:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;ee0bee3f-34b3-4275-af78-f9ff52c82e6a&quot;</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="dt">&quot;router&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;switch&quot;</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>        <span class="dt">&quot;categories&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>            <span class="fu">{</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;cab600f5-b54b-49b9-a7ea-5638f4cbf2b4&quot;</span><span class="fu">,</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Has Name&quot;</span><span class="fu">,</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>                <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;972fb580-54c2-4491-8438-09ace3500ba5&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>            <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>            <span class="fu">{</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9574fbfd-510f-4dfc-b989-97d2aecf50b9&quot;</span><span class="fu">,</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Other&quot;</span><span class="fu">,</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>                <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;6981b1a9-af04-4e26-a248-1fc1f5e5c7eb&quot;</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>            <span class="fu">}</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>        <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a>        <span class="dt">&quot;operand&quot;</span><span class="fu">:</span> <span class="st">&quot;@input&quot;</span><span class="fu">,</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>        <span class="dt">&quot;cases&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>            <span class="fu">{</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;6f78d564-029b-4715-b8d4-b28daeae4f24&quot;</span><span class="fu">,</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>                <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;has_text&quot;</span><span class="fu">,</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a>                <span class="dt">&quot;category_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;cab600f5-b54b-49b9-a7ea-5638f4cbf2b4&quot;</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a>            <span class="fu">}</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a>        <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a>        <span class="dt">&quot;default_category_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9574fbfd-510f-4dfc-b989-97d2aecf50b9&quot;</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>    <span class="fu">},</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a>    <span class="dt">&quot;exits&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a>        <span class="fu">{</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;972fb580-54c2-4491-8438-09ace3500ba5&quot;</span><span class="fu">,</span></span>
+<span id="cb1-30"><a href="#cb1-30"></a>            <span class="dt">&quot;destination_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;deec1dd4-b727-4b21-800a-0b7bbd146a82&quot;</span></span>
+<span id="cb1-31"><a href="#cb1-31"></a>        <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>        <span class="fu">{</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;6981b1a9-af04-4e26-a248-1fc1f5e5c7eb&quot;</span><span class="fu">,</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a>            <span class="dt">&quot;destination_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;ee0bee3f-34b3-4275-af78-f9ff52c82e6a&quot;</span></span>
+<span id="cb1-35"><a href="#cb1-35"></a>        <span class="fu">}</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>    <span class="ot">]</span></span>
+<span id="cb1-37"><a href="#cb1-37"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="random">Random</h2>
+<p>A random router chooses one of its categories randomly and has no additional properties. For example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;ee0bee3f-34b3-4275-af78-f9ff52c82e6a&quot;</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="dt">&quot;router&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;random&quot;</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>        <span class="dt">&quot;categories&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>            <span class="fu">{</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;cab600f5-b54b-49b9-a7ea-5638f4cbf2b4&quot;</span><span class="fu">,</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bucket 1&quot;</span><span class="fu">,</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>                <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;972fb580-54c2-4491-8438-09ace3500ba5&quot;</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>            <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>            <span class="fu">{</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>                <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9574fbfd-510f-4dfc-b989-97d2aecf50b9&quot;</span><span class="fu">,</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bucket 2&quot;</span><span class="fu">,</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>                <span class="dt">&quot;exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;6981b1a9-af04-4e26-a248-1fc1f5e5c7eb&quot;</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>            <span class="fu">}</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>        <span class="ot">]</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="fu">},</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="dt">&quot;exits&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>        <span class="fu">{</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;972fb580-54c2-4491-8438-09ace3500ba5&quot;</span><span class="fu">,</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>            <span class="dt">&quot;destination_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;deec1dd4-b727-4b21-800a-0b7bbd146a82&quot;</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>        <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a>        <span class="fu">{</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;6981b1a9-af04-4e26-a248-1fc1f5e5c7eb&quot;</span><span class="fu">,</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>            <span class="dt">&quot;destination_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;ee0bee3f-34b3-4275-af78-f9ff52c82e6a&quot;</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a>        <span class="fu">}</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a>    <span class="ot">]</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="fu">}</span></span></code></pre></div>
+<h1 id="waits">Waits</h1>
+<p>A wait tells the engine to hand back control to the caller and wait for the caller to resume execution by providing something. The type of the wait indicates what is required to resume flow execution and currently we only support waits of type <code>msg</code>.</p>
+<h2 id="msg">Msg</h2>
+<p>This type indicates that flow execution should pause until an incoming message is received. It can have an optional timeout value which is the number of seconds after which execution can be resumed without a message, e.g.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg&quot;</span><span class="fu">,</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="dt">&quot;timeout&quot;</span><span class="fu">:</span> <span class="dv">600</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">}</span></span></code></pre></div>
+<h1 id="tests">Tests</h1>
+<p>Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using the <code>match</code> component of the result. The flow editor builds these expressions using UI widgets, but they can be used anywhere a normal template function is used.</p>
+<div class="tests">
+<h2 class="item_title">
+<a name="test:has_all_words" href="#test:has_all_words">has_all_words(text, words)</a>
+</h2>
+<p>Tests whether all the <code>words</code> are contained in <code>text</code></p>
+<p>The words can be in any order and may appear more than once.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb4-1"><a href="#cb4-1"></a>@(has_all_words(<span class="st">&quot;the quick brown FOX&quot;</span>, <span class="st">&quot;the fox&quot;</span>)) → true</span>
+<span id="cb4-2"><a href="#cb4-2"></a>@(has_all_words(<span class="st">&quot;the quick brown FOX&quot;</span>, <span class="st">&quot;the fox&quot;</span>).match) → the FOX</span>
+<span id="cb4-3"><a href="#cb4-3"></a>@(has_all_words(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_any_word" href="#test:has_any_word">has_any_word(text, words)</a>
+</h2>
+<p>Tests whether any of the <code>words</code> are contained in the <code>text</code></p>
+<p>Only one of the words needs to match and it may appear more than once.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb5-1"><a href="#cb5-1"></a>@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;fox quick&quot;</span>)) → true</span>
+<span id="cb5-2"><a href="#cb5-2"></a>@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;fox quick&quot;</span>).match) → Quick Fox</span>
+<span id="cb5-3"><a href="#cb5-3"></a>@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>).match) → Fox</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_beginning" href="#test:has_beginning">has_beginning(text, beginning)</a>
+</h2>
+<p>Tests whether <code>text</code> starts with <code>beginning</code></p>
+<p>Both text values are trimmed of surrounding whitespace, but otherwise matching is strict without any tokenization.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb6-1"><a href="#cb6-1"></a>@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the quick&quot;</span>)) → true</span>
+<span id="cb6-2"><a href="#cb6-2"></a>@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the quick&quot;</span>).match) → The Quick</span>
+<span id="cb6-3"><a href="#cb6-3"></a>@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the   quick&quot;</span>)) → false</span>
+<span id="cb6-4"><a href="#cb6-4"></a>@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_category" href="#test:has_category">has_category(result, categories…)</a>
+</h2>
+<p>Tests whether the category of a result on of the passed in <code>categories</code></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb7-1"><a href="#cb7-1"></a>@(has_category(results.webhook, <span class="st">&quot;Success&quot;</span>, <span class="st">&quot;Failure&quot;</span>)) → true</span>
+<span id="cb7-2"><a href="#cb7-2"></a>@(has_category(results.webhook, <span class="st">&quot;Success&quot;</span>, <span class="st">&quot;Failure&quot;</span>).match) → Success</span>
+<span id="cb7-3"><a href="#cb7-3"></a>@(has_category(results.webhook, <span class="st">&quot;Failure&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_date" href="#test:has_date">has_date(text)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a date formatted according to our environment</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb8-1"><a href="#cb8-1"></a>@(has_date(<span class="st">&quot;the date is 15/01/2017&quot;</span>)) → true</span>
+<span id="cb8-2"><a href="#cb8-2"></a>@(has_date(<span class="st">&quot;the date is 15/01/2017&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>@(has_date(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_date_eq" href="#test:has_date_eq">has_date_eq(text, date)</a>
+</h2>
+<p>Tests whether <code>text</code> a date equal to <code>date</code></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb9-1"><a href="#cb9-1"></a>@(has_date_eq(<span class="st">&quot;the date is 15/01/2017&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → true</span>
+<span id="cb9-2"><a href="#cb9-2"></a>@(has_date_eq(<span class="st">&quot;the date is 15/01/2017&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>@(has_date_eq(<span class="st">&quot;the date is 15/01/2017 15:00&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T15:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</span>
+<span id="cb9-5"><a href="#cb9-5"></a>@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_date_gt" href="#test:has_date_gt">has_date_gt(text, min)</a>
+</h2>
+<p>Tests whether <code>text</code> a date after the date <code>min</code></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb10-1"><a href="#cb10-1"></a>@(has_date_gt(<span class="st">&quot;the date is 15/01/2017&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>)) → true</span>
+<span id="cb10-2"><a href="#cb10-2"></a>@(has_date_gt(<span class="st">&quot;the date is 15/01/2017&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>@(has_date_gt(<span class="st">&quot;the date is 15/01/2017&quot;</span>, <span class="st">&quot;2017-03-15&quot;</span>)) → false</span>
+<span id="cb10-4"><a href="#cb10-4"></a>@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</span>
+<span id="cb10-5"><a href="#cb10-5"></a>@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_date_lt" href="#test:has_date_lt">has_date_lt(text, max)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a date before the date <code>max</code></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb11-1"><a href="#cb11-1"></a>@(has_date_lt(<span class="st">&quot;the date is 15/01/2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → true</span>
+<span id="cb11-2"><a href="#cb11-2"></a>@(has_date_lt(<span class="st">&quot;the date is 15/01/2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</span>
+<span id="cb11-4"><a href="#cb11-4"></a>@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_district" href="#test:has_district">has_district(text, state)</a>
+</h2>
+<p>Tests whether a district name is contained in the <code>text</code>. If <code>state</code> is also provided then the returned district must be within that state.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb12-1"><a href="#cb12-1"></a>@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo</span>
+<span id="cb12-2"><a href="#cb12-2"></a>@(has_district(<span class="st">&quot;I live in Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo</span>
+<span id="cb12-3"><a href="#cb12-3"></a>@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Boston&quot;</span>)) → false</span>
+<span id="cb12-4"><a href="#cb12-4"></a>@(has_district(<span class="st">&quot;Gasabo&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_email" href="#test:has_email">has_email(text)</a>
+</h2>
+<p>Tests whether an email is contained in <code>text</code></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb13-1"><a href="#cb13-1"></a>@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>)) → true</span>
+<span id="cb13-2"><a href="#cb13-2"></a>@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>).match) → foo1@bar.com</span>
+<span id="cb13-3"><a href="#cb13-3"></a>@(has_email(<span class="st">&quot;my email is &lt;foo@bar2.com&gt;&quot;</span>).match) → foo@bar2.com</span>
+<span id="cb13-4"><a href="#cb13-4"></a>@(has_email(<span class="st">&quot;i&#39;m not sharing my email&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_error" href="#test:has_error">has_error(value)</a>
+</h2>
+<p>Returns whether <code>value</code> is an error</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb14-1"><a href="#cb14-1"></a>@(has_error(datetime(<span class="st">&quot;foo&quot;</span>))) → true</span>
+<span id="cb14-2"><a href="#cb14-2"></a>@(has_error(datetime(<span class="st">&quot;foo&quot;</span>)).match) → error calling DATETIME: unable to convert <span class="st">&quot;foo&quot;</span> to a datetime</span>
+<span id="cb14-3"><a href="#cb14-3"></a>@(has_error(run.not.existing).match) → object has no property &#39;not&#39;</span>
+<span id="cb14-4"><a href="#cb14-4"></a>@(has_error(contact.fields.unset).match) → object has no property &#39;unset&#39;</span>
+<span id="cb14-5"><a href="#cb14-5"></a>@(has_error(<span class="st">&quot;hello&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_group" href="#test:has_group">has_group(contact, group_uuid)</a>
+</h2>
+<p>Returns whether the <code>contact</code> is part of group with the passed in UUID</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb15-1"><a href="#cb15-1"></a>@(has_group(contact.groups, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>).match) → {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}</span>
+<span id="cb15-2"><a href="#cb15-2"></a>@(has_group(array(), <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_intent" href="#test:has_intent">has_intent(result, name, confidence)</a>
+</h2>
+<p>Tests whether any intent in a classification result has <code>name</code> and minimum <code>confidence</code></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb16-1"><a href="#cb16-1"></a>@(has_intent(results.intent, <span class="st">&quot;book_flight&quot;</span>, <span class="fl">0.5</span>)) → true</span>
+<span id="cb16-2"><a href="#cb16-2"></a>@(has_intent(results.intent, <span class="st">&quot;book_hotel&quot;</span>, <span class="fl">0.2</span>)) → true</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_number" href="#test:has_number">has_number(text)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a number</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb17-1"><a href="#cb17-1"></a>@(has_number(<span class="st">&quot;the number is 42&quot;</span>)) → true</span>
+<span id="cb17-2"><a href="#cb17-2"></a>@(has_number(<span class="st">&quot;the number is 42&quot;</span>).match) → <span class="dv">42</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>@(has_number(<span class="st">&quot;the number is forty two&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_number_between" href="#test:has_number_between">has_number_between(text, min, max)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a number between <code>min</code> and <code>max</code> inclusive</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb18-1"><a href="#cb18-1"></a>@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>, <span class="dv">44</span>)) → true</span>
+<span id="cb18-2"><a href="#cb18-2"></a>@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>, <span class="dv">44</span>).match) → <span class="dv">42</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">50</span>, <span class="dv">60</span>)) → false</span>
+<span id="cb18-4"><a href="#cb18-4"></a>@(has_number_between(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">50</span>, <span class="dv">60</span>)) → false</span>
+<span id="cb18-5"><a href="#cb18-5"></a>@(has_number_between(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="dv">60</span>)) → ERROR</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_number_eq" href="#test:has_number_eq">has_number_eq(text, value)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a number equal to the <code>value</code></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb19-1"><a href="#cb19-1"></a>@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</span>
+<span id="cb19-2"><a href="#cb19-2"></a>@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>).match) → <span class="dv">42</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → false</span>
+<span id="cb19-4"><a href="#cb19-4"></a>@(has_number_eq(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</span>
+<span id="cb19-5"><a href="#cb19-5"></a>@(has_number_eq(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_number_gt" href="#test:has_number_gt">has_number_gt(text, min)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a number greater than <code>min</code></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb20-1"><a href="#cb20-1"></a>@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → true</span>
+<span id="cb20-2"><a href="#cb20-2"></a>@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>).match) → <span class="dv">42</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → false</span>
+<span id="cb20-4"><a href="#cb20-4"></a>@(has_number_gt(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</span>
+<span id="cb20-5"><a href="#cb20-5"></a>@(has_number_gt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_number_gte" href="#test:has_number_gte">has_number_gte(text, min)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a number greater than or equal to <code>min</code></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb21-1"><a href="#cb21-1"></a>@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</span>
+<span id="cb21-2"><a href="#cb21-2"></a>@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>).match) → <span class="dv">42</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">45</span>)) → false</span>
+<span id="cb21-4"><a href="#cb21-4"></a>@(has_number_gte(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</span>
+<span id="cb21-5"><a href="#cb21-5"></a>@(has_number_gte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_number_lt" href="#test:has_number_lt">has_number_lt(text, max)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a number less than <code>max</code></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb22-1"><a href="#cb22-1"></a>@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>)) → true</span>
+<span id="cb22-2"><a href="#cb22-2"></a>@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>).match) → <span class="dv">42</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → false</span>
+<span id="cb22-4"><a href="#cb22-4"></a>@(has_number_lt(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</span>
+<span id="cb22-5"><a href="#cb22-5"></a>@(has_number_lt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_number_lte" href="#test:has_number_lte">has_number_lte(text, max)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a number less than or equal to <code>max</code></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb23-1"><a href="#cb23-1"></a>@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</span>
+<span id="cb23-2"><a href="#cb23-2"></a>@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>).match) → <span class="dv">42</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → false</span>
+<span id="cb23-4"><a href="#cb23-4"></a>@(has_number_lte(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</span>
+<span id="cb23-5"><a href="#cb23-5"></a>@(has_number_lte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_only_phrase" href="#test:has_only_phrase">has_only_phrase(text, phrase)</a>
+</h2>
+<p>Tests whether the <code>text</code> contains only <code>phrase</code></p>
+<p>The phrase must be the only text in the text to match</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb24-1"><a href="#cb24-1"></a>@(has_only_phrase(<span class="st">&quot;Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → true</span>
+<span id="cb24-2"><a href="#cb24-2"></a>@(has_only_phrase(<span class="st">&quot;Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>).match) → Quick Brown</span>
+<span id="cb24-3"><a href="#cb24-3"></a>@(has_only_phrase(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → false</span>
+<span id="cb24-4"><a href="#cb24-4"></a>@(has_only_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;&quot;</span>)) → false</span>
+<span id="cb24-5"><a href="#cb24-5"></a>@(has_only_phrase(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>).match) →</span>
+<span id="cb24-6"><a href="#cb24-6"></a>@(has_only_phrase(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_only_text" href="#test:has_only_text">has_only_text(text1, text2)</a>
+</h2>
+<p>Returns whether two text values are equal (case sensitive). In the case that they are, it will return the text as the match.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb25-1"><a href="#cb25-1"></a>@(has_only_text(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → true</span>
+<span id="cb25-2"><a href="#cb25-2"></a>@(has_only_text(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>).match) → foo</span>
+<span id="cb25-3"><a href="#cb25-3"></a>@(has_only_text(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;FOO&quot;</span>)) → false</span>
+<span id="cb25-4"><a href="#cb25-4"></a>@(has_only_text(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → false</span>
+<span id="cb25-5"><a href="#cb25-5"></a>@(has_only_text(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) → false</span>
+<span id="cb25-6"><a href="#cb25-6"></a>@(has_only_text(run.status, <span class="st">&quot;completed&quot;</span>).match) → completed</span>
+<span id="cb25-7"><a href="#cb25-7"></a>@(has_only_text(results.webhook.category, <span class="st">&quot;Success&quot;</span>).match) → Success</span>
+<span id="cb25-8"><a href="#cb25-8"></a>@(has_only_text(results.webhook.category, <span class="st">&quot;Failure&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_pattern" href="#test:has_pattern">has_pattern(text, pattern)</a>
+</h2>
+<p>Tests whether <code>text</code> matches the regex <code>pattern</code></p>
+<p>Both text values are trimmed of surrounding whitespace and matching is case-insensitive.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb26-1"><a href="#cb26-1"></a>@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) → true</span>
+<span id="cb26-2"><a href="#cb26-2"></a>@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match) → Buy cheese</span>
+<span id="cb26-3"><a href="#cb26-3"></a>@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).extra) → {<span class="dv">0</span>: Buy cheese, <span class="dv">1</span>: cheese}</span>
+<span id="cb26-4"><a href="#cb26-4"></a>@(has_pattern(<span class="st">&quot;Sell cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_phone" href="#test:has_phone">has_phone(text, country_code)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a phone number. The optional <code>country_code</code> argument specifies the country to use for parsing.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb27-1"><a href="#cb27-1"></a>@(has_phone(<span class="st">&quot;my number is +12067799294 thanks&quot;</span>)) → true</span>
+<span id="cb27-2"><a href="#cb27-2"></a>@(has_phone(<span class="st">&quot;my number is +12067799294&quot;</span>).match) → +<span class="dv">12067799294</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a>@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a>@(has_phone(<span class="st">&quot;my number is 206 779 9294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a>@(has_phone(<span class="st">&quot;my number is none of your business&quot;</span>, <span class="st">&quot;US&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_phrase" href="#test:has_phrase">has_phrase(text, phrase)</a>
+</h2>
+<p>Tests whether <code>phrase</code> is contained in <code>text</code></p>
+<p>The words in the test phrase must appear in the same order with no other words in between.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb28-1"><a href="#cb28-1"></a>@(has_phrase(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;brown fox&quot;</span>)) → true</span>
+<span id="cb28-2"><a href="#cb28-2"></a>@(has_phrase(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;brown fox&quot;</span>).match) → brown fox</span>
+<span id="cb28-3"><a href="#cb28-3"></a>@(has_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;quick fox&quot;</span>)) → false</span>
+<span id="cb28-4"><a href="#cb28-4"></a>@(has_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;&quot;</span>).match) →</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_state" href="#test:has_state">has_state(text)</a>
+</h2>
+<p>Tests whether a state name is contained in the <code>text</code></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb29-1"><a href="#cb29-1"></a>@(has_state(<span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City</span>
+<span id="cb29-2"><a href="#cb29-2"></a>@(has_state(<span class="st">&quot;¡Kigali!&quot;</span>).match) → Rwanda &gt; Kigali City</span>
+<span id="cb29-3"><a href="#cb29-3"></a>@(has_state(<span class="st">&quot;I live in Kigali&quot;</span>).match) → Rwanda &gt; Kigali City</span>
+<span id="cb29-4"><a href="#cb29-4"></a>@(has_state(<span class="st">&quot;Boston&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_text" href="#test:has_text">has_text(text)</a>
+</h2>
+<p>Tests whether there the text has any characters in it</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb30-1"><a href="#cb30-1"></a>@(has_text(<span class="st">&quot;quick brown&quot;</span>)) → true</span>
+<span id="cb30-2"><a href="#cb30-2"></a>@(has_text(<span class="st">&quot;quick brown&quot;</span>).match) → quick brown</span>
+<span id="cb30-3"><a href="#cb30-3"></a>@(has_text(<span class="st">&quot;&quot;</span>)) → false</span>
+<span id="cb30-4"><a href="#cb30-4"></a>@(has_text(<span class="st">&quot; </span><span class="sc">\n</span><span class="st">&quot;</span>)) → false</span>
+<span id="cb30-5"><a href="#cb30-5"></a>@(has_text(<span class="dv">123</span>).match) → <span class="dv">123</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a>@(has_text(contact.fields.not_set)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_time" href="#test:has_time">has_time(text)</a>
+</h2>
+<p>Tests whether <code>text</code> contains a time.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb31-1"><a href="#cb31-1"></a>@(has_time(<span class="st">&quot;the time is 10:30&quot;</span>)) → true</span>
+<span id="cb31-2"><a href="#cb31-2"></a>@(has_time(<span class="st">&quot;the time is 10:30&quot;</span>).match) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">00.000000</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>@(has_time(<span class="st">&quot;the time is 10 PM&quot;</span>).match) → <span class="dv">22</span>:<span class="dv">00</span>:<span class="fl">00.000000</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a>@(has_time(<span class="st">&quot;the time is 10:30:45&quot;</span>).match) → <span class="dv">10</span>:<span class="dv">30</span>:<span class="fl">45.000000</span></span>
+<span id="cb31-5"><a href="#cb31-5"></a>@(has_time(<span class="st">&quot;there is no time here, just the number 25&quot;</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_top_intent" href="#test:has_top_intent">has_top_intent(result, name, confidence)</a>
+</h2>
+<p>Tests whether the top intent in a classification result has <code>name</code> and minimum <code>confidence</code></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb32-1"><a href="#cb32-1"></a>@(has_top_intent(results.intent, <span class="st">&quot;book_flight&quot;</span>, <span class="fl">0.5</span>)) → true</span>
+<span id="cb32-2"><a href="#cb32-2"></a>@(has_top_intent(results.intent, <span class="st">&quot;book_hotel&quot;</span>, <span class="fl">0.5</span>)) → false</span></code></pre></div>
+<h2 class="item_title">
+<a name="test:has_ward" href="#test:has_ward">has_ward(text, district, state)</a>
+</h2>
+<p>Tests whether a ward name is contained in the <code>text</code></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb33-1"><a href="#cb33-1"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</span>
+<span id="cb33-2"><a href="#cb33-2"></a>@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</span>
+<span id="cb33-3"><a href="#cb33-3"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) → false</span>
+<span id="cb33-4"><a href="#cb33-4"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</span>
+<span id="cb33-5"><a href="#cb33-5"></a>@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</span>
+<span id="cb33-6"><a href="#cb33-6"></a>@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) → false</span>
+<span id="cb33-7"><a href="#cb33-7"></a>@(has_ward(<span class="st">&quot;Gisozi&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</span></code></pre></div>
+</div>
+
+    </body>
+</html>
