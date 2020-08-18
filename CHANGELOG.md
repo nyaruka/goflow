@@ -1,3 +1,7 @@
+v0.102.0
+----------
+ * Update to latest gocommon
+
 v0.101.2
 ----------
  * Add empty localizations for all the languages used in RapidPro
