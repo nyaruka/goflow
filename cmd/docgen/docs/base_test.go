@@ -6,8 +6,8 @@ import (
 	"path"
 	"testing"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/cmd/docgen/docs"
-	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

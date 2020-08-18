@@ -5,9 +5,9 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/contactql/es"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

@@ -6,7 +6,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/nyaruka/goflow/utils/jsonx"
+	"github.com/nyaruka/gocommon/jsonx"
 )
 
 func init() {

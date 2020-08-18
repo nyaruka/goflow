@@ -974,8 +974,8 @@ Returns a single random number between [0.0-1.0).
 
 
 ```objectivec
-@(rand()) → 0.607552015674623913099594574305228888988494873046875
-@(rand()) → 0.484677570947340263796121462291921488940715789794921875
+@(rand()) → 0.6075520156746239
+@(rand()) → 0.48467757094734026
 ```
 
 <h2 class="item_title"><a name="function:rand_between" href="#function:rand_between">rand_between()</a></h2>

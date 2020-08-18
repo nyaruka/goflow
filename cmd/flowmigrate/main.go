@@ -13,9 +13,9 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
-	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/Masterminds/semver"
 )

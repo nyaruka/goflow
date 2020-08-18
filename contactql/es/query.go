@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/olivere/elastic"
 )

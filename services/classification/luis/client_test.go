@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/services/classification/luis"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/httpx"
 	"github.com/shopspring/decimal"
 
 	"github.com/stretchr/testify/assert"

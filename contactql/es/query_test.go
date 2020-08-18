@@ -7,13 +7,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static/types"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/contactql/es"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/jsonx"
 
 	"github.com/olivere/elastic"
 	"github.com/stretchr/testify/assert"

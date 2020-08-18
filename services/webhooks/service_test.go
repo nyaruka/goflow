@@ -7,11 +7,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/dates"
-	"github.com/nyaruka/goflow/utils/httpx"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
