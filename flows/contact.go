@@ -21,7 +21,7 @@ import (
 )
 
 func init() {
-	utils.RegisterValidatorAlias("contact_status", "eq=active|eq=blocked|eq=stopped", func(validator.FieldError) string {
+	utils.RegisterValidatorAlias("contact_status", "eq=active|eq=blocked|eq=stopped|eq=archived", func(validator.FieldError) string {
 		return "is not a valid contact status"
 	})
 }
@@ -30,9 +30,6 @@ func init() {
 type ContactStatus string
 
 const (
-	// NilContactStatus is the empty contact status
-	NilContactStatus ContactStatus = ""
-
 	// ContactStatusActive is the contact status of active
 	ContactStatusActive ContactStatus = "active"
 
@@ -41,6 +38,9 @@ const (
 
 	// ContactStatusStopped is the contact status of stopped
 	ContactStatusStopped ContactStatus = "stopped"
+
+	// ContactStatusArchived is the contact status of archived
+	ContactStatusArchived ContactStatus = "archived"
 )
 
 // Contact represents a person who is interacting with the flow
@@ -589,7 +589,8 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		assets:     sa,
 	}
 
-	if c.status == NilContactStatus {
+	// it's possible older sessions won't have contact status
+	if c.status == "" {
 		c.status = ContactStatusActive
 	}
 
