@@ -47,8 +47,8 @@ func (m *baseModifier) reevaluateGroups(env envs.Environment, assets flows.Sessi
 		log(events.NewError(err))
 	}
 
-	// make sure from all static groups are removed for blocked or stopped contacts
-	if contact.Status() == flows.ContactStatusBlocked || contact.Status() == flows.ContactStatusStopped {
+	// make sure from all static groups are removed for non-active contacts
+	if contact.Status() != flows.ContactStatusActive {
 		for _, g := range contact.Groups().All() {
 			if !g.IsDynamic() {
 				contact.Groups().Remove(g)

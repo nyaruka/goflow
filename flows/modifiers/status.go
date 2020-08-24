@@ -21,7 +21,7 @@ const TypeStatus string = "status"
 type StatusModifier struct {
 	baseModifier
 
-	Status flows.ContactStatus `json:"status" validate:"eq=active|eq=blocked|eq=stopped"`
+	Status flows.ContactStatus `json:"status" validate:"contact_status"`
 }
 
 // NewStatus creates a new status modifier
