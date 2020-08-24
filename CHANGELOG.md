@@ -1,3 +1,7 @@
+v0.102.1
+----------
+ * Add archived contact status
+
 v0.102.0
 ----------
  * Update to latest gocommon
