@@ -69,7 +69,7 @@
         }
     },
     {
-        "description": "Error event if a group is dynamic",
+        "description": "Error event if a group is query based",
         "action": {
             "type": "add_contact_groups",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -85,7 +85,7 @@
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't add contacts to the dynamic group 'Females'"
+                "text": "can't add contacts to the query based group 'Females'"
             }
         ]
     },

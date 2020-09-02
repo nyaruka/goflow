@@ -253,8 +253,8 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	assert.Equal(t, twitter1, contact.URNs()[0].Channel())
 }
 
-func TestReevaluateDynamicGroups(t *testing.T) {
-	source, err := static.LoadSource("testdata/dynamic_groups.assets.json")
+func TestReevaluateQueryBasedGroups(t *testing.T) {
+	source, err := static.LoadSource("testdata/smart_groups.assets.json")
 	require.NoError(t, err)
 
 	tests := []struct {
@@ -264,7 +264,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 		ContactAfter  json.RawMessage `json:"contact_after"`
 	}{}
 
-	testFile, err := ioutil.ReadFile("testdata/dynamic_groups.json")
+	testFile, err := ioutil.ReadFile("testdata/smart_groups.json")
 	require.NoError(t, err)
 	err = jsonx.Unmarshal(testFile, &tests)
 	require.NoError(t, err)

@@ -55,8 +55,8 @@ func (m *GroupsModifier) Apply(env envs.Environment, assets flows.SessionAssets,
 
 	if m.modification == GroupsAdd {
 		for _, group := range m.groups {
-			if group.IsDynamic() {
-				log(events.NewErrorf("can't add contacts to the dynamic group '%s'", group.Name()))
+			if group.UsesQuery() {
+				log(events.NewErrorf("can't add contacts to the query based group '%s'", group.Name()))
 				continue
 			}
 
@@ -76,8 +76,8 @@ func (m *GroupsModifier) Apply(env envs.Environment, assets flows.SessionAssets,
 
 	} else if m.modification == GroupsRemove {
 		for _, group := range m.groups {
-			if group.IsDynamic() {
-				log(events.NewErrorf("can't remove contacts from the dynamic group '%s'", group.Name()))
+			if group.UsesQuery() {
+				log(events.NewErrorf("can't remove contacts from the query based group '%s'", group.Name()))
 				continue
 			}
 

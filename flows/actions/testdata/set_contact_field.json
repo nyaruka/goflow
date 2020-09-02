@@ -86,7 +86,7 @@
         "events": []
     },
     {
-        "description": "Field changed event and dynamic group changed events if field value changes",
+        "description": "Field changed event and query based group changed events if field value changes",
         "action": {
             "type": "set_contact_field",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -157,7 +157,7 @@
         }
     },
     {
-        "description": "Field changed event and dynamic group changed events if field cleared",
+        "description": "Field changed event and query based group changed events if field cleared",
         "action": {
             "type": "set_contact_field",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",

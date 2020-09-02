@@ -86,7 +86,7 @@ Is a named constant.
 
 <h2 class="item_title"><a name="asset:group" href="#asset:group">group</a></h2>
 
-Is a set of contacts which can be static or dynamic (i.e. based on a query).
+Is a set of contacts which can be added to and removed from manually, or based on a query.
 
 
 ```objectivec

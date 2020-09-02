@@ -38,9 +38,9 @@ func newBaseModifier(typeName string) baseModifier {
 // Type returns the type of this modifier
 func (m *baseModifier) Type() string { return m.Type_ }
 
-// helper to re-evaluate dynamic groups and log any changes to membership
+// helper to re-evaluate groups and log any changes to membership
 func (m *baseModifier) reevaluateGroups(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
-	added, removed, errors := contact.ReevaluateDynamicGroups(env)
+	added, removed, errors := contact.ReevaluateQueryBasedGroups(env)
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {
@@ -50,7 +50,7 @@ func (m *baseModifier) reevaluateGroups(env envs.Environment, assets flows.Sessi
 	// make sure from all static groups are removed for non-active contacts
 	if contact.Status() != flows.ContactStatusActive {
 		for _, g := range contact.Groups().All() {
-			if !g.IsDynamic() {
+			if !g.UsesQuery() {
 				contact.Groups().Remove(g)
 				removed = append(removed, g)
 			}

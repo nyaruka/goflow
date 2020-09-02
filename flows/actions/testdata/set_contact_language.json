@@ -121,7 +121,7 @@
         }
     },
     {
-        "description": "Language changed and dynamic group changed events if language changes",
+        "description": "Language changed and query based group changed events if language changes",
         "action": {
             "type": "set_contact_language",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",

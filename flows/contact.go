@@ -424,18 +424,18 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 	return !oldURNs.Equal(c.urns)
 }
 
-// ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) ReevaluateDynamicGroups(env envs.Environment) ([]*Group, []*Group, []error) {
+// ReevaluateQueryBasedGroups reevaluates membership of all query based groups for this contact
+func (c *Contact) ReevaluateQueryBasedGroups(env envs.Environment) ([]*Group, []*Group, []error) {
 	added := make([]*Group, 0)
 	removed := make([]*Group, 0)
 	errs := make([]error, 0)
 
 	for _, group := range c.assets.Groups().All() {
-		if !group.IsDynamic() {
+		if !group.UsesQuery() {
 			continue
 		}
 
-		qualifies, err := group.CheckDynamicMembership(env, c)
+		qualifies, err := group.CheckQueryBasedMembership(env, c)
 		if err != nil {
 			errs = append(errs, errors.Wrapf(err, "unable to re-evaluate membership of group '%s'", group.Name()))
 		}

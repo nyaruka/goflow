@@ -9,8 +9,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
-// Group represents a grouping of contacts. It can be static (contacts are added and removed manually through
-// [actions](#action:add_contact_groups)) or dynamic (contacts are added automatically by a query).
+// Group adds some functionality to group assets.
 type Group struct {
 	assets.Group
 
@@ -34,13 +33,13 @@ func NewGroup(env envs.Environment, fields *FieldAssets, asset assets.Group) (*G
 // Asset returns the underlying asset
 func (g *Group) Asset() assets.Group { return g.Group }
 
-// IsDynamic returns whether this group is dynamic
-func (g *Group) IsDynamic() bool { return g.Query() != "" }
+// UsesQuery returns whether this group is query based
+func (g *Group) UsesQuery() bool { return g.Query() != "" }
 
-// CheckDynamicMembership returns whether the given contact belongs in this dynamic group
-func (g *Group) CheckDynamicMembership(env envs.Environment, contact *Contact) (bool, error) {
-	if !g.IsDynamic() {
-		panic("can't check membership on a non-dynamic group")
+// CheckQueryBasedMembership returns whether the given contact belongs in a query based group
+func (g *Group) CheckQueryBasedMembership(env envs.Environment, contact *Contact) (bool, error) {
+	if !g.UsesQuery() {
+		panic("can't check membership on a non-query based group")
 	}
 
 	if contact.Status() != ContactStatusActive {

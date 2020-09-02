@@ -154,7 +154,7 @@
         "events": []
     },
     {
-        "description": "error event if adding to group which is dynamic",
+        "description": "error event if adding to group which is query based",
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
@@ -192,7 +192,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "text": "can't add contacts to the dynamic group 'Males'"
+                "text": "can't add contacts to the query based group 'Males'"
             },
             {
                 "type": "contact_groups_changed",
@@ -207,7 +207,7 @@
         ]
     },
     {
-        "description": "error event if removing from group which is dynamic",
+        "description": "error event if removing from group which is query based",
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
@@ -244,7 +244,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "text": "can't remove contacts from the dynamic group 'Males'"
+                "text": "can't remove contacts from the query based group 'Males'"
             },
             {
                 "type": "contact_groups_changed",

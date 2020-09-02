@@ -166,8 +166,8 @@ func (s *session) start(trigger flows.Trigger) (flows.Sprint, error) {
 		return sprint, err
 	}
 
-	// ensure dynamic groups are correct
-	s.ensureDynamicGroups(sprint.LogEvent)
+	// ensure groups are correct
+	s.ensureQueryBasedGroups(sprint.LogEvent)
 
 	// off to the races...
 	if err := s.continueUntilWait(sprint, nil, noDestination, nil, trigger); err != nil {
@@ -253,8 +253,8 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 	// resumes are allowed to make state changes
 	resume.Apply(waitingRun, logEvent)
 
-	// ensure dynamic groups are correct
-	s.ensureDynamicGroups(logEvent)
+	// ensure groups are correct
+	s.ensureQueryBasedGroups(logEvent)
 
 	_, isTimeout := resume.(*resumes.WaitTimeoutResume)
 
@@ -493,14 +493,13 @@ func (s *session) pickNodeExit(sprint flows.Sprint, run flows.FlowRun, node flow
 	return noDestination, nil
 }
 
-// EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
-// as far as the engine is concerned
-func (s *session) ensureDynamicGroups(logEvent flows.EventCallback) {
+// ensures that our session contact is in the correct query based groups as as far as the engine is concerned
+func (s *session) ensureQueryBasedGroups(logEvent flows.EventCallback) {
 	if s.contact == nil {
 		return
 	}
 
-	added, removed, errors := s.contact.ReevaluateDynamicGroups(s.Environment())
+	added, removed, errors := s.contact.ReevaluateQueryBasedGroups(s.Environment())
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {

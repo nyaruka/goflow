@@ -581,7 +581,7 @@ func TestInspection(t *testing.T) {
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 		},
 		{
-			"../../test/testdata/runner/dynamic_groups.json",
+			"../../test/testdata/runner/smart_groups.json",
 			"1b462ce8-983a-4393-b133-e15a0efdb70c",
 		},
 		{

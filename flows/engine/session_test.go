@@ -146,8 +146,8 @@ func TestReadWithMissingAssets(t *testing.T) {
 	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Collect Age"), missingAssets[14])
 }
 
-func TestCorrectDynamicGroupsOnTrigger(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("testdata/dynamic_groups.json")
+func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
+	assetsJSON, err := ioutil.ReadFile("testdata/smart_groups.json")
 	require.NoError(t, err)
 
 	sa, err := test.CreateSessionAssets(assetsJSON, "")

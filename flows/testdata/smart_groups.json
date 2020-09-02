@@ -1,6 +1,6 @@
 [
     {
-        "description": "contact removed from broken dynamic group",
+        "description": "contact removed from broken query based group",
         "contact_before": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2020-02-20T14:36:00Z",
@@ -37,7 +37,7 @@
         }
     },
     {
-        "description": "contact added to dynamic groups",
+        "description": "contact added to query based groups",
         "contact_before": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
@@ -173,7 +173,7 @@
         }
     },
     {
-        "description": "blocked contact not added to dynamic groups",
+        "description": "blocked contact not added to query based groups",
         "contact_before": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
@@ -219,7 +219,7 @@
         }
     },
     {
-        "description": "stopped contact not added to dynamic groups",
+        "description": "stopped contact not added to query based groups",
         "contact_before": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
@@ -265,7 +265,7 @@
         }
     },
     {
-        "description": "blocked contact not added to dynamic groups",
+        "description": "blocked contact not added to query based groups",
         "contact_before": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",
@@ -311,7 +311,7 @@
         }
     },
     {
-        "description": "blocked contact not added to dynamic groups",
+        "description": "blocked contact not added to query based groups",
         "contact_before": {
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "language": "spa",

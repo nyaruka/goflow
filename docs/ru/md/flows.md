@@ -615,7 +615,7 @@ the caller should handle as an IVR play command using the audio attachment.
 
 Can be used to remove a contact from one or more groups. A [contact_groups_changed](sessions.html#event:contact_groups_changed) event will be created
 for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
-the contact from all non-dynamic groups.
+the contact from all non-query based groups.
 
 <div class="input_action"><h3>Action</h3>
 
