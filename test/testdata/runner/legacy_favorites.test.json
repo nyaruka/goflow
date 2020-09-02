@@ -136,7 +136,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -178,6 +178,7 @@
                     "created_on": "2000-01-01T00:00:00Z",
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -228,7 +229,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -266,7 +267,7 @@
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-13T12:30:10.123456789Z",
+                        "expires_on": "2018-07-13T12:30:11.123456789Z",
                         "flow": {
                             "name": "Favorites",
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
@@ -358,7 +359,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "created_on": "2018-07-06T12:30:29.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -395,6 +396,7 @@
                     "created_on": "2000-01-01T00:00:00Z",
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -445,7 +447,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -482,7 +484,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -515,7 +517,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:38.123456789Z",
-                        "expires_on": "2018-07-13T12:30:26.123456789Z",
+                        "expires_on": "2018-07-13T12:30:27.123456789Z",
                         "flow": {
                             "name": "Favorites",
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"

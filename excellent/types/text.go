@@ -5,9 +5,9 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // XText is a string of characters.

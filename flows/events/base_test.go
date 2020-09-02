@@ -9,6 +9,9 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -18,9 +21,6 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/dates"
-	"github.com/nyaruka/goflow/utils/httpx"
-	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 	"github.com/shopspring/decimal"
 
@@ -277,6 +277,7 @@ func TestEventMarshaling(t *testing.T) {
 					],
 					"id": 1234567,
 					"language": "eng",
+					"last_seen_on": "2017-12-31T11:35:10.035757258-02:00",
 					"name": "Ryan Lewis",
 					"status": "active",
 					"timezone": "America/Guayaquil",
@@ -608,4 +609,30 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	assert.Equal(t, "http://temba.io/", event.URL)
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n...", event.Response)
 	assert.True(t, utf8.ValidString(event.Response))
+}
+
+func TestDeprecatedEvents(t *testing.T) {
+	eventJSON := []byte(`{
+		"type": "classifier_called",
+		"created_on": "2006-01-02T15:04:05Z",
+		"classifier": {"uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000", "name": "Booking"},
+		"http_logs": [
+		{
+			"url": "https://api.wit.ai/message?v=20170307&q=hello",
+			"status": "success",
+			"request": "GET /message?v=20170307&q=hello HTTP/1.1",
+			"response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+			"created_on": "2006-01-02T15:04:05Z",
+			"elapsed_ms": 123
+		}
+		]
+	}`)
+
+	e, err := events.ReadEvent(eventJSON)
+	assert.NoError(t, err)
+	assert.Equal(t, events.TypeClassifierCalled, e.Type())
+
+	marshaled, err := jsonx.Marshal(e)
+	assert.NoError(t, err)
+	test.AssertEqualJSON(t, eventJSON, marshaled, "marshal event mismatch")
 }

@@ -1,0 +1,330 @@
+[
+    {
+        "description": "noop active status on non blocked and non stopped contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "status": "active",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "status",
+            "status": "active"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": []
+    },
+    {
+        "description": "noop blocking a blocked contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "status": "blocked",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "status",
+            "status": "blocked"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "blocked",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": []
+    },
+    {
+        "description": "noop stopping a stopped contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "status": "stopped",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "status",
+            "status": "stopped"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "stopped",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": []
+    },
+    {
+        "description": "contact_status_changed when activating a blocked contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "status": "blocked",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "status",
+            "status": "active"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "contact_status_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "status": "active"
+            }
+        ]
+    },
+    {
+        "description": "contact_status_changed when activating a blocked contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "status": "stopped",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "status",
+            "status": "active"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "contact_status_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "status": "active"
+            }
+        ]
+    },
+    {
+        "description": "contact_status_changed when blocking an active contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "status": "active",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "status",
+            "status": "blocked"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "blocked",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "contact_status_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "status": "blocked"
+            }
+        ]
+    },
+    {
+        "description": "contact_status_changed when stopping an active contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "status": "active",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "status",
+            "status": "stopped"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "stopped",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "contact_status_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "status": "stopped"
+            }
+        ]
+    },
+    {
+        "description": "contact_status_changed when activating a blocked contact",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "language": "fra",
+            "status": "blocked",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        },
+        "modifier": {
+            "type": "status",
+            "status": "active"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "language": "fra",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+                    "name": "Francophones"
+                }
+            ]
+        },
+        "events": [
+            {
+                "type": "contact_status_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "status": "active"
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_added": [
+                    {
+                        "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+                        "name": "Francophones"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "contact_status_changed when contact is blocked and removes all groups",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "status": "active",
+            "groups": [
+                {
+                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                    "name": "Customers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "fields": {
+                "gender": {
+                    "text": "male"
+                }
+            }
+        },
+        "modifier": {
+            "type": "status",
+            "status": "blocked"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "blocked",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "fields": {
+                "gender": {
+                    "text": "male"
+                }
+            }
+        },
+        "events": [
+            {
+                "type": "contact_status_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "status": "blocked"
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_removed": [
+                    {
+                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                        "name": "Males"
+                    },
+                    {
+                        "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                        "name": "Customers"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "contact_status_changed when contact is archived and removes all groups",
+        "contact_before": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "name": "Bob",
+            "status": "active",
+            "groups": [
+                {
+                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                    "name": "Customers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "fields": {
+                "gender": {
+                    "text": "male"
+                }
+            }
+        },
+        "modifier": {
+            "type": "status",
+            "status": "archived"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "archived",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "fields": {
+                "gender": {
+                    "text": "male"
+                }
+            }
+        },
+        "events": [
+            {
+                "type": "contact_status_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "status": "archived"
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_removed": [
+                    {
+                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                        "name": "Males"
+                    },
+                    {
+                        "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                        "name": "Customers"
+                    }
+                ]
+            }
+        ]
+    }
+]

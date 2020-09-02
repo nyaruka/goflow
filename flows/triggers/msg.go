@@ -3,6 +3,7 @@ package triggers
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -10,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -74,10 +74,7 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 // InitializeRun performs additional initialization when we visit our first node
 func (t *MsgTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallback) error {
 	// update our input
-	input, err := inputs.NewMsg(run.Session().Assets(), t.msg, t.triggeredOn)
-	if err != nil {
-		return err
-	}
+	input := inputs.NewMsg(run.Session().Assets(), t.msg, t.triggeredOn)
 
 	run.Session().SetInput(input)
 	logEvent(events.NewMsgReceived(t.msg))

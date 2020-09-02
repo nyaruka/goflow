@@ -140,7 +140,7 @@ func TestReadAndWritePO(t *testing.T) {
 }
 
 func TestGetText(t *testing.T) {
-	poFile, err := os.Open("testdata/locales/es/simple.po")
+	poFile, err := os.Open("testdata/locale/es/simple.po")
 	require.NoError(t, err)
 
 	defer poFile.Close()

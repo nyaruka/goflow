@@ -1,12 +1,13 @@
 package contactql
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/dates"
 
 	"github.com/shopspring/decimal"
 )
@@ -21,57 +22,60 @@ func EvaluateQuery(env envs.Environment, query *ContactQuery, queryable Queryabl
 	return query.Evaluate(env, queryable)
 }
 
-func textComparison(objectVal string, comparator Comparator, queryVal string, isName bool) (bool, error) {
+func textComparison(objectVal string, op Operator, queryVal string, isName bool) bool {
 	objectVal = strings.TrimSpace(strings.ToLower(objectVal))
 	queryVal = strings.TrimSpace(strings.ToLower(queryVal))
 
-	switch comparator {
-	case ComparatorEqual:
-		return objectVal == queryVal, nil
-	case ComparatorNotEqual:
-		return objectVal != queryVal, nil
-	case ComparatorContains:
+	switch op {
+	case OpEqual:
+		return objectVal == queryVal
+	case OpNotEqual:
+		return objectVal != queryVal
+	case OpContains:
 		// name is special case
 		if isName {
-			return tokenizedPrefixMatch(objectVal, queryVal, 8), nil
+			return tokenizedPrefixMatch(objectVal, queryVal, 8)
 		}
-		return strings.Contains(objectVal, queryVal), nil
+		return strings.Contains(objectVal, queryVal)
 	}
-	return false, NewQueryErrorf("can't query text fields with %s", comparator)
+
+	panic(fmt.Sprintf("can't query text fields with %s", op))
 }
 
-func numberComparison(objectVal decimal.Decimal, comparator Comparator, queryVal decimal.Decimal) (bool, error) {
-	switch comparator {
-	case ComparatorEqual:
-		return objectVal.Equal(queryVal), nil
-	case ComparatorGreaterThan:
-		return objectVal.GreaterThan(queryVal), nil
-	case ComparatorGreaterThanOrEqual:
-		return objectVal.GreaterThanOrEqual(queryVal), nil
-	case ComparatorLessThan:
-		return objectVal.LessThan(queryVal), nil
-	case ComparatorLessThanOrEqual:
-		return objectVal.LessThanOrEqual(queryVal), nil
+func numberComparison(objectVal decimal.Decimal, op Operator, queryVal decimal.Decimal) bool {
+	switch op {
+	case OpEqual:
+		return objectVal.Equal(queryVal)
+	case OpGreaterThan:
+		return objectVal.GreaterThan(queryVal)
+	case OpGreaterThanOrEqual:
+		return objectVal.GreaterThanOrEqual(queryVal)
+	case OpLessThan:
+		return objectVal.LessThan(queryVal)
+	case OpLessThanOrEqual:
+		return objectVal.LessThanOrEqual(queryVal)
 	}
-	return false, NewQueryErrorf("can't query number fields with %s", comparator)
+
+	panic(fmt.Sprintf("can't query number fields with %s", op))
 }
 
-func dateComparison(objectVal time.Time, comparator Comparator, queryVal time.Time) (bool, error) {
+func dateComparison(objectVal time.Time, op Operator, queryVal time.Time) bool {
 	utcDayStart, utcDayEnd := dates.DayToUTCRange(queryVal, queryVal.Location())
 
-	switch comparator {
-	case ComparatorEqual:
-		return (objectVal.Equal(utcDayStart) || objectVal.After(utcDayStart)) && objectVal.Before(utcDayEnd), nil
-	case ComparatorGreaterThan:
-		return objectVal.After(utcDayEnd) || objectVal.Equal(utcDayEnd), nil
-	case ComparatorGreaterThanOrEqual:
-		return objectVal.After(utcDayStart) || objectVal.Equal(utcDayStart), nil
-	case ComparatorLessThan:
-		return objectVal.Before(utcDayStart), nil
-	case ComparatorLessThanOrEqual:
-		return objectVal.Before(utcDayEnd), nil
+	switch op {
+	case OpEqual:
+		return (objectVal.Equal(utcDayStart) || objectVal.After(utcDayStart)) && objectVal.Before(utcDayEnd)
+	case OpGreaterThan:
+		return objectVal.After(utcDayEnd) || objectVal.Equal(utcDayEnd)
+	case OpGreaterThanOrEqual:
+		return objectVal.After(utcDayStart) || objectVal.Equal(utcDayStart)
+	case OpLessThan:
+		return objectVal.Before(utcDayStart)
+	case OpLessThanOrEqual:
+		return objectVal.Before(utcDayEnd)
 	}
-	return false, NewQueryErrorf("can't query datetime fields with %s", comparator)
+
+	panic(fmt.Sprintf("can't query date fields with %s", op))
 }
 
 // performs a prefix match which should be equivalent to an edge_ngram filter in ES

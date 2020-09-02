@@ -22,5 +22,5 @@ func (g *Group) UUID() assets.GroupUUID { return g.UUID_ }
 // Name returns the name of the group
 func (g *Group) Name() string { return g.Name_ }
 
-// Query returns the query of a dynamic group
+// Query returns the query of a query based group
 func (g *Group) Query() string { return g.Query_ }

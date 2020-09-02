@@ -1,0 +1,164 @@
+{
+    "flows": [
+        {
+            "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c",
+            "name": "Smart Groups",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "actions": [
+                        {
+                            "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
+                            "type": "set_contact_field",
+                            "field": {
+                                "key": "gender",
+                                "name": "Gender"
+                            },
+                            "value": "MALE"
+                        },
+                        {
+                            "uuid": "ee4cd27e-1296-40fd-ac9c-8cd43e9fb8b5",
+                            "type": "set_contact_field",
+                            "field": {
+                                "key": "age",
+                                "name": "Age"
+                            },
+                            "value": "64"
+                        },
+                        {
+                            "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                            "type": "send_msg",
+                            "text": "Current groups: @(foreach(contact.groups, extract, \"name\"))"
+                        },
+                        {
+                            "uuid": "bc94b3ba-4aad-410a-ae71-1861f69da0fe",
+                            "type": "add_contact_urn",
+                            "scheme": "tel",
+                            "path": "+250781234567"
+                        },
+                        {
+                            "uuid": "5bc4894f-9ef4-430e-a040-e688fd2dd578",
+                            "type": "send_msg",
+                            "text": "Current groups: @(foreach(contact.groups, extract, \"name\"))"
+                        },
+                        {
+                            "uuid": "4ecf6abd-e8c8-424b-aef6-e904cf5b4fbe",
+                            "type": "set_contact_field",
+                            "field": {
+                                "key": "age",
+                                "name": "Age"
+                            },
+                            "value": "17"
+                        },
+                        {
+                            "uuid": "279b0215-c9d5-4a90-b7df-f371812bcc78",
+                            "type": "send_msg",
+                            "text": "Current groups: @(foreach(contact.groups, extract, \"name\"))"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "a884d1f8-2e1e-43d2-9221-fa08ee29b31b"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "uuid": "2ddd4c1b-e3cf-472e-b135-440b3453ba37",
+            "key": "first_name",
+            "name": "First Name",
+            "type": "text"
+        },
+        {
+            "uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf",
+            "key": "gender",
+            "name": "Gender",
+            "type": "text"
+        },
+        {
+            "uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565",
+            "key": "age",
+            "name": "Age",
+            "type": "number"
+        },
+        {
+            "uuid": "b0078eb8-1d51-4cb5-bf09-119e201e6518",
+            "key": "state",
+            "name": "State",
+            "type": "text"
+        }
+    ],
+    "groups": [
+        {
+            "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0",
+            "name": "Females",
+            "query": "gender = Female"
+        },
+        {
+            "uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6",
+            "name": "Males",
+            "query": "gender = Male"
+        },
+        {
+            "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75",
+            "name": "Has Gender",
+            "query": "gender != \"\""
+        },
+        {
+            "uuid": "272ee7f6-a011-4baf-b178-b68ed2b2f5b9",
+            "name": "Stateless",
+            "query": "state = \"\""
+        },
+        {
+            "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50",
+            "name": "Youth",
+            "query": "age <= 18"
+        },
+        {
+            "uuid": "f3c36e43-404d-4723-83d5-2cd09212619b",
+            "name": "Old Men",
+            "query": "age > 50 AND gender = male"
+        },
+        {
+            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c",
+            "name": "Has Age",
+            "query": "age != \"\""
+        },
+        {
+            "uuid": "d56e5f4e-17e8-429a-9dff-f6f5e4a784f3",
+            "name": "No Age",
+            "query": "age = \"\""
+        },
+        {
+            "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba",
+            "name": "MTN Callers",
+            "query": "tel ~ \"25078\""
+        },
+        {
+            "uuid": "898396a2-df6f-4c2f-afe2-c850038a7fff",
+            "name": "Complicated",
+            "query": "gender != \"\" AND (age != \"\" OR tel ~ \"25078\")"
+        }
+    ],
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "Android Channel",
+            "address": "+17036975131",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ],
+            "country": "US"
+        }
+    ]
+}

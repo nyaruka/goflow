@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"regexp"
 
-	"github.com/nyaruka/goflow/utils/random"
+	"github.com/nyaruka/gocommon/random"
 
 	"github.com/gofrs/uuid"
 )

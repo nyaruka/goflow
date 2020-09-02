@@ -43,14 +43,14 @@ func (l *Library) Update(domain string, pot *PO) error {
 	pot.Write(f)
 
 	// merge the ID changes into the PO files for the translation languages
-	for _, lang := range l.languages(false) {
+	for _, lc := range l.locales(false) {
 		args := []string{
 			"-q",
 			"--previous",
-			l.poPath(lang, domain),
+			l.poPath(lc, domain),
 			l.poPath(l.srcLanguage, domain),
 			"-o",
-			l.poPath(lang, domain),
+			l.poPath(lc, domain),
 			"--no-wrap",
 			"--sort-output",
 		}
@@ -77,12 +77,12 @@ func (l *Library) Load(language, domain string) (*PO, error) {
 	return ReadPO(f)
 }
 
-// Languages returns all the languages included in this library
-func (l *Library) Languages() []string {
-	return l.languages(true)
+// Locales returns the names of the locales included in this library
+func (l *Library) Locales() []string {
+	return l.locales(true)
 }
 
-func (l *Library) languages(includeSrc bool) []string {
+func (l *Library) locales(includeSrc bool) []string {
 	directory, err := ioutil.ReadDir(l.path)
 	if err != nil {
 		panic(err)

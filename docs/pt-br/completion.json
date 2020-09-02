@@ -1,0 +1,543 @@
+{
+    "types": [
+        {
+            "name": "fields",
+            "key_source": "fields",
+            "property_template": {
+                "key": "{key}",
+                "help": "{key} para o contato",
+                "type": "any"
+            }
+        },
+        {
+            "name": "results",
+            "key_source": "results",
+            "property_template": {
+                "key": "{key}",
+                "help": "o resultado para {key}",
+                "type": "result"
+            }
+        },
+        {
+            "name": "globals",
+            "key_source": "globals",
+            "property_template": {
+                "key": "{key}",
+                "help": "o valor global {key}",
+                "type": "text"
+            }
+        },
+        {
+            "name": "urns",
+            "properties": [
+                {
+                    "key": "ext",
+                    "help": "Ext URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "facebook",
+                    "help": "Facebook URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "fcm",
+                    "help": "Fcm URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "freshchat",
+                    "help": "Freshchat URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "jiochat",
+                    "help": "Jiochat URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "line",
+                    "help": "Line URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "mailto",
+                    "help": "Mailto URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "tel",
+                    "help": "Tel URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "telegram",
+                    "help": "Telegram URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "twitter",
+                    "help": "Twitter URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "twitterid",
+                    "help": "Twitterid URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "viber",
+                    "help": "Viber URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "vk",
+                    "help": "Vk URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "wechat",
+                    "help": "Wechat URN para o contato",
+                    "type": "text"
+                },
+                {
+                    "key": "whatsapp",
+                    "help": "Whatsapp URN para o contato",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "name": "channel",
+            "properties": [
+                {
+                    "key": "__default__",
+                    "help": "o nome",
+                    "type": "text"
+                },
+                {
+                    "key": "uuid",
+                    "help": "o UUID do canal",
+                    "type": "text"
+                },
+                {
+                    "key": "name",
+                    "help": "o nome do canal",
+                    "type": "text"
+                },
+                {
+                    "key": "address",
+                    "help": "o endereço do canal",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "name": "contact",
+            "properties": [
+                {
+                    "key": "__default__",
+                    "help": "o nome da URN",
+                    "type": "text"
+                },
+                {
+                    "key": "uuid",
+                    "help": "o UUID do contato",
+                    "type": "text"
+                },
+                {
+                    "key": "id",
+                    "help": "o ID numérico do contato",
+                    "type": "text"
+                },
+                {
+                    "key": "first_name",
+                    "help": "o primeiro nome do contato",
+                    "type": "text"
+                },
+                {
+                    "key": "name",
+                    "help": "o nome do contato",
+                    "type": "text"
+                },
+                {
+                    "key": "language",
+                    "help": "a língua do contato como código ISO de 3 letras",
+                    "type": "text"
+                },
+                {
+                    "key": "created_on",
+                    "help": "a data de criação do contato",
+                    "type": "datetime"
+                },
+                {
+                    "key": "last_seen_on",
+                    "help": "a data de criação do contato",
+                    "type": "any"
+                },
+                {
+                    "key": "urns",
+                    "help": "as URNs pertencentes ao contato",
+                    "type": "text",
+                    "array": true
+                },
+                {
+                    "key": "urn",
+                    "help": "a URN preferida do contato",
+                    "type": "text"
+                },
+                {
+                    "key": "groups",
+                    "help": "os grupos ao qual o contato pertence",
+                    "type": "group",
+                    "array": true
+                },
+                {
+                    "key": "fields",
+                    "help": "os valores customizados do contato",
+                    "type": "fields"
+                },
+                {
+                    "key": "channel",
+                    "help": "o canal preferido do contato",
+                    "type": "channel"
+                }
+            ]
+        },
+        {
+            "name": "flow",
+            "properties": [
+                {
+                    "key": "__default__",
+                    "help": "o nome",
+                    "type": "text"
+                },
+                {
+                    "key": "uuid",
+                    "help": "o UUID do fluxo",
+                    "type": "text"
+                },
+                {
+                    "key": "name",
+                    "help": "o nome do fluxo",
+                    "type": "text"
+                },
+                {
+                    "key": "revision",
+                    "help": "o número de revisão do fluxo",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "name": "group",
+            "properties": [
+                {
+                    "key": "uuid",
+                    "help": "o UUID do grupo",
+                    "type": "text"
+                },
+                {
+                    "key": "name",
+                    "help": "o nome do grupo",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "name": "input",
+            "properties": [
+                {
+                    "key": "__default__",
+                    "help": "o texto e anexos",
+                    "type": "text"
+                },
+                {
+                    "key": "uuid",
+                    "help": "o UUID da entrada",
+                    "type": "text"
+                },
+                {
+                    "key": "created_on",
+                    "help": "a data de criação da entrada",
+                    "type": "datetime"
+                },
+                {
+                    "key": "channel",
+                    "help": "o canal onde a entrada foi recebida",
+                    "type": "channel"
+                },
+                {
+                    "key": "urn",
+                    "help": "a URN do contato que a entrada foi recebida",
+                    "type": "text"
+                },
+                {
+                    "key": "text",
+                    "help": "a parte de texto da entrada",
+                    "type": "text"
+                },
+                {
+                    "key": "attachments",
+                    "help": "quaisquer anexos na entrada",
+                    "type": "text",
+                    "array": true
+                },
+                {
+                    "key": "external_id",
+                    "help": "o ID externo da entrada",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "name": "related_run",
+            "properties": [
+                {
+                    "key": "__default__",
+                    "help": "o nome do contato e UUID do fluxo",
+                    "type": "text"
+                },
+                {
+                    "key": "uuid",
+                    "help": "o UUID da execução",
+                    "type": "text"
+                },
+                {
+                    "key": "contact",
+                    "help": "o contato da exeução",
+                    "type": "contact"
+                },
+                {
+                    "key": "flow",
+                    "help": "o fluxo da execução",
+                    "type": "flow"
+                },
+                {
+                    "key": "fields",
+                    "help": "os valores customizados da execução",
+                    "type": "fields"
+                },
+                {
+                    "key": "urns",
+                    "help": "os valores de URN da execução",
+                    "type": "urns"
+                },
+                {
+                    "key": "results",
+                    "help": "os resultados salvos pela execução",
+                    "type": "any"
+                },
+                {
+                    "key": "status",
+                    "help": "o status da atual execução",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "name": "result",
+            "properties": [
+                {
+                    "key": "__default__",
+                    "help": "o valor",
+                    "type": "text"
+                },
+                {
+                    "key": "name",
+                    "help": "o nome do resultado",
+                    "type": "text"
+                },
+                {
+                    "key": "value",
+                    "help": "o valor do resultado",
+                    "type": "text"
+                },
+                {
+                    "key": "category",
+                    "help": "a categoria do resultado",
+                    "type": "text"
+                },
+                {
+                    "key": "category_localized",
+                    "help": "a categoria localizada do resultado",
+                    "type": "text"
+                },
+                {
+                    "key": "input",
+                    "help": "a entrada do resultado",
+                    "type": "text"
+                },
+                {
+                    "key": "extra",
+                    "help": "os dados extras do resultado como resposta de webhook",
+                    "type": "any"
+                },
+                {
+                    "key": "node_uuid",
+                    "help": "o UUID do nó no fluxo que gerou o resultado",
+                    "type": "text"
+                },
+                {
+                    "key": "created_on",
+                    "help": "a data de ciração do resultado",
+                    "type": "datetime"
+                }
+            ]
+        },
+        {
+            "name": "run",
+            "properties": [
+                {
+                    "key": "__default__",
+                    "help": "o nome do contato e UUID do fluxo",
+                    "type": "text"
+                },
+                {
+                    "key": "uuid",
+                    "help": "o UUID da execução",
+                    "type": "text"
+                },
+                {
+                    "key": "contact",
+                    "help": "o contato da exeução",
+                    "type": "contact"
+                },
+                {
+                    "key": "flow",
+                    "help": "o fluxo da execução",
+                    "type": "flow"
+                },
+                {
+                    "key": "status",
+                    "help": "o status da atual execução",
+                    "type": "text"
+                },
+                {
+                    "key": "results",
+                    "help": "os resultados salvos pela execução",
+                    "type": "results"
+                },
+                {
+                    "key": "created_on",
+                    "help": " data de criação da execução",
+                    "type": "datetime"
+                },
+                {
+                    "key": "exited_on",
+                    "help": "a data de saída da execução",
+                    "type": "datetime"
+                }
+            ]
+        },
+        {
+            "name": "trigger",
+            "properties": [
+                {
+                    "key": "type",
+                    "help": "o tipo do gatilho que iniciou a sessão",
+                    "type": "text"
+                },
+                {
+                    "key": "params",
+                    "help": "os parâmetros passados para o gatilho",
+                    "type": "any"
+                },
+                {
+                    "key": "keyword",
+                    "help": "a palavra para combinar se uma uma palavra de gatilho",
+                    "type": "text"
+                },
+                {
+                    "key": "user",
+                    "help": "a palavra para combinar se uma uma palavra de gatilho",
+                    "type": "text"
+                },
+                {
+                    "key": "origin",
+                    "help": "a palavra para combinar se uma uma palavra de gatilho",
+                    "type": "text"
+                }
+            ]
+        }
+    ],
+    "root": [
+        {
+            "key": "contact",
+            "help": "o contato",
+            "type": "contact"
+        },
+        {
+            "key": "fields",
+            "help": "os valores customizados do contato",
+            "type": "fields"
+        },
+        {
+            "key": "urns",
+            "help": "os valores de URN do contato",
+            "type": "urns"
+        },
+        {
+            "key": "results",
+            "help": "os resultados da execução atual",
+            "type": "results"
+        },
+        {
+            "key": "input",
+            "help": "a entrada atual do contato",
+            "type": "input"
+        },
+        {
+            "key": "run",
+            "help": "a execução atual",
+            "type": "run"
+        },
+        {
+            "key": "child",
+            "help": "a última execução do filho",
+            "type": "related_run"
+        },
+        {
+            "key": "parent",
+            "help": "o pai da exeução",
+            "type": "related_run"
+        },
+        {
+            "key": "webhook",
+            "help": "a resposta JSON avaliada da última chamada webhook",
+            "type": "any"
+        },
+        {
+            "key": "globals",
+            "help": "os valores globais",
+            "type": "globals"
+        },
+        {
+            "key": "trigger",
+            "help": "o gatilho que iniciou a sessão",
+            "type": "trigger"
+        }
+    ],
+    "root_no_session": [
+        {
+            "key": "contact",
+            "help": "o contato",
+            "type": "contact"
+        },
+        {
+            "key": "fields",
+            "help": "os valores customizados do contato",
+            "type": "fields"
+        },
+        {
+            "key": "urns",
+            "help": "os valores de URN do contato",
+            "type": "urns"
+        },
+        {
+            "key": "globals",
+            "help": "os valores globais",
+            "type": "globals"
+        }
+    ]
+}

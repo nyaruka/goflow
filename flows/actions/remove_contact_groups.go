@@ -3,8 +3,8 @@ package actions
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/actions/modifiers"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/modifiers"
 
 	"github.com/pkg/errors"
 )
@@ -18,7 +18,7 @@ const TypeRemoveContactGroups string = "remove_contact_groups"
 
 // RemoveContactGroupsAction can be used to remove a contact from one or more groups. A [event:contact_groups_changed] event will be created
 // for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
-// the contact from all non-dynamic groups.
+// the contact from all non-query based groups.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -68,7 +68,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 
 	if a.AllGroups {
 		for _, group := range run.Session().Assets().Groups().All() {
-			if !group.IsDynamic() {
+			if !group.UsesQuery() {
 				groups = append(groups, group)
 			}
 		}

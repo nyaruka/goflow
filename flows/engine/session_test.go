@@ -6,6 +6,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -16,8 +18,6 @@ import (
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/dates"
-	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -144,6 +144,41 @@ func TestReadWithMissingAssets(t *testing.T) {
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("4f1f98fc-27a7-4a69-bbdb-24744ba739a9"), "Males"), missingAssets[2])
 	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), "Registration"), missingAssets[13])
 	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Collect Age"), missingAssets[14])
+}
+
+func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
+	assetsJSON, err := ioutil.ReadFile("testdata/smart_groups.json")
+	require.NoError(t, err)
+
+	sa, err := test.CreateSessionAssets(assetsJSON, "")
+	require.NoError(t, err)
+
+	// contact is in wrong groups
+	contact, err := flows.ReadContact(sa, []byte(`{
+		"uuid": "6d116680-eab9-460a-9c6e-1f05d3c5b5d6",
+		"created_on": "2018-06-20T11:40:30.123456789-00:00",
+        "groups": [
+            {"uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6", "name": "Males"}
+        ],
+        "fields": {
+            "gender": {
+                "text": "Female"
+			}
+		}
+	}`), assets.PanicOnMissing)
+	require.NoError(t, err)
+
+	env := envs.NewBuilder().Build()
+	trigger := triggers.NewBuilder(env, assets.NewFlowReference("1b462ce8-983a-4393-b133-e15a0efdb70c", ""), contact).Manual().Build()
+	eng := engine.NewBuilder().Build()
+
+	session, sprint, err := eng.NewSession(sa, trigger)
+	require.NoError(t, err)
+
+	assert.Equal(t, 1, len(sprint.Events()))
+	assert.Equal(t, "contact_groups_changed", sprint.Events()[0].Type())
+	assert.Equal(t, 1, session.Contact().Groups().Count())
+	assert.Equal(t, "Females", session.Contact().Groups().All()[0].Name())
 }
 
 func TestRunResuming(t *testing.T) {

@@ -3,8 +3,8 @@ package events
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {

@@ -6,12 +6,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/dates"
-	"github.com/nyaruka/goflow/utils/random"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -456,8 +456,8 @@ func TestFunctions(t *testing.T) {
 		{"percent", dmy, []types.XValue{xs("")}, ERROR},
 		{"percent", dmy, []types.XValue{}, ERROR},
 
-		{"rand", dmy, []types.XValue{}, xn("0.3849275689214193274523267973563633859157562255859375")},
-		{"rand", dmy, []types.XValue{}, xn("0.607552015674623913099594574305228888988494873046875")},
+		{"rand", dmy, []types.XValue{}, xn("0.3849275689214193")},
+		{"rand", dmy, []types.XValue{}, xn("0.6075520156746239")},
 
 		{"rand_between", dmy, []types.XValue{xn("1"), xn("10")}, xn("5")},
 		{"rand_between", dmy, []types.XValue{xn("1"), xn("10")}, xn("10")},

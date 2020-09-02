@@ -3,9 +3,9 @@ package luis
 import (
 	"net/http"
 
+	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/httpx"
 )
 
 // a classification service implementation for a LUIS app

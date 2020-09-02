@@ -148,7 +148,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
                     "msg": {
                         "text": "135532",
                         "urn": "tel:+12065551212",
@@ -191,6 +191,7 @@
                     "created_on": "2018-01-01T12:00:00Z",
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2020-03-19T16:37:31.207472-05:00",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -247,7 +248,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
                                     "text": "135532",
                                     "urn": "tel:+12065551212",
@@ -286,7 +287,7 @@
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-13T12:30:10.123456789Z",
+                        "expires_on": "2018-07-13T12:30:11.123456789Z",
                         "flow": {
                             "name": "Phone Numbers",
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
@@ -379,7 +380,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "created_on": "2018-07-06T12:30:29.123456789Z",
                     "msg": {
                         "text": "718-456-7890",
                         "urn": "tel:+12065551212",
@@ -445,6 +446,7 @@
                     ],
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2020-03-19T16:37:38.453883-05:00",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -502,7 +504,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
                                     "text": "135532",
                                     "urn": "tel:+12065551212",
@@ -540,7 +542,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
                                 "msg": {
                                     "text": "718-456-7890",
                                     "urn": "tel:+12065551212",
@@ -596,7 +598,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:42.123456789Z",
-                        "expires_on": "2018-07-13T12:30:26.123456789Z",
+                        "expires_on": "2018-07-13T12:30:27.123456789Z",
                         "flow": {
                             "name": "Phone Numbers",
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"

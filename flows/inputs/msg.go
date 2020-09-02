@@ -5,13 +5,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -32,7 +32,7 @@ type MsgInput struct {
 }
 
 // NewMsg creates a new user input based on a message
-func NewMsg(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) (*MsgInput, error) {
+func NewMsg(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) *MsgInput {
 	// load the channel
 	var channel *flows.Channel
 	if msg.Channel() != nil {
@@ -45,7 +45,7 @@ func NewMsg(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) (
 		text:        msg.Text(),
 		attachments: msg.Attachments(),
 		externalID:  msg.ExternalID(),
-	}, nil
+	}
 }
 
 // Context returns the properties available in expressions

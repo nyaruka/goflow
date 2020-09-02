@@ -3,13 +3,13 @@ package resumes
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -59,18 +59,17 @@ func NewMsg(env envs.Environment, contact *flows.Contact, msg *flows.MsgIn) *Msg
 func (r *MsgResume) Msg() *flows.MsgIn { return r.msg }
 
 // Apply applies our state changes and saves any events to the run
-func (r *MsgResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) error {
+func (r *MsgResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
+	// do base changes (contact, environment)
+	r.baseResume.Apply(run, logEvent)
+
 	// update our input
-	input, err := inputs.NewMsg(run.Session().Assets(), r.msg, r.ResumedOn())
-	if err != nil {
-		return err
-	}
+	input := inputs.NewMsg(run.Session().Assets(), r.msg, r.ResumedOn())
 
 	run.Session().SetInput(input)
 	run.ResetExpiration(nil)
-	logEvent(events.NewMsgReceived(r.msg))
 
-	return r.baseResume.Apply(run, logEvent)
+	logEvent(events.NewMsgReceived(r.msg))
 }
 
 var _ flows.Resume = (*MsgResume)(nil)

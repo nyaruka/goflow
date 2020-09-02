@@ -3,12 +3,12 @@ package resumes
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 func init() {
@@ -46,12 +46,12 @@ func NewWaitTimeout(env envs.Environment, contact *flows.Contact) *WaitTimeoutRe
 }
 
 // Apply applies our state changes and saves any events to the run
-func (r *WaitTimeoutResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) error {
+func (r *WaitTimeoutResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
 	// clear the last input
 	run.Session().SetInput(nil)
 	logEvent(events.NewWaitTimedOut())
 
-	return r.baseResume.Apply(run, logEvent)
+	r.baseResume.Apply(run, logEvent)
 }
 
 var _ flows.Resume = (*WaitTimeoutResume)(nil)

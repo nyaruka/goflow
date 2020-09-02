@@ -1,3 +1,54 @@
+v0.102.1
+----------
+ * Add archived contact status
+
+v0.102.0
+----------
+ * Update to latest gocommon
+
+v0.101.2
+----------
+ * Add empty localizations for all the languages used in RapidPro
+
+v0.101.1
+----------
+ * Fix test
+
+v0.101.0
+----------
+ * Use language codes (e.g. en-us) rather than locale names (en_US) for docs directories
+
+v0.100.1
+----------
+ * Add completed pt_BR translation
+
+v0.100.0
+----------
+ * Add last_seen_on to contacts and expose in expressions and queries
+
+v0.99.0
+----------
+ * Rework elastic query generation so that all errors are caught at parsing stage
+ * Allow URN inequality in elastic searches
+
+v0.98.0
+----------
+ * Rework error handling in contactql so more errors are caught during parsing and have associated codes
+
+v0.97.0
+----------
+ * Re-add classifier_called events for backward compatibility
+ * Groups modifier should generate error if asked to operate on blocked or stopped contact
+ * Move modifiers package out of actions package
+ * ContactQL parser errors should contain more info
+
+v0.96.0
+----------
+ * Reorganize validation code so utils doesn't have to know about tags defined higher up
+ * Clone the test session during doc generation so actions always start with the same session
+ * Add action to change contact status
+ * Add historical information to triggers about the session that triggered them and use to prevent looping
+
 v0.95.1
 ----------
  * Improve documentation of call_webhook action

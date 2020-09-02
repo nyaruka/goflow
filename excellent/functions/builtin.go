@@ -12,12 +12,12 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/dates"
-	"github.com/nyaruka/goflow/utils/random"
 
 	"github.com/shopspring/decimal"
 )
@@ -1126,8 +1126,8 @@ func Mod(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XVa
 
 // Rand returns a single random number between [0.0-1.0).
 //
-//   @(rand()) -> 0.607552015674623913099594574305228888988494873046875
-//   @(rand()) -> 0.484677570947340263796121462291921488940715789794921875
+//   @(rand()) -> 0.6075520156746239
+//   @(rand()) -> 0.48467757094734026
 //
 // @function rand()
 func Rand(env envs.Environment) types.XValue {

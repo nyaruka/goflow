@@ -415,6 +415,7 @@
             ],
             "id": "1234567",
             "language": "eng",
+            "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
             "name": "Ryan Lewis",
             "timezone": "America/Guayaquil",
             "urn": "tel:+12024561111",
@@ -476,6 +477,7 @@
                 ],
                 "id": "1234567",
                 "language": "eng",
+                "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                 "name": "Ryan Lewis",
                 "timezone": "America/Guayaquil",
                 "urn": "tel:+12024561111",
@@ -521,14 +523,14 @@
             ],
             "results": {
                 "2factor": {
-                    "category": "",
                     "categories": [
                         ""
                     ],
-                    "category_localized": "",
                     "categories_localized": [
                         ""
                     ],
+                    "category": "",
+                    "category_localized": "",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": null,
                     "input": "",
@@ -540,14 +542,14 @@
                     ]
                 },
                 "favorite_color": {
-                    "category": "Red",
                     "categories": [
                         "Red"
                     ],
-                    "category_localized": "Red",
                     "categories_localized": [
                         "Red"
                     ],
+                    "category": "Red",
+                    "category_localized": "Red",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": null,
                     "input": "",
@@ -597,14 +599,14 @@
                     ]
                 },
                 "phone_number": {
-                    "category": "",
                     "categories": [
                         ""
                     ],
-                    "category_localized": "",
                     "categories_localized": [
                         ""
                     ],
+                    "category": "",
+                    "category_localized": "",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": null,
                     "input": "",
@@ -616,14 +618,14 @@
                     ]
                 },
                 "webhook": {
-                    "category": "Success",
                     "categories": [
                         "Success"
                     ],
-                    "category_localized": "Success",
                     "categories_localized": [
                         "Success"
                     ],
+                    "category": "Success",
+                    "category_localized": "Success",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": {
                         "results": [
@@ -678,6 +680,7 @@
                 ],
                 "id": "1234567",
                 "language": "eng",
+                "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                 "name": "Ryan Lewis",
                 "timezone": "America/Guayaquil",
                 "urn": "tel:+12024561111",
@@ -702,14 +705,14 @@
             },
             "results": {
                 "age": {
-                    "category": "Youth",
                     "categories": [
                         "Youth"
                     ],
-                    "category_localized": "Youth",
                     "categories_localized": [
                         "Youth"
                     ],
+                    "category": "Youth",
+                    "category_localized": "Youth",
                     "created_on": "2018-04-11T13:24:30.123456Z",
                     "extra": null,
                     "input": "",
@@ -749,6 +752,7 @@
                     ],
                     "id": "1234567",
                     "language": "eng",
+                    "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                     "name": "Ryan Lewis",
                     "timezone": "America/Guayaquil",
                     "urn": "tel:+12024561111",
@@ -766,14 +770,14 @@
                 },
                 "results": {
                     "age": {
-                        "category": "Youth",
                         "categories": [
                             "Youth"
                         ],
-                        "category_localized": "Youth",
                         "categories_localized": [
                             "Youth"
                         ],
+                        "category": "Youth",
+                        "category_localized": "Youth",
                         "created_on": "2018-04-11T13:24:30.123456Z",
                         "extra": null,
                         "input": "",
@@ -830,6 +834,7 @@
                 "groups": [],
                 "id": "0",
                 "language": "spa",
+                "last_seen_on": null,
                 "name": "Jasmine",
                 "timezone": null,
                 "urn": "tel:+12024562222",
@@ -852,14 +857,14 @@
             },
             "results": {
                 "role": {
-                    "category": "Reporter",
                     "categories": [
                         "Reporter"
                     ],
-                    "category_localized": "Reporter",
                     "categories_localized": [
                         "Reporter"
                     ],
+                    "category": "Reporter",
+                    "category_localized": "Reporter",
                     "created_on": "2000-01-01T00:00:00.000000Z",
                     "extra": null,
                     "input": "a reporter",
@@ -890,6 +895,7 @@
                     "groups": [],
                     "id": "0",
                     "language": "spa",
+                    "last_seen_on": null,
                     "name": "Jasmine",
                     "timezone": null,
                     "urn": "tel:+12024562222",
@@ -905,14 +911,14 @@
                 },
                 "results": {
                     "role": {
-                        "category": "Reporter",
                         "categories": [
                             "Reporter"
                         ],
-                        "category_localized": "Reporter",
                         "categories_localized": [
                             "Reporter"
                         ],
+                        "category": "Reporter",
+                        "category_localized": "Reporter",
                         "created_on": "2000-01-01T00:00:00.000000Z",
                         "extra": null,
                         "input": "a reporter",
@@ -954,10 +960,10 @@
             "keyword": "",
             "origin": "",
             "params": {
-                "source": "website",
                 "address": {
                     "state": "WA"
-                }
+                },
+                "source": "website"
             },
             "type": "flow_action",
             "user": ""

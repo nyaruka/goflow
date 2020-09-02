@@ -50,7 +50,7 @@ func TestParseQuery(t *testing.T) {
 		{`name is ""`, `name = ""`, "", envs.RedactionPolicyNone},            // is not set
 		{`name != ""`, `name != ""`, "", envs.RedactionPolicyNone},           // is set
 		{`name != "felix"`, `name != "felix"`, "", envs.RedactionPolicyNone}, // is not equal to value
-		{`Name ~ ""`, ``, "value must contain a word of at least 2 characters long for a contains condition on name", envs.RedactionPolicyNone},
+		{`Name ~ ""`, ``, "contains operator on name requires token of minimum length 2", envs.RedactionPolicyNone},
 
 		// explicit attribute conditions
 		{`language = spa`, `language = "spa"`, "", envs.RedactionPolicyNone},
@@ -62,7 +62,7 @@ func TestParseQuery(t *testing.T) {
 		{`tel!=""`, `tel != ""`, "", envs.RedactionPolicyNone},
 		{`tel IS 233`, `tel = 233`, "", envs.RedactionPolicyNone},
 		{`tel HAS 233`, `tel ~ 233`, "", envs.RedactionPolicyNone},
-		{`tel ~ 23`, ``, "value must be least 3 characters long for a contains condition on a URN", envs.RedactionPolicyNone},
+		{`tel ~ 23`, ``, "contains operator on URN requires value of minimum length 3", envs.RedactionPolicyNone},
 		{`mailto = user@example.com`, `mailto = "user@example.com"`, "", envs.RedactionPolicyNone},
 		{`MAILTO ~ user@example.com`, `mailto ~ "user@example.com"`, "", envs.RedactionPolicyNone},
 		{`URN=ewok`, `urn = "ewok"`, "", envs.RedactionPolicyNone},
@@ -106,7 +106,7 @@ func TestParseQuery(t *testing.T) {
 		{`will and felix`, `name ~ "will" AND name ~ "felix"`, "", envs.RedactionPolicyNone}, // explicit AND
 		{`will or felix or matt`, `(name ~ "will" OR name ~ "felix") OR name ~ "matt"`, "", envs.RedactionPolicyNone},
 		{`name=will or Name ~ "felix"`, `name = "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone},
-		{`Name is will or Name has felix`, `name = "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone}, // comparator aliases
+		{`Name is will or Name has felix`, `name = "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone}, // operator aliases
 		{`will or Name ~ "felix"`, `name ~ "will" OR name ~ "felix"`, "", envs.RedactionPolicyNone},
 
 		// boolean operator precedence is AND before OR, even when AND is implicit
@@ -207,7 +207,9 @@ func TestParseQuery(t *testing.T) {
 	})
 
 	for _, tc := range tests {
-		parsed, err := contactql.ParseQuery(tc.text, tc.redact, "US", resolver)
+		env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithDefaultCountry("US").WithRedactionPolicy(tc.redact).Build()
+
+		parsed, err := contactql.ParseQuery(env, tc.text, resolver)
 		if tc.err != "" {
 			assert.EqualError(t, err, tc.err, "error mismatch for '%s'", tc.text)
 			assert.Nil(t, parsed)
@@ -219,6 +221,117 @@ func TestParseQuery(t *testing.T) {
 }
 
 func TestParsingErrors(t *testing.T) {
-	_, err := contactql.ParseQuery("name = ", envs.RedactionPolicyNone, "US", nil)
-	assert.EqualError(t, err, "mismatched input '<EOF>' expecting {TEXT, STRING}")
+	tests := []struct {
+		query    string
+		errMsg   string
+		errCode  string
+		errExtra map[string]string
+	}{
+		{
+			query:    `$`,
+			errMsg:   "mismatched input '$' expecting {'(', TEXT, STRING}",
+			errCode:  "unexpected_token",
+			errExtra: map[string]string{"token": "$"},
+		},
+		{
+			query:    `name = `,
+			errMsg:   "mismatched input '<EOF>' expecting {TEXT, STRING}",
+			errCode:  "unexpected_token",
+			errExtra: map[string]string{"token": "<EOF>"},
+		},
+		{
+			query:    `name = "x`,
+			errMsg:   "extraneous input '\"' expecting {TEXT, STRING}",
+			errCode:  "",
+			errExtra: nil,
+		},
+		{
+			query:    `age = XZ`,
+			errMsg:   "can't convert 'XZ' to a number",
+			errCode:  "invalid_number",
+			errExtra: map[string]string{"value": "XZ"},
+		},
+		{
+			query:    `dob = AB`,
+			errMsg:   "can't convert 'AB' to a date",
+			errCode:  "invalid_date",
+			errExtra: map[string]string{"value": "AB"},
+		},
+		{
+			query:    `created_on = AB`,
+			errMsg:   "can't convert 'AB' to a date",
+			errCode:  "invalid_date",
+			errExtra: map[string]string{"value": "AB"},
+		},
+		{
+			query:    `group = "Cool Kids"`,
+			errMsg:   "'Cool Kids' is not a valid group name",
+			errCode:  "invalid_group",
+			errExtra: map[string]string{"value": "Cool Kids"},
+		},
+		{
+			query:    `language = "zzzzzz"`,
+			errMsg:   "'zzzzzz' is not a valid language code",
+			errCode:  "invalid_language",
+			errExtra: map[string]string{"value": "zzzzzz"},
+		},
+		{
+			query:    `name ~ "x"`,
+			errMsg:   "contains operator on name requires token of minimum length 2",
+			errCode:  "invalid_partial_name",
+			errExtra: map[string]string{"min_token_length": "2"},
+		},
+		{
+			query:    `urn ~ "23"`,
+			errMsg:   "contains operator on URN requires value of minimum length 3",
+			errCode:  "invalid_partial_urn",
+			errExtra: map[string]string{"min_value_length": "3"},
+		},
+		{
+			query:    `uuid ~ 234`,
+			errMsg:   "contains conditions can only be used with name or URN values",
+			errCode:  "unsupported_contains",
+			errExtra: map[string]string{"property": "uuid"},
+		},
+		{
+			query:    `uuid > 123`,
+			errMsg:   "comparisons with > can only be used with date and number fields",
+			errCode:  "unsupported_comparison",
+			errExtra: map[string]string{"property": "uuid", "operator": ">"},
+		},
+		{
+			query:    `uuid = ""`,
+			errMsg:   "can't check whether 'uuid' is set or not set",
+			errCode:  "unsupported_setcheck",
+			errExtra: map[string]string{"property": "uuid", "operator": "="},
+		},
+		{
+			query:    `uuid != ""`,
+			errMsg:   "can't check whether 'uuid' is set or not set",
+			errCode:  "unsupported_setcheck",
+			errExtra: map[string]string{"property": "uuid", "operator": "!="},
+		},
+		{
+			query:    `beers = 12`,
+			errMsg:   "can't resolve 'beers' to attribute, scheme or field",
+			errCode:  "unknown_property",
+			errExtra: map[string]string{"property": "beers"},
+		},
+	}
+
+	env := envs.NewBuilder().WithDefaultCountry("US").Build()
+	resolver := contactql.NewMockResolver(map[string]assets.Field{
+		"age":    types.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
+		"dob":    types.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
+		"gender": types.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
+	}, map[string]assets.Group{})
+
+	for _, tc := range tests {
+		_, err := contactql.ParseQuery(env, tc.query, resolver)
+		assert.EqualError(t, err, tc.errMsg, "error mismatch for '%s'", tc.query)
+
+		qerr := err.(*contactql.QueryError)
+		assert.Equal(t, tc.errCode, qerr.Code())
+		assert.Equal(t, tc.errExtra, qerr.Extra())
+	}
 }

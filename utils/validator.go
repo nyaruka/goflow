@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/nyaruka/goflow/utils/jsonx"
+	"github.com/nyaruka/gocommon/jsonx"
 
 	"github.com/pkg/errors"
 	"gopkg.in/go-playground/validator.v9"

@@ -138,7 +138,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
                     "msg": {
                         "text": "xx",
                         "urn": "tel:+12065551212",
@@ -176,6 +176,7 @@
                     "created_on": "2018-01-01T12:00:00Z",
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2019-03-21T14:37:53.328525-05:00",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -227,7 +228,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
                                     "text": "xx",
                                     "urn": "tel:+12065551212",
@@ -261,7 +262,7 @@
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-13T12:30:10.123456789Z",
+                        "expires_on": "2018-07-13T12:30:11.123456789Z",
                         "flow": {
                             "name": "Subflow Child",
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
@@ -354,7 +355,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "created_on": "2018-07-06T12:30:29.123456789Z",
                     "msg": {
                         "text": "13",
                         "urn": "tel:+12065551212",
@@ -378,6 +379,7 @@
                     "created_on": "2018-01-01T12:00:00Z",
                     "id": 1234567,
                     "language": "eng",
+                    "last_seen_on": "2019-03-21T14:37:55.481222-05:00",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -429,7 +431,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
                                     "text": "xx",
                                     "urn": "tel:+12065551212",
@@ -462,7 +464,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
                                 "msg": {
                                     "text": "13",
                                     "urn": "tel:+12065551212",
@@ -482,7 +484,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:35.123456789Z",
-                        "expires_on": "2018-07-13T12:30:26.123456789Z",
+                        "expires_on": "2018-07-13T12:30:27.123456789Z",
                         "flow": {
                             "name": "Subflow Child",
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"

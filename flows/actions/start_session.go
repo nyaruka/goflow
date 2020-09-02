@@ -1,11 +1,11 @@
 package actions
 
 import (
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils/jsonx"
 )
 
 // max number of times a session can trigger another session without there being input from the contact

@@ -12,12 +12,12 @@ require (
 	github.com/google/go-cmp v0.5.0 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/mailru/easyjson v0.7.1 // indirect
-	github.com/nyaruka/gocommon v1.2.0
+	github.com/nyaruka/gocommon v1.3.0
 	github.com/nyaruka/phonenumbers v1.0.55
 	github.com/olivere/elastic v6.2.33+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.1.0
-	github.com/shopspring/decimal v0.0.0-20180319170823-2df3e6ddaf6e
+	github.com/shopspring/decimal v1.2.0
 	github.com/stretchr/testify v1.5.1
 	golang.org/x/net v0.0.0-20200421231249-e086a090c8fd
 	golang.org/x/text v0.3.2

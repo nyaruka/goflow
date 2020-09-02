@@ -86,7 +86,7 @@
         "events": []
     },
     {
-        "description": "Field changed event and dynamic group changed events if field value changes",
+        "description": "Field changed event and query based group changed events if field value changes",
         "action": {
             "type": "set_contact_field",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -134,6 +134,7 @@
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "last_seen_on": "2018-10-18T14:20:30.000123456Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "twitterid:54784326227#nyaruka"
@@ -156,7 +157,7 @@
         }
     },
     {
-        "description": "Field changed event and dynamic group changed events if field cleared",
+        "description": "Field changed event and query based group changed events if field cleared",
         "action": {
             "type": "set_contact_field",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -196,6 +197,7 @@
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "last_seen_on": "2018-10-18T14:20:30.000123456Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "twitterid:54784326227#nyaruka"
@@ -251,6 +253,7 @@
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "last_seen_on": "2018-10-18T14:20:30.000123456Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "twitterid:54784326227#nyaruka"

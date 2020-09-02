@@ -173,21 +173,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:11.123456789Z",
-                    "msg": {
-                        "channel": {
-                            "name": "Nexmo",
-                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                        },
-                        "text": "I like blue!",
-                        "urn": "tel:+12065551212",
-                        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                    },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                    "type": "msg_received"
-                },
-                {
-                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
                     "environment": {
                         "allowed_languages": [
                             "eng",
@@ -231,9 +217,23 @@
                         ],
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
-                    "created_on": "2018-07-06T12:30:15.123456789Z",
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "contact_refreshed"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:16.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Nexmo",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "I like blue!",
+                        "urn": "tel:+12065551212",
+                        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                    },
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "msg_received"
                 },
                 {
                     "category": "Blue",
@@ -284,6 +284,7 @@
                     },
                     "id": 1234567,
                     "language": "fra",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -350,21 +351,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:11.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Nexmo",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "text": "I like blue!",
-                                    "urn": "tel:+12065551212",
-                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                                },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                                "type": "msg_received"
-                            },
-                            {
-                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "environment": {
                                     "allowed_languages": [
                                         "eng",
@@ -408,9 +395,23 @@
                                     ],
                                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                                 },
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "contact_refreshed"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Nexmo",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "I like blue!",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_received"
                             },
                             {
                                 "category": "Blue",
@@ -448,7 +449,7 @@
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T12:30:09.123456789Z",
+                        "expires_on": "2018-07-06T12:30:14.123456789Z",
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
@@ -535,7 +536,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:32.123456789Z",
+                    "created_on": "2018-07-06T12:30:33.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -598,6 +599,7 @@
                     },
                     "id": 1234567,
                     "language": "fra",
+                    "last_seen_on": "2000-01-01T00:00:00Z",
                     "name": "Ben Haggerty",
                     "status": "active",
                     "timezone": "America/Guayaquil",
@@ -664,21 +666,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:11.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Nexmo",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "text": "I like blue!",
-                                    "urn": "tel:+12065551212",
-                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                                },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                                "type": "msg_received"
-                            },
-                            {
-                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "environment": {
                                     "allowed_languages": [
                                         "eng",
@@ -722,9 +710,23 @@
                                     ],
                                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                                 },
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "contact_refreshed"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Nexmo",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "I like blue!",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_received"
                             },
                             {
                                 "category": "Blue",
@@ -761,7 +763,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "created_on": "2018-07-06T12:30:33.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -811,7 +813,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:46.123456789Z",
-                        "expires_on": "2018-07-06T12:30:30.123456789Z",
+                        "expires_on": "2018-07-06T12:30:31.123456789Z",
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"

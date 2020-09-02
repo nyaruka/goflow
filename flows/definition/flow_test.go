@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Masterminds/semver"
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -18,7 +19,6 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/jsonx"
 	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
@@ -581,7 +581,7 @@ func TestInspection(t *testing.T) {
 			"615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 		},
 		{
-			"../../test/testdata/runner/dynamic_groups.json",
+			"../../test/testdata/runner/smart_groups.json",
 			"1b462ce8-983a-4393-b133-e15a0efdb70c",
 		},
 		{

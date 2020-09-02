@@ -12,12 +12,12 @@ import (
 )
 
 const (
-	outputDir  = "docs"
-	localesDir = "locales"
+	outputDir = "docs"
+	localeDir = "locale"
 )
 
 func main() {
-	if err := docs.Generate(".", outputDir, localesDir); err != nil {
+	if err := docs.Generate(".", outputDir, localeDir); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
