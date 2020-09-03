@@ -3,6 +3,7 @@ package test
 import (
 	"io/ioutil"
 
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/assets/static/types"
@@ -10,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // LoadSessionAssets loads a session assets instance from a static JSON file

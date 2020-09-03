@@ -24,6 +24,7 @@ fields -> the custom field values of the contact
 fields.age -> age for the contact
 fields.gender -> gender for the contact
 urns -> the URN values of the contact
+urns.discord -> Discord URN for the contact
 urns.ext -> Ext URN for the contact
 urns.facebook -> Facebook URN for the contact
 urns.fcm -> Fcm URN for the contact
@@ -134,6 +135,7 @@ child.fields -> the custom field values of the run
 child.fields.age -> age for the contact
 child.fields.gender -> gender for the contact
 child.urns -> the URN values of the run
+child.urns.discord -> Discord URN for the contact
 child.urns.ext -> Ext URN for the contact
 child.urns.facebook -> Facebook URN for the contact
 child.urns.fcm -> Fcm URN for the contact
@@ -183,6 +185,7 @@ parent.fields -> the custom field values of the run
 parent.fields.age -> age for the contact
 parent.fields.gender -> gender for the contact
 parent.urns -> the URN values of the run
+parent.urns.discord -> Discord URN for the contact
 parent.urns.ext -> Ext URN for the contact
 parent.urns.facebook -> Facebook URN for the contact
 parent.urns.fcm -> Fcm URN for the contact

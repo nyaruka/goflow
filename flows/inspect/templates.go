@@ -4,11 +4,11 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/tools"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // Templates extracts template values by reading engine tags on a struct

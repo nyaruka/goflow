@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/nyaruka/goflow/utils/uuids"
+	"github.com/nyaruka/gocommon/uuids"
 
 	"github.com/stretchr/testify/assert"
 )
