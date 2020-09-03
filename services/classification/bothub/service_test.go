@@ -67,6 +67,8 @@ func TestService(t *testing.T) {
 		},
 	}))
 
+	session.Contact().SetLanguage("spa")
+
 	svc := bothub.NewService(
 		http.DefaultClient,
 		nil,
@@ -90,5 +92,6 @@ func TestService(t *testing.T) {
 
 	assert.Equal(t, 1, len(httpLogger.Logs))
 	assert.Equal(t, "https://nlp.bothub.it/parse", httpLogger.Logs[0].URL)
-	assert.Equal(t, "POST /parse HTTP/1.1\r\nHost: nlp.bothub.it\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 43\r\nAuthorization: Bearer ****************\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\nlanguage=en_us&text=book+my+flight+to+Quito", httpLogger.Logs[0].Request)
+
+	test.AssertSnapshot(t, "parse_request", httpLogger.Logs[0].Request)
 }

@@ -21,7 +21,7 @@ import (
 type flowRun struct {
 	uuid        flows.RunUUID
 	session     flows.Session
-	environment *runEnvironment
+	environment envs.Environment
 
 	flow    flows.Flow
 	flowRef *assets.FlowReference
@@ -315,24 +315,17 @@ func (r *flowRun) EvaluateTemplate(template string) (string, error) {
 
 // get the ordered list of languages to be used for localization in this run
 func (r *flowRun) getLanguages() []envs.Language {
-	// TODO cache this this?
-
-	contact := r.Contact()
 	languages := make([]envs.Language, 0, 3)
 
-	// if contact has a allowed language, it takes priority
-	if contact != nil && contact.Language() != envs.NilLanguage {
-		for _, l := range r.Environment().AllowedLanguages() {
-			if l == contact.Language() {
-				languages = append(languages, contact.Language())
-				break
-			}
-		}
+	// if contact has an allowed language, it takes priority
+	contactLanguage := r.Environment().DefaultLanguage()
+	if contactLanguage != envs.NilLanguage {
+		languages = append(languages, contactLanguage)
 	}
 
 	// next we include the default language if it's different to the contact language
-	defaultLanguage := r.Environment().DefaultLanguage()
-	if defaultLanguage != envs.NilLanguage && defaultLanguage != contact.Language() {
+	defaultLanguage := r.Session().Environment().DefaultLanguage()
+	if defaultLanguage != envs.NilLanguage && defaultLanguage != contactLanguage {
 		languages = append(languages, defaultLanguage)
 	}
 

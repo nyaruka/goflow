@@ -72,6 +72,7 @@ const contactJSON = `{
 	"name": "Ben Haggerty",
 	"created_on": "2018-01-01T12:00:00.000000000-00:00",
 	"fields": {},
+	"language": "fra",
 	"timezone": "America/Guayaquil",
 	"urns": [
 		"tel:+12065551212"
@@ -81,8 +82,11 @@ const contactJSON = `{
 func TestRunEnvironment(t *testing.T) {
 	tzRW, _ := time.LoadLocation("Africa/Kigali")
 	tzEC, _ := time.LoadLocation("America/Guayaquil")
+	tzUK, _ := time.LoadLocation("Europe/London")
 
 	env := envs.NewBuilder().
+		WithDefaultLanguage("eng").
+		WithAllowedLanguages([]envs.Language{"eng", "fra", "kin"}).
 		WithDefaultCountry("RW").
 		WithTimezone(tzRW).
 		Build()
@@ -102,12 +106,33 @@ func TestRunEnvironment(t *testing.T) {
 	require.NoError(t, err)
 
 	// environment on the session has the values we started with
-	assert.Equal(t, envs.Country("RW"), session.Environment().DefaultCountry())
-	assert.Equal(t, tzRW, session.Environment().Timezone())
+	sessionEnv := session.Environment()
+	assert.Equal(t, envs.Language("eng"), sessionEnv.DefaultLanguage())
+	assert.Equal(t, []envs.Language{"eng", "fra", "kin"}, sessionEnv.AllowedLanguages())
+	assert.Equal(t, envs.Country("RW"), sessionEnv.DefaultCountry())
+	assert.Equal(t, "en-RW", sessionEnv.DefaultLocale().ToISO639_2())
+	assert.Equal(t, tzRW, sessionEnv.Timezone())
 
 	// environment on the run has values from the contact
-	runEnv := session.Runs()[0].Environment()
+	run := session.Runs()[0]
+	runEnv := run.Environment()
+	assert.Equal(t, envs.Language("fra"), runEnv.DefaultLanguage())
+	assert.Equal(t, []envs.Language{"eng", "fra", "kin"}, runEnv.AllowedLanguages())
 	assert.Equal(t, envs.Country("US"), runEnv.DefaultCountry())
+	assert.Equal(t, "fr-US", runEnv.DefaultLocale().ToISO639_2())
 	assert.Equal(t, tzEC, runEnv.Timezone())
 	assert.NotNil(t, runEnv.LocationResolver())
+
+	// can make changes to contact
+	run.Contact().SetLanguage(envs.Language("kin"))
+	run.Contact().SetTimezone(tzUK)
+
+	// and environment reflects those changes
+	assert.Equal(t, envs.Language("kin"), runEnv.DefaultLanguage())
+	assert.Equal(t, tzUK, runEnv.Timezone())
+
+	// if contact language is not an allowed language it won't be used
+	run.Contact().SetLanguage(envs.Language("spa"))
+	assert.Equal(t, envs.Language("eng"), runEnv.DefaultLanguage())
+	assert.Equal(t, "en-US", runEnv.DefaultLocale().ToISO639_2())
 }
