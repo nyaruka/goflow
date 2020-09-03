@@ -1,3 +1,8 @@
+v0.103.0
+----------
+ * Update to latest gocommon
+ * Update terminology around groups with queries
+
 v0.102.1
 ----------
  * Add archived contact status
