@@ -8,11 +8,11 @@ require (
 	github.com/fortytw2/leaktest v1.3.0 // indirect
 	github.com/go-mail/mail v2.3.1+incompatible
 	github.com/go-playground/universal-translator v0.17.0 // indirect
-	github.com/gofrs/uuid v3.2.0+incompatible
+	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/google/go-cmp v0.5.0 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/mailru/easyjson v0.7.1 // indirect
-	github.com/nyaruka/gocommon v1.3.0
+	github.com/nyaruka/gocommon v1.4.0
 	github.com/nyaruka/phonenumbers v1.0.55
 	github.com/olivere/elastic v6.2.33+incompatible
 	github.com/pkg/errors v0.9.1

@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/random"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -25,7 +26,6 @@ import (
 	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils/smtpx"
-	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"

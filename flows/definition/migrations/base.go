@@ -5,10 +5,10 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/Masterminds/semver"
 	"github.com/pkg/errors"

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -12,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/inspect/issues"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/uuids"
 	"gopkg.in/go-playground/validator.v9"
 
 	"github.com/Masterminds/semver"

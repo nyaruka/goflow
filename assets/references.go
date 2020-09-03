@@ -6,8 +6,8 @@ import (
 	validator "gopkg.in/go-playground/validator.v9"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 func init() {

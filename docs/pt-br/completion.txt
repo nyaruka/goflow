@@ -24,6 +24,7 @@ fields -> os valores customizados do contato
 fields.age -> age para o contato
 fields.gender -> gender para o contato
 urns -> os valores de URN do contato
+urns.discord -> Discord URN para o contato
 urns.ext -> Ext URN para o contato
 urns.facebook -> Facebook URN para o contato
 urns.fcm -> Fcm URN para o contato
@@ -134,6 +135,7 @@ child.fields -> os valores customizados da execução
 child.fields.age -> age para o contato
 child.fields.gender -> gender para o contato
 child.urns -> os valores de URN da execução
+child.urns.discord -> Discord URN para o contato
 child.urns.ext -> Ext URN para o contato
 child.urns.facebook -> Facebook URN para o contato
 child.urns.fcm -> Fcm URN para o contato
@@ -183,6 +185,7 @@ parent.fields -> os valores customizados da execução
 parent.fields.age -> age para o contato
 parent.fields.gender -> gender para o contato
 parent.urns -> os valores de URN da execução
+parent.urns.discord -> Discord URN para o contato
 parent.urns.ext -> Ext URN para o contato
 parent.urns.facebook -> Facebook URN para o contato
 parent.urns.fcm -> Fcm URN para o contato
