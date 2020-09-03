@@ -3,8 +3,8 @@ package inspect
 import (
 	"reflect"
 
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils/uuids"
 )
 
 // LocalizableText extracts localizable text by reading engine tags on a struct

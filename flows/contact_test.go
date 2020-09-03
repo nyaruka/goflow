@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/contactql"
@@ -17,7 +18,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -106,6 +106,7 @@ func TestContact(t *testing.T) {
 	assert.False(t, contact.RemoveURN("whatsapp:235423721788")) // no longer has URN
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
+		"discord":   nil,
 		"ext":       nil,
 		"facebook":  nil,
 		"fcm":       nil,

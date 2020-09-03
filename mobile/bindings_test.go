@@ -4,9 +4,9 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/mobile"
-	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

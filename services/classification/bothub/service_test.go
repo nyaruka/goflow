@@ -7,11 +7,11 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/services/classification/bothub"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/uuids"
 
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"

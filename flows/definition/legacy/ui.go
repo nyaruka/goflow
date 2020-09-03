@@ -1,7 +1,7 @@
 package legacy
 
 import (
-	"github.com/nyaruka/goflow/utils/uuids"
+	"github.com/nyaruka/gocommon/uuids"
 
 	"github.com/shopspring/decimal"
 )
