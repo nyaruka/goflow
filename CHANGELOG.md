@@ -1,3 +1,13 @@
+v0.103.1
+----------
+ * Update to latest gocommon v1.5.0
+ * Run environment's DefaultLanguage and DefaultLocale methods should use contact language
+
+v0.103.0
+----------
+ * Update to latest gocommon
+ * Update terminology around groups with queries
+
 v0.102.1
 ----------
  * Add archived contact status

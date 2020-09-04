@@ -1,0 +1,9 @@
+POST /parse HTTP/1.1
+Host: nlp.bothub.it
+User-Agent: Go-http-client/1.1
+Content-Length: 43
+Authorization: Bearer ****************
+Content-Type: application/x-www-form-urlencoded
+Accept-Encoding: gzip
+
+language=es_us&text=book+my+flight+to+Quito
