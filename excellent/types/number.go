@@ -2,13 +2,18 @@ package types
 
 import (
 	"math"
+	"regexp"
 	"strings"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
+
+// only parse numbers like 123 or 123.456 or .456
+var decimalRegexp = regexp.MustCompile(`^-?(([0-9]+)|([0-9]+\.[0-9]+)|(\.[0-9]+))$`)
 
 func init() {
 	decimal.MarshalJSONWithoutQuotes = true
@@ -41,9 +46,13 @@ func NewXNumberFromInt64(value int64) XNumber {
 	return NewXNumber(decimal.New(value, 0))
 }
 
-// RequireXNumberFromString creates a new XNumber from the given string
+// RequireXNumberFromString creates a new XNumber from the given string or panics (used for tests)
 func RequireXNumberFromString(value string) XNumber {
-	return NewXNumber(decimal.RequireFromString(value))
+	num, err := newXNumberFromString(value)
+	if err != nil {
+		panic(errors.Wrapf(err, "error parsing '%s' as number", value))
+	}
+	return num
 }
 
 // Describe returns a representation of this type for error messages
@@ -122,6 +131,20 @@ func (x *XNumber) UnmarshalJSON(data []byte) error {
 var XNumberZero = NewXNumber(decimal.Zero)
 var _ XValue = XNumberZero
 
+// parses a number from a string
+func newXNumberFromString(s string) (XNumber, error) {
+	s = strings.TrimSpace(s)
+
+	if !decimalRegexp.MatchString(s) {
+		return XNumberZero, errors.New("not a valid number format")
+	}
+	d, err := decimal.NewFromString(s)
+	if err != nil {
+		return XNumberZero, err
+	}
+	return NewXNumber(d), nil
+}
+
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
 func ToXNumber(env envs.Environment, x XValue) (XNumber, XError) {
 	if !utils.IsNil(x) {
@@ -131,9 +154,9 @@ func ToXNumber(env envs.Environment, x XValue) (XNumber, XError) {
 		case XNumber:
 			return typed, nil
 		case XText:
-			parsed, err := decimal.NewFromString(typed.Native())
+			parsed, err := newXNumberFromString(typed.Native())
 			if err == nil {
-				return NewXNumber(parsed), nil
+				return parsed, nil
 			}
 		case *XObject:
 			if typed.hasDefault() {
