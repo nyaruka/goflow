@@ -27,4 +27,10 @@ func TestService(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, []string{"HELO localhost\nMAIL FROM:<updates@temba.io>\nRCPT TO:<bob@nyaruka.com>\nRCPT TO:<jim@nyaruka.com>\nDATA\nHave a great week\n.\nQUIT\n"}, sender.Logs())
+
+	// if body is blank, we'll use a placeholder
+	err = svc.Send(nil, []string{"bob@nyaruka.com", "jim@nyaruka.com"}, "Updates", " ")
+
+	assert.NoError(t, err)
+	assert.Equal(t, "HELO localhost\nMAIL FROM:<updates@temba.io>\nRCPT TO:<bob@nyaruka.com>\nRCPT TO:<jim@nyaruka.com>\nDATA\n(empty body)\n.\nQUIT\n", sender.Logs()[1])
 }
