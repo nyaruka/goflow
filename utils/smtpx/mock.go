@@ -12,27 +12,29 @@ type MockSender struct {
 	logs []string
 }
 
+// NewMockSender creates a new mock sender
 func NewMockSender(err string) *MockSender {
 	return &MockSender{err: err}
 }
 
+// Logs returns the send logs
 func (s *MockSender) Logs() []string {
 	return s.logs
 }
 
-func (s *MockSender) Send(host string, port int, username, password, from string, recipients []string, subject, body string) error {
+func (s *MockSender) Send(c *Client, m *Message) error {
 	if s.err != "" {
 		return errors.New(s.err)
 	}
 
 	b := &strings.Builder{}
 	b.WriteString("HELO localhost\n")
-	b.WriteString(fmt.Sprintf("MAIL FROM:<%s>\n", from))
-	for _, r := range recipients {
+	b.WriteString(fmt.Sprintf("MAIL FROM:<%s>\n", c.from))
+	for _, r := range m.recipients {
 		b.WriteString(fmt.Sprintf("RCPT TO:<%s>\n", r))
 	}
 	b.WriteString("DATA\n")
-	b.WriteString(fmt.Sprintf("%s\n", body))
+	b.WriteString(fmt.Sprintf("%s\n", m.text))
 	b.WriteString(".\n")
 	b.WriteString("QUIT\n")
 
