@@ -1,3 +1,9 @@
+v0.104.0
+----------
+ * Use dummy value to avoid sending empty emails
+ * Rework smtpx package for sending emails in places besides flows
+ * Don't parse numbers in scientific notation
+
 v0.103.1
 ----------
  * Update to latest gocommon v1.5.0
