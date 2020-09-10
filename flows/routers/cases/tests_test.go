@@ -6,9 +6,11 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/test"
 
@@ -30,6 +32,39 @@ var falseResult = cases.FalseResult
 var ERROR = types.NewXErrorf("any error")
 
 var kgl, _ = time.LoadLocation("Africa/Kigali")
+
+var locationHierarchyJSON = `{
+	"name": "Rwanda",
+	"aliases": ["Ruanda"],		
+	"children": [
+		{
+			"name": "Kigali City",
+			"aliases": ["Kigali", "Kigari"],
+			"children": [
+				{
+					"name": "Gasabo",
+					"children": [
+						{
+							"name": "Gisozi"
+						},
+						{
+							"name": "Ndera"
+						}
+					]
+				},
+				{
+					"name": "Nyarugenge",
+					"children": []
+				}
+			]
+		},
+		{
+			"name": "Paktika",
+			"aliases": ["Janikhel", "Terwa", "Yahyakhel", "Yusufkhel", "\u067e\u06a9\u062a\u06cc\u06a9\u0627", "\u062a\u0631\u0648\u0648", "\u06cc\u062d\u06cc\u06cc \u062e\u06cc\u0644", "\u06cc\u0648\u0633\u0641 \u062e\u06cc\u0644"],
+			"children": []
+		}
+	]
+}`
 
 var testTests = []struct {
 	name     string
@@ -243,6 +278,25 @@ var testTests = []struct {
 	{"has_group", []types.XValue{xa(), ERROR}, ERROR},
 	{"has_group", []types.XValue{}, ERROR},
 
+	{"has_state", []types.XValue{xs("kigali city")}, result(xs("Rwanda > Kigali City"))},
+	{"has_state", []types.XValue{xs("kigari")}, result(xs("Rwanda > Kigali City"))},
+	{"has_state", []types.XValue{xs("تروو")}, result(xs("Rwanda > Paktika"))},
+	{"has_state", []types.XValue{xs("غم ځپلې هلمند")}, falseResult},
+	{"has_state", []types.XValue{xs("xyz")}, falseResult},
+	{"has_state", []types.XValue{ERROR}, ERROR},
+
+	{"has_district", []types.XValue{xs("Gasabo"), xs("kigali")}, result(xs("Rwanda > Kigali City > Gasabo"))},
+	{"has_district", []types.XValue{xs("I live in gasabo"), xs("kigali")}, result(xs("Rwanda > Kigali City > Gasabo"))},
+	{"has_district", []types.XValue{xs("Gasabo")}, result(xs("Rwanda > Kigali City > Gasabo"))},
+	{"has_district", []types.XValue{xs("xyz"), xs("kigali")}, falseResult},
+	{"has_district", []types.XValue{ERROR}, ERROR},
+
+	{"has_ward", []types.XValue{xs("Gisozi"), xs("Gasabo"), xs("kigali")}, result(xs("Rwanda > Kigali City > Gasabo > Gisozi"))},
+	{"has_ward", []types.XValue{xs("I live in gisozi"), xs("Gasabo"), xs("kigali")}, result(xs("Rwanda > Kigali City > Gasabo > Gisozi"))},
+	{"has_ward", []types.XValue{xs("Gisozi")}, result(xs("Rwanda > Kigali City > Gasabo > Gisozi"))},
+	{"has_ward", []types.XValue{xs("xyz"), xs("Gasabo"), xs("kigali")}, falseResult},
+	{"has_ward", []types.XValue{ERROR}, ERROR},
+
 	{
 		"has_category",
 		[]types.XValue{
@@ -402,6 +456,11 @@ func TestTests(t *testing.T) {
 		WithTimezone(kgl).
 		WithDefaultCountry(envs.Country("RW")).
 		Build()
+
+	locations, err := envs.ReadLocationHierarchy([]byte(locationHierarchyJSON))
+	require.NoError(t, err)
+
+	env = flows.NewEnvironment(env, flows.NewLocationAssets([]assets.LocationHierarchy{locations}))
 
 	for _, tc := range testTests {
 		testID := fmt.Sprintf("%s(%#v)", tc.name, tc.args)
