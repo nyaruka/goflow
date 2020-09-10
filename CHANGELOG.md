@@ -1,3 +1,7 @@
+v0.104.1
+----------
+ * Update to gocommon v1.5.1
+
 v0.104.0
 ----------
  * Use dummy value to avoid sending empty emails
