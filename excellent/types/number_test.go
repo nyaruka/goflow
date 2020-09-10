@@ -16,6 +16,7 @@ func TestXNumber(t *testing.T) {
 	// test creation
 	assert.Equal(t, types.RequireXNumberFromString("123"), types.NewXNumberFromInt(123))
 	assert.Equal(t, types.RequireXNumberFromString("123"), types.NewXNumberFromInt64(123))
+	assert.Panics(t, func() { types.RequireXNumberFromString("xxx") })
 
 	// test equality
 	assert.True(t, types.NewXNumberFromInt(123).Equals(types.NewXNumberFromInt(123)))
@@ -59,11 +60,14 @@ func TestToXNumberAndInteger(t *testing.T) {
 		{types.NewXErrorf("Error"), types.XNumberZero, 0, true},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), 123, false},
 		{types.NewXText("15.5"), types.RequireXNumberFromString("15.5"), 15, false},
+		{types.NewXText("  15.4  "), types.RequireXNumberFromString("15.4"), 15, false},
 		{types.NewXObject(map[string]types.XValue{
 			"__default__": types.NewXNumberFromInt(123), // should use default
 			"foo":         types.NewXNumberFromInt(234),
 		}), types.NewXNumberFromInt(123), 123, false},
 		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true}, // out of int range
+		{types.NewXText("1E100"), types.XNumberZero, 0, true},                                                     // scientific notation not allowed
+		{types.NewXText("1e100"), types.XNumberZero, 0, true},                                                     // scientific notation not allowed
 	}
 
 	env := envs.NewBuilder().Build()

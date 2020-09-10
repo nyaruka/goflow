@@ -120,7 +120,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 	eng := engine.NewBuilder().
 		WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
-			return smtp.NewService("mail.temba.io", 25, "nyaruka", "pass123", "flows@temba.io"), nil
+			return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io")
 		}).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {

@@ -1,32 +1,37 @@
 package smtpx
 
-import (
-	"github.com/go-mail/mail"
-)
+// Message is email message
+type Message struct {
+	recipients []string
+	subject    string
+	text       string
+	html       string
+}
+
+// NewMessage creates a new message
+func NewMessage(recipients []string, subject, text, html string) *Message {
+	return &Message{
+		recipients: recipients,
+		subject:    subject,
+		text:       text,
+		html:       html,
+	}
+}
 
 // Send an email using SMTP
-func Send(host string, port int, username, password, from string, recipients []string, subject, body string) error {
-	return currentSender.Send(host, port, username, password, from, recipients, subject, body)
+func Send(c *Client, m *Message) error {
+	return currentSender.Send(c, m)
 }
 
 // Sender is anything that can send an email
 type Sender interface {
-	Send(host string, port int, username, password, from string, recipients []string, subject, body string) error
+	Send(*Client, *Message) error
 }
 
 type defaultSender struct{}
 
-func (s defaultSender) Send(host string, port int, username, password, from string, recipients []string, subject, body string) error {
-	// create our dialer for our org
-	d := mail.NewDialer(host, port, username, password)
-
-	m := mail.NewMessage()
-	m.SetHeader("From", from)
-	m.SetHeader("To", recipients...)
-	m.SetHeader("Subject", subject)
-	m.SetBody("text/plain", body)
-
-	return d.DialAndSend(m)
+func (s defaultSender) Send(c *Client, m *Message) error {
+	return c.Send(m)
 }
 
 // DefaultSender is the default SMTP sender
