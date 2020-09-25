@@ -137,7 +137,7 @@ func (m *MsgIn) Text() string {
 
 func (m *MsgIn) Attachments() *StringSlice {
 	attachments := NewStringSlice(len(m.target.Attachments()))
-	for attachment := range m.target.Attachments() {
+	for _, attachment := range m.target.Attachments() {
 		attachments.Add(string(attachment))
 	}
 	return attachments

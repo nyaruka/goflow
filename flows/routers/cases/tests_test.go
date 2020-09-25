@@ -282,6 +282,7 @@ var testTests = []struct {
 	{"has_state", []types.XValue{xs("kigari")}, result(xs("Rwanda > Kigali City"))},
 	{"has_state", []types.XValue{xs("تروو")}, result(xs("Rwanda > Paktika"))},
 	{"has_state", []types.XValue{xs("غم ځپلې هلمند")}, falseResult},
+	{"has_state", []types.XValue{xs("\u063a\u0645 \u0681\u067e\u0644\u06d0 \u0647\u0644\u0645\u0646\u062f")}, falseResult},
 	{"has_state", []types.XValue{xs("xyz")}, falseResult},
 	{"has_state", []types.XValue{ERROR}, ERROR},
 
