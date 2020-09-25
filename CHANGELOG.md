@@ -1,3 +1,7 @@
+v0.105.0
+----------
+ * Bump some deps, test on go 1.15 and fix bug found by 1.15 compiler
+
 v0.104.1
 ----------
  * Update to gocommon v1.5.1
