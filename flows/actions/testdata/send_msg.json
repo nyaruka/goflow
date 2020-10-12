@@ -405,6 +405,7 @@
                             "name": "affirmation"
                         },
                         "language": "eng",
+                        "country": "US",
                         "variables": [
                             "Ryan Lewis",
                             "boy"
@@ -485,6 +486,7 @@
                             "name": "affirmation"
                         },
                         "language": "spa",
+                        "country": "",
                         "variables": [
                             "Ryan Lewis",
                             "niño"
@@ -552,7 +554,8 @@
                             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                             "name": "wakeup"
                         },
-                        "language": "eng"
+                        "language": "eng",
+                        "country": ""
                     }
                 }
             }

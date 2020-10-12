@@ -219,6 +219,7 @@
                         "name": "My Android Phone"
                     },
                     "language": "eng",
+                    "country": "US",
                     "content": "Hi {{1}}, who's an excellent {{2}}?"
                 },
                 {
