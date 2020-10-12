@@ -853,7 +853,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:50.123456789Z",
-                        "expires_on": "2018-07-06T12:30:38.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
@@ -1307,7 +1307,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:50.123456789Z",
-                        "expires_on": "2018-07-06T12:30:38.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
@@ -1634,7 +1634,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:31:28.123456789Z",
-                        "expires_on": "2018-07-06T12:31:17.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
@@ -1800,7 +1800,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:50.123456789Z",
-                        "expires_on": "2018-07-06T12:30:38.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"

@@ -2860,7 +2860,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:35:04.123456789Z",
-                        "expires_on": "2018-07-06T12:30:01.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Node Loop",
                             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"

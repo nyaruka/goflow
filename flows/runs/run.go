@@ -91,7 +91,7 @@ func (r *flowRun) Exit(status flows.RunStatus) {
 
 	r.status = status
 	r.exitedOn = &now
-	//r.expiresOn = nil
+	r.expiresOn = nil
 	r.modifiedOn = now
 
 	// if we have a parent, it's expiration should no longer include our expiration

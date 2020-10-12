@@ -1350,7 +1350,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:32:07.123456789Z",
-                        "expires_on": "2018-07-13T12:31:55.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"

@@ -375,7 +375,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:33.123456789Z",
-                        "expires_on": "2018-07-06T12:30:11.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "NLU Test",
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"

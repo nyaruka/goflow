@@ -251,7 +251,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:22.123456789Z",
-                        "expires_on": "2018-07-13T12:30:01.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Legacy Timeout",
                             "uuid": "eaae833a-4970-4be1-aed4-2e6295903b8f"

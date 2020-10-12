@@ -101,7 +101,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:11.123456789Z",
-                        "expires_on": "2018-07-06T12:30:01.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Field Clear",
                             "uuid": "999c5562-5eb0-4f18-9735-bca0b8d1378e"

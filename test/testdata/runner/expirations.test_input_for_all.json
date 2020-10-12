@@ -427,7 +427,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:36.123456789Z",
-                        "expires_on": "2018-07-06T15:30:26.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Expiration Test C",
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
@@ -689,7 +689,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:57.123456789Z",
-                        "expires_on": "2018-07-06T14:30:48.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Expiration Test B",
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
@@ -767,7 +767,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:36.123456789Z",
-                        "expires_on": "2018-07-06T15:30:26.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Expiration Test C",
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
@@ -957,7 +957,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:31:16.123456789Z",
-                        "expires_on": "2018-07-06T13:31:08.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Expiration Test A",
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
@@ -1045,7 +1045,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:57.123456789Z",
-                        "expires_on": "2018-07-06T14:30:48.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Expiration Test B",
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
@@ -1123,7 +1123,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:36.123456789Z",
-                        "expires_on": "2018-07-06T15:30:26.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Expiration Test C",
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"

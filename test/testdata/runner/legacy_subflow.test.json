@@ -484,7 +484,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:35.123456789Z",
-                        "expires_on": "2018-07-13T12:30:27.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Subflow Child",
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"

@@ -875,7 +875,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:31:04.123456789Z",
-                        "expires_on": "2018-07-13T12:30:45.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Registration",
                             "uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f"

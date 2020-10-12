@@ -384,7 +384,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:49.123456789Z",
-                        "expires_on": "2018-07-06T12:30:44.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
@@ -471,7 +471,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:43.123456789Z",
-                        "expires_on": "2018-07-06T12:30:40.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
@@ -514,7 +514,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:39.123456789Z",
-                        "expires_on": "2018-07-06T12:30:32.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"

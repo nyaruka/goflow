@@ -501,7 +501,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:39.123456789Z",
-                        "expires_on": "2018-07-06T12:30:28.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Legacy Extra",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"

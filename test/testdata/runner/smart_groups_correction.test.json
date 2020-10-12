@@ -66,7 +66,7 @@
                     {
                         "created_on": "2018-07-06T12:30:01.123456789Z",
                         "exited_on": "2018-07-06T12:30:04.123456789Z",
-                        "expires_on": "2018-07-06T12:30:02.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Query Based Groups Correction",
                             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"

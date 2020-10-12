@@ -137,7 +137,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:16.123456789Z",
-                        "expires_on": "2018-07-06T12:30:10.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
