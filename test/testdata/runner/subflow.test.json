@@ -269,7 +269,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:33.123456789Z",
+                    "created_on": "2018-07-06T12:30:35.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -364,7 +364,7 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:33.123456789Z",
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -378,13 +378,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:35.123456789Z",
-                        "expires_on": "2018-07-06T12:30:19.123456789Z",
+                        "exited_on": "2018-07-06T12:30:37.123456789Z",
+                        "expires_on": "2018-07-06T12:30:32.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:35.123456789Z",
+                        "modified_on": "2018-07-06T12:30:37.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -393,7 +393,7 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:32.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
                                 "exit_uuid": "9b13f6ac-5257-4cec-8d5c-545ba85bc832",
                                 "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
