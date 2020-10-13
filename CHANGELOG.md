@@ -1,3 +1,9 @@
+v0.105.2
+----------
+ * Clear a run's expiration when it exits
+ * Unwind accumulated run expirations as child runs complete
+ * Include country in msg templating on msg_created events
+
 v0.105.1
 ----------
  * Update to latest gocommon v1.5.3
