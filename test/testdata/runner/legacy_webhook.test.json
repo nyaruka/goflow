@@ -110,7 +110,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:15.123456789Z",
-                        "expires_on": "2018-07-13T12:30:01.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Webhook",
                             "uuid": "0256c9fc-8194-4567-b4ab-6965c2b7d791"
