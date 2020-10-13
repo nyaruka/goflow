@@ -227,7 +227,8 @@
 <p>Tests whether <code>text</code> contains a number</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><span id="cb17-1"><a href="#cb17-1"></a>@(has_number(<span class="st">&quot;the number is 42&quot;</span>)) → true</span>
 <span id="cb17-2"><a href="#cb17-2"></a>@(has_number(<span class="st">&quot;the number is 42&quot;</span>).match) → <span class="dv">42</span></span>
-<span id="cb17-3"><a href="#cb17-3"></a>@(has_number(<span class="st">&quot;the number is forty two&quot;</span>)) → false</span></code></pre></div>
+<span id="cb17-3"><a href="#cb17-3"></a>@(has_number(<span class="st">&quot;العدد ٤٢&quot;</span>).match) → <span class="dv">42</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>@(has_number(<span class="st">&quot;the number is forty two&quot;</span>)) → false</span></code></pre></div>
 <h2 class="item_title">
 <a name="test:has_number_between" href="#test:has_number_between">has_number_between(text, min, max)</a>
 </h2>
