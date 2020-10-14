@@ -27,12 +27,17 @@ func TestParseDecimal(t *testing.T) {
 		{" .1234 ", dec("0.1234"), envs.DefaultNumberFormat},
 		{"100.00", dec("100.00"), envs.DefaultNumberFormat},
 
+		// Eastern Arabic
 		{"١", dec("1"), envs.DefaultNumberFormat},
 		{"١٢٣٤", dec("1234"), envs.DefaultNumberFormat},
 		{"١,٢٣٤.٥٦٧", dec("1234.567"), envs.DefaultNumberFormat},
 		{"١.٢٣٤,٥٦٧", dec("1234.567"), spaFormat},
-		{"٠.٥", dec("0.5"), envs.DefaultNumberFormat},
+		{"٠.٨٩", dec("0.89"), envs.DefaultNumberFormat},
 		{".١٢٣٤", dec("0.1234"), envs.DefaultNumberFormat},
+
+		// Bengali
+		{"১,২৩৪.৫৬৭", dec("1234.567"), envs.DefaultNumberFormat},
+		{"০.৮৯", dec("0.89"), envs.DefaultNumberFormat},
 	}
 
 	for _, test := range parseTests {
