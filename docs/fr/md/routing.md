@@ -302,6 +302,7 @@ Tests whether `text` contains a number
 ```objectivec
 @(has_number("the number is 42")) → true
 @(has_number("the number is 42").match) → 42
+@(has_number("العدد ٤٢").match) → 42
 @(has_number("the number is forty two")) → false
 ```
 

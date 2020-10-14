@@ -14,7 +14,6 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/test"
 
-	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -158,6 +157,8 @@ var testTests = []struct {
 	{"has_number", []types.XValue{xs("hi.51")}, result(xn("51"))},
 	{"has_number", []types.XValue{xs("hi .51")}, result(xn("0.51"))},
 	{"has_number", []types.XValue{xs(".51")}, result(xn("0.51"))},
+	{"has_number", []types.XValue{xs("١٢٣٤")}, result(xn("1234"))},
+	{"has_number", []types.XValue{xs("٠.٥")}, result(xn("0.5"))},
 	{"has_number", []types.XValue{xs("nothing here")}, falseResult},
 	{"has_number", []types.XValue{xs("lOO")}, falseResult}, // no longer do substitutions
 	{"has_number", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
@@ -165,6 +166,7 @@ var testTests = []struct {
 
 	{"has_number_lt", []types.XValue{xs("the number 10"), xs("11")}, result(xn("10"))},
 	{"has_number_lt", []types.XValue{xs("another is -12.51"), xs("12")}, result(xn("-12.51"))},
+	{"has_number_lt", []types.XValue{xs("١٠"), xs("11")}, result(xn("10"))},
 	{"has_number_lt", []types.XValue{xs("nothing here"), xs("12")}, falseResult},
 	{"has_number_lt", []types.XValue{xs("too big 15"), xs("12")}, falseResult},
 	{"has_number_lt", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
@@ -174,6 +176,7 @@ var testTests = []struct {
 
 	{"has_number_lte", []types.XValue{xs("the number 10"), xs("11")}, result(xn("10"))},
 	{"has_number_lte", []types.XValue{xs("another is -12.51"), xs("12")}, result(xn("-12.51"))},
+	{"has_number_lte", []types.XValue{xs("١٠"), xs("11")}, result(xn("10"))},
 	{"has_number_lte", []types.XValue{xs("nothing here"), xs("12")}, falseResult},
 	{"has_number_lte", []types.XValue{xs("too big 15"), xs("12")}, falseResult},
 	{"has_number_lte", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
@@ -181,6 +184,7 @@ var testTests = []struct {
 
 	{"has_number_eq", []types.XValue{xs("the number 10"), xs("10")}, result(xn("10"))},
 	{"has_number_eq", []types.XValue{xs("another is -12.51"), xs("-12.51")}, result(xn("-12.51"))},
+	{"has_number_eq", []types.XValue{xs("١٠"), xs("10")}, result(xn("10"))},
 	{"has_number_eq", []types.XValue{xs("nothing here"), xs("12")}, falseResult},
 	{"has_number_eq", []types.XValue{xs("wrong .51"), xs(".61")}, falseResult},
 	{"has_number_eq", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
@@ -188,6 +192,7 @@ var testTests = []struct {
 
 	{"has_number_gte", []types.XValue{xs("the number 10"), xs("9")}, result(xn("10"))},
 	{"has_number_gte", []types.XValue{xs("another is -12.51"), xs("-13")}, result(xn("-12.51"))},
+	{"has_number_gte", []types.XValue{xs("١٠"), xs("9")}, result(xn("10"))},
 	{"has_number_gte", []types.XValue{xs("nothing here"), xs("12")}, falseResult},
 	{"has_number_gte", []types.XValue{xs("too small -12"), xs("-11")}, falseResult},
 	{"has_number_gte", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
@@ -195,6 +200,7 @@ var testTests = []struct {
 
 	{"has_number_gt", []types.XValue{xs("the number 10"), xs("9")}, result(xn("10"))},
 	{"has_number_gt", []types.XValue{xs("another is -12.51"), xs("-13")}, result(xn("-12.51"))},
+	{"has_number_gt", []types.XValue{xs("١٠"), xs("9")}, result(xn("10"))},
 	{"has_number_gt", []types.XValue{xs("nothing here"), xs("12")}, falseResult},
 	{"has_number_gt", []types.XValue{xs("not great -12.51"), xs("-12.51")}, falseResult},
 	{"has_number_gt", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
@@ -203,6 +209,7 @@ var testTests = []struct {
 	{"has_number_between", []types.XValue{xs("the number 10"), xs("8"), xs("12")}, result(xn("10"))},
 	{"has_number_between", []types.XValue{xs("24ans"), xn("20"), xn("24")}, result(xn("24"))},
 	{"has_number_between", []types.XValue{xs("another is -12.51"), xs("-12.51"), xs("-10")}, result(xn("-12.51"))},
+	{"has_number_between", []types.XValue{xs("١٠"), xs("8"), xs("12")}, result(xn("10"))},
 	{"has_number_between", []types.XValue{xs("nothing here"), xs("10"), xs("15")}, falseResult},
 	{"has_number_between", []types.XValue{xs("one"), xs("two")}, ERROR},
 	{"has_number_between", []types.XValue{xs("but foo"), nil, xs("10")}, ERROR},
@@ -561,27 +568,5 @@ func TestHasPhone(t *testing.T) {
 		}
 
 		test.AssertXEqual(t, expected, actual, "has_phone mismatch for input=%s country=%s", tc.input, tc.country)
-	}
-}
-
-func TestParseDecimalFuzzy(t *testing.T) {
-	parseTests := []struct {
-		input    string
-		expected decimal.Decimal
-		format   *envs.NumberFormat
-	}{
-		{"1234", decimal.RequireFromString("1234"), envs.DefaultNumberFormat},
-		{"1,234.567", decimal.RequireFromString("1234.567"), envs.DefaultNumberFormat},
-		{"1.234,567", decimal.RequireFromString("1234.567"), &envs.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
-		{".1234", decimal.RequireFromString("0.1234"), envs.DefaultNumberFormat},
-		{" .1234", decimal.RequireFromString("0.1234"), envs.DefaultNumberFormat},
-		{"100.00", decimal.RequireFromString("100.00"), envs.DefaultNumberFormat},
-	}
-
-	for _, test := range parseTests {
-		val, err := cases.ParseDecimalFuzzy(test.input, test.format)
-
-		assert.NoError(t, err)
-		assert.Equal(t, test.expected, val, "parse decimal failed for input '%s'", test.input)
 	}
 }

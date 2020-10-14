@@ -330,6 +330,7 @@ func HasPattern(env envs.Environment, text types.XText, pattern types.XText) typ
 //
 //   @(has_number("the number is 42")) -> true
 //   @(has_number("the number is 42").match) -> 42
+//   @(has_number("العدد ٤٢").match) -> 42
 //   @(has_number("the number is forty two")) -> false
 //
 // @test has_number(text)
@@ -839,19 +840,6 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) types.XV
 // Numerical Test Functions
 //------------------------------------------------------------------------------------------
 
-// ParseDecimalFuzzy parses a decimal from a string
-func ParseDecimalFuzzy(val string, format *envs.NumberFormat) (decimal.Decimal, error) {
-	cleaned := strings.TrimSpace(val)
-
-	// remove digit grouping symbol
-	cleaned = strings.Replace(cleaned, format.DigitGroupingSymbol, "", -1)
-
-	// replace non-period decimal symbols
-	cleaned = strings.Replace(cleaned, format.DecimalSymbol, ".", -1)
-
-	return decimal.NewFromString(cleaned)
-}
-
 type decimalTest func(value decimal.Decimal, test1 decimal.Decimal, test2 decimal.Decimal) bool
 
 func testNumber(env envs.Environment, str types.XText, testNum1 types.XNumber, testNum2 types.XNumber, testFunc decimalTest) types.XValue {
@@ -860,7 +848,7 @@ func testNumber(env envs.Environment, str types.XText, testNum1 types.XNumber, t
 
 	// look for number like things in the input and use the first one that we can actually parse
 	for _, value := range pattern.FindAllString(str.Native(), -1) {
-		num, err := ParseDecimalFuzzy(value, env.NumberFormat())
+		num, err := ParseDecimal(value, env.NumberFormat())
 		if err == nil {
 			if testFunc(num, testNum1.Native(), testNum2.Native()) {
 				return NewTrueResult(types.NewXNumber(num))
