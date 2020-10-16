@@ -1,3 +1,7 @@
+v0.105.4
+----------
+ * Add support for Bengali numerals in number tests
+
 v0.105.3
 ----------
  * Add support for Eastern Arabic numerals in number tests
