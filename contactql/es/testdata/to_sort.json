@@ -18,6 +18,15 @@
         }
     },
     {
+        "desciption": "descending last_seen_on",
+        "sort_by": "-last_seen_on",
+        "elastic": {
+            "last_seen_on": {
+                "order": "desc"
+            }
+        }
+    },
+    {
         "desciption": "ascending name",
         "sort_by": "name",
         "elastic": {
