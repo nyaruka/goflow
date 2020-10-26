@@ -34,7 +34,7 @@ func ToElasticFieldSort(sortBy string, resolver contactql.Resolver) (*elastic.Fi
 	}
 
 	// other attributes are straight sorts
-	if property == contactql.AttributeID || property == contactql.AttributeCreatedOn || property == contactql.AttributeLanguage {
+	if property == contactql.AttributeID || property == contactql.AttributeCreatedOn || property == contactql.AttributeLastSeenOn || property == contactql.AttributeLanguage {
 		return elastic.NewFieldSort(property).Order(ascending), nil
 	}
 
