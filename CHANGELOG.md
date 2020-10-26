@@ -1,3 +1,7 @@
+v0.105.5
+----------
+ * Support sorting contacts by last seen on attribute
+
 v0.105.4
 ----------
  * Add support for Bengali numerals in number tests
