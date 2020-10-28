@@ -395,18 +395,22 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 			urn.SetChannel(nil)
 		}
 	} else {
+		if !channel.HasRole(assets.ChannelRoleSend) {
+			return false
+		}
+
 		priorityURNs := make([]*ContactURN, 0)
 		otherURNs := make([]*ContactURN, 0)
 
 		for _, urn := range c.urns {
 			// tel URNs can be re-assigned, other URN schemes are considered channel specific
-			if urn.URN().Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) && channel.HasRole(assets.ChannelRoleSend) {
+			if urn.URN().Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
 				urn.SetChannel(channel)
 			}
 
 			// If URN doesn't have a channel and is a scheme supported by the channel, then we can set its
 			// channel. This may result in unsendable URN/channel pairing but can't do much about that.
-			if urn.Channel() == nil && channel.SupportsScheme(urn.URN().Scheme()) && channel.HasRole(assets.ChannelRoleSend) {
+			if urn.Channel() == nil && channel.SupportsScheme(urn.URN().Scheme()) {
 				urn.SetChannel(channel)
 			}
 

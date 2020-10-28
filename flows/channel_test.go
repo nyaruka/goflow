@@ -44,6 +44,7 @@ func TestChannel(t *testing.T) {
 
 func TestChannelSetGetForURN(t *testing.T) {
 	rolesSend := []assets.ChannelRole{assets.ChannelRoleSend}
+	rolesReceive := []assets.ChannelRole{assets.ChannelRoleReceive}
 	rolesDefault := []assets.ChannelRole{assets.ChannelRoleSend, assets.ChannelRoleReceive}
 
 	claro := test.NewTelChannel("Claro", "+593971111111", rolesDefault, nil, "EC", nil, true)
@@ -51,13 +52,22 @@ func TestChannelSetGetForURN(t *testing.T) {
 	tigo := test.NewTelChannel("Tigo", "+250723333333", rolesDefault, nil, "RW", nil, false)
 	twilio := test.NewTelChannel("Twilio", "+17036975131", rolesDefault, nil, "", nil, false)
 	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault, nil)
+	receiver := test.NewTelChannel("Receiver", "+250724444444", rolesReceive, nil, "RW", nil, false)
+
 	all := flows.NewChannelAssets([]assets.Channel{claro.Asset(), mtn.Asset(), tigo.Asset(), twitter.Asset()})
 	rwOnly := flows.NewChannelAssets([]assets.Channel{mtn.Asset(), tigo.Asset()})
 	twOnly := flows.NewChannelAssets([]assets.Channel{twilio.Asset()})
+	receiverSet := flows.NewChannelAssets([]assets.Channel{receiver.Asset()})
 
 	// nil if no channel
 	emptySet := flows.NewChannelAssets(nil)
 	assert.Nil(t, emptySet.GetForURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil), assets.ChannelRoleSend))
+
+	// nil if not channel with correct role
+	assert.Nil(t, receiverSet.GetForURN(flows.NewContactURN(urns.URN("tel:+12345678999"), receiver), assets.ChannelRoleSend))
+
+	// can still match URN has a preferred channel with matching role
+	assert.Equal(t, receiver, receiverSet.GetForURN(flows.NewContactURN(urns.URN("tel:+12345678999"), receiver), assets.ChannelRoleReceive))
 
 	// nil if no channel with correct scheme
 	assert.Nil(t, all.GetForURN(flows.NewContactURN(urns.URN("mailto:rowan@foo.bar"), nil), assets.ChannelRoleSend))
