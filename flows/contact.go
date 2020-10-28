@@ -400,13 +400,13 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 
 		for _, urn := range c.urns {
 			// tel URNs can be re-assigned, other URN schemes are considered channel specific
-			if urn.URN().Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
+			if urn.URN().Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) && channel.HasRole(assets.ChannelRoleSend) {
 				urn.SetChannel(channel)
 			}
 
 			// If URN doesn't have a channel and is a scheme supported by the channel, then we can set its
 			// channel. This may result in unsendable URN/channel pairing but can't do much about that.
-			if urn.Channel() == nil && channel.SupportsScheme(urn.URN().Scheme()) {
+			if urn.Channel() == nil && channel.SupportsScheme(urn.URN().Scheme()) && channel.HasRole(assets.ChannelRoleSend) {
 				urn.SetChannel(channel)
 			}
 
