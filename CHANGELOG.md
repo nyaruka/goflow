@@ -1,3 +1,9 @@
+v0.106.0
+----------
+ * Getting channel for URN should always consider the role on the channels
+ * Update to latest gocommon which adds rocketchat scheme
+ * SetPreferredChannel only when the channel has the send role
+
 v0.105.5
 ----------
  * Support sorting contacts by last seen on attribute
