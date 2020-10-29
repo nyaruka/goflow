@@ -71,6 +71,11 @@
                     "type": "text"
                 },
                 {
+                    "key": "rocketchat",
+                    "help": "Rocketchat URN para o contato",
+                    "type": "text"
+                },
+                {
                     "key": "tel",
                     "help": "Tel URN para o contato",
                     "type": "text"

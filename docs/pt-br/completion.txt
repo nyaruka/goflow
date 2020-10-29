@@ -32,6 +32,7 @@ urns.freshchat -> Freshchat URN para o contato
 urns.jiochat -> Jiochat URN para o contato
 urns.line -> Line URN para o contato
 urns.mailto -> Mailto URN para o contato
+urns.rocketchat -> Rocketchat URN para o contato
 urns.tel -> Tel URN para o contato
 urns.telegram -> Telegram URN para o contato
 urns.twitter -> Twitter URN para o contato
@@ -143,6 +144,7 @@ child.urns.freshchat -> Freshchat URN para o contato
 child.urns.jiochat -> Jiochat URN para o contato
 child.urns.line -> Line URN para o contato
 child.urns.mailto -> Mailto URN para o contato
+child.urns.rocketchat -> Rocketchat URN para o contato
 child.urns.tel -> Tel URN para o contato
 child.urns.telegram -> Telegram URN para o contato
 child.urns.twitter -> Twitter URN para o contato
@@ -193,6 +195,7 @@ parent.urns.freshchat -> Freshchat URN para o contato
 parent.urns.jiochat -> Jiochat URN para o contato
 parent.urns.line -> Line URN para o contato
 parent.urns.mailto -> Mailto URN para o contato
+parent.urns.rocketchat -> Rocketchat URN para o contato
 parent.urns.tel -> Tel URN para o contato
 parent.urns.telegram -> Telegram URN para o contato
 parent.urns.twitter -> Twitter URN para o contato
