@@ -56,6 +56,11 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 			logEvent(events.NewDependencyError(a.Channel))
 			return nil
 		}
+
+		if !channel.HasRole(assets.ChannelRoleSend) {
+			logEvent(events.NewErrorf("can't set channel that can't send as the preferred channel"))
+			return nil
+		}
 	}
 
 	a.applyModifier(run, modifiers.NewChannel(channel), logModifier, logEvent)

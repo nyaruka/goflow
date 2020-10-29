@@ -220,8 +220,10 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	env := envs.NewBuilder().Build()
 	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
+	receive_roles := []assets.ChannelRole{assets.ChannelRoleReceive}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
+	android2 := test.NewTelChannel("Android", "+250961111112", receive_roles, nil, "RW", nil, false)
 	twitter1 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 
@@ -253,6 +255,13 @@ func TestContactSetPreferredChannel(t *testing.T) {
 
 	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
 	assert.Equal(t, twitter1, contact.URNs()[0].Channel())
+
+	contact.UpdatePreferredChannel(android2)
+
+	for _, urn := range contact.URNs() {
+		assert.NotEqual(t, android2, urn.Channel())
+	}
+
 }
 
 func TestReevaluateQueryBasedGroups(t *testing.T) {

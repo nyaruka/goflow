@@ -395,6 +395,10 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 			urn.SetChannel(nil)
 		}
 	} else {
+		if !channel.HasRole(assets.ChannelRoleSend) {
+			return false
+		}
+
 		priorityURNs := make([]*ContactURN, 0)
 		otherURNs := make([]*ContactURN, 0)
 
