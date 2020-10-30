@@ -1,3 +1,7 @@
+v0.106.1
+----------
+ * URN and channel modifiers should error with invalid URNs and channels
+
 v0.106.0
 ----------
  * Getting channel for URN should always consider the role on the channels
