@@ -1,3 +1,7 @@
+v0.106.2
+----------
+ * Update to latest gocommon
+
 v0.106.1
 ----------
  * URN and channel modifiers should error with invalid URNs and channels
