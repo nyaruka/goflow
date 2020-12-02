@@ -46,6 +46,8 @@ func numberComparison(objectVal decimal.Decimal, op Operator, queryVal decimal.D
 	switch op {
 	case OpEqual:
 		return objectVal.Equal(queryVal)
+	case OpNotEqual:
+		return !objectVal.Equal(queryVal)
 	case OpGreaterThan:
 		return objectVal.GreaterThan(queryVal)
 	case OpGreaterThanOrEqual:
@@ -65,6 +67,8 @@ func dateComparison(objectVal time.Time, op Operator, queryVal time.Time) bool {
 	switch op {
 	case OpEqual:
 		return (objectVal.Equal(utcDayStart) || objectVal.After(utcDayStart)) && objectVal.Before(utcDayEnd)
+	case OpNotEqual:
+		return !((objectVal.Equal(utcDayStart) || objectVal.After(utcDayStart)) && objectVal.Before(utcDayEnd))
 	case OpGreaterThan:
 		return objectVal.After(utcDayEnd) || objectVal.Equal(utcDayEnd)
 	case OpGreaterThanOrEqual:

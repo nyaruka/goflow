@@ -360,7 +360,8 @@ func TestContactQuery(t *testing.T) {
 		"id": 1234567,
 		"name": "Ben Haggerty",
 		"fields": {
-			"gender": {"text": "Male"}
+			"gender": {"text": "Male"},
+			"age": {"text": "39!", "number": 39}
 		},
 		"groups": [
 			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -407,6 +408,8 @@ func TestContactQuery(t *testing.T) {
 
 		{`created_on = 24-01-2020`, envs.RedactionPolicyNone, true, ""},
 		{`created_on = 25-01-2020`, envs.RedactionPolicyNone, false, ""},
+		{`created_on != 24-01-2020`, envs.RedactionPolicyNone, false, ""},
+		{`created_on != 25-01-2020`, envs.RedactionPolicyNone, true, ""},
 		{`created_on > 22-01-2020`, envs.RedactionPolicyNone, true, ""},
 		{`created_on > 26-01-2020`, envs.RedactionPolicyNone, false, ""},
 
@@ -461,6 +464,11 @@ func TestContactQuery(t *testing.T) {
 		{`group != testers`, envs.RedactionPolicyNone, false, ""},
 		{`group = customers`, envs.RedactionPolicyNone, false, ""},
 		{`group != customers`, envs.RedactionPolicyNone, true, ""},
+
+		{`age = 39`, envs.RedactionPolicyNone, true, ""},
+		{`age != 39`, envs.RedactionPolicyNone, false, ""},
+		{`age = 60`, envs.RedactionPolicyNone, false, ""},
+		{`age != 60`, envs.RedactionPolicyNone, true, ""},
 	}
 
 	doQuery := func(q string, redaction envs.RedactionPolicy) (bool, error) {
