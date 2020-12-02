@@ -1,3 +1,7 @@
+v0.106.3
+----------
+ * Engine evaluator for contact sql should support != x for number and datetime values
+
 v0.106.2
 ----------
  * Update to latest gocommon
