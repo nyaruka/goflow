@@ -14,6 +14,9 @@
             "Hi there!"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -46,6 +49,9 @@
             "Hi there!"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [
                 {
                     "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
@@ -210,6 +216,9 @@
             "Hi there!"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [
                 {
                     "key": "gender",
@@ -310,6 +319,9 @@
             "No"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],

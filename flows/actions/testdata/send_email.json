@@ -50,6 +50,7 @@
             "So I was thinking...@(1 / 0)"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -212,6 +213,7 @@
             "So I was thinking..."
         ],
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [],

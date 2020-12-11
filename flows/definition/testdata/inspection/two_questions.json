@@ -1,4 +1,9 @@
 {
+    "features": [
+        "msg_sends",
+        "msg_waits",
+        "webhooks"
+    ],
     "dependencies": [],
     "issues": [],
     "results": [

@@ -47,6 +47,7 @@
             "Other"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [

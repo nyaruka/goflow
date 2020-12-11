@@ -23,6 +23,7 @@
             "30"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "key": "age",
@@ -59,6 +60,7 @@
             "@( 1/ 0)"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "key": "age",
@@ -291,6 +293,7 @@
             }
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "key": "score",

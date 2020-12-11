@@ -42,6 +42,7 @@
             }
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
@@ -112,6 +113,7 @@
             "Customers@(1 / 0)"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -142,6 +144,7 @@
             "Climbers"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [],

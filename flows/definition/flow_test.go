@@ -281,6 +281,10 @@ func TestNewFlow(t *testing.T) {
 	infoJSON, _ := jsonx.Marshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
+		"features": [
+			"msg_sends",
+			"msg_waits"
+		],
 		"dependencies": [
 			{
 				"key": "gender",
@@ -340,6 +344,7 @@ func TestEmptyFlow(t *testing.T) {
 	infoJSON, _ := jsonx.Marshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
+		"features": [],
 		"dependencies": [],
 		"issues": [],
 		"parent_refs": [],

@@ -9,6 +9,9 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// Feature is our type for a high-level feature
+type Feature string
+
 type baseExtractedItem struct {
 	Node     Node
 	Action   Action
@@ -48,6 +51,7 @@ func NewExtractedReference(n Node, a Action, r Router, l envs.Language, ref asse
 
 // Inspection contains the results of flow inspection
 type Inspection struct {
+	Features     []Feature     `json:"features"`
 	Dependencies []Dependency  `json:"dependencies"`
 	Issues       []Issue       `json:"issues"`
 	Results      []*ResultSpec `json:"results"`

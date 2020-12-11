@@ -1,4 +1,9 @@
 {
+    "features": [
+        "msg_sends",
+        "subflows",
+        "webhooks"
+    ],
     "dependencies": [
         {
             "key": "state",

@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/inspect/issues"
+	"github.com/nyaruka/goflow/flows/inspect/features"
 	"github.com/nyaruka/goflow/utils"
 	"gopkg.in/go-playground/validator.v9"
 
@@ -110,6 +111,7 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
 	templates, assetRefs, parentRefs := f.extract()
 
 	return &flows.Inspection{
+		Features:     features.Check(f),
 		Dependencies: inspect.NewDependencies(assetRefs, sa),
 		Results:      flows.NewResultSpecs(f.extractResults()),
 		WaitingExits: f.extractExitsFromWaits(),

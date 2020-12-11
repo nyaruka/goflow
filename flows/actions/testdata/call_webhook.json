@@ -83,6 +83,9 @@
             "@(3 / 0)"
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [
                 {
                     "key": "age",
@@ -117,6 +120,9 @@
             "@(\"\")"
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -145,6 +151,9 @@
             "@(\":xxxxx\")"
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -207,6 +216,9 @@
             "Hi there!"
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [
                 {
                     "key": "gender",
@@ -280,6 +292,9 @@
             "http://temba.io/"
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -345,6 +360,9 @@
             "http://temba.io/"
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -419,6 +437,9 @@
             "Hi there!"
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -483,6 +504,9 @@
             "Hi there!"
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -553,6 +577,9 @@
             "http://temba.io/"
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [

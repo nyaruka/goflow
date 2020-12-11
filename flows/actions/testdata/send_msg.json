@@ -58,6 +58,9 @@
             "Blue"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -219,6 +222,9 @@
             "Hi there @contact welcome to @globals.org_name, the secret password is @globals.password"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [
                 {
                     "key": "org_name",
@@ -341,6 +347,9 @@
             "boy"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [
                 {
                     "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
@@ -426,6 +435,9 @@
             "boy"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [
                 {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
@@ -508,6 +520,9 @@
             "boy"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [
                 {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
@@ -567,6 +582,9 @@
             "Hi there, it's time to get up!"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [
                 {
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
@@ -650,6 +668,9 @@
             "No"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],

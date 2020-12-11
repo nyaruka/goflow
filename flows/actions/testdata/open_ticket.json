@@ -33,6 +33,7 @@
             "Where are my cookies?"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "uuid": "dc61e948-26a1-407e-9739-b73b46400b51",
@@ -157,6 +158,7 @@
             "Last message: @input.text"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
@@ -245,6 +247,7 @@
             "Where are my cookies? @(1/ 0)"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
@@ -312,6 +315,7 @@
             "Last message: @input.text"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "uuid": "d605bb96-258d-4097-ad0a-080937db2212",

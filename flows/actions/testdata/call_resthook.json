@@ -8,6 +8,9 @@
         },
         "events": [],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -117,6 +120,9 @@
             }
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -246,6 +252,9 @@
             ]
         },
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -383,6 +392,9 @@
             "ok": "true"
         },
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -475,6 +487,9 @@
             }
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -597,6 +612,9 @@
             ]
         },
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -690,6 +708,9 @@
             }
         ],
         "inspection": {
+            "features": [
+                "webhooks"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [

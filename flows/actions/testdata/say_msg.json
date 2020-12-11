@@ -54,6 +54,9 @@
             "Hi there @contact.name"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -138,6 +141,9 @@
             "Hi there @contact.name"
         ],
         "inspection": {
+            "features": [
+                "msg_sends"
+            ],
             "dependencies": [],
             "issues": [],
             "results": [],

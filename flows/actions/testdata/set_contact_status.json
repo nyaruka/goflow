@@ -34,6 +34,7 @@
         },
         "events": [],
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -90,6 +91,7 @@
             }
         },
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [],

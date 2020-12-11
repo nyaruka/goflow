@@ -1,4 +1,7 @@
 {
+    "features": [
+        "msg_sends"
+    ],
     "dependencies": [
         {
             "key": "state",

@@ -211,6 +211,7 @@
             "Other"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -301,6 +302,7 @@
             "Other"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -388,6 +390,7 @@
             "Other"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [
                 {
                     "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
@@ -500,6 +503,7 @@
             "Other"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [
@@ -579,6 +583,7 @@
             "No"
         ],
         "inspection": {
+            "features": [],
             "dependencies": [],
             "issues": [],
             "results": [
