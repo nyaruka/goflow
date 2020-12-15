@@ -59,6 +59,9 @@ const (
 	// FlowTypeMessaging is a flow that is run over a messaging channel
 	FlowTypeMessaging FlowType = "messaging"
 
+	// FlowTypeMessagingPassive is a non-interactive messaging flow (i.e. never waits for input)
+	FlowTypeMessagingPassive FlowType = "messaging_passive"
+
 	// FlowTypeMessagingOffline is a flow which is run over an offline messaging client like Surveyor
 	FlowTypeMessagingOffline FlowType = "messaging_offline"
 
@@ -170,15 +173,29 @@ type Node interface {
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
 
+// FlowTypeRestricted is a part of a flow which can be restricted to certain flow types
+type FlowTypeRestricted interface {
+	AllowedFlowTypes() []FlowType
+}
+
+func (t FlowType) Allows(r FlowTypeRestricted) bool {
+	for _, allowedType := range r.AllowedFlowTypes() {
+		if t == allowedType {
+			return true
+		}
+	}
+	return false
+}
+
 // Action is an action within a flow node
 type Action interface {
 	utils.Typed
 	Localizable
+	FlowTypeRestricted
 
 	UUID() ActionUUID
 	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
 	Validate() error
-	AllowedFlowTypes() []FlowType
 }
 
 // Category is how routers map results to exits
@@ -198,7 +215,7 @@ type Router interface {
 	Categories() []Category
 	ResultName() string
 
-	Validate([]Exit) error
+	Validate(Flow, []Exit) error
 	AllowTimeout() bool
 	Route(FlowRun, Step, EventCallback) (ExitUUID, error)
 	RouteTimeout(FlowRun, Step, EventCallback) (ExitUUID, error)
@@ -224,6 +241,7 @@ type Timeout interface {
 // Wait tells the engine that the session requires input from the user
 type Wait interface {
 	utils.Typed
+	FlowTypeRestricted
 
 	Timeout() Timeout
 
