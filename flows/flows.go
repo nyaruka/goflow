@@ -1,5 +1,17 @@
 package flows
 
+import (
+	"github.com/nyaruka/goflow/utils"
+
+	validator "gopkg.in/go-playground/validator.v9"
+)
+
+func init() {
+	utils.RegisterValidatorAlias("flow_type", "eq=messaging|eq=messaging_passive|eq=messaging_offline|eq=voice", func(validator.FieldError) string {
+		return "is not a valid flow type"
+	})
+}
+
 // FlowType represents the different types of flows
 type FlowType string
 
@@ -31,4 +43,3 @@ func (t FlowType) Allows(r FlowTypeRestricted) bool {
 type FlowTypeRestricted interface {
 	AllowedFlowTypes() []FlowType
 }
-
