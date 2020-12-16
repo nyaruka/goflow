@@ -52,20 +52,6 @@ const NilMsgID = MsgID(0)
 // MsgUUID is the UUID of a message
 type MsgUUID uuids.UUID
 
-// FlowType represents the different types of flows
-type FlowType string
-
-const (
-	// FlowTypeMessaging is a flow that is run over a messaging channel
-	FlowTypeMessaging FlowType = "messaging"
-
-	// FlowTypeMessagingOffline is a flow which is run over an offline messaging client like Surveyor
-	FlowTypeMessagingOffline FlowType = "messaging_offline"
-
-	// FlowTypeVoice is a flow which is run over IVR
-	FlowTypeVoice FlowType = "voice"
-)
-
 // SessionStatus represents the current status of the engine session
 type SessionStatus string
 
@@ -174,11 +160,11 @@ type Node interface {
 type Action interface {
 	utils.Typed
 	Localizable
+	FlowTypeRestricted
 
 	UUID() ActionUUID
 	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
 	Validate() error
-	AllowedFlowTypes() []FlowType
 }
 
 // Category is how routers map results to exits
@@ -198,7 +184,7 @@ type Router interface {
 	Categories() []Category
 	ResultName() string
 
-	Validate([]Exit) error
+	Validate(Flow, []Exit) error
 	AllowTimeout() bool
 	Route(FlowRun, Step, EventCallback) (ExitUUID, error)
 	RouteTimeout(FlowRun, Step, EventCallback) (ExitUUID, error)
@@ -224,6 +210,7 @@ type Timeout interface {
 // Wait tells the engine that the session requires input from the user
 type Wait interface {
 	utils.Typed
+	FlowTypeRestricted
 
 	Timeout() Timeout
 

@@ -170,7 +170,7 @@ type universalAction struct{}
 
 // AllowedFlowTypes returns the flow types which this action is allowed to occur in
 func (a *universalAction) AllowedFlowTypes() []flows.FlowType {
-	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeMessagingOffline, flows.FlowTypeVoice}
+	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeMessagingPassive, flows.FlowTypeMessagingOffline, flows.FlowTypeVoice}
 }
 
 // utility struct which sets the allowed flow types to any which run online
@@ -178,7 +178,7 @@ type onlineAction struct{}
 
 // AllowedFlowTypes returns the flow types which this action is allowed to occur in
 func (a *onlineAction) AllowedFlowTypes() []flows.FlowType {
-	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeVoice}
+	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeMessagingPassive, flows.FlowTypeVoice}
 }
 
 // utility struct which sets the allowed flow types to just voice

@@ -52,6 +52,14 @@ func TestBrokenFlows(t *testing.T) {
 			"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
 		},
 		{
+			"invalid_flow_type.json",
+			"field 'type' is not a valid flow type",
+		},
+		{
+			"invalid_action_by_flow_type.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: action type 'say_msg' is not allowed in a flow of type 'messaging'",
+		},
+		{
 			"invalid_action_by_tag.json",
 			"unable to read action: field 'text' is required",
 		},
@@ -62,6 +70,10 @@ func TestBrokenFlows(t *testing.T) {
 		{
 			"invalid_timeout_category.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: timeout category 13fea3d4-b925-495b-b593-1c9e905e700d is not a valid category",
+		},
+		{
+			"invalid_wait_by_flow_type.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: wait type 'msg' is not allowed in a flow of type 'messaging_passive'",
 		},
 		{
 			"invalid_default_exit.json",
