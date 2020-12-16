@@ -1,3 +1,8 @@
+v0.107.0
+----------
+ * Add new flow type for passive messaging flows
+ * Update to gocommon v1.7.1 to get fix for phone number parsing
+
 v0.106.3
 ----------
  * Engine evaluator for contact sql should support != x for number and datetime values
