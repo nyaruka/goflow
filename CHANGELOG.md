@@ -1,3 +1,7 @@
+v0.107.1
+----------
+ * Add float64 workaround for exponent expressions with non-integer exponents
+
 v0.107.0
 ----------
  * Add new flow type for passive messaging flows
