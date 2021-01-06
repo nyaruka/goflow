@@ -173,6 +173,14 @@ func (a *universalAction) AllowedFlowTypes() []flows.FlowType {
 	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeMessagingPassive, flows.FlowTypeMessagingOffline, flows.FlowTypeVoice}
 }
 
+// utility struct which sets the allowed flow types to non-passive
+type interactiveAction struct{}
+
+// AllowedFlowTypes returns the flow types which this action is allowed to occur in
+func (a *interactiveAction) AllowedFlowTypes() []flows.FlowType {
+	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeMessagingOffline, flows.FlowTypeVoice}
+}
+
 // utility struct which sets the allowed flow types to any which run online
 type onlineAction struct{}
 
