@@ -1,3 +1,7 @@
+v0.107.2
+----------
+ * Disallow labeling actions in passive flows
+
 v0.107.1
 ----------
  * Add float64 workaround for exponent expressions with non-integer exponents
