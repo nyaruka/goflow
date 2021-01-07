@@ -5,7 +5,7 @@
             "name": "Test Flow",
             "spec_version": "13.0",
             "language": "eng",
-            "type": "messaging_passive",
+            "type": "messaging_background",
             "nodes": [
                 {
                     "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",

@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	utils.RegisterValidatorAlias("flow_type", "eq=messaging|eq=messaging_passive|eq=messaging_offline|eq=voice", func(validator.FieldError) string {
+	utils.RegisterValidatorAlias("flow_type", "eq=messaging|eq=messaging_background|eq=messaging_offline|eq=voice", func(validator.FieldError) string {
 		return "is not a valid flow type"
 	})
 }
@@ -19,8 +19,8 @@ const (
 	// FlowTypeMessaging is a flow that is run over a messaging channel
 	FlowTypeMessaging FlowType = "messaging"
 
-	// FlowTypeMessagingPassive is a non-interactive messaging flow (i.e. never waits for input)
-	FlowTypeMessagingPassive FlowType = "messaging_passive"
+	// FlowTypeMessagingBackground is a non-interactive messaging flow (i.e. never waits for input)
+	FlowTypeMessagingBackground FlowType = "messaging_background"
 
 	// FlowTypeMessagingOffline is a flow which is run over an offline messaging client like Surveyor
 	FlowTypeMessagingOffline FlowType = "messaging_offline"
