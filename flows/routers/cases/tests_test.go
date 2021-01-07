@@ -543,6 +543,7 @@ func TestHasPhone(t *testing.T) {
 		{"+12065551212", "RW", "+12065551212"}, // if num has country code, doesn't need to match test country
 		{"12065551212", "US", "+12065551212"},
 		{"206 555 1212", "US", "+12065551212"},
+		{"5912705", "US", ""},                      // would be possible as a local number but not national
 		{"+10001112222", "US", "+10001112222"},     // Invalid but possible US number
 		{"0815 1053 7962", "ID", "+6281510537962"}, // Indonesian numbers with 12 digits
 		{"0954 1053 7962", "ID", "+6295410537962"}, // Invalid but possible Indonesian number

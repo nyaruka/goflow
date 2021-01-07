@@ -1,0 +1,38 @@
+{
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging_background",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "name": "All Responses",
+                                "exit_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            }
+                        ],
+                        "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                        "result_name": "Response 1",
+                        "operand": "@input.text",
+                        "cases": []
+                    },
+                    "exits": [
+                        {
+                            "uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

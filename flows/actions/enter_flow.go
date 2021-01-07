@@ -54,7 +54,7 @@ func (a *EnterFlowAction) Execute(run flows.FlowRun, step flows.Step, logModifie
 		return nil
 	}
 
-	if run.Session().Type() != "" && run.Session().Type() != flow.Type() {
+	if run.Session().Type() != flow.Type() {
 		a.fail(run, errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(), flow.Type(), run.Session().Type()), logEvent)
 		return nil
 	}

@@ -106,22 +106,23 @@ func TestContact(t *testing.T) {
 	assert.False(t, contact.RemoveURN("whatsapp:235423721788")) // no longer has URN
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
-		"discord":   nil,
-		"ext":       nil,
-		"facebook":  nil,
-		"fcm":       nil,
-		"freshchat": nil,
-		"jiochat":   nil,
-		"line":      nil,
-		"mailto":    nil,
-		"tel":       flows.NewContactURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
-		"telegram":  nil,
-		"twitter":   flows.NewContactURN(urns.URN("twitter:joey"), nil).ToXValue(env),
-		"twitterid": nil,
-		"viber":     nil,
-		"vk":        nil,
-		"wechat":    nil,
-		"whatsapp":  nil,
+		"discord":    nil,
+		"ext":        nil,
+		"facebook":   nil,
+		"fcm":        nil,
+		"freshchat":  nil,
+		"jiochat":    nil,
+		"line":       nil,
+		"mailto":     nil,
+		"rocketchat": nil,
+		"tel":        flows.NewContactURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
+		"telegram":   nil,
+		"twitter":    flows.NewContactURN(urns.URN("twitter:joey"), nil).ToXValue(env),
+		"twitterid":  nil,
+		"viber":      nil,
+		"vk":         nil,
+		"wechat":     nil,
+		"whatsapp":   nil,
 	}), flows.ContextFunc(env, contact.URNs().MapContext))
 
 	clone := contact.Clone()
@@ -219,8 +220,10 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	env := envs.NewBuilder().Build()
 	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
+	receive_roles := []assets.ChannelRole{assets.ChannelRoleReceive}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
+	android2 := test.NewTelChannel("Android", "+250961111112", receive_roles, nil, "RW", nil, false)
 	twitter1 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 
@@ -252,6 +255,13 @@ func TestContactSetPreferredChannel(t *testing.T) {
 
 	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
 	assert.Equal(t, twitter1, contact.URNs()[0].Channel())
+
+	contact.UpdatePreferredChannel(android2)
+
+	for _, urn := range contact.URNs() {
+		assert.NotEqual(t, android2, urn.Channel())
+	}
+
 }
 
 func TestReevaluateQueryBasedGroups(t *testing.T) {
@@ -350,7 +360,8 @@ func TestContactQuery(t *testing.T) {
 		"id": 1234567,
 		"name": "Ben Haggerty",
 		"fields": {
-			"gender": {"text": "Male"}
+			"gender": {"text": "Male"},
+			"age": {"text": "39!", "number": 39}
 		},
 		"groups": [
 			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -397,6 +408,8 @@ func TestContactQuery(t *testing.T) {
 
 		{`created_on = 24-01-2020`, envs.RedactionPolicyNone, true, ""},
 		{`created_on = 25-01-2020`, envs.RedactionPolicyNone, false, ""},
+		{`created_on != 24-01-2020`, envs.RedactionPolicyNone, false, ""},
+		{`created_on != 25-01-2020`, envs.RedactionPolicyNone, true, ""},
 		{`created_on > 22-01-2020`, envs.RedactionPolicyNone, true, ""},
 		{`created_on > 26-01-2020`, envs.RedactionPolicyNone, false, ""},
 
@@ -451,6 +464,11 @@ func TestContactQuery(t *testing.T) {
 		{`group != testers`, envs.RedactionPolicyNone, false, ""},
 		{`group = customers`, envs.RedactionPolicyNone, false, ""},
 		{`group != customers`, envs.RedactionPolicyNone, true, ""},
+
+		{`age = 39`, envs.RedactionPolicyNone, true, ""},
+		{`age != 39`, envs.RedactionPolicyNone, false, ""},
+		{`age = 60`, envs.RedactionPolicyNone, false, ""},
+		{`age != 60`, envs.RedactionPolicyNone, true, ""},
 	}
 
 	doQuery := func(q string, redaction envs.RedactionPolicy) (bool, error) {

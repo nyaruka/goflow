@@ -13,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/inspect/issues"
 	"github.com/nyaruka/goflow/utils"
-	"gopkg.in/go-playground/validator.v9"
 
 	"github.com/Masterminds/semver"
 	"github.com/pkg/errors"
@@ -298,12 +297,6 @@ var _ flows.Flow = (*flow)(nil)
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
-
-func init() {
-	utils.RegisterValidatorAlias("flow_type", "eq=messaging|eq=messaging_offline|eq=voice", func(validator.FieldError) string {
-		return "is not a valid flow type"
-	})
-}
 
 type flowEnvelope struct {
 	migrations.Header13

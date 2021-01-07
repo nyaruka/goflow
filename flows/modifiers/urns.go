@@ -57,10 +57,14 @@ func (m *URNsModifier) Apply(env envs.Environment, assets flows.SessionAssets, c
 		// normalize the URN
 		urn := urn.Normalize(string(env.DefaultCountry()))
 
-		if m.Modification == URNsAppend || m.Modification == URNsSet {
-			modified = contact.AddURN(urn, nil)
+		if err := urn.Validate(); err != nil {
+			log(events.NewErrorf("'%s' is not valid URN", urn))
 		} else {
-			modified = contact.RemoveURN(urn)
+			if m.Modification == URNsAppend || m.Modification == URNsSet {
+				modified = contact.AddURN(urn, nil)
+			} else {
+				modified = contact.RemoveURN(urn)
+			}
 		}
 	}
 
