@@ -27,5 +27,5 @@ func TestFlowTypeAllows(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.True(t, flows.FlowTypeMessaging.Allows(msgWait))
-	assert.False(t, flows.FlowTypeMessagingPassive.Allows(msgWait))
+	assert.False(t, flows.FlowTypeMessagingBackground.Allows(msgWait))
 }
