@@ -1,3 +1,7 @@
+v0.108.0
+----------
+ * Rename messaging_passive to messaging_background
+
 v0.107.2
 ----------
  * Disallow labeling actions in passive flows
