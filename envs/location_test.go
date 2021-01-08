@@ -91,7 +91,9 @@ func TestLocationHierarchy(t *testing.T) {
 	assert.Equal(t, 0, len(ndera.Children()))
 
 	assert.Equal(t, []*envs.Location{rwanda}, hierarchy.FindByName("RWaNdA", envs.LocationLevel(0), nil))
+	assert.Equal(t, []*envs.Location{rwanda}, hierarchy.FindByName("RWáNdA", envs.LocationLevel(0), nil))
 	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName("kigari", envs.LocationLevel(1), nil))
+	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName("kigári", envs.LocationLevel(1), nil))
 	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName("rwanda > kigali city", envs.LocationLevel(1), nil))
 	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName("kigari", envs.LocationLevel(1), rwanda))
 	assert.Equal(t, []*envs.Location{gasabo}, hierarchy.FindByName("GASABO", envs.LocationLevel(2), nil))

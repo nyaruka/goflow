@@ -28,6 +28,21 @@ func TestSnakify(t *testing.T) {
 	}
 }
 
+func TestRemoveAccents(t *testing.T) {
+	var removeAccentsTests = []struct {
+		input    string
+		expected string
+	}{
+		{"Hello World", "Hello World"},
+		{"Panama", "Panama"},
+		{"Panamá", "Panama"},
+		{"Café", "Cafe"},
+	}
+	for _, test := range removeAccentsTests {
+		assert.Equal(t, test.expected, utils.RemoveAccents(test.input), "unexpected result tokenizing '%s'", test.input)
+	}
+}
+
 func TestTokenizeString(t *testing.T) {
 	tokenizerTests := []struct {
 		text   string

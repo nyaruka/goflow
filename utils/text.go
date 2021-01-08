@@ -4,8 +4,11 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"unicode"
 
 	"github.com/blevesearch/segment"
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
 )
 
 var snakedChars = regexp.MustCompile(`[^\p{L}\d_]+`)
@@ -52,6 +55,17 @@ func TokenizeStringByUnicodeSeg(str string) []string {
 	}
 
 	return tokens
+}
+
+func isMn(r rune) bool {
+	return unicode.Is(unicode.Mn, r) // Mn: nonspacing marks
+}
+
+// RemoveAccents returns the string transforming it without accents to allow "compatibility equivalence" comparison
+func RemoveAccents(s string) string {
+	t := transform.Chain(norm.NFD, transform.RemoveFunc(isMn), norm.NFC)
+	output, _, _ := transform.String(t, s)
+	return output
 }
 
 // PrefixOverlap returns the number of prefix characters which s1 and s2 have in common

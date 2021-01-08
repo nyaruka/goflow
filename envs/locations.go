@@ -119,11 +119,13 @@ func (p locationPathLookup) lookup(path LocationPath) *Location { return p[path.
 type locationNameLookup map[string][]*Location
 
 func (n locationNameLookup) addLookup(name string, location *Location) {
-	name = strings.ToLower(name)
+	name = strings.ToLower(utils.RemoveAccents(name))
 	n[name] = append(n[name], location)
 }
 
-func (n locationNameLookup) lookup(name string) []*Location { return n[strings.ToLower(name)] }
+func (n locationNameLookup) lookup(name string) []*Location {
+	return n[strings.ToLower(utils.RemoveAccents(name))]
+}
 
 // LocationHierarchy is a hierarical tree of locations
 type LocationHierarchy struct {
