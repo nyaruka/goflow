@@ -207,6 +207,9 @@ parent.urns.whatsapp -> Whatsapp URN para o contato
 parent.results -> os resultados salvos pela execução
 parent.status -> o status da atual execução
 webhook -> a resposta JSON avaliada da última chamada webhook
+node -> a execução atual
+node.uuid -> the UUID of the node
+node.visit_count -> the count of visits to the node by this contact
 globals -> os valores globais
 globals.org_name -> o valor global org_name
 trigger -> o gatilho que iniciou a sessão

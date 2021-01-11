@@ -230,6 +230,7 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 //   child:related_run -> the last child run
 //   parent:related_run -> the parent of the run
 //   webhook:any -> the parsed JSON response of the last webhook call
+//   node:node -> the current node
 //   globals:globals -> the global values
 //   trigger:trigger -> the trigger that started this session
 //
@@ -261,6 +262,7 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 		"input":        flows.Context(env, r.Session().Input()),
 		"globals":      flows.Context(env, r.Session().Assets().Globals()),
 		"webhook":      r.webhook,
+		"node":         flows.ContextFunc(env, r.nodeContext),
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
 }
@@ -293,6 +295,27 @@ func (r *flowRun) Context(env envs.Environment) map[string]types.XValue {
 		"path":        r.path.ToXValue(env),
 		"created_on":  types.NewXDateTime(r.CreatedOn()),
 		"exited_on":   exitedOn,
+	}
+}
+
+// returns the context representation of the current node
+//
+//   uuid:text -> the UUID of the node
+//   visit_count:number -> the count of visits to the node by this contact
+//
+// @context node
+func (r *flowRun) nodeContext(env envs.Environment) map[string]types.XValue {
+	_, node, _ := r.PathLocation()
+	visitCount := 0
+	for _, s := range r.path {
+		if s.NodeUUID() == node.UUID() {
+			visitCount++
+		}
+	}
+
+	return map[string]types.XValue{
+		"uuid":        types.NewXText(string(node.UUID())),
+		"visit_count": types.NewXNumberFromInt(visitCount),
 	}
 }
 

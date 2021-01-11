@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2020-10-29 13:48-0500\n"
+"POT-Creation-Date: 2021-01-11 15:59-0500\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -520,6 +520,9 @@ msgstr ""
 msgid "the UUID of the input"
 msgstr ""
 
+msgid "the UUID of the node"
+msgstr ""
+
 msgid "the UUID of the node in the flow that generated the result"
 msgstr ""
 
@@ -547,6 +550,9 @@ msgstr ""
 msgid "the contact of the run"
 msgstr ""
 
+msgid "the count of visits to the node by this contact"
+msgstr ""
+
 msgid "the creation date of the contact"
 msgstr ""
 
@@ -560,6 +566,9 @@ msgid "the creation date of the run"
 msgstr ""
 
 msgid "the current input from the contact"
+msgstr ""
+
+msgid "the current node"
 msgstr ""
 
 msgid "the current run"

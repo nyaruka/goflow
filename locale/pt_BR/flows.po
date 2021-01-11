@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2020-10-29 13:48-0500\n"
+"POT-Creation-Date: 2021-01-11 15:59-0500\n"
 "Last-Translator: Matheus Soares <matheus.soares@ilhasoft.com.br>, 2020\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/110636/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -665,6 +665,11 @@ msgstr "o UUID do grupo"
 msgid "the UUID of the input"
 msgstr "o UUID da entrada"
 
+#, fuzzy
+#| msgid "the UUID of the run"
+msgid "the UUID of the node"
+msgstr "o UUID da execução"
+
 msgid "the UUID of the node in the flow that generated the result"
 msgstr "o UUID do nó no fluxo que gerou o resultado"
 
@@ -692,6 +697,11 @@ msgstr "o nome do contato e UUID do fluxo"
 msgid "the contact of the run"
 msgstr "o contato da exeução"
 
+#, fuzzy
+#| msgid "the current input from the contact"
+msgid "the count of visits to the node by this contact"
+msgstr "a entrada atual do contato"
+
 msgid "the creation date of the contact"
 msgstr "a data de criação do contato"
 
@@ -706,6 +716,11 @@ msgstr " data de criação da execução"
 
 msgid "the current input from the contact"
 msgstr "a entrada atual do contato"
+
+#, fuzzy
+#| msgid "the current run"
+msgid "the current node"
+msgstr "a execução atual"
 
 msgid "the current run"
 msgstr "a execução atual"
@@ -847,3 +862,8 @@ msgstr "{key} para o contato"
 
 msgid "{type} URN for the contact"
 msgstr "{type} URN para o contato"
+
+#, fuzzy
+#~| msgid "the UUID of the channel"
+#~ msgid "the UUID of the current node"
+#~ msgstr "o UUID do canal"

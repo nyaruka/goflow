@@ -301,6 +301,21 @@
             ]
         },
         {
+            "name": "node",
+            "properties": [
+                {
+                    "key": "uuid",
+                    "help": "the UUID of the node",
+                    "type": "text"
+                },
+                {
+                    "key": "visit_count",
+                    "help": "the count of visits to the node by this contact",
+                    "type": "number"
+                }
+            ]
+        },
+        {
             "name": "related_run",
             "properties": [
                 {
@@ -516,6 +531,11 @@
             "key": "webhook",
             "help": "a resposta JSON avaliada da última chamada webhook",
             "type": "any"
+        },
+        {
+            "key": "node",
+            "help": "a execução atual",
+            "type": "node"
         },
         {
             "key": "globals",
