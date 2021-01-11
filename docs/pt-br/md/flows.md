@@ -516,7 +516,7 @@ an [ivr_forwarded](sessions.html#event:ivr_forwarded) event if successful.
 {
     "type": "forward_ivr",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-    "urn": "tel:+12065551212"
+    "phone": "+12065551212"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>

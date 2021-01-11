@@ -19,7 +19,7 @@ const TypeForwardIVR string = "forward_ivr"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "forward_ivr",
-//     "urn": "tel:+12065551212"
+//     "phone": "+12065551212"
 //   }
 //
 // @action forward_ivr
@@ -27,20 +27,32 @@ type ForwardIVRAction struct {
 	baseAction
 	voiceAction
 
-	URN urns.URN `json:"urn" validate:"required,urn"`
+	Phone string `json:"phone" validate:"required" engine:"evaluated"`
 }
 
 // NewForwardIVR creates a new say message action
-func NewForwardIVR(uuid flows.ActionUUID, urn urns.URN) *ForwardIVRAction {
+func NewForwardIVR(uuid flows.ActionUUID, phone string) *ForwardIVRAction {
 	return &ForwardIVRAction{
 		baseAction: newBaseAction(TypeForwardIVR, uuid),
-		URN:        urn,
+		Phone:      phone,
 	}
 }
 
 // Execute runs this action
 func (a *ForwardIVRAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	logEvent(events.NewIVRForwarded(a.URN))
+	phone, err := run.EvaluateTemplate(a.Phone)
+	if err != nil {
+		logEvent(events.NewError(err))
+		return nil
+	}
+
+	urn, err := urns.NewTelURNForCountry(phone, string(run.Contact().Country()))
+	if err != nil {
+		logEvent(events.NewError(err))
+		return nil
+	}
+
+	logEvent(events.NewIVRForwarded(urn))
 
 	return nil
 }
