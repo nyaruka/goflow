@@ -301,7 +301,7 @@ func (r *flowRun) Context(env envs.Environment) map[string]types.XValue {
 // returns the context representation of the current node
 //
 //   uuid:text -> the UUID of the node
-//   visit_count:number -> the count of visits to the node by this contact
+//   visit_count:number -> the count of visits to the node in this run
 //
 // @context node
 func (r *flowRun) nodeContext(env envs.Environment) map[string]types.XValue {

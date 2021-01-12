@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-01-11 15:59-0500\n"
+"POT-Creation-Date: 2021-01-12 10:56-0500\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -550,7 +550,7 @@ msgstr ""
 msgid "the contact of the run"
 msgstr ""
 
-msgid "the count of visits to the node by this contact"
+msgid "the count of visits to the node in this run"
 msgstr ""
 
 msgid "the creation date of the contact"

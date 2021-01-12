@@ -75,7 +75,7 @@ Defaults to the text and attachments ([text](expressions.html#type:text))
 <h2 class="item_title"><a name="context:node" href="#context:node">node</a></h2>
 
  * `uuid` the UUID of the node ([text](expressions.html#type:text))
- * `visit_count` the count of visits to the node by this contact ([number](expressions.html#type:number))
+ * `visit_count` the count of visits to the node in this run ([number](expressions.html#type:number))
 
 <h2 class="item_title"><a name="context:related_run" href="#context:related_run">related_run</a></h2>
 
