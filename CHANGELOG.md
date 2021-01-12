@@ -1,3 +1,7 @@
+v0.109.0
+----------
+ * Add @node.(uuid|visit_count) to context
+
 v0.108.0
 ----------
  * Rename messaging_passive to messaging_background
