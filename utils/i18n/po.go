@@ -136,6 +136,16 @@ func ParsePOComment(s string) POComment {
 	return c
 }
 
+// HasFlag returns true if this comment contains the given flag
+func (c *POComment) HasFlag(flag string) bool {
+	for _, f := range c.Flags {
+		if f == flag {
+			return true
+		}
+	}
+	return false
+}
+
 func (c *POComment) String() string {
 	lines := make([]string, 0)
 
@@ -229,7 +239,7 @@ func (p *PO) GetText(context, text string) string {
 		return text
 	}
 	entry := c[text]
-	if entry == nil || entry.MsgStr == "" {
+	if entry == nil || entry.MsgStr == "" || entry.Comment.HasFlag("fuzzy") {
 		return text
 	}
 	return entry.MsgStr

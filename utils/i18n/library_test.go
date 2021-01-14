@@ -39,12 +39,12 @@ func TestLibrary(t *testing.T) {
 
 	es, err := library.Load("es", "simple")
 	require.NoError(t, err)
-	assert.Equal(t, 4, len(es.Entries))
+	assert.Equal(t, 5, len(es.Entries))
 	assert.Equal(t, "Azul", es.GetText("", "Blue"))
 
 	en, err := library.Load("en", "simple")
 	require.NoError(t, err)
-	assert.Equal(t, 4, len(es.Entries))
+	assert.Equal(t, 5, len(es.Entries))
 	assert.Equal(t, "Blue", en.GetText("", "Blue"))
 
 	// add new entry

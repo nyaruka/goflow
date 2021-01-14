@@ -21,3 +21,8 @@ msgstr "Azul"
 
 msgid "Missing"
 msgstr ""
+
+#, fuzzy
+#| msgid "Green Light"
+msgid "Green"
+msgstr "Luz Verde"
