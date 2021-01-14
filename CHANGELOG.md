@@ -1,3 +1,7 @@
+v0.109.1
+----------
+ * Add forward_ivr action and ivr_forwarded event
+
 v0.109.0
 ----------
  * Add @node.(uuid|visit_count) to context
