@@ -191,7 +191,7 @@ func TestRetries(t *testing.T) {
 
 func TestAccessRestrictions(t *testing.T) {
 	retries := httpx.NewFixedRetries(5, 10)
-	access := httpx.NewAccessConfig(10, []net.IP{net.IPv4(127, 0, 0, 1)})
+	access := httpx.NewAccessConfig(10, []net.IP{net.IPv4(127, 0, 0, 1)}, nil)
 
 	factory := webhooks.NewServiceFactory(http.DefaultClient, retries, access, map[string]string{"User-Agent": "Foo"}, 12345)
 	svc, err := factory(nil)

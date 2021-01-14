@@ -93,7 +93,7 @@ func NewSwitch(wait flows.Wait, resultName string, categories []flows.Category, 
 func (r *SwitchRouter) Cases() []*Case { return r.cases }
 
 // Validate validates the arguments for this router
-func (r *SwitchRouter) Validate(exits []flows.Exit) error {
+func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
 	// check the default category is valid
 	if r.defaultCategoryUUID != "" && !r.isValidCategory(r.defaultCategoryUUID) {
 		return errors.Errorf("default category %s is not a valid category", r.defaultCategoryUUID)
@@ -111,7 +111,7 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 		}
 	}
 
-	return r.validate(exits)
+	return r.validate(flow, exits)
 }
 
 // Route determines which exit to take from a node

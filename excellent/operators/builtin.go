@@ -1,10 +1,12 @@
 package operators
 
 import (
+	"math"
 	"strings"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/shopspring/decimal"
 )
 
 // Concatenate joins two text values together.
@@ -103,7 +105,21 @@ var Divide = numericalBinary(func(env envs.Environment, num1 types.XNumber, num2
 //
 // @operator exponent "^"
 var Exponent = numericalBinary(func(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Pow(num2.Native()))
+	d1 := num1.Native()
+	d2 := num2.Native()
+
+	// TODO there is currently a bug in shopspring/decimal which means that only the integer part of the
+	// exponent is considered (see https://github.com/nyaruka/goflow/issues/984). If we have a whole number,
+	// we can use the library function, otherwise fallback to float64 math.
+
+	if decimal.New(d2.IntPart(), 0).Equals(d2) {
+		return types.NewXNumber(d1.Pow(d2))
+	}
+
+	f1, _ := d1.Float64()
+	f2, _ := d2.Float64()
+
+	return types.NewXNumber(decimal.NewFromFloat(math.Pow(f1, f2)))
 })
 
 // LessThan returns true if the first number is less than the second.

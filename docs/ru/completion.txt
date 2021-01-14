@@ -32,6 +32,7 @@ urns.freshchat -> Freshchat URN for the contact
 urns.jiochat -> Jiochat URN for the contact
 urns.line -> Line URN for the contact
 urns.mailto -> Mailto URN for the contact
+urns.rocketchat -> Rocketchat URN for the contact
 urns.tel -> Tel URN for the contact
 urns.telegram -> Telegram URN for the contact
 urns.twitter -> Twitter URN for the contact
@@ -143,6 +144,7 @@ child.urns.freshchat -> Freshchat URN for the contact
 child.urns.jiochat -> Jiochat URN for the contact
 child.urns.line -> Line URN for the contact
 child.urns.mailto -> Mailto URN for the contact
+child.urns.rocketchat -> Rocketchat URN for the contact
 child.urns.tel -> Tel URN for the contact
 child.urns.telegram -> Telegram URN for the contact
 child.urns.twitter -> Twitter URN for the contact
@@ -193,6 +195,7 @@ parent.urns.freshchat -> Freshchat URN for the contact
 parent.urns.jiochat -> Jiochat URN for the contact
 parent.urns.line -> Line URN for the contact
 parent.urns.mailto -> Mailto URN for the contact
+parent.urns.rocketchat -> Rocketchat URN for the contact
 parent.urns.tel -> Tel URN for the contact
 parent.urns.telegram -> Telegram URN for the contact
 parent.urns.twitter -> Twitter URN for the contact
@@ -204,6 +207,9 @@ parent.urns.whatsapp -> Whatsapp URN for the contact
 parent.results -> the results saved by the run
 parent.status -> the current status of the run
 webhook -> the parsed JSON response of the last webhook call
+node -> the current node
+node.uuid -> the UUID of the node
+node.visit_count -> the count of visits to the node in this run
 globals -> the global values
 globals.org_name -> the global value org_name
 trigger -> the trigger that started this session

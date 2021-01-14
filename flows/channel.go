@@ -106,7 +106,7 @@ func (s *ChannelAssets) Get(uuid assets.ChannelUUID) *Channel {
 // GetForURN returns the best channel for the given URN
 func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Channel {
 	// if caller has told us which channel to use for this URN, use that
-	if urn.Channel() != nil {
+	if urn.Channel() != nil && urn.Channel().HasRole(role) {
 		return s.getDelegate(urn.Channel(), role)
 	}
 

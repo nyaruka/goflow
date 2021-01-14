@@ -813,7 +813,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:46.123456789Z",
-                        "expires_on": "2018-07-06T12:30:31.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"

@@ -21,3 +21,6 @@ msgstr ""
 
 msgid "Missing"
 msgstr ""
+
+msgid "Green"
+msgstr ""

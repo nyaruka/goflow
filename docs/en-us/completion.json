@@ -71,6 +71,11 @@
                     "type": "text"
                 },
                 {
+                    "key": "rocketchat",
+                    "help": "Rocketchat URN for the contact",
+                    "type": "text"
+                },
+                {
                     "key": "tel",
                     "help": "Tel URN for the contact",
                     "type": "text"
@@ -296,6 +301,21 @@
             ]
         },
         {
+            "name": "node",
+            "properties": [
+                {
+                    "key": "uuid",
+                    "help": "the UUID of the node",
+                    "type": "text"
+                },
+                {
+                    "key": "visit_count",
+                    "help": "the count of visits to the node in this run",
+                    "type": "number"
+                }
+            ]
+        },
+        {
             "name": "related_run",
             "properties": [
                 {
@@ -511,6 +531,11 @@
             "key": "webhook",
             "help": "the parsed JSON response of the last webhook call",
             "type": "any"
+        },
+        {
+            "key": "node",
+            "help": "the current node",
+            "type": "node"
         },
         {
             "key": "globals",

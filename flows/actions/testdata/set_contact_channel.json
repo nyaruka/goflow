@@ -138,5 +138,24 @@
             "waiting_exits": [],
             "parent_refs": []
         }
+    },
+    {
+        "description": "Error event if channel can't send",
+        "action": {
+            "type": "set_contact_channel",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "channel": {
+                "uuid": "eb9fee95-d762-4679-a7d5-91532e400c54",
+                "name": "Receive Only"
+            }
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "can't set channel that can't send as the preferred channel"
+            }
+        ]
     }
 ]

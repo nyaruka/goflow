@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/nyaruka/phonenumbers"
+	"github.com/nyaruka/gocommon/urns"
 )
 
 var possiblePhone = regexp.MustCompile(`\+?[\d \.\-\(\)]{5,}`)
@@ -18,16 +18,12 @@ func ParsePhoneNumber(s, country string) string {
 		return ""
 	}
 
-	phone, err := phonenumbers.Parse(s, country)
+	formatted, err := urns.ParseNumber(s, country)
 	if err != nil {
 		return ""
 	}
 
-	if !phonenumbers.IsValidNumber(phone) {
-		return ""
-	}
-
-	return phonenumbers.Format(phone, phonenumbers.E164)
+	return formatted
 }
 
 // FindPhoneNumbers finds phone numbers anywhere in the given string

@@ -505,6 +505,31 @@ A [flow_entered](sessions.html#event:flow_entered) event will be created to reco
 }
 ```
 </div>
+<h2 class="item_title"><a name="action:forward_ivr" href="#action:forward_ivr">forward_ivr</a></h2>
+
+Can be used to forward an IVR call to another number, perhaps a human agent. It will generate
+an [ivr_forwarded](sessions.html#event:ivr_forwarded) event if successful.
+
+<div class="input_action"><h3>Action</h3>
+
+```json
+{
+    "type": "forward_ivr",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "phone": "+12065551212"
+}
+```
+</div><div class="output_event"><h3>Event</h3>
+
+```json
+{
+    "type": "ivr_forwarded",
+    "created_on": "2018-04-11T18:24:30.123456Z",
+    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+    "urn": "tel:+12065551212"
+}
+```
+</div>
 <h2 class="item_title"><a name="action:open_ticket" href="#action:open_ticket">open_ticket</a></h2>
 
 Is used to open a ticket for the contact.

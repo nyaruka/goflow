@@ -113,6 +113,17 @@
                 "send",
                 "receive"
             ]
+        },
+        {
+            "uuid": "eb9fee95-d762-4679-a7d5-91532e400c54",
+            "name": "Receive Only",
+            "address": "56789",
+            "schemes": [
+                "ext"
+            ],
+            "roles": [
+                "receive"
+            ]
         }
     ],
     "classifiers": [
@@ -219,6 +230,7 @@
                         "name": "My Android Phone"
                     },
                     "language": "eng",
+                    "country": "US",
                     "content": "Hi {{1}}, who's an excellent {{2}}?"
                 },
                 {

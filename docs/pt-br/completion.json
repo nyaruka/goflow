@@ -71,6 +71,11 @@
                     "type": "text"
                 },
                 {
+                    "key": "rocketchat",
+                    "help": "Rocketchat URN para o contato",
+                    "type": "text"
+                },
+                {
                     "key": "tel",
                     "help": "Tel URN para o contato",
                     "type": "text"
@@ -177,7 +182,7 @@
                 },
                 {
                     "key": "last_seen_on",
-                    "help": "a data de criação do contato",
+                    "help": "the last seen date of the contact",
                     "type": "any"
                 },
                 {
@@ -292,6 +297,21 @@
                     "key": "external_id",
                     "help": "o ID externo da entrada",
                     "type": "text"
+                }
+            ]
+        },
+        {
+            "name": "node",
+            "properties": [
+                {
+                    "key": "uuid",
+                    "help": "the UUID of the node",
+                    "type": "text"
+                },
+                {
+                    "key": "visit_count",
+                    "help": "the count of visits to the node in this run",
+                    "type": "number"
                 }
             ]
         },
@@ -455,12 +475,12 @@
                 },
                 {
                     "key": "user",
-                    "help": "a palavra para combinar se uma uma palavra de gatilho",
+                    "help": "the user who started this session if this is a manual trigger",
                     "type": "text"
                 },
                 {
                     "key": "origin",
-                    "help": "a palavra para combinar se uma uma palavra de gatilho",
+                    "help": "the origin of this session if this is a manual trigger",
                     "type": "text"
                 }
             ]
@@ -511,6 +531,11 @@
             "key": "webhook",
             "help": "a resposta JSON avaliada da última chamada webhook",
             "type": "any"
+        },
+        {
+            "key": "node",
+            "help": "the current node",
+            "type": "node"
         },
         {
             "key": "globals",

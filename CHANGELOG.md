@@ -1,3 +1,76 @@
+v0.109.1
+----------
+ * Add forward_ivr action and ivr_forwarded event
+
+v0.109.0
+----------
+ * Add @node.(uuid|visit_count) to context
+
+v0.108.0
+----------
+ * Rename messaging_passive to messaging_background
+
+v0.107.2
+----------
+ * Disallow labeling actions in passive flows
+
+v0.107.1
+----------
+ * Add float64 workaround for exponent expressions with non-integer exponents
+
+v0.107.0
+----------
+ * Add new flow type for passive messaging flows
+ * Update to gocommon v1.7.1 to get fix for phone number parsing
+
+v0.106.3
+----------
+ * Engine evaluator for contact sql should support != x for number and datetime values
+
+v0.106.2
+----------
+ * Update to latest gocommon
+
+v0.106.1
+----------
+ * URN and channel modifiers should error with invalid URNs and channels
+
+v0.106.0
+----------
+ * Getting channel for URN should always consider the role on the channels
+ * Update to latest gocommon which adds rocketchat scheme
+ * SetPreferredChannel only when the channel has the send role
+
+v0.105.5
+----------
+ * Support sorting contacts by last seen on attribute
+
+v0.105.4
+----------
+ * Add support for Bengali numerals in number tests
+
+v0.105.3
+----------
+ * Add support for Eastern Arabic numerals in number tests
+
+v0.105.2
+----------
+ * Clear a run's expiration when it exits
+ * Unwind accumulated run expirations as child runs complete
+ * Include country in msg templating on msg_created events
+
+v0.105.1
+----------
+ * Update to latest gocommon v1.5.3
+
+v0.105.0
+----------
+ * Bump some deps, test on go 1.15 and fix bug found by 1.15 compiler
+
+v0.104.1
+----------
+ * Update to gocommon v1.5.1
+
 v0.104.0
 ----------
  * Use dummy value to avoid sending empty emails

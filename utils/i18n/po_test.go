@@ -35,6 +35,9 @@ func TestComments(t *testing.T) {
 	assert.Equal(t, text, c.String())
 
 	assert.Equal(t, c, i18n.ParsePOComment(text))
+	assert.True(t, c.HasFlag("fuzzy"))
+	assert.True(t, c.HasFlag("go-format"))
+	assert.False(t, c.HasFlag("python-format"))
 }
 
 func TestPOCreation(t *testing.T) {
@@ -153,6 +156,7 @@ func TestGetText(t *testing.T) {
 	assert.Equal(t, "Azul", po.GetText("", "Blue"))
 	assert.Equal(t, "Missing", po.GetText("", "Missing"))
 	assert.Equal(t, "Not even an entry", po.GetText("", "Not even an entry"))
+	assert.Equal(t, "Green", po.GetText("", "Green")) // entry is ignored because it's fuzzy
 }
 
 func TestEncodeAndDecodePOString(t *testing.T) {

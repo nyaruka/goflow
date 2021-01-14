@@ -1,0 +1,1048 @@
+{
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "flow": {
+                        "name": "Expiration Test B",
+                        "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                    },
+                    "parent_run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "terminal": false,
+                    "type": "flow_entered"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
+                    "flow": {
+                        "name": "Expiration Test C",
+                        "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                    },
+                    "parent_run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "terminal": false,
+                    "type": "flow_entered"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:19.123456789Z",
+                    "msg": {
+                        "text": "What's your first name?",
+                        "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                    },
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "flow": {
+                                    "name": "Expiration Test B",
+                                    "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                                },
+                                "parent_run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "terminal": false,
+                                "type": "flow_entered"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-06T18:30:14.123456789Z",
+                        "flow": {
+                            "name": "Expiration Test A",
+                            "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                        },
+                        "modified_on": "2018-07-06T12:30:17.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "node_uuid": "7b8302b9-9b8b-431a-a3fd-4f5763179398",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            }
+                        ],
+                        "status": "active",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    },
+                    {
+                        "created_on": "2018-07-06T12:30:06.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "flow": {
+                                    "name": "Expiration Test C",
+                                    "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                                },
+                                "parent_run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "terminal": false,
+                                "type": "flow_entered"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-06T17:30:14.123456789Z",
+                        "flow": {
+                            "name": "Expiration Test B",
+                            "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                        },
+                        "modified_on": "2018-07-06T12:30:16.123456789Z",
+                        "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:10.123456789Z",
+                                "node_uuid": "775ff683-ebfc-43ae-aba2-6c06f2f3befa",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            }
+                        ],
+                        "status": "active",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
+                    {
+                        "created_on": "2018-07-06T12:30:13.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "msg": {
+                                    "text": "What's your first name?",
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                                },
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-06T15:30:14.123456789Z",
+                        "flow": {
+                            "name": "Expiration Test C",
+                            "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                        },
+                        "modified_on": "2018-07-06T12:30:24.123456789Z",
+                        "parent_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:18.123456789Z",
+                                "exit_uuid": "8e3752c7-8c30-4d9c-9a7f-b04a4bf730ac",
+                                "node_uuid": "e354d2be-ea18-4380-a1c4-8f0d8131bf29",
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
+                                "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Expiration Test A",
+                        "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                    },
+                    "triggered_on": "2020-10-12T15:38:08.915063-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:29.123456789Z",
+                    "run_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "run_expired"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:32.123456789Z",
+                    "msg": {
+                        "text": "What's your middle name?",
+                        "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                    },
+                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:35.123456789Z",
+                    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "flow": {
+                                    "name": "Expiration Test B",
+                                    "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                                },
+                                "parent_run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "terminal": false,
+                                "type": "flow_entered"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-06T15:30:26.123456789Z",
+                        "flow": {
+                            "name": "Expiration Test A",
+                            "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                        },
+                        "modified_on": "2018-07-06T12:30:28.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "node_uuid": "7b8302b9-9b8b-431a-a3fd-4f5763179398",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            }
+                        ],
+                        "status": "active",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    },
+                    {
+                        "created_on": "2018-07-06T12:30:06.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "flow": {
+                                    "name": "Expiration Test C",
+                                    "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                                },
+                                "parent_run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "terminal": false,
+                                "type": "flow_entered"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "msg": {
+                                    "text": "What's your middle name?",
+                                    "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                                },
+                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-06T14:30:26.123456789Z",
+                        "flow": {
+                            "name": "Expiration Test B",
+                            "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                        },
+                        "modified_on": "2018-07-06T12:30:37.123456789Z",
+                        "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:10.123456789Z",
+                                "exit_uuid": "90866618-58a2-4552-b91a-970b91dfa693",
+                                "node_uuid": "775ff683-ebfc-43ae-aba2-6c06f2f3befa",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:31.123456789Z",
+                                "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
+                                "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
+                                "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
+                                "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
+                                "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
+                    {
+                        "created_on": "2018-07-06T12:30:13.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "msg": {
+                                    "text": "What's your first name?",
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                                },
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "run_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "run_expired"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:25.123456789Z",
+                        "expires_on": null,
+                        "flow": {
+                            "name": "Expiration Test C",
+                            "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                        },
+                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "parent_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:18.123456789Z",
+                                "exit_uuid": "8e3752c7-8c30-4d9c-9a7f-b04a4bf730ac",
+                                "node_uuid": "e354d2be-ea18-4380-a1c4-8f0d8131bf29",
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
+                                "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                            }
+                        ],
+                        "status": "expired",
+                        "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Expiration Test A",
+                        "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                    },
+                    "triggered_on": "2020-10-12T15:38:08.915063-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:41.123456789Z",
+                    "run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                    "type": "run_expired"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:44.123456789Z",
+                    "msg": {
+                        "text": "What's your last name?",
+                        "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                    },
+                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:47.123456789Z",
+                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "flow": {
+                                    "name": "Expiration Test B",
+                                    "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                                },
+                                "parent_run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "terminal": false,
+                                "type": "flow_entered"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:44.123456789Z",
+                                "msg": {
+                                    "text": "What's your last name?",
+                                    "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                                },
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:47.123456789Z",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-06T13:30:39.123456789Z",
+                        "flow": {
+                            "name": "Expiration Test A",
+                            "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                        },
+                        "modified_on": "2018-07-06T12:30:49.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "4e1122b2-e96d-4a8b-9e55-ae47d9d9355c",
+                                "node_uuid": "7b8302b9-9b8b-431a-a3fd-4f5763179398",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:43.123456789Z",
+                                "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
+                                "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
+                                "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:46.123456789Z",
+                                "node_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
+                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    },
+                    {
+                        "created_on": "2018-07-06T12:30:06.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "flow": {
+                                    "name": "Expiration Test C",
+                                    "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                                },
+                                "parent_run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "terminal": false,
+                                "type": "flow_entered"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "msg": {
+                                    "text": "What's your middle name?",
+                                    "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                                },
+                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:41.123456789Z",
+                                "run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                                "type": "run_expired"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:38.123456789Z",
+                        "expires_on": null,
+                        "flow": {
+                            "name": "Expiration Test B",
+                            "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                        },
+                        "modified_on": "2018-07-06T12:30:42.123456789Z",
+                        "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:10.123456789Z",
+                                "exit_uuid": "90866618-58a2-4552-b91a-970b91dfa693",
+                                "node_uuid": "775ff683-ebfc-43ae-aba2-6c06f2f3befa",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:31.123456789Z",
+                                "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
+                                "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
+                                "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
+                                "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
+                                "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                            }
+                        ],
+                        "status": "expired",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
+                    {
+                        "created_on": "2018-07-06T12:30:13.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "msg": {
+                                    "text": "What's your first name?",
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                                },
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "run_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "run_expired"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:25.123456789Z",
+                        "expires_on": null,
+                        "flow": {
+                            "name": "Expiration Test C",
+                            "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                        },
+                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "parent_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:18.123456789Z",
+                                "exit_uuid": "8e3752c7-8c30-4d9c-9a7f-b04a4bf730ac",
+                                "node_uuid": "e354d2be-ea18-4380-a1c4-8f0d8131bf29",
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
+                                "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                            }
+                        ],
+                        "status": "expired",
+                        "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Expiration Test A",
+                        "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                    },
+                    "triggered_on": "2020-10-12T15:38:08.915063-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:51.123456789Z",
+                    "run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                    "type": "run_expired"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "flow": {
+                                    "name": "Expiration Test B",
+                                    "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                                },
+                                "parent_run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "terminal": false,
+                                "type": "flow_entered"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:44.123456789Z",
+                                "msg": {
+                                    "text": "What's your last name?",
+                                    "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                                },
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:47.123456789Z",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:51.123456789Z",
+                                "run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                                "type": "run_expired"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:50.123456789Z",
+                        "expires_on": null,
+                        "flow": {
+                            "name": "Expiration Test A",
+                            "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                        },
+                        "modified_on": "2018-07-06T12:30:52.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "4e1122b2-e96d-4a8b-9e55-ae47d9d9355c",
+                                "node_uuid": "7b8302b9-9b8b-431a-a3fd-4f5763179398",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:43.123456789Z",
+                                "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
+                                "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
+                                "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:46.123456789Z",
+                                "node_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
+                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
+                            }
+                        ],
+                        "status": "expired",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    },
+                    {
+                        "created_on": "2018-07-06T12:30:06.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "flow": {
+                                    "name": "Expiration Test C",
+                                    "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                                },
+                                "parent_run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "terminal": false,
+                                "type": "flow_entered"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "msg": {
+                                    "text": "What's your middle name?",
+                                    "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                                },
+                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:41.123456789Z",
+                                "run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                                "type": "run_expired"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:38.123456789Z",
+                        "expires_on": null,
+                        "flow": {
+                            "name": "Expiration Test B",
+                            "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                        },
+                        "modified_on": "2018-07-06T12:30:42.123456789Z",
+                        "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:10.123456789Z",
+                                "exit_uuid": "90866618-58a2-4552-b91a-970b91dfa693",
+                                "node_uuid": "775ff683-ebfc-43ae-aba2-6c06f2f3befa",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:31.123456789Z",
+                                "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
+                                "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
+                                "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
+                                "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
+                                "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                            }
+                        ],
+                        "status": "expired",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
+                    {
+                        "created_on": "2018-07-06T12:30:13.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "msg": {
+                                    "text": "What's your first name?",
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                                },
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "run_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "run_expired"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:25.123456789Z",
+                        "expires_on": null,
+                        "flow": {
+                            "name": "Expiration Test C",
+                            "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                        },
+                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "parent_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:18.123456789Z",
+                                "exit_uuid": "8e3752c7-8c30-4d9c-9a7f-b04a4bf730ac",
+                                "node_uuid": "e354d2be-ea18-4380-a1c4-8f0d8131bf29",
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
+                                "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                            }
+                        ],
+                        "status": "expired",
+                        "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Expiration Test A",
+                        "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                    },
+                    "triggered_on": "2020-10-12T15:38:08.915063-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            }
+        }
+    ],
+    "resumes": [
+        {
+            "resumed_on": "2020-10-12T15:38:17.508225-05:00",
+            "type": "run_expiration"
+        },
+        {
+            "resumed_on": "2020-10-12T15:38:23.165294-05:00",
+            "type": "run_expiration"
+        },
+        {
+            "resumed_on": "2020-10-12T15:38:29.501371-05:00",
+            "type": "run_expiration"
+        }
+    ],
+    "trigger": {
+        "contact": {
+            "created_on": "2018-01-01T12:00:00Z",
+            "id": 1234567,
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+            "allowed_languages": [
+                "eng",
+                "eng"
+            ],
+            "date_format": "YYYY-MM-DD",
+            "max_value_length": 640,
+            "number_format": {
+                "decimal_symbol": ".",
+                "digit_grouping_symbol": ","
+            },
+            "redaction_policy": "none",
+            "time_format": "tt:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Expiration Test A",
+            "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+        },
+        "triggered_on": "2020-10-12T15:38:08.915063-05:00",
+        "type": "manual"
+    }
+}

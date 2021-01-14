@@ -1,6 +1,6 @@
 [
     {
-        "desciption": "empty",
+        "description": "empty",
         "sort_by": "",
         "elastic": {
             "id": {
@@ -9,7 +9,7 @@
         }
     },
     {
-        "desciption": "descending created_on",
+        "description": "descending created_on",
         "sort_by": "-created_on",
         "elastic": {
             "created_on": {
@@ -18,7 +18,16 @@
         }
     },
     {
-        "desciption": "ascending name",
+        "description": "descending last_seen_on",
+        "sort_by": "-last_seen_on",
+        "elastic": {
+            "last_seen_on": {
+                "order": "desc"
+            }
+        }
+    },
+    {
+        "description": "ascending name",
         "sort_by": "name",
         "elastic": {
             "name.keyword": {
@@ -27,7 +36,7 @@
         }
     },
     {
-        "desciption": "descending language",
+        "description": "descending language",
         "sort_by": "-language",
         "elastic": {
             "language": {
@@ -36,7 +45,7 @@
         }
     },
     {
-        "desciption": "descending numeric",
+        "description": "descending numeric",
         "sort_by": "-AGE",
         "elastic": {
             "fields.number": {
@@ -53,7 +62,7 @@
         }
     },
     {
-        "desciption": "ascending text",
+        "description": "ascending text",
         "sort_by": "color",
         "elastic": {
             "fields.text": {
@@ -70,7 +79,7 @@
         }
     },
     {
-        "desciption": "descending date",
+        "description": "descending date",
         "sort_by": "-dob",
         "elastic": {
             "fields.datetime": {
@@ -87,7 +96,7 @@
         }
     },
     {
-        "desciption": "descending state",
+        "description": "descending state",
         "sort_by": "-state",
         "elastic": {
             "fields.state_keyword": {
@@ -104,7 +113,7 @@
         }
     },
     {
-        "desciption": "ascending district",
+        "description": "ascending district",
         "sort_by": "district",
         "elastic": {
             "fields.district_keyword": {
@@ -121,7 +130,7 @@
         }
     },
     {
-        "desciption": "ascending ward",
+        "description": "ascending ward",
         "sort_by": "ward",
         "elastic": {
             "fields.ward_keyword": {
@@ -138,7 +147,7 @@
         }
     },
     {
-        "desciption": "unknown field",
+        "description": "unknown field",
         "sort_by": "foo",
         "error": "no such field with key: foo"
     }

@@ -5,7 +5,7 @@ contact.first_name -> o primeiro nome do contato
 contact.name -> o nome do contato
 contact.language -> a língua do contato como código ISO de 3 letras
 contact.created_on -> a data de criação do contato
-contact.last_seen_on -> a data de criação do contato
+contact.last_seen_on -> the last seen date of the contact
 contact.urns -> as URNs pertencentes ao contato
 contact.urns[0] -> first of as URNs pertencentes ao contato
 contact.urn -> a URN preferida do contato
@@ -32,6 +32,7 @@ urns.freshchat -> Freshchat URN para o contato
 urns.jiochat -> Jiochat URN para o contato
 urns.line -> Line URN para o contato
 urns.mailto -> Mailto URN para o contato
+urns.rocketchat -> Rocketchat URN para o contato
 urns.tel -> Tel URN para o contato
 urns.telegram -> Telegram URN para o contato
 urns.twitter -> Twitter URN para o contato
@@ -71,7 +72,7 @@ run.contact.first_name -> o primeiro nome do contato
 run.contact.name -> o nome do contato
 run.contact.language -> a língua do contato como código ISO de 3 letras
 run.contact.created_on -> a data de criação do contato
-run.contact.last_seen_on -> a data de criação do contato
+run.contact.last_seen_on -> the last seen date of the contact
 run.contact.urns -> as URNs pertencentes ao contato
 run.contact.urns[0] -> first of as URNs pertencentes ao contato
 run.contact.urn -> a URN preferida do contato
@@ -112,7 +113,7 @@ child.contact.first_name -> o primeiro nome do contato
 child.contact.name -> o nome do contato
 child.contact.language -> a língua do contato como código ISO de 3 letras
 child.contact.created_on -> a data de criação do contato
-child.contact.last_seen_on -> a data de criação do contato
+child.contact.last_seen_on -> the last seen date of the contact
 child.contact.urns -> as URNs pertencentes ao contato
 child.contact.urns[0] -> first of as URNs pertencentes ao contato
 child.contact.urn -> a URN preferida do contato
@@ -143,6 +144,7 @@ child.urns.freshchat -> Freshchat URN para o contato
 child.urns.jiochat -> Jiochat URN para o contato
 child.urns.line -> Line URN para o contato
 child.urns.mailto -> Mailto URN para o contato
+child.urns.rocketchat -> Rocketchat URN para o contato
 child.urns.tel -> Tel URN para o contato
 child.urns.telegram -> Telegram URN para o contato
 child.urns.twitter -> Twitter URN para o contato
@@ -162,7 +164,7 @@ parent.contact.first_name -> o primeiro nome do contato
 parent.contact.name -> o nome do contato
 parent.contact.language -> a língua do contato como código ISO de 3 letras
 parent.contact.created_on -> a data de criação do contato
-parent.contact.last_seen_on -> a data de criação do contato
+parent.contact.last_seen_on -> the last seen date of the contact
 parent.contact.urns -> as URNs pertencentes ao contato
 parent.contact.urns[0] -> first of as URNs pertencentes ao contato
 parent.contact.urn -> a URN preferida do contato
@@ -193,6 +195,7 @@ parent.urns.freshchat -> Freshchat URN para o contato
 parent.urns.jiochat -> Jiochat URN para o contato
 parent.urns.line -> Line URN para o contato
 parent.urns.mailto -> Mailto URN para o contato
+parent.urns.rocketchat -> Rocketchat URN para o contato
 parent.urns.tel -> Tel URN para o contato
 parent.urns.telegram -> Telegram URN para o contato
 parent.urns.twitter -> Twitter URN para o contato
@@ -204,11 +207,14 @@ parent.urns.whatsapp -> Whatsapp URN para o contato
 parent.results -> os resultados salvos pela execução
 parent.status -> o status da atual execução
 webhook -> a resposta JSON avaliada da última chamada webhook
+node -> the current node
+node.uuid -> the UUID of the node
+node.visit_count -> the count of visits to the node in this run
 globals -> os valores globais
 globals.org_name -> o valor global org_name
 trigger -> o gatilho que iniciou a sessão
 trigger.type -> o tipo do gatilho que iniciou a sessão
 trigger.params -> os parâmetros passados para o gatilho
 trigger.keyword -> a palavra para combinar se uma uma palavra de gatilho
-trigger.user -> a palavra para combinar se uma uma palavra de gatilho
-trigger.origin -> a palavra para combinar se uma uma palavra de gatilho
+trigger.user -> the user who started this session if this is a manual trigger
+trigger.origin -> the origin of this session if this is a manual trigger

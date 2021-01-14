@@ -43,14 +43,7 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 	for _, action := range n.Actions() {
 
 		// check that this action is valid for this flow type
-		isValidInType := false
-		for _, allowedType := range action.AllowedFlowTypes() {
-			if flow.Type() == allowedType {
-				isValidInType = true
-				break
-			}
-		}
-		if !isValidInType {
+		if !flow.Type().Allows(action) {
 			return errors.Errorf("action type '%s' is not allowed in a flow of type '%s'", action.Type(), flow.Type())
 		}
 
@@ -67,7 +60,7 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 
 	// check the router if there is one
 	if n.Router() != nil {
-		if err := n.Router().Validate(n.Exits()); err != nil {
+		if err := n.Router().Validate(flow, n.Exits()); err != nil {
 			return errors.Wrap(err, "invalid router")
 		}
 	}

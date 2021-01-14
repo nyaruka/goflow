@@ -29,7 +29,7 @@ const TypeAddInputLabels string = "add_input_labels"
 // @action add_input_labels
 type AddInputLabelsAction struct {
 	baseAction
-	universalAction
+	interactiveAction
 
 	Labels []*assets.LabelReference `json:"labels" validate:"required,dive"`
 }

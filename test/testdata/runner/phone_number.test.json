@@ -598,7 +598,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:42.123456789Z",
-                        "expires_on": "2018-07-13T12:30:27.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Phone Numbers",
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"

@@ -517,7 +517,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:38.123456789Z",
-                        "expires_on": "2018-07-13T12:30:27.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Favorites",
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"

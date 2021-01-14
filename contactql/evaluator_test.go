@@ -84,7 +84,10 @@ func TestEvaluateQuery(t *testing.T) {
 
 		// number field condition
 		{`age = 36`, true},
+		{`age = 35`, false},
 		{`age is 35`, false},
+		{`age != 36`, false},
+		{`age != 35`, true},
 		{`age > 36`, false},
 		{`age > 35`, true},
 		{`age >= 36`, true},
@@ -94,6 +97,9 @@ func TestEvaluateQuery(t *testing.T) {
 
 		// datetime field condition
 		{`dob = 1981/05/28`, true},
+		{`dob = 1981/05/29`, false},
+		{`dob != 1981/05/28`, false},
+		{`dob != 1981/05/29`, true},
 		{`dob > 1981/05/28`, false},
 		{`dob > 1981/05/27`, true},
 		{`dob >= 1981/05/28`, true},

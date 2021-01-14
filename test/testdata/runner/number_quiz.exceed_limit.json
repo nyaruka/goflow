@@ -1,0 +1,1079 @@
+{
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "What is 2 + 2?",
+                        "urn": "tel:+12065551212",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "What is 2 + 2?",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-13T12:30:01.123456789Z",
+                        "flow": {
+                            "name": "Number Test",
+                            "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                        },
+                        "modified_on": "2018-07-06T12:30:09.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "d3f3f024-a90e-43a5-bd5a-7056f5bea699",
+                                "node_uuid": "6fde1a09-3997-47dd-aff0-92e8aff3a642",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Number Test",
+                        "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                    },
+                    "triggered_on": "2021-01-11T16:14:07.49807-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "msg": {
+                        "text": "3",
+                        "urn": "tel:+12065551212",
+                        "uuid": "e2271bc1-4b0f-43ff-842b-dda2536dc0c2"
+                    },
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "Other",
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "input": "3",
+                    "name": "Result 1",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "run_result_changed",
+                    "value": "3"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:21.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "That's incorrect. Please try again.",
+                        "urn": "tel:+12065551212",
+                        "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                    },
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "last_seen_on": "2021-01-11T16:14:09.76643-05:00",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "input": {
+                    "created_on": "2021-01-11T16:14:09.76643-05:00",
+                    "text": "3",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "e2271bc1-4b0f-43ff-842b-dda2536dc0c2"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "What is 2 + 2?",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "msg": {
+                                    "text": "3",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "e2271bc1-4b0f-43ff-842b-dda2536dc0c2"
+                                },
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "input": "3",
+                                "name": "Result 1",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "run_result_changed",
+                                "value": "3"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:21.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "That's incorrect. Please try again.",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                                },
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-13T12:30:11.123456789Z",
+                        "flow": {
+                            "name": "Number Test",
+                            "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                        },
+                        "modified_on": "2018-07-06T12:30:26.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "d3f3f024-a90e-43a5-bd5a-7056f5bea699",
+                                "node_uuid": "6fde1a09-3997-47dd-aff0-92e8aff3a642",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "exit_uuid": "e019307e-8860-4cba-a289-55b1405d75e3",
+                                "node_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:20.123456789Z",
+                                "exit_uuid": "02eec519-666b-41b3-b3b5-13ddd9c9eaec",
+                                "node_uuid": "5bd2bd47-3f5f-4ae3-8406-45033fd95f54",
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:23.123456789Z",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                            }
+                        ],
+                        "results": {
+                            "result_1": {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "input": "3",
+                                "name": "Result 1",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "value": "3"
+                            }
+                        },
+                        "status": "waiting",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Number Test",
+                        "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                    },
+                    "triggered_on": "2021-01-11T16:14:07.49807-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:30.123456789Z",
+                    "msg": {
+                        "text": "5",
+                        "urn": "tel:+12065551212",
+                        "uuid": "456fb87a-153b-45d7-a073-7039f06dbb51"
+                    },
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "Other",
+                    "created_on": "2018-07-06T12:30:34.123456789Z",
+                    "input": "5",
+                    "name": "Result 1",
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "run_result_changed",
+                    "value": "5"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:38.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "That's incorrect. Please try again.",
+                        "urn": "tel:+12065551212",
+                        "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                    },
+                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:41.123456789Z",
+                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "last_seen_on": "2021-01-11T16:14:12.725289-05:00",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "input": {
+                    "created_on": "2021-01-11T16:14:12.725289-05:00",
+                    "text": "5",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "456fb87a-153b-45d7-a073-7039f06dbb51"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "What is 2 + 2?",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "msg": {
+                                    "text": "3",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "e2271bc1-4b0f-43ff-842b-dda2536dc0c2"
+                                },
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "input": "3",
+                                "name": "Result 1",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "run_result_changed",
+                                "value": "3"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:21.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "That's incorrect. Please try again.",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                                },
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "msg": {
+                                    "text": "5",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "456fb87a-153b-45d7-a073-7039f06dbb51"
+                                },
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
+                                "input": "5",
+                                "name": "Result 1",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "run_result_changed",
+                                "value": "5"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "That's incorrect. Please try again.",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                                },
+                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:41.123456789Z",
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-13T12:30:28.123456789Z",
+                        "flow": {
+                            "name": "Number Test",
+                            "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                        },
+                        "modified_on": "2018-07-06T12:30:43.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "d3f3f024-a90e-43a5-bd5a-7056f5bea699",
+                                "node_uuid": "6fde1a09-3997-47dd-aff0-92e8aff3a642",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "exit_uuid": "e019307e-8860-4cba-a289-55b1405d75e3",
+                                "node_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:20.123456789Z",
+                                "exit_uuid": "02eec519-666b-41b3-b3b5-13ddd9c9eaec",
+                                "node_uuid": "5bd2bd47-3f5f-4ae3-8406-45033fd95f54",
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:23.123456789Z",
+                                "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:36.123456789Z",
+                                "exit_uuid": "e019307e-8860-4cba-a289-55b1405d75e3",
+                                "node_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
+                                "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
+                                "exit_uuid": "02eec519-666b-41b3-b3b5-13ddd9c9eaec",
+                                "node_uuid": "5bd2bd47-3f5f-4ae3-8406-45033fd95f54",
+                                "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:40.123456789Z",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
+                            }
+                        ],
+                        "results": {
+                            "result_1": {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "input": "5",
+                                "name": "Result 1",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "value": "5"
+                            }
+                        },
+                        "status": "waiting",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Number Test",
+                        "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                    },
+                    "triggered_on": "2021-01-11T16:14:07.49807-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:47.123456789Z",
+                    "msg": {
+                        "text": "22",
+                        "urn": "tel:+12065551212",
+                        "uuid": "3c57f0fe-d837-408d-a641-585262ef6414"
+                    },
+                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "Other",
+                    "created_on": "2018-07-06T12:30:51.123456789Z",
+                    "input": "22",
+                    "name": "Result 1",
+                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                    "type": "run_result_changed",
+                    "value": "22"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:55.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Sorry, you got it wrong too many times.",
+                        "urn": "tel:+12065551212",
+                        "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
+                    },
+                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                    "type": "msg_created"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "last_seen_on": "2021-01-11T16:14:22.220885-05:00",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "input": {
+                    "created_on": "2021-01-11T16:14:22.220885-05:00",
+                    "text": "22",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "3c57f0fe-d837-408d-a641-585262ef6414"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "What is 2 + 2?",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "msg": {
+                                    "text": "3",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "e2271bc1-4b0f-43ff-842b-dda2536dc0c2"
+                                },
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "input": "3",
+                                "name": "Result 1",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "run_result_changed",
+                                "value": "3"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:21.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "That's incorrect. Please try again.",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                                },
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "msg": {
+                                    "text": "5",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "456fb87a-153b-45d7-a073-7039f06dbb51"
+                                },
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
+                                "input": "5",
+                                "name": "Result 1",
+                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "type": "run_result_changed",
+                                "value": "5"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "That's incorrect. Please try again.",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                                },
+                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:41.123456789Z",
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:47.123456789Z",
+                                "msg": {
+                                    "text": "22",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "3c57f0fe-d837-408d-a641-585262ef6414"
+                                },
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:51.123456789Z",
+                                "input": "22",
+                                "name": "Result 1",
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                                "type": "run_result_changed",
+                                "value": "22"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:55.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Sorry, you got it wrong too many times.",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
+                                },
+                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                                "type": "msg_created"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:57.123456789Z",
+                        "expires_on": null,
+                        "flow": {
+                            "name": "Number Test",
+                            "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                        },
+                        "modified_on": "2018-07-06T12:30:57.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "d3f3f024-a90e-43a5-bd5a-7056f5bea699",
+                                "node_uuid": "6fde1a09-3997-47dd-aff0-92e8aff3a642",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "exit_uuid": "e019307e-8860-4cba-a289-55b1405d75e3",
+                                "node_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:20.123456789Z",
+                                "exit_uuid": "02eec519-666b-41b3-b3b5-13ddd9c9eaec",
+                                "node_uuid": "5bd2bd47-3f5f-4ae3-8406-45033fd95f54",
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:23.123456789Z",
+                                "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:36.123456789Z",
+                                "exit_uuid": "e019307e-8860-4cba-a289-55b1405d75e3",
+                                "node_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
+                                "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
+                                "exit_uuid": "02eec519-666b-41b3-b3b5-13ddd9c9eaec",
+                                "node_uuid": "5bd2bd47-3f5f-4ae3-8406-45033fd95f54",
+                                "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:40.123456789Z",
+                                "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:53.123456789Z",
+                                "exit_uuid": "b0cf0ca5-5736-4ecb-8304-4c508e2a5b65",
+                                "node_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
+                                "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:54.123456789Z",
+                                "exit_uuid": "4bc3fc37-e347-4cd6-9e9a-8e62ec5be7f7",
+                                "node_uuid": "de66d8f7-90b2-4c42-90bb-c6610ddad071",
+                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
+                            }
+                        ],
+                        "results": {
+                            "result_1": {
+                                "category": "Other",
+                                "created_on": "2018-07-06T12:30:49.123456789Z",
+                                "input": "22",
+                                "name": "Result 1",
+                                "node_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                                "value": "22"
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Number Test",
+                        "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                    },
+                    "triggered_on": "2021-01-11T16:14:07.49807-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            }
+        }
+    ],
+    "resumes": [
+        {
+            "msg": {
+                "text": "3",
+                "urn": "tel:+12065551212",
+                "uuid": "e2271bc1-4b0f-43ff-842b-dda2536dc0c2"
+            },
+            "resumed_on": "2021-01-11T16:14:09.76643-05:00",
+            "type": "msg"
+        },
+        {
+            "msg": {
+                "text": "5",
+                "urn": "tel:+12065551212",
+                "uuid": "456fb87a-153b-45d7-a073-7039f06dbb51"
+            },
+            "resumed_on": "2021-01-11T16:14:12.725289-05:00",
+            "type": "msg"
+        },
+        {
+            "msg": {
+                "text": "22",
+                "urn": "tel:+12065551212",
+                "uuid": "3c57f0fe-d837-408d-a641-585262ef6414"
+            },
+            "resumed_on": "2021-01-11T16:14:22.220885-05:00",
+            "type": "msg"
+        }
+    ],
+    "trigger": {
+        "contact": {
+            "created_on": "2018-01-01T12:00:00Z",
+            "id": 1234567,
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+            "allowed_languages": [
+                "eng",
+                "eng"
+            ],
+            "date_format": "YYYY-MM-DD",
+            "max_value_length": 640,
+            "number_format": {
+                "decimal_symbol": ".",
+                "digit_grouping_symbol": ","
+            },
+            "redaction_policy": "none",
+            "time_format": "tt:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Number Test",
+            "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+        },
+        "triggered_on": "2021-01-11T16:14:07.49807-05:00",
+        "type": "manual"
+    }
+}

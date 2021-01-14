@@ -1,0 +1,65 @@
+[
+    {
+        "description": "Read fails when phone is empty",
+        "action": {
+            "type": "forward_ivr",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "phone": ""
+        },
+        "read_error": "field 'phone' is required"
+    },
+    {
+        "description": "IVR forwarded event creates error if phone evaluates to empty",
+        "no_input": true,
+        "action": {
+            "type": "forward_ivr",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "phone": "@(\"\")"
+        },
+        "in_flow_type": "voice",
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "scheme or path cannot be empty"
+            }
+        ]
+    },
+    {
+        "description": "IVR forwarded event created if URN is valid expression",
+        "no_input": true,
+        "action": {
+            "type": "forward_ivr",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "phone": "@(format_urn(urns.tel))"
+        },
+        "in_flow_type": "voice",
+        "events": [
+            {
+                "type": "ivr_forwarded",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "urn": "tel:+12065551212"
+            }
+        ]
+    },
+    {
+        "description": "IVR forwarded event created if URN is valid constant",
+        "no_input": true,
+        "action": {
+            "type": "forward_ivr",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "phone": "12065551212"
+        },
+        "in_flow_type": "voice",
+        "events": [
+            {
+                "type": "ivr_forwarded",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "urn": "tel:+12065551212"
+            }
+        ]
+    }
+]
