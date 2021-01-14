@@ -305,7 +305,7 @@
             "properties": [
                 {
                     "key": "uuid",
-                    "help": "el nombre del canal",
+                    "help": "the UUID of the node",
                     "type": "text"
                 },
                 {

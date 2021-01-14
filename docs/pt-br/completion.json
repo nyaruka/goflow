@@ -182,7 +182,7 @@
                 },
                 {
                     "key": "last_seen_on",
-                    "help": "a data de criação do contato",
+                    "help": "the last seen date of the contact",
                     "type": "any"
                 },
                 {
@@ -305,12 +305,12 @@
             "properties": [
                 {
                     "key": "uuid",
-                    "help": "o UUID da execução",
+                    "help": "the UUID of the node",
                     "type": "text"
                 },
                 {
                     "key": "visit_count",
-                    "help": "a entrada atual do contato",
+                    "help": "the count of visits to the node in this run",
                     "type": "number"
                 }
             ]
@@ -475,12 +475,12 @@
                 },
                 {
                     "key": "user",
-                    "help": "a palavra para combinar se uma uma palavra de gatilho",
+                    "help": "the user who started this session if this is a manual trigger",
                     "type": "text"
                 },
                 {
                     "key": "origin",
-                    "help": "a palavra para combinar se uma uma palavra de gatilho",
+                    "help": "the origin of this session if this is a manual trigger",
                     "type": "text"
                 }
             ]
@@ -534,7 +534,7 @@
         },
         {
             "key": "node",
-            "help": "a execução atual",
+            "help": "the current node",
             "type": "node"
         },
         {
