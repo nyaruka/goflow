@@ -310,7 +310,7 @@
                 },
                 {
                     "key": "visit_count",
-                    "help": "the count of visits to the node in this run",
+                    "help": "a entrada atual do contato",
                     "type": "number"
                 }
             ]
