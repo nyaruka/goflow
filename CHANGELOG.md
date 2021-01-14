@@ -1,3 +1,7 @@
+v0.109.4
+----------
+ * Fix release workflow
+
 v0.109.3
 ----------
  * Fix release workflow
