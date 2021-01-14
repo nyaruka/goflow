@@ -40,14 +40,14 @@ jobs:
       run: sudo apt install -y --no-install-recommends pandoc gettext
 
     - name: Install Go
-      uses: actions/setup-go@v1
+      uses: actions/setup-go@v2
       with:
         go-version: ${{ env.go-version }}
 
     - name: Build docs
       run: |
         go install github.com/nyaruka/goflow/cmd/docgen
-        $GOPATH/bin/docgen
+        docgen
         tar -zcf docs.tar.gz docs
 
     - name: Create release
