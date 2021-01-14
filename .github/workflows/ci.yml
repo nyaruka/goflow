@@ -36,6 +36,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v1
 
+    - name: Install Linux packages
+      run: sudo apt install -y --no-install-recommends pandoc gettext
+
     - name: Install Go
       uses: actions/setup-go@v1
       with:
@@ -44,7 +47,7 @@ jobs:
     - name: Build docs
       run: |
         go install github.com/nyaruka/goflow/cmd/docgen
-        docgen
+        $GOPATH/bin/docgen
         tar -zcf docs.tar.gz docs
 
     - name: Create release
