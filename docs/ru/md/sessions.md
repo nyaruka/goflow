@@ -611,6 +611,20 @@ Events are created when an action wants to send an IVR response to the current c
 }
 ```
 </div>
+<h2 class="item_title"><a name="event:ivr_forwarded" href="#event:ivr_forwarded">ivr_forwarded</a></h2>
+
+Events are created when an action wants to forward an IVR call to another phone number.
+
+<div class="output_event">
+
+```json
+{
+    "type": "ivr_forwarded",
+    "created_on": "2006-01-02T15:04:05Z",
+    "urn": "tel:+12065551212"
+}
+```
+</div>
 <h2 class="item_title"><a name="event:msg_created" href="#event:msg_created">msg_created</a></h2>
 
 Events are created when an action wants to send a reply to the current contact.
