@@ -26,6 +26,7 @@
 <li><code>child</code> the last child run (<a href="context.html#context:related_run">related_run</a>)</li>
 <li><code>parent</code> the parent of the run (<a href="context.html#context:related_run">related_run</a>)</li>
 <li><code>webhook</code> the parsed JSON response of the last webhook call (any)</li>
+<li><code>node</code> the current node (<a href="context.html#context:node">node</a>)</li>
 <li><code>globals</code> the global values (globals)</li>
 <li><code>trigger</code> the trigger that started this session (<a href="context.html#context:trigger">trigger</a>)</li>
 </ul>
@@ -87,6 +88,13 @@
 <li><code>text</code> the text part of the input (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>attachments</code> any attachments on the input (<a href="expressions.html#type:text">text</a>)</li>
 <li><code>external_id</code> the external ID of the input (<a href="expressions.html#type:text">text</a>)</li>
+</ul>
+<h2 class="item_title">
+<a name="context:node" href="#context:node">node</a>
+</h2>
+<ul>
+<li><code>uuid</code> the UUID of the node (<a href="expressions.html#type:text">text</a>)</li>
+<li><code>visit_count</code> the count of visits to the node in this run (<a href="expressions.html#type:number">number</a>)</li>
 </ul>
 <h2 class="item_title">
 <a name="context:related_run" href="#context:related_run">related_run</a>

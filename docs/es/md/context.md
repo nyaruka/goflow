@@ -11,6 +11,7 @@ These are the top-level variables that can be accessed in the context:
  * `child` the last child run ([related_run](context.html#context:related_run))
  * `parent` the parent of the run ([related_run](context.html#context:related_run))
  * `webhook` the parsed JSON response of the last webhook call (any)
+ * `node` the current node ([node](context.html#context:node))
  * `globals` the global values (globals)
  * `trigger` the trigger that started this session ([trigger](context.html#context:trigger))
 
@@ -70,6 +71,11 @@ Defaults to the text and attachments ([text](expressions.html#type:text))
  * `text` the text part of the input ([text](expressions.html#type:text))
  * `attachments` any attachments on the input ([text](expressions.html#type:text))
  * `external_id` the external ID of the input ([text](expressions.html#type:text))
+
+<h2 class="item_title"><a name="context:node" href="#context:node">node</a></h2>
+
+ * `uuid` the UUID of the node ([text](expressions.html#type:text))
+ * `visit_count` the count of visits to the node in this run ([number](expressions.html#type:number))
 
 <h2 class="item_title"><a name="context:related_run" href="#context:related_run">related_run</a></h2>
 
