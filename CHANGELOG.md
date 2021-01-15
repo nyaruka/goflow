@@ -1,3 +1,8 @@
+v0.110.0
+----------
+ * Combine the completion.json and functions.json editor support files into a single editor.json file
+ * Remove generated docs from repo
+
 v0.109.4
 ----------
  * Fix release workflow
