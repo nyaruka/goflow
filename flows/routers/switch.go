@@ -46,6 +46,7 @@ func NewCase(uuid uuids.UUID, type_ string, arguments []string, categoryUUID flo
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Case) LocalizationUUID() uuids.UUID { return uuids.UUID(c.UUID) }
 
+// Dependencies enumerates the dependencies on this case
 func (c *Case) Dependencies(localization flows.Localization, include func(envs.Language, assets.Reference)) {
 	groupRef := func(args []string) assets.Reference {
 		// if we have two args, the second is name
@@ -75,28 +76,29 @@ func (c *Case) Dependencies(localization flows.Localization, include func(envs.L
 type SwitchRouter struct {
 	baseRouter
 
-	operand  string
-	cases    []*Case
-	default_ flows.CategoryUUID
+	operand             string
+	cases               []*Case
+	defaultCategoryUUID flows.CategoryUUID
 }
 
 // NewSwitch creates a new switch router
-func NewSwitch(wait flows.Wait, resultName string, categories []flows.Category, operand string, cases []*Case, defaultCategory flows.CategoryUUID) *SwitchRouter {
+func NewSwitch(wait flows.Wait, resultName string, categories []flows.Category, operand string, cases []*Case, defaultCategoryUUID flows.CategoryUUID) *SwitchRouter {
 	return &SwitchRouter{
-		baseRouter: newBaseRouter(TypeSwitch, wait, resultName, categories),
-		default_:   defaultCategory,
-		operand:    operand,
-		cases:      cases,
+		baseRouter:          newBaseRouter(TypeSwitch, wait, resultName, categories),
+		defaultCategoryUUID: defaultCategoryUUID,
+		operand:             operand,
+		cases:               cases,
 	}
 }
 
+// Cases returns the cases for this switch router
 func (r *SwitchRouter) Cases() []*Case { return r.cases }
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
 	// check the default category is valid
-	if r.default_ != "" && !r.isValidCategory(r.default_) {
-		return errors.Errorf("default category %s is not a valid category", r.default_)
+	if r.defaultCategoryUUID != "" && !r.isValidCategory(r.defaultCategoryUUID) {
+		return errors.Errorf("default category %s is not a valid category", r.defaultCategoryUUID)
 	}
 
 	for _, c := range r.cases {
@@ -138,7 +140,7 @@ func (r *SwitchRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.
 	}
 
 	// none of our cases matched, so try to use the default
-	if categoryUUID == "" && r.default_ != "" {
+	if categoryUUID == "" && r.defaultCategoryUUID != "" {
 		// evaluate our operand as a string
 		value, xerr := types.ToXText(env, operand)
 		if xerr != nil {
@@ -146,7 +148,7 @@ func (r *SwitchRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.
 		}
 
 		match = value.Native()
-		categoryUUID = r.default_
+		categoryUUID = r.defaultCategoryUUID
 	}
 
 	return r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
@@ -236,9 +238,9 @@ func (r *SwitchRouter) EnumerateLocalizables(include func(uuids.UUID, string, []
 type switchRouterEnvelope struct {
 	baseRouterEnvelope
 
-	Operand string             `json:"operand"               validate:"required"`
-	Cases   []*Case            `json:"cases"`
-	Default flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid4"`
+	Operand             string             `json:"operand"               validate:"required"`
+	Cases               []*Case            `json:"cases"`
+	DefaultCategoryUUID flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid4"`
 }
 
 func readSwitchRouter(data json.RawMessage) (flows.Router, error) {
@@ -248,9 +250,9 @@ func readSwitchRouter(data json.RawMessage) (flows.Router, error) {
 	}
 
 	r := &SwitchRouter{
-		operand:  e.Operand,
-		cases:    e.Cases,
-		default_: e.Default,
+		operand:             e.Operand,
+		cases:               e.Cases,
+		defaultCategoryUUID: e.DefaultCategoryUUID,
 	}
 
 	if err := r.unmarshal(&e.baseRouterEnvelope); err != nil {
@@ -263,9 +265,9 @@ func readSwitchRouter(data json.RawMessage) (flows.Router, error) {
 // MarshalJSON marshals this resume into JSON
 func (r *SwitchRouter) MarshalJSON() ([]byte, error) {
 	e := &switchRouterEnvelope{
-		Operand: r.operand,
-		Cases:   r.cases,
-		Default: r.default_,
+		Operand:             r.operand,
+		Cases:               r.cases,
+		DefaultCategoryUUID: r.defaultCategoryUUID,
 	}
 
 	if err := r.marshal(&e.baseRouterEnvelope); err != nil {
