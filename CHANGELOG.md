@@ -1,3 +1,15 @@
+v0.109.4
+----------
+ * Fix release workflow
+
+v0.109.3
+----------
+ * Fix release workflow
+
+v0.109.2
+----------
+ * Don't use fuzzy entries in po files
+
 v0.109.1
 ----------
  * Add forward_ivr action and ivr_forwarded event

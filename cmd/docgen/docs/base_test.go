@@ -36,18 +36,6 @@ func TestGenerateDocs(t *testing.T) {
 	err = docs.Generate("../../../", outputDir, localeDir)
 	require.NoError(t, err)
 
-	// check each rendered template for changes
-	for _, template := range docs.Templates {
-		existing, err := ioutil.ReadFile("../../../docs/en-us/md/" + template.Path)
-		require.NoError(t, err)
-
-		generated, err := ioutil.ReadFile(path.Join(outputDir, "en-us", "md", template.Path))
-		require.NoError(t, err)
-
-		// if the docs we just generated don't match the existing ones, someone needs to run docgen
-		require.Equal(t, string(existing), string(generated), "changes have been made that require re-running docgen (go install github.com/nyaruka/goflow/cmd/docgen; docgen)")
-	}
-
 	// check other outputs
 	completion := readJSONOutput(t, outputDir, "en-us", "completion.json").(map[string]interface{})
 	assert.Contains(t, completion, "types")
