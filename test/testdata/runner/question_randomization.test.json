@@ -1293,7 +1293,7 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:31:17.123456789Z",
-                        "expires_on": "2018-07-13T12:31:05.123456789Z",
+                        "expires_on": null,
                         "flow": {
                             "name": "Question Randomization",
                             "uuid": "eaae833a-4970-4be1-aed4-2e6295903b8f"

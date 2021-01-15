@@ -35,13 +35,13 @@ func NewRandomOnce(wait flows.Wait, resultName string, categories []flows.Catego
 }
 
 // Validate validates that the fields on this router are valid
-func (r *RandomOnceRouter) Validate(exits []flows.Exit) error {
+func (r *RandomOnceRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
 	// check the done category is valid
 	if r.defaultCategoryUUID != "" && !r.isValidCategory(r.defaultCategoryUUID) {
 		return errors.Errorf("default category %s is not a valid category", r.defaultCategoryUUID)
 	}
 
-	return r.validate(exits)
+	return r.validate(flow, exits)
 }
 
 // Route determines which exit to take from a node
