@@ -46,6 +46,7 @@ func NewCase(uuid uuids.UUID, type_ string, arguments []string, categoryUUID flo
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Case) LocalizationUUID() uuids.UUID { return uuids.UUID(c.UUID) }
 
+// Dependencies enumerates the dependencies on this case
 func (c *Case) Dependencies(localization flows.Localization, include func(envs.Language, assets.Reference)) {
 	groupRef := func(args []string) assets.Reference {
 		// if we have two args, the second is name
@@ -90,6 +91,7 @@ func NewSwitch(wait flows.Wait, resultName string, categories []flows.Category, 
 	}
 }
 
+// Cases returns the cases for this switch router
 func (r *SwitchRouter) Cases() []*Case { return r.cases }
 
 // Validate validates the arguments for this router
