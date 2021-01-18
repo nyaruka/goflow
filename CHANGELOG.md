@@ -1,3 +1,7 @@
+v0.110.1
+----------
+ * Spanish translations from transifex
+
 v0.110.0
 ----------
  * Combine the completion.json and functions.json editor support files into a single editor.json file
