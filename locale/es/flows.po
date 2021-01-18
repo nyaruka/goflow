@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-01-18 16:41-0500\n"
+"POT-Creation-Date: 2021-01-18 17:16-0500\n"
 "Last-Translator: Nyaruka <info@textit.in>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -664,10 +664,8 @@ msgstr "el UUID del grupo"
 msgid "the UUID of the input"
 msgstr "el UUID de la entrada"
 
-#, fuzzy
-#| msgid "the UUID of the run"
 msgid "the UUID of the node"
-msgstr "el UUID de la carrera"
+msgstr "el UUID del nodo"
 
 msgid "the UUID of the node in the flow that generated the result"
 msgstr "el UUID del nodo en el flujo que generó el resultado"
@@ -696,10 +694,8 @@ msgstr "el nombre del contacto y el UUID del flujo"
 msgid "the contact of the run"
 msgstr "el contacto de la carrera"
 
-#, fuzzy
-#| msgid "the current status of the run"
 msgid "the count of visits to the node in this run"
-msgstr "el estado actual de la carrera"
+msgstr "el recuento de visitas al nodo en esta ejecución"
 
 msgid "the creation date of the contact"
 msgstr "la fecha de creación del contacto"
@@ -716,10 +712,8 @@ msgstr "la fecha de creación de la carrera"
 msgid "the current input from the contact"
 msgstr "la entrada actual del contacto"
 
-#, fuzzy
-#| msgid "the current run"
 msgid "the current node"
-msgstr "la carrera actual"
+msgstr "el nodo actual"
 
 msgid "the current run"
 msgstr "la carrera actual"
@@ -772,10 +766,8 @@ msgstr "el idioma del contacto como código ISO de 3 letras"
 msgid "the last child run"
 msgstr "el último niño corre"
 
-#, fuzzy
-#| msgid "the creation date of the contact"
 msgid "the last seen date of the contact"
-msgstr "la fecha de creación del contacto"
+msgstr "la fecha de última vista del contacto"
 
 msgid "the localized category of the result"
 msgstr "la categoría localizada del resultado"
@@ -804,13 +796,11 @@ msgstr "el nombre o URN"
 msgid "the numeric ID of the contact"
 msgstr "el ID numérico del contacto"
 
-#, fuzzy
-#| msgid "the keyword match if this is a keyword trigger"
 msgid "the origin of this session if this is a manual trigger"
-msgstr "la concordancia de palabra clave si se trata de un activador de palabra clave"
+msgstr "el origen de esta sesión si se trata de un activador manual"
 
 msgid "the parameters passed to the trigger"
-msgstr "los parámetros pasados al disparador"
+msgstr "los parámetros pasados al activador"
 
 msgid "the parent of the run"
 msgstr "el padre de la carrera"
@@ -840,15 +830,13 @@ msgid "the text part of the input"
 msgstr "la parte de texto de la entrada"
 
 msgid "the trigger that started this session"
-msgstr "el detonante que inició esta sesión"
+msgstr "el activador que inició esta sesión"
 
 msgid "the type of trigger that started this session"
-msgstr "el tipo de disparador que inició esta sesión"
+msgstr "el tipo de activador que inició esta sesión"
 
-#, fuzzy
-#| msgid "the keyword match if this is a keyword trigger"
 msgid "the user who started this session if this is a manual trigger"
-msgstr "la concordancia de palabra clave si se trata de un activador de palabra clave"
+msgstr "el usuario que inició esta sesión si se trata de un activador manual"
 
 msgid "the value"
 msgstr "el valor"
