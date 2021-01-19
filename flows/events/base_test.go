@@ -407,16 +407,6 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewIVRForwarded(
-				urns.URN("tel:+12345678900"),
-			),
-			`{
-				"type": "ivr_forwarded",
-				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"urn": "tel:+12345678900"
-			}`,
-		},
-		{
 			events.NewMsgWait(&timeout, hints.NewImageHint()),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
