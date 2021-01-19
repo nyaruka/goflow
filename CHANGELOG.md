@@ -1,3 +1,7 @@
+v0.110.2
+----------
+ * Remove forward_ivr action and ivr_forwarded event
+
 v0.110.1
 ----------
  * Spanish translations from transifex
