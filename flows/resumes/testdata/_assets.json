@@ -20,11 +20,7 @@
                     "router": {
                         "type": "switch",
                         "wait": {
-                            "type": "msg",
-                            "timeout": {
-                                "seconds": 600,
-                                "category_uuid": "1024833c-91aa-4873-a3b5-3bac1ef55812"
-                            }
+                            "type": "msg"
                         },
                         "result_name": "Favorite Color",
                         "categories": [
