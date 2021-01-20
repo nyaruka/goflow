@@ -233,7 +233,7 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 //   node:node -> the current node
 //   globals:globals -> the global values
 //   trigger:trigger -> the trigger that started this session
-//   resume:resume -> the last resume that resumed this session
+//   resume:resume -> the current resume that continued this session
 //
 // @context root
 func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
