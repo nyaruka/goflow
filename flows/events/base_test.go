@@ -423,6 +423,21 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewRedirectEnded(flows.RedirectResponseBusy),
+			`{
+				"type": "redirect_ended",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"response": "busy"
+			}`,
+		},
+		{
+			events.NewRedirectWait(),
+			`{
+				"type": "redirect_wait",
+				"created_on": "2018-10-18T14:20:30.000123456Z"
+			}`,
+		},
+		{
 			events.NewSessionTriggered(
 				assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
 				[]*assets.GroupReference{
