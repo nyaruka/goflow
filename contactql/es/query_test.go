@@ -15,7 +15,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/test"
 
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
