@@ -5,15 +5,12 @@ require (
 	github.com/antlr/antlr4 v0.0.0-20200701161529-3d9351f61e0f
 	github.com/blevesearch/segment v0.9.0
 	github.com/buger/jsonparser v1.0.0
-	github.com/fortytw2/leaktest v1.3.0 // indirect
 	github.com/go-mail/mail v2.3.1+incompatible
 	github.com/go-playground/universal-translator v0.17.0 // indirect
-	github.com/google/go-cmp v0.5.2 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
-	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/nyaruka/gocommon v1.7.1
 	github.com/nyaruka/phonenumbers v1.0.58
-	github.com/olivere/elastic v6.2.35+incompatible
+	github.com/olivere/elastic/v7 v7.0.22
 	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.1.0
 	github.com/shopspring/decimal v1.2.0
