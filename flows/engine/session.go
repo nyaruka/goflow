@@ -30,15 +30,16 @@ type session struct {
 	assets flows.SessionAssets
 
 	// state which is maintained between engine calls
-	uuid    flows.SessionUUID
-	type_   flows.FlowType
-	env     envs.Environment
-	trigger flows.Trigger
-	contact *flows.Contact
-	runs    []flows.FlowRun
-	status  flows.SessionStatus
-	wait    flows.ActivatedWait
-	input   flows.Input
+	uuid          flows.SessionUUID
+	type_         flows.FlowType
+	env           envs.Environment
+	trigger       flows.Trigger
+	currentResume flows.Resume
+	contact       *flows.Contact
+	runs          []flows.FlowRun
+	status        flows.SessionStatus
+	wait          flows.ActivatedWait
+	input         flows.Input
 
 	// state which is temporary to each call
 	batchStart bool
@@ -51,6 +52,7 @@ type session struct {
 
 func (s *session) Assets() flows.SessionAssets { return s.assets }
 func (s *session) Trigger() flows.Trigger      { return s.trigger }
+func (s *session) CurrentResume() flows.Resume { return s.currentResume }
 
 func (s *session) UUID() flows.SessionUUID { return s.uuid }
 
@@ -244,6 +246,7 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 	}
 	s.wait = nil
 	s.status = flows.SessionStatusActive
+	s.currentResume = resume
 
 	logEvent := func(e flows.Event) {
 		waitingRun.LogEvent(step, e)

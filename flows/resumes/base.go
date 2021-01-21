@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -69,6 +70,17 @@ func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
 
 	if run.Status() == flows.RunStatusWaiting {
 		run.SetStatus(flows.RunStatusActive)
+	}
+}
+
+// Context returns the properties available in expressions
+//
+//   type:text -> the type of resume that resumed this session
+//
+// @context resume
+func (r *baseResume) Context(env envs.Environment) map[string]types.XValue {
+	return map[string]types.XValue{
+		"type": types.NewXText(r.type_),
 	}
 }
 
