@@ -10,10 +10,12 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
@@ -154,4 +156,14 @@ func TestReadResume(t *testing.T) {
 	// error if we don't recognize action type
 	_, err = resumes.ReadResume(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+}
+
+func TestResumeContext(t *testing.T) {
+	env := envs.NewBuilder().Build()
+	msg := flows.NewMsgIn("605e6309-343b-4cac-8309-e1de4cadd7b5", urns.URN("tel:1234567890"), nil, "Hello", nil)
+	resume := resumes.NewMsg(env, nil, msg)
+
+	assert.Equal(t, map[string]types.XValue{
+		"type": types.NewXText("msg"),
+	}, resume.Context(env))
 }

@@ -340,3 +340,35 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	assert.Nil(t, session.Contact())
 	assert.Equal(t, defaultEnv, session.Environment()) // uses defaults
 }
+
+func TestTriggerContext(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	source, err := static.NewSource([]byte(assetsJSON))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
+
+	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+	contact.AddURN(urns.URN("tel:+12065551212"), nil)
+
+	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
+	trigger := triggers.NewBuilder(env, flow, contact).
+		Manual().
+		WithParams(params).
+		WithUser("bob@nyaruka.com").
+		WithOrigin("api").
+		AsBatch().
+		Build()
+
+	assert.Equal(t, map[string]types.XValue{
+		"type":    types.NewXText("manual"),
+		"params":  params,
+		"keyword": types.XTextEmpty,
+		"user":    types.NewXText("bob@nyaruka.com"),
+		"origin":  types.NewXText("api"),
+	}, trigger.Context(env))
+}
