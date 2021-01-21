@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -55,6 +56,10 @@ var initialWaitJSON = `{
 }`
 
 func TestMsgWait(t *testing.T) {
+	session, _, err := test.CreateTestVoiceSession("")
+	require.NoError(t, err)
+	run := session.Runs()[0]
+
 	// no timeout or media
 	wait := waits.NewMsgWait(nil, nil)
 	marshaled, _ := jsonx.Marshal(wait)
@@ -65,9 +70,32 @@ func TestMsgWait(t *testing.T) {
 		waits.NewTimeout(5, flows.CategoryUUID("63fca57d-5ef6-4afd-9bcd-7bdcf653cea8")),
 		hints.NewImageHint(),
 	)
-	marshaled, err := jsonx.Marshal(wait)
+
+	// test marsalling definition wait
+	marshaled, err = jsonx.Marshal(wait)
 	require.NoError(t, err)
 	assert.Equal(t, `{"type":"msg","timeout":{"seconds":5,"category_uuid":"63fca57d-5ef6-4afd-9bcd-7bdcf653cea8"},"hint":{"type":"image"}}`, string(marshaled))
+
+	// try activating the wait
+	log := test.NewEventLog()
+	activated := wait.Begin(run, log.Log)
+
+	assert.Equal(t, "msg", activated.Type())
+	assert.Equal(t, 1, len(log.Events))
+	assert.Equal(t, "msg_wait", log.Events[0].Type())
+
+	// test marsalling activated wait
+	marshaled, err = jsonx.Marshal(activated)
+	assert.NoError(t, err)
+	assert.Equal(t, `{"type":"msg","timeout_seconds":5,"hint":{"type":"image"}}`, string(marshaled))
+
+	// try to end with incorrect resume type
+	err = wait.End(resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusBusy, 0)))
+	assert.EqualError(t, err, "can't end a wait of type 'msg' with a resume of type 'dial'")
+
+	// try to end with timeout resume type
+	err = wait.End(resumes.NewWaitTimeout(nil, nil))
+	assert.NoError(t, err)
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {

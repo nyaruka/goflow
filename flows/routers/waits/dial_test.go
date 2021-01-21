@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/test"
 
@@ -41,6 +43,14 @@ func TestDialWait(t *testing.T) {
 	marshaled, err = jsonx.Marshal(activated)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"dial","urn":"tel:+593979123456"}`, string(marshaled))
+
+	// try to end with incorrect resume type
+	err = wait.End(resumes.NewWaitTimeout(nil, nil))
+	assert.EqualError(t, err, "can't end a wait of type 'dial' with a resume of type 'wait_timeout'")
+
+	// try to end with dial resume type
+	err = wait.End(resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusAnswered, 5)))
+	assert.NoError(t, err)
 
 	// try when wait has expression error but still generates valid tel URN
 	wait, err = waits.ReadWait([]byte(`{"type": "dial", "phone": "+593979123456@(1 / 0)"}`))

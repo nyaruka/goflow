@@ -27,7 +27,7 @@ const (
 
 // Dial represents a dialed call or attempt to dial a phone number
 type Dial struct {
-	Status   DialStatus `json:"status" validate:"required"`
+	Status   DialStatus `json:"status" validate:"required,dial_status"`
 	Duration int        `json:"duration"`
 }
 
