@@ -73,15 +73,34 @@ func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
 	}
 }
 
+//------------------------------------------------------------------------------------------
+// Expressions context
+//------------------------------------------------------------------------------------------
+
+// Context is the schema of trigger objects in the context, across all types
+type Context struct {
+	type_ string
+	dial  types.XValue
+}
+
+func (c *Context) asMap() map[string]types.XValue {
+	return map[string]types.XValue{
+		"type": types.NewXText(c.type_),
+		"dial": c.dial,
+	}
+}
+
+func (r *baseResume) context() *Context {
+	return &Context{type_: r.type_}
+}
+
 // Context returns the properties available in expressions
 //
 //   type:text -> the type of resume that resumed this session
 //
 // @context resume
 func (r *baseResume) Context(env envs.Environment) map[string]types.XValue {
-	return map[string]types.XValue{
-		"type": types.NewXText(r.type_),
-	}
+	return r.context().asMap()
 }
 
 //------------------------------------------------------------------------------------------

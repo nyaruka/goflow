@@ -133,9 +133,9 @@ func readActivatedDialWait(data json.RawMessage) (flows.ActivatedWait, error) {
 
 // MarshalJSON marshals this wait into JSON
 func (w *ActivatedDialWait) MarshalJSON() ([]byte, error) {
-	e := &baseActivatedWaitEnvelope{}
+	e := &activatedDialWaitEnvelope{URN: w.urn}
 
-	if err := w.marshal(e); err != nil {
+	if err := w.marshal(&e.baseActivatedWaitEnvelope); err != nil {
 		return nil, err
 	}
 

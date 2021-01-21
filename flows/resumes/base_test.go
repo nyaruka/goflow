@@ -158,10 +158,21 @@ func TestReadResume(t *testing.T) {
 
 func TestResumeContext(t *testing.T) {
 	env := envs.NewBuilder().Build()
-	msg := flows.NewMsgIn("605e6309-343b-4cac-8309-e1de4cadd7b5", urns.URN("tel:1234567890"), nil, "Hello", nil)
-	resume := resumes.NewMsg(env, nil, msg)
+
+	var resume flows.Resume = resumes.NewMsg(
+		env,
+		nil,
+		flows.NewMsgIn("605e6309-343b-4cac-8309-e1de4cadd7b5", urns.URN("tel:1234567890"), nil, "Hello", nil),
+	)
 
 	assert.Equal(t, map[string]types.XValue{
 		"type": types.NewXText("msg"),
+		"dial": nil,
 	}, resume.Context(env))
+
+	resume = resumes.NewDial(env, nil, flows.NewDial(flows.DialStatusNoAnswer, 5))
+	context := resume.Context(env)
+
+	assert.Equal(t, types.NewXText("dial"), context["type"])
+	assert.NotNil(t, context["dial"])
 }

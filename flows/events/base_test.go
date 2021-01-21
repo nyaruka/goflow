@@ -423,7 +423,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewDialEnded(&flows.Dial{Status: flows.DialStatusBusy}),
+			events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0)),
 			`{
 				"type": "dial_ended",
 				"created_on": "2018-10-18T14:20:30.000123456Z",

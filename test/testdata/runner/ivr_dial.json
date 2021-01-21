@@ -65,7 +65,8 @@
                                 ],
                                 "category_uuid": "7c837517-621b-46c6-94e0-5e03699ee67e"
                             }
-                        ]
+                        ],
+                        "result_name": "Redirect"
                     },
                     "exits": [
                         {
@@ -82,6 +83,20 @@
                         }
                     ]
                 }
+            ]
+        }
+    ],
+    "channels": [
+        {
+            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1",
+            "name": "Twilio",
+            "address": "235326346",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "call",
+                "answer"
             ]
         }
     ]

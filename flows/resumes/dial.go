@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -49,6 +50,13 @@ func (r *DialResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
 	logEvent(events.NewDialEnded(r.dial))
 
 	r.baseResume.Apply(run, logEvent)
+}
+
+// Context for dial resumes additionally exposes the dial object
+func (r *DialResume) Context(env envs.Environment) map[string]types.XValue {
+	c := r.context()
+	c.dial = flows.Context(env, r.dial)
+	return c.asMap()
 }
 
 var _ flows.Resume = (*DialResume)(nil)
