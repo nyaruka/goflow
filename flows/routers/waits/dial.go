@@ -43,10 +43,9 @@ func (w *DialWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.Activ
 	phone, err := run.EvaluateTemplate(w.phone)
 	if err != nil {
 		log(events.NewError(err))
-		return nil
 	}
 
-	urn, err := urns.NewTelURNForCountry(phone, string(run.Contact().Country()))
+	urn, err := urns.NewTelURNForCountry(phone, string(run.Environment().DefaultCountry()))
 	if err != nil {
 		log(events.NewError(err))
 		return nil

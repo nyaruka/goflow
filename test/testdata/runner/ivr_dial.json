@@ -14,7 +14,7 @@
                         "type": "switch",
                         "wait": {
                             "type": "dial",
-                            "phone": "0979123456"
+                            "phone": "@fields.supervisor_phone"
                         },
                         "categories": [
                             {
@@ -39,7 +39,7 @@
                             }
                         ],
                         "default_category_uuid": "9f3cd249-c1be-4fe7-9503-e2bf2b988536",
-                        "operand": "@resume.dial.status",
+                        "operand": "@(default(resume.dial.status, \"\"))",
                         "cases": [
                             {
                                 "uuid": "88383f34-456d-4c25-a55a-2f8e55d9f9cc",
@@ -98,6 +98,14 @@
                 "call",
                 "answer"
             ]
+        }
+    ],
+    "fields": [
+        {
+            "uuid": "f9589901-27b6-4e4e-a2e1-18fac6b28163",
+            "key": "supervisor_phone",
+            "name": "Supevisor Phone",
+            "type": "text"
         }
     ]
 }

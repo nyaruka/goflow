@@ -50,6 +50,7 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 	tests := []struct {
 		Description   string              `json:"description"`
+		FlowUUID      assets.FlowUUID     `json:"flow_uuid"`
 		Wait          json.RawMessage     `json:"wait,omitempty"`
 		Resume        json.RawMessage     `json:"resume"`
 		ReadError     string              `json:"read_error,omitempty"`
@@ -89,14 +90,19 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
-		flow, err := sa.Flows().Get(assets.FlowUUID("ed352c17-191e-4e75-b366-1b2c54bb32d8"))
+		flow, err := sa.Flows().Get(tc.FlowUUID)
 		require.NoError(t, err)
 
 		// start a waiting session
 		env := envs.NewBuilder().Build()
 		eng := engine.NewBuilder().Build()
 		contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
-		trigger := triggers.NewBuilder(env, flow.Reference(), contact).Manual().Build()
+		tb := triggers.NewBuilder(env, flow.Reference(), contact).Manual()
+		if flow.Type() == flows.FlowTypeVoice {
+			channel := sa.Channels().Get("a78930fe-6a40-4aa8-99c3-e61b02f45ca1")
+			tb = tb.WithConnection(channel.Reference(), urns.URN("tel:+12065551212"))
+		}
+		trigger := tb.Build()
 		session, _, err := eng.NewSession(sa, trigger)
 		require.NoError(t, err)
 		require.Equal(t, flows.SessionStatusWaiting, session.Status())

@@ -6,12 +6,17 @@
                     "created_on": "2018-07-06T12:30:04.123456789Z",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "dial_wait",
-                    "urn": "tel:0979123456"
+                    "urn": "tel:+12065551212"
                 }
             ],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
+                    "fields": {
+                        "supervisor_phone": {
+                            "text": "(206)5551212"
+                        }
+                    },
                     "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
@@ -29,6 +34,7 @@
                         "eng"
                     ],
                     "date_format": "YYYY-MM-DD",
+                    "default_country": "US",
                     "max_value_length": 640,
                     "number_format": {
                         "decimal_symbol": ".",
@@ -46,7 +52,7 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "dial_wait",
-                                "urn": "tel:0979123456"
+                                "urn": "tel:+12065551212"
                             }
                         ],
                         "exited_on": null,
@@ -78,6 +84,11 @@
                     },
                     "contact": {
                         "created_on": "2018-01-01T12:00:00Z",
+                        "fields": {
+                            "supervisor_phone": {
+                                "text": "(206)5551212"
+                            }
+                        },
                         "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
@@ -95,6 +106,7 @@
                             "eng"
                         ],
                         "date_format": "YYYY-MM-DD",
+                        "default_country": "US",
                         "max_value_length": 640,
                         "number_format": {
                             "decimal_symbol": ".",
@@ -115,7 +127,7 @@
                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                 "wait": {
                     "type": "dial",
-                    "urn": "tel:0979123456"
+                    "urn": "tel:+12065551212"
                 }
             }
         },
@@ -143,6 +155,11 @@
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
+                    "fields": {
+                        "supervisor_phone": {
+                            "text": "(206)5551212"
+                        }
+                    },
                     "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
@@ -160,6 +177,7 @@
                         "eng"
                     ],
                     "date_format": "YYYY-MM-DD",
+                    "default_country": "US",
                     "max_value_length": 640,
                     "number_format": {
                         "decimal_symbol": ".",
@@ -177,7 +195,7 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "dial_wait",
-                                "urn": "tel:0979123456"
+                                "urn": "tel:+12065551212"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:07.123456789Z",
@@ -238,6 +256,11 @@
                     },
                     "contact": {
                         "created_on": "2018-01-01T12:00:00Z",
+                        "fields": {
+                            "supervisor_phone": {
+                                "text": "(206)5551212"
+                            }
+                        },
                         "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
@@ -255,6 +278,7 @@
                             "eng"
                         ],
                         "date_format": "YYYY-MM-DD",
+                        "default_country": "US",
                         "max_value_length": 640,
                         "number_format": {
                             "decimal_symbol": ".",
@@ -296,6 +320,11 @@
         },
         "contact": {
             "created_on": "2018-01-01T12:00:00Z",
+            "fields": {
+                "supervisor_phone": {
+                    "text": "(206)5551212"
+                }
+            },
             "id": 1234567,
             "language": "eng",
             "name": "Ben Haggerty",
@@ -313,6 +342,7 @@
                 "eng"
             ],
             "date_format": "YYYY-MM-DD",
+            "default_country": "US",
             "max_value_length": 640,
             "number_format": {
                 "decimal_symbol": ".",
