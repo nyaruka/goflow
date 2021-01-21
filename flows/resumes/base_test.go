@@ -50,12 +50,12 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 	tests := []struct {
 		Description   string              `json:"description"`
-		Wait          json.RawMessage     `json:"wait"`
+		Wait          json.RawMessage     `json:"wait,omitempty"`
 		Resume        json.RawMessage     `json:"resume"`
-		ReadError     string              `json:"read_error"`
-		Events        json.RawMessage     `json:"events"`
-		RunStatus     flows.RunStatus     `json:"run_status"`
-		SessionStatus flows.SessionStatus `json:"session_status"`
+		ReadError     string              `json:"read_error,omitempty"`
+		Events        json.RawMessage     `json:"events,omitempty"`
+		RunStatus     flows.RunStatus     `json:"run_status,omitempty"`
+		SessionStatus flows.SessionStatus `json:"session_status,omitempty"`
 	}{}
 
 	err = jsonx.Unmarshal(testFile, &tests)
@@ -74,8 +74,6 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		if tc.Wait != nil {
 			testAssetsJSON = test.JSONReplace(assetsJSON, []string{"flows", "[0]", "nodes", "[0]", "router", "wait"}, tc.Wait)
 		}
-
-		fmt.Println(string(testAssetsJSON))
 
 		// create session assets
 		sa, err := test.CreateSessionAssets(testAssetsJSON, "")
