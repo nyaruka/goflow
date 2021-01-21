@@ -423,18 +423,22 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewRedirectEnded(flows.RedirectResponseBusy),
+			events.NewDialEnded(&flows.Dial{Status: flows.DialStatusBusy}),
 			`{
-				"type": "redirect_ended",
+				"type": "dial_ended",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"response": "busy"
+				"dial": {
+					"status": "busy",
+					"duration": 0
+				}
 			}`,
 		},
 		{
-			events.NewRedirectWait(),
+			events.NewDialWait(urns.URN("tel:+1234567890")),
 			`{
-				"type": "redirect_wait",
-				"created_on": "2018-10-18T14:20:30.000123456Z"
+				"type": "dial_wait",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"urn": "tel:+1234567890"
 			}`,
 		},
 		{

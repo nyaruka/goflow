@@ -446,14 +446,3 @@ type Issue interface {
 	Language() envs.Language
 	Description() string
 }
-
-// RedirectResponse is the type for different responses to a redirect
-type RedirectResponse string
-
-// possible redirect response types
-const (
-	RedirectResponseAnswered RedirectResponse = "answered"
-	RedirectResponseNoAnswer RedirectResponse = "no_answer"
-	RedirectResponseBusy     RedirectResponse = "busy"
-	RedirectResponseFailed   RedirectResponse = "failed"
-)

@@ -1,0 +1,10 @@
+[
+    {
+        "description": "dial field required",
+        "resume": {
+            "type": "dial",
+            "resumed_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "field 'dial' is required"
+    }
+]

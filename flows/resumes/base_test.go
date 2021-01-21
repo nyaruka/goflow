@@ -75,8 +75,6 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			testAssetsJSON = test.JSONReplace(assetsJSON, []string{"flows", "[0]", "nodes", "[0]", "router", "wait"}, tc.Wait)
 		}
 
-		fmt.Println(string(testAssetsJSON))
-
 		// create session assets
 		sa, err := test.CreateSessionAssets(testAssetsJSON, "")
 		require.NoError(t, err, "unable to create session assets in %s", testName)
