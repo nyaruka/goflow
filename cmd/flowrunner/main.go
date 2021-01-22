@@ -211,100 +211,106 @@ func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
 
 func printEvents(log []flows.Event, out io.Writer) {
 	for _, event := range log {
-		var msg string
-		switch typed := event.(type) {
-		case *events.BroadcastCreatedEvent:
-			text := typed.Translations[typed.BaseLanguage].Text
-			msg = fmt.Sprintf("🔉 broadcasted '%s' to ...", text)
-		case *events.ServiceCalledEvent:
-			switch typed.Service {
-			case "classifier":
-				msg = fmt.Sprintf("👁️‍🗨️ NLU classifier '%s' called", typed.Classifier.Name)
-			}
-		case *events.ContactFieldChangedEvent:
-			var action string
-			if typed.Value != nil {
-				action = fmt.Sprintf("changed to '%s'", typed.Value.Text.Native())
-			} else {
-				action = "cleared"
-			}
-			msg = fmt.Sprintf("✏️ field '%s' %s", typed.Field.Key, action)
-		case *events.ContactGroupsChangedEvent:
-			msgs := make([]string, 0)
-			if len(typed.GroupsAdded) > 0 {
-				groups := make([]string, len(typed.GroupsAdded))
-				for i, group := range typed.GroupsAdded {
-					groups[i] = fmt.Sprintf("'%s'", group.Name)
-				}
-				msgs = append(msgs, "added to "+strings.Join(groups, ", "))
-			}
-			if len(typed.GroupsRemoved) > 0 {
-				groups := make([]string, len(typed.GroupsRemoved))
-				for i, group := range typed.GroupsRemoved {
-					groups[i] = fmt.Sprintf("'%s'", group.Name)
-				}
-				msgs = append(msgs, "removed from "+strings.Join(groups, ", "))
-			}
-			msg = fmt.Sprintf("👪 %s", strings.Join(msgs, ", "))
-		case *events.ContactLanguageChangedEvent:
-			msg = fmt.Sprintf("🌐 language changed to '%s'", typed.Language)
-		case *events.ContactNameChangedEvent:
-			msg = fmt.Sprintf("📛 name changed to '%s'", typed.Name)
-		case *events.ContactRefreshedEvent:
-			msg = "👤 contact refreshed on resume"
-		case *events.ContactTimezoneChangedEvent:
-			msg = fmt.Sprintf("🕑 timezone changed to '%s'", typed.Timezone)
-		case *events.DialWaitEvent:
-			msg = fmt.Sprintf("⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...")
-		case *events.DialEndedEvent:
-			msg = fmt.Sprintf("☎️ dial ended with \"%s\"", typed.Dial.Status)
-		case *events.EmailSentEvent:
-			msg = fmt.Sprintf("✉️ email sent with subject '%s'", typed.Subject)
-		case *events.EnvironmentRefreshedEvent:
-			msg = "⚙️ environment refreshed on resume"
-		case *events.ErrorEvent:
-			msg = fmt.Sprintf("⚠️ %s", typed.Text)
-		case *events.FailureEvent:
-			msg = fmt.Sprintf("🛑 %s", typed.Text)
-		case *events.FlowEnteredEvent:
-			msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
-		case *events.InputLabelsAddedEvent:
-			labels := make([]string, len(typed.Labels))
-			for i, label := range typed.Labels {
-				labels[i] = fmt.Sprintf("'%s'", label.Name)
-			}
-			msg = fmt.Sprintf("🏷️ labeled with %s", strings.Join(labels, ", "))
-		case *events.IVRCreatedEvent:
-			msg = fmt.Sprintf("📞 IVR created \"%s\"", typed.Msg.Text())
-		case *events.MsgCreatedEvent:
-			msg = fmt.Sprintf("💬 message created \"%s\"", typed.Msg.Text())
-		case *events.MsgReceivedEvent:
-			msg = fmt.Sprintf("📥 message received \"%s\"", typed.Msg.Text())
-		case *events.MsgWaitEvent:
-			if typed.TimeoutSeconds != nil {
-				msg = fmt.Sprintf("⏳ waiting for message (%d sec timeout, type /timeout to simulate)...", *typed.TimeoutSeconds)
-			} else {
-				msg = "⏳ waiting for message..."
-			}
-		case *events.RunExpiredEvent:
-			msg = "📆 exiting due to expiration"
-		case *events.RunResultChangedEvent:
-			msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
-		case *events.SessionTriggeredEvent:
-			msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
-		case *events.TicketOpenedEvent:
-			msg = fmt.Sprintf("🎟️ ticket opened with subject \"%s\"", typed.Ticket.Subject)
-		case *events.WaitTimedOutEvent:
-			msg = "⏲️ resuming due to wait timeout"
-		case *events.WebhookCalledEvent:
-			url := utils.TruncateEllipsis(typed.URL, 50)
-			msg = fmt.Sprintf("☁️ called %s", url)
-		default:
-			msg = fmt.Sprintf("❓ %s event", typed.Type())
-		}
-
-		fmt.Fprintln(out, msg)
+		PrintEvent(event, out)
+		fmt.Fprintln(out)
 	}
+}
+
+// PrintEvent prints out the given event to the given writer
+func PrintEvent(event flows.Event, out io.Writer) {
+	var msg string
+	switch typed := event.(type) {
+	case *events.BroadcastCreatedEvent:
+		text := typed.Translations[typed.BaseLanguage].Text
+		msg = fmt.Sprintf("🔉 broadcasted '%s' to ...", text)
+	case *events.ContactFieldChangedEvent:
+		var action string
+		if typed.Value != nil {
+			action = fmt.Sprintf("changed to '%s'", typed.Value.Text.Native())
+		} else {
+			action = "cleared"
+		}
+		msg = fmt.Sprintf("✏️ field '%s' %s", typed.Field.Key, action)
+	case *events.ContactGroupsChangedEvent:
+		msgs := make([]string, 0)
+		if len(typed.GroupsAdded) > 0 {
+			groups := make([]string, len(typed.GroupsAdded))
+			for i, group := range typed.GroupsAdded {
+				groups[i] = fmt.Sprintf("'%s'", group.Name)
+			}
+			msgs = append(msgs, "added to "+strings.Join(groups, ", "))
+		}
+		if len(typed.GroupsRemoved) > 0 {
+			groups := make([]string, len(typed.GroupsRemoved))
+			for i, group := range typed.GroupsRemoved {
+				groups[i] = fmt.Sprintf("'%s'", group.Name)
+			}
+			msgs = append(msgs, "removed from "+strings.Join(groups, ", "))
+		}
+		msg = fmt.Sprintf("👪 %s", strings.Join(msgs, ", "))
+	case *events.ContactLanguageChangedEvent:
+		msg = fmt.Sprintf("🌐 language changed to '%s'", typed.Language)
+	case *events.ContactNameChangedEvent:
+		msg = fmt.Sprintf("📛 name changed to '%s'", typed.Name)
+	case *events.ContactRefreshedEvent:
+		msg = "👤 contact refreshed on resume"
+	case *events.ContactTimezoneChangedEvent:
+		msg = fmt.Sprintf("🕑 timezone changed to '%s'", typed.Timezone)
+	case *events.DialEndedEvent:
+		msg = fmt.Sprintf("☎️ dial ended with '%s'", typed.Dial.Status)
+	case *events.DialWaitEvent:
+		msg = fmt.Sprintf("⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...")
+	case *events.EmailSentEvent:
+		msg = fmt.Sprintf("✉️ email sent with subject '%s'", typed.Subject)
+	case *events.EnvironmentRefreshedEvent:
+		msg = "⚙️ environment refreshed on resume"
+	case *events.ErrorEvent:
+		msg = fmt.Sprintf("⚠️ %s", typed.Text)
+	case *events.FailureEvent:
+		msg = fmt.Sprintf("🛑 %s", typed.Text)
+	case *events.FlowEnteredEvent:
+		msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
+	case *events.InputLabelsAddedEvent:
+		labels := make([]string, len(typed.Labels))
+		for i, label := range typed.Labels {
+			labels[i] = fmt.Sprintf("'%s'", label.Name)
+		}
+		msg = fmt.Sprintf("🏷️ labeled with %s", strings.Join(labels, ", "))
+	case *events.IVRCreatedEvent:
+		msg = fmt.Sprintf("📞 IVR created \"%s\"", typed.Msg.Text())
+	case *events.MsgCreatedEvent:
+		msg = fmt.Sprintf("💬 message created \"%s\"", typed.Msg.Text())
+	case *events.MsgReceivedEvent:
+		msg = fmt.Sprintf("📥 message received \"%s\"", typed.Msg.Text())
+	case *events.MsgWaitEvent:
+		if typed.TimeoutSeconds != nil {
+			msg = fmt.Sprintf("⏳ waiting for message (%d sec timeout, type /timeout to simulate)...", *typed.TimeoutSeconds)
+		} else {
+			msg = "⏳ waiting for message..."
+		}
+	case *events.RunExpiredEvent:
+		msg = "📆 exiting due to expiration"
+	case *events.RunResultChangedEvent:
+		msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
+	case *events.ServiceCalledEvent:
+		switch typed.Service {
+		case "classifier":
+			msg = fmt.Sprintf("👁️‍🗨️ NLU classifier '%s' called", typed.Classifier.Name)
+		}
+	case *events.SessionTriggeredEvent:
+		msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
+	case *events.TicketOpenedEvent:
+		msg = fmt.Sprintf("🎟️ ticket opened with subject \"%s\"", typed.Ticket.Subject)
+	case *events.WaitTimedOutEvent:
+		msg = "⏲️ resuming due to wait timeout"
+	case *events.WebhookCalledEvent:
+		url := utils.TruncateEllipsis(typed.URL, 50)
+		msg = fmt.Sprintf("☁️ called %s", url)
+	default:
+		msg = fmt.Sprintf("❓ %s event", typed.Type())
+	}
+
+	fmt.Fprint(out, msg)
 }
 
 // Repro describes the trigger and resumes needed to reproduce this session
