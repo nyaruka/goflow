@@ -1,10 +1,15 @@
 package main_test
 
 import (
+	"errors"
 	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/test"
 
 	main "github.com/nyaruka/goflow/cmd/flowrunner"
@@ -47,4 +52,39 @@ func TestRunFlow(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Contains(t, out.String(), "Starting flow 'Two Questions'")
+}
+
+func TestPrintEvent(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	sa := session.Assets()
+	flow, _ := sa.Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
+
+	tests := []struct {
+		event    flows.Event
+		expected string
+	}{
+		{events.NewBroadcastCreated(map[envs.Language]*events.BroadcastTranslation{"eng": {Text: "hello"}}, "eng", nil, nil, nil), `🔉 broadcasted 'hello' to ...`},
+		{events.NewContactFieldChanged(sa.Fields().Get("gender"), flows.NewValue(types.NewXText("M"), nil, nil, "", "", "")), `✏️ field 'gender' changed to 'M'`},
+		{events.NewContactFieldChanged(sa.Fields().Get("gender"), nil), `✏️ field 'gender' cleared`},
+		{events.NewContactGroupsChanged([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}, nil), `👪 added to 'Testers'`},
+		{events.NewContactGroupsChanged(nil, []*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}), `👪 removed from 'Testers'`},
+		{events.NewContactLanguageChanged("eng"), `🌐 language changed to 'eng'`},
+		{events.NewContactNameChanged("Jim"), `📛 name changed to 'Jim'`},
+		{events.NewContactRefreshed(session.Contact()), `👤 contact refreshed on resume`},
+		{events.NewContactTimezoneChanged(session.Environment().Timezone()), `🕑 timezone changed to 'America/Guayaquil'`},
+		{events.NewEmailSent([]string{"code@example.com"}, "Hi", "What up?"), `✉️ email sent with subject 'Hi'`},
+		{events.NewEnvironmentRefreshed(session.Environment()), `⚙️ environment refreshed on resume`},
+		{events.NewErrorf("this didn't work"), `⚠️ this didn't work`},
+		{events.NewFailure(errors.New("this really didn't work")), `🛑 this really didn't work`},
+		{events.NewFlowEntered(flow.Reference(), "", false), `↪️ entered flow 'Registration'`},
+		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", []*flows.Label{sa.Labels().FindByName("Spam")}), `🏷️ labeled with 'Spam'`},
+	}
+
+	for _, tc := range tests {
+		out := &strings.Builder{}
+		main.PrintEvent(tc.event, out)
+		assert.Equal(t, tc.expected, out.String(), "event print mismatch for event type '%s'", tc.event.Type())
+	}
 }
