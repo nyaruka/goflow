@@ -1,3 +1,8 @@
+v0.112.0
+----------
+ * Include resume and node in migration expression parsing
+ * Add dial types of waits and resumes
+
 v0.111.0
 ----------
  * Move to ElasticSearch v7 clients (backwards incompatible change)
