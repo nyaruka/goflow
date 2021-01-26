@@ -423,6 +423,25 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0)),
+			`{
+				"type": "dial_ended",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"dial": {
+					"status": "busy",
+					"duration": 0
+				}
+			}`,
+		},
+		{
+			events.NewDialWait(urns.URN("tel:+1234567890")),
+			`{
+				"type": "dial_wait",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"urn": "tel:+1234567890"
+			}`,
+		},
+		{
 			events.NewSessionTriggered(
 				assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
 				[]*assets.GroupReference{

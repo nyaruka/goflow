@@ -1,0 +1,111 @@
+{
+    "flows": [
+        {
+            "uuid": "90420633-8c92-4480-940a-382cdd6a33b9",
+            "name": "IVR Redirect",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "voice",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "dial",
+                            "phone": "@fields.supervisor_phone"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "71c901c4-b3a4-4a54-b63a-f0330e2988a9",
+                                "name": "Answered",
+                                "exit_uuid": "379c8d64-3ddf-4d37-9e54-ef29ebc1020d"
+                            },
+                            {
+                                "uuid": "50644828-da67-4602-a3ba-ab769d497040",
+                                "name": "No Answer",
+                                "exit_uuid": "131f10b1-797a-44d5-bfe7-528af7ea439c"
+                            },
+                            {
+                                "uuid": "7c837517-621b-46c6-94e0-5e03699ee67e",
+                                "name": "Busy",
+                                "exit_uuid": "52597931-6f0c-4fa3-9bdc-3c619664cb61"
+                            },
+                            {
+                                "uuid": "9f3cd249-c1be-4fe7-9503-e2bf2b988536",
+                                "name": "Failed",
+                                "exit_uuid": "fda29737-867c-45d7-89ab-f9c97a3f08cb"
+                            }
+                        ],
+                        "default_category_uuid": "9f3cd249-c1be-4fe7-9503-e2bf2b988536",
+                        "operand": "@(default(resume.dial.status, \"\"))",
+                        "cases": [
+                            {
+                                "uuid": "88383f34-456d-4c25-a55a-2f8e55d9f9cc",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "answered"
+                                ],
+                                "category_uuid": "71c901c4-b3a4-4a54-b63a-f0330e2988a9"
+                            },
+                            {
+                                "uuid": "7c97370d-b973-436f-bd74-235d29667524",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "no_answer"
+                                ],
+                                "category_uuid": "50644828-da67-4602-a3ba-ab769d497040"
+                            },
+                            {
+                                "uuid": "a4dfe15e-5cb3-4199-b45e-288ee4fed47c",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "busy"
+                                ],
+                                "category_uuid": "7c837517-621b-46c6-94e0-5e03699ee67e"
+                            }
+                        ],
+                        "result_name": "Redirect"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "379c8d64-3ddf-4d37-9e54-ef29ebc1020d"
+                        },
+                        {
+                            "uuid": "131f10b1-797a-44d5-bfe7-528af7ea439c"
+                        },
+                        {
+                            "uuid": "52597931-6f0c-4fa3-9bdc-3c619664cb61"
+                        },
+                        {
+                            "uuid": "fda29737-867c-45d7-89ab-f9c97a3f08cb"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "channels": [
+        {
+            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1",
+            "name": "Twilio",
+            "address": "235326346",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "call",
+                "answer"
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "uuid": "f9589901-27b6-4e4e-a2e1-18fac6b28163",
+            "key": "supervisor_phone",
+            "name": "Supevisor Phone",
+            "type": "text"
+        }
+    ]
+}

@@ -1,6 +1,7 @@
 [
     {
         "description": "msg required",
+        "flow_uuid": "",
         "resume": {
             "type": "msg",
             "resumed_on": "2000-01-01T00:00:00Z"
@@ -9,6 +10,7 @@
     },
     {
         "description": "msg received event created",
+        "flow_uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
         "wait": {
             "type": "msg",
             "timeout": {

@@ -1,6 +1,7 @@
 [
     {
         "description": "wait timed out event created and timeout category used",
+        "flow_uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
         "wait": {
             "type": "msg",
             "timeout": {
@@ -32,6 +33,7 @@
     },
     {
         "description": "can't resume if wait doesn't have a timeout",
+        "flow_uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
         "wait": {
             "type": "msg"
         },

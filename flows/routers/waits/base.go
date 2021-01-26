@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -52,18 +51,8 @@ func (w *baseWait) Type() string { return w.type_ }
 // Timeout returns the timeout of this wait or nil if no timeout is set
 func (w *baseWait) Timeout() flows.Timeout { return w.timeout }
 
-// End ends this wait or returns an error
-func (w *baseWait) End(resume flows.Resume) error {
-	switch resume.Type() {
-	case resumes.TypeRunExpiration:
-		// expired runs always end a wait
-		return nil
-	case resumes.TypeWaitTimeout:
-		if w.timeout == nil {
-			return errors.Errorf("can't end with timeout as wait doesn't have a timeout")
-		}
-	}
-	return nil
+func (w *baseWait) resumeTypeError(r flows.Resume) error {
+	return errors.Errorf("can't end a wait of type '%s' with a resume of type '%s'", w.type_, r.Type())
 }
 
 type baseActivatedWait struct {

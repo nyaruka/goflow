@@ -184,6 +184,9 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		// create our resume
 		if text == "/timeout" {
 			resume = resumes.NewWaitTimeout(nil, nil)
+		} else if strings.HasPrefix(text, "/dial") {
+			status := flows.DialStatus(strings.TrimSpace(text[5:]))
+			resume = resumes.NewDial(nil, nil, flows.NewDial(status, 10))
 		} else {
 			msg := createMessage(contact, scanner.Text())
 			resume = resumes.NewMsg(nil, nil, msg)
@@ -253,6 +256,10 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		msg = "👤 contact refreshed on resume"
 	case *events.ContactTimezoneChangedEvent:
 		msg = fmt.Sprintf("🕑 timezone changed to '%s'", typed.Timezone)
+	case *events.DialEndedEvent:
+		msg = fmt.Sprintf("☎️ dial ended with '%s'", typed.Dial.Status)
+	case *events.DialWaitEvent:
+		msg = fmt.Sprintf("⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...")
 	case *events.EmailSentEvent:
 		msg = fmt.Sprintf("✉️ email sent with subject '%s'", typed.Subject)
 	case *events.EnvironmentRefreshedEvent:
@@ -277,9 +284,9 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		msg = fmt.Sprintf("📥 message received \"%s\"", typed.Msg.Text())
 	case *events.MsgWaitEvent:
 		if typed.TimeoutSeconds != nil {
-			msg = fmt.Sprintf("⏳ waiting for message (%d sec timeout, type /timeout to simulate)....", *typed.TimeoutSeconds)
+			msg = fmt.Sprintf("⏳ waiting for message (%d sec timeout, type /timeout to simulate)...", *typed.TimeoutSeconds)
 		} else {
-			msg = "⏳ waiting for message...."
+			msg = "⏳ waiting for message..."
 		}
 	case *events.RunExpiredEvent:
 		msg = "📆 exiting due to expiration"

@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -33,12 +34,12 @@ func TestRunFlow(t *testing.T) {
 		"Starting flow 'Two Questions'....",
 		"---------------------------------------",
 		"💬 message created \"Hi Ben Haggerty! What is your favorite color? (red/blue)\"",
-		"⏳ waiting for message (600 sec timeout, type /timeout to simulate)....",
+		"⏳ waiting for message (600 sec timeout, type /timeout to simulate)...",
 		"📥 message received \"I like red\"",
 		"📈 run result 'Favorite Color' changed to 'red' with category 'Red'",
 		"🌐 language changed to 'fra'",
 		"💬 message created \"Red it is! What is your favorite soda? (pepsi/coke)\"",
-		"⏳ waiting for message....",
+		"⏳ waiting for message...",
 		"📥 message received \"pepsi\"",
 		"📈 run result 'Soda' changed to 'pepsi' with category 'Pepsi'",
 		"💬 message created \"Great, you are done!\"",
@@ -60,6 +61,7 @@ func TestPrintEvent(t *testing.T) {
 
 	sa := session.Assets()
 	flow, _ := sa.Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
+	timeout := 3
 
 	tests := []struct {
 		event    flows.Event
@@ -74,12 +76,16 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewContactNameChanged("Jim"), `📛 name changed to 'Jim'`},
 		{events.NewContactRefreshed(session.Contact()), `👤 contact refreshed on resume`},
 		{events.NewContactTimezoneChanged(session.Environment().Timezone()), `🕑 timezone changed to 'America/Guayaquil'`},
+		{events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 3)), `☎️ dial ended with 'busy'`},
+		{events.NewDialWait(urns.URN(`tel:+1234567890`)), `⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...`},
 		{events.NewEmailSent([]string{"code@example.com"}, "Hi", "What up?"), `✉️ email sent with subject 'Hi'`},
 		{events.NewEnvironmentRefreshed(session.Environment()), `⚙️ environment refreshed on resume`},
 		{events.NewErrorf("this didn't work"), `⚠️ this didn't work`},
 		{events.NewFailure(errors.New("this really didn't work")), `🛑 this really didn't work`},
 		{events.NewFlowEntered(flow.Reference(), "", false), `↪️ entered flow 'Registration'`},
 		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", []*flows.Label{sa.Labels().FindByName("Spam")}), `🏷️ labeled with 'Spam'`},
+		{events.NewMsgWait(nil, nil), `⏳ waiting for message...`},
+		{events.NewMsgWait(&timeout, nil), `⏳ waiting for message (3 sec timeout, type /timeout to simulate)...`},
 	}
 
 	for _, tc := range tests {

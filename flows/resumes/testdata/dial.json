@@ -1,0 +1,49 @@
+[
+    {
+        "description": "dial field required",
+        "flow_uuid": "0af51032-1caa-40fe-9907-ab7c6af2bf01",
+        "resume": {
+            "type": "dial",
+            "resumed_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "field 'dial' is required"
+    },
+    {
+        "description": "dial ended event created",
+        "flow_uuid": "0af51032-1caa-40fe-9907-ab7c6af2bf01",
+        "wait": {
+            "type": "dial",
+            "phone": "(206)5551212"
+        },
+        "resume": {
+            "type": "dial",
+            "resumed_on": "2000-01-01T00:00:00Z",
+            "dial": {
+                "status": "answered",
+                "duration": 5
+            }
+        },
+        "events": [
+            {
+                "type": "dial_ended",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "dial": {
+                    "status": "answered",
+                    "duration": 5
+                }
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "name": "Redirect",
+                "value": "answered",
+                "category": "Success",
+                "input": "answered"
+            }
+        ],
+        "run_status": "completed",
+        "session_status": "completed"
+    }
+]
