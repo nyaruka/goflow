@@ -1,3 +1,7 @@
+v0.112.1
+----------
+ * Log error event and skip when attachment is longer than 2048 limit
+
 v0.112.0
 ----------
  * Include resume and node in migration expression parsing
