@@ -79,6 +79,10 @@ func NewActivatedDialWait(urn urns.URN) *ActivatedDialWait {
 	}
 }
 
+func (w *ActivatedDialWait) URN() urns.URN {
+	return w.urn
+}
+
 var _ flows.ActivatedWait = (*ActivatedDialWait)(nil)
 
 //------------------------------------------------------------------------------------------

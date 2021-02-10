@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
@@ -59,6 +60,7 @@ func TestDialWait(t *testing.T) {
 	activated = wait.Begin(run, log.Log)
 
 	assert.Equal(t, "dial", activated.Type())
+	assert.Equal(t, urns.URN("tel:+593979123456"), activated.(*waits.ActivatedDialWait).URN())
 	assert.Equal(t, 2, len(log.Events))
 	assert.Equal(t, "error", log.Events[0].Type())
 	assert.Equal(t, "dial_wait", log.Events[1].Type())
