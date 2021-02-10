@@ -1,3 +1,7 @@
+v0.112.2
+----------
+ * Add accessor for URN on ActivatedDialWait
+
 v0.112.1
 ----------
  * Log error event and skip when attachment is longer than 2048 limit
