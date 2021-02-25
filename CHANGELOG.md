@@ -1,3 +1,8 @@
+v0.113.0
+----------
+ * Don't blow up building context if node is null
+ * Add contact language to resthook payload
+
 v0.112.2
 ----------
  * Add accessor for URN on ActivatedDialWait
