@@ -237,7 +237,7 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 //
 // @context root
 func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
-	var urns, fields types.XValue
+	var urns, fields, node types.XValue
 	if r.Contact() != nil {
 		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
 		fields = flows.Context(env, r.Contact().Fields())
@@ -245,6 +245,11 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 
 	var child = newRelatedRunContext(r.Session().GetCurrentChild(r))
 	var parent = newRelatedRunContext(r.Parent())
+
+	_, n, _ := r.PathLocation()
+	if n != nil {
+		node = flows.ContextFunc(env, r.nodeContext)
+	}
 
 	return map[string]types.XValue{
 		// the available runs
@@ -264,7 +269,7 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 		"input":        flows.Context(env, r.Session().Input()),
 		"globals":      flows.Context(env, r.Session().Assets().Globals()),
 		"webhook":      r.webhook,
-		"node":         flows.ContextFunc(env, r.nodeContext),
+		"node":         node,
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
 }
