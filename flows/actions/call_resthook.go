@@ -13,7 +13,7 @@ import (
 
 // ResthookPayload is the POST payload used by resthooks
 const ResthookPayload = `@(json(object(
-  "contact", object("uuid", contact.uuid, "name", contact.name, "urn", contact.urn),
+  "contact", object("uuid", contact.uuid, "name", contact.name, "urn", contact.urn, "language", contact.language),
   "flow", run.flow,
   "path", run.path,
   "results", foreach_value(results, extract_object, "category", "category_localized", "created_on", "input", "name", "node_uuid", "value"),
