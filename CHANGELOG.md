@@ -1,3 +1,7 @@
+v0.113.1
+----------
+ * Update Spanish locale and gocommon dependency
+
 v0.113.0
 ----------
  * Don't blow up building context if node is null
