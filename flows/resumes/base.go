@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -70,6 +71,36 @@ func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
 	if run.Status() == flows.RunStatusWaiting {
 		run.SetStatus(flows.RunStatusActive)
 	}
+}
+
+//------------------------------------------------------------------------------------------
+// Expressions context
+//------------------------------------------------------------------------------------------
+
+// Context is the schema of trigger objects in the context, across all types
+type Context struct {
+	type_ string
+	dial  types.XValue
+}
+
+func (c *Context) asMap() map[string]types.XValue {
+	return map[string]types.XValue{
+		"type": types.NewXText(c.type_),
+		"dial": c.dial,
+	}
+}
+
+func (r *baseResume) context() *Context {
+	return &Context{type_: r.type_}
+}
+
+// Context returns the properties available in expressions
+//
+//   type:text -> the type of resume that resumed this session
+//
+// @context resume
+func (r *baseResume) Context(env envs.Environment) map[string]types.XValue {
+	return r.context().asMap()
 }
 
 //------------------------------------------------------------------------------------------

@@ -82,7 +82,6 @@ func TestTemplatePaths(t *testing.T) {
 		"$.nodes[*].actions[@.type=\"call_webhook\"].body",
 		"$.nodes[*].actions[@.type=\"call_webhook\"].headers[*]",
 		"$.nodes[*].actions[@.type=\"call_webhook\"].url",
-		"$.nodes[*].actions[@.type=\"forward_ivr\"].phone",
 		"$.nodes[*].actions[@.type=\"open_ticket\"].body",
 		"$.nodes[*].actions[@.type=\"open_ticket\"].subject",
 		"$.nodes[*].actions[@.type=\"play_audio\"].audio_url",

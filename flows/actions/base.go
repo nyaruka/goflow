@@ -23,6 +23,9 @@ import (
 // max number of bytes to be saved to extra on a result
 const resultExtraMaxBytes = 10000
 
+// max length of a message attachment (type:url)
+const maxAttachmentLength = 2048
+
 // common category names
 const (
 	CategorySuccess = "Success"
@@ -94,6 +97,10 @@ func (a *baseAction) evaluateMessage(run flows.FlowRun, languages []envs.Languag
 		}
 		if evaluatedAttachment == "" {
 			logEvent(events.NewErrorf("attachment text evaluated to empty string, skipping"))
+			continue
+		}
+		if len(evaluatedAttachment) > maxAttachmentLength {
+			logEvent(events.NewErrorf("evaluated attachment is longer than %d limit, skipping", maxAttachmentLength))
 			continue
 		}
 		evaluatedAttachments = append(evaluatedAttachments, utils.Attachment(evaluatedAttachment))

@@ -71,12 +71,16 @@ func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.Activa
 
 // End ends this wait or returns an error
 func (w *MsgWait) End(resume flows.Resume) error {
-	// if we have a message we can definitely resume
-	if resume.Type() == resumes.TypeMsg {
+	switch resume.Type() {
+	case resumes.TypeMsg, resumes.TypeRunExpiration:
+		return nil
+	case resumes.TypeWaitTimeout:
+		if w.timeout == nil {
+			return errors.Errorf("can't end with timeout as wait doesn't have a timeout")
+		}
 		return nil
 	}
-
-	return w.baseWait.End(resume)
+	return w.resumeTypeError(resume)
 }
 
 var _ flows.Wait = (*MsgWait)(nil)

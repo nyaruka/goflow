@@ -182,6 +182,8 @@ func TestRunContext(t *testing.T) {
 		{`@parent.fields`, "Age: 33\nGender: Female"},
 		{`@node.uuid`, "c0781400-737f-4940-9a6c-1ec1c3df0325"},
 		{`@node.visit_count`, "1"},
+		{`@trigger.type`, "flow_action"},
+		{`@resume.type`, "msg"},
 		{
 			`@(json(contact.fields))`,
 			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`,

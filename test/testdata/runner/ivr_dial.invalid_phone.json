@@ -1,0 +1,207 @@
+{
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "text": "scheme or path cannot be empty",
+                    "type": "error"
+                },
+                {
+                    "category": "Failed",
+                    "created_on": "2018-07-06T12:30:08.123456789Z",
+                    "name": "Redirect",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "run_result_changed",
+                    "value": ""
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "fields": {
+                        "supervisor_phone": {
+                            "text": "-"
+                        }
+                    },
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_country": "US",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "text": "scheme or path cannot be empty",
+                                "type": "error"
+                            },
+                            {
+                                "category": "Failed",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "name": "Redirect",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "run_result_changed",
+                                "value": ""
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:10.123456789Z",
+                        "expires_on": null,
+                        "flow": {
+                            "name": "IVR Redirect",
+                            "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
+                        },
+                        "modified_on": "2018-07-06T12:30:10.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "fda29737-867c-45d7-89ab-f9c97a3f08cb",
+                                "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            }
+                        ],
+                        "results": {
+                            "redirect": {
+                                "category": "Failed",
+                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "name": "Redirect",
+                                "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
+                                "value": ""
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "connection": {
+                        "channel": {
+                            "name": "Twilio",
+                            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"
+                        },
+                        "urn": "tel:+12065551212"
+                    },
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "fields": {
+                            "supervisor_phone": {
+                                "text": "-"
+                            }
+                        },
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_country": "US",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "IVR Redirect",
+                        "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
+                    },
+                    "triggered_on": "2021-01-21T12:28:03.994124-05:00",
+                    "type": "manual"
+                },
+                "type": "voice",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            }
+        }
+    ],
+    "resumes": null,
+    "trigger": {
+        "connection": {
+            "channel": {
+                "name": "Twilio",
+                "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"
+            },
+            "urn": "tel:+12065551212"
+        },
+        "contact": {
+            "created_on": "2018-01-01T12:00:00Z",
+            "fields": {
+                "supervisor_phone": {
+                    "text": "-"
+                }
+            },
+            "id": 1234567,
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+            "allowed_languages": [
+                "eng"
+            ],
+            "date_format": "YYYY-MM-DD",
+            "default_country": "US",
+            "max_value_length": 640,
+            "number_format": {
+                "decimal_symbol": ".",
+                "digit_grouping_symbol": ","
+            },
+            "redaction_policy": "none",
+            "time_format": "tt:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "IVR Redirect",
+            "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
+        },
+        "triggered_on": "2021-01-21T12:28:03.994124-05:00",
+        "type": "manual"
+    }
+}

@@ -28,7 +28,7 @@ _testmain.go
 
 debug
 .DS_Store
-docs/
+/docs
 
 fabric
 fabfile.*

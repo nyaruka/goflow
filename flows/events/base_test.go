@@ -407,16 +407,6 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewIVRForwarded(
-				urns.URN("tel:+12345678900"),
-			),
-			`{
-				"type": "ivr_forwarded",
-				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"urn": "tel:+12345678900"
-			}`,
-		},
-		{
 			events.NewMsgWait(&timeout, hints.NewImageHint()),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
@@ -430,6 +420,25 @@ func TestEventMarshaling(t *testing.T) {
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"type": "wait_timed_out"
+			}`,
+		},
+		{
+			events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0)),
+			`{
+				"type": "dial_ended",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"dial": {
+					"status": "busy",
+					"duration": 0
+				}
+			}`,
+		},
+		{
+			events.NewDialWait(urns.URN("tel:+1234567890")),
+			`{
+				"type": "dial_wait",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"urn": "tel:+1234567890"
 			}`,
 		},
 		{

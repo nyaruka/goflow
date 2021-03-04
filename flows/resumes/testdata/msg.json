@@ -1,6 +1,7 @@
 [
     {
         "description": "msg required",
+        "flow_uuid": "",
         "resume": {
             "type": "msg",
             "resumed_on": "2000-01-01T00:00:00Z"
@@ -9,42 +10,50 @@
     },
     {
         "description": "msg received event created",
+        "flow_uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
+        "wait": {
+            "type": "msg",
+            "timeout": {
+                "seconds": 600,
+                "category_uuid": "1024833c-91aa-4873-a3b5-3bac1ef55812"
+            }
+        },
         "resume": {
             "type": "msg",
+            "resumed_on": "2000-01-01T00:00:00Z",
             "msg": {
                 "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                "urn": "tel:+12065551212",
                 "channel": {
                     "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
                     "name": "Twilio"
                 },
-                "urn": "tel:+12065551212",
                 "text": "red"
-            },
-            "resumed_on": "2000-01-01T00:00:00Z"
+            }
         },
         "events": [
             {
+                "type": "msg_received",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "msg": {
-                    "channel": {
-                        "name": "Twilio",
-                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf"
-                    },
-                    "text": "red",
-                    "urn": "tel:+12065551212",
-                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b"
-                },
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "type": "msg_received"
+                "msg": {
+                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                    "urn": "tel:+12065551212",
+                    "channel": {
+                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                        "name": "Twilio"
+                    },
+                    "text": "red"
+                }
             },
             {
-                "category": "Red",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "input": "red",
-                "name": "Favorite Color",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "type": "run_result_changed",
-                "value": "red"
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "name": "Favorite Color",
+                "value": "red",
+                "category": "Red",
+                "input": "red"
             }
         ],
         "run_status": "completed",

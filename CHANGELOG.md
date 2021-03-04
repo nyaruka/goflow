@@ -1,3 +1,42 @@
+v0.113.1
+----------
+ * Update Spanish locale and gocommon dependency
+
+v0.113.0
+----------
+ * Don't blow up building context if node is null
+ * Add contact language to resthook payload
+
+v0.112.2
+----------
+ * Add accessor for URN on ActivatedDialWait
+
+v0.112.1
+----------
+ * Log error event and skip when attachment is longer than 2048 limit
+
+v0.112.0
+----------
+ * Include resume and node in migration expression parsing
+ * Add dial types of waits and resumes
+
+v0.111.0
+----------
+ * Move to ElasticSearch v7 clients (backwards incompatible change)
+
+v0.110.2
+----------
+ * Remove forward_ivr action and ivr_forwarded event
+
+v0.110.1
+----------
+ * Spanish translations from transifex
+
+v0.110.0
+----------
+ * Combine the completion.json and functions.json editor support files into a single editor.json file
+ * Remove generated docs from repo
+
 v0.109.4
 ----------
  * Fix release workflow

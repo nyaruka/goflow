@@ -20,11 +20,7 @@
                     "router": {
                         "type": "switch",
                         "wait": {
-                            "type": "msg",
-                            "timeout": {
-                                "seconds": 600,
-                                "category_uuid": "1024833c-91aa-4873-a3b5-3bac1ef55812"
-                            }
+                            "type": "msg"
                         },
                         "result_name": "Favorite Color",
                         "categories": [
@@ -98,6 +94,73 @@
                         }
                     ]
                 }
+            ]
+        },
+        {
+            "uuid": "0af51032-1caa-40fe-9907-ab7c6af2bf01",
+            "name": "Resume Tester Voice",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "voice",
+            "revision": 123,
+            "nodes": [
+                {
+                    "uuid": "5e0d216f-5572-4362-b168-96dac9011eaf",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "dial",
+                            "phone": "(206)5551212"
+                        },
+                        "result_name": "Redirect",
+                        "categories": [
+                            {
+                                "uuid": "7209b54a-cc2c-478e-bd28-44148b30ac0d",
+                                "name": "Success",
+                                "exit_uuid": "6e727b31-5ea7-4188-95b8-691a0e9d0477"
+                            },
+                            {
+                                "uuid": "1d13546c-604c-4189-88d0-270f3e8349e2",
+                                "name": "Failure",
+                                "exit_uuid": "d08a5064-8939-4e16-ab0a-c529e0e147a1"
+                            }
+                        ],
+                        "default_category_uuid": "1d13546c-604c-4189-88d0-270f3e8349e2",
+                        "operand": "@(default(resume.dial.status, \"\"))",
+                        "cases": [
+                            {
+                                "uuid": "134fa919-4c03-4264-8423-d8306c4b1b14",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "answered"
+                                ],
+                                "category_uuid": "7209b54a-cc2c-478e-bd28-44148b30ac0d"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "6e727b31-5ea7-4188-95b8-691a0e9d0477"
+                        },
+                        {
+                            "uuid": "d08a5064-8939-4e16-ab0a-c529e0e147a1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "channels": [
+        {
+            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1",
+            "name": "Twilio",
+            "address": "235326346",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "call",
+                "answer"
             ]
         }
     ]

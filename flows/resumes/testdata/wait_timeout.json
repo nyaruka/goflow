@@ -1,26 +1,54 @@
 [
     {
         "description": "wait timed out event created and timeout category used",
+        "flow_uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
+        "wait": {
+            "type": "msg",
+            "timeout": {
+                "seconds": 600,
+                "category_uuid": "1024833c-91aa-4873-a3b5-3bac1ef55812"
+            }
+        },
         "resume": {
             "type": "wait_timeout",
             "resumed_on": "2000-01-01T00:00:00Z"
         },
         "events": [
             {
+                "type": "wait_timed_out",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "type": "wait_timed_out"
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
             },
             {
-                "category": "No Response",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "name": "Favorite Color",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "type": "run_result_changed",
-                "value": "2018-10-18T14:20:30.000123Z"
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "name": "Favorite Color",
+                "value": "2018-10-18T14:20:30.000123Z",
+                "category": "No Response"
             }
         ],
         "run_status": "completed",
         "session_status": "completed"
+    },
+    {
+        "description": "can't resume if wait doesn't have a timeout",
+        "flow_uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
+        "wait": {
+            "type": "msg"
+        },
+        "resume": {
+            "type": "wait_timeout",
+            "resumed_on": "2000-01-01T00:00:00Z"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "text": "can't end with timeout as wait doesn't have a timeout"
+            }
+        ],
+        "run_status": "waiting",
+        "session_status": "waiting"
     }
 ]
