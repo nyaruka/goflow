@@ -1,3 +1,7 @@
+v0.113.2
+----------
+ * Add last missing translations for es and pt-BR
+
 v0.113.1
 ----------
  * Update Spanish locale and gocommon dependency
