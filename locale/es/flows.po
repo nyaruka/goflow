@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-03-08 16:32-0500\n"
+"POT-Creation-Date: 2021-03-09 10:13-0500\n"
 "Last-Translator: Moy Moussan <moymoussan@gmail.com>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -715,10 +715,8 @@ msgstr "la entrada actual del contacto"
 msgid "the current node"
 msgstr "el nodo actual"
 
-#, fuzzy
-#| msgid "the trigger that started this session"
 msgid "the current resume that continued this session"
-msgstr "el activador que inició esta sesión"
+msgstr "la reanudación actual que continuó esta sesión"
 
 msgid "the current run"
 msgstr "la ejecución actual"
@@ -837,10 +835,8 @@ msgstr "la parte de texto de la entrada"
 msgid "the trigger that started this session"
 msgstr "el activador que inició esta sesión"
 
-#, fuzzy
-#| msgid "the type of trigger that started this session"
 msgid "the type of resume that resumed this session"
-msgstr "el tipo de activador que inició esta sesión"
+msgstr "el tipo de reanudación que reanudó esta sesión"
 
 msgid "the type of trigger that started this session"
 msgstr "el tipo de activador que inició esta sesión"

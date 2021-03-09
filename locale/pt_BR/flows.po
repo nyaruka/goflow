@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-03-08 16:32-0500\n"
+"POT-Creation-Date: 2021-03-09 10:13-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -717,10 +717,8 @@ msgstr "a entrada atual do contato"
 msgid "the current node"
 msgstr "o nó atual"
 
-#, fuzzy
-#| msgid "the trigger that started this session"
 msgid "the current resume that continued this session"
-msgstr "o gatilho que iniciou a sessão"
+msgstr "o resumo atual que continuou esta sessão"
 
 msgid "the current run"
 msgstr "a execução atual"
@@ -839,10 +837,8 @@ msgstr "a parte de texto da entrada"
 msgid "the trigger that started this session"
 msgstr "o gatilho que iniciou a sessão"
 
-#, fuzzy
-#| msgid "the type of trigger that started this session"
 msgid "the type of resume that resumed this session"
-msgstr "o tipo do gatilho que iniciou a sessão"
+msgstr "o tipo de resumo que resumiu esta sessão"
 
 msgid "the type of trigger that started this session"
 msgstr "o tipo do gatilho que iniciou a sessão"
