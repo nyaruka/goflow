@@ -180,11 +180,11 @@ func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 }
 
 func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
-	if r.Path() == nil {
+	if len(r.path) == 0 {
 		return nil, nil, errors.Errorf("run has no location as path is empty")
 	}
 
-	step := r.Path()[len(r.Path())-1]
+	step := r.path[len(r.path)-1]
 
 	// check that we still have a node for this step
 	node := r.Flow().GetNode(step.NodeUUID())
