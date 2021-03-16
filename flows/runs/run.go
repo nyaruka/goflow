@@ -187,7 +187,10 @@ func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
 	step := r.Path()[len(r.Path())-1]
 
 	// check that we still have a node for this step
-	node := r.Flow().GetNode(step.NodeUUID())
+	var node flows.Node
+	if r.Flow() != nil {
+		node = r.Flow().GetNode(step.NodeUUID())
+	}
 	if node == nil {
 		return nil, nil, errors.Errorf("run is located at a flow node that no longer exists")
 	}
