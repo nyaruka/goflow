@@ -1,3 +1,7 @@
+v0.113.3
+----------
+ * Fix resuming a parent run when flow is missing
+
 v0.113.2
 ----------
  * Add last missing translations for es and pt-BR
