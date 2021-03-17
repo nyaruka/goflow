@@ -338,7 +338,7 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 				childRun := currentRun
 				currentRun = parentRun
 
-				// as long as we didn't error, we can try to resume it
+				// as long as we didn't fail, we can try to resume it
 				if childRun.Status() != flows.RunStatusFailed {
 					// if flow for this run is a missing asset, we have a problem
 					if currentRun.Flow() == nil {
@@ -349,7 +349,7 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 						failure(sprint, currentRun, step, errors.Wrapf(err, "can't resume run as node no longer exists"))
 					}
 				} else {
-					// if we did error then that needs to bubble back up through the run hierarchy
+					// if we did fail then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
 					failure(sprint, currentRun, step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
 				}
