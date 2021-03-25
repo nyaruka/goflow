@@ -1,8 +1,0 @@
-POST /cgi-bin/shop/topup HTTP/1.1
-Host: airtime-api.dtone.com
-User-Agent: Go-http-client/1.1
-Content-Length: 155
-Content-Type: application/x-www-form-urlencoded
-Accept-Encoding: gzip
-
-action=msisdn_info&currency=USD&delivered_amount_info=1&destination_msisdn=%2B593970000001&key=1570634736123&login=joe&md5=922e0934bef1f4c5fa7ed60b20ba5085

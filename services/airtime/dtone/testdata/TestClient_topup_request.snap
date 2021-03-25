@@ -1,8 +1,0 @@
-POST /cgi-bin/shop/topup HTTP/1.1
-Host: airtime-api.dtone.com
-User-Agent: Go-http-client/1.1
-Content-Length: 166
-Content-Type: application/x-www-form-urlencoded
-Accept-Encoding: gzip
-
-action=topup&destination_msisdn=593999000002&key=1570634748123&login=joe&md5=767818e220f67be02cf92ec4952ec119&msisdn=593999000001&product=1&reserved_id=123455&skuid=2

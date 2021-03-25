@@ -8,22 +8,19 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
 type service struct {
 	client   *Client
-	currency string
 	redactor utils.Redactor
 }
 
 // NewService creates a new DTOne airtime service
-func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, login, token, currency string) flows.AirtimeService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, key, secret string) flows.AirtimeService {
 	return &service{
-		client:   NewClient(httpClient, httpRetries, login, token),
-		currency: currency,
-		redactor: utils.NewRedactor(flows.RedactionMask, token),
+		client:   NewClient(httpClient, httpRetries, key, secret),
+		redactor: utils.NewRedactor(flows.RedactionMask, secret),
 	}
 }
 
@@ -35,7 +32,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		ActualAmount:  decimal.Zero,
 	}
 
-	info, trace, err := s.client.MSISDNInfo(recipient.Path(), s.currency, "1")
+	/*info, trace, err := s.client.LookupMobileNumber(recipient.Path())
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
 	}
@@ -84,20 +81,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		return transfer, err
 	}
 
-	transfer.ActualAmount = topup.ActualProductSent
+	transfer.ActualAmount = topup.ActualProductSent*/
 
 	return transfer, nil
-}
-
-func httpLogStatus(t *httpx.Trace) flows.CallStatus {
-	// DTOne error responses use HTTP 200 OK but we consider them errors
-	if t.ResponseBody != nil {
-		base := &baseResponse{}
-		unmarshalResponse(t.ResponseBody, base)
-		if base.Error() != nil {
-			return flows.CallStatusResponseError
-		}
-	}
-
-	return flows.HTTPStatusFromCode(t)
 }
