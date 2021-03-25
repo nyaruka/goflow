@@ -9,6 +9,7 @@ import (
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/jsonx"
+
 	"github.com/shopspring/decimal"
 )
 
@@ -39,8 +40,8 @@ type errorResponse struct {
 
 func (e *errorResponse) Error() string {
 	msgs := make([]string, len(e.Errors))
-	for m := range e.Errors {
-		msgs[m] = e.Errors[m].Message
+	for i := range e.Errors {
+		msgs[i] = e.Errors[i].Message
 	}
 	return strings.Join(msgs, ", ")
 }
@@ -102,7 +103,56 @@ type Product struct {
 func (c *Client) Products(_type string, operatorID int) ([]*Product, *httpx.Trace, error) {
 	var response []*Product
 
-	trace, err := c.request("GET", fmt.Sprintf("products?type=%s&operator_id=%d", _type, operatorID), nil, &response)
+	// TODO endpoint could return more than 100 products in which case we need to page
+
+	trace, err := c.request("GET", fmt.Sprintf("products?type=%s&operator_id=%d&per_page=100", _type, operatorID), nil, &response)
+	if err != nil {
+		return nil, trace, err
+	}
+
+	return response, trace, nil
+}
+
+// Transaction is a product sent to a beneficiary
+type Transaction struct {
+	ID                         int64  `json:"id"`
+	ExternalID                 string `json:"external_id"`
+	CreationDate               string `json:"creation_date"`
+	ConfirmationExpirationDate string `json:"confirmation_expiration_date"`
+	ConfirmationDate           string `json:"confirmation_date"`
+	Status                     struct {
+		ID      int    `json:"id"`
+		Message string `json:"message"`
+		Class   struct {
+			ID      int    `json:"id"`
+			Message string `json:"message"`
+		}
+	} `json:"status"`
+}
+
+// TransactionSync see https://dvs-api-doc.dtone.com/#tag/Transactions
+func (c *Client) TransactionSync(externalID string, productID int, mobileNumber string) (*Transaction, *httpx.Trace, error) {
+	var response *Transaction
+
+	type creditPartyIdentifier struct {
+		MobileNumber string `json:"mobile_number"`
+	}
+
+	payload := &struct {
+		ExternalID            string                `json:"external_id"`
+		ProductID             int                   `json:"product_id"`
+		AutoConfirm           bool                  `json:"auto_confirm"`
+		CreditPartyIdentifier creditPartyIdentifier `json:"credit_party_identifier"`
+	}{
+		ExternalID:  externalID,
+		ProductID:   productID,
+		AutoConfirm: true,
+		CreditPartyIdentifier: creditPartyIdentifier{
+			MobileNumber: mobileNumber,
+		},
+	}
+
+	trace, err := c.request("POST", "transactions/sync", payload, &response)
 	if err != nil {
 		return nil, trace, err
 	}

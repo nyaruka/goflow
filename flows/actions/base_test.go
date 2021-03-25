@@ -227,7 +227,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				return test.NewTicketService(t), nil
 			}).
 			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
-				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil
+				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
 			}).
 			Build()
 

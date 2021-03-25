@@ -94,94 +94,129 @@
         }
     },
     {
-        "description": "Error and failed transfer if currency not configured",
+        "description": "Transfer and set result events if transfer made",
         "http_mocks": {
-            "https://airtime-api.dtone.com/cgi-bin/shop/topup": [
+            "https://dvs-api.dtone.com/v1/lookup/mobile-number/+12065551212": [
                 {
                     "status": 200,
-                    "body": "countryid=727\r\nproduct_list=1,2,3\r\nlocal_info_value_list=1.00,2.00,3.00\r\ndestination_currency=RWF\r\n"
-                }
-            ]
-        },
-        "action": {
-            "type": "transfer_airtime",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "amounts": {
-                "USD": 0.5
-            },
-            "result_name": "Reward Transfer"
-        },
-        "events": [
-            {
-                "type": "airtime_transferred",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "sender": "tel:+17036975131",
-                "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "currency": "RWF",
-                "desired_amount": 0,
-                "actual_amount": 0,
-                "http_logs": [
-                    {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
-                        "status": "success",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 158\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=msisdn_info&currency=RWF&delivered_amount_info=1&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 99\r\n\r\ncountryid=727\r\nproduct_list=1,2,3\r\nlocal_info_value_list=1.00,2.00,3.00\r\ndestination_currency=RWF\r\n",
-                        "created_on": "2018-10-18T14:20:30.000123456Z",
-                        "elapsed_ms": 0
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "no amount configured for transfers in RWF"
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "name": "Reward Transfer",
-                "value": "0",
-                "category": "Failure"
-            }
-        ],
-        "inspection": {
-            "dependencies": [],
-            "issues": [],
-            "results": [
-                {
-                    "key": "reward_transfer",
-                    "name": "Reward Transfer",
-                    "categories": [
-                        "Success",
-                        "Failure"
-                    ],
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    "body": [
+                        {
+                            "id": 1596,
+                            "name": "Claro Ecuador",
+                            "identified": true
+                        }
                     ]
                 }
             ],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
-        "description": "Transfer and set result events if transfer made",
-        "http_mocks": {
-            "https://airtime-api.dtone.com/cgi-bin/shop/topup": [
+            "https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100": [
                 {
                     "status": 200,
-                    "body": "countryid=727\r\nproduct_list=1,2,3\r\nlocal_info_value_list=1.00,2.00,3.00\r\ndestination_currency=RWF\r\n"
-                },
+                    "body": [
+                        {
+                            "description": "",
+                            "destination": {
+                                "amount": 3,
+                                "unit": "USD",
+                                "unit_type": "CURRENCY"
+                            },
+                            "id": 6035,
+                            "name": "3 USD",
+                            "operator": {
+                                "country": {
+                                    "iso_code": "ECU",
+                                    "name": "Ecuador",
+                                    "regions": null
+                                },
+                                "id": 1596,
+                                "name": "Claro Ecuador",
+                                "regions": null
+                            },
+                            "service": {
+                                "id": 1,
+                                "name": "Mobile"
+                            },
+                            "source": {
+                                "amount": 3.6,
+                                "unit": "USD",
+                                "unit_type": "CURRENCY"
+                            },
+                            "type": "FIXED_VALUE_RECHARGE"
+                        },
+                        {
+                            "description": "",
+                            "destination": {
+                                "amount": 6,
+                                "unit": "USD",
+                                "unit_type": "CURRENCY"
+                            },
+                            "id": 6036,
+                            "name": "6 USD",
+                            "operator": {
+                                "country": {
+                                    "iso_code": "ECU",
+                                    "name": "Ecuador",
+                                    "regions": null
+                                },
+                                "id": 1596,
+                                "name": "Claro Ecuador",
+                                "regions": null
+                            },
+                            "service": {
+                                "id": 1,
+                                "name": "Mobile"
+                            },
+                            "source": {
+                                "amount": 6.3,
+                                "unit": "USD",
+                                "unit_type": "CURRENCY"
+                            },
+                            "type": "FIXED_VALUE_RECHARGE"
+                        }
+                    ]
+                }
+            ],
+            "https://dvs-api.dtone.com/v1/transactions/sync": [
                 {
                     "status": 200,
-                    "body": "reserved_id=123456789\r\n"
-                },
-                {
-                    "status": 200,
-                    "body": "destination_currency=RWF\r\nactual_product_sent=500\r\n"
+                    "body": {
+                        "confirmation_date": "2021-03-24T20:05:06.111631000Z",
+                        "confirmation_expiration_date": "2021-03-24T21:05:05.883561000Z",
+                        "creation_date": "2021-03-24T20:05:05.883561000Z",
+                        "credit_party_identifier": {
+                            "mobile_number": "+593979123456"
+                        },
+                        "external_id": "EX12345",
+                        "id": 2237512891,
+                        "product": {
+                            "description": "",
+                            "id": 6035,
+                            "name": "3 USD",
+                            "operator": {
+                                "country": {
+                                    "iso_code": "ECU",
+                                    "name": "Ecuador",
+                                    "regions": null
+                                },
+                                "id": 1596,
+                                "name": "Claro Ecuador",
+                                "regions": null
+                            },
+                            "regions": null,
+                            "service": {
+                                "id": 1,
+                                "name": "Mobile"
+                            },
+                            "type": "FIXED_VALUE_RECHARGE"
+                        },
+                        "status": {
+                            "class": {
+                                "id": 2,
+                                "message": "CONFIRMED"
+                            },
+                            "id": 20000,
+                            "message": "CONFIRMED"
+                        }
+                    }
                 }
             ]
         },
@@ -190,7 +225,7 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "amounts": {
                 "RWF": 500,
-                "USD": 0.5
+                "USD": 3.5
             },
             "result_name": "Reward Transfer"
         },
@@ -201,31 +236,31 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "currency": "RWF",
-                "desired_amount": 500,
-                "actual_amount": 500,
+                "currency": "USD",
+                "desired_amount": 3.5,
+                "actual_amount": 3,
                 "http_logs": [
                     {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
+                        "url": "https://dvs-api.dtone.com/v1/lookup/mobile-number/+12065551212",
                         "status": "success",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 158\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=msisdn_info&currency=RWF&delivered_amount_info=1&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 99\r\n\r\ncountryid=727\r\nproduct_list=1,2,3\r\nlocal_info_value_list=1.00,2.00,3.00\r\ndestination_currency=RWF\r\n",
+                        "request": "GET /v1/lookup/mobile-number/+12065551212 HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 215\r\n\r\n[\n                        {\n                            \"id\": 1596,\n                            \"name\": \"Claro Ecuador\",\n                            \"identified\": true\n                        }\n                    ]",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
                     },
                     {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
+                        "url": "https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100",
                         "status": "success",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 86\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=reserve_id&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 23\r\n\r\nreserved_id=****************\r\n",
+                        "request": "GET /v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100 HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 2652\r\n\r\n[\n                        {\n                            \"description\": \"\",\n                            \"destination\": {\n                                \"amount\": 3,\n                                \"unit\": \"USD\",\n                                \"unit_type\": \"CURRENCY\"\n                            },\n                            \"id\": 6035,\n                            \"name\": \"3 USD\",\n                            \"operator\": {\n                                \"country\": {\n                                    \"iso_code\": \"ECU\",\n                                    \"name\": \"Ecuador\",\n                                    \"regions\": null\n                                },\n                                \"id\": 1596,\n                                \"name\": \"Claro Ecuador\",\n                                \"regions\": null\n                            },\n                            \"service\": {\n                                \"id\": 1,\n                                \"name\": \"Mobile\"\n                            },\n                            \"source\": {\n                                \"amount\": 3.6,\n                                \"unit\": \"USD\",\n                                \"unit_type\": \"CURRENCY\"\n                            },\n                            \"type\": \"FIXED_VALUE_RECHARGE\"\n                        },\n                        {\n                            \"description\": \"\",\n                            \"destination\": {\n                                \"amount\": 6,\n                                \"unit\": \"USD\",\n                                \"unit_type\": \"CURRENCY\"\n                            },\n                            \"id\": 6036,\n                            \"name\": \"6 USD\",\n                            \"operator\": {\n                                \"country\": {\n                                    \"iso_code\": \"ECU\",\n                                    \"name\": \"Ecuador\",\n                                    \"regions\": null\n                                },\n                                \"id\": 1596,\n                                \"name\": \"Claro Ecuador\",\n                                \"regions\": null\n                            },\n                            \"service\": {\n                                \"id\": 1,\n                                \"name\": \"Mobile\"\n                            },\n                            \"source\": {\n                                \"amount\": 6.3,\n                                \"unit\": \"USD\",\n                                \"unit_type\": \"CURRENCY\"\n                            },\n                            \"type\": \"FIXED_VALUE_RECHARGE\"\n                        }\n                    ]",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
                     },
                     {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
+                        "url": "https://dvs-api.dtone.com/v1/transactions/sync",
                         "status": "success",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 169\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=topup&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32&msisdn=%2B17036975131&product=3&reserved_id=****************",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 51\r\n\r\ndestination_currency=RWF\r\nactual_product_sent=500\r\n",
+                        "request": "POST /v1/transactions/sync HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 115\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"external_id\":\"\",\"product_id\":6035,\"auto_confirm\":true,\"credit_party_identifier\":{\"mobile_number\":\"+12065551212\"}}",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 1746\r\n\r\n{\n                        \"confirmation_date\": \"2021-03-24T20:05:06.111631000Z\",\n                        \"confirmation_expiration_date\": \"2021-03-24T21:05:05.883561000Z\",\n                        \"creation_date\": \"2021-03-24T20:05:05.883561000Z\",\n                        \"credit_party_identifier\": {\n                            \"mobile_number\": \"+593979123456\"\n                        },\n                        \"external_id\": \"EX12345\",\n                        \"id\": 2237512891,\n                        \"product\": {\n                            \"description\": \"\",\n                            \"id\": 6035,\n                            \"name\": \"3 USD\",\n                            \"operator\": {\n                                \"country\": {\n                                    \"iso_code\": \"ECU\",\n                                    \"name\": \"Ecuador\",\n                                    \"regions\": null\n                                },\n                                \"id\": 1596,\n                                \"name\": \"Claro Ecuador\",\n                                \"regions\": null\n                            },\n                            \"regions\": null,\n                            \"service\": {\n                                \"id\": 1,\n                                \"name\": \"Mobile\"\n                            },\n                            \"type\": \"FIXED_VALUE_RECHARGE\"\n                        },\n                        \"status\": {\n                            \"class\": {\n                                \"id\": 2,\n                                \"message\": \"CONFIRMED\"\n                            },\n                            \"id\": 20000,\n                            \"message\": \"CONFIRMED\"\n                        }\n                    }",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
                     }
@@ -236,7 +271,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Reward Transfer",
-                "value": "500",
+                "value": "3",
                 "category": "Success"
             }
         ],
@@ -261,12 +296,19 @@
         }
     },
     {
-        "description": "Transfer failed if MSDNInfo API request returns error response",
+        "description": "Transfer failed if lookup number API request returns error response",
         "http_mocks": {
-            "https://airtime-api.dtone.com/cgi-bin/shop/topup": [
+            "https://dvs-api.dtone.com/v1/lookup/mobile-number/+12065551212": [
                 {
-                    "status": 200,
-                    "body": "error_txt=Ooops\r\nerror_code=345\r\n"
+                    "status": 400,
+                    "body": {
+                        "errors": [
+                            {
+                                "code": 50000,
+                                "message": "that didn't work"
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -291,10 +333,10 @@
                 "actual_amount": 0,
                 "http_logs": [
                     {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
+                        "url": "https://dvs-api.dtone.com/v1/lookup/mobile-number/+12065551212",
                         "status": "response_error",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 158\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=msisdn_info&currency=RWF&delivered_amount_info=1&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 33\r\n\r\nerror_txt=Ooops\r\nerror_code=345\r\n",
+                        "request": "GET /v1/lookup/mobile-number/+12065551212 HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "response": "HTTP/1.0 400 Bad Request\r\nContent-Length: 254\r\n\r\n{\n                        \"errors\": [\n                            {\n                                \"code\": 50000,\n                                \"message\": \"that didn't work\"\n                            }\n                        ]\n                    }",
                         "created_on": "2018-10-18T14:20:30.000123456Z",
                         "elapsed_ms": 0
                     }
@@ -304,193 +346,7 @@
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "DTOne API request failed: Ooops (345)"
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "name": "Reward Transfer",
-                "value": "0",
-                "category": "Failure"
-            }
-        ],
-        "inspection": {
-            "dependencies": [],
-            "issues": [],
-            "results": [
-                {
-                    "key": "reward_transfer",
-                    "name": "Reward Transfer",
-                    "categories": [
-                        "Success",
-                        "Failure"
-                    ],
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
-                }
-            ],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
-        "description": "Transfer failed if reserve_id API request returns error response",
-        "http_mocks": {
-            "https://airtime-api.dtone.com/cgi-bin/shop/topup": [
-                {
-                    "status": 200,
-                    "body": "countryid=727\r\nproduct_list=1,2,3\r\nlocal_info_value_list=1.00,2.00,3.00\r\ndestination_currency=RWF\r\n"
-                },
-                {
-                    "status": 200,
-                    "body": "error_txt=Ooops\r\nerror_code=345\r\n"
-                }
-            ]
-        },
-        "action": {
-            "type": "transfer_airtime",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "amounts": {
-                "RWF": 500,
-                "USD": 0.5
-            },
-            "result_name": "Reward Transfer"
-        },
-        "events": [
-            {
-                "type": "airtime_transferred",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "sender": "tel:+17036975131",
-                "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "currency": "RWF",
-                "desired_amount": 500,
-                "actual_amount": 0,
-                "http_logs": [
-                    {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
-                        "status": "success",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 158\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=msisdn_info&currency=RWF&delivered_amount_info=1&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 99\r\n\r\ncountryid=727\r\nproduct_list=1,2,3\r\nlocal_info_value_list=1.00,2.00,3.00\r\ndestination_currency=RWF\r\n",
-                        "created_on": "2018-10-18T14:20:30.000123456Z",
-                        "elapsed_ms": 0
-                    },
-                    {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
-                        "status": "response_error",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 86\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=reserve_id&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 33\r\n\r\nerror_txt=Ooops\r\nerror_code=345\r\n",
-                        "created_on": "2018-10-18T14:20:30.000123456Z",
-                        "elapsed_ms": 0
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "DTOne API request failed: Ooops (345)"
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "name": "Reward Transfer",
-                "value": "0",
-                "category": "Failure"
-            }
-        ],
-        "inspection": {
-            "dependencies": [],
-            "issues": [],
-            "results": [
-                {
-                    "key": "reward_transfer",
-                    "name": "Reward Transfer",
-                    "categories": [
-                        "Success",
-                        "Failure"
-                    ],
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
-                }
-            ],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
-        "description": "Transfer failed if topup API request returns error response",
-        "http_mocks": {
-            "https://airtime-api.dtone.com/cgi-bin/shop/topup": [
-                {
-                    "status": 200,
-                    "body": "countryid=727\r\nproduct_list=1,2,3\r\nlocal_info_value_list=1.00,2.00,3.00\r\ndestination_currency=RWF\r\n"
-                },
-                {
-                    "status": 200,
-                    "body": "reserved_id=123456789\r\n"
-                },
-                {
-                    "status": 200,
-                    "body": "error_txt=Ooops\r\nerror_code=345\r\n"
-                }
-            ]
-        },
-        "action": {
-            "type": "transfer_airtime",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "amounts": {
-                "RWF": 500,
-                "USD": 0.5
-            },
-            "result_name": "Reward Transfer"
-        },
-        "events": [
-            {
-                "type": "airtime_transferred",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "sender": "tel:+17036975131",
-                "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "currency": "RWF",
-                "desired_amount": 500,
-                "actual_amount": 0,
-                "http_logs": [
-                    {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
-                        "status": "success",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 158\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=msisdn_info&currency=RWF&delivered_amount_info=1&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 99\r\n\r\ncountryid=727\r\nproduct_list=1,2,3\r\nlocal_info_value_list=1.00,2.00,3.00\r\ndestination_currency=RWF\r\n",
-                        "created_on": "2018-10-18T14:20:30.000123456Z",
-                        "elapsed_ms": 0
-                    },
-                    {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
-                        "status": "success",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 86\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=reserve_id&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 23\r\n\r\nreserved_id=****************\r\n",
-                        "created_on": "2018-10-18T14:20:30.000123456Z",
-                        "elapsed_ms": 0
-                    },
-                    {
-                        "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
-                        "status": "response_error",
-                        "request": "POST /cgi-bin/shop/topup HTTP/1.1\r\nHost: airtime-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 169\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept-Encoding: gzip\r\n\r\naction=topup&destination_msisdn=%2B12065551212&key=1539872430000&login=nyaruka&md5=86e8b91a88d1e3386273c86e5ec88d32&msisdn=%2B17036975131&product=3&reserved_id=****************",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 33\r\n\r\nerror_txt=Ooops\r\nerror_code=345\r\n",
-                        "created_on": "2018-10-18T14:20:30.000123456Z",
-                        "elapsed_ms": 0
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "DTOne API request failed: Ooops (345)"
+                "text": "number lookup failed: that didn't work"
             },
             {
                 "type": "run_result_changed",
