@@ -90,6 +90,8 @@ func TestServiceFailedTransfers(t *testing.T) {
 		"https://dvs-api.dtone.com/v1/lookup/mobile-number/+593979123456": {
 			httpx.MockConnectionError, // timeout
 			httpx.NewMockResponse(400, nil, errorResp(1005003, "Credit party mobile number is invalid")),
+			httpx.NewMockResponse(200, nil, `[]`), // no matches
+			httpx.NewMockResponse(200, nil, lookupNumberResponse),
 			httpx.NewMockResponse(200, nil, lookupNumberResponse),
 			httpx.NewMockResponse(200, nil, lookupNumberResponse),
 			httpx.NewMockResponse(200, nil, lookupNumberResponse),
@@ -98,8 +100,10 @@ func TestServiceFailedTransfers(t *testing.T) {
 			httpx.NewMockResponse(400, nil, errorResp(1003001, "Product is not available in your account")),
 			httpx.NewMockResponse(200, nil, `[]`), // no products
 			httpx.NewMockResponse(200, nil, productsResponse),
+			httpx.NewMockResponse(200, nil, productsResponse),
 		},
 		"https://dvs-api.dtone.com/v1/transactions/sync": {
+			httpx.NewMockResponse(400, nil, errorResp(1003001, "Something went wrong")),
 			httpx.NewMockResponse(200, nil, transactionRejectedResponse),
 		},
 	})
@@ -114,7 +118,7 @@ func TestServiceFailedTransfers(t *testing.T) {
 	httpLogger := &flows.HTTPLogger{}
 	amounts := map[string]decimal.Decimal{"USD": decimal.RequireFromString("3.5")}
 
-	// try when phone number lookup gives a conection error
+	// try when phone number lookup gives a connection error
 	transfer, err := svc.Transfer(session, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "number lookup failed: unable to connect to server")
 	assert.Equal(t, urns.URN("tel:+593979000000"), transfer.Sender)
@@ -127,6 +131,11 @@ func TestServiceFailedTransfers(t *testing.T) {
 	assert.EqualError(t, err, "number lookup failed: Credit party mobile number is invalid")
 	assert.NotNil(t, transfer)
 
+	// try when phone number lookup returns no matches
+	transfer, err = svc.Transfer(session, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	assert.EqualError(t, err, "unable to find operator for number +593979123456")
+	assert.NotNil(t, transfer)
+
 	// try when product fetch fails
 	transfer, err = svc.Transfer(session, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "product fetch failed: Product is not available in your account")
@@ -135,6 +144,11 @@ func TestServiceFailedTransfers(t *testing.T) {
 	// try when we can't find any suitable products
 	transfer, err = svc.Transfer(session, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "unable to find a suitable product for operator 'Claro Ecuador'")
+	assert.NotNil(t, transfer)
+
+	// try when transaction request errors
+	transfer, err = svc.Transfer(session, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	assert.EqualError(t, err, "transaction creation failed: Something went wrong")
 	assert.NotNil(t, transfer)
 
 	// try when transaction is rejected

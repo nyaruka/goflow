@@ -97,7 +97,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
 	if err != nil {
-		return transfer, err
+		return transfer, errors.Wrap(err, "transaction creation failed")
 	}
 
 	if tx.Status.Class.ID != 2 {
