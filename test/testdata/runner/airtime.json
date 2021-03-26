@@ -15,8 +15,8 @@
                             "type": "transfer_airtime",
                             "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                             "amounts": {
-                                "BRL": 2.5,
-                                "USD": 3
+                                "RWF": 5000,
+                                "USD": 3.5
                             },
                             "result_name": "Transfer"
                         }

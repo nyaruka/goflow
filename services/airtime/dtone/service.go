@@ -14,16 +14,14 @@ import (
 
 type service struct {
 	client   *Client
-	currency string
 	redactor utils.Redactor
 }
 
 // NewService creates a new DTOne airtime service
-func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, login, token, currency string) flows.AirtimeService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, key, secret string) flows.AirtimeService {
 	return &service{
-		client:   NewClient(httpClient, httpRetries, login, token),
-		currency: currency,
-		redactor: utils.NewRedactor(flows.RedactionMask, token),
+		client:   NewClient(httpClient, httpRetries, key, secret),
+		redactor: utils.NewRedactor(flows.RedactionMask, secret),
 	}
 }
 
@@ -35,69 +33,78 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		ActualAmount:  decimal.Zero,
 	}
 
-	info, trace, err := s.client.MSISDNInfo(recipient.Path(), s.currency, "1")
+	operators, trace, err := s.client.LookupMobileNumber(recipient.Path())
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
+		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
 	if err != nil {
-		return transfer, err
+		return transfer, errors.Wrap(err, "number lookup failed")
 	}
 
-	transfer.Currency = info.DestinationCurrency
-
-	// look up the amount to send in this currency
-	amount, hasAmount := amounts[transfer.Currency]
-	if !hasAmount {
-		return transfer, errors.Errorf("no amount configured for transfers in %s", transfer.Currency)
-	}
-
-	transfer.DesiredAmount = amount
-
-	// find the product closest to our desired amount
-	var useProduct string
-	useAmount := decimal.Zero
-	for p, product := range info.ProductList {
-		price := info.LocalInfoValueList[p]
-		if price.GreaterThan(useAmount) && price.LessThanOrEqual(amount) {
-			useProduct = product
-			useAmount = price
+	// look for an exact match
+	var operator *Operator
+	for _, op := range operators {
+		if op.Identified {
+			operator = op
+			break
 		}
 	}
-
-	if useAmount == decimal.Zero {
-		return transfer, errors.Errorf("amount requested is smaller than the minimum topup of %s %s", info.LocalInfoValueList[0].String(), info.DestinationCurrency)
+	if operator == nil {
+		return transfer, errors.Errorf("unable to find operator for number %s", recipient.Path())
 	}
 
-	reservedID, trace, err := s.client.ReserveID()
+	// fetch available products for this operator
+	products, trace, err := s.client.Products("FIXED_VALUE_RECHARGE", operator.ID)
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
+		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
 	if err != nil {
-		return transfer, err
+		return transfer, errors.Wrap(err, "product fetch failed")
 	}
 
-	topup, trace, err := s.client.Topup(reservedID.ReservedID, sender.Path(), recipient.Path(), useProduct, "")
+	// closest product for each currency we have a desired amount for
+	closestProducts := make(map[string]*Product, len(amounts))
+
+	for currency, desiredAmount := range amounts {
+		for _, product := range products {
+			if product.Destination.Unit == currency {
+				closest := closestProducts[currency]
+				prodAmount := product.Destination.Amount
+
+				if (closest == nil || prodAmount.GreaterThan(closest.Destination.Amount)) && prodAmount.LessThanOrEqual(desiredAmount) {
+					closestProducts[currency] = product
+				}
+			}
+		}
+	}
+	if len(closestProducts) == 0 {
+		return transfer, errors.Errorf("unable to find a suitable product for operator '%s'", operator.Name)
+	}
+
+	// it's possible we have more than one supported currency/product.. use any
+	var product *Product
+	for i := range closestProducts {
+		product = closestProducts[i]
+		break
+	}
+
+	transfer.Currency = product.Destination.Unit
+	transfer.DesiredAmount = amounts[transfer.Currency]
+
+	// request synchronous confirmed transaction for this product
+	tx, trace, err := s.client.TransactionSync("", product.ID, recipient.Path())
 	if trace != nil {
-		logHTTP(flows.NewHTTPLog(trace, httpLogStatus, s.redactor))
+		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
 	if err != nil {
-		return transfer, err
+		return transfer, errors.Wrap(err, "transaction creation failed")
 	}
 
-	transfer.ActualAmount = topup.ActualProductSent
+	if tx.Status.Class.ID != 2 {
+		return transfer, errors.Errorf("transaction to send product %d on operator %d ended with status %s", product.ID, operator.ID, tx.Status.Message)
+	}
+
+	transfer.ActualAmount = product.Destination.Amount
 
 	return transfer, nil
-}
-
-func httpLogStatus(t *httpx.Trace) flows.CallStatus {
-	// DTOne error responses use HTTP 200 OK but we consider them errors
-	if t.ResponseBody != nil {
-		base := &baseResponse{}
-		unmarshalResponse(t.ResponseBody, base)
-		if base.Error() != nil {
-			return flows.CallStatusResponseError
-		}
-	}
-
-	return flows.HTTPStatusFromCode(t)
 }

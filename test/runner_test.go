@@ -126,7 +126,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 			return newClassificationService(c), nil
 		}).
 		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
-			return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789", "RWF"), nil
+			return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
 		}).
 		Build()
 

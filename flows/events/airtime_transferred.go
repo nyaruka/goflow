@@ -26,10 +26,10 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //     "actual_amount": 100,
 //     "http_logs": [
 //       {
-//         "url": "https://airtime-api.dtone.com/cgi-bin/shop/topup",
+//         "url": "https://dvs-api.dtone.com/v1/transactions/sync",
 //         "status": "success",
-//         "request": "POST /topup HTTP/1.1\r\n\r\naction=ping",
-//         "response": "HTTP/1.1 200 OK\r\n\r\ninfo_txt=pong\r\n",
+//         "request": "POST /v1/transactions/sync HTTP/1.1\r\n\r\n{}",
+//         "response": "HTTP/1.1 200 OK\r\n\r\n{}",
 //         "created_on": "2006-01-02T15:04:05Z",
 //         "elapsed_ms": 123
 //       }

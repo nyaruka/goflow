@@ -1,0 +1,6 @@
+GET /v1/lookup/mobile-number/+593979123456 HTTP/1.1
+Host: dvs-api.dtone.com
+User-Agent: Go-http-client/1.1
+Authorization: Basic a2V5MTIzOnNlc2FtZQ==
+Accept-Encoding: gzip
+

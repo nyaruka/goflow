@@ -1,0 +1,6 @@
+GET /v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100 HTTP/1.1
+Host: dvs-api.dtone.com
+User-Agent: Go-http-client/1.1
+Authorization: Basic a2V5MTIzOnNlc2FtZQ==
+Accept-Encoding: gzip
+
