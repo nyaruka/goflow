@@ -118,7 +118,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		} else {
 			httpx.SetRequestor(httpx.DefaultRequestor)
 		}
-		smtpx.SetSender(smtpx.NewMockSender(tc.SMTPError))
+		if tc.SMTPError != "" {
+			smtpx.SetSender(smtpx.NewMockSender(errors.New(tc.SMTPError)))
+		} else {
+			smtpx.SetSender(smtpx.NewMockSender(nil))
+		}
 
 		testName := fmt.Sprintf("test '%s' for action type '%s'", tc.Description, typeName)
 

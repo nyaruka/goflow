@@ -1,20 +1,23 @@
 package smtpx
 
 import (
-	"errors"
 	"fmt"
 	"strings"
+
+	"github.com/pkg/errors"
 )
+
+var MockConnectionError = errors.New("unable to connect to server")
 
 // MockSender is a mocked sender for testing that just logs would-be commands
 type MockSender struct {
-	err  string
+	errs []error
 	logs []string
 }
 
 // NewMockSender creates a new mock sender
-func NewMockSender(err string) *MockSender {
-	return &MockSender{err: err}
+func NewMockSender(errs ...error) *MockSender {
+	return &MockSender{errs: errs}
 }
 
 // Logs returns the send logs
@@ -22,9 +25,17 @@ func (s *MockSender) Logs() []string {
 	return s.logs
 }
 
-func (s *MockSender) Send(c *Client, m *Message) error {
-	if s.err != "" {
-		return errors.New(s.err)
+func (s *MockSender) Send(c *Client, m *Message) (bool, error) {
+	if len(s.errs) == 0 {
+		panic(errors.Errorf("missing mock for send number %d", len(s.logs)))
+	}
+
+	err := s.errs[0]
+	s.errs = s.errs[1:]
+
+	if err == MockConnectionError {
+		s.logs = append(s.logs, err.Error())
+		return true, err
 	}
 
 	b := &strings.Builder{}
@@ -39,5 +50,5 @@ func (s *MockSender) Send(c *Client, m *Message) error {
 	b.WriteString("QUIT\n")
 
 	s.logs = append(s.logs, b.String())
-	return nil
+	return false, err
 }

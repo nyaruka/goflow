@@ -13,7 +13,7 @@ import (
 func TestService(t *testing.T) {
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
-	sender := smtpx.NewMockSender("")
+	sender := smtpx.NewMockSender(nil, nil)
 	smtpx.SetSender(sender)
 
 	// try with invalid URL

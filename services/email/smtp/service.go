@@ -28,5 +28,5 @@ func (s *service) Send(session flows.Session, addresses []string, subject, body 
 	}
 
 	m := smtpx.NewMessage(addresses, subject, body, "")
-	return smtpx.Send(s.smtpClient, m)
+	return smtpx.Send(s.smtpClient, m, nil)
 }
