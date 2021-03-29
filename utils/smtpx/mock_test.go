@@ -32,7 +32,7 @@ func TestMockSender(t *testing.T) {
 	}, sender.Logs())
 
 	// a sender which errors
-	sender = smtpx.NewMockSender(errors.New("oops can't send"), smtpx.MockConnectionError)
+	sender = smtpx.NewMockSender(errors.New("oops can't send"), smtpx.MockDialError("unable to connect to server"))
 	smtpx.SetSender(sender)
 
 	err = smtpx.Send(c, msg1, nil)

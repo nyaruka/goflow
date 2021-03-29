@@ -2,17 +2,19 @@ package smtpx
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
 // RetryConfig configures if and how retrying of connections happens
 type RetryConfig struct {
-	Backoffs []time.Duration
+	Backoffs    []time.Duration
+	ShouldRetry func(bool, error) bool
 }
 
 // NewFixedRetries creates a new retry config with the given backoffs
 func NewFixedRetries(backoffs ...time.Duration) *RetryConfig {
-	return &RetryConfig{Backoffs: backoffs}
+	return &RetryConfig{Backoffs: backoffs, ShouldRetry: DefaultShouldRetry}
 }
 
 // MaxRetries gets the maximum number of retries allowed
@@ -28,19 +30,32 @@ func (r *RetryConfig) Backoff(n int) time.Duration {
 	return r.Backoffs[n]
 }
 
+// DefaultShouldRetry is the default function for determining if a send should be retried
+func DefaultShouldRetry(fromDial bool, err error) bool {
+	errMsg := strings.ToLower(err.Error())
+
+	// if the error message looks to be an authentication failure, don't retry
+	if strings.Contains(errMsg, "username") || strings.Contains(errMsg, "password") {
+		return false
+	}
+
+	// otherwise retry if the err came from the dial stage
+	return fromDial
+}
+
 // Send an email using SMTP
 func Send(c *Client, m *Message, retries *RetryConfig) error {
-	var canRetry bool
+	var fromDial bool
 	var err error
 	retry := 0
 
 	for {
-		canRetry, err = currentSender.Send(c, m)
+		fromDial, err = currentSender.Send(c, m)
 
 		if retries != nil && retry < retries.MaxRetries() {
 			backoff := retries.Backoff(retry)
 
-			if canRetry {
+			if retries.ShouldRetry(fromDial, err) {
 				time.Sleep(backoff)
 				retry++
 				continue

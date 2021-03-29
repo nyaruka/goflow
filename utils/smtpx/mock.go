@@ -7,7 +7,11 @@ import (
 	"github.com/pkg/errors"
 )
 
-var MockConnectionError = errors.New("unable to connect to server")
+type MockDialError string
+
+func (e MockDialError) Error() string {
+	return string(e)
+}
 
 // MockSender is a mocked sender for testing that just logs would-be commands
 type MockSender struct {
@@ -33,8 +37,9 @@ func (s *MockSender) Send(c *Client, m *Message) (bool, error) {
 	err := s.errs[0]
 	s.errs = s.errs[1:]
 
-	if err == MockConnectionError {
-		s.logs = append(s.logs, err.Error())
+	switch typed := err.(type) {
+	case MockDialError:
+		s.logs = append(s.logs, typed.Error())
 		return true, err
 	}
 
