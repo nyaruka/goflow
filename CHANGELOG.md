@@ -1,3 +1,7 @@
+v0.115.0
+----------
+ * Add support for retrying SMTP sends
+
 v0.114.0
 ----------
  * Fully implement airtime service using new DT One API
