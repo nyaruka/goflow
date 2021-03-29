@@ -32,7 +32,7 @@ func TestMockSender(t *testing.T) {
 	}, sender.Logs())
 
 	// a sender which errors
-	sender = smtpx.NewMockSender(errors.New("oops can't send"), smtpx.MockDialError("unable to connect to server"))
+	sender = smtpx.NewMockSender(errors.New("oops can't send"), errors.New("421 Service not available, closing transmission channel"))
 	smtpx.SetSender(sender)
 
 	err = smtpx.Send(c, msg1, nil)
@@ -40,7 +40,7 @@ func TestMockSender(t *testing.T) {
 	assert.Equal(t, 1, len(sender.Logs()))
 
 	err = smtpx.Send(c, msg2, nil)
-	assert.EqualError(t, err, "unable to connect to server")
+	assert.EqualError(t, err, "421 Service not available, closing transmission channel")
 	assert.Equal(t, 2, len(sender.Logs()))
 
 	// we panic if we run out of mocks

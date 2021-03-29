@@ -7,12 +7,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-type MockDialError string
-
-func (e MockDialError) Error() string {
-	return string(e)
-}
-
 // MockSender is a mocked sender for testing that just logs would-be commands
 type MockSender struct {
 	errs []error
@@ -29,19 +23,13 @@ func (s *MockSender) Logs() []string {
 	return s.logs
 }
 
-func (s *MockSender) Send(c *Client, m *Message) (bool, error) {
+func (s *MockSender) Send(c *Client, m *Message) error {
 	if len(s.errs) == 0 {
 		panic(errors.Errorf("missing mock for send number %d", len(s.logs)))
 	}
 
 	err := s.errs[0]
 	s.errs = s.errs[1:]
-
-	switch typed := err.(type) {
-	case MockDialError:
-		s.logs = append(s.logs, typed.Error())
-		return true, err
-	}
 
 	b := &strings.Builder{}
 	b.WriteString("HELO localhost\n")
@@ -55,5 +43,5 @@ func (s *MockSender) Send(c *Client, m *Message) (bool, error) {
 	b.WriteString("QUIT\n")
 
 	s.logs = append(s.logs, b.String())
-	return false, err
+	return err
 }

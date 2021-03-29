@@ -67,7 +67,7 @@ func NewClientFromURL(connectionURL string) (*Client, error) {
 }
 
 // Send sends the given message
-func (c *Client) Send(m *Message) (bool, error) {
+func (c *Client) Send(m *Message) error {
 	// create MIME message
 	mm := mail.NewMessage()
 	mm.SetHeader("From", c.from)
@@ -79,12 +79,5 @@ func (c *Client) Send(m *Message) (bool, error) {
 	}
 
 	d := mail.NewDialer(c.host, c.port, c.username, c.password)
-
-	s, err := d.Dial()
-	if err != nil {
-		return true, err
-	}
-	defer s.Close()
-
-	return false, mail.Send(s, mm)
+	return d.DialAndSend(mm)
 }

@@ -16,14 +16,14 @@ func TestSendWithRetries(t *testing.T) {
 
 	// a sender which errors
 	sender := smtpx.NewMockSender(
-		smtpx.MockDialError("535 5.7.8 Username and Password not accepted"), // a non-retriable dial stage error
-		errors.New("oops can't send"),                                       // a non-retriable send stage error
-		smtpx.MockDialError("unable to connect to server"),                  // a retriable error
-		smtpx.MockDialError("unable to connect to server"),                  // a retriable error
+		errors.New("535 5.7.8 Username and Password not accepted"),            // a non-retriable 5xx error
+		errors.New("oops can't send"),                                         // a non-retriable error with no code
+		errors.New("421 Service not available, closing transmission channel"), // a retriable error
+		errors.New("432 4.7.12 A password transition is needed"),              // a retriable error
 		nil, // success
-		smtpx.MockDialError("unable to connect to server"), // a retriable error
-		smtpx.MockDialError("unable to connect to server"), // a retriable error
-		smtpx.MockDialError("unable to connect to server"), // too many retriable errors
+		errors.New("450 Requested mail action not taken: mailbox unavailable"),    // a retriable error
+		errors.New("451 Requested action aborted: local error in processing"),     // a retriable error
+		errors.New("452 Requested action not taken: insufficient system storage"), // too many retriable errors
 	)
 	smtpx.SetSender(sender)
 
@@ -42,6 +42,6 @@ func TestSendWithRetries(t *testing.T) {
 	assert.Equal(t, 5, len(sender.Logs()))
 
 	err = smtpx.Send(c, msg, retries)
-	assert.EqualError(t, err, "unable to connect to server")
+	assert.EqualError(t, err, "452 Requested action not taken: insufficient system storage")
 	assert.Equal(t, 8, len(sender.Logs()))
 }
