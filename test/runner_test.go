@@ -119,7 +119,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 	eng := engine.NewBuilder().
 		WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
-			return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io")
+			return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 		}).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
@@ -202,7 +202,7 @@ func TestFlows(t *testing.T) {
 
 		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 		dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
-		smtpx.SetSender(smtpx.NewMockSender(""))
+		smtpx.SetSender(smtpx.NewMockSender(nil, nil, nil, nil, nil, nil))
 
 		testJSON, err := ioutil.ReadFile(tc.outputFile)
 		require.NoError(t, err, "error reading output file %s", tc.outputFile)
