@@ -218,7 +218,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		// create an engine instance
 		eng := engine.NewBuilder().
 			WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
-				return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io")
+				return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 			}).
 			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {

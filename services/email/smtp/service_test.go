@@ -17,10 +17,10 @@ func TestService(t *testing.T) {
 	smtpx.SetSender(sender)
 
 	// try with invalid URL
-	_, err := smtp.NewService("xyz")
+	_, err := smtp.NewService("xyz", nil)
 	assert.EqualError(t, err, "connection URL must use SMTP scheme")
 
-	svc, err := smtp.NewService("smtp://leah:pass123@temba.io:255?from=updates@temba.io")
+	svc, err := smtp.NewService("smtp://leah:pass123@temba.io:255?from=updates@temba.io", nil)
 	require.NoError(t, err)
 
 	err = svc.Send(nil, []string{"bob@nyaruka.com", "jim@nyaruka.com"}, "Updates", "Have a great week")

@@ -8,17 +8,18 @@ import (
 )
 
 type service struct {
-	smtpClient *smtpx.Client
+	client  *smtpx.Client
+	retries *smtpx.RetryConfig
 }
 
 // NewService creates a new SMTP email service
-func NewService(smtpURL string) (flows.EmailService, error) {
+func NewService(smtpURL string, retries *smtpx.RetryConfig) (flows.EmailService, error) {
 	c, err := smtpx.NewClientFromURL(smtpURL)
 	if err != nil {
 		return nil, err
 	}
 
-	return &service{smtpClient: c}, nil
+	return &service{client: c, retries: retries}, nil
 }
 
 func (s *service) Send(session flows.Session, addresses []string, subject, body string) error {
@@ -28,5 +29,6 @@ func (s *service) Send(session flows.Session, addresses []string, subject, body 
 	}
 
 	m := smtpx.NewMessage(addresses, subject, body, "")
-	return smtpx.Send(s.smtpClient, m, nil)
+
+	return smtpx.Send(s.client, m, s.retries)
 }
