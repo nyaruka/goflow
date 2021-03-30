@@ -30,7 +30,7 @@ func Send(c *Client, m *Message, retries *RetryConfig) error {
 	for {
 		err = currentSender.Send(c, m)
 
-		if retries != nil && retry < retries.MaxRetries() {
+		if err != nil && retries != nil && retry < retries.MaxRetries() {
 			backoff := retries.Backoff(retry)
 
 			if retries.ShouldRetry(err) {

@@ -24,6 +24,7 @@ func TestSendWithRetries(t *testing.T) {
 		errors.New("450 Requested mail action not taken: mailbox unavailable"),    // a retriable error
 		errors.New("451 Requested action aborted: local error in processing"),     // a retriable error
 		errors.New("452 Requested action not taken: insufficient system storage"), // too many retriable errors
+		nil, // success
 	)
 	smtpx.SetSender(sender)
 
@@ -44,4 +45,8 @@ func TestSendWithRetries(t *testing.T) {
 	err = smtpx.Send(c, msg, retries)
 	assert.EqualError(t, err, "452 Requested action not taken: insufficient system storage")
 	assert.Equal(t, 8, len(sender.Logs()))
+
+	err = smtpx.Send(c, msg, retries)
+	assert.NoError(t, err)
+	assert.Equal(t, 9, len(sender.Logs()))
 }
