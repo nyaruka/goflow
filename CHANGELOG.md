@@ -1,3 +1,7 @@
+v0.115.1
+----------
+ * Fix sometimes retrying successful SMTP sends
+
 v0.115.0
 ----------
  * Add support for retrying SMTP sends
