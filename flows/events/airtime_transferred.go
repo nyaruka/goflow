@@ -26,9 +26,9 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //     "actual_amount": 100,
 //     "http_logs": [
 //       {
-//         "url": "https://dvs-api.dtone.com/v1/transactions/sync",
+//         "url": "https://dvs-api.dtone.com/v1/sync/transactions",
 //         "status": "success",
-//         "request": "POST /v1/transactions/sync HTTP/1.1\r\n\r\n{}",
+//         "request": "POST /v1/sync/transactions HTTP/1.1\r\n\r\n{}",
 //         "response": "HTTP/1.1 200 OK\r\n\r\n{}",
 //         "created_on": "2006-01-02T15:04:05Z",
 //         "elapsed_ms": 123

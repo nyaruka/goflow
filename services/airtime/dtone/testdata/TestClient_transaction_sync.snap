@@ -1,4 +1,4 @@
-POST /v1/transactions/sync HTTP/1.1
+POST /v1/sync/transactions HTTP/1.1
 Host: dvs-api.dtone.com
 User-Agent: Go-http-client/1.1
 Content-Length: 123

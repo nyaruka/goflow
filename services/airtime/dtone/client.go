@@ -13,8 +13,20 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+type StatusCID int
+
 const (
 	apiURL = "https://dvs-api.dtone.com/v1/"
+
+	// see https://dvs-api-doc.dtone.com/#section/Overview/Transactions
+	StatusCIDCreated   StatusCID = 1
+	StatusCIDConfirmed StatusCID = 2
+	StatusCIDRejected  StatusCID = 3
+	StatusCIDCancelled StatusCID = 4
+	StatusCIDSubmitted StatusCID = 5
+	StatusCIDCompleted StatusCID = 7
+	StatusCIDReversed  StatusCID = 8
+	StatusCIDDeclined  StatusCID = 9
 )
 
 // Client is a DTOne client, see https://dvs-api-doc.dtone.com/ for API docs
@@ -124,8 +136,8 @@ type Transaction struct {
 		ID      int    `json:"id"`
 		Message string `json:"message"`
 		Class   struct {
-			ID      int    `json:"id"`
-			Message string `json:"message"`
+			ID      StatusCID `json:"id"`
+			Message string    `json:"message"`
 		}
 	} `json:"status"`
 }
@@ -152,7 +164,7 @@ func (c *Client) TransactionSync(externalID string, productID int, mobileNumber 
 		},
 	}
 
-	trace, err := c.request("POST", "transactions/sync", payload, &response)
+	trace, err := c.request("POST", "sync/transactions", payload, &response)
 	if err != nil {
 		return nil, trace, err
 	}
