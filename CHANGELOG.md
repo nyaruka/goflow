@@ -1,3 +1,7 @@
+v0.115.2
+----------
+ * Fix dtone API endpoint URL and use external IDs
+
 v0.115.1
 ----------
  * Fix sometimes retrying successful SMTP sends
