@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -27,6 +28,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, key, se
 
 func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	transfer := &flows.AirtimeTransfer{
+		UUID:          uuids.New(),
 		Sender:        sender,
 		Recipient:     recipient,
 		DesiredAmount: decimal.Zero,
@@ -92,7 +94,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 	transfer.DesiredAmount = amounts[transfer.Currency]
 
 	// request synchronous confirmed transaction for this product
-	tx, trace, err := s.client.TransactionSync("", product.ID, recipient.Path())
+	tx, trace, err := s.client.TransactionSync(string(transfer.UUID), product.ID, recipient.Path())
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
@@ -100,7 +102,7 @@ func (s *service) Transfer(session flows.Session, sender urns.URN, recipient urn
 		return transfer, errors.Wrap(err, "transaction creation failed")
 	}
 
-	if tx.Status.Class.ID != 2 {
+	if tx.Status.Class.ID != StatusCIDConfirmed && tx.Status.Class.ID != StatusCIDSubmitted && tx.Status.Class.ID != StatusCIDCompleted {
 		return transfer, errors.Errorf("transaction to send product %d on operator %d ended with status %s", product.ID, operator.ID, tx.Status.Message)
 	}
 

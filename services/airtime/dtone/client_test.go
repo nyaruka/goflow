@@ -351,7 +351,7 @@ func TestClient(t *testing.T) {
 		"https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100": {
 			httpx.NewMockResponse(200, nil, productsResponse),
 		},
-		"https://dvs-api.dtone.com/v1/transactions/sync": {
+		"https://dvs-api.dtone.com/v1/sync/transactions": {
 			httpx.NewMockResponse(200, nil, transactionRejectedResponse),
 		},
 	})

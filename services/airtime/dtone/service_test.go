@@ -40,7 +40,7 @@ func TestServiceWithSuccessfulTranfer(t *testing.T) {
 		"https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100": {
 			httpx.NewMockResponse(200, nil, productsResponse),
 		},
-		"https://dvs-api.dtone.com/v1/transactions/sync": {
+		"https://dvs-api.dtone.com/v1/sync/transactions": {
 			httpx.NewMockResponse(200, nil, transactionConfirmedResponse),
 		},
 	})
@@ -66,6 +66,7 @@ func TestServiceWithSuccessfulTranfer(t *testing.T) {
 	)
 	assert.NoError(t, err)
 	assert.Equal(t, &flows.AirtimeTransfer{
+		UUID:          uuids.UUID("1ae96956-4b34-433e-8d1a-f05fe6923d6d"),
 		Sender:        urns.URN("tel:+593979000000"),
 		Recipient:     urns.URN("tel:+593979123456"),
 		Currency:      "USD",
@@ -102,7 +103,7 @@ func TestServiceFailedTransfers(t *testing.T) {
 			httpx.NewMockResponse(200, nil, productsResponse),
 			httpx.NewMockResponse(200, nil, productsResponse),
 		},
-		"https://dvs-api.dtone.com/v1/transactions/sync": {
+		"https://dvs-api.dtone.com/v1/sync/transactions": {
 			httpx.NewMockResponse(400, nil, errorResp(1003001, "Something went wrong")),
 			httpx.NewMockResponse(200, nil, transactionRejectedResponse),
 		},

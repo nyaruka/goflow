@@ -79,7 +79,7 @@
                 "status": 200
             }
         ],
-        "https://dvs-api.dtone.com/v1/transactions/sync": [
+        "https://dvs-api.dtone.com/v1/sync/transactions": [
             {
                 "body": {
                     "confirmation_date": "2021-03-24T20:05:06.111631000Z",
@@ -152,10 +152,10 @@
                         {
                             "created_on": "2018-07-06T12:30:08.123456789Z",
                             "elapsed_ms": 1000,
-                            "request": "POST /v1/transactions/sync HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 115\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"external_id\":\"\",\"product_id\":6035,\"auto_confirm\":true,\"credit_party_identifier\":{\"mobile_number\":\"+12065551212\"}}",
+                            "request": "POST /v1/sync/transactions HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 151\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"external_id\":\"c34b6c7d-fa06-4563-92a3-d648ab64bccb\",\"product_id\":6035,\"auto_confirm\":true,\"credit_party_identifier\":{\"mobile_number\":\"+12065551212\"}}",
                             "response": "HTTP/1.0 200 OK\r\nContent-Length: 1594\r\n\r\n{\n                    \"confirmation_date\": \"2021-03-24T20:05:06.111631000Z\",\n                    \"confirmation_expiration_date\": \"2021-03-24T21:05:05.883561000Z\",\n                    \"creation_date\": \"2021-03-24T20:05:05.883561000Z\",\n                    \"credit_party_identifier\": {\n                        \"mobile_number\": \"+593979123456\"\n                    },\n                    \"external_id\": \"EX12345\",\n                    \"id\": 2237512891,\n                    \"product\": {\n                        \"description\": \"\",\n                        \"id\": 6035,\n                        \"name\": \"3 USD\",\n                        \"operator\": {\n                            \"country\": {\n                                \"iso_code\": \"ECU\",\n                                \"name\": \"Ecuador\",\n                                \"regions\": null\n                            },\n                            \"id\": 1596,\n                            \"name\": \"Claro Ecuador\",\n                            \"regions\": null\n                        },\n                        \"regions\": null,\n                        \"service\": {\n                            \"id\": 1,\n                            \"name\": \"Mobile\"\n                        },\n                        \"type\": \"FIXED_VALUE_RECHARGE\"\n                    },\n                    \"status\": {\n                        \"class\": {\n                            \"id\": 2,\n                            \"message\": \"CONFIRMED\"\n                        },\n                        \"id\": 20000,\n                        \"message\": \"CONFIRMED\"\n                    }\n                }",
                             "status": "success",
-                            "url": "https://dvs-api.dtone.com/v1/transactions/sync"
+                            "url": "https://dvs-api.dtone.com/v1/sync/transactions"
                         }
                     ],
                     "recipient": "tel:+12065551212",
@@ -230,10 +230,10 @@
                                     {
                                         "created_on": "2018-07-06T12:30:08.123456789Z",
                                         "elapsed_ms": 1000,
-                                        "request": "POST /v1/transactions/sync HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 115\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"external_id\":\"\",\"product_id\":6035,\"auto_confirm\":true,\"credit_party_identifier\":{\"mobile_number\":\"+12065551212\"}}",
+                                        "request": "POST /v1/sync/transactions HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 151\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"external_id\":\"c34b6c7d-fa06-4563-92a3-d648ab64bccb\",\"product_id\":6035,\"auto_confirm\":true,\"credit_party_identifier\":{\"mobile_number\":\"+12065551212\"}}",
                                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 1594\r\n\r\n{\n                    \"confirmation_date\": \"2021-03-24T20:05:06.111631000Z\",\n                    \"confirmation_expiration_date\": \"2021-03-24T21:05:05.883561000Z\",\n                    \"creation_date\": \"2021-03-24T20:05:05.883561000Z\",\n                    \"credit_party_identifier\": {\n                        \"mobile_number\": \"+593979123456\"\n                    },\n                    \"external_id\": \"EX12345\",\n                    \"id\": 2237512891,\n                    \"product\": {\n                        \"description\": \"\",\n                        \"id\": 6035,\n                        \"name\": \"3 USD\",\n                        \"operator\": {\n                            \"country\": {\n                                \"iso_code\": \"ECU\",\n                                \"name\": \"Ecuador\",\n                                \"regions\": null\n                            },\n                            \"id\": 1596,\n                            \"name\": \"Claro Ecuador\",\n                            \"regions\": null\n                        },\n                        \"regions\": null,\n                        \"service\": {\n                            \"id\": 1,\n                            \"name\": \"Mobile\"\n                        },\n                        \"type\": \"FIXED_VALUE_RECHARGE\"\n                    },\n                    \"status\": {\n                        \"class\": {\n                            \"id\": 2,\n                            \"message\": \"CONFIRMED\"\n                        },\n                        \"id\": 20000,\n                        \"message\": \"CONFIRMED\"\n                    }\n                }",
                                         "status": "success",
-                                        "url": "https://dvs-api.dtone.com/v1/transactions/sync"
+                                        "url": "https://dvs-api.dtone.com/v1/sync/transactions"
                                     }
                                 ],
                                 "recipient": "tel:+12065551212",
