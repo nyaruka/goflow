@@ -38,17 +38,13 @@ func (x XTime) Render() string { return x.Native().String() }
 
 // Format returns the pretty text representation
 func (x XTime) Format(env envs.Environment) string {
-	formatted, _ := x.FormatCustom(env.TimeFormat())
+	formatted, _ := x.FormatCustom(env, string(env.TimeFormat()))
 	return formatted
 }
 
 // FormatCustom provides customised formatting
-func (x XTime) FormatCustom(format envs.TimeFormat) (string, error) {
-	goFormat, err := envs.ToGoDateFormat(string(format), envs.TimeOnlyFormatting)
-	if err != nil {
-		return "", err
-	}
-	return x.Native().Format(goFormat), nil
+func (x XTime) FormatCustom(env envs.Environment, layout string) (string, error) {
+	return x.Native().Format(layout, env.DefaultLocale().ToISO639_2())
 }
 
 // MarshalJSON is called when a struct containing this type is marshaled

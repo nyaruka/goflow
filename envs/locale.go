@@ -13,8 +13,12 @@ func NewLocale(language Language, country Country) Locale {
 	return Locale{Language: language, Country: country}
 }
 
-// ToISO639_2 returns the ISO 639-2 code
+// ToISO639_2 returns the ISO 639-2 code, e.g. en_US
 func (l Locale) ToISO639_2() string {
+	if l == NilLocale {
+		return ""
+	}
+
 	lang, err := language.ParseBase(string(l.Language))
 	if err != nil {
 		return ""
@@ -27,7 +31,9 @@ func (l Locale) ToISO639_2() string {
 	}
 
 	if l.Country != NilCountry {
-		code += "-" + string(l.Country)
+		code += "_" + string(l.Country)
 	}
 	return code
 }
+
+var NilLocale = Locale{}

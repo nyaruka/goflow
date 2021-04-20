@@ -1200,15 +1200,9 @@ func ParseDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	format, xerr := types.ToXText(env, args[1])
+	layout, xerr := types.ToXText(env, args[1])
 	if xerr != nil {
 		return xerr
-	}
-
-	// try to turn it to a go format
-	goFormat, err := envs.ToGoDateFormat(format.Native(), envs.DateTimeFormatting)
-	if err != nil {
-		return types.NewXError(err)
 	}
 
 	// grab our location
@@ -1219,6 +1213,7 @@ func ParseDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 			return xerr
 		}
 
+		var err error
 		location, err = time.LoadLocation(tzStr.Native())
 		if err != nil {
 			return types.NewXError(err)
@@ -1226,12 +1221,12 @@ func ParseDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	// finally try to parse the date
-	parsed, err := time.ParseInLocation(goFormat, str.Native(), location)
+	parsed, err := dates.ParseDateTime(layout.Native(), str.Native(), location)
 	if err != nil {
 		return types.NewXError(err)
 	}
 
-	return types.NewXDateTime(parsed.In(location))
+	return types.NewXDateTime(parsed)
 }
 
 // DateTimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
@@ -1512,19 +1507,13 @@ func ParseTime(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 		return xerr
 	}
 
-	format, xerr := types.ToXText(env, arg2)
+	layout, xerr := types.ToXText(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
 
-	// try to turn it to a go format
-	goFormat, err := envs.ToGoDateFormat(format.Native(), envs.TimeOnlyFormatting)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	// finally try to parse the date
-	parsed, err := dates.ParseTimeOfDay(goFormat, str.Native())
+	// finally try to parse the time
+	parsed, err := dates.ParseTimeOfDay(layout.Native(), str.Native())
 	if err != nil {
 		return types.NewXError(err)
 	}
@@ -1669,12 +1658,12 @@ func FormatDate(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	if len(args) >= 2 {
-		format, xerr := types.ToXText(env, args[1])
+		layout, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
 
-		formatted, err := date.FormatCustom(envs.DateFormat(format.Native()))
+		formatted, err := date.FormatCustom(env, layout.Native())
 		if err != nil {
 			return types.NewXError(err)
 		}
@@ -1756,7 +1745,7 @@ func FormatDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 		}
 	}
 
-	formatted, err := date.FormatCustom(format.Native(), location)
+	formatted, err := date.FormatCustom(env, format.Native(), location)
 	if err != nil {
 		return types.NewXError(err)
 	}
@@ -1796,12 +1785,12 @@ func FormatTime(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	if len(args) >= 2 {
-		format, xerr := types.ToXText(env, args[1])
+		layout, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
 
-		formatted, err := t.FormatCustom(envs.TimeFormat(format.Native()))
+		formatted, err := t.FormatCustom(env, layout.Native())
 		if err != nil {
 			return types.NewXError(err)
 		}

@@ -1,7 +1,6 @@
 package envs
 
 import (
-	"bytes"
 	"math"
 	"regexp"
 	"strconv"
@@ -25,13 +24,11 @@ func init() {
 }
 
 func validateDateFormat(fl validator.FieldLevel) bool {
-	_, err := ToGoDateFormat(fl.Field().String(), DateOnlyFormatting)
-	return err == nil
+	return dates.ValidateFormat(fl.Field().String(), true, dates.DateOnlyFormatting) == nil
 }
 
 func validateTimeFormat(fl validator.FieldLevel) bool {
-	_, err := ToGoDateFormat(fl.Field().String(), TimeOnlyFormatting)
-	return err == nil
+	return dates.ValidateFormat(fl.Field().String(), true, dates.TimeOnlyFormatting) == nil
 }
 
 // patterns for date and time formats supported for human-entered data
@@ -65,6 +62,7 @@ func (tf TimeFormat) String() string { return string(tf) }
 // generic format for parsing any 8601 date
 var iso8601Format = "2006-01-02T15:04:05Z07:00"
 var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
+var iso8601DateOnlyFormat = "2006-01-02"
 
 var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat}
 
@@ -159,9 +157,9 @@ func parseDate(env Environment, str string) (dates.Date, string, error) {
 	str = strings.Trim(str, " \n\r\t")
 
 	// try to parse as ISO date
-	asISO, err := time.ParseInLocation(dates.ISO8601Date, str[0:utils.MinInt(len(dates.ISO8601Date), len(str))], env.Timezone())
+	asISO, err := time.ParseInLocation(iso8601DateOnlyFormat, str[0:utils.MinInt(len(iso8601DateOnlyFormat), len(str))], env.Timezone())
 	if err == nil {
-		return dates.ExtractDate(asISO), str[len(dates.ISO8601Date):], nil
+		return dates.ExtractDate(asISO), str[len(iso8601DateOnlyFormat):], nil
 	}
 
 	// otherwise, try to parse according to their env settings
@@ -225,203 +223,4 @@ func parseTime(str string) (bool, dates.TimeOfDay) {
 	}
 
 	return false, dates.ZeroTimeOfDay
-}
-
-// FormattingMode describe a mode of formatting dates, times, datetimes
-type FormattingMode int
-
-// supported formatting modes
-const (
-	DateOnlyFormatting FormattingMode = iota
-	TimeOnlyFormatting
-	DateTimeFormatting
-)
-
-var ignoredFormattingRunes = map[rune]bool{' ': true, ':': true, '/': true, '.': true, 'T': true, '-': true, '_': true}
-
-// ToGoDateFormat converts the passed in format to a GoLang format string.
-//
-// If mode is DateOnlyFormatting or DateTimeFormatting, the following sequences are accepted:
-//
-//  `YY`        - last two digits of year 0-99
-//  `YYYY`      - four digits of your 0000-9999
-//  `M`         - month 1-12
-//  `MM`        - month 01-12
-//  `D`         - day of month, 1-31
-//  `DD`        - day of month, zero padded 0-31
-//
-// If mode is TimeOnlyFormatting or DateTimeFormatting, the following sequences are accepted:
-//
-//  `h`         - hour of the day 1-12
-//  `hh`        - hour of the day 01-12
-//  `tt`        - twenty four hour of the day 00-23
-//  `m`         - minute 0-59
-//  `mm`        - minute 00-59
-//  `s`         - second 0-59
-//  `ss`        - second 00-59
-//  `fff`       - milliseconds
-//  `ffffff`    - microseconds
-//  `fffffffff` - nanoseconds
-//  `aa`        - am or pm
-//  `AA`        - AM or PM
-//  `Z`         - hour and minute offset from UTC, or Z for UTC
-//  `ZZZ`       - hour and minute offset from UTC
-//
-// ignored chars: ' ', ':', ',', 'T', '-', '_', '/'
-func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
-	runes := []rune(format)
-	goFormat := bytes.Buffer{}
-
-	repeatCount := func(runes []rune, offset int, test rune) int {
-		count := 0
-		for i := offset; i < len(runes); i++ {
-			if runes[i] == test {
-				count++
-			} else {
-				break
-			}
-		}
-		return count
-	}
-
-	for i := 0; i < len(runes); i++ {
-		r := runes[i]
-		count := repeatCount(runes, i, r)
-
-		if mode == DateOnlyFormatting || mode == DateTimeFormatting {
-			switch r {
-			case 'Y':
-				if count == 2 {
-					goFormat.WriteString("06")
-					i++
-				} else if count == 4 {
-					goFormat.WriteString("2006")
-					i += 3
-				} else {
-					return "", errors.Errorf("invalid date format, invalid count of 'Y' format: %d", count)
-				}
-				continue
-
-			case 'M':
-				if count == 1 {
-					goFormat.WriteString("1")
-				} else if count == 2 {
-					goFormat.WriteString("01")
-					i++
-				} else {
-					return "", errors.Errorf("invalid date format, invalid count of 'M' format: %d", count)
-				}
-				continue
-
-			case 'D':
-				if count == 1 {
-					goFormat.WriteString("2")
-				} else if count >= 2 {
-					goFormat.WriteString("02")
-					i++
-				}
-				continue
-			}
-		}
-
-		if mode == TimeOnlyFormatting || mode == DateTimeFormatting {
-			switch r {
-			case 'f':
-				if count == 9 {
-					goFormat.WriteString("000000000")
-					i += 8
-				} else if count == 6 {
-					goFormat.WriteString("000000")
-					i += 5
-				} else if count == 3 {
-					goFormat.WriteString("000")
-					i += 2
-				} else {
-					return "", errors.Errorf("invalid date format, invalid count of 'f' format: %d", count)
-				}
-				continue
-
-			case 'h':
-				if count == 1 {
-					goFormat.WriteString("3")
-				} else if count == 2 {
-					goFormat.WriteString("03")
-					i++
-				}
-				continue
-
-			case 't':
-				if count == 2 {
-					goFormat.WriteString("15")
-					i++
-				} else {
-					return "", errors.Errorf("invalid date format, invalid count of 't' format: %d", count)
-				}
-				continue
-
-			case 'm':
-				if count == 1 {
-					goFormat.WriteString("4")
-				} else if count == 2 {
-					goFormat.WriteString("04")
-					i++
-				} else {
-					return "", errors.Errorf("invalid date format, invalid count of 'm' format: %d", count)
-				}
-				continue
-
-			case 's':
-				if count == 1 {
-					goFormat.WriteString("5")
-				} else if count == 2 {
-					goFormat.WriteString("05")
-					i++
-				} else {
-					return "", errors.Errorf("invalid date format, invalid count of 's' format: %d", count)
-				}
-				continue
-
-			case 'a':
-				if count == 2 {
-					goFormat.WriteString("pm")
-					i++
-				} else {
-					return "", errors.Errorf("invalid date format, invalid count of 'a' format: %d", count)
-				}
-				continue
-
-			case 'A':
-				if count == 2 {
-					goFormat.WriteString("PM")
-					i++
-				} else {
-					return "", errors.Errorf("invalid date format, invalid count of 'A' format: %d", count)
-				}
-				continue
-			}
-		}
-
-		if mode == DateTimeFormatting {
-			switch r {
-			case 'Z':
-				if count == 1 {
-					goFormat.WriteString("Z07:00")
-				} else if count == 3 {
-					goFormat.WriteString("-07:00")
-					i += 2
-				} else {
-					return "", errors.Errorf("invalid date format, invalid count of 'Z' format: %d", count)
-				}
-				continue
-			}
-		}
-
-		if ignoredFormattingRunes[r] {
-			goFormat.WriteRune(r)
-		} else {
-			return "", errors.Errorf("invalid date format, unknown format char: %c", r)
-		}
-	}
-
-	return goFormat.String(), nil
 }
