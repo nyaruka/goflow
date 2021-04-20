@@ -32,9 +32,10 @@ func TestToISO639_2(t *testing.T) {
 		{envs.Language(`spa`), envs.Country(`EC`), `es_EC`},
 		{envs.Language(`zho`), envs.Country(`CN`), `zh_CN`},
 
-		{envs.Language(`yue`), envs.NilCountry, ``},
+		{envs.Language(`yue`), envs.NilCountry, ``}, // has no 2-letter represention
 		{envs.Language(`und`), envs.NilCountry, ``},
 		{envs.Language(`mul`), envs.NilCountry, ``},
+		{envs.Language(`xyz`), envs.NilCountry, ``}, // is not a language
 	}
 
 	for _, tc := range tests {

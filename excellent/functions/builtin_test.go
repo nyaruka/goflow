@@ -309,6 +309,8 @@ func TestFunctions(t *testing.T) {
 		{"format_time", dmy, []types.XValue{xs("15:34:00.000000")}, xs("15:34")},
 		{"format_time", mdy, []types.XValue{xs("15:34:00.000000")}, xs("3:34 pm")},
 		{"format_time", dmy, []types.XValue{xs("15:34:00.000000"), xs("tt")}, xs("15")},
+		{"format_time", dmy, []types.XValue{xs("15:34:00.000000"), xs("YY")}, ERROR},
+		{"format_time", dmy, []types.XValue{xs("15:34:00.000000"), ERROR}, ERROR},
 		{"format_time", dmy, []types.XValue{}, ERROR},
 
 		{"format_location", dmy, []types.XValue{xs("Rwanda")}, xs("Rwanda")},
