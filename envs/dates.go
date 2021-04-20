@@ -24,11 +24,13 @@ func init() {
 }
 
 func validateDateFormat(fl validator.FieldLevel) bool {
-	return dates.ValidateFormat(fl.Field().String(), true, dates.DateOnlyFormatting) == nil
+	// validate for parsing which has stricter requirements
+	return dates.ValidateFormat(fl.Field().String(), dates.DateOnlyLayouts, dates.ParsingMode) == nil
 }
 
 func validateTimeFormat(fl validator.FieldLevel) bool {
-	return dates.ValidateFormat(fl.Field().String(), true, dates.TimeOnlyFormatting) == nil
+	// validate for parsing which has stricter requirements
+	return dates.ValidateFormat(fl.Field().String(), dates.TimeOnlyLayouts, dates.ParsingMode) == nil
 }
 
 // patterns for date and time formats supported for human-entered data

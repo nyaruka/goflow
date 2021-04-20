@@ -33,7 +33,7 @@ func TestXDate(t *testing.T) {
 	assert.Equal(t, "mié, 20-02-2019", formatted)
 
 	formatted, err = d1.FormatCustom(env, "YYYYYY")
-	assert.EqualError(t, err, "'YYYYYY' is not valid in a date format")
+	assert.EqualError(t, err, "'YYYYYY' is not valid in a date formatting layout")
 
 	asJSON, _ := types.ToXJSON(d1)
 	assert.Equal(t, types.NewXText(`"2019-02-20"`), asJSON)
