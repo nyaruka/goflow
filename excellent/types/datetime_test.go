@@ -15,6 +15,7 @@ import (
 
 func TestXDateTime(t *testing.T) {
 	env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
+	env2 := envs.NewBuilder().WithDateFormat(envs.DateFormatYearMonthDay).WithDefaultLanguage("spa").Build()
 
 	assert.True(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).Truthy())
 
@@ -40,12 +41,16 @@ func TestXDateTime(t *testing.T) {
 	d1 := types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, la))
 	assert.Equal(t, `datetime`, d1.Describe())
 
-	formatted, err := d1.FormatCustom("YYYY", nil)
+	formatted, err := d1.FormatCustom(env, "EEE, DD-MM-YYYY", nil)
 	assert.NoError(t, err)
-	assert.Equal(t, `2018`, formatted)
+	assert.Equal(t, "Mon, 09-04-2018", formatted)
 
-	formatted, err = d1.FormatCustom("YYYYYY", nil)
-	assert.EqualError(t, err, "invalid date format, invalid count of 'Y' format: 6")
+	formatted, err = d1.FormatCustom(env2, "EEE, DD-MM-YYYY", nil)
+	assert.NoError(t, err)
+	assert.Equal(t, "lun, 09-04-2018", formatted)
+
+	formatted, err = d1.FormatCustom(env, "YYYYYY", nil)
+	assert.EqualError(t, err, "'YYYYYY' is not valid in a datetime formatting layout")
 
 	d2 := d1.ReplaceTime(types.NewXTime(dates.NewTimeOfDay(16, 20, 30, 123456789)))
 	assert.Equal(t, 2018, d2.Native().Year())

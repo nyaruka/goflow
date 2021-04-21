@@ -1160,16 +1160,17 @@ func RandBetween(env envs.Environment, min types.XNumber, max types.XNumber) typ
 // * `YY`        - last two digits of year 0-99
 // * `YYYY`      - four digits of year 0000-9999
 // * `M`         - month 1-12
-// * `MM`        - month 01-12
+// * `MM`        - month, zero padded 01-12
 // * `D`         - day of month, 1-31
-// * `DD`        - day of month, zero padded 0-31
+// * `DD`        - day of month, zero padded 01-31
 // * `h`         - hour of the day 1-12
 // * `hh`        - hour of the day 01-12
-// * `tt`        - twenty four hour of the day 01-23
+// * `t`         - twenty four hour of the day 1-23
+// * `tt`        - twenty four hour of the day, zero padded 01-23
 // * `m`         - minute 0-59
-// * `mm`        - minute 00-59
+// * `mm`        - minute, zero padded 00-59
 // * `s`         - second 0-59
-// * `ss`        - second 00-59
+// * `ss`        - second, zero padded 00-59
 // * `fff`       - milliseconds
 // * `ffffff`    - microseconds
 // * `fffffffff` - nanoseconds
@@ -1200,15 +1201,9 @@ func ParseDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	format, xerr := types.ToXText(env, args[1])
+	layout, xerr := types.ToXText(env, args[1])
 	if xerr != nil {
 		return xerr
-	}
-
-	// try to turn it to a go format
-	goFormat, err := envs.ToGoDateFormat(format.Native(), envs.DateTimeFormatting)
-	if err != nil {
-		return types.NewXError(err)
 	}
 
 	// grab our location
@@ -1219,6 +1214,7 @@ func ParseDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 			return xerr
 		}
 
+		var err error
 		location, err = time.LoadLocation(tzStr.Native())
 		if err != nil {
 			return types.NewXError(err)
@@ -1226,12 +1222,12 @@ func ParseDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	// finally try to parse the date
-	parsed, err := time.ParseInLocation(goFormat, str.Native(), location)
+	parsed, err := dates.ParseDateTime(layout.Native(), str.Native(), location)
 	if err != nil {
 		return types.NewXError(err)
 	}
 
-	return types.NewXDateTime(parsed.In(location))
+	return types.NewXDateTime(parsed)
 }
 
 // DateTimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
@@ -1483,12 +1479,13 @@ func Today(env envs.Environment) types.XValue {
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 //
 // * `h`         - hour of the day 1-12
-// * `hh`        - hour of the day 01-12
-// * `tt`        - twenty four hour of the day 01-23
+// * `hh`        - hour of the day, zero padded 01-12
+// * `t`         - twenty four hour of the day 1-23
+// * `tt`        - twenty four hour of the day, zero padded 01-23
 // * `m`         - minute 0-59
-// * `mm`        - minute 00-59
+// * `mm`        - minute, zero padded 00-59
 // * `s`         - second 0-59
-// * `ss`        - second 00-59
+// * `ss`        - second, zero padded 00-59
 // * `fff`       - milliseconds
 // * `ffffff`    - microseconds
 // * `fffffffff` - nanoseconds
@@ -1512,19 +1509,13 @@ func ParseTime(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 		return xerr
 	}
 
-	format, xerr := types.ToXText(env, arg2)
+	layout, xerr := types.ToXText(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
 
-	// try to turn it to a go format
-	goFormat, err := envs.ToGoDateFormat(format.Native(), envs.TimeOnlyFormatting)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	// finally try to parse the date
-	parsed, err := dates.ParseTimeOfDay(goFormat, str.Native())
+	// finally try to parse the time
+	parsed, err := dates.ParseTimeOfDay(layout.Native(), str.Native())
 	if err != nil {
 		return types.NewXError(err)
 	}
@@ -1650,9 +1641,13 @@ func Format(env envs.Environment, value types.XValue) types.XValue {
 // * `YY`        - last two digits of year 0-99
 // * `YYYY`      - four digits of year 0000-9999
 // * `M`         - month 1-12
-// * `MM`        - month 01-12
+// * `MM`        - month, zero padded 01-12
+// * `MMM`       - month Jan-Dec (localized)
+// * `MMMM`      - month January-December (localized)
 // * `D`         - day of month, 1-31
-// * `DD`        - day of month, zero padded 0-31
+// * `DD`        - day of month, zero padded 01-31
+// * `EEE`       - day of week Mon-Sun (localized)
+// * `EEEE`      - day of week Monday-Sunday (localized)
 //
 //   @(format_date("1979-07-18T15:00:00.000000Z")) -> 18-07-1979
 //   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
@@ -1669,12 +1664,12 @@ func FormatDate(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	if len(args) >= 2 {
-		format, xerr := types.ToXText(env, args[1])
+		layout, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
 
-		formatted, err := date.FormatCustom(envs.DateFormat(format.Native()))
+		formatted, err := date.FormatCustom(env, layout.Native())
 		if err != nil {
 			return types.NewXError(err)
 		}
@@ -1694,21 +1689,26 @@ func FormatDate(env envs.Environment, args ...types.XValue) types.XValue {
 // * `YY`        - last two digits of year 0-99
 // * `YYYY`      - four digits of year 0000-9999
 // * `M`         - month 1-12
-// * `MM`        - month 01-12
+// * `MM`        - month, zero padded 01-12
+// * `MMM`       - month Jan-Dec (localized)
+// * `MMMM`      - month January-December (localized)
 // * `D`         - day of month, 1-31
-// * `DD`        - day of month, zero padded 0-31
+// * `DD`        - day of month, zero padded 01-31
+// * `EEE`       - day of week Mon-Sun (localized)
+// * `EEEE`      - day of week Monday-Sunday (localized)
 // * `h`         - hour of the day 1-12
-// * `hh`        - hour of the day 01-12
-// * `tt`        - twenty four hour of the day 00-23
+// * `hh`        - hour of the day, zero padded 01-12
+// * `t`         - twenty four hour of the day 0-23
+// * `tt`        - twenty four hour of the day, zero padded 00-23
 // * `m`         - minute 0-59
-// * `mm`        - minute 00-59
+// * `mm`        - minute, zero padded 00-59
 // * `s`         - second 0-59
-// * `ss`        - second 00-59
+// * `ss`        - second, zero padded 00-59
 // * `fff`       - milliseconds
 // * `ffffff`    - microseconds
 // * `fffffffff` - nanoseconds
-// * `aa`        - am or pm
-// * `AA`        - AM or PM
+// * `aa`        - am or pm (localized)
+// * `AA`        - AM or PM (localized)
 // * `Z`         - hour and minute offset from UTC, or Z for UTC
 // * `ZZZ`       - hour and minute offset from UTC
 //
@@ -1756,7 +1756,7 @@ func FormatDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 		}
 	}
 
-	formatted, err := date.FormatCustom(format.Native(), location)
+	formatted, err := date.FormatCustom(env, format.Native(), location)
 	if err != nil {
 		return types.NewXError(err)
 	}
@@ -1771,17 +1771,18 @@ func FormatDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 // and '_' are ignored. Any other character is an error.
 //
 // * `h`         - hour of the day 1-12
-// * `hh`        - hour of the day 01-12
-// * `tt`        - twenty four hour of the day 00-23
+// * `hh`        - hour of the day, zero padded 01-12
+// * `t`         - twenty four hour of the day 0-23
+// * `tt`        - twenty four hour of the day, zero padded 00-23
 // * `m`         - minute 0-59
-// * `mm`        - minute 00-59
+// * `mm`        - minute, zero padded 00-59
 // * `s`         - second 0-59
-// * `ss`        - second 00-59
+// * `ss`        - second, zero padded 00-59
 // * `fff`       - milliseconds
 // * `ffffff`    - microseconds
 // * `fffffffff` - nanoseconds
-// * `aa`        - am or pm
-// * `AA`        - AM or PM
+// * `aa`        - am or pm (localized)
+// * `AA`        - AM or PM (localized)
 //
 //   @(format_time("14:50:30.000000")) -> 14:50
 //   @(format_time("14:50:30.000000", "h:mm aa")) -> 2:50 pm
@@ -1796,12 +1797,12 @@ func FormatTime(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	if len(args) >= 2 {
-		format, xerr := types.ToXText(env, args[1])
+		layout, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
 
-		formatted, err := t.FormatCustom(envs.TimeFormat(format.Native()))
+		formatted, err := t.FormatCustom(env, layout.Native())
 		if err != nil {
 			return types.NewXError(err)
 		}

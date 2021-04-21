@@ -23,12 +23,12 @@ func TestXTime(t *testing.T) {
 	assert.Equal(t, `17:01`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).Format(env))
 	assert.Equal(t, `XTime(17, 1, 30, 0)`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).String())
 
-	formatted, err := t1.FormatCustom(envs.TimeFormat("ss"))
+	formatted, err := t1.FormatCustom(env, "ss")
 	assert.NoError(t, err)
 	assert.Equal(t, `30`, formatted)
 
-	formatted, err = t1.FormatCustom(envs.TimeFormat("ssssss"))
-	assert.EqualError(t, err, "invalid date format, invalid count of 's' format: 6")
+	formatted, err = t1.FormatCustom(env, "ssssss")
+	assert.EqualError(t, err, "'ssssss' is not valid in a time formatting layout")
 
 	marshaled, err := jsonx.Marshal(t1)
 	assert.NoError(t, err)
