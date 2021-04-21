@@ -1,3 +1,7 @@
+v0.116.1
+----------
+ * Use standard hypenated BCP47 locale codes consistently
+
 v0.116.0
 ----------
  * Test on go 1.16.x
