@@ -13,8 +13,8 @@ func NewLocale(language Language, country Country) Locale {
 	return Locale{Language: language, Country: country}
 }
 
-// ToISO639_2 returns the ISO 639-2 code, e.g. en_US
-func (l Locale) ToISO639_2() string {
+// ToBCP47 returns the BCP47 code, e.g. en-US, pt, pt-BR
+func (l Locale) ToBCP47() string {
 	if l == NilLocale {
 		return ""
 	}
@@ -31,7 +31,7 @@ func (l Locale) ToISO639_2() string {
 	}
 
 	if l.Country != NilCountry {
-		code += "_" + string(l.Country)
+		code += "-" + string(l.Country)
 	}
 	return code
 }

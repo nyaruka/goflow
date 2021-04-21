@@ -61,7 +61,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, envs.Language("eng"), env.DefaultLanguage())
 	assert.Equal(t, []envs.Language{envs.Language("eng"), envs.Language("fra")}, env.AllowedLanguages())
 	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
-	assert.Equal(t, "en_RW", env.DefaultLocale().ToISO639_2())
+	assert.Equal(t, "en-RW", env.DefaultLocale().ToBCP47())
 	assert.Nil(t, env.LocationResolver())
 
 	data, err := jsonx.Marshal(env)

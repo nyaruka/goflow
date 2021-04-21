@@ -195,7 +195,7 @@ func poFromExtracted(sources []flows.Flow, initialComment string, lang envs.Lang
 		flowUUIDs[i] = string(f.UUID())
 	}
 
-	header := i18n.NewPOHeader(initialComment, dates.Now(), envs.NewLocale(lang, envs.NilCountry).ToISO639_2())
+	header := i18n.NewPOHeader(initialComment, dates.Now(), envs.NewLocale(lang, envs.NilCountry).ToBCP47())
 	header.Custom["Source-Flows"] = strings.Join(flowUUIDs, "; ")
 	header.Custom["Language-3"] = string(lang)
 	po := i18n.NewPO(header)

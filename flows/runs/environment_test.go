@@ -110,7 +110,7 @@ func TestRunEnvironment(t *testing.T) {
 	assert.Equal(t, envs.Language("eng"), sessionEnv.DefaultLanguage())
 	assert.Equal(t, []envs.Language{"eng", "fra", "kin"}, sessionEnv.AllowedLanguages())
 	assert.Equal(t, envs.Country("RW"), sessionEnv.DefaultCountry())
-	assert.Equal(t, "en_RW", sessionEnv.DefaultLocale().ToISO639_2())
+	assert.Equal(t, "en-RW", sessionEnv.DefaultLocale().ToBCP47())
 	assert.Equal(t, tzRW, sessionEnv.Timezone())
 
 	// environment on the run has values from the contact
@@ -119,7 +119,7 @@ func TestRunEnvironment(t *testing.T) {
 	assert.Equal(t, envs.Language("fra"), runEnv.DefaultLanguage())
 	assert.Equal(t, []envs.Language{"eng", "fra", "kin"}, runEnv.AllowedLanguages())
 	assert.Equal(t, envs.Country("US"), runEnv.DefaultCountry())
-	assert.Equal(t, "fr_US", runEnv.DefaultLocale().ToISO639_2())
+	assert.Equal(t, "fr-US", runEnv.DefaultLocale().ToBCP47())
 	assert.Equal(t, tzEC, runEnv.Timezone())
 	assert.NotNil(t, runEnv.LocationResolver())
 
@@ -134,5 +134,5 @@ func TestRunEnvironment(t *testing.T) {
 	// if contact language is not an allowed language it won't be used
 	run.Contact().SetLanguage(envs.Language("spa"))
 	assert.Equal(t, envs.Language("eng"), runEnv.DefaultLanguage())
-	assert.Equal(t, "en_US", runEnv.DefaultLocale().ToISO639_2())
+	assert.Equal(t, "en-US", runEnv.DefaultLocale().ToBCP47())
 }

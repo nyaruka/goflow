@@ -8,11 +8,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestToISO639_2(t *testing.T) {
+func TestToBCP47(t *testing.T) {
 	tests := []struct {
-		lang     envs.Language
-		country  envs.Country
-		iso639_2 string
+		lang    envs.Language
+		country envs.Country
+		bcp47   string
 	}{
 		{envs.NilLanguage, envs.NilCountry, ``},
 		{envs.Language(`cat`), envs.NilCountry, `ca`},
@@ -28,9 +28,9 @@ func TestToISO639_2(t *testing.T) {
 		{envs.Language(`spa`), envs.NilCountry, `es`},
 		{envs.Language(`swe`), envs.NilCountry, `sv`},
 		{envs.Language(`zho`), envs.NilCountry, `zh`},
-		{envs.Language(`eng`), envs.Country(`US`), `en_US`},
-		{envs.Language(`spa`), envs.Country(`EC`), `es_EC`},
-		{envs.Language(`zho`), envs.Country(`CN`), `zh_CN`},
+		{envs.Language(`eng`), envs.Country(`US`), `en-US`},
+		{envs.Language(`spa`), envs.Country(`EC`), `es-EC`},
+		{envs.Language(`zho`), envs.Country(`CN`), `zh-CN`},
 
 		{envs.Language(`yue`), envs.NilCountry, ``}, // has no 2-letter represention
 		{envs.Language(`und`), envs.NilCountry, ``},
@@ -39,6 +39,6 @@ func TestToISO639_2(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		assert.Equal(t, tc.iso639_2, envs.NewLocale(tc.lang, tc.country).ToISO639_2())
+		assert.Equal(t, tc.bcp47, envs.NewLocale(tc.lang, tc.country).ToBCP47())
 	}
 }

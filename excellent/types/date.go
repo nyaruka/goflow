@@ -44,7 +44,7 @@ func (x XDate) Format(env envs.Environment) string {
 
 // FormatCustom provides customised formatting
 func (x XDate) FormatCustom(env envs.Environment, layout string) (string, error) {
-	return x.Native().Format(layout, env.DefaultLocale().ToISO639_2())
+	return x.Native().Format(layout, env.DefaultLocale().ToBCP47())
 }
 
 // MarshalJSON is called when a struct containing this type is marshaled

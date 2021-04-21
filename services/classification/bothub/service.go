@@ -27,7 +27,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classif
 
 func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	locale := session.Runs()[0].Environment().DefaultLocale()
-	localeStr := strings.ToLower(locale.ToISO639_2()) // en_US -> en_us
+	localeStr := strings.ReplaceAll(strings.ToLower(locale.ToBCP47()), "-", "_") // en-US -> en_us
 
 	response, trace, err := s.client.Parse(input, localeStr)
 	if trace != nil {
