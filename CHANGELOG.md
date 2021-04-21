@@ -1,3 +1,8 @@
+v0.116.0
+----------
+ * Test on go 1.16.x
+ * Update to latest gocommon datefmt and pass locale to all date formatting calls
+
 v0.115.2
 ----------
  * Fix dtone API endpoint URL and use external IDs
