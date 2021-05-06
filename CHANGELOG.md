@@ -1,3 +1,7 @@
+v0.117.0
+----------
+ * Add WA template translations namespace
+
 v0.116.1
 ----------
  * Use standard hypenated BCP47 locale codes consistently
