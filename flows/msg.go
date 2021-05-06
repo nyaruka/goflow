@@ -153,6 +153,7 @@ type MsgTemplating struct {
 	Language_  envs.Language             `json:"language"`
 	Country_   envs.Country              `json:"country"`
 	Variables_ []string                  `json:"variables,omitempty"`
+	Namespace_ string                    `json:"namespace"`
 }
 
 // Template returns the template this msg template is for
@@ -167,12 +168,16 @@ func (t MsgTemplating) Country() envs.Country { return t.Country_ }
 // Variables returns the variables that should be substituted in the template
 func (t MsgTemplating) Variables() []string { return t.Variables_ }
 
+// Namespace returns the namespace that should be for the template
+func (t MsgTemplating) Namespace() string { return t.Namespace_ }
+
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, language envs.Language, country envs.Country, variables []string) *MsgTemplating {
+func NewMsgTemplating(template *assets.TemplateReference, language envs.Language, country envs.Country, variables []string, namespace string) *MsgTemplating {
 	return &MsgTemplating{
 		Template_:  template,
 		Language_:  language,
 		Country_:   country,
 		Variables_: variables,
+		Namespace_: namespace,
 	}
 }

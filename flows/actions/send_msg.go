@@ -118,7 +118,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, logModifier 
 				}
 
 				evaluatedText = translation.Substitute(evaluatedVariables)
-				templating = flows.NewMsgTemplating(a.Templating.Template, translation.Language(), translation.Country(), evaluatedVariables)
+				templating = flows.NewMsgTemplating(a.Templating.Template, translation.Language(), translation.Country(), evaluatedVariables, translation.Namespace())
 			}
 		}
 
