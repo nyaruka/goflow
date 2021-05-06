@@ -442,6 +442,7 @@
                             "name": "affirmation"
                         },
                         "language": "eng",
+                        "namespace": "",
                         "country": "US",
                         "variables": [
                             "Ryan Lewis",
@@ -523,6 +524,7 @@
                             "name": "affirmation"
                         },
                         "language": "spa",
+                        "namespace": "",
                         "country": "",
                         "variables": [
                             "Ryan Lewis",
@@ -592,6 +594,7 @@
                             "name": "wakeup"
                         },
                         "language": "eng",
+                        "namespace": "",
                         "country": ""
                     }
                 }
