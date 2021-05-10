@@ -1,0 +1,537 @@
+{
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "msg": {
+                        "text": "Hi! What can I help you with?",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "tickets": [
+                        {
+                            "body": "I have a problem",
+                            "subject": "Old ticket",
+                            "ticketer": {
+                                "name": "Support",
+                                "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                            },
+                            "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+                        }
+                    ],
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "text": "Hi! What can I help you with?",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
+                        "flow": {
+                            "name": "Support",
+                            "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
+                        },
+                        "modified_on": "2018-07-06T12:30:09.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                                "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "tickets": [
+                            {
+                                "body": "I have a problem",
+                                "subject": "Old ticket",
+                                "ticketer": {
+                                    "name": "Support",
+                                    "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                                },
+                                "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+                            }
+                        ],
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Support",
+                        "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
+                    },
+                    "triggered_on": "2020-03-19T16:37:26.928919-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "msg": {
+                        "text": "Rats",
+                        "urn": "tel:+12065551212",
+                        "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
+                    },
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "All Responses",
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "input": "Rats",
+                    "name": "Response 1",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "run_result_changed",
+                    "value": "Rats"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
+                    "http_logs": [
+                        {
+                            "created_on": "2019-10-16T13:59:30.123456789Z",
+                            "elapsed_ms": 1,
+                            "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"New ticket\"}",
+                            "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                            "status": "success",
+                            "url": "http://nyaruka.tickets.com/tickets.json"
+                        }
+                    ],
+                    "service": "ticketer",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "ticketer": {
+                        "name": "Support",
+                        "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                    },
+                    "type": "service_called"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "ticket": {
+                        "body": "Last message: Rats",
+                        "external_id": "123456",
+                        "subject": "New ticket",
+                        "ticketer": {
+                            "name": "Support",
+                            "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                        },
+                        "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                    },
+                    "type": "ticket_opened"
+                },
+                {
+                    "category": "Success",
+                    "created_on": "2018-07-06T12:30:26.123456789Z",
+                    "name": "Ticket",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "run_result_changed",
+                    "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                },
+                {
+                    "body": "[{\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"body\":\"Last message: Rats\",\"subject\":\"New ticket\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
+                    "created_on": "2018-07-06T12:30:29.123456789Z",
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "subject": "New ticket: 5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                    "to": [
+                        "bob@nyaruka.com"
+                    ],
+                    "type": "email_sent"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "last_seen_on": "2020-03-19T16:37:38.453883-05:00",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "tickets": [
+                        {
+                            "body": "I have a problem",
+                            "subject": "Old ticket",
+                            "ticketer": {
+                                "name": "Support",
+                                "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                            },
+                            "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+                        },
+                        {
+                            "body": "Last message: Rats",
+                            "external_id": "123456",
+                            "subject": "New ticket",
+                            "ticketer": {
+                                "name": "Support",
+                                "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                            },
+                            "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                        }
+                    ],
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "input": {
+                    "created_on": "2020-03-19T16:37:38.453883-05:00",
+                    "text": "Rats",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "text": "Hi! What can I help you with?",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "msg": {
+                                    "text": "Rats",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
+                                },
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "All Responses",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "input": "Rats",
+                                "name": "Response 1",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "run_result_changed",
+                                "value": "Rats"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "http_logs": [
+                                    {
+                                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                                        "elapsed_ms": 1,
+                                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"New ticket\"}",
+                                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                                        "status": "success",
+                                        "url": "http://nyaruka.tickets.com/tickets.json"
+                                    }
+                                ],
+                                "service": "ticketer",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "ticketer": {
+                                    "name": "Support",
+                                    "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                                },
+                                "type": "service_called"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "ticket": {
+                                    "body": "Last message: Rats",
+                                    "external_id": "123456",
+                                    "subject": "New ticket",
+                                    "ticketer": {
+                                        "name": "Support",
+                                        "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                                    },
+                                    "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                                },
+                                "type": "ticket_opened"
+                            },
+                            {
+                                "category": "Success",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "name": "Ticket",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "run_result_changed",
+                                "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                            },
+                            {
+                                "body": "[{\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"body\":\"Last message: Rats\",\"subject\":\"New ticket\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                                "subject": "New ticket: 5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "to": [
+                                    "bob@nyaruka.com"
+                                ],
+                                "type": "email_sent"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:31.123456789Z",
+                        "expires_on": null,
+                        "flow": {
+                            "name": "Support",
+                            "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
+                        },
+                        "modified_on": "2018-07-06T12:30:31.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                                "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
+                                "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:28.123456789Z",
+                                "exit_uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab",
+                                "node_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
+                                "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                            }
+                        ],
+                        "results": {
+                            "response_1": {
+                                "category": "All Responses",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "input": "Rats",
+                                "name": "Response 1",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                                "value": "Rats"
+                            },
+                            "ticket": {
+                                "category": "Success",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "name": "Ticket",
+                                "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                                "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "tickets": [
+                            {
+                                "body": "I have a problem",
+                                "subject": "Old ticket",
+                                "ticketer": {
+                                    "name": "Support",
+                                    "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                                },
+                                "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+                            }
+                        ],
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Support",
+                        "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
+                    },
+                    "triggered_on": "2020-03-19T16:37:26.928919-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            }
+        }
+    ],
+    "resumes": [
+        {
+            "msg": {
+                "text": "Rats",
+                "urn": "tel:+12065551212",
+                "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
+            },
+            "resumed_on": "2020-03-19T16:37:38.453883-05:00",
+            "type": "msg"
+        }
+    ],
+    "trigger": {
+        "contact": {
+            "created_on": "2018-01-01T12:00:00Z",
+            "id": 1234567,
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "status": "active",
+            "tickets": [
+                {
+                    "body": "I have a problem",
+                    "subject": "Old ticket",
+                    "ticketer": {
+                        "name": "Support",
+                        "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
+                    },
+                    "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+                }
+            ],
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+            "allowed_languages": [
+                "eng"
+            ],
+            "date_format": "YYYY-MM-DD",
+            "max_value_length": 640,
+            "number_format": {
+                "decimal_symbol": ".",
+                "digit_grouping_symbol": ","
+            },
+            "redaction_policy": "none",
+            "time_format": "tt:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Support",
+            "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
+        },
+        "triggered_on": "2020-03-19T16:37:26.928919-05:00",
+        "type": "manual"
+    }
+}

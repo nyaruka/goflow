@@ -138,12 +138,13 @@ func TestReadWithMissingAssets(t *testing.T) {
 	eng := engine.NewBuilder().Build()
 	_, err = eng.ReadSession(sessionAssets, sessionJSON, missing)
 	require.NoError(t, err)
-	assert.Equal(t, 16, len(missingAssets))
+	assert.Equal(t, 18, len(missingAssets))
 	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), ""), missingAssets[0])
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"), missingAssets[1])
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("4f1f98fc-27a7-4a69-bbdb-24744ba739a9"), "Males"), missingAssets[2])
-	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), "Registration"), missingAssets[13])
-	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Collect Age"), missingAssets[14])
+	assert.Equal(t, assets.NewTicketerReference(assets.TicketerUUID("19dc6346-9623-4fe4-be80-538d493ecdf5"), "Support Tickets"), missingAssets[14])
+	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), "Registration"), missingAssets[15])
+	assert.Equal(t, assets.NewFlowReference(assets.FlowUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Collect Age"), missingAssets[16])
 }
 
 func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {

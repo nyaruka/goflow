@@ -111,7 +111,7 @@ func (l *TicketList) Add(ticket *Ticket) {
 	l.tickets = append(l.tickets, ticket)
 }
 
-// Count returns the number of tickets in this ticket list
+// Count returns the number of tickets
 func (l *TicketList) Count() int {
 	return len(l.tickets)
 }

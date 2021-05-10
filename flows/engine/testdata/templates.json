@@ -387,6 +387,10 @@
         "output": "23"
     },
     {
+        "template": "@(json(contact.tickets[0]))",
+        "output": "{\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"}"
+    },
+    {
         "template": "@(json(contact))",
         "output_json": {
             "channel": {
@@ -417,7 +421,13 @@
             "language": "eng",
             "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
             "name": "Ryan Lewis",
-            "tickets": [],
+            "tickets": [
+                {
+                    "body": "I have a problem",
+                    "subject": "Old ticket",
+                    "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+                }
+            ],
             "timezone": "America/Guayaquil",
             "urn": "tel:+12024561111",
             "urns": [
@@ -480,7 +490,13 @@
                 "language": "eng",
                 "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                 "name": "Ryan Lewis",
-                "tickets": [],
+                "tickets": [
+                    {
+                        "body": "I have a problem",
+                        "subject": "Old ticket",
+                        "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+                    }
+                ],
                 "timezone": "America/Guayaquil",
                 "urn": "tel:+12024561111",
                 "urns": [
@@ -684,7 +700,13 @@
                 "language": "eng",
                 "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                 "name": "Ryan Lewis",
-                "tickets": [],
+                "tickets": [
+                    {
+                        "body": "I have a problem",
+                        "subject": "Old ticket",
+                        "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+                    }
+                ],
                 "timezone": "America/Guayaquil",
                 "urn": "tel:+12024561111",
                 "urns": [
@@ -757,7 +779,13 @@
                     "language": "eng",
                     "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                     "name": "Ryan Lewis",
-                    "tickets": [],
+                    "tickets": [
+                        {
+                            "body": "I have a problem",
+                            "subject": "Old ticket",
+                            "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+                        }
+                    ],
                     "timezone": "America/Guayaquil",
                     "urn": "tel:+12024561111",
                     "urns": [

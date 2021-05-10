@@ -281,6 +281,17 @@ func TestEventMarshaling(t *testing.T) {
 					"last_seen_on": "2017-12-31T11:35:10.035757258-02:00",
 					"name": "Ryan Lewis",
 					"status": "active",
+					"tickets": [
+						{
+							"body": "I have a problem",
+							"subject": "Old ticket",
+							"ticketer": {
+								"name": "Support Tickets",
+								"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
+							},
+							"uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+						}
+					],
 					"timezone": "America/Guayaquil",
 					"urns": [
 						"tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
