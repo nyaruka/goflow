@@ -30,7 +30,12 @@ type TicketReference struct {
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, ticketer *Ticketer, subject, body, externalID string) *Ticket {
+func NewTicket(ticketer *Ticketer, subject, body, externalID string) *Ticket {
+	return newTicket(TicketUUID(uuids.New()), ticketer, subject, body, externalID)
+}
+
+// creates a new ticket
+func newTicket(uuid TicketUUID, ticketer *Ticketer, subject, body, externalID string) *Ticket {
 	return &Ticket{
 		baseTicket: baseTicket{
 			UUID:       uuid,
@@ -79,7 +84,7 @@ func NewTicketList(sa SessionAssets, refs []*TicketReference, missing assets.Mis
 		if ticketer == nil {
 			missing(ref.Ticketer, nil)
 		} else {
-			tickets = append(tickets, NewTicket(ref.UUID, ticketer, ref.Subject, ref.Body, ref.ExternalID))
+			tickets = append(tickets, newTicket(ref.UUID, ticketer, ref.Subject, ref.Body, ref.ExternalID))
 		}
 	}
 	return &TicketList{tickets: tickets}
@@ -101,7 +106,7 @@ func (l *TicketList) references() []*TicketReference {
 	return refs
 }
 
-// Add adds the given ticket to this ticket list
+// Adds adds the given ticket to this ticket list
 func (l *TicketList) Add(ticket *Ticket) {
 	l.tickets = append(l.tickets, ticket)
 }

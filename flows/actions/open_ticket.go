@@ -101,6 +101,8 @@ func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *fl
 	}
 	if ticket != nil {
 		logEvent(events.NewTicketOpened(ticket))
+
+		run.Contact().Tickets().Add(ticket)
 	}
 
 	return ticket
