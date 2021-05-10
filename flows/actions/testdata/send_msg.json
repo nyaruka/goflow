@@ -442,12 +442,12 @@
                             "name": "affirmation"
                         },
                         "language": "eng",
-                        "namespace": "",
                         "country": "US",
                         "variables": [
                             "Ryan Lewis",
                             "boy"
-                        ]
+                        ],
+                        "namespace": ""
                     },
                     "topic": "account"
                 }
@@ -524,12 +524,12 @@
                             "name": "affirmation"
                         },
                         "language": "spa",
-                        "namespace": "",
                         "country": "",
                         "variables": [
                             "Ryan Lewis",
                             "niño"
-                        ]
+                        ],
+                        "namespace": ""
                     }
                 }
             }
@@ -594,8 +594,8 @@
                             "name": "wakeup"
                         },
                         "language": "eng",
-                        "namespace": "",
-                        "country": ""
+                        "country": "",
+                        "namespace": ""
                     }
                 }
             }
