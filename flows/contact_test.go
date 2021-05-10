@@ -63,6 +63,7 @@ func TestContact(t *testing.T) {
 		nil,
 		nil,
 		nil,
+		nil,
 		assets.PanicOnMissing,
 	)
 	require.NoError(t, err)
@@ -147,6 +148,7 @@ func TestContact(t *testing.T) {
 		"id":           types.NewXText("12345"),
 		"language":     types.NewXText("eng"),
 		"name":         types.NewXText("Joe Bloggs"),
+		"tickets":      contact.Tickets().ToXValue(env),
 		"timezone":     types.NewXText("America/Bogota"),
 		"urn":          contact.URNs()[0].ToXValue(env),
 		"urns":         contact.URNs().ToXValue(env),
@@ -197,6 +199,7 @@ func TestContactFormat(t *testing.T) {
 		flows.ContactStatusActive,
 		nil,
 		time.Now(),
+		nil,
 		nil,
 		nil,
 		nil,

@@ -121,7 +121,7 @@ func (s *ticketService) Open(session flows.Session, subject, body string, logHTT
 		ElapsedMS: 1,
 	})
 
-	return flows.NewTicket(flows.TicketUUID(uuids.New()), s.ticketer.Reference(), subject, body, "123456"), nil
+	return flows.NewTicket(flows.TicketUUID(uuids.New()), s.ticketer, subject, body, "123456"), nil
 }
 
 // implementation of an airtime service for testing which uses a fixed currency
