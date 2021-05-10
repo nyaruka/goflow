@@ -111,6 +111,11 @@ func (l *TicketList) Add(ticket *Ticket) {
 	l.tickets = append(l.tickets, ticket)
 }
 
+// All returns all tickets in this ticket list
+func (l *TicketList) All() []*Ticket {
+	return l.tickets
+}
+
 // Count returns the number of tickets
 func (l *TicketList) Count() int {
 	return len(l.tickets)
