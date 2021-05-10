@@ -133,11 +133,11 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "ticket": {
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                     "ticketer": {
                         "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
                         "name": "Support Tickets"
                     },
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                     "subject": "Need help",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456"
@@ -221,11 +221,11 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "ticket": {
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                     "ticketer": {
                         "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
                         "name": "Support Tickets"
                     },
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                     "subject": "Need help ",
                     "body": "Where are my cookies? ",
                     "external_id": "123456"

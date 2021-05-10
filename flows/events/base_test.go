@@ -506,8 +506,8 @@ func TestEventMarshaling(t *testing.T) {
 				"ticket": {
 					"uuid": "a8b949ea-60c5-4f78-ae47-9c0a0ba61aa6",
 					"ticketer": {
-						"uuid": "5546b817-48b5-41e9-8c3a-26a4eb469003",
-						"name": "Support"
+						"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+						"name": "Support Tickets"
 					},
 					"subject": "Need help",
 					"body": "Where are my cookies?",

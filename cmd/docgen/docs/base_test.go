@@ -42,7 +42,7 @@ func TestGenerateDocs(t *testing.T) {
 	assert.Contains(t, completion, "root")
 
 	types := completion["types"].([]interface{})
-	assert.Equal(t, 15, len(types))
+	assert.Equal(t, 16, len(types))
 
 	root := completion["root"].([]interface{})
 	assert.Equal(t, 13, len(root))

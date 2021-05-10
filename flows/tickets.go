@@ -42,6 +42,14 @@ func NewTicket(uuid TicketUUID, ticketer *Ticketer, subject, body, externalID st
 	}
 }
 
+// Reference converts this ticket to a ticket reference suitable for marshaling
+func (t *Ticket) Reference() *TicketReference {
+	return &TicketReference{
+		baseTicket: t.baseTicket,
+		Ticketer:   t.Ticketer.Reference(),
+	}
+}
+
 // ToXValue returns a representation of this object for use in expressions
 //
 //   uuid:text -> the UUID of the ticket
@@ -88,10 +96,7 @@ func (l *TicketList) clone() *TicketList {
 func (l *TicketList) references() []*TicketReference {
 	refs := make([]*TicketReference, len(l.tickets))
 	for i, ticket := range l.tickets {
-		refs[i] = &TicketReference{
-			baseTicket: ticket.baseTicket,
-			Ticketer:   ticket.Ticketer.Reference(),
-		}
+		refs[i] = ticket.Reference()
 	}
 	return refs
 }

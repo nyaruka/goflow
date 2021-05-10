@@ -417,6 +417,7 @@
             "language": "eng",
             "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
             "name": "Ryan Lewis",
+            "tickets": [],
             "timezone": "America/Guayaquil",
             "urn": "tel:+12024561111",
             "urns": [
@@ -479,6 +480,7 @@
                 "language": "eng",
                 "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                 "name": "Ryan Lewis",
+                "tickets": [],
                 "timezone": "America/Guayaquil",
                 "urn": "tel:+12024561111",
                 "urns": [
@@ -682,6 +684,7 @@
                 "language": "eng",
                 "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                 "name": "Ryan Lewis",
+                "tickets": [],
                 "timezone": "America/Guayaquil",
                 "urn": "tel:+12024561111",
                 "urns": [
@@ -754,6 +757,7 @@
                     "language": "eng",
                     "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                     "name": "Ryan Lewis",
+                    "tickets": [],
                     "timezone": "America/Guayaquil",
                     "urn": "tel:+12024561111",
                     "urns": [
@@ -838,6 +842,7 @@
                 "language": "spa",
                 "last_seen_on": null,
                 "name": "Jasmine",
+                "tickets": [],
                 "timezone": null,
                 "urn": "tel:+12024562222",
                 "urns": [
@@ -899,6 +904,7 @@
                     "language": "spa",
                     "last_seen_on": null,
                     "name": "Jasmine",
+                    "tickets": [],
                     "timezone": null,
                     "urn": "tel:+12024562222",
                     "urns": [
