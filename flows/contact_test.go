@@ -63,6 +63,7 @@ func TestContact(t *testing.T) {
 		nil,
 		nil,
 		nil,
+		nil,
 		assets.PanicOnMissing,
 	)
 	require.NoError(t, err)
@@ -125,12 +126,20 @@ func TestContact(t *testing.T) {
 		"whatsapp":   nil,
 	}), flows.ContextFunc(env, contact.URNs().MapContext))
 
+	assert.Equal(t, 0, contact.Tickets().Count())
+
+	ticket := flows.NewTicket(sa.Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5"), "New ticket", "I have issues", "654321")
+	contact.Tickets().Add(ticket)
+
+	assert.Equal(t, 1, contact.Tickets().Count())
+
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
 	assert.Equal(t, flows.ContactID(12345), clone.ID())
 	assert.Equal(t, tz, clone.Timezone())
 	assert.Equal(t, envs.Language("eng"), clone.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
+	assert.Equal(t, 1, clone.Tickets().Count())
 
 	// can also clone a null contact!
 	mrNil := (*flows.Contact)(nil)
@@ -147,6 +156,7 @@ func TestContact(t *testing.T) {
 		"id":           types.NewXText("12345"),
 		"language":     types.NewXText("eng"),
 		"name":         types.NewXText("Joe Bloggs"),
+		"tickets":      contact.Tickets().ToXValue(env),
 		"timezone":     types.NewXText("America/Bogota"),
 		"urn":          contact.URNs()[0].ToXValue(env),
 		"urns":         contact.URNs().ToXValue(env),
@@ -197,6 +207,7 @@ func TestContactFormat(t *testing.T) {
 		flows.ContactStatusActive,
 		nil,
 		time.Now(),
+		nil,
 		nil,
 		nil,
 		nil,

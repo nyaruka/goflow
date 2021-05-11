@@ -32,13 +32,13 @@ const TypeTicketOpened string = "ticket_opened"
 type TicketOpenedEvent struct {
 	baseEvent
 
-	Ticket *flows.Ticket `json:"ticket"`
+	Ticket *flows.TicketReference `json:"ticket"`
 }
 
 // NewTicketOpened returns a new ticket opened event
 func NewTicketOpened(ticket *flows.Ticket) *TicketOpenedEvent {
 	return &TicketOpenedEvent{
 		baseEvent: newBaseEvent(TypeTicketOpened),
-		Ticket:    ticket,
+		Ticket:    ticket.Reference(),
 	}
 }

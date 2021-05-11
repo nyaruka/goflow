@@ -56,6 +56,7 @@ type Contact struct {
 	urns       URNList
 	groups     *GroupList
 	fields     FieldValues
+	tickets    *TicketList
 
 	// transient fields
 	assets SessionAssets
@@ -75,6 +76,7 @@ func NewContact(
 	urns []urns.URN,
 	groups []*assets.GroupReference,
 	fields map[string]*Value,
+	tickets []*TicketReference,
 	missing assets.MissingCallback) (*Contact, error) {
 
 	urnList, err := ReadURNList(sa, urns, missing)
@@ -84,6 +86,7 @@ func NewContact(
 
 	groupList := NewGroupList(sa, groups, missing)
 	fieldValues := NewFieldValues(sa, fields, missing)
+	ticketList := NewTicketList(sa, tickets, missing)
 
 	return &Contact{
 		uuid:       uuid,
@@ -97,6 +100,7 @@ func NewContact(
 		urns:       urnList,
 		groups:     groupList,
 		fields:     fieldValues,
+		tickets:    ticketList,
 		assets:     sa,
 	}, nil
 }
@@ -114,6 +118,7 @@ func NewEmptyContact(sa SessionAssets, name string, language envs.Language, time
 		urns:       URNList{},
 		groups:     NewGroupList(sa, nil, assets.IgnoreMissing),
 		fields:     make(FieldValues),
+		tickets:    NewTicketList(sa, nil, assets.IgnoreMissing),
 		assets:     sa,
 	}
 }
@@ -136,6 +141,7 @@ func (c *Contact) Clone() *Contact {
 		urns:       c.urns.clone(),
 		groups:     c.groups.clone(),
 		fields:     c.fields.clone(),
+		tickets:    c.tickets.clone(),
 		assets:     c.assets,
 	}
 }
@@ -263,6 +269,9 @@ func (c *Contact) Fields() FieldValues { return c.fields }
 // Groups returns the groups that this contact belongs to
 func (c *Contact) Groups() *GroupList { return c.groups }
 
+// Tickets returns the tickets that this contact has open
+func (c *Contact) Tickets() *TicketList { return c.tickets }
+
 // Reference returns a reference to this contact
 func (c *Contact) Reference() *ContactReference {
 	if c == nil {
@@ -342,6 +351,7 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 		"groups":       c.groups.ToXValue(env),
 		"fields":       Context(env, c.Fields()),
 		"channel":      Context(env, c.PreferredChannel()),
+		"tickets":      c.tickets.ToXValue(env),
 	}
 }
 
@@ -571,6 +581,7 @@ type contactEnvelope struct {
 	URNs       []urns.URN               `json:"urns,omitempty"      validate:"dive,urn"`
 	Groups     []*assets.GroupReference `json:"groups,omitempty"    validate:"dive"`
 	Fields     map[string]*Value        `json:"fields,omitempty"`
+	Tickets    []*TicketReference       `json:"tickets,omitempty"   validate:"dive"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -614,6 +625,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 
 	c.groups = NewGroupList(sa, envelope.Groups, missing)
 	c.fields = NewFieldValues(sa, envelope.Fields, missing)
+	c.tickets = NewTicketList(sa, envelope.Tickets, missing)
 
 	return c, nil
 }
@@ -628,16 +640,13 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		Language:   c.language,
 		CreatedOn:  c.createdOn,
 		LastSeenOn: c.lastSeenOn,
+		URNs:       c.urns.RawURNs(),
+		Groups:     c.groups.references(),
+		Tickets:    c.tickets.references(),
 	}
 
-	ce.URNs = c.urns.RawURNs()
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()
-	}
-
-	ce.Groups = make([]*assets.GroupReference, c.groups.Count())
-	for i, group := range c.groups.All() {
-		ce.Groups[i] = group.Reference()
 	}
 
 	ce.Fields = make(map[string]*Value)

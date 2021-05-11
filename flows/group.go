@@ -90,11 +90,20 @@ func NewGroupList(a SessionAssets, refs []*assets.GroupReference, missing assets
 	return &GroupList{groups: groups}
 }
 
-// Clone returns a clone of this group list
+// returns a clone of this group list
 func (l *GroupList) clone() *GroupList {
 	groups := make([]*Group, len(l.groups))
 	copy(groups, l.groups)
 	return &GroupList{groups: groups}
+}
+
+// returns this group list as a slice of group references
+func (l *GroupList) references() []*assets.GroupReference {
+	refs := make([]*assets.GroupReference, len(l.groups))
+	for i, group := range l.groups {
+		refs[i] = group.Reference()
+	}
+	return refs
 }
 
 // FindByUUID returns the group with the passed in UUID or nil if not found

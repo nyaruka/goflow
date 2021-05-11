@@ -303,7 +303,18 @@ var sessionTrigger = `{
             "activation_token": {
                 "text": "AACC55"
             }
-        }
+        },
+        "tickets": [
+            {
+                "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52",
+                "subject": "Old ticket",
+                "body": "I have a problem",
+                "ticketer": {
+                    "name": "Support Tickets",
+                    "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
+                }
+            }
+        ]
     },
     "run_summary": {
         "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d",

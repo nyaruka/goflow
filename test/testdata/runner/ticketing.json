@@ -111,8 +111,8 @@
                             "addresses": [
                                 "bob@nyaruka.com"
                             ],
-                            "subject": "New ticket",
-                            "body": "Ticket @results.ticket.value opened"
+                            "subject": "New ticket: @results.ticket.value",
+                            "body": "@(json(contact.tickets))"
                         }
                     ],
                     "exits": [
