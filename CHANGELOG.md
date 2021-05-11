@@ -1,3 +1,7 @@
+v0.118.0
+----------
+ * Add contact tickets to expression context
+
 v0.117.0
 ----------
  * Add WA template translations namespace
