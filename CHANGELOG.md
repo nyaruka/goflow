@@ -1,3 +1,7 @@
+v0.118.1
+----------
+ * Add way to create new ticket reference instances and add contact tickets to editor autocompletion
+
 v0.118.0
 ----------
  * Add contact tickets to expression context
