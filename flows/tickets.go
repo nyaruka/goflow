@@ -17,21 +17,34 @@ type baseTicket struct {
 	ExternalID string     `json:"external_id,omitempty"`
 }
 
-// Ticket is a ticket in a ticketing system
-type Ticket struct {
-	Ticketer *Ticketer
-	baseTicket
-}
-
 // TicketReference is a ticket with a reference to the ticketer
 type TicketReference struct {
 	Ticketer *assets.TicketerReference `json:"ticketer"`
 	baseTicket
 }
 
-// NewTicket creates a new ticket
-func NewTicket(ticketer *Ticketer, subject, body, externalID string) *Ticket {
-	return newTicket(TicketUUID(uuids.New()), ticketer, subject, body, externalID)
+// NewTicketReference creates a new ticket with a reference to the ticketer
+func NewTicketReference(uuid TicketUUID, ticketer *assets.TicketerReference, subject, body, externalID string) *TicketReference {
+	return &TicketReference{
+		baseTicket: baseTicket{
+			UUID:       uuid,
+			Subject:    subject,
+			Body:       body,
+			ExternalID: externalID,
+		},
+		Ticketer: ticketer,
+	}
+}
+
+// Ticket is a ticket in a ticketing system
+type Ticket struct {
+	Ticketer *Ticketer
+	baseTicket
+}
+
+// NewTicket creates a new ticket. Used by ticketing services to open a new ticket.
+func NewTicket(ticketer *Ticketer, subject, body string) *Ticket {
+	return newTicket(TicketUUID(uuids.New()), ticketer, subject, body, "")
 }
 
 // creates a new ticket
