@@ -313,6 +313,7 @@ func (c *Contact) Format(env envs.Environment) string {
 //   groups:[]group -> the groups the contact belongs to
 //   fields:fields -> the custom field values of the contact
 //   channel:channel -> the preferred channel of the contact
+//   tickets:[]ticket -> the open tickets of the contact
 //
 // @context contact
 func (c *Contact) Context(env envs.Environment) map[string]types.XValue {

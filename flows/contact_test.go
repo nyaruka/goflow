@@ -128,7 +128,7 @@ func TestContact(t *testing.T) {
 
 	assert.Equal(t, 0, contact.Tickets().Count())
 
-	ticket := flows.NewTicket(sa.Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5"), "New ticket", "I have issues", "654321")
+	ticket := flows.NewTicket(sa.Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5"), "New ticket", "I have issues")
 	contact.Tickets().Add(ticket)
 
 	assert.Equal(t, 1, contact.Tickets().Count())

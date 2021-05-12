@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -15,6 +16,9 @@ import (
 )
 
 func TestTickets(t *testing.T) {
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+
 	env := envs.NewBuilder().Build()
 
 	source, err := static.NewSource([]byte(`{
@@ -73,8 +77,26 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, 1, len(missingRefs))
 	assert.Equal(t, "0a0b5ce4-35c9-47b7-b124-40258f0a5b53", missingRefs[0].Identity())
 
-	ticket := flows.NewTicket(mailgun, "New ticket", "Where are my pants?", "893732")
+	ticket := flows.NewTicket(mailgun, "New ticket", "Where are my pants?")
+	ticket.ExternalID = "24567"
 	tickets.Add(ticket)
-
 	assert.Equal(t, 2, tickets.Count())
+
+	ticketRef := ticket.Reference()
+	assert.Equal(t, flows.TicketUUID("1ae96956-4b34-433e-8d1a-f05fe6923d6d"), ticketRef.UUID)
+	assert.Equal(t, assets.TicketerUUID("5885ed52-8d3e-4fd3-be49-57eebe5d4d59"), ticketRef.Ticketer.UUID)
+	assert.Equal(t, "Email Tickets", ticketRef.Ticketer.Name)
+	assert.Equal(t, "New ticket", ticketRef.Subject)
+	assert.Equal(t, "Where are my pants?", ticketRef.Body)
+	assert.Equal(t, "24567", ticketRef.ExternalID)
+
+	// can also create same ticket ref explicitly
+	ticketRef2 := flows.NewTicketReference(
+		"1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+		assets.NewTicketerReference("5885ed52-8d3e-4fd3-be49-57eebe5d4d59", "Email Tickets"),
+		"New ticket",
+		"Where are my pants?",
+		"24567",
+	)
+	assert.Equal(t, ticketRef, ticketRef2)
 }
