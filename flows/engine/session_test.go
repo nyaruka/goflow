@@ -3,6 +3,7 @@ package engine_test
 import (
 	"encoding/json"
 	"io/ioutil"
+	"sort"
 	"testing"
 	"time"
 
@@ -145,27 +146,30 @@ func TestReadWithMissingAssets(t *testing.T) {
 		refs[i] = missingAssets[i].String()
 	}
 
+	// ordering isn't deterministic so sort A-Z
+	sort.Strings(refs)
+
 	assert.Equal(t, []string{
+		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=My Android Phone]",
 		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=]",
-		"group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-		"group[uuid=4f1f98fc-27a7-4a69-bbdb-24744ba739a9,name=Males]",
+		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=]",
 		"field[key=activation_token,name=]",
-		"field[key=gender,name=]",
-		"field[key=join_date,name=]",
-		"ticketer[uuid=19dc6346-9623-4fe4-be80-538d493ecdf5,name=Support Tickets]",
-		"ticketer[uuid=19dc6346-9623-4fe4-be80-538d493ecdf5,name=Support Tickets]",
-		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=]",
-		"group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-		"group[uuid=4f1f98fc-27a7-4a69-bbdb-24744ba739a9,name=Males]",
 		"field[key=activation_token,name=]",
 		"field[key=age,name=]",
 		"field[key=gender,name=]",
+		"field[key=gender,name=]",
 		"field[key=join_date,name=]",
-		"ticketer[uuid=19dc6346-9623-4fe4-be80-538d493ecdf5,name=Support Tickets]",
-		"ticketer[uuid=19dc6346-9623-4fe4-be80-538d493ecdf5,name=Support Tickets]",
+		"field[key=join_date,name=]",
 		"flow[uuid=50c3706e-fedb-42c0-8eab-dda3335714b7,name=Registration]",
 		"flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]",
-		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=My Android Phone]",
+		"group[uuid=4f1f98fc-27a7-4a69-bbdb-24744ba739a9,name=Males]",
+		"group[uuid=4f1f98fc-27a7-4a69-bbdb-24744ba739a9,name=Males]",
+		"group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
+		"group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
+		"ticketer[uuid=19dc6346-9623-4fe4-be80-538d493ecdf5,name=Support Tickets]",
+		"ticketer[uuid=19dc6346-9623-4fe4-be80-538d493ecdf5,name=Support Tickets]",
+		"ticketer[uuid=19dc6346-9623-4fe4-be80-538d493ecdf5,name=Support Tickets]",
+		"ticketer[uuid=19dc6346-9623-4fe4-be80-538d493ecdf5,name=Support Tickets]",
 	}, refs)
 }
 
