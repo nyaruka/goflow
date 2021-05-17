@@ -292,6 +292,15 @@ func TestEventMarshaling(t *testing.T) {
 								"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
 							},
 							"uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+						},
+						{
+							"body": "What day is it?",
+							"subject": "Question",
+							"ticketer": {
+								"name": "Support Tickets",
+								"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
+							},
+							"uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
 						}
 					],
 					"timezone": "America/Guayaquil",

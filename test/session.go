@@ -313,6 +313,15 @@ var sessionTrigger = `{
                     "name": "Support Tickets",
                     "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
                 }
+            },
+            {
+                "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
+                "subject": "Question",
+                "body": "What day is it?",
+                "ticketer": {
+                    "name": "Support Tickets",
+                    "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
+                }
             }
         ]
     },

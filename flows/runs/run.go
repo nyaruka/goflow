@@ -232,6 +232,7 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 //   run:run -> the current run
 //   child:related_run -> the last child run
 //   parent:related_run -> the parent of the run
+//   ticket:ticket -> the last opened ticket for the contact
 //   webhook:any -> the parsed JSON response of the last webhook call
 //   node:node -> the current node
 //   globals:globals -> the global values
@@ -240,10 +241,16 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 //
 // @context root
 func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
-	var urns, fields, node types.XValue
+	var urns, fields, ticket, node types.XValue
 	if r.Contact() != nil {
 		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
 		fields = flows.Context(env, r.Contact().Fields())
+
+		tickets := r.Contact().Tickets()
+
+		if tickets.Count() > 0 {
+			ticket = flows.Context(env, tickets.All()[tickets.Count()-1])
+		}
 	}
 
 	var child = newRelatedRunContext(r.Session().GetCurrentChild(r))
@@ -260,11 +267,12 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 		"child":  flows.Context(env, child),
 		"parent": flows.Context(env, parent),
 
-		// shortcuts to things on the current run
+		// shortcuts to things on the current run or contact
 		"contact": flows.Context(env, r.Contact()),
 		"results": flows.Context(env, r.Results()),
 		"urns":    urns,
 		"fields":  fields,
+		"ticket":  ticket,
 
 		// other
 		"trigger":      flows.Context(env, r.Session().Trigger()),
