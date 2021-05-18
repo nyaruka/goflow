@@ -1,3 +1,7 @@
+v0.118.2
+----------
+ * Add @ticket to the root context as the last opened ticket
+
 v0.118.1
 ----------
  * Add way to create new ticket reference instances and add contact tickets to editor autocompletion
