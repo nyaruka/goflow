@@ -43,6 +43,7 @@ var RunContextTopLevels = []string{
 	"results",
 	"resume",
 	"run",
+	"ticket",
 	"trigger",
 	"urns",
 	"webhook",

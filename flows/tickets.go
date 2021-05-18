@@ -68,19 +68,19 @@ func (t *Ticket) Reference() *TicketReference {
 	}
 }
 
-// ToXValue returns a representation of this object for use in expressions
+// Context returns the properties available in expressions
 //
 //   uuid:text -> the UUID of the ticket
 //   subject:text -> the subject of the ticket
 //   body:text -> the body of the ticket
 //
 // @context ticket
-func (t *Ticket) ToXValue(env envs.Environment) types.XValue {
-	return types.NewXObject(map[string]types.XValue{
+func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
+	return map[string]types.XValue{
 		"uuid":    types.NewXText(string(t.UUID)),
 		"subject": types.NewXText(t.Subject),
 		"body":    types.NewXText(t.Body),
-	})
+	}
 }
 
 // TicketList defines a contact's list of tickets
@@ -138,7 +138,7 @@ func (l *TicketList) Count() int {
 func (l TicketList) ToXValue(env envs.Environment) types.XValue {
 	array := make([]types.XValue, len(l.tickets))
 	for i, ticket := range l.tickets {
-		array[i] = ticket.ToXValue(env)
+		array[i] = Context(env, ticket)
 	}
 	return types.NewXArray(array...)
 }

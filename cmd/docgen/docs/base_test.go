@@ -45,7 +45,7 @@ func TestGenerateDocs(t *testing.T) {
 	assert.Equal(t, 16, len(types))
 
 	root := completion["root"].([]interface{})
-	assert.Equal(t, 13, len(root))
+	assert.Equal(t, 14, len(root))
 
 	functions := readJSONOutput(t, outputDir, "en-us", "functions.json").([]interface{})
 	assert.Equal(t, 80, len(functions))
