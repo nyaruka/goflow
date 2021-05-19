@@ -1,3 +1,7 @@
+v0.119.0
+----------
+ * Remove legacy_extra issue type
+
 v0.118.2
 ----------
  * Add @ticket to the root context as the last opened ticket
