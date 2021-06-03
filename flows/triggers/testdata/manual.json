@@ -35,6 +35,7 @@
             "params": {
                 "foo": "bar"
             },
+            "ticket": null,
             "type": "manual",
             "user": "bob@nyaruka.com"
         }
@@ -60,6 +61,7 @@
             "keyword": "",
             "origin": "",
             "params": {},
+            "ticket": null,
             "type": "manual",
             "user": ""
         }

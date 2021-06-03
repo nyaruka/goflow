@@ -5,6 +5,8 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -56,6 +58,15 @@ type TicketEvent struct {
 type TicketTrigger struct {
 	baseTrigger
 	event *TicketEvent
+
+	ticket *flows.Ticket
+}
+
+// Context for ticket triggers includes the ticket
+func (t *TicketTrigger) Context(env envs.Environment) map[string]types.XValue {
+	c := t.context()
+	c.ticket = flows.Context(env, t.ticket)
+	return c.asMap()
 }
 
 var _ flows.Trigger = (*TicketTrigger)(nil)
@@ -93,7 +104,7 @@ type ticketTriggerEnvelope struct {
 	Event *TicketEvent `json:"event" validate:"required,dive"`
 }
 
-func readTicketTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
+func readTicketTrigger(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &ticketTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -102,9 +113,12 @@ func readTicketTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, 
 	t := &TicketTrigger{
 		event: e.Event,
 	}
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
 		return nil, err
 	}
+
+	// convert to real ticket in case we need to use it in the context
+	t.ticket = flows.NewTicketFromReference(sa, t.event.Ticket)
 
 	return t, nil
 }

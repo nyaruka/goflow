@@ -1031,6 +1031,7 @@
                 },
                 "source": "website"
             },
+            "ticket": null,
             "type": "flow_action",
             "user": ""
         }

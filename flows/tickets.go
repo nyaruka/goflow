@@ -88,16 +88,22 @@ type TicketList struct {
 	tickets []*Ticket
 }
 
+// NewTicketFromReference creates a new ticket from a ticket reference
+func NewTicketFromReference(sa SessionAssets, ref *TicketReference) *Ticket {
+	ticketer := sa.Ticketers().Get(ref.Ticketer.UUID)
+	return newTicket(ref.UUID, ticketer, ref.Subject, ref.Body, ref.ExternalID)
+}
+
 // NewTicketList creates a new ticket list
 func NewTicketList(sa SessionAssets, refs []*TicketReference, missing assets.MissingCallback) *TicketList {
 	tickets := make([]*Ticket, 0, len(refs))
 
 	for _, ref := range refs {
-		ticketer := sa.Ticketers().Get(ref.Ticketer.UUID)
-		if ticketer == nil {
-			missing(ref.Ticketer, nil)
+		ticket := NewTicketFromReference(sa, ref)
+		if ticket.Ticketer != nil {
+			tickets = append(tickets, ticket)
 		} else {
-			tickets = append(tickets, newTicket(ref.UUID, ticketer, ref.Subject, ref.Body, ref.ExternalID))
+			missing(ref.Ticketer, nil)
 		}
 	}
 	return &TicketList{tickets: tickets}

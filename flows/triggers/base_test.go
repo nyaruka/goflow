@@ -150,7 +150,14 @@ var assetsJSON = `{
             "schemes": ["tel"],
             "roles": ["send", "receive"]
         }
-	]
+	],
+    "ticketers": [
+        {
+            "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+            "name": "Support Tickets",
+            "type": "mailgun"
+        }
+    ]
 }`
 
 func TestTriggerMarshaling(t *testing.T) {
@@ -378,5 +385,6 @@ func TestTriggerContext(t *testing.T) {
 		"keyword": types.XTextEmpty,
 		"user":    types.NewXText("bob@nyaruka.com"),
 		"origin":  types.NewXText("api"),
+		"ticket":  nil,
 	}, trigger.Context(env))
 }
