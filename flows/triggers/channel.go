@@ -23,8 +23,10 @@ type ChannelEventType string
 
 // different channel event types
 const (
-	ChannelEventTypeNewConversation ChannelEventType = "new_conversation"
 	ChannelEventTypeIncomingCall    ChannelEventType = "incoming_call"
+	ChannelEventTypeMissedCall      ChannelEventType = "missed_call"
+	ChannelEventTypeNewConversation ChannelEventType = "new_conversation"
+	ChannelEventTypeReferral        ChannelEventType = "referral"
 )
 
 // ChannelEvent describes the specific event on the channel that triggered the session

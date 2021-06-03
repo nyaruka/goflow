@@ -168,8 +168,10 @@ func TestTriggerMarshaling(t *testing.T) {
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
+	flow := assets.NewFlowReference("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc", "Registration")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
+	ticketer := assets.NewTicketerReference("19dc6346-9623-4fe4-be80-538d493ecdf5", "Support Tickets")
+	ticket := flows.NewTicketReference("276c2e43-d6f9-4c36-8e54-b5af5039acf6", ticketer, "Problem", "Where are my shoes?", "123456")
 
 	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)
@@ -257,6 +259,12 @@ func TestTriggerMarshaling(t *testing.T) {
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
 				Build(),
 			"msg",
+		},
+		{
+			triggers.NewBuilder(env, flow, contact).
+				Ticket(ticket, triggers.TicketEventTypeClosed).
+				Build(),
+			"ticket_closed",
 		},
 	}
 
