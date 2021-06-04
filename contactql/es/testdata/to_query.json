@@ -764,6 +764,31 @@
         }
     },
     {
+        "description": "state field equality with punctuation",
+        "query": "state = \"Nord-Kivu\"",
+        "elastic": {
+            "nested": {
+                "path": "fields",
+                "query": {
+                    "bool": {
+                        "must": [
+                            {
+                                "term": {
+                                    "fields.field": "67663ad1-3abc-42dd-a162-09df2dea66ec"
+                                }
+                            },
+                            {
+                                "term": {
+                                    "fields.state_keyword": "nord-kivu"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    {
         "description": "state field inequality",
         "query": "state!=washington",
         "elastic": {
@@ -877,7 +902,7 @@
         }
     },
     {
-        "description": "vdistrict field inequality",
+        "description": "district field inequality",
         "query": "district!=chelan",
         "elastic": {
             "bool": {
