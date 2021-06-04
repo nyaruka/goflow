@@ -170,7 +170,7 @@
     },
     {
         "template": "@(count(contact.fields))",
-        "output": "5"
+        "output": "6"
     },
     {
         "template": "@fields",
@@ -202,7 +202,7 @@
     },
     {
         "template": "@(count(fields))",
-        "output": "5"
+        "output": "6"
     },
     {
         "template": "@input",
@@ -379,7 +379,8 @@
             "age": 23,
             "gender": "Male",
             "join_date": "2017-12-02T00:00:00.000000-02:00",
-            "not_set": null
+            "not_set": null,
+            "state": null
         }
     },
     {
@@ -412,7 +413,8 @@
                 "age": 23,
                 "gender": "Male",
                 "join_date": "2017-12-02T00:00:00.000000-02:00",
-                "not_set": null
+                "not_set": null,
+                "state": null
             },
             "first_name": "Ryan",
             "groups": [
@@ -486,7 +488,8 @@
                     "age": 23,
                     "gender": "Male",
                     "join_date": "2017-12-02T00:00:00.000000-02:00",
-                    "not_set": null
+                    "not_set": null,
+                    "state": null
                 },
                 "first_name": "Ryan",
                 "groups": [
@@ -701,7 +704,8 @@
                     "age": 23,
                     "gender": "Male",
                     "join_date": "2017-12-02T00:00:00.000000-02:00",
-                    "not_set": null
+                    "not_set": null,
+                    "state": null
                 },
                 "first_name": "Ryan",
                 "groups": [
@@ -744,7 +748,8 @@
                 "age": 23,
                 "gender": "Male",
                 "join_date": "2017-12-02T00:00:00.000000-02:00",
-                "not_set": null
+                "not_set": null,
+                "state": null
             },
             "flow": {
                 "name": "Collect Age",
@@ -785,7 +790,8 @@
                         "age": 23,
                         "gender": "Male",
                         "join_date": "2017-12-02T00:00:00.000000-02:00",
-                        "not_set": null
+                        "not_set": null,
+                        "state": null
                     },
                     "first_name": "Ryan",
                     "groups": [
@@ -890,7 +896,8 @@
                     "age": 33,
                     "gender": "Female",
                     "join_date": null,
-                    "not_set": null
+                    "not_set": null,
+                    "state": null
                 },
                 "first_name": "Jasmine",
                 "groups": [],
@@ -911,7 +918,8 @@
                 "age": 33,
                 "gender": "Female",
                 "join_date": null,
-                "not_set": null
+                "not_set": null,
+                "state": null
             },
             "flow": {
                 "name": "Parent",
@@ -952,7 +960,8 @@
                         "age": 33,
                         "gender": "Female",
                         "join_date": null,
-                        "not_set": null
+                        "not_set": null,
+                        "state": null
                     },
                     "first_name": "Jasmine",
                     "groups": [],

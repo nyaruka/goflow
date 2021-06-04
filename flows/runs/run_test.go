@@ -186,11 +186,11 @@ func TestRunContext(t *testing.T) {
 		{`@resume.type`, "msg"},
 		{
 			`@(json(contact.fields))`,
-			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`,
+			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null,"state":null}`,
 		},
 		{
 			`@(json(fields))`,
-			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null}`,
+			`{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00","not_set":null,"state":null}`,
 		},
 		{
 			`@(json(contact.urns))`,
@@ -218,7 +218,7 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(parent.fields))`,
-			`{"activation_token":null,"age":33,"gender":"Female","join_date":null,"not_set":null}`,
+			`{"activation_token":null,"age":33,"gender":"Female","join_date":null,"not_set":null,"state":null}`,
 		},
 	}
 

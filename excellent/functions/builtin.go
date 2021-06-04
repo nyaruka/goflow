@@ -1899,7 +1899,7 @@ func IsError(env envs.Environment, value types.XValue) types.XValue {
 //
 // It will return an error if it is passed an item which isn't countable.
 //
-//   @(count(contact.fields)) -> 5
+//   @(count(contact.fields)) -> 6
 //   @(count(array())) -> 0
 //   @(count(array("a", "b", "c"))) -> 3
 //   @(count(1234)) -> ERROR

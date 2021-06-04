@@ -14,7 +14,7 @@ import (
 )
 
 func TestFieldValues(t *testing.T) {
-	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyNone)
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
 
 	env := session.Environment()
@@ -23,10 +23,10 @@ func TestFieldValues(t *testing.T) {
 	age := fields.Get("age")
 
 	// can have no values for any fields
-	fieldVals := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, assets.PanicOnMissing)
+	flows.NewFieldValues(session.Assets(), map[string]*flows.Value{}, assets.PanicOnMissing)
 
 	// can have a value but not in the right type for that field (age below)
-	fieldVals = flows.NewFieldValues(session.Assets(), map[string]*flows.Value{
+	fieldVals := flows.NewFieldValues(session.Assets(), map[string]*flows.Value{
 		"gender": flows.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
 		"age":    flows.NewValue(types.NewXText("nan"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
 	}, assets.PanicOnMissing)
@@ -46,8 +46,45 @@ func TestFieldValues(t *testing.T) {
 		"age":              nil,
 		"gender":           types.NewXText("Male"),
 		"join_date":        nil,
+		"state":            nil,
 		"not_set":          nil,
 	}), flows.Context(env, fieldVals))
+}
+
+func TestFieldValueParse(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	fields := session.Assets().Fields()
+	gender := fields.Get("gender")
+	age := fields.Get("age")
+	state := fields.Get("state")
+
+	xt := types.NewXText
+	xn := func(s string) *types.XNumber { xn := types.RequireXNumberFromString(s); return &xn }
+	nilLocPath := envs.LocationPath("")
+
+	tcs := []struct {
+		field    *flows.Field
+		value    string
+		expected *flows.Value
+	}{
+		{gender, "", nil},
+		{gender, "M", flows.NewValue(xt("M"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+		{gender, " M ", flows.NewValue(xt(" M "), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+		{gender, " 12 ", flows.NewValue(xt(" 12 "), nil, xn("12"), nilLocPath, nilLocPath, nilLocPath)},
+		{age, "", nil},
+		{age, "12", flows.NewValue(xt("12"), nil, xn("12"), nilLocPath, nilLocPath, nilLocPath)},
+		{state, "", nil},
+		{state, "kigali city", flows.NewValue(xt("kigali city"), nil, nil, envs.LocationPath("Rwanda > Kigali City"), nilLocPath, nilLocPath)},
+		{state, "x", flows.NewValue(xt("x"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+	}
+
+	for _, tc := range tcs {
+		actual := session.Contact().Fields().Parse(session.Runs()[0].Environment(), fields, tc.field, tc.value)
+
+		assert.Equal(t, tc.expected, actual, "parse mismatch for field %s and value '%s'", tc.field.Key(), tc.value)
+	}
 }
 
 func TestValues(t *testing.T) {
