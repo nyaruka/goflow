@@ -112,6 +112,7 @@ type Context struct {
 	keyword string
 	user    string
 	origin  string
+	ticket  types.XValue
 }
 
 func (c *Context) asMap() map[string]types.XValue {
@@ -121,6 +122,7 @@ func (c *Context) asMap() map[string]types.XValue {
 		"keyword": types.NewXText(c.keyword),
 		"user":    types.NewXText(c.user),
 		"origin":  types.NewXText(c.origin),
+		"ticket":  c.ticket,
 	}
 }
 

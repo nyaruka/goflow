@@ -46,6 +46,9 @@
                 "status": "active",
                 "created_on": "2018-01-01T12:00:00Z"
             },
+            "params": {
+                "referer_id": "234567345"
+            },
             "triggered_on": "2000-01-01T00:00:00Z",
             "event": {
                 "type": "new_conversation",
@@ -53,9 +56,6 @@
                     "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
                     "name": "Facebook"
                 }
-            },
-            "params": {
-                "referer_id": "234567345"
             }
         },
         "events": [],
@@ -65,6 +65,7 @@
             "params": {
                 "referer_id": "234567345"
             },
+            "ticket": null,
             "type": "channel",
             "user": ""
         }
