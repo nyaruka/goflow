@@ -1,3 +1,8 @@
+v0.120.0
+----------
+ * Add ticket as property to @trigger in context
+ * Add new ticket type trigger with a closed event
+
 v0.119.0
 ----------
  * Remove legacy_extra issue type
