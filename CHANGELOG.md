@@ -1,3 +1,7 @@
+v0.120.1
+----------
+ * Tweak test.AssertEqualJSON to take msgAndArgs param like asserts library
+
 v0.120.0
 ----------
  * Add ticket as property to @trigger in context
