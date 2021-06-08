@@ -62,28 +62,6 @@ func (g *editorSupportGenerator) Generate(baseDir, outputDir string, items map[s
 	}
 	fmt.Printf(" > editor support file written to %s\n", outputPath)
 
-	// for backwards compatibility, write as two separate files as well
-	mapPath := path.Join(outputDir, "completion.json")
-	listingPath := path.Join(outputDir, "functions.json")
-
-	marshaled, err = jsonx.MarshalPretty(es.Context)
-	if err != nil {
-		return err
-	}
-	if err := ioutil.WriteFile(mapPath, marshaled, 0755); err != nil {
-		return err
-	}
-	fmt.Printf(" > %d completion map written to %s\n", len(items["context"]), mapPath)
-
-	marshaled, err = jsonx.MarshalPretty(es.Functions)
-	if err != nil {
-		return err
-	}
-	if err := ioutil.WriteFile(listingPath, marshaled, 0755); err != nil {
-		return err
-	}
-	fmt.Printf(" > %d functions written to %s\n", len(es.Functions), listingPath)
-
 	// also output list of context paths.. not used by the editor but useful for checking
 	if err := createContextPathListFile(outputDir, es.Context); err != nil {
 		return err
