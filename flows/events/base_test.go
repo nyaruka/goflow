@@ -668,5 +668,5 @@ func TestDeprecatedEvents(t *testing.T) {
 
 	marshaled, err := jsonx.Marshal(e)
 	assert.NoError(t, err)
-	test.AssertEqualJSON(t, eventJSON, marshaled, "marshal event mismatch")
+	test.AssertEqualJSON(t, eventJSON, marshaled)
 }

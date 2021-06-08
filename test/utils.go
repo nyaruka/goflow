@@ -34,12 +34,12 @@ func NormalizeJSON(data json.RawMessage) ([]byte, error) {
 }
 
 // AssertEqualJSON checks two JSON strings for equality
-func AssertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMessage, msg string, msgArgs ...interface{}) bool {
+func AssertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMessage, msgAndArgs ...interface{}) bool {
 	if expected == nil && actual == nil {
 		return true
 	}
 
-	message := fmt.Sprintf(msg, msgArgs...)
+	message := fmtMsgAndArgs(msgAndArgs)
 
 	expectedNormalized, err := NormalizeJSON(expected)
 	require.NoError(t, err, "%s: unable to normalize expected JSON: %s", message, string(expected))
@@ -69,4 +69,21 @@ func JSONReplace(data json.RawMessage, path []string, value json.RawMessage) jso
 // JSONDelete deletes a node in JSON
 func JSONDelete(data json.RawMessage, path []string) json.RawMessage {
 	return jsonparser.Delete(data, path...)
+}
+
+func fmtMsgAndArgs(msgAndArgs []interface{}) string {
+	if len(msgAndArgs) == 0 {
+		return ""
+	}
+	if len(msgAndArgs) == 1 {
+		msg := msgAndArgs[0]
+		if msgAsStr, ok := msg.(string); ok {
+			return msgAsStr
+		}
+		return fmt.Sprintf("%+v", msg)
+	}
+	if len(msgAndArgs) > 1 {
+		return fmt.Sprintf(msgAndArgs[0].(string), msgAndArgs[1:]...)
+	}
+	return ""
 }
