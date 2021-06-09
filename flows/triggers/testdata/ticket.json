@@ -15,7 +15,7 @@
             },
             "triggered_on": "2000-01-01T00:00:00Z"
         },
-        "read_error": "field 'event' is required"
+        "read_error": "field 'event.type' is required, field 'event.ticket' is required"
     },
     {
         "description": "with all required fields",

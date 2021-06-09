@@ -1,7 +1,6 @@
 package flows_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/gocommon/uuids"
@@ -51,52 +50,47 @@ func TestTickets(t *testing.T) {
 		missingRefs = append(missingRefs, ref)
 	}
 
-	ticketsJSON := `[
-		{
-			"uuid": "349c851f-3f8e-4353-8bf2-8e90b6d73530", 
-			"ticketer": {"uuid": "0a0b5ce4-35c9-47b7-b124-40258f0a5b53", "name": "Deleted"},
-			"subject": "Very Old ticket",
-			"body": "Ticketer gone!"
-		},
-		{
-			"uuid": "5a4af021-d2c2-47fc-9abc-abbb8635d8c0", 
-			"ticketer": {"uuid": "d605bb96-258d-4097-ad0a-080937db2212", "name": "Support Tickets"},
-			"subject": "Old ticket",
-			"body": "Where are my shoes?"
-		}
-	]`
-	var ticketRefs []*flows.TicketReference
-	err = json.Unmarshal([]byte(ticketsJSON), &ticketRefs)
+	ticket1, err := flows.ReadTicket(sa, []byte(`{
+		"uuid": "349c851f-3f8e-4353-8bf2-8e90b6d73530", 
+		"ticketer": {"uuid": "0a0b5ce4-35c9-47b7-b124-40258f0a5b53", "name": "Deleted"},
+		"subject": "Very Old Ticket",
+		"body": "Ticketer gone!",
+		"external_id": "7654"
+	}`), missing)
 	require.NoError(t, err)
 
-	tickets := flows.NewTicketList(sa, ticketRefs, missing)
-	assert.Equal(t, 1, tickets.Count())
-	assert.Equal(t, "Old ticket", tickets.All()[0].Subject)
+	assert.Equal(t, flows.TicketUUID("349c851f-3f8e-4353-8bf2-8e90b6d73530"), ticket1.UUID())
+	assert.Nil(t, ticket1.Ticketer())
+	assert.Equal(t, "Very Old Ticket", ticket1.Subject())
+	assert.Equal(t, "Ticketer gone!", ticket1.Body())
+	assert.Equal(t, "7654", ticket1.ExternalID())
 
-	// check that ticket with missing ticketer is logged as a missing dependency
+	// check that missing ticketer is logged as a missing dependency
 	assert.Equal(t, 1, len(missingRefs))
 	assert.Equal(t, "0a0b5ce4-35c9-47b7-b124-40258f0a5b53", missingRefs[0].Identity())
 
-	ticket := flows.NewTicket(mailgun, "New ticket", "Where are my pants?")
-	ticket.ExternalID = "24567"
-	tickets.Add(ticket)
+	ticket2, err := flows.ReadTicket(sa, []byte(`{
+		"uuid": "5a4af021-d2c2-47fc-9abc-abbb8635d8c0", 
+		"ticketer": {"uuid": "d605bb96-258d-4097-ad0a-080937db2212", "name": "Support Tickets"},
+		"subject": "Old Ticket",
+		"body": "Where are my shoes?"
+	}`), missing)
+	require.NoError(t, err)
+
+	tickets := flows.NewTicketList([]*flows.Ticket{ticket1, ticket2})
 	assert.Equal(t, 2, tickets.Count())
+	assert.Equal(t, "Very Old Ticket", tickets.All()[0].Subject())
+	assert.Equal(t, "Old Ticket", tickets.All()[1].Subject())
 
-	ticketRef := ticket.Reference()
-	assert.Equal(t, flows.TicketUUID("1ae96956-4b34-433e-8d1a-f05fe6923d6d"), ticketRef.UUID)
-	assert.Equal(t, assets.TicketerUUID("5885ed52-8d3e-4fd3-be49-57eebe5d4d59"), ticketRef.Ticketer.UUID)
-	assert.Equal(t, "Email Tickets", ticketRef.Ticketer.Name)
-	assert.Equal(t, "New ticket", ticketRef.Subject)
-	assert.Equal(t, "Where are my pants?", ticketRef.Body)
-	assert.Equal(t, "24567", ticketRef.ExternalID)
+	ticket3 := flows.OpenTicket(mailgun, "New Ticket", "Where are my pants?")
+	ticket3.SetExternalID("24567")
 
-	// can also create same ticket ref explicitly
-	ticketRef2 := flows.NewTicketReference(
-		"1ae96956-4b34-433e-8d1a-f05fe6923d6d",
-		assets.NewTicketerReference("5885ed52-8d3e-4fd3-be49-57eebe5d4d59", "Email Tickets"),
-		"New ticket",
-		"Where are my pants?",
-		"24567",
-	)
-	assert.Equal(t, ticketRef, ticketRef2)
+	assert.Equal(t, flows.TicketUUID("1ae96956-4b34-433e-8d1a-f05fe6923d6d"), ticket3.UUID())
+	assert.Equal(t, mailgun, ticket3.Ticketer())
+	assert.Equal(t, "New Ticket", ticket3.Subject())
+	assert.Equal(t, "Where are my pants?", ticket3.Body())
+	assert.Equal(t, "24567", ticket3.ExternalID())
+
+	tickets.Add(ticket3)
+	assert.Equal(t, 3, tickets.Count())
 }

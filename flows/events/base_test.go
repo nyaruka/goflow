@@ -42,8 +42,7 @@ func TestEventMarshaling(t *testing.T) {
 	timeout := 500
 	gender := session.Assets().Fields().Get("gender")
 	mailgun := session.Assets().Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5")
-	ticket := flows.NewTicket(mailgun, "Need help", "Where are my cookies?")
-	ticket.ExternalID = "1243252"
+	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", mailgun, "Need help", "Where are my cookies?", "1243252")
 
 	eventTests := []struct {
 		event     flows.Event
@@ -424,7 +423,7 @@ func TestEventMarshaling(t *testing.T) {
 					},
 					"text": "Hi there",
 					"urn": "tel:+12345678900",
-					"uuid": "04e910a5-d2e3-448b-958a-630e35c62431"
+					"uuid": "20cc4181-48cf-4344-9751-99419796decd"
 				},
 				"type": "ivr_created"
 			}`,
@@ -518,7 +517,7 @@ func TestEventMarshaling(t *testing.T) {
 				"type": "ticket_opened",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"ticket": {
-					"uuid": "20cc4181-48cf-4344-9751-99419796decd",
+					"uuid": "7481888c-07dd-47dc-bf22-ef7448696ffe",
 					"ticketer": {
 						"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
 						"name": "Support Tickets"
