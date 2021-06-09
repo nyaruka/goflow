@@ -1,3 +1,8 @@
+v0.122.0
+----------
+ * Allow build failing on codecov uploads again
+ * Get rid of ticket references
+
 v0.121.0
 ----------
  * Don't generate separate completion/functions doc files
