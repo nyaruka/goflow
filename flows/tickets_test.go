@@ -50,6 +50,9 @@ func TestTickets(t *testing.T) {
 		missingRefs = append(missingRefs, ref)
 	}
 
+	_, err = flows.ReadTicket(sa, []byte(`{}`), missing)
+	assert.EqualError(t, err, "field 'uuid' is required")
+
 	ticket1, err := flows.ReadTicket(sa, []byte(`{
 		"uuid": "349c851f-3f8e-4353-8bf2-8e90b6d73530", 
 		"ticketer": {"uuid": "0a0b5ce4-35c9-47b7-b124-40258f0a5b53", "name": "Deleted"},

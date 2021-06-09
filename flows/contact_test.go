@@ -2,6 +2,7 @@ package flows_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"testing"
 	"time"
@@ -33,6 +34,13 @@ func TestContact(t *testing.T) {
 				"schemes": ["tel"],
 				"roles": ["send", "receive"],
 				"country": "US"
+			}
+		],
+		"ticketers": [
+			{
+				"uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+				"name": "Support Tickets",
+				"type": "mailgun"
 			}
 		]
 	}`))
@@ -128,7 +136,7 @@ func TestContact(t *testing.T) {
 
 	assert.Equal(t, 0, contact.Tickets().Count())
 
-	ticket := flows.OpenTicket(sa.Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5"), "New ticket", "I have issues")
+	ticket := flows.OpenTicket(sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212"), "New ticket", "I have issues")
 	contact.Tickets().Add(ticket)
 
 	assert.Equal(t, 1, contact.Tickets().Count())
@@ -166,6 +174,16 @@ func TestContact(t *testing.T) {
 	assert.True(t, contact.ClearURNs()) // did have URNs
 	assert.False(t, contact.ClearURNs())
 	assert.Equal(t, flows.URNList{}, contact.URNs())
+
+	marshaled, err := jsonx.Marshal(contact)
+	require.NoError(t, err)
+
+	fmt.Println(string(marshaled))
+
+	unmarshaled, err := flows.ReadContact(sa, marshaled, assets.PanicOnMissing)
+	require.NoError(t, err)
+
+	assert.True(t, contact.Equal(unmarshaled))
 }
 
 func TestReadContact(t *testing.T) {

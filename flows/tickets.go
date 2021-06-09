@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 // TicketUUID is the UUID of a ticket
@@ -66,7 +65,7 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 
 type ticketEnvelope struct {
 	UUID       TicketUUID                `json:"uuid"                   validate:"required,uuid4"`
-	Ticketer   *assets.TicketerReference `json:"ticketer"               validate:"required,dive"`
+	Ticketer   *assets.TicketerReference `json:"ticketer"               validate:"omitempty,dive"`
 	Subject    string                    `json:"subject"`
 	Body       string                    `json:"body"`
 	ExternalID string                    `json:"external_id,omitempty"`
@@ -78,7 +77,7 @@ func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (
 	e := &ticketEnvelope{}
 
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, errors.Wrap(err, "unable to read ticket")
+		return nil, err
 	}
 
 	ticketer := sa.Ticketers().Get(e.Ticketer.UUID)
