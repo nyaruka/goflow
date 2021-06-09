@@ -1,3 +1,7 @@
+v0.121.0
+----------
+ * Don't generate separate completion/functions doc files
+
 v0.120.1
 ----------
  * Tweak test.AssertEqualJSON to take msgAndArgs param like asserts library
