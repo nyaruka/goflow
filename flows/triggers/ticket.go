@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -28,8 +29,8 @@ const (
 
 // TicketEvent describes the specific event on the ticket that triggered the session
 type TicketEvent struct {
-	Type   TicketEventType        `json:"type" validate:"required"`
-	Ticket *flows.TicketReference `json:"ticket" validate:"required,dive"`
+	type_  TicketEventType
+	ticket *flows.Ticket
 }
 
 // TicketTrigger is used when a session was triggered by a ticket event
@@ -58,14 +59,12 @@ type TicketEvent struct {
 type TicketTrigger struct {
 	baseTrigger
 	event *TicketEvent
-
-	ticket *flows.Ticket
 }
 
 // Context for ticket triggers includes the ticket
 func (t *TicketTrigger) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
-	c.ticket = flows.Context(env, t.ticket)
+	c.ticket = flows.Context(env, t.event.ticket)
 	return c.asMap()
 }
 
@@ -81,11 +80,11 @@ type TicketBuilder struct {
 }
 
 // Ticket returns a ticket trigger builder
-func (b *Builder) Ticket(ticket *flows.TicketReference, eventType TicketEventType) *TicketBuilder {
+func (b *Builder) Ticket(ticket *flows.Ticket, eventType TicketEventType) *TicketBuilder {
 	return &TicketBuilder{
 		t: &TicketTrigger{
 			baseTrigger: newBaseTrigger(TypeTicket, b.environment, b.flow, b.contact, nil, false, nil),
-			event:       &TicketEvent{Type: eventType, Ticket: ticket},
+			event:       &TicketEvent{type_: eventType, ticket: ticket},
 		},
 	}
 }
@@ -99,9 +98,14 @@ func (b *TicketBuilder) Build() *TicketTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type ticketEventEnvelope struct {
+	Type   TicketEventType `json:"type"   validate:"required"`
+	Ticket json.RawMessage `json:"ticket" validate:"required"`
+}
+
 type ticketTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event *TicketEvent `json:"event" validate:"required,dive"`
+	Event ticketEventEnvelope `json:"event" validate:"required,dive"`
 }
 
 func readTicketTrigger(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
@@ -111,22 +115,36 @@ func readTicketTrigger(sa flows.SessionAssets, data json.RawMessage, missing ass
 	}
 
 	t := &TicketTrigger{
-		event: e.Event,
+		event: &TicketEvent{
+			type_: e.Event.Type,
+		},
 	}
+
+	var err error
+	t.event.ticket, err = flows.ReadTicket(sa, e.Event.Ticket, missing)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to read ticket")
+	}
+
 	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
 		return nil, err
 	}
-
-	// convert to real ticket in case we need to use it in the context
-	t.ticket = flows.NewTicketFromReference(sa, t.event.Ticket)
 
 	return t, nil
 }
 
 // MarshalJSON marshals this trigger into JSON
 func (t *TicketTrigger) MarshalJSON() ([]byte, error) {
+	ticket, err := jsonx.Marshal(t.event.ticket)
+	if err != nil {
+		return nil, err
+	}
+
 	e := &ticketTriggerEnvelope{
-		Event: t.event,
+		Event: ticketEventEnvelope{
+			Type:   t.event.type_,
+			Ticket: ticket,
+		},
 	}
 
 	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {

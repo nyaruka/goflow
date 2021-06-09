@@ -76,7 +76,7 @@ func NewContact(
 	urns []urns.URN,
 	groups []*assets.GroupReference,
 	fields map[string]*Value,
-	tickets []*TicketReference,
+	tickets []*Ticket,
 	missing assets.MissingCallback) (*Contact, error) {
 
 	urnList, err := ReadURNList(sa, urns, missing)
@@ -86,7 +86,7 @@ func NewContact(
 
 	groupList := NewGroupList(sa, groups, missing)
 	fieldValues := NewFieldValues(sa, fields, missing)
-	ticketList := NewTicketList(sa, tickets, missing)
+	ticketList := NewTicketList(tickets)
 
 	return &Contact{
 		uuid:       uuid,
@@ -118,7 +118,7 @@ func NewEmptyContact(sa SessionAssets, name string, language envs.Language, time
 		urns:       URNList{},
 		groups:     NewGroupList(sa, nil, assets.IgnoreMissing),
 		fields:     make(FieldValues),
-		tickets:    NewTicketList(sa, nil, assets.IgnoreMissing),
+		tickets:    NewTicketList([]*Ticket{}),
 		assets:     sa,
 	}
 }
@@ -582,7 +582,7 @@ type contactEnvelope struct {
 	URNs       []urns.URN               `json:"urns,omitempty"      validate:"dive,urn"`
 	Groups     []*assets.GroupReference `json:"groups,omitempty"    validate:"dive"`
 	Fields     map[string]*Value        `json:"fields,omitempty"`
-	Tickets    []*TicketReference       `json:"tickets,omitempty"   validate:"dive"`
+	Tickets    []json.RawMessage        `json:"tickets,omitempty"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -626,13 +626,30 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 
 	c.groups = NewGroupList(sa, envelope.Groups, missing)
 	c.fields = NewFieldValues(sa, envelope.Fields, missing)
-	c.tickets = NewTicketList(sa, envelope.Tickets, missing)
+
+	tickets := make([]*Ticket, len(envelope.Tickets))
+	for i := range envelope.Tickets {
+		tickets[i], err = ReadTicket(sa, envelope.Tickets[i], missing)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to read ticket")
+		}
+	}
+	c.tickets = NewTicketList(tickets)
 
 	return c, nil
 }
 
 // MarshalJSON marshals this contact into JSON
 func (c *Contact) MarshalJSON() ([]byte, error) {
+	var err error
+	tickets := make([]json.RawMessage, len(c.tickets.tickets))
+	for i, ticket := range c.tickets.tickets {
+		tickets[i], err = jsonx.Marshal(ticket)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	ce := &contactEnvelope{
 		Name:       c.name,
 		UUID:       c.uuid,
@@ -643,7 +660,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		LastSeenOn: c.lastSeenOn,
 		URNs:       c.urns.RawURNs(),
 		Groups:     c.groups.references(),
-		Tickets:    c.tickets.references(),
+		Tickets:    tickets,
 	}
 
 	if c.timezone != nil {
