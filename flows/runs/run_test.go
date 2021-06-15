@@ -97,7 +97,6 @@ var sessionTrigger = `{
     },
     "environment": {
         "date_format": "YYYY-MM-DD",
-        "default_language": "eng",
         "allowed_languages": [
             "eng", 
             "spa"

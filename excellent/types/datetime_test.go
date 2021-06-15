@@ -15,7 +15,7 @@ import (
 
 func TestXDateTime(t *testing.T) {
 	env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
-	env2 := envs.NewBuilder().WithDateFormat(envs.DateFormatYearMonthDay).WithDefaultLanguage("spa").Build()
+	env2 := envs.NewBuilder().WithDateFormat(envs.DateFormatYearMonthDay).WithAllowedLanguages([]envs.Language{"spa"}).Build()
 
 	assert.True(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 123456789, time.UTC)).Truthy())
 

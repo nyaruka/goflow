@@ -363,7 +363,6 @@ var sessionTrigger = `{
     },
     "environment": {
         "date_format": "DD-MM-YYYY",
-        "default_language": "eng",
         "allowed_languages": [
             "eng", 
             "spa"
@@ -476,7 +475,6 @@ var voiceSessionTrigger = `{
     },
     "environment": {
         "date_format": "DD-MM-YYYY",
-        "default_language": "eng",
         "allowed_languages": [
             "eng", 
             "spa"

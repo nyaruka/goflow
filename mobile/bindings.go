@@ -47,7 +47,7 @@ type Environment struct {
 }
 
 // NewEnvironment creates a new environment.
-func NewEnvironment(dateFormat string, timeFormat string, timezone string, defaultLanguage string, allowedLanguages *StringSlice, defaultCountry string, redactionPolicy string) (*Environment, error) {
+func NewEnvironment(dateFormat string, timeFormat string, timezone string, allowedLanguages *StringSlice, defaultCountry string, redactionPolicy string) (*Environment, error) {
 	tz, err := time.LoadLocation(timezone)
 	if err != nil {
 		return nil, err
@@ -63,7 +63,6 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 			WithDateFormat(envs.DateFormat(dateFormat)).
 			WithTimeFormat(envs.TimeFormat(timeFormat)).
 			WithTimezone(tz).
-			WithDefaultLanguage(envs.Language(defaultLanguage)).
 			WithAllowedLanguages(langs).
 			WithDefaultCountry(envs.Country(defaultCountry)).
 			WithRedactionPolicy(envs.RedactionPolicy(redactionPolicy)).

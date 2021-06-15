@@ -31,13 +31,13 @@ type Environment interface {
 	DateFormat() DateFormat
 	TimeFormat() TimeFormat
 	Timezone() *time.Location
-	DefaultLanguage() Language
 	AllowedLanguages() []Language
 	DefaultCountry() Country
 	NumberFormat() *NumberFormat
 	RedactionPolicy() RedactionPolicy
 	MaxValueLength() int
 
+	DefaultLanguage() Language
 	DefaultLocale() Locale
 
 	LocationResolver() LocationResolver
@@ -52,7 +52,6 @@ type environment struct {
 	dateFormat       DateFormat
 	timeFormat       TimeFormat
 	timezone         *time.Location
-	defaultLanguage  Language
 	allowedLanguages []Language
 	defaultCountry   Country
 	numberFormat     *NumberFormat
@@ -63,12 +62,19 @@ type environment struct {
 func (e *environment) DateFormat() DateFormat           { return e.dateFormat }
 func (e *environment) TimeFormat() TimeFormat           { return e.timeFormat }
 func (e *environment) Timezone() *time.Location         { return e.timezone }
-func (e *environment) DefaultLanguage() Language        { return e.defaultLanguage }
 func (e *environment) AllowedLanguages() []Language     { return e.allowedLanguages }
 func (e *environment) DefaultCountry() Country          { return e.defaultCountry }
 func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
 func (e *environment) MaxValueLength() int              { return e.maxValueLength }
+
+// DefaultLanguage is the first allowed language
+func (e *environment) DefaultLanguage() Language {
+	if len(e.allowedLanguages) > 0 {
+		return e.allowedLanguages[0]
+	}
+	return NilLanguage
+}
 
 // DefaultLocale combines the default languages and countries into a locale
 func (e *environment) DefaultLocale() Locale {
@@ -95,7 +101,6 @@ type envEnvelope struct {
 	DateFormat       DateFormat      `json:"date_format" validate:"date_format"`
 	TimeFormat       TimeFormat      `json:"time_format" validate:"time_format"`
 	Timezone         string          `json:"timezone"`
-	DefaultLanguage  Language        `json:"default_language,omitempty" validate:"omitempty,language"`
 	AllowedLanguages []Language      `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
 	NumberFormat     *NumberFormat   `json:"number_format,omitempty"`
 	DefaultCountry   Country         `json:"default_country,omitempty" validate:"omitempty,country"`
@@ -115,7 +120,6 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 
 	env.dateFormat = envelope.DateFormat
 	env.timeFormat = envelope.TimeFormat
-	env.defaultLanguage = envelope.DefaultLanguage
 	env.allowedLanguages = envelope.AllowedLanguages
 	env.defaultCountry = envelope.DefaultCountry
 	env.numberFormat = envelope.NumberFormat
@@ -136,7 +140,6 @@ func (e *environment) toEnvelope() *envEnvelope {
 		DateFormat:       e.dateFormat,
 		TimeFormat:       e.timeFormat,
 		Timezone:         e.timezone.String(),
-		DefaultLanguage:  e.defaultLanguage,
 		AllowedLanguages: e.allowedLanguages,
 		DefaultCountry:   e.defaultCountry,
 		NumberFormat:     e.numberFormat,
@@ -166,7 +169,6 @@ func NewBuilder() *EnvironmentBuilder {
 			dateFormat:       DateFormatYearMonthDay,
 			timeFormat:       TimeFormatHourMinute,
 			timezone:         time.UTC,
-			defaultLanguage:  NilLanguage,
 			allowedLanguages: nil,
 			defaultCountry:   NilCountry,
 			numberFormat:     DefaultNumberFormat,
@@ -190,11 +192,6 @@ func (b *EnvironmentBuilder) WithTimeFormat(timeFormat TimeFormat) *EnvironmentB
 
 func (b *EnvironmentBuilder) WithTimezone(timezone *time.Location) *EnvironmentBuilder {
 	b.env.timezone = timezone
-	return b
-}
-
-func (b *EnvironmentBuilder) WithDefaultLanguage(defaultLanguage Language) *EnvironmentBuilder {
-	b.env.defaultLanguage = defaultLanguage
 	return b
 }
 
