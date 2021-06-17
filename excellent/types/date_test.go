@@ -14,7 +14,7 @@ import (
 
 func TestXDate(t *testing.T) {
 	env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
-	env2 := envs.NewBuilder().WithDateFormat(envs.DateFormatYearMonthDay).WithDefaultLanguage("spa").Build()
+	env2 := envs.NewBuilder().WithDateFormat(envs.DateFormatYearMonthDay).WithAllowedLanguages([]envs.Language{"spa"}).Build()
 
 	d1 := types.NewXDate(dates.NewDate(2019, 2, 20))
 	assert.Equal(t, `date`, d1.Describe())
