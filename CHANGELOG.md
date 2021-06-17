@@ -1,3 +1,8 @@
+v0.123.0
+----------
+ * Add SUM() excellent function
+ * Remove default_language from envs and usa first item of allowed_languages as the default
+
 v0.122.0
 ----------
  * Allow build failing on codecov uploads again
