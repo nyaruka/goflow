@@ -565,6 +565,14 @@ func TestFunctions(t *testing.T) {
 		{"split", dmy, []types.XValue{ERROR, xs(",")}, ERROR},
 		{"split", dmy, []types.XValue{}, ERROR},
 
+		{"sum", dmy, []types.XValue{xa(xn("1"), xn("2"), xs("3"))}, xn("6")},
+		{"sum", dmy, []types.XValue{xa()}, xn("0")},
+		{"sum", dmy, []types.XValue{xs("xx")}, ERROR},
+		{"sum", dmy, []types.XValue{xa(xn("1"), xn("2"), xs("xx"))}, ERROR},
+		{"sum", dmy, []types.XValue{xa(xn("1"), xn("2"), ERROR)}, ERROR},
+		{"sum", dmy, []types.XValue{ERROR}, ERROR},
+		{"sum", dmy, []types.XValue{}, ERROR},
+
 		{"text", dmy, []types.XValue{xs("abc")}, xs("abc")},
 		{"text", dmy, []types.XValue{xi(123)}, xs("123")},
 		{"text", dmy, []types.XValue{ERROR}, ERROR},

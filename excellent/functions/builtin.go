@@ -44,7 +44,6 @@ func init() {
 		"trim":              TextAndOptionalTextFunction(Trim, types.XTextEmpty),
 		"trim_left":         TextAndOptionalTextFunction(TrimLeft, types.XTextEmpty),
 		"trim_right":        TextAndOptionalTextFunction(TrimRight, types.XTextEmpty),
-		"join":              TwoArgFunction(Join),
 		"title":             OneTextFunction(Title),
 		"word":              InitialTextFunction(1, 2, Word),
 		"remove_first_word": OneTextFunction(RemoveFirstWord),
@@ -101,6 +100,10 @@ func init() {
 		// time functions
 		"parse_time":      TwoArgFunction(ParseTime),
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
+
+		// array functions
+		"join": TwoArgFunction(Join),
+		"sum":  OneArgFunction(Sum),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -464,39 +467,6 @@ func TrimRight(env envs.Environment, text types.XText, chars types.XText) types.
 	}
 
 	return types.NewXText(strings.TrimRightFunc(text.Native(), unicode.IsSpace))
-}
-
-// Join joins the given `array` of strings with `separator` to make text.
-//
-//   @(join(array("a", "b", "c"), "|")) -> a|b|c
-//   @(join(split("a.b.c", "."), " ")) -> a b c
-//
-// @function join(array, separator)
-func Join(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-
-	separator, xerr := types.ToXText(env, arg2)
-	if xerr != nil {
-		return xerr
-	}
-
-	var output bytes.Buffer
-	for i := 0; i < array.Count(); i++ {
-		if i > 0 {
-			output.WriteString(separator.Native())
-		}
-		itemAsStr, xerr := types.ToXText(env, array.Get(i))
-		if xerr != nil {
-			return xerr
-		}
-
-		output.WriteString(itemAsStr.Native())
-	}
-
-	return types.NewXText(output.String())
 }
 
 // Char returns the character for the given UNICODE `code`.
@@ -1543,6 +1513,71 @@ func TimeFromParts(env envs.Environment, hour, minute, second int) types.XValue 
 
 	return types.NewXTime(dates.NewTimeOfDay(hour, minute, second, 0))
 }
+
+//------------------------------------------------------------------------------------------
+// Array Functions
+//------------------------------------------------------------------------------------------
+
+// Join joins the given `array` of strings with `separator` to make text.
+//
+//   @(join(array("a", "b", "c"), "|")) -> a|b|c
+//   @(join(split("a.b.c", "."), " ")) -> a b c
+//
+// @function join(array, separator)
+func Join(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+	array, xerr := types.ToXArray(env, arg1)
+	if xerr != nil {
+		return xerr
+	}
+
+	separator, xerr := types.ToXText(env, arg2)
+	if xerr != nil {
+		return xerr
+	}
+
+	var output bytes.Buffer
+	for i := 0; i < array.Count(); i++ {
+		if i > 0 {
+			output.WriteString(separator.Native())
+		}
+		itemAsStr, xerr := types.ToXText(env, array.Get(i))
+		if xerr != nil {
+			return xerr
+		}
+
+		output.WriteString(itemAsStr.Native())
+	}
+
+	return types.NewXText(output.String())
+}
+
+// Sum sums the items in the given `array`.
+//
+//   @(sum(array(1, 2, "3"))) -> 6
+//
+// @function sum(array)
+func Sum(env envs.Environment, arg1 types.XValue) types.XValue {
+	array, xerr := types.ToXArray(env, arg1)
+	if xerr != nil {
+		return xerr
+	}
+
+	total := decimal.Zero
+	for i := 0; i < array.Count(); i++ {
+		itemAsNum, xerr := types.ToXNumber(env, array.Get(i))
+		if xerr != nil {
+			return xerr
+		}
+
+		total = total.Add(itemAsNum.Native())
+	}
+
+	return types.NewXNumber(total)
+}
+
+//------------------------------------------------------------------------------------------
+// Encoded Text Functions
+//------------------------------------------------------------------------------------------
 
 // URNParts parses a URN into its different parts
 //
