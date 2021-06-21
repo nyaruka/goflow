@@ -25,7 +25,10 @@
                 "foo": "bar"
             },
             "triggered_on": "2000-01-01T00:00:00Z",
-            "user": "bob@nyaruka.com",
+            "user": {
+                "email": "bob@nyaruka.com",
+                "name": ""
+            },
             "origin": "api"
         },
         "events": [],
@@ -37,7 +40,10 @@
             },
             "ticket": null,
             "type": "manual",
-            "user": "bob@nyaruka.com"
+            "user": {
+                "email": "bob@nyaruka.com",
+                "name": ""
+            }
         }
     },
     {
@@ -63,7 +69,7 @@
             "params": {},
             "ticket": null,
             "type": "manual",
-            "user": ""
+            "user": null
         }
     }
 ]

@@ -17,8 +17,9 @@ func TestUsers(t *testing.T) {
 
 	env := envs.NewBuilder().Build()
 	assert.Equal(t, map[string]types.XValue{
-		"email": types.NewXText("bob@nyaruka.com"),
-		"name":  types.NewXText("Bob"),
+		"__default__": types.NewXText("bob@nyaruka.com"),
+		"email":       types.NewXText("bob@nyaruka.com"),
+		"name":        types.NewXText("Bob"),
 	}, u.Context(env))
 
 	marshaled, err := jsonx.Marshal(u)

@@ -1050,7 +1050,7 @@
             },
             "ticket": null,
             "type": "flow_action",
-            "user": ""
+            "user": null
         }
     }
 ]

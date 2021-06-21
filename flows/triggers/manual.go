@@ -29,7 +29,7 @@ const TypeManual string = "manual"
 //       "name": "Bob",
 //       "created_on": "2018-01-01T12:00:00.000000Z"
 //     },
-//     "user": "bob@nyaruka.com",
+//     "user": {"email": "bob@nyaruka.com", "name": "Bob"},
 //     "origin": "ui",
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
@@ -38,14 +38,14 @@ const TypeManual string = "manual"
 type ManualTrigger struct {
 	baseTrigger
 
-	user   string
+	user   *flows.User
 	origin string
 }
 
 // Context for manual triggers always has non-nil params
 func (t *ManualTrigger) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
-	c.user = t.user
+	c.user = flows.Context(env, t.user)
 	c.origin = t.origin
 	return c.asMap()
 }
@@ -81,7 +81,7 @@ func (b *ManualBuilder) WithConnection(channel *assets.ChannelReference, urn urn
 }
 
 // WithUser sets the user (e.g. an email address, login) for the trigger
-func (b *ManualBuilder) WithUser(user string) *ManualBuilder {
+func (b *ManualBuilder) WithUser(user *flows.User) *ManualBuilder {
 	b.t.user = user
 	return b
 }
@@ -109,8 +109,8 @@ func (b *ManualBuilder) Build() *ManualTrigger {
 
 type manualTriggerEnvelope struct {
 	baseTriggerEnvelope
-	User   string `json:"user,omitempty"`
-	Origin string `json:"origin,omitempty"`
+	User   *flows.User `json:"user,omitempty" validate:"omitempty,dive"`
+	Origin string      `json:"origin,omitempty"`
 }
 
 func readManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {

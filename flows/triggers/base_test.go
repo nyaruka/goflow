@@ -240,7 +240,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			triggers.NewBuilder(env, flow, contact).
 				Manual().
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
-				WithUser("bob@nyaruka.com").
+				WithUser(flows.NewUser("bob@nyaruka.com", "Bob")).
 				WithOrigin("api").
 				AsBatch().
 				Build(),
@@ -375,17 +375,21 @@ func TestTriggerContext(t *testing.T) {
 	trigger := triggers.NewBuilder(env, flow, contact).
 		Manual().
 		WithParams(params).
-		WithUser("bob@nyaruka.com").
+		WithUser(flows.NewUser("bob@nyaruka.com", "Bob")).
 		WithOrigin("api").
 		AsBatch().
 		Build()
 
-	assert.Equal(t, map[string]types.XValue{
+	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"type":    types.NewXText("manual"),
 		"params":  params,
 		"keyword": types.XTextEmpty,
-		"user":    types.NewXText("bob@nyaruka.com"),
-		"origin":  types.NewXText("api"),
-		"ticket":  nil,
-	}, trigger.Context(env))
+		"user": types.NewXObject(map[string]types.XValue{
+			"__default__": types.NewXText("bob@nyaruka.com"),
+			"email":       types.NewXText("bob@nyaruka.com"),
+			"name":        types.NewXText("Bob"),
+		}),
+		"origin": types.NewXText("api"),
+		"ticket": nil,
+	}), flows.Context(env, trigger))
 }

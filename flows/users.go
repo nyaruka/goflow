@@ -21,14 +21,16 @@ func (u *User) Name() string  { return u.name }
 
 // Context returns the properties available in expressions
 //
+//   __default__:text -> the email address of the user
 //   email:text -> the email address of the user
 //   name:text -> the name of the user
 //
 // @context user
 func (u *User) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"email": types.NewXText(u.email),
-		"name":  types.NewXText(u.name),
+		"__default__": types.NewXText(u.email),
+		"email":       types.NewXText(u.email),
+		"name":        types.NewXText(u.name),
 	}
 }
 
