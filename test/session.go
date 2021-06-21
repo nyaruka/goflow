@@ -322,7 +322,8 @@ var sessionTrigger = `{
                 "ticketer": {
                     "name": "Support Tickets",
                     "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
-                }
+                },
+                "assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
             }
         ]
     },

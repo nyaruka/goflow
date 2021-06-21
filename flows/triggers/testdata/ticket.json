@@ -35,11 +35,11 @@
             "event": {
                 "type": "closed",
                 "ticket": {
+                    "uuid": "0d43506d-b92f-4468-8bee-0f31dd438abf",
                     "ticketer": {
                         "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
                         "name": "Support Tickets"
                     },
-                    "uuid": "0d43506d-b92f-4468-8bee-0f31dd438abf",
                     "subject": "Problem",
                     "body": "Where are my shoes?",
                     "external_id": "12345"
@@ -52,6 +52,7 @@
             "origin": "",
             "params": {},
             "ticket": {
+                "assignee": null,
                 "body": "Where are my shoes?",
                 "subject": "Problem",
                 "uuid": "0d43506d-b92f-4468-8bee-0f31dd438abf"

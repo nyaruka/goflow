@@ -216,7 +216,7 @@
                     "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                 },
                 {
-                    "body": "[{\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"body\":\"Last message: Rats\",\"subject\":\"New ticket\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
+                    "body": "[{\"assignee\":null,\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"assignee\":null,\"body\":\"Last message: Rats\",\"subject\":\"New ticket\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
                     "created_on": "2018-07-06T12:30:29.123456789Z",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "subject": "New ticket: 5ecda5fc-951c-437b-a17e-f85e49829fb9",
@@ -363,7 +363,7 @@
                                 "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "body": "[{\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"body\":\"Last message: Rats\",\"subject\":\"New ticket\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
+                                "body": "[{\"assignee\":null,\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"assignee\":null,\"body\":\"Last message: Rats\",\"subject\":\"New ticket\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
                                 "created_on": "2018-07-06T12:30:29.123456789Z",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "subject": "New ticket: 5ecda5fc-951c-437b-a17e-f85e49829fb9",

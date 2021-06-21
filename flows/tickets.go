@@ -14,27 +14,29 @@ type TicketUUID uuids.UUID
 
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
-	uuid       TicketUUID `json:"uuid"`
+	uuid       TicketUUID
 	ticketer   *Ticketer
-	subject    string `json:"subject"`
-	body       string `json:"body"`
-	externalID string `json:"external_id,omitempty"`
+	subject    string
+	body       string
+	externalID string
+	assignee   *User
 }
 
-// NewTicketcreates a new ticket with a reference to the ticketer
-func NewTicket(uuid TicketUUID, ticketer *Ticketer, subject, body, externalID string) *Ticket {
+// NewTicket creates a new ticket
+func NewTicket(uuid TicketUUID, ticketer *Ticketer, subject, body, externalID string, assignee *User) *Ticket {
 	return &Ticket{
 		uuid:       uuid,
 		ticketer:   ticketer,
 		subject:    subject,
 		body:       body,
 		externalID: externalID,
+		assignee:   assignee,
 	}
 }
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
 func OpenTicket(ticketer *Ticketer, subject, body string) *Ticket {
-	return NewTicket(TicketUUID(uuids.New()), ticketer, subject, body, "")
+	return NewTicket(TicketUUID(uuids.New()), ticketer, subject, body, "", nil)
 }
 
 func (t *Ticket) UUID() TicketUUID        { return t.uuid }
@@ -43,6 +45,7 @@ func (t *Ticket) Subject() string         { return t.subject }
 func (t *Ticket) Body() string            { return t.body }
 func (t *Ticket) ExternalID() string      { return t.externalID }
 func (t *Ticket) SetExternalID(id string) { t.externalID = id }
+func (t *Ticket) Assignee() *User         { return t.assignee }
 
 // Context returns the properties available in expressions
 //
@@ -53,9 +56,10 @@ func (t *Ticket) SetExternalID(id string) { t.externalID = id }
 // @context ticket
 func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"uuid":    types.NewXText(string(t.uuid)),
-		"subject": types.NewXText(t.subject),
-		"body":    types.NewXText(t.body),
+		"uuid":     types.NewXText(string(t.uuid)),
+		"subject":  types.NewXText(t.subject),
+		"body":     types.NewXText(t.body),
+		"assignee": Context(env, t.assignee),
 	}
 }
 
@@ -69,6 +73,7 @@ type ticketEnvelope struct {
 	Subject    string                    `json:"subject"`
 	Body       string                    `json:"body"`
 	ExternalID string                    `json:"external_id,omitempty"`
+	Assignee   *User                     `json:"assignee,omitempty"     validate:"omitempty,dive"`
 }
 
 // ReadTicket ecodes a contact from the passed in JSON. If the ticketer can't be found in the assets,

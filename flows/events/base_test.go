@@ -42,7 +42,8 @@ func TestEventMarshaling(t *testing.T) {
 	timeout := 500
 	gender := session.Assets().Fields().Get("gender")
 	mailgun := session.Assets().Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5")
-	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", mailgun, "Need help", "Where are my cookies?", "1243252")
+	user := flows.NewUser("bob@nyaruka.com", "Bob")
+	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", mailgun, "Need help", "Where are my cookies?", "1243252", user)
 
 	eventTests := []struct {
 		event     flows.Event
