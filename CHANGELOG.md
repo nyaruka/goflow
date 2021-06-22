@@ -1,3 +1,7 @@
+v0.124.0
+----------
+ * Add User assets and use for Ticket.Assignee and Trigger.user
+
 v0.123.0
 ----------
  * Add SUM() excellent function
