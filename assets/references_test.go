@@ -157,11 +157,22 @@ func TestUserReferenceUnmarsal(t *testing.T) {
 	assert.Equal(t, "", user.Name)
 
 	// or an object
-	user = &assets.UserReference{}
 	err = utils.UnmarshalAndValidate([]byte(`{"email": "jim@nyaruka.com", "name": "Jim"}`), user)
 	assert.NoError(t, err)
 	assert.Equal(t, "jim@nyaruka.com", user.Email)
 	assert.Equal(t, "Jim", user.Name)
+
+	// but not a malformed string
+	err = utils.UnmarshalAndValidate([]byte(`"xxx`), user)
+	assert.EqualError(t, err, "unexpected end of JSON input")
+
+	// or malformed object
+	err = utils.UnmarshalAndValidate([]byte(`{"email": "bob@nyaruka.com", `), user)
+	assert.EqualError(t, err, "unexpected end of JSON input")
+
+	// or invalid object
+	err = utils.UnmarshalAndValidate([]byte(`{"email": ""}`), user)
+	assert.EqualError(t, err, "field 'email' is required")
 }
 
 func TestTypedReference(t *testing.T) {
