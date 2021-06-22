@@ -25,5 +25,11 @@
             "name": "Support Tickets",
             "type": "mailgun"
         }
+    ],
+    "users": [
+        {
+            "email": "bob@nyaruka.com",
+            "name": "Bob"
+        }
     ]
 }

@@ -271,6 +271,12 @@ var sessionAssets = `{
                 "http://localhost/?cmd=success"
             ]
         }
+    ],
+    "users": [
+        {
+            "email": "bob@nyaruka.com",
+            "name": "Bob"
+        }
     ]
 }`
 

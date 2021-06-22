@@ -36,7 +36,11 @@
             },
             "subject": "Problem",
             "body": "Where are my shoes?",
-            "external_id": "123456"
+            "external_id": "123456",
+            "assignee": {
+                "email": "bob@nyaruka.com",
+                "name": "Bob"
+            }
         }
     }
 }

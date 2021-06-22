@@ -127,6 +127,16 @@ func TestReferences(t *testing.T) {
 
 	// ticketer references must always be concrete
 	assert.EqualError(t, utils.Validate(assets.NewTicketerReference("", "Booking")), "field 'uuid' is required")
+
+	userRef := assets.NewUserReference("bob@nyaruka.com", "Bob")
+	assert.Equal(t, "user", userRef.Type())
+	assert.Equal(t, "bob@nyaruka.com", userRef.Identity())
+	assert.Equal(t, "user[email=bob@nyaruka.com,name=Bob]", userRef.String())
+	assert.False(t, userRef.Variable())
+	assert.NoError(t, utils.Validate(userRef))
+
+	// user references must always be concrete
+	assert.EqualError(t, utils.Validate(assets.NewUserReference("", "Jim")), "field 'email' is required")
 }
 
 func TestChannelReferenceUnmarsal(t *testing.T) {
@@ -136,6 +146,22 @@ func TestChannelReferenceUnmarsal(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"), channel.UUID)
 	assert.Equal(t, "Old Channel", channel.Name)
+}
+
+func TestUserReferenceUnmarsal(t *testing.T) {
+	// check that we can unmarshal from just a string (the email address)
+	user := &assets.UserReference{}
+	err := utils.UnmarshalAndValidate([]byte(`"bob@nyaruka.com"`), user)
+	assert.NoError(t, err)
+	assert.Equal(t, "bob@nyaruka.com", user.Email)
+	assert.Equal(t, "", user.Name)
+
+	// or an object
+	user = &assets.UserReference{}
+	err = utils.UnmarshalAndValidate([]byte(`{"email": "jim@nyaruka.com", "name": "Jim"}`), user)
+	assert.NoError(t, err)
+	assert.Equal(t, "jim@nyaruka.com", user.Email)
+	assert.Equal(t, "Jim", user.Name)
 }
 
 func TestTypedReference(t *testing.T) {

@@ -22,7 +22,7 @@ func NewGlobal(asset assets.Global) *Global {
 // Asset returns the underlying asset
 func (g *Global) Asset() assets.Global { return g.Global }
 
-// Reference returns a reference to this classifier
+// Reference returns a reference to this global
 func (g *Global) Reference() *assets.GlobalReference {
 	return assets.NewGlobalReference(g.Key(), g.Name())
 }
@@ -47,7 +47,7 @@ func NewGlobalAssets(globals []assets.Global) *GlobalAssets {
 	return s
 }
 
-// Get returns the contact field with the given key
+// Get returns the global with the given key
 func (s *GlobalAssets) Get(key string) *Global {
 	return s.byKey[key]
 }

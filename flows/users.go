@@ -1,23 +1,28 @@
 package flows
 
 import (
-	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
+// User adds some functionality to user assets.
 type User struct {
-	email string
-	name  string
+	assets.User
 }
 
-func NewUser(email, name string) *User {
-	return &User{email: email, name: name}
+// NewUser returns a new user object from the given user asset
+func NewUser(asset assets.User) *User {
+	return &User{User: asset}
 }
 
-func (u *User) Email() string { return u.email }
-func (u *User) Name() string  { return u.name }
+// Asset returns the underlying asset
+func (u *User) Asset() assets.User { return u.User }
+
+// Reference returns a reference to this user
+func (u *User) Reference() *assets.UserReference {
+	return assets.NewUserReference(u.Email(), u.Name())
+}
 
 // Context returns the properties available in expressions
 //
@@ -28,43 +33,33 @@ func (u *User) Name() string  { return u.name }
 // @context user
 func (u *User) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"__default__": types.NewXText(u.email),
-		"email":       types.NewXText(u.email),
-		"name":        types.NewXText(u.name),
+		"__default__": types.NewXText(u.Email()),
+		"email":       types.NewXText(u.Email()),
+		"name":        types.NewXText(u.Name()),
 	}
 }
 
-//------------------------------------------------------------------------------------------
-// JSON Encoding / Decoding
-//------------------------------------------------------------------------------------------
-
-type userEnvelope struct {
-	Email string `json:"email" validate:"required"`
-	Name  string `json:"name"`
+// UserAssets provides access to all user assets
+type UserAssets struct {
+	all     []*User
+	byEmail map[string]*User
 }
 
-// UmarshalJSON unmarshals this object from JSON
-func (u *User) UnmarshalJSON(data []byte) error {
-	// can be read from email string
-	if data[0] == '"' {
-		var email string
-		if err := jsonx.Unmarshal(data, &email); err != nil {
-			return err
-		}
-		u.email = email
-	} else {
-		e := &userEnvelope{}
-		if err := utils.UnmarshalAndValidate(data, e); err != nil {
-			return err
-		}
-		u.email = e.Email
-		u.name = e.Name
+// NewUserAssets creates a new set of user assets
+func NewUserAssets(users []assets.User) *UserAssets {
+	s := &UserAssets{
+		all:     make([]*User, len(users)),
+		byEmail: make(map[string]*User, len(users)),
 	}
-
-	return nil
+	for i, asset := range users {
+		user := NewUser(asset)
+		s.all[i] = user
+		s.byEmail[user.Email()] = user
+	}
+	return s
 }
 
-// MarshalJSON marshals this object into JSON
-func (u *User) MarshalJSON() ([]byte, error) {
-	return jsonx.Marshal(&userEnvelope{Email: u.email, Name: u.name})
+// Get returns the user with the given email
+func (s *UserAssets) Get(email string) *User {
+	return s.byEmail[email]
 }

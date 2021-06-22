@@ -141,3 +141,7 @@ func (s *testSource) Templates() ([]assets.Template, error) {
 func (s *testSource) Ticketers() ([]assets.Ticketer, error) {
 	return nil, s.err("ticketers")
 }
+
+func (s *testSource) Users() ([]assets.User, error) {
+	return nil, s.err("users")
+}

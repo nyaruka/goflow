@@ -23,6 +23,7 @@ func TestGlobals(t *testing.T) {
 
 	assert.Equal(t, "Org Name", g1.Name())
 	assert.Equal(t, ga1, g1.Asset())
+	assert.Equal(t, assets.NewGlobalReference("org_name", "Org Name"), g1.Reference())
 
 	env := envs.NewBuilder().Build()
 

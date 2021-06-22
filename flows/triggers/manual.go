@@ -109,22 +109,30 @@ func (b *ManualBuilder) Build() *ManualTrigger {
 
 type manualTriggerEnvelope struct {
 	baseTriggerEnvelope
-	User   *flows.User `json:"user,omitempty" validate:"omitempty,dive"`
-	Origin string      `json:"origin,omitempty"`
+	User   *assets.UserReference `json:"user,omitempty" validate:"omitempty,dive"`
+	Origin string                `json:"origin,omitempty"`
 }
 
-func readManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
+func readManualTrigger(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &manualTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
+	var user *flows.User
+	if e.User != nil {
+		user = sa.Users().Get(e.User.Email)
+		if user == nil {
+			missing(e.User, nil)
+		}
+	}
+
 	t := &ManualTrigger{
-		user:   e.User,
+		user:   user,
 		origin: e.Origin,
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -133,8 +141,13 @@ func readManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, 
 
 // MarshalJSON marshals this trigger into JSON
 func (t *ManualTrigger) MarshalJSON() ([]byte, error) {
+	var userRef *assets.UserReference
+	if t.user != nil {
+		userRef = t.user.Reference()
+	}
+
 	e := &manualTriggerEnvelope{
-		User:   t.user,
+		User:   userRef,
 		Origin: t.origin,
 	}
 

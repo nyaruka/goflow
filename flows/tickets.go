@@ -73,7 +73,7 @@ type ticketEnvelope struct {
 	Subject    string                    `json:"subject"`
 	Body       string                    `json:"body"`
 	ExternalID string                    `json:"external_id,omitempty"`
-	Assignee   *User                     `json:"assignee,omitempty"     validate:"omitempty,dive"`
+	Assignee   *assets.UserReference     `json:"assignee,omitempty"     validate:"omitempty,dive"`
 }
 
 // ReadTicket ecodes a contact from the passed in JSON. If the ticketer can't be found in the assets,
@@ -90,12 +90,21 @@ func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (
 		missing(e.Ticketer, nil)
 	}
 
+	var assignee *User
+	if e.Assignee != nil {
+		assignee = sa.Users().Get(e.Assignee.Email)
+		if assignee == nil {
+			missing(e.Assignee, nil)
+		}
+	}
+
 	return &Ticket{
 		uuid:       e.UUID,
 		ticketer:   ticketer,
 		subject:    e.Subject,
 		body:       e.Body,
 		externalID: e.ExternalID,
+		assignee:   assignee,
 	}, nil
 }
 
@@ -106,12 +115,18 @@ func (t *Ticket) MarshalJSON() ([]byte, error) {
 		ticketerRef = t.ticketer.Reference()
 	}
 
+	var assigneeRef *assets.UserReference
+	if t.assignee != nil {
+		assigneeRef = t.assignee.Reference()
+	}
+
 	return jsonx.Marshal(&ticketEnvelope{
 		UUID:       t.uuid,
 		Ticketer:   ticketerRef,
 		Subject:    t.subject,
 		Body:       t.body,
 		ExternalID: t.externalID,
+		Assignee:   assigneeRef,
 	})
 }
 
