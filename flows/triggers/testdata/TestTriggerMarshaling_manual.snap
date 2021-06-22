@@ -30,6 +30,9 @@
         "foo": "bar"
     },
     "triggered_on": "2018-10-20T09:49:31.23456789Z",
-    "user": "bob@nyaruka.com",
+    "user": {
+        "email": "bob@nyaruka.com",
+        "name": "Bob"
+    },
     "origin": "api"
 }

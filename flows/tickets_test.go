@@ -32,6 +32,12 @@ func TestTickets(t *testing.T) {
 				"name": "Email Tickets",
 				"type": "mailgun"
 			}
+		],
+		"users": [
+			{
+				"email": "bob@nyaruka.com",
+				"name": "Bob"
+			}
 		]
 	}`))
 	require.NoError(t, err)
@@ -58,7 +64,8 @@ func TestTickets(t *testing.T) {
 		"ticketer": {"uuid": "0a0b5ce4-35c9-47b7-b124-40258f0a5b53", "name": "Deleted"},
 		"subject": "Very Old Ticket",
 		"body": "Ticketer gone!",
-		"external_id": "7654"
+		"external_id": "7654",
+		"assignee": {"email": "dave@nyaruka.com", "name": "Dave"}
 	}`), missing)
 	require.NoError(t, err)
 
@@ -67,18 +74,27 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, "Very Old Ticket", ticket1.Subject())
 	assert.Equal(t, "Ticketer gone!", ticket1.Body())
 	assert.Equal(t, "7654", ticket1.ExternalID())
+	assert.Nil(t, ticket1.Assignee())
 
-	// check that missing ticketer is logged as a missing dependency
-	assert.Equal(t, 1, len(missingRefs))
+	// check that missing ticketer and assignee are logged as a missing dependencies
+	assert.Equal(t, 2, len(missingRefs))
 	assert.Equal(t, "0a0b5ce4-35c9-47b7-b124-40258f0a5b53", missingRefs[0].Identity())
+	assert.Equal(t, "dave@nyaruka.com", missingRefs[1].Identity())
+
+	missingRefs = make([]assets.Reference, 0)
 
 	ticket2, err := flows.ReadTicket(sa, []byte(`{
 		"uuid": "5a4af021-d2c2-47fc-9abc-abbb8635d8c0", 
 		"ticketer": {"uuid": "d605bb96-258d-4097-ad0a-080937db2212", "name": "Support Tickets"},
 		"subject": "Old Ticket",
-		"body": "Where are my shoes?"
+		"body": "Where are my shoes?",
+		"assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
 	}`), missing)
 	require.NoError(t, err)
+
+	assert.Equal(t, 0, len(missingRefs))
+	assert.Equal(t, "Support Tickets", ticket2.Ticketer().Name())
+	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 
 	tickets := flows.NewTicketList([]*flows.Ticket{ticket1, ticket2})
 	assert.Equal(t, 2, tickets.Count())

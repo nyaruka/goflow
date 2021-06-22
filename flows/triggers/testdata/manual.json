@@ -25,7 +25,10 @@
                 "foo": "bar"
             },
             "triggered_on": "2000-01-01T00:00:00Z",
-            "user": "bob@nyaruka.com",
+            "user": {
+                "email": "bob@nyaruka.com",
+                "name": "Bob"
+            },
             "origin": "api"
         },
         "events": [],
@@ -37,11 +40,14 @@
             },
             "ticket": null,
             "type": "manual",
-            "user": "bob@nyaruka.com"
+            "user": {
+                "email": "bob@nyaruka.com",
+                "name": "Bob"
+            }
         }
     },
     {
-        "description": "params are optional but always non-null",
+        "description": "user and params are optional (params always non-null in expressions)",
         "trigger": {
             "type": "manual",
             "flow": {
@@ -63,7 +69,7 @@
             "params": {},
             "ticket": null,
             "type": "manual",
-            "user": ""
+            "user": null
         }
     }
 ]

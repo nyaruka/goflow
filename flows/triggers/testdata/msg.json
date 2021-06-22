@@ -131,7 +131,7 @@
             "params": {},
             "ticket": null,
             "type": "msg",
-            "user": ""
+            "user": null
         }
     },
     {
@@ -187,7 +187,7 @@
             "params": {},
             "ticket": null,
             "type": "msg",
-            "user": ""
+            "user": null
         }
     }
 ]

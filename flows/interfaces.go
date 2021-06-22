@@ -111,6 +111,7 @@ type SessionAssets interface {
 	Resthooks() *ResthookAssets
 	Templates() *TemplateAssets
 	Ticketers() *TicketerAssets
+	Users() *UserAssets
 }
 
 // Localizable is anything in the flow definition which can be localized and therefore needs a UUID

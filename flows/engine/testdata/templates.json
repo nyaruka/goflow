@@ -389,15 +389,15 @@
     },
     {
         "template": "@(json(contact.tickets))",
-        "output": "[{\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"body\":\"What day is it?\",\"subject\":\"Question\",\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}]"
+        "output": "[{\"assignee\":null,\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"name\":\"Bob\"},\"body\":\"What day is it?\",\"subject\":\"Question\",\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}]"
     },
     {
         "template": "@ticket",
-        "output": "{body: What day is it?, subject: Question, uuid: 78d1fe0d-7e39-461e-81c3-a6a25f15ed69}"
+        "output": "{assignee: bob@nyaruka.com, body: What day is it?, subject: Question, uuid: 78d1fe0d-7e39-461e-81c3-a6a25f15ed69}"
     },
     {
         "template": "@(json(ticket))",
-        "output": "{\"body\":\"What day is it?\",\"subject\":\"Question\",\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}"
+        "output": "{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"name\":\"Bob\"},\"body\":\"What day is it?\",\"subject\":\"Question\",\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}"
     },
     {
         "template": "@(json(contact))",
@@ -433,11 +433,16 @@
             "name": "Ryan Lewis",
             "tickets": [
                 {
+                    "assignee": null,
                     "body": "I have a problem",
                     "subject": "Old ticket",
                     "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
                 },
                 {
+                    "assignee": {
+                        "email": "bob@nyaruka.com",
+                        "name": "Bob"
+                    },
                     "body": "What day is it?",
                     "subject": "Question",
                     "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
@@ -508,11 +513,16 @@
                 "name": "Ryan Lewis",
                 "tickets": [
                     {
+                        "assignee": null,
                         "body": "I have a problem",
                         "subject": "Old ticket",
                         "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
                     },
                     {
+                        "assignee": {
+                            "email": "bob@nyaruka.com",
+                            "name": "Bob"
+                        },
                         "body": "What day is it?",
                         "subject": "Question",
                         "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
@@ -724,11 +734,16 @@
                 "name": "Ryan Lewis",
                 "tickets": [
                     {
+                        "assignee": null,
                         "body": "I have a problem",
                         "subject": "Old ticket",
                         "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
                     },
                     {
+                        "assignee": {
+                            "email": "bob@nyaruka.com",
+                            "name": "Bob"
+                        },
                         "body": "What day is it?",
                         "subject": "Question",
                         "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
@@ -810,11 +825,16 @@
                     "name": "Ryan Lewis",
                     "tickets": [
                         {
+                            "assignee": null,
                             "body": "I have a problem",
                             "subject": "Old ticket",
                             "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
                         },
                         {
+                            "assignee": {
+                                "email": "bob@nyaruka.com",
+                                "name": "Bob"
+                            },
                             "body": "What day is it?",
                             "subject": "Question",
                             "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
@@ -1042,7 +1062,7 @@
             },
             "ticket": null,
             "type": "flow_action",
-            "user": ""
+            "user": null
         }
     }
 ]

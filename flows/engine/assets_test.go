@@ -79,7 +79,7 @@ func TestSessionAssetsWithSourceErrors(t *testing.T) {
 	_, err = sa.Flows().Get(assets.FlowUUID("ddba5842-252f-4a20-b901-08696fc773e2"))
 	assert.EqualError(t, err, "unable to load flow assets")
 
-	for _, errType := range []string{"channels", "classifiers", "fields", "globals", "groups", "labels", "locations", "resthooks", "templates"} {
+	for _, errType := range []string{"channels", "classifiers", "fields", "globals", "groups", "labels", "locations", "resthooks", "templates", "users"} {
 		source.currentErrType = errType
 		_, err = engine.NewSessionAssets(env, source, nil)
 		assert.EqualError(t, err, fmt.Sprintf("unable to load %s assets", errType), "error mismatch for type %s", errType)
@@ -140,4 +140,8 @@ func (s *testSource) Templates() ([]assets.Template, error) {
 
 func (s *testSource) Ticketers() ([]assets.Ticketer, error) {
 	return nil, s.err("ticketers")
+}
+
+func (s *testSource) Users() ([]assets.User, error) {
+	return nil, s.err("users")
 }
