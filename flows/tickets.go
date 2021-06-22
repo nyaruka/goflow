@@ -76,8 +76,8 @@ type ticketEnvelope struct {
 	Assignee   *assets.UserReference     `json:"assignee,omitempty"     validate:"omitempty,dive"`
 }
 
-// ReadTicket ecodes a contact from the passed in JSON. If the ticketer can't be found in the assets,
-// we return report the missing asset and return ticket with nil ticketer.
+// ReadTicket decodes a contact from the passed in JSON. If the ticketer or assigned user can't
+// be found in the assets, we report the missing asset and return ticket without those.
 func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (*Ticket, error) {
 	e := &ticketEnvelope{}
 
