@@ -392,7 +392,7 @@ func TestTriggerContext(t *testing.T) {
 		"params":  params,
 		"keyword": types.XTextEmpty,
 		"user": types.NewXObject(map[string]types.XValue{
-			"__default__": types.NewXText("bob@nyaruka.com"),
+			"__default__": types.NewXText("Bob"),
 			"email":       types.NewXText("bob@nyaruka.com"),
 			"name":        types.NewXText("Bob"),
 		}),

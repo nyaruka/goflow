@@ -29,7 +29,7 @@ func TestUsers(t *testing.T) {
 
 	// check use in expressions
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
-		"__default__": types.NewXText("bob@nyaruka.com"),
+		"__default__": types.NewXText("Bob"),
 		"email":       types.NewXText("bob@nyaruka.com"),
 		"name":        types.NewXText("Bob"),
 	}), flows.Context(env, u1))

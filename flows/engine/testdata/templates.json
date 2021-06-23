@@ -393,7 +393,7 @@
     },
     {
         "template": "@ticket",
-        "output": "{assignee: bob@nyaruka.com, body: What day is it?, subject: Question, uuid: 78d1fe0d-7e39-461e-81c3-a6a25f15ed69}"
+        "output": "{assignee: Bob, body: What day is it?, subject: Question, uuid: 78d1fe0d-7e39-461e-81c3-a6a25f15ed69}"
     },
     {
         "template": "@(json(ticket))",
