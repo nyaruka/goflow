@@ -1,3 +1,7 @@
+v0.124.2
+----------
+ * Change default property of user objects in expressions to be the name to match contacts
+
 v0.124.1
 ----------
  * Fix remove_first_word when input contains non-ASCII
