@@ -406,13 +406,7 @@ func Code(env envs.Environment, text types.XText) types.XValue {
 //
 // @function split(text, [,delimiters])
 func Split(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
-	var splits []string
-
-	if delimiters != types.XTextEmpty {
-		splits = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
-	} else {
-		splits = utils.TokenizeString(text.Native())
-	}
+	splits := extractWords(text.Native(), delimiters.Native())
 
 	nonEmpty := make([]types.XValue, 0)
 	for _, split := range splits {
@@ -520,16 +514,15 @@ func Word(env envs.Environment, text types.XText, args ...types.XValue) types.XV
 		return xerr
 	}
 
-	var words []string
+	delimiters := types.XTextEmpty
 	if len(args) == 2 && args[1] != nil {
-		delimiters, xerr := types.ToXText(env, args[1])
+		delimiters, xerr = types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
-		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
-	} else {
-		words = utils.TokenizeString(text.Native())
 	}
+
+	words := extractWords(text.Native(), delimiters.Native())
 
 	offset := index
 	if offset < 0 {
@@ -550,19 +543,21 @@ func Word(env envs.Environment, text types.XText, args ...types.XValue) types.XV
 //
 // @function remove_first_word(text)
 func RemoveFirstWord(env envs.Environment, text types.XText) types.XValue {
-	firstWordVal := Word(env, text, types.XNumberZero)
-	firstWord, isText := firstWordVal.(types.XText)
-	if !isText || firstWord == types.XTextEmpty {
+	s := text.Native()
+	words := extractWords(s, "")
+	if len(words) < 2 {
 		return types.XTextEmpty
 	}
 
-	firstWordStart := strings.Index(text.Native(), firstWord.Native())
-	firstWordEnd := firstWordStart + firstWord.Length()
+	// find first word and remove
+	w1Start := strings.Index(s, words[0])
+	s = s[w1Start+len(words[0]):]
 
-	remainder := text.Slice(firstWordEnd, text.Length())
+	// find where second word starts and discard everything up to that
+	w2Start := strings.Index(s, words[1])
+	s = s[w2Start:]
 
-	// remove any white space left at start
-	return types.NewXText(strings.TrimLeft(remainder.Native(), " "))
+	return types.NewXText(s)
 }
 
 // WordSlice extracts a sub-sequence of words from `text`.
@@ -600,16 +595,15 @@ func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 		return types.NewXErrorf("must have a end which is greater than the start")
 	}
 
-	var words []string
+	delimiters := types.XTextEmpty
 	if len(args) == 3 && args[2] != nil {
-		delimiters, xerr := types.ToXText(env, args[2])
+		delimiters, xerr = types.ToXText(env, args[2])
 		if xerr != nil {
 			return xerr
 		}
-		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
-	} else {
-		words = utils.TokenizeString(text.Native())
 	}
+
+	words := extractWords(text.Native(), delimiters.Native())
 
 	if start >= len(words) {
 		return types.XTextEmpty
@@ -638,13 +632,7 @@ func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 //
 // @function word_count(text [,delimiters])
 func WordCount(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
-	var words []string
-
-	if delimiters != types.XTextEmpty {
-		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
-	} else {
-		words = utils.TokenizeString(text.Native())
-	}
+	words := extractWords(text.Native(), delimiters.Native())
 
 	return types.NewXNumberFromInt(len(words))
 }
