@@ -1,3 +1,7 @@
+v0.124.1
+----------
+ * Fix remove_first_word when input contains non-ASCII
+
 v0.124.0
 ----------
  * Add User assets and use for Ticket.Assignee and Trigger.user
