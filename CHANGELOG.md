@@ -1,3 +1,7 @@
+v0.124.3
+----------
+ * Fix inspecting user dependencies in flows
+
 v0.124.2
 ----------
  * Change default property of user objects in expressions to be the name to match contacts
