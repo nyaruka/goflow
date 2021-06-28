@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // User adds some functionality to user assets.
@@ -24,18 +25,38 @@ func (u *User) Reference() *assets.UserReference {
 	return assets.NewUserReference(u.Email(), u.Name())
 }
 
+// Format returns a friendly string version of this user depending on what fields are set
+func (u *User) Format() string {
+	// if user has a name set, use that
+	if u.Name() != "" {
+		return u.Name()
+	}
+
+	// otherwise use email
+	return u.Email()
+}
+
 // Context returns the properties available in expressions
 //
-//   __default__:text -> the name of the user
+//   __default__:text -> the name or email
 //   email:text -> the email address of the user
 //   name:text -> the name of the user
+//   first_name:text -> the first name of the user
 //
 // @context user
 func (u *User) Context(env envs.Environment) map[string]types.XValue {
+	var firstName types.XText
+
+	names := utils.TokenizeString(u.Name())
+	if len(names) >= 1 {
+		firstName = types.NewXText(names[0])
+	}
+
 	return map[string]types.XValue{
-		"__default__": types.NewXText(u.Name()),
+		"__default__": types.NewXText(u.Format()),
 		"email":       types.NewXText(u.Email()),
 		"name":        types.NewXText(u.Name()),
+		"first_name":  firstName,
 	}
 }
 

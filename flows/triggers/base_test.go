@@ -161,7 +161,7 @@ var assetsJSON = `{
     "users": [
         {
             "email": "bob@nyaruka.com",
-            "name": "Bob"
+            "name": "Bob McTickets"
         }
     ]
 }`
@@ -375,7 +375,7 @@ func TestTriggerContext(t *testing.T) {
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 	user := sa.Users().Get("bob@nyaruka.com")
 
-	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Jim", envs.Language("eng"), nil)
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
@@ -392,9 +392,10 @@ func TestTriggerContext(t *testing.T) {
 		"params":  params,
 		"keyword": types.XTextEmpty,
 		"user": types.NewXObject(map[string]types.XValue{
-			"__default__": types.NewXText("Bob"),
+			"__default__": types.NewXText("Bob McTickets"),
 			"email":       types.NewXText("bob@nyaruka.com"),
-			"name":        types.NewXText("Bob"),
+			"name":        types.NewXText("Bob McTickets"),
+			"first_name":  types.NewXText("Bob"),
 		}),
 		"origin": types.NewXText("api"),
 		"ticket": nil,

@@ -42,6 +42,7 @@
             "type": "manual",
             "user": {
                 "email": "bob@nyaruka.com",
+                "first_name": "Bob",
                 "name": "Bob"
             }
         }
