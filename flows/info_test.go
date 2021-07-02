@@ -35,7 +35,7 @@ func TestNewResultSpecs(t *testing.T) {
 	}
 
 	specs := flows.NewResultSpecs(extracted)
-	specsJSON, _ := jsonx.Marshal(specs)
+	specsJSON := jsonx.MustMarshal(specs)
 
 	test.AssertEqualJSON(t, []byte(`[
 		{

@@ -379,7 +379,7 @@ func TestLegacyTests(t *testing.T) {
 			}
 
 			migratedVars := tc.Context.Variables.Migrate().Context(env)
-			migratedVarsJSON, _ := jsonx.Marshal(migratedVars)
+			migratedVarsJSON := jsonx.MustMarshal(migratedVars)
 
 			_, err = excellent.EvaluateTemplate(env, migratedVars, migratedTemplate, nil)
 

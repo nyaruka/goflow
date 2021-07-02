@@ -179,8 +179,8 @@ func TestTypedReference(t *testing.T) {
 	ref := assets.NewGroupReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Bobs")
 	typed := assets.NewTypedReference(ref)
 
-	refJSON, _ := jsonx.Marshal(ref)
-	typedJSON, _ := jsonx.Marshal(typed)
+	refJSON := jsonx.MustMarshal(ref)
+	typedJSON := jsonx.MustMarshal(typed)
 
 	assert.Equal(t, `{"uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf","name":"Bobs"}`, string(refJSON))
 	assert.Equal(t, `{"uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf","name":"Bobs","type":"group"}`, string(typedJSON))

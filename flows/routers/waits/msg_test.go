@@ -62,7 +62,7 @@ func TestMsgWait(t *testing.T) {
 
 	// no timeout or media
 	wait := waits.NewMsgWait(nil, nil)
-	marshaled, _ := jsonx.Marshal(wait)
+	marshaled := jsonx.MustMarshal(wait)
 	assert.Equal(t, `{"type":"msg"}`, string(marshaled))
 
 	// timeout and image hint

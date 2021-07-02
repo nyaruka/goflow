@@ -372,7 +372,7 @@ func TestSessionHistory(t *testing.T) {
 
 	// trigger another session from that session
 	runSummary := session1.Runs()[0].Snapshot()
-	runSummaryJSON, _ := jsonx.Marshal(runSummary)
+	runSummaryJSON := jsonx.MustMarshal(runSummary)
 	history := flows.NewChildHistory(session1)
 
 	session2, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).FlowAction(history, runSummaryJSON).Build())

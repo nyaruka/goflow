@@ -21,8 +21,7 @@ import (
 )
 
 func errorResp(code int, message string) string {
-	d, _ := jsonx.Marshal(map[string]interface{}{"errors": []map[string]interface{}{{"code": code, "message": message}}})
-	return string(d)
+	return string(jsonx.MustMarshal(map[string]interface{}{"errors": []map[string]interface{}{{"code": code, "message": message}}}))
 }
 
 func TestServiceWithSuccessfulTranfer(t *testing.T) {

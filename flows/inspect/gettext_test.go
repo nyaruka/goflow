@@ -36,7 +36,7 @@ func TestLocalizableText(t *testing.T) {
 		"text":          {"Hi there"},
 	}, extracted)
 
-	data, _ := jsonx.Marshal(sendMsg)
+	data := jsonx.MustMarshal(sendMsg)
 	test.AssertEqualJSON(t, []byte(`{
 		"uuid": "7a463f01-2bf4-4ea6-8d7b-3f743d19f27a",
 		"type": "send_msg",

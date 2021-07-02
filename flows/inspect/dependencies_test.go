@@ -65,7 +65,7 @@ func TestDependencies(t *testing.T) {
 	require.NoError(t, err)
 
 	deps := inspect.NewDependencies(refs, sa)
-	depsJSON, _ := jsonx.Marshal(deps)
+	depsJSON := jsonx.MustMarshal(deps)
 	test.AssertEqualJSON(t, []byte(`[
 		{
 			"missing": true,

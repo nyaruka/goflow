@@ -56,7 +56,7 @@ func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 		}
 
 		info := flow.Inspect(sessionAssets)
-		issuesJSON, _ := jsonx.Marshal(info.Issues)
+		issuesJSON := jsonx.MustMarshal(info.Issues)
 
 		// clone test case and populate with actual values
 		actual := tc

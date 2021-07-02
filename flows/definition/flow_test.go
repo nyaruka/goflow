@@ -290,7 +290,7 @@ func TestNewFlow(t *testing.T) {
 
 	// check inspection
 	info := flow.Inspect(session.Assets())
-	infoJSON, _ := jsonx.Marshal(info)
+	infoJSON := jsonx.MustMarshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
 		"dependencies": [
@@ -349,7 +349,7 @@ func TestEmptyFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(expected), marshaled, "flow definition mismatch")
 
 	info := flow.Inspect(nil)
-	infoJSON, _ := jsonx.Marshal(info)
+	infoJSON := jsonx.MustMarshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
 		"dependencies": [],

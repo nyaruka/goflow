@@ -36,7 +36,7 @@ func TestElasticSort(t *testing.T) {
 			assert.EqualError(t, err, tc.Error)
 		} else {
 			src, _ := sort.Source()
-			encoded, _ := jsonx.Marshal(src)
+			encoded := jsonx.MustMarshal(src)
 			test.AssertEqualJSON(t, []byte(tc.Elastic), encoded, "field sort mismatch for %s", tc.Description)
 		}
 	}
