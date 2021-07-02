@@ -1,3 +1,7 @@
+v0.125.0
+----------
+ * Update to latest gocommon
+
 v0.124.4
 ----------
  * Make users more like contacts in expressions by giving them an always non-empty default and a first_name property
