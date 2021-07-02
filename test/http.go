@@ -57,6 +57,9 @@ func testHTTPHandler(w http.ResponseWriter, r *http.Request) {
 	case "textjs":
 		contentType = "text/javascript; charset=iso-8859-1"
 		data = []byte(`{ "ok": "true" }`)
+	case "badutf8":
+		contentType = "text/plain"
+		data = []byte("{ \"bad\": \"\x80\x81\" }")
 	case "typeless":
 		w.Header().Set("Content-Type", "")
 	case "unavailable":

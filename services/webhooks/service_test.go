@@ -81,6 +81,15 @@ func TestWebhookParsing(t *testing.T) {
 				validJSON: true,
 			},
 		}, {
+			// successful POST with non-UTF8 response body
+			call: call{"POST", "http://127.0.0.1:49994/?cmd=badutf8", ""},
+			webhook: webhook{
+				request:   "POST /?cmd=badutf8 HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
+				response:  "HTTP/1.1 200 OK\r\nContent-Length: 15\r\nContent-Type: text/plain\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:      "{ \"bad\": \"\x80\x81\" }",
+				validJSON: false,
+			},
+		}, {
 			// successful POST receiving gzipped non-JSON body
 			call: call{"POST", "http://127.0.0.1:49994/?cmd=gzipped&content=Hello", ``},
 			webhook: webhook{

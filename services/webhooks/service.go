@@ -3,6 +3,7 @@ package webhooks
 import (
 	"encoding/json"
 	"net/http"
+	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/flows"
@@ -59,7 +60,7 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 			return call, nil
 		}
 
-		call.ValidJSON = len(trace.ResponseBody) > 0 && json.Valid(trace.ResponseBody)
+		call.ValidJSON = len(trace.ResponseBody) > 0 && json.Valid(trace.ResponseBody) && utf8.Valid(trace.ResponseBody)
 
 		return call, err
 	}
