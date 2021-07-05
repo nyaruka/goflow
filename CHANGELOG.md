@@ -1,3 +1,7 @@
+v0.125.1
+----------
+ * Strip out invalid UTF-8 from webhook responses before trying to convert to JSON
+
 v0.125.0
 ----------
  * Update to latest gocommon
