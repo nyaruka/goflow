@@ -1,3 +1,8 @@
+v0.125.2
+----------
+ * Add assignee (optional) to ticket_opened events
+ * Cleanup from linter suggestions
+
 v0.125.1
 ----------
  * Strip out invalid UTF-8 from webhook responses before trying to convert to JSON
