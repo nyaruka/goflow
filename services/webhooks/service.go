@@ -1,6 +1,7 @@
 package webhooks
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 
@@ -59,7 +60,13 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 			return call, nil
 		}
 
-		call.ValidJSON = len(trace.ResponseBody) > 0 && json.Valid(trace.ResponseBody)
+		if len(call.ResponseBody) > 0 {
+			// strip out any invalid UTF-8
+			bodyUTF8 := bytes.ToValidUTF8(call.ResponseBody, nil)
+			if json.Valid(bodyUTF8) {
+				call.ResponseJSON = bodyUTF8
+			}
+		}
 
 		return call, err
 	}
