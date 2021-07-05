@@ -134,8 +134,6 @@ func (r *baseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 	return false
 }
 
-type routerFunc func(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error)
-
 // RouteTimeout routes in the case that this router's wait timed out
 func (r *baseRouter) RouteTimeout(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
 	if !r.AllowTimeout() {

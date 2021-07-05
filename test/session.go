@@ -512,7 +512,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 
 	eng := NewEngine()
 
-	session, sprint, err := eng.NewSession(sa, trigger)
+	session, _, err := eng.NewSession(sa, trigger)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error starting test session")
 	}
@@ -523,7 +523,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 		return nil, nil, errors.Wrap(err, "error reading resume")
 	}
 
-	sprint, err = session.Resume(resume)
+	sprint, err := session.Resume(resume)
 	return session, sprint.Events(), err
 }
 

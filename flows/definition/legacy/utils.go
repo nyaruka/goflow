@@ -123,11 +123,8 @@ func URLJoin(base, relative string) string {
 		return relative
 	}
 
-	if strings.HasSuffix(base, "/") {
-		base = base[:len(base)-1]
-	}
-	if strings.HasPrefix(relative, "/") {
-		relative = relative[1:]
-	}
+	base = strings.TrimSuffix(base, "/")
+	relative = strings.TrimPrefix(relative, "/")
+
 	return fmt.Sprintf("%s/%s", base, relative)
 }

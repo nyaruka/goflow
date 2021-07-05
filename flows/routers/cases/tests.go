@@ -290,7 +290,7 @@ func HasBeginning(env envs.Environment, text types.XText, beginning types.XText)
 	}
 
 	segment := hayStack[:len(pinCushion)]
-	if strings.ToLower(segment) == strings.ToLower(pinCushion) {
+	if strings.EqualFold(segment, pinCushion) {
 		return NewTrueResult(types.NewXText(segment))
 	}
 

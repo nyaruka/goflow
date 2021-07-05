@@ -53,6 +53,9 @@ func Migrate(reader io.Reader, toVersion *semver.Version, baseMediaURL string, p
 	}
 
 	migrated, err := migrations.MigrateToVersion(data, toVersion, migConfig)
+	if err != nil {
+		return nil, err
+	}
 
 	// if we've migrated to the engine version, validate the flow can be read by the engine
 	if toVersion == nil || toVersion.Equal(definition.CurrentSpecVersion) {

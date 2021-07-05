@@ -11,8 +11,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var laTZ, _ = time.LoadLocation("America/Los_Angeles")
-
 func TestDateTimeFromString(t *testing.T) {
 
 	testCases := []struct {

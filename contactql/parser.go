@@ -223,17 +223,17 @@ func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, e
 }
 
 func (c *Condition) evaluateValue(env envs.Environment, val interface{}) bool {
-	switch val.(type) {
+	switch typed := val.(type) {
 	case string:
 		isName := c.propKey == AttributeName // needs to be handled as special case
 
-		return textComparison(val.(string), c.operator, c.value, isName)
+		return textComparison(typed, c.operator, c.value, isName)
 
 	case decimal.Decimal:
-		return numberComparison(val.(decimal.Decimal), c.operator, c.valueAsNumber)
+		return numberComparison(typed, c.operator, c.valueAsNumber)
 
 	case time.Time:
-		return dateComparison(val.(time.Time), c.operator, c.valueAsDate)
+		return dateComparison(typed, c.operator, c.valueAsDate)
 	}
 
 	panic(fmt.Sprintf("unsupported query data type: %T", val))

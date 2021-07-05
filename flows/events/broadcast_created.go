@@ -48,7 +48,7 @@ type BroadcastTranslation struct {
 type BroadcastCreatedEvent struct {
 	baseEvent
 
-	Translations map[envs.Language]*BroadcastTranslation `json:"translations,min=1" validate:"dive"`
+	Translations map[envs.Language]*BroadcastTranslation `json:"translations" validate:"min=1,dive"`
 	BaseLanguage envs.Language                           `json:"base_language" validate:"required"`
 	Groups       []*assets.GroupReference                `json:"groups,omitempty" validate:"dive"`
 	Contacts     []*flows.ContactReference               `json:"contacts,omitempty" validate:"dive"`

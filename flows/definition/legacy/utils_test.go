@@ -59,12 +59,6 @@ func TestStringOrNumber(t *testing.T) {
 	assert.EqualError(t, err, "expected string or number, not [")
 }
 
-type testObject struct {
-	Foo   string `json:"foo"`
-	Other int    `json:"other"`
-}
-
-func (t *testObject) Type() string { return "second" }
 func TestTypedEnvelope(t *testing.T) {
 	// error if JSON is malformed
 	e := &legacy.TypedEnvelope{}

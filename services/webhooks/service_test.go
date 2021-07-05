@@ -191,6 +191,7 @@ func TestRetries(t *testing.T) {
 
 	svc, _ := session.Engine().Services().Webhook(session)
 	c, err := svc.Call(session, request)
+	require.NoError(t, err)
 
 	assert.Equal(t, 200, c.Response.StatusCode)
 	assert.Equal(t, "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 4\r\nAccept-Encoding: gzip\r\n\r\nBODY", string(c.RequestTrace))
@@ -234,6 +235,7 @@ func TestGzipEncoding(t *testing.T) {
 
 	svc, _ := session.Engine().Services().Webhook(session)
 	c, err := svc.Call(session, request)
+	require.NoError(t, err)
 
 	// check that gzip decompression happens transparently
 	assert.Equal(t, 200, c.Response.StatusCode)

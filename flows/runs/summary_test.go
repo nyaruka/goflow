@@ -54,6 +54,7 @@ func TestRunSummary(t *testing.T) {
 
 	// try reading with missing assets
 	emptyAssets, err := engine.NewSessionAssets(session.Environment(), static.NewEmptySource(), nil)
+	assert.NoError(t, err)
 
 	summary, err = runs.ReadRunSummary(emptyAssets, marshaled, assets.IgnoreMissing)
 	require.NoError(t, err)

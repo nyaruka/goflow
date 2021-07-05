@@ -20,7 +20,6 @@ import (
 
 var xs = types.NewXText
 var xn = types.RequireXNumberFromString
-var xi = types.NewXNumberFromInt
 var xd = types.NewXDateTime
 var xt = types.NewXTime
 var xa = types.NewXArray

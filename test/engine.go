@@ -34,9 +34,7 @@ func NewEngine() flows.Engine {
 }
 
 // implementation of an email service for testing which just fakes sending the email
-type emailService struct {
-	classifier *flows.Classifier
-}
+type emailService struct{}
 
 func newEmailService() *emailService {
 	return &emailService{}
@@ -60,7 +58,7 @@ func (s *classificationService) Classify(session flows.Session, input string, lo
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")
 	for i := range classifierIntents {
-		extractedIntents[i] = flows.ExtractedIntent{classifierIntents[i], confidence}
+		extractedIntents[i] = flows.ExtractedIntent{Name: classifierIntents[i], Confidence: confidence}
 		confidence = confidence.Div(decimal.RequireFromString("2"))
 	}
 
@@ -76,8 +74,8 @@ func (s *classificationService) Classify(session flows.Session, input string, lo
 	classification := &flows.Classification{
 		Intents: extractedIntents,
 		Entities: map[string][]flows.ExtractedEntity{
-			"location": []flows.ExtractedEntity{
-				flows.ExtractedEntity{"Quito", decimal.RequireFromString("1.0")},
+			"location": {
+				flows.ExtractedEntity{Value: "Quito", Confidence: decimal.RequireFromString("1.0")},
 			},
 		},
 	}

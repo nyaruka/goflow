@@ -218,15 +218,11 @@ func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flow
 
 	// copy URNs
 	urnList := make([]urns.URN, 0, len(a.URNs))
-	for _, urn := range a.URNs {
-		urnList = append(urnList, urn)
-	}
+	urnList = append(urnList, a.URNs...)
 
 	// copy contact references
 	contactRefs := make([]*flows.ContactReference, 0, len(a.Contacts))
-	for _, contactRef := range a.Contacts {
-		contactRefs = append(contactRefs, contactRef)
-	}
+	contactRefs = append(contactRefs, a.Contacts...)
 
 	// resolve group references
 	groups, err := resolveGroups(run, a.Groups, logEvent)

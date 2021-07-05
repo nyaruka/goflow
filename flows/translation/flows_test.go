@@ -220,6 +220,7 @@ func TestImportNewTranslationIntoFlows(t *testing.T) {
 	require.NoError(t, err)
 
 	po, err := i18n.ReadPO(bytes.NewReader(poData))
+	require.NoError(t, err)
 
 	err = translation.ImportIntoFlows(po, "spa", flow)
 	require.NoError(t, err)

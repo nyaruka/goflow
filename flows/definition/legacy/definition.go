@@ -833,7 +833,7 @@ func migrateRules(baseLanguage envs.Language, r RuleSet, validDests map[uuids.UU
 
 // migrates the given legacy rule to a router case
 func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, localization migratedLocalization) (migratedCase, map[string]interface{}, error) {
-	newType, _ := testTypeMappings[r.Test.Type]
+	newType := testTypeMappings[r.Test.Type]
 	var arguments []string
 	var err error
 

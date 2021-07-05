@@ -109,6 +109,7 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// resume with our resume...
 		sprint, err := session.Resume(resume)
+		require.NoError(t, err)
 
 		actual := tc
 		actual.RunStatus = session.Runs()[0].Status()

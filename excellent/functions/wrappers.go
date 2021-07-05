@@ -293,7 +293,7 @@ func ObjectAndTextsFunction(f func(envs.Environment, *types.XObject, ...types.XT
 		}
 
 		texts := make([]types.XText, len(args)-1)
-		for i, arg := range args[1:len(args)] {
+		for i, arg := range args[1:] {
 			text, xerr := types.ToXText(env, arg)
 			if xerr != nil {
 				return xerr

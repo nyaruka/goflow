@@ -73,9 +73,8 @@ type stepEnvelope struct {
 // UnmarshalJSON unmarshals a run step from the given JSON
 func (s *step) UnmarshalJSON(data []byte) error {
 	var se stepEnvelope
-	var err error
 
-	err = jsonx.Unmarshal(data, &se)
+	err := jsonx.Unmarshal(data, &se)
 	if err != nil {
 		return err
 	}

@@ -110,7 +110,7 @@ func extractFromProperty(translationsLanguage envs.Language, flow flows.Flow, uu
 		if text != "" {
 			extracted = append(extracted, &localizedText{
 				Locations: []textLocation{
-					textLocation{
+					{
 						Flow:     flow,
 						UUID:     uuid,
 						Property: property,
@@ -258,8 +258,8 @@ func (u *TranslationUpdate) String() string {
 // CalculateFlowUpdates calculates what updates should be made to translations in the given flows
 func CalculateFlowUpdates(po *i18n.PO, translationsLanguage envs.Language, targets ...flows.Flow) []*TranslationUpdate {
 	localized := findLocalizedText(translationsLanguage, nil, targets)
-	localizedByContext := make(map[string][]*localizedText, 0)
-	localizedByMsgID := make(map[string][]*localizedText, 0)
+	localizedByContext := make(map[string][]*localizedText)
+	localizedByMsgID := make(map[string][]*localizedText)
 
 	for _, lt := range localized {
 		context := lt.Locations[0].MsgContext()

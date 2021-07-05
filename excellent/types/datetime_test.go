@@ -49,7 +49,7 @@ func TestXDateTime(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "lun, 09-04-2018", formatted)
 
-	formatted, err = d1.FormatCustom(env, "YYYYYY", nil)
+	_, err = d1.FormatCustom(env, "YYYYYY", nil)
 	assert.EqualError(t, err, "'YYYYYY' is not valid in a datetime formatting layout")
 
 	d2 := d1.ReplaceTime(types.NewXTime(dates.NewTimeOfDay(16, 20, 30, 123456789)))

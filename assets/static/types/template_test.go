@@ -35,6 +35,7 @@ func TestTemplate(t *testing.T) {
 
 	copy := Template{}
 	err = jsonx.Unmarshal(asJSON, &copy)
+	assert.NoError(t, err)
 
 	assert.Equal(t, copy.Name(), template.Name())
 	assert.Equal(t, copy.UUID(), template.UUID())

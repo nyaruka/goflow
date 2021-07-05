@@ -259,7 +259,7 @@ func PrintEvent(event flows.Event, out io.Writer) {
 	case *events.DialEndedEvent:
 		msg = fmt.Sprintf("☎️ dial ended with '%s'", typed.Dial.Status)
 	case *events.DialWaitEvent:
-		msg = fmt.Sprintf("⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...")
+		msg = "⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)..."
 	case *events.EmailSentEvent:
 		msg = fmt.Sprintf("✉️ email sent with subject '%s'", typed.Subject)
 	case *events.EnvironmentRefreshedEvent:

@@ -79,7 +79,7 @@ type Results map[string]*Result
 
 // NewResults creates a new empty set of results
 func NewResults() Results {
-	return make(Results, 0)
+	return make(Results)
 }
 
 // Clone returns a clone of this results set

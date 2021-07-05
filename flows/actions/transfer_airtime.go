@@ -100,10 +100,6 @@ func (a *TransferAirtimeAction) saveSuccess(run flows.FlowRun, step flows.Step, 
 	a.saveResult(run, step, a.ResultName, transfer.ActualAmount.String(), CategorySuccess, "", "", nil, logEvent)
 }
 
-func (a *TransferAirtimeAction) saveSkipped(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) {
-	a.saveResult(run, step, a.ResultName, "0", CategorySkipped, "", "", nil, logEvent)
-}
-
 func (a *TransferAirtimeAction) saveFailure(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, "0", CategoryFailure, "", "", nil, logEvent)
 }

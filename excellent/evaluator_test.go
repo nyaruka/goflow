@@ -17,7 +17,6 @@ import (
 var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
-var xd = types.NewXDateTime
 var ERROR = types.NewXErrorf("any error")
 
 func TestEvaluateTemplateValue(t *testing.T) {

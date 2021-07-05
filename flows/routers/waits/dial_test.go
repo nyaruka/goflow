@@ -55,6 +55,7 @@ func TestDialWait(t *testing.T) {
 
 	// try when wait has expression error but still generates valid tel URN
 	wait, err = waits.ReadWait([]byte(`{"type": "dial", "phone": "+593979123456@(1 / 0)"}`))
+	assert.NoError(t, err)
 
 	log = test.NewEventLog()
 	activated = wait.Begin(run, log.Log)
@@ -67,6 +68,7 @@ func TestDialWait(t *testing.T) {
 
 	// try when wait doesn't generate a valid tel URN
 	wait, err = waits.ReadWait([]byte(`{"type": "dial", "phone": "@(\"\")"}`))
+	assert.NoError(t, err)
 
 	log = test.NewEventLog()
 	activated = wait.Begin(run, log.Log)

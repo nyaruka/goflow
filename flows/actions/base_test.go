@@ -743,6 +743,7 @@ func TestResthookPayload(t *testing.T) {
 	defer server.Close()
 
 	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
+	require.NoError(t, err)
 	run := session.Runs()[0]
 
 	payload, err := run.EvaluateTemplate(actions.ResthookPayload)
@@ -803,10 +804,11 @@ func TestStartSessionLoopProtection(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
-	session, sprint, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	_, sprint, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
 	require.NoError(t, err)
 
 	sessions := make([]flows.Session, 0)
+	var session flows.Session
 
 	for {
 		// look for a session triggered event
