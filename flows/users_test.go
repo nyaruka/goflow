@@ -26,6 +26,9 @@ func TestUsers(t *testing.T) {
 	assert.Equal(t, ua1, u1.Asset())
 	assert.Equal(t, assets.NewUserReference("bob@nyaruka.com", "Bob McTickets"), u1.Reference())
 
+	// nil object returns nil reference
+	assert.Nil(t, (*flows.User)(nil).Reference())
+
 	env := envs.NewBuilder().Build()
 
 	// check use in expressions

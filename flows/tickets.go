@@ -186,6 +186,9 @@ func (t *Ticketer) Asset() assets.Ticketer { return t.Ticketer }
 
 // Reference returns a reference to this classifier
 func (t *Ticketer) Reference() *assets.TicketerReference {
+	if t == nil {
+		return nil
+	}
 	return assets.NewTicketerReference(t.UUID(), t.Name())
 }
 

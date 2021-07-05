@@ -22,6 +22,9 @@ func (u *User) Asset() assets.User { return u.User }
 
 // Reference returns a reference to this user
 func (u *User) Reference() *assets.UserReference {
+	if u == nil {
+		return nil
+	}
 	return assets.NewUserReference(u.Email(), u.Name())
 }
 

@@ -51,6 +51,9 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, "mailgun", mailgun.Type())
 	assert.Equal(t, assets.NewTicketerReference("5885ed52-8d3e-4fd3-be49-57eebe5d4d59", "Email Tickets"), mailgun.Reference())
 
+	// nil object returns nil reference
+	assert.Nil(t, (*flows.Ticketer)(nil).Reference())
+
 	missingRefs := make([]assets.Reference, 0)
 	missing := func(ref assets.Reference, err error) {
 		missingRefs = append(missingRefs, ref)

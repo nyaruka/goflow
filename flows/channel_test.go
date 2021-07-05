@@ -39,6 +39,9 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, assets.NewChannelReference(ch.UUID(), "Android"), ch.Reference())
 	assert.True(t, ch.HasRole(assets.ChannelRoleSend))
 	assert.False(t, ch.HasRole(assets.ChannelRoleCall))
+
+	// nil object returns nil reference
+	assert.Nil(t, (*flows.Channel)(nil).Reference())
 }
 
 func TestChannelSetGetForURN(t *testing.T) {

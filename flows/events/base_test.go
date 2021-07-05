@@ -528,7 +528,11 @@ func TestEventMarshaling(t *testing.T) {
 					},
 					"subject": "Need help",
 					"body": "Where are my cookies?",
-					"external_id": "1243252"
+					"external_id": "1243252",
+					"assignee": {
+						"email": "bob@nyaruka.com",
+						"name": "Bob"
+					}
 				}
 			}`,
 		},

@@ -18,6 +18,7 @@ type Ticket struct {
 	Subject    string                    `json:"subject"`
 	Body       string                    `json:"body"`
 	ExternalID string                    `json:"external_id,omitempty"`
+	Assignee   *assets.UserReference     `json:"assignee,omitempty"     validate:"omitempty,dive"`
 }
 
 // TicketOpenedEvent events are created when a new ticket is opened.
@@ -33,7 +34,8 @@ type Ticket struct {
 //       },
 //       "subject": "Need help",
 //       "body": "Where are my cookies?",
-//       "external_id": "32526523"
+//       "external_id": "32526523",
+//       "assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
 //     }
 //   }
 //
@@ -54,6 +56,7 @@ func NewTicketOpened(ticket *flows.Ticket) *TicketOpenedEvent {
 			Subject:    ticket.Subject(),
 			Body:       ticket.Body(),
 			ExternalID: ticket.ExternalID(),
+			Assignee:   ticket.Assignee().Reference(),
 		},
 	}
 }
