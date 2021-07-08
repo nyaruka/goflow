@@ -81,13 +81,31 @@ func TestWebhookParsing(t *testing.T) {
 				bodyJSON: `{ "ok": "true" }`,
 			},
 		}, {
-			// successful POST with non-UTF8 response body
-			call: call{"POST", "http://127.0.0.1:49994/?cmd=badutf8", ""},
+			// successful GET with "JSON" response body containing null char (not valid JSON)
+			call: call{"GET", "http://127.0.0.1:49994/?cmd=badstr", ""},
 			webhook: webhook{
-				request:  "POST /?cmd=badutf8 HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAccept-Encoding: gzip\r\n\r\n",
+				request:  "GET /?cmd=badstr HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response: "HTTP/1.1 200 OK\r\nContent-Length: 14\r\nContent-Type: text/plain\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:     "{ \"bad\": \"\x00\" }",
+				bodyJSON: ``,
+			},
+		}, {
+			// successful GET with JSON response body containing invalid unicode sequence (invalid UTF8 should be stripped)
+			call: call{"GET", "http://127.0.0.1:49994/?cmd=badutf8", ""},
+			webhook: webhook{
+				request:  "GET /?cmd=badutf8 HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
 				response: "HTTP/1.1 200 OK\r\nContent-Length: 15\r\nContent-Type: text/plain\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
 				body:     "{ \"bad\": \"\x80\x81\" }",
 				bodyJSON: `{ "bad": "" }`,
+			},
+		}, {
+			// successful GET with JSON response body containing escaped null chars (actual escaped nulls should be replaced with \ufffd)
+			call: call{"GET", "http://127.0.0.1:49994/?cmd=badjson", ""},
+			webhook: webhook{
+				request:  "GET /?cmd=badjson HTTP/1.1\r\nHost: 127.0.0.1:49994\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+				response: "HTTP/1.1 200 OK\r\nContent-Length: 48\r\nContent-Type: application/json\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n",
+				body:     `{ "nulls": "\u0000-\\u0000-\\\u0000-\\\\u0000" }`,
+				bodyJSON: `{ "nulls": "\ufffd-\\u0000-\\\ufffd-\\\\u0000" }`,
 			},
 		}, {
 			// successful POST receiving gzipped non-JSON body

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"regexp"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/flows"
@@ -61,10 +62,11 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 		}
 
 		if len(call.ResponseBody) > 0 {
-			// strip out any invalid UTF-8
-			bodyUTF8 := bytes.ToValidUTF8(call.ResponseBody, nil)
-			if json.Valid(bodyUTF8) {
-				call.ResponseJSON = bodyUTF8
+			// strip out any invalid UTF-8 and replace any escaped nulls
+			cleaned := replaceEscapedNulls(bytes.ToValidUTF8(call.ResponseBody, nil))
+
+			if json.Valid(cleaned) {
+				call.ResponseJSON = cleaned
 			}
 		}
 
@@ -75,3 +77,19 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 }
 
 var _ flows.WebhookService = (*service)(nil)
+
+// replaces any `\u0000` sequences with the unicode replacement char `\ufffd`
+// a sequence such as `\\u0000` is preserved as it is an escaped slash followed by the sequence `u0000`
+func replaceEscapedNulls(data []byte) []byte {
+	return nullEscapeRegex.ReplaceAllFunc(data, func(m []byte) []byte {
+		slashes := bytes.Count(m, []byte(`\`))
+		if slashes%2 == 0 {
+			return m
+		}
+
+		return append(bytes.Repeat([]byte(`\`), slashes-1), replacementChar...)
+	})
+}
+
+var nullEscapeRegex = regexp.MustCompile(`\\+u0{4}`)
+var replacementChar = []byte(`\ufffd`)
