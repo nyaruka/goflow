@@ -53,15 +53,17 @@ func NewWebhookCalled(call *flows.WebhookCall, status flows.CallStatus, resthook
 		statusCode = call.Response.StatusCode
 	}
 
+	response := utils.ReplaceEscapedNulls(call.SanitizedResponse("..."), []byte(`�`))
+
 	return &WebhookCalledEvent{
 		baseEvent:   newBaseEvent(TypeWebhookCalled),
 		URL:         call.Request.URL.String(),
 		Status:      status,
 		Request:     utils.TruncateEllipsis(string(call.RequestTrace), trimTracesTo),
-		Response:    utils.TruncateEllipsis(string(call.ResponseTraceUTF8("...")), trimTracesTo),
+		Response:    utils.TruncateEllipsis(string(response), trimTracesTo),
 		ElapsedMS:   int((call.EndTime.Sub(call.StartTime)) / time.Millisecond),
 		Resthook:    resthook,
 		StatusCode:  statusCode,
-		BodyIgnored: len(call.ResponseBody) > 0 && len(call.ResponseJSON) == 0,
+		BodyIgnored: len(call.ResponseBody) > 0 && len(call.ResponseJSON) == 0, // i.e. there was a body but it couldn't be converted to JSON
 	}
 }

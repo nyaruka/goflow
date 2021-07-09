@@ -630,12 +630,35 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 	assert.Equal(t, "YYYYYYY...", event.Response[9990:])
 }
 
+func TestWebhookCalledEventNullChar(t *testing.T) {
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
+
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"http://temba.io/": {
+			httpx.NewMockResponse(200, nil, "abc \x00 \\u0000 \\\u0000 \\\\u0000"),
+		},
+	}))
+
+	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
+
+	svc := webhooks.NewService(http.DefaultClient, nil, nil, nil, 1024*1024)
+	call, err := svc.Call(nil, request)
+	require.NoError(t, err)
+
+	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
+
+	// actual null will have been stripped, escaped null will remain
+	assert.Equal(t, "http://temba.io/", event.URL)
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 23\r\n\r\nabc � � \\� \\\\u0000", event.Response)
+	assert.True(t, utf8.ValidString(event.Response))
+}
+
 func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(200, nil, "\xa0\xa1"),
+			httpx.NewMockResponse(200, map[string]string{"Bad-Header": "\xa0\xa1"}, "\xa0\xa1"),
 		},
 	}))
 
@@ -648,7 +671,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
 
 	assert.Equal(t, "http://temba.io/", event.URL)
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n...", event.Response)
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\nBad-Header: �\r\n\r\n...", event.Response)
 	assert.True(t, utf8.ValidString(event.Response))
 }
 

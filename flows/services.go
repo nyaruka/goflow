@@ -156,7 +156,7 @@ func NewHTTPLog(trace *httpx.Trace, statusFn HTTPStatusResolver, redact utils.Re
 func newHTTPLogWithStatus(trace *httpx.Trace, status CallStatus, redact utils.Redactor) *HTTPLog {
 	url := trace.Request.URL.String()
 	request := string(trace.RequestTrace)
-	response := trace.ResponseTraceUTF8("...")
+	response := string(utils.ReplaceEscapedNulls(trace.SanitizedResponse("..."), []byte(`�`)))
 
 	if redact != nil {
 		url = redact(url)

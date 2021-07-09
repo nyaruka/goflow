@@ -18,7 +18,7 @@ func TestHTTPLogs(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(200, nil, "hello"),
+			httpx.NewMockResponse(200, nil, "hello \\u0000"),
 			httpx.NewMockResponse(400, nil, "is error"),
 			httpx.MockConnectionError,
 		},
@@ -41,6 +41,7 @@ func TestHTTPLogs(t *testing.T) {
 
 	log1 := flows.NewHTTPLog(trace1, flows.HTTPStatusFromCode, nil)
 	assert.Equal(t, flows.CallStatusSuccess, log1.Status)
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 12\r\n\r\nhello �", log1.Response) // escaped null should have been replaced
 
 	log2 := flows.NewHTTPLog(trace2, flows.HTTPStatusFromCode, nil)
 	assert.Equal(t, flows.CallStatusResponseError, log2.Status)

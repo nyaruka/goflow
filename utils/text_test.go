@@ -186,3 +186,12 @@ func TestRedactor(t *testing.T) {
 	assert.Equal(t, "**** def **** def", utils.NewRedactor("****", "abc")("abc def abc def"))        // all instances redacted
 	assert.Equal(t, "**** def **** jkl", utils.NewRedactor("****", "abc", "ghi")("abc def ghi jkl")) // all values redacted
 }
+
+func TestReplaceEscapedNulls(t *testing.T) {
+	assert.Equal(t, []byte(nil), utils.ReplaceEscapedNulls(nil, []byte(`?`)))
+	assert.Equal(t, []byte(`abcdef`), utils.ReplaceEscapedNulls([]byte(`abc\u0000def`), nil))
+	assert.Equal(t, []byte(`abc?def`), utils.ReplaceEscapedNulls([]byte(`abc\u0000def`), []byte(`?`)))
+	assert.Equal(t, []byte(`�ɇ�ɇ`), utils.ReplaceEscapedNulls([]byte(`\u0000\u0000`), []byte(`�ɇ`)))
+	assert.Equal(t, []byte(`abc  \\u0000 \\ \\\\u0000 def`), utils.ReplaceEscapedNulls([]byte(`abc \u0000 \\u0000 \\\u0000 \\\\u0000 def`), nil))
+	assert.Equal(t, []byte(`0000`), utils.ReplaceEscapedNulls([]byte(`\u00000000`), nil))
+}

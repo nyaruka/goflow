@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/utils"
 )
 
 type service struct {
@@ -61,10 +62,16 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 		}
 
 		if len(call.ResponseBody) > 0 {
-			// strip out any invalid UTF-8
-			bodyUTF8 := bytes.ToValidUTF8(call.ResponseBody, nil)
-			if json.Valid(bodyUTF8) {
-				call.ResponseJSON = bodyUTF8
+			// we make a best effort to turn the body into JSON, so we strip out:
+			//  1. any invalid UTF-8 sequences
+			//  2. null chars
+			//  3. escaped null chars (\u0000)
+			cleaned := bytes.ToValidUTF8(call.ResponseBody, nil)
+			cleaned = bytes.ReplaceAll(cleaned, []byte{0}, nil)
+			cleaned = utils.ReplaceEscapedNulls(cleaned, nil)
+
+			if json.Valid(cleaned) {
+				call.ResponseJSON = cleaned
 			}
 		}
 
