@@ -1,3 +1,7 @@
+v0.126.0
+----------
+ * Use latest gocommon, replace all nulls and escaped nulls when parsing bodies as JSON
+
 v0.125.2
 ----------
  * Add assignee (optional) to ticket_opened events
