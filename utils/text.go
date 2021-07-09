@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"regexp"
 	"sort"
 	"strings"
@@ -148,3 +149,18 @@ func NewRedactor(mask string, values ...string) Redactor {
 	}
 	return strings.NewReplacer(replacements...).Replace
 }
+
+// replaces any `\u0000` sequences with the given replacement sequence which may be empty.
+// A sequence such as `\\u0000` is preserved as it is an escaped slash followed by the sequence `u0000`
+func ReplaceEscapedNulls(data []byte, repl []byte) []byte {
+	return nullEscapeRegex.ReplaceAllFunc(data, func(m []byte) []byte {
+		slashes := bytes.Count(m, []byte(`\`))
+		if slashes%2 == 0 {
+			return m
+		}
+
+		return append(bytes.Repeat([]byte(`\`), slashes-1), repl...)
+	})
+}
+
+var nullEscapeRegex = regexp.MustCompile(`\\+u0{4}`)
