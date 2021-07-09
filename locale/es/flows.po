@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-05-20 15:16-0500\n"
+"POT-Creation-Date: 2021-07-09 15:14-0500\n"
 "Last-Translator: Moy Moussan <moymoussan@gmail.com>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -491,6 +491,11 @@ msgstr "Divide el `text` en una matriz de palabras separadas."
 msgid "Splits `text` using the given `delimiter` and returns the field at `index`."
 msgstr "Divide el `text` usando el `delimiter` dado y devuelve el campo en el `index`."
 
+#, fuzzy
+#| msgid "Parses `text` into a date using the given `format`."
+msgid "Sums the items in the given `array`."
+msgstr "Analiza el `text` en una fecha usando el `format` dado."
+
 msgid "Takes an object and extracts the named property."
 msgstr "Toma un objeto y extrae la propiedad nombrada."
 
@@ -873,6 +878,11 @@ msgstr "los valores de campo personalizados del contacto"
 msgid "the custom field values of the run"
 msgstr "los valores de campo personalizados de la ejecución"
 
+#, fuzzy
+#| msgid "the address of the channel"
+msgid "the email address of the user"
+msgstr "la dirección del canal"
+
 msgid "the exit date of the run"
 msgstr "la fecha de salida de la ejecución"
 
@@ -883,6 +893,11 @@ msgid "the extra data of the result such as a webhook response"
 msgstr "los datos adicionales del resultado, como una respuesta de webhook"
 
 msgid "the first name of the contact"
+msgstr "el nombre del contacto"
+
+#, fuzzy
+#| msgid "the first name of the contact"
+msgid "the first name of the user"
 msgstr "el nombre del contacto"
 
 msgid "the flow of the run"
@@ -938,7 +953,17 @@ msgstr "el nombre del grupo"
 msgid "the name of the result"
 msgstr "el nombre del resultado"
 
+#, fuzzy
+#| msgid "the name of the group"
+msgid "the name of the user"
+msgstr "el nombre del grupo"
+
 msgid "the name or URN"
+msgstr "el nombre o URN"
+
+#, fuzzy
+#| msgid "the name or URN"
+msgid "the name or email"
 msgstr "el nombre o URN"
 
 msgid "the numeric ID of the contact"

@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-05-20 15:16-0500\n"
+"POT-Creation-Date: 2021-07-09 15:14-0500\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -356,6 +356,9 @@ msgstr ""
 msgid "Splits `text` using the given `delimiter` and returns the field at `index`."
 msgstr ""
 
+msgid "Sums the items in the given `array`."
+msgstr ""
+
 msgid "Takes an object and extracts the named property."
 msgstr ""
 
@@ -607,6 +610,9 @@ msgstr ""
 msgid "the custom field values of the run"
 msgstr ""
 
+msgid "the email address of the user"
+msgstr ""
+
 msgid "the exit date of the run"
 msgstr ""
 
@@ -617,6 +623,9 @@ msgid "the extra data of the result such as a webhook response"
 msgstr ""
 
 msgid "the first name of the contact"
+msgstr ""
+
+msgid "the first name of the user"
 msgstr ""
 
 msgid "the flow of the run"
@@ -670,7 +679,13 @@ msgstr ""
 msgid "the name of the result"
 msgstr ""
 
+msgid "the name of the user"
+msgstr ""
+
 msgid "the name or URN"
+msgstr ""
+
+msgid "the name or email"
 msgstr ""
 
 msgid "the numeric ID of the contact"

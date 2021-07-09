@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-05-20 15:16-0500\n"
+"POT-Creation-Date: 2021-07-09 15:14-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -491,6 +491,11 @@ msgstr "Divide `text` em uma matriz com palavras separadas."
 msgid "Splits `text` using the given `delimiter` and returns the field at `index`."
 msgstr "Divide `text` utilizando o dado `delimiter` e retorna o campo no `index`."
 
+#, fuzzy
+#| msgid "Parses `text` into a date using the given `format`."
+msgid "Sums the items in the given `array`."
+msgstr "Analisa o `text` em uma data usando um `format` dado."
+
 msgid "Takes an object and extracts the named property."
 msgstr "Toma um objeto e extrai a propriedade nomeada."
 
@@ -875,6 +880,11 @@ msgstr "os valores customizados do contato"
 msgid "the custom field values of the run"
 msgstr "os valores customizados da execução"
 
+#, fuzzy
+#| msgid "the address of the channel"
+msgid "the email address of the user"
+msgstr "o endereço do canal"
+
 msgid "the exit date of the run"
 msgstr "a data de saída da execução"
 
@@ -885,6 +895,11 @@ msgid "the extra data of the result such as a webhook response"
 msgstr "os dados extras do resultado como resposta de webhook"
 
 msgid "the first name of the contact"
+msgstr "o primeiro nome do contato"
+
+#, fuzzy
+#| msgid "the first name of the contact"
+msgid "the first name of the user"
 msgstr "o primeiro nome do contato"
 
 msgid "the flow of the run"
@@ -940,7 +955,17 @@ msgstr "o nome do grupo"
 msgid "the name of the result"
 msgstr "o nome do resultado"
 
+#, fuzzy
+#| msgid "the name of the group"
+msgid "the name of the user"
+msgstr "o nome do grupo"
+
 msgid "the name or URN"
+msgstr "o nome da URN"
+
+#, fuzzy
+#| msgid "the name or URN"
+msgid "the name or email"
 msgstr "o nome da URN"
 
 msgid "the numeric ID of the contact"
