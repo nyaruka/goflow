@@ -80,6 +80,12 @@ var testTests = []struct {
 	{"has_text", []types.XValue{xs("one"), xs("two")}, ERROR},
 	{"has_text", []types.XValue{ERROR}, ERROR},
 
+	{"has_only_text", []types.XValue{xs("hello"), xs("hello")}, result(xs("hello"))},
+	{"has_only_text", []types.XValue{xs("hello-world"), xs("hello-world")}, result(xs("hello-world"))},
+	{"has_only_text", []types.XValue{xs("HELLO"), xs("hello")}, falseResult}, // case sensitive
+	{"has_only_text", []types.XValue{xs("hello"), ERROR}, ERROR},
+	{"has_only_text", []types.XValue{ERROR, xs("hello")}, ERROR},
+
 	{"has_beginning", []types.XValue{xs("hello"), xs("hell")}, result(xs("hell"))},
 	{"has_beginning", []types.XValue{xs("  HelloThere"), xs("hello")}, result(xs("Hello"))},
 	{"has_beginning", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
