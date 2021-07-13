@@ -11,8 +11,8 @@ import (
 
 var snakedChars = regexp.MustCompile(`[^\p{L}\d_]+`)
 
-// treats sequences of letters/numbers/_/' as tokens, and symbols as individual tokens
-var wordTokenRegex = regexp.MustCompile(`[\pM\pL\pN_']+|\pS`)
+// treats sequences of letters/numbers/_/-/' as tokens, and symbols as individual tokens
+var wordTokenRegex = regexp.MustCompile(`[\pM\pL\pN_'-]+|\pS`)
 
 // Snakify turns the passed in string into a context reference. We replace all whitespace
 // characters with _ and replace any duplicate underscores

@@ -679,10 +679,10 @@ func TestFunctions(t *testing.T) {
 		{"word", dmy, []types.XValue{ERROR, xi(1)}, ERROR},                     // input is error
 		{"word", dmy, []types.XValue{}, ERROR},
 
-		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(0), xi(2)}, xs("hello world")},
-		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(2)}, xs("from mars")},
+		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(0), xi(2)}, xs("hello-world from")},
+		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(2)}, xs("mars")},
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(10)}, xs("")},
-		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(3), xi(10)}, xs("mars")},
+		{"word_slice", dmy, []types.XValue{xs("hello-world from mars planet"), xi(3), xi(10)}, xs("planet")},
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(-1), xi(2)}, ERROR},
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(3), xi(1)}, ERROR},
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xs("x"), xi(3)}, ERROR},
