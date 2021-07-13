@@ -116,6 +116,7 @@ var testTests = []struct {
 	{"has_phrase", []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
 	{"has_phrase", []types.XValue{}, ERROR},
 
+	{"has_only_phrase", []types.XValue{xs("Must-resist"), xs("must-resist")}, result(xs("Must-resist"))},
 	{"has_only_phrase", []types.XValue{xs("Must resist"), xs("must resist")}, result(xs("Must resist"))},
 	{"has_only_phrase", []types.XValue{xs(" world Too "), xs("world too")}, result(xs("world Too"))},
 	{"has_only_phrase", []types.XValue{xs("this world Too"), xs("")}, falseResult},
