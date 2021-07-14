@@ -3,7 +3,7 @@ package legacy_test
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -129,7 +129,7 @@ type RuleSetMigrationTest struct {
 }
 
 func TestFlowMigration(t *testing.T) {
-	data, err := ioutil.ReadFile("testdata/flows.json")
+	data, err := os.ReadFile("testdata/flows.json")
 	require.NoError(t, err)
 
 	var tests []FlowMigrationTest
@@ -149,7 +149,7 @@ func TestFlowMigration(t *testing.T) {
 }
 
 func TestActionMigration(t *testing.T) {
-	data, err := ioutil.ReadFile("testdata/actions.json")
+	data, err := os.ReadFile("testdata/actions.json")
 	require.NoError(t, err)
 
 	var tests []ActionMigrationTest
@@ -178,7 +178,7 @@ func TestActionMigration(t *testing.T) {
 }
 
 func TestTestMigration(t *testing.T) {
-	data, err := ioutil.ReadFile("testdata/tests.json")
+	data, err := os.ReadFile("testdata/tests.json")
 	require.NoError(t, err)
 
 	var tests []TestMigrationTest
@@ -222,7 +222,7 @@ func TestTestMigration(t *testing.T) {
 }
 
 func TestRuleSetMigration(t *testing.T) {
-	data, err := ioutil.ReadFile("testdata/rulesets.json")
+	data, err := os.ReadFile("testdata/rulesets.json")
 	require.NoError(t, err)
 
 	var tests []RuleSetMigrationTest

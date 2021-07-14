@@ -2,7 +2,6 @@ package i18n
 
 import (
 	"errors"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
@@ -83,7 +82,7 @@ func (l *Library) Locales() []string {
 }
 
 func (l *Library) locales(includeSrc bool) []string {
-	directory, err := ioutil.ReadDir(l.path)
+	directory, err := os.ReadDir(l.path)
 	if err != nil {
 		panic(err)
 	}

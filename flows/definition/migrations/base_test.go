@@ -3,7 +3,7 @@ package migrations_test
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"sort"
 	"testing"
 
@@ -32,7 +32,7 @@ func TestMigrateToVersion(t *testing.T) {
 	sort.SliceStable(versions, func(i, j int) bool { return versions[i].LessThan(versions[j]) })
 
 	for _, version := range versions {
-		testsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/migrations/%s.json", version.String()))
+		testsJSON, err := os.ReadFile(fmt.Sprintf("testdata/migrations/%s.json", version.String()))
 		require.NoError(t, err)
 
 		tests := []struct {

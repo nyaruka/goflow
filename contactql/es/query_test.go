@@ -3,7 +3,7 @@ package es_test
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -48,7 +48,7 @@ func TestElasticQuery(t *testing.T) {
 		RedactURNs  bool            `json:"redact_urns"`
 	}
 	tcs := make([]testCase, 0, 20)
-	tcJSON, err := ioutil.ReadFile("testdata/to_query.json")
+	tcJSON, err := os.ReadFile("testdata/to_query.json")
 	require.NoError(t, err)
 
 	err = json.Unmarshal(tcJSON, &tcs)

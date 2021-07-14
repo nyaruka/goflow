@@ -3,7 +3,7 @@ package flows_test
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -304,7 +304,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 		ContactAfter  json.RawMessage `json:"contact_after"`
 	}{}
 
-	testFile, err := ioutil.ReadFile("testdata/smart_groups.json")
+	testFile, err := os.ReadFile("testdata/smart_groups.json")
 	require.NoError(t, err)
 	err = jsonx.Unmarshal(testFile, &tests)
 	require.NoError(t, err)

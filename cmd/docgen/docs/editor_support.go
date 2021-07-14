@@ -2,7 +2,7 @@ package docs
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path"
 	"sort"
 	"strings"
@@ -57,7 +57,7 @@ func (g *editorSupportGenerator) Generate(baseDir, outputDir string, items map[s
 	if err != nil {
 		return err
 	}
-	if err := ioutil.WriteFile(outputPath, marshaled, 0755); err != nil {
+	if err := os.WriteFile(outputPath, marshaled, 0755); err != nil {
 		return err
 	}
 	fmt.Printf(" > editor support file written to %s\n", outputPath)
@@ -152,7 +152,7 @@ func createContextPathListFile(outputDir string, c *completion.Completion) error
 	}
 
 	listPath := path.Join(outputDir, "completion.txt")
-	return ioutil.WriteFile(listPath, []byte(nodeOutput.String()), 0755)
+	return os.WriteFile(listPath, []byte(nodeOutput.String()), 0755)
 }
 
 func createURNsType(gettext func(string) string) completion.Type {

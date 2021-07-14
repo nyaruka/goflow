@@ -10,7 +10,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -42,7 +41,7 @@ func main() {
 
 // Migrate reads a flow definition as JSON and migrates it
 func Migrate(reader io.Reader, toVersion *semver.Version, baseMediaURL string, pretty bool) ([]byte, error) {
-	data, err := ioutil.ReadAll(reader)
+	data, err := io.ReadAll(reader)
 	if err != nil {
 		return nil, err
 	}

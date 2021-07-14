@@ -3,7 +3,6 @@ package test
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -25,10 +24,10 @@ func AssertSnapshot(t *testing.T, name, expected string) {
 	_, err := os.Stat(path)
 
 	if UpdateSnapshots || os.IsNotExist(err) {
-		err := ioutil.WriteFile(path, []byte(expected), 0666)
+		err := os.WriteFile(path, []byte(expected), 0666)
 		require.NoError(t, err, "error writing snapshot file %s", path)
 	} else {
-		data, err := ioutil.ReadFile(path)
+		data, err := os.ReadFile(path)
 		require.NoError(t, err, "error reading snapshot file %s", path)
 
 		assert.Equal(t, string(data), expected)

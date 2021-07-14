@@ -3,7 +3,7 @@ package issues_test
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -29,7 +29,7 @@ func TestIssueTypes(t *testing.T) {
 
 func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
-	testFile, err := ioutil.ReadFile(testPath)
+	testFile, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
 	tests := []struct {
@@ -74,7 +74,7 @@ func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 
-		err = ioutil.WriteFile(testPath, actualJSON, 0666)
+		err = os.WriteFile(testPath, actualJSON, 0666)
 		require.NoError(t, err)
 	}
 }

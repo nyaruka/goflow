@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -347,7 +347,7 @@ type legacyTest struct {
 
 // TestLegacyTests runs the tests from https://github.com/rapidpro/expressions,  migrating each template first
 func TestLegacyTests(t *testing.T) {
-	legacyTestData, err := ioutil.ReadFile("testdata/legacy_tests.json")
+	legacyTestData, err := os.ReadFile("testdata/legacy_tests.json")
 	require.NoError(t, err)
 
 	var tests []legacyTest

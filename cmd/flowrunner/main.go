@@ -6,7 +6,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -105,7 +104,7 @@ func createEngine(witToken string) flows.Engine {
 
 // RunFlow steps through a flow
 func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang envs.Language, in io.Reader, out io.Writer) (*Repro, error) {
-	assetsJSON, err := ioutil.ReadFile(assetsPath)
+	assetsJSON, err := os.ReadFile(assetsPath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error reading assets file '%s'", assetsPath)
 	}

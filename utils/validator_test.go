@@ -2,7 +2,7 @@ package utils_test
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"strings"
 	"testing"
 
@@ -116,12 +116,12 @@ func TestUnmarshalAndValidate(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "123", o.Foo)
 
-	err = utils.UnmarshalAndValidateWithLimit(ioutil.NopCloser(bytes.NewReader([]byte(`{"foo": "abc"}`))), o, 100)
+	err = utils.UnmarshalAndValidateWithLimit(io.NopCloser(bytes.NewReader([]byte(`{"foo": "abc"}`))), o, 100)
 
 	assert.NoError(t, err)
 	assert.Equal(t, "abc", o.Foo)
 
-	err = utils.UnmarshalAndValidateWithLimit(ioutil.NopCloser(bytes.NewReader([]byte(`{"foo": "abc"}`))), o, 5)
+	err = utils.UnmarshalAndValidateWithLimit(io.NopCloser(bytes.NewReader([]byte(`{"foo": "abc"}`))), o, 5)
 
 	assert.EqualError(t, err, "unexpected end of JSON input")
 }

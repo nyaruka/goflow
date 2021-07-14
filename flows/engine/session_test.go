@@ -2,7 +2,7 @@ package engine_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"sort"
 	"testing"
 	"time"
@@ -26,7 +26,7 @@ import (
 )
 
 func TestEvaluateTemplate(t *testing.T) {
-	testFile, err := ioutil.ReadFile("testdata/templates.json")
+	testFile, err := os.ReadFile("testdata/templates.json")
 	require.NoError(t, err)
 
 	server := test.NewTestHTTPServer(49992)
@@ -91,13 +91,13 @@ func TestEvaluateTemplate(t *testing.T) {
 		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 
-		err = ioutil.WriteFile("testdata/templates.json", actualJSON, 0666)
+		err = os.WriteFile("testdata/templates.json", actualJSON, 0666)
 		require.NoError(t, err)
 	}
 }
 
 func BenchmarkEvaluateTemplate(b *testing.B) {
-	testFile, err := ioutil.ReadFile("testdata/templates.json")
+	testFile, err := os.ReadFile("testdata/templates.json")
 	require.NoError(b, err)
 
 	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyNone)
@@ -176,7 +176,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 }
 
 func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("testdata/smart_groups.json")
+	assetsJSON, err := os.ReadFile("testdata/smart_groups.json")
 	require.NoError(t, err)
 
 	sa, err := test.CreateSessionAssets(assetsJSON, "")
@@ -211,7 +211,7 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 }
 
 func TestRunResuming(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("testdata/subflows.json")
+	assetsJSON, err := os.ReadFile("testdata/subflows.json")
 	require.NoError(t, err)
 
 	session, _, err := test.CreateSession(assetsJSON, assets.FlowUUID("72162f46-dce3-4798-9f19-384a2447efc5"))
@@ -236,7 +236,7 @@ func TestRunResuming(t *testing.T) {
 }
 
 func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("../../test/testdata/runner/subflow.json")
+	assetsJSON, err := os.ReadFile("../../test/testdata/runner/subflow.json")
 	require.NoError(t, err)
 
 	session1, _, err := test.CreateSession(assetsJSON, assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
@@ -275,7 +275,7 @@ func TestWaitTimeout(t *testing.T) {
 	t1 := time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
 	dates.SetNowSource(dates.NewFixedNowSource(t1))
 
-	assetsJSON, err := ioutil.ReadFile("testdata/timeout_test.json")
+	assetsJSON, err := os.ReadFile("testdata/timeout_test.json")
 	require.NoError(t, err)
 
 	session, sprint, err := test.CreateSession(assetsJSON, assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
@@ -306,7 +306,7 @@ func TestWaitTimeout(t *testing.T) {
 }
 
 func TestCurrentContext(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("../../test/testdata/runner/subflow_loop_with_wait.json")
+	assetsJSON, err := os.ReadFile("../../test/testdata/runner/subflow_loop_with_wait.json")
 	require.NoError(t, err)
 
 	session, _, err := test.CreateSession(assetsJSON, assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))

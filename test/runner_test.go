@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"testing"
@@ -51,7 +51,7 @@ func (t runnerTest) String() string {
 
 func loadTestCases() ([]runnerTest, error) {
 	directory := "testdata/runner/"
-	files, err := ioutil.ReadDir(directory)
+	files, err := os.ReadDir(directory)
 	if err != nil {
 		return nil, errors.Wrap(err, "error reading test directory")
 	}
@@ -207,7 +207,7 @@ func TestFlows(t *testing.T) {
 		dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
 		smtpx.SetSender(smtpx.NewMockSender(nil, nil, nil, nil, nil, nil))
 
-		testJSON, err := ioutil.ReadFile(tc.outputFile)
+		testJSON, err := os.ReadFile(tc.outputFile)
 		require.NoError(t, err, "error reading output file %s", tc.outputFile)
 
 		flowTest := &FlowTest{}
@@ -243,7 +243,7 @@ func TestFlows(t *testing.T) {
 			testJSON, _ = NormalizeJSON(testJSON)
 
 			// write our output
-			err = ioutil.WriteFile(tc.outputFile, testJSON, 0644)
+			err = os.WriteFile(tc.outputFile, testJSON, 0644)
 			require.NoError(t, err, "Error writing test file to %s: %s", tc.outputFile, err)
 		} else {
 			// start by checking we have the expected number of outputs
@@ -279,7 +279,7 @@ func BenchmarkFlows(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		for _, tc := range testCases {
-			testJSON, err := ioutil.ReadFile(tc.outputFile)
+			testJSON, err := os.ReadFile(tc.outputFile)
 			require.NoError(b, err, "error reading output file %s", tc.outputFile)
 
 			flowTest := &FlowTest{}

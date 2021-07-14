@@ -3,7 +3,7 @@ package translation_test
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -97,12 +97,12 @@ func TestExtractFromFlows(t *testing.T) {
 		poAsStr := b.String()
 
 		if !test.UpdateSnapshots {
-			expected, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s", tc.po))
+			expected, err := os.ReadFile(fmt.Sprintf("testdata/%s", tc.po))
 			require.NoError(t, err)
 
 			assert.Equal(t, string(expected), poAsStr)
 		} else {
-			ioutil.WriteFile(fmt.Sprintf("testdata/%s", tc.po), []byte(poAsStr), 0666)
+			os.WriteFile(fmt.Sprintf("testdata/%s", tc.po), []byte(poAsStr), 0666)
 		}
 	}
 }
@@ -216,7 +216,7 @@ func TestImportNewTranslationIntoFlows(t *testing.T) {
 	flow, err := sa.Flows().Get(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)
 	require.NoError(t, err)
 
-	poData, err := ioutil.ReadFile("testdata/imports/two_questions.es.po")
+	poData, err := os.ReadFile("testdata/imports/two_questions.es.po")
 	require.NoError(t, err)
 
 	po, err := i18n.ReadPO(bytes.NewReader(poData))

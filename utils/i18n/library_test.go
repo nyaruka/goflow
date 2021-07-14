@@ -1,7 +1,6 @@
 package i18n_test
 
 import (
-	"io/ioutil"
 	"os"
 	"path"
 	"testing"
@@ -14,7 +13,7 @@ import (
 
 func TestLibrary(t *testing.T) {
 	// create a temporary directory to hold a library
-	libraryDir, err := ioutil.TempDir("", "")
+	libraryDir, err := os.MkdirTemp("", "")
 	require.NoError(t, err)
 
 	defer os.RemoveAll(libraryDir)
@@ -24,12 +23,12 @@ func TestLibrary(t *testing.T) {
 	os.Mkdir(path.Join(libraryDir, "es"), 0700)
 
 	// copy sample PO files from testdata
-	poEN, err := ioutil.ReadFile(path.Join("testdata", "locale", "en", "simple.po"))
+	poEN, err := os.ReadFile(path.Join("testdata", "locale", "en", "simple.po"))
 	require.NoError(t, err)
-	poES, err := ioutil.ReadFile(path.Join("testdata", "locale", "es", "simple.po"))
+	poES, err := os.ReadFile(path.Join("testdata", "locale", "es", "simple.po"))
 	require.NoError(t, err)
-	ioutil.WriteFile(path.Join(libraryDir, "en", "simple.po"), poEN, 0700)
-	ioutil.WriteFile(path.Join(libraryDir, "es", "simple.po"), poES, 0700)
+	os.WriteFile(path.Join(libraryDir, "en", "simple.po"), poEN, 0700)
+	os.WriteFile(path.Join(libraryDir, "es", "simple.po"), poES, 0700)
 
 	library := i18n.NewLibrary(libraryDir, "en")
 

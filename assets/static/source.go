@@ -3,7 +3,7 @@ package static
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static/types"
@@ -47,7 +47,7 @@ func NewSource(data json.RawMessage) (*StaticSource, error) {
 
 // LoadSource loads a new static source from the given JSON file
 func LoadSource(path string) (*StaticSource, error) {
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error reading file '%s'", path)
 	}

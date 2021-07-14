@@ -1,7 +1,7 @@
 package test
 
 import (
-	"io/ioutil"
+	"os"
 
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -15,7 +15,7 @@ import (
 
 // LoadSessionAssets loads a session assets instance from a static JSON file
 func LoadSessionAssets(env envs.Environment, path string) (flows.SessionAssets, error) {
-	assetsJSON, err := ioutil.ReadFile(path)
+	assetsJSON, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}

@@ -2,7 +2,6 @@ package docs
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
@@ -133,7 +132,7 @@ func renderTemplate(src, dst string, context map[string]string, resolver urlReso
 
 	processed := resolveLinks(output.String(), resolver, linkTargets)
 
-	return ioutil.WriteFile(dst, []byte(processed), 0666)
+	return os.WriteFile(dst, []byte(processed), 0666)
 }
 
 // converts a markdown file to HTML
@@ -200,11 +199,11 @@ func resolveLinks(s string, resolver urlResolver, targets map[string]bool) strin
 
 // copies a file from one path to another
 func copyFile(src, dst string) error {
-	contents, err := ioutil.ReadFile(src)
+	contents, err := os.ReadFile(src)
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(dst, contents, 0666)
+	return os.WriteFile(dst, contents, 0666)
 }
 
 // builds the documentation generation context from the given documented items

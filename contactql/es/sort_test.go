@@ -2,7 +2,7 @@ package es_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -23,7 +23,7 @@ func TestElasticSort(t *testing.T) {
 		Error       string          `json:"error,omitempty"`
 	}
 	tcs := make([]testCase, 0, 20)
-	tcJSON, err := ioutil.ReadFile("testdata/to_sort.json")
+	tcJSON, err := os.ReadFile("testdata/to_sort.json")
 	require.NoError(t, err)
 
 	err = json.Unmarshal(tcJSON, &tcs)

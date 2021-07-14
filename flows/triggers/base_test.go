@@ -3,7 +3,7 @@ package triggers_test
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"sort"
 	"testing"
 	"time"
@@ -27,7 +27,7 @@ import (
 )
 
 func TestTriggerTypes(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
+	assetsJSON, err := os.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
 	typeNames := make([]string, 0)
@@ -44,7 +44,7 @@ func TestTriggerTypes(t *testing.T) {
 
 func testTriggerType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
-	testFile, err := ioutil.ReadFile(testPath)
+	testFile, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
 	tests := []struct {
@@ -119,7 +119,7 @@ func testTriggerType(t *testing.T, assetsJSON json.RawMessage, typeName string) 
 		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 
-		err = ioutil.WriteFile(testPath, actualJSON, 0666)
+		err = os.WriteFile(testPath, actualJSON, 0666)
 		require.NoError(t, err)
 	}
 }

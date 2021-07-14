@@ -3,7 +3,7 @@ package routers_test
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -38,7 +38,7 @@ var contactJSON = `{
 }`
 
 func TestRouterTypes(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
+	assetsJSON, err := os.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
 	for _, typeName := range routers.RegisteredTypes() {
@@ -48,7 +48,7 @@ func TestRouterTypes(t *testing.T) {
 
 func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
-	testFile, err := ioutil.ReadFile(testPath)
+	testFile, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
 	tests := []struct {
@@ -153,7 +153,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 
-		err = ioutil.WriteFile(testPath, actualJSON, 0666)
+		err = os.WriteFile(testPath, actualJSON, 0666)
 		require.NoError(t, err)
 	}
 }

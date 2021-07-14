@@ -3,7 +3,7 @@ package modifiers_test
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -35,7 +35,7 @@ func TestModifierTypes(t *testing.T) {
 
 func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
-	testFile, err := ioutil.ReadFile(testPath)
+	testFile, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
 	tests := []struct {
@@ -103,7 +103,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 		actualJSON, err := jsonx.MarshalPretty(tests)
 		require.NoError(t, err)
 
-		err = ioutil.WriteFile(testPath, actualJSON, 0666)
+		err = os.WriteFile(testPath, actualJSON, 0666)
 		require.NoError(t, err)
 	}
 }
