@@ -23,6 +23,7 @@ type sessionAssets struct {
 	resthooks   *flows.ResthookAssets
 	templates   *flows.TemplateAssets
 	ticketers   *flows.TicketerAssets
+	topics      *flows.TopicAssets
 	users       *flows.UserAssets
 }
 
@@ -70,6 +71,10 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 	if err != nil {
 		return nil, err
 	}
+	topics, err := source.Topics()
+	if err != nil {
+		return nil, err
+	}
 	users, err := source.Users()
 	if err != nil {
 		return nil, err
@@ -91,6 +96,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		resthooks:   flows.NewResthookAssets(resthooks),
 		templates:   flows.NewTemplateAssets(templates),
 		ticketers:   flows.NewTicketerAssets(ticketers),
+		topics:      flows.NewTopicAssets(topics),
 		users:       flows.NewUserAssets(users),
 	}, nil
 }
@@ -107,6 +113,7 @@ func (s *sessionAssets) Locations() *flows.LocationAssets     { return s.locatio
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets     { return s.resthooks }
 func (s *sessionAssets) Templates() *flows.TemplateAssets     { return s.templates }
 func (s *sessionAssets) Ticketers() *flows.TicketerAssets     { return s.ticketers }
+func (s *sessionAssets) Topics() *flows.TopicAssets           { return s.topics }
 func (s *sessionAssets) Users() *flows.UserAssets             { return s.users }
 
 func (s *sessionAssets) ResolveField(key string) assets.Field {

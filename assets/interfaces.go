@@ -287,6 +287,22 @@ type Ticketer interface {
 	Type() string
 }
 
+// TopicUUID is the UUID of a topic
+type TopicUUID uuids.UUID
+
+// Topic categorizes tickets
+//
+//   {
+//     "uuid": "cd48bd11-08b9-44e3-9778-8e26adf08a7a",
+//     "name": "Weather"
+//   }
+//
+// @asset topic
+type Topic interface {
+	UUID() TopicUUID
+	Name() string
+}
+
 // User is an person who can trigger flows or be assigned tickets etc.
 //
 //   {
@@ -313,5 +329,6 @@ type Source interface {
 	Resthooks() ([]Resthook, error)
 	Templates() ([]Template, error)
 	Ticketers() ([]Ticketer, error)
+	Topics() ([]Topic, error)
 	Users() ([]User, error)
 }
