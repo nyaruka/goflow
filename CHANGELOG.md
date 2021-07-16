@@ -1,3 +1,9 @@
+v0.126.2
+----------
+ * Updated translations from Transifex
+ * Replace usages of soon to be deprecated ioutil
+ * Allow Msg type triggers to have connections
+
 v0.126.1
 ----------
  * Update locale files
