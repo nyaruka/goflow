@@ -95,7 +95,7 @@ func NewTicketService(ticketer *flows.Ticketer) flows.TicketService {
 	return &ticketService{ticketer: ticketer}
 }
 
-func (s *ticketService) Open(session flows.Session, subject, body string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
+func (s *ticketService) Open(session flows.Session, topic *flows.Topic, subject, body string, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	if strings.Contains(subject, "fail") {
 		logHTTP(&flows.HTTPLog{
 			URL:       "http://nyaruka.tickets.com/tickets.json",
@@ -118,7 +118,7 @@ func (s *ticketService) Open(session flows.Session, subject, body string, logHTT
 		ElapsedMS: 1,
 	})
 
-	ticket := flows.OpenTicket(s.ticketer, subject, body)
+	ticket := flows.OpenTicket(s.ticketer, topic, subject, body)
 	ticket.SetExternalID("123456")
 	return ticket, nil
 }

@@ -111,6 +111,7 @@ type SessionAssets interface {
 	Resthooks() *ResthookAssets
 	Templates() *TemplateAssets
 	Ticketers() *TicketerAssets
+	Topics() *TopicAssets
 	Users() *UserAssets
 }
 

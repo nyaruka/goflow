@@ -26,6 +26,12 @@
             "type": "mailgun"
         }
     ],
+    "topics": [
+        {
+            "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+            "name": "Weather"
+        }
+    ],
     "users": [
         {
             "email": "bob@nyaruka.com",
