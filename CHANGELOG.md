@@ -1,3 +1,7 @@
+v0.127.0
+----------
+ * Update to latest gocommon
+
 v0.126.2
 ----------
  * Updated translations from Transifex
