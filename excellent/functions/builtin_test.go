@@ -645,6 +645,17 @@ func TestFunctions(t *testing.T) {
 		{"tz_offset", dmy, []types.XValue{xs("xxx")}, ERROR},
 		{"tz_offset", dmy, []types.XValue{}, ERROR},
 
+		{"unique", dmy, []types.XValue{xa(xn("1"), xn("3"), xn("2"), xn("3"))}, xa(xn("1"), xn("3"), xn("2"))},
+		{
+			"unique",
+			dmy,
+			[]types.XValue{xa(xa(xs("A"), xs("B"), xs("C")), xa(xs("D"), xs("E"), xs("F")), xa(xs("A"), xs("B"), xs("C")))},
+			xa(xa(xs("A"), xs("B"), xs("C")), xa(xs("D"), xs("E"), xs("F"))),
+		},
+		{"unique", dmy, []types.XValue{xa(nil, xs("X"), nil, xs("X"))}, xa(nil, xs("X"))},
+		{"unique", dmy, []types.XValue{ERROR}, ERROR},
+		{"unique", dmy, []types.XValue{}, ERROR},
+
 		{"upper", dmy, []types.XValue{xs("HEllo")}, xs("HELLO")},
 		{"upper", dmy, []types.XValue{xs("  HELLO  world")}, xs("  HELLO  WORLD")},
 		{"upper", dmy, []types.XValue{xs("ß")}, xs("ß")},
