@@ -1,3 +1,11 @@
+v0.128.0
+----------
+ * Add unique excellent function to get unique elements in an array
+
+v0.127.0
+----------
+ * Update to latest gocommon
+
 v0.126.2
 ----------
  * Updated translations from Transifex

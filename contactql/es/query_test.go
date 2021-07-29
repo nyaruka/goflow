@@ -50,9 +50,7 @@ func TestElasticQuery(t *testing.T) {
 	tcs := make([]testCase, 0, 20)
 	tcJSON, err := os.ReadFile("testdata/to_query.json")
 	require.NoError(t, err)
-
-	err = json.Unmarshal(tcJSON, &tcs)
-	require.NoError(t, err)
+	jsonx.MustUnmarshal(tcJSON, &tcs)
 
 	ny, _ := time.LoadLocation("America/New_York")
 
@@ -65,11 +63,15 @@ func TestElasticQuery(t *testing.T) {
 		}
 		env := envs.NewBuilder().WithTimezone(ny).WithRedactionPolicy(redactionPolicy).Build()
 
-		qlQuery, err := contactql.ParseQuery(env, tc.Query, resolver)
+		parsed, err := contactql.ParseQuery(env, tc.Query)
 
 		var query elastic.Query
 		if err == nil {
-			query = es.ToElasticQuery(env, qlQuery)
+			err = parsed.Validate(env, resolver)
+			if err == nil {
+				query, err = es.ToElasticQuery(env, resolver, parsed)
+				require.NoError(t, err)
+			}
 		}
 
 		if tc.Error != "" {
@@ -86,9 +88,6 @@ func TestElasticQuery(t *testing.T) {
 		}
 
 		assert.NotNil(t, query, tc.Description)
-		if query == nil {
-			continue
-		}
 
 		source, err := query.Source()
 		require.NoError(t, err, "error reqesting source for elastic query in ", testName)

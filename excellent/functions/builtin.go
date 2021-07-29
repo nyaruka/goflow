@@ -102,8 +102,9 @@ func init() {
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
 		// array functions
-		"join": TwoArgFunction(Join),
-		"sum":  OneArgFunction(Sum),
+		"join":   TwoArgFunction(Join),
+		"sum":    OneArrayFunction(Sum),
+		"unique": OneArrayFunction(Unique),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -1544,12 +1545,7 @@ func Join(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XVal
 //   @(sum(array(1, 2, "3"))) -> 6
 //
 // @function sum(array)
-func Sum(env envs.Environment, arg1 types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-
+func Sum(env envs.Environment, array *types.XArray) types.XValue {
 	total := decimal.Zero
 	for i := 0; i < array.Count(); i++ {
 		itemAsNum, xerr := types.ToXNumber(env, array.Get(i))
@@ -1561,6 +1557,33 @@ func Sum(env envs.Environment, arg1 types.XValue) types.XValue {
 	}
 
 	return types.NewXNumber(total)
+}
+
+// Unique returns the unique values in `array`.
+//
+//   @(unique(array(1, 3, 2, 3))) -> [1, 3, 2]
+//   @(unique(array("hi", "there", "hi"))) -> [hi, there]
+//
+// @function unique(array)
+func Unique(env envs.Environment, array *types.XArray) types.XValue {
+	unique := make([]types.XValue, 0, array.Count())
+	for i := 0; i < array.Count(); i++ {
+		val := array.Get(i)
+
+		seen := false
+		for j := 0; j < len(unique); j++ {
+			if (val == nil && unique[j] == nil) || types.Equals(val, unique[j]) {
+				seen = true
+				break
+			}
+		}
+
+		if !seen {
+			unique = append(unique, val)
+		}
+	}
+
+	return types.NewXArray(unique...)
 }
 
 //------------------------------------------------------------------------------------------

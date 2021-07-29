@@ -56,15 +56,13 @@ type Resolver interface {
 type visitor struct {
 	gen.BaseContactQLVisitor
 
-	env      envs.Environment
-	resolver Resolver
-
+	env    envs.Environment
 	errors []error
 }
 
 // creates a new ContactQL visitor
-func newVisitor(env envs.Environment, resolver Resolver) *visitor {
-	return &visitor{env: env, resolver: resolver}
+func newVisitor(env envs.Environment) *visitor {
+	return &visitor{env: env}
 }
 
 // Visit the top level parse tree
@@ -86,17 +84,17 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 	if v.env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		num, err := strconv.Atoi(value)
 		if err == nil {
-			return newCondition(AttributeID, PropertyTypeAttribute, nil, OpEqual, strconv.Itoa(num), attributes[AttributeID])
+			return newCondition(AttributeID, PropertyTypeAttribute, OpEqual, strconv.Itoa(num))
 		}
 	} else if asURN != urns.NilURN {
 		scheme, path, _, _ := asURN.ToParts()
 
-		return newCondition(scheme, PropertyTypeScheme, nil, OpEqual, path, assets.FieldTypeText)
+		return newCondition(scheme, PropertyTypeScheme, OpEqual, path)
 
 	} else if implicitIsPhoneNumberRegex.MatchString(value) {
 		value = cleanPhoneNumberRegex.ReplaceAllLiteralString(value, "")
 
-		return newCondition(urns.TelScheme, PropertyTypeScheme, nil, OpContains, value, assets.FieldTypeText)
+		return newCondition(urns.TelScheme, PropertyTypeScheme, OpContains, value)
 	}
 
 	// convert to contains condition only if we have the right tokens, otherwise make equals check
@@ -105,13 +103,7 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 		operator = OpEqual
 	}
 
-	condition := newCondition(AttributeName, PropertyTypeAttribute, nil, operator, value, attributes[AttributeName])
-
-	if err := condition.Validate(v.env, v.resolver); err != nil {
-		v.addError(err)
-	}
-
-	return condition
+	return newCondition(AttributeName, PropertyTypeAttribute, operator, value)
 }
 
 // expression : TEXT COMPARATOR literal
@@ -126,10 +118,9 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 	}
 
 	var propType PropertyType
-	var propField assets.Field
 
 	// first try to match a fixed attribute
-	valueType, isAttribute := attributes[propKey]
+	_, isAttribute := attributes[propKey]
 	if isAttribute {
 		propType = PropertyTypeAttribute
 
@@ -140,29 +131,15 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 	} else if urns.IsValidScheme(propKey) {
 		// second try to match a URN scheme
 		propType = PropertyTypeScheme
-		valueType = assets.FieldTypeText
 
 		if v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
 			v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
 		}
 	} else {
-		field := v.resolver.ResolveField(propKey)
-		if field != nil {
-			propType = PropertyTypeField
-			propField = field
-			valueType = field.Type()
-		} else {
-			v.addError(NewQueryError(ErrUnknownProperty, "can't resolve '%s' to attribute, scheme or field", propKey).withExtra("property", propKey))
-		}
+		propType = PropertyTypeField
 	}
 
-	condition := newCondition(propKey, propType, propField, operator, value, valueType)
-
-	if err := condition.Validate(v.env, v.resolver); err != nil {
-		v.addError(err)
-	}
-
-	return condition
+	return newCondition(propKey, propType, operator, value)
 }
 
 // expression : expression AND expression

@@ -66,30 +66,23 @@ var isNumberRegex = regexp.MustCompile(`^\d+(\.\d+)?$`)
 // QueryNode is the base for nodes in our query parse tree
 type QueryNode interface {
 	fmt.Stringer
-	Evaluate(envs.Environment, Queryable) (bool, error)
+	Validate(envs.Environment, Resolver) error
 }
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
 type Condition struct {
-	propKey       string
-	propType      PropertyType
-	propField     assets.Field
-	operator      Operator
-	value         string
-	valueAsNumber decimal.Decimal
-	valueAsDate   time.Time
-	valueAsGroup  assets.Group
-	valueType     assets.FieldType
+	propKey  string
+	propType PropertyType
+	operator Operator
+	value    string
 }
 
-func newCondition(propKey string, propType PropertyType, propField assets.Field, operator Operator, value string, valueType assets.FieldType) *Condition {
+func newCondition(propKey string, propType PropertyType, operator Operator, value string) *Condition {
 	return &Condition{
-		propKey:   propKey,
-		propType:  propType,
-		propField: propField,
-		operator:  operator,
-		value:     value,
-		valueType: valueType,
+		propKey:  propKey,
+		propType: propType,
+		operator: operator,
+		value:    value,
 	}
 }
 
@@ -99,26 +92,49 @@ func (c *Condition) PropertyKey() string { return c.propKey }
 // PropertyType returns the type (attribute, scheme, field)
 func (c *Condition) PropertyType() PropertyType { return c.propType }
 
-// PropertyField returns the field for the property being queried if it's a field
-func (c *Condition) PropertyField() assets.Field { return c.propField }
-
 // Operator returns the type of comparison being made
 func (c *Condition) Operator() Operator { return c.operator }
 
 // Value returns the value being compared against
 func (c *Condition) Value() string { return c.value }
 
-// ValueAsNumber returns the value as a number if value type is number
-func (c *Condition) ValueAsNumber() decimal.Decimal { return c.valueAsNumber }
+// ValueAsNumber returns the value as a number if possible, or an error if not
+func (c *Condition) ValueAsNumber() (decimal.Decimal, error) {
+	return decimal.NewFromString(c.value)
+}
 
-// ValueAsDate returns the value as a date if condition is datetime
-func (c *Condition) ValueAsDate() time.Time { return c.valueAsDate }
+// ValueAsDate returns the value as a date if possible, or an error if not
+func (c *Condition) ValueAsDate(env envs.Environment) (time.Time, error) {
+	return envs.DateTimeFromString(env, c.value, false)
+}
 
-// ValueAsGroup returns the value as a group if condition is on the group attribute
-func (c *Condition) ValueAsGroup() assets.Group { return c.valueAsGroup }
+// ValueAsGroup returns the value as a date if possible, or an error if not
+func (c *Condition) ValueAsGroup(resolver Resolver) assets.Group {
+	return resolver.ResolveGroup(c.value)
+}
+
+func (c *Condition) resolveValueType(resolver Resolver) assets.FieldType {
+	switch c.propType {
+	case PropertyTypeAttribute:
+		return attributes[c.propKey]
+	case PropertyTypeScheme:
+		return assets.FieldTypeText
+	case PropertyTypeField:
+		field := resolver.ResolveField(c.propKey)
+		if field != nil {
+			return field.Type()
+		}
+	}
+	return ""
+}
 
 // Validate checks that this condition is valid (and thus can be evaluated)
 func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
+	valueType := c.resolveValueType(resolver)
+	if valueType == "" {
+		return NewQueryError(ErrUnknownProperty, "can't resolve '%s' to attribute, scheme or field", c.propKey).withExtra("property", c.propKey)
+	}
+
 	switch c.operator {
 	case OpContains:
 		if c.propKey == AttributeName {
@@ -135,7 +151,7 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 		}
 
 	case OpGreaterThan, OpGreaterThanOrEqual, OpLessThan, OpLessThanOrEqual:
-		if c.valueType != assets.FieldTypeNumber && c.valueType != assets.FieldTypeDatetime {
+		if valueType != assets.FieldTypeNumber && valueType != assets.FieldTypeDatetime {
 			return NewQueryError(ErrUnsupportedComparison, "comparisons with %s can only be used with date and number fields", c.operator).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
 		}
 	}
@@ -148,28 +164,22 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 		}
 	} else {
 		// check values are valid for the attribute type
-		if c.valueType == assets.FieldTypeNumber {
-			asDecimal, err := decimal.NewFromString(c.value)
+		if valueType == assets.FieldTypeNumber {
+			_, err := c.ValueAsNumber()
 			if err != nil {
 				return NewQueryError(ErrInvalidNumber, "can't convert '%s' to a number", c.value).withExtra("value", c.value)
 			}
-			c.valueAsNumber = asDecimal
-
-		} else if c.valueType == assets.FieldTypeDatetime {
-			asDate, err := envs.DateTimeFromString(env, c.value, false)
+		} else if valueType == assets.FieldTypeDatetime {
+			_, err := c.ValueAsDate(env)
 			if err != nil {
 				return NewQueryError(ErrInvalidDate, "can't convert '%s' to a date", c.value).withExtra("value", c.value)
 			}
-			c.valueAsDate = asDate
 
 		} else if c.propKey == AttributeGroup {
-			group := resolver.ResolveGroup(c.value)
+			group := c.ValueAsGroup(resolver)
 			if group == nil {
 				return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
 			}
-			c.value = group.Name()
-			c.valueAsGroup = group
-
 		} else if c.propKey == AttributeLanguage {
 			if c.value != "" {
 				_, err := envs.ParseLanguage(c.value)
@@ -184,59 +194,8 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 }
 
 // Evaluate evaluates this condition against the queryable contact
-func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
-	// contacts can return multiple values per key, e.g. multiple phone numbers in a "tel = x" condition
-	vals := queryable.QueryProperty(env, c.PropertyKey(), c.PropertyType())
-
-	// is this an existence check?
-	if c.value == "" {
-		if c.operator == OpEqual {
-			return len(vals) == 0, nil // x = "" is true if x doesn't exist
-		} else if c.operator == OpNotEqual {
-			return len(vals) > 0, nil // x != "" is false if x doesn't exist (i.e. true if x does exist)
-		}
-	}
-
-	// if keyed value doesn't exist on our contact then all other comparisons at this point are false
-	if len(vals) == 0 {
-		return false, nil
-	}
-
-	// evaluate condition against each resolved value
-	anyTrue := false
-	allTrue := true
-	for _, val := range vals {
-		if c.evaluateValue(env, val) {
-			anyTrue = true
-		} else {
-			allTrue = false
-		}
-	}
-
-	// foo != x is only true if all values of foo are not x
-	if c.operator == OpNotEqual {
-		return allTrue, nil
-	}
-
-	// foo = x is true if any value of foo is x
-	return anyTrue, nil
-}
-
-func (c *Condition) evaluateValue(env envs.Environment, val interface{}) bool {
-	switch typed := val.(type) {
-	case string:
-		isName := c.propKey == AttributeName // needs to be handled as special case
-
-		return textComparison(typed, c.operator, c.value, isName)
-
-	case decimal.Decimal:
-		return numberComparison(typed, c.operator, c.valueAsNumber)
-
-	case time.Time:
-		return dateComparison(typed, c.operator, c.valueAsDate)
-	}
-
-	panic(fmt.Sprintf("unsupported query data type: %T", val))
+func (c *Condition) Evaluate(env envs.Environment, resolver Resolver, queryable Queryable) (bool, error) {
+	return evaluateCondition(env, resolver, c, queryable)
 }
 
 func (c *Condition) String() string {
@@ -267,32 +226,15 @@ func NewBoolCombination(op BoolOperator, children ...QueryNode) *BoolCombination
 	return &BoolCombination{op: op, children: children}
 }
 
-// Evaluate returns whether this combination evaluates to true or false
-func (b *BoolCombination) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
-	var childRes bool
-	var err error
-
-	if b.op == BoolOperatorAnd {
-		for _, child := range b.children {
-			if childRes, err = child.Evaluate(env, queryable); err != nil {
-				return false, err
-			}
-			if !childRes {
-				return false, nil
-			}
-		}
-		return true, nil
-	}
-
+// Validate validates this node
+func (b *BoolCombination) Validate(env envs.Environment, resolver Resolver) error {
 	for _, child := range b.children {
-		if childRes, err = child.Evaluate(env, queryable); err != nil {
-			return false, err
-		}
-		if childRes {
-			return true, nil
+		err := child.Validate(env, resolver)
+		if err != nil {
+			return err
 		}
 	}
-	return false, nil
+	return nil
 }
 
 func (b *BoolCombination) String() string {
@@ -311,9 +253,9 @@ type ContactQuery struct {
 // Root returns the root node of this query
 func (q *ContactQuery) Root() QueryNode { return q.root }
 
-// Evaluate returns whether the given queryable matches this query
-func (q *ContactQuery) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
-	return q.root.Evaluate(env, queryable)
+// Validate validates this query
+func (q *ContactQuery) Validate(env envs.Environment, resolver Resolver) error {
+	return q.root.Validate(env, resolver)
 }
 
 // String returns the pretty formatted version of this query
@@ -328,7 +270,7 @@ func (q *ContactQuery) String() string {
 }
 
 // ParseQuery parses a ContactQL query from the given input
-func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQuery, error) {
+func ParseQuery(env envs.Environment, text string) (*ContactQuery, error) {
 	// preprocess text before parsing
 	text = strings.TrimSpace(text)
 
@@ -354,7 +296,7 @@ func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQ
 		return nil, err
 	}
 
-	visitor := newVisitor(env, resolver)
+	visitor := newVisitor(env)
 	rootNode := visitor.Visit(tree).(QueryNode)
 
 	if len(visitor.errors) > 0 {
