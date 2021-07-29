@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/shopspring/decimal"
 
 	"github.com/pkg/errors"
 	validator "gopkg.in/go-playground/validator.v9"
@@ -502,6 +503,8 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 				vals[i] = group.Name()
 			}
 			return vals
+		case contactql.AttributeTickets:
+			return []interface{}{decimal.NewFromInt(int64(c.tickets.Count()))}
 		case contactql.AttributeCreatedOn:
 			return []interface{}{c.createdOn}
 		case contactql.AttributeLastSeenOn:
