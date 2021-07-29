@@ -26,22 +26,20 @@ func Inspect(query *ContactQuery) *Inspection {
 		switch c.propType {
 		case PropertyTypeAttribute:
 			attributes[c.propKey] = true
+
+			if c.propKey == AttributeGroup {
+				ref := assets.NewVariableGroupReference(c.value)
+				if !refsSeen[ref.String()] {
+					groupRefs = append(groupRefs, ref)
+					refsSeen[ref.String()] = true
+				}
+			}
 		case PropertyTypeScheme:
 			schemes[c.propKey] = true
-		}
-
-		if c.propField != nil {
-			ref := assets.NewFieldReference(c.propField.Key(), c.propField.Name())
+		case PropertyTypeField:
+			ref := assets.NewFieldReference(c.propKey, "")
 			if !refsSeen[ref.String()] {
 				fieldRefs = append(fieldRefs, ref)
-				refsSeen[ref.String()] = true
-			}
-		}
-
-		if c.valueAsGroup != nil {
-			ref := assets.NewGroupReference(c.valueAsGroup.UUID(), c.valueAsGroup.Name())
-			if !refsSeen[ref.String()] {
-				groupRefs = append(groupRefs, ref)
 				refsSeen[ref.String()] = true
 			}
 		}

@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParseQuery(t *testing.T) {
+func TestParseAndValidateQuery(t *testing.T) {
 	tests := []struct {
 		text   string
 		parsed string
@@ -131,7 +131,7 @@ func TestParseQuery(t *testing.T) {
 		{`id = 02352`, `id = 02352`, "", envs.RedactionPolicyNone},
 		{`name = felix`, `name = "felix"`, "", envs.RedactionPolicyNone},
 		{`language = eng`, `language = "eng"`, "", envs.RedactionPolicyNone},
-		{`group = u-reporters`, `group = "U-Reporters"`, "", envs.RedactionPolicyNone},
+		{`group = u-reporters`, `group = "u-reporters"`, "", envs.RedactionPolicyNone},
 		{`created_on = 20-02-2020`, `created_on = "20-02-2020"`, "", envs.RedactionPolicyNone},
 		{`tel = 02352`, `tel = 02352`, "", envs.RedactionPolicyNone},
 		{`urn = 02352`, `urn = 02352`, "", envs.RedactionPolicyNone},
@@ -145,7 +145,7 @@ func TestParseQuery(t *testing.T) {
 		{`id != 02352`, `id != 02352`, "", envs.RedactionPolicyNone},
 		{`name != felix`, `name != "felix"`, "", envs.RedactionPolicyNone},
 		{`language != eng`, `language != "eng"`, "", envs.RedactionPolicyNone},
-		{`group != u-reporters`, `group != "U-Reporters"`, "", envs.RedactionPolicyNone},
+		{`group != u-reporters`, `group != "u-reporters"`, "", envs.RedactionPolicyNone},
 		{`created_on != 20-02-2020`, `created_on != "20-02-2020"`, "", envs.RedactionPolicyNone},
 		{`tel != 02352`, `tel != 02352`, "", envs.RedactionPolicyNone},
 		{`urn != 02352`, `urn != 02352`, "", envs.RedactionPolicyNone},
@@ -209,10 +209,13 @@ func TestParseQuery(t *testing.T) {
 	for _, tc := range tests {
 		env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithDefaultCountry("US").WithRedactionPolicy(tc.redact).Build()
 
-		parsed, err := contactql.ParseQuery(env, tc.text, resolver)
+		parsed, err := contactql.ParseQuery(env, tc.text)
+		if parsed != nil {
+			err = parsed.Validate(env, resolver)
+		}
+
 		if tc.err != "" {
 			assert.EqualError(t, err, tc.err, "error mismatch for '%s'", tc.text)
-			assert.Nil(t, parsed)
 		} else {
 			assert.NoError(t, err, "unexpected error for '%s'", tc.text)
 			assert.Equal(t, tc.parsed, parsed.String(), "parse mismatch for '%s'", tc.text)
@@ -327,7 +330,11 @@ func TestParsingErrors(t *testing.T) {
 	}, map[string]assets.Group{})
 
 	for _, tc := range tests {
-		_, err := contactql.ParseQuery(env, tc.query, resolver)
+		parsed, err := contactql.ParseQuery(env, tc.query)
+		if parsed != nil {
+			err = parsed.Validate(env, resolver)
+		}
+
 		assert.EqualError(t, err, tc.errMsg, "error mismatch for '%s'", tc.query)
 
 		qerr := err.(*contactql.QueryError)

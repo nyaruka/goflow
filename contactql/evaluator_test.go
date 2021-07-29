@@ -149,10 +149,13 @@ func TestEvaluateQuery(t *testing.T) {
 	}, map[string]assets.Group{})
 
 	for _, test := range tests {
-		parsed, err := contactql.ParseQuery(env, test.query, resolver)
+		parsed, err := contactql.ParseQuery(env, test.query)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
-		actualResult, err := contactql.EvaluateQuery(env, parsed, testObj)
+		err = parsed.Validate(env, resolver)
+		assert.NoError(t, err, "unexpected error validating '%s'", test.query)
+
+		actualResult, err := contactql.EvaluateQuery(env, resolver, parsed, testObj)
 		assert.NoError(t, err, "unexpected error evaluating '%s'", test.query)
 		assert.Equal(t, test.result, actualResult, "unexpected result for '%s'", test.query)
 	}

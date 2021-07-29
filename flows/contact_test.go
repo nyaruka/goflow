@@ -507,12 +507,16 @@ func TestContactQuery(t *testing.T) {
 			env = session.Environment()
 		}
 
-		query, err := contactql.ParseQuery(env, q, session.Assets())
+		parsed, err := contactql.ParseQuery(env, q)
+		if err != nil {
+			return false, err
+		}
+		err = parsed.Validate(env, session.Assets())
 		if err != nil {
 			return false, err
 		}
 
-		return contactql.EvaluateQuery(env, query, contact)
+		return contactql.EvaluateQuery(env, session.Assets(), parsed, contact)
 	}
 
 	for _, tc := range testCases {
