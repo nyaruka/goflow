@@ -1,3 +1,7 @@
+v0.129.0
+----------
+ * Rework contactql to separate query parsing, validation and evaluation
+
 v0.128.0
 ----------
  * Add unique excellent function to get unique elements in an array
