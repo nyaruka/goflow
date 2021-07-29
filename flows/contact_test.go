@@ -516,7 +516,7 @@ func TestContactQuery(t *testing.T) {
 			return false, err
 		}
 
-		return contactql.EvaluateQuery(env, parsed, contact)
+		return contactql.EvaluateQuery(env, session.Assets(), parsed, contact)
 	}
 
 	for _, tc := range testCases {

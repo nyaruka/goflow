@@ -87,10 +87,7 @@ func TestElasticQuery(t *testing.T) {
 			continue
 		}
 
-		assert.NotNil(t, query, tc.Description, "unexpected nil query in %s", testName)
-		if query == nil {
-			continue
-		}
+		assert.NotNil(t, query, tc.Description)
 
 		source, err := query.Source()
 		require.NoError(t, err, "error reqesting source for elastic query in ", testName)

@@ -27,7 +27,7 @@ func TestInspect(t *testing.T) {
 			},
 		},
 		{
-			query: "age > 18 AND name != \"\" OR twitter = bobby OR tel ~1234",
+			query: "AGE > 18 AND name != \"\" OR twitter = bobby OR tel ~1234",
 			inspection: &contactql.Inspection{
 				Attributes: []string{"name"},
 				Schemes:    []string{"tel", "twitter"},

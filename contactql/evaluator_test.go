@@ -155,7 +155,7 @@ func TestEvaluateQuery(t *testing.T) {
 		err = parsed.Validate(env, resolver)
 		assert.NoError(t, err, "unexpected error validating '%s'", test.query)
 
-		actualResult, err := contactql.EvaluateQuery(env, parsed, testObj)
+		actualResult, err := contactql.EvaluateQuery(env, resolver, parsed, testObj)
 		assert.NoError(t, err, "unexpected error evaluating '%s'", test.query)
 		assert.Equal(t, test.result, actualResult, "unexpected result for '%s'", test.query)
 	}

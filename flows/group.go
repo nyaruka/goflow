@@ -14,6 +14,7 @@ type Group struct {
 	assets.Group
 
 	parsedQuery *contactql.ContactQuery
+	resolver    contactql.Resolver
 }
 
 // NewGroup returns a new group object from the given group asset
@@ -27,7 +28,7 @@ func NewGroup(env envs.Environment, fields *FieldAssets, asset assets.Group) (*G
 			return nil, err
 		}
 
-		return &Group{Group: asset, parsedQuery: query}, nil
+		return &Group{Group: asset, parsedQuery: query, resolver: fields}, nil
 	}
 
 	return &Group{Group: asset}, nil
@@ -49,7 +50,7 @@ func (g *Group) CheckQueryBasedMembership(env envs.Environment, contact *Contact
 		return false, nil
 	}
 
-	return contactql.EvaluateQuery(env, g.parsedQuery, contact)
+	return contactql.EvaluateQuery(env, g.resolver, g.parsedQuery, contact)
 }
 
 // Reference returns a reference to this group

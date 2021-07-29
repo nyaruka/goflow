@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 
@@ -17,9 +18,101 @@ type Queryable interface {
 	QueryProperty(envs.Environment, string, PropertyType) []interface{}
 }
 
-// EvaluateQuery evaluates the given parsed query against a queryable object
-func EvaluateQuery(env envs.Environment, query *ContactQuery, queryable Queryable) (bool, error) {
-	return query.Evaluate(env, queryable)
+// EvaluateQuery evaluates the given query against the given queryable
+func EvaluateQuery(env envs.Environment, resolver Resolver, query *ContactQuery, queryable Queryable) (bool, error) {
+	return evaluateNode(env, resolver, query.root, queryable)
+}
+
+func evaluateNode(env envs.Environment, resolver Resolver, node QueryNode, queryable Queryable) (bool, error) {
+	switch n := node.(type) {
+	case *BoolCombination:
+		return evaluateBoolCombination(env, resolver, n, queryable)
+	case *Condition:
+		return evaluateCondition(env, resolver, n, queryable)
+	default:
+		panic(fmt.Sprintf("unsupported node type: %T", n))
+	}
+}
+
+func evaluateBoolCombination(env envs.Environment, resolver Resolver, b *BoolCombination, queryable Queryable) (bool, error) {
+	var childRes bool
+	var err error
+
+	if b.op == BoolOperatorAnd {
+		for _, child := range b.children {
+			if childRes, err = evaluateNode(env, resolver, child, queryable); err != nil {
+				return false, err
+			}
+			if !childRes {
+				return false, nil
+			}
+		}
+		return true, nil
+	}
+
+	for _, child := range b.children {
+		if childRes, err = evaluateNode(env, resolver, child, queryable); err != nil {
+			return false, err
+		}
+		if childRes {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+func evaluateCondition(env envs.Environment, resolver Resolver, c *Condition, queryable Queryable) (bool, error) {
+	// contacts can return multiple values per key, e.g. multiple phone numbers in a "tel = x" condition
+	vals := queryable.QueryProperty(env, c.PropertyKey(), c.PropertyType())
+
+	// is this an existence check?
+	if c.value == "" {
+		if c.operator == OpEqual {
+			return len(vals) == 0, nil // x = "" is true if x doesn't exist
+		} else if c.operator == OpNotEqual {
+			return len(vals) > 0, nil // x != "" is false if x doesn't exist (i.e. true if x does exist)
+		}
+	}
+
+	// if keyed value doesn't exist on our contact then all other comparisons at this point are false
+	if len(vals) == 0 {
+		return false, nil
+	}
+
+	// evaluate condition against each resolved value
+	anyTrue := false
+	allTrue := true
+	for _, val := range vals {
+		if evaluateConditionWithValue(env, resolver, c, val) {
+			anyTrue = true
+		} else {
+			allTrue = false
+		}
+	}
+
+	// foo != x is only true if all values of foo are not x
+	if c.operator == OpNotEqual {
+		return allTrue, nil
+	}
+
+	// foo = x is true if any value of foo is x
+	return anyTrue, nil
+}
+
+func evaluateConditionWithValue(env envs.Environment, resolver Resolver, c *Condition, val interface{}) bool {
+	valueType := c.resolveValueType(resolver)
+
+	switch valueType {
+	case assets.FieldTypeNumber:
+		asDecimal, _ := decimal.NewFromString(c.value)
+		return numberComparison(val.(decimal.Decimal), c.operator, asDecimal)
+	case assets.FieldTypeDatetime:
+		asDate, _ := envs.DateTimeFromString(env, c.value, false)
+		return dateComparison(val.(time.Time), c.operator, asDate)
+	default:
+		isName := c.propKey == AttributeName // needs to be handled as special case
+		return textComparison(val.(string), c.operator, c.value, isName)
+	}
 }
 
 func textComparison(objectVal string, op Operator, queryVal string, isName bool) bool {
@@ -37,9 +130,9 @@ func textComparison(objectVal string, op Operator, queryVal string, isName bool)
 			return tokenizedPrefixMatch(objectVal, queryVal, 8)
 		}
 		return strings.Contains(objectVal, queryVal)
+	default:
+		panic(fmt.Sprintf("can't query text fields with %s", op))
 	}
-
-	panic(fmt.Sprintf("can't query text fields with %s", op))
 }
 
 func numberComparison(objectVal decimal.Decimal, op Operator, queryVal decimal.Decimal) bool {
@@ -56,9 +149,9 @@ func numberComparison(objectVal decimal.Decimal, op Operator, queryVal decimal.D
 		return objectVal.LessThan(queryVal)
 	case OpLessThanOrEqual:
 		return objectVal.LessThanOrEqual(queryVal)
+	default:
+		panic(fmt.Sprintf("can't query number fields with %s", op))
 	}
-
-	panic(fmt.Sprintf("can't query number fields with %s", op))
 }
 
 func dateComparison(objectVal time.Time, op Operator, queryVal time.Time) bool {
@@ -77,9 +170,9 @@ func dateComparison(objectVal time.Time, op Operator, queryVal time.Time) bool {
 		return objectVal.Before(utcDayStart)
 	case OpLessThanOrEqual:
 		return objectVal.Before(utcDayEnd)
+	default:
+		panic(fmt.Sprintf("can't query date fields with %s", op))
 	}
-
-	panic(fmt.Sprintf("can't query date fields with %s", op))
 }
 
 // performs a prefix match which should be equivalent to an edge_ngram filter in ES

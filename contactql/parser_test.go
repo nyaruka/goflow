@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParseQuery(t *testing.T) {
+func TestParseAndValidateQuery(t *testing.T) {
 	tests := []struct {
 		text   string
 		parsed string

@@ -67,7 +67,6 @@ var isNumberRegex = regexp.MustCompile(`^\d+(\.\d+)?$`)
 type QueryNode interface {
 	fmt.Stringer
 	Validate(envs.Environment, Resolver) error
-	Evaluate(envs.Environment, Queryable) (bool, error)
 }
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
@@ -195,61 +194,8 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 }
 
 // Evaluate evaluates this condition against the queryable contact
-func (c *Condition) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
-	// contacts can return multiple values per key, e.g. multiple phone numbers in a "tel = x" condition
-	vals := queryable.QueryProperty(env, c.PropertyKey(), c.PropertyType())
-
-	// is this an existence check?
-	if c.value == "" {
-		if c.operator == OpEqual {
-			return len(vals) == 0, nil // x = "" is true if x doesn't exist
-		} else if c.operator == OpNotEqual {
-			return len(vals) > 0, nil // x != "" is false if x doesn't exist (i.e. true if x does exist)
-		}
-	}
-
-	// if keyed value doesn't exist on our contact then all other comparisons at this point are false
-	if len(vals) == 0 {
-		return false, nil
-	}
-
-	// evaluate condition against each resolved value
-	anyTrue := false
-	allTrue := true
-	for _, val := range vals {
-		if c.evaluateValue(env, val) {
-			anyTrue = true
-		} else {
-			allTrue = false
-		}
-	}
-
-	// foo != x is only true if all values of foo are not x
-	if c.operator == OpNotEqual {
-		return allTrue, nil
-	}
-
-	// foo = x is true if any value of foo is x
-	return anyTrue, nil
-}
-
-func (c *Condition) evaluateValue(env envs.Environment, val interface{}) bool {
-	switch typed := val.(type) {
-	case string:
-		isName := c.propKey == AttributeName // needs to be handled as special case
-
-		return textComparison(typed, c.operator, c.value, isName)
-
-	case decimal.Decimal:
-		asDecimal, _ := decimal.NewFromString(c.value)
-		return numberComparison(typed, c.operator, asDecimal)
-
-	case time.Time:
-		asDate, _ := envs.DateTimeFromString(env, c.value, false)
-		return dateComparison(typed, c.operator, asDate)
-	}
-
-	panic(fmt.Sprintf("unsupported query data type: %T", val))
+func (c *Condition) Evaluate(env envs.Environment, resolver Resolver, queryable Queryable) (bool, error) {
+	return evaluateCondition(env, resolver, c, queryable)
 }
 
 func (c *Condition) String() string {
@@ -291,34 +237,6 @@ func (b *BoolCombination) Validate(env envs.Environment, resolver Resolver) erro
 	return nil
 }
 
-// Evaluate returns whether this combination evaluates to true or false
-func (b *BoolCombination) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
-	var childRes bool
-	var err error
-
-	if b.op == BoolOperatorAnd {
-		for _, child := range b.children {
-			if childRes, err = child.Evaluate(env, queryable); err != nil {
-				return false, err
-			}
-			if !childRes {
-				return false, nil
-			}
-		}
-		return true, nil
-	}
-
-	for _, child := range b.children {
-		if childRes, err = child.Evaluate(env, queryable); err != nil {
-			return false, err
-		}
-		if childRes {
-			return true, nil
-		}
-	}
-	return false, nil
-}
-
 func (b *BoolCombination) String() string {
 	children := make([]string, len(b.children))
 	for i := range b.children {
@@ -338,11 +256,6 @@ func (q *ContactQuery) Root() QueryNode { return q.root }
 // Validate validates this query
 func (q *ContactQuery) Validate(env envs.Environment, resolver Resolver) error {
 	return q.root.Validate(env, resolver)
-}
-
-// Evaluate returns whether the given queryable matches this query
-func (q *ContactQuery) Evaluate(env envs.Environment, queryable Queryable) (bool, error) {
-	return q.root.Evaluate(env, queryable)
 }
 
 // String returns the pretty formatted version of this query
