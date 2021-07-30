@@ -441,20 +441,16 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 }
 
 // ReevaluateQueryBasedGroups reevaluates membership of all query based groups for this contact
-func (c *Contact) ReevaluateQueryBasedGroups(env envs.Environment) ([]*Group, []*Group, []error) {
+func (c *Contact) ReevaluateQueryBasedGroups(env envs.Environment) ([]*Group, []*Group) {
 	added := make([]*Group, 0)
 	removed := make([]*Group, 0)
-	errs := make([]error, 0)
 
 	for _, group := range c.assets.Groups().All() {
 		if !group.UsesQuery() {
 			continue
 		}
 
-		qualifies, err := group.CheckQueryBasedMembership(env, c)
-		if err != nil {
-			errs = append(errs, errors.Wrapf(err, "unable to re-evaluate membership of group '%s'", group.Name()))
-		}
+		qualifies := group.CheckQueryBasedMembership(env, c)
 
 		if qualifies {
 			if c.groups.Add(group) {
@@ -467,7 +463,7 @@ func (c *Contact) ReevaluateQueryBasedGroups(env envs.Environment) ([]*Group, []
 		}
 	}
 
-	return added, removed, errs
+	return added, removed
 }
 
 // QueryProperty resolves a contact query search key for this contact

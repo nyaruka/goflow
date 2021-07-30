@@ -66,7 +66,7 @@ var isNumberRegex = regexp.MustCompile(`^\d+(\.\d+)?$`)
 // QueryNode is the base for nodes in our query parse tree
 type QueryNode interface {
 	fmt.Stringer
-	Validate(envs.Environment, Resolver) error
+	validate(envs.Environment, Resolver) error
 }
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
@@ -129,7 +129,12 @@ func (c *Condition) resolveValueType(resolver Resolver) assets.FieldType {
 }
 
 // Validate checks that this condition is valid (and thus can be evaluated)
-func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
+func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
+	// if our property is a field and we don't have a resolver, we can't validate because we don't know the value type
+	if c.propType == PropertyTypeField && resolver == nil {
+		return nil
+	}
+
 	valueType := c.resolveValueType(resolver)
 	if valueType == "" {
 		return NewQueryError(ErrUnknownProperty, "can't resolve '%s' to attribute, scheme or field", c.propKey).withExtra("property", c.propKey)
@@ -163,7 +168,7 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 			return NewQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
 		}
 	} else {
-		// check values are valid for the attribute type
+		// check values are valid for the property type
 		if valueType == assets.FieldTypeNumber {
 			_, err := c.ValueAsNumber()
 			if err != nil {
@@ -175,7 +180,7 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 				return NewQueryError(ErrInvalidDate, "can't convert '%s' to a date", c.value).withExtra("value", c.value)
 			}
 
-		} else if c.propKey == AttributeGroup {
+		} else if c.propKey == AttributeGroup && resolver != nil {
 			group := c.ValueAsGroup(resolver)
 			if group == nil {
 				return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
@@ -191,11 +196,6 @@ func (c *Condition) Validate(env envs.Environment, resolver Resolver) error {
 	}
 
 	return nil
-}
-
-// Evaluate evaluates this condition against the queryable contact
-func (c *Condition) Evaluate(env envs.Environment, resolver Resolver, queryable Queryable) (bool, error) {
-	return evaluateCondition(env, resolver, c, queryable)
 }
 
 func (c *Condition) String() string {
@@ -227,9 +227,9 @@ func NewBoolCombination(op BoolOperator, children ...QueryNode) *BoolCombination
 }
 
 // Validate validates this node
-func (b *BoolCombination) Validate(env envs.Environment, resolver Resolver) error {
+func (b *BoolCombination) validate(env envs.Environment, resolver Resolver) error {
 	for _, child := range b.children {
-		err := child.Validate(env, resolver)
+		err := child.validate(env, resolver)
 		if err != nil {
 			return err
 		}
@@ -247,16 +247,12 @@ func (b *BoolCombination) String() string {
 
 // ContactQuery is a parsed contact QL query
 type ContactQuery struct {
-	root QueryNode
+	root     QueryNode
+	resolver Resolver
 }
 
 // Root returns the root node of this query
 func (q *ContactQuery) Root() QueryNode { return q.root }
-
-// Validate validates this query
-func (q *ContactQuery) Validate(env envs.Environment, resolver Resolver) error {
-	return q.root.Validate(env, resolver)
-}
 
 // String returns the pretty formatted version of this query
 func (q *ContactQuery) String() string {
@@ -269,8 +265,9 @@ func (q *ContactQuery) String() string {
 	return s
 }
 
-// ParseQuery parses a ContactQL query from the given input
-func ParseQuery(env envs.Environment, text string) (*ContactQuery, error) {
+// ParseQuery parses a ContactQL query from the given input. If resolver is provided then we validate against it
+// to ensure that fields and groups exist. If not provided then still validate what we can.
+func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQuery, error) {
 	// preprocess text before parsing
 	text = strings.TrimSpace(text)
 
@@ -303,7 +300,11 @@ func ParseQuery(env envs.Environment, text string) (*ContactQuery, error) {
 		return nil, visitor.errors[0]
 	}
 
-	return &ContactQuery{root: rootNode}, nil
+	if err := rootNode.validate(env, resolver); err != nil {
+		return nil, err
+	}
+
+	return &ContactQuery{root: rootNode, resolver: resolver}, nil
 }
 
 type errorListener struct {
