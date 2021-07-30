@@ -32,6 +32,7 @@ const (
 	AttributeLanguage   = "language"
 	AttributeURN        = "urn"
 	AttributeGroup      = "group"
+	AttributeTickets    = "tickets"
 	AttributeCreatedOn  = "created_on"
 	AttributeLastSeenOn = "last_seen_on"
 )
@@ -43,6 +44,7 @@ var attributes = map[string]assets.FieldType{
 	AttributeLanguage:   assets.FieldTypeText,
 	AttributeURN:        assets.FieldTypeText,
 	AttributeGroup:      assets.FieldTypeText,
+	AttributeTickets:    assets.FieldTypeNumber,
 	AttributeCreatedOn:  assets.FieldTypeDatetime,
 	AttributeLastSeenOn: assets.FieldTypeDatetime,
 }

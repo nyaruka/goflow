@@ -18,9 +18,15 @@ type Inspection struct {
 func Inspect(query *ContactQuery) *Inspection {
 	attributes := make(map[string]bool)
 	schemes := make(map[string]bool)
-	fieldRefs := make([]*assets.FieldReference, 0)
-	groupRefs := make([]*assets.GroupReference, 0)
+	refs := make([]assets.Reference, 0)
 	refsSeen := make(map[string]bool)
+
+	addRef := func(ref assets.Reference) {
+		if !refsSeen[ref.String()] {
+			refs = append(refs, ref)
+			refsSeen[ref.String()] = true
+		}
+	}
 
 	walk(query.Root(), func(c *Condition) {
 		switch c.propType {
@@ -28,22 +34,36 @@ func Inspect(query *ContactQuery) *Inspection {
 			attributes[c.propKey] = true
 
 			if c.propKey == AttributeGroup {
-				ref := assets.NewVariableGroupReference(c.value)
-				if !refsSeen[ref.String()] {
-					groupRefs = append(groupRefs, ref)
-					refsSeen[ref.String()] = true
+				if query.resolver != nil {
+					group := query.resolver.ResolveGroup(c.value)
+					addRef(assets.NewGroupReference(group.UUID(), group.Name()))
+				} else {
+					addRef(assets.NewVariableGroupReference(c.value))
 				}
 			}
 		case PropertyTypeScheme:
 			schemes[c.propKey] = true
 		case PropertyTypeField:
-			ref := assets.NewFieldReference(c.propKey, "")
-			if !refsSeen[ref.String()] {
-				fieldRefs = append(fieldRefs, ref)
-				refsSeen[ref.String()] = true
+			if query.resolver != nil {
+				field := query.resolver.ResolveField(c.propKey)
+				addRef(assets.NewFieldReference(field.Key(), field.Name()))
+			} else {
+				addRef(assets.NewFieldReference(c.propKey, ""))
 			}
+
 		}
 	})
+
+	fieldRefs := make([]*assets.FieldReference, 0)
+	groupRefs := make([]*assets.GroupReference, 0)
+	for _, ref := range refs {
+		switch typed := ref.(type) {
+		case *assets.FieldReference:
+			fieldRefs = append(fieldRefs, typed)
+		case *assets.GroupReference:
+			groupRefs = append(groupRefs, typed)
+		}
+	}
 
 	allowAsGroup := !(attributes[AttributeID] || attributes[AttributeGroup])
 

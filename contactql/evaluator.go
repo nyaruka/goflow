@@ -18,12 +18,17 @@ type Queryable interface {
 	QueryProperty(envs.Environment, string, PropertyType) []interface{}
 }
 
-// EvaluateQuery evaluates the given query against the given queryable
-func EvaluateQuery(env envs.Environment, resolver Resolver, query *ContactQuery, queryable Queryable) (bool, error) {
-	return evaluateNode(env, resolver, query.root, queryable)
+// EvaluateQuery evaluates the given query against the given queryable. That query must have been parsed
+// with a resolver to ensure all fields and groups resolve. If not function panics.
+func EvaluateQuery(env envs.Environment, query *ContactQuery, queryable Queryable) bool {
+	if query.resolver == nil {
+		panic("can only evaluate queries parsed with a resolver")
+	}
+
+	return evaluateNode(env, query.resolver, query.root, queryable)
 }
 
-func evaluateNode(env envs.Environment, resolver Resolver, node QueryNode, queryable Queryable) (bool, error) {
+func evaluateNode(env envs.Environment, resolver Resolver, node QueryNode, queryable Queryable) bool {
 	switch n := node.(type) {
 	case *BoolCombination:
 		return evaluateBoolCombination(env, resolver, n, queryable)
@@ -34,49 +39,40 @@ func evaluateNode(env envs.Environment, resolver Resolver, node QueryNode, query
 	}
 }
 
-func evaluateBoolCombination(env envs.Environment, resolver Resolver, b *BoolCombination, queryable Queryable) (bool, error) {
-	var childRes bool
-	var err error
-
+func evaluateBoolCombination(env envs.Environment, resolver Resolver, b *BoolCombination, queryable Queryable) bool {
 	if b.op == BoolOperatorAnd {
 		for _, child := range b.children {
-			if childRes, err = evaluateNode(env, resolver, child, queryable); err != nil {
-				return false, err
-			}
-			if !childRes {
-				return false, nil
+			if !evaluateNode(env, resolver, child, queryable) {
+				return false
 			}
 		}
-		return true, nil
+		return true
 	}
 
 	for _, child := range b.children {
-		if childRes, err = evaluateNode(env, resolver, child, queryable); err != nil {
-			return false, err
-		}
-		if childRes {
-			return true, nil
+		if evaluateNode(env, resolver, child, queryable) {
+			return true
 		}
 	}
-	return false, nil
+	return false
 }
 
-func evaluateCondition(env envs.Environment, resolver Resolver, c *Condition, queryable Queryable) (bool, error) {
+func evaluateCondition(env envs.Environment, resolver Resolver, c *Condition, queryable Queryable) bool {
 	// contacts can return multiple values per key, e.g. multiple phone numbers in a "tel = x" condition
 	vals := queryable.QueryProperty(env, c.PropertyKey(), c.PropertyType())
 
 	// is this an existence check?
 	if c.value == "" {
 		if c.operator == OpEqual {
-			return len(vals) == 0, nil // x = "" is true if x doesn't exist
+			return len(vals) == 0 // x = "" is true if x doesn't exist
 		} else if c.operator == OpNotEqual {
-			return len(vals) > 0, nil // x != "" is false if x doesn't exist (i.e. true if x does exist)
+			return len(vals) > 0 // x != "" is false if x doesn't exist (i.e. true if x does exist)
 		}
 	}
 
 	// if keyed value doesn't exist on our contact then all other comparisons at this point are false
 	if len(vals) == 0 {
-		return false, nil
+		return false
 	}
 
 	// evaluate condition against each resolved value
@@ -92,11 +88,11 @@ func evaluateCondition(env envs.Environment, resolver Resolver, c *Condition, qu
 
 	// foo != x is only true if all values of foo are not x
 	if c.operator == OpNotEqual {
-		return allTrue, nil
+		return allTrue
 	}
 
 	// foo = x is true if any value of foo is x
-	return anyTrue, nil
+	return anyTrue
 }
 
 func evaluateConditionWithValue(env envs.Environment, resolver Resolver, c *Condition, val interface{}) bool {
@@ -104,10 +100,10 @@ func evaluateConditionWithValue(env envs.Environment, resolver Resolver, c *Cond
 
 	switch valueType {
 	case assets.FieldTypeNumber:
-		asDecimal, _ := decimal.NewFromString(c.value)
-		return numberComparison(val.(decimal.Decimal), c.operator, asDecimal)
+		asNumber, _ := c.ValueAsNumber()
+		return numberComparison(val.(decimal.Decimal), c.operator, asNumber)
 	case assets.FieldTypeDatetime:
-		asDate, _ := envs.DateTimeFromString(env, c.value, false)
+		asDate, _ := c.ValueAsDate(env)
 		return dateComparison(val.(time.Time), c.operator, asDate)
 	default:
 		isName := c.propKey == AttributeName // needs to be handled as special case

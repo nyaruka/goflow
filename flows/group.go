@@ -20,11 +20,8 @@ type Group struct {
 // NewGroup returns a new group object from the given group asset
 func NewGroup(env envs.Environment, fields *FieldAssets, asset assets.Group) (*Group, error) {
 	if asset.Query() != "" {
-		query, err := contactql.ParseQuery(env, asset.Query())
+		query, err := contactql.ParseQuery(env, asset.Query(), fields)
 		if err != nil {
-			return nil, err
-		}
-		if err := query.Validate(env, fields); err != nil {
 			return nil, err
 		}
 
@@ -41,16 +38,16 @@ func (g *Group) Asset() assets.Group { return g.Group }
 func (g *Group) UsesQuery() bool { return g.Query() != "" }
 
 // CheckQueryBasedMembership returns whether the given contact belongs in a query based group
-func (g *Group) CheckQueryBasedMembership(env envs.Environment, contact *Contact) (bool, error) {
+func (g *Group) CheckQueryBasedMembership(env envs.Environment, contact *Contact) bool {
 	if !g.UsesQuery() {
 		panic("can't check membership on a non-query based group")
 	}
 
 	if contact.Status() != ContactStatusActive {
-		return false, nil
+		return false
 	}
 
-	return contactql.EvaluateQuery(env, g.resolver, g.parsedQuery, contact)
+	return contactql.EvaluateQuery(env, g.parsedQuery, contact)
 }
 
 // Reference returns a reference to this group

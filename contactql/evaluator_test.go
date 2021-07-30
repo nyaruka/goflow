@@ -43,98 +43,98 @@ func TestEvaluateQuery(t *testing.T) {
 		result bool
 	}{
 		// UUID condition
-		{`uuid = "C7D9BECE-6bbd-4b3b-8a86-eb0cf1ac9d05"`, true},
-		{`uuid = "xyz"`, false},
+		{query: `uuid = "C7D9BECE-6bbd-4b3b-8a86-eb0cf1ac9d05"`, result: true},
+		{query: `uuid = "xyz"`, result: false},
 
 		// ID condition
-		{`id = 12345`, true},
-		{`id = 76543`, false},
+		{query: `id = 12345`, result: true},
+		{query: `id = 76543`, result: false},
 
 		// name condition
-		{`name = "BOB smithwick"`, true},
-		{`name = "Bob"`, false},
-		{`name ~ "Bob"`, true},
-		{`name ~ "Bobby"`, false},
-		{`name ~ "Sm"`, true},
-		{`name ~ "Smithwicke"`, true}, // only compare up to 8 chars
-		{`name ~ "Smithx"`, false},
+		{query: `name = "BOB smithwick"`, result: true},
+		{query: `name = "Bob"`, result: false},
+		{query: `name ~ "Bob"`, result: true},
+		{query: `name ~ "Bobby"`, result: false},
+		{query: `name ~ "Sm"`, result: true},
+		{query: `name ~ "Smithwicke"`, result: true}, // only compare up to 8 chars
+		{query: `name ~ "Smithx"`, result: false},
 
 		// URN condition
-		{`tel = +59313145145`, true},
-		{`tel = +59313140000`, false},
-		{`tel:+59313145145`, true},
-		{`tel:+59313140000`, false},
-		{`tel has 45145`, true},
-		{`tel ~ 33333`, false},
-		{`TWITTER IS bob_smith`, true},
-		{`twitter:bob_smith`, true},
-		{`twitter = jim_smith`, false},
-		{`twitter:jim_smith`, false},
-		{`twitter ~ smith`, true},
-		{`whatsapp = 4533343`, false},
+		{query: `tel = +59313145145`, result: true},
+		{query: `tel = +59313140000`, result: false},
+		{query: `tel:+59313145145`, result: true},
+		{query: `tel:+59313140000`, result: false},
+		{query: `tel has 45145`, result: true},
+		{query: `tel ~ 33333`, result: false},
+		{query: `TWITTER IS bob_smith`, result: true},
+		{query: `twitter:bob_smith`, result: true},
+		{query: `twitter = jim_smith`, result: false},
+		{query: `twitter:jim_smith`, result: false},
+		{query: `twitter ~ smith`, result: true},
+		{query: `whatsapp = 4533343`, result: false},
 
 		// text field condition
-		{`Gender = male`, true},
-		{`Gender is MALE`, true},
-		{`gender = "female"`, false},
-		{`gender != "female"`, true},
-		{`gender != "male"`, false},
-		{`empty != "male"`, true}, // this is true because "" is not "male"
-		{`gender != ""`, true},
+		{query: `Gender = male`, result: true},
+		{query: `Gender is MALE`, result: true},
+		{query: `gender = "female"`, result: false},
+		{query: `gender != "female"`, result: true},
+		{query: `gender != "male"`, result: false},
+		{query: `empty != "male"`, result: true}, // this is true because "" is not "male"
+		{query: `gender != ""`, result: true},
 
 		// number field condition
-		{`age = 36`, true},
-		{`age = 35`, false},
-		{`age is 35`, false},
-		{`age != 36`, false},
-		{`age != 35`, true},
-		{`age > 36`, false},
-		{`age > 35`, true},
-		{`age >= 36`, true},
-		{`age < 36`, false},
-		{`age < 37`, true},
-		{`age <= 36`, true},
+		{query: `age = 36`, result: true},
+		{query: `age = 35`, result: false},
+		{query: `age is 35`, result: false},
+		{query: `age != 36`, result: false},
+		{query: `age != 35`, result: true},
+		{query: `age > 36`, result: false},
+		{query: `age > 35`, result: true},
+		{query: `age >= 36`, result: true},
+		{query: `age < 36`, result: false},
+		{query: `age < 37`, result: true},
+		{query: `age <= 36`, result: true},
 
 		// datetime field condition
-		{`dob = 1981/05/28`, true},
-		{`dob = 1981/05/29`, false},
-		{`dob != 1981/05/28`, false},
-		{`dob != 1981/05/29`, true},
-		{`dob > 1981/05/28`, false},
-		{`dob > 1981/05/27`, true},
-		{`dob >= 1981/05/28`, true},
-		{`dob >= 1981/05/29`, false},
-		{`dob < 1981/05/28`, false},
-		{`dob < 1981/05/29`, true},
-		{`dob <= 1981/05/28`, true},
-		{`dob <= 1981/05/27`, false},
+		{query: `dob = 1981/05/28`, result: true},
+		{query: `dob = 1981/05/29`, result: false},
+		{query: `dob != 1981/05/28`, result: false},
+		{query: `dob != 1981/05/29`, result: true},
+		{query: `dob > 1981/05/28`, result: false},
+		{query: `dob > 1981/05/27`, result: true},
+		{query: `dob >= 1981/05/28`, result: true},
+		{query: `dob >= 1981/05/29`, result: false},
+		{query: `dob < 1981/05/28`, result: false},
+		{query: `dob < 1981/05/29`, result: true},
+		{query: `dob <= 1981/05/28`, result: true},
+		{query: `dob <= 1981/05/27`, result: false},
 
 		// location field condition
-		{`state = kigali`, true},
-		{`state = "kigali"`, true},
-		{`state = "NYC"`, false},
-		{`district = "GASABO"`, true},
-		{`district = "Brooklyn"`, false},
-		{`ward = ndera`, true},
-		{`ward = solano`, false},
-		{`ward != ndera`, false},
-		{`ward != solano`, true},
+		{query: `state = kigali`, result: true},
+		{query: `state = "kigali"`, result: true},
+		{query: `state = "NYC"`, result: false},
+		{query: `district = "GASABO"`, result: true},
+		{query: `district = "Brooklyn"`, result: false},
+		{query: `ward = ndera`, result: true},
+		{query: `ward = solano`, result: false},
+		{query: `ward != ndera`, result: false},
+		{query: `ward != solano`, result: true},
 
 		// existence
-		{`age = ""`, false},
-		{`age != ""`, true},
-		{`xyz = ""`, true},
-		{`xyz != ""`, false},
-		{`age != "" AND xyz != ""`, false},
-		{`age != "" OR xyz != ""`, true},
+		{query: `age = ""`, result: false},
+		{query: `age != ""`, result: true},
+		{query: `xyz = ""`, result: true},
+		{query: `xyz != ""`, result: false},
+		{query: `age != "" AND xyz != ""`, result: false},
+		{query: `age != "" OR xyz != ""`, result: true},
 
 		// boolean combinations
-		{`age = 36 AND gender = male`, true},
-		{`(age = 36) AND (gender = male)`, true},
-		{`age = 36 AND gender = female`, false},
-		{`age = 36 OR gender = female`, true},
-		{`age = 35 OR gender = female`, false},
-		{`(age = 36 OR gender = female) AND age > 35`, true},
+		{query: `age = 36 AND gender = male`, result: true},
+		{query: `(age = 36) AND (gender = male)`, result: true},
+		{query: `age = 36 AND gender = female`, result: false},
+		{query: `age = 36 OR gender = female`, result: true},
+		{query: `age = 35 OR gender = female`, result: false},
+		{query: `(age = 36 OR gender = female) AND age > 35`, result: true},
 	}
 
 	resolver := contactql.NewMockResolver(map[string]assets.Field{
@@ -149,14 +149,10 @@ func TestEvaluateQuery(t *testing.T) {
 	}, map[string]assets.Group{})
 
 	for _, test := range tests {
-		parsed, err := contactql.ParseQuery(env, test.query)
+		parsed, err := contactql.ParseQuery(env, test.query, resolver)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
-		err = parsed.Validate(env, resolver)
-		assert.NoError(t, err, "unexpected error validating '%s'", test.query)
-
-		actualResult, err := contactql.EvaluateQuery(env, resolver, parsed, testObj)
-		assert.NoError(t, err, "unexpected error evaluating '%s'", test.query)
+		actualResult := contactql.EvaluateQuery(env, parsed, testObj)
 		assert.Equal(t, test.result, actualResult, "unexpected result for '%s'", test.query)
 	}
 }

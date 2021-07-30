@@ -401,7 +401,19 @@ func TestContactQuery(t *testing.T) {
 		},
 		"groups": [
 			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
-        	{"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
+			{"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
+		],
+		"tickets": [
+			{
+				"uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52",
+				"ticketer": {
+					"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+					"name": "Support Tickets"
+				},
+				"subject": "Old ticket",
+				"body": "I have a problem",
+				"assignee": null
+			}
 		],
 		"language": "eng",
 		"timezone": "America/Guayaquil",
@@ -501,6 +513,12 @@ func TestContactQuery(t *testing.T) {
 		{`group = customers`, envs.RedactionPolicyNone, false, ""},
 		{`group != customers`, envs.RedactionPolicyNone, true, ""},
 
+		{`tickets = 1`, envs.RedactionPolicyNone, true, ""},
+		{`tickets = 0`, envs.RedactionPolicyNone, false, ""},
+		{`tickets != 1`, envs.RedactionPolicyNone, false, ""},
+		{`tickets != 0`, envs.RedactionPolicyNone, true, ""},
+		{`tickets > 0`, envs.RedactionPolicyNone, true, ""},
+
 		{`age = 39`, envs.RedactionPolicyNone, true, ""},
 		{`age != 39`, envs.RedactionPolicyNone, false, ""},
 		{`age = 60`, envs.RedactionPolicyNone, false, ""},
@@ -515,16 +533,12 @@ func TestContactQuery(t *testing.T) {
 			env = session.Environment()
 		}
 
-		parsed, err := contactql.ParseQuery(env, q)
-		if err != nil {
-			return false, err
-		}
-		err = parsed.Validate(env, session.Assets())
+		parsed, err := contactql.ParseQuery(env, q, session.Assets())
 		if err != nil {
 			return false, err
 		}
 
-		return contactql.EvaluateQuery(env, session.Assets(), parsed, contact)
+		return contactql.EvaluateQuery(env, parsed, contact), nil
 	}
 
 	for _, tc := range testCases {
