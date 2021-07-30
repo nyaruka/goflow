@@ -1,3 +1,7 @@
+v0.130.1
+----------
+ * Also simplify converting queries to elastic
+
 v0.130.0
 ----------
  * Simplify parsing contact queries
