@@ -15,7 +15,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/test"
 
-	"github.com/olivere/elastic/v7"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -44,7 +43,6 @@ func TestElasticQuery(t *testing.T) {
 		Description string          `json:"description"`
 		Query       string          `json:"query"`
 		Elastic     json.RawMessage `json:"elastic"`
-		Error       string          `json:"error"`
 		RedactURNs  bool            `json:"redact_urns"`
 	}
 	tcs := make([]testCase, 0, 20)
@@ -64,30 +62,13 @@ func TestElasticQuery(t *testing.T) {
 		env := envs.NewBuilder().WithTimezone(ny).WithRedactionPolicy(redactionPolicy).Build()
 
 		parsed, err := contactql.ParseQuery(env, tc.Query, resolver)
+		require.NoError(t, err)
 
-		var query elastic.Query
-		if err == nil {
-			query, err = es.ToElasticQuery(env, resolver, parsed)
-			require.NoError(t, err)
-		}
-
-		if tc.Error != "" {
-			assert.Error(t, err, "expected error in %s", testName)
-			if err != nil {
-				assert.Contains(t, err.Error(), tc.Error)
-			}
-			continue
-		}
-
-		assert.NoError(t, err, "unexpected error in %s", testName)
-		if err != nil {
-			continue
-		}
-
+		query := es.ToElasticQuery(env, parsed)
 		assert.NotNil(t, query, tc.Description)
 
 		source, err := query.Source()
-		require.NoError(t, err, "error reqesting source for elastic query in ", testName)
+		require.NoError(t, err, "error requesting source for elastic query in ", testName)
 
 		asJSON, err := jsonx.Marshal(source)
 		require.NoError(t, err)

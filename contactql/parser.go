@@ -254,6 +254,9 @@ type ContactQuery struct {
 // Root returns the root node of this query
 func (q *ContactQuery) Root() QueryNode { return q.root }
 
+// Resolver returns the optional resolver this query was parsed with
+func (q *ContactQuery) Resolver() Resolver { return q.resolver }
+
 // String returns the pretty formatted version of this query
 func (q *ContactQuery) String() string {
 	s := q.root.String()

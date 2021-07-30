@@ -10,15 +10,18 @@ import (
 	"github.com/nyaruka/goflow/envs"
 
 	"github.com/olivere/elastic/v7"
-	"github.com/pkg/errors"
 )
 
 // ToElasticQuery converts a contactql query to an Elastic query
-func ToElasticQuery(env envs.Environment, resolver contactql.Resolver, query *contactql.ContactQuery) (elastic.Query, error) {
-	return nodeToElastic(env, resolver, query.Root())
+func ToElasticQuery(env envs.Environment, query *contactql.ContactQuery) elastic.Query {
+	if query.Resolver() == nil {
+		panic("can only convert queries parsed with a resolver")
+	}
+
+	return nodeToElastic(env, query.Resolver(), query.Root())
 }
 
-func nodeToElastic(env envs.Environment, resolver contactql.Resolver, node contactql.QueryNode) (elastic.Query, error) {
+func nodeToElastic(env envs.Environment, resolver contactql.Resolver, node contactql.QueryNode) elastic.Query {
 	switch n := node.(type) {
 	case *contactql.BoolCombination:
 		return boolCombinationToElastic(env, resolver, n)
@@ -29,44 +32,36 @@ func nodeToElastic(env envs.Environment, resolver contactql.Resolver, node conta
 	}
 }
 
-func boolCombinationToElastic(env envs.Environment, resolver contactql.Resolver, combination *contactql.BoolCombination) (elastic.Query, error) {
-	var err error
+func boolCombinationToElastic(env envs.Environment, resolver contactql.Resolver, combination *contactql.BoolCombination) elastic.Query {
 	queries := make([]elastic.Query, len(combination.Children()))
 	for i, child := range combination.Children() {
-		queries[i], err = nodeToElastic(env, resolver, child)
-		if err != nil {
-			return nil, err
-		}
+		queries[i] = nodeToElastic(env, resolver, child)
 	}
 
 	if combination.Operator() == contactql.BoolOperatorAnd {
-		return elastic.NewBoolQuery().Must(queries...), nil
+		return elastic.NewBoolQuery().Must(queries...)
 	}
 
-	return elastic.NewBoolQuery().Should(queries...), nil
+	return elastic.NewBoolQuery().Should(queries...)
 }
 
-func conditionToElastic(env envs.Environment, resolver contactql.Resolver, c *contactql.Condition) (elastic.Query, error) {
+func conditionToElastic(env envs.Environment, resolver contactql.Resolver, c *contactql.Condition) elastic.Query {
 	switch c.PropertyType() {
 	case contactql.PropertyTypeField:
 		return fieldConditionToElastic(env, resolver, c)
 	case contactql.PropertyTypeAttribute:
-		return attributeConditionToElastic(env, resolver, c), nil
+		return attributeConditionToElastic(env, resolver, c)
 	case contactql.PropertyTypeScheme:
-		return schemeConditionToElastic(env, c), nil
+		return schemeConditionToElastic(env, c)
 	default:
 		panic(fmt.Sprintf("unsupported property type: %s", c.PropertyType()))
 	}
 }
 
-func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, c *contactql.Condition) (elastic.Query, error) {
+func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, c *contactql.Condition) elastic.Query {
 	var query elastic.Query
 
 	field := resolver.ResolveField(c.PropertyKey())
-	if field == nil {
-		return nil, errors.Errorf("no such field '%s'", c.PropertyKey())
-	}
-
 	fieldType := field.Type()
 	fieldQuery := elastic.NewTermQuery("fields.field", field.UUID())
 
@@ -81,7 +76,7 @@ func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, 
 		if c.Operator() == contactql.OpEqual {
 			query = not(query)
 		}
-		return query, nil
+		return query
 	}
 
 	if fieldType == assets.FieldTypeText {
@@ -90,14 +85,14 @@ func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, 
 		switch c.Operator() {
 		case contactql.OpEqual:
 			query = elastic.NewTermQuery("fields.text", value)
-			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
+			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query))
 		case contactql.OpNotEqual:
 			query = elastic.NewBoolQuery().Must(
 				fieldQuery,
 				elastic.NewTermQuery("fields.text", value),
 				elastic.NewExistsQuery("fields.text"),
 			)
-			return not(elastic.NewNestedQuery("fields", query)), nil
+			return not(elastic.NewNestedQuery("fields", query))
 		default:
 			panic(fmt.Sprintf("unsupported text field operator: %s", c.Operator()))
 		}
@@ -116,7 +111,7 @@ func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, 
 						elastic.NewMatchQuery("fields.number", value),
 					),
 				),
-			), nil
+			)
 		case contactql.OpGreaterThan:
 			query = elastic.NewRangeQuery("fields.number").Gt(value)
 		case contactql.OpGreaterThanOrEqual:
@@ -129,7 +124,7 @@ func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, 
 			panic(fmt.Sprintf("unsupported number field operator: %s", c.Operator()))
 		}
 
-		return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
+		return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query))
 
 	} else if fieldType == assets.FieldTypeDatetime {
 		value, _ := c.ValueAsDate(env)
@@ -146,7 +141,7 @@ func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, 
 						elastic.NewRangeQuery("fields.datetime").Gte(start).Lt(end),
 					),
 				),
-			), nil
+			)
 		case contactql.OpGreaterThan:
 			query = elastic.NewRangeQuery("fields.datetime").Gte(end)
 		case contactql.OpGreaterThanOrEqual:
@@ -159,7 +154,7 @@ func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, 
 			panic(fmt.Sprintf("unsupported datetime field operator: %s", c.Operator()))
 		}
 
-		return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
+		return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query))
 
 	} else if fieldType == assets.FieldTypeState || fieldType == assets.FieldTypeDistrict || fieldType == assets.FieldTypeWard {
 		value := strings.ToLower(c.Value())
@@ -168,7 +163,7 @@ func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, 
 		switch c.Operator() {
 		case contactql.OpEqual:
 			query = elastic.NewTermQuery(name, value)
-			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query)), nil
+			return elastic.NewNestedQuery("fields", elastic.NewBoolQuery().Must(fieldQuery, query))
 		case contactql.OpNotEqual:
 			return not(
 				elastic.NewNestedQuery("fields",
@@ -177,7 +172,7 @@ func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, 
 						elastic.NewExistsQuery(name),
 					),
 				),
-			), nil
+			)
 		default:
 			panic(fmt.Sprintf("unsupported location field operator: %s", c.Operator()))
 		}
