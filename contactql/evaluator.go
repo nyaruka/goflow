@@ -21,11 +21,11 @@ type Queryable interface {
 // EvaluateQuery evaluates the given query against the given queryable. That query must have been parsed
 // with a resolver to ensure all fields and groups resolve. If not function panics.
 func EvaluateQuery(env envs.Environment, query *ContactQuery, queryable Queryable) bool {
-	if query.resolver == nil {
+	if query.Resolver() == nil {
 		panic("can only evaluate queries parsed with a resolver")
 	}
 
-	return evaluateNode(env, query.resolver, query.root, queryable)
+	return evaluateNode(env, query.Resolver(), query.Root(), queryable)
 }
 
 func evaluateNode(env envs.Environment, resolver Resolver, node QueryNode, queryable Queryable) bool {
