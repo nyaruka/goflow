@@ -502,12 +502,7 @@ func (s *session) ensureQueryBasedGroups(logEvent flows.EventCallback) {
 		return
 	}
 
-	added, removed, errors := s.contact.ReevaluateQueryBasedGroups(s.Environment())
-
-	// add error event for each group we couldn't re-evaluate
-	for _, err := range errors {
-		logEvent(events.NewError(err))
-	}
+	added, removed := s.contact.ReevaluateQueryBasedGroups(s.Environment())
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {

@@ -40,12 +40,7 @@ func (m *baseModifier) Type() string { return m.Type_ }
 
 // helper to re-evaluate groups and log any changes to membership
 func (m *baseModifier) reevaluateGroups(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
-	added, removed, errors := contact.ReevaluateQueryBasedGroups(env)
-
-	// add error event for each group we couldn't re-evaluate
-	for _, err := range errors {
-		log(events.NewError(err))
-	}
+	added, removed := contact.ReevaluateQueryBasedGroups(env)
 
 	// make sure from all static groups are removed for non-active contacts
 	if contact.Status() != flows.ContactStatusActive {

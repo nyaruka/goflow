@@ -63,15 +63,12 @@ func TestElasticQuery(t *testing.T) {
 		}
 		env := envs.NewBuilder().WithTimezone(ny).WithRedactionPolicy(redactionPolicy).Build()
 
-		parsed, err := contactql.ParseQuery(env, tc.Query)
+		parsed, err := contactql.ParseQuery(env, tc.Query, resolver)
 
 		var query elastic.Query
 		if err == nil {
-			err = parsed.Validate(env, resolver)
-			if err == nil {
-				query, err = es.ToElasticQuery(env, resolver, parsed)
-				require.NoError(t, err)
-			}
+			query, err = es.ToElasticQuery(env, resolver, parsed)
+			require.NoError(t, err)
 		}
 
 		if tc.Error != "" {
