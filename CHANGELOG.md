@@ -1,3 +1,8 @@
+v0.130.0
+----------
+ * Simplify parsing contact queries
+ * Add support for query property tickets
+
 v0.129.0
 ----------
  * Rework contactql to separate query parsing, validation and evaluation

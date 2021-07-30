@@ -113,26 +113,6 @@
         }
     },
     {
-        "description": "text field greater than",
-        "query": "color > red",
-        "error": "comparisons with > can only be used with date and number fields"
-    },
-    {
-        "description": "text field less than",
-        "query": "color < red",
-        "error": "comparisons with < can only be used with date and number fields"
-    },
-    {
-        "description": "text field less than empty string",
-        "query": "color < \"\"",
-        "error": "comparisons with < can only be used with date and number fields"
-    },
-    {
-        "description": "text field greater than empty string",
-        "query": "color > \"\"",
-        "error": "comparisons with > can only be used with date and number fields"
-    },
-    {
         "description": "number field is set",
         "query": "age!=\"\"",
         "elastic": {
@@ -363,26 +343,6 @@
                 }
             }
         }
-    },
-    {
-        "description": "number field with invalid value",
-        "query": "age=fred",
-        "error": "can't convert 'fred' to a number"
-    },
-    {
-        "description": "number field greater than empty string",
-        "query": "age > \"\"",
-        "error": "can't convert '' to a number"
-    },
-    {
-        "description": "datetime field with invalid value",
-        "query": "dob=10",
-        "error": "can't convert '10' to a date"
-    },
-    {
-        "description": "datetime field greater than empty string",
-        "query": "dob > \"\"",
-        "error": "can't convert '' to a date"
     },
     {
         "description": "date field is set",
@@ -818,11 +778,6 @@
         }
     },
     {
-        "description": "state field with greater than",
-        "query": "state<washington",
-        "error": "comparisons with < can only be used with date and number fields"
-    },
-    {
         "description": "district field is set",
         "query": "district!=\"\"",
         "elastic": {
@@ -929,11 +884,6 @@
                 }
             }
         }
-    },
-    {
-        "description": "district field with greater than",
-        "query": "district<chelan",
-        "error": "comparisons with < can only be used with date and number fields"
     },
     {
         "description": "ward field is set",
@@ -1044,11 +994,6 @@
         }
     },
     {
-        "description": "ward field with greater than",
-        "query": "ward<stevens",
-        "error": "comparisons with < can only be used with date and number fields"
-    },
-    {
         "description": "name equality",
         "query": "name=chef",
         "elastic": {
@@ -1132,11 +1077,6 @@
                 }
             }
         }
-    },
-    {
-        "description": "name with greater than",
-        "query": "name>chef",
-        "error": "comparisons with > can only be used with date and number fields"
     },
     {
         "description": "uuid equality",
@@ -1261,21 +1201,6 @@
         }
     },
     {
-        "description": "language equality with invalid language",
-        "query": "language=dog",
-        "error": "'dog' is not a valid language code"
-    },
-    {
-        "description": "language inequality with invalid language",
-        "query": "language!=dog",
-        "error": "'dog' is not a valid language code"
-    },
-    {
-        "description": "language greater than with invalid language",
-        "query": "language>dog",
-        "error": "comparisons with > can only be used with date and number fields"
-    },
-    {
         "description": "created_on greater than",
         "query": "created_on>2018-06-23",
         "elastic": {
@@ -1362,11 +1287,6 @@
                 }
             }
         }
-    },
-    {
-        "description": "created_on less than with invalid date",
-        "query": "created_on<dog",
-        "error": "can't convert 'dog' to a date"
     },
     {
         "description": "last_seen_on greater than",
@@ -1477,11 +1397,6 @@
                 }
             }
         }
-    },
-    {
-        "description": "last_seen_on less than with invalid date",
-        "query": "last_seen_on<dog",
-        "error": "can't convert 'dog' to a date"
     },
     {
         "description": "tel scheme is set",
@@ -1619,11 +1534,6 @@
         }
     },
     {
-        "description": "tel scheme greater than",
-        "query": "tel>12345",
-        "error": "comparisons with > can only be used with date and number fields"
-    },
-    {
         "description": "tel scheme is set with URN redaction",
         "query": "tel!=\"\"",
         "redact_urns": true,
@@ -1678,12 +1588,6 @@
                 }
             }
         }
-    },
-    {
-        "description": "tel scheme equality with URN redaction",
-        "query": "tel=12345",
-        "redact_urns": true,
-        "error": "cannot query on redacted URNs"
     },
     {
         "description": "urn is set",
@@ -1775,11 +1679,6 @@
         }
     },
     {
-        "description": "group equality with invalid group",
-        "query": "group = \"Spammers\"",
-        "error": "'Spammers' is not a valid group name"
-    },
-    {
         "description": "group inequality",
         "query": "group != \"U-Reporters\"",
         "elastic": {
@@ -1791,26 +1690,6 @@
                 }
             }
         }
-    },
-    {
-        "description": "group inequality with invalid group",
-        "query": "group != \"Spammers\"",
-        "error": "'Spammers' is not a valid group name"
-    },
-    {
-        "description": "group is set",
-        "query": "group != \"\"",
-        "error": "can't check whether 'group' is set or not set"
-    },
-    {
-        "description": "group is not set",
-        "query": "group = \"\"",
-        "error": "can't check whether 'group' is set or not set"
-    },
-    {
-        "description": "unknown property equality",
-        "query": "unsupported=12345",
-        "error": "can't resolve 'unsupported' to attribute, scheme or field"
     },
     {
         "description": "bool and",
