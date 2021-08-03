@@ -2,6 +2,7 @@ package luis
 
 import (
 	"net/http"
+	"sort"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/flows"
@@ -16,9 +17,9 @@ type service struct {
 }
 
 // NewService creates a new classification service
-func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAccess *httpx.AccessConfig, classifier *flows.Classifier, endpoint, appID, key string) flows.ClassificationService {
+func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAccess *httpx.AccessConfig, classifier *flows.Classifier, endpoint, slot, appID, key string) flows.ClassificationService {
 	return &service{
-		client:     NewClient(httpClient, httpRetries, httpAccess, endpoint, appID, key),
+		client:     NewClient(httpClient, httpRetries, httpAccess, endpoint, slot, appID, key),
 		classifier: classifier,
 		redactor:   utils.NewRedactor(flows.RedactionMask, key),
 	}
@@ -34,24 +35,27 @@ func (s *service) Classify(session flows.Session, input string, logHTTP flows.HT
 	}
 
 	result := &flows.Classification{
-		Intents:  make([]flows.ExtractedIntent, len(response.Intents)),
-		Entities: make(map[string][]flows.ExtractedEntity, len(response.Entities)),
+		Intents:  make([]flows.ExtractedIntent, 0, len(response.Prediction.Intents)),
+		Entities: make(map[string][]flows.ExtractedEntity, len(response.Prediction.Entities.Values)),
 	}
 
-	for i, intent := range response.Intents {
-		result.Intents[i] = flows.ExtractedIntent{Name: intent.Intent, Confidence: intent.Score}
+	for name, intent := range response.Prediction.Intents {
+		result.Intents = append(result.Intents, flows.ExtractedIntent{Name: name, Confidence: intent.Score})
 	}
+	sort.SliceStable(result.Intents, func(i, j int) bool { return result.Intents[i].Confidence.GreaterThan(result.Intents[j].Confidence) })
 
-	for _, entity := range response.Entities {
-		result.Entities[entity.Type] = []flows.ExtractedEntity{
-			{Value: entity.Entity, Confidence: entity.Score},
+	for name, matches := range response.Prediction.Entities.Instance {
+		var entities []flows.ExtractedEntity
+		for _, match := range matches {
+			entities = append(entities, flows.ExtractedEntity{Value: match.Text, Confidence: match.Score})
 		}
+		result.Entities[name] = entities
 	}
 
 	// if sentiment analysis was included, convert to an entity
-	if response.SentimentAnalysis != nil {
+	if response.Prediction.Sentiment != nil {
 		result.Entities["sentiment"] = []flows.ExtractedEntity{
-			{Value: response.SentimentAnalysis.Label, Confidence: response.SentimentAnalysis.Score},
+			{Value: response.Prediction.Sentiment.Label, Confidence: response.Prediction.Sentiment.Score},
 		}
 	}
 

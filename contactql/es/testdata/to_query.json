@@ -1804,5 +1804,87 @@
                 ]
             }
         }
+    },
+    {
+        "description": "tickets equality",
+        "query": "tickets = 2",
+        "elastic": {
+            "match": {
+                "tickets": {
+                    "query": 2
+                }
+            }
+        }
+    },
+    {
+        "description": "tickets inequality",
+        "query": "tickets != 0",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "match": {
+                        "tickets": {
+                            "query": 0
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "tickets greater than",
+        "query": "tickets > 0",
+        "elastic": {
+            "range": {
+                "tickets": {
+                    "from": 0,
+                    "include_lower": false,
+                    "include_upper": true,
+                    "to": null
+                }
+            }
+        }
+    },
+    {
+        "description": "tickets greater than or equal",
+        "query": "tickets >= 1",
+        "elastic": {
+            "range": {
+                "tickets": {
+                    "from": 1,
+                    "include_lower": true,
+                    "include_upper": true,
+                    "to": null
+                }
+            }
+        }
+    },
+    {
+        "description": "tickets less than",
+        "query": "tickets < 1",
+        "elastic": {
+            "range": {
+                "tickets": {
+                    "from": null,
+                    "include_lower": true,
+                    "include_upper": false,
+                    "to": 1
+                }
+            }
+        }
+    },
+    {
+        "description": "tickets less than or equal",
+        "query": "tickets <= 1",
+        "elastic": {
+            "range": {
+                "tickets": {
+                    "from": null,
+                    "include_lower": true,
+                    "include_upper": true,
+                    "to": 1
+                }
+            }
+        }
     }
 ]
