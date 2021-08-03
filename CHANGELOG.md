@@ -1,3 +1,7 @@
+v0.131.0
+----------
+ * Update to LUIS API v3.0
+
 v0.130.2
 ----------
  * Add support for tickets queries in elastic
