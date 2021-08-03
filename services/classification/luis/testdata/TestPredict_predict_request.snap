@@ -1,5 +1,5 @@
-GET /luis/v2.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02?verbose=true&subscription-key=3246231&q=Hello HTTP/1.1
-Host: westus.api.cognitive.microsoft.com
+GET /luis/prediction/v3.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02/slots/production/predict?subscription-key=3246231&verbose=true&show-all-intents=true&log=true&query=book+flight+to+Quito HTTP/1.1
+Host: luismm2.cognitiveservices.azure.com
 User-Agent: Go-http-client/1.1
 Accept-Encoding: gzip
 
