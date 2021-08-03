@@ -204,14 +204,7 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 
 	switch c.PropertyKey() {
 	case contactql.AttributeUUID:
-		switch c.Operator() {
-		case contactql.OpEqual:
-			return elastic.NewTermQuery("uuid", value)
-		case contactql.OpNotEqual:
-			return not(elastic.NewTermQuery("uuid", value))
-		default:
-			panic(fmt.Sprintf("unsupported UUID attribute operator: %s", c.Operator()))
-		}
+		return textAttributeQuery(c, "uuid")
 	case contactql.AttributeID:
 		switch c.Operator() {
 		case contactql.OpEqual:
@@ -233,14 +226,7 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 			panic(fmt.Sprintf("unsupported name attribute operator: %s", c.Operator()))
 		}
 	case contactql.AttributeLanguage:
-		switch c.Operator() {
-		case contactql.OpEqual:
-			return elastic.NewTermQuery("language", value)
-		case contactql.OpNotEqual:
-			return not(elastic.NewTermQuery("language", value))
-		default:
-			panic(fmt.Sprintf("unsupported language attribute operator: %s", c.Operator()))
-		}
+		return textAttributeQuery(c, "language")
 	case contactql.AttributeCreatedOn:
 		value, _ := c.ValueAsDate(env)
 		start, end := dates.DayToUTCRange(value, value.Location())
@@ -323,6 +309,8 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 		default:
 			panic(fmt.Sprintf("unsupported group attribute operator: %s", c.Operator()))
 		}
+	case contactql.AttributeTickets:
+		return numericalAttributeQuery(c, "tickets")
 	default:
 		panic(fmt.Sprintf("unsupported contact attribute: %s", key))
 	}
@@ -363,6 +351,40 @@ func schemeConditionToElastic(env envs.Environment, c *contactql.Condition) elas
 		)
 	default:
 		panic(fmt.Sprintf("unsupported scheme operator: %s", c.Operator()))
+	}
+}
+
+func textAttributeQuery(c *contactql.Condition, name string) elastic.Query {
+	value := strings.ToLower(c.Value())
+
+	switch c.Operator() {
+	case contactql.OpEqual:
+		return elastic.NewTermQuery(name, value)
+	case contactql.OpNotEqual:
+		return not(elastic.NewTermQuery(name, value))
+	default:
+		panic(fmt.Sprintf("unsupported %s attribute operator: %s", name, c.Operator()))
+	}
+}
+
+func numericalAttributeQuery(c *contactql.Condition, name string) elastic.Query {
+	value, _ := c.ValueAsNumber()
+
+	switch c.Operator() {
+	case contactql.OpEqual:
+		return elastic.NewMatchQuery(name, value)
+	case contactql.OpNotEqual:
+		return not(elastic.NewMatchQuery(name, value))
+	case contactql.OpGreaterThan:
+		return elastic.NewRangeQuery(name).Gt(value)
+	case contactql.OpGreaterThanOrEqual:
+		return elastic.NewRangeQuery(name).Gte(value)
+	case contactql.OpLessThan:
+		return elastic.NewRangeQuery(name).Lt(value)
+	case contactql.OpLessThanOrEqual:
+		return elastic.NewRangeQuery(name).Lte(value)
+	default:
+		panic(fmt.Sprintf("unsupported %s attribute operator: %s", name, c.Operator()))
 	}
 }
 
