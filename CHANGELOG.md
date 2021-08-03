@@ -1,3 +1,7 @@
+v0.130.2
+----------
+ * Add support for tickets queries in elastic
+
 v0.130.1
 ----------
  * Also simplify converting queries to elastic
