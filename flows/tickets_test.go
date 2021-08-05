@@ -66,6 +66,8 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, "Weather", weather.Name())
 	assert.Equal(t, assets.NewTopicReference("472a7a73-96cb-4736-b567-056d987cc5b4", "Weather"), weather.Reference())
 
+	bob := sa.Users().Get("bob@nyaruka.com")
+
 	// nil object returns nil reference
 	assert.Nil(t, (*flows.Topic)(nil).Reference())
 
@@ -123,7 +125,7 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, "Very Old Ticket", tickets.All()[0].Subject())
 	assert.Equal(t, "Old Ticket", tickets.All()[1].Subject())
 
-	ticket3 := flows.OpenTicket(mailgun, weather, "New Ticket", "Where are my pants?")
+	ticket3 := flows.OpenTicket(mailgun, weather, "New Ticket", "Where are my pants?", bob)
 	ticket3.SetExternalID("24567")
 
 	assert.Equal(t, flows.TicketUUID("1ae96956-4b34-433e-8d1a-f05fe6923d6d"), ticket3.UUID())
@@ -132,6 +134,7 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, "New Ticket", ticket3.Subject())
 	assert.Equal(t, "Where are my pants?", ticket3.Body())
 	assert.Equal(t, "24567", ticket3.ExternalID())
+	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 
 	tickets.Add(ticket3)
 	assert.Equal(t, 3, tickets.Count())
