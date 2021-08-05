@@ -46,6 +46,7 @@ func TestDependencies(t *testing.T) {
 		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam")),
 		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome")),
 		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewTicketerReference("fb9cab80-4450-4a9d-ba9b-cb8df40dd233", "Support")),
+		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewTopicReference("531d3fc7-64f4-4170-927d-b477e8145dd3", "Weather")),
 		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewUserReference("jim@nyaruka.com", "Jim")),
 		flows.NewExtractedReference(node2, nil, router2, envs.NilLanguage, assets.NewGlobalReference("org_name", "Org Name")),
 	}
@@ -130,6 +131,12 @@ func TestDependencies(t *testing.T) {
 			"name": "Support",
 			"type": "ticketer",
 			"uuid": "fb9cab80-4450-4a9d-ba9b-cb8df40dd233"
+		},
+		{
+			"missing": true,
+			"name": "Weather",
+			"type": "topic",
+			"uuid": "531d3fc7-64f4-4170-927d-b477e8145dd3"
 		},
 		{
 			"missing": true,

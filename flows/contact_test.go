@@ -42,6 +42,12 @@ func TestContact(t *testing.T) {
 				"name": "Support Tickets",
 				"type": "mailgun"
 			}
+		],
+		"topics": [
+			{
+				"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+				"name": "Weather"
+			}
 		]
 	}`))
 	require.NoError(t, err)
@@ -136,7 +142,9 @@ func TestContact(t *testing.T) {
 
 	assert.Equal(t, 0, contact.Tickets().Count())
 
-	ticket := flows.OpenTicket(sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212"), "New ticket", "I have issues")
+	mailgun := sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212")
+	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
+	ticket := flows.OpenTicket(mailgun, weather, "New ticket", "I have issues")
 	contact.Tickets().Add(ticket)
 
 	assert.Equal(t, 1, contact.Tickets().Count())

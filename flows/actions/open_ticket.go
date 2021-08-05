@@ -22,6 +22,10 @@ const TypeOpenTicket string = "open_ticket"
 //       "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
 //       "name": "Support Tickets"
 //     },
+//     "topic": {
+//       "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+//       "name": "Weather"
+//     },
 //     "subject": "Needs help",
 //     "body": "@input",
 //     "result_name": "Help Ticket"
@@ -33,16 +37,18 @@ type OpenTicketAction struct {
 	onlineAction
 
 	Ticketer   *assets.TicketerReference `json:"ticketer" validate:"required"`
+	Topic      *assets.TopicReference    `json:"topic"`
 	Subject    string                    `json:"subject" validate:"required" engine:"evaluated"`
 	Body       string                    `json:"body" engine:"evaluated"`
 	ResultName string                    `json:"result_name" validate:"required"`
 }
 
 // NewOpenTicket creates a new open ticket action
-func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, subject, body, resultName string) *OpenTicketAction {
+func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, topic *assets.TopicReference, subject, body, resultName string) *OpenTicketAction {
 	return &OpenTicketAction{
 		baseAction: newBaseAction(TypeOpenTicket, uuid),
 		Ticketer:   ticketer,
+		Topic:      topic,
 		Subject:    subject,
 		Body:       body,
 		ResultName: resultName,
@@ -54,6 +60,12 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 	ticketers := run.Session().Assets().Ticketers()
 	ticketer := ticketers.Get(a.Ticketer.UUID)
 
+	topics := run.Session().Assets().Topics()
+	var topic *flows.Topic
+	if a.Topic != nil {
+		topic = topics.Get(a.Topic.UUID)
+	}
+
 	evaluatedSubject, err := run.EvaluateTemplate(a.Subject)
 	if err != nil {
 		logEvent(events.NewError(err))
@@ -63,7 +75,7 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 		logEvent(events.NewError(err))
 	}
 
-	ticket := a.open(run, step, ticketer, evaluatedSubject, evaluatedBody, logEvent)
+	ticket := a.open(run, step, ticketer, topic, evaluatedSubject, evaluatedBody, logEvent)
 	if ticket != nil {
 		a.saveResult(run, step, a.ResultName, string(ticket.UUID()), CategorySuccess, "", "", nil, logEvent)
 	} else {
@@ -73,7 +85,7 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 	return nil
 }
 
-func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *flows.Ticketer, subject, body string, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *flows.Ticketer, topic *flows.Topic, subject, body string, logEvent flows.EventCallback) *flows.Ticket {
 	if run.Session().BatchStart() {
 		logEvent(events.NewErrorf("can't open tickets during batch starts"))
 		return nil
@@ -81,6 +93,10 @@ func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *fl
 
 	if ticketer == nil {
 		logEvent(events.NewDependencyError(a.Ticketer))
+		return nil
+	}
+	if a.Topic != nil && topic == nil {
+		logEvent(events.NewDependencyError(a.Topic))
 		return nil
 	}
 
@@ -92,7 +108,7 @@ func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *fl
 
 	httpLogger := &flows.HTTPLogger{}
 
-	ticket, err := svc.Open(run.Session(), subject, body, httpLogger.Log)
+	ticket, err := svc.Open(run.Session(), topic, subject, body, httpLogger.Log)
 	if err != nil {
 		logEvent(events.NewError(err))
 	}

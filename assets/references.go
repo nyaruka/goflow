@@ -365,6 +365,43 @@ func (r *TicketerReference) String() string {
 
 var _ UUIDReference = (*TicketerReference)(nil)
 
+// TopicReference is used to reference a topic
+type TopicReference struct {
+	UUID TopicUUID `json:"uuid" validate:"required,uuid"`
+	Name string    `json:"name"`
+}
+
+// NewTopicReference creates a new topic reference with the given UUID and name
+func NewTopicReference(uuid TopicUUID, name string) *TopicReference {
+	return &TopicReference{UUID: uuid, Name: name}
+}
+
+// Type returns the name of the asset type
+func (r *TopicReference) Type() string {
+	return "topic"
+}
+
+// GenericUUID returns the untyped UUID
+func (r *TopicReference) GenericUUID() uuids.UUID {
+	return uuids.UUID(r.UUID)
+}
+
+// Identity returns the unique identity of the asset
+func (r *TopicReference) Identity() string {
+	return string(r.UUID)
+}
+
+// Variable returns whether this a variable (vs concrete) reference
+func (r *TopicReference) Variable() bool {
+	return false
+}
+
+func (r *TopicReference) String() string {
+	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
+}
+
+var _ UUIDReference = (*TopicReference)(nil)
+
 // UserReference is used to reference a user
 type UserReference struct {
 	Email string `json:"email" validate:"required"`

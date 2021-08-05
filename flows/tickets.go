@@ -16,6 +16,7 @@ type TicketUUID uuids.UUID
 type Ticket struct {
 	uuid       TicketUUID
 	ticketer   *Ticketer
+	topic      *Topic
 	subject    string
 	body       string
 	externalID string
@@ -23,10 +24,11 @@ type Ticket struct {
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, ticketer *Ticketer, subject, body, externalID string, assignee *User) *Ticket {
+func NewTicket(uuid TicketUUID, ticketer *Ticketer, topic *Topic, subject, body, externalID string, assignee *User) *Ticket {
 	return &Ticket{
 		uuid:       uuid,
 		ticketer:   ticketer,
+		topic:      topic,
 		subject:    subject,
 		body:       body,
 		externalID: externalID,
@@ -35,12 +37,13 @@ func NewTicket(uuid TicketUUID, ticketer *Ticketer, subject, body, externalID st
 }
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
-func OpenTicket(ticketer *Ticketer, subject, body string) *Ticket {
-	return NewTicket(TicketUUID(uuids.New()), ticketer, subject, body, "", nil)
+func OpenTicket(ticketer *Ticketer, topic *Topic, subject, body string) *Ticket {
+	return NewTicket(TicketUUID(uuids.New()), ticketer, topic, subject, body, "", nil)
 }
 
 func (t *Ticket) UUID() TicketUUID        { return t.uuid }
 func (t *Ticket) Ticketer() *Ticketer     { return t.ticketer }
+func (t *Ticket) Topic() *Topic           { return t.topic }
 func (t *Ticket) Subject() string         { return t.subject }
 func (t *Ticket) Body() string            { return t.body }
 func (t *Ticket) ExternalID() string      { return t.externalID }
@@ -70,6 +73,7 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 type ticketEnvelope struct {
 	UUID       TicketUUID                `json:"uuid"                   validate:"required,uuid4"`
 	Ticketer   *assets.TicketerReference `json:"ticketer"               validate:"omitempty,dive"`
+	Topic      *assets.TopicReference    `json:"topic"               validate:"omitempty,dive"`
 	Subject    string                    `json:"subject"`
 	Body       string                    `json:"body"`
 	ExternalID string                    `json:"external_id,omitempty"`
@@ -90,6 +94,14 @@ func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (
 		missing(e.Ticketer, nil)
 	}
 
+	var topic *Topic
+	if e.Topic != nil {
+		topic = sa.Topics().Get(e.Topic.UUID)
+		if topic == nil {
+			missing(e.Topic, nil)
+		}
+	}
+
 	var assignee *User
 	if e.Assignee != nil {
 		assignee = sa.Users().Get(e.Assignee.Email)
@@ -101,6 +113,7 @@ func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (
 	return &Ticket{
 		uuid:       e.UUID,
 		ticketer:   ticketer,
+		topic:      topic,
 		subject:    e.Subject,
 		body:       e.Body,
 		externalID: e.ExternalID,
@@ -115,6 +128,11 @@ func (t *Ticket) MarshalJSON() ([]byte, error) {
 		ticketerRef = t.ticketer.Reference()
 	}
 
+	var topicRef *assets.TopicReference
+	if t.topic != nil {
+		topicRef = t.topic.Reference()
+	}
+
 	var assigneeRef *assets.UserReference
 	if t.assignee != nil {
 		assigneeRef = t.assignee.Reference()
@@ -123,6 +141,7 @@ func (t *Ticket) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketEnvelope{
 		UUID:       t.uuid,
 		Ticketer:   ticketerRef,
+		Topic:      topicRef,
 		Subject:    t.subject,
 		Body:       t.body,
 		ExternalID: t.externalID,

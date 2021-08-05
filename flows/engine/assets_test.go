@@ -142,6 +142,10 @@ func (s *testSource) Ticketers() ([]assets.Ticketer, error) {
 	return nil, s.err("ticketers")
 }
 
+func (s *testSource) Topics() ([]assets.Topic, error) {
+	return nil, s.err("topics")
+}
+
 func (s *testSource) Users() ([]assets.User, error) {
 	return nil, s.err("users")
 }
