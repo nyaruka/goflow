@@ -144,7 +144,7 @@ func TestContact(t *testing.T) {
 
 	mailgun := sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
-	ticket := flows.OpenTicket(mailgun, weather, "New ticket", "I have issues")
+	ticket := flows.OpenTicket(mailgun, weather, "New ticket", "I have issues", nil)
 	contact.Tickets().Add(ticket)
 
 	assert.Equal(t, 1, contact.Tickets().Count())

@@ -80,7 +80,7 @@ type ClassificationService interface {
 // TicketService provides ticketing functionality to the engine
 type TicketService interface {
 	// Open tries to open a new ticket
-	Open(session Session, topic *Topic, subject, body string, logHTTP HTTPLogCallback) (*Ticket, error)
+	Open(session Session, topic *Topic, subject, body string, assignee *User, logHTTP HTTPLogCallback) (*Ticket, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer

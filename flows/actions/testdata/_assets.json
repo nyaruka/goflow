@@ -274,5 +274,11 @@
             "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
             "name": "Computers"
         }
+    ],
+    "users": [
+        {
+            "email": "bob@nyaruka.com",
+            "name": "Bob"
+        }
     ]
 }
