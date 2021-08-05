@@ -81,21 +81,21 @@ type Client struct {
 	httpRetries *httpx.RetryConfig
 	httpAccess  *httpx.AccessConfig
 	endpoint    string
-	slot        string
 	appID       string
 	key         string
+	slot        string
 }
 
 // NewClient creates a new client
-func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAccess *httpx.AccessConfig, endpoint, slot, appID, key string) *Client {
+func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAccess *httpx.AccessConfig, endpoint, appID, key, slot string) *Client {
 	return &Client{
 		httpClient:  httpClient,
 		httpRetries: httpRetries,
 		httpAccess:  httpAccess,
 		endpoint:    endpoint,
-		slot:        slot,
 		appID:       appID,
 		key:         key,
+		slot:        slot,
 	}
 }
 

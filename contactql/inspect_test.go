@@ -39,9 +39,9 @@ func TestInspect(t *testing.T) {
 			},
 		},
 		{
-			query: "AGE > 18 AND name != \"\" OR twitter = bobby OR tel ~1234",
+			query: "AGE > 18 AND name != \"\" OR twitter = bobby OR tel ~1234 AND tickets > 0",
 			inspection: &contactql.Inspection{
-				Attributes: []string{"name"},
+				Attributes: []string{"name", "tickets"},
 				Schemes:    []string{"tel", "twitter"},
 				Fields: []*assets.FieldReference{
 					assets.NewFieldReference("age", ""),
@@ -51,10 +51,10 @@ func TestInspect(t *testing.T) {
 			},
 		},
 		{
-			query:    "AGE > 18 AND name != \"\" OR twitter = bobby OR tel ~1234",
+			query:    "AGE > 18 AND name != \"\" OR twitter = bobby OR tel ~1234 AND tickets > 0",
 			resolver: resolver,
 			inspection: &contactql.Inspection{
-				Attributes: []string{"name"},
+				Attributes: []string{"name", "tickets"},
 				Schemes:    []string{"tel", "twitter"},
 				Fields: []*assets.FieldReference{
 					assets.NewFieldReference("age", "Age"),

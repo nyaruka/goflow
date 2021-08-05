@@ -78,9 +78,9 @@ func TestService(t *testing.T) {
 		nil,
 		test.NewClassifier("Booking", "luis", []string{"book_flight", "book_hotel"}),
 		"https://luismm2.cognitiveservices.azure.com/",
-		"production",
 		"f96abf2f-3b53-4766-8ea6-09a655222a02",
 		"3246231",
+		"production",
 	)
 
 	httpLogger := &flows.HTTPLogger{}
