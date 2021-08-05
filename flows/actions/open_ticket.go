@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -26,7 +27,6 @@ const TypeOpenTicket string = "open_ticket"
 //       "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
 //       "name": "Weather"
 //     },
-//     "subject": "Needs help",
 //     "body": "@input",
 //     "assignee": {"email": "bob@nyaruka.com", "name": "Bob McTickets"},
 //     "result_name": "Help Ticket"
@@ -39,7 +39,7 @@ type OpenTicketAction struct {
 
 	Ticketer   *assets.TicketerReference `json:"ticketer" validate:"required,dive"`
 	Topic      *assets.TopicReference    `json:"topic" validate:"omitempty,dive"`
-	Subject    string                    `json:"subject" validate:"required" engine:"evaluated"`
+	Subject    string                    `json:"subject" engine:"evaluated"`
 	Body       string                    `json:"body" engine:"evaluated"`
 	Assignee   *assets.UserReference     `json:"assignee" validate:"omitempty,dive"`
 	ResultName string                    `json:"result_name" validate:"required"`
@@ -56,6 +56,15 @@ func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, to
 		Assignee:   assignee,
 		ResultName: resultName,
 	}
+}
+
+// Validate validates our action is valid
+func (a *OpenTicketAction) Validate() error {
+	if (a.Subject == "" && a.Topic == nil) || (a.Subject != "" && a.Topic != nil) {
+		return errors.New("must have one of 'subject' or 'topic'")
+	}
+
+	return nil
 }
 
 // Execute runs this action

@@ -180,7 +180,7 @@
                         {
                             "created_on": "2019-10-16T13:59:30.123456789Z",
                             "elapsed_ms": 1,
-                            "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"New ticket\"}",
+                            "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"\"}",
                             "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                             "status": "success",
                             "url": "http://nyaruka.tickets.com/tickets.json"
@@ -200,7 +200,7 @@
                     "ticket": {
                         "body": "Last message: Rats",
                         "external_id": "123456",
-                        "subject": "New ticket",
+                        "subject": "",
                         "ticketer": {
                             "name": "Support",
                             "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
@@ -222,7 +222,7 @@
                     "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                 },
                 {
-                    "body": "[{\"assignee\":null,\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"assignee\":null,\"body\":\"Last message: Rats\",\"subject\":\"New ticket\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
+                    "body": "[{\"assignee\":null,\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"assignee\":null,\"body\":\"Last message: Rats\",\"subject\":\"\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
                     "created_on": "2018-07-06T12:30:29.123456789Z",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "subject": "New ticket: 5ecda5fc-951c-437b-a17e-f85e49829fb9",
@@ -254,7 +254,7 @@
                         {
                             "body": "Last message: Rats",
                             "external_id": "123456",
-                            "subject": "New ticket",
+                            "subject": "",
                             "ticketer": {
                                 "name": "Support",
                                 "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
@@ -336,7 +336,7 @@
                                     {
                                         "created_on": "2019-10-16T13:59:30.123456789Z",
                                         "elapsed_ms": 1,
-                                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"New ticket\"}",
+                                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"\"}",
                                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                                         "status": "success",
                                         "url": "http://nyaruka.tickets.com/tickets.json"
@@ -356,7 +356,7 @@
                                 "ticket": {
                                     "body": "Last message: Rats",
                                     "external_id": "123456",
-                                    "subject": "New ticket",
+                                    "subject": "",
                                     "ticketer": {
                                         "name": "Support",
                                         "uuid": "1c0e9407-0e0f-4a00-b08a-c611c225d38d"
@@ -378,7 +378,7 @@
                                 "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "body": "[{\"assignee\":null,\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"assignee\":null,\"body\":\"Last message: Rats\",\"subject\":\"New ticket\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
+                                "body": "[{\"assignee\":null,\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"assignee\":null,\"body\":\"Last message: Rats\",\"subject\":\"\",\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
                                 "created_on": "2018-07-06T12:30:29.123456789Z",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "subject": "New ticket: 5ecda5fc-951c-437b-a17e-f85e49829fb9",
