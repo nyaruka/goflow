@@ -1,3 +1,8 @@
+v0.131.1
+----------
+ * Move slot param for LUIS classifiers to last
+ * Add util cmd for testing classifier services
+
 v0.131.0
 ----------
  * Update to LUIS API v3.0
