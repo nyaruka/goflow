@@ -45,7 +45,7 @@ func main() {
 
 	if luisAppID != "" && luisKey != "" {
 		c := flows.NewClassifier(types.NewClassifier("ea166a58-a71d-404e-91c9-d28aeb396bc5", "Test", "luis", nil))
-		svcs["luis"] = luis.NewService(http.DefaultClient, nil, nil, c, luisEndpoint, luisSlot, luisAppID, luisKey)
+		svcs["luis"] = luis.NewService(http.DefaultClient, nil, nil, c, luisEndpoint, luisAppID, luisKey, luisSlot)
 	}
 
 	classifications, logs, err := classify(svcs, args[0])
