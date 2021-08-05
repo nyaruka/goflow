@@ -1,3 +1,9 @@
+v0.132.0
+----------
+ * Require either a subject or a topic to open a ticket but not both
+ * Add assignee as optional field to open ticket actions
+ * Add topics to tickets
+
 v0.131.1
 ----------
  * Move slot param for LUIS classifiers to last
