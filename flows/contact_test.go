@@ -136,6 +136,7 @@ func TestContact(t *testing.T) {
 		"twitterid":  nil,
 		"viber":      nil,
 		"vk":         nil,
+		"webchat":    nil,
 		"wechat":     nil,
 		"whatsapp":   nil,
 	}), flows.ContextFunc(env, contact.URNs().MapContext))

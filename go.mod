@@ -8,7 +8,7 @@ require (
 	github.com/go-mail/mail v2.3.1+incompatible
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
-	github.com/nyaruka/gocommon v1.13.0
+	github.com/nyaruka/gocommon v1.13.1
 	github.com/nyaruka/phonenumbers v1.0.58
 	github.com/olivere/elastic/v7 v7.0.22
 	github.com/pkg/errors v0.9.1
