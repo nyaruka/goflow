@@ -1,3 +1,7 @@
+v0.132.1
+----------
+ * Update to latest gocommon and add webchat URN schemes
+
 v0.132.0
 ----------
  * Require either a subject or a topic to open a ticket but not both
