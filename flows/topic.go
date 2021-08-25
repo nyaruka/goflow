@@ -1,6 +1,8 @@
 package flows
 
 import (
+	"strings"
+
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -47,6 +49,7 @@ var _ assets.Topic = (*Topic)(nil)
 
 // TopicAssets provides access to all topic assets
 type TopicAssets struct {
+	all    []*Topic
 	byUUID map[assets.TopicUUID]*Topic
 }
 
@@ -57,6 +60,7 @@ func NewTopicAssets(topics []assets.Topic) *TopicAssets {
 	}
 	for _, asset := range topics {
 		topic := NewTopic(asset)
+		s.all = append(s.all, topic)
 		s.byUUID[topic.UUID()] = topic
 	}
 	return s
@@ -65,4 +69,15 @@ func NewTopicAssets(topics []assets.Topic) *TopicAssets {
 // Get returns the topic with the given UUID
 func (s *TopicAssets) Get(uuid assets.TopicUUID) *Topic {
 	return s.byUUID[uuid]
+}
+
+// FindByName looks for a topic with the given name (case-insensitive)
+func (s *TopicAssets) FindByName(name string) *Topic {
+	name = strings.ToLower(name)
+	for _, topic := range s.all {
+		if strings.ToLower(topic.Name()) == name {
+			return topic
+		}
+	}
+	return nil
 }

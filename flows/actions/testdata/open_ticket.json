@@ -397,7 +397,10 @@
                         "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
                         "name": "Support Tickets"
                     },
-                    "topic": null,
+                    "topic": {
+                        "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
+                        "name": "General"
+                    },
                     "subject": "Need help",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456"
@@ -446,7 +449,10 @@
                         "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
                         "name": "Support Tickets"
                     },
-                    "topic": null,
+                    "topic": {
+                        "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
+                        "name": "General"
+                    },
                     "subject": "Need help",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456"
@@ -529,7 +535,10 @@
                         "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
                         "name": "Support Tickets"
                     },
-                    "topic": null,
+                    "topic": {
+                        "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
+                        "name": "General"
+                    },
                     "subject": "Need help ",
                     "body": "Where are my cookies? ",
                     "external_id": "123456"
