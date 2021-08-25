@@ -1,3 +1,8 @@
+v0.133.0
+----------
+ * If open ticket action doesn't specify a topic, default to General
+ * Expose topic instead of subject in context for ticket objects
+
 v0.132.1
 ----------
  * Update to latest gocommon and add webchat URN schemes
