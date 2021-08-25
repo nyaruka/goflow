@@ -46,38 +46,38 @@
         },
         "issues": [
             {
+                "type": "missing_dependency",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                 "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                "description": "missing field dependency 'county'",
                 "dependency": {
                     "key": "county",
                     "name": "",
                     "type": "field"
-                },
-                "description": "missing field dependency 'county'",
-                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                "type": "missing_dependency"
+                }
             },
             {
+                "type": "missing_dependency",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                 "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
-                "dependency": {
-                    "key": "county",
-                    "name": "",
-                    "type": "field"
-                },
-                "description": "missing field dependency 'county'",
                 "language": "spa",
-                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                "type": "missing_dependency"
+                "description": "missing field dependency 'county'",
+                "dependency": {
+                    "key": "county",
+                    "name": "",
+                    "type": "field"
+                }
             },
             {
-                "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                "dependency": {
-                    "name": "Spam",
-                    "type": "label",
-                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
-                },
-                "description": "missing label dependency '3f65d88a-95dc-4140-9451-943e94e06fea'",
+                "type": "missing_dependency",
                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                "type": "missing_dependency"
+                "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                "description": "missing label dependency '3f65d88a-95dc-4140-9451-943e94e06fea'",
+                "dependency": {
+                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                    "name": "Spam",
+                    "type": "label"
+                }
             }
         ]
     },
@@ -144,25 +144,25 @@
         },
         "issues": [
             {
-                "dependency": {
-                    "name": "Testers",
-                    "type": "group",
-                    "uuid": "ade39253-0371-4dde-9df4-95245fe6a3a8"
-                },
-                "description": "missing group dependency 'ade39253-0371-4dde-9df4-95245fe6a3a8'",
+                "type": "missing_dependency",
                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                "type": "missing_dependency"
+                "description": "missing group dependency 'ade39253-0371-4dde-9df4-95245fe6a3a8'",
+                "dependency": {
+                    "uuid": "ade39253-0371-4dde-9df4-95245fe6a3a8",
+                    "name": "Testers",
+                    "type": "group"
+                }
             },
             {
-                "dependency": {
-                    "name": "Ensayadores",
-                    "type": "group",
-                    "uuid": "db6d7535-069f-43fc-a2e0-8d53386072bf"
-                },
-                "description": "missing group dependency 'db6d7535-069f-43fc-a2e0-8d53386072bf'",
-                "language": "spa",
+                "type": "missing_dependency",
                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                "type": "missing_dependency"
+                "language": "spa",
+                "description": "missing group dependency 'db6d7535-069f-43fc-a2e0-8d53386072bf'",
+                "dependency": {
+                    "uuid": "db6d7535-069f-43fc-a2e0-8d53386072bf",
+                    "name": "Ensayadores",
+                    "type": "group"
+                }
             }
         ]
     },

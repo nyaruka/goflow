@@ -138,9 +138,9 @@
         },
         "events": [
             {
+                "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "text": "can't set channel that can't send as the preferred channel",
-                "type": "error"
+                "text": "can't set channel that can't send as the preferred channel"
             }
         ]
     }

@@ -2,6 +2,8 @@ package flows
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 )
 
 // Topic represents a ticket topic
@@ -15,14 +17,30 @@ func NewTopic(asset assets.Topic) *Topic {
 }
 
 // Asset returns the underlying asset
-func (l *Topic) Asset() assets.Topic { return l.Topic }
+func (t *Topic) Asset() assets.Topic { return t.Topic }
 
 // Reference returns a reference to this topic
-func (l *Topic) Reference() *assets.TopicReference {
-	if l == nil {
+func (t *Topic) Reference() *assets.TopicReference {
+	if t == nil {
 		return nil
 	}
-	return assets.NewTopicReference(l.UUID(), l.Name())
+	return assets.NewTopicReference(t.UUID(), t.Name())
+}
+
+// Context returns the properties available in expressions
+//
+//   __default__:text -> the name
+//   uuid:text -> the UUID of the topic
+//   name:text -> the name of the topic
+//
+// @context topic
+func (t *Topic) Context(env envs.Environment) map[string]types.XValue {
+
+	return map[string]types.XValue{
+		"__default__": types.NewXText(t.Name()),
+		"uuid":        types.NewXText(string(t.UUID())),
+		"name":        types.NewXText(t.Name()),
+	}
 }
 
 var _ assets.Topic = (*Topic)(nil)
