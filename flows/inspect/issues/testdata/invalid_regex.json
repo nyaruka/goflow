@@ -102,15 +102,15 @@
         "issues": [
             {
                 "type": "invalid_regex",
-                "description": "invalid regex: ^^.(",
                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                 "language": "spa",
+                "description": "invalid regex: ^^.(",
                 "regex": "^^.("
             },
             {
                 "type": "invalid_regex",
-                "description": "invalid regex: [[",
                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "description": "invalid regex: [[",
                 "regex": "[["
             }
         ]

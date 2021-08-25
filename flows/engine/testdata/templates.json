@@ -389,15 +389,15 @@
     },
     {
         "template": "@(json(contact.tickets))",
-        "output": "[{\"assignee\":null,\"body\":\"I have a problem\",\"subject\":\"Old ticket\",\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"first_name\":\"Bob\",\"name\":\"Bob\"},\"body\":\"What day is it?\",\"subject\":\"Question\",\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}]"
+        "output": "[{\"assignee\":null,\"body\":\"I have a problem\",\"topic\":null,\"uuid\":\"e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52\"},{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"first_name\":\"Bob\",\"name\":\"Bob\"},\"body\":\"What day is it?\",\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}]"
     },
     {
         "template": "@ticket",
-        "output": "{assignee: Bob, body: What day is it?, subject: Question, uuid: 78d1fe0d-7e39-461e-81c3-a6a25f15ed69}"
+        "output": "{assignee: Bob, body: What day is it?, topic: Weather, uuid: 78d1fe0d-7e39-461e-81c3-a6a25f15ed69}"
     },
     {
         "template": "@(json(ticket))",
-        "output": "{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"first_name\":\"Bob\",\"name\":\"Bob\"},\"body\":\"What day is it?\",\"subject\":\"Question\",\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}"
+        "output": "{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"first_name\":\"Bob\",\"name\":\"Bob\"},\"body\":\"What day is it?\",\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}"
     },
     {
         "template": "@(json(contact))",
@@ -435,7 +435,7 @@
                 {
                     "assignee": null,
                     "body": "I have a problem",
-                    "subject": "Old ticket",
+                    "topic": null,
                     "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
                 },
                 {
@@ -445,7 +445,10 @@
                         "name": "Bob"
                     },
                     "body": "What day is it?",
-                    "subject": "Question",
+                    "topic": {
+                        "name": "Weather",
+                        "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
+                    },
                     "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
                 }
             ],
@@ -516,7 +519,7 @@
                     {
                         "assignee": null,
                         "body": "I have a problem",
-                        "subject": "Old ticket",
+                        "topic": null,
                         "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
                     },
                     {
@@ -526,7 +529,10 @@
                             "name": "Bob"
                         },
                         "body": "What day is it?",
-                        "subject": "Question",
+                        "topic": {
+                            "name": "Weather",
+                            "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
+                        },
                         "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
                     }
                 ],
@@ -738,7 +744,7 @@
                     {
                         "assignee": null,
                         "body": "I have a problem",
-                        "subject": "Old ticket",
+                        "topic": null,
                         "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
                     },
                     {
@@ -748,7 +754,10 @@
                             "name": "Bob"
                         },
                         "body": "What day is it?",
-                        "subject": "Question",
+                        "topic": {
+                            "name": "Weather",
+                            "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
+                        },
                         "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
                     }
                 ],
@@ -830,7 +839,7 @@
                         {
                             "assignee": null,
                             "body": "I have a problem",
-                            "subject": "Old ticket",
+                            "topic": null,
                             "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
                         },
                         {
@@ -840,7 +849,10 @@
                                 "name": "Bob"
                             },
                             "body": "What day is it?",
-                            "subject": "Question",
+                            "topic": {
+                                "name": "Weather",
+                                "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
+                            },
                             "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
                         }
                     ],

@@ -17,7 +17,7 @@ type Ticket struct {
 	uuid       TicketUUID
 	ticketer   *Ticketer
 	topic      *Topic
-	subject    string
+	subject    string // deprecated
 	body       string
 	externalID string
 	assignee   *User
@@ -60,7 +60,7 @@ func (t *Ticket) Assignee() *User         { return t.assignee }
 func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"uuid":     types.NewXText(string(t.uuid)),
-		"subject":  types.NewXText(t.subject),
+		"topic":    Context(env, t.topic),
 		"body":     types.NewXText(t.body),
 		"assignee": Context(env, t.assignee),
 	}
