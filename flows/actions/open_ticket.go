@@ -76,6 +76,8 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 	var topic *flows.Topic
 	if a.Topic != nil {
 		topic = sa.Topics().Get(a.Topic.UUID)
+	} else {
+		topic = sa.Topics().FindByName("General") // TODO remove when editor adds topics
 	}
 	var assignee *flows.User
 	if a.Assignee != nil {
