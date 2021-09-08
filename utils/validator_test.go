@@ -31,6 +31,7 @@ type TestObject struct {
 	Things     []string  `json:"things" validate:"min=1,max=3,dive,http_method"`
 	DateFormat string    `json:"date_format" validate:"date_format"`
 	TimeFormat string    `json:"time_format" validate:"time_format"`
+	Email      string    `json:"email" validate:"email"`
 	Hex        string    `json:"hex" validate:"hexadecimal"`
 }
 
@@ -49,6 +50,7 @@ func TestValidate(t *testing.T) {
 		Things:     []string{"GET", "POST", "PATCH"},
 		DateFormat: "DD-MM-YYYY",
 		TimeFormat: "hh:mm:ss",
+		Email:      "bob@nyaruka.com",
 		Hex:        "0A",
 	})
 	assert.Nil(t, errs)
@@ -65,6 +67,7 @@ func TestValidate(t *testing.T) {
 		Things:     nil,
 		DateFormat: "hh:mm",
 		TimeFormat: "DD-MM",
+		Email:      " # ",
 		Hex:        "XY",
 	})
 	assert.NotNil(t, errs)
@@ -80,6 +83,7 @@ func TestValidate(t *testing.T) {
 		`field 'things' must have a minimum of 1 items`,
 		`field 'date_format' is not a valid date format`,
 		`field 'time_format' is not a valid time format`,
+		`field 'email' is not a valid email address`,
 		`field 'hex' failed tag 'hexadecimal'`,
 	}, msgs)
 
@@ -93,6 +97,7 @@ func TestValidate(t *testing.T) {
 			SomeValue: 2,
 		},
 		Things: []string{"UGHHH"},
+		Email:  "a@b.c",
 		Hex:    "ZY",
 	})
 	assert.NotNil(t, errs)

@@ -64,7 +64,6 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 	}
 
 	var groups []*flows.Group
-	var err error
 
 	if a.AllGroups {
 		for _, group := range run.Session().Assets().Groups().All() {
@@ -73,9 +72,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 			}
 		}
 	} else {
-		if groups, err = resolveGroups(run, a.Groups, logEvent); err != nil {
-			return err
-		}
+		groups = resolveGroups(run, a.Groups, logEvent)
 	}
 
 	a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsRemove), logModifier, logEvent)

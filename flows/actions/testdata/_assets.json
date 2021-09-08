@@ -283,6 +283,10 @@
         {
             "email": "bob@nyaruka.com",
             "name": "Bob"
+        },
+        {
+            "email": "jim@nyaruka.com",
+            "name": "Jim"
         }
     ]
 }
