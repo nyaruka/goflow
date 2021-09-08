@@ -1,3 +1,7 @@
+v0.134.0
+----------
+ * Add support for variable user references to open ticket actions
+
 v0.133.1
 ----------
  * Update to latest gocommon/phonenumbers
