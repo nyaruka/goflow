@@ -194,8 +194,8 @@ func TestUserReferenceUnmarsal(t *testing.T) {
 	assert.EqualError(t, err, "unexpected end of JSON input")
 
 	// or invalid object
-	err = utils.UnmarshalAndValidate([]byte(`{"email": ""}`), user)
-	assert.EqualError(t, err, "field 'email' is required")
+	err = utils.UnmarshalAndValidate([]byte(`{"email": "!!!!"}`), user)
+	assert.EqualError(t, err, "field 'email' is not a valid email address")
 }
 
 func TestTypedReference(t *testing.T) {

@@ -51,10 +51,7 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, logMo
 		return nil
 	}
 
-	labels, err := resolveLabels(run, a.Labels, logEvent)
-	if err != nil {
-		return err
-	}
+	labels := resolveLabels(run, a.Labels, logEvent)
 
 	if len(labels) > 0 {
 		logEvent(events.NewInputLabelsAdded(input.UUID(), labels))

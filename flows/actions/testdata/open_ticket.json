@@ -478,6 +478,292 @@
         }
     },
     {
+        "description": "Result with category success created and contact tickets appended to if ticket opened (using variable assignee)",
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "ticketer": {
+                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                "name": "Support Tickets"
+            },
+            "topic": {
+                "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                "name": "Weather"
+            },
+            "subject": "",
+            "body": "Last message: @input.text",
+            "assignee": {
+                "email_match": "@(lower(\"JIM\" & \"@NYARUKA.COM\"))"
+            },
+            "result_name": "Ticket"
+        },
+        "events": [
+            {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status": "success",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"\"}",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                        "elapsed_ms": 1
+                    }
+                ]
+            },
+            {
+                "type": "ticket_opened",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "ticket": {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "ticketer": {
+                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                        "name": "Support Tickets"
+                    },
+                    "topic": {
+                        "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                        "name": "Weather"
+                    },
+                    "subject": "",
+                    "body": "Last message: Hi everybody",
+                    "external_id": "123456",
+                    "assignee": {
+                        "email": "jim@nyaruka.com",
+                        "name": "Jim"
+                    }
+                }
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Ticket",
+                "value": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "category": "Success"
+            }
+        ],
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "last_seen_on": "2018-10-18T14:20:30.000123456Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "fields": {
+                "gender": {
+                    "text": "Male"
+                }
+            },
+            "tickets": [
+                {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "ticketer": {
+                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                        "name": "Support Tickets"
+                    },
+                    "topic": {
+                        "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                        "name": "Weather"
+                    },
+                    "subject": "",
+                    "body": "Last message: Hi everybody",
+                    "external_id": "123456",
+                    "assignee": {
+                        "email": "jim@nyaruka.com",
+                        "name": "Jim"
+                    }
+                }
+            ]
+        },
+        "templates": [
+            "Last message: @input.text",
+            "@(lower(\"JIM\" & \"@NYARUKA.COM\"))"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets",
+                    "type": "ticketer"
+                },
+                {
+                    "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                    "name": "Weather",
+                    "type": "topic"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Ticket still opened without assignee if assignee not found",
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "ticketer": {
+                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                "name": "Support Tickets"
+            },
+            "topic": {
+                "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                "name": "Weather"
+            },
+            "subject": "",
+            "body": "Last message: @input.text",
+            "assignee": {
+                "email_match": "@(\"EVE@NYARUKA.COM\")"
+            },
+            "result_name": "Ticket"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "no such user with email 'EVE@NYARUKA.COM'"
+            },
+            {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status": "success",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"\"}",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                        "created_on": "2019-10-16T13:59:30.123456789Z",
+                        "elapsed_ms": 1
+                    }
+                ]
+            },
+            {
+                "type": "ticket_opened",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "ticket": {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "ticketer": {
+                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                        "name": "Support Tickets"
+                    },
+                    "topic": {
+                        "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                        "name": "Weather"
+                    },
+                    "subject": "",
+                    "body": "Last message: Hi everybody",
+                    "external_id": "123456"
+                }
+            },
+            {
+                "type": "run_result_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "name": "Ticket",
+                "value": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "category": "Success"
+            }
+        ],
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "last_seen_on": "2018-10-18T14:20:30.000123456Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "fields": {
+                "gender": {
+                    "text": "Male"
+                }
+            },
+            "tickets": [
+                {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "ticketer": {
+                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                        "name": "Support Tickets"
+                    },
+                    "topic": {
+                        "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                        "name": "Weather"
+                    },
+                    "subject": "",
+                    "body": "Last message: Hi everybody",
+                    "external_id": "123456"
+                }
+            ]
+        },
+        "templates": [
+            "Last message: @input.text",
+            "@(\"EVE@NYARUKA.COM\")"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets",
+                    "type": "ticketer"
+                },
+                {
+                    "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                    "name": "Weather",
+                    "type": "topic"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
         "description": "Error events if subject or body contain expression errors",
         "action": {
             "type": "open_ticket",

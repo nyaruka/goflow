@@ -81,7 +81,7 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 	}
 	var assignee *flows.User
 	if a.Assignee != nil {
-		assignee = sa.Users().Get(a.Assignee.Email)
+		assignee = resolveUser(run, a.Assignee, logEvent)
 	}
 
 	evaluatedSubject, err := run.EvaluateTemplate(a.Subject)

@@ -20,6 +20,7 @@ type ErrorMessageFunc func(validator.FieldError) string
 
 var messageFuncs = map[string]ErrorMessageFunc{
 	"required": func(e validator.FieldError) string { return "is required" },
+	"email":    func(e validator.FieldError) string { return "is not a valid email address" },
 	"uuid":     func(e validator.FieldError) string { return "must be a valid UUID" },
 	"uuid4":    func(e validator.FieldError) string { return "must be a valid UUID4" },
 	"url":      func(e validator.FieldError) string { return "is not a valid URL" },
