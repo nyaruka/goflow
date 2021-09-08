@@ -1,10 +1,10 @@
-package types_test
+package static_test
 
 import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/static/types"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 
@@ -12,7 +12,7 @@ import (
 )
 
 func TestChannel(t *testing.T) {
-	channel := types.NewChannel(
+	channel := static.NewChannel(
 		assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"),
 		"Android",
 		"+234151",
@@ -33,7 +33,7 @@ func TestChannel(t *testing.T) {
 	// check that UUIDs aren't required to be valid UUID4s
 	assert.Nil(t, utils.Validate(channel))
 
-	channel = types.NewTelChannel(
+	channel = static.NewTelChannel(
 		assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"),
 		"Android",
 		"+234151",

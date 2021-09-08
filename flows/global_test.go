@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	atypes "github.com/nyaruka/goflow/assets/static/types"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -14,8 +14,8 @@ import (
 )
 
 func TestGlobals(t *testing.T) {
-	ga1 := atypes.NewGlobal("org_name", "Org Name", "U-Report")
-	ga2 := atypes.NewGlobal("access_token", "Access Token", "674372272")
+	ga1 := static.NewGlobal("org_name", "Org Name", "U-Report")
+	ga2 := static.NewGlobal("access_token", "Access Token", "674372272")
 
 	ga := flows.NewGlobalAssets([]assets.Global{ga1, ga2})
 

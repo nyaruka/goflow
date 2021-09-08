@@ -1,4 +1,4 @@
-package types
+package static
 
 import (
 	"encoding/json"
