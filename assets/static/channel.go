@@ -1,4 +1,4 @@
-package types
+package static
 
 import (
 	"github.com/nyaruka/gocommon/urns"

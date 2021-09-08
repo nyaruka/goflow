@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/goflow/assets/static/types"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/services/classification/luis"
 	"github.com/nyaruka/goflow/services/classification/wit"
@@ -39,12 +39,12 @@ func main() {
 	svcs := make(map[string]flows.ClassificationService)
 
 	if witToken != "" {
-		c := flows.NewClassifier(types.NewClassifier("72a82155-deee-471a-97c0-02f36cf6a7e5", "Test", "wit", nil))
+		c := flows.NewClassifier(static.NewClassifier("72a82155-deee-471a-97c0-02f36cf6a7e5", "Test", "wit", nil))
 		svcs["wit"] = wit.NewService(http.DefaultClient, nil, c, witToken)
 	}
 
 	if luisAppID != "" && luisKey != "" {
-		c := flows.NewClassifier(types.NewClassifier("ea166a58-a71d-404e-91c9-d28aeb396bc5", "Test", "luis", nil))
+		c := flows.NewClassifier(static.NewClassifier("ea166a58-a71d-404e-91c9-d28aeb396bc5", "Test", "luis", nil))
 		svcs["luis"] = luis.NewService(http.DefaultClient, nil, nil, c, luisEndpoint, luisAppID, luisKey, luisSlot)
 	}
 

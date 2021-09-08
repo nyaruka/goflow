@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	atypes "github.com/nyaruka/goflow/assets/static/types"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -14,8 +14,8 @@ import (
 )
 
 func TestUsers(t *testing.T) {
-	ua1 := atypes.NewUser("bob@nyaruka.com", "Bob McTickets")
-	ua2 := atypes.NewUser("jim@nyaruka.com", "")
+	ua1 := static.NewUser("bob@nyaruka.com", "Bob McTickets")
+	ua2 := static.NewUser("jim@nyaruka.com", "")
 
 	ua := flows.NewUserAssets([]assets.User{ua1, ua2})
 

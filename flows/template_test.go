@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/static/types"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 
 	"github.com/stretchr/testify/assert"
@@ -24,7 +24,7 @@ func TestTemplateTranslation(t *testing.T) {
 	channel := assets.NewChannelReference("0bce5fd3-c215-45a0-bcb8-2386eb194175", "Test Channel")
 
 	for i, tc := range tcs {
-		tt := NewTemplateTranslation(types.NewTemplateTranslation(*channel, envs.Language("eng"), envs.Country("US"), tc.Content, len(tc.Variables), "a6a8863e_7879_4487_ad24_5e2ea429027c"))
+		tt := NewTemplateTranslation(static.NewTemplateTranslation(*channel, envs.Language("eng"), envs.Country("US"), tc.Content, len(tc.Variables), "a6a8863e_7879_4487_ad24_5e2ea429027c"))
 		result := tt.Substitute(tc.Variables)
 		assert.Equal(t, tc.Expected, result, "%d: unexpected template substitution", i)
 	}
@@ -32,10 +32,10 @@ func TestTemplateTranslation(t *testing.T) {
 
 func TestTemplates(t *testing.T) {
 	channel1 := assets.NewChannelReference("0bce5fd3-c215-45a0-bcb8-2386eb194175", "Test Channel")
-	tt1 := types.NewTemplateTranslation(*channel1, envs.Language("eng"), envs.NilCountry, "Hello {{1}}", 1, "")
-	tt2 := types.NewTemplateTranslation(*channel1, envs.Language("spa"), envs.Country("EC"), "Que tal {{1}}", 1, "")
-	tt3 := types.NewTemplateTranslation(*channel1, envs.Language("spa"), envs.Country("ES"), "Hola {{1}}", 1, "")
-	template := NewTemplate(types.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*types.TemplateTranslation{tt1, tt2, tt3}))
+	tt1 := static.NewTemplateTranslation(*channel1, envs.Language("eng"), envs.NilCountry, "Hello {{1}}", 1, "")
+	tt2 := static.NewTemplateTranslation(*channel1, envs.Language("spa"), envs.Country("EC"), "Que tal {{1}}", 1, "")
+	tt3 := static.NewTemplateTranslation(*channel1, envs.Language("spa"), envs.Country("ES"), "Hola {{1}}", 1, "")
+	template := NewTemplate(static.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*static.TemplateTranslation{tt1, tt2, tt3}))
 
 	tas := NewTemplateAssets([]assets.Template{template})
 
