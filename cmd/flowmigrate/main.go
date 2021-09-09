@@ -12,11 +12,10 @@ import (
 	"io"
 	"os"
 
+	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
-
-	"github.com/Masterminds/semver"
 )
 
 func main() {

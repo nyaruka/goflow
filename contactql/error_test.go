@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/contactql"
-
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )

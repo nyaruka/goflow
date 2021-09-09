@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/pkg/errors"
 )
 

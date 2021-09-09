@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/cmd/docgen/completion"
-
 	"github.com/stretchr/testify/assert"
 )
 

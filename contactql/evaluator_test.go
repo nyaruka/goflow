@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
-
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )

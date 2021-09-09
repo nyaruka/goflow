@@ -3,11 +3,10 @@ package tools
 import (
 	"strconv"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/gen"
-
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 // FindContextRefsInTemplate audits context references in the given template. Note that the case of

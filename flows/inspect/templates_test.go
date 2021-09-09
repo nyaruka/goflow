@@ -38,7 +38,7 @@ func TestTemplates(t *testing.T) {
 		templates[l] = append(templates[l], t)
 	})
 
-	assert.Equal(t, map[envs.Language][]string{"": []string{"Hello", "World"}, "spa": []string{"Hola"}}, templates)
+	assert.Equal(t, map[envs.Language][]string{"": {"Hello", "World"}, "spa": {"Hola"}}, templates)
 
 	// can also extract from slice of things
 	templates = make(map[envs.Language][]string)
@@ -46,7 +46,7 @@ func TestTemplates(t *testing.T) {
 		templates[l] = append(templates[l], t)
 	})
 
-	assert.Equal(t, map[envs.Language][]string{"": []string{"Hello", "World"}, "spa": []string{"Hola"}}, templates)
+	assert.Equal(t, map[envs.Language][]string{"": {"Hello", "World"}, "spa": {"Hola"}}, templates)
 
 	// or a slice of actions
 	actions := []flows.Action{
@@ -59,7 +59,7 @@ func TestTemplates(t *testing.T) {
 		templates[l] = append(templates[l], t)
 	})
 
-	assert.Equal(t, map[envs.Language][]string{"": []string{"Bob", "Gibberish"}}, templates)
+	assert.Equal(t, map[envs.Language][]string{"": {"Bob", "Gibberish"}}, templates)
 }
 
 func TestTemplatePaths(t *testing.T) {

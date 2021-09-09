@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/tools"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -23,7 +22,7 @@ func TestFindContextRefsInTemplate(t *testing.T) {
 		{`@(foo["bar"])`, [][]string{{`foo`}, {`foo`, `bar`}}, false},
 		{`@(3 * (foo.bar + 1) / 2)`, [][]string{{`foo`}, {`foo`, `bar`}}, false},
 		{`@("foo.bar")`, [][]string{}, false},
-		{`@(webhook.0.kd_prov)`, [][]string{[]string{"webhook"}, []string{"webhook", "0"}, []string{"webhook", "0", "kd_prov"}}, false},
+		{`@(webhook.0.kd_prov)`, [][]string{{"webhook"}, {"webhook", "0"}, {"webhook", "0", "kd_prov"}}, false},
 	}
 
 	for _, tc := range testCases {

@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/buger/jsonparser"
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )

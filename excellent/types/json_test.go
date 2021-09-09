@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 )
 

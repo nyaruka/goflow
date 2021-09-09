@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent"
-
 	"github.com/stretchr/testify/assert"
 )
 

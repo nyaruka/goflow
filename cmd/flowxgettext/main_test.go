@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	main "github.com/nyaruka/goflow/cmd/flowxgettext"
 	"github.com/nyaruka/goflow/envs"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

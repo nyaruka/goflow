@@ -69,7 +69,8 @@ func (s *BaseExcellent2Listener) EnterNull(ctx *NullContext) {}
 func (s *BaseExcellent2Listener) ExitNull(ctx *NullContext) {}
 
 // EnterMultiplicationOrDivision is called when production multiplicationOrDivision is entered.
-func (s *BaseExcellent2Listener) EnterMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) {}
+func (s *BaseExcellent2Listener) EnterMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) {
+}
 
 // ExitMultiplicationOrDivision is called when production multiplicationOrDivision is exited.
 func (s *BaseExcellent2Listener) ExitMultiplicationOrDivision(ctx *MultiplicationOrDivisionContext) {}

@@ -3,9 +3,8 @@ package excellent
 import (
 	"strings"
 
-	"github.com/nyaruka/goflow/excellent/gen"
-
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/nyaruka/goflow/excellent/gen"
 )
 
 // VisitExpression parses and visits the given expression with the given visitor

@@ -16,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
-
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )

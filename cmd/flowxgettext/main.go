@@ -13,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/translation"
-
 	"github.com/pkg/errors"
 )
 

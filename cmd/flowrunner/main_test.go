@@ -7,14 +7,12 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	main "github.com/nyaruka/goflow/cmd/flowrunner"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/test"
-
-	main "github.com/nyaruka/goflow/cmd/flowrunner"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

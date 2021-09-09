@@ -18,7 +18,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/shopspring/decimal"
 )
 

@@ -5,7 +5,6 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-
 	"github.com/stretchr/testify/assert"
 )
 

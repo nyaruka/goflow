@@ -88,5 +88,5 @@ func (c *Client) Message(q string) (*MessageResponse, *httpx.Trace, error) {
 		return response, trace, nil
 	}
 
-	return nil, trace, errors.New("Wit API request failed")
+	return nil, trace, errors.New("wit.ai API request failed")
 }

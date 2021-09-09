@@ -8,7 +8,6 @@ import (
 	main "github.com/nyaruka/goflow/cmd/flowmigrate"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/require"
 )
 
