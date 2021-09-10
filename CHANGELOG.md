@@ -1,3 +1,7 @@
+v0.134.1
+----------
+ * Re-evaluate dynamic groups after opening tickets
+
 v0.134.0
 ----------
  * Add support for variable user references to open ticket actions
