@@ -38,8 +38,8 @@ func newBaseModifier(typeName string) baseModifier {
 // Type returns the type of this modifier
 func (m *baseModifier) Type() string { return m.Type_ }
 
-// helper to re-evaluate groups and log any changes to membership
-func (m *baseModifier) reevaluateGroups(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+// ReevaluateGroups is a helper to re-evaluate groups and log any changes to membership
+func ReevaluateGroups(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	added, removed := contact.ReevaluateQueryBasedGroups(env)
 
 	// make sure from all static groups are removed for non-active contacts

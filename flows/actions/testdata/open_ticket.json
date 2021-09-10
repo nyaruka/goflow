@@ -268,6 +268,17 @@
                 }
             },
             {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "groups_added": [
+                    {
+                        "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                        "name": "With Tickets"
+                    }
+                ]
+            },
+            {
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -296,6 +307,10 @@
                 {
                     "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
                     "name": "Males"
+                },
+                {
+                    "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                    "name": "With Tickets"
                 }
             ],
             "fields": {
@@ -407,6 +422,17 @@
                 }
             },
             {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "groups_added": [
+                    {
+                        "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                        "name": "With Tickets"
+                    }
+                ]
+            },
+            {
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -435,6 +461,10 @@
                 {
                     "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
                     "name": "Males"
+                },
+                {
+                    "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                    "name": "With Tickets"
                 }
             ],
             "fields": {
@@ -542,6 +572,17 @@
                 }
             },
             {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "groups_added": [
+                    {
+                        "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                        "name": "With Tickets"
+                    }
+                ]
+            },
+            {
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -570,6 +611,10 @@
                 {
                     "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
                     "name": "Males"
+                },
+                {
+                    "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                    "name": "With Tickets"
                 }
             ],
             "fields": {
@@ -688,6 +733,17 @@
                 }
             },
             {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "groups_added": [
+                    {
+                        "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                        "name": "With Tickets"
+                    }
+                ]
+            },
+            {
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
@@ -716,6 +772,10 @@
                 {
                     "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
                     "name": "Males"
+                },
+                {
+                    "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                    "name": "With Tickets"
                 }
             ],
             "fields": {
@@ -829,6 +889,17 @@
                     "body": "Where are my cookies? ",
                     "external_id": "123456"
                 }
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "groups_added": [
+                    {
+                        "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                        "name": "With Tickets"
+                    }
+                ]
             },
             {
                 "type": "run_result_changed",

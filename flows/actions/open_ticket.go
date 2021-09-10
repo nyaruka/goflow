@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/modifiers"
 	"github.com/pkg/errors"
 )
 
@@ -137,6 +138,9 @@ func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *fl
 		logEvent(events.NewTicketOpened(ticket))
 
 		run.Contact().Tickets().Add(ticket)
+
+		// need to re-evaluate groups since may have groups that query on tickets
+		modifiers.ReevaluateGroups(run.Environment(), run.Session().Assets(), run.Contact(), logEvent)
 	}
 
 	return ticket

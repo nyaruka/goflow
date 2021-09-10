@@ -50,7 +50,7 @@ func (m *FieldModifier) Apply(env envs.Environment, sa flows.SessionAssets, cont
 	if !newValue.Equals(oldValue) {
 		contact.Fields().Set(m.field, newValue)
 		log(events.NewContactFieldChanged(m.field, newValue))
-		m.reevaluateGroups(env, sa, contact, log)
+		ReevaluateGroups(env, sa, contact, log)
 	}
 }
 

@@ -38,7 +38,7 @@ func (m *StatusModifier) Apply(env envs.Environment, assets flows.SessionAssets,
 	if contact.Status() != m.Status {
 		contact.SetStatus(m.Status)
 		log(events.NewContactStatusChanged(m.Status))
-		m.reevaluateGroups(env, assets, contact, log)
+		ReevaluateGroups(env, assets, contact, log)
 	}
 }
 
