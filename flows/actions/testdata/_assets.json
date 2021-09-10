@@ -191,6 +191,11 @@
             "uuid": "5389414a-66b8-408b-afec-07c5d68f6784",
             "name": "Nameless",
             "query": "name = \"\""
+        },
+        {
+            "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+            "name": "With Tickets",
+            "query": "tickets > 0"
         }
     ],
     "labels": [

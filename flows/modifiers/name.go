@@ -40,7 +40,7 @@ func (m *NameModifier) Apply(env envs.Environment, assets flows.SessionAssets, c
 
 		contact.SetName(name)
 		log(events.NewContactNameChanged(name))
-		m.reevaluateGroups(env, assets, contact, log)
+		ReevaluateGroups(env, assets, contact, log)
 	}
 }
 

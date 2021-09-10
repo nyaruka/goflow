@@ -70,7 +70,7 @@ func (m *URNsModifier) Apply(env envs.Environment, assets flows.SessionAssets, c
 
 	if modified {
 		log(events.NewContactURNsChanged(contact.URNs().RawURNs()))
-		m.reevaluateGroups(env, assets, contact, log)
+		ReevaluateGroups(env, assets, contact, log)
 	}
 }
 
