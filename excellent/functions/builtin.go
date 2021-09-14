@@ -586,7 +586,7 @@ func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 	}
 
 	end := -1
-	if len(args) == 2 {
+	if len(args) >= 2 {
 		if end, xerr = types.ToInteger(env, args[1]); xerr != nil {
 			return xerr
 		}
@@ -596,7 +596,7 @@ func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 	}
 
 	delimiters := types.XTextEmpty
-	if len(args) == 3 && args[2] != nil {
+	if len(args) >= 3 && args[2] != nil {
 		delimiters, xerr = types.ToXText(env, args[2])
 		if xerr != nil {
 			return xerr
