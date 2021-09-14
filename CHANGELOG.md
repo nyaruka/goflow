@@ -1,3 +1,7 @@
+v0.134.2
+----------
+ * Fix word_slice when passing custom delimiters
+
 v0.134.1
 ----------
  * Re-evaluate dynamic groups after opening tickets
