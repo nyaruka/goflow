@@ -698,6 +698,7 @@ func TestFunctions(t *testing.T) {
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xs("x"), xi(3)}, ERROR},
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), xi(3), xs("x")}, ERROR},
 		{"word_slice", dmy, []types.XValue{xs("hello-world from mars"), ERROR, xi(2)}, ERROR},
+		{"word_slice", dmy, []types.XValue{xs("post_special_chars_to_webhook"), xi(1), xi(2), xs("_")}, xs("special")},
 		{"word_slice", dmy, []types.XValue{xs("bee.*cat,dog"), xi(1), xi(-1), xs(".*=|,")}, xs("cat dog")},
 		{"word_slice", dmy, []types.XValue{xs("bee.*cat,dog"), xi(1), xi(-1), ERROR}, ERROR}, // delimiters is error
 		{"word_slice", dmy, []types.XValue{ERROR, xi(0), xi(2)}, ERROR},                      // input is error
