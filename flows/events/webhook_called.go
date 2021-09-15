@@ -28,6 +28,7 @@ const trimTracesTo = 10000
 //     "status": "success",
 //     "status_code": 200,
 //     "elapsed_ms": 123,
+//     "retries": 0,
 //     "request": "GET /?format=json HTTP/1.1",
 //     "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}"
 //   }
@@ -41,6 +42,7 @@ type WebhookCalledEvent struct {
 	Request     string           `json:"request" validate:"required"`
 	Response    string           `json:"response"`
 	ElapsedMS   int              `json:"elapsed_ms"`
+	Retries     int              `json:"retries"`
 	Resthook    string           `json:"resthook,omitempty"`
 	StatusCode  int              `json:"status_code,omitempty"`
 	BodyIgnored bool             `json:"body_ignored,omitempty"`
@@ -62,6 +64,7 @@ func NewWebhookCalled(call *flows.WebhookCall, status flows.CallStatus, resthook
 		Request:     utils.TruncateEllipsis(string(call.RequestTrace), trimTracesTo),
 		Response:    utils.TruncateEllipsis(string(response), trimTracesTo),
 		ElapsedMS:   int((call.EndTime.Sub(call.StartTime)) / time.Millisecond),
+		Retries:     call.Retries,
 		Resthook:    resthook,
 		StatusCode:  statusCode,
 		BodyIgnored: len(call.ResponseBody) > 0 && len(call.ResponseJSON) == 0, // i.e. there was a body but it couldn't be converted to JSON
