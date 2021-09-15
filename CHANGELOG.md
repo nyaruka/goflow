@@ -1,3 +1,7 @@
+v0.134.3
+----------
+ * Add number of retries to webhook_called events
+
 v0.134.2
 ----------
  * Fix word_slice when passing custom delimiters
