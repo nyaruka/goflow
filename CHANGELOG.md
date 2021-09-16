@@ -1,3 +1,7 @@
+v0.135.0
+----------
+ * Get rid of ticket subjects
+
 v0.134.3
 ----------
  * Add number of retries to webhook_called events
