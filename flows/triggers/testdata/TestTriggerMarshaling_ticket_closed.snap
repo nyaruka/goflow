@@ -35,7 +35,6 @@
                 "name": "Support Tickets"
             },
             "topic": null,
-            "subject": "Problem",
             "body": "Where are my shoes?",
             "external_id": "123456",
             "assignee": {

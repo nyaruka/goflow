@@ -186,7 +186,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	ticketer := sa.Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := sa.Users().Get("bob@nyaruka.com")
-	ticket := flows.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", ticketer, weather, "Problem", "Where are my shoes?", "123456", user)
+	ticket := flows.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", ticketer, weather, "Where are my shoes?", "123456", user)
 
 	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)

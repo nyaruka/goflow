@@ -97,7 +97,6 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, flows.TicketUUID("349c851f-3f8e-4353-8bf2-8e90b6d73530"), ticket1.UUID())
 	assert.Nil(t, ticket1.Ticketer())
 	assert.Nil(t, ticket1.Topic())
-	assert.Equal(t, "Very Old Ticket", ticket1.Subject())
 	assert.Equal(t, "Ticketer, topic and assignee gone!", ticket1.Body())
 	assert.Equal(t, "7654", ticket1.ExternalID())
 	assert.Nil(t, ticket1.Assignee())
@@ -126,16 +125,15 @@ func TestTickets(t *testing.T) {
 
 	tickets := flows.NewTicketList([]*flows.Ticket{ticket1, ticket2})
 	assert.Equal(t, 2, tickets.Count())
-	assert.Equal(t, "Very Old Ticket", tickets.All()[0].Subject())
-	assert.Equal(t, "Old Ticket", tickets.All()[1].Subject())
+	assert.Equal(t, flows.TicketUUID("349c851f-3f8e-4353-8bf2-8e90b6d73530"), tickets.All()[0].UUID())
+	assert.Equal(t, flows.TicketUUID("5a4af021-d2c2-47fc-9abc-abbb8635d8c0"), tickets.All()[1].UUID())
 
-	ticket3 := flows.OpenTicket(mailgun, weather, "New Ticket", "Where are my pants?", bob)
+	ticket3 := flows.OpenTicket(mailgun, weather, "Where are my pants?", bob)
 	ticket3.SetExternalID("24567")
 
 	assert.Equal(t, flows.TicketUUID("1ae96956-4b34-433e-8d1a-f05fe6923d6d"), ticket3.UUID())
 	assert.Equal(t, mailgun, ticket3.Ticketer())
 	assert.Equal(t, weather, ticket3.Topic())
-	assert.Equal(t, "New Ticket", ticket3.Subject())
 	assert.Equal(t, "Where are my pants?", ticket3.Body())
 	assert.Equal(t, "24567", ticket3.ExternalID())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())

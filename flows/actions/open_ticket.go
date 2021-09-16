@@ -5,7 +5,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -40,32 +39,21 @@ type OpenTicketAction struct {
 
 	Ticketer   *assets.TicketerReference `json:"ticketer" validate:"required,dive"`
 	Topic      *assets.TopicReference    `json:"topic" validate:"omitempty,dive"`
-	Subject    string                    `json:"subject" engine:"evaluated"`
 	Body       string                    `json:"body" engine:"evaluated"`
 	Assignee   *assets.UserReference     `json:"assignee" validate:"omitempty,dive"`
 	ResultName string                    `json:"result_name" validate:"required"`
 }
 
 // NewOpenTicket creates a new open ticket action
-func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, topic *assets.TopicReference, subject, body string, assignee *assets.UserReference, resultName string) *OpenTicketAction {
+func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, topic *assets.TopicReference, body string, assignee *assets.UserReference, resultName string) *OpenTicketAction {
 	return &OpenTicketAction{
 		baseAction: newBaseAction(TypeOpenTicket, uuid),
 		Ticketer:   ticketer,
 		Topic:      topic,
-		Subject:    subject,
 		Body:       body,
 		Assignee:   assignee,
 		ResultName: resultName,
 	}
-}
-
-// Validate validates our action is valid
-func (a *OpenTicketAction) Validate() error {
-	if (a.Subject == "" && a.Topic == nil) || (a.Subject != "" && a.Topic != nil) {
-		return errors.New("must have one of 'subject' or 'topic'")
-	}
-
-	return nil
 }
 
 // Execute runs this action
@@ -85,16 +73,12 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 		assignee = resolveUser(run, a.Assignee, logEvent)
 	}
 
-	evaluatedSubject, err := run.EvaluateTemplate(a.Subject)
-	if err != nil {
-		logEvent(events.NewError(err))
-	}
 	evaluatedBody, err := run.EvaluateTemplate(a.Body)
 	if err != nil {
 		logEvent(events.NewError(err))
 	}
 
-	ticket := a.open(run, step, ticketer, topic, evaluatedSubject, evaluatedBody, assignee, logEvent)
+	ticket := a.open(run, step, ticketer, topic, evaluatedBody, assignee, logEvent)
 	if ticket != nil {
 		a.saveResult(run, step, a.ResultName, string(ticket.UUID()), CategorySuccess, "", "", nil, logEvent)
 	} else {
@@ -104,7 +88,7 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 	return nil
 }
 
-func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *flows.Ticketer, topic *flows.Topic, subject, body string, assignee *flows.User, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *flows.Ticketer, topic *flows.Topic, body string, assignee *flows.User, logEvent flows.EventCallback) *flows.Ticket {
 	if run.Session().BatchStart() {
 		logEvent(events.NewErrorf("can't open tickets during batch starts"))
 		return nil
@@ -127,7 +111,7 @@ func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *fl
 
 	httpLogger := &flows.HTTPLogger{}
 
-	ticket, err := svc.Open(run.Session(), topic, subject, body, assignee, httpLogger.Log)
+	ticket, err := svc.Open(run.Session(), topic, body, assignee, httpLogger.Log)
 	if err != nil {
 		logEvent(events.NewError(err))
 	}

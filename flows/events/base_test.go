@@ -44,7 +44,7 @@ func TestEventMarshaling(t *testing.T) {
 	mailgun := session.Assets().Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5")
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := session.Assets().Users().Get("bob@nyaruka.com")
-	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", mailgun, weather, "Need help", "Where are my cookies?", "1243252", user)
+	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", mailgun, weather, "Where are my cookies?", "1243252", user)
 
 	eventTests := []struct {
 		event     flows.Event
@@ -287,7 +287,6 @@ func TestEventMarshaling(t *testing.T) {
 					"tickets": [
 						{
 							"body": "I have a problem",
-							"subject": "Old ticket",
 							"ticketer": {
 								"name": "Support Tickets",
 								"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
@@ -301,7 +300,6 @@ func TestEventMarshaling(t *testing.T) {
 								"name": "Bob"
 							},
 							"body": "What day is it?",
-							"subject": "Question",
 							"ticketer": {
 								"name": "Support Tickets",
 								"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
@@ -536,7 +534,6 @@ func TestEventMarshaling(t *testing.T) {
 						"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
          				"name": "Weather"
 					},
-					"subject": "Need help",
 					"body": "Where are my cookies?",
 					"external_id": "1243252",
 					"assignee": {

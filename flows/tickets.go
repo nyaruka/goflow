@@ -17,19 +17,17 @@ type Ticket struct {
 	uuid       TicketUUID
 	ticketer   *Ticketer
 	topic      *Topic
-	subject    string // deprecated
 	body       string
 	externalID string
 	assignee   *User
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, ticketer *Ticketer, topic *Topic, subject, body, externalID string, assignee *User) *Ticket {
+func NewTicket(uuid TicketUUID, ticketer *Ticketer, topic *Topic, body, externalID string, assignee *User) *Ticket {
 	return &Ticket{
 		uuid:       uuid,
 		ticketer:   ticketer,
 		topic:      topic,
-		subject:    subject,
 		body:       body,
 		externalID: externalID,
 		assignee:   assignee,
@@ -37,14 +35,13 @@ func NewTicket(uuid TicketUUID, ticketer *Ticketer, topic *Topic, subject, body,
 }
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
-func OpenTicket(ticketer *Ticketer, topic *Topic, subject, body string, assignee *User) *Ticket {
-	return NewTicket(TicketUUID(uuids.New()), ticketer, topic, subject, body, "", assignee)
+func OpenTicket(ticketer *Ticketer, topic *Topic, body string, assignee *User) *Ticket {
+	return NewTicket(TicketUUID(uuids.New()), ticketer, topic, body, "", assignee)
 }
 
 func (t *Ticket) UUID() TicketUUID        { return t.uuid }
 func (t *Ticket) Ticketer() *Ticketer     { return t.ticketer }
 func (t *Ticket) Topic() *Topic           { return t.topic }
-func (t *Ticket) Subject() string         { return t.subject }
 func (t *Ticket) Body() string            { return t.body }
 func (t *Ticket) ExternalID() string      { return t.externalID }
 func (t *Ticket) SetExternalID(id string) { t.externalID = id }
@@ -74,7 +71,6 @@ type ticketEnvelope struct {
 	UUID       TicketUUID                `json:"uuid"                   validate:"required,uuid4"`
 	Ticketer   *assets.TicketerReference `json:"ticketer"               validate:"omitempty,dive"`
 	Topic      *assets.TopicReference    `json:"topic"               validate:"omitempty,dive"`
-	Subject    string                    `json:"subject"`
 	Body       string                    `json:"body"`
 	ExternalID string                    `json:"external_id,omitempty"`
 	Assignee   *assets.UserReference     `json:"assignee,omitempty"     validate:"omitempty,dive"`
@@ -114,7 +110,6 @@ func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (
 		uuid:       e.UUID,
 		ticketer:   ticketer,
 		topic:      topic,
-		subject:    e.Subject,
 		body:       e.Body,
 		externalID: e.ExternalID,
 		assignee:   assignee,
@@ -142,7 +137,6 @@ func (t *Ticket) MarshalJSON() ([]byte, error) {
 		UUID:       t.uuid,
 		Ticketer:   ticketerRef,
 		Topic:      topicRef,
-		Subject:    t.subject,
 		Body:       t.body,
 		ExternalID: t.externalID,
 		Assignee:   assigneeRef,

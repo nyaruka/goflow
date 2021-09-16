@@ -16,7 +16,6 @@ type Ticket struct {
 	UUID       flows.TicketUUID          `json:"uuid"                   validate:"required,uuid4"`
 	Ticketer   *assets.TicketerReference `json:"ticketer"               validate:"required,dive"`
 	Topic      *assets.TopicReference    `json:"topic"                  validate:"omitempty,dive"`
-	Subject    string                    `json:"subject"`
 	Body       string                    `json:"body"`
 	ExternalID string                    `json:"external_id,omitempty"`
 	Assignee   *assets.UserReference     `json:"assignee,omitempty"     validate:"omitempty,dive"`
@@ -37,7 +36,6 @@ type Ticket struct {
 //         "uuid": "add17edf-0b6e-4311-bcd7-a64b2a459157",
 //         "name": "Weather"
 //       },
-//       "subject": "Need help",
 //       "body": "Where are my cookies?",
 //       "external_id": "32526523",
 //       "assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
@@ -59,7 +57,6 @@ func NewTicketOpened(ticket *flows.Ticket) *TicketOpenedEvent {
 			UUID:       ticket.UUID(),
 			Ticketer:   ticket.Ticketer().Reference(),
 			Topic:      ticket.Topic().Reference(),
-			Subject:    ticket.Subject(),
 			Body:       ticket.Body(),
 			ExternalID: ticket.ExternalID(),
 			Assignee:   ticket.Assignee().Reference(),
