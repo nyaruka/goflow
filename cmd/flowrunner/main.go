@@ -298,7 +298,7 @@ func PrintEvent(event flows.Event, out io.Writer) {
 	case *events.SessionTriggeredEvent:
 		msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
 	case *events.TicketOpenedEvent:
-		msg = fmt.Sprintf("🎟️ ticket opened with subject \"%s\"", typed.Ticket.Subject)
+		msg = fmt.Sprintf("🎟️ ticket opened with topic \"%s\"", typed.Ticket.Topic.Name)
 	case *events.WaitTimedOutEvent:
 		msg = "⏲️ resuming due to wait timeout"
 	case *events.WebhookCalledEvent:

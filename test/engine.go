@@ -95,11 +95,11 @@ func NewTicketService(ticketer *flows.Ticketer) flows.TicketService {
 	return &ticketService{ticketer: ticketer}
 }
 
-func (s *ticketService) Open(session flows.Session, topic *flows.Topic, subject, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
-	if strings.Contains(subject, "fail") {
+func (s *ticketService) Open(session flows.Session, topic *flows.Topic, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
+	if strings.Contains(body, "fail") {
 		logHTTP(&flows.HTTPLog{
 			URL:       "http://nyaruka.tickets.com/tickets.json",
-			Request:   fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"%s\"}", subject),
+			Request:   fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
 			Response:  "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
 			Status:    flows.CallStatusResponseError,
 			CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
@@ -111,14 +111,14 @@ func (s *ticketService) Open(session flows.Session, topic *flows.Topic, subject,
 
 	logHTTP(&flows.HTTPLog{
 		URL:       "http://nyaruka.tickets.com/tickets.json",
-		Request:   fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"%s\"}", subject),
+		Request:   fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
 		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
 		Status:    flows.CallStatusSuccess,
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 		ElapsedMS: 1,
 	})
 
-	ticket := flows.OpenTicket(s.ticketer, topic, subject, body, assignee)
+	ticket := flows.OpenTicket(s.ticketer, topic, body, assignee)
 	ticket.SetExternalID("123456")
 	return ticket, nil
 }

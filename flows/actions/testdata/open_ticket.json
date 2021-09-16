@@ -1,40 +1,5 @@
 [
     {
-        "description": "Read fails if both subject and topic are empty",
-        "action": {
-            "type": "open_ticket",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "ticketer": {
-                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                "name": "Support Tickets"
-            },
-            "topic": null,
-            "subject": "",
-            "body": "Where are my cookies?",
-            "result_name": "Ticket"
-        },
-        "read_error": "must have one of 'subject' or 'topic'"
-    },
-    {
-        "description": "Read fails if both subject and topic are non-empty",
-        "action": {
-            "type": "open_ticket",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "ticketer": {
-                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                "name": "Support Tickets"
-            },
-            "topic": {
-                "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
-                "name": "Weather"
-            },
-            "subject": "Weather",
-            "body": "Where are my cookies?",
-            "result_name": "Ticket"
-        },
-        "read_error": "must have one of 'subject' or 'topic'"
-    },
-    {
         "description": "Error event for invalid ticketer reference",
         "action": {
             "type": "open_ticket",
@@ -44,7 +9,6 @@
                 "name": "Deleted"
             },
             "topic": null,
-            "subject": "Need help",
             "body": "Where are my cookies?",
             "assignee": null,
             "result_name": "Ticket"
@@ -66,7 +30,6 @@
             }
         ],
         "templates": [
-            "Need help",
             "Where are my cookies?"
         ],
         "inspection": {
@@ -109,7 +72,6 @@
                 "uuid": "dc61e948-26a1-407e-9739-b73b46400b51",
                 "name": "Deleted"
             },
-            "subject": "",
             "body": "Where are my cookies?",
             "assignee": null,
             "result_name": "Ticket"
@@ -176,7 +138,6 @@
                 "name": "Support Tickets"
             },
             "topic": null,
-            "subject": "Need help",
             "body": "Where are my cookies?",
             "assignee": null,
             "result_name": "Ticket"
@@ -198,12 +159,11 @@
             }
         ],
         "templates": [
-            "Need help",
             "Where are my cookies?"
         ]
     },
     {
-        "description": "Result with category success created and contact tickets appended to if ticket opened (using topic and assignee)",
+        "description": "Result with category success created and contact tickets appended to if ticket opened (has assignee)",
         "action": {
             "type": "open_ticket",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -215,7 +175,6 @@
                 "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                 "name": "Weather"
             },
-            "subject": "",
             "body": "Last message: @input.text",
             "assignee": {
                 "email": "bob@nyaruka.com",
@@ -237,7 +196,7 @@
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
                         "status": "success",
-                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"\"}",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                         "created_on": "2019-10-16T13:59:30.123456789Z",
                         "elapsed_ms": 1
@@ -258,7 +217,6 @@
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                         "name": "Weather"
                     },
-                    "subject": "",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456",
                     "assignee": {
@@ -329,7 +287,6 @@
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                         "name": "Weather"
                     },
-                    "subject": "",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456",
                     "assignee": {
@@ -367,7 +324,7 @@
         }
     },
     {
-        "description": "Result with category success created and contact tickets appended to if ticket opened (using subject and omitting assignee)",
+        "description": "Result with category success created and contact tickets appended to if ticket opened (topic missing, omitting assignee)",
         "action": {
             "type": "open_ticket",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -376,7 +333,6 @@
                 "name": "Support Tickets"
             },
             "topic": null,
-            "subject": "Need help",
             "body": "Last message: @input.text",
             "assignee": null,
             "result_name": "Ticket"
@@ -395,7 +351,7 @@
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
                         "status": "success",
-                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Need help\"}",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                         "created_on": "2019-10-16T13:59:30.123456789Z",
                         "elapsed_ms": 1
@@ -416,7 +372,6 @@
                         "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
                         "name": "General"
                     },
-                    "subject": "Need help",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456"
                 }
@@ -483,14 +438,12 @@
                         "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
                         "name": "General"
                     },
-                    "subject": "Need help",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456"
                 }
             ]
         },
         "templates": [
-            "Need help",
             "Last message: @input.text"
         ],
         "inspection": {
@@ -520,7 +473,6 @@
                 "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                 "name": "Weather"
             },
-            "subject": "",
             "body": "Last message: @input.text",
             "assignee": {
                 "email_match": "@(lower(\"JIM\" & \"@NYARUKA.COM\"))"
@@ -541,7 +493,7 @@
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
                         "status": "success",
-                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"\"}",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                         "created_on": "2019-10-16T13:59:30.123456789Z",
                         "elapsed_ms": 1
@@ -562,7 +514,6 @@
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                         "name": "Weather"
                     },
-                    "subject": "",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456",
                     "assignee": {
@@ -633,7 +584,6 @@
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                         "name": "Weather"
                     },
-                    "subject": "",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456",
                     "assignee": {
@@ -679,7 +629,6 @@
                 "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                 "name": "Weather"
             },
-            "subject": "",
             "body": "Last message: @input.text",
             "assignee": {
                 "email_match": "@(\"EVE@NYARUKA.COM\")"
@@ -706,7 +655,7 @@
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
                         "status": "success",
-                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"\"}",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                         "created_on": "2019-10-16T13:59:30.123456789Z",
                         "elapsed_ms": 1
@@ -727,7 +676,6 @@
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                         "name": "Weather"
                     },
-                    "subject": "",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456"
                 }
@@ -794,7 +742,6 @@
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                         "name": "Weather"
                     },
-                    "subject": "",
                     "body": "Last message: Hi everybody",
                     "external_id": "123456"
                 }
@@ -833,18 +780,11 @@
                 "name": "Support Tickets"
             },
             "topic": null,
-            "subject": "Need help @(1 / 0)",
             "body": "Where are my cookies? @(1/ 0)",
             "assignee": null,
             "result_name": "Ticket"
         },
         "events": [
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error evaluating @(1 / 0): division by zero"
-            },
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
@@ -864,7 +804,7 @@
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
                         "status": "success",
-                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Need help \"}",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Where are my cookies? \"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                         "created_on": "2019-10-16T13:59:30.123456789Z",
                         "elapsed_ms": 1
@@ -885,7 +825,6 @@
                         "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
                         "name": "General"
                     },
-                    "subject": "Need help ",
                     "body": "Where are my cookies? ",
                     "external_id": "123456"
                 }
@@ -911,7 +850,6 @@
             }
         ],
         "templates": [
-            "Need help @(1 / 0)",
             "Where are my cookies? @(1/ 0)"
         ],
         "inspection": {
@@ -938,18 +876,11 @@
                 "name": "Support Tickets"
             },
             "topic": null,
-            "subject": "Doomed to fail",
             "body": "Last message: @input.text",
             "assignee": null,
             "result_name": "Ticket"
         },
         "events": [
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "error calling ticket API"
-            },
             {
                 "type": "service_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
@@ -962,11 +893,40 @@
                 "http_logs": [
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
-                        "status": "response_error",
-                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"subject\":\"Doomed to fail\"}",
-                        "response": "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
+                        "status": "success",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                         "created_on": "2019-10-16T13:59:30.123456789Z",
                         "elapsed_ms": 1
+                    }
+                ]
+            },
+            {
+                "type": "ticket_opened",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "ticket": {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "ticketer": {
+                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                        "name": "Support Tickets"
+                    },
+                    "topic": {
+                        "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
+                        "name": "General"
+                    },
+                    "body": "Last message: Hi everybody",
+                    "external_id": "123456"
+                }
+            },
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "groups_added": [
+                    {
+                        "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
+                        "name": "With Tickets"
                     }
                 ]
             },
@@ -975,12 +935,11 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Ticket",
-                "value": "",
-                "category": "Failure"
+                "value": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "category": "Success"
             }
         ],
         "templates": [
-            "Doomed to fail",
             "Last message: @input.text"
         ],
         "inspection": {

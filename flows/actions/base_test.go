@@ -440,7 +440,6 @@ func TestConstructors(t *testing.T) {
 				actionUUID,
 				assets.NewTicketerReference(assets.TicketerUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Support Tickets"),
 				assets.NewTopicReference("472a7a73-96cb-4736-b567-056d987cc5b4", "Weather"),
-				"Need help",
 				"Where are my cookies?",
 				assets.NewUserReference("bob@nyaruka.com", "Bob McTickets"),
 				"Ticket",
@@ -456,7 +455,6 @@ func TestConstructors(t *testing.T) {
 					"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
 					"name": "Weather"
 				},
-				"subject": "Need help",
 				"body": "Where are my cookies?",
 				"assignee": {
 					"email": "bob@nyaruka.com",
