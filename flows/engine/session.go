@@ -90,6 +90,17 @@ func (s *session) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
 	return nil, errors.Errorf("unable to find run with UUID '%s'", uuid)
 }
 
+func (s *session) FindStep(uuid flows.StepUUID) (flows.FlowRun, flows.Step) {
+	for _, r := range s.runs {
+		for _, t := range r.Path() {
+			if t.UUID() == uuid {
+				return r, t
+			}
+		}
+	}
+	return nil, nil
+}
+
 func (s *session) addRun(run flows.FlowRun) {
 	s.runs = append(s.runs, run)
 	s.runsByUUID[run.UUID()] = run

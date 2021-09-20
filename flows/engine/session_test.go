@@ -386,3 +386,16 @@ func TestSessionHistory(t *testing.T) {
 		AncestorsSinceInput: 1,
 	}, session2.History())
 }
+
+func TestFindStep(t *testing.T) {
+	session, evts, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	run, step := session.FindStep(evts[0].StepUUID())
+	assert.Equal(t, "Registration", run.Flow().Name())
+	assert.Equal(t, step.UUID(), evts[0].StepUUID())
+
+	run, step = session.FindStep(flows.StepUUID("4f33917a-d562-4c20-88bd-f1a4c6827848"))
+	assert.Nil(t, run)
+	assert.Nil(t, step)
+}

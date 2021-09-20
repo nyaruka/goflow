@@ -365,6 +365,7 @@ type Session interface {
 	Resume(Resume) (Sprint, error)
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
+	FindStep(uuid StepUUID) (FlowRun, Step)
 	GetCurrentChild(FlowRun) FlowRun
 	ParentRun() RunSummary
 	CurrentContext() *types.XObject
