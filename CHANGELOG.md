@@ -1,3 +1,7 @@
+v0.136.1
+----------
+ * Add Session.FindStep
+
 v0.136.0
 ----------
  * Rework WebhookCall and HTTPLog to overlap as much as possible
