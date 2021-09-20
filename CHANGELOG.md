@@ -1,3 +1,7 @@
+v0.136.0
+----------
+ * Rework WebhookCall and HTTPLog to overlap as much as possible
+
 v0.135.0
 ----------
  * Get rid of ticket subjects
