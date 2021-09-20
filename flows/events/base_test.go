@@ -61,12 +61,15 @@ func TestEventMarshaling(t *testing.T) {
 				},
 				[]*flows.HTTPLog{
 					{
+						HTTPTrace: &flows.HTTPTrace{
+							URL:        "https://send.money.com/topup",
+							StatusCode: 200,
+							Status:     flows.CallStatusSuccess,
+							Request:    "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+							Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
+							ElapsedMS:  12,
+						},
 						CreatedOn: dates.Now(),
-						ElapsedMS: 12,
-						Request:   "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-						Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
-						Status:    flows.CallStatusSuccess,
-						URL:       "https://send.money.com/topup",
 					},
 				},
 			),
@@ -77,12 +80,14 @@ func TestEventMarshaling(t *testing.T) {
         	    "desired_amount": 1.2,
 				"http_logs": [
 					{
-						"created_on": "2018-10-18T14:20:30.000123456Z",
-						"elapsed_ms": 12,
+						"url": "https://send.money.com/topup",
+						"status_code": 200,
+						"status": "success",
 						"request": "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 						"response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
-						"status": "success",
-						"url": "https://send.money.com/topup"
+						"elapsed_ms": 12,
+						"retries": 0,
+						"created_on": "2018-10-18T14:20:30.000123456Z"
 					}
 				],
 				"recipient": "tel:+593979099222",
@@ -139,12 +144,15 @@ func TestEventMarshaling(t *testing.T) {
 				assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
 				[]*flows.HTTPLog{
 					{
+						HTTPTrace: &flows.HTTPTrace{
+							URL:        "https://api.wit.ai/message?v=20200513&q=hello",
+							StatusCode: 200,
+							Status:     flows.CallStatusSuccess,
+							Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+							Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+							ElapsedMS:  12,
+						},
 						CreatedOn: dates.Now(),
-						ElapsedMS: 12,
-						Request:   "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-						Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-						Status:    flows.CallStatusSuccess,
-						URL:       "https://api.wit.ai/message?v=20200513&q=hello",
 					},
 				},
 			),
@@ -158,12 +166,14 @@ func TestEventMarshaling(t *testing.T) {
 				},
 				"http_logs": [
 					{
-						"created_on": "2018-10-18T14:20:30.000123456Z",
-						"elapsed_ms": 12,
+						"url": "https://api.wit.ai/message?v=20200513&q=hello",
+						"status_code": 200,
+						"status": "success",
 						"request": "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 						"response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-						"status": "success",
-						"url": "https://api.wit.ai/message?v=20200513&q=hello"
+						"elapsed_ms": 12,
+						"retries": 0,
+						"created_on": "2018-10-18T14:20:30.000123456Z"
 					}
 				]
 			}`,
@@ -548,12 +558,15 @@ func TestEventMarshaling(t *testing.T) {
 				assets.NewTicketerReference(assets.TicketerUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Support"),
 				[]*flows.HTTPLog{
 					{
+						HTTPTrace: &flows.HTTPTrace{
+							URL:        "https://tickets.com",
+							StatusCode: 200,
+							Status:     flows.CallStatusSuccess,
+							Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+							Response:   "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
+							ElapsedMS:  12,
+						},
 						CreatedOn: dates.Now(),
-						ElapsedMS: 12,
-						Request:   "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-						Response:  "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
-						Status:    flows.CallStatusSuccess,
-						URL:       "https://tickets.com",
 					},
 				},
 			),
@@ -567,12 +580,14 @@ func TestEventMarshaling(t *testing.T) {
 				},
 				"http_logs": [
 					{
-						"created_on": "2018-10-18T14:20:30.000123456Z",
-						"elapsed_ms": 12,
+						"url": "https://tickets.com",
+						"status_code": 200,
+						"status": "success",
 						"request": "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
 						"response": "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
-						"status": "success",
-						"url": "https://tickets.com"
+						"elapsed_ms": 12,
+						"retries": 0,
+						"created_on": "2018-10-18T14:20:30.000123456Z"
 					}
 				]
 			}`,
@@ -688,14 +703,16 @@ func TestDeprecatedEvents(t *testing.T) {
 		"created_on": "2006-01-02T15:04:05Z",
 		"classifier": {"uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000", "name": "Booking"},
 		"http_logs": [
-		{
-			"url": "https://api.wit.ai/message?v=20170307&q=hello",
-			"status": "success",
-			"request": "GET /message?v=20170307&q=hello HTTP/1.1",
-			"response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-			"created_on": "2006-01-02T15:04:05Z",
-			"elapsed_ms": 123
-		}
+			{
+				"url": "https://api.wit.ai/message?v=20170307&q=hello",
+				"status_code": 200,
+				"status": "success",
+				"request": "GET /message?v=20170307&q=hello HTTP/1.1",
+				"response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
+				"elapsed_ms": 123,
+				"retries": 0,
+				"created_on": "2006-01-02T15:04:05Z"
+			}
 		]
 	}`)
 
