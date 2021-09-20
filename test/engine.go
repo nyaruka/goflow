@@ -63,12 +63,16 @@ func (s *classificationService) Classify(session flows.Session, input string, lo
 	}
 
 	logHTTP(&flows.HTTPLog{
-		URL:       "http://test.acme.ai?classify",
-		Request:   "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-		Status:    "success",
+		HTTPTrace: &flows.HTTPTrace{
+			URL:        "http://test.acme.ai?classify",
+			StatusCode: 200,
+			Status:     flows.CallStatusSuccess,
+			Request:    "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+			Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+			ElapsedMS:  1000,
+			Retries:    0,
+		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
-		ElapsedMS: 1000,
 	})
 
 	classification := &flows.Classification{
@@ -98,24 +102,32 @@ func NewTicketService(ticketer *flows.Ticketer) flows.TicketService {
 func (s *ticketService) Open(session flows.Session, topic *flows.Topic, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	if strings.Contains(body, "fail") {
 		logHTTP(&flows.HTTPLog{
-			URL:       "http://nyaruka.tickets.com/tickets.json",
-			Request:   fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
-			Response:  "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
-			Status:    flows.CallStatusResponseError,
+			HTTPTrace: &flows.HTTPTrace{
+				URL:        "http://nyaruka.tickets.com/tickets.json",
+				StatusCode: 400,
+				Status:     flows.CallStatusResponseError,
+				Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
+				Response:   "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
+				ElapsedMS:  1,
+				Retries:    0,
+			},
 			CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
-			ElapsedMS: 1,
 		})
 
 		return nil, errors.New("error calling ticket API")
 	}
 
 	logHTTP(&flows.HTTPLog{
-		URL:       "http://nyaruka.tickets.com/tickets.json",
-		Request:   fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
-		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-		Status:    flows.CallStatusSuccess,
+		HTTPTrace: &flows.HTTPTrace{
+			URL:        "http://nyaruka.tickets.com/tickets.json",
+			StatusCode: 200,
+			Status:     flows.CallStatusSuccess,
+			Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
+			Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+			ElapsedMS:  1,
+			Retries:    0,
+		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
-		ElapsedMS: 1,
 	})
 
 	ticket := flows.OpenTicket(s.ticketer, topic, body, assignee)
@@ -134,12 +146,16 @@ func newAirtimeService(currency string) *airtimeService {
 
 func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	logHTTP(&flows.HTTPLog{
-		URL:       "http://send.airtime.com",
-		Request:   "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-		Response:  "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-		Status:    "success",
+		HTTPTrace: &flows.HTTPTrace{
+			URL:        "http://send.airtime.com",
+			StatusCode: 200,
+			Status:     flows.CallStatusSuccess,
+			Request:    "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+			Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+			ElapsedMS:  0,
+			Retries:    0,
+		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
-		ElapsedMS: 0,
 	})
 
 	amount, hasAmount := amounts[s.fixedCurrency]

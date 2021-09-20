@@ -195,11 +195,13 @@
                 "http_logs": [
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status_code": 200,
                         "status": "success",
                         "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                        "created_on": "2019-10-16T13:59:30.123456789Z",
-                        "elapsed_ms": 1
+                        "elapsed_ms": 1,
+                        "retries": 0,
+                        "created_on": "2019-10-16T13:59:30.123456789Z"
                     }
                 ]
             },
@@ -350,11 +352,13 @@
                 "http_logs": [
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status_code": 200,
                         "status": "success",
                         "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                        "created_on": "2019-10-16T13:59:30.123456789Z",
-                        "elapsed_ms": 1
+                        "elapsed_ms": 1,
+                        "retries": 0,
+                        "created_on": "2019-10-16T13:59:30.123456789Z"
                     }
                 ]
             },
@@ -492,11 +496,13 @@
                 "http_logs": [
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status_code": 200,
                         "status": "success",
                         "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                        "created_on": "2019-10-16T13:59:30.123456789Z",
-                        "elapsed_ms": 1
+                        "elapsed_ms": 1,
+                        "retries": 0,
+                        "created_on": "2019-10-16T13:59:30.123456789Z"
                     }
                 ]
             },
@@ -654,11 +660,13 @@
                 "http_logs": [
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status_code": 200,
                         "status": "success",
                         "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                        "created_on": "2019-10-16T13:59:30.123456789Z",
-                        "elapsed_ms": 1
+                        "elapsed_ms": 1,
+                        "retries": 0,
+                        "created_on": "2019-10-16T13:59:30.123456789Z"
                     }
                 ]
             },
@@ -803,11 +811,13 @@
                 "http_logs": [
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status_code": 200,
                         "status": "success",
                         "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Where are my cookies? \"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                        "created_on": "2019-10-16T13:59:30.123456789Z",
-                        "elapsed_ms": 1
+                        "elapsed_ms": 1,
+                        "retries": 0,
+                        "created_on": "2019-10-16T13:59:30.123456789Z"
                     }
                 ]
             },
@@ -893,11 +903,13 @@
                 "http_logs": [
                     {
                         "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status_code": 200,
                         "status": "success",
                         "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Hi everybody\"}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-                        "created_on": "2019-10-16T13:59:30.123456789Z",
-                        "elapsed_ms": 1
+                        "elapsed_ms": 1,
+                        "retries": 0,
+                        "created_on": "2019-10-16T13:59:30.123456789Z"
                     }
                 ]
             },

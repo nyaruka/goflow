@@ -169,7 +169,9 @@
                             "elapsed_ms": 1000,
                             "request": "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
                             "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+                            "retries": 0,
                             "status": "success",
+                            "status_code": 200,
                             "url": "http://test.acme.ai?classify"
                         }
                     ],
@@ -315,7 +317,9 @@
                                         "elapsed_ms": 1000,
                                         "request": "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
                                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+                                        "retries": 0,
                                         "status": "success",
+                                        "status_code": 200,
                                         "url": "http://test.acme.ai?classify"
                                     }
                                 ],

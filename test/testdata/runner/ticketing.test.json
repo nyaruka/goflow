@@ -180,7 +180,9 @@
                             "elapsed_ms": 1,
                             "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Rats\"}",
                             "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                            "retries": 0,
                             "status": "success",
+                            "status_code": 200,
                             "url": "http://nyaruka.tickets.com/tickets.json"
                         }
                     ],
@@ -333,7 +335,9 @@
                                         "elapsed_ms": 1,
                                         "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Last message: Rats\"}",
                                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                                        "retries": 0,
                                         "status": "success",
+                                        "status_code": 200,
                                         "url": "http://nyaruka.tickets.com/tickets.json"
                                     }
                                 ],

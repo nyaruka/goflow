@@ -108,14 +108,29 @@ type AirtimeService interface {
 	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
+// HTTPTrace describes an HTTP request/response
+type HTTPTrace struct {
+	URL        string     `json:"url" validate:"required"`
+	StatusCode int        `json:"status_code,omitempty"`
+	Status     CallStatus `json:"status" validate:"required"`
+	Request    string     `json:"request" validate:"required"`
+	Response   string     `json:"response,omitempty"`
+	ElapsedMS  int        `json:"elapsed_ms"`
+	Retries    int        `json:"retries"`
+}
+
+// trim request and response traces to 10K chars to avoid bloating serialized sessions
+const trimTracesTo = 10000
+
+// NewHTTPTrace creates a new HTTP log from a trace
+func NewHTTPTrace(trace *httpx.Trace, status CallStatus) *HTTPTrace {
+	return newHTTPTraceWithStatus(trace, status, nil)
+}
+
 // HTTPLog describes an HTTP request/response
 type HTTPLog struct {
-	URL       string     `json:"url" validate:"required"`
-	Status    CallStatus `json:"status" validate:"required"`
-	Request   string     `json:"request" validate:"required"`
-	Response  string     `json:"response,omitempty"`
-	CreatedOn time.Time  `json:"created_on" validate:"required"`
-	ElapsedMS int        `json:"elapsed_ms"`
+	*HTTPTrace
+	CreatedOn time.Time `json:"created_on" validate:"required"`
 }
 
 // HTTPLogCallback is a function that handles an HTTP log
@@ -131,8 +146,8 @@ func (l *HTTPLogger) Log(h *HTTPLog) {
 	l.Logs = append(l.Logs, h)
 }
 
-// HTTPStatusResolver is a function that determines the status of an HTTP log from the response
-type HTTPStatusResolver func(t *httpx.Trace) CallStatus
+// HTTPLogStatusResolver is a function that determines the status of an HTTP log from the response
+type HTTPLogStatusResolver func(t *httpx.Trace) CallStatus
 
 // HTTPStatusFromCode uses the status code to determine status of an HTTP log
 func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
@@ -148,15 +163,23 @@ func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
 const RedactionMask = "****************"
 
 // NewHTTPLog creates a new HTTP log from a trace
-func NewHTTPLog(trace *httpx.Trace, statusFn HTTPStatusResolver, redact utils.Redactor) *HTTPLog {
-	return newHTTPLogWithStatus(trace, statusFn(trace), redact)
+func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact utils.Redactor) *HTTPLog {
+	return &HTTPLog{
+		newHTTPTraceWithStatus(trace, statusFn(trace), redact),
+		trace.StartTime,
+	}
 }
 
-// creates a new HTTP log from a trace with an explicit status
-func newHTTPLogWithStatus(trace *httpx.Trace, status CallStatus, redact utils.Redactor) *HTTPLog {
+// creates a new HTTPTrace from a trace with an explicit status
+func newHTTPTraceWithStatus(trace *httpx.Trace, status CallStatus, redact utils.Redactor) *HTTPTrace {
 	url := trace.Request.URL.String()
 	request := string(trace.RequestTrace)
 	response := string(utils.ReplaceEscapedNulls(trace.SanitizedResponse("..."), []byte(`�`)))
+
+	statusCode := 0
+	if trace.Response != nil {
+		statusCode = trace.Response.StatusCode
+	}
 
 	if redact != nil {
 		url = redact(url)
@@ -164,12 +187,13 @@ func newHTTPLogWithStatus(trace *httpx.Trace, status CallStatus, redact utils.Re
 		response = redact(response)
 	}
 
-	return &HTTPLog{
-		URL:       url,
-		Status:    status,
-		Request:   request,
-		Response:  response,
-		CreatedOn: trace.StartTime,
-		ElapsedMS: int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
+	return &HTTPTrace{
+		URL:        url,
+		StatusCode: statusCode,
+		Status:     status,
+		Request:    utils.TruncateEllipsis(request, trimTracesTo),
+		Response:   utils.TruncateEllipsis(response, trimTracesTo),
+		ElapsedMS:  int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
+		Retries:    trace.Retries,
 	}
 }
