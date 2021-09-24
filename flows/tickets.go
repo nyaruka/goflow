@@ -70,7 +70,7 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 type ticketEnvelope struct {
 	UUID       TicketUUID                `json:"uuid"                   validate:"required,uuid4"`
 	Ticketer   *assets.TicketerReference `json:"ticketer"               validate:"omitempty,dive"`
-	Topic      *assets.TopicReference    `json:"topic"               validate:"omitempty,dive"`
+	Topic      *assets.TopicReference    `json:"topic"                  validate:"omitempty,dive"`
 	Body       string                    `json:"body"`
 	ExternalID string                    `json:"external_id,omitempty"`
 	Assignee   *assets.UserReference     `json:"assignee,omitempty"     validate:"omitempty,dive"`
