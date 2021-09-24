@@ -1,3 +1,7 @@
+v0.136.2
+----------
+ * Fix trigger docs
+
 v0.136.1
 ----------
  * Add Session.FindStep
