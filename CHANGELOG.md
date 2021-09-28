@@ -1,3 +1,7 @@
+v0.136.4
+----------
+ * Improve validator error message with startswith tag
+
 v0.136.3
 ----------
  * Tweak validation to work when struct doesn't use json tags
