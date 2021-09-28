@@ -1,3 +1,7 @@
+v0.136.3
+----------
+ * Tweak validation to work when struct doesn't use json tags
+
 v0.136.2
 ----------
  * Fix trigger docs
