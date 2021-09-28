@@ -107,6 +107,9 @@ func Validate(obj interface{}) error {
 
 	for i, fieldErr := range validationErrs {
 		location := fieldErr.Namespace()
+		if strings.HasSuffix(location, ".-") {
+			location = fieldErr.StructNamespace()
+		}
 
 		// the first part of the namespace is always the struct name so we remove it
 		parts := strings.Split(location, ".")[1:]
