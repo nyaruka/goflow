@@ -35,6 +35,10 @@ type TestObject struct {
 	Hex        string    `json:"hex" validate:"hexadecimal"`
 }
 
+type NoJSONObject struct {
+	Foo string `validate:"required"`
+}
+
 func TestValidate(t *testing.T) {
 	utils.RegisterValidatorAlias("two_or_three", "eq=2|eq=3", func(e validator.FieldError) string { return "is not two or three!" })
 
@@ -108,6 +112,11 @@ func TestValidate(t *testing.T) {
 		`field 'things[0]' is not a valid HTTP method`,
 		`field 'hex' failed tag 'hexadecimal'`,
 	}, msgs)
+}
+
+func TestValidateObjectWithoutJSONTags(t *testing.T) {
+	err := utils.Validate(&NoJSONObject{})
+	assert.EqualError(t, err, "field 'Foo' is required")
 }
 
 func TestUnmarshalAndValidate(t *testing.T) {
