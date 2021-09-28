@@ -37,6 +37,7 @@ type TestObject struct {
 
 type NoJSONObject struct {
 	Foo string `validate:"required"`
+	Bar string `validate:"startswith=go"`
 }
 
 func TestValidate(t *testing.T) {
@@ -116,7 +117,7 @@ func TestValidate(t *testing.T) {
 
 func TestValidateObjectWithoutJSONTags(t *testing.T) {
 	err := utils.Validate(&NoJSONObject{})
-	assert.EqualError(t, err, "field 'Foo' is required")
+	assert.EqualError(t, err, "field 'Foo' is required, field 'Bar' must start with 'go'")
 }
 
 func TestUnmarshalAndValidate(t *testing.T) {
