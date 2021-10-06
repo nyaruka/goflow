@@ -1,3 +1,8 @@
+v0.136.5
+----------
+ * Update to latest gocommon
+ * Update locale files
+
 v0.136.4
 ----------
  * Improve validator error message with startswith tag
