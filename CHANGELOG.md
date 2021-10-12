@@ -1,3 +1,7 @@
+v0.137.0
+----------
+ * Simplify contactql queries after parsing
+
 v0.136.5
 ----------
  * Update to latest gocommon
