@@ -113,7 +113,12 @@ func TestParseQuery(t *testing.T) {
 
 		// explicit combinations...
 		{text: `will and felix`, parsed: `name ~ "will" AND name ~ "felix"`, resolver: resolver}, // explicit AND
-		{text: `will or felix or matt`, parsed: `(name ~ "will" OR name ~ "felix") OR name ~ "matt"`, resolver: resolver},
+		{text: `will or felix or matt`, parsed: `name ~ "will" OR name ~ "felix" OR name ~ "matt"`, resolver: resolver},
+		{text: `name = will AND age > 18 AND tickets = 0`, parsed: `name = "will" AND age > 18 AND tickets = 0`, resolver: resolver},
+		{text: `name = will OR age > 18 AND tickets = 0`, parsed: `name = "will" OR (age > 18 AND tickets = 0)`, resolver: resolver},
+		{text: `name = will AND age > 18 OR tickets = 0`, parsed: `(name = "will" AND age > 18) OR tickets = 0`, resolver: resolver},
+		{text: `(name = will AND age > 18) AND tickets = 0`, parsed: `name = "will" AND age > 18 AND tickets = 0`, resolver: resolver},
+		{text: `(name = will AND age > 18) AND (tickets = 0 AND language = eng)`, parsed: `name = "will" AND age > 18 AND tickets = 0 AND language = "eng"`, resolver: resolver},
 		{text: `name=will or Name ~ "felix"`, parsed: `name = "will" OR name ~ "felix"`, resolver: resolver},
 		{text: `Name is will or Name has felix`, parsed: `name = "will" OR name ~ "felix"`, resolver: resolver}, // operator aliases
 		{text: `will or Name ~ "felix"`, parsed: `name ~ "will" OR name ~ "felix"`, resolver: resolver},

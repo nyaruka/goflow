@@ -66,6 +66,7 @@ var isNumberRegex = regexp.MustCompile(`^\d+(\.\d+)?$`)
 type QueryNode interface {
 	fmt.Stringer
 	validate(envs.Environment, Resolver) error
+	simplify() QueryNode
 }
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
@@ -197,6 +198,10 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 	return nil
 }
 
+func (c *Condition) simplify() QueryNode {
+	return c
+}
+
 func (c *Condition) String() string {
 	value := c.value
 
@@ -234,6 +239,30 @@ func (b *BoolCombination) validate(env envs.Environment, resolver Resolver) erro
 		}
 	}
 	return nil
+}
+
+func (b *BoolCombination) simplify() QueryNode {
+	for i, child := range b.children {
+		b.children[i] = child.simplify()
+	}
+
+	newChilden := make([]QueryNode, 0, 2*len(b.children))
+
+	// simplify by promoting grand children to children if they're combined with same op
+	for _, child := range b.children {
+		switch typed := child.(type) {
+		case *BoolCombination:
+			if typed.op != b.op {
+				// can't simplfy if grandchildren combined with different op
+				return b
+			}
+			newChilden = append(newChilden, typed.children...)
+		case *Condition:
+			newChilden = append(newChilden, typed)
+		}
+	}
+
+	return &BoolCombination{op: b.op, children: newChilden}
 }
 
 func (b *BoolCombination) String() string {
@@ -305,6 +334,8 @@ func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQ
 	if err := rootNode.validate(env, resolver); err != nil {
 		return nil, err
 	}
+
+	rootNode = rootNode.simplify()
 
 	return &ContactQuery{root: rootNode, resolver: resolver}, nil
 }
