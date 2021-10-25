@@ -2,6 +2,7 @@ package engine
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -240,6 +241,10 @@ func (s *session) tryToResume(sprint flows.Sprint, waitingRun flows.FlowRun, res
 		return errors.New("can't resume run with missing flow asset")
 	}
 
+	if s.countWaits() >= s.engine.MaxResumesPerSession() {
+		return errors.Errorf("reached maximum number of resumes per session (%d)", s.Engine().MaxResumesPerSession())
+	}
+
 	// figure out where in the flow we began waiting on
 	step, node, err := waitingRun.PathLocation()
 	if err != nil {
@@ -384,7 +389,7 @@ func (s *session) continueUntilWait(sprint flows.Sprint, currentRun flows.FlowRu
 
 			if numNewSteps > s.Engine().MaxStepsPerSprint() {
 				// we've hit the step limit - usually a sign of a loop
-				failure(sprint, currentRun, step, errors.Errorf("step limit exceeded, stopping execution before entering '%s'", destination))
+				failure(sprint, currentRun, step, errors.Errorf("reached maximum number of steps per sprint (%d)", s.Engine().MaxStepsPerSprint()))
 				destination = noDestination
 			} else {
 				node := currentRun.Flow().GetNode(destination)
@@ -519,6 +524,18 @@ func (s *session) ensureQueryBasedGroups(logEvent flows.EventCallback) {
 	if len(added) > 0 || len(removed) > 0 {
 		logEvent(events.NewContactGroupsChanged(added, removed))
 	}
+}
+
+func (s *session) countWaits() int {
+	waits := 0
+	for _, r := range s.runs {
+		for _, e := range r.Events() {
+			if strings.HasSuffix(e.Type(), "_wait") {
+				waits++
+			}
+		}
+	}
+	return waits
 }
 
 const noDestination = flows.NodeUUID("")

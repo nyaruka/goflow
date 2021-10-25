@@ -327,6 +327,7 @@ type Engine interface {
 
 	Services() Services
 	MaxStepsPerSprint() int
+	MaxResumesPerSession() int
 	MaxTemplateChars() int
 }
 
