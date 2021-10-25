@@ -1,3 +1,7 @@
+v0.138.0
+----------
+ * Add engine property for maximum resumes per session
+
 v0.137.0
 ----------
  * Simplify contactql queries after parsing
