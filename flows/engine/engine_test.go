@@ -13,9 +13,10 @@ import (
 
 func TestBuilder(t *testing.T) {
 	// create engine with no services
-	eng := engine.NewBuilder().WithMaxStepsPerSprint(123).Build()
+	eng := engine.NewBuilder().WithMaxStepsPerSprint(123).WithMaxResumesPerSession(567).Build()
 
 	assert.Equal(t, 123, eng.MaxStepsPerSprint())
+	assert.Equal(t, 567, eng.MaxResumesPerSession())
 
 	_, err := eng.Services().Email(nil)
 	assert.EqualError(t, err, "no email service factory configured")

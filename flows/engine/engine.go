@@ -10,9 +10,10 @@ import (
 
 // an instance of the engine
 type engine struct {
-	services          *services
-	maxStepsPerSprint int
-	maxTemplateChars  int
+	services             *services
+	maxStepsPerSprint    int
+	maxResumesPerSession int
+	maxTemplateChars     int
 }
 
 // NewSession creates a new session
@@ -37,9 +38,10 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missi
 	return readSession(e, sa, data, missing)
 }
 
-func (e *engine) Services() flows.Services { return e.services }
-func (e *engine) MaxStepsPerSprint() int   { return e.maxStepsPerSprint }
-func (e *engine) MaxTemplateChars() int    { return e.maxTemplateChars }
+func (e *engine) Services() flows.Services  { return e.services }
+func (e *engine) MaxStepsPerSprint() int    { return e.maxStepsPerSprint }
+func (e *engine) MaxResumesPerSession() int { return e.maxResumesPerSession }
+func (e *engine) MaxTemplateChars() int     { return e.maxTemplateChars }
 
 var _ flows.Engine = (*engine)(nil)
 
@@ -56,9 +58,10 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		eng: &engine{
-			services:          newEmptyServices(),
-			maxStepsPerSprint: 100,
-			maxTemplateChars:  10000,
+			services:             newEmptyServices(),
+			maxStepsPerSprint:    100,
+			maxResumesPerSession: 500,
+			maxTemplateChars:     10000,
 		},
 	}
 }
@@ -96,6 +99,12 @@ func (b *Builder) WithAirtimeServiceFactory(f AirtimeServiceFactory) *Builder {
 // WithMaxStepsPerSprint sets the maximum number of steps allowed in a single sprint
 func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
 	b.eng.maxStepsPerSprint = max
+	return b
+}
+
+// WithMaxResumesPerSession sets the maximum number of resumes allowed in a single session
+func (b *Builder) WithMaxResumesPerSession(max int) *Builder {
+	b.eng.maxResumesPerSession = max
 	return b
 }
 

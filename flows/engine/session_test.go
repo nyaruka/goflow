@@ -387,6 +387,31 @@ func TestSessionHistory(t *testing.T) {
 	}, session2.History())
 }
 
+func TestMaxResumesPerSession(t *testing.T) {
+	assetsJSON, err := os.ReadFile("../../test/testdata/runner/two_questions.json")
+	require.NoError(t, err)
+
+	session, _, err := test.CreateSession(assetsJSON, "615b8a0f-588c-4d20-a05f-363b0b4ce6f4")
+	require.NoError(t, err)
+	require.Equal(t, flows.SessionStatusWaiting, session.Status())
+
+	numResumes := 0
+	for {
+		msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), "tel:+593979123456", nil, "Teal", nil)
+		resume := resumes.NewMsg(nil, nil, msg)
+		numResumes++
+
+		_, err := session.Resume(resume)
+		require.NoError(t, err)
+
+		if session.Status() == flows.SessionStatusFailed {
+			break
+		}
+	}
+
+	assert.Equal(t, 500, numResumes)
+}
+
 func TestFindStep(t *testing.T) {
 	session, evts, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)
