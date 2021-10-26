@@ -1,3 +1,7 @@
+v0.139.0
+----------
+ * Add sort() excellent function
+
 v0.138.0
 ----------
  * Add engine property for maximum resumes per session
