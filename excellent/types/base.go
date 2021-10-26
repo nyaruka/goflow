@@ -28,6 +28,9 @@ type XValue interface {
 
 	// Format returns the pretty text representation
 	Format(env envs.Environment) string
+
+	// Equals returns true if this value is equal to the given value
+	Equals(XValue) bool
 }
 
 // XCountable is the interface for types which can be counted
@@ -35,7 +38,13 @@ type XCountable interface {
 	Count() int
 }
 
-// Equals checks for equality between the two give values. This is only used for testing as x = y
+// XComparable is the interface for types which can be compared
+type XComparable interface {
+	// Compare returns -1 if this value is less, 0 if equal, +1 if greater
+	Compare(XValue) int
+}
+
+// Equals checks for equality between the two given values. This is only used for testing as x = y
 // specifically means text(x) == text(y)
 func Equals(x1 XValue, x2 XValue) bool {
 	// nil == nil
@@ -50,31 +59,31 @@ func Equals(x1 XValue, x2 XValue) bool {
 		return false
 	}
 
-	// common types, do real comparisons
-	switch typed := x1.(type) {
-	case *XArray:
-		return typed.Equals(x2.(*XArray))
-	case XBoolean:
-		return typed.Equals(x2.(XBoolean))
-	case XDate:
-		return typed.Equals(x2.(XDate))
-	case XDateTime:
-		return typed.Equals(x2.(XDateTime))
-	case XError:
-		return typed.Equals(x2.(XError))
-	case XFunction:
-		return typed.Equals(x2.(XFunction))
-	case XNumber:
-		return typed.Equals(x2.(XNumber))
-	case *XObject:
-		return typed.Equals(x2.(*XObject))
-	case XText:
-		return typed.Equals(x2.(XText))
-	case XTime:
-		return typed.Equals(x2.(XTime))
-	default:
-		panic(fmt.Sprintf("can't compare equality of instances of %T", x1))
+	return x1.Equals(x2)
+}
+
+// Compare compares two given values
+func Compare(x1 XValue, x2 XValue) int {
+	// nil == nil
+	if utils.IsNil(x1) && utils.IsNil(x2) {
+		return 0
+	} else if utils.IsNil(x1) {
+		return -1
+	} else if utils.IsNil(x2) {
+		return 1
 	}
+
+	// different types can't be compared
+	if reflect.TypeOf(x1) != reflect.TypeOf(x2) {
+		panic(fmt.Sprintf("can't compare a %T with a %T", x1, x2))
+	}
+
+	this, isComparable := x1.(XComparable)
+	if !isComparable {
+		panic(fmt.Sprintf("type %T is not comparable", x1))
+	}
+
+	return this.Compare(x2)
 }
 
 // Describe returns a representation of the given value for use in error messages

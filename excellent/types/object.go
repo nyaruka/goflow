@@ -166,7 +166,9 @@ func (x *XObject) Properties() []string {
 }
 
 // Equals determines equality for this type
-func (x *XObject) Equals(other *XObject) bool {
+func (x *XObject) Equals(o XValue) bool {
+	other := o.(*XObject)
+
 	if x.hasDefault() || other.hasDefault() {
 		if !Equals(x.Default(), other.Default()) {
 			return false

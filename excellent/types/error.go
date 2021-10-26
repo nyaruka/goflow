@@ -11,7 +11,7 @@ import (
 type XError interface {
 	error
 	XValue
-	Equals(XError) bool
+	Equals(XValue) bool
 }
 
 type xerror struct {
@@ -52,7 +52,9 @@ func (x xerror) Native() error { return x.native }
 func (x xerror) Error() string { return x.Native().Error() }
 
 // Equals determines equality for this type
-func (x xerror) Equals(other XError) bool {
+func (x xerror) Equals(o XValue) bool {
+	other := o.(xerror)
+
 	return x.String() == other.String()
 }
 

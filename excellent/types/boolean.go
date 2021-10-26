@@ -53,12 +53,16 @@ func (x XBoolean) String() string { return `XBoolean(` + strconv.FormatBool(x.Na
 func (x XBoolean) Native() bool { return x.native }
 
 // Equals determines equality for this type
-func (x XBoolean) Equals(other XBoolean) bool {
+func (x XBoolean) Equals(o XValue) bool {
+	other := o.(XBoolean)
+
 	return x.Native() == other.Native()
 }
 
 // Compare compares this bool to another
-func (x XBoolean) Compare(other XBoolean) int {
+func (x XBoolean) Compare(o XValue) int {
+	other := o.(XBoolean)
+
 	switch {
 	case !x.Native() && other.Native():
 		return -1

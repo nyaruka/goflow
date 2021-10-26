@@ -87,12 +87,16 @@ func (x XDateTime) ReplaceTime(tm XTime) XDateTime {
 }
 
 // Equals determines equality for this type
-func (x XDateTime) Equals(other XDateTime) bool {
+func (x XDateTime) Equals(o XValue) bool {
+	other := o.(XDateTime)
+
 	return x.Native().Equal(other.Native())
 }
 
 // Compare compares this date to another
-func (x XDateTime) Compare(other XDateTime) int {
+func (x XDateTime) Compare(o XValue) int {
+	other := o.(XDateTime)
+
 	switch {
 	case x.Native().Before(other.Native()):
 		return -1

@@ -50,12 +50,16 @@ func (x XText) String() string { return `XText("` + x.Native() + `")` }
 func (x XText) Native() string { return x.native }
 
 // Equals determines equality for this type
-func (x XText) Equals(other XText) bool {
+func (x XText) Equals(o XValue) bool {
+	other := o.(XText)
+
 	return x.Native() == other.Native()
 }
 
 // Compare compares this string to another
-func (x XText) Compare(other XText) int {
+func (x XText) Compare(o XValue) int {
+	other := o.(XText)
+
 	return strings.Compare(x.Native(), other.Native())
 }
 

@@ -61,13 +61,23 @@ func (x XTime) String() string {
 func (x XTime) Native() dates.TimeOfDay { return x.native }
 
 // Equals determines equality for this type
-func (x XTime) Equals(other XTime) bool {
+func (x XTime) Equals(o XValue) bool {
+	other := o.(XTime)
+
 	return x.Native().Equal(other.Native())
 }
 
 // Compare compares this date to another
-func (x XTime) Compare(other XTime) int {
-	return x.Native().Compare(other.Native())
+func (x XTime) Compare(o XValue) int {
+	other := o.(XTime)
+
+	c := x.Native().Compare(other.Native())
+	if c > 0 {
+		return 1
+	} else if c < 0 {
+		return -1
+	}
+	return 0
 }
 
 // XTimeZero is the zero time value
