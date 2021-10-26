@@ -60,7 +60,9 @@ func (x XBoolean) Equals(o XValue) bool {
 }
 
 // Compare compares this bool to another
-func (x XBoolean) Compare(other XBoolean) int {
+func (x XBoolean) Compare(o XValue) int {
+	other := o.(XBoolean)
+
 	switch {
 	case !x.Native() && other.Native():
 		return -1

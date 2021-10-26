@@ -68,7 +68,9 @@ func (x XDate) Equals(o XValue) bool {
 }
 
 // Compare compares this date to another
-func (x XDate) Compare(other XDate) int {
+func (x XDate) Compare(o XValue) int {
+	other := o.(XDate)
+
 	return x.Native().Compare(other.Native())
 }
 

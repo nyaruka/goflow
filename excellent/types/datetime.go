@@ -94,7 +94,9 @@ func (x XDateTime) Equals(o XValue) bool {
 }
 
 // Compare compares this date to another
-func (x XDateTime) Compare(other XDateTime) int {
+func (x XDateTime) Compare(o XValue) int {
+	other := o.(XDateTime)
+
 	switch {
 	case x.Native().Before(other.Native()):
 		return -1

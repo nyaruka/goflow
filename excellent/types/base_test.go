@@ -196,7 +196,9 @@ func TestEquals(t *testing.T) {
 		{types.NewXArray(types.XBooleanFalse, types.NewXText("bob")), types.NewXArray(types.NewXText("bob"), types.XBooleanFalse), false}, // order matters
 
 		{types.XBooleanFalse, types.XBooleanFalse, true},
+		{types.XBooleanTrue, types.XBooleanTrue, true},
 		{types.XBooleanTrue, types.XBooleanFalse, false},
+		{types.XBooleanFalse, types.XBooleanTrue, false},
 
 		{types.NewXDate(dates.NewDate(2018, 4, 9)), types.NewXDate(dates.NewDate(2018, 4, 9)), true},
 		{types.NewXDate(dates.NewDate(2019, 4, 9)), types.NewXDate(dates.NewDate(2018, 4, 10)), false},
@@ -246,11 +248,56 @@ func TestEquals(t *testing.T) {
 	for _, tc := range tests {
 		assert.Equal(t, tc.result, types.Equals(tc.x1, tc.x2), "equality mismatch for inputs '%s' and '%s'", tc.x1, tc.x2)
 	}
-
-	// test we get panic if we forgot to code Equals for a new xvalue type
-	assert.Panics(t, func() { types.Equals(&XBogusType{}, &XBogusType{}) })
 }
 
 type XBogusType struct {
 	types.XText
+}
+
+func TestCompare(t *testing.T) {
+	var tests = []struct {
+		x1     types.XValue
+		x2     types.XValue
+		result int
+	}{
+
+		{nil, nil, 0},                 // nil == nil
+		{nil, types.NewXText(""), -1}, // nil < non-nil
+		{types.NewXText(""), nil, 1},  // non-nil > non-nil
+
+		{types.XBooleanFalse, types.XBooleanFalse, 0},
+		{types.XBooleanTrue, types.XBooleanTrue, 0},
+		{types.XBooleanTrue, types.XBooleanFalse, 1},
+		{types.XBooleanFalse, types.XBooleanTrue, -1},
+
+		{types.NewXDate(dates.NewDate(2018, 4, 9)), types.NewXDate(dates.NewDate(2018, 4, 9)), 0},
+		{types.NewXDate(dates.NewDate(2019, 4, 9)), types.NewXDate(dates.NewDate(2018, 4, 10)), 1},
+		{types.NewXDate(dates.NewDate(2018, 4, 10)), types.NewXDate(dates.NewDate(2019, 4, 9)), -1},
+
+		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), 0},
+		{types.NewXDateTime(time.Date(2019, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), 1},
+		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2019, 4, 9, 17, 1, 30, 0, time.UTC)), -1},
+
+		{types.NewXText("bob"), types.NewXText("bob"), 0},
+		{types.NewXText("bob"), types.NewXText("abc"), 1},
+		{types.NewXText("abc"), types.NewXText("bob"), -1},
+
+		{types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 123456789)), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 123456789)), 0},
+		{types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 987654321)), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 123456789)), 1},
+		{types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 123456789)), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 987654321)), -1},
+
+		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), 0},
+		{types.NewXNumberFromInt(124), types.NewXNumberFromInt(123), 1},
+		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(124), -1},
+	}
+
+	for _, tc := range tests {
+		assert.Equal(t, tc.result, types.Compare(tc.x1, tc.x2), "comparison mismatch for inputs '%s' and '%s'", tc.x1, tc.x2)
+	}
+
+	// test we get panic if we try to compare different types
+	assert.Panics(t, func() { types.Compare(types.NewXText("x"), types.NewXNumberFromInt(123)) })
+
+	// test we get panic if we try to compare non-comparable types
+	assert.Panics(t, func() { types.Compare(types.NewXErrorf("boom"), types.NewXErrorf("doh")) })
 }

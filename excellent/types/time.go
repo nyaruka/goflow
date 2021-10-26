@@ -68,8 +68,16 @@ func (x XTime) Equals(o XValue) bool {
 }
 
 // Compare compares this date to another
-func (x XTime) Compare(other XTime) int {
-	return x.Native().Compare(other.Native())
+func (x XTime) Compare(o XValue) int {
+	other := o.(XTime)
+
+	c := x.Native().Compare(other.Native())
+	if c > 0 {
+		return 1
+	} else if c < 0 {
+		return -1
+	}
+	return 0
 }
 
 // XTimeZero is the zero time value

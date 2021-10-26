@@ -113,7 +113,9 @@ func (x XNumber) Equals(o XValue) bool {
 }
 
 // Compare compares this number to another
-func (x XNumber) Compare(other XNumber) int {
+func (x XNumber) Compare(o XValue) int {
+	other := o.(XNumber)
+
 	return x.Native().Cmp(other.Native())
 }
 

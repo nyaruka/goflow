@@ -57,7 +57,9 @@ func (x XText) Equals(o XValue) bool {
 }
 
 // Compare compares this string to another
-func (x XText) Compare(other XText) int {
+func (x XText) Compare(o XValue) int {
+	other := o.(XText)
+
 	return strings.Compare(x.Native(), other.Native())
 }
 
