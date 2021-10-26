@@ -41,7 +41,7 @@ func (x XFunction) String() string {
 }
 
 // Equals determines equality for this type
-func (x XFunction) Equals(other XFunction) bool {
+func (x XFunction) Equals(o XValue) bool {
 	return true // TODO
 }
 

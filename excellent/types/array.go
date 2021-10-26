@@ -112,7 +112,9 @@ func (x *XArray) String() string {
 }
 
 // Equals determines equality for this type
-func (x *XArray) Equals(other *XArray) bool {
+func (x *XArray) Equals(o XValue) bool {
+	other := o.(*XArray)
+
 	if x.Count() != other.Count() {
 		return false
 	}

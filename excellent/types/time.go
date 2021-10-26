@@ -61,7 +61,9 @@ func (x XTime) String() string {
 func (x XTime) Native() dates.TimeOfDay { return x.native }
 
 // Equals determines equality for this type
-func (x XTime) Equals(other XTime) bool {
+func (x XTime) Equals(o XValue) bool {
+	other := o.(XTime)
+
 	return x.Native().Equal(other.Native())
 }
 

@@ -106,7 +106,9 @@ func (x XNumber) String() string { return `XNumber(` + x.Render() + `)` }
 func (x XNumber) Native() decimal.Decimal { return x.native }
 
 // Equals determines equality for this type
-func (x XNumber) Equals(other XNumber) bool {
+func (x XNumber) Equals(o XValue) bool {
+	other := o.(XNumber)
+
 	return x.Native().Equals(other.Native())
 }
 

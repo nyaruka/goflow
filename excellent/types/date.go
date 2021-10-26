@@ -61,7 +61,9 @@ func (x XDate) String() string {
 func (x XDate) Native() dates.Date { return x.native }
 
 // Equals determines equality for this type
-func (x XDate) Equals(other XDate) bool {
+func (x XDate) Equals(o XValue) bool {
+	other := o.(XDate)
+
 	return x.Native().Equal(other.Native())
 }
 

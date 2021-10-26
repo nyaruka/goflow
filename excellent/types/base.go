@@ -28,6 +28,8 @@ type XValue interface {
 
 	// Format returns the pretty text representation
 	Format(env envs.Environment) string
+
+	Equals(o XValue) bool
 }
 
 // XCountable is the interface for types which can be counted
@@ -50,31 +52,7 @@ func Equals(x1 XValue, x2 XValue) bool {
 		return false
 	}
 
-	// common types, do real comparisons
-	switch typed := x1.(type) {
-	case *XArray:
-		return typed.Equals(x2.(*XArray))
-	case XBoolean:
-		return typed.Equals(x2.(XBoolean))
-	case XDate:
-		return typed.Equals(x2.(XDate))
-	case XDateTime:
-		return typed.Equals(x2.(XDateTime))
-	case XError:
-		return typed.Equals(x2.(XError))
-	case XFunction:
-		return typed.Equals(x2.(XFunction))
-	case XNumber:
-		return typed.Equals(x2.(XNumber))
-	case *XObject:
-		return typed.Equals(x2.(*XObject))
-	case XText:
-		return typed.Equals(x2.(XText))
-	case XTime:
-		return typed.Equals(x2.(XTime))
-	default:
-		panic(fmt.Sprintf("can't compare equality of instances of %T", x1))
-	}
+	return x1.Equals(x2)
 }
 
 // Describe returns a representation of the given value for use in error messages
