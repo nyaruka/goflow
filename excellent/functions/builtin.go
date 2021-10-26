@@ -7,6 +7,7 @@ import (
 	"math"
 	"net/url"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 	"unicode"
@@ -104,6 +105,7 @@ func init() {
 		"join":   TwoArgFunction(Join),
 		"sum":    OneArrayFunction(Sum),
 		"unique": OneArrayFunction(Unique),
+		"sort":   OneArrayFunction(Sort),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -1583,6 +1585,32 @@ func Unique(env envs.Environment, array *types.XArray) types.XValue {
 	}
 
 	return types.NewXArray(unique...)
+}
+
+// Sort returns a new array with the values of `array` sorted.
+//
+//   @(sort(array(3, 1, 2))) -> [1, 2, 3]
+//   @(sort(array("C", "A", "B"))) -> [A, B, C]
+//
+// @function sort(array)
+func Sort(env envs.Environment, array *types.XArray) types.XValue {
+	sorted := make([]types.XValue, array.Count())
+	for i := 0; i < array.Count(); i++ {
+		val := array.Get(i)
+
+		_, isComparable := val.(types.XComparable)
+		if !isComparable {
+			return types.NewXErrorf("%s isn't a comparable type", types.Describe(val))
+		}
+
+		sorted[i] = val
+	}
+
+	sort.SliceStable(sorted, func(i, j int) bool {
+		return sorted[i].(types.XComparable).Compare(sorted[j]) < 0
+	})
+
+	return types.NewXArray(sorted...)
 }
 
 //------------------------------------------------------------------------------------------
