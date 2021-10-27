@@ -1,3 +1,7 @@
+v0.139.1
+----------
+ * Limit webhook URLs to 2048 chars
+
 v0.139.0
 ----------
  * Add sort() excellent function
