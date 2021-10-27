@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -12,7 +13,13 @@ import (
 	"golang.org/x/net/http/httpguts"
 )
 
-func isValidURL(u string) bool { _, err := url.Parse(u); return err == nil }
+func isValidURL(u string) bool {
+	if utf8.RuneCountInString(u) > 2048 {
+		return false
+	}
+	_, err := url.Parse(u)
+	return err == nil
+}
 
 func init() {
 	registerType(TypeCallWebhook, func() flows.Action { return &CallWebhookAction{} })
