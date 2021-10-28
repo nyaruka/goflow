@@ -1,3 +1,7 @@
+v0.140.0
+----------
+ * Add reverse excellent function
+
 v0.139.1
 ----------
  * Limit webhook URLs to 2048 chars
