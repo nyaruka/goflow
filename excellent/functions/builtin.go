@@ -102,10 +102,11 @@ func init() {
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
 		// array functions
-		"join":   TwoArgFunction(Join),
-		"sum":    OneArrayFunction(Sum),
-		"unique": OneArrayFunction(Unique),
-		"sort":   OneArrayFunction(Sort),
+		"join":    TwoArgFunction(Join),
+		"reverse": OneArrayFunction(Reverse),
+		"sort":    OneArrayFunction(Sort),
+		"sum":     OneArrayFunction(Sum),
+		"unique":  OneArrayFunction(Unique),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -1541,6 +1542,46 @@ func Join(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XVal
 	return types.NewXText(output.String())
 }
 
+// Reverse returns a new array with the values of `array` reversed.
+//
+//   @(reverse(array(3, 1, 2))) -> [2, 1, 3]
+//   @(reverse(array("C", "A", "B"))) -> [B, A, C]
+//
+// @function reverse(array)
+func Reverse(env envs.Environment, array *types.XArray) types.XValue {
+	reversed := make([]types.XValue, array.Count())
+	for i := 0; i < array.Count(); i++ {
+		reversed[array.Count()-(i+1)] = array.Get(i)
+	}
+	return types.NewXArray(reversed...)
+}
+
+// Sort returns a new array with the values of `array` sorted.
+//
+//   @(sort(array(3, 1, 2))) -> [1, 2, 3]
+//   @(sort(array("C", "A", "B"))) -> [A, B, C]
+//
+// @function sort(array)
+func Sort(env envs.Environment, array *types.XArray) types.XValue {
+	sorted := make([]types.XValue, array.Count())
+	for i := 0; i < array.Count(); i++ {
+		val := array.Get(i)
+
+		_, isComparable := val.(types.XComparable)
+		if !isComparable {
+			return types.NewXErrorf("%s isn't a comparable type", types.Describe(val))
+		}
+
+		sorted[i] = val
+	}
+
+	sort.SliceStable(sorted, func(i, j int) bool {
+		return sorted[i].(types.XComparable).Compare(sorted[j]) < 0
+	})
+
+	return types.NewXArray(sorted...)
+}
+
 // Sum sums the items in the given `array`.
 //
 //   @(sum(array(1, 2, "3"))) -> 6
@@ -1585,32 +1626,6 @@ func Unique(env envs.Environment, array *types.XArray) types.XValue {
 	}
 
 	return types.NewXArray(unique...)
-}
-
-// Sort returns a new array with the values of `array` sorted.
-//
-//   @(sort(array(3, 1, 2))) -> [1, 2, 3]
-//   @(sort(array("C", "A", "B"))) -> [A, B, C]
-//
-// @function sort(array)
-func Sort(env envs.Environment, array *types.XArray) types.XValue {
-	sorted := make([]types.XValue, array.Count())
-	for i := 0; i < array.Count(); i++ {
-		val := array.Get(i)
-
-		_, isComparable := val.(types.XComparable)
-		if !isComparable {
-			return types.NewXErrorf("%s isn't a comparable type", types.Describe(val))
-		}
-
-		sorted[i] = val
-	}
-
-	sort.SliceStable(sorted, func(i, j int) bool {
-		return sorted[i].(types.XComparable).Compare(sorted[j]) < 0
-	})
-
-	return types.NewXArray(sorted...)
 }
 
 //------------------------------------------------------------------------------------------
