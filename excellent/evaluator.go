@@ -75,13 +75,11 @@ func EvaluateTemplateValue(env envs.Environment, context *types.XObject, templat
 // EvaluateExpression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
 func EvaluateExpression(env envs.Environment, ctx *types.XObject, expression string) types.XValue {
-	visitor := &visitor{}
-	output, err := VisitExpression(expression, visitor)
+	parsed, err := Parse(expression)
 	if err != nil {
 		return types.NewXError(err)
 	}
-
-	return toExpression(output).Evaluate(env, ctx)
+	return parsed.Evaluate(env, ctx)
 }
 
 // visitor which evaluates each part of an expression as a value

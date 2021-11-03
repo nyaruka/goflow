@@ -7,6 +7,13 @@ import (
 	"github.com/nyaruka/goflow/excellent/gen"
 )
 
+// Parse parses an expression
+func Parse(expression string) (Expression, error) {
+	visitor := &visitor{}
+	output, err := VisitExpression(expression, visitor)
+	return toExpression(output), err
+}
+
 // VisitExpression parses and visits the given expression with the given visitor
 func VisitExpression(expression string, visitor antlr.ParseTreeVisitor) (interface{}, error) {
 	errListener := NewErrorListener(expression)
