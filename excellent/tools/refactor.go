@@ -34,7 +34,7 @@ func RefactorTemplate(template string, allowedTopLevels []string) (string, error
 
 // RefactorTemplate refactors the passed in template
 func refactorExpression(expression string) (string, error) {
-	parsed, err := excellent.Parse(expression)
+	parsed, err := excellent.Parse(expression, nil)
 	if err != nil {
 		return "", err
 	}
