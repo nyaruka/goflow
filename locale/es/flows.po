@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-10-04 16:54-0500\n"
+"POT-Creation-Date: 2021-11-03 12:43+0000\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -345,6 +345,16 @@ msgstr "Devuelve `value1` si `test` es veraz o `value2` si no."
 
 msgid "Returns `value` if is not empty or an error, otherwise it returns `default`."
 msgstr "Devuelve `value` si no está vacío o es un error; de lo contrario, devuelve `default`."
+
+#, fuzzy
+#| msgid "Returns the minimum value in `numbers`."
+msgid "Returns a new array with the values of `array` reversed."
+msgstr "Devuelve el valor mínimo en `numbers`."
+
+#, fuzzy
+#| msgid "Returns the minimum value in `numbers`."
+msgid "Returns a new array with the values of `array` sorted."
+msgstr "Devuelve el valor mínimo en `numbers`."
 
 msgid "Returns a new datetime with the time part replaced by the `time`."
 msgstr "Devuelve una nueva fecha y hora con la parte de la hora reemplazada por `hour`."

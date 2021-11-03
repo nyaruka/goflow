@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-10-04 16:54-0500\n"
+"POT-Creation-Date: 2021-11-03 12:43+0000\n"
 "Language-Team: Russian (https://www.transifex.com/rapidpro/teams/226/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -260,6 +260,12 @@ msgid "Returns `value1` if `test` is truthy or `value2` if not."
 msgstr ""
 
 msgid "Returns `value` if is not empty or an error, otherwise it returns `default`."
+msgstr ""
+
+msgid "Returns a new array with the values of `array` reversed."
+msgstr ""
+
+msgid "Returns a new array with the values of `array` sorted."
 msgstr ""
 
 msgid "Returns a new datetime with the time part replaced by the `time`."
