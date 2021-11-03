@@ -481,7 +481,7 @@ func TestTests(t *testing.T) {
 		testFunc, exists := cases.XTESTS[tc.name]
 		require.True(t, exists, "no such registered function: %s", tc.name)
 
-		result := testFunc(env, tc.args...)
+		result := testFunc.Call(env, tc.args)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {
@@ -511,7 +511,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		hasError bool
 	}{
 		{"@(has_error(array1[100]).match)", "index 100 out of range for 3 items", false}, // errors are like any other value
-		{`@(has_error(round("foo", "bar")).match)`, "error calling ROUND: unable to convert \"foo\" to a number", false},
+		{`@(has_error(round("foo", "bar")).match)`, "error calling round(...): unable to convert \"foo\" to a number", false},
 		{`@(has_error(err).match)`, "an error", false},
 		{"@(has_error(thing.foo).match)", "", false},
 		{"@(has_error(thing.xxx).match)", "object has no property 'xxx'", false},
