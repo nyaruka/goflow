@@ -25,5 +25,6 @@ func TestXFunction(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, `null`, string(marshaled))
 
-	assert.True(t, types.Equals(func1, func2))
+	assert.True(t, types.Equals(func1, func1))
+	assert.False(t, types.Equals(func1, func2))
 }
