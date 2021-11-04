@@ -369,7 +369,7 @@ var errorTests = []struct {
 	{`@(format_datetime(3))`, `error evaluating @(format_datetime(3)): error calling format_datetime(...): unable to convert 3 to a datetime`},
 
 	// function call errors
-	{`@(FOO())`, `error evaluating @(FOO()): FOO is not a function`},
+	{`@(FOO())`, `error evaluating @(FOO()): foo is not a function`},
 	{`@(count(1))`, `error evaluating @(count(1)): error calling count(...): value isn't countable`},
 	{`@(word_count())`, `error evaluating @(word_count()): error calling word_count(...): need 1 to 2 argument(s), got 0`},
 	{`@(word_count("a", "b", "c"))`, `error evaluating @(word_count("a", "b", "c")): error calling word_count(...): need 1 to 2 argument(s), got 3`},

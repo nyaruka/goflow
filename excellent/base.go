@@ -7,8 +7,8 @@ import (
 	"github.com/nyaruka/goflow/excellent/gen"
 )
 
-// VisitExpression parses and visits the given expression with the given visitor
-func VisitExpression(expression string, visitor antlr.ParseTreeVisitor) (interface{}, error) {
+// Parse parses an expression
+func Parse(expression string, contextCallback func([]string)) (Expression, error) {
 	errListener := NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)
@@ -24,7 +24,9 @@ func VisitExpression(expression string, visitor antlr.ParseTreeVisitor) (interfa
 		return nil, errListener.Errors()[0]
 	}
 
-	return visitor.Visit(tree), nil
+	visitor := &visitor{contextCallback: contextCallback}
+	output := visitor.Visit(tree)
+	return toExpression(output), nil
 }
 
 // VisitTemplate scans the given template and calls the callback for each token encountered
