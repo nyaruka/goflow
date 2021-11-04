@@ -12,7 +12,7 @@ import (
 
 // Expression is the base interface of all syntax elements
 type Expression interface {
-	Evaluate(envs.Environment, *types.XObject) types.XValue
+	Evaluate(envs.Environment, *Context) types.XValue
 	String() string
 }
 
@@ -21,7 +21,7 @@ type ContextReference struct {
 	name string
 }
 
-func (x *ContextReference) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *ContextReference) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	name := strings.ToLower(x.name)
 
 	// first of all try to look this up as a function
@@ -47,7 +47,7 @@ type DotLookup struct {
 	lookup    string
 }
 
-func (x *DotLookup) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *DotLookup) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	containerVal := x.container.Evaluate(env, ctx)
 	if types.IsXError(containerVal) {
 		return containerVal
@@ -65,7 +65,7 @@ type ArrayLookup struct {
 	lookup    Expression
 }
 
-func (x *ArrayLookup) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *ArrayLookup) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	containerVal := x.container.Evaluate(env, ctx)
 	if types.IsXError(containerVal) {
 		return containerVal
@@ -88,7 +88,7 @@ type FunctionCall struct {
 	params   []Expression
 }
 
-func (x *FunctionCall) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *FunctionCall) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	funcVal := x.function.Evaluate(env, ctx)
 	if types.IsXError(funcVal) {
 		return funcVal
@@ -116,12 +116,37 @@ func (x *FunctionCall) String() string {
 	return fmt.Sprintf("%s(%s)", x.function.String(), strings.Join(params, ", "))
 }
 
+type AnonFunction struct {
+	args []string
+	body Expression
+}
+
+func (x *AnonFunction) Evaluate(env envs.Environment, ctx *Context) types.XValue {
+	// create an XFunction which wraps our body expression
+	fn := func(env envs.Environment, args ...types.XValue) types.XValue {
+		// create new context that includes the args
+		argsMap := make(map[string]types.XValue, len(x.args))
+		for i := range x.args {
+			argsMap[x.args[i]] = args[i]
+		}
+		childCtx := NewContext(types.NewXObject(argsMap), ctx)
+
+		return x.body.Evaluate(env, childCtx)
+	}
+
+	return types.NewXFunction("", functions.NumArgsCheck(len(x.args), fn))
+}
+
+func (x *AnonFunction) String() string {
+	return fmt.Sprintf("(%s) => %s", strings.Join(x.args, ", "), x.body)
+}
+
 type Concatenation struct {
 	exp1 Expression
 	exp2 Expression
 }
 
-func (x *Concatenation) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *Concatenation) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.Concatenate(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -134,7 +159,7 @@ type Addition struct {
 	exp2 Expression
 }
 
-func (x *Addition) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *Addition) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.Add(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -147,7 +172,7 @@ type Subtraction struct {
 	exp2 Expression
 }
 
-func (x *Subtraction) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *Subtraction) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.Subtract(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -160,7 +185,7 @@ type Multiplication struct {
 	exp2 Expression
 }
 
-func (x *Multiplication) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *Multiplication) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.Multiply(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -173,7 +198,7 @@ type Division struct {
 	exp2 Expression
 }
 
-func (x *Division) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *Division) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.Divide(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -186,7 +211,7 @@ type Exponent struct {
 	exponent   Expression
 }
 
-func (x *Exponent) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *Exponent) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.Exponent(env, x.expression.Evaluate(env, ctx), x.exponent.Evaluate(env, ctx))
 }
 
@@ -198,7 +223,7 @@ type Negation struct {
 	exp Expression
 }
 
-func (x *Negation) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *Negation) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.Negate(env, x.exp.Evaluate(env, ctx))
 }
 
@@ -211,7 +236,7 @@ type Equality struct {
 	exp2 Expression
 }
 
-func (x *Equality) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *Equality) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.Equal(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -224,7 +249,7 @@ type InEquality struct {
 	exp2 Expression
 }
 
-func (x *InEquality) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *InEquality) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.NotEqual(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -237,7 +262,7 @@ type LessThan struct {
 	exp2 Expression
 }
 
-func (x *LessThan) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *LessThan) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.LessThan(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -250,7 +275,7 @@ type LessThanOrEqual struct {
 	exp2 Expression
 }
 
-func (x *LessThanOrEqual) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *LessThanOrEqual) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.LessThanOrEqual(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -263,7 +288,7 @@ type GreaterThan struct {
 	exp2 Expression
 }
 
-func (x *GreaterThan) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *GreaterThan) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.GreaterThan(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -276,7 +301,7 @@ type GreaterThanOrEqual struct {
 	exp2 Expression
 }
 
-func (x *GreaterThanOrEqual) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *GreaterThanOrEqual) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return operators.GreaterThanOrEqual(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
@@ -288,7 +313,7 @@ type Parentheses struct {
 	exp Expression
 }
 
-func (x *Parentheses) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *Parentheses) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return x.exp.Evaluate(env, ctx)
 }
 
@@ -300,7 +325,7 @@ type TextLiteral struct {
 	val types.XText
 }
 
-func (x *TextLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *TextLiteral) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return x.val
 }
 
@@ -313,7 +338,7 @@ type NumberLiteral struct {
 	val types.XNumber
 }
 
-func (x *NumberLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *NumberLiteral) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return x.val
 }
 
@@ -326,7 +351,7 @@ type BooleanLiteral struct {
 	val types.XBoolean
 }
 
-func (x *BooleanLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *BooleanLiteral) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return x.val
 }
 
@@ -336,7 +361,7 @@ func (x *BooleanLiteral) String() string {
 
 type NullLiteral struct{}
 
-func (x *NullLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *NullLiteral) Evaluate(env envs.Environment, ctx *Context) types.XValue {
 	return nil
 }
 

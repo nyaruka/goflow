@@ -12,9 +12,9 @@ func Parse(expression string, contextCallback func([]string)) (Expression, error
 	errListener := NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)
-	lexer := gen.NewExcellent2Lexer(input)
+	lexer := gen.NewExcellent3Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
-	p := gen.NewExcellent2Parser(stream)
+	p := gen.NewExcellent3Parser(stream)
 	p.RemoveErrorListeners()
 	p.AddErrorListener(errListener)
 	tree := p.Parse()
