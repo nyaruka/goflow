@@ -192,55 +192,55 @@ func (x *InEquality) String() string {
 	return fmt.Sprintf("%s != %s", x.exp1.String(), x.exp2.String())
 }
 
-type LessComparison struct {
+type LessThan struct {
 	exp1 Expression
 	exp2 Expression
 }
 
-func (x *LessComparison) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *LessThan) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
 	return operators.LessThan(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
-func (x *LessComparison) String() string {
+func (x *LessThan) String() string {
 	return fmt.Sprintf("%s < %s", x.exp1.String(), x.exp2.String())
 }
 
-type LessOrEqualComparison struct {
+type LessThanOrEqual struct {
 	exp1 Expression
 	exp2 Expression
 }
 
-func (x *LessOrEqualComparison) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *LessThanOrEqual) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
 	return operators.LessThanOrEqual(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
-func (x *LessOrEqualComparison) String() string {
+func (x *LessThanOrEqual) String() string {
 	return fmt.Sprintf("%s <= %s", x.exp1.String(), x.exp2.String())
 }
 
-type GreaterComparison struct {
+type GreaterThan struct {
 	exp1 Expression
 	exp2 Expression
 }
 
-func (x *GreaterComparison) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *GreaterThan) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
 	return operators.GreaterThan(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
-func (x *GreaterComparison) String() string {
+func (x *GreaterThan) String() string {
 	return fmt.Sprintf("%s > %s", x.exp1.String(), x.exp2.String())
 }
 
-type GreaterOrEqualComparison struct {
+type GreaterThanOrEqual struct {
 	exp1 Expression
 	exp2 Expression
 }
 
-func (x *GreaterOrEqualComparison) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+func (x *GreaterThanOrEqual) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
 	return operators.GreaterThanOrEqual(env, x.exp1.Evaluate(env, ctx), x.exp2.Evaluate(env, ctx))
 }
 
-func (x *GreaterOrEqualComparison) String() string {
+func (x *GreaterThanOrEqual) String() string {
 	return fmt.Sprintf("%s >= %s", x.exp1.String(), x.exp2.String())
 }
 

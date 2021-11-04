@@ -1,7 +1,7 @@
 package types
 
 import (
-	"fmt"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 
@@ -28,7 +28,9 @@ func NewXText(value string) XText {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XText) Describe() string { return fmt.Sprintf(`"%s"`, x.Native()) }
+func (x XText) Describe() string {
+	return strconv.Quote(x.Native())
+}
 
 // Truthy determines truthiness for this type
 func (x XText) Truthy() bool {

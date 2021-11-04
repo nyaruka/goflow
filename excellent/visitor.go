@@ -1,6 +1,7 @@
 package excellent
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -40,24 +41,9 @@ func (v *visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 	return v.Visit(ctx.Expression())
 }
 
-// VisitTextLiteral deals with string literals such as "asdf"
-func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
-	value := ctx.GetText()
-
-	// unquote, this takes care of escape sequences as well
-	unquoted, err := strconv.Unquote(value)
-
-	// if we had an error, just strip surrounding quotes
-	if err != nil {
-		unquoted = value[1 : len(value)-1]
-	}
-
-	return &TextLiteral{val: types.NewXText(unquoted)}
-}
-
-// VisitNumberLiteral deals with numbers like 123 or 1.5
-func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) interface{} {
-	return &NumberLiteral{val: types.RequireXNumberFromString(ctx.GetText())}
+// VisitAtomReference deals with visiting a single atom in our expression
+func (v *visitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} {
+	return v.Visit(ctx.Atom())
 }
 
 // VisitContextReference deals with identifiers which are function names or root variables in the context
@@ -109,24 +95,15 @@ func (v *visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 	return &FunctionCall{function: function, params: params}
 }
 
-// VisitTrue deals with the `true` reserved word
-func (v *visitor) VisitTrue(ctx *gen.TrueContext) interface{} {
-	return &BooleanLiteral{val: types.XBooleanTrue}
-}
+// VisitFunctionParameters deals with the parameters to a function call
+func (v *visitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) interface{} {
+	expressions := ctx.AllExpression()
+	params := make([]Expression, len(expressions))
 
-// VisitFalse deals with the `false` reserved word
-func (v *visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
-	return &BooleanLiteral{val: types.XBooleanFalse}
-}
-
-// VisitNull deals with the `null` reserved word
-func (v *visitor) VisitNull(ctx *gen.NullContext) interface{} {
-	return &NullLiteral{}
-}
-
-// VisitParentheses deals with expressions in parentheses such as (1+2)
-func (v *visitor) VisitParentheses(ctx *gen.ParenthesesContext) interface{} {
-	return &Parentheses{exp: toExpression(v.Visit(ctx.Expression()))}
+	for i := range expressions {
+		params[i] = toExpression(v.Visit(expressions[i]))
+	}
+	return params
 }
 
 // VisitNegation deals with negations such as -5
@@ -190,37 +167,61 @@ func (v *visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
 
 	switch {
 	case ctx.LT() != nil:
-		return &LessComparison{exp1: exp1, exp2: exp2}
+		return &LessThan{exp1: exp1, exp2: exp2}
 	case ctx.LTE() != nil:
-		return &LessOrEqualComparison{exp1: exp1, exp2: exp2}
+		return &LessThanOrEqual{exp1: exp1, exp2: exp2}
 	case ctx.GTE() != nil:
-		return &GreaterOrEqualComparison{exp1: exp1, exp2: exp2}
+		return &GreaterThanOrEqual{exp1: exp1, exp2: exp2}
 	default:
-		return &GreaterComparison{exp1: exp1, exp2: exp2}
+		return &GreaterThan{exp1: exp1, exp2: exp2}
 	}
 }
 
-// VisitAtomReference deals with visiting a single atom in our expression
-func (v *visitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} {
-	return v.Visit(ctx.Atom())
+// VisitParentheses deals with expressions in parentheses such as (1+2)
+func (v *visitor) VisitParentheses(ctx *gen.ParenthesesContext) interface{} {
+	return &Parentheses{exp: toExpression(v.Visit(ctx.Expression()))}
 }
 
-// VisitFunctionParameters deals with the parameters to a function call
-func (v *visitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) interface{} {
-	expressions := ctx.AllExpression()
-	params := make([]Expression, len(expressions))
+// VisitTextLiteral deals with string literals such as "asdf"
+func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
+	value := ctx.GetText()
 
-	for i := range expressions {
-		params[i] = toExpression(v.Visit(expressions[i]))
+	// unquote, this takes care of escape sequences as well
+	unquoted, err := strconv.Unquote(value)
+
+	// if we had an error, just strip surrounding quotes
+	if err != nil {
+		unquoted = value[1 : len(value)-1]
 	}
-	return params
+
+	return &TextLiteral{val: types.NewXText(unquoted)}
+}
+
+// VisitNumberLiteral deals with numbers like 123 or 1.5
+func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) interface{} {
+	return &NumberLiteral{val: types.RequireXNumberFromString(ctx.GetText())}
+}
+
+// VisitTrue deals with the `true` reserved word
+func (v *visitor) VisitTrue(ctx *gen.TrueContext) interface{} {
+	return &BooleanLiteral{val: types.XBooleanTrue}
+}
+
+// VisitFalse deals with the `false` reserved word
+func (v *visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
+	return &BooleanLiteral{val: types.XBooleanFalse}
+}
+
+// VisitNull deals with the `null` reserved word
+func (v *visitor) VisitNull(ctx *gen.NullContext) interface{} {
+	return &NullLiteral{}
 }
 
 // convenience utility to convert the given value to an Expression
 func toExpression(val interface{}) Expression {
 	asExp, isExp := val.(Expression)
 	if !isExp && val != nil {
-		panic("attempt to convert a non-expression to an Expression")
+		panic(fmt.Sprintf("attempt to convert a %T to an Expression", val))
 	}
 	return asExp
 }
