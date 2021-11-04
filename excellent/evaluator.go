@@ -184,19 +184,17 @@ func (v *visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 		return function
 	}
 
-	asFunction, isFunction := function.(types.XFunction)
+	asFunction, isFunction := function.(*types.XFunction)
 	if !isFunction {
 		return types.NewXErrorf("%s is not a function", ctx.Atom().GetText())
 	}
-
-	name := strings.ToLower(ctx.Atom().GetText())
 
 	var params []types.XValue
 	if ctx.Parameters() != nil {
 		params, _ = v.Visit(ctx.Parameters()).([]types.XValue)
 	}
 
-	return functions.Call(v.env, name, asFunction, params)
+	return asFunction.Call(v.env, params)
 }
 
 // VisitTrue deals with the `true` reserved word

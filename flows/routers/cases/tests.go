@@ -21,60 +21,63 @@ import (
 // Mapping
 //------------------------------------------------------------------------------------------
 
+// XTESTS is our map of test functions
+var XTESTS = map[string]*types.XFunction{}
+
 func init() {
-	// register our router tests as Excellent functions
-	for name, testFunc := range XTESTS {
-		functions.RegisterXFunction(name, testFunc)
+	builtin := map[string]types.XFunc{
+		"has_error": functions.OneArgFunction(HasError),
+
+		"has_only_text":   functions.TwoTextFunction(HasOnlyText),
+		"has_phrase":      functions.TwoTextFunction(HasPhrase),
+		"has_only_phrase": functions.TwoTextFunction(HasOnlyPhrase),
+		"has_any_word":    functions.TwoTextFunction(HasAnyWord),
+		"has_all_words":   functions.TwoTextFunction(HasAllWords),
+		"has_beginning":   functions.TwoTextFunction(HasBeginning),
+		"has_text":        functions.OneTextFunction(HasText),
+		"has_pattern":     functions.TwoTextFunction(HasPattern),
+
+		"has_number":         functions.OneTextFunction(HasNumber),
+		"has_number_between": functions.ThreeArgFunction(HasNumberBetween),
+		"has_number_lt":      functions.TextAndNumberFunction(HasNumberLT),
+		"has_number_lte":     functions.TextAndNumberFunction(HasNumberLTE),
+		"has_number_eq":      functions.TextAndNumberFunction(HasNumberEQ),
+		"has_number_gte":     functions.TextAndNumberFunction(HasNumberGTE),
+		"has_number_gt":      functions.TextAndNumberFunction(HasNumberGT),
+
+		"has_date":    functions.OneTextFunction(HasDate),
+		"has_date_lt": functions.TextAndDateFunction(HasDateLT),
+		"has_date_eq": functions.TextAndDateFunction(HasDateEQ),
+		"has_date_gt": functions.TextAndDateFunction(HasDateGT),
+
+		"has_time":  functions.OneTextFunction(HasTime),
+		"has_phone": functions.InitialTextFunction(0, 1, HasPhone),
+		"has_email": functions.OneTextFunction(HasEmail),
+		"has_group": functions.MinAndMaxArgsCheck(2, 3, HasGroup),
+
+		"has_category":   functions.ObjectAndTextsFunction(HasCategory),
+		"has_intent":     functions.ObjectTextAndNumberFunction(HasIntent),
+		"has_top_intent": functions.ObjectTextAndNumberFunction(HasTopIntent),
+
+		"has_state":    functions.OneTextFunction(HasState),
+		"has_district": functions.MinAndMaxArgsCheck(1, 2, HasDistrict),
+		"has_ward":     HasWard,
+
+		// for backward compatibility
+		"has_value": functions.OneTextFunction(HasText),
+	}
+
+	for name, fn := range builtin {
+		RegisterXTest(name, fn)
 	}
 }
 
 // RegisterXTest registers a new router test (and Excellent function)
-func RegisterXTest(name string, function types.XFunction) {
-	XTESTS[name] = function
-	functions.RegisterXFunction(name, function)
-}
+func RegisterXTest(name string, fn types.XFunc) {
+	XTESTS[name] = types.NewXFunction(name, fn)
 
-// XTESTS is our mapping of the excellent test names to their actual functions
-var XTESTS = map[string]types.XFunction{
-	"has_error": functions.OneArgFunction(HasError),
-
-	"has_only_text":   functions.TwoTextFunction(HasOnlyText),
-	"has_phrase":      functions.TwoTextFunction(HasPhrase),
-	"has_only_phrase": functions.TwoTextFunction(HasOnlyPhrase),
-	"has_any_word":    functions.TwoTextFunction(HasAnyWord),
-	"has_all_words":   functions.TwoTextFunction(HasAllWords),
-	"has_beginning":   functions.TwoTextFunction(HasBeginning),
-	"has_text":        functions.OneTextFunction(HasText),
-	"has_pattern":     functions.TwoTextFunction(HasPattern),
-
-	"has_number":         functions.OneTextFunction(HasNumber),
-	"has_number_between": functions.ThreeArgFunction(HasNumberBetween),
-	"has_number_lt":      functions.TextAndNumberFunction(HasNumberLT),
-	"has_number_lte":     functions.TextAndNumberFunction(HasNumberLTE),
-	"has_number_eq":      functions.TextAndNumberFunction(HasNumberEQ),
-	"has_number_gte":     functions.TextAndNumberFunction(HasNumberGTE),
-	"has_number_gt":      functions.TextAndNumberFunction(HasNumberGT),
-
-	"has_date":    functions.OneTextFunction(HasDate),
-	"has_date_lt": functions.TextAndDateFunction(HasDateLT),
-	"has_date_eq": functions.TextAndDateFunction(HasDateEQ),
-	"has_date_gt": functions.TextAndDateFunction(HasDateGT),
-
-	"has_time":  functions.OneTextFunction(HasTime),
-	"has_phone": functions.InitialTextFunction(0, 1, HasPhone),
-	"has_email": functions.OneTextFunction(HasEmail),
-	"has_group": functions.MinAndMaxArgsCheck(2, 3, HasGroup),
-
-	"has_category":   functions.ObjectAndTextsFunction(HasCategory),
-	"has_intent":     functions.ObjectTextAndNumberFunction(HasIntent),
-	"has_top_intent": functions.ObjectTextAndNumberFunction(HasTopIntent),
-
-	"has_state":    functions.OneTextFunction(HasState),
-	"has_district": functions.MinAndMaxArgsCheck(1, 2, HasDistrict),
-	"has_ward":     HasWard,
-
-	// for backward compatibility
-	"has_value": functions.OneTextFunction(HasText),
+	// register our router tests as well as Excellent functions
+	functions.RegisterXFunction(name, fn)
 }
 
 //------------------------------------------------------------------------------------------
@@ -132,7 +135,7 @@ func HasOnlyText(env envs.Environment, text1 types.XText, text2 types.XText) typ
 // HasError returns whether `value` is an error
 //
 //   @(has_error(datetime("foo"))) -> true
-//   @(has_error(datetime("foo")).match) -> error calling DATETIME: unable to convert "foo" to a datetime
+//   @(has_error(datetime("foo")).match) -> error calling datetime(...): unable to convert "foo" to a datetime
 //   @(has_error(run.not.existing).match) -> object has no property 'not'
 //   @(has_error(contact.fields.unset).match) -> object has no property 'unset'
 //   @(has_error("hello")) -> false

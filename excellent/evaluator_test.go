@@ -230,7 +230,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`Hello @_special`, "Hello 🐒", false},
 
 		// functions are values too
-		{`@(title)`, "function", false},
+		{`@(Title)`, "title", false},
 		{`@((title)("xyz"))`, "Xyz", false},
 		{`@(func("xyz"))`, "XYZ", false},
 		{`@(array(upper)[0]("hello"))`, "HELLO", false},
@@ -365,14 +365,14 @@ var errorTests = []struct {
 	{`@(1 + null)`, `error evaluating @(1 + null): unable to convert null to a number`},
 	{`@(1 + true)`, `error evaluating @(1 + true): unable to convert true to a number`},
 	{`@("a" + 2)`, `error evaluating @("a" + 2): unable to convert "a" to a number`},
-	{`@(format_datetime("x"))`, `error evaluating @(format_datetime("x")): error calling FORMAT_DATETIME: unable to convert "x" to a datetime`},
-	{`@(format_datetime(3))`, `error evaluating @(format_datetime(3)): error calling FORMAT_DATETIME: unable to convert 3 to a datetime`},
+	{`@(format_datetime("x"))`, `error evaluating @(format_datetime("x")): error calling format_datetime(...): unable to convert "x" to a datetime`},
+	{`@(format_datetime(3))`, `error evaluating @(format_datetime(3)): error calling format_datetime(...): unable to convert 3 to a datetime`},
 
 	// function call errors
 	{`@(FOO())`, `error evaluating @(FOO()): FOO is not a function`},
-	{`@(count(1))`, `error evaluating @(count(1)): error calling COUNT: value isn't countable`},
-	{`@(word_count())`, `error evaluating @(word_count()): error calling WORD_COUNT: need 1 to 2 argument(s), got 0`},
-	{`@(word_count("a", "b", "c"))`, `error evaluating @(word_count("a", "b", "c")): error calling WORD_COUNT: need 1 to 2 argument(s), got 3`},
+	{`@(count(1))`, `error evaluating @(count(1)): error calling count(...): value isn't countable`},
+	{`@(word_count())`, `error evaluating @(word_count()): error calling word_count(...): need 1 to 2 argument(s), got 0`},
+	{`@(word_count("a", "b", "c"))`, `error evaluating @(word_count("a", "b", "c")): error calling word_count(...): need 1 to 2 argument(s), got 3`},
 }
 
 func TestEvaluationErrors(t *testing.T) {

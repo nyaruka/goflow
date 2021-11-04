@@ -26,7 +26,7 @@ var nanosPerSecond = decimal.RequireFromString("1000000000")
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
 func init() {
-	builtin := map[string]types.XFunction{
+	builtin := map[string]types.XFunc{
 		// type conversion
 		"text":     OneArgFunction(Text),
 		"boolean":  OneArgFunction(Boolean),
@@ -2095,7 +2095,7 @@ func ForEach(env envs.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	function, isFunction := args[1].(types.XFunction)
+	function, isFunction := args[1].(*types.XFunction)
 	if !isFunction {
 		return types.NewXErrorf("requires an function as its second argument")
 	}
@@ -2108,7 +2108,7 @@ func ForEach(env envs.Environment, args ...types.XValue) types.XValue {
 		oldItem := array.Get(i)
 		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 
-		newItem := Call(env, function.Describe(), function, funcArgs)
+		newItem := function.Call(env, funcArgs)
 		if types.IsXError(newItem) {
 			return newItem
 		}
@@ -2132,7 +2132,7 @@ func ForEachValue(env envs.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	function, isFunction := args[1].(types.XFunction)
+	function, isFunction := args[1].(*types.XFunction)
 	if !isFunction {
 		return types.NewXErrorf("requires an function as its second argument")
 	}
@@ -2146,7 +2146,7 @@ func ForEachValue(env envs.Environment, args ...types.XValue) types.XValue {
 		oldItem, _ := object.Get(prop)
 		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 
-		newItem := Call(env, function.Describe(), function, funcArgs)
+		newItem := function.Call(env, funcArgs)
 		if types.IsXError(newItem) {
 			return newItem
 		}

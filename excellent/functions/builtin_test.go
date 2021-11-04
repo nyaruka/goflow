@@ -342,9 +342,9 @@ func TestFunctions(t *testing.T) {
 
 		{"if", dmy, []types.XValue{types.XBooleanTrue, xs("10"), xs("20")}, xs("10")},
 		{"if", dmy, []types.XValue{types.XBooleanFalse, xs("10"), xs("20")}, xs("20")},
-		{"if", dmy, []types.XValue{types.XBooleanTrue, errorArg, xs("20")}, types.NewXErrorf("error calling IF: I am error")},
+		{"if", dmy, []types.XValue{types.XBooleanTrue, errorArg, xs("20")}, types.NewXErrorf("error calling if(...): I am error")},
 		{"if", dmy, []types.XValue{}, ERROR},
-		{"if", dmy, []types.XValue{errorArg, xs("10"), xs("20")}, types.NewXErrorf("error calling IF: I am error")},
+		{"if", dmy, []types.XValue{errorArg, xs("10"), xs("20")}, types.NewXErrorf("error calling if(...): I am error")},
 
 		{"is_error", dmy, []types.XValue{xs("hello")}, types.XBooleanFalse},
 		{"is_error", dmy, []types.XValue{nil}, types.XBooleanFalse},
@@ -753,7 +753,7 @@ func TestFunctions(t *testing.T) {
 		xFunc := functions.Lookup(tc.name)
 		require.NotNil(t, "no such registered function: %s", tc.name)
 
-		result := functions.Call(tc.env, tc.name, xFunc, tc.args)
+		result := xFunc.Call(tc.env, tc.args)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {

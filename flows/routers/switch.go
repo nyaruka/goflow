@@ -178,13 +178,13 @@ func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand typ
 		}
 
 		// call our function
-		result := xtest(run.Environment(), args...)
+		result := xtest.Call(run.Environment(), args)
 
 		// tests have to return either errors or test results
 		switch typed := result.(type) {
 		case types.XError:
 			// test functions can return an error
-			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typed.Error()))
+			run.LogError(step, errors.Errorf("error calling test %s: %s", xtest.Describe(), typed.Error()))
 		case *types.XObject:
 			matched := typed.Truthy()
 			if !matched {
