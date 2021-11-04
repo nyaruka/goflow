@@ -106,19 +106,6 @@ func (v *visitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) in
 	return params
 }
 
-// VisitNegation deals with negations such as -5
-func (v *visitor) VisitNegation(ctx *gen.NegationContext) interface{} {
-	return &Negation{exp: toExpression(v.Visit(ctx.Expression()))}
-}
-
-// VisitExponent deals with exponenets such as 5^5
-func (v *visitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
-	return &Exponent{
-		expression: toExpression(v.Visit(ctx.Expression(0))),
-		exponent:   toExpression(v.Visit(ctx.Expression(1))),
-	}
-}
-
 // VisitConcatenation deals with string concatenations like "foo" & "bar"
 func (v *visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} {
 	return &Concatenation{
@@ -147,6 +134,19 @@ func (v *visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisio
 		return &Multiplication{exp1: exp1, exp2: exp2}
 	}
 	return &Division{exp1: exp1, exp2: exp2}
+}
+
+// VisitExponent deals with exponenets such as 5^5
+func (v *visitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
+	return &Exponent{
+		expression: toExpression(v.Visit(ctx.Expression(0))),
+		exponent:   toExpression(v.Visit(ctx.Expression(1))),
+	}
+}
+
+// VisitNegation deals with negations such as -5
+func (v *visitor) VisitNegation(ctx *gen.NegationContext) interface{} {
+	return &Negation{exp: toExpression(v.Visit(ctx.Expression()))}
 }
 
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5

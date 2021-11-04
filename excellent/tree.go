@@ -16,89 +16,104 @@ type Expression interface {
 	String() string
 }
 
-// BooleanLiteral is a literal bool
-type BooleanLiteral struct {
-	val types.XBoolean
+// ContextReference is an identifier which is a function name or root variable in the context
+type ContextReference struct {
+	name string
 }
 
-func (x *BooleanLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	return x.val
+func (x *ContextReference) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	name := strings.ToLower(x.name)
+
+	// first of all try to look this up as a function
+	function := functions.Lookup(name)
+	if function != nil {
+		return function
+	}
+
+	value, exists := ctx.Get(name)
+	if !exists {
+		return types.NewXErrorf("context has no property '%s'", name)
+	}
+
+	return value
 }
 
-func (x *BooleanLiteral) String() string {
-	return x.val.Describe()
+func (x *ContextReference) String() string {
+	return strings.ToLower(x.name)
 }
 
-// NumberLiteral is a literal number like 123 or 1.5
-type NumberLiteral struct {
-	val types.XNumber
+type DotLookup struct {
+	container Expression
+	lookup    string
 }
 
-func (x *NumberLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	return x.val
+func (x *DotLookup) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	containerVal := x.container.Evaluate(env, ctx)
+	if types.IsXError(containerVal) {
+		return containerVal
+	}
+
+	return resolveLookup(env, containerVal, types.NewXText(x.lookup), lookupNotationDot)
 }
 
-func (x *NumberLiteral) String() string {
-	return x.val.Describe()
+func (x *DotLookup) String() string {
+	return fmt.Sprintf("%s.%s", x.container.String(), x.lookup)
 }
 
-type TextLiteral struct {
-	val types.XText
+type ArrayLookup struct {
+	container Expression
+	lookup    Expression
 }
 
-func (x *TextLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	return x.val
+func (x *ArrayLookup) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	containerVal := x.container.Evaluate(env, ctx)
+	if types.IsXError(containerVal) {
+		return containerVal
+	}
+
+	lookupVal := x.lookup.Evaluate(env, ctx)
+	if types.IsXError(lookupVal) {
+		return lookupVal
+	}
+
+	return resolveLookup(env, containerVal, lookupVal, lookupNotationArray)
 }
 
-func (x *TextLiteral) String() string {
-	return x.val.Describe()
+func (x *ArrayLookup) String() string {
+	return fmt.Sprintf("%s[%s]", x.container.String(), x.lookup.String())
 }
 
-type NullLiteral struct{}
-
-func (x *NullLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	return nil
+type FunctionCall struct {
+	function Expression
+	params   []Expression
 }
 
-func (x *NullLiteral) String() string {
-	return "null"
+func (x *FunctionCall) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	funcVal := x.function.Evaluate(env, ctx)
+	if types.IsXError(funcVal) {
+		return funcVal
+	}
+
+	asFunction, isFunction := funcVal.(*types.XFunction)
+	if !isFunction {
+		return types.NewXErrorf("%s is not a function", x.function.String())
+	}
+
+	params := make([]types.XValue, len(x.params))
+	for i := range x.params {
+		params[i] = x.params[i].Evaluate(env, ctx)
+	}
+
+	return asFunction.Call(env, params)
 }
 
-type Parentheses struct {
-	exp Expression
-}
+func (x *FunctionCall) String() string {
+	params := make([]string, len(x.params))
+	for i := range x.params {
+		params[i] = x.params[i].String()
+	}
 
-func (x *Parentheses) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	return x.exp.Evaluate(env, ctx)
-}
-
-func (x *Parentheses) String() string {
-	return fmt.Sprintf("(%s)", x.exp.String())
-}
-
-type Negation struct {
-	exp Expression
-}
-
-func (x *Negation) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	return operators.Negate(env, x.exp.Evaluate(env, ctx))
-}
-
-func (x *Negation) String() string {
-	return fmt.Sprintf("-%s", x.exp.String())
-}
-
-type Exponent struct {
-	expression Expression
-	exponent   Expression
-}
-
-func (x *Exponent) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	return operators.Exponent(env, x.expression.Evaluate(env, ctx), x.exponent.Evaluate(env, ctx))
-}
-
-func (x *Exponent) String() string {
-	return fmt.Sprintf("%s ^ %s", x.expression.String(), x.exponent.String())
+	return fmt.Sprintf("%s(%s)", x.function.String(), strings.Join(params, ", "))
 }
 
 type Concatenation struct {
@@ -164,6 +179,31 @@ func (x *Division) Evaluate(env envs.Environment, ctx *types.XObject) types.XVal
 
 func (x *Division) String() string {
 	return fmt.Sprintf("%s / %s", x.exp1.String(), x.exp2.String())
+}
+
+type Exponent struct {
+	expression Expression
+	exponent   Expression
+}
+
+func (x *Exponent) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	return operators.Exponent(env, x.expression.Evaluate(env, ctx), x.exponent.Evaluate(env, ctx))
+}
+
+func (x *Exponent) String() string {
+	return fmt.Sprintf("%s ^ %s", x.expression.String(), x.exponent.String())
+}
+
+type Negation struct {
+	exp Expression
+}
+
+func (x *Negation) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	return operators.Negate(env, x.exp.Evaluate(env, ctx))
+}
+
+func (x *Negation) String() string {
+	return fmt.Sprintf("-%s", x.exp.String())
 }
 
 type Equality struct {
@@ -244,102 +284,62 @@ func (x *GreaterThanOrEqual) String() string {
 	return fmt.Sprintf("%s >= %s", x.exp1.String(), x.exp2.String())
 }
 
-type FunctionCall struct {
-	function Expression
-	params   []Expression
+type Parentheses struct {
+	exp Expression
 }
 
-func (x *FunctionCall) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	funcVal := x.function.Evaluate(env, ctx)
-	if types.IsXError(funcVal) {
-		return funcVal
-	}
-
-	asFunction, isFunction := funcVal.(*types.XFunction)
-	if !isFunction {
-		return types.NewXErrorf("%s is not a function", x.function.String())
-	}
-
-	params := make([]types.XValue, len(x.params))
-	for i := range x.params {
-		params[i] = x.params[i].Evaluate(env, ctx)
-	}
-
-	return asFunction.Call(env, params)
+func (x *Parentheses) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	return x.exp.Evaluate(env, ctx)
 }
 
-func (x *FunctionCall) String() string {
-	params := make([]string, len(x.params))
-	for i := range x.params {
-		params[i] = x.params[i].String()
-	}
-
-	return fmt.Sprintf("%s(%s)", x.function.String(), strings.Join(params, ", "))
+func (x *Parentheses) String() string {
+	return fmt.Sprintf("(%s)", x.exp.String())
 }
 
-type DotLookup struct {
-	container Expression
-	lookup    string
+type TextLiteral struct {
+	val types.XText
 }
 
-func (x *DotLookup) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	containerVal := x.container.Evaluate(env, ctx)
-	if types.IsXError(containerVal) {
-		return containerVal
-	}
-
-	return resolveLookup(env, containerVal, types.NewXText(x.lookup), lookupNotationDot)
+func (x *TextLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	return x.val
 }
 
-func (x *DotLookup) String() string {
-	return fmt.Sprintf("%s.%s", x.container.String(), x.lookup)
+func (x *TextLiteral) String() string {
+	return x.val.Describe()
 }
 
-type ArrayLookup struct {
-	container Expression
-	lookup    Expression
+// NumberLiteral is a literal number like 123 or 1.5
+type NumberLiteral struct {
+	val types.XNumber
 }
 
-func (x *ArrayLookup) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	containerVal := x.container.Evaluate(env, ctx)
-	if types.IsXError(containerVal) {
-		return containerVal
-	}
-
-	lookupVal := x.lookup.Evaluate(env, ctx)
-	if types.IsXError(lookupVal) {
-		return lookupVal
-	}
-
-	return resolveLookup(env, containerVal, lookupVal, lookupNotationArray)
+func (x *NumberLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	return x.val
 }
 
-func (x *ArrayLookup) String() string {
-	return fmt.Sprintf("%s[%s]", x.container.String(), x.lookup.String())
+func (x *NumberLiteral) String() string {
+	return x.val.Describe()
 }
 
-// ContextReference is an identifier which is a function name or root variable in the context
-type ContextReference struct {
-	name string
+// BooleanLiteral is a literal bool
+type BooleanLiteral struct {
+	val types.XBoolean
 }
 
-func (x *ContextReference) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
-	name := strings.ToLower(x.name)
-
-	// first of all try to look this up as a function
-	function := functions.Lookup(name)
-	if function != nil {
-		return function
-	}
-
-	value, exists := ctx.Get(name)
-	if !exists {
-		return types.NewXErrorf("context has no property '%s'", name)
-	}
-
-	return value
+func (x *BooleanLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	return x.val
 }
 
-func (x *ContextReference) String() string {
-	return strings.ToLower(x.name)
+func (x *BooleanLiteral) String() string {
+	return x.val.Describe()
+}
+
+type NullLiteral struct{}
+
+func (x *NullLiteral) Evaluate(env envs.Environment, ctx *types.XObject) types.XValue {
+	return nil
+}
+
+func (x *NullLiteral) String() string {
+	return "null"
 }
