@@ -121,12 +121,16 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{"@(2 + 1 = 3)", types.XBooleanTrue},
 		{"@(7 != 2 + 1)", types.XBooleanTrue},
 
+		{"@(upper = UPPER)", types.XBooleanTrue},
+		{"@(upper = lower)", types.XBooleanFalse},
+		{"@(upper != lower)", types.XBooleanTrue},
+
 		// date equality
 		{`@(datetime("2018-04-16") = datetime("2018-04-16"))`, types.XBooleanTrue},
 		{`@(datetime("2018-04-16") != datetime("2018-04-16"))`, types.XBooleanFalse},
 		{`@(datetime("2018-04-16") = datetime("2017-03-20"))`, types.XBooleanFalse},
 		{`@(datetime("2018-04-16") != datetime("2017-03-20"))`, types.XBooleanTrue},
-		{`@(datetime("xxx") == datetime("2017-03-20"))`, ERROR},
+		{`@(datetime("xxx") = datetime("2017-03-20"))`, ERROR},
 
 		// other comparisons must be numerical
 		{"@(2 > 1)", types.XBooleanTrue},

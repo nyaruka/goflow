@@ -64,7 +64,10 @@ func (x *XFunction) String() string {
 
 // Equals determines equality for this type
 func (x *XFunction) Equals(o XValue) bool {
-	return true // TODO
+	other := o.(*XFunction)
+
+	// functions are equal if they have the same name but anon functions are never equal
+	return x.name != "" && other.name != "" && x.name == other.name
 }
 
 var _ XValue = (*XFunction)(nil)
