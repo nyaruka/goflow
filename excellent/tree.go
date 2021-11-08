@@ -22,17 +22,9 @@ type ContextReference struct {
 }
 
 func (x *ContextReference) Evaluate(env envs.Environment, ctx *Context) types.XValue {
-	name := strings.ToLower(x.name)
-
-	// first of all try to look this up as a function
-	function := functions.Lookup(name)
-	if function != nil {
-		return function
-	}
-
-	value, exists := ctx.Get(name)
+	value, exists := ctx.Get(x.name)
 	if !exists {
-		return types.NewXErrorf("context has no property '%s'", name)
+		return types.NewXErrorf("context has no property '%s'", x.name)
 	}
 
 	return value

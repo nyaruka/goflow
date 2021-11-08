@@ -7,6 +7,59 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestParse(t *testing.T) {
+	tcs := []struct {
+		expression string
+		parsed     Expression
+	}{
+		{
+			expression: `"abc" & "cde"`,
+			parsed: &Concatenation{
+				exp1: &TextLiteral{val: types.NewXText("abc")},
+				exp2: &TextLiteral{val: types.NewXText("cde")},
+			},
+		},
+		{
+			expression: `upper("abc")`,
+			parsed: &FunctionCall{
+				function: &ContextReference{name: "upper"},
+				params:   []Expression{&TextLiteral{val: types.NewXText("abc")}},
+			},
+		},
+		{
+			expression: `(x) => upper(x)`,
+			parsed: &AnonFunction{
+				args: []string{"x"},
+				body: &FunctionCall{
+					function: &ContextReference{name: "upper"},
+					params:   []Expression{&ContextReference{name: "x"}},
+				},
+			},
+		},
+		{
+			expression: `((x) => upper(x))("abc")`,
+			parsed: &FunctionCall{
+				function: &Parentheses{
+					exp: &AnonFunction{
+						args: []string{"x"},
+						body: &FunctionCall{
+							function: &ContextReference{name: "upper"},
+							params:   []Expression{&ContextReference{name: "x"}},
+						},
+					},
+				},
+				params: []Expression{&TextLiteral{val: types.NewXText("abc")}},
+			},
+		},
+	}
+
+	for _, tc := range tcs {
+		exp, err := Parse(tc.expression, nil)
+		assert.NoError(t, err)
+		assert.Equal(t, tc.parsed, exp, "parsed mismatch for expression: %s", tc.expression)
+	}
+}
+
 func TestExpressionsToString(t *testing.T) {
 	foo := &ContextReference{name: "foo"}
 	abc := &TextLiteral{types.NewXText("abc")}

@@ -4,17 +4,20 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
 // Escaping is a function applied to expressions in a template after they've been evaluated
 type Escaping func(string) string
 
+// Context provides access to context objects including functions
 type Context struct {
 	root   *types.XObject
 	parent *Context
 }
 
+// NewContext creates a new evaluation context with an optional parent
 func NewContext(root *types.XObject, parent *Context) *Context {
 	return &Context{root: root, parent: parent}
 }
@@ -23,7 +26,16 @@ func (c *Context) TopLevels() []string {
 	return c.root.Properties()
 }
 
+// Get looks up a named value in the context
 func (c *Context) Get(name string) (types.XValue, bool) {
+	name = strings.ToLower(name)
+
+	// first of all try to look this up as a function
+	function := functions.Lookup(name)
+	if function != nil {
+		return function, true
+	}
+
 	v, exists := c.root.Get(name)
 	if exists {
 		return v, true

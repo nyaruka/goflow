@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var xs = types.NewXText
@@ -412,4 +413,14 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 			excellent.EvaluateTemplate(env, ctx, tc.template, nil)
 		}
 	}
+}
+
+func TestContext(t *testing.T) {
+	ctx := excellent.NewContext(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("b")}), nil)
+	env := envs.NewBuilder().Build()
+
+	// x & foo is evaluated with a new context created by the anon func call which will have the root context as its parent
+	output, err := excellent.EvaluateTemplate(env, ctx, `@(((x) => x & foo)("a"))`, nil)
+	require.NoError(t, err)
+	assert.Equal(t, "ab", output)
 }
