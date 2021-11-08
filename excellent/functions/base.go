@@ -3,7 +3,6 @@ package functions
 import (
 	"strings"
 
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
@@ -11,7 +10,7 @@ import (
 var XFUNCTIONS = map[string]*types.XFunction{}
 
 // RegisterXFunction registers a new function in Excellent
-func RegisterXFunction(name string, f func(env envs.Environment, args ...types.XValue) types.XValue) {
+func RegisterXFunction(name string, f types.XFunc) {
 	XFUNCTIONS[name] = types.NewXFunction(name, f)
 }
 
