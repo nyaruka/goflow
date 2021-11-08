@@ -76,26 +76,18 @@ func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValu
 	return map[string]types.XValue{
 		"__default__": types.NewXText(FormatRunSummary(env, c.run)),
 		"uuid":        types.NewXText(string(c.run.UUID())),
-		"run":         flows.ContextFunc(env, c.RunContext), // deprecated to be removed in 13.1
 		"contact":     flows.Context(env, c.run.Contact()),
 		"flow":        flows.Context(env, c.run.Flow()),
 		"urns":        urns,
 		"fields":      fields,
 		"results":     flows.Context(env, c.run.Results()),
 		"status":      types.NewXText(string(c.run.Status())),
-	}
-}
 
-// Context returns the properties available in expressions. Run summaries expose a
-// subset of the properties exposed by a real run.
-func (c *relatedRunContext) RunContext(env envs.Environment) map[string]types.XValue {
-	return map[string]types.XValue{
-		"__default__": types.NewXText(FormatRunSummary(env, c.run)),
-		"uuid":        types.NewXText(string(c.run.UUID())),
-		"contact":     flows.Context(env, c.run.Contact()),
-		"flow":        flows.Context(env, c.run.Flow()),
-		"status":      types.NewXText(string(c.run.Status())),
-		"results":     flows.Context(env, c.run.Results()),
+		// deprecated but used by a lot of flows for @child.run.status as that is what editor has
+		// been using for subflow splits
+		"run": types.NewXObject(map[string]types.XValue{
+			"status": types.NewXText(string(c.run.Status())),
+		}),
 	}
 }
 

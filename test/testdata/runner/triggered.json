@@ -14,7 +14,7 @@
                         {
                             "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
                             "type": "send_msg",
-                            "text": "Hi @contact.name you were started in this flow by @parent.contact.name from the '@parent.run.flow.name' flow. He is from @(format_location(parent.contact.fields.state)) and is aged @parent.results.age.value."
+                            "text": "Hi @contact.name you were started in this flow by @parent.contact.name from the '@parent.flow.name' flow. He is from @(format_location(parent.contact.fields.state)) and is aged @parent.results.age.value."
                         }
                     ],
                     "exits": [
