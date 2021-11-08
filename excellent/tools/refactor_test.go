@@ -33,11 +33,11 @@ func TestRefactorTemplate(t *testing.T) {
 	}
 
 	env := envs.NewBuilder().Build()
-	ctx := excellent.NewContext(types.NewXObject(map[string]types.XValue{
+	ctx := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXObject(map[string]types.XValue{
 			"bar": types.NewXNumberFromInt(123),
 		}),
-	}), nil)
+	})
 	topLevels := []string{"foo"}
 
 	for _, tc := range testCases {

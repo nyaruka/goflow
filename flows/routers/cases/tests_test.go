@@ -493,7 +493,7 @@ func TestTests(t *testing.T) {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	ctx := excellent.NewContext(types.NewXObject(map[string]types.XValue{
+	ctx := types.NewXObject(map[string]types.XValue{
 		"int1":   types.NewXNumberFromInt(1),
 		"int2":   types.NewXNumberFromInt(2),
 		"array1": types.NewXArray(xs("one"), xs("two"), xs("three")),
@@ -503,7 +503,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			"missing": nil,
 		}),
 		"err": types.NewXErrorf("an error"),
-	}), nil)
+	})
 
 	evalTests := []struct {
 		template string
