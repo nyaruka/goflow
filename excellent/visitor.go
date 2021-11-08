@@ -207,7 +207,8 @@ func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
 	// unquote, this takes care of escape sequences as well
 	unquoted, err := strconv.Unquote(value)
 
-	// if we had an error, just strip surrounding quotes
+	// if we had an error, just strip surrounding quotes. It's fairly common for text literals
+	// to contain escape sequences which aren't legal in go, e.g. a regex \w+
 	if err != nil {
 		unquoted = value[1 : len(value)-1]
 	}
