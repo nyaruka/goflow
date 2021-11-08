@@ -2086,6 +2086,8 @@ func ExtractObject(env envs.Environment, args ...types.XValue) types.XValue {
 // If the given function takes more than one argument, you can pass additional arguments after the function.
 //
 //   @(foreach(array("a", "b", "c"), upper)) -> [A, B, C]
+//   @(foreach(array("a", "b", "c"), (x) => x & "1")) -> [a1, b1, c1]
+//   @(foreach(array("a", "b", "c"), (x) => object("v", x))) -> [{v: a}, {v: b}, {v: c}]
 //   @(foreach(array("the man", "fox", "jumped up"), word, 0)) -> [the, fox, jumped]
 //
 // @function foreach(values, func, [args...])

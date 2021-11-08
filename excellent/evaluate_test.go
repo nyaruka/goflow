@@ -22,7 +22,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	array1d := types.NewXArray(types.NewXText("a"), types.NewXText("b"), types.NewXText("c"))
 	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")))
 
-	context := types.NewXObject(map[string]types.XValue{
+	ctx := excellent.NewContext(types.NewXObject(map[string]types.XValue{
 		"string1": types.NewXText("foo"),
 		"string2": types.NewXText("bar"),
 		"string3": types.NewXText("🐒"),
@@ -34,7 +34,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		"words":   types.NewXText("one two three"),
 		"array1d": array1d,
 		"array2d": array2d,
-	})
+	}), nil)
 
 	env := envs.NewBuilder().Build()
 
@@ -156,9 +156,14 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{"@(\"foo\" & missing)", ERROR},
 
 		{"@(TITLE(string1))", xs("Foo")},
-		{"@(MISSING(string1))", ERROR},
-		{"@(TITLE(string1, string2))", ERROR},
+		{"@(MISSING(string1))", ERROR},          // non-existent function
+		{"@(TITLE(string1, string2))", ERROR},   // wrong number of args
 		{"@(TITLE)", functions.Lookup("title")}, // functions are values too
+
+		{`@(text((x) => "abc"))`, xs("<anon>")},
+		{`@(((x) => upper(x))("abc"))`, xs("ABC")},
+		{`@(((x, y) => x + y)(1, 2))`, xi(3)},
+		{`@(((x, y) => "abc")(1))`, ERROR}, // wrong number of args
 
 		{"@(1 = asdf)", ERROR},       // asdf isn't a valid context item
 		{"@(asdf = 1)", ERROR},       // asdf isn't a valid context item
@@ -174,21 +179,20 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	}
 
 	for _, tc := range evaluateTests {
-		result, err := excellent.EvaluateTemplateValue(env, context, tc.template)
+		result, err := excellent.EvaluateTemplateValue(env, ctx, tc.template)
 		assert.NoError(t, err)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, tc.template)
 		} else {
-			test.AssertXEqual(t, result, tc.expected, "output mismatch for template '%s'", tc.template)
+			test.AssertXEqual(t, tc.expected, result, "output mismatch for template '%s'", tc.template)
 		}
 	}
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-
-	vars := types.NewXObject(map[string]types.XValue{
+	ctx := excellent.NewContext(types.NewXObject(map[string]types.XValue{
 		"string1":  types.NewXText("foo"),
 		"string2":  types.NewXText("bar"),
 		"_special": types.NewXText("🐒"),
@@ -214,7 +218,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			"__default__": types.XTextEmpty,
 			"foo":         types.NewXNumberFromInt(234),
 		}),
-	})
+	}), nil)
 
 	evaluateAsStringTests := []struct {
 		template string
@@ -314,7 +318,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			}
 		}()
 
-		eval, err := excellent.EvaluateTemplate(env, vars, tc.template, nil)
+		eval, err := excellent.EvaluateTemplate(env, ctx, tc.template, nil)
 
 		if tc.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", tc.template)
@@ -326,16 +330,16 @@ func TestEvaluateTemplate(t *testing.T) {
 }
 
 func TestEvaluateTemplateWithEscaping(t *testing.T) {
-	vars := types.NewXObject(map[string]types.XValue{
+	ctx := excellent.NewContext(types.NewXObject(map[string]types.XValue{
 		"string1": types.NewXText(`""; DROP`),
-	})
+	}), nil)
 
 	escaping := func(s string) string {
 		return strings.Replace(s, `"`, `\"`, -1)
 	}
 
 	env := envs.NewBuilder().Build()
-	eval, err := excellent.EvaluateTemplate(env, vars, `Hi @string1`, escaping)
+	eval, err := excellent.EvaluateTemplate(env, ctx, `Hi @string1`, escaping)
 	assert.NoError(t, err)
 	assert.Equal(t, `Hi \"\"; DROP`, eval)
 }
@@ -380,13 +384,13 @@ var errorTests = []struct {
 }
 
 func TestEvaluationErrors(t *testing.T) {
-	vars := types.NewXObject(map[string]types.XValue{
-		"foo": types.NewXText("bar"),
-	})
 	env := envs.NewBuilder().Build()
+	ctx := excellent.NewContext(types.NewXObject(map[string]types.XValue{
+		"foo": types.NewXText("bar"),
+	}), nil)
 
 	for _, tc := range errorTests {
-		result, err := excellent.EvaluateTemplate(env, vars, tc.template, nil)
+		result, err := excellent.EvaluateTemplate(env, ctx, tc.template, nil)
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
 
@@ -397,14 +401,15 @@ func TestEvaluationErrors(t *testing.T) {
 }
 
 func BenchmarkEvaluationErrors(b *testing.B) {
+	env := envs.NewBuilder().Build()
+	ctx := excellent.NewContext(types.NewXObject(map[string]types.XValue{
+		"foo": types.NewXText("bar"),
+	}), nil)
+
 	for i := 0; i < b.N; i++ {
-		vars := types.NewXObject(map[string]types.XValue{
-			"foo": types.NewXText("bar"),
-		})
-		env := envs.NewBuilder().Build()
 
 		for _, tc := range errorTests {
-			excellent.EvaluateTemplate(env, vars, tc.template, nil)
+			excellent.EvaluateTemplate(env, ctx, tc.template, nil)
 		}
 	}
 }

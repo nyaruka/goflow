@@ -25,6 +25,8 @@ func TestExpressionsToString(t *testing.T) {
 	assert.Equal(t, `foo("abc", 1)`, (&FunctionCall{function: foo, params: []Expression{abc, one}}).String())
 	assert.Equal(t, `foo()`, (&FunctionCall{function: foo, params: []Expression{}}).String())
 
+	assert.Equal(t, `(x, y) => "abc"`, (&AnonFunction{args: []string{"x", "y"}, body: abc}).String())
+
 	assert.Equal(t, `"abc" & "cde"`, (&Concatenation{exp1: abc, exp2: cde}).String())
 
 	assert.Equal(t, `1 + 2`, (&Addition{exp1: one, exp2: two}).String())

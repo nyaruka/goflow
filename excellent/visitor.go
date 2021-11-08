@@ -12,7 +12,7 @@ import (
 
 // visitor which evaluates each part of an expression as a value
 type visitor struct {
-	gen.BaseExcellent2Visitor
+	gen.BaseExcellent3Visitor
 
 	// tracks where we are in the context
 	currContext     []string
@@ -104,6 +104,24 @@ func (v *visitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) in
 		params[i] = toExpression(v.Visit(expressions[i]))
 	}
 	return params
+}
+
+// VisitAnonFunction deals with anonymous functions, e.g. (x) => 2 * x
+func (v *visitor) VisitAnonFunction(ctx *gen.AnonFunctionContext) interface{} {
+	return &AnonFunction{
+		args: v.Visit(ctx.NameList()).([]string),
+		body: toExpression(v.Visit(ctx.Expression())),
+	}
+}
+
+func (v *visitor) VisitNameList(ctx *gen.NameListContext) interface{} {
+	names := ctx.AllNAME()
+	args := make([]string, len(names))
+
+	for i := range names {
+		args[i] = names[i].GetText()
+	}
+	return args
 }
 
 // VisitConcatenation deals with string concatenations like "foo" & "bar"
