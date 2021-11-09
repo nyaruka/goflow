@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-11-03 12:43+0000\n"
+"POT-Creation-Date: 2021-11-09 16:39-0500\n"
 "Language-Team: Russian (https://www.transifex.com/rapidpro/teams/226/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
