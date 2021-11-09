@@ -13,6 +13,14 @@ func TestParse(t *testing.T) {
 		parsed     Expression
 	}{
 		{
+			expression: `"hello\nworld"`,
+			parsed:     &TextLiteral{val: types.NewXText("hello\nworld")},
+		},
+		{
+			expression: `"\w+"`,
+			parsed:     &TextLiteral{val: types.NewXText("\\w+")},
+		},
+		{
 			expression: `"abc" & "cde"`,
 			parsed: &Concatenation{
 				exp1: &TextLiteral{val: types.NewXText("abc")},

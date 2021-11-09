@@ -363,52 +363,53 @@ func TestEvaluateTemplateWithEscaping(t *testing.T) {
 	assert.Equal(t, `Hi \"\"; DROP`, eval)
 }
 
-var errorTests = []struct {
-	template string
-	errorMsg string
-}{
-	// parser errors
-	{`@('x')`, `error evaluating @('x'): syntax error at 'x'`},
-	{`@(0 / )`, `error evaluating @(0 / ): syntax error at `},
-	{`@(0 / )@('x')`, `error evaluating @(0 / ): syntax error at , error evaluating @('x'): syntax error at 'x'`},
-	{`@(1.1.0)`, `error evaluating @(1.1.0): syntax error at .0`},
-	{`@(NULL.x)`, `error evaluating @(NULL.x): syntax error at .x`},
-	{`@(False.g)`, `error evaluating @(False.g): syntax error at .g`},
-	{`@("abc".v)`, `error evaluating @("abc".v): syntax error at .v`},
-
-	// lookup errors
-	{`@(hello)`, `error evaluating @(hello): context has no property 'hello'`},
-	{`@((1).x)`, `error evaluating @((1).x): 1 doesn't support lookups`},
-	{`@((1)[0])`, `error evaluating @((1)[0]): 1 doesn't support lookups`},
-	{`@((1)["x"])`, `error evaluating @((1)["x"]): 1 doesn't support lookups`},
-	{`@((TRUE).x)`, `error evaluating @((TRUE).x): true doesn't support lookups`},
-	{`@((TRUE)["x"])`, `error evaluating @((TRUE)["x"]): true doesn't support lookups`},
-	{`@(foo.x)`, `error evaluating @(foo.x): "bar" doesn't support lookups`},
-	{`@(foo["x"])`, `error evaluating @(foo["x"]): "bar" doesn't support lookups`},
-	{`@foo.x`, `error evaluating @foo.x: "bar" doesn't support lookups`},
-	{`@(array(1, 2)[5])`, `error evaluating @(array(1, 2)[5]): index 5 out of range for 2 items`},
-
-	// conversion errors
-	{`@(1 + null)`, `error evaluating @(1 + null): unable to convert null to a number`},
-	{`@(1 + true)`, `error evaluating @(1 + true): unable to convert true to a number`},
-	{`@("a" + 2)`, `error evaluating @("a" + 2): unable to convert "a" to a number`},
-	{`@(format_datetime("x"))`, `error evaluating @(format_datetime("x")): error calling format_datetime(...): unable to convert "x" to a datetime`},
-	{`@(format_datetime(3))`, `error evaluating @(format_datetime(3)): error calling format_datetime(...): unable to convert 3 to a datetime`},
-
-	// function call errors
-	{`@(FOO())`, `error evaluating @(FOO()): foo is not a function`},
-	{`@(count(1))`, `error evaluating @(count(1)): error calling count(...): value isn't countable`},
-	{`@(word_count())`, `error evaluating @(word_count()): error calling word_count(...): need 1 to 2 argument(s), got 0`},
-	{`@(word_count("a", "b", "c"))`, `error evaluating @(word_count("a", "b", "c")): error calling word_count(...): need 1 to 2 argument(s), got 3`},
-}
-
 func TestEvaluationErrors(t *testing.T) {
 	env := envs.NewBuilder().Build()
 	ctx := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXText("bar"),
 	})
 
-	for _, tc := range errorTests {
+	tcs := []struct {
+		template string
+		errorMsg string
+	}{
+		// parser errors
+		{`@('x')`, `error evaluating @('x'): syntax error at 'x'`},
+		{`@(0 / )`, `error evaluating @(0 / ): syntax error at `},
+		{`@(0 / )@('x')`, `error evaluating @(0 / ): syntax error at , error evaluating @('x'): syntax error at 'x'`},
+		{`@(1.1.0)`, `error evaluating @(1.1.0): syntax error at .0`},
+		{`@(NULL.x)`, `error evaluating @(NULL.x): syntax error at .x`},
+		{`@(False.g)`, `error evaluating @(False.g): syntax error at .g`},
+		{`@("abc".v)`, `error evaluating @("abc".v): syntax error at .v`},
+
+		// lookup errors
+		{`@(hello)`, `error evaluating @(hello): context has no property 'hello'`},
+		{`@((1).x)`, `error evaluating @((1).x): 1 doesn't support lookups`},
+		{`@((1)[0])`, `error evaluating @((1)[0]): 1 doesn't support lookups`},
+		{`@((1)["x"])`, `error evaluating @((1)["x"]): 1 doesn't support lookups`},
+		{`@((TRUE).x)`, `error evaluating @((TRUE).x): true doesn't support lookups`},
+		{`@((TRUE)["x"])`, `error evaluating @((TRUE)["x"]): true doesn't support lookups`},
+		{`@(foo.x)`, `error evaluating @(foo.x): "bar" doesn't support lookups`},
+		{`@(foo["x"])`, `error evaluating @(foo["x"]): "bar" doesn't support lookups`},
+		{`@foo.x`, `error evaluating @foo.x: "bar" doesn't support lookups`},
+		{`@(array(1, 2)[5])`, `error evaluating @(array(1, 2)[5]): index 5 out of range for 2 items`},
+		{`@(array(1, 2)["x"])`, `error evaluating @(array(1, 2)["x"]): unable to convert "x" to a number`},
+
+		// conversion errors
+		{`@(1 + null)`, `error evaluating @(1 + null): unable to convert null to a number`},
+		{`@(1 + true)`, `error evaluating @(1 + true): unable to convert true to a number`},
+		{`@("a" + 2)`, `error evaluating @("a" + 2): unable to convert "a" to a number`},
+		{`@(format_datetime("x"))`, `error evaluating @(format_datetime("x")): error calling format_datetime(...): unable to convert "x" to a datetime`},
+		{`@(format_datetime(3))`, `error evaluating @(format_datetime(3)): error calling format_datetime(...): unable to convert 3 to a datetime`},
+
+		// function call errors
+		{`@(FOO())`, `error evaluating @(FOO()): foo is not a function`},
+		{`@(count(1))`, `error evaluating @(count(1)): error calling count(...): value isn't countable`},
+		{`@(word_count())`, `error evaluating @(word_count()): error calling word_count(...): need 1 to 2 argument(s), got 0`},
+		{`@(word_count("a", "b", "c"))`, `error evaluating @(word_count("a", "b", "c")): error calling word_count(...): need 1 to 2 argument(s), got 3`},
+	}
+
+	for _, tc := range tcs {
 		result, err := excellent.EvaluateTemplate(env, ctx, tc.template, nil)
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)

@@ -15,7 +15,7 @@ func TestXFunction(t *testing.T) {
 	func1 := types.NewXFunction("foo", func(env envs.Environment, args ...types.XValue) types.XValue {
 		return types.NewXNumberFromInt(len(args))
 	})
-	func2 := types.NewXFunction("nill", func(env envs.Environment, args ...types.XValue) types.XValue { return nil })
+	func2 := types.NewXFunction("bad", func(env envs.Environment, args ...types.XValue) types.XValue { return types.NewXErrorf("boom") })
 	anon1 := types.NewXFunction("", func(env envs.Environment, args ...types.XValue) types.XValue { return types.NewXText("c") })
 	anon2 := types.NewXFunction("", func(env envs.Environment, args ...types.XValue) types.XValue { return types.NewXText("d") })
 
@@ -26,6 +26,8 @@ func TestXFunction(t *testing.T) {
 	assert.Equal(t, `foo(...)`, func1.Describe())
 	assert.Equal(t, types.NewXNumberFromInt(0), func1.Call(env, nil))
 	assert.Equal(t, types.NewXNumberFromInt(2), func1.Call(env, []types.XValue{types.NewXText("a"), types.NewXText("b")}))
+
+	assert.Equal(t, types.NewXErrorf("error calling bad(...): boom"), func2.Call(env, nil))
 
 	assert.True(t, anon1.Truthy())
 	assert.Equal(t, `<anon>`, anon1.Render())
