@@ -1,3 +1,7 @@
+v0.140.1
+----------
+ * Update locale files (adds empty cs and mn translations)
+
 v0.140.0
 ----------
  * Add reverse excellent function
