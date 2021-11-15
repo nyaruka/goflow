@@ -250,6 +250,12 @@ func TestEquals(t *testing.T) {
 	}
 }
 
+func TestTruthy(t *testing.T) {
+	assert.False(t, types.Truthy(nil))
+	assert.False(t, types.Truthy(types.NewXText("")))
+	assert.True(t, types.Truthy(types.NewXText("x")))
+}
+
 type XBogusType struct {
 	types.XText
 }

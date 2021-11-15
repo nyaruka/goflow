@@ -18,6 +18,7 @@ func TestFindContextRefsInTemplate(t *testing.T) {
 		{`@foo.bar.x.y`, [][]string{{`foo`}, {`foo`, `bar`}, {`foo`, `bar`, `x`}, {`foo`, `bar`, `x`, `y`}}, false},
 		{`@(foo) @(foo.bar)`, [][]string{{`foo`}, {`foo`}, {`foo`, `bar`}}, false},
 		{`@((foo))`, [][]string{{`foo`}}, false},
+		{`@((FOO))`, [][]string{{`foo`}}, false},
 		{`@(lower(foo.bar))`, [][]string{{`foo`}, {`foo`, `bar`}}, false},
 		{`@(foo["bar"])`, [][]string{{`foo`}, {`foo`, `bar`}}, false},
 		{`@(3 * (foo.bar + 1) / 2)`, [][]string{{`foo`}, {`foo`, `bar`}}, false},
