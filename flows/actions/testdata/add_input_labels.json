@@ -17,7 +17,7 @@
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without input"
+                "text": "no input to add labels to"
             }
         ]
     },
