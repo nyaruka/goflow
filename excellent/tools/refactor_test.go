@@ -33,7 +33,7 @@ func TestRefactorTemplate(t *testing.T) {
 	}
 
 	env := envs.NewBuilder().Build()
-	context := types.NewXObject(map[string]types.XValue{
+	ctx := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXObject(map[string]types.XValue{
 			"bar": types.NewXNumberFromInt(123),
 		}),
@@ -51,8 +51,8 @@ func TestRefactorTemplate(t *testing.T) {
 			assert.NoError(t, err, "unexpected error for template: %s, err: %s", tc.template, err)
 
 			// test that the original and the refactored template evaluate equally
-			originalValue, _ := excellent.EvaluateTemplate(env, context, tc.template, nil)
-			refactoredValue, _ := excellent.EvaluateTemplate(env, context, actual, nil)
+			originalValue, _ := excellent.EvaluateTemplate(env, ctx, tc.template, nil)
+			refactoredValue, _ := excellent.EvaluateTemplate(env, ctx, actual, nil)
 
 			assert.Equal(t, originalValue, refactoredValue, "refactoring of template %s gives different value: %s", tc.template, refactoredValue)
 		}

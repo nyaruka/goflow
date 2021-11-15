@@ -339,16 +339,16 @@ func (r *flowRun) nodeContext(env envs.Environment) map[string]types.XValue {
 
 // EvaluateTemplate evaluates the given template in the context of this run
 func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
-	context := types.NewXObject(r.RootContext(r.Environment()))
+	ctx := types.NewXObject(r.RootContext(r.Environment()))
 
-	return excellent.EvaluateTemplateValue(r.Environment(), context, template)
+	return excellent.EvaluateTemplateValue(r.Environment(), ctx, template)
 }
 
 // EvaluateTemplateText evaluates the given template as text in the context of this run
 func (r *flowRun) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool) (string, error) {
-	context := types.NewXObject(r.RootContext(r.Environment()))
+	ctx := types.NewXObject(r.RootContext(r.Environment()))
 
-	value, err := excellent.EvaluateTemplate(r.Environment(), context, template, escaping)
+	value, err := excellent.EvaluateTemplate(r.Environment(), ctx, template, escaping)
 	if truncate {
 		value = utils.TruncateEllipsis(value, r.Session().Engine().MaxTemplateChars())
 	}

@@ -1,10 +1,10 @@
-// Code generated from Excellent2.g4 by ANTLR 4.7.2. DO NOT EDIT.
+// Code generated from Excellent3.g4 by ANTLR 4.9.2. DO NOT EDIT.
 
-package gen // Excellent2
+package gen // Excellent3
 import "github.com/antlr/antlr4/runtime/Go/antlr"
 
-// Excellent2Listener is a complete listener for a parse tree produced by Excellent2Parser.
-type Excellent2Listener interface {
+// Excellent3Listener is a complete listener for a parse tree produced by Excellent3Parser.
+type Excellent3Listener interface {
 	antlr.ParseTreeListener
 
 	// EnterParse is called when entering the parse production.
@@ -40,6 +40,9 @@ type Excellent2Listener interface {
 	// EnterAtomReference is called when entering the atomReference production.
 	EnterAtomReference(c *AtomReferenceContext)
 
+	// EnterAnonFunction is called when entering the anonFunction production.
+	EnterAnonFunction(c *AnonFunctionContext)
+
 	// EnterEquality is called when entering the equality production.
 	EnterEquality(c *EqualityContext)
 
@@ -66,6 +69,9 @@ type Excellent2Listener interface {
 
 	// EnterFunctionParameters is called when entering the functionParameters production.
 	EnterFunctionParameters(c *FunctionParametersContext)
+
+	// EnterNameList is called when entering the nameList production.
+	EnterNameList(c *NameListContext)
 
 	// ExitParse is called when exiting the parse production.
 	ExitParse(c *ParseContext)
@@ -100,6 +106,9 @@ type Excellent2Listener interface {
 	// ExitAtomReference is called when exiting the atomReference production.
 	ExitAtomReference(c *AtomReferenceContext)
 
+	// ExitAnonFunction is called when exiting the anonFunction production.
+	ExitAnonFunction(c *AnonFunctionContext)
+
 	// ExitEquality is called when exiting the equality production.
 	ExitEquality(c *EqualityContext)
 
@@ -126,4 +135,7 @@ type Excellent2Listener interface {
 
 	// ExitFunctionParameters is called when exiting the functionParameters production.
 	ExitFunctionParameters(c *FunctionParametersContext)
+
+	// ExitNameList is called when exiting the nameList production.
+	ExitNameList(c *NameListContext)
 }

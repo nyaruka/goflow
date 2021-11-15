@@ -141,10 +141,10 @@ func newXNumberFromString(s string) (XNumber, error) {
 	if !decimalRegexp.MatchString(s) {
 		return XNumberZero, errors.New("not a valid number format")
 	}
-	d, err := decimal.NewFromString(s)
-	if err != nil {
-		return XNumberZero, err
-	}
+
+	// we can assume anything that matched our regex is parseable
+	d := decimal.RequireFromString(s)
+
 	return NewXNumber(d), nil
 }
 

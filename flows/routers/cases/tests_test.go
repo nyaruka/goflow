@@ -481,7 +481,7 @@ func TestTests(t *testing.T) {
 		testFunc, exists := cases.XTESTS[tc.name]
 		require.True(t, exists, "no such registered function: %s", tc.name)
 
-		result := testFunc(env, tc.args...)
+		result := testFunc.Call(env, tc.args)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {
@@ -493,7 +493,7 @@ func TestTests(t *testing.T) {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	vars := types.NewXObject(map[string]types.XValue{
+	ctx := types.NewXObject(map[string]types.XValue{
 		"int1":   types.NewXNumberFromInt(1),
 		"int2":   types.NewXNumberFromInt(2),
 		"array1": types.NewXArray(xs("one"), xs("two"), xs("three")),
@@ -511,7 +511,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		hasError bool
 	}{
 		{"@(has_error(array1[100]).match)", "index 100 out of range for 3 items", false}, // errors are like any other value
-		{`@(has_error(round("foo", "bar")).match)`, "error calling ROUND: unable to convert \"foo\" to a number", false},
+		{`@(has_error(round("foo", "bar")).match)`, "error calling round(...): unable to convert \"foo\" to a number", false},
 		{`@(has_error(err).match)`, "an error", false},
 		{"@(has_error(thing.foo).match)", "", false},
 		{"@(has_error(thing.xxx).match)", "object has no property 'xxx'", false},
@@ -520,7 +520,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	env := envs.NewBuilder().Build()
 	for _, test := range evalTests {
-		eval, err := excellent.EvaluateTemplate(env, vars, test.template, nil)
+		eval, err := excellent.EvaluateTemplate(env, ctx, test.template, nil)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)

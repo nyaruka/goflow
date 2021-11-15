@@ -1,6 +1,6 @@
-grammar Excellent2;
+grammar Excellent3;
 
-// kept for historical records
+// rebuild with % antlr -Dlanguage=Go Excellent3.g4 -o ../excellent/gen -package gen -visitor
 
 import LexUnicode;
 
@@ -11,6 +11,7 @@ LBRACK: '[';
 RBRACK: ']';
 
 DOT: '.';
+ARROW: '=>';
 
 PLUS: '+';
 MINUS: '-';
@@ -53,6 +54,7 @@ expression:
 	| expression op = (LTE | LT | GTE | GT) expression	# comparison
 	| expression op = (EQ | NEQ) expression				# equality
 	| expression AMPERSAND expression					# concatenation
+	| LPAREN nameList RPAREN ARROW expression			# anonFunction
 	| TEXT												# textLiteral
 	| (INTEGER | DECIMAL)								# numberLiteral
 	| TRUE												# true
@@ -68,3 +70,5 @@ atom:
 	| NAME							# contextReference;
 
 parameters: expression (COMMA expression)* # functionParameters;
+
+nameList: NAME (COMMA NAME)*;
