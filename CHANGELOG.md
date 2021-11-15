@@ -1,3 +1,15 @@
+v0.141.0
+----------
+ * Rework Context into Scope, expose functions via a root scope, and support shadowing
+ * Cleanup function exposure in contexts and add more tests
+ * Drop unused child.run.* and parent.run.* parts of the context except .status as used subflow splits
+ * Add support for anonymous functions in excellent
+ * Fix function equality/inequality for consistency
+ * Use syntax tree for refactoring operations
+ * Excellent evaluation should parse to syntax tree as first step
+ * Let Excellent functions know their own name to make better error messages
+ * Only msg resumes should set input, all other resumes clear it
+
 v0.140.1
 ----------
  * Update locale files (adds empty cs and mn translations)
