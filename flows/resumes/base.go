@@ -71,6 +71,9 @@ func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
 	if run.Status() == flows.RunStatusWaiting {
 		run.SetStatus(flows.RunStatusActive)
 	}
+
+	// clear the last input
+	run.Session().SetInput(nil)
 }
 
 //------------------------------------------------------------------------------------------
