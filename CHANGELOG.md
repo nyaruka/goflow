@@ -1,3 +1,8 @@
+v0.142.0
+----------
+ * Add Segments() to Sprint which returns all complete segments in that sprint
+ * Simplify error message that users see if they have label action with no input
+
 v0.141.0
 ----------
  * Rework Context into Scope, expose functions via a root scope, and support shadowing
