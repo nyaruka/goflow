@@ -1,3 +1,7 @@
+v0.142.1
+----------
+ * Put back engine.NewSprint which mailroom uses for surveyor submissions
+
 v0.142.0
 ----------
  * Add Segments() to Sprint which returns all complete segments in that sprint
