@@ -47,6 +47,7 @@
                     "type": "msg_wait"
                 }
             ],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -279,6 +280,18 @@
                     },
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43",
+                    "exit_uuid": "78f74c5c-5797-4bcf-8d05-7f38e34e968d",
+                    "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
+                },
+                {
+                    "destination_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
+                    "exit_uuid": "4d043c51-260c-4a5f-a7d7-defd1067c9f2",
+                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                 }
             ],
             "session": {

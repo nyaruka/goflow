@@ -17,6 +17,13 @@
                     "type": "msg_wait"
                 }
             ],
+            "segments": [
+                {
+                    "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                    "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -228,6 +235,18 @@
                     },
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_created"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                    "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
+                    "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
+                },
+                {
+                    "destination_uuid": "8f4aba68-3250-43b6-8409-93ba44092962",
+                    "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
+                    "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
                 }
             ],
             "session": {

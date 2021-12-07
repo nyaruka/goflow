@@ -17,6 +17,13 @@
                     "type": "msg_wait"
                 }
             ],
+            "segments": [
+                {
+                    "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                    "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -229,6 +236,18 @@
                         "bob@nyaruka.com"
                     ],
                     "type": "email_sent"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                    "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
+                    "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
+                },
+                {
+                    "destination_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
+                    "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
+                    "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
                 }
             ],
             "session": {

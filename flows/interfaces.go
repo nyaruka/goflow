@@ -331,12 +331,18 @@ type Engine interface {
 	MaxTemplateChars() int
 }
 
+// Segment is a movement on the flow graph from an exit to another node
+type Segment interface {
+	Flow() Flow
+	Exit() Exit
+	Destination() Node
+}
+
 // Sprint is an interaction with the engine - i.e. a start or resume of a session
 type Sprint interface {
 	Modifiers() []Modifier
-	LogModifier(Modifier)
 	Events() []Event
-	LogEvent(Event)
+	Segments() []Segment
 }
 
 // Session represents the session of a flow run which may contain many runs

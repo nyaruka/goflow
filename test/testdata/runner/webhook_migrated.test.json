@@ -16,6 +16,7 @@
                     "type": "msg_wait"
                 }
             ],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -149,6 +150,18 @@
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
                     "value": "valid"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "d02536d0-7e86-47ab-8c60-fcf2678abc2b",
+                    "exit_uuid": "cbb4ff9e-fa50-4d19-be5b-3c219e9366b1",
+                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                },
+                {
+                    "destination_uuid": "e5d0c54c-7702-4e6b-9080-3de1a120a647",
+                    "exit_uuid": "96a1ff26-af04-4698-a4bd-40939bf2e7ab",
+                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                 }
             ],
             "session": {

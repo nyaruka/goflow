@@ -408,6 +408,7 @@
                     ]
                 }
             ],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",

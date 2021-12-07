@@ -22,6 +22,7 @@
                     "type": "msg_wait"
                 }
             ],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -206,6 +207,13 @@
                     },
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                    "exit_uuid": "079f247a-16f4-419f-8cd2-0c8ae13152c6",
+                    "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                 }
             ],
             "session": {
