@@ -48,6 +48,11 @@ func newEmptySprint() *sprint {
 	}
 }
 
+// NewSprint creates a new sprint - engine doesn't use this but we do it when handling surveyor responses
+func NewSprint(modifiers []flows.Modifier, events []flows.Event, segments []flows.Segment) flows.Sprint {
+	return &sprint{modifiers: modifiers, events: events, segments: segments}
+}
+
 func (s *sprint) Modifiers() []flows.Modifier { return s.modifiers }
 func (s *sprint) Events() []flows.Event       { return s.events }
 func (s *sprint) Segments() []flows.Segment   { return s.segments }
