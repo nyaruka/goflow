@@ -9,7 +9,7 @@
                     "urn": "tel:+12065551212"
                 }
             ],
-            "path": [],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -153,7 +153,7 @@
                     "value": "busy"
                 }
             ],
-            "path": [],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",

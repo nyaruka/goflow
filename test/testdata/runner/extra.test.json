@@ -96,7 +96,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                     "exit_uuid": "532e0cec-b66a-4c30-925b-c305705a9607",
@@ -352,7 +352,7 @@
                     "type": "msg_created"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "e9666140-dcf1-46ab-a27e-ecb2a5e8b73d",
                     "exit_uuid": "e63af3a0-4c7c-469e-8c5a-01cc38ab872d",

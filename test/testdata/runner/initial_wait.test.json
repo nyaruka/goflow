@@ -36,7 +36,7 @@
                     "type": "msg_created"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "exit_uuid": "1ca74fca-1803-4ae7-8ae9-336e75276cd6",

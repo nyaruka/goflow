@@ -57,7 +57,7 @@
                     }
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
                     "exit_uuid": "8f2a3d3f-6522-42ea-8322-c1677bcb324e",

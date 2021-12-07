@@ -24,11 +24,11 @@ type segmentEnvelope struct {
 }
 
 func (s *segment) MarshalJSON() ([]byte, error) {
-	e := &segmentEnvelope{FlowUUID: s.flow.UUID(), ExitUUID: s.exit.UUID()}
-	if s.destination != nil {
-		e.DestinationUUID = s.destination.UUID()
-	}
-	return json.Marshal(e)
+	return json.Marshal(&segmentEnvelope{
+		FlowUUID:        s.flow.UUID(),
+		ExitUUID:        s.exit.UUID(),
+		DestinationUUID: s.destination.UUID(),
+	})
 }
 
 var _ flows.Segment = (*segment)(nil)
@@ -50,7 +50,7 @@ func newEmptySprint() *sprint {
 
 func (s *sprint) Modifiers() []flows.Modifier { return s.modifiers }
 func (s *sprint) Events() []flows.Event       { return s.events }
-func (s *sprint) Path() []flows.Segment       { return s.segments }
+func (s *sprint) Segments() []flows.Segment   { return s.segments }
 
 func (s *sprint) logModifier(m flows.Modifier) {
 	s.modifiers = append(s.modifiers, m)

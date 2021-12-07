@@ -22,7 +22,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -209,7 +209,7 @@
                     "type": "msg_created"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "exit_uuid": "079f247a-16f4-419f-8cd2-0c8ae13152c6",

@@ -47,7 +47,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f",
                     "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -296,7 +296,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17",
                     "exit_uuid": "980b6ca4-1812-4fa8-959f-777b5b5d02cf",
@@ -635,7 +635,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "9b53d684-62a6-4f25-900c-268f762b192e",
                     "exit_uuid": "5a2f31ea-6ffc-40ce-8adc-d1f5d9f9d5e4",
@@ -1040,7 +1040,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742",
                     "exit_uuid": "5b6fb733-249a-42f6-992e-1253f158404c",
@@ -1499,7 +1499,7 @@
                     "type": "msg_created"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "48d058e6-a40c-437f-a3b0-f757dbbdeda1",
                     "exit_uuid": "3a7b37a7-3ea0-4532-8c27-742c467be53a",

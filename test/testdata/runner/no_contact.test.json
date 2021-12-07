@@ -41,7 +41,7 @@
                     "type": "error"
                 }
             ],
-            "path": [],
+            "segments": [],
             "session": {
                 "environment": {
                     "date_format": "YYYY-MM-DD",

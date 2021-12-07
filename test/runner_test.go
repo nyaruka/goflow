@@ -85,9 +85,9 @@ func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
 }
 
 type Output struct {
-	Session json.RawMessage   `json:"session"`
-	Events  []json.RawMessage `json:"events"`
-	Path    json.RawMessage   `json:"path"`
+	Session  json.RawMessage   `json:"session"`
+	Events   []json.RawMessage `json:"events"`
+	Segments json.RawMessage   `json:"segments"`
 }
 
 type FlowTest struct {
@@ -145,9 +145,9 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		}
 
 		outputs = append(outputs, &Output{
-			Session: sessionJSON,
-			Events:  marshalEventLog(sprint.Events()),
-			Path:    jsonx.MustMarshal(sprint.Path()),
+			Session:  sessionJSON,
+			Events:   marshalEventLog(sprint.Events()),
+			Segments: jsonx.MustMarshal(sprint.Segments()),
 		})
 
 		session, err = eng.ReadSession(sa, sessionJSON, assets.PanicOnMissing)
@@ -177,9 +177,9 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	}
 
 	outputs = append(outputs, &Output{
-		Session: sessionJSON,
-		Events:  marshalEventLog(sprint.Events()),
-		Path:    jsonx.MustMarshal(sprint.Path()),
+		Session:  sessionJSON,
+		Events:   marshalEventLog(sprint.Events()),
+		Segments: jsonx.MustMarshal(sprint.Segments()),
 	})
 
 	return runResult{session, outputs}, nil
@@ -267,7 +267,7 @@ func TestFlows(t *testing.T) {
 				}
 
 				// and finally the path segments
-				if !AssertEqualJSON(t, expected.Path, actual.Path, "path is different in output[%d] in %s", i, tc) {
+				if !AssertEqualJSON(t, expected.Segments, actual.Segments, "segments are different in output[%d] in %s", i, tc) {
 					break
 				}
 			}

@@ -3,6 +3,7 @@ package engine
 import (
 	"testing"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -88,8 +89,13 @@ func TestSprint(t *testing.T) {
 
 	assert.Equal(t, []flows.Modifier{mod1, mod2}, sprint.Modifiers())
 	assert.Equal(t, []flows.Event{event1, event2}, sprint.Events())
-	assert.Equal(t, []flows.Segment{
-		&segment{flow, node1Exit1, node2},
-		&segment{flow, node2Exit1, node3},
-	}, sprint.Path())
+	assert.Equal(t, []flows.Segment{&segment{flow, node1Exit1, node2}, &segment{flow, node2Exit1, node3}}, sprint.Segments())
+
+	assert.Equal(t, flow, sprint.Segments()[0].Flow())
+	assert.Equal(t, node1Exit1, sprint.Segments()[0].Exit())
+	assert.Equal(t, node2, sprint.Segments()[0].Destination())
+	assert.Equal(t,
+		`{"flow_uuid":"76f0a02f-3b75-4b86-9064-e9195e1b3a02","exit_uuid":"c0f31cdf-bc9a-404f-88c3-9d6c39d345c9","destination_uuid":"1747f81b-3692-4ef0-81c9-921c1124cf61"}`,
+		string(jsonx.MustMarshal(sprint.Segments()[0])),
+	)
 }

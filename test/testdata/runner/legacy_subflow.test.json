@@ -17,7 +17,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
                     "exit_uuid": "faeaff17-1c00-4fc1-a4a6-32b5cf28f7f6",
@@ -178,7 +178,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "22c48807-0f4a-4229-8cf3-e05019804ff7",
                     "exit_uuid": "0ca5e8ce-6979-4c2f-b934-ca628897342e",
@@ -393,7 +393,7 @@
                     "value": "13"
                 }
             ],
-            "path": [],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",

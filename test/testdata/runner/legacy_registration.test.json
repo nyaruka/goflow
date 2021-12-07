@@ -17,7 +17,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "797e66c1-99bf-4d65-8944-812e723be5f1",
                     "exit_uuid": "1e92bd7e-f531-442d-982b-7d8ef4435400",
@@ -184,7 +184,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "1db62b2a-7885-48f8-abaf-43074c6201b5",
                     "exit_uuid": "67a730a1-20a4-42c7-9da5-b093e859c24e",
@@ -419,7 +419,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "050d338f-33d5-4c95-8a55-d4702c8365f5",
                     "exit_uuid": "47063adc-04c6-478f-b13d-fad09f383e1e",
@@ -722,7 +722,7 @@
                     "type": "contact_groups_changed"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "4c6e76f3-c91b-4a3c-b5fc-998e8bfd4bd8",
                     "exit_uuid": "16772a2d-7302-4b4d-af6f-0a9eb7b68f1f",

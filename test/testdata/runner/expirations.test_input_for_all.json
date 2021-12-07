@@ -39,7 +39,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
                     "exit_uuid": "8e3752c7-8c30-4d9c-9a7f-b04a4bf730ac",
@@ -266,7 +266,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
                     "exit_uuid": "680503db-279c-44b6-a13d-2ecdbae1fba5",
@@ -562,7 +562,7 @@
                     "type": "msg_wait"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
                     "exit_uuid": "5344a3af-390e-433b-a177-aef743bf0e4d",
@@ -900,7 +900,7 @@
                     "value": "Johnson"
                 }
             ],
-            "path": [],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",

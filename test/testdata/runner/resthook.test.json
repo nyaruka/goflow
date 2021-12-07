@@ -105,7 +105,7 @@
                     "type": "msg_created"
                 }
             ],
-            "path": [
+            "segments": [
                 {
                     "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                     "exit_uuid": "cffd72b4-0b30-41a8-ae2b-b8e5019a164d",
