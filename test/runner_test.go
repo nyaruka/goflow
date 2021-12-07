@@ -75,22 +75,19 @@ func loadTestCases() ([]runnerTest, error) {
 	return tests, nil
 }
 
-func marshalEventLog(eventLog []flows.Event) ([]json.RawMessage, error) {
+func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
 	marshaled := make([]json.RawMessage, len(eventLog))
-	var err error
 
 	for i := range eventLog {
-		marshaled[i], err = jsonx.Marshal(eventLog[i])
-		if err != nil {
-			return nil, errors.Wrap(err, "error marshaling event")
-		}
+		marshaled[i] = jsonx.MustMarshal(eventLog[i])
 	}
-	return marshaled, nil
+	return marshaled
 }
 
 type Output struct {
 	Session json.RawMessage   `json:"session"`
 	Events  []json.RawMessage `json:"events"`
+	Path    json.RawMessage   `json:"path"`
 }
 
 type FlowTest struct {
@@ -146,12 +143,12 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		if err != nil {
 			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}
-		marshalledEvents, err := marshalEventLog(sprint.Events())
-		if err != nil {
-			return runResult{}, err
-		}
 
-		outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
+		outputs = append(outputs, &Output{
+			Session: sessionJSON,
+			Events:  marshalEventLog(sprint.Events()),
+			Path:    jsonx.MustMarshal(sprint.Path()),
+		})
 
 		session, err = eng.ReadSession(sa, sessionJSON, assets.PanicOnMissing)
 		if err != nil {
@@ -179,12 +176,11 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		return runResult{}, errors.Wrap(err, "error marshalling output")
 	}
 
-	marshalledEvents, err := marshalEventLog(sprint.Events())
-	if err != nil {
-		return runResult{}, err
-	}
-
-	outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
+	outputs = append(outputs, &Output{
+		Session: sessionJSON,
+		Events:  marshalEventLog(sprint.Events()),
+		Path:    jsonx.MustMarshal(sprint.Path()),
+	})
 
 	return runResult{session, outputs}, nil
 }
@@ -259,15 +255,20 @@ func TestFlows(t *testing.T) {
 				require.NoError(t, err, "error unmarshalling output")
 
 				// first the session
-				if !AssertEqualJSON(t, expected.Session, actual.Session, fmt.Sprintf("session is different in output[%d] in %s", i, tc)) {
+				if !AssertEqualJSON(t, expected.Session, actual.Session, "session is different in output[%d] in %s", i, tc) {
 					break
 				}
 
 				// and then each event
 				for j := range actual.Events {
-					if !AssertEqualJSON(t, expected.Events[j], actual.Events[j], fmt.Sprintf("event[%d] is different in output[%d] in %s", j, i, tc)) {
+					if !AssertEqualJSON(t, expected.Events[j], actual.Events[j], "event[%d] is different in output[%d] in %s", j, i, tc) {
 						break
 					}
+				}
+
+				// and finally the path segments
+				if !AssertEqualJSON(t, expected.Path, actual.Path, "path is different in output[%d] in %s", i, tc) {
+					break
 				}
 			}
 		}

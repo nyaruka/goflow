@@ -39,6 +39,13 @@
                     "type": "msg_wait"
                 }
             ],
+            "path": [
+                {
+                    "destination_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
+                    "exit_uuid": "8e3752c7-8c30-4d9c-9a7f-b04a4bf730ac",
+                    "flow_uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -257,6 +264,18 @@
                     "created_on": "2018-07-06T12:30:44.123456789Z",
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "msg_wait"
+                }
+            ],
+            "path": [
+                {
+                    "destination_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
+                    "exit_uuid": "680503db-279c-44b6-a13d-2ecdbae1fba5",
+                    "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                },
+                {
+                    "destination_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
+                    "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
+                    "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                 }
             ],
             "session": {
@@ -541,6 +560,18 @@
                     "created_on": "2018-07-06T12:31:04.123456789Z",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_wait"
+                }
+            ],
+            "path": [
+                {
+                    "destination_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
+                    "exit_uuid": "5344a3af-390e-433b-a177-aef743bf0e4d",
+                    "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                },
+                {
+                    "destination_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
+                    "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
+                    "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                 }
             ],
             "session": {
@@ -869,6 +900,7 @@
                     "value": "Johnson"
                 }
             ],
+            "path": [],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",

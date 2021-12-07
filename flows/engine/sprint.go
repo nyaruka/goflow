@@ -1,6 +1,9 @@
 package engine
 
 import (
+	"encoding/json"
+
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -13,6 +16,20 @@ type segment struct {
 func (s *segment) Flow() flows.Flow        { return s.flow }
 func (s *segment) Exit() flows.Exit        { return s.exit }
 func (s *segment) Destination() flows.Node { return s.destination }
+
+type segmentEnvelope struct {
+	FlowUUID        assets.FlowUUID `json:"flow_uuid"`
+	ExitUUID        flows.ExitUUID  `json:"exit_uuid"`
+	DestinationUUID flows.NodeUUID  `json:"destination_uuid"`
+}
+
+func (s *segment) MarshalJSON() ([]byte, error) {
+	e := &segmentEnvelope{FlowUUID: s.flow.UUID(), ExitUUID: s.exit.UUID()}
+	if s.destination != nil {
+		e.DestinationUUID = s.destination.UUID()
+	}
+	return json.Marshal(e)
+}
 
 var _ flows.Segment = (*segment)(nil)
 

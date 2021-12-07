@@ -22,6 +22,13 @@
                     "type": "msg_wait"
                 }
             ],
+            "path": [
+                {
+                    "destination_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                    "exit_uuid": "d3f3f024-a90e-43a5-bd5a-7056f5bea699",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -184,6 +191,23 @@
                     "created_on": "2018-07-06T12:30:24.123456789Z",
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "msg_wait"
+                }
+            ],
+            "path": [
+                {
+                    "destination_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
+                    "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                },
+                {
+                    "destination_uuid": "5bd2bd47-3f5f-4ae3-8406-45033fd95f54",
+                    "exit_uuid": "e019307e-8860-4cba-a289-55b1405d75e3",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                },
+                {
+                    "destination_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                    "exit_uuid": "02eec519-666b-41b3-b3b5-13ddd9c9eaec",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                 }
             ],
             "session": {
@@ -422,6 +446,23 @@
                     "created_on": "2018-07-06T12:30:41.123456789Z",
                     "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "type": "msg_wait"
+                }
+            ],
+            "path": [
+                {
+                    "destination_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
+                    "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                },
+                {
+                    "destination_uuid": "5bd2bd47-3f5f-4ae3-8406-45033fd95f54",
+                    "exit_uuid": "e019307e-8860-4cba-a289-55b1405d75e3",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                },
+                {
+                    "destination_uuid": "84783891-10c7-464e-bfc3-a8dacfba8771",
+                    "exit_uuid": "02eec519-666b-41b3-b3b5-13ddd9c9eaec",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                 }
             ],
             "session": {
@@ -711,6 +752,18 @@
                     },
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_created"
+                }
+            ],
+            "path": [
+                {
+                    "destination_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
+                    "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
+                },
+                {
+                    "destination_uuid": "de66d8f7-90b2-4c42-90bb-c6610ddad071",
+                    "exit_uuid": "b0cf0ca5-5736-4ecb-8304-4c508e2a5b65",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                 }
             ],
             "session": {

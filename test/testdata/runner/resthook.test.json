@@ -105,6 +105,13 @@
                     "type": "msg_created"
                 }
             ],
+            "path": [
+                {
+                    "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "exit_uuid": "cffd72b4-0b30-41a8-ae2b-b8e5019a164d",
+                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
